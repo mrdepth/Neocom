@@ -25,6 +25,7 @@
 #import "NCDatabaseTypeInfoViewController.h"
 #import "Flurry.h"
 #import "NCAPIKeyAccessMaskViewController.h"
+#import "NCShoppingList.h"
 
 @interface NCAppDelegate()<SKPaymentTransactionObserver>
 @property (nonatomic, strong) NCTaskManager* taskManager;
@@ -46,7 +47,6 @@
 @end
 
 @implementation NCAppDelegate
-
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -79,14 +79,12 @@
 	[paymentQueue addTransactionObserver:self];
 
 //	__block NSError* error = nil;
+	
 	[self migrateWithCompletionHandler:^{
-//		NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
-//		NSError* error = nil;
-//		[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
-//		[accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
-//		[accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];
-		
 		id cloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+		
+		if (cloudToken && [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey]) {
+		}
 
 
 		void (^loadAccount)() = ^() {
@@ -133,16 +131,7 @@
 														 [NCAccountsManager setSharedManager:accountsManager];
 													 }
 										 completionHandler:^(NCTask *task) {
-											 NCStorage* storage = [NCStorage sharedStorage];
-											 if (storage.storageType == NCStorageTypeCloud && ![[NSUserDefaults standardUserDefaults] valueForKey:@"NCSettingsMigratedToCloudKey"]) {
-												 [self askToTransferDataWithCompletionHandler:^(BOOL transfer) {
-													 if (transfer)
-														 [[NCStorage sharedStorage] transferDataFromFallbackToCloud];
-													 loadAccount();
-												 }];
-											 }
-											 else
-												 loadAccount();
+											 loadAccount();
 										 }];
 			}
 		};
@@ -268,6 +257,7 @@
 			
 			if (!useCloud || !currentCloudToken) {
 				[NCAccount setCurrentAccount:nil];
+				[NCShoppingList setCurrentShoppingList:nil];
 				
 				NCStorage* storage = [NCStorage fallbackStorage];
 				[NCStorage setSharedStorage:storage];
@@ -290,6 +280,7 @@
 													 }
 										 completionHandler:^(NCTask *task) {
 											 [NCAccount setCurrentAccount:nil];
+											 [NCShoppingList setCurrentShoppingList:nil];
 											 
 											 [NCStorage setSharedStorage:storage];
 											 [NCAccountsManager setSharedManager:accountsManager];

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Q05-ST-c2d">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Q05-ST-c2d">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <scenes>
         <!--FittingPOS Workspace View Controller-->
@@ -630,6 +630,7 @@
                         <outlet property="sectionSegmentedControl" destination="jFM-E8-0sf" id="4Mg-7i-J88"/>
                         <segue destination="5Wk-dt-RY8" kind="push" identifier="NCDatabaseTypeInfoViewController" id="kgL-le-e7F"/>
                         <segue destination="OsB-48-kC5" kind="push" identifier="NCFittingDamagePatternsViewController" id="wFS-y0-Xmt"/>
+                        <segue destination="Ean-xO-vhu" kind="push" identifier="NCNewShoppingItemViewController" id="WGl-HT-gDd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eh3-qK-zHU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -707,6 +708,30 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FUW-XH-DZI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1406" y="-1997"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="938-U2-An4">
+            <objects>
+                <viewController storyboardIdentifier="NCNewShoppingItemViewController" id="Ean-xO-vhu" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VLL-ce-Ve6"/>
+                        <viewControllerLayoutGuide type="bottom" id="3RM-cm-ofw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="qgd-Z2-iD3">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="wdI-Ym-Pf9">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="ctM-7i-ncf"/>
+                    </navigationItem>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="ShoppingList"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Ox-ba-bY3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1076" y="-1161"/>
         </scene>
     </scenes>
     <resources>

@@ -21,6 +21,7 @@
 #endif
 
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
+#define NCSettingsCurrentShoppingListKey @"NCSettingsCurrentShoppingListKey"
 #define NCSettingsNotificationsLastUpdateTimeKey @"NCSettingsNotificationsLastUpdateTimeKey"
 #define NCSettingsNotificationsLastEventsUpdateTimeKey @"NCSettingsNotificationsLastEventsUpdateTimeKey"
 #define NCSettingsAPINextSyncDateKey @"NCSettingsAPINextSyncDateKey"
@@ -29,6 +30,9 @@
 #define NCSettingsSkillQueueNotificationTimeKey @"NCSettingsSkillQueueNotificationTimeKey"
 #define NCSettingsMarketPricesMonitorKey @"NCSettingsMarketPricesMonitorKey"
 #define NCSettingsCalendarIdentifierKey @"NCSettingsCalendarIdentifierKey"
+#define NCSettingsDontNeedsCloudTransfer @"NCSettingsDontNeedsCloudTransfer"
+#define NCSettingsDontNeedsCloudReset @"NCSettingsDontNeedsCloudReset"
+#define NCSettingsStorageType @"NCSettingsStorageType"
 
 #define NCSettingsSkillsViewControllerModeKey @"NCSettingsSkillsViewControllerModeKey"
 

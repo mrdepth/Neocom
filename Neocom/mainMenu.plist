@@ -109,6 +109,18 @@
 			<key>corpAccessMask</key>
 			<integer>0</integer>
 		</dict>
+		<dict>
+			<key>segueIdentifier</key>
+			<string>NCDatabaseWHViewController</string>
+			<key>title</key>
+			<string>Wormholes</string>
+			<key>image</key>
+			<string>terminate.png</string>
+			<key>charAccessMask</key>
+			<integer>0</integer>
+			<key>corpAccessMask</key>
+			<integer>0</integer>
+		</dict>
 	</array>
 	<array>
 		<dict>
@@ -232,6 +244,30 @@
 			<integer>-1</integer>
 			<key>corpAccessMask</key>
 			<integer>655360</integer>
+		</dict>
+		<dict>
+			<key>segueIdentifier</key>
+			<string>NCShoppingListViewController</string>
+			<key>title</key>
+			<string>Shopping List</string>
+			<key>image</key>
+			<string>note.png</string>
+			<key>charAccessMask</key>
+			<integer>0</integer>
+			<key>corpAccessMask</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>segueIdentifier</key>
+			<string>NCPlanetaryViewController</string>
+			<key>title</key>
+			<string>Planetary</string>
+			<key>image</key>
+			<string>planetarycommodities.png</string>
+			<key>charAccessMask</key>
+			<integer>2</integer>
+			<key>corpAccessMask</key>
+			<integer>-1</integer>
 		</dict>
 	</array>
 	<array>

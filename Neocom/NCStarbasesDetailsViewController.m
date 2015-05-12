@@ -168,7 +168,7 @@
 	NCStarbasesDetailsViewControllerDataSection* section = self.sections[indexPath.section];
 	NCStarbasesDetailsViewControllerDataRow* row = section.rows[indexPath.row];
 	
-	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	
 	cell.iconView.image = row.resource.resourceType.icon ? row.resource.resourceType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	cell.titleLabel.text = row.resource.resourceType.typeName;

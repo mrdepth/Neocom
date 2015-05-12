@@ -115,7 +115,7 @@
 	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 
-	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	if ([row isKindOfClass:[NCDBInvType class]]) {
 		NCDBInvType* type = row;
 		cell.titleLabel.text = type.typeName;

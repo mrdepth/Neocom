@@ -19,5 +19,4 @@
 @property (weak, nonatomic) IBOutlet UIImageView *weaponTypeImageView;
 @property (weak, nonatomic) IBOutlet UILabel *shipLabel;
 @property (weak, nonatomic) IBOutlet UILabel *damageDoneLabel;
-@property (strong, nonatomic) id object;
 @end

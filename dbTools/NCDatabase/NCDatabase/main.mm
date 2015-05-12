@@ -9,8 +9,11 @@
 #import "EVEDBAPI.h"
 #import "NCDatabase.h"
 #import "NSString+HTML.h"
+#import "NSMutableString+HTML.h"
 #include "eufe.h"
 #import <objc/runtime.h>
+
+#define NCDBExpansion @"Mosaic"
 
 #define NCDBCertMasteryLevelIconsStartID 1000000
 #define NCDBCertCertificateDisplayNameTranslationColumnID 1000
@@ -21,6 +24,72 @@
 
 #define NCDBMetaGroupAttributeID 1692
 #define NCDBMetaLevelAttributeID 633
+
+typedef enum : uint32_t {
+	/* Typeface info (lower 16 bits of UIFontDescriptorSymbolicTraits ) */
+	UIFontDescriptorTraitItalic = 1u << 0,
+	UIFontDescriptorTraitBold = 1u << 1,
+	UIFontDescriptorTraitExpanded = 1u << 5,
+	UIFontDescriptorTraitCondensed = 1u << 6,
+	UIFontDescriptorTraitMonoSpace = 1u << 10,
+	UIFontDescriptorTraitVertical = 1u << 11,
+	UIFontDescriptorTraitUIOptimized = 1u << 12,
+	UIFontDescriptorTraitTightLeading = 1u << 15,
+	UIFontDescriptorTraitLooseLeading = 1u << 16,
+	
+	/* Font appearance info (upper 16 bits of UIFontDescriptorSymbolicTraits */
+	UIFontDescriptorClassMask = 0xF0000000,
+	
+	UIFontDescriptorClassUnknown = 0u << 28,
+	UIFontDescriptorClassOldStyleSerifs = 1u << 28,
+	UIFontDescriptorClassTransitionalSerifs = 2u << 28,
+	UIFontDescriptorClassModernSerifs = 3u << 28,
+	UIFontDescriptorClassClarendonSerifs = 4u << 28,
+	UIFontDescriptorClassSlabSerifs = 5u << 28,
+	UIFontDescriptorClassFreeformSerifs = 7u << 28,
+	UIFontDescriptorClassSansSerif = 8u << 28,
+	UIFontDescriptorClassOrnamentals = 9u << 28,
+	UIFontDescriptorClassScripts = 10u << 28,
+	UIFontDescriptorClassSymbolic = 12u << 28
+} UIFontDescriptorSymbolicTraits;
+
+@interface NSColor(NCDatabase)
+
++ (instancetype) colorWithString:(NSString*) string;
++ (instancetype) colorWithUInteger:(NSUInteger) rgba;
+@end
+
+
+@implementation NSColor(NCDatabase)
+
++ (instancetype) colorWithString:(NSString*) string {
+	unsigned int rgba;
+	if ([[NSScanner scannerWithString:string] scanHexInt:&rgba]) {
+		return [self colorWithUInteger:rgba];
+	}
+	else {
+		NSString* key = [string capitalizedString];
+		for (NSColorList* colorList in [NSColorList availableColorLists]) {
+			NSColor* color = [colorList colorWithKey:key];
+			if (color)
+				return color;
+		}
+	}
+	return nil;
+}
+
++ (instancetype) colorWithUInteger:(NSUInteger) argb {
+	float components[4];
+	for (int i = 3; i > 0; i--) {
+		components[i - 1] = (argb & 0xff) / 255.0;
+		argb >>= 8;
+	}
+	components[3] = (argb & 0xff) / 255.0;
+	return [NSColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:components[3]];
+}
+
+@end
+
 
 @interface EVEDBInvMarketGroup (NCDatabaseTypePickerViewController)
 @property (nonatomic, strong, readonly) NSMutableArray* subgroups;
@@ -115,6 +184,81 @@ static NSManagedObjectContext *managedObjectContext()
     return context;
 }
 
+static NSAttributedString* attributedStringFromHTMLString(NSString* html) {
+	NSMutableString* mHtml = [html mutableCopy];
+	[mHtml replaceOccurrencesOfString:@"<br>" withString:@"\n" options:NSCaseInsensitiveSearch range:NSMakeRange(0, mHtml.length)];
+	[mHtml replaceOccurrencesOfString:@"<p>" withString:@"\n" options:NSCaseInsensitiveSearch range:NSMakeRange(0, mHtml.length)];
+	
+	NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:mHtml attributes:nil];
+
+	
+	NSRegularExpression* expression = [NSRegularExpression regularExpressionWithPattern:@"<(a[^>]*href|url)=[\"']?(.*?)[\"']?>(.*?)<\\/(a|url)>"
+																				   options:NSRegularExpressionCaseInsensitive
+																				  error:nil];
+	
+	NSTextCheckingResult* result;
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
+		NSMutableAttributedString* replace = [[s attributedSubstringFromRange:[result rangeAtIndex:3]] mutableCopy];
+		[replace addAttribute:@"NSURL" value:[NSURL URLWithString:[[s.string substringWithRange:[result rangeAtIndex:2]] stringByReplacingOccurrencesOfString:@" " withString:@""]] range:NSMakeRange(0, replace.length)];
+		[s replaceCharactersInRange:[result rangeAtIndex:0] withAttributedString:replace];
+	}
+	
+	expression = [NSRegularExpression regularExpressionWithPattern:@"<b[^>]*>(.*?)</b>"
+														   options:NSRegularExpressionCaseInsensitive
+															 error:nil];
+	
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
+		NSMutableAttributedString* replace = [[s attributedSubstringFromRange:[result rangeAtIndex:1]] mutableCopy];
+		[replace addAttribute:@"UIFontDescriptorSymbolicTraits" value:@(UIFontDescriptorTraitBold) range:NSMakeRange(0, replace.length)];
+		[s replaceCharactersInRange:[result rangeAtIndex:0] withAttributedString:replace];
+	}
+	
+	expression = [NSRegularExpression regularExpressionWithPattern:@"<i[^>]*>(.*?)</i>"
+														   options:NSRegularExpressionCaseInsensitive
+															 error:nil];
+	
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
+		NSMutableAttributedString* replace = [[s attributedSubstringFromRange:[result rangeAtIndex:1]] mutableCopy];
+		[replace addAttribute:@"UIFontDescriptorSymbolicTraits" value:@(UIFontDescriptorTraitItalic) range:NSMakeRange(0, replace.length)];
+		[s replaceCharactersInRange:[result rangeAtIndex:0] withAttributedString:replace];
+	}
+
+	expression = [NSRegularExpression regularExpressionWithPattern:@"<u[^>]*>(.*?)</u>"
+														   options:NSRegularExpressionCaseInsensitive
+															 error:nil];
+	
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
+		NSMutableAttributedString* replace = [[s attributedSubstringFromRange:[result rangeAtIndex:1]] mutableCopy];
+		[replace addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(0, replace.length)];
+		[s replaceCharactersInRange:[result rangeAtIndex:0] withAttributedString:replace];
+	}
+	
+	expression = [NSRegularExpression regularExpressionWithPattern:@"<(color|font)[^>]*=[\"']?(.*?)[\"']?\\s*?>(.*?)</(color|font)>"
+														   options:NSRegularExpressionCaseInsensitive
+															 error:nil];
+	
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
+		NSString* colorString = [s.string substringWithRange:[result rangeAtIndex:2]];
+		NSColor* color = [NSColor colorWithString:colorString];
+		
+		NSMutableAttributedString* replace = [[s attributedSubstringFromRange:[result rangeAtIndex:3]] mutableCopy];
+		if (color)
+			[replace addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, replace.length)];
+		[s replaceCharactersInRange:[result rangeAtIndex:0] withAttributedString:replace];
+	}
+
+	expression = [NSRegularExpression regularExpressionWithPattern:@"</?.*?>"
+														   options:NSRegularExpressionCaseInsensitive
+															 error:nil];
+	
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil)
+		[s replaceCharactersInRange:result.range withAttributedString:[[NSAttributedString alloc] initWithString:@"" attributes:nil]];
+	
+	[s.mutableString unescapeHTML];
+
+	return s;
+}
+
 NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	NSMutableDictionary* dictionary = [NSMutableDictionary new];
 	
@@ -136,6 +280,34 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 			dictionary[@(eveIcon.iconID)] = icon;
 		}
 	}];
+	
+	for (NSString* iconNo in @[@"09_07", @"105_32", @"50_13", @"38_193", @"38_194", @"38_195", @"38_174", @"17_04", @"74_14", @"79_01", @"23_03", @"18_02", @"33_02"]) {
+		__block EVEDBEveIcon* eveIcon = nil;
+		[database execSQLRequest:[NSString stringWithFormat:@"select * from eveIcons where iconFile=\"%@\"", iconNo]
+					 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+						 *needsMore = NO;
+						 eveIcon = [[EVEDBEveIcon alloc] initWithStatement:stmt];
+					 }];
+		if (!eveIcon) {
+			NCDBEveIcon* icon = dictionary[iconNo];
+			if (!icon) {
+				NSString* iconImageName = [NSString stringWithFormat:@"./Icons/icon%@.png", iconNo];
+				
+				NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
+				if (data) {
+					NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
+					NCDBEveIcon* icon = [NSEntityDescription insertNewObjectForEntityForName:@"EveIcon" inManagedObjectContext:context];
+					icon.iconFile = iconNo;
+					icon.image = [NSEntityDescription insertNewObjectForEntityForName:@"EveIconImage" inManagedObjectContext:context];
+					icon.image.image = imageRep;
+					dictionary[iconNo] = icon;
+				}
+				else {
+					NSLog(@"Unable to load icon %@", iconNo);
+				}
+			}
+		}
+	}
 	
 	for (int i = 0; i <= 5; i++) {
 		NSString* iconImageName = [NSString stringWithFormat:@"./Icons/icon79_0%d.png", i + 1];
@@ -212,33 +384,7 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 		}
 	}];
 	
-	for (NSString* iconNo in @[@"09_07", @"105_32", @"50_13", @"38_193", @"38_194", @"38_195", @"38_174", @"17_04", @"74_14", @"79_01"]) {
-		__block EVEDBEveIcon* eveIcon = nil;
-		[database execSQLRequest:[NSString stringWithFormat:@"select * from eveIcons where iconFile=\"%@\"", iconNo]
-					 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-						 *needsMore = NO;
-						 eveIcon = [[EVEDBEveIcon alloc] initWithStatement:stmt];
-					 }];
-		if (!eveIcon) {
-			NCDBEveIcon* icon = dictionary[iconNo];
-			if (!icon) {
-				NSString* iconImageName = [NSString stringWithFormat:@"./Icons/icon%@.png", iconNo];
-				
-				NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
-				if (data) {
-					NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
-					NCDBEveIcon* icon = [NSEntityDescription insertNewObjectForEntityForName:@"EveIcon" inManagedObjectContext:context];
-					icon.iconFile = iconNo;
-					icon.image = [NSEntityDescription insertNewObjectForEntityForName:@"EveIconImage" inManagedObjectContext:context];
-					icon.image.image = imageRep;
-					dictionary[iconNo] = icon;
-				}
-				else {
-					NSLog(@"Unable to load icon %@", iconNo);
-				}
-			}
-		}
-	}
+
 	return dictionary;
 }
 
@@ -313,18 +459,20 @@ NSDictionary* convertInvTypes(NSManagedObjectContext* context, EVEDBDatabase* da
 		
 		dictionary[@(eveType.typeID)] = type;
 		
-		NSString* s = [[eveType.description stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
-		NSMutableString* description = [NSMutableString stringWithString:s ? s : @""];
-		[description replaceOccurrencesOfString:@"\\r" withString:@"" options:0 range:NSMakeRange(0, description.length)];
-		[description replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, description.length)];
-		[description replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, description.length)];
+		NSMutableString* description = [eveType.description mutableCopy];
+		//[description replaceOccurrencesOfString:@"\\r" withString:@"" options:0 range:NSMakeRange(0, description.length)];
+		//[description replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, description.length)];
+		//[description replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, description.length)];
 		
 		if (eveType.traitsString.length > 0) {
-			[description appendFormat:@"\n%@", eveType.traitsString];
+			if (description)
+				[description appendFormat:@"\n%@", eveType.traitsString];
+			else
+				description = [eveType.traitsString mutableCopy];
 		}
 		
 		type.typeDescription = [NSEntityDescription insertNewObjectForEntityForName:@"TxtDescription" inManagedObjectContext:context];
-		type.typeDescription.text = description;
+		type.typeDescription.text = attributedStringFromHTMLString(description);
 	}];
 	
 	return dictionary;
@@ -507,7 +655,7 @@ NSDictionary* convertCertCertificates(NSManagedObjectContext* context, EVEDBData
 		dictionary[@(certificate.certificateID)] = certificate;
 		
 		certificate.certificateDescription = [NSEntityDescription insertNewObjectForEntityForName:@"TxtDescription" inManagedObjectContext:context];
-		certificate.certificateDescription.text = eveCertificate.description;
+		certificate.certificateDescription.text = attributedStringFromHTMLString(eveCertificate.description);
 	}];
 	
 	return dictionary;
@@ -1272,17 +1420,35 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 				 }];
 }
 
+void convertWhTypes(NSManagedObjectContext* context, EVEDBDatabase* database) {
+	[database execSQLRequest:@"SELECT * FROM invTypes where groupID = 988" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+		EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
+		
+		EVEDBDgmTypeAttribute* targetSystemClass = type.attributesDictionary[@(1381)];
+		EVEDBDgmTypeAttribute* maxStableTime = type.attributesDictionary[@(1382)];
+		EVEDBDgmTypeAttribute* maxStableMass = type.attributesDictionary[@(1383)];
+		EVEDBDgmTypeAttribute* maxRegeneration = type.attributesDictionary[@(1384)];
+		EVEDBDgmTypeAttribute* maxJumpMass = type.attributesDictionary[@(1385)];
+
+		NCDBWhType* wh = [NSEntityDescription insertNewObjectForEntityForName:@"WhType" inManagedObjectContext:context];
+		wh.type = invTypes[@(type.typeID)];
+		wh.targetSystemClass = targetSystemClass.value;
+		wh.maxJumpMass = maxJumpMass.value;
+		wh.maxRegeneration = maxRegeneration.value;
+		wh.maxStableMass = maxStableMass.value;
+		wh.maxStableTime = maxStableTime.value;
+	}];
+}
+
 int main(int argc, const char * argv[])
 {
 
 	@autoreleasepool {
 		NSManagedObjectContext *context = managedObjectContext();
-
 		EVEDBDatabase* database = [[EVEDBDatabase alloc] initWithDatabasePath:@"./evedb.sqlite"];
 		[EVEDBDatabase setSharedDatabase:database];
 		
 		@autoreleasepool {
-			
 			[database execSQLRequest:@"select version, build from version"
 						 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 							 const char* version = (const char*) sqlite3_column_text(stmt, 0);
@@ -1290,6 +1456,7 @@ int main(int argc, const char * argv[])
 							 NCDBVersion* dbVersion = [NSEntityDescription insertNewObjectForEntityForName:@"Version" inManagedObjectContext:context];
 							 dbVersion.version = [NSString stringWithCString:version encoding:NSUTF8StringEncoding];
 							 dbVersion.build = build;
+							 dbVersion.expansion = NCDBExpansion;
 						 }];
 			
 			NSLog(@"convertEveIcons");
@@ -1374,6 +1541,8 @@ int main(int argc, const char * argv[])
 //			convertIndustryActivityRaces(context, database);
 			NSLog(@"convertIndustryActivitySkills");
 			convertIndustryActivitySkills(context, database);
+			NSLog(@"convertWhTypes");
+			convertWhTypes(context, database);
 		}
 		NSLog(@"Saving...");
 

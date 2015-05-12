@@ -80,8 +80,11 @@
 #pragma mark Table view delegate
 
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionIndex {
-	if (sectionIndex == 0)
-		return nil;
+	if (sectionIndex == 0) {
+		UIView* view = [[UIView alloc] initWithFrame:CGRectZero];
+		view.backgroundColor = [UIColor clearColor];
+		return view;
+	}
 	else {
 		NCFittingSectionGenericHeaderView* header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCFittingSectionGenericHeaderView"];
 		if (sectionIndex == 1) {
@@ -94,6 +97,13 @@
 		}
 		return header;
 	}
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	if (section == 0)
+		return 0;
+	else
+		return 44;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -182,18 +192,18 @@
 	return @"Cell";
 }
 
-- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
+- (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	cell.subtitleLabel.text = nil;
 	cell.accessoryView = nil;
 	
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			cell.titleLabel.text = NSLocalizedString(@"Import Implant Set", nil);
-			cell.iconView.image = [UIImage imageNamed:@"implant.png"];
+			cell.iconView.image = [UIImage imageNamed:@"augmentations.png"];
 		}
 		else {
 			cell.titleLabel.text = NSLocalizedString(@"Save Implant Set", nil);
-			cell.iconView.image = [UIImage imageNamed:@"implant.png"];
+			cell.iconView.image = [UIImage imageNamed:@"augmentations.png"];
 		}
 	}
 	else {

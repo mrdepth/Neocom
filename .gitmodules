@@ -6,4 +6,4 @@
 	url = https://github.com/mrdepth/tools.git
 [submodule "ThirdParty/eufe"]
 	path = ThirdParty/eufe
-	url = ../eufe.git
+	url = https://github.com/mrdepth/eufe.git

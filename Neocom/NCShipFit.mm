@@ -1033,7 +1033,7 @@
 - (NSString*) eveXMLRecordRepresentation {
 	[self flush];
 	
-	NSMutableString* xml = [NSMutableString stringWithFormat:@"<fitting name=\"%@\">\n<description value=\"EVEUniverse fitting engine\"/>\n<shipType value=\"%@\"/>\n", self.loadoutName, self.type.typeName];
+	NSMutableString* xml = [NSMutableString stringWithFormat:@"<fitting name=\"%@\">\n<description value=\"Neocom\"/>\n<shipType value=\"%@\"/>\n", self.loadoutName, self.type.typeName];
 	
 	NSString* keys[] = {@"hiSlots", @"medSlots", @"lowSlots", @"rigSlots", @"subsystems"};
 	NSString* slots[] = {@"hi slot", @"med slot", @"low slot", @"rig slot", @"subsystem slot"};

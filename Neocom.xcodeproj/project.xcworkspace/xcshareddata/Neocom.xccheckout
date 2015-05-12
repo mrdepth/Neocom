@@ -15,9 +15,9 @@
 		<key>6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195</key>
 		<string>https://github.com/mrdepth/tools.git</string>
 		<key>CBD3C72D1EC244FEC895CDE83582355773BC1B4F</key>
-		<string>https://github.com/mrdepth/EVEUniverse.git</string>
+		<string>github.com:mrdepth/EVEUniverse.git</string>
 		<key>CE59D664C95604646A8898B717A20F0AFC1A609F</key>
-		<string>https://github.com/mrdepth/eufe.git</string>
+		<string>github.com:mrdepth/eufe.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Neocom.xcodeproj</string>
@@ -33,7 +33,7 @@
 		<string>../..ThirdParty/eufe</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/mrdepth/EVEUniverse.git</string>
+	<string>github.com:mrdepth/EVEUniverse.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
@@ -62,7 +62,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>CBD3C72D1EC244FEC895CDE83582355773BC1B4F</string>
 			<key>IDESourceControlWCCName</key>
-			<string>Neocom</string>
+			<string>EVEUniverse</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

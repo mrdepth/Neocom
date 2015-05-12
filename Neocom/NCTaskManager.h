@@ -19,7 +19,7 @@
 @property (nonatomic, assign) BOOL active;
 
 - (id) initWithViewController:(UIViewController*) viewController;
-- (void) addTaskWithIndentifier:(NSString*) identifier
+- (NCTask*) addTaskWithIndentifier:(NSString*) identifier
 						  title:(NSString*) title
 						  block:(void(^)(NCTask* task)) block
 			  completionHandler:(void(^)(NCTask* task)) completionHandler;

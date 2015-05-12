@@ -287,9 +287,7 @@
 		for (EVECharacterSheetSkill* skill in self.characterSheet.skills)
 			skillPoints += skill.skillpoints;
 
-		//return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], (int32_t) self.characterSheet.skills.count];
-		
-		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)\n%@ ISK", nil),
+		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)\n%@", nil),
 				[NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], (int32_t) self.characterSheet.skills.count,
 				[NSString shortStringWithFloat:self.characterSheet.balance unit:NSLocalizedString(@"ISK", nil)]];
 	}
@@ -323,10 +321,10 @@
 - (void) onTimer:(NSTimer*) timer {
 	if (self.serverStatus) {
 		self.serverTimeLabel.text = [self.dateFormatter stringFromDate:[self.serverStatus serverTimeWithLocalTime:[NSDate date]]];
-		if ([[self.serverStatus cacheExpireDate] compare:[NSDate date]] == NSOrderedAscending) {
-			[self updateServerStatus];
-			self.timer = nil;
-		}
+//		if ([[self.serverStatus cacheExpireDate] compare:[NSDate date]] == NSOrderedAscending) {
+//			[self updateServerStatus];
+//			self.timer = nil;
+//		}
 	}
 	else {
 		self.timer = nil;
@@ -355,13 +353,14 @@
 										 self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
 										 self.serverStatusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ players online", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:serverStatus.onlinePlayers]];
 										 [self onTimer:self.timer];
+										 [self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:MAX([serverStatus.cacheExpireDate timeIntervalSinceNow], 60)];
 									 }
 									 else {
 										 if (error)
 											 self.serverStatusLabel.text = [error localizedDescription];
 										 else
 											 self.serverStatusLabel.text = NSLocalizedString(@"Server offline", nil);
-										 [self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:30.];
+										 [self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:60.];
 									 }
 								 }
 							 }];
@@ -386,11 +385,11 @@
 								 if (![task isCancelled]) {
 									 if (marketStat) {
 										 self.marketStat = marketStat;
-										 [self performSelector:@selector(updatePrices) withObject:nil afterDelay:[self.marketStat.cacheExpireDate timeIntervalSinceNow]];
+										 [self performSelector:@selector(updatePrices) withObject:nil afterDelay:MAX([self.marketStat.cacheExpireDate timeIntervalSinceNow], 60)];
 										 [self updateMarqueeLabel];
 									 }
 									 else {
-										 [self performSelector:@selector(updatePrices) withObject:nil afterDelay:30.];
+										 [self performSelector:@selector(updatePrices) withObject:nil afterDelay:60.];
 									 }
 								 }
 							 }];

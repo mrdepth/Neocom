@@ -2145,4 +2145,8 @@ INSERT INTO eveIcons VALUES (21400, "res:/UI/Asset/mannequin/feet/34363_female_F
 INSERT INTO eveIcons VALUES (21401, "res:/UI/Asset/mannequin/feet/34364_female_Feet_BootsPrtF01_Types_BootsPrtF01_sansha.png", "34364_female_Feet_BootsPrtF01_Types_BootsPrtF01_sansha.png");
 INSERT INTO eveIcons VALUES (21402, "res:/UI/Asset/mannequin/feet/34365_female_Feet_BootsPrtF01_Types_BootsPrtF01_guristas.png", "34365_female_Feet_BootsPrtF01_Types_BootsPrtF01_guristas.png");
 INSERT INTO eveIcons VALUES (21403, "res:/UI/Asset/mannequin/outer/34351_female_Outer_JacketPrtF01_Types_JacketPrtF01_guristas.png", "34351_female_Outer_JacketPrtF01_Types_JacketPrtF01_guristas.png");
-INSERT INTO eveIcons VALUES (21404, "117_2 ", "Drifter Faction Icon");
+INSERT INTO eveIcons VALUES (21404, "117_2", "Drifter Faction Icon");
+INSERT INTO eveIcons VALUES (21408, "118_1", "Antikthera Element Icon");
+INSERT INTO eveIcons VALUES (21409, "119_1", "Lux Kontos Icon");
+INSERT INTO eveIcons VALUES (21414, "res:/UI/Asset/mannequin/topmiddle/34824_male_topMiddle_ShirtQM01_Types_ff2015m01.png", "34824_male_topMiddle_ShirtQM01_Types_ff2015m01.png");
+INSERT INTO eveIcons VALUES (21415, "res:/UI/Asset/mannequin/topmiddle/34825_female_TopMiddle_ShirtQF01_Types_ff2015f01.png ", "34825_female_TopMiddle_ShirtQF01_Types_ff2015f01.png");

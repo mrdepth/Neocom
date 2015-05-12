@@ -10,6 +10,7 @@
 #import "EVECentralAPI.h"
 
 @interface NCPriceManager : NSObject
++ (instancetype) sharedManager;
 - (EVECentralMarketStatType*) priceWithType:(NSInteger) typeID;
 - (NSDictionary*) pricesWithTypes:(NSArray*) types;
 @end

@@ -428,7 +428,7 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	if (indexPath.row >= self.rows.count) {
-		NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 		cell.iconView.image = [UIImage imageNamed:@"drone.png"];
 		cell.titleLabel.text = NSLocalizedString(@"Add Drone", nil);
 		cell.subtitleLabel.text = nil;

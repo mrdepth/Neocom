@@ -11,5 +11,5 @@
 @interface NCMigrationManager : NSObject
 
 + (BOOL) migrateWithError:(NSError**) errorPtr;
-
+- (void) transferCloudToLocal;
 @end

@@ -59,6 +59,15 @@
 
 @implementation NCPriceManager
 
++ (instancetype) sharedManager {
+	static NCPriceManager* sharedManager = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		sharedManager = [NCPriceManager new];
+	});
+	return sharedManager;
+}
+
 - (EVECentralMarketStatType*) priceWithType:(NSInteger) typeID {
 	return [self pricesWithTypes:@[@(typeID)]][@(typeID)];
 }
@@ -84,15 +93,21 @@
 					records[key] = obj;
 			}];
 
-			EVECentralMarketStat* marketStat = [EVECentralMarketStat marketStatWithTypeIDs:missingTypes regionIDs:nil hours:0 minQ:0 cachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
-			NSDate* date = [NSDate date];
-			for (EVECentralMarketStatType* stat in marketStat.types) {
-				prices[@(stat.typeID)] = stat;
-				NCPriceManagerDataRecord* record = [NCPriceManagerDataRecord new];
-				record.marketStat = stat;
-				record.date = date;
-				records[@(stat.typeID)] = record;
-			}
+			NSError* error = nil;
+//			for (NSUInteger location = 0; location < missingTypes.count; location += 200) {
+				NSUInteger location = 0;
+				NSUInteger len = missingTypes.count;//MIN(missingTypes.count - location, 200);
+				
+				EVECentralMarketStat* marketStat = [EVECentralMarketStat marketStatWithTypeIDs:[missingTypes subarrayWithRange:NSMakeRange(location, len)] regionIDs:nil hours:0 minQ:0 cachePolicy:NSURLRequestUseProtocolCachePolicy error:&error progressHandler:nil];
+				NSDate* date = [NSDate date];
+				for (EVECentralMarketStatType* stat in marketStat.types) {
+					prices[@(stat.typeID)] = stat;
+					NCPriceManagerDataRecord* record = [NCPriceManagerDataRecord new];
+					record.marketStat = stat;
+					record.date = date;
+					records[@(stat.typeID)] = record;
+				}
+//			}
 			
 			NCPriceManagerData* newData = [NCPriceManagerData new];
 			newData.marketStat = records;

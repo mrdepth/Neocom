@@ -77,7 +77,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? 3 : [(NSArray*) self.sections[section - 1] count];
+    return section == 0 ? 4 : [(NSArray*) self.sections[section - 1] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -208,7 +208,7 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	if (indexPath.section > 0) {
-		NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+		NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
 		cell.titleLabel.text = loadout.type.typeName;
 		cell.subtitleLabel.text = loadout.name;

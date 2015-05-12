@@ -44,19 +44,28 @@
 																	   attribute:NSLayoutAttributeNotAnAttribute
 																	  multiplier:1
 																		constant:36]];
+
+	NSLayoutConstraint* constraint = [NSLayoutConstraint constraintWithItem:self.layoutContentView
+																  attribute:NSLayoutAttributeHeight
+																  relatedBy:NSLayoutRelationEqual
+																	 toItem:nil
+																  attribute:NSLayoutAttributeNotAnAttribute
+																 multiplier:1
+																   constant:36];
+	constraint.priority = 500;
+	[self.layoutContentView addConstraint:constraint];
+
 	
 	[self.contentView addSubview:[views lastObject]];
 	NSDictionary* bindings = @{@"view": self.layoutContentView};
 	
-	NSArray* c = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0@999-|"
-													options:0
-													metrics:nil
-													  views:bindings];
-
-	[self.contentView addConstraints:c];
+	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0@999-|"
+																			 options:0
+																			 metrics:nil
+																			   views:bindings]];
 
 
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|"
+	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0@999-|"
 																			 options:0
 																			 metrics:nil
 																			   views:bindings]];

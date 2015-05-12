@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, NCTypeCategory) {
 @property (nonatomic, readonly) NSString* metaGroupName;
 
 + (instancetype) invTypeWithTypeID:(int32_t) typeID;
++ (instancetype) invTypeWithTypeName:(NSString*) typeName;
 - (NSDictionary*) attributesDictionary;
 - (NSDictionary*) effectsDictionary;
 

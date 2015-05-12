@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14C1510" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CertCertificate" representedClassName="NCDBCertCertificate" syncable="YES">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String" syncable="YES"/>
@@ -214,6 +214,7 @@
         <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StaStation" inverseName="stationType" inverseEntity="StaStation" syncable="YES"/>
         <relationship name="typeDescription" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TxtDescription" inverseName="type" inverseEntity="TxtDescription" syncable="YES"/>
         <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="parentType" inverseEntity="InvType" syncable="YES"/>
+        <relationship name="wormhole" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="WhType" inverseName="type" inverseEntity="WhType" syncable="YES"/>
     </entity>
     <entity name="InvTypeRequiredSkill" representedClassName="NCDBInvTypeRequiredSkill" syncable="YES">
         <attribute name="skillLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -291,13 +292,23 @@
         <relationship name="stationType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="stations" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="TxtDescription" representedClassName="NCDBTxtDescription" syncable="YES">
-        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="certificate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="certificateDescription" inverseEntity="CertCertificate" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="typeDescription" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="Version" representedClassName="NCDBVersion" syncable="YES">
         <attribute name="build" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="expansion" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="WhType" representedClassName="NCDBWhType" syncable="YES">
+        <attribute name="maxJumpMass" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="maxRegeneration" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="maxStableMass" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="maxStableTime" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="targetSystemClass" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetSystemClassDisplayName" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="wormhole" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <fetchRequest name="DefaultIcon" entity="EveIcon" predicateString="iconFile == &quot;07_15&quot;" fetchLimit="1"/>
     <elements>
@@ -328,7 +339,7 @@
         <element name="InvGroup" positionX="0" positionY="45" width="128" height="163"/>
         <element name="InvMarketGroup" positionX="-18" positionY="36" width="128" height="133"/>
         <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="103"/>
-        <element name="InvType" positionX="-396" positionY="85" width="128" height="568"/>
+        <element name="InvType" positionX="-396" positionY="85" width="128" height="585"/>
         <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="88"/>
         <element name="MapConstellation" positionX="81" positionY="225" width="128" height="133"/>
         <element name="MapDenormalize" positionX="90" positionY="234" width="128" height="148"/>
@@ -339,7 +350,8 @@
         <element name="RamAssemblyLineType" positionX="72" positionY="216" width="128" height="163"/>
         <element name="RamInstallationTypeContent" positionX="81" positionY="225" width="128" height="88"/>
         <element name="StaStation" positionX="99" positionY="243" width="128" height="118"/>
-        <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="28"/>
-        <element name="Version" positionX="-153" positionY="216" width="128" height="73"/>
+        <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
+        <element name="Version" positionX="-153" positionY="216" width="128" height="90"/>
+        <element name="WhType" positionX="-189" positionY="180" width="128" height="150"/>
     </elements>
 </model>

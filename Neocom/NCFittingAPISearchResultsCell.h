@@ -20,5 +20,4 @@
 @property (weak, nonatomic) IBOutlet UILabel *falloffLabel;
 @property (weak, nonatomic) IBOutlet UILabel *velocityLabel;
 @property (weak, nonatomic) IBOutlet UILabel *capacitorLabel;
-@property (strong, nonatomic) id object;
 @end

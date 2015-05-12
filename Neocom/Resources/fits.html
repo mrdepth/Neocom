@@ -1,0 +1,86 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Neocom</title>
+
+<style type="text/css">
+	html, body {
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100%;
+		font-family: Verdana,Arial;
+		font-size: 8pt;
+		color: white;
+		
+		background-color: black;
+	}
+	h2 {font-size: 11pt;}
+	
+	A:link{color: #ffa500;text-decoration: none}
+	A:visited{color: #ffa500;text-decoration: none}
+	A:active{color: #ffa500;text-decoration: none}
+	A:hover{color: #ffa500;text-decoration: underline}
+	
+	.form {
+		min-width:300px;
+		max-width:800px;
+		background-color: #2C2C38;
+		border: 1px solid #444444;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	table {
+		border: 1px solid #444444;
+		border-collapse: collapse;
+		border-spacing: 1px;
+		font-family: Verdana,Arial;
+		font-size: 8pt;
+		color: white;
+	}
+	th {
+		border: 1px solid #444444;
+	}
+	td {
+		border: 1px solid #444444;
+		padding-left: 10px;
+	}
+	.icon {
+		width: 32px;
+		height: 32px;
+		padding-left: 0px;
+	}
+	.group {
+		background-color: #3C3C48;
+	}
+</style>
+</head>
+
+<body>
+	<br>
+	<h2 align="center">Neocom</h2>
+	<div class="form">
+		<table width=100% border="0">
+			<tr><th colspan=2>Ship</th><th>Fit name</th><th>Download</th></tr>
+			
+{header}
+			<tr><td colspan=4 class="group"><b>%1$@</b></td></tr>
+{/header}
+{row}
+			<tr><td class="icon"><image src="%1$@" width=32 height=32 /></td><td width="25%%">%2$@</td><td>%3$@</td><td width="40%%">Download <a href="%4$d_%5$d.xml">EVE XML file</a> or <a href="javascript:CCPEVE.showFitting('%6$@');">Show Loadout</a> ingame</td></tr>
+{/row}
+{body}
+			<tr>
+				<td colspan=3>All fits</td><td>Download <a href="allFits.xml">EVE XML file</a></td>
+			</tr>
+			<tr><td colspan=4>
+				<form action="upload" method="post" enctype="multipart/form-data">
+					<p>Import from eve xml</p><input type="file" name="file"></input><input type=submit>
+				</form>
+			</td>
+		</table>
+	</div>
+</body>
+</html>

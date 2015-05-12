@@ -116,6 +116,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	[[NCAccountsManager sharedManager] reload];
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.logoutItem.enabled = [NCAccount currentAccount] != nil;
 	self.modeSetting = [[NCStorage sharedStorage] settingWithKey:@"NCAccountsViewController.mode"];
@@ -362,6 +363,19 @@
 				shouldReloadData = YES;
 				break;
 			}
+			if (account.accountType == NCAccountTypeCorporate) {
+				if (!account.corporationSheet) {
+					shouldReloadData = YES;
+					break;
+				}
+			}
+			else {
+				if (!account.characterInfo) {
+					shouldReloadData = YES;
+					break;
+				}
+			}
+
 		}
 	}
 	for (NCAccountsViewControllerDataAccount* accountData in [self.cacheRecord.data.data accounts]) {

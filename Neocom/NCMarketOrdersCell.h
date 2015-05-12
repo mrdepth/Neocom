@@ -17,5 +17,4 @@
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *quantityLabel;
 @property (weak, nonatomic) IBOutlet UILabel *issuedLabel;
-@property (strong, nonatomic) id object;
 @end

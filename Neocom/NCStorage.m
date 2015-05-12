@@ -15,6 +15,8 @@
 #import "NCImplantSet.h"
 #import "NCFitCharacter.h"
 #import <objc/runtime.h>
+#import "NSData+MD5.h"
+#import "NCMigrationManager.h"
 
 @interface NCValueTransformer : NSValueTransformer
 
@@ -64,6 +66,7 @@ static NCStorage* sharedStorage;
 
 @interface NCStorage()
 @property (nonatomic, assign, readwrite) NCStorageType storageType;
+@property (nonatomic, strong) id observer;
 
 - (void) didUpdateCloud:(NSNotification*) notification;
 - (void) notifyStorageChange;
@@ -77,17 +80,17 @@ static NCStorage* sharedStorage;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize backgroundManagedObjectContext = _backgroundManagedObjectContext;
 
-+ (id) sharedStorage {
++ (instancetype) sharedStorage {
 	@synchronized(self) {
-		return sharedStorage;
+		return sharedStorage.observer ? nil : sharedStorage;
 	}
 }
 
-+ (id) fallbackStorage {
++ (instancetype) fallbackStorage {
 	return [[self alloc] initFallbackStorage];
 }
 
-+ (id) cloudStorage {
++ (instancetype) cloudStorage {
 	return [[self alloc] initCloudStorage];
 }
 
@@ -97,12 +100,47 @@ static NCStorage* sharedStorage;
 	}
 }
 
+- (void) didChange:(NSNotification*) notification {
+	
+}
+
+- (void) willChange:(NSNotification*) notification {
+	if (!self.observer && notification.object == self.persistentStoreCoordinator)
+		self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:NSPersistentStoreCoordinatorStoresDidChangeNotification
+																		  object:notification.object
+																		   queue:[NSOperationQueue mainQueue]
+																	  usingBlock:^(NSNotification *note) {
+
+																		  if ([notification.userInfo[NSPersistentStoreUbiquitousTransitionTypeKey] integerValue] == NSPersistentStoreUbiquitousTransitionTypeInitialImportCompleted) {
+																			  if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
+																				  [[NSUserDefaults standardUserDefaults] setInteger:NCStorageTypeCloud forKey:NCSettingsStorageType];
+																				  [[NSUserDefaults standardUserDefaults] synchronize];
+																				  self.storageType = NCStorageTypeCloud;
+																			  }
+//																			  [self removeDuplicatesFromPersistentStoreCoordinator:self.persistentStoreCoordinator];
+																		  }
+																		  
+																		  [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+
+																		  self.observer = nil;
+																		  [self notifyStorageChange];
+
+																	  }];
+}
 
 - (id) init {
 	if (self = [super init]) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willChange:) name:NSPersistentStoreCoordinatorStoresWillChangeNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChange:) name:NSPersistentStoreCoordinatorStoresDidChangeNotification object:nil];
 	}
 	return self;
+}
+
+- (void) dealloc {
+	if (self.observer)
+		[[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id) initFallbackStorage {
@@ -120,7 +158,8 @@ static NCStorage* sharedStorage;
 			if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 														   configuration:@"Cloud"
 																	 URL:storeURL
-																 options:nil
+																options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+																		  NSMigratePersistentStoresAutomaticallyOption : @(YES)}
 																   error:&error])
 				break;
 			else
@@ -139,7 +178,8 @@ static NCStorage* sharedStorage;
 			if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 														  configuration:@"Local"
 																	URL:storeURL
-																options:nil
+																options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+																		  NSMigratePersistentStoresAutomaticallyOption : @(YES)}
 																  error:&error])
 				break;
 			else
@@ -151,13 +191,13 @@ static NCStorage* sharedStorage;
 			});
 			return nil;
 		}
+		[self notifyStorageChange];
 	}
 	return self;
 }
 
 - (id) initCloudStorage {
 	if (self = [self init]) {
-		self.storageType = NCStorageTypeCloud;
 		BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey];
 		if (!useCloud)
 			return nil;
@@ -186,27 +226,53 @@ static NCStorage* sharedStorage;
 		[[NSUserDefaults standardUserDefaults] setObject: tokenData forKey:NCSettingsCloudTokenKey];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
-		NSDictionary* options = @{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
+		NSMutableDictionary* options = [@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
 								  NSPersistentStoreUbiquitousContentURLKey : url,
 								  NSInferMappingModelAutomaticallyOption : @(YES),
-								  NSMigratePersistentStoresAutomaticallyOption : @(YES)};
-
+								  NSMigratePersistentStoresAutomaticallyOption : @(YES)} mutableCopy];
 		
+		if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudReset]) {
+			options[NSPersistentStoreRebuildFromUbiquitousContentOption] = @(YES);
+			[[NSUserDefaults standardUserDefaults] setInteger:NCStorageTypeFallback forKey:NCSettingsStorageType];
+			self.storageType = NCStorageTypeFallback;
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsDontNeedsCloudReset];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		}
+		else
+			self.storageType = [[NSUserDefaults standardUserDefaults] integerForKey:NCSettingsStorageType];
+
 		
 		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
 		
 		NSError *error = nil;
+		
+//		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"NCCloudInitialization"])
+//			options[NSPersistentStoreRebuildFromUbiquitousContentOption] = @(YES);
+		
+//		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NCCloudInitialization"];
+//		[[NSUserDefaults standardUserDefaults] synchronize];
 		for (int n = 0; n < 2; n++) {
 			error = nil;
-			if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-														  configuration:@"Cloud"
-																	URL:storeURL
-																options:options
-																  error:&error])
+			NSPersistentStore* persistentStore = nil;
+			@try {
+				persistentStore = [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+																			configuration:@"Cloud"
+																					  URL:storeURL
+																				  options:options
+																					error:&error];
+			}
+			@catch (NSException *exception) {
+			}
+			@finally {
+			}
+			if (persistentStore)
 				break;
-			else
-				[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+			else {
+				options[NSPersistentStoreRebuildFromUbiquitousContentOption] = @(YES);
+			}
 		}
+//		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NCCloudInitialization"];
+
 		if (error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[[UIAlertView alertViewWithError:error] show];
@@ -220,7 +286,8 @@ static NCStorage* sharedStorage;
 			if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 														  configuration:@"Local"
 																	URL:storeURL
-																options:nil
+																options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+																		  NSMigratePersistentStoresAutomaticallyOption : @(YES)}
 																  error:&error])
 				break;
 			else
@@ -232,12 +299,9 @@ static NCStorage* sharedStorage;
 			});
 			return nil;
 		}
+		[self notifyStorageChange];
 	}
 	return self;
-}
-
-- (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 }
 
 - (void)saveContext
@@ -350,6 +414,77 @@ static NCStorage* sharedStorage;
 	return YES;
 }
 
+- (BOOL) backupCloudData {
+	NSURL* url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+	if (!url)
+		return NO;
+
+	NSString* directory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store"];
+	NSURL *storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"cloudStore.sqlite"]];
+	NSURL *fallbackURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"fallbackStore.sqlite"]];
+
+	NSPersistentStoreCoordinator* persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
+	
+	if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+												 configuration:@"Cloud"
+														   URL:storeURL
+													   options:@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
+																 NSPersistentStoreUbiquitousContentURLKey : url,
+																 NSInferMappingModelAutomaticallyOption : @(YES),
+																 NSMigratePersistentStoresAutomaticallyOption : @(YES)}
+														 error:nil]) {
+		NSError* error = nil;
+		if ([persistentStoreCoordinator migratePersistentStore:[persistentStoreCoordinator.persistentStores lastObject]
+															toURL:fallbackURL
+														  options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+																 NSMigratePersistentStoresAutomaticallyOption : @(YES),
+																 NSPersistentStoreRemoveUbiquitousMetadataOption:@(YES)}
+			 
+														 withType:NSSQLiteStoreType
+															error:&error]) {
+			[self removeDuplicatesFromPersistentStoreCoordinator:persistentStoreCoordinator];
+			return YES;
+		}
+	}
+	return NO;
+}
+
+- (BOOL) restoreCloudData {
+	NSURL* url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+	if (!url)
+		return NO;
+	
+	_persistentStoreCoordinator = nil;
+	
+	NSString* directory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store"];
+	NSURL *storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"cloudStore.sqlite"]];
+	NSURL *fallbackURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"fallbackStore.sqlite"]];
+	
+	NSPersistentStoreCoordinator* persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
+	
+	if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+												 configuration:@"Cloud"
+														   URL:fallbackURL
+													   options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+																 NSMigratePersistentStoresAutomaticallyOption : @(YES),
+																 NSPersistentStoreRemoveUbiquitousMetadataOption:@(YES)}
+														 error:nil]) {
+		NSError* error = nil;
+		if ([persistentStoreCoordinator migratePersistentStore:[persistentStoreCoordinator.persistentStores lastObject]
+															toURL:storeURL
+													   options:@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
+																 NSPersistentStoreUbiquitousContentURLKey : url,
+																 NSInferMappingModelAutomaticallyOption : @(YES),
+																 NSMigratePersistentStoresAutomaticallyOption : @(YES)}
+														 withType:NSSQLiteStoreType
+															error:&error]) {
+			[self removeDuplicatesFromPersistentStoreCoordinator:persistentStoreCoordinator];
+			return YES;
+		}
+	}
+	return NO;
+}
+
 #pragma mark - Core Data stack
 
 // Returns the managed object context for the application.
@@ -439,6 +574,91 @@ static NCStorage* sharedStorage;
 			[[NSNotificationCenter defaultCenter] postNotificationName:NCStorageDidChangeNotification object:self userInfo:nil];
 		});
 	}
+}
+
+- (void) removeDuplicatesFromPersistentStoreCoordinator:(NSPersistentStoreCoordinator*) persistentStoreCoordinator {
+	NSManagedObjectContext* context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+	[context setPersistentStoreCoordinator:persistentStoreCoordinator];
+	[context performBlockAndWait:^{
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+		NSMutableSet* items = [NSMutableSet new];
+		for (NCAccount* account in [context executeFetchRequest:request error:nil]) {
+			if ([items containsObject:account.uuid]) {
+				account.apiKey = nil;
+				[context deleteObject:account];
+			}
+			else
+				[items addObject:account.uuid];
+		}
+
+		request = [NSFetchRequest fetchRequestWithEntityName:@"APIKey"];
+		for (NCAPIKey* apiKey in [context executeFetchRequest:request error:nil]) {
+			if (apiKey.accounts.count == 0)
+				[context deleteObject:apiKey];
+		}
+
+		request = [NSFetchRequest fetchRequestWithEntityName:@"Loadout"];
+		items = [NSMutableSet new];
+		for (NCLoadout* loadout in [context executeFetchRequest:request error:nil]) {
+			NSMutableData* data = [NSMutableData new];
+			NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+			[archiver encodeObject:loadout.data.data forKey:@"data"];
+			[archiver encodeObject:loadout.name forKey:@"name"];
+			[archiver encodeInt32:loadout.typeID forKey:@"typeID"];
+			[archiver finishEncoding];
+			NSString* item = [data md5];
+			
+			if ([items containsObject:item])
+				[context deleteObject:loadout];
+			else
+				[items addObject:item];
+		}
+
+		request = [NSFetchRequest fetchRequestWithEntityName:@"SkillPlan"];
+		items = [NSMutableSet new];
+		for (NCSkillPlan* skillPlan in [context executeFetchRequest:request error:nil]) {
+			NSMutableData* data = [NSMutableData new];
+			NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+			[archiver encodeObject:skillPlan.skills forKey:@"skills"];
+			[archiver encodeObject:skillPlan.name forKey:@"name"];
+			[archiver finishEncoding];
+			NSString* item = [data md5];
+			
+			if ([items containsObject:item])
+				[context deleteObject:skillPlan];
+			else
+				[items addObject:item];
+		}
+		
+		request = [NSFetchRequest fetchRequestWithEntityName:@"DamagePattern"];
+		items = [NSMutableSet new];
+		for (NCDamagePattern* damagePattern in [context executeFetchRequest:request error:nil]) {
+			NSString* item = [NSString stringWithFormat:@"%.2f,%.2f,%.2f,%.2f,%@", damagePattern.em, damagePattern.thermal, damagePattern.kinetic, damagePattern.explosive, damagePattern.name];
+			if ([items containsObject:item])
+				[context deleteObject:damagePattern];
+			else
+				[items addObject:item];
+		}
+		
+		request = [NSFetchRequest fetchRequestWithEntityName:@"FitCharacter"];
+		items = [NSMutableSet new];
+		for (NCFitCharacter* fitCharacter in [context executeFetchRequest:request error:nil]) {
+			NSMutableData* data = [NSMutableData new];
+			NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+			[archiver encodeObject:fitCharacter.skills forKey:@"skills"];
+			[archiver encodeObject:fitCharacter.name forKey:@"name"];
+			[archiver finishEncoding];
+			NSString* item = [data md5];
+			
+			if ([items containsObject:item])
+				[context deleteObject:fitCharacter];
+			else
+				[items addObject:item];
+		}
+
+		if ([context hasChanges])
+			[context save:nil];
+	}];
 }
 
 @end

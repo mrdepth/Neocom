@@ -20,5 +20,6 @@
 @property (nonatomic, weak) IBOutlet UIImageView *sensorImageView;
 @property (nonatomic, weak) IBOutlet UILabel *droneRangeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *warpSpeedLabel;
+@property (weak, nonatomic) IBOutlet UILabel *massLabel;
 
 @end

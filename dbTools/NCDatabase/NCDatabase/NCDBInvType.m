@@ -68,5 +68,6 @@
 @dynamic materials;
 @dynamic indRequiredSkills;
 @dynamic variations;
+@dynamic wormhole;
 
 @end

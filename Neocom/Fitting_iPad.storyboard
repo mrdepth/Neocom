@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="U8Y-O6-AXg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="U8Y-O6-AXg">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <scenes>
         <!--Fitting-->
@@ -171,7 +171,7 @@
                                     <outlet property="layoutContentView" destination="UYa-Mk-BZ7" id="8Ds-dL-sFH"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem4Cell" id="Yqe-ri-ohq" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem3Cell" id="Yqe-ri-ohq" customClass="NCTableViewCell">
                                 <rect key="frame" x="0.0" y="271" width="703" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Yqe-ri-ohq" id="xTW-pX-5cM">
@@ -181,13 +181,13 @@
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xwv-m8-wpF">
                                             <rect key="frame" x="0.0" y="0.0" width="703" height="36"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GbJ-wG-BJR">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import/Export" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GbJ-wG-BJR">
                                                     <rect key="frame" x="55" y="4" width="633" height="28"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon94_03.png" translatesAutoresizingMaskIntoConstraints="NO" id="agB-63-BPR">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="browser.png" translatesAutoresizingMaskIntoConstraints="NO" id="agB-63-BPR">
                                                     <rect key="frame" x="15" y="2" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="32" id="C6g-y8-Ams"/>
@@ -218,6 +218,7 @@
                                 <inset key="separatorInset" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="layoutContentView" destination="Xwv-m8-wpF" id="dLR-Wz-eqY"/>
+                                    <segue destination="qxw-MZ-Qlt" kind="modal" modalPresentationStyle="formSheet" id="6kf-Sy-2i1"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem5Cell" id="C3f-5D-TT2" customClass="NCTableViewCell">
@@ -781,6 +782,23 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uqb-dI-y0n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3416" y="117"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Y7c-rY-Du9">
+            <objects>
+                <navigationController id="qxw-MZ-Qlt" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="lGx-eR-lHJ">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Ie4-LN-K16" kind="relationship" relationship="rootViewController" id="bLf-rO-fb9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="axB-vR-vQW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2466" y="-13"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="VVS-cF-bcW">
@@ -1368,16 +1386,57 @@
             </objects>
             <point key="canvasLocation" x="-637" y="998"/>
         </scene>
+        <!--Export-->
+        <scene sceneID="hMX-JC-Q7A">
+            <objects>
+                <viewController id="Ie4-LN-K16" customClass="NCFittingExportViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gd4-qY-rNi"/>
+                        <viewControllerLayoutGuide type="bottom" id="Dts-dc-ERH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5pP-NZ-3Fc">
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTK-EC-u6d">
+                                <rect key="frame" x="20" y="300" width="500" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="fTK-EC-u6d" secondAttribute="centerY" id="0Jx-IY-EsP"/>
+                            <constraint firstAttribute="trailing" secondItem="fTK-EC-u6d" secondAttribute="trailing" constant="20" id="HzP-ey-Ccd"/>
+                            <constraint firstItem="fTK-EC-u6d" firstAttribute="leading" secondItem="5pP-NZ-3Fc" secondAttribute="leading" constant="20" id="iIL-6o-UjQ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Export" id="6VE-Gp-XmN">
+                        <barButtonItem key="leftBarButtonItem" title="Close" id="9Nd-3k-SHI">
+                            <connections>
+                                <action selector="onClose:" destination="Ie4-LN-K16" id="5L6-wv-Qwb"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="urlLabel" destination="fTK-EC-u6d" id="akQ-lP-nis"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gaf-tJ-Hz0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1855" y="-13"/>
+        </scene>
     </scenes>
     <resources>
         <image name="armor.png" width="32" height="32"/>
         <image name="battleclinic.png" width="32" height="32"/>
+        <image name="browser.png" width="64" height="64"/>
         <image name="capacitor.png" width="64" height="64"/>
         <image name="criminal.png" width="64" height="64"/>
         <image name="droneBandwidth.png" width="64" height="64"/>
         <image name="falloff.png" width="32" height="32"/>
         <image name="fitting.png" width="64" height="64"/>
-        <image name="icon94_03.png" width="64" height="64"/>
         <image name="ships.png" width="64" height="64"/>
         <image name="station.png" width="64" height="64"/>
         <image name="targetingRange.png" width="32" height="32"/>

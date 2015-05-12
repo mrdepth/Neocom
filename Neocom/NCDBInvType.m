@@ -68,5 +68,6 @@
 @dynamic stations;
 @dynamic typeDescription;
 @dynamic variations;
+@dynamic wormhole;
 
 @end

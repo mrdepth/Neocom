@@ -97,7 +97,7 @@
 	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	NCDBInvType* row = sectionInfo.objects[indexPath.row];
 	
-	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	cell.titleLabel.text = [row typeName];
 	cell.iconView.image = row.icon.image.image ? row.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	cell.object = row;

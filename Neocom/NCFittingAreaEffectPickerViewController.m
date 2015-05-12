@@ -153,7 +153,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	
 	NCDBInvType* row = self.sections[indexPath.section][indexPath.row];
 	cell.titleLabel.text = row.typeName;

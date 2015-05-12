@@ -103,10 +103,7 @@
 
 + (NSAttributedString*) attributedStringWithString:(NSString*) string url:(NSURL*) url {
 	return [[NSAttributedString alloc] initWithString:string
-										   attributes:@{@"NSURL":url,
-														NSForegroundColorAttributeName:[UIColor whiteColor],
-														NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)
-														}];
+										   attributes:@{@"NSURL":url}];
 }
 
 #pragma mark - Private

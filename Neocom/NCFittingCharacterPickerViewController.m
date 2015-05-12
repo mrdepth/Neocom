@@ -205,7 +205,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	
 	if (indexPath.section == 0) {
 		NCAccount* account = self.accounts[indexPath.row];

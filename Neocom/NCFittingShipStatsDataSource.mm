@@ -67,6 +67,7 @@
 @property (nonatomic, assign) float alignTime;
 @property (nonatomic, assign) float signature;
 @property (nonatomic, assign) float cargo;
+@property (nonatomic, assign) float mass;
 @property (nonatomic, strong) UIImage *sensorImage;
 @property (nonatomic, strong) NCDamagePattern* damagePattern;
 @property (nonatomic, assign) float droneRange;
@@ -77,6 +78,7 @@
 @interface NCFittingShipStatsDataSourcePriceStats : NSObject
 @property (nonatomic, assign) float shipPrice;
 @property (nonatomic, assign) float fittingsPrice;
+@property (nonatomic, assign) float dronesPrice;
 @property (nonatomic, assign) float totalPrice;
 @end
 
@@ -98,7 +100,7 @@
 
 - (id) init {
 	if (self = [super init]) {
-		self.priceManager = [NCPriceManager new];
+		self.priceManager = [NCPriceManager sharedManager];
 	}
 	return self;
 }
@@ -171,7 +173,8 @@
 															stats.alignTime = ship->getAlignTime();
 															stats.signature =ship->getSignatureRadius();
 															stats.cargo =ship->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
-															
+															stats.mass = ship->getMass();
+														
 															switch(ship->getScanType()) {
 																case eufe::Ship::SCAN_TYPE_GRAVIMETRIC:
 																	stats.sensorImage = [UIImage imageNamed:@"Gravimetric.png"];
@@ -291,6 +294,7 @@
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														NSCountedSet* types = [NSCountedSet set];
+														NSMutableSet* drones = [NSMutableSet set];
 														__block int32_t shipTypeID;
 //														@synchronized(self.controller) {
 
@@ -303,26 +307,31 @@
 															for (auto i: ship->getModules())
 																[types addObject:@(i->getTypeID())];
 															
-															for (auto i: ship->getDrones())
+															for (auto i: ship->getDrones()) {
 																[types addObject:@(i->getTypeID())];
+																[drones addObject:@(i->getTypeID())];
+															}
 //														}
 														
 														NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
 														__block float shipPrice = 0;
 														__block float fittingsPrice = 0;
+														__block float dronesPrice = 0;
 														
 														[prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVECentralMarketStatType* obj, BOOL *stop) {
 															int32_t typeID = [key intValue];
 															if (typeID == shipTypeID)
 																shipPrice = obj.sell.percentile;
+															else if ([drones containsObject:@(typeID)])
+																dronesPrice += obj.sell.percentile * [types countForObject:key];
 															else
 																fittingsPrice += obj.sell.percentile * [types countForObject:key];
 														}];
 														
 														stats.shipPrice = shipPrice;
 														stats.fittingsPrice = fittingsPrice;
-														stats.totalPrice = stats.shipPrice + stats.fittingsPrice;
-
+														stats.dronesPrice = dronesPrice;
+														stats.totalPrice = shipPrice + fittingsPrice + dronesPrice;
 													}
 										completionHandler:^(NCTask *task) {
 											if (![task isCancelled]) {
@@ -529,6 +538,7 @@
 			cell.sensorImageView.image = self.shipStats.sensorImage;
 			cell.droneRangeLabel.text = [NSString stringWithFormat:@"%.1f km", self.shipStats.droneRange];
 			cell.warpSpeedLabel.text = [NSString stringWithFormat:@"%.2f AU/s", self.shipStats.warpSpeed];
+			cell.massLabel.text = [NSString stringWithFormat:@"%@ kg", [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.shipStats.mass)]];
 		}
 	}
 	else if (indexPath.section == 6) {
@@ -536,7 +546,8 @@
 		if (self.priceStats) {
 			cell.shipPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.shipPrice unit:nil]];
 			cell.fittingsPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.fittingsPrice unit:nil]];
-			cell.totalPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.totalPrice unit:nil]];
+			cell.dronesPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.dronesPrice unit:nil]];
+			cell.totalPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.totalPrice unit:nil]];
 		}
 	}
 }

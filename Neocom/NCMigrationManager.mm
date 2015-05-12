@@ -17,16 +17,26 @@
 #import "NCPOSFit.h"
 #import "NCStorage.h"
 #import "NCDatabase.h"
+#import "UIAlertView+Block.h"
+
+@interface NCStorage()
+- (void) notifyStorageChange;
+@end
+
 
 @interface NCMigrationManager()
 @property (nonatomic, strong) NCStorage* storage;
 @property (nonatomic, strong) NCAccountsManager* accountsManager;
 @property (nonatomic, strong) EUStorage* oldStorage;
+@property (nonatomic, strong) id willChangeObserver;
+@property (nonatomic, strong) id didChangeObserver;
+@property (nonatomic, strong) id storeChangedObserver;
 
 - (BOOL) transferAPIKeysWithError:(NSError**) errorPtr;
 - (void) transferShipLoadouts;
 - (void) transferPOSLoadouts;
 - (void) transferSkillPlans;
+- (void) transferCloudToLocal;
 @end
 
 @implementation NCMigrationManager
@@ -36,8 +46,9 @@
 	NSString* documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 	NSString* path = [documents stringByAppendingPathComponent:@"fallbackStore.sqlite"];
 	NSError* error = nil;
+	NCMigrationManager* migrationManager = [NCMigrationManager new];
+
 	if ([fileManager fileExistsAtPath:path isDirectory:NULL]) {
-		NCMigrationManager* migrationManager = [NCMigrationManager new];
 		migrationManager.storage = [NCStorage fallbackStorage];
 		migrationManager.accountsManager = [[NCAccountsManager alloc] initWithStorage:migrationManager.storage];
 		migrationManager.oldStorage = [EUStorage new];
@@ -51,10 +62,19 @@
 			}];
 			if ([migrationManager.oldStorage.managedObjectContext hasChanges])
 				[migrationManager.oldStorage.managedObjectContext save:nil];
+			
 		}
 		@catch(NSException* exc) {
 			
 		}
+	}
+	
+	@try {
+		if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
+			[migrationManager transferCloudToLocal];
+		}
+	}
+	@catch(NSException* exc) {
 	}
 	
 	if (errorPtr)
@@ -67,7 +87,12 @@
 			[fileManager removeItemAtPath:[documents stringByAppendingPathComponent:fileName] error:nil];
 		}
 	}
+	
 	return error == nil;
+}
+
+- (void) dealloc {
+	
 }
 
 #pragma mark - Private
@@ -289,6 +314,136 @@
 		if (transfered)
 			[self.oldStorage.managedObjectContext deleteObject:skillPlan];
 	}
+}
+
+- (void) transferCloudToLocal {
+	NSURL *sourceModelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage.momd/NCStorage" withExtension:@"mom"];
+	NSManagedObjectModel* sourceManagedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:sourceModelURL];
+	
+	NSURL* url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+	if (!url)
+		return;
+	
+	NSString* directory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store"];
+	NSString* backupDirectory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store.backup"];
+	[[NSFileManager defaultManager] createDirectoryAtPath:backupDirectory withIntermediateDirectories:YES attributes:nil error:nil];
+	[[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
+	NSURL *storeURL = [NSURL fileURLWithPath:[backupDirectory stringByAppendingPathComponent:@"cloudStore.sqlite"]];
+	NSURL *backupURL = [NSURL fileURLWithPath:[backupDirectory stringByAppendingPathComponent:@"backup.sqlite"]];
+	
+	
+	void (^migrate)() = ^{
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[[UIAlertView alertViewWithTitle:nil
+									 message:NSLocalizedString(@"You need to update Neocom on all your devices to finish iCloud sync.", nil)
+						   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+						   otherButtonTitles:nil
+							 completionBlock:nil
+								 cancelBlock:nil] show];
+		});
+
+		void (^transfer)() = ^ {
+			NCStorage* storage = [NCStorage sharedStorage];
+			if (storage.allAccounts.count == 0 && storage.loadouts.count == 0) {
+				NSPersistentStoreCoordinator* persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:storage.managedObjectModel];
+				NSURL *storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"cloudStore.sqlite"]];
+				
+				if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+															 configuration:@"Cloud"
+																	   URL:backupURL
+																   options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+																			 NSMigratePersistentStoresAutomaticallyOption : @(YES),
+																			 NSPersistentStoreRemoveUbiquitousMetadataOption:@(YES)}
+																	 error:nil]) {
+					NSError* error = nil;
+					if ([persistentStoreCoordinator migratePersistentStore:[persistentStoreCoordinator.persistentStores lastObject]
+																	 toURL:storeURL
+																   options:@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
+																			 NSPersistentStoreUbiquitousContentURLKey : url,
+																			 NSInferMappingModelAutomaticallyOption : @(YES),
+																			 NSMigratePersistentStoresAutomaticallyOption : @(YES)}
+																  withType:NSSQLiteStoreType
+																	 error:&error]) {
+						[storage removeDuplicatesFromPersistentStoreCoordinator:persistentStoreCoordinator];
+						[storage notifyStorageChange];
+					}
+				}
+
+				
+
+				//[[NCStorage sharedStorage] restoreCloudData];
+			}
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsDontNeedsCloudTransfer];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		};
+		
+		if (![NCStorage sharedStorage] || [NCStorage sharedStorage].storageType != NCStorageTypeCloud) {
+			self.storeChangedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NCStorageDidChangeNotification
+																						  object:nil
+																						   queue:[NSOperationQueue mainQueue]
+																					  usingBlock:^(NSNotification *note) {
+																						  NCStorage* storage = note.object;
+																						  if (storage.storageType == NCStorageTypeCloud) {
+																							  [[NSNotificationCenter defaultCenter] removeObserver:self.storeChangedObserver];
+																							  self.storeChangedObserver = nil;
+																							  transfer();
+																						  }
+																					  }];
+		}
+		else {
+			transfer();
+		}
+	};
+	
+	if (![[NSFileManager defaultManager] fileExistsAtPath:backupURL.path]) {
+		NSPersistentStoreCoordinator* sourceCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:sourceManagedObjectModel];
+		
+		void (^didChange)(NSNotification*) = ^(NSNotification *note) {
+			[[NSNotificationCenter defaultCenter] removeObserver:self.didChangeObserver];
+			self.didChangeObserver = nil;
+
+			if ([sourceCoordinator migratePersistentStore:[sourceCoordinator.persistentStores lastObject]
+													toURL:backupURL
+												  options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+															NSMigratePersistentStoresAutomaticallyOption : @(YES),
+															NSPersistentStoreRemoveUbiquitousMetadataOption:@(YES)}
+												 withType:NSSQLiteStoreType
+													error:nil]) {
+				migrate();
+			}
+
+			[[NSNotificationCenter defaultCenter] removeObserver:self.didChangeObserver];
+			self.didChangeObserver = nil;
+		};
+		
+		
+		void (^willChange)(NSNotification*) = ^(NSNotification *note) {
+			self.didChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSPersistentStoreCoordinatorStoresDidChangeNotification
+																					   object:sourceCoordinator
+																						queue:[NSOperationQueue mainQueue]
+																				   usingBlock:didChange];
+			[[NSNotificationCenter defaultCenter] removeObserver:self.willChangeObserver];
+			self.willChangeObserver = nil;
+		};
+		
+		self.willChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSPersistentStoreCoordinatorStoresWillChangeNotification
+																					object:sourceCoordinator
+																					 queue:[NSOperationQueue mainQueue]
+																				usingBlock:willChange];
+		
+		if (![sourceCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+											 configuration:@"Cloud"
+													   URL:storeURL
+												   options:@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
+															 NSPersistentStoreUbiquitousContentURLKey : url,
+															 NSPersistentStoreRebuildFromUbiquitousContentOption:@(YES)}
+													 error:nil]) {
+			[[NSNotificationCenter defaultCenter] removeObserver:self.willChangeObserver];
+			self.willChangeObserver = nil;
+		}
+	}
+	else
+		migrate();
 }
 
 @end

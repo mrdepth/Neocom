@@ -180,7 +180,7 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCIndustryJobsDetailsViewControllerRow* row = self.rows[indexPath.row];
-	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	
 	cell.object = row.object;
 	cell.titleLabel.text = row.title;

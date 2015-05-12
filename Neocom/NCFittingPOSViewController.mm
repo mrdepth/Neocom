@@ -16,12 +16,16 @@
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NCFittingDamagePatternsViewController.h"
 #import "NCStoryboardPopoverSegue.h"
+#import "NCShoppingItem+Neocom.h"
+#import "NCShoppingGroup.h"
+#import "NCNewShoppingItemViewController.h"
 
 #define ActionButtonShowControlTowerInfo NSLocalizedString(@"Control Tower Info", nil)
 #define ActionButtonSetName NSLocalizedString(@"Set Fit Name", nil)
 #define ActionButtonSave NSLocalizedString(@"Save Fit", nil)
 #define ActionButtonDuplicate NSLocalizedString(@"Duplicate Fit", nil)
 #define ActionButtonSetDamagePattern NSLocalizedString(@"Set Damage Pattern", nil)
+#define ActionButtonAddToShoppingList NSLocalizedString(@"Add to Shopping List", nil)
 
 @interface NCFittingPOSViewController ()
 @property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Engine> engine;
@@ -77,10 +81,12 @@
 								 self.structuresDataSource = [NCFittingPOSStructuresDataSource new];
 								 self.structuresDataSource.controller = self;
 								 self.structuresDataSource.tableView = self.workspaceViewController.tableView;
+								 self.structuresDataSource.tableViewController = self.workspaceViewController;
 								 
 								 self.assemblyLinesDataSource = [NCFittingPOSAssemblyLinesDataSource new];
 								 self.assemblyLinesDataSource.controller = self;
 								 self.assemblyLinesDataSource.tableView = self.workspaceViewController.tableView;
+								 self.assemblyLinesDataSource.tableViewController = self.workspaceViewController;
 								 
 								 self.statsDataSource = [NCFittingPOSStatsDataSource new];
 								 self.statsDataSource.controller = self;
@@ -88,9 +94,11 @@
 									 self.statsDataSource.tableView = self.statsViewController.tableView;
 									 self.statsViewController.tableView.dataSource = self.statsDataSource;
 									 self.statsViewController.tableView.delegate = self.statsDataSource;
+									 self.statsDataSource.tableViewController = self.statsViewController;
 								 }
 								 else {
 									 self.statsDataSource.tableView = self.workspaceViewController.tableView;
+									 self.statsDataSource.tableViewController = self.workspaceViewController;
 								 }
 								 
 								 NCFittingPOSDataSource* dataSources[] = {self.structuresDataSource, self.assemblyLinesDataSource, self.statsDataSource};
@@ -153,6 +161,14 @@
 			controller = segue.destinationViewController;
 
 		controller.selectedDamagePattern = self.damagePattern;
+	}
+	else if ([segue.identifier isEqualToString:@"NCNewShoppingItemViewController"]) {
+		NCNewShoppingItemViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		controller.shoppingGroup = sender;
 	}
 }
 
@@ -242,6 +258,52 @@
 		[self performSegueWithIdentifier:@"NCFittingDamagePatternsViewController" sender:sender];
 	};
 	
+	void (^addToShoppingList)() = ^() {
+		NSMutableDictionary* items = [NSMutableDictionary new];
+		
+		eufe::ControlTower* controlTower = self.fit.engine->getControlTower();
+		
+		NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
+												  insertIntoManagedObjectContext:nil];
+		shoppingGroup.name = self.fit.loadout.name.length > 0 ? self.fit.loadout.name : self.fit.type.typeName;
+		shoppingGroup.quantity = 1;
+		
+		
+		void (^addItem)(eufe::Item*, int32_t) = ^(eufe::Item* item, int32_t quanity) {
+			NCShoppingItem* shoppingItem = items[@(item->getTypeID())];
+			if (!shoppingItem) {
+				shoppingItem = [NCShoppingItem shoppingItemWithType:[self typeWithItem:item] quantity:quanity];
+				shoppingItem.shoppingGroup = shoppingGroup;
+				[shoppingGroup addShoppingItemsObject:shoppingItem];
+				if (shoppingItem)
+					items[@(item->getTypeID())] = shoppingItem;
+			}
+			else
+				shoppingItem.quantity += quanity;
+		};
+		
+		addItem(controlTower, 1);
+		
+		for (auto structure: controlTower->getStructures()) {
+			addItem(structure, 1);
+			
+			eufe::Charge* charge = structure->getCharge();
+			if (charge) {
+				int n = structure->getCharges();
+				if (n == 0)
+					n = 1;
+				addItem(charge, n);
+			}
+		}
+		
+		shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
+		shoppingGroup.immutable = YES;
+		shoppingGroup.iconFile = self.fit.loadout.type.icon.iconFile;
+		
+		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:shoppingGroup];
+	};
+
+	
 	[actions addObject:controlTowerInfo];
 	[buttons addObject:ActionButtonShowControlTowerInfo];
 	
@@ -260,6 +322,9 @@
 	[actions addObject:setDamagePattern];
 	[buttons addObject:ActionButtonSetDamagePattern];
 	
+	[buttons addObject:ActionButtonAddToShoppingList];
+	[actions addObject:addToShoppingList];
+
 	if (self.actionSheet) {
 		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
 		self.actionSheet = nil;
@@ -298,6 +363,10 @@
 		controlTower->setDamagePattern(damagePattern);
 		[self reload];
 	}
+}
+
+- (IBAction) unwindFromNewShoppingItem:(UIStoryboardSegue*)segue {
+	
 }
 
 @end

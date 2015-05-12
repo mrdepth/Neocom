@@ -171,7 +171,7 @@
 		cell.titleLabel.text = [row regionName];
 	}
 	else {
-		NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 		cell.object = row;
 		cell.titleLabel.text = [row solarSystemName];
 	}

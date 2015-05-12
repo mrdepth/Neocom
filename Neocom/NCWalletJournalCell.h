@@ -15,6 +15,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *characterNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *taxLabel;
 @property (weak, nonatomic) IBOutlet UILabel *balanceLabel;
-@property (strong, nonatomic) id object;
 
 @end

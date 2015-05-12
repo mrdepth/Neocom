@@ -29,6 +29,9 @@
 #import "NCFittingShipAffectingSkillsViewController.h"
 #import "NCStoryboardPopoverSegue.h"
 #import "UIColor+Neocom.h"
+#import "NCShoppingItem+Neocom.h"
+#import "NCShoppingGroup.h"
+#import "NCNewShoppingItemViewController.h"
 
 #include <set>
 
@@ -46,6 +49,7 @@
 #define ActionButtonDuplicate NSLocalizedString(@"Duplicate Fit", nil)
 #define ActionButtonShowShipInfo NSLocalizedString(@"Ship Info", nil)
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
+#define ActionButtonAddToShoppingList NSLocalizedString(@"Add to Shopping List", nil)
 
 @interface NCFittingShipViewController ()<MFMailComposeViewControllerDelegate>
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
@@ -120,18 +124,22 @@
 								 self.modulesDataSource = [NCFittingShipModulesDataSource new];
 								 self.modulesDataSource.controller = self;
 								 self.modulesDataSource.tableView = self.workspaceViewController.tableView;
+								 self.modulesDataSource.tableViewController = self.workspaceViewController;
 								 
 								 self.dronesDataSource = [NCFittingShipDronesDataSource new];
 								 self.dronesDataSource.controller = self;
 								 self.dronesDataSource.tableView = self.workspaceViewController.tableView;
+								 self.dronesDataSource.tableViewController = self.workspaceViewController;
 								 
 								 self.implantsDataSource = [NCFittingShipImplantsDataSource new];
 								 self.implantsDataSource.controller = self;
 								 self.implantsDataSource.tableView = self.workspaceViewController.tableView;
+								 self.implantsDataSource.tableViewController = self.workspaceViewController;
 								 
 								 self.fleetDataSource = [NCFittingShipFleetDataSource new];
 								 self.fleetDataSource.controller = self;
 								 self.fleetDataSource.tableView = self.workspaceViewController.tableView;
+								 self.fleetDataSource.tableViewController = self.workspaceViewController;
 								 
 								 self.statsDataSource = [NCFittingShipStatsDataSource new];
 								 self.statsDataSource.controller = self;
@@ -139,9 +147,11 @@
 									 self.statsDataSource.tableView = self.statsViewController.tableView;
 									 self.statsViewController.tableView.dataSource = self.statsDataSource;
 									 self.statsViewController.tableView.delegate = self.statsDataSource;
+									 self.statsDataSource.tableViewController = self.statsViewController;
 								 }
 								 else {
 									 self.statsDataSource.tableView = self.workspaceViewController.tableView;
+									 self.statsDataSource.tableViewController = self.workspaceViewController;
 								 }
 								 
 								 NCFittingShipDataSource* dataSources[] = {self.modulesDataSource, self.dronesDataSource, self.implantsDataSource, self.fleetDataSource, self.statsDataSource};
@@ -342,6 +352,14 @@
 		controller.implantSetData = data;
 		controller.saveMode = YES;
 	}
+	else if ([segue.identifier isEqualToString:@"NCNewShoppingItemViewController"]) {
+		NCNewShoppingItemViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		controller.shoppingGroup = sender;
+	}
 }
 
 - (NCDBInvType*) typeWithItem:(eufe::Item*) item {
@@ -519,6 +537,59 @@
 		[self performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
 								  sender:@{@"sender": sender, @"object": [NSValue valueWithPointer:self.fit.pilot->getShip()]}];
 	};
+	
+	void (^addToShoppingList)() = ^() {
+		NSMutableDictionary* items = [NSMutableDictionary new];
+		
+		eufe::Character* character = self.fit.pilot;
+		eufe::Ship* ship = character->getShip();
+		
+		NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
+												  insertIntoManagedObjectContext:nil];
+		shoppingGroup.name = self.fit.loadout.name.length > 0 ? self.fit.loadout.name : self.fit.type.typeName;
+		shoppingGroup.quantity = 1;
+		
+
+		void (^addItem)(eufe::Item*, int32_t) = ^(eufe::Item* item, int32_t quanity) {
+			NCShoppingItem* shoppingItem = items[@(item->getTypeID())];
+			if (!shoppingItem) {
+				shoppingItem = [NCShoppingItem shoppingItemWithType:[self typeWithItem:item] quantity:quanity];
+				shoppingItem.shoppingGroup = shoppingGroup;
+				[shoppingGroup addShoppingItemsObject:shoppingItem];
+				if (shoppingItem)
+					items[@(item->getTypeID())] = shoppingItem;
+			}
+			else
+				shoppingItem.quantity += quanity;
+		};
+		
+		addItem(ship, 1);
+		
+		for (auto module: ship->getModules()) {
+			if (module->getSlot() == eufe::Module::SLOT_MODE)
+				continue;
+			
+			addItem(module, 1);
+
+			eufe::Charge* charge = module->getCharge();
+			if (charge) {
+				int n = module->getCharges();
+				if (n == 0)
+					n = 1;
+				addItem(charge, n);
+			}
+		}
+		
+		for (auto drone: ship->getDrones())
+			addItem(drone, 1);
+		
+		
+		shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
+		shoppingGroup.immutable = YES;
+		shoppingGroup.iconFile = self.fit.loadout.type.icon.iconFile;
+		
+		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:shoppingGroup];
+	};
 
 	
 	if (self.engine->getArea() != NULL)
@@ -561,6 +632,9 @@
 	
 	[buttons addObject:ActionButtonAffectingSkills];
 	[actions addObject:affectingSkills];
+
+	[buttons addObject:ActionButtonAddToShoppingList];
+	[actions addObject:addToShoppingList];
 
 	if (self.actionSheet) {
 		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
@@ -733,6 +807,10 @@
 									 [self reload];
 								 }];
 	}
+}
+
+- (IBAction) unwindFromNewShoppingItem:(UIStoryboardSegue*)segue {
+	
 }
 
 - (void) performExport {

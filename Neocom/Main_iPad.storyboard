@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="cos-tx-HAD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="cos-tx-HAD">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -679,6 +679,9 @@
                         <segue destination="BLT-Xw-QHo" kind="modal" identifier="NCAboutViewController" modalPresentationStyle="formSheet" id="XGC-GP-Uxr"/>
                         <segue destination="MOu-I0-jD7" kind="modal" identifier="NCDonationViewController" modalPresentationStyle="formSheet" id="Dru-7J-x3f"/>
                         <segue destination="rU9-0k-N0H" kind="modal" identifier="NCSettingsViewController" modalPresentationStyle="formSheet" id="2xo-g0-C0f"/>
+                        <segue destination="hVb-tT-FHt" kind="custom" identifier="NCPlanetaryViewController" customClass="NCSideMenuViewControllerContentSegue" id="Pzb-iX-qST"/>
+                        <segue destination="ian-cw-ECi" kind="custom" identifier="NCShoppingListViewController" customClass="NCSideMenuViewControllerContentSegue" id="1aF-fr-DU3"/>
+                        <segue destination="wWG-eM-xdX" kind="custom" identifier="NCDatabaseWHViewController" customClass="NCSideMenuViewControllerContentSegue" id="8IY-EZ-c41"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KUM-a3-TWC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1007,7 +1010,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HZc-Uw-EmK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8639" y="2384"/>
+            <point key="canvasLocation" x="8682.5" y="2384"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="WAZ-jt-YPw">
@@ -1174,7 +1177,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="9zH-Ai-dol">
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="9zH-Ai-dol">
                                 <rect key="frame" x="132" y="327" width="440" height="115"/>
                             </imageView>
                         </subviews>
@@ -1291,6 +1294,73 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xzF-rL-5dl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-638" y="4920"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="UAL-Op-dKM">
+            <objects>
+                <viewController storyboardIdentifier="NCPlanetaryViewController" id="hVb-tT-FHt" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fjN-ck-Rdb"/>
+                        <viewControllerLayoutGuide type="bottom" id="gUf-I8-J4s"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5Ac-1m-OZA">
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Market_iPad"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wdb-IM-16T" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="9569.5" y="2384"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="4NI-at-8eg">
+            <objects>
+                <viewController storyboardIdentifier="NCShoppingListViewController" id="ian-cw-ECi" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cdt-rG-lmt"/>
+                        <viewControllerLayoutGuide type="bottom" id="2DY-XH-fEe"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="OKO-Xu-ZHb">
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="g7G-Yt-ZSo"/>
+                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="ShoppingList_iPad"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rXZ-fs-tIn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="10389.5" y="2384"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="n0o-XI-bsk">
+            <objects>
+                <viewController storyboardIdentifier="NCDatabaseWHViewController" id="wWG-eM-xdX" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Q0y-Hp-gRL"/>
+                        <viewControllerLayoutGuide type="bottom" id="55g-T9-0Kx"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="e8Q-Bg-2MV">
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database_iPad"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AkR-jc-63m" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7049.5" y="-1388"/>
         </scene>
     </scenes>
     <resources>

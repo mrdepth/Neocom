@@ -23,6 +23,12 @@
 #import "UIColor+Neocom.h"
 #import "NSArray+Neocom.h"
 #import "NCDatabaseTypeRequirementsViewController.h"
+#import "NCPriceManager.h"
+#import "NCShoppingList.h"
+#import "NCShoppingItem+Neocom.h"
+#import "NCShoppingGroup+Neocom.h"
+#import "NCNewShoppingItemViewController.h"
+#import "NCDatabaseFetchedResultsViewController.h"
 
 #define EVEDBUnitIDMillisecondsID 101
 #define EVEDBUnitIDInverseAbsolutePercentID 108
@@ -50,6 +56,7 @@
 @property (nonatomic, copy) NSString* detail;
 @property (nonatomic, strong) NCDBEveIcon* icon;
 @property (nonatomic, strong) NCDBEveIcon* accessoryIcon;
+@property (nonatomic, strong) UIImage* image;
 @property (nonatomic, strong) id object;
 @property (nonatomic, strong) NSString* cellIdentifier;
 @property (nonatomic, assign) NSInteger indentationLevel;
@@ -65,6 +72,7 @@
 - (void) loadItemAttributes;
 - (void) loadBlueprintAttributes;
 - (void) loadNPCAttributes;
+- (void) loadWHAttributes;
 @end
 
 @implementation NCDatabaseTypeInfoViewControllerRow
@@ -170,7 +178,29 @@
 		NCDatabaseTypeRequirementsViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.type = self.type;
 	}
+	else if ([segue.identifier isEqualToString:@"NCNewShoppingItemViewController"]) {
+		NCNewShoppingItemViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		controller.shoppingGroup = sender;
+	}
+	else if ([segue.identifier isEqualToString:@"NCDatabaseFetchedResultsViewController"]) {
+		NCDatabaseFetchedResultsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		controller.result = row.object;
+		controller.title = row.title;
+	}
 }
+
+- (IBAction) unwindFromNewShoppingItem:(UIStoryboardSegue*)segue {
+	
+}
+
 
 #pragma mark - NCTableViewController
 
@@ -199,10 +229,16 @@
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
 	
-	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	cell.titleLabel.text = row.title;
 	cell.subtitleLabel.text = row.detail;
-	cell.iconView.image = row.icon ? row.icon.image.image : self.defaultAttributeIcon.image.image;
+	if (row.image)
+		cell.iconView.image = row.image;
+	else if (row.icon)
+		cell.iconView.image = row.icon.image.image;
+	else
+		cell.iconView.image = self.defaultAttributeIcon.image.image;
+	
 	cell.indentationLevel = row.indentationLevel;
 	cell.indentationWidth = 16;
 	
@@ -228,7 +264,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
-	if (row.object && [row.object isKindOfClass:[NCTrainingQueue class]]) {
+	if ([row.object isKindOfClass:[NCTrainingQueue class]]) {
 		NCTrainingQueue* trainingQueue = row.object;
 		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
 								 message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]]
@@ -241,6 +277,21 @@
 							 }
 						 }
 							 cancelBlock:nil] show];
+	}
+	else if ([row.object isKindOfClass:[NCShoppingList class]]) {
+		NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
+												  insertIntoManagedObjectContext:nil];
+		NCDBInvMarketGroup* marketGroup;
+		for (marketGroup = self.type.marketGroup; marketGroup.parentGroup; marketGroup = marketGroup.parentGroup);
+		shoppingGroup.name = marketGroup.marketGroupName;
+		shoppingGroup.immutable = NO;
+		NCShoppingItem* shoppingItem = [NCShoppingItem shoppingItemWithType:self.type quantity:1];
+		shoppingItem.shoppingGroup = shoppingGroup;
+		shoppingGroup.iconFile = marketGroup.icon.iconFile;
+		[shoppingGroup addShoppingItemsObject:shoppingItem];
+		shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
+		
+		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:shoppingGroup];
 	}
 }
 
@@ -259,7 +310,7 @@
 	self.titleLabel.attributedText = title;
 	self.imageView.image = type.icon.image.image ? type.icon.image.image : self.defaultIcon.image.image;
 	
-	if (type.typeDescription.text.length > 0) {
+	/*if (type.typeDescription.text.length > 0) {
 		NSMutableAttributedString* descriptionAttributesString = [[NSMutableAttributedString alloc] initWithString:type.typeDescription.text
 																								   attributes:@{NSFontAttributeName: self.descriptionLabel.font,
 																												NSForegroundColorAttributeName: self.descriptionLabel.textColor}];
@@ -289,7 +340,8 @@
 		self.descriptionLabel.attributedText = descriptionAttributesString;
 	}
 	else
-		self.descriptionLabel.text = nil;
+		self.descriptionLabel.text = nil;*/
+	self.descriptionLabel.attributedText = type.typeDescription.text;
 
 	
 	
@@ -300,6 +352,8 @@
 		[self loadBlueprintAttributes];
 	else if (type.group.category.categoryID == 11)
 		[self loadNPCAttributes];
+	else if (type.wormhole)
+		[self loadWHAttributes];
 	else
 		[self loadItemAttributes];
 }
@@ -322,27 +376,49 @@
 											   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 											   [trainingQueue addRequiredSkillsForType:type];
 											   
-											   //NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
-											   //static NSArray* skillRequirementsMap = nil;
-											   //static int32_t requirementID[] = {182, 183, 184, 1285, 1289, 1290};
-											   //static int32_t skillLevelID[] = {277, 278, 279, 1286, 1287, 1288};
+											   if (type.marketGroup) {
+												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
+												   section[@"title"] = NSLocalizedString(@"Shopping List", nil);
+												   NSMutableArray* rows = [NSMutableArray array];
+												   section[@"rows"] = rows;
+												   
+												   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+												   row.title = NSLocalizedString(@"Add to Shopping List", nil);
+												   
+												   NCTask* priceTask = [[self taskManager] addTaskWithIndentifier:nil
+																											title:NCTaskManagerDefaultTitle
+																											block:^(NCTask *task) {
+																												NSDictionary* price = [[NCPriceManager sharedManager] pricesWithTypes:@[@(type.typeID)]];
+																												EVECentralMarketStatType* marketStat = price[@(type.typeID)];
+																												if (marketStat)
+																													row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(marketStat.sell.percentile)]];
+																											} completionHandler:^(NCTask *task) {
+																												if ([self.tableView numberOfSections] > 0 && [self.tableView numberOfRowsInSection:0] > 0)
+																													[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+																											}];
+												   [priceTask addDependency:task];
+												   
+												   row.cellIdentifier = @"Cell";
+												   row.image = [UIImage imageNamed:@"note.png"];
+												   row.object = [NCShoppingList currentShoppingList];
+												   [rows addObject:row];
+												   [sections addObject:section];
+											   }
 											   
-											   {
-												   NSInteger count = type.parentType ? type.parentType.variations.count : type.variations.count;
-												   if (count > 0) {
-													   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-													   section[@"title"] = NSLocalizedString(@"Variations", nil);
-													   NSMutableArray* rows = [NSMutableArray array];
-													   section[@"rows"] = rows;
-													   
-													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-													   row.title = NSLocalizedString(@"Variations", nil);
-													   row.detail = [NSString stringWithFormat:@"%d", (int32_t) count + 1];
-													   row.icon = [NCDBEveIcon eveIconWithIconFile:@"09_07"];
-													   row.cellIdentifier = @"VariationsCell";
-													   [rows addObject:row];
-													   [sections addObject:section];
-												   }
+											   NSInteger count = type.parentType ? type.parentType.variations.count : type.variations.count;
+											   if (count > 0) {
+												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
+												   section[@"title"] = NSLocalizedString(@"Variations", nil);
+												   NSMutableArray* rows = [NSMutableArray array];
+												   section[@"rows"] = rows;
+												   
+												   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+												   row.title = NSLocalizedString(@"Variations", nil);
+												   row.detail = [NSString stringWithFormat:@"%d", (int32_t) count + 1];
+												   row.icon = [NCDBEveIcon eveIconWithIconFile:@"09_07"];
+												   row.cellIdentifier = @"VariationsCell";
+												   [rows addObject:row];
+												   [sections addObject:section];
 											   }
 											   
 											   if (account && account.activeSkillPlan) {
@@ -429,10 +505,11 @@
 													   row.cellIdentifier = @"TypeCell";
 													   [rows addObject:row];
 												   }
-												   
-												   section[@"title"] = NSLocalizedString(@"Manufacturing", nil);
-												   section[@"rows"] = rows;
-												   [sections addObject:section];
+												   if (rows.count > 0) {
+													   section[@"title"] = NSLocalizedString(@"Manufacturing", nil);
+													   section[@"rows"] = rows;
+													   [sections addObject:section];
+												   }
 											   }
 											   
 											   NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DgmTypeAttribute"];
@@ -1875,6 +1952,91 @@
 												 if (rows.count > 0)
 													 [sections addObject:@{@"title" : NSLocalizedString(@"Energy Vampire", nil), @"rows" : rows}];
 											 }
+											 }];
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (![task isCancelled]) {
+									 self.sections = sections;
+									 [self update];
+								 }
+							 }];
+}
+
+- (void) loadWHAttributes {
+	NCAccount *account = [NCAccount currentAccount];
+	NCCharacterAttributes* attributes = [account characterAttributes];
+	if (!attributes)
+		attributes = [NCCharacterAttributes defaultCharacterAttributes];
+	
+	NSMutableArray* sections = [NSMutableArray new];
+	
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 NCDatabase* database = [NCDatabase sharedDatabase];
+											 [database.backgroundManagedObjectContext performBlockAndWait:^{
+												 NCDBInvType* type = (NCDBInvType*) [database.backgroundManagedObjectContext objectWithID:self.type.objectID];
+												 NCDBWhType* wh = type.wormhole;
+												 
+												 NSMutableArray* rows = [[NSMutableArray alloc] init];
+												 
+												 if (wh.targetSystemClass >= 0) {
+													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+													 row.title = NSLocalizedString(@"Leads into", nil);
+													 row.detail = wh.targetSystemClassDisplayName;
+													 row.icon = self.defaultAttributeIcon;
+													 [rows addObject:row];
+												 }
+												 if (wh.maxStableTime > 0) {
+													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+													 row.title = NSLocalizedString(@"Maximum Stable Time", nil);
+													 int32_t time = wh.maxStableTime / 60;
+													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%d h", nil), time];
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_16"];
+													 [rows addObject:row];
+												 }
+												 if (wh.maxStableMass > 0) {
+													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+													 row.title = NSLocalizedString(@"Maximum Stable Mass", nil);
+													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ kg", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(wh.maxStableMass)]];
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"02_10"];
+													 [rows addObject:row];
+												 }
+												 if (wh.maxJumpMass) {
+													 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvGroup"];
+													 request.predicate = [NSPredicate predicateWithFormat:@"ANY types.mass <= %f AND category.categoryID = 6", wh.maxJumpMass];
+													 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"category.categoryName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
+													 NSFetchedResultsController* controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:type.managedObjectContext sectionNameKeyPath:@"category.categoryName" cacheName:nil];
+													 [controller performFetch:nil];
+													 
+													 request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+													 request.predicate = [NSPredicate predicateWithFormat:@"mass <= %f AND group.category.categoryID = 6", wh.maxJumpMass];
+													 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"mass" ascending:NO]];
+													 request.fetchLimit = 1;
+													 NCDBInvType* maxMassShip = [[type.managedObjectContext executeFetchRequest:request error:nil] lastObject];
+													 
+													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+													 row.cellIdentifier = @"ResultsCell";
+													 row.title = NSLocalizedString(@"Maximum Jump Mass", nil);
+													 if (maxMassShip)
+														 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ kg\n%@", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(wh.maxJumpMass)], maxMassShip.group.groupName];
+													 else
+														 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ kg", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(wh.maxJumpMass)]];
+													 
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"36_13"];
+													 row.object = controller;
+													 [rows addObject:row];
+												 }
+												 if (wh.maxRegeneration) {
+													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+													 row.title = NSLocalizedString(@"Maximum Mass Regeneration", nil);
+													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ kg", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(wh.maxRegeneration)]];
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"23_03"];
+													 [rows addObject:row];
+												 }
+												 if (rows.count > 0)
+													 [sections addObject:@{@"title" : NSLocalizedString(@"Details", nil), @"rows" : rows}];
+
 											 }];
 										 }
 							 completionHandler:^(NCTask *task) {

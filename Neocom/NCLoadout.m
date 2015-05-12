@@ -55,6 +55,7 @@
 @dynamic typeID;
 @dynamic url;
 @dynamic data;
+@dynamic tag;
 
 - (NCDBInvType*) type {
 	if (!_type) {

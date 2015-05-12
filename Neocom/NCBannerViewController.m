@@ -13,7 +13,6 @@
 
 @interface NCBannerView()
 @property (nonatomic, assign) CGSize intrinsicContentSize;
-
 @end
 
 @implementation NCBannerView
@@ -27,6 +26,7 @@
 
 @interface NCBannerViewController ()<GADBannerViewDelegate>
 @property (nonatomic, strong) IBOutlet GADBannerView* gadBannerView;
+- (void) updateBanner;
 @end
 
 @implementation NCBannerViewController
@@ -45,27 +45,12 @@
     [super viewDidLoad];
 	self.bannerView.intrinsicContentSize = CGSizeZero;
 	
-//#warning Remove
-//	return;
-	
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-		[[NSNotificationCenter defaultCenter] removeObserver:self];
-		if (![ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased) {
-			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-				self.gadBannerView = [[GADBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(320, 50)) origin:CGPointMake(0, 0)];
-			else
-				self.gadBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait origin:CGPointMake(0, 0)];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidRemoveAdds:) name:NCApplicationDidRemoveAddsNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 
-			self.gadBannerView.rootViewController = self;
-			self.gadBannerView.adUnitID = @"ca-app-pub-0434787749004673/2607342948";
-			self.gadBannerView.delegate = self;
-			
-			GADRequest *request = [GADRequest request];
-			[self.gadBannerView loadRequest:request];
-			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidRemoveAdds:) name:NCApplicationDidRemoveAddsNotification object:nil];
-			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-		}
-	});
+	[self performSelector:@selector(updateBanner) withObject:nil afterDelay:10];
 }
 
 - (void)didReceiveMemoryWarning
@@ -146,17 +131,51 @@
 		[self.bannerView invalidateIntrinsicContentSize];
 	}
 	self.gadBannerView = nil;
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void) applicationDidBecomeActive:(NSNotification*) notification {
-	if (self.gadBannerView.superview && [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased) {
-		[self.gadBannerView removeFromSuperview];
-		self.bannerView.intrinsicContentSize = CGSizeZero;
-		[self.bannerView invalidateIntrinsicContentSize];
-		self.gadBannerView = nil;
-		[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self updateBanner];
+}
+
+- (void) applicationWillResignActive:(NSNotification*) notification {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+}
+
+- (void) updateBanner {
+	static int retry= 0;
+	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+	ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
+	if (purchase || retry >= 3) {
+		retry = 0;
+		if (purchase.purchased) {
+			if (self.gadBannerView.superview) {
+				[self.gadBannerView removeFromSuperview];
+				self.bannerView.intrinsicContentSize = CGSizeZero;
+				[self.bannerView invalidateIntrinsicContentSize];
+				self.gadBannerView = nil;
+			}
+		}
+		else {
+			if (!self.gadBannerView) {
+				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+					self.gadBannerView = [[GADBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(320, 50)) origin:CGPointMake(0, 0)];
+				else
+					self.gadBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait origin:CGPointMake(0, 0)];
+				
+				self.gadBannerView.rootViewController = self;
+				self.gadBannerView.adUnitID = @"ca-app-pub-0434787749004673/2607342948";
+				self.gadBannerView.delegate = self;
+				
+				GADRequest *request = [GADRequest request];
+				[self.gadBannerView loadRequest:request];
+			}
+		}
 	}
+	else {
+		retry++;
+		[self performSelector:@selector(updateBanner) withObject:nil afterDelay:10];
+	}
+	
 }
 
 @end

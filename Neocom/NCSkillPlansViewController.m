@@ -64,7 +64,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (indexPath.row < self.skillPlans.count) {
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+		NCDefaultTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 		NCSkillPlan* skillPlan = self.skillPlans[indexPath.row];
 		cell.object = skillPlan;
 		cell.titleLabel.text = skillPlan.name.length > 0 ? skillPlan.name : NSLocalizedString(@"Unnamed", nil);

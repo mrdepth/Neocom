@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1216EB811AE0DC020026AF58 /* NCDBWhType.m in Sources */ = {isa = PBXBuildFile; fileRef = 1216EB801AE0DC020026AF58 /* NCDBWhType.m */; };
 		12436D73194596750090D4A6 /* EVEDBCertCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D1C194596740090D4A6 /* EVEDBCertCertificate.m */; };
 		12436D74194596750090D4A6 /* EVEDBCertMastery.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D1E194596740090D4A6 /* EVEDBCertMastery.m */; };
 		12436D75194596750090D4A6 /* EVEDBCertSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D20194596740090D4A6 /* EVEDBCertSkill.m */; };
@@ -165,6 +166,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1216EB7F1AE0DC020026AF58 /* NCDBWhType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBWhType.h; sourceTree = "<group>"; };
+		1216EB801AE0DC020026AF58 /* NCDBWhType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBWhType.m; sourceTree = "<group>"; };
 		12436D1A194596740090D4A6 /* EVEDBAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBAPI.h; sourceTree = "<group>"; };
 		12436D1B194596740090D4A6 /* EVEDBCertCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCertCertificate.h; sourceTree = "<group>"; };
 		12436D1C194596740090D4A6 /* EVEDBCertCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCertCertificate.m; sourceTree = "<group>"; };
@@ -773,8 +776,6 @@
 		12D6DCFD1922009C003FC5ED /* Generated */ = {
 			isa = PBXGroup;
 			children = (
-				12A049D219EF0D4000B1FF1D /* NCDBVersion.h */,
-				12A049D319EF0D4000B1FF1D /* NCDBVersion.m */,
 				12584E9219C9604B00847AB1 /* NCDBCertCertificate.h */,
 				12584E9319C9604B00847AB1 /* NCDBCertCertificate.m */,
 				12584EBC19C9604C00847AB1 /* NCDBCertMastery.h */,
@@ -853,6 +854,10 @@
 				12584EE119C9604D00847AB1 /* NCDBStaStation.m */,
 				12584EEF19C9604E00847AB1 /* NCDBTxtDescription.h */,
 				12584EF019C9604E00847AB1 /* NCDBTxtDescription.m */,
+				12A049D219EF0D4000B1FF1D /* NCDBVersion.h */,
+				12A049D319EF0D4000B1FF1D /* NCDBVersion.m */,
+				1216EB7F1AE0DC020026AF58 /* NCDBWhType.h */,
+				1216EB801AE0DC020026AF58 /* NCDBWhType.m */,
 			);
 			name = Generated;
 			sourceTree = "<group>";
@@ -928,6 +933,7 @@
 				12584E9D19C9604C00847AB1 /* NCDBDgmTypeAttribute.m in Sources */,
 				12584E1019C9513500847AB1 /* EVEDBIndustryBlueprint.m in Sources */,
 				12436D7E194596750090D4A6 /* EVEDBDgmAttributeType.m in Sources */,
+				1216EB811AE0DC020026AF58 /* NCDBWhType.m in Sources */,
 				12476CAC19501A4D009E07C6 /* Module.cpp in Sources */,
 				12436D76194596750090D4A6 /* EVEDBChrRace.m in Sources */,
 				12436DA41945967E0090D4A6 /* NSMutableString+HTML.m in Sources */,

@@ -14,5 +14,6 @@
 
 @property (nonatomic, retain) NSString * version;
 @property (nonatomic) int32_t build;
+@property (nonatomic, retain) NSString * expansion;
 
 @end

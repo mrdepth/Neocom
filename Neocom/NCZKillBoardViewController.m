@@ -137,7 +137,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 
 - (IBAction)onChangeDate:(UIDatePicker*)sender {
 	self.date = sender.date;
-	NCTableViewCell* cell = (NCTableViewCell*) [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
+	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
 	if (cell)
 		cell.titleLabel.text = [NSString stringWithFormat:@"Since %@", [self.dateFormatter stringFromDate:self.date]];
 }
@@ -232,7 +232,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString* cellIdentifier = self.cellIdentifiers[indexPath.row];
-	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	
 	static UIButton* (^newClearButton)() = nil;
 	if (!newClearButton)

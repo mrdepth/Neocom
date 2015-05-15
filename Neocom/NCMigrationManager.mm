@@ -70,9 +70,9 @@
 	}
 	
 	@try {
-		if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
-			[migrationManager transferCloudToLocal];
-		}
+//		if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
+//			[migrationManager transferCloudToLocal];
+//		}
 	}
 	@catch(NSException* exc) {
 	}

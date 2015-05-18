@@ -231,7 +231,7 @@ static NCStorage* sharedStorage;
 								  NSInferMappingModelAutomaticallyOption : @(YES),
 								  NSMigratePersistentStoresAutomaticallyOption : @(YES)} mutableCopy];
 		
-		if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudReset]) {
+/*		if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudReset]) {
 			options[NSPersistentStoreRebuildFromUbiquitousContentOption] = @(YES);
 			[[NSUserDefaults standardUserDefaults] setInteger:NCStorageTypeFallback forKey:NCSettingsStorageType];
 			self.storageType = NCStorageTypeFallback;
@@ -239,7 +239,8 @@ static NCStorage* sharedStorage;
 			[[NSUserDefaults standardUserDefaults] synchronize];
 		}
 		else
-			self.storageType = [[NSUserDefaults standardUserDefaults] integerForKey:NCSettingsStorageType];
+			self.storageType = [[NSUserDefaults standardUserDefaults] integerForKey:NCSettingsStorageType];*/
+		self.storageType = NCStorageTypeCloud;
 
 		
 		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

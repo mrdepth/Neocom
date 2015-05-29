@@ -61,7 +61,6 @@
 		12476C8D19501A4D009E07C6 /* CapacitorSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C1D19501A4C009E07C6 /* CapacitorSimulator.cpp */; };
 		12476C8E19501A4D009E07C6 /* Character.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C1F19501A4C009E07C6 /* Character.cpp */; };
 		12476C8F19501A4D009E07C6 /* Charge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2119501A4C009E07C6 /* Charge.cpp */; };
-		12476C9019501A4D009E07C6 /* Compiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2319501A4C009E07C6 /* Compiler.cpp */; };
 		12476C9119501A4D009E07C6 /* ControlTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2519501A4C009E07C6 /* ControlTower.cpp */; };
 		12476C9219501A4D009E07C6 /* DamagePattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2719501A4C009E07C6 /* DamagePattern.cpp */; };
 		12476C9319501A4D009E07C6 /* Decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2919501A4C009E07C6 /* Decoder.cpp */; };
@@ -1049,7 +1048,6 @@
 				12584E8B19C9604B00847AB1 /* NCDBEveIconImage.m in Sources */,
 				12476CA719501A4D009E07C6 /* Item.cpp in Sources */,
 				12584E9119C9604B00847AB1 /* NCDBMapRegion.m in Sources */,
-				12476C9019501A4D009E07C6 /* Compiler.cpp in Sources */,
 				12476C8B19501A4D009E07C6 /* Blob.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -27,6 +27,20 @@
 #import "NCAPIKeyAccessMaskViewController.h"
 #import "NCShoppingList.h"
 
+static NSUncaughtExceptionHandler* handler;
+
+void uncaughtExceptionHandler(NSException* exception) {
+	for (NSString* symbol in exception.callStackSymbols) {
+		if ([symbol containsString:@"CoreData"]) {
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"CoreDataException"];
+			break;
+		}
+	}
+	if (handler) {
+		handler(exception);
+	}
+}
+
 @interface NCAppDelegate()<SKPaymentTransactionObserver>
 @property (nonatomic, strong) NCTaskManager* taskManager;
 - (void) addAPIKeyWithURL:(NSURL*) url;
@@ -55,7 +69,10 @@
 	[Flurry setCrashReportingEnabled:YES];
 	[Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
 #endif
-	
+
+//	handler = NSGetUncaughtExceptionHandler();
+//	NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+
 	/*if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsNoAds"]) {
 		ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
 		purchase.purchased = YES;
@@ -78,8 +95,6 @@
 	SKPaymentQueue *paymentQueue = [SKPaymentQueue defaultQueue];
 	[paymentQueue addTransactionObserver:self];
 
-//	__block NSError* error = nil;
-	
 	[self migrateWithCompletionHandler:^{
 		id cloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
 		

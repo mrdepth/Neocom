@@ -12,6 +12,6 @@
 
 @end
 
-@interface NCBannerViewController : UIViewController
-@property (nonatomic, weak) IBOutlet NCBannerView* bannerView;
+@interface NCBannerViewController : UINavigationController
+@property (nonatomic, strong) IBOutlet NCBannerView* bannerView;
 @end

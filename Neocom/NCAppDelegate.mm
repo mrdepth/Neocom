@@ -27,7 +27,7 @@
 #import "NCAPIKeyAccessMaskViewController.h"
 #import "NCShoppingList.h"
 
-@interface NCAppDelegate()<SKPaymentTransactionObserver>
+@interface NCAppDelegate()<SKPaymentTransactionObserver, UISplitViewControllerDelegate>
 @property (nonatomic, strong) NCTaskManager* taskManager;
 - (void) addAPIKeyWithURL:(NSURL*) url;
 - (void) openFitWithURL:(NSURL*) url;
@@ -47,7 +47,6 @@
 @end
 
 @implementation NCAppDelegate
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //#warning Enable Flurry
@@ -148,6 +147,11 @@
 	}];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ubiquityIdentityDidChange:) name:NSUbiquityIdentityDidChangeNotification object:nil];
+	
+	UISplitViewController* controller = (UISplitViewController*) self.window.rootViewController;
+	if ([controller isKindOfClass:[UISplitViewController class]]) {
+		controller.delegate = self;
+	}
 
     return YES;
 }
@@ -330,6 +334,39 @@
 		}
 	}
 }
+
+#pragma mark - UISplitViewControllerDelegate
+
+- (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+		return YES;
+	else
+		return NO;
+}
+
+- (void) splitViewController:(UISplitViewController *)svc willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
+	if (displayMode == UISplitViewControllerDisplayModeAllVisible) {
+		[[svc.viewControllers[1] viewControllers][0] navigationItem].leftBarButtonItem = nil;
+	}
+	else
+		[[svc.viewControllers[1] viewControllers][0] navigationItem].leftBarButtonItem = svc.displayModeButtonItem;
+}
+
+- (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {
+	barButtonItem.image = [UIImage imageNamed:@"menuIcon.png"];
+	UINavigationController* navigationController = svc.viewControllers[1];
+	if ([navigationController isKindOfClass:[UINavigationController class]]) {
+		[[navigationController.viewControllers[0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];
+	}
+}
+
+- (void)splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
+	UINavigationController* navigationController = svc.viewControllers[1];
+	if ([navigationController isKindOfClass:[UINavigationController class]]) {
+		[[navigationController.viewControllers[0] navigationItem] setLeftBarButtonItem:nil animated:YES];
+	}
+}
+
 
 #pragma mark - Private
 

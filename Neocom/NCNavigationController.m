@@ -45,6 +45,12 @@
 	self.tapOutsideGestureRecognizer = nil;
 }
 
+- (void) viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	UIView* v = self.view.subviews[0];
+	v.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 100);
+}
+
 #pragma mark - Private
 
 - (void) setTapOutsideGestureRecognizer:(UITapGestureRecognizer *)tapOutsideGestureRecognizer {

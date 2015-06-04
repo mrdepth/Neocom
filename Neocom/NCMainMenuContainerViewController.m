@@ -54,6 +54,8 @@
 	self.menuViewController = self.childViewControllers[0];
 	
 	self.navigationCharacterButton = [NCNavigationCharacterButton viewWithNibName:@"NCNavigationCharacterButton" bundle:nil];
+	self.navigationCharacterButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+	self.navigationCharacterButton.translatesAutoresizingMaskIntoConstraints = YES;
 	[self.navigationCharacterButton addTarget:self action:@selector(onAccounts:) forControlEvents:UIControlEventTouchUpInside];
 	CGRect frame = self.navigationCharacterButton.frame;
 	frame.origin.x = 10;

@@ -26,6 +26,7 @@
 
 @interface NCBannerViewController ()<GADBannerViewDelegate>
 @property (nonatomic, strong) IBOutlet GADBannerView* gadBannerView;
+@property (nonatomic, weak) UIView* transitionView;
 - (void) updateBanner;
 @end
 
@@ -51,6 +52,20 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 
 	[self performSelector:@selector(updateBanner) withObject:nil afterDelay:10];
+	
+	
+	UIView* transitionView;
+	for (transitionView in self.view.subviews)
+		if ([transitionView isKindOfClass:NSClassFromString(@"UINavigationTransitionView")])
+			break;
+	
+	if (!transitionView && self.view.subviews.count > 0)
+		transitionView = self.view.subviews[0];
+	self.transitionView = transitionView;
+	
+	self.bannerView = [[NCBannerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 0)];
+	self.bannerView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+	[self.view addSubview:self.bannerView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,23 +91,40 @@
 	}
 }
 
+- (void) traitCollectionDidChange: (UITraitCollection *) previousTraitCollection {
+	[super traitCollectionDidChange: previousTraitCollection];
+	if (self.traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass || self.traitCollection.horizontalSizeClass != previousTraitCollection.horizontalSizeClass) {
+	}
+}
+
+- (void) viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	CGSize size = CGSizeFromGADAdSize(self.gadBannerView.adSize);
+	CGSize bannerSize = CGSizeMake(self.view.frame.size.width, 50);
+	if (!CGSizeEqualToSize(bannerSize, size))
+		self.gadBannerView.adSize = GADAdSizeFromCGSize(bannerSize);
+}
+
 #pragma mark - GADBannerViewDelegate
 
 - (void)adViewDidReceiveAd:(GADBannerView *)view {
-	self.bannerView.intrinsicContentSize = CGSizeFromGADAdSize(self.gadBannerView.adSize);
-	[self.bannerView invalidateIntrinsicContentSize];
+	CGSize size = CGSizeFromGADAdSize(self.gadBannerView.adSize);
+	self.bannerView.frame = CGRectMake(0, self.view.frame.size.height - size.height, self.view.frame.size.width, size.height);
+	self.transitionView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.bannerView.frame.origin.y);
 	if (!self.gadBannerView.superview) {
 		[self.bannerView addSubview:self.gadBannerView];
 	}
-	[self.view setNeedsLayout];
-	[self.view layoutIfNeeded];
+//	[self.view setNeedsLayout];
+//	[self.view layoutIfNeeded];
 }
 
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {
 	if (self.gadBannerView.superview) {
+		self.transitionView.frame = self.view.bounds;
+		self.bannerView.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 0);
 		[self.gadBannerView removeFromSuperview];
-		self.bannerView.intrinsicContentSize = CGSizeZero;
-		[self.bannerView invalidateIntrinsicContentSize];
+		//self.bannerView.intrinsicContentSize = CGSizeZero;
+		//[self.bannerView invalidateIntrinsicContentSize];
 	}
 }
 
@@ -157,10 +189,11 @@
 		}
 		else {
 			if (!self.gadBannerView) {
-				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-					self.gadBannerView = [[GADBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(320, 50)) origin:CGPointMake(0, 0)];
-				else
-					self.gadBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait origin:CGPointMake(0, 0)];
+				self.gadBannerView = [[GADBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(self.view.frame.size.width, 50)) origin:CGPointMake(0, 0)];
+//				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+					//self.gadBannerView = [[GADBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(320, 50)) origin:CGPointMake(0, 0)];
+//				else
+//					self.gadBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait origin:CGPointMake(0, 0)];
 				
 				self.gadBannerView.rootViewController = self;
 				self.gadBannerView.adUnitID = @"ca-app-pub-0434787749004673/2607342948";

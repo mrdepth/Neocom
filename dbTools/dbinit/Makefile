@@ -35,7 +35,7 @@ Types: EVETypesConverter
 	$(TMP)/EVETypesConverter ./input/Types $(TMP)/Types $(TMP)/typesMap.sql
 
 eufe.sqlite:
-	cd ../../ThirdParty/eufe/dbinit; make OUTPUT_DIR=${PWD} DUMP=$(DUMP) TMP=$(TMP)
+	cd ../../ThirdParty/eufe/dbinit; make clean; make OUTPUT_DIR=${PWD} DUMP=$(DUMP) TMP=$(TMP)
 
 createTables.sql: tmp
 	sqlite3 ./input/sde/eve.sqlite ".read ./sql/tablesExtract.sql" > $(TMP)/tmp.sql
@@ -54,10 +54,11 @@ evedb.sqlite: createTables.sql Types eveIcons.sql npc.sql
 	sqlite3 $(TMP)/evedb.sqlite "CREATE INDEX \"npcGroup_parentNpcGroupID\" ON \"npcGroup\" (\"parentNpcGroupID\" ASC);"
 
 NCDatabase.sqlite: NCDatabase evedb.sqlite Icons Types
-	$(TMP)/NCDatabase ./NCDatabase.sqlite $(TMP)/evedb.sqlite $(TMP)/Icons $(TMP)/Types ./input/Factions
+	$(TMP)/NCDatabase ./NCDatabase.sqlite $(TMP)/evedb.sqlite $(TMP)/Icons $(TMP)/Types ./input/Factions $(EXPANSION)
 
 tmp:
 	mkdir -p $(TMP)
 
 clean:
 	rm -rf $(TMP)
+	rm -rf *.sqlite

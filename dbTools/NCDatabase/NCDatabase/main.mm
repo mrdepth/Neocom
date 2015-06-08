@@ -1453,7 +1453,7 @@ int main(int argc, const char * argv[])
 {
 
 	@autoreleasepool {
-		if (argc != 6)
+		if (argc != 7)
 			return 1;
 		
 		databasePath = [NSString stringWithUTF8String:argv[1]];
@@ -1461,6 +1461,7 @@ int main(int argc, const char * argv[])
 		iconsPath = [NSString stringWithUTF8String:argv[3]];
 		typesPath = [NSString stringWithUTF8String:argv[4]];
 		factionsPath = [NSString stringWithUTF8String:argv[5]];
+		NSString* expansion = [NSString stringWithUTF8String:argv[6]];
 
 		NSManagedObjectContext *context = managedObjectContext();
 		EVEDBDatabase* database = [[EVEDBDatabase alloc] initWithDatabasePath:evedbPath];
@@ -1474,7 +1475,7 @@ int main(int argc, const char * argv[])
 							 NCDBVersion* dbVersion = [NSEntityDescription insertNewObjectForEntityForName:@"Version" inManagedObjectContext:context];
 							 dbVersion.version = [NSString stringWithCString:version encoding:NSUTF8StringEncoding];
 							 dbVersion.build = build;
-							 dbVersion.expansion = NCDBExpansion;
+							 dbVersion.expansion = expansion;
 						 }];
 			
 			NSLog(@"convertEveIcons");

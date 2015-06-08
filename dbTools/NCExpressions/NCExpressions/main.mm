@@ -19,6 +19,8 @@ static NSMutableArray *types;
 static NSMutableArray *groups;
 static NSMutableArray *categories;
 
+static NSString* output;
+
 static int callback(void *pArg, int argc, char **argv, char **azColName){
 	NSMutableArray *rows = (__bridge NSMutableArray*) pArg;
 	NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
@@ -114,7 +116,7 @@ static void processEffect(NSMutableDictionary *effect) {
 	for (NSString *key in [NSArray arrayWithObjects:@"effectID", @"effectCategory", @"description", @"guid", @"iconID", @"isOffensive", @"isAssistance", @"durationAttributeID", @"trackingSpeedAttributeID", @"dischargeAttributeID", @"rangeAttributeID", @"falloffAttributeID", @"disallowAutoRepeat", @"published", @"displayName", @"isWarpSafe", @"rangeChance", @"electronicChance", @"propulsionChance", @"distribution", @"sfxName", @"npcUsageChanceAttributeID", @"npcActivationChanceAttributeID", @"fittingUsageChanceAttributeID", nil])
 		[effect setValue:nil forKey:key];
 	NSData* data = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
-	[data writeToFile:[NSString stringWithFormat:@"/Users/shimanski/Work/tmp/Effects/%@.json", [effect valueForKey:@"effectName"]] atomically:YES];
+	[data writeToFile:[NSString stringWithFormat:@"%@/%@.json", output, [effect valueForKey:@"effectName"]] atomically:YES];
 }
 
 NSError* exec(sqlite3* db, NSString* sqlRequest, void (^resultBlock)(sqlite3_stmt* stmt, BOOL* needsMore)) {
@@ -143,39 +145,40 @@ int main (int argc, const char * argv[])
 {
 	
 	@autoreleasepool {
-		effects = [NSMutableArray array];
-		expressions = [NSMutableArray array];
-		operands = [NSMutableArray array];
-		attributes = [NSMutableArray array];
-		types = [NSMutableArray array];
-		groups = [NSMutableArray array];
-		categories = [NSMutableArray array];
-		
-		
-		//const char* expression = @"((CurrentShip->medSlots).(ModAdd)).AddItemModifier (medSlots)";
-		
-		
-		
-		sqlite3 *pDB;
-		pDB = NULL;
-		sqlite3_open("/Users/shimanski/Work/git/Neocom/dbTools/dbinit/database.sqlite", &pDB);
-		
-		char *errmsg = NULL;
-		sqlite3_exec(pDB, "select * from dgmEffects", callback, (__bridge void*) effects, &errmsg);
-		sqlite3_exec(pDB, "select * from dgmOperands", callback, (__bridge void*) operands, &errmsg);
-		sqlite3_exec(pDB, "select * from dgmExpressions", callback, (__bridge void*) expressions, &errmsg);
-		sqlite3_exec(pDB, "select * from dgmAttributeTypes", callback, (__bridge void*) attributes, &errmsg);
-		sqlite3_exec(pDB, "select * from invTypes", callback, (__bridge void*) types, &errmsg);
-		sqlite3_exec(pDB, "select * from invGroups", callback, (__bridge void*) groups, &errmsg);
-		sqlite3_exec(pDB, "select * from invCategories", callback, (__bridge void*) categories, &errmsg);
-		sqlite3_close(pDB);
-		
-		for (NSMutableDictionary *effect in effects) {
-			@autoreleasepool {
-				processEffect(effect);
+		if (argc == 3) {
+			effects = [NSMutableArray array];
+			expressions = [NSMutableArray array];
+			operands = [NSMutableArray array];
+			attributes = [NSMutableArray array];
+			types = [NSMutableArray array];
+			groups = [NSMutableArray array];
+			categories = [NSMutableArray array];
+			output = [NSString stringWithUTF8String:argv[2]];
+			
+			//const char* expression = @"((CurrentShip->medSlots).(ModAdd)).AddItemModifier (medSlots)";
+			
+			
+			
+			sqlite3 *pDB;
+			pDB = NULL;
+			sqlite3_open(argv[1], &pDB);
+			
+			char *errmsg = NULL;
+			sqlite3_exec(pDB, "select * from dgmEffects", callback, (__bridge void*) effects, &errmsg);
+			sqlite3_exec(pDB, "select * from dgmOperands", callback, (__bridge void*) operands, &errmsg);
+			sqlite3_exec(pDB, "select * from dgmExpressions", callback, (__bridge void*) expressions, &errmsg);
+			sqlite3_exec(pDB, "select * from dgmAttributeTypes", callback, (__bridge void*) attributes, &errmsg);
+			sqlite3_exec(pDB, "select * from invTypes", callback, (__bridge void*) types, &errmsg);
+			sqlite3_exec(pDB, "select * from invGroups", callback, (__bridge void*) groups, &errmsg);
+			sqlite3_exec(pDB, "select * from invCategories", callback, (__bridge void*) categories, &errmsg);
+			sqlite3_close(pDB);
+			
+			for (NSMutableDictionary *effect in effects) {
+				@autoreleasepool {
+					processEffect(effect);
+				}
 			}
 		}
-		
 	}
 	return 0;
 }

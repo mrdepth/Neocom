@@ -21,6 +21,10 @@
 	return _intrinsicContentSize;
 }
 
+- (CGFloat) length {
+	return self.frame.size.height;
+}
+
 @end
 
 
@@ -62,6 +66,7 @@
 	if (!transitionView && self.view.subviews.count > 0)
 		transitionView = self.view.subviews[0];
 	self.transitionView = transitionView;
+	self.transitionView.backgroundColor = [UIColor blackColor];
 	
 	self.bannerView = [[NCBannerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 0)];
 	self.bannerView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
@@ -91,18 +96,20 @@
 	}
 }
 
-- (void) traitCollectionDidChange: (UITraitCollection *) previousTraitCollection {
-	[super traitCollectionDidChange: previousTraitCollection];
-	if (self.traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass || self.traitCollection.horizontalSizeClass != previousTraitCollection.horizontalSizeClass) {
-	}
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+	self.transitionView.frame = self.view.bounds;
+	self.bannerView.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 0);
+	[self.gadBannerView removeFromSuperview];
 }
 
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
 	CGSize size = CGSizeFromGADAdSize(self.gadBannerView.adSize);
 	CGSize bannerSize = CGSizeMake(self.view.frame.size.width, 50);
-	if (!CGSizeEqualToSize(bannerSize, size))
+	if (!CGSizeEqualToSize(bannerSize, size)) {
 		self.gadBannerView.adSize = GADAdSizeFromCGSize(bannerSize);
+	}
 }
 
 #pragma mark - GADBannerViewDelegate
@@ -110,12 +117,14 @@
 - (void)adViewDidReceiveAd:(GADBannerView *)view {
 	CGSize size = CGSizeFromGADAdSize(self.gadBannerView.adSize);
 	self.bannerView.frame = CGRectMake(0, self.view.frame.size.height - size.height, self.view.frame.size.width, size.height);
-	self.transitionView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.bannerView.frame.origin.y);
+	CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.bannerView.frame.origin.y);
+	if (!CGRectEqualToRect(frame, self.transitionView.frame)) {
+		self.transitionView.frame = frame;
+		[self.view setNeedsLayout];
+	}
 	if (!self.gadBannerView.superview) {
 		[self.bannerView addSubview:self.gadBannerView];
 	}
-//	[self.view setNeedsLayout];
-//	[self.view layoutIfNeeded];
 }
 
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {

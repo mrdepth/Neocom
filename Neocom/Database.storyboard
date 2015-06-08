@@ -1060,13 +1060,13 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="qyD-gc-O13"/>
-        <segue reference="nbW-ac-udm"/>
-        <segue reference="dFJ-0K-RGe"/>
-        <segue reference="XgO-bk-a8F"/>
-        <segue reference="SQ9-TP-fSp"/>
-        <segue reference="zmy-uu-JWe"/>
         <segue reference="6f8-Ke-TrG"/>
+        <segue reference="He4-ED-1Vg"/>
+        <segue reference="dFJ-0K-RGe"/>
+        <segue reference="nbW-ac-udm"/>
+        <segue reference="XgO-bk-a8F"/>
+        <segue reference="zmy-uu-JWe"/>
+        <segue reference="qyD-gc-O13"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

@@ -11,7 +11,7 @@
         <scene sceneID="5Rr-DP-2Wu">
             <objects>
                 <navigationController id="yZl-Nd-WWY" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Jvx-qi-kTL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Jvx-qi-kTL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -23,11 +23,10 @@
             </objects>
             <point key="canvasLocation" x="-1329" y="528"/>
         </scene>
-        <!--View Controller-->
+        <!--Splash Screen View Controller-->
         <scene sceneID="Stq-rf-DPM">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HVu-2a-Qwz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController id="423-3q-YDv" sceneMemberID="viewController">
+                <viewController id="423-3q-YDv" customClass="NCSplashScreenViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="F4W-5v-fyL"/>
                         <viewControllerLayoutGuide type="bottom" id="UbL-8s-ZL5"/>
@@ -35,10 +34,24 @@
                     <view key="view" contentMode="scaleToFill" id="6IK-Sz-pe1">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="jMf-K0-Yal">
+                                <rect key="frame" x="80" y="243" width="440" height="115"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="jMf-K0-Yal" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6IK-Sz-pe1" secondAttribute="leading" constant="40" id="39c-qg-sft"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="jMf-K0-Yal" secondAttribute="trailing" constant="40" id="4QY-39-DvZ"/>
+                            <constraint firstAttribute="centerX" secondItem="jMf-K0-Yal" secondAttribute="centerX" id="Sz0-H6-CQX"/>
+                            <constraint firstAttribute="centerY" secondItem="jMf-K0-Yal" secondAttribute="centerY" id="p6i-Ui-cTI"/>
+                            <constraint firstItem="UbL-8s-ZL5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="jMf-K0-Yal" secondAttribute="bottom" constant="40" id="xfN-3B-VM4"/>
+                            <constraint firstItem="jMf-K0-Yal" firstAttribute="top" relation="greaterThanOrEqual" secondItem="F4W-5v-fyL" secondAttribute="bottom" constant="40" id="zBy-j0-OFW"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="8xH-zC-qe4"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HVu-2a-Qwz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-561" y="528"/>
         </scene>
@@ -102,7 +115,7 @@
         <!--Main Menu Container View Controller-->
         <scene sceneID="3b5-FD-zTD">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" definesPresentationContext="YES" id="51P-Kd-T7T" customClass="NCMainMenuContainerViewController" sceneMemberID="viewController">
+                <viewController definesPresentationContext="YES" id="51P-Kd-T7T" customClass="NCMainMenuContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qgO-Rq-eR4"/>
                         <viewControllerLayoutGuide type="bottom" id="Tcl-jw-yYT"/>
@@ -112,7 +125,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AHj-tc-Pz8">
-                                <rect key="frame" x="0.0" y="44" width="600" height="506"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="550"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="PgR-W2-PV6" kind="embed" id="qb7-Vv-pKL"/>
@@ -123,7 +136,7 @@
                         <constraints>
                             <constraint firstItem="Tcl-jw-yYT" firstAttribute="top" secondItem="AHj-tc-Pz8" secondAttribute="bottom" id="2f9-6X-pPc"/>
                             <constraint firstItem="AHj-tc-Pz8" firstAttribute="leading" secondItem="dUf-rs-Sp5" secondAttribute="leading" id="NLj-h1-Lcf"/>
-                            <constraint firstItem="AHj-tc-Pz8" firstAttribute="top" secondItem="qgO-Rq-eR4" secondAttribute="bottom" id="NQX-lW-jz7"/>
+                            <constraint firstItem="AHj-tc-Pz8" firstAttribute="top" secondItem="dUf-rs-Sp5" secondAttribute="top" id="T2l-Gp-08P"/>
                             <constraint firstAttribute="trailing" secondItem="AHj-tc-Pz8" secondAttribute="trailing" id="zSJ-zi-WTg"/>
                         </constraints>
                     </view>
@@ -571,9 +584,9 @@
         <!--Main Menu View Controller-->
         <scene sceneID="iaV-Lg-iie">
             <objects>
-                <tableViewController automaticallyAdjustsScrollViewInsets="NO" definesPresentationContext="YES" clearsSelectionOnViewWillAppear="NO" id="PgR-W2-PV6" customClass="NCMainMenuViewController" sceneMemberID="viewController">
+                <tableViewController definesPresentationContext="YES" clearsSelectionOnViewWillAppear="NO" id="PgR-W2-PV6" customClass="NCMainMenuViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="41" sectionHeaderHeight="22" sectionFooterHeight="22" id="Opw-lt-6pY">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="506"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="550"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="xL0-df-S2v">
@@ -1299,6 +1312,9 @@
             <point key="canvasLocation" x="7346.25" y="-6.3380281690140841"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="logo.png" width="440" height="115"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="xJn-oR-osy"/>
     </inferredMetricsTieBreakers>

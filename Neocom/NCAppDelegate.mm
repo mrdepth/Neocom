@@ -26,6 +26,7 @@
 #import "Flurry.h"
 #import "NCAPIKeyAccessMaskViewController.h"
 #import "NCShoppingList.h"
+#import "NCSplashScreenViewController.h"
 
 @interface NCAppDelegate()<SKPaymentTransactionObserver, UISplitViewControllerDelegate>
 @property (nonatomic, strong) NCTaskManager* taskManager;
@@ -338,10 +339,11 @@
 #pragma mark - UISplitViewControllerDelegate
 
 - (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-		return YES;
-	else
-		return NO;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController*) secondaryViewController viewControllers][0] isKindOfClass:[NCSplashScreenViewController class]])
+			return YES;
+	}
+	return NO;
 }
 
 - (void) splitViewController:(UISplitViewController *)svc willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {

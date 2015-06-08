@@ -113,6 +113,7 @@
 		120D5B4218B1FE5B007ED9B4 /* NCLocationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4118B1FE5B007ED9B4 /* NCLocationsManager.m */; };
 		120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */; };
 		120D5B5318B22AC0007ED9B4 /* NCMarketOrdersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */; };
+		120E77B81B25D91300816E1C /* NCSplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120E77B71B25D91300816E1C /* NCSplashScreenViewController.m */; };
 		1211122E185989E1009E5106 /* NCTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211122D185989E1009E5106 /* NCTaskManager.m */; };
 		1211123118598B09009E5106 /* NCTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211123018598B09009E5106 /* NCTask.m */; };
 		121112341859929E009E5106 /* NCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 121112331859929E009E5106 /* NCTableViewController.m */; };
@@ -895,6 +896,8 @@
 		120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMarketOrdersViewController.m; sourceTree = "<group>"; };
 		120D5B5118B22AC0007ED9B4 /* NCMarketOrdersCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMarketOrdersCell.h; sourceTree = "<group>"; };
 		120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMarketOrdersCell.m; sourceTree = "<group>"; };
+		120E77B61B25D91300816E1C /* NCSplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSplashScreenViewController.h; sourceTree = "<group>"; };
+		120E77B71B25D91300816E1C /* NCSplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSplashScreenViewController.m; sourceTree = "<group>"; };
 		1211122C185989E1009E5106 /* NCTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTaskManager.h; sourceTree = "<group>"; };
 		1211122D185989E1009E5106 /* NCTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTaskManager.m; sourceTree = "<group>"; };
 		1211122F18598B09009E5106 /* NCTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTask.h; sourceTree = "<group>"; };
@@ -2086,6 +2089,15 @@
 			name = NCMarketOrdersCell;
 			sourceTree = "<group>";
 		};
+		120E77B21B25D8E900816E1C /* NCSplashScreenViewController */ = {
+			isa = PBXGroup;
+			children = (
+				120E77B61B25D91300816E1C /* NCSplashScreenViewController.h */,
+				120E77B71B25D91300816E1C /* NCSplashScreenViewController.m */,
+			);
+			name = NCSplashScreenViewController;
+			sourceTree = "<group>";
+		};
 		120EED571AC58FEF00947614 /* ShoppingList */ = {
 			isa = PBXGroup;
 			children = (
@@ -2524,6 +2536,7 @@
 		125F67CD18852172005732FA /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
+				120E77B21B25D8E900816E1C /* NCSplashScreenViewController */,
 				129D263A187E98A500E2062C /* NCNavigationCharacterButton */,
 				129D2636187E927600E2062C /* NCMainMenuContainerViewController */,
 				129D257B187E8C8E00E2062C /* NCMainMenuViewController */,
@@ -5199,6 +5212,7 @@
 				8416386D1893BEA000968ADF /* NSDate+Neocom.m in Sources */,
 				120C337319CAB0AA0093EECA /* NCDBRamAssemblyLineType.m in Sources */,
 				126A0E5E185F3B9300A8E8A3 /* EVECertificateTree.m in Sources */,
+				120E77B81B25D91300816E1C /* NCSplashScreenViewController.m in Sources */,
 				126648F418C07D1000ADBBE1 /* NCZKillBoardSearchResultsViewController.m in Sources */,
 				126A0E6B185F3B9300A8E8A3 /* EVESovereignty.m in Sources */,
 				12F82A6718ADFAB500A967B5 /* NCAssetsContainerViewController.mm in Sources */,

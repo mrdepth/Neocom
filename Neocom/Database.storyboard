@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VAS-h1-Ayq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
-        <scene sceneID="AAZ-Jo-0mh">
+        <scene sceneID="WUY-yy-S2k">
             <objects>
-                <navigationController storyboardIdentifier="NCDatabaseViewController" id="VAS-h1-Ayq" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ysd-Rr-Hhx">
+                <navigationController id="Ebv-hK-Jb2" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="hJF-Eo-Kx7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="fQN-VN-Su3" kind="relationship" relationship="rootViewController" id="6f8-Ke-TrG"/>
+                        <segue destination="fQN-VN-Su3" kind="relationship" relationship="rootViewController" id="J6m-rr-eL7"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zjo-bi-dHU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3xT-Kk-7df" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2570.625" y="471.12676056338023"/>
+            <point key="canvasLocation" x="-2347" y="471"/>
         </scene>
         <!--Database-->
         <scene sceneID="VPG-1H-jaK">
             <objects>
-                <tableViewController id="fQN-VN-Su3" customClass="NCDatabaseViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseViewController" id="fQN-VN-Su3" customClass="NCDatabaseViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="lBc-KK-Gfj">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -48,7 +49,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="fQN-VN-Su3" kind="show" identifier="NCDatabaseViewController" id="XCS-La-EyZ"/>
+                                    <segue destination="fQN-VN-Su3" kind="show" identifier="NCDatabaseViewController" id="x7z-PH-FXZ"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="eUp-d6-v1a" customClass="NCDefaultTableViewCell">
@@ -60,7 +61,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="dFj-mD-7QZ" kind="show" identifier="NCDatabaseTypeInfoViewController" id="raC-Em-4AD"/>
+                                    <segue destination="dFj-mD-7QZ" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveModalSegue" id="sbK-kZ-f7D"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -98,7 +99,7 @@
         <!--Market-->
         <scene sceneID="jEJ-dz-n4I">
             <objects>
-                <tableViewController id="lEO-4A-qIj" customClass="NCDatabaseMarketViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseMarketViewController" id="lEO-4A-qIj" customClass="NCDatabaseMarketViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="j3L-Vy-TYS" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -134,7 +135,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="4UZ-Rj-aNc" kind="show" identifier="NCDatabaseTypeMarketInfoViewController" id="dFJ-0K-RGe"/>
+                                    <segue destination="4UZ-Rj-aNc" kind="custom" identifier="NCDatabaseTypeMarketInfoViewController" customClass="NCAdaptiveModalSegue" id="dFJ-0K-RGe"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -166,7 +167,7 @@
         <!--Certificates-->
         <scene sceneID="5tt-L0-cHf">
             <objects>
-                <tableViewController id="igD-MV-bsc" customClass="NCDatabaseCertificatesViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseCertificatesViewController" id="igD-MV-bsc" customClass="NCDatabaseCertificatesViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="HLV-HU-SWV" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -193,7 +194,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="Gaj-wd-8of" kind="show" identifier="NCDatabaseCertificateInfoViewController" id="x80-mj-lXM"/>
+                                    <segue destination="Gaj-wd-8of" kind="custom" identifier="NCDatabaseCertificateInfoViewController" customClass="NCAdaptiveModalSegue" id="x80-mj-lXM"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -363,7 +364,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aXK-Dz-dyq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-414.375" y="471.12676056338023"/>
+            <point key="canvasLocation" x="-653" y="471"/>
         </scene>
         <!--Database Type Market Info View Controller-->
         <scene sceneID="rAT-aI-Ucb">
@@ -515,7 +516,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-414.375" y="1242.2535211267605"/>
+            <point key="canvasLocation" x="-653" y="1233"/>
         </scene>
         <!--Variations-->
         <scene sceneID="WxF-GY-BVg">
@@ -698,12 +699,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="REX-7Y-dR2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-414.375" y="1973.2394366197182"/>
+            <point key="canvasLocation" x="-653" y="1973"/>
         </scene>
         <!--NPC-->
         <scene sceneID="ytX-d2-sFZ">
             <objects>
-                <tableViewController id="dG5-dx-SwW" customClass="NCDatabaseNPCViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseNPCViewController" id="dG5-dx-SwW" customClass="NCDatabaseNPCViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="opI-2D-O7f">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -739,7 +740,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="dFj-mD-7QZ" kind="show" identifier="NCDatabaseTypeInfoViewController" id="r4q-Am-NEf"/>
+                                    <segue destination="dFj-mD-7QZ" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveModalSegue" id="r4q-Am-NEf"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -843,7 +844,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HqW-f6-NcH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2570.625" y="-308.45070422535207"/>
+            <point key="canvasLocation" x="-2347" y="-309"/>
         </scene>
         <!--RequiredFor-->
         <scene sceneID="PG2-Wc-5Ia">
@@ -944,7 +945,7 @@
         <!--Wormholes-->
         <scene sceneID="3qI-1b-g0e">
             <objects>
-                <tableViewController id="kwZ-Q6-3bj" customClass="NCDatabaseWHViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseWHViewController" id="kwZ-Q6-3bj" customClass="NCDatabaseWHViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="JGJ-7s-Qe4">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -968,7 +969,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="dFj-mD-7QZ" kind="show" identifier="NCDatabaseTypeInfoViewController" id="Amd-o8-4a1"/>
+                                    <segue destination="dFj-mD-7QZ" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveModalSegue" id="Amd-o8-4a1"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -995,78 +996,82 @@
             <point key="canvasLocation" x="-1604" y="3523"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="sDT-60-8AW">
+        <scene sceneID="IqI-n2-22u">
             <objects>
-                <navigationController storyboardIdentifier="NCDatabaseMarketViewController" id="FRh-ag-XYw" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Dy1-M9-lFQ">
+                <navigationController id="GFL-EY-bey" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="cug-xS-cpk">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="lEO-4A-qIj" kind="relationship" relationship="rootViewController" id="nbW-ac-udm"/>
+                        <segue destination="lEO-4A-qIj" kind="relationship" relationship="rootViewController" id="IAS-t0-x0K"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2aZ-oE-lK8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qgb-A9-1At" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2570.625" y="1233.8028169014083"/>
+            <point key="canvasLocation" x="-2347" y="1233"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="4Lf-xo-hZu">
+        <scene sceneID="lGR-hj-v0f">
             <objects>
-                <navigationController storyboardIdentifier="NCDatabaseCertificatesViewController" id="M3X-wB-g3I" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Xer-aD-RMV">
+                <navigationController id="vKl-xa-k2p" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="OzR-m4-NYq">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="igD-MV-bsc" kind="relationship" relationship="rootViewController" id="XgO-bk-a8F"/>
+                        <segue destination="igD-MV-bsc" kind="relationship" relationship="rootViewController" id="ns8-Ad-PQ7"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SAz-Yp-LXb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iVx-wG-gC3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2571" y="1973"/>
+            <point key="canvasLocation" x="-2347" y="1973"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="Jlg-Cd-uFX">
+        <scene sceneID="sZU-zx-lhv">
             <objects>
-                <navigationController storyboardIdentifier="NCDatabaseNPCViewController" id="cl2-NC-NQo" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bre-mk-KmQ">
+                <navigationController id="YL0-NH-qsF" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="y4P-R7-KX5">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="dG5-dx-SwW" kind="relationship" relationship="rootViewController" id="zmy-uu-JWe"/>
+                        <segue destination="dG5-dx-SwW" kind="relationship" relationship="rootViewController" id="PD6-VV-6gd"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3Fm-qH-X4x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZZw-Tm-Bmu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2571" y="2816"/>
+            <point key="canvasLocation" x="-2347" y="2816"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="38T-vb-T1k">
+        <scene sceneID="UvE-M2-c08">
             <objects>
-                <navigationController storyboardIdentifier="NCDatabaseWHViewController" id="AjW-c6-bXH" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="vFT-QB-1CE">
+                <navigationController id="2sq-th-Evs" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="1NY-f7-O8C">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="kwZ-Q6-3bj" kind="relationship" relationship="rootViewController" id="jl2-AH-Dz4"/>
+                        <segue destination="kwZ-Q6-3bj" kind="relationship" relationship="rootViewController" id="O2d-or-o9G"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zeQ-P7-tsu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hku-ct-rmM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2571" y="3523"/>
+            <point key="canvasLocation" x="-2347" y="3523"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="6f8-Ke-TrG"/>
-        <segue reference="He4-ED-1Vg"/>
-        <segue reference="dFJ-0K-RGe"/>
-        <segue reference="nbW-ac-udm"/>
-        <segue reference="XgO-bk-a8F"/>
-        <segue reference="zmy-uu-JWe"/>
+        <segue reference="Amd-o8-4a1"/>
+        <segue reference="edv-w8-2To"/>
         <segue reference="qyD-gc-O13"/>
+        <segue reference="dFJ-0K-RGe"/>
+        <segue reference="IAS-t0-x0K"/>
+        <segue reference="ns8-Ad-PQ7"/>
+        <segue reference="PD6-VV-6gd"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

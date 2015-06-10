@@ -513,6 +513,7 @@
 		12ED82E91AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82E81AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.m */; };
 		12F407551A8D181D0031FB35 /* NCDefaultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */; };
 		12F407591A8D25220031FB35 /* NCDefaultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */; };
+		12F4C0721B2862C100AF3389 /* NCAdaptiveModalSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F4C0711B2862C100AF3389 /* NCAdaptiveModalSegue.m */; };
 		12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */; };
 		12F82A5018AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A4F18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m */; };
 		12F82A5418AC98B100A967B5 /* NCFittingAPIFlagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5318AC98B100A967B5 /* NCFittingAPIFlagsViewController.m */; };
@@ -1597,6 +1598,8 @@
 		12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultTableViewCell.xib; sourceTree = "<group>"; };
 		12F407571A8D25220031FB35 /* NCDefaultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDefaultTableViewCell.h; sourceTree = "<group>"; };
 		12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDefaultTableViewCell.m; sourceTree = "<group>"; };
+		12F4C0701B2862C100AF3389 /* NCAdaptiveModalSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAdaptiveModalSegue.h; sourceTree = "<group>"; };
+		12F4C0711B2862C100AF3389 /* NCAdaptiveModalSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAdaptiveModalSegue.m; sourceTree = "<group>"; };
 		12F7108718B63EA100D9C08A /* NCContractsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCContractsDetailsViewController.h; sourceTree = "<group>"; };
 		12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCContractsDetailsViewController.m; sourceTree = "<group>"; };
 		12F82A4E18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseGroupPickerViewContoller.h; sourceTree = "<group>"; };
@@ -2696,6 +2699,7 @@
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				12F4C06F1B2862AE00AF3389 /* NCAdaptiveModalSegue */,
 				129421A6187FDF5D00977CB8 /* Categories */,
 				12F8E1F518E9A52200CEA658 /* NCSplitViewController */,
 				1235E3F118E562C700BC2607 /* NCNavigationController */,
@@ -4182,6 +4186,15 @@
 			name = NCDefaultTableViewCell;
 			sourceTree = "<group>";
 		};
+		12F4C06F1B2862AE00AF3389 /* NCAdaptiveModalSegue */ = {
+			isa = PBXGroup;
+			children = (
+				12F4C0701B2862C100AF3389 /* NCAdaptiveModalSegue.h */,
+				12F4C0711B2862C100AF3389 /* NCAdaptiveModalSegue.m */,
+			);
+			name = NCAdaptiveModalSegue;
+			sourceTree = "<group>";
+		};
 		12F7108518B63E8300D9C08A /* NCContractsDetailsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -5160,6 +5173,7 @@
 				12A7DB9C18B34B0900343D25 /* NSString+ASHTTPServer.m in Sources */,
 				1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */,
 				126703061A8FD22700F816F9 /* NSAttributedString+Neocom.m in Sources */,
+				12F4C0721B2862C100AF3389 /* NCAdaptiveModalSegue.m in Sources */,
 				126A0E80185F3B9300A8E8A3 /* NSData+MD5.m in Sources */,
 				123EE6F818F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.m in Sources */,
 				126A0E74185F3B9300A8E8A3 /* RSSParser.m in Sources */,

@@ -28,6 +28,7 @@
 #import "NCShoppingList.h"
 #import "NCSplashScreenViewController.h"
 
+
 @interface NCAppDelegate()<SKPaymentTransactionObserver, UISplitViewControllerDelegate>
 @property (nonatomic, strong) NCTaskManager* taskManager;
 - (void) addAPIKeyWithURL:(NSURL*) url;

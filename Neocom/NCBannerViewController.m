@@ -66,7 +66,7 @@
 	if (!transitionView && self.view.subviews.count > 0)
 		transitionView = self.view.subviews[0];
 	self.transitionView = transitionView;
-	self.transitionView.backgroundColor = [UIColor blackColor];
+//	self.view.backgroundColor = [UIColor blackColor];
 	
 	self.bannerView = [[NCBannerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 0)];
 	self.bannerView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;

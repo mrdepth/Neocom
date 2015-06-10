@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="rXs-cs-oxV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--Fitting Ship Workspace View Controller-->
@@ -1524,7 +1524,24 @@ IAogA
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="idu-Ya-tgS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1918" y="-2142"/>
+            <point key="canvasLocation" x="-3596.25" y="-2262.676056338028"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="XSp-Xy-lrn">
+            <objects>
+                <navigationController id="Wjk-dx-i2i" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="sVo-Ss-Ugi">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="rXs-cs-oxV" kind="relationship" relationship="rootViewController" id="3Ri-l9-f8Q"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p9n-ra-iiP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4827" y="-1227"/>
         </scene>
         <!--Fitting Ship View Controller-->
         <scene sceneID="4nQ-g3-9Yj">
@@ -1535,11 +1552,11 @@ IAogA
                         <viewControllerLayoutGuide type="bottom" id="6BP-Ua-sRd"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="xhC-K1-h68">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="BeZ-9Y-mho">
-                                <rect key="frame" x="10" y="68" width="300" height="29"/>
+                                <rect key="frame" x="10" y="68" width="580" height="29"/>
                                 <segments>
                                     <segment title="Modules"/>
                                     <segment title="Drones"/>
@@ -1553,14 +1570,14 @@ IAogA
                                 </connections>
                             </segmentedControl>
                             <view opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="24" translatesAutoresizingMaskIntoConstraints="NO" id="g4v-Dw-0GZ">
-                                <rect key="frame" x="0.0" y="100" width="320" height="24"/>
+                                <rect key="frame" x="0.0" y="100" width="600" height="24"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="200" id="dXk-1V-IqN"/>
                                 </constraints>
                             </view>
                             <containerView clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ETv-oZ-Cca">
-                                <rect key="frame" x="0.0" y="124" width="320" height="444"/>
+                                <rect key="frame" x="0.0" y="124" width="600" height="476"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="AJi-xr-hae" kind="embed" id="law-5m-CMc"/>
@@ -1593,23 +1610,23 @@ IAogA
                     <connections>
                         <outlet property="headerView" destination="g4v-Dw-0GZ" id="RGO-En-2Ve"/>
                         <outlet property="sectionSegmentedControl" destination="BeZ-9Y-mho" id="O6o-Eh-sYY"/>
-                        <segue destination="oxw-Gk-0JF" kind="push" identifier="NCDatabaseTypeInfoViewController" id="M1g-g8-PJm"/>
-                        <segue destination="GS3-JK-anj" kind="push" identifier="NCFittingRequiredSkillsViewController" id="Ve0-rS-KGn"/>
-                        <segue destination="gxe-oV-SlO" kind="push" identifier="NCFittingTypeVariationsViewController" id="1rd-Q3-at6"/>
-                        <segue destination="TEo-Cl-pbK" kind="push" identifier="NCFittingFitPickerViewController" id="gDq-hg-0Ln"/>
-                        <segue destination="xOJ-XJ-7d3" kind="push" identifier="NCFittingCharacterPickerViewController" id="ZgH-rM-bmf"/>
-                        <segue destination="018-ME-IOh" kind="push" identifier="NCFittingTargetsViewController" id="qzw-hE-BVI"/>
-                        <segue destination="s1B-Zc-8t5" kind="push" identifier="NCFittingImplantSetsViewControllerImport" id="D7k-l2-ZfU"/>
-                        <segue destination="GwB-XZ-nRV" kind="push" identifier="NCFittingShipAffectingSkillsViewController" id="dr2-fP-c5X"/>
-                        <segue destination="GEQ-B3-aL5" kind="push" identifier="NCFittingAreaEffectPickerViewController" id="dyB-W4-if1"/>
-                        <segue destination="hDJ-ZI-DaS" kind="push" identifier="NCFittingDamagePatternsViewController" id="0OW-q0-5fO"/>
-                        <segue destination="s1B-Zc-8t5" kind="push" identifier="NCFittingImplantSetsViewControllerSave" id="wmr-bV-V4i"/>
-                        <segue destination="v4H-UL-Afe" kind="push" identifier="NCNewShoppingItemViewController" id="gyJ-vG-Tzb"/>
+                        <segue destination="oxw-Gk-0JF" kind="show" identifier="NCDatabaseTypeInfoViewController" id="M1g-g8-PJm"/>
+                        <segue destination="GS3-JK-anj" kind="show" identifier="NCFittingRequiredSkillsViewController" id="Ve0-rS-KGn"/>
+                        <segue destination="gxe-oV-SlO" kind="show" identifier="NCFittingTypeVariationsViewController" id="1rd-Q3-at6"/>
+                        <segue destination="TEo-Cl-pbK" kind="show" identifier="NCFittingFitPickerViewController" id="gDq-hg-0Ln"/>
+                        <segue destination="xOJ-XJ-7d3" kind="show" identifier="NCFittingCharacterPickerViewController" id="ZgH-rM-bmf"/>
+                        <segue destination="018-ME-IOh" kind="show" identifier="NCFittingTargetsViewController" id="qzw-hE-BVI"/>
+                        <segue destination="s1B-Zc-8t5" kind="show" identifier="NCFittingImplantSetsViewControllerImport" id="D7k-l2-ZfU"/>
+                        <segue destination="GwB-XZ-nRV" kind="show" identifier="NCFittingShipAffectingSkillsViewController" id="dr2-fP-c5X"/>
+                        <segue destination="GEQ-B3-aL5" kind="show" identifier="NCFittingAreaEffectPickerViewController" id="dyB-W4-if1"/>
+                        <segue destination="hDJ-ZI-DaS" kind="show" identifier="NCFittingDamagePatternsViewController" id="0OW-q0-5fO"/>
+                        <segue destination="s1B-Zc-8t5" kind="show" identifier="NCFittingImplantSetsViewControllerSave" id="wmr-bV-V4i"/>
+                        <segue destination="v4H-UL-Afe" kind="show" identifier="NCNewShoppingItemViewController" id="gyJ-vG-Tzb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DPd-Nb-aoG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2158" y="-1161"/>
+            <point key="canvasLocation" x="-4046.25" y="-1226.4084507042253"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="ZLI-4H-PZB">
@@ -1620,7 +1637,7 @@ IAogA
                         <viewControllerLayoutGuide type="bottom" id="Znx-SJ-LkE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="2cY-AC-rGI">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -1633,14 +1650,14 @@ IAogA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bct-KO-1CT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="308" y="-873"/>
+            <point key="canvasLocation" x="577.5" y="-922.1830985915492"/>
         </scene>
         <!--Select Target-->
         <scene sceneID="NFx-WF-dcr">
             <objects>
                 <tableViewController id="018-ME-IOh" customClass="NCFittingTargetsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="Yyt-oj-KeQ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1665,14 +1682,14 @@ IAogA
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fdq-JE-D5e" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="tLL-bk-hhN" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1018" y="-1585"/>
+            <point key="canvasLocation" x="-1908.75" y="-1674.2957746478871"/>
         </scene>
         <!--Characters-->
         <scene sceneID="aKy-5B-ghi">
             <objects>
                 <tableViewController id="xOJ-XJ-7d3" customClass="NCFittingCharacterPickerViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="sHC-30-iZA" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1695,21 +1712,21 @@ IAogA
                         <barButtonItem key="backBarButtonItem" title="Back" id="ZqL-jn-ckz"/>
                     </navigationItem>
                     <connections>
-                        <segue destination="k7C-Gm-A8O" kind="push" identifier="NCFittingCharacterEditorViewController" id="AkJ-Pr-96d"/>
+                        <segue destination="k7C-Gm-A8O" kind="show" identifier="NCFittingCharacterEditorViewController" id="AkJ-Pr-96d"/>
                         <segue destination="3dn-pm-3Fj" kind="unwind" identifier="Unwind" unwindAction="unwindFromCharacterPicker:" id="ge1-Xe-e0J"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ere-6h-W0q" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="3dn-pm-3Fj" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-677" y="-116"/>
+            <point key="canvasLocation" x="-1269.375" y="-122.53521126760563"/>
         </scene>
         <!--Fitting Character Editor View Controller-->
         <scene sceneID="GBj-GG-ipM">
             <objects>
                 <tableViewController id="k7C-Gm-A8O" customClass="NCFittingCharacterEditorViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="gPy-fM-phn" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1721,10 +1738,10 @@ IAogA
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OSg-30-GI0">
-                                            <rect key="frame" x="0.0" y="0.0" width="253" height="36"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="533" height="36"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="199" translatesAutoresizingMaskIntoConstraints="NO" id="gaU-wr-jDI">
-                                                    <rect key="frame" x="15" y="2" width="199" height="32"/>
+                                                    <rect key="frame" x="15" y="2" width="479" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="SFe-08-uuo"/>
                                                     </constraints>
@@ -1733,7 +1750,7 @@ IAogA
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BW-go-AVD">
-                                                    <rect key="frame" x="222" y="2" width="31" height="32"/>
+                                                    <rect key="frame" x="502" y="2" width="31" height="32"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1763,7 +1780,7 @@ IAogA
                                     <outlet property="layoutContentView" destination="OSg-30-GI0" id="juR-5d-Ktg"/>
                                     <outlet property="skillLevelLabel" destination="8BW-go-AVD" id="Zli-UG-KxA"/>
                                     <outlet property="skillNameLabel" destination="gaU-wr-jDI" id="bUB-u8-ZiT"/>
-                                    <segue destination="oxw-Gk-0JF" kind="push" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="cmu-Cl-2Ty"/>
+                                    <segue destination="oxw-Gk-0JF" kind="show" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="cmu-Cl-2Ty"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1785,14 +1802,14 @@ IAogA
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S1m-4g-vZ7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-203" y="-116"/>
+            <point key="canvasLocation" x="-380.625" y="-122.53521126760563"/>
         </scene>
         <!--Select Fit-->
         <scene sceneID="Ndd-HB-2RY">
             <objects>
                 <tableViewController id="TEo-Cl-pbK" customClass="NCFittingFitPickerViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="cTN-TS-5oh" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1813,7 +1830,7 @@ IAogA
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pkb-pr-6rB">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fitting.png" translatesAutoresizingMaskIntoConstraints="NO" id="DbR-7P-KKa">
                                                     <rect key="frame" x="15" y="2" width="32" height="32"/>
@@ -1823,7 +1840,7 @@ IAogA
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Ship Fit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kKV-e2-naG">
-                                                    <rect key="frame" x="55" y="2" width="250" height="32"/>
+                                                    <rect key="frame" x="55" y="2" width="530" height="32"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -1869,14 +1886,14 @@ IAogA
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iuh-iX-Pej" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="4Qq-Pd-S8A" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-956" y="-2292"/>
+            <point key="canvasLocation" x="-1792.5" y="-2421.1267605633802"/>
         </scene>
         <!--Area Effects-->
         <scene sceneID="mrV-NP-AyF">
             <objects>
                 <tableViewController id="GEQ-B3-aL5" customClass="NCFittingAreaEffectPickerViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="Xnh-Jt-WtY" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1890,7 +1907,7 @@ IAogA
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="Zc8-fp-yNI" kind="unwind" identifier="Unwind" unwindAction="unwindFromAreaEffectPicker:" id="rv3-y6-e7H"/>
-                                    <segue destination="oxw-Gk-0JF" kind="push" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="emS-f0-N2k"/>
+                                    <segue destination="oxw-Gk-0JF" kind="show" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="emS-f0-N2k"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1906,14 +1923,14 @@ IAogA
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ahD-ey-zzT" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Zc8-fp-yNI" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1918" y="-91"/>
+            <point key="canvasLocation" x="-3596.25" y="-96.126760563380273"/>
         </scene>
         <!--Variations-->
         <scene sceneID="g6H-wq-WXj">
             <objects>
                 <tableViewController id="gxe-oV-SlO" customClass="NCFittingTypeVariationsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="R8z-8d-fPT" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1927,7 +1944,7 @@ IAogA
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="bgc-cK-n5O" kind="unwind" identifier="Unwind" unwindAction="unwindFromTypeVariations:" id="iwS-ti-6Qc"/>
-                                    <segue destination="oxw-Gk-0JF" kind="push" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="Rlv-l0-RVD"/>
+                                    <segue destination="oxw-Gk-0JF" kind="show" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="Rlv-l0-RVD"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1943,14 +1960,14 @@ IAogA
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MTI-fv-dBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="bgc-cK-n5O" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-377" y="-2300"/>
+            <point key="canvasLocation" x="-706.875" y="-2429.5774647887324"/>
         </scene>
         <!--Fitting Required Skills View Controller-->
         <scene sceneID="Fc7-6f-hsZ">
             <objects>
                 <tableViewController id="GS3-JK-anj" customClass="NCFittingRequiredSkillsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="Mp4-DI-btX">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1962,17 +1979,17 @@ IAogA
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T83-ca-AIA">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Piz-hc-sqb" customClass="NCLabel">
-                                                    <rect key="frame" x="15" y="2" width="290" height="17"/>
+                                                    <rect key="frame" x="15" y="2" width="570" height="17"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eLi-Bs-GvE" customClass="NCLabel">
-                                                    <rect key="frame" x="15" y="19" width="290" height="15"/>
+                                                    <rect key="frame" x="15" y="19" width="570" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2012,32 +2029,32 @@ IAogA
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iF5-Ev-NbU">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qpK-9E-OTh" customClass="NCLabel">
-                                                    <rect key="frame" x="15" y="2" width="202" height="17"/>
+                                                    <rect key="frame" x="15" y="2" width="482" height="17"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Level 5" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Yy-j3-nBQ">
-                                                    <rect key="frame" x="225" y="4" width="40" height="15"/>
+                                                    <rect key="frame" x="505" y="4" width="40" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Completes" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Lqd-Se-Fqc">
-                                                    <rect key="frame" x="254" y="19" width="61" height="15"/>
+                                                    <rect key="frame" x="534" y="19" width="61" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" placeholderIntrinsicWidth="48" placeholderIntrinsicHeight="8" translatesAutoresizingMaskIntoConstraints="NO" id="ges-4G-kkl" customClass="NCImageView">
-                                                    <rect key="frame" x="267" y="8" width="48" height="8"/>
+                                                    <rect key="frame" x="547" y="8" width="48" height="8"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="fIc-2V-nK7" customClass="NCLabel">
-                                                    <rect key="frame" x="15" y="19" width="231" height="15"/>
+                                                    <rect key="frame" x="15" y="19" width="511" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2096,14 +2113,14 @@ IAogA
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lb5-qm-st6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-377" y="-1572"/>
+            <point key="canvasLocation" x="-706.875" y="-1660.5633802816901"/>
         </scene>
         <!--Implant Sets-->
         <scene sceneID="sdv-Mh-APi">
             <objects>
                 <tableViewController id="s1B-Zc-8t5" customClass="NCFittingImplantSetsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="Dg7-GI-nnP" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -2133,14 +2150,14 @@ IAogA
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8AC-jP-a9N" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="hFg-ap-KOK" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-946" y="-873"/>
+            <point key="canvasLocation" x="-1773.75" y="-922.1830985915492"/>
         </scene>
         <!--Affecting Skills-->
         <scene sceneID="kvv-e2-DAF">
             <objects>
                 <tableViewController id="GwB-XZ-nRV" customClass="NCFittingShipAffectingSkillsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="Y6d-BO-7pp" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -2152,10 +2169,10 @@ IAogA
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Pf-64-VLP">
-                                            <rect key="frame" x="0.0" y="0.0" width="253" height="36"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="533" height="36"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="199" translatesAutoresizingMaskIntoConstraints="NO" id="93y-e8-NrK">
-                                                    <rect key="frame" x="15" y="2" width="199" height="32"/>
+                                                    <rect key="frame" x="15" y="2" width="479" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="zQg-F0-Z9g"/>
                                                     </constraints>
@@ -2164,7 +2181,7 @@ IAogA
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vCH-un-jKP">
-                                                    <rect key="frame" x="222" y="2" width="31" height="32"/>
+                                                    <rect key="frame" x="502" y="2" width="31" height="32"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2194,7 +2211,7 @@ IAogA
                                     <outlet property="layoutContentView" destination="0Pf-64-VLP" id="ckc-sB-Lnf"/>
                                     <outlet property="skillLevelLabel" destination="vCH-un-jKP" id="gmq-l9-RlS"/>
                                     <outlet property="skillNameLabel" destination="93y-e8-NrK" id="WgT-cX-an3"/>
-                                    <segue destination="oxw-Gk-0JF" kind="push" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="hKI-l5-8JK"/>
+                                    <segue destination="oxw-Gk-0JF" kind="show" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="hKI-l5-8JK"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -2210,7 +2227,7 @@ IAogA
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tR2-Rh-Ekm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1319" y="-91"/>
+            <point key="canvasLocation" x="-2473.125" y="-96.126760563380273"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="G88-1s-ogS">
@@ -2221,7 +2238,7 @@ IAogA
                         <viewControllerLayoutGuide type="bottom" id="mGJ-JK-FNe"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="hlP-M4-3aT">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -2234,7 +2251,7 @@ IAogA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S6T-Es-vg1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2488" y="-433"/>
+            <point key="canvasLocation" x="-4665" y="-457.39436619718305"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="yeP-ay-QUR">
@@ -2245,7 +2262,7 @@ IAogA
                         <viewControllerLayoutGuide type="bottom" id="rSo-gp-olI"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="7kL-vB-n4V">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -2258,7 +2275,7 @@ IAogA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yb5-ce-qMf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-956" y="-3045"/>
+            <point key="canvasLocation" x="-1792.5" y="-3216.5492957746478"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="5hE-Q5-uh6">
@@ -2269,7 +2286,7 @@ IAogA
                         <viewControllerLayoutGuide type="bottom" id="aUs-fo-NPe"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wZj-Fn-Cgj">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -2282,7 +2299,7 @@ IAogA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z8y-f2-OGt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="872" y="-865"/>
+            <point key="canvasLocation" x="1635" y="-913.73239436619713"/>
         </scene>
     </scenes>
     <resources>
@@ -2320,13 +2337,8 @@ IAogA
         <image name="velocity.png" width="32" height="32"/>
         <image name="warpSpeed.png" width="64" height="64"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="wmr-bV-V4i"/>
-        <segue reference="emS-f0-N2k"/>
+        <segue reference="M1g-g8-PJm"/>
     </inferredMetricsTieBreakers>
 </document>

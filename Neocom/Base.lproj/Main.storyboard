@@ -36,7 +36,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="jMf-K0-Yal">
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="jMf-K0-Yal">
                                 <rect key="frame" x="80" y="243" width="440" height="115"/>
                             </imageView>
                         </subviews>
@@ -139,7 +139,7 @@
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="2zB-mH-MjX"/>
                                 <barButtonItem systemItem="add" id="bx3-gC-GyZ">
                                     <connections>
-                                        <segue destination="dbV-Pp-N4T" kind="show" id="gEp-hk-kvg"/>
+                                        <segue destination="dbV-Pp-N4T" kind="custom" customClass="NCAdaptiveModalSegue" id="gEp-hk-kvg"/>
                                     </connections>
                                 </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="FZM-TA-efc"/>
@@ -352,7 +352,7 @@
             <objects>
                 <tableViewController id="dbV-Pp-N4T" customClass="NCAddAPIKeyViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="Onw-CB-TGK">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -366,7 +366,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="KeyID" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gVc-bh-DkY">
-                                                    <rect key="frame" x="20" y="3" width="280" height="30"/>
+                                                    <rect key="frame" x="20" y="3" width="560" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
@@ -390,7 +390,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="vCode" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="BGK-2B-SUh">
-                                                    <rect key="frame" x="20" y="3" width="280" height="30"/>
+                                                    <rect key="frame" x="20" y="3" width="560" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
@@ -473,7 +473,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xwX-CC-aAq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2437.5" y="638.02816901408448"/>
+            <point key="canvasLocation" x="1684" y="945"/>
         </scene>
         <!--Access Mask-->
         <scene sceneID="98d-zm-WUU">

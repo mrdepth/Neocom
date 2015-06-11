@@ -79,6 +79,7 @@
 	else {
 		[[self.viewControllers[0] navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)]];
 		[controller presentViewController:self animated:animated completion:nil];
+//		[controller.splitViewController.viewControllers[0] showViewController:self sender:view];
 	}
 }
 

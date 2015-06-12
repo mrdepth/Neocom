@@ -33,6 +33,14 @@
 #import "NCShoppingGroup.h"
 #import "NCNewShoppingItemViewController.h"
 
+#import "NSString+Neocom.h"
+
+#import "NCFittingShipModulesViewController.h"
+#import "NCFittingShipDronesViewController.h"
+#import "NCFittingShipImplantsViewController.h"
+#import "NCFittingShipFleetViewController.h"
+#import "NCFittingShipStatsViewController.h"
+
 #include <set>
 
 #define ActionButtonBack NSLocalizedString(@"Back", nil)
@@ -60,6 +68,13 @@
 @property (nonatomic, strong) NCFittingShipImplantsDataSource* implantsDataSource;
 @property (nonatomic, strong) NCFittingShipFleetDataSource* fleetDataSource;
 @property (nonatomic, strong) NCFittingShipStatsDataSource* statsDataSource;
+
+@property (nonatomic, strong) NCFittingShipModulesViewController* modulesViewController;
+@property (nonatomic, strong) NCFittingShipDronesViewController* dronesViewController;
+@property (nonatomic, strong) NCFittingShipImplantsViewController* implantsViewController;
+@property (nonatomic, strong) NCFittingShipFleetViewController* fleetViewController;
+@property (nonatomic, strong) NCFittingShipStatsViewController* statsViewController;
+
 @property (nonatomic, strong) NSMutableDictionary* typesCache;
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
 
@@ -86,8 +101,18 @@
 	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	
 	for (id controller in self.childViewControllers) {
-		if ([controller isKindOfClass:[NCFittingShipWorkspaceViewController class]])
-			self.workspaceViewController = controller;
+//		if ([controller isKindOfClass:[NCFittingShipWorkspaceViewController class]])
+//			self.workspaceViewController = controller;
+//		else if ([controller isKindOfClass:[NCFittingShipStatsViewController class]])
+//			self.statsViewController = controller;
+		if ([controller isKindOfClass:[NCFittingShipModulesViewController class]])
+			self.modulesViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingShipDronesViewController class]])
+			self.dronesViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingShipImplantsViewController class]])
+			self.implantsViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingShipFleetViewController class]])
+			self.fleetViewController = controller;
 		else if ([controller isKindOfClass:[NCFittingShipStatsViewController class]])
 			self.statsViewController = controller;
 	}
@@ -143,7 +168,7 @@
 								 
 								 self.statsDataSource = [NCFittingShipStatsDataSource new];
 								 self.statsDataSource.controller = self;
-								 if (self.statsViewController) {
+								 /*if (self.statsViewController) {
 									 self.statsDataSource.tableView = self.statsViewController.tableView;
 									 self.statsViewController.tableView.dataSource = self.statsDataSource;
 									 self.statsViewController.tableView.delegate = self.statsDataSource;
@@ -152,7 +177,7 @@
 								 else {
 									 self.statsDataSource.tableView = self.workspaceViewController.tableView;
 									 self.statsDataSource.tableViewController = self.workspaceViewController;
-								 }
+								 }*/
 								 
 								 NCFittingShipDataSource* dataSources[] = {self.modulesDataSource, self.dronesDataSource, self.implantsDataSource, self.fleetDataSource, self.statsDataSource};
 								 NCFittingShipDataSource* dataSource = dataSources[self.sectionSegmentedControl.selectedSegmentIndex];
@@ -161,22 +186,6 @@
 								 self.workspaceViewController.tableView.delegate = dataSource;
 								 //self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
 								 
-								 for (UIView* view in self.headerView.subviews)
-									 [view removeFromSuperview];
-								 
-								 if (dataSource.tableHeaderView) {
-									 NSDictionary* bindings = @{@"view": dataSource.tableHeaderView};
-									 [self.headerView addSubview:dataSource.tableHeaderView];
-									 [self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|"
-																											 options:0
-																											 metrics:nil
-																											   views:bindings]];
-									 [self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
-																											 options:0
-																											 metrics:nil
-																											   views:bindings]];
-								 }
-
 								 [self reload];
 							 }];
 }
@@ -387,8 +396,53 @@
 }
 
 - (void) reload {
-	[(id) self.workspaceViewController.tableView.dataSource reload];
-	[(id) self.statsViewController.tableView.dataSource reload];
+	[self.modulesViewController reload];
+	[self.dronesViewController reload];
+	[self.implantsViewController reload];
+	[self.fleetViewController reload];
+	[self.statsViewController reload];
+	
+	if (!self.fit.pilot)
+		return;
+	
+	eufe::Ship* ship = self.fit.pilot->getShip();
+
+	float totalPG = ship->getTotalPowerGrid();
+	float usedPG = ship->getPowerGridUsed();
+	
+	float totalCPU = ship->getTotalCpu();
+	float usedCPU = ship->getCpuUsed();
+	
+	float totalCalibration = ship->getTotalCalibration();
+	float usedCalibration = ship->getCalibrationUsed();
+
+	
+	self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
+	self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
+	self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
+	self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
+	self.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
+	self.calibrationLabel.progress = totalCalibration > 0 ? usedCalibration / totalCalibration : 0;
+
+	float totalDB = ship->getTotalDroneBay();
+	float usedDB = ship->getDroneBayUsed();
+	
+	float totalBandwidth = ship->getTotalDroneBandwidth();
+	float usedBandwidth = ship->getDroneBandwidthUsed();
+	
+	int maxActiveDrones = ship->getMaxActiveDrones();
+	int activeDrones = ship->getActiveDrones();
+
+	
+	self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
+	self.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
+	self.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
+	self.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
+	self.dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
+	if (activeDrones > maxActiveDrones)
+		self.dronesCountLabel.textColor = [UIColor redColor];
+	else
+		self.dronesCountLabel.textColor = [UIColor whiteColor];
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {
@@ -406,21 +460,6 @@
 	self.workspaceViewController.tableView.delegate = dataSource;
 	//self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
 	
-	for (UIView* view in self.headerView.subviews)
-		[view removeFromSuperview];
-
-	if (dataSource.tableHeaderView) {
-		NSDictionary* bindings = @{@"view": dataSource.tableHeaderView};
-		[self.headerView addSubview:dataSource.tableHeaderView];
-		[self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|"
-																				options:0
-																				metrics:nil
-																				  views:bindings]];
-		[self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
-																				options:0
-																				metrics:nil
-																				  views:bindings]];
-	}
 	[dataSource reload];
 }
 

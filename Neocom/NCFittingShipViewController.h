@@ -11,14 +11,20 @@
 #import "NCShipFit.h"
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCFittingShipWorkspaceViewController.h"
-#import "NCFittingShipStatsViewController.h"
 #import "NCDamagePattern.h"
+#import "NCProgressLabel.h"
 
 @interface NCFittingShipViewController : NCViewController
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControl;
-@property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (nonatomic, weak) IBOutlet NCProgressLabel *powerGridLabel;
+@property (nonatomic, weak) IBOutlet NCProgressLabel *cpuLabel;
+@property (nonatomic, weak) IBOutlet NCProgressLabel *calibrationLabel;
+@property (nonatomic, weak) IBOutlet NCProgressLabel *droneBayLabel;
+@property (nonatomic, weak) IBOutlet NCProgressLabel *droneBandwidthLabel;
+@property (nonatomic, weak) IBOutlet UILabel *dronesCountLabel;
+
+
 @property (nonatomic, weak) NCFittingShipWorkspaceViewController* workspaceViewController;
-@property (nonatomic, weak) NCFittingShipStatsViewController* statsViewController;
 @property (nonatomic, strong, readonly) NCDatabaseTypePickerViewController* typePickerViewController;
 
 @property (nonatomic, strong, readonly) NSMutableArray* fits;

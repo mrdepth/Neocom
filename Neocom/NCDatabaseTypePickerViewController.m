@@ -12,6 +12,7 @@
 #import "NSString+MD5.h"
 #import "NCDatabase.h"
 #import "NCDatabaseTypePickerContentViewController.h"
+#import "NCAdaptivePopoverSegue.h"
 
 @interface NCDatabaseTypePickerContentViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* result;

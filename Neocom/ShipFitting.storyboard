@@ -383,7 +383,7 @@
                         <segue destination="018-ME-IOh" kind="custom" identifier="NCFittingTargetsViewController" customClass="NCAdaptiveModalSegue" id="qzw-hE-BVI"/>
                         <segue destination="s1B-Zc-8t5" kind="custom" identifier="NCFittingImplantSetsViewControllerImport" id="D7k-l2-ZfU"/>
                         <segue destination="GwB-XZ-nRV" kind="custom" identifier="NCFittingShipAffectingSkillsViewController" customClass="NCAdaptiveModalSegue" id="dr2-fP-c5X"/>
-                        <segue destination="GEQ-B3-aL5" kind="custom" identifier="NCFittingAreaEffectPickerViewController" customClass="NCAdaptiveModalSegue" id="dyB-W4-if1"/>
+                        <segue destination="GEQ-B3-aL5" kind="custom" identifier="NCFittingAreaEffectPickerViewController" customClass="NCAdaptivePopoverSegue" id="dyB-W4-if1"/>
                         <segue destination="hDJ-ZI-DaS" kind="custom" identifier="NCFittingDamagePatternsViewController" customClass="NCAdaptiveModalSegue" id="0OW-q0-5fO"/>
                         <segue destination="s1B-Zc-8t5" kind="custom" identifier="NCFittingImplantSetsViewControllerSave" id="wmr-bV-V4i"/>
                         <segue destination="v4H-UL-Afe" kind="custom" identifier="NCNewShoppingItemViewController" customClass="NCAdaptiveModalSegue" id="gyJ-vG-Tzb"/>

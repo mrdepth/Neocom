@@ -200,6 +200,8 @@
 		123F0ADB18C5C8AC00D53602 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 123F0ADA18C5C8AC00D53602 /* evemon.html */; };
 		124097B91B2EDDE4002AC442 /* NCFittingPOSStructuresViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 124097B81B2EDDE4002AC442 /* NCFittingPOSStructuresViewController.mm */; };
 		124097BC1B2F021A002AC442 /* NCFittingPOSAssemblyLinesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 124097BB1B2F021A002AC442 /* NCFittingPOSAssemblyLinesViewController.mm */; };
+		124097C01B2F200F002AC442 /* NCAdaptivePopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 124097BF1B2F200F002AC442 /* NCAdaptivePopoverSegue.m */; };
+		124097C31B2F2021002AC442 /* NCPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 124097C21B2F2021002AC442 /* NCPopoverController.m */; };
 		12422FC118E409F70051FD24 /* NCSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12422FC018E409F70051FD24 /* NCSettingsViewController.m */; };
 		12430BAF18C852550025D971 /* NCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BAE18C852550025D971 /* NCAboutViewController.m */; };
 		12430BB318C875910025D971 /* NCDonationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB218C875910025D971 /* NCDonationViewController.m */; };
@@ -1015,6 +1017,10 @@
 		124097B81B2EDDE4002AC442 /* NCFittingPOSStructuresViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingPOSStructuresViewController.mm; sourceTree = "<group>"; };
 		124097BA1B2F021A002AC442 /* NCFittingPOSAssemblyLinesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPOSAssemblyLinesViewController.h; sourceTree = "<group>"; };
 		124097BB1B2F021A002AC442 /* NCFittingPOSAssemblyLinesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingPOSAssemblyLinesViewController.mm; sourceTree = "<group>"; };
+		124097BE1B2F200F002AC442 /* NCAdaptivePopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAdaptivePopoverSegue.h; sourceTree = "<group>"; };
+		124097BF1B2F200F002AC442 /* NCAdaptivePopoverSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAdaptivePopoverSegue.m; sourceTree = "<group>"; };
+		124097C11B2F2021002AC442 /* NCPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPopoverController.h; sourceTree = "<group>"; };
+		124097C21B2F2021002AC442 /* NCPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPopoverController.m; sourceTree = "<group>"; };
 		12422FBF18E409F70051FD24 /* NCSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSettingsViewController.h; sourceTree = "<group>"; };
 		12422FC018E409F70051FD24 /* NCSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSettingsViewController.m; sourceTree = "<group>"; };
 		12430BAD18C852550025D971 /* NCAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAboutViewController.h; sourceTree = "<group>"; };
@@ -2424,6 +2430,17 @@
 			name = NCSkillPlanViewController;
 			sourceTree = "<group>";
 		};
+		124097BD1B2F1FF6002AC442 /* NCAdaptivePopoverSegue */ = {
+			isa = PBXGroup;
+			children = (
+				124097BE1B2F200F002AC442 /* NCAdaptivePopoverSegue.h */,
+				124097BF1B2F200F002AC442 /* NCAdaptivePopoverSegue.m */,
+				124097C11B2F2021002AC442 /* NCPopoverController.h */,
+				124097C21B2F2021002AC442 /* NCPopoverController.m */,
+			);
+			name = NCAdaptivePopoverSegue;
+			sourceTree = "<group>";
+		};
 		12422FBD18E409DF0051FD24 /* NCSettingsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2677,6 +2694,7 @@
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				124097BD1B2F1FF6002AC442 /* NCAdaptivePopoverSegue */,
 				12F4C06F1B2862AE00AF3389 /* NCAdaptiveModalSegue */,
 				129421A6187FDF5D00977CB8 /* Categories */,
 				12F8E1F518E9A52200CEA658 /* NCSplitViewController */,
@@ -5349,6 +5367,7 @@
 				1216EB841AE0DFE20026AF58 /* NCDBWhType.m in Sources */,
 				126A0E70185F3B9300A8E8A3 /* NAPILookup.m in Sources */,
 				12ED82B71AC04AF900C593C4 /* EVEPlanetaryColonies.m in Sources */,
+				124097C01B2F200F002AC442 /* NCAdaptivePopoverSegue.m in Sources */,
 				12A7DBAF18B3739B00343D25 /* NCWalletTransactionsCell.m in Sources */,
 				126A0E57185F3B9300A8E8A3 /* EVEOutpostList.m in Sources */,
 				129D261A187E923300E2062C /* LUITextField.m in Sources */,
@@ -5457,6 +5476,7 @@
 				12B992351913718900448D01 /* NCAssetsAccountsViewController.m in Sources */,
 				1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */,
 				12CC8D6C188178570058C5DF /* NCTableViewEmptyHeaderView.m in Sources */,
+				124097C31B2F2021002AC442 /* NCPopoverController.m in Sources */,
 				1267030C1A911A0900F816F9 /* NSMutableAttributedString+Neocom.m in Sources */,
 				120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */,
 				126A0E5B185F3B9300A8E8A3 /* EVEStarbaseList.m in Sources */,

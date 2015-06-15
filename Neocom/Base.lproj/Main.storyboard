@@ -36,7 +36,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="jMf-K0-Yal">
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="jMf-K0-Yal">
                                 <rect key="frame" x="80" y="243" width="440" height="115"/>
                             </imageView>
                         </subviews>
@@ -627,9 +627,9 @@
                         <segue destination="oCU-PZ-EMj" kind="showDetail" identifier="NCKillMailsViewController" id="zLq-oD-Bgb"/>
                         <segue destination="Udu-ka-O6T" kind="showDetail" identifier="NCZKillBoardViewController" id="2B5-IQ-pfH"/>
                         <segue destination="Mf7-UC-7pi" kind="showDetail" identifier="NCRSSViewController" id="3t3-Sg-aVS"/>
-                        <segue destination="rIm-Ex-95h" kind="showDetail" identifier="NCAboutViewController" id="i6k-h2-L46"/>
-                        <segue destination="QJh-t9-gwi" kind="showDetail" identifier="NCDonationViewController" id="WNB-Nk-O5T"/>
-                        <segue destination="vSI-MB-dwP" kind="showDetail" identifier="NCSettingsViewController" id="kmX-U2-Da6"/>
+                        <segue destination="mic-we-dmt" kind="custom" identifier="NCAboutViewController" customClass="NCAdaptiveModalSegue" id="imX-Np-2uC"/>
+                        <segue destination="l7n-v9-sUl" kind="custom" identifier="NCDonationViewController" customClass="NCAdaptiveModalSegue" id="iTv-5C-0w9"/>
+                        <segue destination="FcJ-g8-V6g" kind="custom" identifier="NCSettingsViewController" customClass="NCAdaptiveModalSegue" id="EDu-ap-Dhu"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JSS-DF-SnS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1621,57 +1621,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hL1-NP-sGQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3750" y="3737"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="dC4-vr-qBL">
-            <objects>
-                <navigationController id="QJh-t9-gwi" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="09O-MI-Td5">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="l7n-v9-sUl" kind="relationship" relationship="rootViewController" id="uzl-ot-4gn"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7di-4t-WFe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5105" y="5177"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="lX6-b5-Apn">
-            <objects>
-                <navigationController id="rIm-Ex-95h" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="SxU-mY-vuQ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="mic-we-dmt" kind="relationship" relationship="rootViewController" id="7t1-Pe-nb8"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rGS-j2-rs1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4434" y="5177"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="oSV-JV-AOn">
-            <objects>
-                <navigationController id="vSI-MB-dwP" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Bp7-5T-0UF">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="FcJ-g8-V6g" kind="relationship" relationship="rootViewController" id="U4b-ML-OlF"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="X2e-2F-2nQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5769" y="5177"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="odH-Sw-M1r">

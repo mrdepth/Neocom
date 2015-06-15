@@ -12,7 +12,6 @@
 #import "NCTableViewCell.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "UIActionSheet+Block.h"
-#import "NCFittingShipDronesTableHeaderView.h"
 #import "UIView+Nib.h"
 #import "NSString+Neocom.h"
 #import "NCFittingAmountCell.h"
@@ -58,86 +57,51 @@
 @implementation NCFittingShipDronesViewController
 
 - (void) reload {
-	if (self.tableView.dataSource == self) {
-		[self.tableView reloadData];
-	}
-	
-	__block float totalDB = 0;
-	__block float usedDB = 0;
-	__block float totalBandwidth = 0;
-	__block float usedBandwidth = 0;
-	__block int maxActiveDrones = 0;
-	__block int activeDrones = 0;
-	
 	__block NSMutableArray* rows = nil;
-	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-													title:NCTaskManagerDefaultTitle
-													block:^(NCTask *task) {
-														NSMutableDictionary* dronesDic = [NSMutableDictionary new];
-														eufe::DronesList drones;
-														
-														//														@synchronized(self.controller) {
-														if (!self.controller.fit.pilot)
-															return;
-														
-														eufe::Ship* ship = self.controller.fit.pilot->getShip();
-														drones = ship->getDrones();
-														
-														totalDB = ship->getTotalDroneBay();
-														usedDB = ship->getDroneBayUsed();
-														
-														totalBandwidth = ship->getTotalDroneBandwidth();
-														usedBandwidth = ship->getDroneBandwidthUsed();
-														
-														maxActiveDrones = ship->getMaxActiveDrones();
-														activeDrones = ship->getActiveDrones();
-														//														}
-														
-														for (auto drone: drones) {
-															NSInteger typeID = drone->getTypeID();
-															NCFittingShipDronesViewControllerRow* row = dronesDic[@(typeID)];
-															if (!row) {
-																row = [NCFittingShipDronesViewControllerRow new];
-																row.type = [self.controller typeWithItem:drone];
-																dronesDic[@(typeID)] = row;
-															}
-															row.drones.push_back(drone);
-														}
-														
-														rows = [[[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
-														if (self.activeAmountType) {
-															NSInteger i = 1;
-															for (NCFittingShipDronesViewControllerRow* row in rows) {
-																if (row.type.typeID == self.activeAmountType.typeID) {
-																	NCFittingShipDronesViewControllerPickerRow* pickerRow = [NCFittingShipDronesViewControllerPickerRow new];
-																	pickerRow.associatedRow = row;
-																	[rows insertObject:pickerRow atIndex:i];
-																	break;
-																}
-																i++;
-															}
-														}
-													}
-										completionHandler:^(NCTask *task) {
-											if (![task isCancelled]) {
-												self.rows = rows;
-												
-												if (self.tableView.dataSource == self) {
-													[self.tableView reloadData];
-												}
-												
-/*												self.tableHeaderView.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
-												self.tableHeaderView.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
-												self.tableHeaderView.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
-												self.tableHeaderView.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
-												self.tableHeaderView.dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
-												if (activeDrones > maxActiveDrones)
-													self.tableHeaderView.dronesCountLabel.textColor = [UIColor redColor];
-												else
-													self.tableHeaderView.dronesCountLabel.textColor = [UIColor whiteColor];*/
-												
-											}
-										}];
+	self.tableView.userInteractionEnabled = NO;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+											 eufe::DronesList drones;
+											 if (!self.controller.fit.pilot)
+												 return;
+											 
+											 eufe::Ship* ship = self.controller.fit.pilot->getShip();
+											 drones = ship->getDrones();
+											 
+											 for (auto drone: drones) {
+												 NSInteger typeID = drone->getTypeID();
+												 NCFittingShipDronesViewControllerRow* row = dronesDic[@(typeID)];
+												 if (!row) {
+													 row = [NCFittingShipDronesViewControllerRow new];
+													 row.type = [self.controller typeWithItem:drone];
+													 dronesDic[@(typeID)] = row;
+												 }
+												 row.drones.push_back(drone);
+											 }
+											 
+											 rows = [[[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
+											 if (self.activeAmountType) {
+												 NSInteger i = 1;
+												 for (NCFittingShipDronesViewControllerRow* row in rows) {
+													 if (row.type.typeID == self.activeAmountType.typeID) {
+														 NCFittingShipDronesViewControllerPickerRow* pickerRow = [NCFittingShipDronesViewControllerPickerRow new];
+														 pickerRow.associatedRow = row;
+														 [rows insertObject:pickerRow atIndex:i];
+														 break;
+													 }
+													 i++;
+												 }
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (![task isCancelled]) {
+									 self.rows = rows;
+									 [self.tableView reloadData];
+									 self.tableView.userInteractionEnabled = YES;
+								 }
+							 }];
 }
 
 

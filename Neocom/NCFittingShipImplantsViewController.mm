@@ -32,34 +32,40 @@
 	__block std::vector<eufe::Implant*> implants(10, nullptr);
 	__block std::vector<eufe::Booster*> boosters(4, nullptr);
 	
-	eufe::Character* character = self.controller.fit.pilot;
-	if (!character)
-		return;
-	
-	for (auto implant: character->getImplants()) {
-		int slot = implant->getSlot() - 1;
-		if (slot >= 0 && slot < 10)
-			implants[slot] = implant;
-	}
-	
-	for (auto booster: character->getBoosters()) {
-		int slot = booster->getSlot() - 1;
-		if (slot >= 0 && slot < 4)
-			boosters[slot] = booster;
-	}
-	
-	self.implants = implants;
-	self.boosters = boosters;
-	
-	if (self.tableView.dataSource == self)
-		[self.tableView reloadData];
+	self.tableView.userInteractionEnabled = NO;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 eufe::Character* character = self.controller.fit.pilot;
+											 if (!character)
+												 return;
+											 
+											 for (auto implant: character->getImplants()) {
+												 int slot = implant->getSlot() - 1;
+												 if (slot >= 0 && slot < 10)
+													 implants[slot] = implant;
+											 }
+											 
+											 for (auto booster: character->getBoosters()) {
+												 int slot = booster->getSlot() - 1;
+												 if (slot >= 0 && slot < 4)
+													 boosters[slot] = booster;
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (![task isCancelled]) {
+									 self.implants = implants;
+									 self.boosters = boosters;
+									 [self.tableView reloadData];
+									 self.tableView.userInteractionEnabled = YES;
+								 }
+							 }];
 }
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	// Return the number of sections.
 	return 3;
 }
 

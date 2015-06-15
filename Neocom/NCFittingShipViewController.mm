@@ -7,11 +7,6 @@
 //
 
 #import "NCFittingShipViewController.h"
-#import "NCFittingShipModulesDataSource.h"
-#import "NCFittingShipDronesDataSource.h"
-#import "NCFittingShipImplantsDataSource.h"
-#import "NCFittingShipFleetDataSource.h"
-#import "NCFittingShipStatsDataSource.h"
 #import "NCStorage.h"
 #import "NCFitCharacter.h"
 #import "NCAccount.h"
@@ -63,17 +58,11 @@
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
 @property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Engine> engine;
 
-@property (nonatomic, strong) NCFittingShipModulesDataSource* modulesDataSource;
-@property (nonatomic, strong) NCFittingShipDronesDataSource* dronesDataSource;
-@property (nonatomic, strong) NCFittingShipImplantsDataSource* implantsDataSource;
-@property (nonatomic, strong) NCFittingShipFleetDataSource* fleetDataSource;
-@property (nonatomic, strong) NCFittingShipStatsDataSource* statsDataSource;
-
-@property (nonatomic, strong) NCFittingShipModulesViewController* modulesViewController;
-@property (nonatomic, strong) NCFittingShipDronesViewController* dronesViewController;
-@property (nonatomic, strong) NCFittingShipImplantsViewController* implantsViewController;
-@property (nonatomic, strong) NCFittingShipFleetViewController* fleetViewController;
-@property (nonatomic, strong) NCFittingShipStatsViewController* statsViewController;
+@property (nonatomic, weak) NCFittingShipModulesViewController* modulesViewController;
+@property (nonatomic, weak) NCFittingShipDronesViewController* dronesViewController;
+@property (nonatomic, weak) NCFittingShipImplantsViewController* implantsViewController;
+@property (nonatomic, weak) NCFittingShipFleetViewController* fleetViewController;
+@property (nonatomic, weak) NCFittingShipStatsViewController* statsViewController;
 
 @property (nonatomic, strong) NSMutableDictionary* typesCache;
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
@@ -98,13 +87,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
-	
 	for (id controller in self.childViewControllers) {
-//		if ([controller isKindOfClass:[NCFittingShipWorkspaceViewController class]])
-//			self.workspaceViewController = controller;
-//		else if ([controller isKindOfClass:[NCFittingShipStatsViewController class]])
-//			self.statsViewController = controller;
 		if ([controller isKindOfClass:[NCFittingShipModulesViewController class]])
 			self.modulesViewController = controller;
 		else if ([controller isKindOfClass:[NCFittingShipDronesViewController class]])
@@ -116,6 +99,12 @@
 		else if ([controller isKindOfClass:[NCFittingShipStatsViewController class]])
 			self.statsViewController = controller;
 	}
+	
+	self.taskManager.maxConcurrentOperationCount = 1;
+	
+	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
+	
+
 	
 	if (!self.engine)
 		self.engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
@@ -146,46 +135,6 @@
 //											 }
 										 }
 							 completionHandler:^(NCTask *task) {
-								 self.modulesDataSource = [NCFittingShipModulesDataSource new];
-								 self.modulesDataSource.controller = self;
-								 self.modulesDataSource.tableView = self.workspaceViewController.tableView;
-								 self.modulesDataSource.tableViewController = self.workspaceViewController;
-								 
-								 self.dronesDataSource = [NCFittingShipDronesDataSource new];
-								 self.dronesDataSource.controller = self;
-								 self.dronesDataSource.tableView = self.workspaceViewController.tableView;
-								 self.dronesDataSource.tableViewController = self.workspaceViewController;
-								 
-								 self.implantsDataSource = [NCFittingShipImplantsDataSource new];
-								 self.implantsDataSource.controller = self;
-								 self.implantsDataSource.tableView = self.workspaceViewController.tableView;
-								 self.implantsDataSource.tableViewController = self.workspaceViewController;
-								 
-								 self.fleetDataSource = [NCFittingShipFleetDataSource new];
-								 self.fleetDataSource.controller = self;
-								 self.fleetDataSource.tableView = self.workspaceViewController.tableView;
-								 self.fleetDataSource.tableViewController = self.workspaceViewController;
-								 
-								 self.statsDataSource = [NCFittingShipStatsDataSource new];
-								 self.statsDataSource.controller = self;
-								 /*if (self.statsViewController) {
-									 self.statsDataSource.tableView = self.statsViewController.tableView;
-									 self.statsViewController.tableView.dataSource = self.statsDataSource;
-									 self.statsViewController.tableView.delegate = self.statsDataSource;
-									 self.statsDataSource.tableViewController = self.statsViewController;
-								 }
-								 else {
-									 self.statsDataSource.tableView = self.workspaceViewController.tableView;
-									 self.statsDataSource.tableViewController = self.workspaceViewController;
-								 }*/
-								 
-								 NCFittingShipDataSource* dataSources[] = {self.modulesDataSource, self.dronesDataSource, self.implantsDataSource, self.fleetDataSource, self.statsDataSource};
-								 NCFittingShipDataSource* dataSource = dataSources[self.sectionSegmentedControl.selectedSegmentIndex];
-								 
-								 self.workspaceViewController.tableView.dataSource = dataSource;
-								 self.workspaceViewController.tableView.delegate = dataSource;
-								 //self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
-								 
 								 [self reload];
 							 }];
 }
@@ -205,6 +154,18 @@
 		[[NCStorage sharedStorage] saveContext];
 	}
 	[super viewWillDisappear:animated];
+}
+
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+		self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width * self.sectionSegmentedControl.selectedSegmentIndex, 0);
+	}
+								 completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+								 }];
+}
+
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width * self.sectionSegmentedControl.selectedSegmentIndex, 0);
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -404,45 +365,62 @@
 	
 	if (!self.fit.pilot)
 		return;
-	
-	eufe::Ship* ship = self.fit.pilot->getShip();
 
-	float totalPG = ship->getTotalPowerGrid();
-	float usedPG = ship->getPowerGridUsed();
+	__block float totalPG;
+	__block float usedPG;
+	__block float totalCPU;
+	__block float usedCPU;
+	__block float totalCalibration;
+	__block float usedCalibration;
 	
-	float totalCPU = ship->getTotalCpu();
-	float usedCPU = ship->getCpuUsed();
+	__block float totalDB;
+	__block float usedDB;
+	__block float totalBandwidth;
+	__block float usedBandwidth;
+	__block int maxActiveDrones;
+	__block int activeDrones;
 	
-	float totalCalibration = ship->getTotalCalibration();
-	float usedCalibration = ship->getCalibrationUsed();
 
-	
-	self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
-	self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
-	self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
-	self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
-	self.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
-	self.calibrationLabel.progress = totalCalibration > 0 ? usedCalibration / totalCalibration : 0;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 eufe::Ship* ship = self.fit.pilot->getShip();
+											 
+											 totalPG = ship->getTotalPowerGrid();
+											 usedPG = ship->getPowerGridUsed();
+											 totalCPU = ship->getTotalCpu();
+											 usedCPU = ship->getCpuUsed();
+											 totalCalibration = ship->getTotalCalibration();
+											 usedCalibration = ship->getCalibrationUsed();
+											 
+											 totalDB = ship->getTotalDroneBay();
+											 usedDB = ship->getDroneBayUsed();
+											 totalBandwidth = ship->getTotalDroneBandwidth();
+											 usedBandwidth = ship->getDroneBandwidthUsed();
+											 maxActiveDrones = ship->getMaxActiveDrones();
+											 activeDrones = ship->getActiveDrones();
 
-	float totalDB = ship->getTotalDroneBay();
-	float usedDB = ship->getDroneBayUsed();
-	
-	float totalBandwidth = ship->getTotalDroneBandwidth();
-	float usedBandwidth = ship->getDroneBandwidthUsed();
-	
-	int maxActiveDrones = ship->getMaxActiveDrones();
-	int activeDrones = ship->getActiveDrones();
-
-	
-	self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
-	self.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
-	self.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
-	self.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
-	self.dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
-	if (activeDrones > maxActiveDrones)
-		self.dronesCountLabel.textColor = [UIColor redColor];
-	else
-		self.dronesCountLabel.textColor = [UIColor whiteColor];
+										 }
+							 completionHandler:^(NCTask *task) {
+								 self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
+								 self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
+								 self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
+								 self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
+								 self.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
+								 self.calibrationLabel.progress = totalCalibration > 0 ? usedCalibration / totalCalibration : 0;
+								 
+								 
+								 
+								 self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
+								 self.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
+								 self.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
+								 self.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
+								 self.dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
+								 if (activeDrones > maxActiveDrones)
+									 self.dronesCountLabel.textColor = [UIColor redColor];
+								 else
+									 self.dronesCountLabel.textColor = [UIColor whiteColor];
+							 }];
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {
@@ -452,15 +430,8 @@
 	return _typePickerViewController;
 }
 
-- (IBAction)onChangeSection:(id)sender {
-	NCFittingShipDataSource* dataSources[] = {self.modulesDataSource, self.dronesDataSource, self.implantsDataSource, self.fleetDataSource, self.statsDataSource};
-	NCFittingShipDataSource* dataSource = dataSources[self.sectionSegmentedControl.selectedSegmentIndex];
-	
-	self.workspaceViewController.tableView.dataSource = dataSource;
-	self.workspaceViewController.tableView.delegate = dataSource;
-	//self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
-	
-	[dataSource reload];
+- (IBAction)onChangeSection:(UISegmentedControl*)sender {
+	[self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * sender.selectedSegmentIndex, 0) animated:YES];
 }
 
 - (IBAction)onAction:(id)sender {
@@ -705,6 +676,22 @@
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
 	[controller dismissAnimated];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+	if (scrollView.tracking) {
+		NSInteger page = round(self.scrollView.contentOffset.x / self.scrollView.frame.size.width);
+		page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
+		self.sectionSegmentedControl.selectedSegmentIndex = page;
+	}
+}
+
+- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+	NSInteger page = round(self.scrollView.contentOffset.x / self.scrollView.frame.size.width);
+	page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
+	self.sectionSegmentedControl.selectedSegmentIndex = page;
 }
 
 #pragma mark - Private

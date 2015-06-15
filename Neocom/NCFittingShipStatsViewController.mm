@@ -98,11 +98,9 @@
 
 @implementation NCFittingShipStatsViewController
 
-- (id) init {
-	if (self = [super init]) {
-		self.priceManager = [NCPriceManager sharedManager];
-	}
-	return self;
+- (void) viewDidLoad {
+	[super viewDidLoad];
+	self.priceManager = [NCPriceManager sharedManager];
 }
 
 - (void) reload {
@@ -110,102 +108,102 @@
 	if (self.tableView.dataSource == self)
 		[self.tableView reloadData];
 	
-	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-													title:NCTaskManagerDefaultTitle
-													block:^(NCTask *task) {
-														//														@synchronized(self.controller) {
-														eufe::Character* character = self.controller.fit.pilot;
-														if (!character)
-															return;
-														eufe::Ship* ship = character->getShip();
-														
-														stats.totalPG = ship->getTotalPowerGrid();
-														stats.usedPG = ship->getPowerGridUsed();
-														
-														stats.totalCPU = ship->getTotalCpu();
-														stats.usedCPU = ship->getCpuUsed();
-														
-														stats.totalCalibration = ship->getTotalCalibration();
-														stats.usedCalibration = ship->getCalibrationUsed();
-														
-														stats.maxActiveDrones = ship->getMaxActiveDrones();
-														stats.activeDrones = ship->getActiveDrones();
-														
-														
-														stats.totalBandwidth = ship->getTotalDroneBandwidth();
-														stats.usedBandwidth = ship->getDroneBandwidthUsed();
-														
-														stats.totalDB = ship->getTotalDroneBay();
-														stats.usedDB = ship->getDroneBayUsed();
-														
-														stats.usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
-														stats.totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
-														stats.usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-														stats.totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-														
-														stats.resistances = ship->getResistances();
-														
-														stats.hp = ship->getHitPoints();
-														eufe::HitPoints effectiveHitPoints = ship->getEffectiveHitPoints();
-														stats.ehp = effectiveHitPoints.shield + effectiveHitPoints.armor + effectiveHitPoints.hull;
-														
-														stats.rtank = ship->getTank();
-														stats.stank = ship->getSustainableTank();
-														stats.ertank = ship->getEffectiveTank();
-														stats.estank = ship->getEffectiveSustainableTank();
-														
-														stats.capCapacity = ship->getCapCapacity();
-														stats.capStable = ship->isCapStable();
-														stats.capState = stats.capStable ? ship->getCapStableLevel() * 100.0 : ship->getCapLastsTime();
-														stats.capacitorRechargeTime = ship->getAttribute(eufe::RECHARGE_RATE_ATTRIBUTE_ID)->getValue() / 1000.0;
-														stats.delta = ship->getCapRecharge() - ship->getCapUsed();
-														
-														stats.weaponDPS = ship->getWeaponDps();
-														stats.droneDPS = ship->getDroneDps();
-														stats.volleyDamage = ship->getWeaponVolley() + ship->getDroneVolley();
-														stats.dps = stats.weaponDPS + stats.droneDPS;
-														
-														stats.targets = ship->getMaxTargets();
-														stats.targetRange = ship->getMaxTargetRange() / 1000.0;
-														stats.scanRes = ship->getScanResolution();
-														stats.sensorStr = ship->getScanStrength();
-														stats.speed = ship->getVelocity();
-														stats.alignTime = ship->getAlignTime();
-														stats.signature =ship->getSignatureRadius();
-														stats.cargo =ship->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
-														stats.mass = ship->getMass();
-														
-														switch(ship->getScanType()) {
-															case eufe::Ship::SCAN_TYPE_GRAVIMETRIC:
-																stats.sensorImage = [UIImage imageNamed:@"Gravimetric.png"];
-																break;
-															case eufe::Ship::SCAN_TYPE_LADAR:
-																stats.sensorImage = [UIImage imageNamed:@"Ladar.png"];
-																break;
-															case eufe::Ship::SCAN_TYPE_MAGNETOMETRIC:
-																stats.sensorImage = [UIImage imageNamed:@"Magnetometric.png"];
-																break;
-															case eufe::Ship::SCAN_TYPE_RADAR:
-																stats.sensorImage = [UIImage imageNamed:@"Radar.png"];
-																break;
-															default:
-																stats.sensorImage = [UIImage imageNamed:@"Multispectral.png"];
-																break;
-														}
-														
-														stats.droneRange = character->getAttribute(eufe::DRONE_CONTROL_DISTANCE_ATTRIBUTE_ID)->getValue() / 1000;
-														stats.warpSpeed = ship->getWarpSpeed();
-														
-														stats.damagePattern = self.controller.damagePattern;
-														//														}
-													}
-										completionHandler:^(NCTask *task) {
-											if (![task isCancelled]) {
-												self.shipStats = stats;
-												if (self.tableView.dataSource == self)
-													[self.tableView reloadData];
-											}
-										}];
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 //														@synchronized(self.controller) {
+											 eufe::Character* character = self.controller.fit.pilot;
+											 if (!character)
+												 return;
+											 eufe::Ship* ship = character->getShip();
+											 
+											 stats.totalPG = ship->getTotalPowerGrid();
+											 stats.usedPG = ship->getPowerGridUsed();
+											 
+											 stats.totalCPU = ship->getTotalCpu();
+											 stats.usedCPU = ship->getCpuUsed();
+											 
+											 stats.totalCalibration = ship->getTotalCalibration();
+											 stats.usedCalibration = ship->getCalibrationUsed();
+											 
+											 stats.maxActiveDrones = ship->getMaxActiveDrones();
+											 stats.activeDrones = ship->getActiveDrones();
+											 
+											 
+											 stats.totalBandwidth = ship->getTotalDroneBandwidth();
+											 stats.usedBandwidth = ship->getDroneBandwidthUsed();
+											 
+											 stats.totalDB = ship->getTotalDroneBay();
+											 stats.usedDB = ship->getDroneBayUsed();
+											 
+											 stats.usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
+											 stats.totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
+											 stats.usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+											 stats.totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+											 
+											 stats.resistances = ship->getResistances();
+											 
+											 stats.hp = ship->getHitPoints();
+											 eufe::HitPoints effectiveHitPoints = ship->getEffectiveHitPoints();
+											 stats.ehp = effectiveHitPoints.shield + effectiveHitPoints.armor + effectiveHitPoints.hull;
+											 
+											 stats.rtank = ship->getTank();
+											 stats.stank = ship->getSustainableTank();
+											 stats.ertank = ship->getEffectiveTank();
+											 stats.estank = ship->getEffectiveSustainableTank();
+											 
+											 stats.capCapacity = ship->getCapCapacity();
+											 stats.capStable = ship->isCapStable();
+											 stats.capState = stats.capStable ? ship->getCapStableLevel() * 100.0 : ship->getCapLastsTime();
+											 stats.capacitorRechargeTime = ship->getAttribute(eufe::RECHARGE_RATE_ATTRIBUTE_ID)->getValue() / 1000.0;
+											 stats.delta = ship->getCapRecharge() - ship->getCapUsed();
+											 
+											 stats.weaponDPS = ship->getWeaponDps();
+											 stats.droneDPS = ship->getDroneDps();
+											 stats.volleyDamage = ship->getWeaponVolley() + ship->getDroneVolley();
+											 stats.dps = stats.weaponDPS + stats.droneDPS;
+											 
+											 stats.targets = ship->getMaxTargets();
+											 stats.targetRange = ship->getMaxTargetRange() / 1000.0;
+											 stats.scanRes = ship->getScanResolution();
+											 stats.sensorStr = ship->getScanStrength();
+											 stats.speed = ship->getVelocity();
+											 stats.alignTime = ship->getAlignTime();
+											 stats.signature =ship->getSignatureRadius();
+											 stats.cargo =ship->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
+											 stats.mass = ship->getMass();
+											 
+											 switch(ship->getScanType()) {
+												 case eufe::Ship::SCAN_TYPE_GRAVIMETRIC:
+													 stats.sensorImage = [UIImage imageNamed:@"Gravimetric.png"];
+													 break;
+												 case eufe::Ship::SCAN_TYPE_LADAR:
+													 stats.sensorImage = [UIImage imageNamed:@"Ladar.png"];
+													 break;
+												 case eufe::Ship::SCAN_TYPE_MAGNETOMETRIC:
+													 stats.sensorImage = [UIImage imageNamed:@"Magnetometric.png"];
+													 break;
+												 case eufe::Ship::SCAN_TYPE_RADAR:
+													 stats.sensorImage = [UIImage imageNamed:@"Radar.png"];
+													 break;
+												 default:
+													 stats.sensorImage = [UIImage imageNamed:@"Multispectral.png"];
+													 break;
+											 }
+											 
+											 stats.droneRange = character->getAttribute(eufe::DRONE_CONTROL_DISTANCE_ATTRIBUTE_ID)->getValue() / 1000;
+											 stats.warpSpeed = ship->getWarpSpeed();
+											 
+											 stats.damagePattern = self.controller.damagePattern;
+											 //														}
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (![task isCancelled]) {
+									 self.shipStats = stats;
+									 if (self.tableView.dataSource == self)
+										 [self.tableView reloadData];
+								 }
+							 }];
 	[self updatePrice];
 }
 
@@ -290,56 +288,55 @@
 	NCFittingShipStatsViewControllerPriceStats* stats = [NCFittingShipStatsViewControllerPriceStats new];
 	
 	
-	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-													title:NCTaskManagerDefaultTitle
-													block:^(NCTask *task) {
-														NSCountedSet* types = [NSCountedSet set];
-														NSMutableSet* drones = [NSMutableSet set];
-														__block int32_t shipTypeID;
-														//														@synchronized(self.controller) {
-														
-														eufe::Character* character = self.controller.fit.pilot;
-														eufe::Ship* ship = character->getShip();
-														shipTypeID = ship->getTypeID();
-														
-														[types addObject:@(ship->getTypeID())];
-														
-														for (auto i: ship->getModules())
-															[types addObject:@(i->getTypeID())];
-														
-														for (auto i: ship->getDrones()) {
-															[types addObject:@(i->getTypeID())];
-															[drones addObject:@(i->getTypeID())];
-														}
-														//														}
-														
-														NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
-														__block float shipPrice = 0;
-														__block float fittingsPrice = 0;
-														__block float dronesPrice = 0;
-														
-														[prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVECentralMarketStatType* obj, BOOL *stop) {
-															int32_t typeID = [key intValue];
-															if (typeID == shipTypeID)
-																shipPrice = obj.sell.percentile;
-															else if ([drones containsObject:@(typeID)])
-																dronesPrice += obj.sell.percentile * [types countForObject:key];
-															else
-																fittingsPrice += obj.sell.percentile * [types countForObject:key];
-														}];
-														
-														stats.shipPrice = shipPrice;
-														stats.fittingsPrice = fittingsPrice;
-														stats.dronesPrice = dronesPrice;
-														stats.totalPrice = shipPrice + fittingsPrice + dronesPrice;
-													}
-										completionHandler:^(NCTask *task) {
-											if (![task isCancelled]) {
-												self.priceStats = stats;
-												if (self.tableView.dataSource == self)
-													[self.tableView reloadData];
-											}
-										}];
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 NSCountedSet* types = [NSCountedSet set];
+											 NSMutableSet* drones = [NSMutableSet set];
+											 __block int32_t shipTypeID;
+											 //														@synchronized(self.controller) {
+											 
+											 eufe::Character* character = self.controller.fit.pilot;
+											 eufe::Ship* ship = character->getShip();
+											 shipTypeID = ship->getTypeID();
+											 
+											 [types addObject:@(ship->getTypeID())];
+											 
+											 for (auto i: ship->getModules())
+												 [types addObject:@(i->getTypeID())];
+											 
+											 for (auto i: ship->getDrones()) {
+												 [types addObject:@(i->getTypeID())];
+												 [drones addObject:@(i->getTypeID())];
+											 }
+											 //														}
+											 
+											 NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
+											 __block float shipPrice = 0;
+											 __block float fittingsPrice = 0;
+											 __block float dronesPrice = 0;
+											 
+											 [prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVECentralMarketStatType* obj, BOOL *stop) {
+												 int32_t typeID = [key intValue];
+												 if (typeID == shipTypeID)
+													 shipPrice = obj.sell.percentile;
+												 else if ([drones containsObject:@(typeID)])
+													 dronesPrice += obj.sell.percentile * [types countForObject:key];
+												 else
+													 fittingsPrice += obj.sell.percentile * [types countForObject:key];
+											 }];
+											 
+											 stats.shipPrice = shipPrice;
+											 stats.fittingsPrice = fittingsPrice;
+											 stats.dronesPrice = dronesPrice;
+											 stats.totalPrice = shipPrice + fittingsPrice + dronesPrice;
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (![task isCancelled]) {
+									 self.priceStats = stats;
+									 [self.tableView reloadData];
+								 }
+							 }];
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {

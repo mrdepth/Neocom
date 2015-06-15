@@ -33,8 +33,7 @@
 @implementation NCFittingShipFleetViewController
 
 - (void) reload {
-	if (self.tableView.dataSource == self)
-		[self.tableView reloadData];
+	[self.tableView reloadData];
 }
 
 #pragma mark -
@@ -65,25 +64,6 @@
 	}
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
-#pragma mark FitsViewControllerDelegate
-
-/*- (void) fitsViewController:(FitsViewController*) aController didSelectFit:(ShipFit*) fit {
-	if (![self.fittingViewController.fits containsObject:fit]) {
- eufe::Character* character = fit.character;
- self.fittingViewController.fittingEngine->getGang()->addPilot(character);
- [self.fittingViewController.fits addObject:fit];
- 
- eufe::DamagePattern eufeDamagePattern;
- eufeDamagePattern.emAmount = self.fittingViewController.damagePattern.emAmount;
- eufeDamagePattern.thermalAmount = self.fittingViewController.damagePattern.thermalAmount;
- eufeDamagePattern.kineticAmount = self.fittingViewController.damagePattern.kineticAmount;
- eufeDamagePattern.explosiveAmount = self.fittingViewController.damagePattern.explosiveAmount;
- character->getShip()->setDamagePattern(eufeDamagePattern);
- [self.fittingViewController update];
-	}
-	[self.fittingViewController dismiss];
- }*/
 
 #pragma mark - Private
 

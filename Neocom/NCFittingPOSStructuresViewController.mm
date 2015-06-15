@@ -1,19 +1,18 @@
 //
-//  NCFittingPOSStructuresDataSource.m
+//  NCFittingPOSStructuresViewController.m
 //  Neocom
 //
-//  Created by Shimanski Artem on 11.02.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Артем Шиманский on 15.06.15.
+//  Copyright (c) 2015 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingPOSStructuresDataSource.h"
+#import "NCFittingPOSStructuresViewController.h"
 #import "NCFittingPOSViewController.h"
 #import "NCTableViewCell.h"
 #import "NCFittingPOSStructureCell.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NSString+Neocom.h"
 #import "UIActionSheet+Block.h"
-#import "NCFittingPOSStructuresTableHeaderView.h"
 #import "UIView+Nib.h"
 #import "NCFittingAmountCell.h"
 
@@ -32,40 +31,37 @@
 #define ActionButtonShowAmmoInfo NSLocalizedString(@"Show Ammo Info", nil)
 #define ActionButtonAmount NSLocalizedString(@"Set Amount", nil)
 
-@interface NCFittingPOSStructuresDataSourceRow : NSObject {
+@interface NCFittingPOSStructuresViewControllerRow : NSObject {
 	eufe::StructuresList _structures;
 }
 @property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, readonly) eufe::StructuresList& structures;
 @end
 
-@interface NCFittingPOSStructuresDataSourcePickerRow : NSObject
-@property (nonatomic, strong) NCFittingPOSStructuresDataSourceRow* associatedRow;
+@interface NCFittingPOSStructuresViewControllerPickerRow : NSObject
+@property (nonatomic, strong) NCFittingPOSStructuresViewControllerRow* associatedRow;
 @end
 
 
-@implementation NCFittingPOSStructuresDataSourceRow
+@implementation NCFittingPOSStructuresViewControllerRow
 
 @end
 
-@implementation NCFittingPOSStructuresDataSourcePickerRow
+@implementation NCFittingPOSStructuresViewControllerPickerRow
 
 @end
 
-@interface NCFittingPOSStructuresDataSource()<UIPickerViewDataSource, UIPickerViewDelegate>
+@interface NCFittingPOSStructuresViewController()<UIPickerViewDataSource, UIPickerViewDelegate>
 @property (nonatomic, strong) NCDBInvType* activeAmountType;
 @property (nonatomic, assign) NSInteger maximumAmount;
 @property (nonatomic, strong) NSArray* rows;
-@property (nonatomic, strong, readwrite) NCFittingPOSStructuresTableHeaderView* tableHeaderView;
-@property (nonatomic, strong) NCFittingPOSStructureCell* offscreenCell;
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath;
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath;
 
 @end
 
-@implementation NCFittingPOSStructuresDataSource
-@synthesize tableHeaderView = _tableHeaderView;
+@implementation NCFittingPOSStructuresViewController
 
 - (void) reload {
 	if (self.tableView.dataSource == self)
@@ -77,40 +73,40 @@
 	__block float usedCPU;
 	
 	__block NSMutableArray* rows = nil;
-	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														NSMutableDictionary* structuresDic = [NSMutableDictionary new];
-
-//														@synchronized(self.controller) {
-															eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
-															
-															
-															for (auto structure: controlTower->getStructures()) {
-																NSInteger typeID = structure->getTypeID();
-																NCFittingPOSStructuresDataSourceRow* row = structuresDic[@(typeID)];
-																if (!row) {
-																	row = [NCFittingPOSStructuresDataSourceRow new];
-																	row.type = [self.controller typeWithItem:structure];
-																	structuresDic[@(typeID)] = row;
-																}
-																row.structures.push_back(structure);
+														
+														//														@synchronized(self.controller) {
+														eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
+														
+														
+														for (auto structure: controlTower->getStructures()) {
+															NSInteger typeID = structure->getTypeID();
+															NCFittingPOSStructuresViewControllerRow* row = structuresDic[@(typeID)];
+															if (!row) {
+																row = [NCFittingPOSStructuresViewControllerRow new];
+																row.type = [self.controller typeWithItem:structure];
+																structuresDic[@(typeID)] = row;
 															}
-															
-															totalPG = controlTower->getTotalPowerGrid();
-															usedPG = controlTower->getPowerGridUsed();
-															
-															totalCPU = controlTower->getTotalCpu();
-															usedCPU = controlTower->getCpuUsed();
-//														}
-															
+															row.structures.push_back(structure);
+														}
+														
+														totalPG = controlTower->getTotalPowerGrid();
+														usedPG = controlTower->getPowerGridUsed();
+														
+														totalCPU = controlTower->getTotalCpu();
+														usedCPU = controlTower->getCpuUsed();
+														//														}
+														
 														rows = [[[structuresDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
 														
 														if (self.activeAmountType) {
 															NSInteger i = 1;
-															for (NCFittingPOSStructuresDataSourceRow* row in rows) {
+															for (NCFittingPOSStructuresViewControllerRow* row in rows) {
 																if (row.type.typeID == self.activeAmountType.typeID) {
-																	NCFittingPOSStructuresDataSourcePickerRow* pickerRow = [NCFittingPOSStructuresDataSourcePickerRow new];
+																	NCFittingPOSStructuresViewControllerPickerRow* pickerRow = [NCFittingPOSStructuresViewControllerPickerRow new];
 																	pickerRow.associatedRow = row;
 																	[rows insertObject:pickerRow atIndex:i];
 																	break;
@@ -126,34 +122,26 @@
 												if (self.tableView.dataSource == self)
 													[self.tableView reloadData];
 												
-												self.tableHeaderView.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
-												self.tableHeaderView.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
-												self.tableHeaderView.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
-												self.tableHeaderView.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
+//												self.tableHeaderView.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
+//												self.tableHeaderView.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
+//												self.tableHeaderView.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
+//												self.tableHeaderView.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
 												
 											}
 										}];
 }
 
 
-- (NCFittingPOSStructuresTableHeaderView*) tableHeaderView {
-	if (!_tableHeaderView) {
-		_tableHeaderView = [NCFittingPOSStructuresTableHeaderView viewWithNibName:@"NCFittingPOSStructuresTableHeaderView" bundle:nil];
-		//_tableHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
-	}
-	return _tableHeaderView;
-}
-
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+	return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.rows.count + 1;
+	return self.rows.count + 1;
 }
 
 #pragma mark -
@@ -162,7 +150,7 @@
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	[super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
 	if ([cell isKindOfClass:[NCFittingAmountCell class]]) {
-		NCFittingPOSStructuresDataSourcePickerRow* pickerRow = self.rows[indexPath.row];
+		NCFittingPOSStructuresViewControllerPickerRow* pickerRow = self.rows[indexPath.row];
 		NCFittingAmountCell* amountCell = (NCFittingAmountCell*) cell;
 		amountCell.pickerView.dataSource = self;
 		amountCell.pickerView.delegate = self;
@@ -173,8 +161,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSInteger i = 0;
-	for (NCFittingPOSStructuresDataSourcePickerRow* row in self.rows) {
-		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
+	for (NCFittingPOSStructuresViewControllerPickerRow* row in self.rows) {
+		if ([row isKindOfClass:[NCFittingPOSStructuresViewControllerPickerRow class]]) {
 			self.activeAmountType = nil;
 			NSMutableArray* rows = [self.rows mutableCopy];
 			[rows removeObjectAtIndex:i];
@@ -196,27 +184,27 @@
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Structures", nil);
 		
 		[self.controller.typePickerViewController presentWithCategory:[NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotStructure size:0 race:nil]
-													   inViewController:self.controller
-															   fromRect:cell.bounds
-																 inView:cell
-															   animated:YES
-													  completionHandler:^(NCDBInvType *type) {
-														  eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
-														  eufe::Module::State state = eufe::Module::STATE_ACTIVE;
-														  eufe::Charge* charge = nullptr;
-														  for (auto structure: controlTower->getStructures()) {
-															  if (structure->getTypeID() == type.typeID) {
-																  state = structure->getState();
-																  charge = structure->getCharge();
-															  }
-														  }
-														  auto structure = controlTower->addStructure(type.typeID);
-														  structure->setState(state);
-														  if (charge)
-															  structure->setCharge(charge->getTypeID());
-														  [self.controller reload];
-														  [self.controller dismissAnimated];
-													  }];
+													 inViewController:self.controller
+															 fromRect:cell.bounds
+															   inView:cell
+															 animated:YES
+													completionHandler:^(NCDBInvType *type) {
+														eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
+														eufe::Module::State state = eufe::Module::STATE_ACTIVE;
+														eufe::Charge* charge = nullptr;
+														for (auto structure: controlTower->getStructures()) {
+															if (structure->getTypeID() == type.typeID) {
+																state = structure->getState();
+																charge = structure->getCharge();
+															}
+														}
+														auto structure = controlTower->addStructure(type.typeID);
+														structure->setState(state);
+														if (charge)
+															structure->setCharge(charge->getTypeID());
+														[self.controller reload];
+														[self.controller dismissAnimated];
+													}];
 	}
 	else {
 		[self performActionForRowAtIndexPath:indexPath];
@@ -241,8 +229,8 @@
 - (void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)rowIndex inComponent:(NSInteger)component {
 	int amount = (int) rowIndex + 1;
 	NSInteger i = 0;
-	for (NCFittingPOSStructuresDataSourcePickerRow* row in self.rows) {
-		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
+	for (NCFittingPOSStructuresViewControllerPickerRow* row in self.rows) {
+		if ([row isKindOfClass:[NCFittingPOSStructuresViewControllerPickerRow class]]) {
 			eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
 			eufe::TypeID typeID = row.associatedRow.structures.front()->getTypeID();
 			
@@ -278,7 +266,7 @@
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
 	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-	NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
+	NCFittingPOSStructuresViewControllerRow* row = self.rows[indexPath.row];
 	
 	eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
 	eufe::Structure* structure = row.structures.front();
@@ -317,7 +305,7 @@
 		NSMutableArray* rows = [self.rows mutableCopy];
 		[rows removeObjectAtIndex:indexPath.row];
 		self.rows = rows;
-
+		
 		[self.controller reload];
 	};
 	
@@ -326,17 +314,17 @@
 			structure->setState(eufe::Module::STATE_OFFLINE);
 		[self.controller reload];
 	};
-
+	
 	void (^putOnline)(eufe::StructuresList) = ^(eufe::StructuresList structures){
 		for (auto structure: structures)
 			structure->setState(eufe::Module::STATE_ACTIVE);
 		[self.controller reload];
 	};
-
+	
 	void (^setAmount)(eufe::StructuresList) = ^(eufe::StructuresList structures) {
 		self.activeAmountType = row.type;
 		NSMutableArray* rows = [self.rows mutableCopy];
-		NCFittingPOSStructuresDataSourcePickerRow* pickerRow = [NCFittingPOSStructuresDataSourcePickerRow new];
+		NCFittingPOSStructuresViewControllerPickerRow* pickerRow = [NCFittingPOSStructuresViewControllerPickerRow new];
 		pickerRow.associatedRow = row;
 		
 		[rows insertObject:pickerRow atIndex:indexPath.row + 1];
@@ -346,35 +334,35 @@
 	
 	void (^setAmmo)(eufe::StructuresList) = ^(eufe::StructuresList structures){
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Ammo", nil);
-
+		
 		[self.controller.typePickerViewController presentWithCategory:row.type.eufeItem.charge
-													   inViewController:self.controller
-															   fromRect:cell.bounds
-																 inView:cell
-															   animated:YES
-													  completionHandler:^(NCDBInvType *type) {
-														  for (auto structure: structures)
-															  structure->setCharge(type.typeID);
-														  [self.controller reload];
-														  [self.controller dismissAnimated];
-													  }];
+													 inViewController:self.controller
+															 fromRect:cell.bounds
+															   inView:cell
+															 animated:YES
+													completionHandler:^(NCDBInvType *type) {
+														for (auto structure: structures)
+															structure->setCharge(type.typeID);
+														[self.controller reload];
+														[self.controller dismissAnimated];
+													}];
 	};
 	
 	void (^setAllModulesAmmo)(NSArray*) = ^(NSArray* structures){
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Ammo", nil);
 		[self.controller.typePickerViewController presentWithCategory:row.type.eufeItem.charge
-													   inViewController:self.controller
-															   fromRect:cell.bounds
-																 inView:cell
-															   animated:YES
-													  completionHandler:^(NCDBInvType *type) {
-														  for (auto structure: controlTower->getStructures())
-															  structure->setCharge(type.typeID);
-														  [self.controller reload];
-														  [self.controller dismissAnimated];
-													  }];
+													 inViewController:self.controller
+															 fromRect:cell.bounds
+															   inView:cell
+															 animated:YES
+													completionHandler:^(NCDBInvType *type) {
+														for (auto structure: controlTower->getStructures())
+															structure->setCharge(type.typeID);
+														[self.controller reload];
+														[self.controller dismissAnimated];
+													}];
 	};
-
+	
 	
 	void (^unloadAmmo)(eufe::StructuresList) = ^(eufe::StructuresList structures){
 		for (auto structure: structures)
@@ -447,8 +435,8 @@
 	if (indexPath.row >= self.rows.count)
 		return @"Cell";
 	else {
-		NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
-		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]])
+		NCFittingPOSStructuresViewControllerRow* row = self.rows[indexPath.row];
+		if ([row isKindOfClass:[NCFittingPOSStructuresViewControllerPickerRow class]])
 			return @"NCFittingAmountCell";
 		else
 			return @"NCFittingPOSStructureCell";
@@ -464,56 +452,56 @@
 		cell.accessoryView = nil;
 	}
 	else {
-		NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
-		if (![row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
-//			@synchronized(self.controller) {
-				eufe::Structure* structure = row.structures.front();
-				
-				int optimal = (int) structure->getMaxRange();
-				int falloff = (int) structure->getFalloff();
-				float trackingSpeed = structure->getTrackingSpeed();
-				
-				NCFittingPOSStructureCell* cell = (NCFittingPOSStructureCell*) tableViewCell;
-				
-				cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.structures.size()];
-				cell.typeImageView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-				
-				eufe::Charge* charge = structure->getCharge();
-				
-				if (charge) {
-					NCDBInvType* type = [self.controller typeWithItem:charge];
-					cell.chargeLabel.text = type.typeName;
-				}
-				else
-					cell.chargeLabel.text = nil;
-				
-				
-				if (optimal > 0) {
-					NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-					if (falloff > 0)
-						s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-					if (trackingSpeed > 0)
-						s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-					cell.optimalLabel.text = s;
-				}
-				else
-					cell.optimalLabel.text = nil;
-				
-				switch (structure->getState()) {
-					case eufe::Module::STATE_ACTIVE:
-						cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
-						break;
-					case eufe::Module::STATE_ONLINE:
-						cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
-						break;
-					case eufe::Module::STATE_OVERLOADED:
-						cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
-						break;
-					default:
-						cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
-						break;
-				}
-//			}
+		NCFittingPOSStructuresViewControllerRow* row = self.rows[indexPath.row];
+		if (![row isKindOfClass:[NCFittingPOSStructuresViewControllerPickerRow class]]) {
+			//			@synchronized(self.controller) {
+			eufe::Structure* structure = row.structures.front();
+			
+			int optimal = (int) structure->getMaxRange();
+			int falloff = (int) structure->getFalloff();
+			float trackingSpeed = structure->getTrackingSpeed();
+			
+			NCFittingPOSStructureCell* cell = (NCFittingPOSStructureCell*) tableViewCell;
+			
+			cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.structures.size()];
+			cell.typeImageView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+			
+			eufe::Charge* charge = structure->getCharge();
+			
+			if (charge) {
+				NCDBInvType* type = [self.controller typeWithItem:charge];
+				cell.chargeLabel.text = type.typeName;
+			}
+			else
+				cell.chargeLabel.text = nil;
+			
+			
+			if (optimal > 0) {
+				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+				if (falloff > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+				if (trackingSpeed > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+				cell.optimalLabel.text = s;
+			}
+			else
+				cell.optimalLabel.text = nil;
+			
+			switch (structure->getState()) {
+				case eufe::Module::STATE_ACTIVE:
+					cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
+					break;
+				case eufe::Module::STATE_ONLINE:
+					cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
+					break;
+				case eufe::Module::STATE_OVERLOADED:
+					cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
+					break;
+				default:
+					cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
+					break;
+			}
+			//			}
 		}
 	}
 }

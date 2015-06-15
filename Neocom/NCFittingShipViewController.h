@@ -14,7 +14,7 @@
 #import "NCDamagePattern.h"
 #import "NCProgressLabel.h"
 
-@interface NCFittingShipViewController : NCViewController
+@interface NCFittingShipViewController : NCViewController<UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControl;
 @property (nonatomic, weak) IBOutlet NCProgressLabel *powerGridLabel;
 @property (nonatomic, weak) IBOutlet NCProgressLabel *cpuLabel;
@@ -22,9 +22,9 @@
 @property (nonatomic, weak) IBOutlet NCProgressLabel *droneBayLabel;
 @property (nonatomic, weak) IBOutlet NCProgressLabel *droneBandwidthLabel;
 @property (nonatomic, weak) IBOutlet UILabel *dronesCountLabel;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 
-@property (nonatomic, weak) NCFittingShipWorkspaceViewController* workspaceViewController;
 @property (nonatomic, strong, readonly) NCDatabaseTypePickerViewController* typePickerViewController;
 
 @property (nonatomic, strong, readonly) NSMutableArray* fits;
@@ -35,7 +35,7 @@
 @property (nonatomic, strong) NCDamagePattern* damagePattern;
 
 
-- (IBAction)onChangeSection:(id)sender;
+- (IBAction)onChangeSection:(UISegmentedControl*)sender;
 - (IBAction)onAction:(id)sender;
 - (NCDBInvType*) typeWithItem:(eufe::Item*) item;
 - (void) reload;

@@ -8,7 +8,6 @@
 
 #import "NCFittingShipModulesViewController.h"
 #import "NCFittingShipViewController.h"
-#import "NCFittingShipModulesTableHeaderView.h"
 #import "UIView+Nib.h"
 #import "NSString+Neocom.h"
 #import <algorithm>
@@ -71,77 +70,53 @@
 }
 
 - (void) reload {
-	__block float totalPG = 0;
-	__block float usedPG = 0;
-	__block float totalCPU = 0;
-	__block float usedCPU = 0;
-	__block float totalCalibration = 0;
-	__block float usedCalibration = 0;
-	
 	NSMutableArray* sections = [NSMutableArray new];
 	if (!self.controller.fit.pilot)
 		return;
+	__block float usedTurretHardpoints;
+	__block float totalTurretHardpoints;
+	__block float usedMissileHardpoints;
+	__block float totalMissileHardpoints;
 	
-	eufe::Ship* ship = self.controller.fit.pilot->getShip();
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 eufe::Ship* ship = self.controller.fit.pilot->getShip();
+											 
+											 eufe::Module::Slot slots[] = {eufe::Module::SLOT_MODE, eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
+											 int n = sizeof(slots) / sizeof(eufe::Module::Slot);
+											 
+											 for (int i = 0; i < n; i++) {
+												 int numberOfSlots = ship->getNumberOfSlots(slots[i]);
+												 if (numberOfSlots > 0) {
+													 eufe::ModulesList modules;
+													 ship->getModules(slots[i], std::inserter(modules, modules.end()));
+													 
+													 NCFittingShipModulesViewControllerSection* section = [NCFittingShipModulesViewControllerSection new];
+													 section.slot = slots[i];
+													 section.numberOfSlots = numberOfSlots;
+													 section.modules.insert(section.modules.begin(), modules.begin(), modules.end());
+													 [sections addObject:section];
+													 
+													 usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
+													 totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
+													 usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+													 totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+
+												 }
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 self.sections = sections;
+								 
+								 self.usedTurretHardpoints = usedTurretHardpoints;
+								 self.totalTurretHardpoints = totalTurretHardpoints;
+								 self.usedMissileHardpoints = usedMissileHardpoints;
+								 self.totalMissileHardpoints = totalMissileHardpoints;
+								 
+								 [self.tableView reloadData];
+							 }];
 	
-	eufe::Module::Slot slots[] = {eufe::Module::SLOT_MODE, eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
-	int n = sizeof(slots) / sizeof(eufe::Module::Slot);
-	
-	//	@synchronized(self.controller) {
-	for (int i = 0; i < n; i++) {
-		int numberOfSlots = ship->getNumberOfSlots(slots[i]);
-		if (numberOfSlots > 0) {
-			eufe::ModulesList modules;
-			ship->getModules(slots[i], std::inserter(modules, modules.end()));
-			
-			NCFittingShipModulesViewControllerSection* section = [NCFittingShipModulesViewControllerSection new];
-			section.slot = slots[i];
-			section.numberOfSlots = numberOfSlots;
-			section.modules.insert(section.modules.begin(), modules.begin(), modules.end());
-			[sections addObject:section];
-		}
-	}
-	//	}
-	self.sections = sections;
-	
-	if (self.tableView.dataSource == self) {
-		//		[self.tableView reloadData];
-	}
-	
-	/*	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-	 title:NCTaskManagerDefaultTitle
-	 block:^(NCTask *task) {
-	 //														@synchronized(self.controller) {
-	 */
-	totalPG = ship->getTotalPowerGrid();
-	usedPG = ship->getPowerGridUsed();
-	
-	totalCPU = ship->getTotalCpu();
-	usedCPU = ship->getCpuUsed();
-	
-	totalCalibration = ship->getTotalCalibration();
-	usedCalibration = ship->getCalibrationUsed();
-	
-	self.usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
-	self.totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
-	self.usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-	self.totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-	//														}
-	//													}
-	//										completionHandler:^(NCTask *task) {
-	//											if (![task isCancelled]) {
-/*	self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
-	self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
-	self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
-	self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
-	self.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
-	self.calibrationLabel.progress = totalCalibration > 0 ? usedCalibration / totalCalibration : 0;
-*/
-	if (self.tableView.dataSource == self) {
-		[self.tableView reloadData];
-	}
-	//											}
-	//										}];
 }
 
 #pragma mark - Table view data source

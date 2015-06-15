@@ -1,20 +1,21 @@
 //
-//  NCFittingShipWorkspaceViewController.m
+//  NCFittingPOSWorkspaceViewController.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 29.01.14.
+//  Created by Артем Шиманский on 11.02.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingShipWorkspaceViewController.h"
+#import "NCFittingPOSWorkspaceViewController.h"
+#import "NCFittingPOSViewController.h"
 #import "NCTableViewHeaderView.h"
 #import "UIColor+Neocom.h"
 
-@interface NCFittingShipWorkspaceViewController ()
+@interface NCFittingPOSWorkspaceViewController ()
 
 @end
 
-@implementation NCFittingShipWorkspaceViewController
+@implementation NCFittingPOSWorkspaceViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -25,9 +26,8 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)viewDidLoad {
+	[super viewDidLoad];
 	self.refreshControl = nil;
 	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionGenericHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionGenericHeaderView"];
 }
@@ -42,8 +42,12 @@
 	
 }
 
-- (NCFittingShipViewController*) controller {
-	return (NCFittingShipViewController*) self.parentViewController;
+- (NCFittingPOSViewController*) controller {
+	return (NCFittingPOSViewController*) self.parentViewController;
+}
+
+- (NCTaskManager*) taskManager {
+	return [self.controller taskManager];
 }
 
 #pragma mark - NCTableViewController

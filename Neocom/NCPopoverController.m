@@ -15,7 +15,6 @@
 	if (self = [super initWithContentViewController:viewController]) {
 		objc_setAssociatedObject(viewController, @"popover", self, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		self.delegate = self;
-		self.backgroundColor = [UIColor blackColor];
 	}
 	return self;
 }

@@ -40,7 +40,7 @@
 	[super perform];
 	if ([self.popoverController respondsToSelector:@selector(setBackgroundColor:)])
 		//self.popoverController.backgroundColor = [UIColor blackColor];
-		self.popoverController.backgroundColor = [UIColor appearancePopoberBackgroundColor];
+		self.popoverController.backgroundColor = [UIColor appearancePopoverBackgroundColor];
 }
 
 @end

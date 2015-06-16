@@ -7,6 +7,7 @@
 //
 
 #import "NCViewController.h"
+#import "NCAdaptivePopoverSegue.h"
 
 @interface NCViewController ()
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
@@ -57,4 +58,10 @@
 	return _taskManager;
 }
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue isKindOfClass:[NCAdaptivePopoverSegue class]]) {
+        NCAdaptivePopoverSegue* popoverSegue = (NCAdaptivePopoverSegue*) segue;
+        popoverSegue.sender = sender;
+    }
+}
 @end

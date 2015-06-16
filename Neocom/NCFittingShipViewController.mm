@@ -35,6 +35,7 @@
 #import "NCFittingShipImplantsViewController.h"
 #import "NCFittingShipFleetViewController.h"
 #import "NCFittingShipStatsViewController.h"
+#import "NCAdaptivePopoverSegue.h"
 
 #include <set>
 
@@ -169,6 +170,17 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    //[super prepareForSegue:segue sender:sender];
+    if ([segue isKindOfClass:[NCAdaptivePopoverSegue class]]) {
+        NCAdaptivePopoverSegue* popoverSegue = (NCAdaptivePopoverSegue*) segue;
+        if ([sender isKindOfClass:[NSDictionary class]])
+            popoverSegue.sender = sender[@"sender"];
+        else if ([sender isKindOfClass:[UIView class]])
+            popoverSegue.sender = sender;
+        else
+            popoverSegue.sender = self.navigationItem.rightBarButtonItem;
+    }
+
 	if ([segue isKindOfClass:[NCStoryboardPopoverSegue class]]) {
 		NCStoryboardPopoverSegue* popoverSegue = (NCStoryboardPopoverSegue*) segue;
 		id anchor = sender;

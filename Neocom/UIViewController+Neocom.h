@@ -10,9 +10,7 @@
 
 @interface UIViewController (Neocom)
 
-- (void)presentViewControllerInPopover:(UIViewController *)viewControllerToPresent fromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated;
-- (void)presentViewControllerInPopover:(UIViewController *)viewControllerToPresent fromRect:(CGRect) rect inView:(UIView*) view permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated;
 - (IBAction)dismissAnimated;
 
-
+- (void) presentViewControllerInPopover:(UIViewController *)viewControllerToPresent withSender:(id) sender animated:(BOOL)animated;
 @end

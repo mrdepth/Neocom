@@ -61,7 +61,7 @@
 }
 
 
-+ (instancetype) appearancePopoberBackgroundColor {
++ (instancetype) appearancePopoverBackgroundColor {
 	return [self appearanceTableViewBackgroundColor];
 }
 

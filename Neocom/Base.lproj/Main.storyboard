@@ -10,7 +10,7 @@
         <!--Navigation Controller-->
         <scene sceneID="5Rr-DP-2Wu">
             <objects>
-                <navigationController id="yZl-Nd-WWY" sceneMemberID="viewController">
+                <navigationController id="yZl-Nd-WWY" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Jvx-qi-kTL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1184,7 +1184,7 @@
         <!--Navigation Controller-->
         <scene sceneID="FKw-7Z-waP">
             <objects>
-                <navigationController storyboardIdentifier="NCSkillPlanViewController" definesPresentationContext="YES" id="cs3-Cj-XDu" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NCSkillPlanViewController" definesPresentationContext="YES" id="cs3-Cj-XDu" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ahk-Lm-VnN">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1268,7 +1268,7 @@
         <!--Navigation Controller-->
         <scene sceneID="IdE-YD-bFt">
             <objects>
-                <navigationController id="N3M-XV-ebe" sceneMemberID="viewController">
+                <navigationController id="N3M-XV-ebe" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="aoe-cL-KMT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1285,7 +1285,7 @@
         <!--Navigation Controller-->
         <scene sceneID="wNb-Nj-xoQ">
             <objects>
-                <navigationController id="WNG-dj-Mi6" sceneMemberID="viewController">
+                <navigationController id="WNG-dj-Mi6" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ZPD-0Q-w8B">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1302,7 +1302,7 @@
         <!--Navigation Controller-->
         <scene sceneID="gKy-h0-8e7">
             <objects>
-                <navigationController id="eCk-dY-Q5g" sceneMemberID="viewController">
+                <navigationController id="eCk-dY-Q5g" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="GJS-lx-hB6">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1319,7 +1319,7 @@
         <!--Navigation Controller-->
         <scene sceneID="lYx-TQ-dyM">
             <objects>
-                <navigationController id="Pio-gy-etn" sceneMemberID="viewController">
+                <navigationController id="Pio-gy-etn" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="QEK-RQ-cNh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1336,7 +1336,7 @@
         <!--Navigation Controller-->
         <scene sceneID="hhJ-kG-BbB">
             <objects>
-                <navigationController id="Wj7-38-Nqh" sceneMemberID="viewController">
+                <navigationController id="Wj7-38-Nqh" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="iYe-hg-gid">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1353,7 +1353,7 @@
         <!--Navigation Controller-->
         <scene sceneID="QfT-v1-Nez">
             <objects>
-                <navigationController id="fQq-KP-y8n" sceneMemberID="viewController">
+                <navigationController id="fQq-KP-y8n" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="2Ks-xa-vQ5">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1370,7 +1370,7 @@
         <!--Navigation Controller-->
         <scene sceneID="pa0-Bf-a1V">
             <objects>
-                <navigationController id="LJQ-9g-Vdq" sceneMemberID="viewController">
+                <navigationController id="LJQ-9g-Vdq" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="4pH-YI-KhW">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1387,7 +1387,7 @@
         <!--Navigation Controller-->
         <scene sceneID="SHu-LH-ePz">
             <objects>
-                <navigationController id="E9E-ud-YUx" sceneMemberID="viewController">
+                <navigationController id="E9E-ud-YUx" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="uDk-de-KrZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1404,7 +1404,7 @@
         <!--Navigation Controller-->
         <scene sceneID="NHd-D5-OQA">
             <objects>
-                <navigationController id="Wvy-Fw-VBr" sceneMemberID="viewController">
+                <navigationController id="Wvy-Fw-VBr" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="8Ql-ug-AUp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1421,7 +1421,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Uco-e2-Cmf">
             <objects>
-                <navigationController id="VXu-PM-zqx" sceneMemberID="viewController">
+                <navigationController id="VXu-PM-zqx" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="xkA-UA-nDZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1438,7 +1438,7 @@
         <!--Navigation Controller-->
         <scene sceneID="X3n-oI-sCz">
             <objects>
-                <navigationController id="Xab-Aq-67k" sceneMemberID="viewController">
+                <navigationController id="Xab-Aq-67k" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ygU-lv-WgE">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1455,7 +1455,7 @@
         <!--Navigation Controller-->
         <scene sceneID="rm9-Lk-CW1">
             <objects>
-                <navigationController id="oCt-Rp-rsk" sceneMemberID="viewController">
+                <navigationController id="oCt-Rp-rsk" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="FqU-Rh-f10">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1472,7 +1472,7 @@
         <!--Navigation Controller-->
         <scene sceneID="q3t-9S-rtQ">
             <objects>
-                <navigationController id="vMG-1F-OLI" sceneMemberID="viewController">
+                <navigationController id="vMG-1F-OLI" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="tQ0-GF-Tee">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1489,7 +1489,7 @@
         <!--Navigation Controller-->
         <scene sceneID="9L8-DQ-YFb">
             <objects>
-                <navigationController id="kXg-E1-Gdz" sceneMemberID="viewController">
+                <navigationController id="kXg-E1-Gdz" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="5m0-6b-Nug">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1506,7 +1506,7 @@
         <!--Navigation Controller-->
         <scene sceneID="NyW-fc-dyc">
             <objects>
-                <navigationController id="TfD-Px-N45" sceneMemberID="viewController">
+                <navigationController id="TfD-Px-N45" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Rgu-qx-8kz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1523,7 +1523,7 @@
         <!--Navigation Controller-->
         <scene sceneID="lNd-aN-qUG">
             <objects>
-                <navigationController id="Jfu-XM-kRJ" sceneMemberID="viewController">
+                <navigationController id="Jfu-XM-kRJ" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Wcp-aA-SsS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1540,7 +1540,7 @@
         <!--Navigation Controller-->
         <scene sceneID="9Hd-Dv-tmM">
             <objects>
-                <navigationController id="8HH-ey-MUP" sceneMemberID="viewController">
+                <navigationController id="8HH-ey-MUP" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Heh-f6-D3C">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1557,7 +1557,7 @@
         <!--Navigation Controller-->
         <scene sceneID="lfY-pw-SpS">
             <objects>
-                <navigationController id="r6m-qx-QwA" sceneMemberID="viewController">
+                <navigationController id="r6m-qx-QwA" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="wcL-2l-f2Y">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1574,7 +1574,7 @@
         <!--Navigation Controller-->
         <scene sceneID="sfx-9V-PG3">
             <objects>
-                <navigationController id="Fku-a4-GYe" sceneMemberID="viewController">
+                <navigationController id="Fku-a4-GYe" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="9k4-JN-LVF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1591,7 +1591,7 @@
         <!--Navigation Controller-->
         <scene sceneID="QiF-Ov-WkH">
             <objects>
-                <navigationController id="Udu-ka-O6T" sceneMemberID="viewController">
+                <navigationController id="Udu-ka-O6T" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="XY9-sI-ffh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1608,7 +1608,7 @@
         <!--Navigation Controller-->
         <scene sceneID="k0t-33-fCt">
             <objects>
-                <navigationController id="oCU-PZ-EMj" sceneMemberID="viewController">
+                <navigationController id="oCU-PZ-EMj" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="0y0-tb-kNb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1625,7 +1625,7 @@
         <!--Navigation Controller-->
         <scene sceneID="odH-Sw-M1r">
             <objects>
-                <navigationController id="Mf7-UC-7pi" sceneMemberID="viewController">
+                <navigationController id="Mf7-UC-7pi" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="GtM-h2-4mr">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

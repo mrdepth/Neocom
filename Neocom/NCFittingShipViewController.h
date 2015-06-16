@@ -24,7 +24,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *dronesCountLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
-
 @property (nonatomic, strong, readonly) NCDatabaseTypePickerViewController* typePickerViewController;
 
 @property (nonatomic, strong, readonly) NSMutableArray* fits;

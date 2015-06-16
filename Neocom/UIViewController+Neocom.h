@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class NCPopoverController;
 @interface UIViewController (Neocom)
+@property (nonatomic, strong, readonly) NCPopoverController* popover;
 
 - (IBAction)dismissAnimated;
 

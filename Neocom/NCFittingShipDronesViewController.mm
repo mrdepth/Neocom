@@ -110,6 +110,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
+	//return self.view.window ? 1 : 0;
 }
 
 

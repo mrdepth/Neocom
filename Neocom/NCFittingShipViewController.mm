@@ -88,18 +88,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	for (id controller in self.childViewControllers) {
-		if ([controller isKindOfClass:[NCFittingShipModulesViewController class]])
-			self.modulesViewController = controller;
-		else if ([controller isKindOfClass:[NCFittingShipDronesViewController class]])
-			self.dronesViewController = controller;
-		else if ([controller isKindOfClass:[NCFittingShipImplantsViewController class]])
-			self.implantsViewController = controller;
-		else if ([controller isKindOfClass:[NCFittingShipFleetViewController class]])
-			self.fleetViewController = controller;
-		else if ([controller isKindOfClass:[NCFittingShipStatsViewController class]])
-			self.statsViewController = controller;
-	}
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
 	
 	self.taskManager.maxConcurrentOperationCount = 1;
 	
@@ -140,9 +130,33 @@
 							 }];
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	for (id controller in self.childViewControllers) {
+		if (![(UIViewController*) controller view].window)
+			continue;
+		if ([controller isKindOfClass:[NCFittingShipModulesViewController class]])
+			self.modulesViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingShipDronesViewController class]])
+			self.dronesViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingShipImplantsViewController class]])
+			self.implantsViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingShipFleetViewController class]])
+			self.fleetViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingShipStatsViewController class]])
+			self.statsViewController = controller;
+	}
+	[self reload];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void) viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width * self.sectionSegmentedControl.selectedSegmentIndex, 0);
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -157,7 +171,7 @@
 	[super viewWillDisappear:animated];
 }
 
-- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+/*- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
 	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
 		self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width * self.sectionSegmentedControl.selectedSegmentIndex, 0);
 	}
@@ -167,7 +181,7 @@
 
 - (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width * self.sectionSegmentedControl.selectedSegmentIndex, 0);
-}
+}*/
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     //[super prepareForSegue:segue sender:sender];

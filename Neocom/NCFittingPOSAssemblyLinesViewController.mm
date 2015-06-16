@@ -92,6 +92,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	// Return the number of sections.
 	return self.sections.count;
+	//return self.view.window ? self.sections.count : 0;
 }
 
 

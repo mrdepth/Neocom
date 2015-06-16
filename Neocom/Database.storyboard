@@ -552,7 +552,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X44-R4-PR5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="545.625" y="471.12676056338023"/>
+            <point key="canvasLocation" x="545" y="471"/>
         </scene>
         <!--Mastery-->
         <scene sceneID="Qgr-cU-BXc">
@@ -1065,13 +1065,13 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Amd-o8-4a1"/>
-        <segue reference="edv-w8-2To"/>
-        <segue reference="qyD-gc-O13"/>
-        <segue reference="dFJ-0K-RGe"/>
+        <segue reference="itz-y8-GPm"/>
+        <segue reference="J6m-rr-eL7"/>
         <segue reference="IAS-t0-x0K"/>
+        <segue reference="dFJ-0K-RGe"/>
         <segue reference="ns8-Ad-PQ7"/>
         <segue reference="PD6-VV-6gd"/>
+        <segue reference="qyD-gc-O13"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

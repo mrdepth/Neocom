@@ -16,6 +16,7 @@
 #import "NCStorage.h"
 #import "UIColor+Neocom.h"
 #import "NCTableViewCell.h"
+#import "NCAdaptivePopoverSegue.h"
 
 @interface NCTableViewController ()
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
@@ -126,6 +127,8 @@
 	}
 }
 
+
+
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.taskManager.active = YES;
@@ -160,6 +163,13 @@
 	[super willMoveToParentViewController:parent];
 	if (!parent) {
 		[self.taskManager cancelAllOperations];
+	}
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue isKindOfClass:[NCAdaptivePopoverSegue class]]) {
+		NCAdaptivePopoverSegue* popoverSegue = (NCAdaptivePopoverSegue*) segue;
+		popoverSegue.sender = sender;
 	}
 }
 

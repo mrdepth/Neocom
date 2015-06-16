@@ -56,15 +56,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	for (id controller in self.childViewControllers) {
-		if ([controller isKindOfClass:[NCFittingPOSStructuresViewController class]])
-			self.structuresViewController = controller;
-		else if ([controller isKindOfClass:[NCFittingPOSAssemblyLinesViewController class]])
-			self.assemblyLinesViewController = controller;
-		else if ([controller isKindOfClass:[NCFittingPOSStatsViewController class]])
-			self.statsViewController = controller;
-	}
-	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
+
 	self.taskManager.maxConcurrentOperationCount = 1;
 	self.title = self.fit.loadoutName;
 	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
@@ -88,6 +82,21 @@
 								 [self reload];
 
 							 }];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	for (id controller in self.childViewControllers) {
+		if (![(UIViewController*) controller view].window)
+			continue;
+		if ([controller isKindOfClass:[NCFittingPOSStructuresViewController class]])
+			self.structuresViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingPOSAssemblyLinesViewController class]])
+			self.assemblyLinesViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingPOSStatsViewController class]])
+			self.statsViewController = controller;
+	}
+	[self reload];
 }
 
 - (void)didReceiveMemoryWarning

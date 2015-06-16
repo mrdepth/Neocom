@@ -268,7 +268,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="Fvg-OJ-rZS" kind="show" identifier="NCDatabaseTypeInfoViewController" id="W7V-Fr-4NT"/>
+                                    <segue destination="Fvg-OJ-rZS" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveModalSegue" id="W7V-Fr-4NT"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" showsReorderControl="YES" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCKillMailDetailsAttackerCell" rowHeight="107" id="rbO-5M-je1" customClass="NCKillMailDetailsAttackerCell">
@@ -470,7 +470,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="Xra-zg-1OC" kind="show" identifier="NCDatabaseGroupPickerViewContoller" id="fkB-r4-VB4"/>
+                                    <segue destination="Xra-zg-1OC" kind="custom" identifier="NCDatabaseGroupPickerViewContoller" customClass="NCAdaptivePopoverSegue" id="fkB-r4-VB4"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CharacterCell" id="hua-gV-nFM" customClass="NCDefaultTableViewCell">
@@ -491,7 +491,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="1eK-h6-8RJ" kind="show" identifier="NCDatabaseSolarSystemPickerViewController" id="hHl-yL-ErL"/>
+                                    <segue destination="1eK-h6-8RJ" kind="custom" identifier="NCDatabaseSolarSystemPickerViewController" customClass="NCAdaptivePopoverSegue" id="hHl-yL-ErL"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="KillsCell" rowHeight="34" id="wl5-Ku-qf8" customClass="NCTableViewCell">
@@ -911,7 +911,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-1235.625" y="2028.1690140845069"/>
+            <point key="canvasLocation" x="-1480" y="2044"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Caa-gF-fCx">
@@ -959,7 +959,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JTF-uf-4cS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3273.75" y="2028.1690140845069"/>
+            <point key="canvasLocation" x="-3240" y="2044"/>
         </scene>
         <!--Ship Classes-->
         <scene sceneID="yet-Sr-zHZ">
@@ -996,7 +996,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gSm-I8-JIF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="UMY-Z5-296" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-2315.625" y="2028.1690140845069"/>
+            <point key="canvasLocation" x="-2245" y="2044"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="eo5-ii-UNs">

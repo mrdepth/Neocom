@@ -213,6 +213,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	// Return the number of sections.
 	return 7;
+	//return self.view.window ? 7 : 0;
 }
 
 

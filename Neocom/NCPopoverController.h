@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface NCPopoverController : UIPopoverController<UIPopoverControllerDelegate>
-
+@property (nonatomic, weak) UIViewController* presentingViewController;
 @end

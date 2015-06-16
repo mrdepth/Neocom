@@ -316,6 +316,22 @@
 	}
 }
 
+- (UIInterfaceOrientationMask) application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+	UITraitCollection* tc1 = [UITraitCollection traitCollectionWithVerticalSizeClass:UIUserInterfaceSizeClassCompact];
+	UITraitCollection* tc2 = [UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassRegular];
+	UITraitCollection* tc = [UITraitCollection traitCollectionWithTraitsFromCollections:@[tc1, tc2]];
+	BOOL b = [self.window.traitCollection containsTraitsInCollection:tc];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		return UIInterfaceOrientationMaskAll;
+	}
+	else {
+		if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
+			return UIInterfaceOrientationMaskPortrait;
+		else
+			return UIInterfaceOrientationMaskAll;
+	}
+}
+
 #pragma mark - SKPaymentTransactionObserver
 
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {

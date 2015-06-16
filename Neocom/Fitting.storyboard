@@ -9,9 +9,10 @@
         <scene sceneID="cKh-Vq-0Hd">
             <objects>
                 <navigationController id="dp8-oy-sSo" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="fdg-Gy-grh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="fdg-Gy-grh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="lhY-Pd-wMi" kind="relationship" relationship="rootViewController" id="3kG-h9-JMp"/>
@@ -301,8 +302,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="w25-rV-onS" kind="show" identifier="NCFittingAPIFlagsViewController" id="9pU-zR-sgX"/>
-                        <segue destination="yRZ-Vo-V45" kind="show" identifier="NCDatabaseGroupPickerViewContoller" id="l9G-FT-4hn"/>
+                        <segue destination="w25-rV-onS" kind="custom" identifier="NCFittingAPIFlagsViewController" customClass="NCAdaptivePopoverSegue" id="9pU-zR-sgX"/>
+                        <segue destination="yRZ-Vo-V45" kind="custom" identifier="NCDatabaseGroupPickerViewContoller" customClass="NCAdaptivePopoverSegue" id="l9G-FT-4hn"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FGh-7N-bHU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -641,6 +642,23 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u5M-1u-TMN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4831.875" y="-1353.1690140845069"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ykP-Yv-llD">
+            <objects>
+                <navigationController id="yow-eC-gzv" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="csp-I4-ZGR">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="bWl-Ik-2uJ" kind="relationship" relationship="rootViewController" id="fKH-iO-0Xj"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G6D-Dg-kzc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-7358" y="140"/>
         </scene>
         <!--Damage Patterns-->
         <scene sceneID="9DZ-z6-jT0">

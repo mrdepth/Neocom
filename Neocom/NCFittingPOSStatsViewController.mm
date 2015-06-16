@@ -111,6 +111,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	// Return the number of sections.
 	return 4;
+	//return self.view.window ? 4 : 0;
 }
 
 

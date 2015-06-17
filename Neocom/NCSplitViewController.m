@@ -14,7 +14,21 @@
 
 @implementation NCSplitViewController
 
-- (void) awakeFromNib {
+- (BOOL) shouldAutorotate {
+	NSLog(@"%@", self.view.window.screen);
+	return NO;
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+	if (self.view.window.screen.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact && self.view.window.screen.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact)
+		return UIInterfaceOrientationMaskPortrait;
+	else
+		return UIInterfaceOrientationMaskAll;
+	return UIInterfaceOrientationMaskAll;
+	return [super supportedInterfaceOrientations];
+}
+
+/*- (void) awakeFromNib {
 	self.delegate = self;
 }
 
@@ -67,6 +81,6 @@
 	if ([navigationController isKindOfClass:[UINavigationController class]]) {
 		[[[[navigationController viewControllers] objectAtIndex:0] navigationItem] setLeftBarButtonItem:self.menuBarButtonItem animated:YES];
 	}
-}
+}*/
 
 @end

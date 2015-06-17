@@ -317,19 +317,25 @@
 }
 
 - (UIInterfaceOrientationMask) application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-	UITraitCollection* tc1 = [UITraitCollection traitCollectionWithVerticalSizeClass:UIUserInterfaceSizeClassCompact];
-	UITraitCollection* tc2 = [UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassRegular];
-	UITraitCollection* tc = [UITraitCollection traitCollectionWithTraitsFromCollections:@[tc1, tc2]];
-	BOOL b = [self.window.traitCollection containsTraitsInCollection:tc];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		return UIInterfaceOrientationMaskAll;
 	}
 	else {
 		if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
 			return UIInterfaceOrientationMaskPortrait;
-		else
-			return UIInterfaceOrientationMaskAll;
+		else {
+			if ([self.window respondsToSelector:NSSelectorFromString(@"_traitCollectionWhenRotated")]) {
+				UITraitCollection* tc1 = [self.window traitCollection];
+				UITraitCollection* tc2 = [self.window valueForKeyPath:@"_traitCollectionWhenRotated"];
+				if (self.window) {
+					return (tc1.horizontalSizeClass == UIUserInterfaceSizeClassRegular && tc1.verticalSizeClass == UIUserInterfaceSizeClassCompact) ||
+					(tc2.horizontalSizeClass == UIUserInterfaceSizeClassRegular && tc2.verticalSizeClass == UIUserInterfaceSizeClassCompact)
+					? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
+				}
+			}
+		}
 	}
+	return UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark - SKPaymentTransactionObserver

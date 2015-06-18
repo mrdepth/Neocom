@@ -354,7 +354,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		controller.shoppingGroup = sender;
+		controller.shoppingGroup = sender[@"object"];
 	}
 }
 
@@ -624,7 +624,7 @@
 		shoppingGroup.immutable = YES;
 		shoppingGroup.iconFile = self.fit.loadout.type.icon.iconFile;
 		
-		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:shoppingGroup];
+		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"sender": sender, @"object": shoppingGroup}];
 	};
 
 	

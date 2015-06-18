@@ -30,6 +30,8 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
+    self.navigationController.toolbar.barStyle = UIBarStyleBlack;
+    self.navigationController.toolbar.tintColor = [UIColor whiteColor];
 	self.refreshControl = nil;
 	self.shoppingList = [NCShoppingList currentShoppingList];
 	if (self.shoppingList)

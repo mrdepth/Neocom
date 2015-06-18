@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D2134" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -357,13 +357,13 @@
                                         <exclude reference="erN-UB-pq3"/>
                                     </mask>
                                     <mask key="constraints">
+                                        <include reference="h7j-Lh-M04"/>
                                         <exclude reference="Djb-tx-bYI"/>
                                         <exclude reference="LM8-LY-HeG"/>
                                         <exclude reference="Phe-VX-k9W"/>
                                         <exclude reference="Vdf-L7-LEa"/>
                                         <exclude reference="jhh-Pi-6Sv"/>
                                         <exclude reference="qHa-Kv-E1T"/>
-                                        <include reference="h7j-Lh-M04"/>
                                     </mask>
                                 </variation>
                                 <connections>
@@ -421,10 +421,10 @@
                                 <include reference="Qld-NP-DBN"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="tAj-CF-Y9n"/>
                                 <include reference="1vM-vp-GTV"/>
                                 <include reference="foB-rS-RMa"/>
                                 <include reference="sht-dH-WWI"/>
+                                <exclude reference="tAj-CF-Y9n"/>
                                 <include reference="Zod-1x-s0Q"/>
                             </mask>
                         </variation>
@@ -447,10 +447,10 @@
                         <outlet property="powerGridLabel" destination="dxM-c9-krk" id="uCX-85-ObC"/>
                         <outlet property="scrollView" destination="2Wt-V5-HxI" id="B9Q-39-pwh"/>
                         <outlet property="sectionSegmentedControl" destination="BeZ-9Y-mho" id="O6o-Eh-sYY"/>
-                        <segue destination="oxw-Gk-0JF" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveModalSegue" id="M1g-g8-PJm"/>
-                        <segue destination="GS3-JK-anj" kind="custom" identifier="NCFittingRequiredSkillsViewController" customClass="NCAdaptiveModalSegue" id="Ve0-rS-KGn"/>
+                        <segue destination="oxw-Gk-0JF" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptivePopoverSegue" id="M1g-g8-PJm"/>
+                        <segue destination="GS3-JK-anj" kind="custom" identifier="NCFittingRequiredSkillsViewController" customClass="NCAdaptivePopoverSegue" id="Ve0-rS-KGn"/>
                         <segue destination="gxe-oV-SlO" kind="custom" identifier="NCFittingTypeVariationsViewController" customClass="NCAdaptivePopoverSegue" id="1rd-Q3-at6"/>
-                        <segue destination="TEo-Cl-pbK" kind="custom" identifier="NCFittingFitPickerViewController" customClass="NCAdaptiveModalSegue" id="gDq-hg-0Ln"/>
+                        <segue destination="TEo-Cl-pbK" kind="custom" identifier="NCFittingFitPickerViewController" customClass="NCAdaptivePopoverSegue" id="gDq-hg-0Ln"/>
                         <segue destination="xOJ-XJ-7d3" kind="custom" identifier="NCFittingCharacterPickerViewController" customClass="NCAdaptivePopoverSegue" id="ZgH-rM-bmf"/>
                         <segue destination="018-ME-IOh" kind="custom" identifier="NCFittingTargetsViewController" customClass="NCAdaptivePopoverSegue" id="qzw-hE-BVI"/>
                         <segue destination="s1B-Zc-8t5" kind="custom" identifier="NCFittingImplantSetsViewControllerImport" customClass="NCAdaptivePopoverSegue" id="D7k-l2-ZfU"/>
@@ -458,7 +458,7 @@
                         <segue destination="GEQ-B3-aL5" kind="custom" identifier="NCFittingAreaEffectPickerViewController" customClass="NCAdaptivePopoverSegue" id="dyB-W4-if1"/>
                         <segue destination="hDJ-ZI-DaS" kind="custom" identifier="NCFittingDamagePatternsViewController" customClass="NCAdaptivePopoverSegue" id="0OW-q0-5fO"/>
                         <segue destination="s1B-Zc-8t5" kind="custom" identifier="NCFittingImplantSetsViewControllerSave" customClass="NCAdaptivePopoverSegue" id="wmr-bV-V4i"/>
-                        <segue destination="v4H-UL-Afe" kind="custom" identifier="NCNewShoppingItemViewController" customClass="NCAdaptiveModalSegue" id="gyJ-vG-Tzb"/>
+                        <segue destination="v4H-UL-Afe" kind="custom" identifier="NCNewShoppingItemViewController" customClass="NCAdaptivePopoverSegue" id="gyJ-vG-Tzb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DPd-Nb-aoG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1155,7 +1155,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="71"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ic8-4j-VVe">
+                                        <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ic8-4j-VVe">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JML-hi-Gk3">
@@ -1183,7 +1183,7 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Life time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Oly-ag-BO8">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Life time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Oly-ag-BO8">
                                                     <rect key="frame" x="55" y="49" width="208" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
@@ -1649,7 +1649,7 @@
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="thermal.png" translatesAutoresizingMaskIntoConstraints="NO" id="zpa-Xp-eMR">
                                                     <rect key="frame" x="96" y="2" width="49" height="24"/>
                                                 </imageView>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="kinetic.png" translatesAutoresizingMaskIntoConstraints="NO" id="4pU-HJ-W7F">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="kinetic.png" translatesAutoresizingMaskIntoConstraints="NO" id="4pU-HJ-W7F">
                                                     <rect key="frame" x="149" y="2" width="50" height="24"/>
                                                 </imageView>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="explosion.png" translatesAutoresizingMaskIntoConstraints="NO" id="jO5-Tk-Ucc">
@@ -1729,7 +1729,7 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="VoG-rN-k0j" customClass="NCProgressLabel">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="VoG-rN-k0j" customClass="NCProgressLabel">
                                                     <rect key="frame" x="149" y="2" width="50" height="24"/>
                                                     <color key="backgroundColor" red="0.69803923369999998" green="0.69803923369999998" blue="0.69803923369999998" alpha="1" colorSpace="deviceRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -2280,7 +2280,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tpf-Rb-HvH">
+                                        <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tpf-Rb-HvH">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="Total:" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="r9r-uJ-0DG" customClass="LUILabel">
@@ -2525,7 +2525,7 @@ IAogA
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lfh-zZ-jrS">
+                                        <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lfh-zZ-jrS">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Weapon" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="MA9-se-fpw" customClass="LUILabel">
@@ -2659,7 +2659,7 @@ IAogA
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhH-be-seN">
+                                        <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DhH-be-seN">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="54"/>
                                             <subviews>
                                                 <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r98-cH-dWJ">
@@ -2684,13 +2684,13 @@ IAogA
                                                                 <constraint firstAttribute="height" constant="24" id="X9K-Co-v2A"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Fittings" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GdF-fD-uKr" customClass="LUILabel">
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Fittings" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GdF-fD-uKr" customClass="LUILabel">
                                                             <rect key="frame" x="143" y="2" width="68" height="15"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </label>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="15" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="re0-p2-aR3">
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="15" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="re0-p2-aR3">
                                                             <rect key="frame" x="143" y="17" width="68" height="15"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2836,8 +2836,8 @@ IAogA
         <image name="warpSpeed.png" width="64" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="M1g-g8-PJm"/>
         <segue reference="yLb-CS-0Qz"/>
         <segue reference="wmr-bV-V4i"/>
+        <segue reference="cmu-Cl-2Ty"/>
     </inferredMetricsTieBreakers>
 </document>

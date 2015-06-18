@@ -112,8 +112,8 @@
 						  fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 						  fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 						  self.selectedFit = fit;
+                          [controller dismissAnimated];
 						  [self performSegueWithIdentifier:@"Unwind" sender:cell];
-						  [self dismissAnimated];
 					  }];
 	}
 	else {

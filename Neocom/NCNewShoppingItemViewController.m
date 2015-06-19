@@ -13,6 +13,7 @@
 #import "NSString+Neocom.h"
 #import "UIAlertView+Block.h"
 #import "NCShoppingGroup+Neocom.h"
+#import "UIViewController+Neocom.h"
 
 @interface NCNewShoppingItemViewController()
 @property (nonatomic, strong) NSMutableArray* rows;
@@ -108,9 +109,9 @@
 		if ([shoppingList.managedObjectContext hasChanges])
 			[shoppingList.managedObjectContext save:nil];
 	}];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self dismissViewControllerAnimated:YES completion:nil];
-	else
+//	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		//[self dismissViewControllerAnimated:YES completion:nil];
+//	else
 		[self performSegueWithIdentifier:@"Unwind" sender:nil];
 }
 

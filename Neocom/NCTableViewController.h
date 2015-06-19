@@ -17,6 +17,7 @@
 @property (nonatomic, strong, readonly) NCTaskManager* taskManager;
 @property (nonatomic, strong, readonly) NCCacheRecord* cacheRecord;
 @property (nonatomic, strong, readonly) id data;
+@property (nonatomic, strong) UISearchController* searchController;
 
 - (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
 - (void) didUpdateData:(id) data;

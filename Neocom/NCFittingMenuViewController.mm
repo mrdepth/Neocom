@@ -150,7 +150,7 @@
 												 }];
 												 
 												 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
-												 [self dismissAnimated];
+												 [self.typePickerViewController dismissAnimated];
 											 }];
 		}
 		else if (indexPath.row == 2) {
@@ -168,7 +168,7 @@
 												 fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 												 
 												 [self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
-												 [self dismissAnimated];
+												 [self.typePickerViewController dismissAnimated];
 											 }];
 		}
 	}

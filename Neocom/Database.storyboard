@@ -359,7 +359,7 @@
                         <outlet property="descriptionLabel" destination="sH6-hb-ETj" id="ZaM-FL-6ad"/>
                         <outlet property="imageView" destination="s5t-gK-Wwc" id="WVH-6q-z9J"/>
                         <outlet property="titleLabel" destination="EvT-51-Y7k" id="Fbd-P6-tzb"/>
-                        <segue destination="ufY-cW-LRt" kind="show" identifier="NCNewShoppingItemViewController" id="OPB-g6-4pw"/>
+                        <segue destination="ufY-cW-LRt" kind="custom" identifier="NCNewShoppingItemViewController" customClass="NCAdaptivePopoverSegue" id="OPB-g6-4pw"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aXK-Dz-dyq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -805,7 +805,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="dFj-mD-7QZ" kind="show" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="E04-iH-wb4"/>
+                                    <segue destination="dFj-mD-7QZ" kind="custom" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" customClass="NCAdaptiveModalSegue" id="E04-iH-wb4"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1065,13 +1065,13 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="itz-y8-GPm"/>
+        <segue reference="sbK-kZ-f7D"/>
         <segue reference="J6m-rr-eL7"/>
         <segue reference="IAS-t0-x0K"/>
         <segue reference="dFJ-0K-RGe"/>
-        <segue reference="ns8-Ad-PQ7"/>
         <segue reference="PD6-VV-6gd"/>
         <segue reference="qyD-gc-O13"/>
+        <segue reference="ns8-Ad-PQ7"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

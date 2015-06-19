@@ -18,7 +18,7 @@
 #import "NCTableViewCell.h"
 #import "NCAdaptivePopoverSegue.h"
 
-@interface NCTableViewController ()
+@interface NCTableViewController ()<UISearchResultsUpdating>
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
 @property (nonatomic, strong, readwrite) NCCacheRecord* cacheRecord;
 @property (nonatomic, strong, readwrite) id data;
@@ -165,6 +165,28 @@
 		[self.taskManager cancelAllOperations];
 	}
 }
+
+- (void) setSearchController:(UISearchController *)searchController {
+	_searchController = searchController;
+	searchController.searchResultsUpdater = self;
+	[searchController.searchBar sizeToFit];
+	searchController.hidesNavigationBarDuringPresentation = NO;
+	searchController.searchBar.barStyle = UIBarStyleBlack;
+	searchController.searchBar.tintColor = [UIColor whiteColor];
+
+	self.tableView.tableHeaderView = searchController.searchBar;
+	self.definesPresentationContext = YES;
+}
+
+/*- (UINavigationController*) navigationController {
+	UINavigationController* nc = [super navigationController];
+	if (!nc) {
+		if ([self.presentingViewController isKindOfClass:[self class]])
+			nc = self.presentingViewController.navigationController;
+	}
+	return nc;
+}*/
+
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue isKindOfClass:[NCAdaptivePopoverSegue class]]) {
@@ -368,6 +390,13 @@
 	tableView.backgroundColor = self.tableView.backgroundColor;
 	tableView.separatorColor = self.tableView.separatorColor;
 }
+
+#pragma mark - UISearchResultsUpdating
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+	[self searchWithSearchString:self.searchController.searchBar.text];
+}
+
 
 #pragma mark - UIScrollViewDelegate
 

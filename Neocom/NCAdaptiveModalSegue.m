@@ -8,12 +8,13 @@
 
 #import "NCAdaptiveModalSegue.h"
 #import "UIViewController+Neocom.h"
+#import "NCNavigationController.h"
 
 @implementation NCAdaptiveModalSegue
 
 - (void) perform {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		UINavigationController* controller = [[UINavigationController alloc] initWithRootViewController:self.destinationViewController];
+		UINavigationController* controller = [[NCNavigationController alloc] initWithRootViewController:self.destinationViewController];
 		controller.navigationBar.barStyle = UIBarStyleBlack;
 		controller.navigationBar.tintColor = [UIColor whiteColor];
 		controller.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -21,7 +22,10 @@
 		[self.sourceViewController presentViewController:controller animated:YES completion:nil];
 	}
 	else {
-		[[self.sourceViewController navigationController] pushViewController:self.destinationViewController animated:YES];
+		UINavigationController* controller = [self.sourceViewController navigationController];
+		if (!controller)
+			controller = [[self.sourceViewController presentingViewController] navigationController];
+		[controller pushViewController:self.destinationViewController animated:YES];
 	}
 }
 

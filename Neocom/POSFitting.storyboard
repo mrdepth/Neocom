@@ -409,10 +409,10 @@
                                 <exclude reference="i5e-vm-fKg"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="jO0-C5-BUq"/>
                                 <exclude reference="5ln-oS-TSU"/>
                                 <exclude reference="FI7-Nw-MPx"/>
                                 <exclude reference="hbB-sC-are"/>
-                                <exclude reference="jO0-C5-BUq"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -421,10 +421,10 @@
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="ZNR-xu-hlC"/>
+                                <include reference="jO0-C5-BUq"/>
                                 <include reference="5ln-oS-TSU"/>
                                 <include reference="FI7-Nw-MPx"/>
                                 <include reference="hbB-sC-are"/>
-                                <include reference="jO0-C5-BUq"/>
                             </mask>
                         </variation>
                     </view>
@@ -443,8 +443,8 @@
                         <outlet property="scrollView" destination="KgQ-yF-wPS" id="ull-EP-bEY"/>
                         <outlet property="sectionSegmentedControl" destination="jFM-E8-0sf" id="4Mg-7i-J88"/>
                         <segue destination="5Wk-dt-RY8" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveModalSegue" id="kgL-le-e7F"/>
-                        <segue destination="OsB-48-kC5" kind="custom" identifier="NCFittingDamagePatternsViewController" customClass="NCAdaptiveModalSegue" id="wFS-y0-Xmt"/>
-                        <segue destination="Ean-xO-vhu" kind="custom" identifier="NCNewShoppingItemViewController" customClass="NCAdaptiveModalSegue" id="WGl-HT-gDd"/>
+                        <segue destination="OsB-48-kC5" kind="custom" identifier="NCFittingDamagePatternsViewController" customClass="NCAdaptivePopoverSegue" id="wFS-y0-Xmt"/>
+                        <segue destination="Ean-xO-vhu" kind="custom" identifier="NCNewShoppingItemViewController" customClass="NCAdaptivePopoverSegue" id="WGl-HT-gDd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eh3-qK-zHU" userLabel="First Responder" sceneMemberID="firstResponder"/>

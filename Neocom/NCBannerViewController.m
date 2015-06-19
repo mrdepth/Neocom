@@ -32,6 +32,7 @@
 @property (nonatomic, strong) IBOutlet GADBannerView* gadBannerView;
 @property (nonatomic, weak) UIView* transitionView;
 - (void) updateBanner;
+- (void) updateFrame;
 @end
 
 @implementation NCBannerViewController
@@ -48,8 +49,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.bannerView.intrinsicContentSize = CGSizeZero;
-	
+
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidRemoveAdds:) name:NCApplicationDidRemoveAddsNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -71,6 +71,10 @@
 	self.bannerView = [[NCBannerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 0)];
 	self.bannerView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
 	[self.view addSubview:self.bannerView];
+}
+
+- (void) dealloc {
+	[self.bannerView removeFromSuperview];
 }
 
 - (void)didReceiveMemoryWarning
@@ -98,42 +102,52 @@
 
 - (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-	self.transitionView.frame = self.view.bounds;
-	self.bannerView.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 0);
+//	self.transitionView.frame = self.view.bounds;
+//	self.bannerView.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 0);
 	[self.gadBannerView removeFromSuperview];
+	[self updateFrame];
 }
 
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
+
 	CGSize size = CGSizeFromGADAdSize(self.gadBannerView.adSize);
 	CGSize bannerSize = CGSizeMake(self.view.frame.size.width, 50);
 	if (!CGSizeEqualToSize(bannerSize, size)) {
 		self.gadBannerView.adSize = GADAdSizeFromCGSize(bannerSize);
+	}
+	
+	[self updateFrame];
+}
+
+- (void) setToolbarHidden:(BOOL)toolbarHidden animated:(BOOL)animated {
+	[super setToolbarHidden:toolbarHidden animated:animated];
+	CAAnimation* animation = [[self.toolbar.layer animationForKey:@"position"] mutableCopy];
+	[self updateFrame];
+
+	if (animation) {
+		[self.toolbar.layer removeAnimationForKey:@"position"];
+		CGPoint from = [[animation valueForKey:@"fromValue"] CGPointValue];
+		from.y = self.toolbar.layer.position.y;
+		[animation setValue:[NSValue valueWithCGPoint:from] forKey:@"fromValue"];
+		[self.toolbar.layer addAnimation:animation forKey:@"position"];
 	}
 }
 
 #pragma mark - GADBannerViewDelegate
 
 - (void)adViewDidReceiveAd:(GADBannerView *)view {
-	CGSize size = CGSizeFromGADAdSize(self.gadBannerView.adSize);
-	self.bannerView.frame = CGRectMake(0, self.view.frame.size.height - size.height, self.view.frame.size.width, size.height);
-	CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.bannerView.frame.origin.y);
-	if (!CGRectEqualToRect(frame, self.transitionView.frame)) {
-		self.transitionView.frame = frame;
-		[self.view setNeedsLayout];
-	}
 	if (!self.gadBannerView.superview) {
 		[self.bannerView addSubview:self.gadBannerView];
+		[self.bannerView setNeedsLayout];
+		[self updateFrame];
 	}
 }
 
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {
 	if (self.gadBannerView.superview) {
-		self.transitionView.frame = self.view.bounds;
-		self.bannerView.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 0);
 		[self.gadBannerView removeFromSuperview];
-		//self.bannerView.intrinsicContentSize = CGSizeZero;
-		//[self.bannerView invalidateIntrinsicContentSize];
+		[self updateFrame];
 	}
 }
 
@@ -170,6 +184,7 @@
 		[self.gadBannerView removeFromSuperview];
 		self.bannerView.intrinsicContentSize = CGSizeZero;
 		[self.bannerView invalidateIntrinsicContentSize];
+		[self updateFrame];
 	}
 	self.gadBannerView = nil;
 }
@@ -194,16 +209,12 @@
 				self.bannerView.intrinsicContentSize = CGSizeZero;
 				[self.bannerView invalidateIntrinsicContentSize];
 				self.gadBannerView = nil;
+				[self updateFrame];
 			}
 		}
 		else {
 			if (!self.gadBannerView) {
 				self.gadBannerView = [[GADBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(self.view.frame.size.width, 50)) origin:CGPointMake(0, 0)];
-//				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-					//self.gadBannerView = [[GADBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(320, 50)) origin:CGPointMake(0, 0)];
-//				else
-//					self.gadBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait origin:CGPointMake(0, 0)];
-				
 				self.gadBannerView.rootViewController = self;
 				self.gadBannerView.adUnitID = @"ca-app-pub-0434787749004673/2607342948";
 				self.gadBannerView.delegate = self;
@@ -218,6 +229,27 @@
 		[self performSelector:@selector(updateBanner) withObject:nil afterDelay:10];
 	}
 	
+}
+
+- (void) updateFrame {
+	CGSize size = CGSizeZero;
+	if (self.gadBannerView.superview)
+		size = CGSizeFromGADAdSize(self.gadBannerView.adSize);
+	
+	CGRect frame = self.bannerView.frame;
+	CGFloat y = CGRectGetMaxY(self.view.bounds);
+	frame.size.height = size.height;
+	frame.origin.y = y - frame.size.height;
+	self.bannerView.frame = frame;
+	
+	frame = self.transitionView.frame;
+	frame.size.height = self.bannerView.frame.origin.y - frame.origin.y;
+	if (!CGRectEqualToRect(self.view.frame, frame))
+		self.transitionView.frame = frame;
+	
+	frame = self.toolbar.frame;
+	frame.origin.y = self.bannerView.frame.origin.y - frame.size.height;
+	self.toolbar.frame = frame;
 }
 
 @end

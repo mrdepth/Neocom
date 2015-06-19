@@ -14,6 +14,7 @@
 @interface NCDatabaseViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* result;
 @property (nonatomic, strong) NSFetchedResultsController* searchResult;
+
 - (void) reload;
 @end
 
@@ -46,10 +47,28 @@
 	else if (self.filter == NCDatabaseFilterUnpublished)
 		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Unpublished", nil);
 	
+	
+	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+		if (self.parentViewController) {
+			self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseViewController"]];
+		}
+		else
+			self.tableView.tableHeaderView = nil;
+	}
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+//	[self.searchController setActive:YES];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+//	[self.searchController setActive:NO];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -169,12 +188,18 @@
 		}
 		NSError* error = nil;
 		[self.searchResult performFetch:&error];
-		[self.searchDisplayController.searchResultsTableView reloadData];
 	}
 	else {
 		self.searchResult = nil;
-		[self.searchDisplayController.searchResultsTableView reloadData];
 	}
+	
+	if (self.searchController) {
+		NCDatabaseViewController* searchResultsController = (NCDatabaseViewController*) self.searchController.searchResultsController;
+		searchResultsController.result = self.searchResult;
+		[searchResultsController.tableView reloadData];
+	}
+	else if (self.searchDisplayController)
+		[self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {

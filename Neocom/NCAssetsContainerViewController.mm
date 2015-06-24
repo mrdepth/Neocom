@@ -51,6 +51,15 @@
 		self.asset.type.group.groupID != NCControlTowerGroupID)
 		self.navigationItem.rightBarButtonItem = nil;
 	
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        if (self.parentViewController) {
+            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCAssetsContainerViewController"]];
+        }
+        else
+            self.tableView.tableHeaderView = nil;
+    }
+
+    
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {

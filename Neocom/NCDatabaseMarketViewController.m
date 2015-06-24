@@ -19,15 +19,6 @@
 
 @implementation NCDatabaseMarketViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -35,6 +26,15 @@
 	if (self.marketGroup)
 		self.title = self.marketGroup.marketGroupName;
 	[self reload];
+    
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        if (self.parentViewController) {
+            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseMarketViewController"]];
+        }
+        else
+            self.tableView.tableHeaderView = nil;
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,12 +94,19 @@
 
 		NSError* error = nil;
 		[self.searchResult performFetch:&error];
-		[self.searchDisplayController.searchResultsTableView reloadData];
 	}
 	else {
 		self.searchResult = nil;
-		[self.searchDisplayController.searchResultsTableView reloadData];
 	}
+    
+    if (self.searchController) {
+        NCDatabaseMarketViewController* searchResultsController = (NCDatabaseMarketViewController*) self.searchController.searchResultsController;
+        searchResultsController.result = self.searchResult;
+        [searchResultsController.tableView reloadData];
+    }
+    else if (self.searchDisplayController)
+        [self.searchDisplayController.searchResultsTableView reloadData];
+
 }
 
 - (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {

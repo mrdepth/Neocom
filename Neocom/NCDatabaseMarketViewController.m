@@ -23,18 +23,20 @@
 {
     [super viewDidLoad];
 	self.refreshControl = nil;
-	if (self.marketGroup)
-		self.title = self.marketGroup.marketGroupName;
-	[self reload];
     
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-        if (self.parentViewController) {
+        if (!self.searchContentsController) {
             self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseMarketViewController"]];
         }
-        else
+        else {
             self.tableView.tableHeaderView = nil;
+            return;
+        }
     }
-
+    
+    if (self.marketGroup)
+        self.title = self.marketGroup.marketGroupName;
+    [self reload];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,17 +64,17 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return tableView == self.tableView ? self.result.sections.count : self.searchResult.sections.count;
+	return tableView == self.tableView && !self.searchContentsController ? self.result.sections.count : self.searchResult.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[section] : self.searchResult.sections[section];
 	return sectionInfo.numberOfObjects;
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[section] : self.searchResult.sections[section];
 	return sectionInfo.name.length > 0 ? sectionInfo.name : nil;
 }
 
@@ -101,7 +103,7 @@
     
     if (self.searchController) {
         NCDatabaseMarketViewController* searchResultsController = (NCDatabaseMarketViewController*) self.searchController.searchResultsController;
-        searchResultsController.result = self.searchResult;
+        searchResultsController.searchResult = self.searchResult;
         [searchResultsController.tableView reloadData];
     }
     else if (self.searchDisplayController)
@@ -110,7 +112,7 @@
 }
 
 - (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	if ([row isKindOfClass:[NCDBInvType class]])
 		return @"TypeCell";
@@ -119,7 +121,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 
 	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;

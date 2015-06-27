@@ -817,7 +817,7 @@
         <!--Regions-->
         <scene sceneID="Q19-0j-1rw">
             <objects>
-                <tableViewController id="1eK-h6-8RJ" customClass="NCDatabaseSolarSystemPickerViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseSolarSystemPickerViewController" id="1eK-h6-8RJ" customClass="NCDatabaseSolarSystemPickerViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="iDN-fT-msT">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -825,20 +825,21 @@
                         <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="aWk-em-POH">
                             <rect key="frame" x="0.0" y="64" width="600" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <textInputTraits key="textInputTraits"/>
                             <connections>
                                 <outlet property="delegate" destination="1eK-h6-8RJ" id="3F8-5e-Lvk"/>
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RegionCell" id="xhZ-FN-mxy" customClass="NCDatabaseSolarSystemPickerRegionCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RegionCell" id="xhZ-FN-mxy" customClass="NCDatabaseSolarSystemPickerRegionCell">
                                 <rect key="frame" x="0.0" y="130" width="320" height="37"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xhZ-FN-mxy" id="Qi4-wM-Pay">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEg-3y-pzN">
+                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEg-3y-pzN">
                                             <rect key="frame" x="544" y="4" width="41" height="29"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                             <state key="normal" title="Select">
@@ -849,7 +850,7 @@
                                                 <segue destination="7XM-HQ-f7b" kind="unwind" identifier="RegionUnwind" unwindAction="unwindFromSolarSystemPicker:" id="FMF-3k-2vg"/>
                                             </connections>
                                         </button>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="227" translatesAutoresizingMaskIntoConstraints="NO" id="O0H-YY-GDw">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="227" translatesAutoresizingMaskIntoConstraints="NO" id="O0H-YY-GDw">
                                             <rect key="frame" x="15" y="0.0" width="514" height="36"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="36" id="Y99-23-zua"/>
@@ -862,7 +863,7 @@
                                     <constraints>
                                         <constraint firstAttribute="centerY" secondItem="aEg-3y-pzN" secondAttribute="centerY" id="GSR-xL-YZk"/>
                                         <constraint firstItem="O0H-YY-GDw" firstAttribute="top" secondItem="Qi4-wM-Pay" secondAttribute="top" id="cw6-OZ-Pr9"/>
-                                        <constraint firstAttribute="bottom" secondItem="O0H-YY-GDw" secondAttribute="bottom" id="g86-vt-NXq"/>
+                                        <constraint firstAttribute="bottom" secondItem="O0H-YY-GDw" secondAttribute="bottom" priority="50" id="g86-vt-NXq"/>
                                         <constraint firstItem="aEg-3y-pzN" firstAttribute="leading" secondItem="O0H-YY-GDw" secondAttribute="trailing" constant="15" id="jKR-6s-MsJ"/>
                                         <constraint firstAttribute="trailing" secondItem="aEg-3y-pzN" secondAttribute="trailing" constant="15" id="mpK-Ln-Bwx"/>
                                         <constraint firstItem="O0H-YY-GDw" firstAttribute="leading" secondItem="Qi4-wM-Pay" secondAttribute="leading" constant="15" id="sTh-KW-BmS"/>
@@ -870,8 +871,9 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
+                                    <outlet property="layoutContentView" destination="Qi4-wM-Pay" id="wRE-t0-X8l"/>
                                     <outlet property="titleLabel" destination="O0H-YY-GDw" id="sIP-NN-dHk"/>
-                                    <segue destination="1eK-h6-8RJ" kind="show" identifier="NCDatabaseSolarSystemPickerViewController" id="uGC-zj-9DV"/>
+                                    <segue destination="1eK-h6-8RJ" kind="push" identifier="NCDatabaseSolarSystemPickerViewController" id="uGC-zj-9DV"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SolarSystemCell" id="Xly-iS-fWM" customClass="NCDefaultTableViewCell">

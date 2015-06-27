@@ -146,6 +146,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        if (!self.searchContentsController) {
+            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCAssetsViewController"]];
+        }
+        else {
+            self.tableView.tableHeaderView = nil;
+            return;
+        }
+    }
+
 	NCAccount* account = [NCAccount currentAccount];
 	if (account) {
 		NSArray* accounts = self.accounts;
@@ -153,6 +164,7 @@
 			self.accounts = @[account];
 	}
 
+    
 	// Do any additional setup after loading the view.
 }
 
@@ -202,18 +214,18 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NCAssetsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.data : self.searchResults;
 	return data.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NCAssetsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.data : self.searchResults;
 	return [[data.sections[section] assets] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
-	NCAssetsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.data : self.searchResults;
 	NCAssetsViewControllerDataSection* section = data.sections[sectionIndex];
 	return [NSString stringWithFormat:@"%@ (%@)", section.title, [NSNumberFormatter neocomLocalizedStringFromInteger:section.assets.count]];
 }
@@ -222,7 +234,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-	NCAssetsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.data : self.searchResults;
 	NCAssetsViewControllerDataSection* section = data.sections[indexPath.section];
 	EVEAssetListItem* asset = section.assets[indexPath.row];
 	if (asset.contents.count == 0)
@@ -514,7 +526,14 @@
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {
 									 self.searchResults = searchResults;
-									 [self.searchDisplayController.searchResultsTableView reloadData];
+                                     
+                                     if (self.searchController) {
+                                         NCAssetsViewController* searchResultsController = (NCAssetsViewController*) self.searchController.searchResultsController;
+                                         searchResultsController.searchResults = self.searchResults;
+                                         [searchResultsController.tableView reloadData];
+                                     }
+                                     else if (self.searchDisplayController)
+                                         [self.searchDisplayController.searchResultsTableView reloadData];
 								 }
 							 }];
 }
@@ -530,7 +549,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCAssetsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.data : self.searchResults;
 	NCAssetsViewControllerDataSection* section = data.sections[indexPath.section];
 	EVEAssetListItem* asset = section.assets[indexPath.row];
 	

@@ -37,6 +37,16 @@
 		self.title = self.category.categoryName;
 	self.refreshControl = nil;
 	
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        if (self.parentViewController) {
+            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseViewController"]];
+        }
+        else {
+            self.tableView.tableHeaderView = nil;
+            return;
+        }
+    }
+    
 	if (!self.result) {
 		[self reload];
 	}
@@ -47,14 +57,6 @@
 	else if (self.filter == NCDatabaseFilterUnpublished)
 		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Unpublished", nil);
 	
-	
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-		if (self.parentViewController) {
-			self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseViewController"]];
-		}
-		else
-			self.tableView.tableHeaderView = nil;
-	}
 }
 
 - (void)didReceiveMemoryWarning {

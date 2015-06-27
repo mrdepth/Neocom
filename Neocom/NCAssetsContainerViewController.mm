@@ -52,11 +52,13 @@
 		self.navigationItem.rightBarButtonItem = nil;
 	
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-        if (self.parentViewController) {
+        if (!self.searchContentsController) {
             self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCAssetsContainerViewController"]];
         }
-        else
+        else {
             self.tableView.tableHeaderView = nil;
+            return;
+        }
     }
 
     
@@ -225,18 +227,18 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NSArray* sections = tableView == self.tableView ? self.sections : self.searchResults;
+	NSArray* sections = tableView == self.tableView && !self.searchContentsController ? self.sections : self.searchResults;
 	return sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NSArray* sections = tableView == self.tableView ? self.sections : self.searchResults;
+	NSArray* sections = tableView == self.tableView && !self.searchContentsController ? self.sections : self.searchResults;
 	return [[sections[section] assets] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
-	NSArray* sections = tableView == self.tableView ? self.sections : self.searchResults;
+	NSArray* sections = tableView == self.tableView && !self.searchContentsController ? self.sections : self.searchResults;
 	NCAssetsContainerViewControllerSection* section = sections[sectionIndex];
 	return [NSString stringWithFormat:@"%@ (%@)", section.title, [NSNumberFormatter neocomLocalizedStringFromInteger:section.assets.count]];
 }
@@ -245,7 +247,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-	NSArray* sections = tableView == self.tableView ? self.sections : self.searchResults;
+	NSArray* sections = tableView == self.tableView && !self.searchContentsController ? self.sections : self.searchResults;
 	NCAssetsContainerViewControllerSection* section = sections[indexPath.section];
 	EVEAssetListItem* asset = section.assets[indexPath.row];
 	if (asset.contents.count == 0)
@@ -309,7 +311,14 @@
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {
 									 self.searchResults = searchResults;
-									 [self.searchDisplayController.searchResultsTableView reloadData];
+                                     
+                                     if (self.searchController) {
+                                         NCAssetsContainerViewController* searchResultsController = (NCAssetsContainerViewController*) self.searchController.searchResultsController;
+                                         searchResultsController.searchResults = self.searchResults;
+                                         [searchResultsController.tableView reloadData];
+                                     }
+                                     else if (self.searchDisplayController)
+                                         [self.searchDisplayController.searchResultsTableView reloadData];
 								 }
 							 }];
 }
@@ -319,7 +328,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NSArray* sections = tableView == self.tableView ? self.sections : self.searchResults;
+	NSArray* sections = tableView == self.tableView && !self.searchContentsController ? self.sections : self.searchResults;
 	NCAssetsContainerViewControllerSection* section = sections[indexPath.section];
 	EVEAssetListItem* asset = section.assets[indexPath.row];
 	

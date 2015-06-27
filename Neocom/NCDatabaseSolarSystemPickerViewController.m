@@ -28,6 +28,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        if (self.parentViewController) {
+            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseSolarSystemPickerViewController"]];
+        }
+        else {
+            self.tableView.tableHeaderView = nil;
+            return;
+        }
+    }
+
 	if (self.region)
 		self.title = self.region.regionName;
 	
@@ -82,7 +93,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if (tableView == self.tableView)
+	if (tableView == self.tableView && !self.searchContentsController)
 		return 1;
 	else
 		return self.searchResults.count;
@@ -90,14 +101,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if (tableView == self.tableView)
+	if (tableView == self.tableView && !self.searchContentsController)
 		return self.rows.count;
 	else
 		return [self.searchResults[section][@"rows"] count];
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (tableView == self.tableView)
+	if (tableView == self.tableView && !self.searchContentsController)
 		return nil;
 	else
 		return self.searchResults[section][@"title"];
@@ -142,12 +153,19 @@
 			[searchResults addObject:@{@"rows": solarSystems, @"title": NSLocalizedString(@"Solar Systems", nil)}];
 	}
 	self.searchResults = searchResults;
-	[self.searchDisplayController.searchResultsTableView reloadData];
+    
+    if (self.searchController) {
+        NCDatabaseSolarSystemPickerViewController* searchResultsController = (NCDatabaseSolarSystemPickerViewController*) self.searchController.searchResultsController;
+        searchResultsController.searchResults = self.searchResults;
+        [searchResultsController.tableView reloadData];
+    }
+    else if (self.searchDisplayController)
+        [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	id row;
-	if (tableView == self.tableView)
+	if (tableView == self.tableView && !self.searchContentsController)
 		row = self.rows[indexPath.row];
 	else
 		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
@@ -160,7 +178,7 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	id row;
-	if (tableView == self.tableView)
+	if (tableView == self.tableView && !self.searchContentsController)
 		row = self.rows[indexPath.row];
 	else
 		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];

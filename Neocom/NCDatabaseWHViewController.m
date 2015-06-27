@@ -38,6 +38,18 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	self.refreshControl = nil;
+    
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        if (self.parentViewController) {
+            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseWHViewController"]];
+        }
+        else {
+            self.tableView.tableHeaderView = nil;
+            return;
+        }
+    }
+
+    
 	if (!self.result)
 		[self reload];
 }
@@ -63,17 +75,17 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return tableView == self.tableView ? self.result.sections.count : self.searchResult.sections.count;
+	return tableView == self.tableView && !self.searchContentsController ? self.result.sections.count : self.searchResult.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	id<NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	id<NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[section] : self.searchResult.sections[section];
 	return sectionInfo.numberOfObjects;
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	id<NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	id<NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[section] : self.searchResult.sections[section];
 	return sectionInfo.name;
 }
 
@@ -93,16 +105,23 @@
 		
 		[controller performFetch:nil];
 		self.searchResult = controller;
-		[self.searchDisplayController.searchResultsTableView reloadData];
 	}
 	else {
 		self.searchResult = nil;
-		[self.searchDisplayController.searchResultsTableView reloadData];
 	}
+    
+    if (self.searchController) {
+        NCDatabaseWHViewController* searchResultsController = (NCDatabaseWHViewController*) self.searchController.searchResultsController;
+        searchResultsController.searchResult = self.searchResult;
+        [searchResultsController.tableView reloadData];
+    }
+    else if (self.searchDisplayController)
+        [self.searchDisplayController.searchResultsTableView reloadData];
+
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCDBWhType* row = tableView == self.tableView ? [self.result objectAtIndexPath:indexPath] : [self.searchResult objectAtIndexPath:indexPath];
+	NCDBWhType* row = tableView == self.tableView && !self.searchContentsController ? [self.result objectAtIndexPath:indexPath] : [self.searchResult objectAtIndexPath:indexPath];
 	
 	cell.titleLabel.text = row.type.typeName;
 	if (row.maxJumpMass > 0)

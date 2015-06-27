@@ -79,7 +79,7 @@
                     <connections>
                         <outlet property="balanceLabel" destination="0gH-Sb-Mq9" id="15K-ox-FCE"/>
                         <outlet property="searchDisplayController" destination="u7V-24-vab" id="yuo-F3-bre"/>
-                        <segue destination="TvR-8U-ty6" kind="show" identifier="NCAssetsContainerViewController" id="Fen-pK-A2o"/>
+                        <segue destination="TvR-8U-ty6" kind="push" identifier="NCAssetsContainerViewController" id="Fen-pK-A2o"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XTb-9E-zeL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -424,7 +424,7 @@
         <!--Assets-->
         <scene sceneID="X3O-Ap-RDL">
             <objects>
-                <tableViewController id="TvR-8U-ty6" customClass="NCAssetsContainerViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCAssetsContainerViewController" id="TvR-8U-ty6" customClass="NCAssetsContainerViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="tBa-hz-QMr" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1501,7 +1501,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="On9-oC-MEU"/>
         <segue reference="Fen-pK-A2o"/>
+        <segue reference="cqV-az-kho"/>
     </inferredMetricsTieBreakers>
 </document>

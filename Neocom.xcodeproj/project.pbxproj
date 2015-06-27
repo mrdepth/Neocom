@@ -163,8 +163,6 @@
 		1225A0B71A400954005DD73B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1225A0B61A400954005DD73B /* Launch Screen.xib */; };
 		1229475D18EA8B2E0093FAB8 /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; };
 		122947EB18EAA51D0093FAB8 /* NCSkillsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */; };
-		122947ED18EAB3950093FAB8 /* Fitting_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122947EC18EAB3950093FAB8 /* Fitting_iPad.storyboard */; };
-		122947EF18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122947EE18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard */; };
 		122947F318EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122947F218EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm */; };
 		122AC51518BCD84C005F0F46 /* EVEzKillBoardSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 122AC51418BCD84C005F0F46 /* EVEzKillBoardSearch.m */; };
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
@@ -177,10 +175,7 @@
 		122F01C519483A0700D04D60 /* NCDBEveIcon+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 122F01C419483A0700D04D60 /* NCDBEveIcon+Neocom.m */; };
 		122F01C819483D2100D04D60 /* NCDBInvType+Neocom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122F01C719483D2100D04D60 /* NCDBInvType+Neocom.mm */; };
 		12331DC118F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12331DC018F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.m */; };
-		1235E3EF18E552C100BC2607 /* Database_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1235E3EE18E552C100BC2607 /* Database_iPad.storyboard */; };
 		1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1235E3F318E562E300BC2607 /* NCNavigationController.m */; };
-		1235E3F618E56F0B00BC2607 /* Character_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1235E3F518E56F0B00BC2607 /* Character_iPad.storyboard */; };
-		1235E3F818E5825800BC2607 /* Market_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1235E3F718E5825800BC2607 /* Market_iPad.storyboard */; };
 		123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 123A97F218C7017E001045F5 /* MessageUI.framework */; };
 		123A97F718C708FE001045F5 /* NSString+Temp.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A97F618C708FE001045F5 /* NSString+Temp.m */; };
 		123A97FC18C714B7001045F5 /* rss.png in Resources */ = {isa = PBXBuildFile; fileRef = 123A97FA18C714B7001045F5 /* rss.png */; };
@@ -368,7 +363,6 @@
 		127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 127123A81897A94E005F46EE /* NCProgressLabel.m */; };
 		127123AA1897ABF3005F46EE /* libeufe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1271239518978236005F46EE /* libeufe.a */; };
 		127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */; };
-		127BF2611AD79B240037A401 /* ShoppingList_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 127BF2601AD79B240037A401 /* ShoppingList_iPad.storyboard */; };
 		127C50B718CF52DA0074877C /* clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50B618CF52D90074877C /* clear.png */; };
 		127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */; };
 		128A1F32189906A400005C4F /* NCFittingShipWorkspaceViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F31189906A400005C4F /* NCFittingShipWorkspaceViewController.mm */; };
@@ -450,7 +444,6 @@
 		12ACDCA618A0AD2600566DFE /* NCFittingDamagePatternsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */; };
 		12ACDCAA18A0B12D00566DFE /* NCFittingDamagePatternCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */; };
 		12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */; };
-		12B3198818DAFA8C00025C53 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B3198718DAFA8C00025C53 /* Main_iPad.storyboard */; };
 		12B42E6C1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B42E6B1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m */; };
 		12B42E6E1AC7182000A0D956 /* ShoppingList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B42E6D1AC7182000A0D956 /* ShoppingList.storyboard */; };
 		12B42E711AC8432900A0D956 /* NCShoppingItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B42E701AC8432900A0D956 /* NCShoppingItem+Neocom.m */; };
@@ -467,10 +460,7 @@
 		12B950A11ADB8D96009E31DB /* NCFittingExportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B950A01ADB8D96009E31DB /* NCFittingExportViewController.mm */; };
 		12B950A31ADB8EC7009E31DB /* augmentations.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B950A21ADB8EC7009E31DB /* augmentations.png */; };
 		12B950A51ADB8F15009E31DB /* browser.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B950A41ADB8F15009E31DB /* browser.png */; };
-		12B971A318EC28D2008F8740 /* POSFitting_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B971A218EC28D2008F8740 /* POSFitting_iPad.storyboard */; };
 		12B971A718EC2A11008F8740 /* NCFittingPOSStatsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B971A618EC2A11008F8740 /* NCFittingPOSStatsViewController.mm */; };
-		12B971A918EC3D08008F8740 /* KillBoard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B971A818EC3D08008F8740 /* KillBoard_iPad.storyboard */; };
-		12B971AB18EC4A39008F8740 /* Help_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B971AA18EC4A38008F8740 /* Help_iPad.storyboard */; };
 		12B97D3318AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3218AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m */; };
 		12B97D3818AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3718AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm */; };
 		12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3B18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m */; };
@@ -4885,7 +4875,6 @@
 				849B9FC51896D24A00D4DD2B /* launchers.png in Resources */,
 				1219C1241A9E662C00FF6205 /* charactersheet.png in Resources */,
 				126F1CE51954069F00E5CD4F /* charisma.png in Resources */,
-				12B3198818DAFA8C00025C53 /* Main_iPad.storyboard in Resources */,
 				126F1CDE195405E200E5CD4F /* falloff.png in Resources */,
 				849B9FD01896D24A00D4DD2B /* shieldRecharge.png in Resources */,
 				126F1CD41954047100E5CD4F /* droneRange.png in Resources */,
@@ -4907,9 +4896,7 @@
 				849B9FC01896D24A00D4DD2B /* hull.png in Resources */,
 				1219C12D1A9E662C00FF6205 /* items.png in Resources */,
 				120B507C18FCFFCB0033AF78 /* level_131.gif in Resources */,
-				122947ED18EAB3950093FAB8 /* Fitting_iPad.storyboard in Resources */,
 				1219C1361A9E662C00FF6205 /* rate@2x.png in Resources */,
-				1235E3EF18E552C100BC2607 /* Database_iPad.storyboard in Resources */,
 				120B508718FCFFCB0033AF78 /* level_251.gif in Resources */,
 				84EEFCEB1896C69C007962A0 /* mordusLegion@2x.png in Resources */,
 				1219C1301A9E662C00FF6205 /* killrights.png in Resources */,
@@ -4924,12 +4911,10 @@
 				849B9FB01896D24A00D4DD2B /* armor.png in Resources */,
 				120B507618FCFFCB0033AF78 /* level_050.gif in Resources */,
 				12045E521AD16E9800AD32F8 /* map.png in Resources */,
-				127BF2611AD79B240037A401 /* ShoppingList_iPad.storyboard in Resources */,
 				849B9FDA1896D24A00D4DD2B /* thumbsDown.png in Resources */,
 				126F1CE81954069F00E5CD4F /* perception.png in Resources */,
 				120B508E18FCFFCB0033AF78 /* level_450.gif in Resources */,
 				1261593D18EE7BFD0049B9CE /* eufe.sqlite in Resources */,
-				12B971AB18EC4A39008F8740 /* Help_iPad.storyboard in Resources */,
 				120B507918FCFFCB0033AF78 /* level_120.gif in Resources */,
 				120B507318FCFFCB0033AF78 /* level_031.gif in Resources */,
 				120B507718FCFFCB0033AF78 /* level_051.gif in Resources */,
@@ -4965,7 +4950,6 @@
 				849B9FB11896D24A00D4DD2B /* armorRepairer.png in Resources */,
 				849B9FCB1896D24A00D4DD2B /* powerGrid.png in Resources */,
 				1216EB8E1AE0F5FF0026AF58 /* planetarycommodities.png in Resources */,
-				12B971A318EC28D2008F8740 /* POSFitting_iPad.storyboard in Resources */,
 				1219C1271A9E662C00FF6205 /* evemail.png in Resources */,
 				1219C1311A9E662C00FF6205 /* market.png in Resources */,
 				1219C1261A9E662C00FF6205 /* contacts.png in Resources */,
@@ -5012,7 +4996,6 @@
 				849B9FBB1896D24A00D4DD2B /* droneBandwidth.png in Resources */,
 				12B42E6E1AC7182000A0D956 /* ShoppingList.storyboard in Resources */,
 				1219C1211A9E662C00FF6205 /* assets.png in Resources */,
-				12B971A918EC3D08008F8740 /* KillBoard_iPad.storyboard in Resources */,
 				123F0ADB18C5C8AC00D53602 /* evemon.html in Resources */,
 				849B9FBA1896D24A00D4DD2B /* drone.png in Resources */,
 				123A97FC18C714B7001045F5 /* rss.png in Resources */,
@@ -5028,7 +5011,6 @@
 				126F1CD81954047100E5CD4F /* warpSpeed.png in Resources */,
 				123A980418C71548001045F5 /* rssFeeds.plist in Resources */,
 				1209685D1845F0CB00921A37 /* InfoPlist.strings in Resources */,
-				1235E3F818E5825800BC2607 /* Market_iPad.storyboard in Resources */,
 				1219C1321A9E662C00FF6205 /* marketdeliveries.png in Resources */,
 				84EEFCED1896C69C007962A0 /* serpentis@2x.png in Resources */,
 				1219C12B1A9E662C00FF6205 /* industry.png in Resources */,
@@ -5036,11 +5018,9 @@
 				128D29B418BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib in Resources */,
 				12430BBB18C881EA0025D971 /* Help.storyboard in Resources */,
 				12C66E4E18D026690037124A /* arrowDown@2x.png in Resources */,
-				1235E3F618E56F0B00BC2607 /* Character_iPad.storyboard in Resources */,
 				1219C1351A9E662C00FF6205 /* rate.png in Resources */,
 				126F1CD61954047100E5CD4F /* priceShip.png in Resources */,
 				849B9FCE1896D24A00D4DD2B /* shield.png in Resources */,
-				122947EF18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard in Resources */,
 				123A97FD18C714B7001045F5 /* rss@2x.png in Resources */,
 				120B507D18FCFFCB0033AF78 /* level_140.gif in Resources */,
 				849B9FB81896D24A00D4DD2B /* damagePattern.png in Resources */,

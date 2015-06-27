@@ -83,6 +83,8 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    [super prepareForSegue:segue sender:sender];
+    
 	if ([segue.identifier isEqualToString:@"NCDatabaseGroupPickerViewContoller"]) {
 		NCDatabaseGroupPickerViewContoller* controller;
 		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
@@ -181,7 +183,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 												  animated:YES
 										 completionHandler:^(NCDBInvType *type) {
 											 self.type = type;
-											 [self dismissAnimated];
+											 [self.typePickerViewController dismissAnimated];
 											 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 											 if (self.group) {
 												 self.group = nil;

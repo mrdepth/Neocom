@@ -27,6 +27,7 @@
 #import "NCAPIKeyAccessMaskViewController.h"
 #import "NCShoppingList.h"
 #import "NCSplashScreenViewController.h"
+#import "NCSkillPlanViewController.h"
 
 
 @interface NCAppDelegate()<SKPaymentTransactionObserver, UISplitViewControllerDelegate>
@@ -484,16 +485,15 @@
 	else {
 		NSData* data = [[NSData dataWithContentsOfURL:url] uncompressedData];
 		NSString* name = [[url lastPathComponent] stringByDeletingPathExtension];
+		
 		if (data) {
 			if (!name)
 				name = NSLocalizedString(@"Skill Plan", nil);
-			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-				UISplitViewController* splitViewController = (UISplitViewController*) self.window.rootViewController;
-				[splitViewController.viewControllers[0] performSegueWithIdentifier:@"NCSkillPlanViewController" sender:@{@"name": name, @"data": data}];
-			}
-			else
-				[self.window.rootViewController performSegueWithIdentifier:@"NCSkillPlanViewController" sender:@{@"name": name, @"data": data}];
-
+			UINavigationController* navigationController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCSkillPlanViewController"];
+			NCSkillPlanViewController* controller = navigationController.viewControllers[0];
+			controller.xmlData = data;
+			controller.skillPlanName = name;
+			[self.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
 		}
 	}
 	[[NSFileManager defaultManager] removeItemAtURL:url error:nil];

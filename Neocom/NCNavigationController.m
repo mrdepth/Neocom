@@ -12,7 +12,7 @@
 
 @interface NCNavigationController ()
 @property (nonatomic, strong) UITapGestureRecognizer* tapOutsideGestureRecognizer;
-- (void) onTap:(UITapGestureRecognizer *)recognizer;
+//- (void) onTap:(UITapGestureRecognizer *)recognizer;
 @end
 
 @implementation NCNavigationController

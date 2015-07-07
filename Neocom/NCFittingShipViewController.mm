@@ -892,9 +892,18 @@
 											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
 												   
 												   if (selectedButtonIndex == 0) {
-													   __block NSError* error = nil;
 													   NSString* dna = self.fit.dnaRepresentation;
-													   __block NSString* shortenLink = nil;
+													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"http://neocom.by/api/fitting?dna=%@", [dna stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+													   [[UIAlertView alertViewWithTitle:nil
+																				message:NSLocalizedString(@"Link has been copied to clipboard", nil)
+																	  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+																	  otherButtonTitles:nil
+																		completionBlock:nil
+																			cancelBlock:nil] show];
+
+													  /* __block NSString* shortenLink = nil;
+													   __block NSError* error = nil;
+
 													   [[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 																							title:NCTaskManagerDefaultTitle
 																							block:^(NCTask *task) {
@@ -931,7 +940,7 @@
 																											 cancelBlock:nil] show];
 																					}
 																				}];
-													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"fitting:%@", self.fit.dnaRepresentation]];
+													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"fitting:%@", self.fit.dnaRepresentation]];*/
 												   }
 												   else if (selectedButtonIndex == 1)
 													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"fitting:%@", self.fit.dnaRepresentation]];

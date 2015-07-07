@@ -308,7 +308,8 @@
 		cell.typeImageView.image = type.icon ? type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		
 		eufe::Charge* charge = module->getCharge();
-		
+		eufe::Ship* ship = self.controller.fit.pilot->getShip();
+
 		if (charge) {
 			type = [self.controller typeWithItem:charge];
 			float volume = charge->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
@@ -321,21 +322,56 @@
 		else
 			cell.chargeLabel.text = nil;
 		
-		int optimal = (int) module->getMaxRange();
-		int falloff = (int) module->getFalloff();
+		float optimal = module->getMaxRange();
+		float falloff = module->getFalloff();
 		float trackingSpeed = module->getTrackingSpeed();
 		float lifeTime = module->getLifeTime();
+		float velocity = ship->getVelocity();
 		
 		if (optimal > 0) {
 			NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
 			if (falloff > 0)
 				[s appendFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-			if (trackingSpeed > 0)
-				[s appendFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
 			cell.optimalLabel.text = s;
 		}
 		else
 			cell.optimalLabel.text = nil;
+		
+		if (trackingSpeed > 0) {
+			float v0 = ship->getMaxVelocityInOrbit(optimal);
+			float v1 = ship->getMaxVelocityInOrbit(optimal + falloff);
+			
+			UIColor* color = trackingSpeed * optimal > v0 ? [UIColor greenColor] : (trackingSpeed * (optimal + falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
+			
+			NSMutableAttributedString* s = [NSMutableAttributedString new];
+			
+			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@ rad/sec (", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]]
+																	  attributes:nil]];
+			NSTextAttachment* icon;
+			icon = [NSTextAttachment new];
+			icon.image = [UIImage imageNamed:@"targetingRange.png"];
+			icon.bounds = CGRectMake(0, -7 -cell.trackingLabel.font.descender, 15, 15);
+			[s appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
+			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@+ m)", nil),
+																				  [NSNumberFormatter neocomLocalizedStringFromNumber:@(velocity / trackingSpeed)]]
+																	  attributes:nil]];
+			
+			
+/*			icon = [NSTextAttachment new];
+			icon.image = [UIImage imageNamed:@"falloff.png"];
+			icon.bounds = CGRectMake(0, -7 -cell.trackingLabel.font.descender, 15, 15);
+			[s appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
+			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@ m/s", nil),
+																				  [NSNumberFormatter neocomLocalizedStringFromNumber:@((optimal + falloff) * trackingSpeed)]]
+																	  attributes:@{NSForegroundColorAttributeName: falloffColor}]];
+
+			[s appendAttributedString:[[NSAttributedString alloc] initWithString:@")" attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor]}]];*/
+			cell.trackingLabel.attributedText = s;
+			cell.trackingLabel.textColor = color;
+		}
+		else
+			cell.trackingLabel.text = nil;
+
 		
 		if (lifeTime > 0)
 			cell.lifetimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];

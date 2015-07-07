@@ -457,7 +457,7 @@
 }
 
 - (IBAction)onChangeSection:(UISegmentedControl*)sender {
-	[self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * sender.selectedSegmentIndex, 0) animated:YES];
+	[self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * sender.selectedSegmentIndex, 0) animated:NO];
 }
 
 - (IBAction)onAction:(id)sender {

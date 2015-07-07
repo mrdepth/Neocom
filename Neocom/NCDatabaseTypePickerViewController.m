@@ -52,9 +52,12 @@
 - (void) presentWithCategory:(NCDBEufeItemCategory*) category inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(NCDBInvType* type)) completion {
 	if (![self.category isEqual:category]) {
 		self.category = category;
-		for (UIViewController* controller in self.viewControllers)
-			if ([controller.searchDisplayController isActive])
+		for (NCTableViewController* controller in self.viewControllers) {
+			if (controller.searchController.isActive)
+				[controller.searchController setActive:NO];
+			else if (controller.searchDisplayController.isActive)
 				[controller.searchDisplayController setActive:NO animated:NO];
+		}
 		
 		if (self.viewControllers.count > 1)
 			[self setViewControllers:@[[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]] animated:NO];

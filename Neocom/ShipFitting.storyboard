@@ -1148,7 +1148,7 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCFittingShipModuleCell" rowHeight="67" id="Thf-yW-Iql" customClass="NCFittingShipModuleCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCFittingShipModuleCell" rowHeight="82" id="Thf-yW-Iql" customClass="NCFittingShipModuleCell">
                                 <rect key="frame" x="0.0" y="186" width="320" height="72"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Thf-yW-Iql" id="7qc-WS-OUh">
@@ -1156,10 +1156,10 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ic8-4j-VVe">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="81"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JML-hi-Gk3">
-                                                    <rect key="frame" x="15" y="17" width="32" height="32"/>
+                                                    <rect key="frame" x="15" y="25" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="Rp4-Wx-GTr"/>
                                                         <constraint firstAttribute="width" constant="32" id="WXz-jS-pnf"/>
@@ -1183,21 +1183,27 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Life time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Oly-ag-BO8">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tracking" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7xG-R6-d2j">
                                                     <rect key="frame" x="55" y="49" width="208" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Life time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Oly-ag-BO8">
+                                                    <rect key="frame" x="55" y="64" width="208" height="15"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="Wsw-Of-SRH">
-                                                    <rect key="frame" x="289" y="25" width="16" height="16"/>
+                                                    <rect key="frame" x="289" y="33" width="16" height="16"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="16" id="7Yf-wD-x3D"/>
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="16" id="Uh5-uK-4D1"/>
                                                     </constraints>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="uKw-1g-vFy">
-                                                    <rect key="frame" x="271" y="25" width="16" height="16"/>
+                                                    <rect key="frame" x="271" y="33" width="16" height="16"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="16" id="hLD-sF-oRf"/>
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="16" id="joY-O9-LQf"/>
@@ -1210,14 +1216,16 @@
                                                 <constraint firstAttribute="bottom" secondItem="Oly-ag-BO8" secondAttribute="bottom" constant="2" id="3iO-LV-xEk"/>
                                                 <constraint firstItem="JML-hi-Gk3" firstAttribute="leading" secondItem="ic8-4j-VVe" secondAttribute="leading" constant="15" id="6Vi-q0-mix"/>
                                                 <constraint firstItem="ilR-vk-X0g" firstAttribute="top" secondItem="cgv-cE-48m" secondAttribute="bottom" id="9Do-Qc-4g6"/>
+                                                <constraint firstItem="7xG-R6-d2j" firstAttribute="leading" secondItem="vUq-Mg-e7y" secondAttribute="leading" id="EZS-pa-h2p"/>
                                                 <constraint firstItem="cgv-cE-48m" firstAttribute="leading" secondItem="JML-hi-Gk3" secondAttribute="trailing" constant="8" id="I3T-q2-xmD"/>
                                                 <constraint firstAttribute="centerY" secondItem="uKw-1g-vFy" secondAttribute="centerY" id="Ij4-f0-wGU"/>
+                                                <constraint firstItem="7xG-R6-d2j" firstAttribute="trailing" secondItem="vUq-Mg-e7y" secondAttribute="trailing" id="K9R-35-mQ1"/>
                                                 <constraint firstAttribute="centerY" secondItem="JML-hi-Gk3" secondAttribute="centerY" id="KH9-FM-4YT"/>
                                                 <constraint firstItem="JML-hi-Gk3" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ic8-4j-VVe" secondAttribute="top" constant="2" id="NoF-2E-Cav"/>
                                                 <constraint firstItem="uKw-1g-vFy" firstAttribute="leading" secondItem="cgv-cE-48m" secondAttribute="trailing" constant="8" id="QAf-Qv-tFn"/>
+                                                <constraint firstItem="Oly-ag-BO8" firstAttribute="top" secondItem="7xG-R6-d2j" secondAttribute="bottom" id="R7r-27-TLI"/>
                                                 <constraint firstItem="cgv-cE-48m" firstAttribute="top" secondItem="ic8-4j-VVe" secondAttribute="top" constant="2" id="Wzb-o8-1zl"/>
                                                 <constraint firstAttribute="trailing" secondItem="Wsw-Of-SRH" secondAttribute="trailing" constant="15" id="bUj-wg-8SS"/>
-                                                <constraint firstItem="Oly-ag-BO8" firstAttribute="top" secondItem="vUq-Mg-e7y" secondAttribute="bottom" id="cfQ-fS-AxU"/>
                                                 <constraint firstItem="Oly-ag-BO8" firstAttribute="trailing" secondItem="vUq-Mg-e7y" secondAttribute="trailing" id="clv-6X-V7Z"/>
                                                 <constraint firstItem="vUq-Mg-e7y" firstAttribute="top" secondItem="ilR-vk-X0g" secondAttribute="bottom" id="eSs-go-1X6"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="JML-hi-Gk3" secondAttribute="bottom" constant="2" id="hUD-kN-pd5"/>
@@ -1227,6 +1235,7 @@
                                                 <constraint firstItem="Wsw-Of-SRH" firstAttribute="leading" secondItem="uKw-1g-vFy" secondAttribute="trailing" constant="2" id="oN3-rn-kGO"/>
                                                 <constraint firstAttribute="centerY" secondItem="Wsw-Of-SRH" secondAttribute="centerY" id="omm-6A-eoP"/>
                                                 <constraint firstItem="Oly-ag-BO8" firstAttribute="leading" secondItem="vUq-Mg-e7y" secondAttribute="leading" id="phn-EK-35H"/>
+                                                <constraint firstItem="7xG-R6-d2j" firstAttribute="top" secondItem="vUq-Mg-e7y" secondAttribute="bottom" id="sjX-VB-wVh"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -1245,6 +1254,7 @@
                                     <outlet property="optimalLabel" destination="vUq-Mg-e7y" id="J1P-3R-g6x"/>
                                     <outlet property="stateImageView" destination="Wsw-Of-SRH" id="b7P-Xp-Ue9"/>
                                     <outlet property="targetImageView" destination="uKw-1g-vFy" id="OgY-Z0-h1f"/>
+                                    <outlet property="trackingLabel" destination="7xG-R6-d2j" id="cgg-2T-kvy"/>
                                     <outlet property="typeImageView" destination="JML-hi-Gk3" id="xgg-ht-RHG"/>
                                     <outlet property="typeNameLabel" destination="cgv-cE-48m" id="Uh9-cW-Vpj"/>
                                 </connections>

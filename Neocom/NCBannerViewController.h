@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCNavigationController.h"
 
 @interface NCBannerView : UIView
 
 @end
 
-@interface NCBannerViewController : UIViewController
-@property (nonatomic, weak) IBOutlet NCBannerView* bannerView;
+@interface NCBannerViewController : NCNavigationController
+@property (nonatomic, strong) IBOutlet NCBannerView* bannerView;
 @end

@@ -1,12 +1,12 @@
 //
-//  NCFittingPOSStatsDataSource.m
+//  NCFittingPOSStatsViewController.m
 //  Neocom
 //
-//  Created by Shimanski Artem on 11.02.14.
+//  Created by Артем Шиманский on 02.04.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingPOSStatsDataSource.h"
+#import "NCFittingPOSStatsViewController.h"
 #import "NCFittingPOSViewController.h"
 #import "NCTableViewCell.h"
 #import "NCFittingPOSResourcesCell.h"
@@ -15,12 +15,11 @@
 #import "NCFittingEHPCell.h"
 #import "NSString+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
-#import "NCFittingPOSStructuresTableHeaderView.h"
 #import "NCPriceManager.h"
 #import "NCTableViewHeaderView.h"
 
 
-@interface NCFittingPOSStatsDataSourcePOSStats : NSObject
+@interface NCFittingPOSStatsViewControllerPOSStats : NSObject
 @property (nonatomic, assign) float totalPG;
 @property (nonatomic, assign) float usedPG;
 @property (nonatomic, assign) float totalCPU;
@@ -36,7 +35,7 @@
 @property (nonatomic, strong) NCDamagePattern* damagePattern;
 @end
 
-@interface NCFittingPOSStatsDataSourcePriceStats : NSObject
+@interface NCFittingPOSStatsViewControllerPriceStats : NSObject
 @property (nonatomic, assign) int fuelConsumtion;
 @property (nonatomic, assign) float fuelDailyCost;
 @property (nonatomic, assign) float upgradesCost;
@@ -44,59 +43,57 @@
 @property (nonatomic, assign) float posCost;
 @end
 
-@implementation NCFittingPOSStatsDataSourcePOSStats
+@implementation NCFittingPOSStatsViewControllerPOSStats
 @end
 
-@implementation NCFittingPOSStatsDataSourcePriceStats
+@implementation NCFittingPOSStatsViewControllerPriceStats
 @end
 
 
-@interface NCFittingPOSStatsDataSource()
-@property (nonatomic, strong) NCFittingPOSStatsDataSourcePOSStats* posStats;
-@property (nonatomic, strong) NCFittingPOSStatsDataSourcePriceStats* priceStats;
+@interface NCFittingPOSStatsViewController()
+@property (nonatomic, strong) NCFittingPOSStatsViewControllerPOSStats* posStats;
+@property (nonatomic, strong) NCFittingPOSStatsViewControllerPriceStats* priceStats;
 @property (nonatomic, strong) NCPriceManager* priceManager;
 @property (nonatomic, strong) NCDBInvControlTowerResource* posFuelRequirements;
 @end
 
 
-@implementation NCFittingPOSStatsDataSource
+@implementation NCFittingPOSStatsViewController
 
-- (id) init {
-	if (self = [super init]) {
-		self.priceManager = [NCPriceManager sharedManager];
-	}
-	return self;
+- (void) viewDidLoad {
+	[super viewDidLoad];
+	self.priceManager = [NCPriceManager sharedManager];
 }
 
 - (void) reload {
-	NCFittingPOSStatsDataSourcePOSStats* stats = [NCFittingPOSStatsDataSourcePOSStats new];
+	NCFittingPOSStatsViewControllerPOSStats* stats = [NCFittingPOSStatsViewControllerPOSStats new];
 	
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
-//														@synchronized(self.controller) {
-															eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
-															
-															stats.totalPG = controlTower->getTotalPowerGrid();
-															stats.usedPG = controlTower->getPowerGridUsed();
-															
-															stats.totalCPU = controlTower->getTotalCpu();
-															stats.usedCPU = controlTower->getCpuUsed();
-															
-															stats.resistances = controlTower->getResistances();
-															
-															stats.hp = controlTower->getHitPoints();
-															eufe::HitPoints effectiveHitPoints = controlTower->getEffectiveHitPoints();
-															stats.ehp = effectiveHitPoints.shield + effectiveHitPoints.armor + effectiveHitPoints.hull;
-															
-															stats.rtank = controlTower->getTank();
-															stats.ertank = controlTower->getEffectiveTank();
-															
-															stats.weaponDPS = controlTower->getWeaponDps();
-															stats.volleyDamage = controlTower->getWeaponVolley();
-															
-															stats.damagePattern = self.controller.damagePattern;
-//														}
+														//														@synchronized(self.controller) {
+														eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
+														
+														stats.totalPG = controlTower->getTotalPowerGrid();
+														stats.usedPG = controlTower->getPowerGridUsed();
+														
+														stats.totalCPU = controlTower->getTotalCpu();
+														stats.usedCPU = controlTower->getCpuUsed();
+														
+														stats.resistances = controlTower->getResistances();
+														
+														stats.hp = controlTower->getHitPoints();
+														eufe::HitPoints effectiveHitPoints = controlTower->getEffectiveHitPoints();
+														stats.ehp = effectiveHitPoints.shield + effectiveHitPoints.armor + effectiveHitPoints.hull;
+														
+														stats.rtank = controlTower->getTank();
+														stats.ertank = controlTower->getEffectiveTank();
+														
+														stats.weaponDPS = controlTower->getWeaponDps();
+														stats.volleyDamage = controlTower->getWeaponVolley();
+														
+														stats.damagePattern = self.controller.damagePattern;
+														//														}
 													}
 										completionHandler:^(NCTask *task) {
 											if (![task isCancelled]) {
@@ -112,8 +109,9 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 4;
+	// Return the number of sections.
+	return 4;
+	//return self.view.window ? 4 : 0;
 }
 
 
@@ -311,40 +309,40 @@
 }
 
 - (void) updatePrice {
-	NCFittingPOSStatsDataSourcePriceStats* stats = [NCFittingPOSStatsDataSourcePriceStats new];
+	NCFittingPOSStatsViewControllerPriceStats* stats = [NCFittingPOSStatsViewControllerPriceStats new];
 	
 	
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
-//														@synchronized(self.controller) {
-															NSMutableSet* types = [NSMutableSet set];
-															NSMutableDictionary* infrastructureUpgrades = [NSMutableDictionary dictionary];
-															eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
-															NCDBInvControlTowerResource* resource = self.posFuelRequirements;
-															stats.fuelConsumtion = resource.quantity;
-															
-															[types addObject:@(controlTower->getTypeID())];
-															[types addObject:@(resource.resourceType.typeID)];
-															
-															float upgradesDailyCost = 0;
-															for (auto i: controlTower->getStructures()) {
-																[types addObject:@(i->getTypeID())];
-																if (i->hasAttribute(1595)) { //anchoringRequiresSovUpgrade1
-																	int32_t typeID = (int32_t) i->getAttribute(1595)->getValue();
-																	NCDBInvType* upgrade = infrastructureUpgrades[@(typeID)];
-																	if (!upgrade) {
-																		upgrade = [NCDBInvType invTypeWithTypeID:typeID];
-																		if (upgrade) {
-																			[types addObject:@(typeID)];
-																			infrastructureUpgrades[@(typeID)] = upgrade;
-																			[types addObject:@(typeID)];
-																			NCDBDgmTypeAttribute* attribute = upgrade.attributesDictionary[@(1603)];
-																			upgradesDailyCost += attribute.value;
-																		}
+														//														@synchronized(self.controller) {
+														NSMutableSet* types = [NSMutableSet set];
+														NSMutableDictionary* infrastructureUpgrades = [NSMutableDictionary dictionary];
+														eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
+														NCDBInvControlTowerResource* resource = self.posFuelRequirements;
+														stats.fuelConsumtion = resource.quantity;
+														
+														[types addObject:@(controlTower->getTypeID())];
+														[types addObject:@(resource.resourceType.typeID)];
+														
+														float upgradesDailyCost = 0;
+														for (auto i: controlTower->getStructures()) {
+															[types addObject:@(i->getTypeID())];
+															if (i->hasAttribute(1595)) { //anchoringRequiresSovUpgrade1
+																int32_t typeID = (int32_t) i->getAttribute(1595)->getValue();
+																NCDBInvType* upgrade = infrastructureUpgrades[@(typeID)];
+																if (!upgrade) {
+																	upgrade = [NCDBInvType invTypeWithTypeID:typeID];
+																	if (upgrade) {
+																		[types addObject:@(typeID)];
+																		infrastructureUpgrades[@(typeID)] = upgrade;
+																		[types addObject:@(typeID)];
+																		NCDBDgmTypeAttribute* attribute = upgrade.attributesDictionary[@(1603)];
+																		upgradesDailyCost += attribute.value;
 																	}
 																}
-//															}
+															}
+															//															}
 															
 															NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
 															

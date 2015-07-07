@@ -8,6 +8,10 @@
 
 #import "NCTableViewController.h"
 
+@class NCFittingPOSViewController;
 @interface NCFittingPOSWorkspaceViewController : NCTableViewController
+@property (nonatomic, readonly) NCFittingPOSViewController* controller;
+
+- (void) reload;
 
 @end

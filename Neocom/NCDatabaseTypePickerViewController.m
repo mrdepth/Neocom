@@ -12,6 +12,7 @@
 #import "NSString+MD5.h"
 #import "NCDatabase.h"
 #import "NCDatabaseTypePickerContentViewController.h"
+#import "NCAdaptivePopoverSegue.h"
 
 @interface NCDatabaseTypePickerContentViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* result;
@@ -75,10 +76,11 @@
 	self.completionHandler = completion;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[controller presentViewControllerInPopover:self fromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
+        [controller presentViewControllerInPopover:self withSender:view animated:YES];
 	else {
 		[[self.viewControllers[0] navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)]];
 		[controller presentViewController:self animated:animated completion:nil];
+//		[controller.splitViewController.viewControllers[0] showViewController:self sender:view];
 	}
 }
 

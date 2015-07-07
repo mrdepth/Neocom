@@ -1,12 +1,12 @@
 //
-//  NCFittingShipImplantsDataSource.m
+//  NCFittingShipImplantsViewController.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 29.01.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Артем Шиманский on 12.06.15.
+//  Copyright (c) 2015 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingShipImplantsDataSource.h"
+#import "NCFittingShipImplantsViewController.h"
 #import "NCFittingShipViewController.h"
 #import "NCTableViewCell.h"
 #import "UIActionSheet+Block.h"
@@ -18,55 +18,61 @@
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 
 
-@interface NCFittingShipImplantsDataSource()
+@interface NCFittingShipImplantsViewController()
 @property (nonatomic, assign) std::vector<eufe::Implant*> implants;
 @property (nonatomic, assign) std::vector<eufe::Booster*> boosters;
-@property (nonatomic, strong) NCTableViewCell* offscreenCell;
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath;
 
 @end
 
-@implementation NCFittingShipImplantsDataSource
+@implementation NCFittingShipImplantsViewController
 
 - (void) reload {
 	__block std::vector<eufe::Implant*> implants(10, nullptr);
 	__block std::vector<eufe::Booster*> boosters(4, nullptr);
 	
-	eufe::Character* character = self.controller.fit.pilot;
-	if (!character)
-		return;
-	
-	for (auto implant: character->getImplants()) {
-		int slot = implant->getSlot() - 1;
-		if (slot >= 0 && slot < 10)
-			implants[slot] = implant;
-	}
-	
-	for (auto booster: character->getBoosters()) {
-		int slot = booster->getSlot() - 1;
-		if (slot >= 0 && slot < 4)
-			boosters[slot] = booster;
-	}
-
-	self.implants = implants;
-	self.boosters = boosters;
-	
-	if (self.tableView.dataSource == self)
-		[self.tableView reloadData];
+	self.tableView.userInteractionEnabled = NO;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 eufe::Character* character = self.controller.fit.pilot;
+											 if (!character)
+												 return;
+											 
+											 for (auto implant: character->getImplants()) {
+												 int slot = implant->getSlot() - 1;
+												 if (slot >= 0 && slot < 10)
+													 implants[slot] = implant;
+											 }
+											 
+											 for (auto booster: character->getBoosters()) {
+												 int slot = booster->getSlot() - 1;
+												 if (slot >= 0 && slot < 4)
+													 boosters[slot] = booster;
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (![task isCancelled]) {
+									 self.implants = implants;
+									 self.boosters = boosters;
+									 [self.tableView reloadData];
+									 self.tableView.userInteractionEnabled = YES;
+								 }
+							 }];
 }
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 3;
+	return 3;
+	//return self.view.window ? 3 : 0;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
+	// Return the number of rows in the section.
 	if (section == 0)
 		return 2;
 	else if (section == 1)

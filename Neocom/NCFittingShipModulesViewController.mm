@@ -1,14 +1,13 @@
 //
-//  NCFittingShipModulesDataSource.m
+//  NCFittingShipModulesViewController.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 28.01.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Артем Шиманский on 12.06.15.
+//  Copyright (c) 2015 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingShipModulesDataSource.h"
+#import "NCFittingShipModulesViewController.h"
 #import "NCFittingShipViewController.h"
-#import "NCFittingShipModulesTableHeaderView.h"
 #import "UIView+Nib.h"
 #import "NSString+Neocom.h"
 #import <algorithm>
@@ -39,7 +38,7 @@
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 
 
-@interface NCFittingShipModulesDataSourceSection : NSObject {
+@interface NCFittingShipModulesViewControllerSection : NSObject {
 	std::vector<eufe::Module*> _modules;
 }
 @property (nonatomic, readonly) std::vector<eufe::Module*>& modules;
@@ -47,11 +46,11 @@
 @property (nonatomic, assign) int numberOfSlots;
 @end
 
-@implementation NCFittingShipModulesDataSourceSection
+@implementation NCFittingShipModulesViewControllerSection
 
 @end
 
-@interface NCFittingShipModulesDataSource()
+@interface NCFittingShipModulesViewController()
 @property (nonatomic, assign) int usedTurretHardpoints;
 @property (nonatomic, assign) int totalTurretHardpoints;
 @property (nonatomic, assign) int usedMissileHardpoints;
@@ -59,106 +58,76 @@
 
 @property (nonatomic, strong) NSArray* sections;
 
-@property (nonatomic, strong, readwrite) NCFittingShipModulesTableHeaderView* tableHeaderView;
-@property (nonatomic, strong) NCFittingShipModuleCell* offscreenCell;
-
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath;
 
 @end
 
-@implementation NCFittingShipModulesDataSource
-@synthesize tableHeaderView = _tableHeaderView;
+@implementation NCFittingShipModulesViewController
+
+- (void) viewDidLoad {
+	[super viewDidLoad];
+	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionHiSlotHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionHiSlotHeaderView"];
+}
 
 - (void) reload {
-	__block float totalPG = 0;
-	__block float usedPG = 0;
-	__block float totalCPU = 0;
-	__block float usedCPU = 0;
-	__block float totalCalibration = 0;
-	__block float usedCalibration = 0;
-	
 	NSMutableArray* sections = [NSMutableArray new];
 	if (!self.controller.fit.pilot)
 		return;
+	__block float usedTurretHardpoints;
+	__block float totalTurretHardpoints;
+	__block float usedMissileHardpoints;
+	__block float totalMissileHardpoints;
 	
-	eufe::Ship* ship = self.controller.fit.pilot->getShip();
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 eufe::Ship* ship = self.controller.fit.pilot->getShip();
+											 
+											 eufe::Module::Slot slots[] = {eufe::Module::SLOT_MODE, eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
+											 int n = sizeof(slots) / sizeof(eufe::Module::Slot);
+											 
+											 for (int i = 0; i < n; i++) {
+												 int numberOfSlots = ship->getNumberOfSlots(slots[i]);
+												 if (numberOfSlots > 0) {
+													 eufe::ModulesList modules;
+													 ship->getModules(slots[i], std::inserter(modules, modules.end()));
+													 
+													 NCFittingShipModulesViewControllerSection* section = [NCFittingShipModulesViewControllerSection new];
+													 section.slot = slots[i];
+													 section.numberOfSlots = numberOfSlots;
+													 section.modules.insert(section.modules.begin(), modules.begin(), modules.end());
+													 [sections addObject:section];
+													 
+													 usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
+													 totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
+													 usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+													 totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+
+												 }
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 self.sections = sections;
+								 
+								 self.usedTurretHardpoints = usedTurretHardpoints;
+								 self.totalTurretHardpoints = totalTurretHardpoints;
+								 self.usedMissileHardpoints = usedMissileHardpoints;
+								 self.totalMissileHardpoints = totalMissileHardpoints;
+								 
+								 [self.tableView reloadData];
+							 }];
 	
-	eufe::Module::Slot slots[] = {eufe::Module::SLOT_MODE, eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
-	int n = sizeof(slots) / sizeof(eufe::Module::Slot);
-	
-//	@synchronized(self.controller) {
-		for (int i = 0; i < n; i++) {
-			int numberOfSlots = ship->getNumberOfSlots(slots[i]);
-			if (numberOfSlots > 0) {
-				eufe::ModulesList modules;
-				ship->getModules(slots[i], std::inserter(modules, modules.end()));
-				
-				NCFittingShipModulesDataSourceSection* section = [NCFittingShipModulesDataSourceSection new];
-				section.slot = slots[i];
-				section.numberOfSlots = numberOfSlots;
-				section.modules.insert(section.modules.begin(), modules.begin(), modules.end());
-				[sections addObject:section];
-			}
-		}
-//	}
-	self.sections = sections;
-
-	if (self.tableView.dataSource == self) {
-//		[self.tableView reloadData];
-	}
-
-/*	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-													title:NCTaskManagerDefaultTitle
-													block:^(NCTask *task) {
-//														@synchronized(self.controller) {
-*/
-															totalPG = ship->getTotalPowerGrid();
-															usedPG = ship->getPowerGridUsed();
-															
-															totalCPU = ship->getTotalCpu();
-															usedCPU = ship->getCpuUsed();
-															
-															totalCalibration = ship->getTotalCalibration();
-															usedCalibration = ship->getCalibrationUsed();
-															
-															self.usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
-															self.totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
-															self.usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-															self.totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-//														}
-//													}
-//										completionHandler:^(NCTask *task) {
-//											if (![task isCancelled]) {
-												self.tableHeaderView.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
-												self.tableHeaderView.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
-												self.tableHeaderView.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
-												self.tableHeaderView.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
-												self.tableHeaderView.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
-												self.tableHeaderView.calibrationLabel.progress = totalCalibration > 0 ? usedCalibration / totalCalibration : 0;
-
-												if (self.tableView.dataSource == self) {
-													[self.tableView reloadData];
-												}
-//											}
-//										}];
-}
-
-- (NCFittingShipModulesTableHeaderView*) tableHeaderView {
-	if (!_tableHeaderView) {
-		_tableHeaderView = [NCFittingShipModulesTableHeaderView viewWithNibName:@"NCFittingShipModulesTableHeaderView" bundle:nil];
-		_tableHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
-	}
-	return _tableHeaderView;
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 	return self.sections.count;
+	//return self.view.window ? self.sections.count : 0;
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
-	NCFittingShipModulesDataSourceSection* section = self.sections[sectionIndex];
+	NCFittingShipModulesViewControllerSection* section = self.sections[sectionIndex];
 	if (!section)
 		return 0;
 	else
@@ -168,7 +137,7 @@
 #pragma mark - Table view delegate
 
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionIndex {
-	NCFittingShipModulesDataSourceSection* section = self.sections[sectionIndex];
+	NCFittingShipModulesViewControllerSection* section = self.sections[sectionIndex];
 	
 	if (section.slot == eufe::Module::SLOT_HI) {
 		NCFittingSectionHiSlotHeaderView* header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCFittingSectionHiSlotHeaderView"];
@@ -209,7 +178,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
+	NCFittingShipModulesViewControllerSection* section = self.sections[indexPath.section];
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.row >= section.modules.size() || section.slot == eufe::Module::SLOT_MODE) {
 		eufe::Ship* ship = self.controller.fit.pilot->getShip();
@@ -261,22 +230,22 @@
 		}
 		self.controller.typePickerViewController.title = title;
 		[self.controller.typePickerViewController presentWithCategory:category
-													   inViewController:self.controller
-															   fromRect:cell.bounds
-																 inView:cell
-															   animated:YES
-													  completionHandler:^(NCDBInvType *type) {
-														  if (section.slot == eufe::Module::SLOT_MODE) {
-															  eufe::ModulesList modes;
-															  ship->getModules(eufe::Module::SLOT_MODE, std::inserter(modes, modes.end()));
-															  for (auto i:modes)
-																  ship->removeModule(i);
-														  }
-														  ship->addModule(type.typeID);
-														  [self.controller reload];
-														  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-															  [self.controller dismissAnimated];
-													  }];
+													 inViewController:self.controller
+															 fromRect:cell.bounds
+															   inView:cell
+															 animated:YES
+													completionHandler:^(NCDBInvType *type) {
+														if (section.slot == eufe::Module::SLOT_MODE) {
+															eufe::ModulesList modes;
+															ship->getModules(eufe::Module::SLOT_MODE, std::inserter(modes, modes.end()));
+															for (auto i:modes)
+																ship->removeModule(i);
+														}
+														ship->addModule(type.typeID);
+														[self.controller reload];
+														if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+															[self.controller dismissAnimated];
+													}];
 	}
 	else {
 		[self performActionForRowAtIndexPath:indexPath];
@@ -284,10 +253,10 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark - Private
+#pragma mark - NCTableViewController
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
+	NCFittingShipModulesViewControllerSection* section = self.sections[indexPath.section];
 	if (indexPath.row >= section.modules.size())
 		return @"Cell";
 	else
@@ -295,7 +264,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
+	NCFittingShipModulesViewControllerSection* section = self.sections[indexPath.section];
 	if (indexPath.row >= section.modules.size()) {
 		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 		cell.subtitleLabel.text = nil;
@@ -331,75 +300,77 @@
 		}
 	}
 	else {
-//		@synchronized(self.controller) {
-			NCFittingShipModuleCell* cell = (NCFittingShipModuleCell*) tableViewCell;
-			eufe::Module* module = section.modules[indexPath.row];
-			NCDBInvType* type = [self.controller typeWithItem:module];
-			cell.typeNameLabel.text = type.typeName;
-			cell.typeImageView.image = type.icon ? type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-			
-			eufe::Charge* charge = module->getCharge();
-			
-			if (charge) {
-				type = [self.controller typeWithItem:charge];
-				float volume = charge->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
-				float capacity = module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
-				if (volume > 0 && capacity > 0)
-					cell.chargeLabel.text = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
-				else
-					cell.chargeLabel.text = type.typeName;
+		//		@synchronized(self.controller) {
+		NCFittingShipModuleCell* cell = (NCFittingShipModuleCell*) tableViewCell;
+		eufe::Module* module = section.modules[indexPath.row];
+		NCDBInvType* type = [self.controller typeWithItem:module];
+		cell.typeNameLabel.text = type.typeName;
+		cell.typeImageView.image = type.icon ? type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+		
+		eufe::Charge* charge = module->getCharge();
+		
+		if (charge) {
+			type = [self.controller typeWithItem:charge];
+			float volume = charge->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
+			float capacity = module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
+			if (volume > 0 && capacity > 0)
+				cell.chargeLabel.text = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
+			else
+				cell.chargeLabel.text = type.typeName;
+		}
+		else
+			cell.chargeLabel.text = nil;
+		
+		int optimal = (int) module->getMaxRange();
+		int falloff = (int) module->getFalloff();
+		float trackingSpeed = module->getTrackingSpeed();
+		float lifeTime = module->getLifeTime();
+		
+		if (optimal > 0) {
+			NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+			if (falloff > 0)
+				[s appendFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+			if (trackingSpeed > 0)
+				[s appendFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+			cell.optimalLabel.text = s;
+		}
+		else
+			cell.optimalLabel.text = nil;
+		
+		if (lifeTime > 0)
+			cell.lifetimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];
+		else
+			cell.lifetimeLabel.text = nil;
+		
+		eufe::Module::Slot slot = module->getSlot();
+		if (slot == eufe::Module::SLOT_HI || slot == eufe::Module::SLOT_MED || slot == eufe::Module::SLOT_LOW) {
+			switch (module->getState()) {
+				case eufe::Module::STATE_ACTIVE:
+					cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
+					break;
+				case eufe::Module::STATE_ONLINE:
+					cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
+					break;
+				case eufe::Module::STATE_OVERLOADED:
+					cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
+					break;
+				default:
+					cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
+					break;
 			}
-			else
-				cell.chargeLabel.text = nil;
-			
-			int optimal = (int) module->getMaxRange();
-			int falloff = (int) module->getFalloff();
-			float trackingSpeed = module->getTrackingSpeed();
-			float lifeTime = module->getLifeTime();
-			
-			if (optimal > 0) {
-				NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-				if (falloff > 0)
-					[s appendFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-				if (trackingSpeed > 0)
-					[s appendFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-				cell.optimalLabel.text = s;
-			}
-			else
-				cell.optimalLabel.text = nil;
-			
-			if (lifeTime > 0)
-				cell.lifetimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];
-			else
-				cell.lifetimeLabel.text = nil;
-			
-			eufe::Module::Slot slot = module->getSlot();
-			if (slot == eufe::Module::SLOT_HI || slot == eufe::Module::SLOT_MED || slot == eufe::Module::SLOT_LOW) {
-				switch (module->getState()) {
-					case eufe::Module::STATE_ACTIVE:
-						cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
-						break;
-					case eufe::Module::STATE_ONLINE:
-						cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
-						break;
-					case eufe::Module::STATE_OVERLOADED:
-						cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
-						break;
-					default:
-						cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
-						break;
-				}
-			}
-			else
-				cell.stateImageView.image = nil;
-			
-			cell.targetImageView.image = module->getTarget() != NULL ? [[[NCDBEveIcon eveIconWithIconFile:@"04_12"] image] image] : nil;
-//		}
+		}
+		else
+			cell.stateImageView.image = nil;
+		
+		cell.targetImageView.image = module->getTarget() != NULL ? [[[NCDBEveIcon eveIconWithIconFile:@"04_12"] image] image] : nil;
+		//		}
 	}
 }
 
+#pragma mark - Private
+
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
+	NCFittingShipModulesViewControllerSection* section = self.sections[indexPath.section];
 	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
 	
 	eufe::Ship* ship = self.controller.fit.pilot->getShip();
@@ -518,16 +489,16 @@
 						   [NSString stringWithFormat:@"invTypes.volume <= %f", module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()]];
 		
 		[self.controller.typePickerViewController presentWithCategory:type.eufeItem.charge
-													   inViewController:self.controller
-															   fromRect:cell.bounds
-																 inView:cell
-															   animated:YES
-													  completionHandler:^(NCDBInvType *type) {
-														  for (auto module: modules)
-															  module->setCharge(type.typeID);
-														  [self.controller reload];
-														  [self.controller dismissAnimated];
-													  }];
+													 inViewController:self.controller
+															 fromRect:cell.bounds
+															   inView:cell
+															 animated:YES
+													completionHandler:^(NCDBInvType *type) {
+														for (auto module: modules)
+															module->setCharge(type.typeID);
+														[self.controller reload];
+														[self.controller dismissAnimated];
+													}];
 	};
 	void (^unloadAmmo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
 		for (auto module: modules)
@@ -673,10 +644,10 @@
 	}
 	[buttons addObject:ActionButtonVariations];
 	[actions addObject:variations];
-
+	
 	[buttons addObject:ActionButtonAffectingSkills];
 	[actions addObject:affectingSkills];
-
+	
 	if (multiple) {
 		[buttons addObject:ActionButtonAllSimilarModules];
 		[actions addObject:similarModules];

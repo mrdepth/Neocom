@@ -16,8 +16,9 @@
 #import "NCStorage.h"
 #import "UIColor+Neocom.h"
 #import "NCTableViewCell.h"
+#import "NCAdaptivePopoverSegue.h"
 
-@interface NCTableViewController ()
+@interface NCTableViewController ()<UISearchResultsUpdating>
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
 @property (nonatomic, strong, readwrite) NCCacheRecord* cacheRecord;
 @property (nonatomic, strong, readwrite) id data;
@@ -35,6 +36,8 @@
 - (void) onLongPress:(UILongPressGestureRecognizer*) recognizer;
 - (void) collapsAll:(UIMenuController*) controller;
 - (void) expandAll:(UIMenuController*) controller;
+- (void) reloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy;
+
 
 @end
 
@@ -126,13 +129,15 @@
 	}
 }
 
+
+
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.taskManager.active = YES;
 	if (!self.cacheRecord)
 		[self reloadFromCache];
 	else if ([self shouldReloadData])
-		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+		[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -163,6 +168,45 @@
 	}
 }
 
+/*- (UINavigationController*) navigationController {
+    if (self.searchContentsController)
+        return self.searchContentsController.navigationController;
+    else
+        return [super navigationController];
+}*/
+
+- (void) setSearchController:(UISearchController *)searchController {
+	_searchController = searchController;
+	searchController.searchResultsUpdater = self;
+	[searchController.searchBar sizeToFit];
+	searchController.hidesNavigationBarDuringPresentation = NO;
+	searchController.searchBar.barStyle = UIBarStyleBlack;
+	searchController.searchBar.tintColor = [UIColor whiteColor];
+
+	self.tableView.tableHeaderView = searchController.searchBar;
+	self.definesPresentationContext = YES;
+
+    NCTableViewController* searchResultsController = (NCTableViewController*) searchController.searchResultsController;
+    searchResultsController.searchContentsController = self;
+}
+
+- (UINavigationController*) navigationController {
+	UINavigationController* nc = [super navigationController];
+	if (!nc) {
+		if ([self.presentingViewController isKindOfClass:[self class]])
+			nc = self.presentingViewController.navigationController;
+	}
+	return nc;
+}
+
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue isKindOfClass:[NCAdaptivePopoverSegue class]]) {
+		NCAdaptivePopoverSegue* popoverSegue = (NCAdaptivePopoverSegue*) segue;
+		popoverSegue.sender = sender;
+	}
+}
+
 - (BOOL)canBecomeFirstResponder {
     return YES;
 }
@@ -187,7 +231,7 @@
 }
 
 - (void) reloadFromCache {
-	if (self.recordID) {
+	if (!self.searchContentsController && self.recordID) {
 
 		NCCache* cache = [NCCache sharedCache];
 		NSManagedObjectContext* context = cache.managedObjectContext;
@@ -209,14 +253,14 @@
 									 [NSObject cancelPreviousPerformRequestsWithTarget:self];
 									 if (![task isCancelled]) {
 										 if (!self.cacheRecord.data.data) {
-											 [self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+											 [self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
 										 }
 										 else {
 											 self.data = self.cacheRecord.data.data;
 											 [self update];
 											 
 											 if ([self shouldReloadData])
-												 [self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+												 [self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
 										 }
 									 }
 								 }];
@@ -255,7 +299,7 @@
 }
 
 - (void) didChangeStorage {
-	[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+	[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
 }
 
 - (void) didFailLoadDataWithError:(NSError*) error {
@@ -266,26 +310,6 @@
 	[self.tableView reloadData];
 	[self.refreshControl endRefreshing];
 	[self updateCacheTime];
-
-	//NSInteger sections = [self.tableView numberOfSections];
-	//BOOL empty = sections == 0;
-/*	for (NSInteger i = 0; i < sections; i++) {
-		if ([self.tableView numberOfRowsInSection:i] > 0) {
-			empty = NO;
-			break;
-		}
-	}*/
-/*	if (empty) {
-		UILabel* label = [[UILabel alloc] initWithFrame:CGRectZero];
-		label.backgroundColor = [UIColor clearColor];
-		label.textColor = [UIColor lightTextColor];
-		label.font = [UIFont boldSystemFontOfSize:22];
-		label.text = NSLocalizedString(@"No Results", nil);
-		label.textAlignment = NSTextAlignmentCenter;
-		self.tableView.backgroundView = label;
-	}
-	else
-		self.tableView.backgroundView = nil;*/
 }
 
 - (NSTimeInterval) defaultCacheExpireTime {
@@ -358,6 +382,13 @@
 	tableView.backgroundColor = self.tableView.backgroundColor;
 	tableView.separatorColor = self.tableView.separatorColor;
 }
+
+#pragma mark - UISearchResultsUpdating
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+	[self searchWithSearchString:self.searchController.searchBar.text];
+}
+
 
 #pragma mark - UIScrollViewDelegate
 
@@ -496,7 +527,7 @@
 #pragma mark - Private
 
 - (IBAction) onRefresh:(id) sender {
-    [self reloadDataWithCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+    [self reloadDataWithCachePolicyInternal:NSURLRequestReloadIgnoringLocalCacheData];
 }
 
 - (void) progressStepWithTask:(NCTask*) task {
@@ -524,7 +555,7 @@
 
 - (void) didBecomeActive:(NSNotification *)notification {
 	if ([self shouldReloadData])
-		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+		[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
 	else
 		[self update];
 }
@@ -546,6 +577,13 @@
 
 - (void) expandAll:(UIMenuController*) controller {
 	[(CollapsableTableView*) self.tableView expandAll];
+}
+
+- (void) reloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy {
+    if (self.searchContentsController)
+        [self update];
+    else
+        [self reloadDataWithCachePolicy:cachePolicy];
 }
 
 @end

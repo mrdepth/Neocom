@@ -17,7 +17,7 @@
 + (instancetype) appearanceTableViewHeaderViewBackgroundColor;
 + (instancetype) appearanceTableViewCellBackgroundColor;
 + (instancetype) appearanceTableViewSeparatorColor;
-+ (instancetype) appearancePopoberBackgroundColor;
++ (instancetype) appearancePopoverBackgroundColor;
 
 + (instancetype) urlColor;
 

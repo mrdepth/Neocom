@@ -7,15 +7,44 @@
 //
 
 #import "NCNavigationController.h"
+#import "UIViewController+Neocom.h"
+#import "NCPopoverController.h"
 
 @interface NCNavigationController ()
 @property (nonatomic, strong) UITapGestureRecognizer* tapOutsideGestureRecognizer;
-- (void) onTap:(UITapGestureRecognizer *)recognizer;
+//- (void) onTap:(UITapGestureRecognizer *)recognizer;
 @end
 
 @implementation NCNavigationController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (UIViewController*) viewControllerForUnwindSegueAction:(SEL)action fromViewController:(UIViewController *)fromViewController withSender:(id)sender {
+	UIViewController* controller = [super viewControllerForUnwindSegueAction:action fromViewController:fromViewController withSender:sender];
+	if (!controller)
+		controller = [self.popover.presentingViewController viewControllerForUnwindSegueAction:action
+																	  fromViewController:fromViewController
+																			  withSender:sender];
+	return controller;
+}
+
+- (UIStoryboardSegue*) segueForUnwindingToViewController:(UIViewController *)toViewController fromViewController:(UIViewController *)fromViewController identifier:(NSString *)identifier {
+	if (fromViewController.parentViewController != toViewController.parentViewController) {
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			if (fromViewController.popover) {
+				return [UIStoryboardSegue segueWithIdentifier:identifier source:fromViewController destination:toViewController performHandler:^{
+					[fromViewController.popover dismissPopoverAnimated:YES];
+				}];
+			}
+			else if (fromViewController.modalPresentationStyle == UIModalPresentationPopover || fromViewController.parentViewController.modalPresentationStyle == UIModalPresentationPopover)
+				return [UIStoryboardSegue segueWithIdentifier:identifier source:fromViewController destination:toViewController performHandler:^{
+					[fromViewController dismissViewControllerAnimated:YES completion:nil];
+				}];
+		}
+	}
+
+	return [super segueForUnwindingToViewController:toViewController fromViewController:fromViewController identifier:identifier];
+}
+
+/*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -45,6 +74,12 @@
 	self.tapOutsideGestureRecognizer = nil;
 }
 
+- (void) viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	UIView* v = self.view.subviews[0];
+	v.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 100);
+}
+
 #pragma mark - Private
 
 - (void) setTapOutsideGestureRecognizer:(UITapGestureRecognizer *)tapOutsideGestureRecognizer {
@@ -67,6 +102,6 @@
 			self.tapOutsideGestureRecognizer = nil;
         }
 	}
-}
+}*/
 
 @end

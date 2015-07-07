@@ -1,12 +1,12 @@
 //
-//  NCFittingShipFleetDataSource.m
+//  NCFittingShipFleetViewController.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 31.01.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Артем Шиманский on 12.06.15.
+//  Copyright (c) 2015 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingShipFleetDataSource.h"
+#import "NCFittingShipFleetViewController.h"
 #import "NCFittingShipViewController.h"
 #import "NCTableViewCell.h"
 #import "UIActionSheet+Block.h"
@@ -24,32 +24,31 @@
 #define ActionButtonSetSquadBooster NSLocalizedString(@"Set Squad Booster", nil)
 #define ActionButtonRemoveBooster NSLocalizedString(@"Remove Booster", nil)
 
-@interface NCFittingShipFleetDataSource()
-@property (nonatomic, strong) NCTableViewCell* offscreenCell;
+@interface NCFittingShipFleetViewController()
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath;
 - (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath;
 @end
 
-@implementation NCFittingShipFleetDataSource
+@implementation NCFittingShipFleetViewController
 
 - (void) reload {
-	if (self.tableView.dataSource == self)
-		[self.tableView reloadData];
+	[self.tableView reloadData];
 }
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 1;
+	// Return the number of sections.
+	return 1;
+	//return self.view.window ? 1 : 0;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return self.controller.fits.count + 1;
+	// Return the number of rows in the section.
+	return self.controller.fits.count + 1;
 }
 
 
@@ -66,25 +65,6 @@
 	}
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
-#pragma mark FitsViewControllerDelegate
-
-/*- (void) fitsViewController:(FitsViewController*) aController didSelectFit:(ShipFit*) fit {
-	if (![self.fittingViewController.fits containsObject:fit]) {
-		eufe::Character* character = fit.character;
-		self.fittingViewController.fittingEngine->getGang()->addPilot(character);
-		[self.fittingViewController.fits addObject:fit];
-		
-		eufe::DamagePattern eufeDamagePattern;
-		eufeDamagePattern.emAmount = self.fittingViewController.damagePattern.emAmount;
-		eufeDamagePattern.thermalAmount = self.fittingViewController.damagePattern.thermalAmount;
-		eufeDamagePattern.kineticAmount = self.fittingViewController.damagePattern.kineticAmount;
-		eufeDamagePattern.explosiveAmount = self.fittingViewController.damagePattern.explosiveAmount;
-		character->getShip()->setDamagePattern(eufeDamagePattern);
-		[self.fittingViewController update];
-	}
-	[self.fittingViewController dismiss];
-}*/
 
 #pragma mark - Private
 
@@ -190,18 +170,18 @@
 	void (^showInfo)() = ^{
 		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
 											 sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:character->getShip()]}];
-
-/*		ItemInfo* itemInfo = self.pilots[indexPath.row][@"ship"];
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
-		[itemInfo updateAttributes];
-		itemViewController.type = itemInfo;
-		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		
+		/*		ItemInfo* itemInfo = self.pilots[indexPath.row][@"ship"];
+		 ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
+		 [itemInfo updateAttributes];
+		 itemViewController.type = itemInfo;
+		 [itemViewController setActivePage:ItemViewControllerActivePageInfo];
+		 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
 			[self.fittingViewController presentViewController:navController animated:YES completion:nil];
-		}
-		else
+		 }
+		 else
 			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];*/
 	};
 	
@@ -256,34 +236,36 @@
 		cell.accessoryView = nil;
 	}
 	else {
-//		@synchronized(self.controller) {
-			NCShipFit* fit = self.controller.fits[indexPath.row];
-			eufe::Gang* gang = self.controller.engine->getGang();
-			
-			eufe::Character* fleetBooster = gang->getFleetBooster();
-			eufe::Character* wingBooster = gang->getWingBooster();
-			eufe::Character* squadBooster = gang->getSquadBooster();
-			
-			NSString *booster = nil;
-			
-			if (fit.pilot == fleetBooster)
-				booster = NSLocalizedString(@" (Fleet Booster)", nil);
-			else if (fit.pilot == wingBooster)
-				booster = NSLocalizedString(@" (Wing Booster)", nil);
-			else if (fit.pilot == squadBooster)
-				booster = NSLocalizedString(@" (Squad Booster)", nil);
-			else
-				booster = @"";
-			
-			
-			cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s%@", fit.type.typeName, fit.pilot->getCharacterName(), booster];
-			cell.subtitleLabel.text = fit.loadoutName;
-			cell.iconView.image = fit.type.icon ? fit.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-			if (self.controller.fit == fit)
-				cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
-			else
-				cell.accessoryView = nil;
-//		}
+		//		@synchronized(self.controller) {
+		NCShipFit* fit = self.controller.fits[indexPath.row];
+		eufe::Gang* gang = self.controller.engine->getGang();
+		if (!fit || !fit.pilot || !gang)
+			return;
+		
+		eufe::Character* fleetBooster = gang->getFleetBooster();
+		eufe::Character* wingBooster = gang->getWingBooster();
+		eufe::Character* squadBooster = gang->getSquadBooster();
+		
+		NSString *booster = nil;
+		
+		if (fit.pilot == fleetBooster)
+			booster = NSLocalizedString(@" (Fleet Booster)", nil);
+		else if (fit.pilot == wingBooster)
+			booster = NSLocalizedString(@" (Wing Booster)", nil);
+		else if (fit.pilot == squadBooster)
+			booster = NSLocalizedString(@" (Squad Booster)", nil);
+		else
+			booster = @"";
+		
+		
+		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s%@", fit.type.typeName, fit.pilot->getCharacterName(), booster];
+		cell.subtitleLabel.text = fit.loadoutName;
+		cell.iconView.image = fit.type.icon ? fit.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+		if (self.controller.fit == fit)
+			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
+		else
+			cell.accessoryView = nil;
+		//		}
 	}
 }
 

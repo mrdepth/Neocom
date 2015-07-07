@@ -35,9 +35,13 @@
 		else if ([controller isKindOfClass:[NCSkillsViewController class]])
 			self.skillsViewController = controller;
 	}
-	[self.navigationItem setRightBarButtonItems:@[self.skillQueueViewController.editButtonItem,
-												  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self.skillQueueViewController action:@selector(onAction:)]]
-									   animated:YES];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self.navigationItem setRightBarButtonItems:@[self.skillQueueViewController.editButtonItem,
+													  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self.skillQueueViewController action:@selector(onAction:)]]
+										   animated:YES];
+	else {
+		self.navigationItem.rightBarButtonItems = self.skillQueueViewController.navigationItem.rightBarButtonItems;
+	}
 }
 
 - (void)didReceiveMemoryWarning

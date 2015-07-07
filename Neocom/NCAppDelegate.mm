@@ -26,6 +26,8 @@
 #import "Flurry.h"
 #import "NCAPIKeyAccessMaskViewController.h"
 #import "NCShoppingList.h"
+#import "NCSplashScreenViewController.h"
+#import "NCSkillPlanViewController.h"
 
 static NSUncaughtExceptionHandler* handler;
 
@@ -41,7 +43,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 	}
 }
 
-@interface NCAppDelegate()<SKPaymentTransactionObserver>
+@interface NCAppDelegate()<SKPaymentTransactionObserver, UISplitViewControllerDelegate>
 @property (nonatomic, strong) NCTaskManager* taskManager;
 - (void) addAPIKeyWithURL:(NSURL*) url;
 - (void) openFitWithURL:(NSURL*) url;
@@ -61,7 +63,6 @@ void uncaughtExceptionHandler(NSException* exception) {
 @end
 
 @implementation NCAppDelegate
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //#warning Enable Flurry
@@ -163,6 +164,11 @@ void uncaughtExceptionHandler(NSException* exception) {
 	}];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ubiquityIdentityDidChange:) name:NSUbiquityIdentityDidChangeNotification object:nil];
+	
+	UISplitViewController* controller = (UISplitViewController*) self.window.rootViewController;
+	if ([controller isKindOfClass:[UISplitViewController class]]) {
+		controller.delegate = self;
+	}
 
     return YES;
 }
@@ -325,6 +331,28 @@ void uncaughtExceptionHandler(NSException* exception) {
 	}
 }
 
+- (UIInterfaceOrientationMask) application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		return UIInterfaceOrientationMaskAll;
+	}
+	else {
+		if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
+			return UIInterfaceOrientationMaskPortrait;
+		else {
+			if ([self.window respondsToSelector:NSSelectorFromString(@"_traitCollectionWhenRotated")]) {
+				UITraitCollection* tc1 = [self.window traitCollection];
+				UITraitCollection* tc2 = [self.window valueForKeyPath:@"_traitCollectionWhenRotated"];
+				if (self.window) {
+					return (tc1.horizontalSizeClass == UIUserInterfaceSizeClassRegular && tc1.verticalSizeClass == UIUserInterfaceSizeClassCompact) ||
+					(tc2.horizontalSizeClass == UIUserInterfaceSizeClassRegular && tc2.verticalSizeClass == UIUserInterfaceSizeClassCompact)
+					? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
+				}
+			}
+		}
+	}
+	return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - SKPaymentTransactionObserver
 
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
@@ -345,6 +373,40 @@ void uncaughtExceptionHandler(NSException* exception) {
 		}
 	}
 }
+
+#pragma mark - UISplitViewControllerDelegate
+
+- (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		if ([secondaryViewController isKindOfClass:[UINavigationController class]] && [[(UINavigationController*) secondaryViewController viewControllers][0] isKindOfClass:[NCSplashScreenViewController class]])
+			return YES;
+	}
+	return NO;
+}
+
+- (void) splitViewController:(UISplitViewController *)svc willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
+	if (displayMode == UISplitViewControllerDisplayModeAllVisible) {
+		[[svc.viewControllers[1] viewControllers][0] navigationItem].leftBarButtonItem = nil;
+	}
+	else
+		[[svc.viewControllers[1] viewControllers][0] navigationItem].leftBarButtonItem = svc.displayModeButtonItem;
+}
+
+- (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {
+	barButtonItem.image = [UIImage imageNamed:@"menuIcon.png"];
+	UINavigationController* navigationController = svc.viewControllers[1];
+	if ([navigationController isKindOfClass:[UINavigationController class]]) {
+		[[navigationController.viewControllers[0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];
+	}
+}
+
+- (void)splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
+	UINavigationController* navigationController = svc.viewControllers[1];
+	if ([navigationController isKindOfClass:[UINavigationController class]]) {
+		[[navigationController.viewControllers[0] navigationItem] setLeftBarButtonItem:nil animated:YES];
+	}
+}
+
 
 #pragma mark - Private
 
@@ -437,16 +499,15 @@ void uncaughtExceptionHandler(NSException* exception) {
 	else {
 		NSData* data = [[NSData dataWithContentsOfURL:url] uncompressedData];
 		NSString* name = [[url lastPathComponent] stringByDeletingPathExtension];
+		
 		if (data) {
 			if (!name)
 				name = NSLocalizedString(@"Skill Plan", nil);
-			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-				UISplitViewController* splitViewController = (UISplitViewController*) self.window.rootViewController;
-				[splitViewController.viewControllers[0] performSegueWithIdentifier:@"NCSkillPlanViewController" sender:@{@"name": name, @"data": data}];
-			}
-			else
-				[self.window.rootViewController performSegueWithIdentifier:@"NCSkillPlanViewController" sender:@{@"name": name, @"data": data}];
-
+			UINavigationController* navigationController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCSkillPlanViewController"];
+			NCSkillPlanViewController* controller = navigationController.viewControllers[0];
+			controller.xmlData = data;
+			controller.skillPlanName = name;
+			[self.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
 		}
 	}
 	[[NSFileManager defaultManager] removeItemAtURL:url error:nil];

@@ -9,9 +9,6 @@
 #import "NCFittingPOSViewController.h"
 #import "UIActionSheet+Block.h"
 #import "UIAlertView+Block.h"
-#import "NCFittingPOSStructuresDataSource.h"
-#import "NCFittingPOSAssemblyLinesDataSource.h"
-#import "NCFittingPOSStatsDataSource.h"
 #import "NCStorage.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NCFittingDamagePatternsViewController.h"
@@ -19,6 +16,11 @@
 #import "NCShoppingItem+Neocom.h"
 #import "NCShoppingGroup.h"
 #import "NCNewShoppingItemViewController.h"
+#import "NCFittingPOSStructuresViewController.h"
+#import "NCFittingPOSAssemblyLinesViewController.h"
+#import "NCFittingPOSStatsViewController.h"
+#import "NSString+Neocom.h"
+#import "UIColor+Neocom.h"
 
 #define ActionButtonShowControlTowerInfo NSLocalizedString(@"Control Tower Info", nil)
 #define ActionButtonSetName NSLocalizedString(@"Set Fit Name", nil)
@@ -31,11 +33,12 @@
 @property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Engine> engine;
 
 @property (nonatomic, strong) NSMutableDictionary* typesCache;
-@property (nonatomic, strong) NCFittingPOSStructuresDataSource* structuresDataSource;
-@property (nonatomic, strong) NCFittingPOSAssemblyLinesDataSource* assemblyLinesDataSource;
-@property (nonatomic, strong) NCFittingPOSStatsDataSource* statsDataSource;
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
 @property (nonatomic, strong) UIActionSheet* actionSheet;
+
+@property (nonatomic, weak) NCFittingPOSStructuresViewController* structuresViewController;
+@property (nonatomic, weak) NCFittingPOSAssemblyLinesViewController* assemblyLinesViewController;
+@property (nonatomic, weak) NCFittingPOSStatsViewController* statsViewController;
 
 @end
 
@@ -53,15 +56,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = self.fit.loadoutName;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
 
-	for (id controller in self.childViewControllers) {
-		if ([controller isKindOfClass:[NCFittingPOSWorkspaceViewController class]])
-			self.workspaceViewController = controller;
-		else if ([controller isKindOfClass:[NCFittingPOSStatsViewController class]])
-			self.statsViewController = controller;
-	}
-	
+	self.taskManager.maxConcurrentOperationCount = 1;
+	self.title = self.fit.loadoutName;
+	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
+
 	if (!self.engine)
 		self.engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
 	
@@ -78,38 +79,24 @@
 											 }
 										 }
 							 completionHandler:^(NCTask *task) {
-								 self.structuresDataSource = [NCFittingPOSStructuresDataSource new];
-								 self.structuresDataSource.controller = self;
-								 self.structuresDataSource.tableView = self.workspaceViewController.tableView;
-								 self.structuresDataSource.tableViewController = self.workspaceViewController;
-								 
-								 self.assemblyLinesDataSource = [NCFittingPOSAssemblyLinesDataSource new];
-								 self.assemblyLinesDataSource.controller = self;
-								 self.assemblyLinesDataSource.tableView = self.workspaceViewController.tableView;
-								 self.assemblyLinesDataSource.tableViewController = self.workspaceViewController;
-								 
-								 self.statsDataSource = [NCFittingPOSStatsDataSource new];
-								 self.statsDataSource.controller = self;
-								 if (self.statsViewController) {
-									 self.statsDataSource.tableView = self.statsViewController.tableView;
-									 self.statsViewController.tableView.dataSource = self.statsDataSource;
-									 self.statsViewController.tableView.delegate = self.statsDataSource;
-									 self.statsDataSource.tableViewController = self.statsViewController;
-								 }
-								 else {
-									 self.statsDataSource.tableView = self.workspaceViewController.tableView;
-									 self.statsDataSource.tableViewController = self.workspaceViewController;
-								 }
-								 
-								 NCFittingPOSDataSource* dataSources[] = {self.structuresDataSource, self.assemblyLinesDataSource, self.statsDataSource};
-								 NCFittingPOSDataSource* dataSource = dataSources[self.sectionSegmentedControl.selectedSegmentIndex];
-								 
-								 self.workspaceViewController.tableView.dataSource = dataSource;
-								 self.workspaceViewController.tableView.delegate = dataSource;
-								 self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
 								 [self reload];
 
 							 }];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	for (id controller in self.childViewControllers) {
+		if (![(UIViewController*) controller view].window)
+			continue;
+		if ([controller isKindOfClass:[NCFittingPOSStructuresViewController class]])
+			self.structuresViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingPOSAssemblyLinesViewController class]])
+			self.assemblyLinesViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingPOSStatsViewController class]])
+			self.statsViewController = controller;
+	}
+	[self reload];
 }
 
 - (void)didReceiveMemoryWarning
@@ -126,6 +113,17 @@
 	[super viewWillDisappear:animated];
 }
 
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+		self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width * self.sectionSegmentedControl.selectedSegmentIndex, 0);
+	}
+								 completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+								 }];
+}
+
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width * self.sectionSegmentedControl.selectedSegmentIndex, 0);
+}
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue isKindOfClass:[NCStoryboardPopoverSegue class]]) {
@@ -191,8 +189,32 @@
 }
 
 - (void) reload {
-	[(id) self.workspaceViewController.tableView.dataSource reload];
-	[(id) self.statsViewController.tableView.dataSource reload];
+	[self.structuresViewController reload];
+	[self.assemblyLinesViewController reload];
+	[self.statsViewController reload];
+	
+	__block float totalPG;
+	__block float usedPG;
+	__block float totalCPU;
+	__block float usedCPU;
+
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 eufe::ControlTower* controlTower = self.engine->getControlTower();
+											 totalPG = controlTower->getTotalPowerGrid();
+											 usedPG = controlTower->getPowerGridUsed();
+											 
+											 totalCPU = controlTower->getTotalCpu();
+											 usedCPU = controlTower->getCpuUsed();
+
+										 }
+							 completionHandler:^(NCTask *task) {
+								 self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
+								 self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
+								 self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
+								 self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
+							 }];
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {
@@ -202,14 +224,8 @@
 	return _typePickerViewController;
 }
 
-- (IBAction)onChangeSection:(id)sender {
-	NCFittingPOSDataSource* dataSources[] = {self.structuresDataSource, self.assemblyLinesDataSource, self.statsDataSource};
-	NCFittingPOSDataSource* dataSource = dataSources[self.sectionSegmentedControl.selectedSegmentIndex];
-	
-	self.workspaceViewController.tableView.dataSource = dataSource;
-	self.workspaceViewController.tableView.delegate = dataSource;
-	self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
-	[dataSource reload];
+- (IBAction)onChangeSection:(UISegmentedControl*)sender {
+	[self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * sender.selectedSegmentIndex, 0) animated:YES];
 }
 
 - (IBAction)onAction:(id)sender {
@@ -344,6 +360,22 @@
 											   self.actionSheet = nil;
 										   } cancelBlock:nil];
 	[self.actionSheet showFromBarButtonItem:sender animated:YES];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+	if (scrollView.tracking) {
+		NSInteger page = round(self.scrollView.contentOffset.x / self.scrollView.frame.size.width);
+		page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
+		self.sectionSegmentedControl.selectedSegmentIndex = page;
+	}
+}
+
+- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+	NSInteger page = round(self.scrollView.contentOffset.x / self.scrollView.frame.size.width);
+	page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
+	self.sectionSegmentedControl.selectedSegmentIndex = page;
 }
 
 #pragma mark - Private

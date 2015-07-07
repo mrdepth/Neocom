@@ -107,15 +107,6 @@
 
 @implementation NCDatabaseTypeMarketInfoViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
 	self.modeSetting = [[NCStorage sharedStorage] settingWithKey:@"NCDatabaseTypeMarketInfoViewController.mode"];
@@ -126,6 +117,15 @@
 	if (self.navigationController.viewControllers[0] != self)
 		self.navigationItem.leftBarButtonItem = nil;
 	self.searchDisplayController.searchResultsTableView.rowHeight = self.tableView.rowHeight;
+    
+    /*if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        if (self.parentViewController) {
+            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeMarketInfoViewController"]];
+        }
+        else
+            self.tableView.tableHeaderView = nil;
+    }*/
+    self.tableView.tableHeaderView = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -413,7 +413,8 @@
 									 self.filteredBuyOrdersSections = filteredBuyOrdersSections;
 									 self.filteredSellSummary = filteredSellSummary;
 									 self.filteredBuySummary = filteredBuySummary;
-									 [self.searchDisplayController.searchResultsTableView reloadData];
+                                     
+                                     [self.searchDisplayController.searchResultsTableView reloadData];
 								 }
 							 }];
 }

@@ -9,6 +9,7 @@
 #import "NCFittingShipWorkspaceViewController.h"
 #import "NCTableViewHeaderView.h"
 #import "UIColor+Neocom.h"
+#import "NCFittingShipViewController.h"
 
 @interface NCFittingShipWorkspaceViewController ()
 
@@ -25,25 +26,28 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	self.refreshControl = nil;
-	
 	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionGenericHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionGenericHeaderView"];
-	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionHiSlotHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionHiSlotHeaderView"];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) reload {
+	
+}
+
+- (NCFittingShipViewController*) controller {
+	return (NCFittingShipViewController*) self.parentViewController;
+}
+
+- (NCTaskManager*) taskManager {
+	return [self.controller taskManager];
 }
 
 #pragma mark - NCTableViewController

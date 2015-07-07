@@ -13,11 +13,14 @@
 #import "eufe.h"
 #import "NCPOSFit.h"
 #import "NCDamagePattern.h"
+#import "NCProgressLabel.h"
 
-@interface NCFittingPOSViewController : NCViewController
+@interface NCFittingPOSViewController : NCViewController<UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControl;
-@property (nonatomic, weak) NCFittingPOSWorkspaceViewController* workspaceViewController;
-@property (nonatomic, weak) NCFittingPOSStatsViewController* statsViewController;
+@property (nonatomic, weak) IBOutlet NCProgressLabel *powerGridLabel;
+@property (nonatomic, weak) IBOutlet NCProgressLabel *cpuLabel;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
 @property (nonatomic, strong, readonly) NCDatabaseTypePickerViewController* typePickerViewController;
 
 @property (nonatomic, assign, readonly) std::shared_ptr<eufe::Engine> engine;
@@ -25,7 +28,7 @@
 @property (nonatomic, strong) NCDamagePattern* damagePattern;
 
 
-- (IBAction)onChangeSection:(id)sender;
+- (IBAction)onChangeSection:(UISegmentedControl*)sender;
 - (IBAction)onAction:(id)sender;
 - (NCDBInvType*) typeWithItem:(eufe::Item*) item;
 - (void) reload;

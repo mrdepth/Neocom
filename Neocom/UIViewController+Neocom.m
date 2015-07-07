@@ -9,8 +9,9 @@
 #import "UIViewController+Neocom.h"
 #import <objc/runtime.h>
 #import "UIColor+Neocom.h"
+#import "NCPopoverController.h"
 
-@interface NCPopoverController : UIPopoverController
+/*@interface NCPopoverController : UIPopoverController
 
 @end
 
@@ -26,9 +27,14 @@
 	self.contentViewController.popover = nil;
 }
 
-@end
+@end*/
 
 @implementation UIViewController (Neocom)
+
+- (UIStatusBarStyle) preferredStatusBarStyle {
+	return UIStatusBarStyleLightContent;
+}
+
 
 - (void) dismiss {
 	if (self.popover)
@@ -37,33 +43,15 @@
 		[self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void) setPopover:(UIPopoverController *)popover {
+- (NCPopoverController*) popover {
+	NCPopoverController* popover = objc_getAssociatedObject(self, @"popover");
+	if (!popover)
+		popover = self.parentViewController.popover;
+	return popover;
+}
+
+- (void) setPopover:(NCPopoverController *)popover {
 	objc_setAssociatedObject(self, @"popover", popover, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (UIPopoverController*) popover {
-	return objc_getAssociatedObject(self, @"popover");
-}
-
-- (void)presentViewControllerInPopover:(UIViewController *)viewControllerToPresent fromRect:(CGRect) rect inView:(UIView*) view permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated {
-	self.popover = [[NCPopoverController alloc] initWithContentViewController:viewControllerToPresent];
-	self.popover.delegate = self;
-	[self.popover presentPopoverFromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
-	if ([self.popover respondsToSelector:@selector(setBackgroundColor:)])
-		//self.popover.backgroundColor = [UIColor blackColor];
-		self.popover.backgroundColor = [UIColor appearancePopoberBackgroundColor];
-}
-
-- (void)presentViewControllerInPopover:(UIViewController *)viewControllerToPresent fromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated {
-	if (self.popover)
-		[self.popover dismissPopoverAnimated:YES];
-	
-	self.popover = [[NCPopoverController alloc] initWithContentViewController:viewControllerToPresent];
-	self.popover.delegate = self;
-	[self.popover presentPopoverFromBarButtonItem:item permittedArrowDirections:arrowDirections animated:animated];
-	if ([self.popover respondsToSelector:@selector(setBackgroundColor:)])
-		//self.popover.backgroundColor = [UIColor blackColor];
-		self.popover.backgroundColor = [UIColor appearancePopoberBackgroundColor];
 }
 
 - (IBAction)dismissAnimated {
@@ -73,11 +61,28 @@
 		[self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - UIPopoverControllerDelegate
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-	if (self.popover == popoverController)
-		self.popover = nil;
+- (void) presentViewControllerInPopover:(UIViewController *)viewControllerToPresent withSender:(id) sender animated:(BOOL)animated {
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+        NCPopoverController* popoverController = [[NCPopoverController alloc] initWithContentViewController:viewControllerToPresent];
+		popoverController.presentingViewController = self;
+        popoverController.backgroundColor = [UIColor appearancePopoverBackgroundColor];
+        if ([sender isKindOfClass:[UIBarButtonItem class]])
+            [popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        else
+            [popoverController presentPopoverFromRect:[sender bounds] inView:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+    else {
+        viewControllerToPresent.modalPresentationStyle = UIModalPresentationPopover;
+        viewControllerToPresent.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        viewControllerToPresent.popoverPresentationController.backgroundColor = [UIColor appearancePopoverBackgroundColor];
+        if ([sender isKindOfClass:[UIBarButtonItem class]])
+            viewControllerToPresent.popoverPresentationController.barButtonItem = sender;
+        else {
+            viewControllerToPresent.popoverPresentationController.sourceView = sender;
+            viewControllerToPresent.popoverPresentationController.sourceRect = [sender bounds];
+        }
+        [self presentViewController:viewControllerToPresent animated:YES completion:nil];
+    }
 }
 
 @end

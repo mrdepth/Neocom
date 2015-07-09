@@ -326,7 +326,6 @@
 		float falloff = module->getFalloff();
 		float trackingSpeed = module->getTrackingSpeed();
 		float lifeTime = module->getLifeTime();
-		float velocity = ship->getVelocity();
 		
 		if (optimal > 0) {
 			NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
@@ -341,6 +340,8 @@
 			float v0 = ship->getMaxVelocityInOrbit(optimal);
 			float v1 = ship->getMaxVelocityInOrbit(optimal + falloff);
 			
+			double r = ship->getOrbitRadiusWithAngularVelocity(trackingSpeed);
+			
 			UIColor* color = trackingSpeed * optimal > v0 ? [UIColor greenColor] : (trackingSpeed * (optimal + falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
 			
 			NSMutableAttributedString* s = [NSMutableAttributedString new];
@@ -353,7 +354,7 @@
 			icon.bounds = CGRectMake(0, -7 -cell.trackingLabel.font.descender, 15, 15);
 			[s appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
 			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@+ m)", nil),
-																				  [NSNumberFormatter neocomLocalizedStringFromNumber:@(velocity / trackingSpeed)]]
+																				  [NSNumberFormatter neocomLocalizedStringFromNumber:@(r)]]
 																	  attributes:nil]];
 			
 			

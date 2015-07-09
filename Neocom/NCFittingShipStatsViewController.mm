@@ -93,6 +93,7 @@
 @property (nonatomic, strong) NCFittingShipStatsViewControllerShipStats* shipStats;
 @property (nonatomic, strong) NCFittingShipStatsViewControllerPriceStats* priceStats;
 @property (nonatomic, strong) NCPriceManager* priceManager;
+@property (nonatomic, strong) NCTaskManager* pricesTaskManager;
 @end
 
 
@@ -100,6 +101,8 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
+	self.pricesTaskManager = [[NCTaskManager alloc] initWithViewController:self];
+	
 	self.priceManager = [NCPriceManager sharedManager];
 }
 
@@ -289,7 +292,7 @@
 	NCFittingShipStatsViewControllerPriceStats* stats = [NCFittingShipStatsViewControllerPriceStats new];
 	
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+	[[self pricesTaskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 NSCountedSet* types = [NSCountedSet set];

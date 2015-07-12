@@ -42,6 +42,10 @@ INSERT INTO eveDB.industryBlueprints SELECT * FROM industryBlueprints;
 
 INSERT INTO eveDB.chrRaces SELECT * FROM chrRaces;
 
+INSERT INTO eveDB.invTypes SELECT * FROM invTypes;
+INSERT INTO eveDB.invGroups SELECT * FROM invGroups;
+INSERT INTO eveDB.invCategories SELECT * FROM invCategories;
+
 delete from eveDB.invTypes where groupID in (select groupID from eveDB.invGroups where categoryID not in (2,3,4,5,6,7,8,9,11,16,17,18,20,22,23,24,25,30,32,34,35,39,40,41,42,43,46,63,350001));
 delete from eveDB.invGroups where categoryID not in (2,3,4,5,6,7,8,9,11,16,17,18,20,22,23,24,25,30,32,34,35,39,40,41,42,43,46,63,350001);
 delete from eveDB.invCategories where categoryID not in (2,3,4,5,6,7,8,9,11,16,17,18,20,22,23,24,25,30,32,34,35,39,40,41,42,43,46,63,350001);

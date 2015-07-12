@@ -114,7 +114,7 @@ static void processEffect(NSMutableDictionary *effect) {
 	for (NSString *key in [NSArray arrayWithObjects:@"effectID", @"effectCategory", @"description", @"guid", @"iconID", @"isOffensive", @"isAssistance", @"durationAttributeID", @"trackingSpeedAttributeID", @"dischargeAttributeID", @"rangeAttributeID", @"falloffAttributeID", @"disallowAutoRepeat", @"published", @"displayName", @"isWarpSafe", @"rangeChance", @"electronicChance", @"propulsionChance", @"distribution", @"sfxName", @"npcUsageChanceAttributeID", @"npcActivationChanceAttributeID", @"fittingUsageChanceAttributeID", nil])
 		[effect setValue:nil forKey:key];
 	NSData* data = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
-	[data writeToFile:[NSString stringWithFormat:@"/Users/shimanski/Work/tmp/Effects/%@.json", [effect valueForKey:@"effectName"]] atomically:YES];
+	[data writeToFile:[NSString stringWithFormat:@"/Users/shimanski/work/tmp/Effects/%@.json", [effect valueForKey:@"effectName"]] atomically:YES];
 }
 
 NSError* exec(sqlite3* db, NSString* sqlRequest, void (^resultBlock)(sqlite3_stmt* stmt, BOOL* needsMore)) {
@@ -158,7 +158,7 @@ int main (int argc, const char * argv[])
 		
 		sqlite3 *pDB;
 		pDB = NULL;
-		sqlite3_open("/Users/shimanski/Work/git/Neocom/dbTools/dbinit/database.sqlite", &pDB);
+		sqlite3_open("/Users/shimanski/work/git/EVEUniverse/ThirdParty/eufe/dbinit/tmp/dump.sqlite", &pDB);
 		
 		char *errmsg = NULL;
 		sqlite3_exec(pDB, "select * from dgmEffects", callback, (__bridge void*) effects, &errmsg);

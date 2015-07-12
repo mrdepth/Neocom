@@ -1,9 +1,10 @@
 CC=clang++
 CFLAGS=-arch x86_64 -std=gnu++11 -stdlib=libc++ -lsqlite3
-TMP+=${PWD}/tmp
+T+=${PWD}/tmp
 DUMP=${PWD}/input/dump
-VPATH=$(TMP)
+VPATH=${T}
 SQL=${PWD}/sql
+SDE+=${PWD}/input/sde/eve.sqlite
 
 all: eufe.sqlite NCDatabase.sqlite
 
@@ -11,53 +12,53 @@ dbpatch: tmp
 	$(CC) $(CFLAGS) ../dbpatch/dbpatch.cpp -o ./tmp/$@
 
 EVEIconsConverter: tmp
-	xcodebuild -project ../EVEIconsConverter/EVEIconsConverter.xcodeproj -configuration Release TARGET_BUILD_DIR=${TMP} OBJROOT=${TMP}/build SYMROOT=${TMP}/build
+	xcodebuild -project ../EVEIconsConverter/EVEIconsConverter.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
 
 EVEIconsIDsParser: tmp
-	xcodebuild -project ../EVEIconsIDsParser/EVEIconsIDsParser.xcodeproj -configuration Release TARGET_BUILD_DIR=${TMP} OBJROOT=${TMP}/build SYMROOT=${TMP}/build
+	xcodebuild -project ../EVEIconsIDsParser/EVEIconsIDsParser.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
 
 EVETypesConverter: tmp
-	xcodebuild -project ../EVETypesConverter/EVETypesConverter.xcodeproj -configuration Release TARGET_BUILD_DIR=${TMP} OBJROOT=${TMP}/build SYMROOT=${TMP}/build
+	xcodebuild -project ../EVETypesConverter/EVETypesConverter.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
 
 EVENPCBuilder: tmp
-	xcodebuild -project ../EVENPCBuilder/EVENPCBuilder.xcodeproj -configuration Release TARGET_BUILD_DIR=${TMP} OBJROOT=${TMP}/build SYMROOT=${TMP}/build
+	xcodebuild -project ../EVENPCBuilder/EVENPCBuilder.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
 
 NCDatabase: tmp
-	xcodebuild -project ../NCDatabase/NCDatabase.xcodeproj -configuration Release TARGET_BUILD_DIR=${TMP} OBJROOT=${TMP}/build SYMROOT=${TMP}/build
+	xcodebuild -project ../NCDatabase/NCDatabase.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
 
 Icons: eveIcons.sql EVEIconsConverter
-	$(TMP)/EVEIconsConverter ./input/Icons/items $(TMP)/Icons
+	${T}/EVEIconsConverter ./input/Icons/items ${T}/Icons
 
 eveIcons.sql: EVEIconsIDsParser
-	$(TMP)/EVEIconsIDsParser ./input/sde/iconIDs.yaml $(TMP)/eveIcons.sql
+	${T}/EVEIconsIDsParser ./input/sde/iconIDs.yaml ${T}/eveIcons.sql
 
 Types: EVETypesConverter
-	$(TMP)/EVETypesConverter ./input/Types $(TMP)/Types $(TMP)/typesMap.sql
+	${T}/EVETypesConverter ./input/Types ${T}/Types ${T}/typesMap.sql
 
 eufe.sqlite:
-	cd ../../ThirdParty/eufe/dbinit; make OUTPUT_DIR=${PWD} DUMP=$(DUMP) TMP=$(TMP)
+	cd ../../ThirdParty/eufe/dbinit; make OUTPUT_DIR=${PWD} DUMP=$(DUMP) T=${T} SDE=$(SDE)
 
 createTables.sql: tmp
-	sqlite3 ./input/sde/eve.sqlite ".read ./sql/tablesExtract.sql" > $(TMP)/tmp.sql
-	sed 's/integer/int/g' $(TMP)/tmp.sql > $(TMP)/createTables.sql
+	sqlite3 ${SDE} ".read ./sql/tablesExtract.sql" > ${T}/tmp.sql
+	sed 's/integer/int/g' ${T}/tmp.sql > ${T}/createTables.sql
 
 npc.sql: EVENPCBuilder
-	$(TMP)/EVENPCBuilder ./input/npc.json $(TMP)/npc.sql
+	${T}/EVENPCBuilder ./input/npc.json ${T}/npc.sql
 
 evedb.sqlite: createTables.sql Types eveIcons.sql npc.sql
-	sqlite3 $(TMP)/evedb.sqlite ".read $(TMP)/createTables.sql"
-	cd $(DUMP);	sqlite3 $(TMP)/evedb.sqlite ".read $(SQL)/dump.sql"
-	sqlite3 ./input/sde/eve.sqlite ".read ./sql/evedb.sql"
-	sqlite3 $(TMP)/evedb.sqlite ".read ../../ThirdParty/eufe/dbinit/sql/dumpPatch.sql"
-	sqlite3 $(TMP)/evedb.sqlite ".read $(TMP)/eveIcons.sql"
-	sqlite3 $(TMP)/evedb.sqlite ".read $(TMP)/npc.sql"
-	sqlite3 $(TMP)/evedb.sqlite "CREATE INDEX \"npcGroup_parentNpcGroupID\" ON \"npcGroup\" (\"parentNpcGroupID\" ASC);"
+	sqlite3 ${T}/evedb.sqlite ".read ${T}/createTables.sql"
+	cd $(DUMP);	sqlite3 ${T}/evedb.sqlite ".read $(SQL)/dump.sql"
+	sqlite3 ${SDE} ".read ./sql/evedb.sql"
+	sqlite3 ${T}/evedb.sqlite ".read ../../ThirdParty/eufe/dbinit/sql/dumpPatch.sql"
+	sqlite3 ${T}/evedb.sqlite ".read ${T}/eveIcons.sql"
+	sqlite3 ${T}/evedb.sqlite ".read ${T}/npc.sql"
+	sqlite3 ${T}/evedb.sqlite "CREATE INDEX \"npcGroup_parentNpcGroupID\" ON \"npcGroup\" (\"parentNpcGroupID\" ASC);"
 
 NCDatabase.sqlite: NCDatabase evedb.sqlite Icons Types
-	$(TMP)/NCDatabase ./NCDatabase.sqlite $(TMP)/evedb.sqlite $(TMP)/Icons $(TMP)/Types ./input/Factions
+	${T}/NCDatabase ./NCDatabase.sqlite ${T}/evedb.sqlite ${T}/Icons ${T}/Types ./input/Factions
 
 tmp:
-	mkdir -p $(TMP)
+	mkdir -p ${T}
 
 clean:
-	rm -rf $(TMP)
+	rm -rf ${T}

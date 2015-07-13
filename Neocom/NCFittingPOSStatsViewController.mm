@@ -72,7 +72,11 @@
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														//														@synchronized(self.controller) {
+														if (!self.controller.engine)
+															return;
 														eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
+														if (!controlTower)
+															return;
 														
 														stats.totalPG = controlTower->getTotalPowerGrid();
 														stats.usedPG = controlTower->getPowerGridUsed();

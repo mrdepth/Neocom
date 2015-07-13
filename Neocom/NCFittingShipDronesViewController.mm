@@ -109,7 +109,7 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
+	return self.controller.engine ? 1 : 0;
 	//return self.view.window ? 1 : 0;
 }
 

@@ -300,8 +300,14 @@
 											 __block int32_t shipTypeID;
 											 //														@synchronized(self.controller) {
 											 
+											 if (!self.controller.engine)
+												 return;
 											 eufe::Character* character = self.controller.fit.pilot;
+											 if (!character)
+												 return;
 											 eufe::Ship* ship = character->getShip();
+											 if (!ship)
+												 return;
 											 shipTypeID = ship->getTypeID();
 											 
 											 [types addObject:@(ship->getTypeID())];

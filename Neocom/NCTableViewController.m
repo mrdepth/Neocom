@@ -394,6 +394,7 @@
 
 - (void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
 	[self updateCacheTime];
+	[self.view.window endEditing:YES];
 }
 
 #pragma mark - UITableViewDataSource

@@ -63,8 +63,7 @@
 	self.title = self.fit.loadoutName;
 	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 
-	if (!self.engine)
-		self.engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
+	std::shared_ptr<eufe::Engine> engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
 	
 	NCPOSFit* fit = self.fit;
 	
@@ -73,12 +72,13 @@
 										 block:^(NCTask *task) {
 											 @synchronized(self) {
 												 if (!fit.engine) {
-													 fit.engine = self.engine.get();
+													 fit.engine = engine.get();
 													 [fit load];
 												 }
 											 }
 										 }
 							 completionHandler:^(NCTask *task) {
+								 self.engine = engine;
 								 [self reload];
 
 							 }];

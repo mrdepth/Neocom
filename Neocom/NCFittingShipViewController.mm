@@ -97,14 +97,11 @@
 	
 
 	
-	if (!self.engine)
-		self.engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
+	std::shared_ptr<eufe::Engine> engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
 	
 	if (!self.fits)
 		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
 	NCShipFit* fit = self.fit;
-	
-	std::shared_ptr<eufe::Engine> engine = self.engine;
 	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
@@ -126,6 +123,7 @@
 //											 }
 										 }
 							 completionHandler:^(NCTask *task) {
+								 self.engine = engine;
 								 [self reload];
 							 }];
 }

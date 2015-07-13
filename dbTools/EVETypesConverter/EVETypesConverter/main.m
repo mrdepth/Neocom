@@ -23,8 +23,8 @@ int main (int argc, const char * argv[])
 			[fileManager removeItemAtPath:outputFolder error:nil];
 			[fileManager createDirectoryAtPath:outputFolder withIntermediateDirectories:YES attributes:nil error:nil];
 			NSMutableDictionary* types = [NSMutableDictionary dictionary];
-			for (NSString* fileName in inputFiles) {
-				fileName = [fileName lowercaseString];
+			for (NSString* fn in inputFiles) {
+				NSString* fileName = [fn lowercaseString];
 				if ([[fileName pathExtension] compare:@"png"] == NSOrderedSame) {
 					NSArray* components = [[fileName stringByDeletingPathExtension] componentsSeparatedByString:@"_"];
 					NSString* typeID = [components objectAtIndex:0];
@@ -79,7 +79,6 @@ int main (int argc, const char * argv[])
 				}
 				else
 					[[record valueForKey:@"typeIDs"] addObject:typeID];
-				[data release];
 			}
 			
 			for (NSDictionary* record in [md5s allValues]) {

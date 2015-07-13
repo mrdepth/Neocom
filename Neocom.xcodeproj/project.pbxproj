@@ -113,6 +113,8 @@
 		120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */; };
 		120D5B5318B22AC0007ED9B4 /* NCMarketOrdersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */; };
 		120E77B81B25D91300816E1C /* NCSplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120E77B71B25D91300816E1C /* NCSplashScreenViewController.m */; };
+		120F98A61B539E220047A019 /* eufe.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 120F98A41B539E220047A019 /* eufe.sqlite */; };
+		120F98A71B539E220047A019 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 120F98A51B539E220047A019 /* NCDatabase.sqlite */; };
 		1211122E185989E1009E5106 /* NCTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211122D185989E1009E5106 /* NCTaskManager.m */; };
 		1211123118598B09009E5106 /* NCTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211123018598B09009E5106 /* NCTask.m */; };
 		121112341859929E009E5106 /* NCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 121112331859929E009E5106 /* NCTableViewController.m */; };
@@ -207,7 +209,6 @@
 		12436DAB1945A0310090D4A6 /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12436DA91945A0310090D4A6 /* NCDatabase.xcdatamodeld */; };
 		12436DAE1945A06B0090D4A6 /* NCDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436DAD1945A06B0090D4A6 /* NCDatabase.m */; };
 		12436E141946E4670090D4A6 /* NCDBImageValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436E131946E4670090D4A6 /* NCDBImageValueTransformer.m */; };
-		12436E9B1946F7360090D4A6 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 12436E9A1946F7360090D4A6 /* NCDatabase.sqlite */; };
 		1243761C189653980078F526 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1243761B189653980078F526 /* Character.storyboard */; };
 		1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771418969E590078F526 /* NCDatabaseNPCViewController.m */; };
 		124638331AD25A84001F8780 /* NCShoppingAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 124638321AD25A84001F8780 /* NCShoppingAssetsViewController.m */; };
@@ -221,7 +222,6 @@
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
 		125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 125F6824188537FF005732FA /* NCCharacterAttributes.mm */; };
 		12614EEF1AC92522007620DA /* NCShoppingListsManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */; };
-		1261593D18EE7BFD0049B9CE /* eufe.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1261593B18EE7BFD0049B9CE /* eufe.sqlite */; };
 		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
 		1263EA141AEA85C80052DC27 /* NCLoadoutsParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1263EA131AEA85C80052DC27 /* NCLoadoutsParser.mm */; };
 		12640AFA18B72E43005C311D /* NCStarbasesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640AF918B72E43005C311D /* NCStarbasesViewController.m */; };
@@ -880,6 +880,8 @@
 		120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMarketOrdersCell.m; sourceTree = "<group>"; };
 		120E77B61B25D91300816E1C /* NCSplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSplashScreenViewController.h; sourceTree = "<group>"; };
 		120E77B71B25D91300816E1C /* NCSplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSplashScreenViewController.m; sourceTree = "<group>"; };
+		120F98A41B539E220047A019 /* eufe.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = eufe.sqlite; path = dbTools/dbinit/eufe.sqlite; sourceTree = SOURCE_ROOT; };
+		120F98A51B539E220047A019 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = dbTools/dbinit/NCDatabase.sqlite; sourceTree = SOURCE_ROOT; };
 		1211122C185989E1009E5106 /* NCTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTaskManager.h; sourceTree = "<group>"; };
 		1211122D185989E1009E5106 /* NCTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTaskManager.m; sourceTree = "<group>"; };
 		1211122F18598B09009E5106 /* NCTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTask.h; sourceTree = "<group>"; };
@@ -1028,7 +1030,6 @@
 		12436DAD1945A06B0090D4A6 /* NCDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabase.m; sourceTree = "<group>"; };
 		12436E121946E4670090D4A6 /* NCDBImageValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBImageValueTransformer.h; sourceTree = "<group>"; };
 		12436E131946E4670090D4A6 /* NCDBImageValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBImageValueTransformer.m; sourceTree = "<group>"; };
-		12436E9A1946F7360090D4A6 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = NCDatabase.sqlite; sourceTree = "<group>"; };
 		1243761B189653980078F526 /* Character.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Character.storyboard; sourceTree = "<group>"; };
 		1243771318969E590078F526 /* NCDatabaseNPCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseNPCViewController.h; sourceTree = "<group>"; };
 		1243771418969E590078F526 /* NCDatabaseNPCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseNPCViewController.m; sourceTree = "<group>"; };
@@ -1051,7 +1052,6 @@
 		125F6824188537FF005732FA /* NCCharacterAttributes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCCharacterAttributes.mm; sourceTree = "<group>"; };
 		12614EED1AC92522007620DA /* NCShoppingListsManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingListsManagerViewController.h; sourceTree = "<group>"; };
 		12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingListsManagerViewController.m; sourceTree = "<group>"; };
-		1261593B18EE7BFD0049B9CE /* eufe.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = eufe.sqlite; sourceTree = "<group>"; };
 		1261594718EE7F9C0049B9CE /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		1261594A18EE7FCB0049B9CE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1263AAE219055A9000AF522A /* Neocom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Neocom.entitlements; sourceTree = "<group>"; };
@@ -2566,8 +2566,8 @@
 		1261593A18EE7BFD0049B9CE /* db */ = {
 			isa = PBXGroup;
 			children = (
-				1261593B18EE7BFD0049B9CE /* eufe.sqlite */,
-				12436E9A1946F7360090D4A6 /* NCDatabase.sqlite */,
+				120F98A41B539E220047A019 /* eufe.sqlite */,
+				120F98A51B539E220047A019 /* NCDatabase.sqlite */,
 			);
 			path = db;
 			sourceTree = "<group>";
@@ -4861,6 +4861,7 @@
 				841534F0188A9A7500B42433 /* Database.storyboard in Resources */,
 				849B9FD31896D24A00D4DD2B /* slotLow.png in Resources */,
 				849B9FC31896D24A00D4DD2B /* kinetic.png in Resources */,
+				120F98A71B539E220047A019 /* NCDatabase.sqlite in Resources */,
 				120B508818FCFFCB0033AF78 /* level_300.gif in Resources */,
 				120B508518FCFFCB0033AF78 /* level_241.gif in Resources */,
 				849B9FD51896D24A00D4DD2B /* slotRig.png in Resources */,
@@ -4917,7 +4918,6 @@
 				849B9FDA1896D24A00D4DD2B /* thumbsDown.png in Resources */,
 				126F1CE81954069F00E5CD4F /* perception.png in Resources */,
 				120B508E18FCFFCB0033AF78 /* level_450.gif in Resources */,
-				1261593D18EE7BFD0049B9CE /* eufe.sqlite in Resources */,
 				120B507918FCFFCB0033AF78 /* level_120.gif in Resources */,
 				120B507318FCFFCB0033AF78 /* level_031.gif in Resources */,
 				121FF9C71B4BDF1700091AFE /* tracking.png in Resources */,
@@ -4963,6 +4963,7 @@
 				849B9FD61896D24A00D4DD2B /* slotSubsystem.png in Resources */,
 				1219C13C1A9E662C00FF6205 /* wallet.png in Resources */,
 				84EEFCEC1896C69C007962A0 /* sanshasNation@2x.png in Resources */,
+				120F98A61B539E220047A019 /* eufe.sqlite in Resources */,
 				12B950A51ADB8F15009E31DB /* browser.png in Resources */,
 				120B508618FCFFCB0033AF78 /* level_250.gif in Resources */,
 				849B9FD81896D24A00D4DD2B /* targets.png in Resources */,
@@ -4993,7 +4994,6 @@
 				120B508B18FCFFCB0033AF78 /* level_350.gif in Resources */,
 				126F1CE91954069F00E5CD4F /* willpower.png in Resources */,
 				84EEFCE81896C69C007962A0 /* guristasPirates@2x.png in Resources */,
-				12436E9B1946F7360090D4A6 /* NCDatabase.sqlite in Resources */,
 				120B508318FCFFCB0033AF78 /* level_231.gif in Resources */,
 				120B507A18FCFFCB0033AF78 /* level_121.gif in Resources */,
 				849B9FBD1896D24A00D4DD2B /* em.png in Resources */,

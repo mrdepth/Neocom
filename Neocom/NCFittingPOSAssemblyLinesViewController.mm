@@ -34,7 +34,11 @@
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														//@synchronized(self.controller) {
+														if (!self.controller.engine)
+															return;
 														eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
+														if (!controlTower)
+															return;
 														
 														NSMutableDictionary* assemblyLinesTypes = [NSMutableDictionary new];
 														

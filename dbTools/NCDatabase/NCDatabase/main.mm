@@ -192,6 +192,8 @@ static NSManagedObjectContext *managedObjectContext()
 }
 
 static NSAttributedString* attributedStringFromHTMLString(NSString* html) {
+	if (!html)
+		return [[NSAttributedString alloc] initWithString:@"" attributes:nil];
 	NSMutableString* mHtml = [html mutableCopy];
 	[mHtml replaceOccurrencesOfString:@"<br>" withString:@"\n" options:NSCaseInsensitiveSearch range:NSMakeRange(0, mHtml.length)];
 	[mHtml replaceOccurrencesOfString:@"<p>" withString:@"\n" options:NSCaseInsensitiveSearch range:NSMakeRange(0, mHtml.length)];
@@ -419,6 +421,8 @@ NSDictionary* convertInvTypes(NSManagedObjectContext* context, EVEDBDatabase* da
 
 	[database execSQLRequest:@"select * from invTypes" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBInvType* eveType = [[EVEDBInvType alloc] initWithStatement:stmt];
+		if (!eveType.typeName)
+			return;
 		NCDBEveIcon* icon = eveType.imageName ? eveIcons[eveType.imageName] : nil;
 		
 		NCDBInvType* type = [NSEntityDescription insertNewObjectForEntityForName:@"InvType" inManagedObjectContext:context];

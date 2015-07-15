@@ -51,7 +51,15 @@ typedef enum : uint32_t {
 	UIFontDescriptorClassOrnamentals = 9u << 28,
 	UIFontDescriptorClassScripts = 10u << 28,
 	UIFontDescriptorClassSymbolic = 12u << 28
+	
 } UIFontDescriptorSymbolicTraits;
+
+NSString* databasePath;
+NSString* evedbPath;
+NSString* iconsPath;
+NSString* typesPath;
+NSString* factionsPath;
+
 
 @interface NSColor(NCDatabase)
 
@@ -166,8 +174,7 @@ static NSManagedObjectContext *managedObjectContext()
         
         NSString *STORE_TYPE = NSSQLiteStoreType;
         
-        NSString *path = @"./NCDatabase";
-        NSURL *url = [NSURL fileURLWithPath:[path stringByAppendingPathExtension:@"sqlite"]];
+        NSURL *url = [NSURL fileURLWithPath:databasePath];
 		[[NSFileManager defaultManager] removeItemAtURL:url error:nil];
         
         NSError *error;
@@ -185,6 +192,8 @@ static NSManagedObjectContext *managedObjectContext()
 }
 
 static NSAttributedString* attributedStringFromHTMLString(NSString* html) {
+	if (!html)
+		return [[NSAttributedString alloc] initWithString:@"" attributes:nil];
 	NSMutableString* mHtml = [html mutableCopy];
 	[mHtml replaceOccurrencesOfString:@"<br>" withString:@"\n" options:NSCaseInsensitiveSearch range:NSMakeRange(0, mHtml.length)];
 	[mHtml replaceOccurrencesOfString:@"<p>" withString:@"\n" options:NSCaseInsensitiveSearch range:NSMakeRange(0, mHtml.length)];
@@ -266,9 +275,9 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 		EVEDBEveIcon* eveIcon = [[EVEDBEveIcon alloc] initWithStatement:stmt];
 		NSString* iconImageName = nil;
 		if ([eveIcon.iconFile hasPrefix:@"res:/"])
-			iconImageName = [NSString stringWithFormat:@"./Icons/%@", [eveIcon.iconFile lastPathComponent]];
+			iconImageName = [NSString stringWithFormat:@"%@/%@", iconsPath, [eveIcon.iconFile lastPathComponent]];
 		else
-			iconImageName = [NSString stringWithFormat:@"./Icons/icon%@.png", eveIcon.iconFile];
+			iconImageName = [NSString stringWithFormat:@"%@/icon%@.png", iconsPath, eveIcon.iconFile];
 		
 		NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
 		if (data) {
@@ -291,7 +300,7 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 		if (!eveIcon) {
 			NCDBEveIcon* icon = dictionary[iconNo];
 			if (!icon) {
-				NSString* iconImageName = [NSString stringWithFormat:@"./Icons/icon%@.png", iconNo];
+				NSString* iconImageName = [NSString stringWithFormat:@"%@/icon%@.png", iconsPath, iconNo];
 				
 				NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
 				if (data) {
@@ -310,7 +319,7 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 	}
 	
 	for (int i = 0; i <= 5; i++) {
-		NSString* iconImageName = [NSString stringWithFormat:@"./Icons/icon79_0%d.png", i + 1];
+		NSString* iconImageName = [NSString stringWithFormat:@"%@/icon79_0%d.png", iconsPath, i + 1];
 		NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
 		if (data) {
 			NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
@@ -336,7 +345,7 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 			if (!eveIcon) {
 				NCDBEveIcon* icon = dictionary[eveActivity.iconNo];
 				if (!icon) {
-					NSString* iconImageName = [NSString stringWithFormat:@"./Icons/icon%@.png", eveActivity.iconNo];
+					NSString* iconImageName = [NSString stringWithFormat:@"%@/icon%@.png", iconsPath, eveActivity.iconNo];
 					
 					NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
 					if (data) {
@@ -355,7 +364,7 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 	
 	[database execSQLRequest:@"SELECT * FROM npcGroup WHERE iconName IS NOT NULL GROUP BY iconName" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBNpcGroup* eveNpcGroup = [[EVEDBNpcGroup alloc] initWithStatement:stmt];
-		NSString* iconImageName = [NSString stringWithFormat:@"./Factions/%@@2x.png", [eveNpcGroup.iconName stringByDeletingPathExtension]];
+		NSString* iconImageName = [NSString stringWithFormat:@"%@/%@@2x.png", factionsPath, [eveNpcGroup.iconName stringByDeletingPathExtension]];
 		
 		NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
 		if (data) {
@@ -372,7 +381,7 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 	
 	[database execSQLRequest:@"SELECT * FROM invTypes WHERE imageName IS NOT NULL GROUP BY imageName" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBInvType* eveType = [[EVEDBInvType alloc] initWithStatement:stmt];
-		NSString* iconImageName = [NSString stringWithFormat:@"./Types/%@.png", eveType.imageName];
+		NSString* iconImageName = [NSString stringWithFormat:@"%@/%@.png", typesPath, eveType.imageName];
 		NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
 		if (data) {
 			NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
@@ -412,6 +421,8 @@ NSDictionary* convertInvTypes(NSManagedObjectContext* context, EVEDBDatabase* da
 
 	[database execSQLRequest:@"select * from invTypes" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBInvType* eveType = [[EVEDBInvType alloc] initWithStatement:stmt];
+		if (!eveType.typeName)
+			return;
 		NCDBEveIcon* icon = eveType.imageName ? eveIcons[eveType.imageName] : nil;
 		
 		NCDBInvType* type = [NSEntityDescription insertNewObjectForEntityForName:@"InvType" inManagedObjectContext:context];
@@ -639,7 +650,9 @@ void convertDgmTypeEffects(NSManagedObjectContext* context, EVEDBDatabase* datab
 	[database execSQLRequest:@"select * from dgmTypeEffects" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBDgmTypeEffect* eveTypeEffect = [[EVEDBDgmTypeEffect alloc] initWithStatement:stmt];
 		NCDBDgmEffect* effect = dgmEffects[@(eveTypeEffect.effectID)];
-		[effect addTypesObject:invTypes[@(eveTypeEffect.typeID)]];
+		NCDBInvType* type = invTypes[@(eveTypeEffect.typeID)];
+		if (type)
+			[effect addTypesObject:type];
 	}];
 }
 
@@ -1444,8 +1457,18 @@ int main(int argc, const char * argv[])
 {
 
 	@autoreleasepool {
+		if (argc != 7)
+			return 1;
+		
+		databasePath = [NSString stringWithUTF8String:argv[1]];
+		evedbPath = [NSString stringWithUTF8String:argv[2]];
+		iconsPath = [NSString stringWithUTF8String:argv[3]];
+		typesPath = [NSString stringWithUTF8String:argv[4]];
+		factionsPath = [NSString stringWithUTF8String:argv[5]];
+		NSString* expansion = [NSString stringWithUTF8String:argv[6]];
+
 		NSManagedObjectContext *context = managedObjectContext();
-		EVEDBDatabase* database = [[EVEDBDatabase alloc] initWithDatabasePath:@"./evedb.sqlite"];
+		EVEDBDatabase* database = [[EVEDBDatabase alloc] initWithDatabasePath:evedbPath];
 		[EVEDBDatabase setSharedDatabase:database];
 		
 		@autoreleasepool {
@@ -1456,7 +1479,7 @@ int main(int argc, const char * argv[])
 							 NCDBVersion* dbVersion = [NSEntityDescription insertNewObjectForEntityForName:@"Version" inManagedObjectContext:context];
 							 dbVersion.version = [NSString stringWithCString:version encoding:NSUTF8StringEncoding];
 							 dbVersion.build = build;
-							 dbVersion.expansion = NCDBExpansion;
+							 dbVersion.expansion = expansion;
 						 }];
 			
 			NSLog(@"convertEveIcons");

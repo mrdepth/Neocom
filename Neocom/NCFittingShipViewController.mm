@@ -7,11 +7,6 @@
 //
 
 #import "NCFittingShipViewController.h"
-#import "NCFittingShipModulesDataSource.h"
-#import "NCFittingShipDronesDataSource.h"
-#import "NCFittingShipImplantsDataSource.h"
-#import "NCFittingShipFleetDataSource.h"
-#import "NCFittingShipStatsDataSource.h"
 #import "NCStorage.h"
 #import "NCFitCharacter.h"
 #import "NCAccount.h"
@@ -32,6 +27,15 @@
 #import "NCShoppingItem+Neocom.h"
 #import "NCShoppingGroup.h"
 #import "NCNewShoppingItemViewController.h"
+
+#import "NSString+Neocom.h"
+
+#import "NCFittingShipModulesViewController.h"
+#import "NCFittingShipDronesViewController.h"
+#import "NCFittingShipImplantsViewController.h"
+#import "NCFittingShipFleetViewController.h"
+#import "NCFittingShipStatsViewController.h"
+#import "NCAdaptivePopoverSegue.h"
 
 #include <set>
 
@@ -55,11 +59,12 @@
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
 @property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Engine> engine;
 
-@property (nonatomic, strong) NCFittingShipModulesDataSource* modulesDataSource;
-@property (nonatomic, strong) NCFittingShipDronesDataSource* dronesDataSource;
-@property (nonatomic, strong) NCFittingShipImplantsDataSource* implantsDataSource;
-@property (nonatomic, strong) NCFittingShipFleetDataSource* fleetDataSource;
-@property (nonatomic, strong) NCFittingShipStatsDataSource* statsDataSource;
+@property (nonatomic, weak) NCFittingShipModulesViewController* modulesViewController;
+@property (nonatomic, weak) NCFittingShipDronesViewController* dronesViewController;
+@property (nonatomic, weak) NCFittingShipImplantsViewController* implantsViewController;
+@property (nonatomic, weak) NCFittingShipFleetViewController* fleetViewController;
+@property (nonatomic, weak) NCFittingShipStatsViewController* statsViewController;
+
 @property (nonatomic, strong) NSMutableDictionary* typesCache;
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
 
@@ -83,23 +88,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
+	
+	self.taskManager.maxConcurrentOperationCount = 1;
+	
 	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	
-	for (id controller in self.childViewControllers) {
-		if ([controller isKindOfClass:[NCFittingShipWorkspaceViewController class]])
-			self.workspaceViewController = controller;
-		else if ([controller isKindOfClass:[NCFittingShipStatsViewController class]])
-			self.statsViewController = controller;
-	}
+
 	
-	if (!self.engine)
-		self.engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
+	std::shared_ptr<eufe::Engine> engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
 	
 	if (!self.fits)
 		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
 	NCShipFit* fit = self.fit;
-	
-	std::shared_ptr<eufe::Engine> engine = self.engine;
 	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
@@ -121,69 +123,38 @@
 //											 }
 										 }
 							 completionHandler:^(NCTask *task) {
-								 self.modulesDataSource = [NCFittingShipModulesDataSource new];
-								 self.modulesDataSource.controller = self;
-								 self.modulesDataSource.tableView = self.workspaceViewController.tableView;
-								 self.modulesDataSource.tableViewController = self.workspaceViewController;
-								 
-								 self.dronesDataSource = [NCFittingShipDronesDataSource new];
-								 self.dronesDataSource.controller = self;
-								 self.dronesDataSource.tableView = self.workspaceViewController.tableView;
-								 self.dronesDataSource.tableViewController = self.workspaceViewController;
-								 
-								 self.implantsDataSource = [NCFittingShipImplantsDataSource new];
-								 self.implantsDataSource.controller = self;
-								 self.implantsDataSource.tableView = self.workspaceViewController.tableView;
-								 self.implantsDataSource.tableViewController = self.workspaceViewController;
-								 
-								 self.fleetDataSource = [NCFittingShipFleetDataSource new];
-								 self.fleetDataSource.controller = self;
-								 self.fleetDataSource.tableView = self.workspaceViewController.tableView;
-								 self.fleetDataSource.tableViewController = self.workspaceViewController;
-								 
-								 self.statsDataSource = [NCFittingShipStatsDataSource new];
-								 self.statsDataSource.controller = self;
-								 if (self.statsViewController) {
-									 self.statsDataSource.tableView = self.statsViewController.tableView;
-									 self.statsViewController.tableView.dataSource = self.statsDataSource;
-									 self.statsViewController.tableView.delegate = self.statsDataSource;
-									 self.statsDataSource.tableViewController = self.statsViewController;
-								 }
-								 else {
-									 self.statsDataSource.tableView = self.workspaceViewController.tableView;
-									 self.statsDataSource.tableViewController = self.workspaceViewController;
-								 }
-								 
-								 NCFittingShipDataSource* dataSources[] = {self.modulesDataSource, self.dronesDataSource, self.implantsDataSource, self.fleetDataSource, self.statsDataSource};
-								 NCFittingShipDataSource* dataSource = dataSources[self.sectionSegmentedControl.selectedSegmentIndex];
-								 
-								 self.workspaceViewController.tableView.dataSource = dataSource;
-								 self.workspaceViewController.tableView.delegate = dataSource;
-								 //self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
-								 
-								 for (UIView* view in self.headerView.subviews)
-									 [view removeFromSuperview];
-								 
-								 if (dataSource.tableHeaderView) {
-									 NSDictionary* bindings = @{@"view": dataSource.tableHeaderView};
-									 [self.headerView addSubview:dataSource.tableHeaderView];
-									 [self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|"
-																											 options:0
-																											 metrics:nil
-																											   views:bindings]];
-									 [self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
-																											 options:0
-																											 metrics:nil
-																											   views:bindings]];
-								 }
-
+								 self.engine = engine;
 								 [self reload];
 							 }];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	for (id controller in self.childViewControllers) {
+		if (![(UIViewController*) controller view].window)
+			continue;
+		if ([controller isKindOfClass:[NCFittingShipModulesViewController class]])
+			self.modulesViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingShipDronesViewController class]])
+			self.dronesViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingShipImplantsViewController class]])
+			self.implantsViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingShipFleetViewController class]])
+			self.fleetViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingShipStatsViewController class]])
+			self.statsViewController = controller;
+	}
+	[self reload];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void) viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width * self.sectionSegmentedControl.selectedSegmentIndex, 0);
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -198,7 +169,30 @@
 	[super viewWillDisappear:animated];
 }
 
+/*- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+		self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width * self.sectionSegmentedControl.selectedSegmentIndex, 0);
+	}
+								 completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+								 }];
+}
+
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width * self.sectionSegmentedControl.selectedSegmentIndex, 0);
+}*/
+
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    //[super prepareForSegue:segue sender:sender];
+    if ([segue isKindOfClass:[NCAdaptivePopoverSegue class]]) {
+        NCAdaptivePopoverSegue* popoverSegue = (NCAdaptivePopoverSegue*) segue;
+        if ([sender isKindOfClass:[NSDictionary class]])
+            popoverSegue.sender = sender[@"sender"];
+        else if ([sender isKindOfClass:[UIView class]])
+            popoverSegue.sender = sender;
+        else
+            popoverSegue.sender = self.navigationItem.rightBarButtonItem;
+    }
+
 	if ([segue isKindOfClass:[NCStoryboardPopoverSegue class]]) {
 		NCStoryboardPopoverSegue* popoverSegue = (NCStoryboardPopoverSegue*) segue;
 		id anchor = sender;
@@ -358,7 +352,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		controller.shoppingGroup = sender;
+		controller.shoppingGroup = sender[@"object"];
 	}
 }
 
@@ -387,8 +381,70 @@
 }
 
 - (void) reload {
-	[(id) self.workspaceViewController.tableView.dataSource reload];
-	[(id) self.statsViewController.tableView.dataSource reload];
+	[self.modulesViewController reload];
+	[self.dronesViewController reload];
+	[self.implantsViewController reload];
+	[self.fleetViewController reload];
+	[self.statsViewController reload];
+	
+	if (!self.fit.pilot)
+		return;
+
+	__block float totalPG;
+	__block float usedPG;
+	__block float totalCPU;
+	__block float usedCPU;
+	__block float totalCalibration;
+	__block float usedCalibration;
+	
+	__block float totalDB;
+	__block float usedDB;
+	__block float totalBandwidth;
+	__block float usedBandwidth;
+	__block int maxActiveDrones;
+	__block int activeDrones;
+	
+
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 eufe::Ship* ship = self.fit.pilot->getShip();
+											 
+											 totalPG = ship->getTotalPowerGrid();
+											 usedPG = ship->getPowerGridUsed();
+											 totalCPU = ship->getTotalCpu();
+											 usedCPU = ship->getCpuUsed();
+											 totalCalibration = ship->getTotalCalibration();
+											 usedCalibration = ship->getCalibrationUsed();
+											 
+											 totalDB = ship->getTotalDroneBay();
+											 usedDB = ship->getDroneBayUsed();
+											 totalBandwidth = ship->getTotalDroneBandwidth();
+											 usedBandwidth = ship->getDroneBandwidthUsed();
+											 maxActiveDrones = ship->getMaxActiveDrones();
+											 activeDrones = ship->getActiveDrones();
+
+										 }
+							 completionHandler:^(NCTask *task) {
+								 self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
+								 self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
+								 self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
+								 self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
+								 self.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
+								 self.calibrationLabel.progress = totalCalibration > 0 ? usedCalibration / totalCalibration : 0;
+								 
+								 
+								 
+								 self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
+								 self.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
+								 self.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
+								 self.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
+								 self.dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
+								 if (activeDrones > maxActiveDrones)
+									 self.dronesCountLabel.textColor = [UIColor redColor];
+								 else
+									 self.dronesCountLabel.textColor = [UIColor whiteColor];
+							 }];
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {
@@ -398,30 +454,8 @@
 	return _typePickerViewController;
 }
 
-- (IBAction)onChangeSection:(id)sender {
-	NCFittingShipDataSource* dataSources[] = {self.modulesDataSource, self.dronesDataSource, self.implantsDataSource, self.fleetDataSource, self.statsDataSource};
-	NCFittingShipDataSource* dataSource = dataSources[self.sectionSegmentedControl.selectedSegmentIndex];
-	
-	self.workspaceViewController.tableView.dataSource = dataSource;
-	self.workspaceViewController.tableView.delegate = dataSource;
-	//self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
-	
-	for (UIView* view in self.headerView.subviews)
-		[view removeFromSuperview];
-
-	if (dataSource.tableHeaderView) {
-		NSDictionary* bindings = @{@"view": dataSource.tableHeaderView};
-		[self.headerView addSubview:dataSource.tableHeaderView];
-		[self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|"
-																				options:0
-																				metrics:nil
-																				  views:bindings]];
-		[self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
-																				options:0
-																				metrics:nil
-																				  views:bindings]];
-	}
-	[dataSource reload];
+- (IBAction)onChangeSection:(UISegmentedControl*)sender {
+	[self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * sender.selectedSegmentIndex, 0) animated:NO];
 }
 
 - (IBAction)onAction:(id)sender {
@@ -588,7 +622,7 @@
 		shoppingGroup.immutable = YES;
 		shoppingGroup.iconFile = self.fit.loadout.type.icon.iconFile;
 		
-		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:shoppingGroup];
+		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"sender": sender, @"object": shoppingGroup}];
 	};
 
 	
@@ -666,6 +700,22 @@
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
 	[controller dismissAnimated];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+	if (scrollView.tracking) {
+		NSInteger page = round(self.scrollView.contentOffset.x / self.scrollView.frame.size.width);
+		page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
+		self.sectionSegmentedControl.selectedSegmentIndex = page;
+	}
+}
+
+- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+	NSInteger page = round(self.scrollView.contentOffset.x / self.scrollView.frame.size.width);
+	page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
+	self.sectionSegmentedControl.selectedSegmentIndex = page;
 }
 
 #pragma mark - Private
@@ -840,9 +890,18 @@
 											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
 												   
 												   if (selectedButtonIndex == 0) {
-													   __block NSError* error = nil;
 													   NSString* dna = self.fit.dnaRepresentation;
-													   __block NSString* shortenLink = nil;
+													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"http://neocom.by/api/fitting?dna=%@", [dna stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+													   [[UIAlertView alertViewWithTitle:nil
+																				message:NSLocalizedString(@"Link has been copied to clipboard", nil)
+																	  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+																	  otherButtonTitles:nil
+																		completionBlock:nil
+																			cancelBlock:nil] show];
+
+													  /* __block NSString* shortenLink = nil;
+													   __block NSError* error = nil;
+
 													   [[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 																							title:NCTaskManagerDefaultTitle
 																							block:^(NCTask *task) {
@@ -879,7 +938,7 @@
 																											 cancelBlock:nil] show];
 																					}
 																				}];
-													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"fitting:%@", self.fit.dnaRepresentation]];
+													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"fitting:%@", self.fit.dnaRepresentation]];*/
 												   }
 												   else if (selectedButtonIndex == 1)
 													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"fitting:%@", self.fit.dnaRepresentation]];

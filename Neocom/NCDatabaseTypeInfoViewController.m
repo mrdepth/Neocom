@@ -29,6 +29,7 @@
 #import "NCShoppingGroup+Neocom.h"
 #import "NCNewShoppingItemViewController.h"
 #import "NCDatabaseFetchedResultsViewController.h"
+#import "NCAdaptivePopoverSegue.h"
 
 #define EVEDBUnitIDMillisecondsID 101
 #define EVEDBUnitIDInverseAbsolutePercentID 108
@@ -139,6 +140,17 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	NSIndexPath* indexPath;
 	NCDatabaseTypeInfoViewControllerRow* row;
+	
+	if ([segue isKindOfClass:[NCAdaptivePopoverSegue class]]) {
+		NCAdaptivePopoverSegue* popoverSegue = (NCAdaptivePopoverSegue*) segue;
+		if ([sender isKindOfClass:[NSDictionary class]])
+			popoverSegue.sender = sender[@"sender"];
+		else if ([sender isKindOfClass:[UIView class]])
+			popoverSegue.sender = sender;
+		else
+			popoverSegue.sender = self.navigationItem.rightBarButtonItem;
+	}
+	
 	if ([sender isKindOfClass:[UITableViewCell class]]) {
 		indexPath = [self.tableView indexPathForCell:sender];
 		row = self.sections[indexPath.section][@"rows"][indexPath.row];
@@ -184,7 +196,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		controller.shoppingGroup = sender;
+		controller.shoppingGroup = sender[@"object"];
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseFetchedResultsViewController"]) {
 		NCDatabaseFetchedResultsViewController* controller;
@@ -291,7 +303,11 @@
 		[shoppingGroup addShoppingItemsObject:shoppingItem];
 		shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
 		
-		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:shoppingGroup];
+		UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+		if (cell)
+			[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"sender":cell, @"object":shoppingGroup}];
+		else
+			[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"object":shoppingGroup}];
 	}
 }
 

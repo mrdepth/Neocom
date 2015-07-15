@@ -23,6 +23,8 @@
 - (void) presentDropDownViewController:(UIViewController *)dropDownViewController animated:(BOOL) animated;
 - (void) dismissDropDownViewControllerAnimated:(BOOL) animated;
 - (IBAction)onAccounts:(id)sender;
+
+- (void) updateInsetsForView:(UIView*) view;
 @end
 
 @implementation NCMainMenuDropDownSegue
@@ -50,10 +52,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.automaticallyAdjustsScrollViewInsets = NO;
 	
 	self.menuViewController = self.childViewControllers[0];
 	
 	self.navigationCharacterButton = [NCNavigationCharacterButton viewWithNibName:@"NCNavigationCharacterButton" bundle:nil];
+	self.navigationCharacterButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+	self.navigationCharacterButton.translatesAutoresizingMaskIntoConstraints = YES;
 	[self.navigationCharacterButton addTarget:self action:@selector(onAccounts:) forControlEvents:UIControlEventTouchUpInside];
 	CGRect frame = self.navigationCharacterButton.frame;
 	frame.origin.x = 10;
@@ -79,6 +84,11 @@
 	}
 }
 
+- (void) viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	[self updateInsetsForView:self.view];
+}
+
 #pragma mark - Private
 
 - (void) presentDropDownViewController:(UIViewController *)dropDownViewController animated:(BOOL) animated {
@@ -93,6 +103,7 @@
 
 		CGRect frame = self.menuViewController.view.superview.bounds;
 		dropDownViewController.view.frame = frame;
+		[self updateInsetsForView:dropDownViewController.view];
 		dropDownViewController.view.layer.zPosition = 1.0;
 		dropDownViewController.view.transform = CGAffineTransformMakeTranslation(0.0f, -frame.size.height);
 		dropDownViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
@@ -131,7 +142,10 @@
 		self.navigationCharacterButton.userInteractionEnabled = NO;
 		
 		UIViewController* dropDownViewController = self.dropDownViewController;
-		
+		CGRect frame = dropDownViewController.view.superview.bounds;
+		self.menuViewController.view.frame = frame;
+		[self updateInsetsForView:self.menuViewController.view];
+
 		[self transitionFromViewController:dropDownViewController
 						  toViewController:self.menuViewController
 								  duration:animated ? NCMainMenuDropDownSegueAnimationDuration : 0.0f
@@ -159,5 +173,22 @@
 	}
 }
 
+- (void) updateInsetsForView:(UIView*) view {
+	if (view.frame.origin.y == 0) {
+		if ([view isKindOfClass:[UIScrollView class]]) {
+			UIScrollView* scrollView = (UIScrollView*) view;
+			CGPoint contentOffset = scrollView.contentOffset;
+			CGFloat top = [self.topLayoutGuide length];
+			contentOffset.y += scrollView.contentInset.top - top;
+			scrollView.contentInset = UIEdgeInsetsMake(top, 0, 0, 0);
+			scrollView.contentOffset = contentOffset;
+			scrollView.scrollIndicatorInsets = scrollView.contentInset;
+		}
+		else {
+			for (UIView* subview in view.subviews)
+				[self updateInsetsForView:subview];
+		}
+	}
+}
 
 @end

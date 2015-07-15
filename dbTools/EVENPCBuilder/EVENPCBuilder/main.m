@@ -26,26 +26,28 @@ int parse(NSMutableArray* rows, NSArray* groups, int parentGroupID) {
 int main(int argc, const char * argv[])
 {
 	@autoreleasepool {
-		NSString* input = @"/Users/shimanski/Documents/git/EVEUniverse/dbTools/EVENPCBuilder/npc.json";
-		NSString* output = @"/Users/shimanski/Documents/git/EVEUniverse/dbTools/EVENPCBuilder/npc.sql";
-		NSArray* npc = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:input]
-													   options:0
+		if (argc == 3) {
+			NSString* input = [NSString stringWithUTF8String:argv[1]];
+			NSString* output = [NSString stringWithUTF8String:argv[2]];
+			NSArray* npc = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:input]
+														   options:0
+															 error:nil];
+			NSMutableArray* rows = [NSMutableArray new];
+			[rows addObject:@"DROP TABLE IF EXISTS npcGroup;\n\
+			 CREATE TABLE \"npcGroup\" (\n\
+			 \"npcGroupID\" INTEGER NOT NULL,\n\
+			 \"parentNpcGroupID\" INTEGER DEFAULT NULL,\n\
+			 \"npcGroupName\" TEXT,\n\
+			 \"iconName\" TEXT NULL,\n\
+			 \"groupID\" INTEGER DEFAULT NULL,\n\
+			 PRIMARY KEY (\"npcGroupID\")\n\
+			 );\n"];
+			parse(rows, npc, 0);
+			[[rows componentsJoinedByString:@"\n"] writeToFile:output
+													atomically:YES
+													  encoding:NSUTF8StringEncoding
 														 error:nil];
-		NSMutableArray* rows = [NSMutableArray new];
-		[rows addObject:@"DROP TABLE IF EXISTS npcGroup;\n\
-CREATE TABLE \"npcGroup\" (\n\
-\"npcGroupID\" INTEGER NOT NULL,\n\
-\"parentNpcGroupID\" INTEGER DEFAULT NULL,\n\
-\"npcGroupName\" TEXT,\n\
-\"iconName\" TEXT NULL,\n\
-\"groupID\" INTEGER DEFAULT NULL,\n\
-PRIMARY KEY (\"npcGroupID\")\n\
-);\n"];
-		parse(rows, npc, 0);
-		[[rows componentsJoinedByString:@"\n"] writeToFile:output
-												atomically:YES
-												  encoding:NSUTF8StringEncoding
-													 error:nil];
+		}
 	}
     return 0;
 }

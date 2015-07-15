@@ -8,6 +8,9 @@
 
 #import "NCTableViewController.h"
 
+@class NCFittingShipViewController;
 @interface NCFittingShipWorkspaceViewController : NCTableViewController
+@property (nonatomic, readonly) NCFittingShipViewController* controller;
 
+- (void) reload;
 @end

@@ -30,9 +30,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	if (self.npcGroup)
-		self.title = self.npcGroup.npcGroupName;
 	self.refreshControl = nil;
+    
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        if (self.parentViewController) {
+            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseNPCViewController"]];
+        }
+        else {
+            self.tableView.tableHeaderView = nil;
+            return;
+        }
+    }
+    
+    if (self.npcGroup)
+        self.title = self.npcGroup.npcGroupName;
+
 	[self reload];
 }
 
@@ -66,7 +78,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[section] : self.searchResult.sections[section];
 	return sectionInfo.numberOfObjects;
 }
 
@@ -86,11 +98,18 @@
 	request.fetchBatchSize = 50;
 	self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	[self.searchResult performFetch:nil];
-	[self.searchDisplayController.searchResultsTableView reloadData];
+    
+    if (self.searchController) {
+        NCDatabaseNPCViewController* searchResultsController = (NCDatabaseNPCViewController*) self.searchController.searchResultsController;
+        searchResultsController.searchResult = self.searchResult;
+        [searchResultsController.tableView reloadData];
+    }
+    else if (self.searchDisplayController)
+        [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	if ([row isKindOfClass:[NCDBInvType class]])
 		return @"TypeCell";
@@ -99,7 +118,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	if ([row isKindOfClass:[NCDBInvType class]]) {

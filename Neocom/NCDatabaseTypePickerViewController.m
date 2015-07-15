@@ -12,6 +12,7 @@
 #import "NSString+MD5.h"
 #import "NCDatabase.h"
 #import "NCDatabaseTypePickerContentViewController.h"
+#import "NCAdaptivePopoverSegue.h"
 
 @interface NCDatabaseTypePickerContentViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* result;
@@ -51,9 +52,12 @@
 - (void) presentWithCategory:(NCDBEufeItemCategory*) category inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(NCDBInvType* type)) completion {
 	if (![self.category isEqual:category]) {
 		self.category = category;
-		for (UIViewController* controller in self.viewControllers)
-			if ([controller.searchDisplayController isActive])
+		for (NCTableViewController* controller in self.viewControllers) {
+			if (controller.searchController.isActive)
+				[controller.searchController setActive:NO];
+			else if (controller.searchDisplayController.isActive)
 				[controller.searchDisplayController setActive:NO animated:NO];
+		}
 		
 		if (self.viewControllers.count > 1)
 			[self setViewControllers:@[[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]] animated:NO];
@@ -75,10 +79,11 @@
 	self.completionHandler = completion;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[controller presentViewControllerInPopover:self fromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
+        [controller presentViewControllerInPopover:self withSender:view animated:YES];
 	else {
 		[[self.viewControllers[0] navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)]];
 		[controller presentViewController:self animated:animated completion:nil];
+//		[controller.splitViewController.viewControllers[0] showViewController:self sender:view];
 	}
 }
 

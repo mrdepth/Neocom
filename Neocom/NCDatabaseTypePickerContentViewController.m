@@ -38,7 +38,16 @@
 {
     [super viewDidLoad];
 	self.refreshControl = nil;
-	// Do any additional setup after loading the view.
+    
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        if (self.parentViewController) {
+            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]];
+        }
+        else {
+            self.tableView.tableHeaderView = nil;
+            return;
+        }
+    }
 }
 
 - (void) dealloc {
@@ -79,23 +88,23 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return tableView == self.tableView ? self.result.sections.count : self.searchResult.sections.count;
+	return tableView == self.tableView && !self.searchContentsController ? self.result.sections.count : self.searchResult.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[section] : self.searchResult.sections[section];
 	return sectionInfo.numberOfObjects;
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[section] : self.searchResult.sections[section];
 	return sectionInfo.name.length > 0 ? sectionInfo.name : nil;
 }
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 
 	if ([row isKindOfClass:[NCDBEufeItem class]]) {
@@ -126,16 +135,23 @@
 		self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
 		NSError* error = nil;
 		[self.searchResult performFetch:&error];
-		[self.searchDisplayController.searchResultsTableView reloadData];
 	}
 	else {
 		self.searchResult = nil;
-		[self.searchDisplayController.searchResultsTableView reloadData];
 	}
+    
+    if (self.searchController) {
+        NCDatabaseTypePickerContentViewController* searchResultsController = (NCDatabaseTypePickerContentViewController*) self.searchController.searchResultsController;
+        searchResultsController.searchResult = self.searchResult;
+        [searchResultsController.tableView reloadData];
+    }
+    else if (self.searchDisplayController)
+        [self.searchDisplayController.searchResultsTableView reloadData];
+
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	
 	if ([row isKindOfClass:[NCDBEufeItem class]])
@@ -145,7 +161,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	
 	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;

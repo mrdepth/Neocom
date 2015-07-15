@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="XGa-bo-1x4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="qIL-of-0Bg">
+            <objects>
+                <navigationController id="LJA-f2-dSg" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="xd6-jw-GSx">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="XGa-bo-1x4" kind="relationship" relationship="rootViewController" id="pKH-6O-BD2"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wPf-BH-oFs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3000" y="335.91549295774644"/>
+        </scene>
         <!--News-->
         <scene sceneID="ihu-0J-8bJ">
             <objects>
                 <tableViewController storyboardIdentifier="NCRSSViewController" id="XGa-bo-1x4" customClass="NCRSSViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="7qN-bf-TYh">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -23,7 +40,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="okg-d3-PGe" kind="push" identifier="NCRSSFeedViewController" id="bWI-5h-dyi"/>
+                                    <segue destination="okg-d3-PGe" kind="show" identifier="NCRSSFeedViewController" id="bWI-5h-dyi"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -35,7 +52,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zvi-sR-hNz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1181" y="318"/>
+            <point key="canvasLocation" x="-2214.375" y="335.91549295774644"/>
         </scene>
         <!--About-->
         <scene sceneID="qWB-gh-FHy">
@@ -263,14 +280,14 @@ Anton Vorobyov aka Kadesh Priestess</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sRp-7G-npX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1181" y="1017"/>
+            <point key="canvasLocation" x="-2215" y="1061"/>
         </scene>
         <!--Donate-->
         <scene sceneID="Y78-M6-YLN">
             <objects>
                 <tableViewController storyboardIdentifier="NCDonationViewController" id="j7W-gB-kRW" customClass="NCDonationViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="161" sectionHeaderHeight="22" sectionFooterHeight="22" id="gpj-rz-3XU">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -282,10 +299,10 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JiO-Ag-vF9">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="134"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="134"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FQ2-GM-674">
-                                                    <rect key="frame" x="191" y="103" width="56" height="29"/>
+                                                    <rect key="frame" x="471" y="103" width="56" height="29"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <state key="normal" title="Upgrade">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -296,17 +313,17 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                                     </connections>
                                                 </button>
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="FmH-lh-YgH">
-                                                    <rect key="frame" x="163" y="108" width="20" height="20"/>
+                                                    <rect key="frame" x="443" y="108" width="20" height="20"/>
                                                 </activityIndicatorView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="uZn-Ac-Btu">
-                                                    <rect key="frame" x="15" y="2" width="290" height="93"/>
+                                                    <rect key="frame" x="15" y="2" width="570" height="93"/>
                                                     <string key="text">You can support the development by making a donation. Ads will be automatically removed. If you have previously made ​​a donation, you can restore your status purchase.</string>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hzR-If-UDV">
-                                                    <rect key="frame" x="255" y="103" width="50" height="29"/>
+                                                    <rect key="frame" x="535" y="103" width="50" height="29"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <state key="normal" title="Restore">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -353,19 +370,19 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="shK-86-FA8">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="96"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="96"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ads already removed, but you can still support the development by making a donation." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="cUG-kU-V2g">
-                                                    <rect key="frame" x="15" y="2" width="290" height="55"/>
+                                                    <rect key="frame" x="15" y="2" width="570" height="55"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="IwX-Wy-NCc">
-                                                    <rect key="frame" x="230" y="70" width="20" height="20"/>
+                                                    <rect key="frame" x="510" y="70" width="20" height="20"/>
                                                 </activityIndicatorView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w8w-Qo-eKD">
-                                                    <rect key="frame" x="258" y="65" width="47" height="29"/>
+                                                    <rect key="frame" x="538" y="65" width="47" height="29"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <state key="normal" title="Donate">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -411,14 +428,14 @@ Anton Vorobyov aka Kadesh Priestess</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gwt-7a-Rmz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-315" y="958"/>
+            <point key="canvasLocation" x="-590.625" y="1011.9718309859154"/>
         </scene>
         <!--Settings-->
         <scene sceneID="3kN-cv-lg1">
             <objects>
                 <tableViewController storyboardIdentifier="NCSettingsViewController" id="k5g-0D-RW7" customClass="NCSettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="SFk-cu-Vzy">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
@@ -432,13 +449,13 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rQg-5G-DSN">
-                                                    <rect key="frame" x="256" y="3" width="51" height="31"/>
+                                                    <rect key="frame" x="536" y="3" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="onChangeCloud:" destination="k5g-0D-RW7" eventType="valueChanged" id="Dg1-C0-44U"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use iCloud Storage" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fwg-gg-fbb">
-                                                    <rect key="frame" x="15" y="0.0" width="226" height="36"/>
+                                                    <rect key="frame" x="15" y="0.0" width="506" height="36"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -532,13 +549,13 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="24 hours left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FJ3-33-g41">
-                                                    <rect key="frame" x="15" y="0.0" width="226" height="36"/>
+                                                    <rect key="frame" x="15" y="0.0" width="506" height="36"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zLJ-e0-9CX">
-                                                    <rect key="frame" x="256" y="3" width="51" height="31"/>
+                                                    <rect key="frame" x="536" y="3" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="onChangeNotification:" destination="k5g-0D-RW7" eventType="valueChanged" id="CPI-Y4-Mld"/>
                                                     </connections>
@@ -563,13 +580,13 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Od8-sS-hlt">
-                                                    <rect key="frame" x="256" y="3" width="51" height="31"/>
+                                                    <rect key="frame" x="536" y="3" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="onChangeNotification:" destination="k5g-0D-RW7" eventType="valueChanged" id="QmC-ug-mgm"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 hours left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PzO-Kb-Imf">
-                                                    <rect key="frame" x="15" y="0.0" width="226" height="36"/>
+                                                    <rect key="frame" x="15" y="0.0" width="506" height="36"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -594,13 +611,13 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="COf-T2-gi3">
-                                                    <rect key="frame" x="256" y="3" width="51" height="31"/>
+                                                    <rect key="frame" x="536" y="3" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="onChangeNotification:" destination="k5g-0D-RW7" eventType="valueChanged" id="4uw-Eg-Kht"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4 hours left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="72T-4g-9cH">
-                                                    <rect key="frame" x="15" y="0.0" width="226" height="36"/>
+                                                    <rect key="frame" x="15" y="0.0" width="506" height="36"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -625,13 +642,13 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0ML-wh-bSX">
-                                                    <rect key="frame" x="256" y="3" width="51" height="31"/>
+                                                    <rect key="frame" x="536" y="3" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="onChangeNotification:" destination="k5g-0D-RW7" eventType="valueChanged" id="C4R-zH-LXo"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 hour left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k9B-vw-yvu">
-                                                    <rect key="frame" x="15" y="0.0" width="226" height="36"/>
+                                                    <rect key="frame" x="15" y="0.0" width="506" height="36"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -660,13 +677,13 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JLa-0T-dDk">
-                                                    <rect key="frame" x="256" y="3" width="51" height="31"/>
+                                                    <rect key="frame" x="536" y="3" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="onChangeMarketPricesMonitor:" destination="k5g-0D-RW7" eventType="valueChanged" id="V9R-9o-LT8"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ISK Exchange Rate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rC6-Dm-cj8">
-                                                    <rect key="frame" x="15" y="0.0" width="226" height="36"/>
+                                                    <rect key="frame" x="15" y="0.0" width="506" height="36"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -691,13 +708,13 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AS8-00-Qf6">
-                                                    <rect key="frame" x="256" y="3" width="51" height="31"/>
+                                                    <rect key="frame" x="536" y="3" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="onChangeMarketPricesMonitor:" destination="k5g-0D-RW7" eventType="valueChanged" id="8mt-37-VeF"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PLEX" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZEg-dz-Cbw">
-                                                    <rect key="frame" x="15" y="0.0" width="226" height="36"/>
+                                                    <rect key="frame" x="15" y="0.0" width="506" height="36"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -722,13 +739,13 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9D9-Ee-Fdp">
-                                                    <rect key="frame" x="256" y="3" width="51" height="31"/>
+                                                    <rect key="frame" x="536" y="3" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="onChangeMarketPricesMonitor:" destination="k5g-0D-RW7" eventType="valueChanged" id="KcQ-IK-vy6"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minerals" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tYI-mq-Oft">
-                                                    <rect key="frame" x="15" y="0.0" width="226" height="36"/>
+                                                    <rect key="frame" x="15" y="0.0" width="506" height="36"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -768,14 +785,14 @@ Anton Vorobyov aka Kadesh Priestess</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4WR-W9-GLq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-769" y="951"/>
+            <point key="canvasLocation" x="-1441.875" y="1004.5774647887323"/>
         </scene>
         <!--News-->
         <scene sceneID="mFB-ra-2Ez">
             <objects>
                 <tableViewController id="okg-d3-PGe" customClass="NCRSSFeedViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="56" sectionHeaderHeight="22" sectionFooterHeight="22" id="7rs-hD-93S">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -787,22 +804,22 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TxQ-v4-aTO">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="55"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="55"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00.00 00:00 from CCP" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="257" translatesAutoresizingMaskIntoConstraints="NO" id="rH1-NG-Otw" customClass="NCLabel">
-                                                    <rect key="frame" x="15" y="4" width="272" height="17"/>
+                                                    <rect key="frame" x="15" y="4" width="552" height="17"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="r5q-Yk-qtG">
-                                                    <rect key="frame" x="15" y="21" width="272" height="15"/>
+                                                    <rect key="frame" x="15" y="21" width="552" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00.00 00:00 from CCP" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="257" translatesAutoresizingMaskIntoConstraints="NO" id="Xsb-Gv-JPO" customClass="NCLabel">
-                                                    <rect key="frame" x="15" y="36" width="272" height="15"/>
+                                                    <rect key="frame" x="15" y="36" width="552" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -836,7 +853,7 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                     <outlet property="layoutContentView" destination="TxQ-v4-aTO" id="JIE-qN-vMN"/>
                                     <outlet property="rssItemText" destination="Xsb-Gv-JPO" id="NJ0-ht-Ert"/>
                                     <outlet property="titleLabel" destination="rH1-NG-Otw" id="PcH-lS-WwU"/>
-                                    <segue destination="C29-g5-qOW" kind="push" identifier="NCRSSItemViewController" id="BNg-yh-5rM"/>
+                                    <segue destination="C29-g5-qOW" kind="custom" identifier="NCRSSItemViewController" customClass="NCAdaptiveModalSegue" id="BNg-yh-5rM"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -851,7 +868,7 @@ Anton Vorobyov aka Kadesh Priestess</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lfh-Cu-WX9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-769" y="318"/>
+            <point key="canvasLocation" x="-1441.875" y="335.91549295774644"/>
         </scene>
         <!--News-->
         <scene sceneID="bgQ-aK-p80">
@@ -862,11 +879,11 @@ Anton Vorobyov aka Kadesh Priestess</string>
                         <viewControllerLayoutGuide type="bottom" id="HIf-wv-S38"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="5ds-MB-iBl">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o3o-It-Sbm">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
                                 <connections>
@@ -891,12 +908,7 @@ Anton Vorobyov aka Kadesh Priestess</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2oU-qZ-pyv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-315" y="318"/>
+            <point key="canvasLocation" x="-590.625" y="335.91549295774644"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

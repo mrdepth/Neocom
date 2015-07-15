@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCTableViewController.h"
+#import "NCFittingPOSWorkspaceViewController.h"
 
-@interface NCFittingPOSStatsViewController : NCTableViewController
+@interface NCFittingPOSStatsViewController : NCFittingPOSWorkspaceViewController
 
 @end

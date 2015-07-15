@@ -203,6 +203,7 @@
 		3788E59E14C9D544009DC6AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EVETypesConverter/EVETypesConverter-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -212,6 +213,7 @@
 		3788E59F14C9D544009DC6AF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EVETypesConverter/EVETypesConverter-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -237,6 +239,7 @@
 				3788E59F14C9D544009DC6AF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

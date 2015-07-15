@@ -117,6 +117,7 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	[super prepareForSegue:segue sender:sender];
 	if ([segue.identifier isEqualToString:@"NCShoppingAssetsViewController"]) {
 		NCShoppingAssetsViewController* controller;
 		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
@@ -153,6 +154,15 @@
 }
 
 - (IBAction)unwindFromShoppingListsManager:(UIStoryboardSegue*) segue {
+	if (self.shoppingList != [NCShoppingList currentShoppingList]) {
+		self.shoppingList = [NCShoppingList currentShoppingList];
+		[self reloadFromCache];
+	}
+	
+	if (self.shoppingList) {
+		NSString* name = self.shoppingList.name;
+		self.navigationItem.rightBarButtonItem.title = name;
+	}
 }
 
 

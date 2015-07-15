@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *chargeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *optimalLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lifetimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *trackingLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *stateImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *targetImageView;
 

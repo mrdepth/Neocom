@@ -111,8 +111,8 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	NCSplitViewController* splitViewController = (NCSplitViewController*) self.splitViewController;
-	[splitViewController.masterPopover dismissPopoverAnimated:YES];
+//	NCSplitViewController* splitViewController = (NCSplitViewController*) self.splitViewController;
+//	[splitViewController.masterPopover dismissPopoverAnimated:YES];
 }
 
 - (IBAction)onFacebook:(id)sender {

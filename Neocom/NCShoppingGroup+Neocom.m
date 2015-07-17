@@ -15,7 +15,7 @@
 - (double) price {
 	double price = 0;
 	for (NCShoppingItem* item in self.shoppingItems)
-		price += item.price.sell.percentile * item.quantity;
+		price += item.price * item.quantity;
 	return price * self.quantity;
 }
 

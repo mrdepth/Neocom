@@ -440,8 +440,8 @@
 											 NSDictionary* prices = [[NCPriceManager sharedManager] pricesWithTypes:[typeIDs allKeys]];
 											 __block double balance = 0;
 											 [typeIDs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-												 EVECentralMarketStatType* price = prices[key];
-												 balance += price.sell.percentile * [obj longLongValue];
+												 double price = [prices[key] doubleValue];
+												 balance += price * [obj longLongValue];
 											 }];
 
 											 [sections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];

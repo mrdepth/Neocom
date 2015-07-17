@@ -352,14 +352,14 @@
 															
 															__block float upgradesCost = 0;
 															__block float posCost = 0;
-															[prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVECentralMarketStatType* obj, BOOL *stop) {
+															[prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NSNumber* obj, BOOL *stop) {
 																NSInteger typeID = [key integerValue];
 																if (typeID == resource.resourceType.typeID)
-																	stats.fuelDailyCost = stats.fuelConsumtion * obj.sell.percentile * 24;
+																	stats.fuelDailyCost = stats.fuelConsumtion * [obj doubleValue];
 																else if (infrastructureUpgrades[key] != nil)
-																	upgradesCost += obj.sell.percentile;
+																	upgradesCost += [obj doubleValue];
 																else
-																	posCost += obj.sell.percentile;
+																	posCost += [obj doubleValue];
 															}];
 															
 															stats.posCost = posCost;

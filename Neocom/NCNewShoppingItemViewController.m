@@ -207,7 +207,7 @@
 		NCShoppingItem* item = self.rows[indexPath.row];
 		cell.titleLabel.text = item.type.typeName;
 		if (item.price)
-			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"x%d, %@", nil), item.quantity * (int32_t) self.stepper.value, [NSString shortStringWithFloat:item.price.sell.percentile * item.quantity * self.stepper.value unit:@"ISK"]];
+			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"x%d, %@", nil), item.quantity * (int32_t) self.stepper.value, [NSString shortStringWithFloat:item.price * item.quantity * self.stepper.value unit:@"ISK"]];
 		else
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"x%d", nil), item.quantity * (int32_t) self.stepper.value];
 		cell.iconView.image = item.type.icon ? item.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
@@ -276,7 +276,7 @@
 											   NCPriceManager* priceManager = [NCPriceManager sharedManager];
 											   NSDictionary* prices = [priceManager pricesWithTypes:[itemsWithoutPrice valueForKey:@"typeID"]];
 											   for (NCShoppingItem* item in itemsWithoutPrice)
-												   item.price = prices[@(item.typeID)];
+												   item.price = [prices[@(item.typeID)] doubleValue];
 										   }
 
 									   }
@@ -303,7 +303,7 @@
 	NCStorage* storage = [NCStorage sharedStorage];
 	[storage.managedObjectContext performBlockAndWait:^{
 		for (NCShoppingItem* item in self.rows)
-			totalPrice += item.quantity * item.price.sell.percentile;
+			totalPrice += item.quantity * item.price;
 		for (NCShoppingGroup* group in self.contents)
 			totalContentsPrice += group.price;
 	}];

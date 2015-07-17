@@ -13,4 +13,6 @@
 + (instancetype) sharedManager;
 - (EVECentralMarketStatType*) priceWithType:(NSInteger) typeID;
 - (NSDictionary*) pricesWithTypes:(NSArray*) types;
+- (void) updateIfNeeded;
+
 @end

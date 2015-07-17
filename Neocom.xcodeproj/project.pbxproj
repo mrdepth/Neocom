@@ -164,6 +164,7 @@
 		1219C1541AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1219C1531AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m */; };
 		121FF9C71B4BDF1700091AFE /* tracking.png in Resources */ = {isa = PBXBuildFile; fileRef = 121FF9C61B4BDF1700091AFE /* tracking.png */; };
 		1225A0B71A400954005DD73B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1225A0B61A400954005DD73B /* Launch Screen.xib */; };
+		1226D2D31B58F04F000C69EC /* NCCachePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1226D2D21B58F04F000C69EC /* NCCachePrice.m */; };
 		1229475D18EA8B2E0093FAB8 /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; };
 		122947EB18EAA51D0093FAB8 /* NCSkillsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */; };
 		122947F318EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122947F218EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm */; };
@@ -943,6 +944,8 @@
 		1219C1531AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeRequirementsViewController.m; sourceTree = "<group>"; };
 		121FF9C61B4BDF1700091AFE /* tracking.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tracking.png; sourceTree = "<group>"; };
 		1225A0B61A400954005DD73B /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		1226D2D11B58F04F000C69EC /* NCCachePrice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCachePrice.h; sourceTree = "<group>"; };
+		1226D2D21B58F04F000C69EC /* NCCachePrice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCachePrice.m; sourceTree = "<group>"; };
 		1229475B18EA8B2E0093FAB8 /* NCSkillQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillQueueViewController.h; sourceTree = "<group>"; };
 		1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillQueueViewController.m; sourceTree = "<group>"; };
 		122947E918EAA51D0093FAB8 /* NCSkillsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillsContainerViewController.h; sourceTree = "<group>"; };
@@ -2107,6 +2110,8 @@
 		12111235185992DD009E5106 /* NCCache */ = {
 			isa = PBXGroup;
 			children = (
+				1226D2D11B58F04F000C69EC /* NCCachePrice.h */,
+				1226D2D21B58F04F000C69EC /* NCCachePrice.m */,
 				1211123C18599396009E5106 /* NCCache.xcdatamodeld */,
 				1211123618599339009E5106 /* NCCache.h */,
 				1211123718599339009E5106 /* NCCache.m */,
@@ -5068,6 +5073,7 @@
 				129D260F187E923300E2062C /* ASInAppPurchase.m in Sources */,
 				126A0E72185F3B9300A8E8A3 /* NAPIUpload.m in Sources */,
 				84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */,
+				1226D2D31B58F04F000C69EC /* NCCachePrice.m in Sources */,
 				126A0E45185F3B9300A8E8A3 /* EVENotifications.m in Sources */,
 				12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */,
 				1263EA141AEA85C80052DC27 /* NCLoadoutsParser.mm in Sources */,

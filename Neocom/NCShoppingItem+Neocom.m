@@ -38,12 +38,12 @@
 	objc_setAssociatedObject(self, @"type", type, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (EVECentralMarketStatType*) price {
-	return objc_getAssociatedObject(self, @"price");
+- (double) price {
+	return [objc_getAssociatedObject(self, @"price") doubleValue];
 }
 
-- (void) setPrice:(EVECentralMarketStatType *)price {
-	objc_setAssociatedObject(self, @"price", price, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void) setPrice:(double)price {
+	objc_setAssociatedObject(self, @"price", @(price), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

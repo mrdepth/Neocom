@@ -147,11 +147,16 @@ static NCCache* sharedCache;
 		
 		NSError *error = nil;
 		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-													   configuration:nil
-																 URL:[NSURL fileURLWithPath:storePath]
-															 options:nil
-															   error:&error]) {
+		for (int i = 0; i < 2; i++) {
+			if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+														   configuration:nil
+																	 URL:[NSURL fileURLWithPath:storePath]
+																 options:nil
+																   error:&error]) {
+				break;
+			}
+			else
+				[[NSFileManager defaultManager] removeItemAtPath:storePath error:nil];
 		}
 		return _persistentStoreCoordinator;
 	}

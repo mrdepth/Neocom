@@ -12,7 +12,7 @@
 @class EVECentralMarketStatType;
 @interface NCShoppingItem (Neocom)
 @property (nonatomic, strong) NCDBInvType* type;
-@property (nonatomic, strong) EVECentralMarketStatType* price;
+@property (nonatomic, assign) double price;
 
 + (instancetype) shoppingItemWithType:(NCDBInvType*) type quantity:(int32_t) quantity;
 

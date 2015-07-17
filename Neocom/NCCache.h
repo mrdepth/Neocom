@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NCCacheRecord.h"
+#import "NCCachePrice.h"
 
 @interface NCCache : NSObject
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

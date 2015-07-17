@@ -404,10 +404,10 @@
 												   NCTask* priceTask = [[self taskManager] addTaskWithIndentifier:nil
 																											title:NCTaskManagerDefaultTitle
 																											block:^(NCTask *task) {
-																												NSDictionary* price = [[NCPriceManager sharedManager] pricesWithTypes:@[@(type.typeID)]];
-																												EVECentralMarketStatType* marketStat = price[@(type.typeID)];
-																												if (marketStat)
-																													row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(marketStat.sell.percentile)]];
+																												NSDictionary* prices = [[NCPriceManager sharedManager] pricesWithTypes:@[@(type.typeID)]];
+																												double price = [prices[@(type.typeID)] doubleValue];
+																												if (price > 0)
+																													row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(price)]];
 																											} completionHandler:^(NCTask *task) {
 																												if ([self.tableView numberOfSections] > 0 && [self.tableView numberOfRowsInSection:0] > 0)
 																													[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];

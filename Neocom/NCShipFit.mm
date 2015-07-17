@@ -1056,7 +1056,7 @@
 }
 
 - (NSString*) eftRepresentation {
-	NSMutableString* eft = [NSMutableString stringWithFormat:@"[%@, %@]\n", self.loadoutName, self.type.typeName];
+	NSMutableString* eft = [NSMutableString stringWithFormat:@"[%@, %@]\n", self.type.typeName, self.loadoutName];
 	
 	for (NSString* key in @[@"lowSlots", @"medSlots", @"hiSlots", @"rigSlots", @"subsystems"]) {
 		NSArray* array = [self.loadoutData valueForKey:key];
@@ -1096,6 +1096,5 @@
 	self.pilot->setSkillLevels(levels);
 
 }
-
 
 @end

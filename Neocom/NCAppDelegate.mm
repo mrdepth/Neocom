@@ -28,6 +28,7 @@
 #import "NCShoppingList.h"
 #import "NCSplashScreenViewController.h"
 #import "NCSkillPlanViewController.h"
+#import "NCPriceManager.h"
 
 static NSUncaughtExceptionHandler* handler;
 
@@ -198,6 +199,8 @@ void uncaughtExceptionHandler(NSException* exception) {
 	[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:^(BOOL newData) {
 		[application endBackgroundTask:task];
 	}];
+	
+	[[NCPriceManager sharedManager] updateIfNeeded];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

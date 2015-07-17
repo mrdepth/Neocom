@@ -326,14 +326,14 @@
 											 __block float fittingsPrice = 0;
 											 __block float dronesPrice = 0;
 											 
-											 [prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVECentralMarketStatType* obj, BOOL *stop) {
+											 [prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NSNumber* obj, BOOL *stop) {
 												 int32_t typeID = [key intValue];
 												 if (typeID == shipTypeID)
-													 shipPrice = obj.sell.percentile;
+													 shipPrice = [obj doubleValue];
 												 else if ([drones containsObject:@(typeID)])
-													 dronesPrice += obj.sell.percentile * [types countForObject:key];
+													 dronesPrice += [obj doubleValue] * [types countForObject:key];
 												 else
-													 fittingsPrice += obj.sell.percentile * [types countForObject:key];
+													 fittingsPrice += [obj doubleValue] * [types countForObject:key];
 											 }];
 											 
 											 stats.shipPrice = shipPrice;

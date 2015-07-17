@@ -211,7 +211,7 @@
 		
 		double price = section.price;
 		for (NCShoppingItem* item in row.items)
-			price -= item.price.sell.percentile * item.quantity * item.shoppingGroup.quantity;
+			price -= item.price * item.quantity * item.shoppingGroup.quantity;
 		section.price = price;
 		
 		[section.rows removeObjectAtIndex:indexPath.row];
@@ -248,7 +248,7 @@
 				double price = 0;
 				for (NCShoppingListViewControllerRow* row in section.rows)
 					for (NCShoppingItem* item in row.items)
-						price += item.price.sell.percentile * item.quantity * item.shoppingGroup.quantity;
+						price += item.price * item.quantity * item.shoppingGroup.quantity;
 				section.price = price;
 			}
 			sectionIndex++;
@@ -525,7 +525,7 @@
 														 [section.rows addObject:row];
 														 row.assets = assets[@(item.typeID)];
 														 
-														 if (item.price == nil)
+														 if (item.price == 0)
 															 [itemsWithoutPrice addObject:item];
 														 
 														 NSMutableArray* array = items[@(item.typeID)];
@@ -545,7 +545,7 @@
 												 NCPriceManager* priceManager = [NCPriceManager sharedManager];
 												 NSDictionary* prices = [priceManager pricesWithTypes:[itemsWithoutPrice valueForKey:@"typeID"]];
 												 for (NCShoppingItem* item in itemsWithoutPrice)
-													 item.price = prices[@(item.typeID)];
+													 item.price = [prices[@(item.typeID)] doubleValue];
 											 }
 											 
 											 [storage.backgroundManagedObjectContext performBlockAndWait:^{
@@ -553,7 +553,7 @@
 													 double price = 0;
 													 for (NCShoppingListViewControllerRow* row in section.rows) {
 														 for (NCShoppingItem* item in row.items)
-															 price += item.quantity * item.shoppingGroup.quantity * item.price.sell.percentile;
+															 price += item.quantity * item.shoppingGroup.quantity * item.price;
 													 }
 													 section.price = price;
 												 }
@@ -574,7 +574,7 @@
 													 NCShoppingListViewControllerRow* row = [NCShoppingListViewControllerRow new];
 													 double price = section.price;
 													 for (NCShoppingItem* item in array)
-														 price += item.quantity * item.shoppingGroup.quantity * item.price.sell.percentile;
+														 price += item.quantity * item.shoppingGroup.quantity * item.price;
 													 
 													 section.price = price;
 
@@ -641,8 +641,8 @@
 	cell.titleLabel.text = item.type.typeName;
 	NSMutableString* subtitle = [[NSMutableString alloc] initWithFormat:NSLocalizedString(@"x%d", nil), quantity];
 
-	if (item.price.sell.percentile > 0)
-		[subtitle appendFormat:NSLocalizedString(@", %@", nil), [NSString shortStringWithFloat:item.price.sell.percentile * quantity unit:@"ISK"]];
+	if (item.price > 0)
+		[subtitle appendFormat:NSLocalizedString(@", %@", nil), [NSString shortStringWithFloat:item.price * quantity unit:@"ISK"]];
 	
 	NSInteger available = [[row.assets valueForKeyPath:@"@sum.asset.quantity"] integerValue];
 	if (available > 0) {

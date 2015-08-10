@@ -1122,7 +1122,7 @@
 		126A0D42185F3B9200A8E8A3 /* EVECalendarEventAttendees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECalendarEventAttendees.h; sourceTree = "<group>"; };
 		126A0D43185F3B9200A8E8A3 /* EVECalendarEventAttendees.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECalendarEventAttendees.m; sourceTree = "<group>"; };
 		126A0D44185F3B9200A8E8A3 /* EVECharacterSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacterSheet.h; sourceTree = "<group>"; };
-		126A0D45185F3B9200A8E8A3 /* EVECharacterSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVECharacterSheet.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		126A0D45185F3B9200A8E8A3 /* EVECharacterSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVECharacterSheet.m; sourceTree = "<group>"; };
 		126A0D46185F3B9200A8E8A3 /* EVECharContactList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharContactList.h; sourceTree = "<group>"; };
 		126A0D47185F3B9200A8E8A3 /* EVECharContactList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharContactList.m; sourceTree = "<group>"; };
 		126A0D48185F3B9200A8E8A3 /* EVECharFacWarStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharFacWarStats.h; sourceTree = "<group>"; };

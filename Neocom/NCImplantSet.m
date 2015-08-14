@@ -8,25 +8,6 @@
 
 #import "NCImplantSet.h"
 
-@implementation NCStorage(NCImplantSet)
-
-- (NSArray*) implantSets {
-	__block NSArray *fetchedObjects = nil;
-	NSManagedObjectContext* context = [NSThread isMainThread] ? self.managedObjectContext : self.backgroundManagedObjectContext;
-	[context performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"ImplantSet" inManagedObjectContext:context];
-		[fetchRequest setEntity:entity];
-		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
-		
-		NSError *error = nil;
-		fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-	}];
-	return fetchedObjects;
-}
-
-@end
-
 @implementation NCImplantSetData
 
 - (id) initWithCoder:(NSCoder *)aDecoder {

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "EVEOnlineAPI.h"
+#import <CoreData/CoreData.h>
 #import "NCTaskManager.h"
 
 typedef NS_ENUM(NSInteger, NCMailBoxContactType){
@@ -23,6 +23,8 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 @end
 
 @class NCMailBox;
+@class EVEMailMessagesItem;
+@class EVEMailBodiesItem;
 @interface NCMailBoxMessage : NSObject<NSCoding>
 @property (nonatomic, weak) NCMailBox* mailBox;
 @property (nonatomic, strong) EVEMailMessagesItem* header;

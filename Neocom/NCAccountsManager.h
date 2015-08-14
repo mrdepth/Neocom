@@ -12,14 +12,11 @@
 
 @class NCStorage;
 @interface NCAccountsManager : NSObject
-@property (nonatomic, strong, readonly) NSArray* accounts;
-@property (nonatomic, strong, readonly) NSArray* apiKeys;
 @property (nonatomic, strong, readonly) NCStorage* storage;
 + (instancetype) sharedManager;
 + (void) setSharedManager:(NCAccountsManager*) manager;
 
 - (id) initWithStorage:(NCStorage*) storage;
-- (BOOL) addAPIKeyWithKeyID:(int32_t) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr;
+- (void) addAPIKeyWithKeyID:(int32_t) keyID vCode:(NSString*) vCode completionBlock:(void(^)(NSError* error)) completionBlock;
 - (void) removeAccount:(NCAccount*) account;
-- (void) reload;
 @end

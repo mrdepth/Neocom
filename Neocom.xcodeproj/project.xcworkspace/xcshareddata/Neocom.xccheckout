@@ -18,6 +18,8 @@
 		<string>github.com:mrdepth/EVEUniverse.git</string>
 		<key>CE59D664C95604646A8898B717A20F0AFC1A609F</key>
 		<string>github.com:mrdepth/eufe.git</string>
+		<key>DD20A1A48C66B5213E0FEBB87A95EF51D6C6F3E8</key>
+		<string>https://github.com/AFNetworking/AFNetworking.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Neocom.xcodeproj</string>
@@ -31,6 +33,8 @@
 		<string>../..</string>
 		<key>CE59D664C95604646A8898B717A20F0AFC1A609F</key>
 		<string>../..ThirdParty/eufe</string>
+		<key>DD20A1A48C66B5213E0FEBB87A95EF51D6C6F3E8</key>
+		<string>../../ThirdParty/EVEOnlineAPI/ThirdParty/AFNetworking</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:mrdepth/EVEUniverse.git</string>
@@ -40,6 +44,14 @@
 	<string>CBD3C72D1EC244FEC895CDE83582355773BC1B4F</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DD20A1A48C66B5213E0FEBB87A95EF51D6C6F3E8</string>
+			<key>IDESourceControlWCCName</key>
+			<string>AFNetworking</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>

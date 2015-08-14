@@ -16,12 +16,6 @@ typedef NS_ENUM(NSInteger, NCLoadoutCategory) {
 	NCLoadoutCategoryPOS
 };
 
-@interface NCStorage(NCLoadout)
-- (NSArray*) loadouts;
-- (NSArray*) shipLoadouts;
-- (NSArray*) posLoadouts;
-@end
-
 @class NCDBInvType;
 
 @interface NCLoadout : NSManagedObject

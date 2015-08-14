@@ -168,7 +168,6 @@
 		1229475D18EA8B2E0093FAB8 /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; };
 		122947EB18EAA51D0093FAB8 /* NCSkillsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */; };
 		122947F318EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122947F218EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm */; };
-		122AC51518BCD84C005F0F46 /* EVEzKillBoardSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 122AC51418BCD84C005F0F46 /* EVEzKillBoardSearch.m */; };
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
 		122C98A318B5DC3800386EDE /* NCContractsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98A218B5DC3800386EDE /* NCContractsCell.m */; };
@@ -215,6 +214,31 @@
 		124638331AD25A84001F8780 /* NCShoppingAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 124638321AD25A84001F8780 /* NCShoppingAssetsViewController.m */; };
 		1246383E1AD421E4001F8780 /* stationcontainer.png in Resources */ = {isa = PBXBuildFile; fileRef = 1246383D1AD421E4001F8780 /* stationcontainer.png */; };
 		12476C11194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12476C10194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m */; };
+		1248CE4F1B7DDCBF000266BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248CE4E1B7DDCBF000266BE /* main.m */; };
+		1248CE521B7DDCBF000266BE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248CE511B7DDCBF000266BE /* AppDelegate.m */; };
+		1248CE551B7DDCBF000266BE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248CE541B7DDCBF000266BE /* ViewController.m */; };
+		1248CE581B7DDCBF000266BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1248CE561B7DDCBF000266BE /* Main.storyboard */; };
+		1248CE5A1B7DDCBF000266BE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1248CE591B7DDCBF000266BE /* Images.xcassets */; };
+		1248CE5D1B7DDCBF000266BE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248CE5B1B7DDCBF000266BE /* LaunchScreen.xib */; };
+		1248CE7F1B7DDD1C000266BE /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1248CE7C1B7DDCE1000266BE /* AFNetworking.framework */; };
+		1248CE801B7DDD1C000266BE /* EVEAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1248CE7E1B7DDCE1000266BE /* EVEAPI.framework */; };
+		1248CE851B7DDD3F000266BE /* NCAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C9DCA018617A6300A654C5 /* NCAccountsManager.m */; };
+		1248CEB01B7E1149000266BE /* NSManagedObjectContext+NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248CEAF1B7E1149000266BE /* NSManagedObjectContext+NCStorage.m */; };
+		1248CEB11B7E12A9000266BE /* NSManagedObjectContext+NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248CEAF1B7E1149000266BE /* NSManagedObjectContext+NCStorage.m */; };
+		1248CEB21B7E12C8000266BE /* NCShoppingGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFFD1ACBC33A003CDF65 /* NCShoppingGroup.m */; };
+		1248CEB31B7E12C8000266BE /* NCShoppingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFF41ACBC154003CDF65 /* NCShoppingItem.m */; };
+		1248CEB41B7E12C8000266BE /* NCShoppingList.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFF11ACBC154003CDF65 /* NCShoppingList.m */; };
+		1248CEB51B7E12C8000266BE /* NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE171860313D00F75FA6 /* NCStorage.m */; };
+		1248CEB61B7E12C8000266BE /* NCImplantSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDA32D18E00710007B091D /* NCImplantSet.m */; };
+		1248CEB71B7E12C8000266BE /* NCDamagePattern.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA018A0AC4A00566DFE /* NCDamagePattern.m */; };
+		1248CEB81B7E12C8000266BE /* NCLoadoutData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84521910189AEEA800E7E3C1 /* NCLoadoutData.m */; };
+		1248CEB91B7E12C8000266BE /* NCLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8452190D189AEEA700E7E3C1 /* NCLoadout.m */; };
+		1248CEBA1B7E12C8000266BE /* NCAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F5F18785CCC0004073C /* NCAccount.m */; };
+		1248CEBB1B7E12C8000266BE /* NCFitCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE471860326E00F75FA6 /* NCFitCharacter.m */; };
+		1248CEBC1B7E12C8000266BE /* NCSkillPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE3E1860326E00F75FA6 /* NCSkillPlan.m */; };
+		1248CEBD1B7E12C8000266BE /* NCSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE381860326E00F75FA6 /* NCSetting.m */; };
+		1248CEBE1B7E12C8000266BE /* NCAPIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE351860326E00F75FA6 /* NCAPIKey.m */; };
+		1248CEBF1B7E12C8000266BE /* NCMailBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5E918922FB20010BEE8 /* NCMailBox.m */; };
 		124D38941AD4F872000D92CE /* note.png in Resources */ = {isa = PBXBuildFile; fileRef = 124D38931AD4F872000D92CE /* note.png */; };
 		1251E95B18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1251E95A18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m */; };
 		1256923D1A37799A008F6468 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1256923C1A37799A008F6468 /* EventKit.framework */; };
@@ -238,101 +262,6 @@
 		126648F418C07D1000ADBBE1 /* NCZKillBoardSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126648F318C07D1000ADBBE1 /* NCZKillBoardSearchResultsViewController.m */; };
 		126703061A8FD22700F816F9 /* NSAttributedString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126703051A8FD22700F816F9 /* NSAttributedString+Neocom.m */; };
 		1267030C1A911A0900F816F9 /* NSMutableAttributedString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 1267030B1A911A0800F816F9 /* NSMutableAttributedString+Neocom.m */; };
-		126A0E00185F3B9300A8E8A3 /* BCEveLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */; };
-		126A0E01185F3B9300A8E8A3 /* BCEveLoadoutsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCD185F3B9100A8E8A3 /* BCEveLoadoutsList.m */; };
-		126A0E02185F3B9300A8E8A3 /* BCEveLoadoutsTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCF185F3B9100A8E8A3 /* BCEveLoadoutsTags.m */; };
-		126A0E03185F3B9300A8E8A3 /* BCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CD3185F3B9100A8E8A3 /* BCRequest.m */; };
-		126A0E04185F3B9300A8E8A3 /* EVEC0rporationFaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CD7185F3B9100A8E8A3 /* EVEC0rporationFaction.m */; };
-		126A0E05185F3B9300A8E8A3 /* EVECentralMarketStat.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CDB185F3B9100A8E8A3 /* EVECentralMarketStat.m */; };
-		126A0E06185F3B9300A8E8A3 /* EVECentralQuickLook.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CDD185F3B9100A8E8A3 /* EVECentralQuickLook.m */; };
-		126A0E07185F3B9300A8E8A3 /* EVECentralRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CE1185F3B9100A8E8A3 /* EVECentralRequest.m */; };
-		126A0E2D185F3B9300A8E8A3 /* EVEAccountStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D35185F3B9200A8E8A3 /* EVEAccountStatus.m */; };
-		126A0E2E185F3B9300A8E8A3 /* EVEAPIKeyInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D37185F3B9200A8E8A3 /* EVEAPIKeyInfo.m */; };
-		126A0E2F185F3B9300A8E8A3 /* EVECharacters.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D39185F3B9200A8E8A3 /* EVECharacters.m */; };
-		126A0E30185F3B9300A8E8A3 /* EVECalllist.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D3C185F3B9200A8E8A3 /* EVECalllist.m */; };
-		126A0E31185F3B9300A8E8A3 /* EVEAccountBalance.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D3F185F3B9200A8E8A3 /* EVEAccountBalance.m */; };
-		126A0E32185F3B9300A8E8A3 /* EVEAssetList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D41185F3B9200A8E8A3 /* EVEAssetList.m */; };
-		126A0E33185F3B9300A8E8A3 /* EVECalendarEventAttendees.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D43185F3B9200A8E8A3 /* EVECalendarEventAttendees.m */; };
-		126A0E34185F3B9300A8E8A3 /* EVECharacterSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D45185F3B9200A8E8A3 /* EVECharacterSheet.m */; };
-		126A0E35185F3B9300A8E8A3 /* EVECharContactList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D47185F3B9200A8E8A3 /* EVECharContactList.m */; };
-		126A0E36185F3B9300A8E8A3 /* EVECharFacWarStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D49185F3B9200A8E8A3 /* EVECharFacWarStats.m */; };
-		126A0E37185F3B9300A8E8A3 /* EVECharMedals.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D4B185F3B9200A8E8A3 /* EVECharMedals.m */; };
-		126A0E38185F3B9300A8E8A3 /* EVECharWalletJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D4D185F3B9200A8E8A3 /* EVECharWalletJournal.m */; };
-		126A0E39185F3B9300A8E8A3 /* EVECharWalletTransactions.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D4F185F3B9200A8E8A3 /* EVECharWalletTransactions.m */; };
-		126A0E3A185F3B9300A8E8A3 /* EVEContactNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D51185F3B9200A8E8A3 /* EVEContactNotifications.m */; };
-		126A0E3B185F3B9300A8E8A3 /* EVEContractBids.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D53185F3B9200A8E8A3 /* EVEContractBids.m */; };
-		126A0E3C185F3B9300A8E8A3 /* EVEContractItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D55185F3B9200A8E8A3 /* EVEContractItems.m */; };
-		126A0E3D185F3B9300A8E8A3 /* EVEContracts.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D57185F3B9200A8E8A3 /* EVEContracts.m */; };
-		126A0E3E185F3B9300A8E8A3 /* EVEIndustryJobs.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D59185F3B9200A8E8A3 /* EVEIndustryJobs.m */; };
-		126A0E3F185F3B9300A8E8A3 /* EVEKillLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D5B185F3B9200A8E8A3 /* EVEKillLog.m */; };
-		126A0E40185F3B9300A8E8A3 /* EVELocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D5D185F3B9200A8E8A3 /* EVELocations.m */; };
-		126A0E41185F3B9300A8E8A3 /* EVEMailBodies.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D5F185F3B9200A8E8A3 /* EVEMailBodies.m */; };
-		126A0E42185F3B9300A8E8A3 /* EVEMailingLists.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D61185F3B9200A8E8A3 /* EVEMailingLists.m */; };
-		126A0E43185F3B9300A8E8A3 /* EVEMailMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D63185F3B9200A8E8A3 /* EVEMailMessages.m */; };
-		126A0E44185F3B9300A8E8A3 /* EVEMarketOrders.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D65185F3B9200A8E8A3 /* EVEMarketOrders.m */; };
-		126A0E45185F3B9300A8E8A3 /* EVENotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D67185F3B9200A8E8A3 /* EVENotifications.m */; };
-		126A0E46185F3B9300A8E8A3 /* EVENotificationTexts.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D69185F3B9200A8E8A3 /* EVENotificationTexts.m */; };
-		126A0E47185F3B9300A8E8A3 /* EVEResearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D6B185F3B9200A8E8A3 /* EVEResearch.m */; };
-		126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D6D185F3B9200A8E8A3 /* EVESkillInTraining.m */; };
-		126A0E49185F3B9300A8E8A3 /* EVESkillQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D6F185F3B9200A8E8A3 /* EVESkillQueue.m */; };
-		126A0E4A185F3B9300A8E8A3 /* EVEStandings.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D71185F3B9200A8E8A3 /* EVEStandings.m */; };
-		126A0E4B185F3B9300A8E8A3 /* EVEUpcomingCalendarEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D73185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.m */; };
-		126A0E4C185F3B9300A8E8A3 /* EVEContainerLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D76185F3B9200A8E8A3 /* EVEContainerLog.m */; };
-		126A0E4D185F3B9300A8E8A3 /* EVECorpContactList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D78185F3B9200A8E8A3 /* EVECorpContactList.m */; };
-		126A0E4E185F3B9300A8E8A3 /* EVECorpFacWarStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D7A185F3B9200A8E8A3 /* EVECorpFacWarStats.m */; };
-		126A0E4F185F3B9300A8E8A3 /* EVECorpMedals.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D7C185F3B9200A8E8A3 /* EVECorpMedals.m */; };
-		126A0E50185F3B9300A8E8A3 /* EVECorporationSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D7E185F3B9200A8E8A3 /* EVECorporationSheet.m */; };
-		126A0E51185F3B9300A8E8A3 /* EVECorpWalletJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D80185F3B9200A8E8A3 /* EVECorpWalletJournal.m */; };
-		126A0E52185F3B9300A8E8A3 /* EVECorpWalletTransactions.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D82185F3B9200A8E8A3 /* EVECorpWalletTransactions.m */; };
-		126A0E53185F3B9300A8E8A3 /* EVEMemberMedals.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D84185F3B9200A8E8A3 /* EVEMemberMedals.m */; };
-		126A0E54185F3B9300A8E8A3 /* EVEMemberSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D86185F3B9200A8E8A3 /* EVEMemberSecurity.m */; };
-		126A0E55185F3B9300A8E8A3 /* EVEMemberSecurityLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D88185F3B9200A8E8A3 /* EVEMemberSecurityLog.m */; };
-		126A0E56185F3B9300A8E8A3 /* EVEMemberTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D8A185F3B9200A8E8A3 /* EVEMemberTracking.m */; };
-		126A0E57185F3B9300A8E8A3 /* EVEOutpostList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D8C185F3B9200A8E8A3 /* EVEOutpostList.m */; };
-		126A0E58185F3B9300A8E8A3 /* EVEOutpostServiceDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D8E185F3B9200A8E8A3 /* EVEOutpostServiceDetail.m */; };
-		126A0E59185F3B9300A8E8A3 /* EVEShareholders.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D90185F3B9200A8E8A3 /* EVEShareholders.m */; };
-		126A0E5A185F3B9300A8E8A3 /* EVEStarbaseDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D92185F3B9200A8E8A3 /* EVEStarbaseDetail.m */; };
-		126A0E5B185F3B9300A8E8A3 /* EVEStarbaseList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D94185F3B9200A8E8A3 /* EVEStarbaseList.m */; };
-		126A0E5C185F3B9300A8E8A3 /* EVETitles.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D96185F3B9200A8E8A3 /* EVETitles.m */; };
-		126A0E5D185F3B9300A8E8A3 /* EVEAllianceList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D99185F3B9200A8E8A3 /* EVEAllianceList.m */; };
-		126A0E5E185F3B9300A8E8A3 /* EVECertificateTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D9B185F3B9200A8E8A3 /* EVECertificateTree.m */; };
-		126A0E5F185F3B9300A8E8A3 /* EVECharacterID.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D9D185F3B9200A8E8A3 /* EVECharacterID.m */; };
-		126A0E60185F3B9300A8E8A3 /* EVECharacterInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D9F185F3B9200A8E8A3 /* EVECharacterInfo.m */; };
-		126A0E61185F3B9300A8E8A3 /* EVECharacterName.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DA1185F3B9200A8E8A3 /* EVECharacterName.m */; };
-		126A0E62185F3B9300A8E8A3 /* EVEConquerableStationList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DA3185F3B9200A8E8A3 /* EVEConquerableStationList.m */; };
-		126A0E63185F3B9300A8E8A3 /* EVEErrorList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DA5185F3B9200A8E8A3 /* EVEErrorList.m */; };
-		126A0E64185F3B9300A8E8A3 /* EVEFacWarStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DA7185F3B9200A8E8A3 /* EVEFacWarStats.m */; };
-		126A0E65185F3B9300A8E8A3 /* EVEFacWarTopStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DA9185F3B9200A8E8A3 /* EVEFacWarTopStats.m */; };
-		126A0E66185F3B9300A8E8A3 /* EVERefTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DAB185F3B9200A8E8A3 /* EVERefTypes.m */; };
-		126A0E67185F3B9300A8E8A3 /* EVESkillTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DAD185F3B9200A8E8A3 /* EVESkillTree.m */; };
-		126A0E68185F3B9300A8E8A3 /* EVEFacWarSystems.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DB1185F3B9200A8E8A3 /* EVEFacWarSystems.m */; };
-		126A0E69185F3B9300A8E8A3 /* EVEJumps.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DB3185F3B9200A8E8A3 /* EVEJumps.m */; };
-		126A0E6A185F3B9300A8E8A3 /* EVEKills.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DB5185F3B9200A8E8A3 /* EVEKills.m */; };
-		126A0E6B185F3B9300A8E8A3 /* EVESovereignty.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DB7185F3B9200A8E8A3 /* EVESovereignty.m */; };
-		126A0E6C185F3B9300A8E8A3 /* EVEImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DBA185F3B9200A8E8A3 /* EVEImage.m */; };
-		126A0E6D185F3B9300A8E8A3 /* EVEServerStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DBD185F3B9200A8E8A3 /* EVEServerStatus.m */; };
-		126A0E6E185F3B9300A8E8A3 /* EVERequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DC1185F3B9200A8E8A3 /* EVERequest.m */; };
-		126A0E70185F3B9300A8E8A3 /* NAPILookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DC6185F3B9200A8E8A3 /* NAPILookup.m */; };
-		126A0E71185F3B9300A8E8A3 /* NAPISearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DC8185F3B9200A8E8A3 /* NAPISearch.m */; };
-		126A0E72185F3B9300A8E8A3 /* NAPIUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DCA185F3B9200A8E8A3 /* NAPIUpload.m */; };
-		126A0E73185F3B9300A8E8A3 /* NSMutableString+RSSParser10.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DD0185F3B9200A8E8A3 /* NSMutableString+RSSParser10.m */; };
-		126A0E74185F3B9300A8E8A3 /* RSSParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DD2185F3B9200A8E8A3 /* RSSParser.m */; };
-		126A0E75185F3B9300A8E8A3 /* RSSParser10.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DD4185F3B9200A8E8A3 /* RSSParser10.m */; };
-		126A0E76185F3B9300A8E8A3 /* RSSParser20.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DD6185F3B9200A8E8A3 /* RSSParser20.m */; };
-		126A0E77185F3B9300A8E8A3 /* RSSParserAtom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DD8185F3B9200A8E8A3 /* RSSParserAtom.m */; };
-		126A0E78185F3B9300A8E8A3 /* RSSEnclosure.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DDA185F3B9200A8E8A3 /* RSSEnclosure.m */; };
-		126A0E79185F3B9300A8E8A3 /* RSSFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DDC185F3B9200A8E8A3 /* RSSFeed.m */; };
-		126A0E7A185F3B9300A8E8A3 /* RSSImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DDE185F3B9200A8E8A3 /* RSSImage.m */; };
-		126A0E7B185F3B9300A8E8A3 /* RSSItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DE0185F3B9200A8E8A3 /* RSSItem.m */; };
-		126A0E7C185F3B9300A8E8A3 /* RSSSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DE2185F3B9200A8E8A3 /* RSSSource.m */; };
-		126A0E7D185F3B9300A8E8A3 /* RSS.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DE4185F3B9200A8E8A3 /* RSS.m */; };
-		126A0E7E185F3B9300A8E8A3 /* ASURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DE7185F3B9200A8E8A3 /* ASURLConnection.m */; };
-		126A0E7F185F3B9300A8E8A3 /* EVECachedURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DE9185F3B9200A8E8A3 /* EVECachedURLRequest.m */; };
-		126A0E80185F3B9300A8E8A3 /* NSData+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DEB185F3B9200A8E8A3 /* NSData+MD5.m */; };
-		126A0E81185F3B9300A8E8A3 /* NSMutableString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DEE185F3B9200A8E8A3 /* NSMutableString+HTML.m */; };
-		126A0E82185F3B9300A8E8A3 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DF1185F3B9200A8E8A3 /* NSString+HTML.m */; };
-		126A0E83185F3B9300A8E8A3 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DF3185F3B9200A8E8A3 /* NSString+MD5.m */; };
-		126A0E84185F3B9300A8E8A3 /* NSURL+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DF5185F3B9200A8E8A3 /* NSURL+MD5.m */; };
 		126ABD6219499580007634E1 /* NCDBDgmAttributeType+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126ABD6119499580007634E1 /* NCDBDgmAttributeType+Neocom.m */; };
 		126ABD6519499659007634E1 /* NCDBInvGroup+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126ABD6419499659007634E1 /* NCDBInvGroup+Neocom.m */; };
 		126DC6A218D1ABD3009EEA86 /* NCCharacterAttributesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 126DC6A118D1ABD3009EEA86 /* NCCharacterAttributesCell.m */; };
@@ -480,7 +409,6 @@
 		12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EEA11886CFB100F90763 /* NCSkillHierarchy.m */; };
 		12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C9DCA018617A6300A654C5 /* NCAccountsManager.m */; };
 		12CC8D6C188178570058C5DF /* NCTableViewEmptyHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CC8D6B188178570058C5DF /* NCTableViewEmptyHeaderView.m */; };
-		12CDB7DC188E6ABD002079C0 /* murmurhash3.c in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7DA188E6ABD002079C0 /* murmurhash3.c */; };
 		12CDB7E0188E7D1C002079C0 /* ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7DF188E7D1C002079C0 /* ASHTTPServer.m */; };
 		12CDB7EF188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7EE188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m */; };
 		12CDB7F2188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7F1188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m */; };
@@ -495,10 +423,6 @@
 		12E86946195EC7E1004B66D0 /* NSString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421A8187FDF7200977CB8 /* NSString+Neocom.m */; };
 		12EC0AC118C0B18D0010169C /* KillBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12EC0AC018C0B18D0010169C /* KillBoard.storyboard */; };
 		12EC0AC618C0BAA20010169C /* NCNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */; };
-		12ED82B71AC04AF900C593C4 /* EVEPlanetaryColonies.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82B61AC04AF900C593C4 /* EVEPlanetaryColonies.m */; };
-		12ED82BD1AC04B0F00C593C4 /* EVEPlanetaryPins.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82BC1AC04B0F00C593C4 /* EVEPlanetaryPins.m */; };
-		12ED82C01AC04B3600C593C4 /* EVEPlanetaryRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82BF1AC04B3600C593C4 /* EVEPlanetaryRoutes.m */; };
-		12ED82C31AC04B4C00C593C4 /* EVEPlanetaryLinks.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82C21AC04B4C00C593C4 /* EVEPlanetaryLinks.m */; };
 		12ED82DA1AC13CD500C593C4 /* NCPlanetaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */; };
 		12ED82E91AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82E81AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.m */; };
 		12F407551A8D181D0031FB35 /* NCDefaultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */; };
@@ -510,7 +434,6 @@
 		12F82A5A18ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5918ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m */; };
 		12F82A5D18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5C18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm */; };
 		12F82A6718ADFAB500A967B5 /* NCAssetsContainerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.mm */; };
-		12F86DD318E59C8800AFDA97 /* EVEOwnerID.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F86DD218E59C8800AFDA97 /* EVEOwnerID.m */; };
 		12F8E1F418E9A47400CEA658 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 12F8E1F318E9A47300CEA658 /* logo.png */; };
 		12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F8E1F718E9A53700CEA658 /* NCSplitViewController.m */; };
 		12F955E818CDA2A0005CEAD6 /* EUStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F955E718CDA2A0005CEAD6 /* EUStorage.m */; };
@@ -544,7 +467,6 @@
 		8418BB1C1891970500B99A7E /* eventTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 8418BB1B1891970500B99A7E /* eventTemplate.html */; };
 		8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */; };
 		84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
-		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
 		8435C87718A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8435C87618A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m */; };
 		843C2F0218AD41CF00221721 /* NCAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843C2F0118AD41CF00221721 /* NCAssetsViewController.m */; };
 		84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84442A5C189FFF230021CB24 /* NCFittingTargetsViewController.mm */; };
@@ -643,6 +565,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1248CE791B7DDCE1000266BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1D6058910D05DD3D006BFB54;
+			remoteInfo = EVEOnlineAPI;
+		};
+		1248CE7B1B7DDCE1000266BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12F273931B72017400941A98;
+			remoteInfo = AFNetworking;
+		};
+		1248CE7D1B7DDCE1000266BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1248CD7F1B7DDA23000266BE;
+			remoteInfo = EVEAPI;
+		};
+		1248CE811B7DDD27000266BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 12F273921B72017400941A98;
+			remoteInfo = AFNetworking;
+		};
+		1248CE831B7DDD27000266BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1248CD7E1B7DDA23000266BE;
+			remoteInfo = EVEAPI;
+		};
 		124C3D9819C2C29B00FCF18E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
@@ -954,9 +911,6 @@
 		122947EE18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShipFitting_iPad.storyboard; sourceTree = "<group>"; };
 		122947F118EACAAF0093FAB8 /* NCFittingShipStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipStatsViewController.h; sourceTree = "<group>"; };
 		122947F218EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipStatsViewController.mm; sourceTree = "<group>"; };
-		122AC51218BCD84C005F0F46 /* EVEzKillBoardAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEzKillBoardAPI.h; sourceTree = "<group>"; };
-		122AC51318BCD84C005F0F46 /* EVEzKillBoardSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEzKillBoardSearch.h; sourceTree = "<group>"; };
-		122AC51418BCD84C005F0F46 /* EVEzKillBoardSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEzKillBoardSearch.m; sourceTree = "<group>"; };
 		122C51EF188FA746000AEC2C /* NCCacheRecordData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCacheRecordData.h; sourceTree = "<group>"; };
 		122C51F0188FA746000AEC2C /* NCCacheRecordData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCacheRecordData.m; sourceTree = "<group>"; };
 		122C51F3188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeMasteryViewController.h; sourceTree = "<group>"; };
@@ -1041,6 +995,19 @@
 		1246383D1AD421E4001F8780 /* stationcontainer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stationcontainer.png; sourceTree = "<group>"; };
 		12476C0F194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBMapSolarSystem+Neocom.h"; sourceTree = "<group>"; };
 		12476C10194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBMapSolarSystem+Neocom.m"; sourceTree = "<group>"; };
+		1248CE4A1B7DDCBF000266BE /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1248CE4D1B7DDCBF000266BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1248CE4E1B7DDCBF000266BE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		1248CE501B7DDCBF000266BE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		1248CE511B7DDCBF000266BE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		1248CE531B7DDCBF000266BE /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		1248CE541B7DDCBF000266BE /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		1248CE571B7DDCBF000266BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1248CE591B7DDCBF000266BE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		1248CE5C1B7DDCBF000266BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EVEOnlineAPI.xcodeproj; path = EVEOnlineAPI/EVEOnlineAPI.xcodeproj; sourceTree = "<group>"; };
+		1248CEAE1B7E1149000266BE /* NSManagedObjectContext+NCStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+NCStorage.h"; sourceTree = "<group>"; };
+		1248CEAF1B7E1149000266BE /* NSManagedObjectContext+NCStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+NCStorage.m"; sourceTree = "<group>"; };
 		124D38931AD4F872000D92CE /* note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = note.png; sourceTree = "<group>"; };
 		1251E95918BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCKillMailDetailsAttackerCell.h; sourceTree = "<group>"; };
 		1251E95A18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCKillMailDetailsAttackerCell.m; sourceTree = "<group>"; };
@@ -1086,204 +1053,6 @@
 		126703051A8FD22700F816F9 /* NSAttributedString+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Neocom.m"; sourceTree = "<group>"; };
 		1267030A1A911A0800F816F9 /* NSMutableAttributedString+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+Neocom.h"; sourceTree = "<group>"; };
 		1267030B1A911A0800F816F9 /* NSMutableAttributedString+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+Neocom.m"; sourceTree = "<group>"; };
-		126A0CC9185F3B9100A8E8A3 /* BattleClinicAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BattleClinicAPI.h; sourceTree = "<group>"; };
-		126A0CCA185F3B9100A8E8A3 /* BCEveLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEveLoadout.h; sourceTree = "<group>"; };
-		126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEveLoadout.m; sourceTree = "<group>"; };
-		126A0CCC185F3B9100A8E8A3 /* BCEveLoadoutsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEveLoadoutsList.h; sourceTree = "<group>"; };
-		126A0CCD185F3B9100A8E8A3 /* BCEveLoadoutsList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BCEveLoadoutsList.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0CCE185F3B9100A8E8A3 /* BCEveLoadoutsTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEveLoadoutsTags.h; sourceTree = "<group>"; };
-		126A0CCF185F3B9100A8E8A3 /* BCEveLoadoutsTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEveLoadoutsTags.m; sourceTree = "<group>"; };
-		126A0CD1185F3B9100A8E8A3 /* BCGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCGlobals.h; sourceTree = "<group>"; };
-		126A0CD2185F3B9100A8E8A3 /* BCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCRequest.h; sourceTree = "<group>"; };
-		126A0CD3185F3B9100A8E8A3 /* BCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCRequest.m; sourceTree = "<group>"; };
-		126A0CD5185F3B9100A8E8A3 /* EVEC0rporationAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEC0rporationAPI.h; sourceTree = "<group>"; };
-		126A0CD6185F3B9100A8E8A3 /* EVEC0rporationFaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EVEC0rporationFaction.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		126A0CD7185F3B9100A8E8A3 /* EVEC0rporationFaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEC0rporationFaction.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0CD9185F3B9100A8E8A3 /* EVECentralAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralAPI.h; sourceTree = "<group>"; };
-		126A0CDA185F3B9100A8E8A3 /* EVECentralMarketStat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralMarketStat.h; sourceTree = "<group>"; };
-		126A0CDB185F3B9100A8E8A3 /* EVECentralMarketStat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVECentralMarketStat.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0CDC185F3B9100A8E8A3 /* EVECentralQuickLook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralQuickLook.h; sourceTree = "<group>"; };
-		126A0CDD185F3B9100A8E8A3 /* EVECentralQuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVECentralQuickLook.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0CDF185F3B9100A8E8A3 /* EVECentralGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralGlobals.h; sourceTree = "<group>"; };
-		126A0CE0185F3B9100A8E8A3 /* EVECentralRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralRequest.h; sourceTree = "<group>"; };
-		126A0CE1185F3B9100A8E8A3 /* EVECentralRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECentralRequest.m; sourceTree = "<group>"; };
-		126A0D34185F3B9200A8E8A3 /* EVEAccountStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountStatus.h; sourceTree = "<group>"; };
-		126A0D35185F3B9200A8E8A3 /* EVEAccountStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountStatus.m; sourceTree = "<group>"; };
-		126A0D36185F3B9200A8E8A3 /* EVEAPIKeyInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAPIKeyInfo.h; sourceTree = "<group>"; };
-		126A0D37185F3B9200A8E8A3 /* EVEAPIKeyInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEAPIKeyInfo.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0D38185F3B9200A8E8A3 /* EVECharacters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacters.h; sourceTree = "<group>"; };
-		126A0D39185F3B9200A8E8A3 /* EVECharacters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharacters.m; sourceTree = "<group>"; };
-		126A0D3B185F3B9200A8E8A3 /* EVECalllist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EVECalllist.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		126A0D3C185F3B9200A8E8A3 /* EVECalllist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVECalllist.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0D3E185F3B9200A8E8A3 /* EVEAccountBalance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountBalance.h; sourceTree = "<group>"; };
-		126A0D3F185F3B9200A8E8A3 /* EVEAccountBalance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountBalance.m; sourceTree = "<group>"; };
-		126A0D40185F3B9200A8E8A3 /* EVEAssetList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAssetList.h; sourceTree = "<group>"; };
-		126A0D41185F3B9200A8E8A3 /* EVEAssetList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEAssetList.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0D42185F3B9200A8E8A3 /* EVECalendarEventAttendees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECalendarEventAttendees.h; sourceTree = "<group>"; };
-		126A0D43185F3B9200A8E8A3 /* EVECalendarEventAttendees.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECalendarEventAttendees.m; sourceTree = "<group>"; };
-		126A0D44185F3B9200A8E8A3 /* EVECharacterSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacterSheet.h; sourceTree = "<group>"; };
-		126A0D45185F3B9200A8E8A3 /* EVECharacterSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVECharacterSheet.m; sourceTree = "<group>"; };
-		126A0D46185F3B9200A8E8A3 /* EVECharContactList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharContactList.h; sourceTree = "<group>"; };
-		126A0D47185F3B9200A8E8A3 /* EVECharContactList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharContactList.m; sourceTree = "<group>"; };
-		126A0D48185F3B9200A8E8A3 /* EVECharFacWarStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharFacWarStats.h; sourceTree = "<group>"; };
-		126A0D49185F3B9200A8E8A3 /* EVECharFacWarStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharFacWarStats.m; sourceTree = "<group>"; };
-		126A0D4A185F3B9200A8E8A3 /* EVECharMedals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharMedals.h; sourceTree = "<group>"; };
-		126A0D4B185F3B9200A8E8A3 /* EVECharMedals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharMedals.m; sourceTree = "<group>"; };
-		126A0D4C185F3B9200A8E8A3 /* EVECharWalletJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharWalletJournal.h; sourceTree = "<group>"; };
-		126A0D4D185F3B9200A8E8A3 /* EVECharWalletJournal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharWalletJournal.m; sourceTree = "<group>"; };
-		126A0D4E185F3B9200A8E8A3 /* EVECharWalletTransactions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharWalletTransactions.h; sourceTree = "<group>"; };
-		126A0D4F185F3B9200A8E8A3 /* EVECharWalletTransactions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharWalletTransactions.m; sourceTree = "<group>"; };
-		126A0D50185F3B9200A8E8A3 /* EVEContactNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContactNotifications.h; sourceTree = "<group>"; };
-		126A0D51185F3B9200A8E8A3 /* EVEContactNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEContactNotifications.m; sourceTree = "<group>"; };
-		126A0D52185F3B9200A8E8A3 /* EVEContractBids.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContractBids.h; sourceTree = "<group>"; };
-		126A0D53185F3B9200A8E8A3 /* EVEContractBids.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEContractBids.m; sourceTree = "<group>"; };
-		126A0D54185F3B9200A8E8A3 /* EVEContractItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContractItems.h; sourceTree = "<group>"; };
-		126A0D55185F3B9200A8E8A3 /* EVEContractItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEContractItems.m; sourceTree = "<group>"; };
-		126A0D56185F3B9200A8E8A3 /* EVEContracts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContracts.h; sourceTree = "<group>"; };
-		126A0D57185F3B9200A8E8A3 /* EVEContracts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEContracts.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0D58185F3B9200A8E8A3 /* EVEIndustryJobs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEIndustryJobs.h; sourceTree = "<group>"; };
-		126A0D59185F3B9200A8E8A3 /* EVEIndustryJobs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEIndustryJobs.m; sourceTree = "<group>"; };
-		126A0D5A185F3B9200A8E8A3 /* EVEKillLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEKillLog.h; sourceTree = "<group>"; };
-		126A0D5B185F3B9200A8E8A3 /* EVEKillLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEKillLog.m; sourceTree = "<group>"; };
-		126A0D5C185F3B9200A8E8A3 /* EVELocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVELocations.h; sourceTree = "<group>"; };
-		126A0D5D185F3B9200A8E8A3 /* EVELocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVELocations.m; sourceTree = "<group>"; };
-		126A0D5E185F3B9200A8E8A3 /* EVEMailBodies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMailBodies.h; sourceTree = "<group>"; };
-		126A0D5F185F3B9200A8E8A3 /* EVEMailBodies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMailBodies.m; sourceTree = "<group>"; };
-		126A0D60185F3B9200A8E8A3 /* EVEMailingLists.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMailingLists.h; sourceTree = "<group>"; };
-		126A0D61185F3B9200A8E8A3 /* EVEMailingLists.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMailingLists.m; sourceTree = "<group>"; };
-		126A0D62185F3B9200A8E8A3 /* EVEMailMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMailMessages.h; sourceTree = "<group>"; };
-		126A0D63185F3B9200A8E8A3 /* EVEMailMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMailMessages.m; sourceTree = "<group>"; };
-		126A0D64185F3B9200A8E8A3 /* EVEMarketOrders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMarketOrders.h; sourceTree = "<group>"; };
-		126A0D65185F3B9200A8E8A3 /* EVEMarketOrders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMarketOrders.m; sourceTree = "<group>"; };
-		126A0D66185F3B9200A8E8A3 /* EVENotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVENotifications.h; sourceTree = "<group>"; };
-		126A0D67185F3B9200A8E8A3 /* EVENotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVENotifications.m; sourceTree = "<group>"; };
-		126A0D68185F3B9200A8E8A3 /* EVENotificationTexts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVENotificationTexts.h; sourceTree = "<group>"; };
-		126A0D69185F3B9200A8E8A3 /* EVENotificationTexts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVENotificationTexts.m; sourceTree = "<group>"; };
-		126A0D6A185F3B9200A8E8A3 /* EVEResearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEResearch.h; sourceTree = "<group>"; };
-		126A0D6B185F3B9200A8E8A3 /* EVEResearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEResearch.m; sourceTree = "<group>"; };
-		126A0D6C185F3B9200A8E8A3 /* EVESkillInTraining.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVESkillInTraining.h; sourceTree = "<group>"; };
-		126A0D6D185F3B9200A8E8A3 /* EVESkillInTraining.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVESkillInTraining.m; sourceTree = "<group>"; };
-		126A0D6E185F3B9200A8E8A3 /* EVESkillQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVESkillQueue.h; sourceTree = "<group>"; };
-		126A0D6F185F3B9200A8E8A3 /* EVESkillQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVESkillQueue.m; sourceTree = "<group>"; };
-		126A0D70185F3B9200A8E8A3 /* EVEStandings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEStandings.h; sourceTree = "<group>"; };
-		126A0D71185F3B9200A8E8A3 /* EVEStandings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEStandings.m; sourceTree = "<group>"; };
-		126A0D72185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEUpcomingCalendarEvents.h; sourceTree = "<group>"; };
-		126A0D73185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEUpcomingCalendarEvents.m; sourceTree = "<group>"; };
-		126A0D75185F3B9200A8E8A3 /* EVEContainerLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContainerLog.h; sourceTree = "<group>"; };
-		126A0D76185F3B9200A8E8A3 /* EVEContainerLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEContainerLog.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0D77185F3B9200A8E8A3 /* EVECorpContactList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorpContactList.h; sourceTree = "<group>"; };
-		126A0D78185F3B9200A8E8A3 /* EVECorpContactList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorpContactList.m; sourceTree = "<group>"; };
-		126A0D79185F3B9200A8E8A3 /* EVECorpFacWarStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorpFacWarStats.h; sourceTree = "<group>"; };
-		126A0D7A185F3B9200A8E8A3 /* EVECorpFacWarStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorpFacWarStats.m; sourceTree = "<group>"; };
-		126A0D7B185F3B9200A8E8A3 /* EVECorpMedals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorpMedals.h; sourceTree = "<group>"; };
-		126A0D7C185F3B9200A8E8A3 /* EVECorpMedals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorpMedals.m; sourceTree = "<group>"; };
-		126A0D7D185F3B9200A8E8A3 /* EVECorporationSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorporationSheet.h; sourceTree = "<group>"; };
-		126A0D7E185F3B9200A8E8A3 /* EVECorporationSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorporationSheet.m; sourceTree = "<group>"; };
-		126A0D7F185F3B9200A8E8A3 /* EVECorpWalletJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorpWalletJournal.h; sourceTree = "<group>"; };
-		126A0D80185F3B9200A8E8A3 /* EVECorpWalletJournal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorpWalletJournal.m; sourceTree = "<group>"; };
-		126A0D81185F3B9200A8E8A3 /* EVECorpWalletTransactions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorpWalletTransactions.h; sourceTree = "<group>"; };
-		126A0D82185F3B9200A8E8A3 /* EVECorpWalletTransactions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorpWalletTransactions.m; sourceTree = "<group>"; };
-		126A0D83185F3B9200A8E8A3 /* EVEMemberMedals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMemberMedals.h; sourceTree = "<group>"; };
-		126A0D84185F3B9200A8E8A3 /* EVEMemberMedals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMemberMedals.m; sourceTree = "<group>"; };
-		126A0D85185F3B9200A8E8A3 /* EVEMemberSecurity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMemberSecurity.h; sourceTree = "<group>"; };
-		126A0D86185F3B9200A8E8A3 /* EVEMemberSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMemberSecurity.m; sourceTree = "<group>"; };
-		126A0D87185F3B9200A8E8A3 /* EVEMemberSecurityLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMemberSecurityLog.h; sourceTree = "<group>"; };
-		126A0D88185F3B9200A8E8A3 /* EVEMemberSecurityLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMemberSecurityLog.m; sourceTree = "<group>"; };
-		126A0D89185F3B9200A8E8A3 /* EVEMemberTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMemberTracking.h; sourceTree = "<group>"; };
-		126A0D8A185F3B9200A8E8A3 /* EVEMemberTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMemberTracking.m; sourceTree = "<group>"; };
-		126A0D8B185F3B9200A8E8A3 /* EVEOutpostList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEOutpostList.h; sourceTree = "<group>"; };
-		126A0D8C185F3B9200A8E8A3 /* EVEOutpostList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEOutpostList.m; sourceTree = "<group>"; };
-		126A0D8D185F3B9200A8E8A3 /* EVEOutpostServiceDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEOutpostServiceDetail.h; sourceTree = "<group>"; };
-		126A0D8E185F3B9200A8E8A3 /* EVEOutpostServiceDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEOutpostServiceDetail.m; sourceTree = "<group>"; };
-		126A0D8F185F3B9200A8E8A3 /* EVEShareholders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEShareholders.h; sourceTree = "<group>"; };
-		126A0D90185F3B9200A8E8A3 /* EVEShareholders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEShareholders.m; sourceTree = "<group>"; };
-		126A0D91185F3B9200A8E8A3 /* EVEStarbaseDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEStarbaseDetail.h; sourceTree = "<group>"; };
-		126A0D92185F3B9200A8E8A3 /* EVEStarbaseDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEStarbaseDetail.m; sourceTree = "<group>"; };
-		126A0D93185F3B9200A8E8A3 /* EVEStarbaseList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEStarbaseList.h; sourceTree = "<group>"; };
-		126A0D94185F3B9200A8E8A3 /* EVEStarbaseList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEStarbaseList.m; sourceTree = "<group>"; };
-		126A0D95185F3B9200A8E8A3 /* EVETitles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVETitles.h; sourceTree = "<group>"; };
-		126A0D96185F3B9200A8E8A3 /* EVETitles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVETitles.m; sourceTree = "<group>"; };
-		126A0D98185F3B9200A8E8A3 /* EVEAllianceList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EVEAllianceList.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		126A0D99185F3B9200A8E8A3 /* EVEAllianceList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEAllianceList.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0D9A185F3B9200A8E8A3 /* EVECertificateTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EVECertificateTree.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		126A0D9B185F3B9200A8E8A3 /* EVECertificateTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVECertificateTree.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0D9C185F3B9200A8E8A3 /* EVECharacterID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacterID.h; sourceTree = "<group>"; };
-		126A0D9D185F3B9200A8E8A3 /* EVECharacterID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharacterID.m; sourceTree = "<group>"; };
-		126A0D9E185F3B9200A8E8A3 /* EVECharacterInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacterInfo.h; sourceTree = "<group>"; };
-		126A0D9F185F3B9200A8E8A3 /* EVECharacterInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharacterInfo.m; sourceTree = "<group>"; };
-		126A0DA0185F3B9200A8E8A3 /* EVECharacterName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacterName.h; sourceTree = "<group>"; };
-		126A0DA1185F3B9200A8E8A3 /* EVECharacterName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharacterName.m; sourceTree = "<group>"; };
-		126A0DA2185F3B9200A8E8A3 /* EVEConquerableStationList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EVEConquerableStationList.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		126A0DA3185F3B9200A8E8A3 /* EVEConquerableStationList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEConquerableStationList.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0DA4185F3B9200A8E8A3 /* EVEErrorList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EVEErrorList.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		126A0DA5185F3B9200A8E8A3 /* EVEErrorList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEErrorList.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0DA6185F3B9200A8E8A3 /* EVEFacWarStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EVEFacWarStats.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		126A0DA7185F3B9200A8E8A3 /* EVEFacWarStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEFacWarStats.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0DA8185F3B9200A8E8A3 /* EVEFacWarTopStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EVEFacWarTopStats.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		126A0DA9185F3B9200A8E8A3 /* EVEFacWarTopStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEFacWarTopStats.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0DAA185F3B9200A8E8A3 /* EVERefTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVERefTypes.h; sourceTree = "<group>"; };
-		126A0DAB185F3B9200A8E8A3 /* EVERefTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVERefTypes.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0DAC185F3B9200A8E8A3 /* EVESkillTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVESkillTree.h; sourceTree = "<group>"; };
-		126A0DAD185F3B9200A8E8A3 /* EVESkillTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVESkillTree.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0DAE185F3B9200A8E8A3 /* EVEOnlineAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEOnlineAPI.h; sourceTree = "<group>"; };
-		126A0DB0185F3B9200A8E8A3 /* EVEFacWarSystems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EVEFacWarSystems.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		126A0DB1185F3B9200A8E8A3 /* EVEFacWarSystems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEFacWarSystems.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0DB2185F3B9200A8E8A3 /* EVEJumps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EVEJumps.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		126A0DB3185F3B9200A8E8A3 /* EVEJumps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEJumps.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0DB4185F3B9200A8E8A3 /* EVEKills.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEKills.h; sourceTree = "<group>"; };
-		126A0DB5185F3B9200A8E8A3 /* EVEKills.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEKills.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0DB6185F3B9200A8E8A3 /* EVESovereignty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVESovereignty.h; sourceTree = "<group>"; };
-		126A0DB7185F3B9200A8E8A3 /* EVESovereignty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVESovereignty.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		126A0DB9185F3B9200A8E8A3 /* EVEImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEImage.h; sourceTree = "<group>"; };
-		126A0DBA185F3B9200A8E8A3 /* EVEImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEImage.m; sourceTree = "<group>"; };
-		126A0DBC185F3B9200A8E8A3 /* EVEServerStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEServerStatus.h; sourceTree = "<group>"; };
-		126A0DBD185F3B9200A8E8A3 /* EVEServerStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEServerStatus.m; sourceTree = "<group>"; };
-		126A0DBF185F3B9200A8E8A3 /* EVEGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEGlobals.h; sourceTree = "<group>"; };
-		126A0DC0185F3B9200A8E8A3 /* EVERequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVERequest.h; sourceTree = "<group>"; };
-		126A0DC1185F3B9200A8E8A3 /* EVERequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVERequest.m; sourceTree = "<group>"; };
-		126A0DC5185F3B9200A8E8A3 /* NAPILookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPILookup.h; sourceTree = "<group>"; };
-		126A0DC6185F3B9200A8E8A3 /* NAPILookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPILookup.m; sourceTree = "<group>"; };
-		126A0DC7185F3B9200A8E8A3 /* NAPISearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPISearch.h; sourceTree = "<group>"; };
-		126A0DC8185F3B9200A8E8A3 /* NAPISearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPISearch.m; sourceTree = "<group>"; };
-		126A0DC9185F3B9200A8E8A3 /* NAPIUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPIUpload.h; sourceTree = "<group>"; };
-		126A0DCA185F3B9200A8E8A3 /* NAPIUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPIUpload.m; sourceTree = "<group>"; };
-		126A0DCB185F3B9200A8E8A3 /* NeocomAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeocomAPI.h; sourceTree = "<group>"; };
-		126A0DCF185F3B9200A8E8A3 /* NSMutableString+RSSParser10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+RSSParser10.h"; sourceTree = "<group>"; };
-		126A0DD0185F3B9200A8E8A3 /* NSMutableString+RSSParser10.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+RSSParser10.m"; sourceTree = "<group>"; };
-		126A0DD1185F3B9200A8E8A3 /* RSSParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParser.h; sourceTree = "<group>"; };
-		126A0DD2185F3B9200A8E8A3 /* RSSParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParser.m; sourceTree = "<group>"; };
-		126A0DD3185F3B9200A8E8A3 /* RSSParser10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParser10.h; sourceTree = "<group>"; };
-		126A0DD4185F3B9200A8E8A3 /* RSSParser10.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParser10.m; sourceTree = "<group>"; };
-		126A0DD5185F3B9200A8E8A3 /* RSSParser20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParser20.h; sourceTree = "<group>"; };
-		126A0DD6185F3B9200A8E8A3 /* RSSParser20.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParser20.m; sourceTree = "<group>"; };
-		126A0DD7185F3B9200A8E8A3 /* RSSParserAtom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParserAtom.h; sourceTree = "<group>"; };
-		126A0DD8185F3B9200A8E8A3 /* RSSParserAtom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParserAtom.m; sourceTree = "<group>"; };
-		126A0DD9185F3B9200A8E8A3 /* RSSEnclosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSEnclosure.h; sourceTree = "<group>"; };
-		126A0DDA185F3B9200A8E8A3 /* RSSEnclosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSEnclosure.m; sourceTree = "<group>"; };
-		126A0DDB185F3B9200A8E8A3 /* RSSFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSFeed.h; sourceTree = "<group>"; };
-		126A0DDC185F3B9200A8E8A3 /* RSSFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSFeed.m; sourceTree = "<group>"; };
-		126A0DDD185F3B9200A8E8A3 /* RSSImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSImage.h; sourceTree = "<group>"; };
-		126A0DDE185F3B9200A8E8A3 /* RSSImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSImage.m; sourceTree = "<group>"; };
-		126A0DDF185F3B9200A8E8A3 /* RSSItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSItem.h; sourceTree = "<group>"; };
-		126A0DE0185F3B9200A8E8A3 /* RSSItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSItem.m; sourceTree = "<group>"; };
-		126A0DE1185F3B9200A8E8A3 /* RSSSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSSource.h; sourceTree = "<group>"; };
-		126A0DE2185F3B9200A8E8A3 /* RSSSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSSource.m; sourceTree = "<group>"; };
-		126A0DE3185F3B9200A8E8A3 /* RSS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSS.h; sourceTree = "<group>"; };
-		126A0DE4185F3B9200A8E8A3 /* RSS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSS.m; sourceTree = "<group>"; };
-		126A0DE6185F3B9200A8E8A3 /* ASURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASURLConnection.h; sourceTree = "<group>"; };
-		126A0DE7185F3B9200A8E8A3 /* ASURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASURLConnection.m; sourceTree = "<group>"; };
-		126A0DE8185F3B9200A8E8A3 /* EVECachedURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECachedURLRequest.h; sourceTree = "<group>"; };
-		126A0DE9185F3B9200A8E8A3 /* EVECachedURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECachedURLRequest.m; sourceTree = "<group>"; };
-		126A0DEA185F3B9200A8E8A3 /* NSData+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MD5.h"; sourceTree = "<group>"; };
-		126A0DEB185F3B9200A8E8A3 /* NSData+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MD5.m"; sourceTree = "<group>"; };
-		126A0DED185F3B9200A8E8A3 /* NSMutableString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+HTML.h"; sourceTree = "<group>"; };
-		126A0DEE185F3B9200A8E8A3 /* NSMutableString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+HTML.m"; sourceTree = "<group>"; };
-		126A0DF0185F3B9200A8E8A3 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
-		126A0DF1185F3B9200A8E8A3 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
-		126A0DF2185F3B9200A8E8A3 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
-		126A0DF3185F3B9200A8E8A3 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
-		126A0DF4185F3B9200A8E8A3 /* NSURL+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MD5.h"; sourceTree = "<group>"; };
-		126A0DF5185F3B9200A8E8A3 /* NSURL+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MD5.m"; sourceTree = "<group>"; };
 		126ABD6019499580007634E1 /* NCDBDgmAttributeType+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmAttributeType+Neocom.h"; sourceTree = "<group>"; };
 		126ABD6119499580007634E1 /* NCDBDgmAttributeType+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmAttributeType+Neocom.m"; sourceTree = "<group>"; };
 		126ABD6319499659007634E1 /* NCDBInvGroup+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvGroup+Neocom.h"; sourceTree = "<group>"; };
@@ -1546,8 +1315,6 @@
 		12C9DCA018617A6300A654C5 /* NCAccountsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsManager.m; sourceTree = "<group>"; };
 		12CC8D6A188178570058C5DF /* NCTableViewEmptyHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewEmptyHeaderView.h; sourceTree = "<group>"; };
 		12CC8D6B188178570058C5DF /* NCTableViewEmptyHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewEmptyHeaderView.m; sourceTree = "<group>"; };
-		12CDB7DA188E6ABD002079C0 /* murmurhash3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = murmurhash3.c; sourceTree = "<group>"; };
-		12CDB7DB188E6ABD002079C0 /* murmurhash3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = murmurhash3.h; sourceTree = "<group>"; };
 		12CDB7DE188E7D1C002079C0 /* ASHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASHTTPServer.h; sourceTree = "<group>"; };
 		12CDB7DF188E7D1C002079C0 /* ASHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASHTTPServer.m; sourceTree = "<group>"; };
 		12CDB7ED188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+ASHTTPServer.h"; sourceTree = "<group>"; };
@@ -1567,14 +1334,6 @@
 		12EC0AC018C0B18D0010169C /* KillBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KillBoard.storyboard; sourceTree = "<group>"; };
 		12EC0AC418C0BAA20010169C /* NCNotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNotificationsManager.h; sourceTree = "<group>"; };
 		12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNotificationsManager.m; sourceTree = "<group>"; };
-		12ED82B51AC04AF900C593C4 /* EVEPlanetaryColonies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEPlanetaryColonies.h; sourceTree = "<group>"; };
-		12ED82B61AC04AF900C593C4 /* EVEPlanetaryColonies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEPlanetaryColonies.m; sourceTree = "<group>"; };
-		12ED82BB1AC04B0F00C593C4 /* EVEPlanetaryPins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEPlanetaryPins.h; sourceTree = "<group>"; };
-		12ED82BC1AC04B0F00C593C4 /* EVEPlanetaryPins.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEPlanetaryPins.m; sourceTree = "<group>"; };
-		12ED82BE1AC04B3600C593C4 /* EVEPlanetaryRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEPlanetaryRoutes.h; sourceTree = "<group>"; };
-		12ED82BF1AC04B3600C593C4 /* EVEPlanetaryRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEPlanetaryRoutes.m; sourceTree = "<group>"; };
-		12ED82C11AC04B4C00C593C4 /* EVEPlanetaryLinks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEPlanetaryLinks.h; sourceTree = "<group>"; };
-		12ED82C21AC04B4C00C593C4 /* EVEPlanetaryLinks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEPlanetaryLinks.m; sourceTree = "<group>"; };
 		12ED82D81AC13CD500C593C4 /* NCPlanetaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPlanetaryViewController.h; sourceTree = "<group>"; };
 		12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPlanetaryViewController.m; sourceTree = "<group>"; };
 		12ED82E71AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEPlanetaryPinsItem+Neocom.h"; sourceTree = "<group>"; };
@@ -1597,8 +1356,6 @@
 		12F82A5C18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingAPISearchResultsViewController.mm; sourceTree = "<group>"; };
 		12F82A6518ADFAB500A967B5 /* NCAssetsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAssetsContainerViewController.h; sourceTree = "<group>"; };
 		12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCAssetsContainerViewController.mm; sourceTree = "<group>"; };
-		12F86DD118E59C8800AFDA97 /* EVEOwnerID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEOwnerID.h; sourceTree = "<group>"; };
-		12F86DD218E59C8800AFDA97 /* EVEOwnerID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEOwnerID.m; sourceTree = "<group>"; };
 		12F8E1F318E9A47300CEA658 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		12F8E1F618E9A53700CEA658 /* NCSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSplitViewController.h; sourceTree = "<group>"; };
 		12F8E1F718E9A53700CEA658 /* NCSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSplitViewController.m; sourceTree = "<group>"; };
@@ -1656,8 +1413,6 @@
 		8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCalendarEventDetailsViewController.m; sourceTree = "<group>"; };
 		84250637187DC566002E691E /* NCSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSideMenuViewController.h; sourceTree = "<group>"; };
 		84250638187DC566002E691E /* NCSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSideMenuViewController.m; sourceTree = "<group>"; };
-		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
-		8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
 		8435C87518A690C000D11FC9 /* NCFittingRequiredSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingRequiredSkillsViewController.h; sourceTree = "<group>"; };
 		8435C87618A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingRequiredSkillsViewController.m; sourceTree = "<group>"; };
 		843C2F0018AD41CF00221721 /* NCAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAssetsViewController.h; sourceTree = "<group>"; };
@@ -1811,6 +1566,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1248CE471B7DDCBF000266BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1248CE7F1B7DDD1C000266BE /* AFNetworking.framework in Frameworks */,
+				1248CE801B7DDD1C000266BE /* EVEAPI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		12B68564195EB1B20043B30A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1892,6 +1656,7 @@
 			children = (
 				120968581845F0CB00921A37 /* Neocom */,
 				12B6856A195EB1B30043B30A /* today */,
+				1248CE4B1B7DDCBF000266BE /* TestApp */,
 				120968511845F0CB00921A37 /* Frameworks */,
 				120968501845F0CB00921A37 /* Products */,
 			);
@@ -1902,6 +1667,7 @@
 			children = (
 				1209684F1845F0CB00921A37 /* Neocom.app */,
 				12B68567195EB1B20043B30A /* com.shimanski.eveuniverse.today.appex */,
+				1248CE4A1B7DDCBF000266BE /* TestApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2240,17 +2006,6 @@
 			name = NCFittingShipStatsViewController;
 			sourceTree = "<group>";
 		};
-		122AC51118BCD84C005F0F46 /* EVEzKillBoardAPI */ = {
-			isa = PBXGroup;
-			children = (
-				122AC51218BCD84C005F0F46 /* EVEzKillBoardAPI.h */,
-				122AC51318BCD84C005F0F46 /* EVEzKillBoardSearch.h */,
-				122AC51418BCD84C005F0F46 /* EVEzKillBoardSearch.m */,
-			);
-			name = EVEzKillBoardAPI;
-			path = Classes/EVEzKillBoardAPI;
-			sourceTree = "<group>";
-		};
 		122C51F2188FB7E0000AEC2C /* NCDatabaseTypeMasteryViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2519,6 +2274,40 @@
 			name = NCDatabaseNPCViewController;
 			sourceTree = "<group>";
 		};
+		1248CE4B1B7DDCBF000266BE /* TestApp */ = {
+			isa = PBXGroup;
+			children = (
+				1248CE501B7DDCBF000266BE /* AppDelegate.h */,
+				1248CE511B7DDCBF000266BE /* AppDelegate.m */,
+				1248CE531B7DDCBF000266BE /* ViewController.h */,
+				1248CE541B7DDCBF000266BE /* ViewController.m */,
+				1248CE561B7DDCBF000266BE /* Main.storyboard */,
+				1248CE591B7DDCBF000266BE /* Images.xcassets */,
+				1248CE5B1B7DDCBF000266BE /* LaunchScreen.xib */,
+				1248CE4C1B7DDCBF000266BE /* Supporting Files */,
+			);
+			path = TestApp;
+			sourceTree = "<group>";
+		};
+		1248CE4C1B7DDCBF000266BE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				1248CE4D1B7DDCBF000266BE /* Info.plist */,
+				1248CE4E1B7DDCBF000266BE /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		1248CE741B7DDCE1000266BE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1248CE7A1B7DDCE1000266BE /* EVEOnlineAPI.app */,
+				1248CE7C1B7DDCE1000266BE /* AFNetworking.framework */,
+				1248CE7E1B7DDCE1000266BE /* EVEAPI.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		1251E95718BC6E3400DDAA62 /* NCKillMailDetailsAttackerCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -2732,416 +2521,14 @@
 		126A0CC4185F3B9100A8E8A3 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */,
 				1271238D18978235005F46EE /* eufe.xcodeproj */,
 				129D257F187E923200E2062C /* tools */,
-				126A0CC5185F3B9100A8E8A3 /* EVEOnlineAPI */,
 				1261594618EE7F9C0049B9CE /* flurry */,
 				12D6DBF51920A296003FC5ED /* admob */,
 			);
 			path = ThirdParty;
 			sourceTree = SOURCE_ROOT;
-		};
-		126A0CC5185F3B9100A8E8A3 /* EVEOnlineAPI */ = {
-			isa = PBXGroup;
-			children = (
-				126A0CC8185F3B9100A8E8A3 /* BattleClinicAPI */,
-				126A0CD4185F3B9100A8E8A3 /* EVEC0rporationAPI */,
-				126A0CD8185F3B9100A8E8A3 /* EVECentralAPI */,
-				126A0D32185F3B9200A8E8A3 /* EVEOnlineAPI */,
-				126A0DC4185F3B9200A8E8A3 /* NeocomAPI */,
-				122AC51118BCD84C005F0F46 /* EVEzKillBoardAPI */,
-				126A0DCC185F3B9200A8E8A3 /* RSS */,
-				126A0DE5185F3B9200A8E8A3 /* Utility */,
-			);
-			path = EVEOnlineAPI;
-			sourceTree = "<group>";
-		};
-		126A0CC8185F3B9100A8E8A3 /* BattleClinicAPI */ = {
-			isa = PBXGroup;
-			children = (
-				126A0CC9185F3B9100A8E8A3 /* BattleClinicAPI.h */,
-				126A0CCA185F3B9100A8E8A3 /* BCEveLoadout.h */,
-				126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */,
-				126A0CCC185F3B9100A8E8A3 /* BCEveLoadoutsList.h */,
-				126A0CCD185F3B9100A8E8A3 /* BCEveLoadoutsList.m */,
-				126A0CCE185F3B9100A8E8A3 /* BCEveLoadoutsTags.h */,
-				126A0CCF185F3B9100A8E8A3 /* BCEveLoadoutsTags.m */,
-				126A0CD0185F3B9100A8E8A3 /* Utility */,
-			);
-			name = BattleClinicAPI;
-			path = Classes/BattleClinicAPI;
-			sourceTree = "<group>";
-		};
-		126A0CD0185F3B9100A8E8A3 /* Utility */ = {
-			isa = PBXGroup;
-			children = (
-				126A0CD1185F3B9100A8E8A3 /* BCGlobals.h */,
-				126A0CD2185F3B9100A8E8A3 /* BCRequest.h */,
-				126A0CD3185F3B9100A8E8A3 /* BCRequest.m */,
-			);
-			path = Utility;
-			sourceTree = "<group>";
-		};
-		126A0CD4185F3B9100A8E8A3 /* EVEC0rporationAPI */ = {
-			isa = PBXGroup;
-			children = (
-				126A0CD5185F3B9100A8E8A3 /* EVEC0rporationAPI.h */,
-				126A0CD6185F3B9100A8E8A3 /* EVEC0rporationFaction.h */,
-				126A0CD7185F3B9100A8E8A3 /* EVEC0rporationFaction.m */,
-			);
-			name = EVEC0rporationAPI;
-			path = Classes/EVEC0rporationAPI;
-			sourceTree = "<group>";
-		};
-		126A0CD8185F3B9100A8E8A3 /* EVECentralAPI */ = {
-			isa = PBXGroup;
-			children = (
-				126A0CD9185F3B9100A8E8A3 /* EVECentralAPI.h */,
-				126A0CDA185F3B9100A8E8A3 /* EVECentralMarketStat.h */,
-				126A0CDB185F3B9100A8E8A3 /* EVECentralMarketStat.m */,
-				126A0CDC185F3B9100A8E8A3 /* EVECentralQuickLook.h */,
-				126A0CDD185F3B9100A8E8A3 /* EVECentralQuickLook.m */,
-				126A0CDE185F3B9100A8E8A3 /* Utility */,
-			);
-			name = EVECentralAPI;
-			path = Classes/EVECentralAPI;
-			sourceTree = "<group>";
-		};
-		126A0CDE185F3B9100A8E8A3 /* Utility */ = {
-			isa = PBXGroup;
-			children = (
-				126A0CDF185F3B9100A8E8A3 /* EVECentralGlobals.h */,
-				126A0CE0185F3B9100A8E8A3 /* EVECentralRequest.h */,
-				126A0CE1185F3B9100A8E8A3 /* EVECentralRequest.m */,
-			);
-			path = Utility;
-			sourceTree = "<group>";
-		};
-		126A0D32185F3B9200A8E8A3 /* EVEOnlineAPI */ = {
-			isa = PBXGroup;
-			children = (
-				126A0DAE185F3B9200A8E8A3 /* EVEOnlineAPI.h */,
-				126A0D33185F3B9200A8E8A3 /* Account */,
-				126A0D3A185F3B9200A8E8A3 /* API */,
-				126A0D3D185F3B9200A8E8A3 /* Character */,
-				126A0D74185F3B9200A8E8A3 /* Corporation */,
-				126A0D97185F3B9200A8E8A3 /* EVE */,
-				126A0DAF185F3B9200A8E8A3 /* Map */,
-				126A0DB8185F3B9200A8E8A3 /* Misc */,
-				126A0DBB185F3B9200A8E8A3 /* Server */,
-				126A0DBE185F3B9200A8E8A3 /* Utility */,
-			);
-			name = EVEOnlineAPI;
-			path = Classes/EVEOnlineAPI;
-			sourceTree = "<group>";
-		};
-		126A0D33185F3B9200A8E8A3 /* Account */ = {
-			isa = PBXGroup;
-			children = (
-				126A0D34185F3B9200A8E8A3 /* EVEAccountStatus.h */,
-				126A0D35185F3B9200A8E8A3 /* EVEAccountStatus.m */,
-				126A0D36185F3B9200A8E8A3 /* EVEAPIKeyInfo.h */,
-				126A0D37185F3B9200A8E8A3 /* EVEAPIKeyInfo.m */,
-				126A0D38185F3B9200A8E8A3 /* EVECharacters.h */,
-				126A0D39185F3B9200A8E8A3 /* EVECharacters.m */,
-			);
-			path = Account;
-			sourceTree = "<group>";
-		};
-		126A0D3A185F3B9200A8E8A3 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				126A0D3B185F3B9200A8E8A3 /* EVECalllist.h */,
-				126A0D3C185F3B9200A8E8A3 /* EVECalllist.m */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
-		126A0D3D185F3B9200A8E8A3 /* Character */ = {
-			isa = PBXGroup;
-			children = (
-				126A0D3E185F3B9200A8E8A3 /* EVEAccountBalance.h */,
-				126A0D3F185F3B9200A8E8A3 /* EVEAccountBalance.m */,
-				126A0D40185F3B9200A8E8A3 /* EVEAssetList.h */,
-				126A0D41185F3B9200A8E8A3 /* EVEAssetList.m */,
-				126A0D42185F3B9200A8E8A3 /* EVECalendarEventAttendees.h */,
-				126A0D43185F3B9200A8E8A3 /* EVECalendarEventAttendees.m */,
-				126A0D44185F3B9200A8E8A3 /* EVECharacterSheet.h */,
-				126A0D45185F3B9200A8E8A3 /* EVECharacterSheet.m */,
-				126A0D46185F3B9200A8E8A3 /* EVECharContactList.h */,
-				126A0D47185F3B9200A8E8A3 /* EVECharContactList.m */,
-				126A0D48185F3B9200A8E8A3 /* EVECharFacWarStats.h */,
-				126A0D49185F3B9200A8E8A3 /* EVECharFacWarStats.m */,
-				126A0D4A185F3B9200A8E8A3 /* EVECharMedals.h */,
-				126A0D4B185F3B9200A8E8A3 /* EVECharMedals.m */,
-				126A0D4C185F3B9200A8E8A3 /* EVECharWalletJournal.h */,
-				126A0D4D185F3B9200A8E8A3 /* EVECharWalletJournal.m */,
-				126A0D4E185F3B9200A8E8A3 /* EVECharWalletTransactions.h */,
-				126A0D4F185F3B9200A8E8A3 /* EVECharWalletTransactions.m */,
-				126A0D50185F3B9200A8E8A3 /* EVEContactNotifications.h */,
-				126A0D51185F3B9200A8E8A3 /* EVEContactNotifications.m */,
-				126A0D52185F3B9200A8E8A3 /* EVEContractBids.h */,
-				126A0D53185F3B9200A8E8A3 /* EVEContractBids.m */,
-				126A0D54185F3B9200A8E8A3 /* EVEContractItems.h */,
-				126A0D55185F3B9200A8E8A3 /* EVEContractItems.m */,
-				126A0D56185F3B9200A8E8A3 /* EVEContracts.h */,
-				126A0D57185F3B9200A8E8A3 /* EVEContracts.m */,
-				126A0D58185F3B9200A8E8A3 /* EVEIndustryJobs.h */,
-				126A0D59185F3B9200A8E8A3 /* EVEIndustryJobs.m */,
-				126A0D5A185F3B9200A8E8A3 /* EVEKillLog.h */,
-				126A0D5B185F3B9200A8E8A3 /* EVEKillLog.m */,
-				126A0D5C185F3B9200A8E8A3 /* EVELocations.h */,
-				126A0D5D185F3B9200A8E8A3 /* EVELocations.m */,
-				126A0D5E185F3B9200A8E8A3 /* EVEMailBodies.h */,
-				126A0D5F185F3B9200A8E8A3 /* EVEMailBodies.m */,
-				126A0D60185F3B9200A8E8A3 /* EVEMailingLists.h */,
-				126A0D61185F3B9200A8E8A3 /* EVEMailingLists.m */,
-				126A0D62185F3B9200A8E8A3 /* EVEMailMessages.h */,
-				126A0D63185F3B9200A8E8A3 /* EVEMailMessages.m */,
-				126A0D64185F3B9200A8E8A3 /* EVEMarketOrders.h */,
-				126A0D65185F3B9200A8E8A3 /* EVEMarketOrders.m */,
-				126A0D66185F3B9200A8E8A3 /* EVENotifications.h */,
-				126A0D67185F3B9200A8E8A3 /* EVENotifications.m */,
-				126A0D68185F3B9200A8E8A3 /* EVENotificationTexts.h */,
-				126A0D69185F3B9200A8E8A3 /* EVENotificationTexts.m */,
-				126A0D6A185F3B9200A8E8A3 /* EVEResearch.h */,
-				126A0D6B185F3B9200A8E8A3 /* EVEResearch.m */,
-				126A0D6C185F3B9200A8E8A3 /* EVESkillInTraining.h */,
-				126A0D6D185F3B9200A8E8A3 /* EVESkillInTraining.m */,
-				126A0D6E185F3B9200A8E8A3 /* EVESkillQueue.h */,
-				126A0D6F185F3B9200A8E8A3 /* EVESkillQueue.m */,
-				126A0D70185F3B9200A8E8A3 /* EVEStandings.h */,
-				126A0D71185F3B9200A8E8A3 /* EVEStandings.m */,
-				126A0D72185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.h */,
-				126A0D73185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.m */,
-				12ED82B51AC04AF900C593C4 /* EVEPlanetaryColonies.h */,
-				12ED82B61AC04AF900C593C4 /* EVEPlanetaryColonies.m */,
-				12ED82BB1AC04B0F00C593C4 /* EVEPlanetaryPins.h */,
-				12ED82BC1AC04B0F00C593C4 /* EVEPlanetaryPins.m */,
-				12ED82BE1AC04B3600C593C4 /* EVEPlanetaryRoutes.h */,
-				12ED82BF1AC04B3600C593C4 /* EVEPlanetaryRoutes.m */,
-				12ED82C11AC04B4C00C593C4 /* EVEPlanetaryLinks.h */,
-				12ED82C21AC04B4C00C593C4 /* EVEPlanetaryLinks.m */,
-			);
-			path = Character;
-			sourceTree = "<group>";
-		};
-		126A0D74185F3B9200A8E8A3 /* Corporation */ = {
-			isa = PBXGroup;
-			children = (
-				126A0D75185F3B9200A8E8A3 /* EVEContainerLog.h */,
-				126A0D76185F3B9200A8E8A3 /* EVEContainerLog.m */,
-				126A0D77185F3B9200A8E8A3 /* EVECorpContactList.h */,
-				126A0D78185F3B9200A8E8A3 /* EVECorpContactList.m */,
-				126A0D79185F3B9200A8E8A3 /* EVECorpFacWarStats.h */,
-				126A0D7A185F3B9200A8E8A3 /* EVECorpFacWarStats.m */,
-				126A0D7B185F3B9200A8E8A3 /* EVECorpMedals.h */,
-				126A0D7C185F3B9200A8E8A3 /* EVECorpMedals.m */,
-				126A0D7D185F3B9200A8E8A3 /* EVECorporationSheet.h */,
-				126A0D7E185F3B9200A8E8A3 /* EVECorporationSheet.m */,
-				126A0D7F185F3B9200A8E8A3 /* EVECorpWalletJournal.h */,
-				126A0D80185F3B9200A8E8A3 /* EVECorpWalletJournal.m */,
-				126A0D81185F3B9200A8E8A3 /* EVECorpWalletTransactions.h */,
-				126A0D82185F3B9200A8E8A3 /* EVECorpWalletTransactions.m */,
-				126A0D83185F3B9200A8E8A3 /* EVEMemberMedals.h */,
-				126A0D84185F3B9200A8E8A3 /* EVEMemberMedals.m */,
-				126A0D85185F3B9200A8E8A3 /* EVEMemberSecurity.h */,
-				126A0D86185F3B9200A8E8A3 /* EVEMemberSecurity.m */,
-				126A0D87185F3B9200A8E8A3 /* EVEMemberSecurityLog.h */,
-				126A0D88185F3B9200A8E8A3 /* EVEMemberSecurityLog.m */,
-				126A0D89185F3B9200A8E8A3 /* EVEMemberTracking.h */,
-				126A0D8A185F3B9200A8E8A3 /* EVEMemberTracking.m */,
-				126A0D8B185F3B9200A8E8A3 /* EVEOutpostList.h */,
-				126A0D8C185F3B9200A8E8A3 /* EVEOutpostList.m */,
-				126A0D8D185F3B9200A8E8A3 /* EVEOutpostServiceDetail.h */,
-				126A0D8E185F3B9200A8E8A3 /* EVEOutpostServiceDetail.m */,
-				126A0D8F185F3B9200A8E8A3 /* EVEShareholders.h */,
-				126A0D90185F3B9200A8E8A3 /* EVEShareholders.m */,
-				126A0D91185F3B9200A8E8A3 /* EVEStarbaseDetail.h */,
-				126A0D92185F3B9200A8E8A3 /* EVEStarbaseDetail.m */,
-				126A0D93185F3B9200A8E8A3 /* EVEStarbaseList.h */,
-				126A0D94185F3B9200A8E8A3 /* EVEStarbaseList.m */,
-				126A0D95185F3B9200A8E8A3 /* EVETitles.h */,
-				126A0D96185F3B9200A8E8A3 /* EVETitles.m */,
-			);
-			path = Corporation;
-			sourceTree = "<group>";
-		};
-		126A0D97185F3B9200A8E8A3 /* EVE */ = {
-			isa = PBXGroup;
-			children = (
-				126A0D98185F3B9200A8E8A3 /* EVEAllianceList.h */,
-				126A0D99185F3B9200A8E8A3 /* EVEAllianceList.m */,
-				126A0D9A185F3B9200A8E8A3 /* EVECertificateTree.h */,
-				126A0D9B185F3B9200A8E8A3 /* EVECertificateTree.m */,
-				126A0D9C185F3B9200A8E8A3 /* EVECharacterID.h */,
-				126A0D9D185F3B9200A8E8A3 /* EVECharacterID.m */,
-				126A0D9E185F3B9200A8E8A3 /* EVECharacterInfo.h */,
-				126A0D9F185F3B9200A8E8A3 /* EVECharacterInfo.m */,
-				126A0DA0185F3B9200A8E8A3 /* EVECharacterName.h */,
-				126A0DA1185F3B9200A8E8A3 /* EVECharacterName.m */,
-				126A0DA2185F3B9200A8E8A3 /* EVEConquerableStationList.h */,
-				126A0DA3185F3B9200A8E8A3 /* EVEConquerableStationList.m */,
-				126A0DA4185F3B9200A8E8A3 /* EVEErrorList.h */,
-				126A0DA5185F3B9200A8E8A3 /* EVEErrorList.m */,
-				126A0DA6185F3B9200A8E8A3 /* EVEFacWarStats.h */,
-				126A0DA7185F3B9200A8E8A3 /* EVEFacWarStats.m */,
-				126A0DA8185F3B9200A8E8A3 /* EVEFacWarTopStats.h */,
-				126A0DA9185F3B9200A8E8A3 /* EVEFacWarTopStats.m */,
-				126A0DAA185F3B9200A8E8A3 /* EVERefTypes.h */,
-				126A0DAB185F3B9200A8E8A3 /* EVERefTypes.m */,
-				126A0DAC185F3B9200A8E8A3 /* EVESkillTree.h */,
-				126A0DAD185F3B9200A8E8A3 /* EVESkillTree.m */,
-				12F86DD118E59C8800AFDA97 /* EVEOwnerID.h */,
-				12F86DD218E59C8800AFDA97 /* EVEOwnerID.m */,
-			);
-			path = EVE;
-			sourceTree = "<group>";
-		};
-		126A0DAF185F3B9200A8E8A3 /* Map */ = {
-			isa = PBXGroup;
-			children = (
-				126A0DB0185F3B9200A8E8A3 /* EVEFacWarSystems.h */,
-				126A0DB1185F3B9200A8E8A3 /* EVEFacWarSystems.m */,
-				126A0DB2185F3B9200A8E8A3 /* EVEJumps.h */,
-				126A0DB3185F3B9200A8E8A3 /* EVEJumps.m */,
-				126A0DB4185F3B9200A8E8A3 /* EVEKills.h */,
-				126A0DB5185F3B9200A8E8A3 /* EVEKills.m */,
-				126A0DB6185F3B9200A8E8A3 /* EVESovereignty.h */,
-				126A0DB7185F3B9200A8E8A3 /* EVESovereignty.m */,
-			);
-			path = Map;
-			sourceTree = "<group>";
-		};
-		126A0DB8185F3B9200A8E8A3 /* Misc */ = {
-			isa = PBXGroup;
-			children = (
-				126A0DB9185F3B9200A8E8A3 /* EVEImage.h */,
-				126A0DBA185F3B9200A8E8A3 /* EVEImage.m */,
-			);
-			path = Misc;
-			sourceTree = "<group>";
-		};
-		126A0DBB185F3B9200A8E8A3 /* Server */ = {
-			isa = PBXGroup;
-			children = (
-				126A0DBC185F3B9200A8E8A3 /* EVEServerStatus.h */,
-				126A0DBD185F3B9200A8E8A3 /* EVEServerStatus.m */,
-			);
-			path = Server;
-			sourceTree = "<group>";
-		};
-		126A0DBE185F3B9200A8E8A3 /* Utility */ = {
-			isa = PBXGroup;
-			children = (
-				126A0DBF185F3B9200A8E8A3 /* EVEGlobals.h */,
-				126A0DC0185F3B9200A8E8A3 /* EVERequest.h */,
-				126A0DC1185F3B9200A8E8A3 /* EVERequest.m */,
-			);
-			path = Utility;
-			sourceTree = "<group>";
-		};
-		126A0DC4185F3B9200A8E8A3 /* NeocomAPI */ = {
-			isa = PBXGroup;
-			children = (
-				126A0DC5185F3B9200A8E8A3 /* NAPILookup.h */,
-				126A0DC6185F3B9200A8E8A3 /* NAPILookup.m */,
-				126A0DC7185F3B9200A8E8A3 /* NAPISearch.h */,
-				126A0DC8185F3B9200A8E8A3 /* NAPISearch.m */,
-				126A0DC9185F3B9200A8E8A3 /* NAPIUpload.h */,
-				126A0DCA185F3B9200A8E8A3 /* NAPIUpload.m */,
-				126A0DCB185F3B9200A8E8A3 /* NeocomAPI.h */,
-			);
-			name = NeocomAPI;
-			path = Classes/NeocomAPI;
-			sourceTree = "<group>";
-		};
-		126A0DCC185F3B9200A8E8A3 /* RSS */ = {
-			isa = PBXGroup;
-			children = (
-				126A0DCD185F3B9200A8E8A3 /* RSS */,
-				126A0DE3185F3B9200A8E8A3 /* RSS.h */,
-				126A0DE4185F3B9200A8E8A3 /* RSS.m */,
-			);
-			name = RSS;
-			path = Classes/RSS;
-			sourceTree = "<group>";
-		};
-		126A0DCD185F3B9200A8E8A3 /* RSS */ = {
-			isa = PBXGroup;
-			children = (
-				126A0DCE185F3B9200A8E8A3 /* Parsers */,
-				126A0DD9185F3B9200A8E8A3 /* RSSEnclosure.h */,
-				126A0DDA185F3B9200A8E8A3 /* RSSEnclosure.m */,
-				126A0DDB185F3B9200A8E8A3 /* RSSFeed.h */,
-				126A0DDC185F3B9200A8E8A3 /* RSSFeed.m */,
-				126A0DDD185F3B9200A8E8A3 /* RSSImage.h */,
-				126A0DDE185F3B9200A8E8A3 /* RSSImage.m */,
-				126A0DDF185F3B9200A8E8A3 /* RSSItem.h */,
-				126A0DE0185F3B9200A8E8A3 /* RSSItem.m */,
-				126A0DE1185F3B9200A8E8A3 /* RSSSource.h */,
-				126A0DE2185F3B9200A8E8A3 /* RSSSource.m */,
-			);
-			path = RSS;
-			sourceTree = "<group>";
-		};
-		126A0DCE185F3B9200A8E8A3 /* Parsers */ = {
-			isa = PBXGroup;
-			children = (
-				126A0DCF185F3B9200A8E8A3 /* NSMutableString+RSSParser10.h */,
-				126A0DD0185F3B9200A8E8A3 /* NSMutableString+RSSParser10.m */,
-				126A0DD1185F3B9200A8E8A3 /* RSSParser.h */,
-				126A0DD2185F3B9200A8E8A3 /* RSSParser.m */,
-				126A0DD3185F3B9200A8E8A3 /* RSSParser10.h */,
-				126A0DD4185F3B9200A8E8A3 /* RSSParser10.m */,
-				126A0DD5185F3B9200A8E8A3 /* RSSParser20.h */,
-				126A0DD6185F3B9200A8E8A3 /* RSSParser20.m */,
-				126A0DD7185F3B9200A8E8A3 /* RSSParserAtom.h */,
-				126A0DD8185F3B9200A8E8A3 /* RSSParserAtom.m */,
-			);
-			path = Parsers;
-			sourceTree = "<group>";
-		};
-		126A0DE5185F3B9200A8E8A3 /* Utility */ = {
-			isa = PBXGroup;
-			children = (
-				126A0DE6185F3B9200A8E8A3 /* ASURLConnection.h */,
-				126A0DE7185F3B9200A8E8A3 /* ASURLConnection.m */,
-				126A0DE8185F3B9200A8E8A3 /* EVECachedURLRequest.h */,
-				126A0DE9185F3B9200A8E8A3 /* EVECachedURLRequest.m */,
-				126A0DEA185F3B9200A8E8A3 /* NSData+MD5.h */,
-				126A0DEB185F3B9200A8E8A3 /* NSData+MD5.m */,
-				12CDB7D9188E6ABD002079C0 /* MurmurHash3 */,
-				126A0DEC185F3B9200A8E8A3 /* NSMutableString+HTML */,
-				126A0DEF185F3B9200A8E8A3 /* NSString+HTML */,
-				126A0DF2185F3B9200A8E8A3 /* NSString+MD5.h */,
-				126A0DF3185F3B9200A8E8A3 /* NSString+MD5.m */,
-				126A0DF4185F3B9200A8E8A3 /* NSURL+MD5.h */,
-				126A0DF5185F3B9200A8E8A3 /* NSURL+MD5.m */,
-				8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */,
-				8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */,
-			);
-			name = Utility;
-			path = Classes/Utility;
-			sourceTree = "<group>";
-		};
-		126A0DEC185F3B9200A8E8A3 /* NSMutableString+HTML */ = {
-			isa = PBXGroup;
-			children = (
-				126A0DED185F3B9200A8E8A3 /* NSMutableString+HTML.h */,
-				126A0DEE185F3B9200A8E8A3 /* NSMutableString+HTML.m */,
-			);
-			path = "NSMutableString+HTML";
-			sourceTree = "<group>";
-		};
-		126A0DEF185F3B9200A8E8A3 /* NSString+HTML */ = {
-			isa = PBXGroup;
-			children = (
-				126A0DF0185F3B9200A8E8A3 /* NSString+HTML.h */,
-				126A0DF1185F3B9200A8E8A3 /* NSString+HTML.m */,
-			);
-			path = "NSString+HTML";
-			sourceTree = "<group>";
 		};
 		126DC69F18D1ABBD009EEA86 /* NCCharacterAttributesCell */ = {
 			isa = PBXGroup;
@@ -3863,6 +3250,8 @@
 				129FEE351860326E00F75FA6 /* NCAPIKey.m */,
 				1206C5E818922FB10010BEE8 /* NCMailBox.h */,
 				1206C5E918922FB20010BEE8 /* NCMailBox.m */,
+				1248CEAE1B7E1149000266BE /* NSManagedObjectContext+NCStorage.h */,
+				1248CEAF1B7E1149000266BE /* NSManagedObjectContext+NCStorage.m */,
 			);
 			name = NCStorage;
 			sourceTree = "<group>";
@@ -4095,15 +3484,6 @@
 				12CC8D6B188178570058C5DF /* NCTableViewEmptyHeaderView.m */,
 			);
 			name = NCTableViewEmptyHeaderView;
-			sourceTree = "<group>";
-		};
-		12CDB7D9188E6ABD002079C0 /* MurmurHash3 */ = {
-			isa = PBXGroup;
-			children = (
-				12CDB7DA188E6ABD002079C0 /* murmurhash3.c */,
-				12CDB7DB188E6ABD002079C0 /* murmurhash3.h */,
-			);
-			path = MurmurHash3;
 			sourceTree = "<group>";
 		};
 		12CDB7DD188E7D0B002079C0 /* ASHTTPServer */ = {
@@ -4749,6 +4129,25 @@
 			productReference = 1209684F1845F0CB00921A37 /* Neocom.app */;
 			productType = "com.apple.product-type.application";
 		};
+		1248CE491B7DDCBF000266BE /* TestApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1248CE711B7DDCC0000266BE /* Build configuration list for PBXNativeTarget "TestApp" */;
+			buildPhases = (
+				1248CE461B7DDCBF000266BE /* Sources */,
+				1248CE471B7DDCBF000266BE /* Frameworks */,
+				1248CE481B7DDCBF000266BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1248CE821B7DDD27000266BE /* PBXTargetDependency */,
+				1248CE841B7DDD27000266BE /* PBXTargetDependency */,
+			);
+			name = TestApp;
+			productName = TestApp;
+			productReference = 1248CE4A1B7DDCBF000266BE /* TestApp.app */;
+			productType = "com.apple.product-type.application";
+		};
 		12B68566195EB1B20043B30A /* today */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12B6857A195EB1B30043B30A /* Build configuration list for PBXNativeTarget "today" */;
@@ -4787,6 +4186,9 @@
 							};
 						};
 					};
+					1248CE491B7DDCBF000266BE = {
+						CreatedOnToolsVersion = 6.4;
+					};
 					12B68566195EB1B20043B30A = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = YB4RLQ4M9A;
@@ -4814,16 +4216,42 @@
 					ProductGroup = 1271238E18978235005F46EE /* Products */;
 					ProjectRef = 1271238D18978235005F46EE /* eufe.xcodeproj */;
 				},
+				{
+					ProductGroup = 1248CE741B7DDCE1000266BE /* Products */;
+					ProjectRef = 1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
 				1209684E1845F0CB00921A37 /* Neocom */,
 				12B68566195EB1B20043B30A /* today */,
+				1248CE491B7DDCBF000266BE /* TestApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		1248CE7A1B7DDCE1000266BE /* EVEOnlineAPI.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = EVEOnlineAPI.app;
+			remoteRef = 1248CE791B7DDCE1000266BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1248CE7C1B7DDCE1000266BE /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 1248CE7B1B7DDCE1000266BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1248CE7E1B7DDCE1000266BE /* EVEAPI.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = EVEAPI.framework;
+			remoteRef = 1248CE7D1B7DDCE1000266BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		124C3D9919C2C29B00FCF18E /* eufeTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -5050,6 +4478,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1248CE481B7DDCBF000266BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1248CE581B7DDCBF000266BE /* Main.storyboard in Resources */,
+				1248CE5D1B7DDCBF000266BE /* LaunchScreen.xib in Resources */,
+				1248CE5A1B7DDCBF000266BE /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		12B68565195EB1B20043B30A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5065,16 +4503,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				126A0E65185F3B9300A8E8A3 /* EVEFacWarTopStats.m in Sources */,
 				129D261F187E923300E2062C /* NSURL+MD5.m in Sources */,
 				12CDB7F2188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m in Sources */,
 				12B5EFF51ACBC154003CDF65 /* NCShoppingItem.m in Sources */,
-				126A0E07185F3B9300A8E8A3 /* EVECentralRequest.m in Sources */,
 				129D260F187E923300E2062C /* ASInAppPurchase.m in Sources */,
-				126A0E72185F3B9300A8E8A3 /* NAPIUpload.m in Sources */,
 				84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */,
 				1226D2D31B58F04F000C69EC /* NCCachePrice.m in Sources */,
-				126A0E45185F3B9300A8E8A3 /* EVENotifications.m in Sources */,
 				12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */,
 				1263EA141AEA85C80052DC27 /* NCLoadoutsParser.mm in Sources */,
 				129D2632187E923300E2062C /* UIImageView+URL.m in Sources */,
@@ -5085,7 +4519,6 @@
 				12640B0918B74CBF005C311D /* NCStarbasesDetailsViewController.m in Sources */,
 				122F01C519483A0700D04D60 /* NCDBEveIcon+Neocom.m in Sources */,
 				12FA32AF18E1673D0053DDC5 /* UIView+Neocom.m in Sources */,
-				126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */,
 				12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */,
 				12B971A718EC2A11008F8740 /* NCFittingPOSStatsViewController.mm in Sources */,
 				1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */,
@@ -5095,32 +4528,23 @@
 				12FDA32E18E00710007B091D /* NCImplantSet.m in Sources */,
 				12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */,
 				124097B91B2EDDE4002AC442 /* NCFittingPOSStructuresViewController.mm in Sources */,
-				126A0E33185F3B9300A8E8A3 /* EVECalendarEventAttendees.m in Sources */,
 				843C2F0218AD41CF00221721 /* NCAssetsViewController.m in Sources */,
 				12FA32AC18E157920053DDC5 /* NCMarqueeLabel.m in Sources */,
 				128C9B0918BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m in Sources */,
-				126A0E6C185F3B9300A8E8A3 /* EVEImage.m in Sources */,
 				8435C87718A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m in Sources */,
-				126A0E64185F3B9300A8E8A3 /* EVEFacWarStats.m in Sources */,
-				126A0E69185F3B9300A8E8A3 /* EVEJumps.m in Sources */,
 				8418BB14189186D900B99A7E /* NCCalendarEventsViewController.m in Sources */,
 				120C333119CAB0A60093EECA /* NCDBEufeItem.m in Sources */,
 				120C332819CAB0A60093EECA /* NCDBInvTypeRequiredSkill.m in Sources */,
 				84FA63DE188C4FC1008FD761 /* NCSkillCell.m in Sources */,
 				123F0AD118C5B5FF00D53602 /* NSData+Neocom.m in Sources */,
 				122C98AB18B5EAF900386EDE /* NCIndustryJobsCell.m in Sources */,
-				126A0E46185F3B9300A8E8A3 /* EVENotificationTexts.m in Sources */,
 				12E86940195EC14D004B66D0 /* NCTodayRow.m in Sources */,
-				126A0E41185F3B9300A8E8A3 /* EVEMailBodies.m in Sources */,
 				1202FC7618A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m in Sources */,
-				126A0E6A185F3B9300A8E8A3 /* EVEKills.m in Sources */,
 				12A7DB9C18B34B0900343D25 /* NSString+ASHTTPServer.m in Sources */,
 				1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */,
 				126703061A8FD22700F816F9 /* NSAttributedString+Neocom.m in Sources */,
 				12F4C0721B2862C100AF3389 /* NCAdaptiveModalSegue.m in Sources */,
-				126A0E80185F3B9300A8E8A3 /* NSData+MD5.m in Sources */,
 				123EE6F818F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.m in Sources */,
-				126A0E74185F3B9300A8E8A3 /* RSSParser.m in Sources */,
 				126F1BC519531D5C00E5CD4F /* NCDBMapRegion+Neocom.m in Sources */,
 				84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */,
 				120C335E19CAB0A90093EECA /* NCDBMapConstellation.m in Sources */,
@@ -5129,81 +4553,57 @@
 				120C335819CAB0A80093EECA /* NCDBMapSolarSystem.m in Sources */,
 				84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */,
 				12B97D3318AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m in Sources */,
-				126A0E62185F3B9300A8E8A3 /* EVEConquerableStationList.m in Sources */,
 				12ED82E91AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.m in Sources */,
 				12F955F718CDA3DD005CEAD6 /* POSFit.mm in Sources */,
 				126F1BC219531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.m in Sources */,
 				126F1BB91952D43600E5CD4F /* NCDBMapDenormalize+Neocom.m in Sources */,
 				123A980818C715EA001045F5 /* NCRSSFeedViewController.m in Sources */,
-				126A0E32185F3B9300A8E8A3 /* EVEAssetList.m in Sources */,
 				12D011BC18A20BE600C0A228 /* NCFittingNPCPickerViewController.m in Sources */,
 				120C333719CAB0A70093EECA /* NCDBCertMasteryLevel.m in Sources */,
-				126A0E4B185F3B9300A8E8A3 /* EVEUpcomingCalendarEvents.m in Sources */,
 				126F1BB61952D3AF00E5CD4F /* NCDBStaStation+Neocom.m in Sources */,
-				126A0E03185F3B9300A8E8A3 /* BCRequest.m in Sources */,
-				126A0E3D185F3B9300A8E8A3 /* EVEContracts.m in Sources */,
 				84FA63E1188C50A2008FD761 /* UIImageView+Neocom.m in Sources */,
 				1206C5EA18922FB20010BEE8 /* NCMailBox.m in Sources */,
 				120C334019CAB0A70093EECA /* NCDBEveIcon.m in Sources */,
-				126A0E53185F3B9300A8E8A3 /* EVEMemberMedals.m in Sources */,
 				128A1F32189906A400005C4F /* NCFittingShipWorkspaceViewController.mm in Sources */,
 				120C336719CAB0A90093EECA /* NCDBIndRequiredSkill.m in Sources */,
-				126A0E3A185F3B9300A8E8A3 /* EVEContactNotifications.m in Sources */,
 				84FC4F6018785CCC0004073C /* NCAccount.m in Sources */,
 				84C118301898457E00A35516 /* UIViewController+Neocom.m in Sources */,
-				12CDB7DC188E6ABD002079C0 /* murmurhash3.c in Sources */,
 				1271238118977E8C005F46EE /* NCFittingShipModuleCell.m in Sources */,
 				12A7DB9618B33AC500343D25 /* NCAddAPIKeyViewController.m in Sources */,
-				126A0E77185F3B9300A8E8A3 /* RSSParserAtom.m in Sources */,
 				12640B0418B74048005C311D /* NCStarbasesCell.m in Sources */,
-				126A0E60185F3B9300A8E8A3 /* EVECharacterInfo.m in Sources */,
-				126A0E43185F3B9300A8E8A3 /* EVEMailMessages.m in Sources */,
-				126A0E7A185F3B9300A8E8A3 /* RSSImage.m in Sources */,
 				120C333419CAB0A70093EECA /* NCDBIndBlueprintType.m in Sources */,
-				126A0E7F185F3B9300A8E8A3 /* EVECachedURLRequest.m in Sources */,
 				12F955FD18CDA5DE005CEAD6 /* NCMigrationManager.mm in Sources */,
-				126A0E73185F3B9300A8E8A3 /* NSMutableString+RSSParser10.m in Sources */,
 				12B42E6C1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m in Sources */,
 				127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */,
 				8416386D1893BEA000968ADF /* NSDate+Neocom.m in Sources */,
 				120C337319CAB0AA0093EECA /* NCDBRamAssemblyLineType.m in Sources */,
-				126A0E5E185F3B9300A8E8A3 /* EVECertificateTree.m in Sources */,
 				120E77B81B25D91300816E1C /* NCSplashScreenViewController.m in Sources */,
 				126648F418C07D1000ADBBE1 /* NCZKillBoardSearchResultsViewController.m in Sources */,
-				126A0E6B185F3B9300A8E8A3 /* EVESovereignty.m in Sources */,
 				12F82A6718ADFAB500A967B5 /* NCAssetsContainerViewController.mm in Sources */,
 				120C339419CAB0AC0093EECA /* NCDBInvGroup.m in Sources */,
 				125F682218853230005732FA /* NCSkillData.m in Sources */,
 				129D2628187E923300E2062C /* NSBundle+Retina4.m in Sources */,
 				121112341859929E009E5106 /* NCTableViewController.m in Sources */,
 				129D262C187E923300E2062C /* UIActionSheet+Block.m in Sources */,
-				126A0E00185F3B9300A8E8A3 /* BCEveLoadout.m in Sources */,
-				126A0E78185F3B9300A8E8A3 /* RSSEnclosure.m in Sources */,
-				126A0E39185F3B9300A8E8A3 /* EVECharWalletTransactions.m in Sources */,
 				12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */,
 				120D5B4218B1FE5B007ED9B4 /* NCLocationsManager.m in Sources */,
 				129D2618187E923300E2062C /* LUISearchBar.m in Sources */,
 				12430BAF18C852550025D971 /* NCAboutViewController.m in Sources */,
 				12430BB318C875910025D971 /* NCDonationViewController.m in Sources */,
 				12A7DB9F18B34D6200343D25 /* NSURLRequest+ASHTTPServer.m in Sources */,
-				126A0E5A185F3B9300A8E8A3 /* EVEStarbaseDetail.m in Sources */,
 				8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */,
-				126A0E82185F3B9300A8E8A3 /* NSString+HTML.m in Sources */,
-				126A0E7E185F3B9300A8E8A3 /* ASURLConnection.m in Sources */,
 				120C336419CAB0A90093EECA /* NCDBChrRace.m in Sources */,
 				129421B81880321900977CB8 /* NCAccountCorporationCell.m in Sources */,
 				120C333D19CAB0A70093EECA /* NCDBRamActivity.m in Sources */,
 				84E4332218951C3500DF2061 /* NCViewController.m in Sources */,
 				123A980218C71516001045F5 /* NCRSSViewController.m in Sources */,
 				12F82A5A18ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m in Sources */,
-				126A0E56185F3B9300A8E8A3 /* EVEMemberTracking.m in Sources */,
 				129D2630187E923300E2062C /* UIDevice+IP.m in Sources */,
 				129FEE391860326E00F75FA6 /* NCSetting.m in Sources */,
 				125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */,
 				12041572189A4C3D00B15BB5 /* NCFittingEHPCell.m in Sources */,
 				12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */,
 				123A981418C721C7001045F5 /* RSSItem+Neocom.m in Sources */,
-				126A0E84185F3B9300A8E8A3 /* NSURL+MD5.m in Sources */,
 				126DC6A218D1ABD3009EEA86 /* NCCharacterAttributesCell.m in Sources */,
 				84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */,
 				129D2611187E923300E2062C /* NSObject+Debug.m in Sources */,
@@ -5212,11 +4612,8 @@
 				123A981018C71F2E001045F5 /* NCRSSItemViewController.m in Sources */,
 				1211123E18599396009E5106 /* NCCache.xcdatamodeld in Sources */,
 				122C98AE18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m in Sources */,
-				126A0E81185F3B9300A8E8A3 /* NSMutableString+HTML.m in Sources */,
 				1211122E185989E1009E5106 /* NCTaskManager.m in Sources */,
 				12041563189A450200B15BB5 /* NCFittingShipFirepowerCell.m in Sources */,
-				122AC51518BCD84C005F0F46 /* EVEzKillBoardSearch.m in Sources */,
-				126A0E68185F3B9300A8E8A3 /* EVEFacWarSystems.m in Sources */,
 				12640B0E18B77A2D005C311D /* NCKillMailsViewController.m in Sources */,
 				12F955FA18CDA3FC005CEAD6 /* SkillPlan.m in Sources */,
 				1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */,
@@ -5232,24 +4629,18 @@
 				12041569189A453F00B15BB5 /* NCFittingShipMiscCell.m in Sources */,
 				1211123118598B09009E5106 /* NCTask.m in Sources */,
 				120C332519CAB0A60093EECA /* NCDBInvControlTowerResourcePurpose.m in Sources */,
-				126A0E36185F3B9300A8E8A3 /* EVECharFacWarStats.m in Sources */,
 				129D261D187E923300E2062C /* NSData+MD5.m in Sources */,
-				126A0E83185F3B9300A8E8A3 /* NSString+MD5.m in Sources */,
 				129D2624187E923300E2062C /* NSString+Email.m in Sources */,
-				126A0E47185F3B9300A8E8A3 /* EVEResearch.m in Sources */,
 				12640AFA18B72E43005C311D /* NCStarbasesViewController.m in Sources */,
 				84C1182D1898443900A35516 /* NCDatabaseTypePickerContentViewController.m in Sources */,
-				126A0E37185F3B9300A8E8A3 /* EVECharMedals.m in Sources */,
 				12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */,
 				12436DAE1945A06B0090D4A6 /* NCDatabase.m in Sources */,
 				12FDA33518E03172007B091D /* NCFittingAmountCell.m in Sources */,
 				12190BF91ADFE7E0009E1C5E /* NCDatabaseWHViewController.m in Sources */,
 				129D261C187E923300E2062C /* LUIToolbar.m in Sources */,
 				12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */,
-				126A0E49185F3B9300A8E8A3 /* EVESkillQueue.m in Sources */,
 				12640C4C18BB73A4005C311D /* NCKillMailDetailsViewController.mm in Sources */,
 				129D2625187E923300E2062C /* NSString+UTI.m in Sources */,
-				126A0E40185F3B9300A8E8A3 /* EVELocations.m in Sources */,
 				123A980C18C716B9001045F5 /* NCRSSFeedCell.m in Sources */,
 				12B5EFF21ACBC154003CDF65 /* NCShoppingList.m in Sources */,
 				12F9560218CDB5D4005CEAD6 /* NCBannerViewController.m in Sources */,
@@ -5267,12 +4658,10 @@
 				123F0ACE18C5990100D53602 /* NCSkillPlansViewController.m in Sources */,
 				129FEE361860326E00F75FA6 /* NCAPIKey.m in Sources */,
 				120C335219CAB0A80093EECA /* NCDBTxtDescription.m in Sources */,
-				126A0E3F185F3B9300A8E8A3 /* EVEKillLog.m in Sources */,
 				120C334F19CAB0A80093EECA /* NCDBEveIconImage.m in Sources */,
 				849B9FE11896D31B00D4DD2B /* NCFittingMenuViewController.mm in Sources */,
 				126ABD6519499659007634E1 /* NCDBInvGroup+Neocom.m in Sources */,
 				120C332B19CAB0A60093EECA /* NCDBCertCertificate.m in Sources */,
-				126A0E67185F3B9300A8E8A3 /* EVESkillTree.m in Sources */,
 				1203B69B18B4DD7C003A0D72 /* NCWalletJournalCell.m in Sources */,
 				125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */,
 				120C334319CAB0A70093EECA /* NCDBIndRequiredMaterial.m in Sources */,
@@ -5281,59 +4670,41 @@
 				1297FCFA1B2ABF1800176BF0 /* NCFittingShipImplantsViewController.mm in Sources */,
 				123A97F718C708FE001045F5 /* NSString+Temp.m in Sources */,
 				129421AC187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m in Sources */,
-				126A0E34185F3B9300A8E8A3 /* EVECharacterSheet.m in Sources */,
 				120C337919CAB0AA0093EECA /* NCDBCertSkill.m in Sources */,
 				845B7C7318B54247006DA157 /* EVEContractsItem+Neocom.m in Sources */,
 				12C50763189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m in Sources */,
 				12FF5871189FC2D100E2D70A /* NCFittingFitPickerViewController.mm in Sources */,
 				1209685F1845F0CB00921A37 /* main.m in Sources */,
-				126A0E30185F3B9300A8E8A3 /* EVECalllist.m in Sources */,
 				129D262F187E923300E2062C /* UIColor+NSNumber.m in Sources */,
 				12422FC118E409F70051FD24 /* NCSettingsViewController.m in Sources */,
-				126A0E4F185F3B9300A8E8A3 /* EVECorpMedals.m in Sources */,
 				12640B1218B77B87005C311D /* NCKillMail.mm in Sources */,
 				12614EEF1AC92522007620DA /* NCShoppingListsManagerViewController.m in Sources */,
-				126A0E75185F3B9300A8E8A3 /* RSSParser10.m in Sources */,
-				12F86DD318E59C8800AFDA97 /* EVEOwnerID.m in Sources */,
 				127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */,
-				126A0E42185F3B9300A8E8A3 /* EVEMailingLists.m in Sources */,
 				129D2600187E923200E2062C /* ASCaptionTextField.m in Sources */,
 				12FDA33218E00FFA007B091D /* NCFittingImplantSetsViewController.m in Sources */,
 				84521911189AEEA800E7E3C1 /* NCLoadoutData.m in Sources */,
 				12041566189A451E00B15BB5 /* NCFittingShipTankCell.m in Sources */,
-				126A0E71185F3B9300A8E8A3 /* NAPISearch.m in Sources */,
-				126A0E44185F3B9300A8E8A3 /* EVEMarketOrders.m in Sources */,
 				12640B1818BB27D2005C311D /* EVEKillLogVictim+Neocom.m in Sources */,
 				1204155D189A44CF00B15BB5 /* NCFittingResistancesCell.m in Sources */,
 				1297FCFE1B2ABF5300176BF0 /* NCFittingShipFleetViewController.mm in Sources */,
 				122C98A718B5DD5700386EDE /* NCIndustryJobsViewController.m in Sources */,
 				12A7DBA618B36B1A00343D25 /* NCWalletTransactionsViewController.m in Sources */,
 				8456E87518AAAEE2000DAE75 /* NCFittingPOSResourcesCell.m in Sources */,
-				126A0E79185F3B9300A8E8A3 /* RSSFeed.m in Sources */,
 				845B7C6F18B53F64006DA157 /* NCContractsViewController.m in Sources */,
 				1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */,
 				127082A7190109E900822F00 /* EUStorage.xcdatamodeld in Sources */,
 				129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */,
-				126A0E66185F3B9300A8E8A3 /* EVERefTypes.m in Sources */,
 				12FF5866189F6D9100E2D70A /* NCFittingCharacterEditorCell.m in Sources */,
 				125AEFFC1AE7A8C6008B9EAF /* NCDBVersion.m in Sources */,
-				126A0E38185F3B9300A8E8A3 /* EVECharWalletJournal.m in Sources */,
 				84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */,
 				120C335519CAB0A80093EECA /* NCDBInvControlTowerResource.m in Sources */,
-				126A0E31185F3B9300A8E8A3 /* EVEAccountBalance.m in Sources */,
 				122947F318EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm in Sources */,
-				126A0E50185F3B9300A8E8A3 /* EVECorporationSheet.m in Sources */,
 				127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */,
 				12430BB718C87C1B0025D971 /* NCDonationCell.m in Sources */,
-				126A0E3E185F3B9300A8E8A3 /* EVEIndustryJobs.m in Sources */,
-				126A0E55185F3B9300A8E8A3 /* EVEMemberSecurityLog.m in Sources */,
 				129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */,
 				120C337F19CAB0AB0093EECA /* NCDBDgmEffect.m in Sources */,
-				126A0E6E185F3B9300A8E8A3 /* EVERequest.m in Sources */,
 				128D29B118BDBD23003B8E03 /* NCTableViewHeaderView.m in Sources */,
-				126A0E4E185F3B9300A8E8A3 /* EVECorpFacWarStats.m in Sources */,
 				129FEE15186030FD00F75FA6 /* NCStorage.xcdatamodeld in Sources */,
-				126A0E7D185F3B9300A8E8A3 /* RSS.m in Sources */,
 				120C334919CAB0A80093EECA /* NCDBInvMetaGroup.m in Sources */,
 				129D2629187E923300E2062C /* UIImage+Retina4.m in Sources */,
 				129421A9187FDF7200977CB8 /* NSString+Neocom.m in Sources */,
@@ -5347,7 +4718,6 @@
 				12ACDCA618A0AD2600566DFE /* NCFittingDamagePatternsViewController.m in Sources */,
 				12331DC118F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.m in Sources */,
 				129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */,
-				126A0E5D185F3B9300A8E8A3 /* EVEAllianceList.m in Sources */,
 				12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */,
 				849FEE4218A42C4300A4F85E /* NCFittingTypeVariationsViewController.m in Sources */,
 				124638331AD25A84001F8780 /* NCShoppingAssetsViewController.m in Sources */,
@@ -5355,35 +4725,24 @@
 				120C338219CAB0AB0093EECA /* NCDBIndProduct.m in Sources */,
 				8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */,
 				1216EB841AE0DFE20026AF58 /* NCDBWhType.m in Sources */,
-				126A0E70185F3B9300A8E8A3 /* NAPILookup.m in Sources */,
-				12ED82B71AC04AF900C593C4 /* EVEPlanetaryColonies.m in Sources */,
 				124097C01B2F200F002AC442 /* NCAdaptivePopoverSegue.m in Sources */,
 				12A7DBAF18B3739B00343D25 /* NCWalletTransactionsCell.m in Sources */,
-				126A0E57185F3B9300A8E8A3 /* EVEOutpostList.m in Sources */,
 				129D261A187E923300E2062C /* LUITextField.m in Sources */,
 				12476C11194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m in Sources */,
 				12CDB7EF188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m in Sources */,
 				8456E86C18AAA13A000DAE75 /* NCFittingPOSStructureCell.m in Sources */,
 				127123A318979F55005F46EE /* NCFittingSectionGenericHeaderView.m in Sources */,
 				8456E87818AAAFBD000DAE75 /* NCFittingPOSDefenseOffenseCell.m in Sources */,
-				126A0E5C185F3B9300A8E8A3 /* EVETitles.m in Sources */,
 				123C628218DB1E6A00B03156 /* NCLabel.m in Sources */,
 				124097BC1B2F021A002AC442 /* NCFittingPOSAssemblyLinesViewController.mm in Sources */,
-				126A0E6D185F3B9300A8E8A3 /* EVEServerStatus.m in Sources */,
 				12B5EFFE1ACBC33A003CDF65 /* NCShoppingGroup.m in Sources */,
 				12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */,
 				12F9562918CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m in Sources */,
-				126A0E06185F3B9300A8E8A3 /* EVECentralQuickLook.m in Sources */,
 				129D2623187E923300E2062C /* NSDate+DaysAgo.m in Sources */,
-				12ED82C01AC04B3600C593C4 /* EVEPlanetaryRoutes.m in Sources */,
 				120C334C19CAB0A80093EECA /* NCDBEufeItemGroup.m in Sources */,
-				126A0E4A185F3B9300A8E8A3 /* EVEStandings.m in Sources */,
-				126A0E59185F3B9300A8E8A3 /* EVEShareholders.m in Sources */,
-				126A0E4C185F3B9300A8E8A3 /* EVEContainerLog.m in Sources */,
 				12CDB7E0188E7D1C002079C0 /* ASHTTPServer.m in Sources */,
 				1204156C189A454A00B15BB5 /* NCFittingShipPriceCell.m in Sources */,
 				120C334619CAB0A80093EECA /* NCDBDgmAttributeCategory.m in Sources */,
-				126A0E2E185F3B9300A8E8A3 /* EVEAPIKeyInfo.m in Sources */,
 				128A1F3B1899141200005C4F /* NCFittingShipDroneCell.m in Sources */,
 				12C5074F189B6F170064AC32 /* NCShipFit.mm in Sources */,
 				120C338819CAB0AB0093EECA /* NCDBEufeItemCategory.m in Sources */,
@@ -5392,18 +4751,13 @@
 				128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */,
 				12045E461ACB20D100AD32F8 /* NCShoppingListViewController.m in Sources */,
 				12F407591A8D25220031FB35 /* NCDefaultTableViewCell.m in Sources */,
-				126A0E2F185F3B9300A8E8A3 /* EVECharacters.m in Sources */,
 				128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m in Sources */,
 				129D2626187E923300E2062C /* NSString+UUID.m in Sources */,
 				12C107E01ADD584C008D60DF /* NCDatabaseFetchedResultsViewController.m in Sources */,
-				126A0E01185F3B9300A8E8A3 /* BCEveLoadoutsList.m in Sources */,
 				120C337C19CAB0AA0093EECA /* NCDBNpcGroup.m in Sources */,
-				126A0E7B185F3B9300A8E8A3 /* RSSItem.m in Sources */,
-				12ED82C31AC04B4C00C593C4 /* EVEPlanetaryLinks.m in Sources */,
 				120C336D19CAB0AA0093EECA /* NCDBMapDenormalize.m in Sources */,
 				12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */,
 				122947EB18EAA51D0093FAB8 /* NCSkillsContainerViewController.m in Sources */,
-				12ED82BD1AC04B0F00C593C4 /* EVEPlanetaryPins.m in Sources */,
 				1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */,
 				122F01C819483D2100D04D60 /* NCDBInvType+Neocom.mm in Sources */,
 				1203B69718B4A4FC003A0D72 /* NCWalletJournalViewController.m in Sources */,
@@ -5415,53 +4769,40 @@
 				129FEE181860313D00F75FA6 /* NCStorage.m in Sources */,
 				12ACDCAA18A0B12D00566DFE /* NCFittingDamagePatternCell.m in Sources */,
 				84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */,
-				126A0E52185F3B9300A8E8A3 /* EVECorpWalletTransactions.m in Sources */,
 				12F955E818CDA2A0005CEAD6 /* EUStorage.m in Sources */,
 				12041557189A449E00B15BB5 /* NCFittingShipWeaponsCell.m in Sources */,
-				126A0E2D185F3B9300A8E8A3 /* EVEAccountStatus.m in Sources */,
 				12ACDCA118A0AC4A00566DFE /* NCDamagePattern.m in Sources */,
 				120C338B19CAB0AB0093EECA /* NCDBRamInstallationTypeContent.m in Sources */,
 				1229475D18EA8B2E0093FAB8 /* NCSkillQueueViewController.m in Sources */,
 				12C50757189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m in Sources */,
 				129D2615187E923300E2062C /* LUIBarButtonItem.m in Sources */,
 				12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */,
-				8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */,
 				84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */,
 				122C98A318B5DC3800386EDE /* NCContractsCell.m in Sources */,
 				12B42E711AC8432900A0D956 /* NCShoppingItem+Neocom.m in Sources */,
 				84F8E2C918AD75A3005D968F /* EVEAssetListItem+Neocom.m in Sources */,
 				129D2631187E923300E2062C /* UIImage+Resize.m in Sources */,
 				841534EC188A921200B42433 /* NCDatabaseMarketViewController.m in Sources */,
-				126A0E3B185F3B9300A8E8A3 /* EVEContractBids.m in Sources */,
-				126A0E76185F3B9300A8E8A3 /* RSSParser20.m in Sources */,
 				129D261B187E923300E2062C /* LUITextView.m in Sources */,
 				12F955F118CDA3BE005CEAD6 /* Fit.mm in Sources */,
 				129C586218AA2CF900CA8787 /* NCFittingPOSViewController.mm in Sources */,
 				128C9B0418BF034E0086F7B3 /* NCCharacterID.m in Sources */,
 				12B97D3818AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm in Sources */,
-				126A0E35185F3B9300A8E8A3 /* EVECharContactList.m in Sources */,
 				120C337619CAB0AA0093EECA /* NCDBInvType.m in Sources */,
 				12F82A5418AC98B100A967B5 /* NCFittingAPIFlagsViewController.m in Sources */,
 				122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */,
-				126A0E7C185F3B9300A8E8A3 /* RSSSource.m in Sources */,
 				129D2617187E923300E2062C /* LUILabel.m in Sources */,
+				1248CEB01B7E1149000266BE /* NSManagedObjectContext+NCStorage.m in Sources */,
 				129D2619187E923300E2062C /* LUISegmentedControl.m in Sources */,
 				123F0AD818C5BCC700D53602 /* NCSkillPlanViewController.m in Sources */,
 				12124AAF1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m in Sources */,
-				126A0E04185F3B9300A8E8A3 /* EVEC0rporationFaction.m in Sources */,
-				126A0E61185F3B9300A8E8A3 /* EVECharacterName.m in Sources */,
-				126A0E63185F3B9300A8E8A3 /* EVEErrorList.m in Sources */,
 				129D257E187E8CB400E2062C /* NCMainMenuViewController.m in Sources */,
 				12F82A5D18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm in Sources */,
 				12F82A5018AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m in Sources */,
-				126A0E4D185F3B9300A8E8A3 /* EVECorpContactList.m in Sources */,
 				120C338E19CAB0AB0093EECA /* NCDBDgmTypeAttribute.m in Sources */,
-				126A0E5F185F3B9300A8E8A3 /* EVECharacterID.m in Sources */,
 				120C336A19CAB0A90093EECA /* NCDBInvControlTower.m in Sources */,
-				126A0E3C185F3B9300A8E8A3 /* EVEContractItems.m in Sources */,
 				12B5F0011ACBC6AD003CDF65 /* NCShoppingGroup+Neocom.m in Sources */,
 				129D2610187E923300E2062C /* CollapsableTableView.m in Sources */,
-				126A0E05185F3B9300A8E8A3 /* EVECentralMarketStat.m in Sources */,
 				12436DAB1945A0310090D4A6 /* NCDatabase.xcdatamodeld in Sources */,
 				12B992351913718900448D01 /* NCAssetsAccountsViewController.m in Sources */,
 				1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */,
@@ -5469,19 +4810,40 @@
 				124097C31B2F2021002AC442 /* NCPopoverController.m in Sources */,
 				1267030C1A911A0900F816F9 /* NSMutableAttributedString+Neocom.m in Sources */,
 				120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */,
-				126A0E5B185F3B9300A8E8A3 /* EVEStarbaseList.m in Sources */,
 				12E86944195EC700004B66D0 /* NCTodayCell.m in Sources */,
 				120C335B19CAB0A90093EECA /* NCDBEveUnit.m in Sources */,
-				126A0E58185F3B9300A8E8A3 /* EVEOutpostServiceDetail.m in Sources */,
-				126A0E02185F3B9300A8E8A3 /* BCEveLoadoutsTags.m in Sources */,
 				84E4331B18951AA800DF2061 /* NCMailBoxMessageViewController.m in Sources */,
 				1211123818599339009E5106 /* NCCache.m in Sources */,
 				8418BB171891873800B99A7E /* NCCalendarEventCell.m in Sources */,
 				122C98B318B6026100386EDE /* NCIndustryJobsDetailsViewController.m in Sources */,
 				129D262E187E923300E2062C /* UIAlertView+Error.m in Sources */,
-				126A0E51185F3B9300A8E8A3 /* EVECorpWalletJournal.m in Sources */,
 				12ED82DA1AC13CD500C593C4 /* NCPlanetaryViewController.m in Sources */,
-				126A0E54185F3B9300A8E8A3 /* EVEMemberSecurity.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1248CE461B7DDCBF000266BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1248CEB41B7E12C8000266BE /* NCShoppingList.m in Sources */,
+				1248CEBE1B7E12C8000266BE /* NCAPIKey.m in Sources */,
+				1248CEB91B7E12C8000266BE /* NCLoadout.m in Sources */,
+				1248CE551B7DDCBF000266BE /* ViewController.m in Sources */,
+				1248CEBC1B7E12C8000266BE /* NCSkillPlan.m in Sources */,
+				1248CE521B7DDCBF000266BE /* AppDelegate.m in Sources */,
+				1248CEB21B7E12C8000266BE /* NCShoppingGroup.m in Sources */,
+				1248CEB71B7E12C8000266BE /* NCDamagePattern.m in Sources */,
+				1248CEBA1B7E12C8000266BE /* NCAccount.m in Sources */,
+				1248CEB51B7E12C8000266BE /* NCStorage.m in Sources */,
+				1248CE851B7DDD3F000266BE /* NCAccountsManager.m in Sources */,
+				1248CE4F1B7DDCBF000266BE /* main.m in Sources */,
+				1248CEBF1B7E12C8000266BE /* NCMailBox.m in Sources */,
+				1248CEBD1B7E12C8000266BE /* NCSetting.m in Sources */,
+				1248CEBB1B7E12C8000266BE /* NCFitCharacter.m in Sources */,
+				1248CEB61B7E12C8000266BE /* NCImplantSet.m in Sources */,
+				1248CEB81B7E12C8000266BE /* NCLoadoutData.m in Sources */,
+				1248CEB11B7E12A9000266BE /* NSManagedObjectContext+NCStorage.m in Sources */,
+				1248CEB31B7E12C8000266BE /* NCShoppingItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5499,6 +4861,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1248CE821B7DDD27000266BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AFNetworking;
+			targetProxy = 1248CE811B7DDD27000266BE /* PBXContainerItemProxy */;
+		};
+		1248CE841B7DDD27000266BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = EVEAPI;
+			targetProxy = 1248CE831B7DDD27000266BE /* PBXContainerItemProxy */;
+		};
 		127123AC1897ABF8005F46EE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = eufe;
@@ -5531,6 +4903,22 @@
 				120968651845F0CB00921A37 /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		1248CE561B7DDCBF000266BE /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1248CE571B7DDCBF000266BE /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		1248CE5B1B7DDCBF000266BE /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1248CE5C1B7DDCBF000266BE /* Base */,
+			);
+			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -5682,6 +5070,45 @@
 			};
 			name = Release;
 		};
+		1248CE6A1B7DDCBF000266BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = TestApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		1248CE6B1B7DDCBF000266BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = TestApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		12B68577195EB1B30043B30A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5743,6 +5170,15 @@
 			buildConfigurations = (
 				120968821845F0CB00921A37 /* Debug */,
 				120968831845F0CB00921A37 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1248CE711B7DDCC0000266BE /* Build configuration list for PBXNativeTarget "TestApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1248CE6A1B7DDCBF000266BE /* Debug */,
+				1248CE6B1B7DDCBF000266BE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

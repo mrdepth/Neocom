@@ -8,12 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "EVEOnlineAPI.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCCharacterAttributes.h"
 #import "NCAPIKey.h"
 #import "NCMailBox.h"
 #import "NCSkillPlan.h"
 #import "NCStorage.h"
+
+#define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
+#define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
 
 typedef NS_ENUM(NSInteger, NCAccountType) {
 	NCAccountTypeCharacter,
@@ -50,9 +53,17 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 @property (nonatomic, strong, readonly) NSError* corporationSheetError;
 @property (nonatomic, strong, readonly) NSError* skillQueueError;
 
+@property (nonatomic, strong, readonly) EVEAPIKey* eveAPIKey;
+
 + (instancetype) currentAccount;
 + (void) setCurrentAccount:(NCAccount*) account;
 
-- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;
+- (void) loadCharacterInfoWithCompletionBlock:(void(^)(EVECharacterInfo* characterInfo, NSError* error)) completionBlock;
+- (void) loadCharacterSheetWithCompletionBlock:(void(^)(EVECharacterSheet* characterSheet, NSError* error)) completionBlock;
+- (void) loadCorporationSheetWithCompletionBlock:(void(^)(EVECorporationSheet* corporationSheet, NSError* error)) completionBlock;
+- (void) loadSkillQueueWithCompletionBlock:(void(^)(EVESkillQueue* skillQueue, NSError* error)) completionBlock;
+- (void) loadCharacterAttributesWithCompletionBlock:(void(^)(NCCharacterAttributes* characterAttributes, NSError* error)) completionBlock;
+
+- (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
 
 @end

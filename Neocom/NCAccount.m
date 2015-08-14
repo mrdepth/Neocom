@@ -424,6 +424,80 @@ static NCAccount* currentAccount = nil;
 	}
 }
 
+- (void) loadCharacterInfoWithCompletionBlock:(void(^)(EVECharacterInfo* characterInfo, NSError* error)) completionBlock {
+	NSManagedObjectContext* cacheContext = [[NCCache sharedCache] managedObjectContext];
+	[cacheContext performBlock:^{
+		if (!self.characterInfoCacheRecord)
+			self.characterInfoCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterInfo", self.uuid]];
+		EVECharacterInfo* characterInfo = self.characterInfoCacheRecord.data.data;
+		if (!characterInfo) {
+			[self.managedObjectContext performBlock:^{
+				[[EVEOnlineAPI apiWithAPIKey:self.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy] characterInfoWithCharacterID:self.characterID
+																														 completionBlock:^(EVECharacterInfo *result, NSError *error) {
+																															 [cacheContext performBlock:^{
+																																 if (result) {
+																																	 self.characterInfoCacheRecord.data.data = characterInfo;
+																																	 self.characterInfoCacheRecord.date = characterInfo.eveapi.cacheDate;
+																																	 self.characterInfoCacheRecord.expireDate = characterInfo.eveapi.cachedUntil;
+																																 }
+																																 else {
+																																	 self.characterInfoCacheRecord.date = [NSDate date];
+																																	 self.characterInfoCacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:10];
+																																 }
+																																 [cacheContext save:nil];
+																																 dispatch_async(dispatch_get_main_queue(), ^{
+																																	 completionBlock(characterInfo, error);
+																																 });
+																															 }];
+																														 }
+																														   progressBlock:nil];
+			}];
+		}
+		else {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				completionBlock(characterInfo, nil);
+			});
+		}
+	}];
+}
+
+- (void) loadCharacterSheetWithCompletionBlock:(void(^)(EVECharacterSheet* characterSheet, NSError* error)) completionBlock {
+	if (self.characterSheet)
+		completionBlock(self.characterSheet, nil);
+	else {
+		NSManagedObjectContext* cacheContext = [[NCCache sharedCache] managedObjectContext];
+		[cacheContext performBlock:^{
+			if (!self.characterSheetCacheRecord)
+				self.characterSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterSheet", self.uuid]];
+			EVECharacterSheet* characterSheet = self.characterSheetCacheRecord.data.data;
+			if (!characterSheet) {
+				[self.managedObjectContext performBlock:^{
+					[[EVEOnlineAPI apiWithAPIKey:self.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy] characterSheetWithCompletionBlock:^(EVECharacterSheet *result, NSError *error) {
+						self.characterSheet = result;
+					}
+																																	progressBlock:nil];
+				}];
+			}
+		}];
+	}
+}
+
+- (void) loadCorporationSheetWithCompletionBlock:(void(^)(EVECorporationSheet* corporationSheet, NSError* error)) completionBlock {
+	
+}
+
+- (void) loadSkillQueueWithCompletionBlock:(void(^)(EVESkillQueue* skillQueue, NSError* error)) completionBlock {
+	
+}
+
+- (void) loadCharacterAttributesWithCompletionBlock:(void(^)(NCCharacterAttributes* characterAttributes, NSError* error)) completionBlock {
+	
+}
+
+- (EVEAPIKey*) eveAPIKey {
+	return [EVEAPIKey apiKeyWithKeyID:self.apiKey.keyID vCode:self.apiKey.vCode characterID:self.characterID corporate:self.accountType == NCAccountTypeCorporate];
+}
+
 #pragma mark - Private
 
 - (NCCacheRecord*) characterInfoCacheRecord {

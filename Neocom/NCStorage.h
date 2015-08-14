@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define NCStorageDidChangeNotification @"NCStorageDidChangeNotification"
+
 typedef NS_ENUM(NSInteger, NCStorageType) {
 	NCStorageTypeFallback,
 	NCStorageTypeCloud

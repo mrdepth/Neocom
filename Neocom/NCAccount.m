@@ -436,19 +436,19 @@ static NCAccount* currentAccount = nil;
 																														 completionBlock:^(EVECharacterInfo *result, NSError *error) {
 																															 [cacheContext performBlock:^{
 																																 if (result) {
-																																	 self.characterInfoCacheRecord.data.data = characterInfo;
-																																	 self.characterInfoCacheRecord.date = characterInfo.eveapi.cacheDate;
-																																	 self.characterInfoCacheRecord.expireDate = characterInfo.eveapi.cachedUntil;
+																																	 self.characterInfoCacheRecord.data.data = result;
+																																	 self.characterInfoCacheRecord.date = result.eveapi.cacheDate;
+																																	 self.characterInfoCacheRecord.expireDate = result.eveapi.cachedUntil;
 																																 }
 																																 else {
 																																	 self.characterInfoCacheRecord.date = [NSDate date];
-																																	 self.characterInfoCacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:10];
+																																	 self.characterInfoCacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:3];
 																																 }
 																																 [cacheContext save:nil];
-																																 dispatch_async(dispatch_get_main_queue(), ^{
-																																	 completionBlock(characterInfo, error);
-																																 });
 																															 }];
+																															 dispatch_async(dispatch_get_main_queue(), ^{
+																																 completionBlock(result, error);
+																															 });
 																														 }
 																														   progressBlock:nil];
 			}];
@@ -462,24 +462,39 @@ static NCAccount* currentAccount = nil;
 }
 
 - (void) loadCharacterSheetWithCompletionBlock:(void(^)(EVECharacterSheet* characterSheet, NSError* error)) completionBlock {
-	if (self.characterSheet)
-		completionBlock(self.characterSheet, nil);
-	else {
-		NSManagedObjectContext* cacheContext = [[NCCache sharedCache] managedObjectContext];
-		[cacheContext performBlock:^{
-			if (!self.characterSheetCacheRecord)
-				self.characterSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterSheet", self.uuid]];
-			EVECharacterSheet* characterSheet = self.characterSheetCacheRecord.data.data;
-			if (!characterSheet) {
-				[self.managedObjectContext performBlock:^{
-					[[EVEOnlineAPI apiWithAPIKey:self.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy] characterSheetWithCompletionBlock:^(EVECharacterSheet *result, NSError *error) {
-						self.characterSheet = result;
-					}
-																																	progressBlock:nil];
-				}];
-			}
-		}];
-	}
+	NSManagedObjectContext* cacheContext = [[NCCache sharedCache] managedObjectContext];
+	[cacheContext performBlock:^{
+		if (!self.characterSheetCacheRecord)
+			self.characterSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterSheet", self.uuid]];
+		EVECharacterSheet* characterSheet = self.characterSheetCacheRecord.data.data;
+		if (!characterSheet) {
+			[self.managedObjectContext performBlock:^{
+				[[EVEOnlineAPI apiWithAPIKey:self.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy] characterSheetWithCompletionBlock:^(EVECharacterSheet *result, NSError *error) {
+																															 [cacheContext performBlock:^{
+																																 if (result) {
+																																	 self.characterSheetCacheRecord.data.data = result;
+																																	 self.characterSheetCacheRecord.date = result.eveapi.cacheDate;
+																																	 self.characterSheetCacheRecord.expireDate = result.eveapi.cachedUntil;
+																																 }
+																																 else {
+																																	 self.characterSheetCacheRecord.date = [NSDate date];
+																																	 self.characterSheetCacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:3];
+																																 }
+																																 [cacheContext save:nil];
+																															 }];
+																															 dispatch_async(dispatch_get_main_queue(), ^{
+																																 completionBlock(result, error);
+																															 });
+																														 }
+																														   progressBlock:nil];
+			}];
+		}
+		else {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				completionBlock(characterSheet, nil);
+			});
+		}
+	}];
 }
 
 - (void) loadCorporationSheetWithCompletionBlock:(void(^)(EVECorporationSheet* corporationSheet, NSError* error)) completionBlock {

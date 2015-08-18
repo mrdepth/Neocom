@@ -69,15 +69,13 @@
 						if ([dic isKindOfClass:[NSDictionary class]]) {
 							[cache.managedObjectContext performBlock:^{
 								NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Price"];
-								request.fetchLimit = 1;
+								for (NCCachePrice* record in [cache.managedObjectContext executeFetchRequest:request error:nil])
+									[cache.managedObjectContext deleteObject:record];
+
 								for (NSDictionary* item in dic[@"items"]) {
 									int32_t typeID = [item[@"type"][@"id"] intValue];
-									request.predicate = [NSPredicate predicateWithFormat:@"typeID=%d", typeID];
-									NCCachePrice* record = [[cache.managedObjectContext executeFetchRequest:request error:nil] lastObject];
-									if (!record) {
-										record = [NSEntityDescription insertNewObjectForEntityForName:@"Price" inManagedObjectContext:cache.managedObjectContext];
-										record.typeID = typeID;
-									}
+									NCCachePrice* record = [NSEntityDescription insertNewObjectForEntityForName:@"Price" inManagedObjectContext:cache.managedObjectContext];
+									record.typeID = typeID;
 									double adjustedPrice = [item[@"adjustedPrice"] doubleValue];
 									double averagePrice = [item[@"averagePrice"] doubleValue];
 									record.price = averagePrice > 0 ? averagePrice : adjustedPrice;

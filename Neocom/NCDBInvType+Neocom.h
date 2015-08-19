@@ -8,6 +8,13 @@
 
 #import "NCDBInvType.h"
 
+#define NCShipCategoryID 6
+#define NCChargeCategoryID 8
+#define NCModuleCategoryID 7
+#define NCSubsystemCategoryID 32
+#define NCDroneCategoryID 18
+
+
 typedef NS_ENUM(NSInteger, NCTypeCategory) {
 	NCTypeCategoryUnknown,
 	NCTypeCategoryModule,

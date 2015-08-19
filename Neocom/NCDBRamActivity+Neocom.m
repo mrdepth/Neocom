@@ -16,14 +16,7 @@
 	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"RamActivity"];
 	request.predicate = [NSPredicate predicateWithFormat:@"activityID == %d", activityID];
 	request.fetchLimit = 1;
-	__block NSArray* result;
-	if ([NSThread isMainThread])
-		result = [database.managedObjectContext executeFetchRequest:request error:nil];
-	else
-		[database.backgroundManagedObjectContext performBlockAndWait:^{
-			result = [database.backgroundManagedObjectContext executeFetchRequest:request error:nil];
-		}];
-	return result.count > 0 ? result[0] : nil;
+	return [[database.managedObjectContext executeFetchRequest:request error:nil] lastObject];
 }
 
 @end

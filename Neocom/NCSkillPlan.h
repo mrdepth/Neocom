@@ -25,7 +25,7 @@
 - (void) removeSkill:(NCSkillData*) skill;
 - (void) clear;
 
-- (void) updateSkillPoints;
-- (void) reloadIfNeeded;
+- (BOOL) isLoaded;
+- (void) loadWithCompletionBlock:(void(^)()) completionBlock;
 
 @end

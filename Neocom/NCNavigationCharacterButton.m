@@ -23,7 +23,7 @@
 
 - (void) awakeFromNib {
 	self.taskManager = [NCTaskManager new];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:NCAccountDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:NCCurrentAccountDidChangeNotification object:nil];
 	self.account = [NCAccount currentAccount];
 }
 

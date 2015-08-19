@@ -33,6 +33,7 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 @property (nonatomic, strong) NSArray* recipients;
 @property (nonatomic, getter = isRead) BOOL read;
 
+- (void) loadBodyWithCompletionBlock:(void(^)(EVEMailBodiesItem* body, NSError* error)) completionBlock;
 - (void) clearCache;
 @end
 

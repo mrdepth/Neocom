@@ -19,18 +19,14 @@
 
 + (instancetype) cacheRecordWithRecordID:(NSString*) recordID {
 	
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSManagedObjectContext* context = [[NCCache sharedCache] managedObjectContext];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:context];
-	[fetchRequest setEntity:entity];
-	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recordID == %@", recordID]];
+	NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Record"];
+	fetchRequest.fetchLimit = 1;
+	fetchRequest.predicate = [NSPredicate predicateWithFormat:@"recordID == %@", recordID];
 	
-	NCCacheRecord* record = nil;
-	NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:nil];
-	if (fetchedObjects.count > 0)
-		record = fetchedObjects[0];
+	NSManagedObjectContext* context = [[NCCache sharedCache] managedObjectContext];
+	NCCacheRecord* record = [[context executeFetchRequest:fetchRequest error:nil] lastObject];
 	if (!record) {
-		record = [[NCCacheRecord alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+		record = [[NCCacheRecord alloc] initWithEntity:[NSEntityDescription entityForName:@"Record" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
 		record.recordID = recordID;
 		record.date = [NSDate date];
 		record.expireDate = [NSDate distantPast];

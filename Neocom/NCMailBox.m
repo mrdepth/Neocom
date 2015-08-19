@@ -59,39 +59,38 @@
 
 @implementation NCMailBoxMessage
 
-- (EVEMailBodiesItem*) body {
+- (void) loadBodyWithCompletionBlock:(void(^)(EVEMailBodiesItem* body, NSError* error)) completionBlock {
 	if (!_body) {
-		__block NCCacheRecord* cacheRecord;
 		[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
-			 cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBoxMessage.%d", self.header.messageID]];
-			[cacheRecord data];
-		}];
-		
-		if (cacheRecord.data.data)
+			 NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBoxMessage.%d", self.header.messageID]];
 			_body = cacheRecord.data.data;
-		else {
-			if (![NSThread isMainThread]) {
-				EVEMailBodies* bodies = [EVEMailBodies mailBodiesWithKeyID:self.mailBox.account.apiKey.keyID
-																	 vCode:self.mailBox.account.apiKey.vCode
-															   cachePolicy:NSURLRequestUseProtocolCachePolicy
-															   characterID:self.mailBox.account.characterID
-																	   ids:@[@(self.header.messageID)]
-																	 error:nil
-														   progressHandler:nil];
-				if (bodies.messages.count > 0) {
-					_body = bodies.messages[0];
-					NCCache* cache = [NCCache sharedCache];
-					[cache.managedObjectContext performBlockAndWait:^{
-						cacheRecord.date = bodies.cacheDate;
-						cacheRecord.expireDate = bodies.cacheExpireDate;
-						cacheRecord.data.data = _body;
-						[cache saveContext];
-					}];
-				}
+			if (!_body) {
+				[self.mailBox.managedObjectContext performBlock:^{
+					[[EVEOnlineAPI apiWithAPIKey:self.mailBox.account.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy] mailBodiesWithIDs:@[@(self.header.messageID)]
+																																  completionBlock:^(EVEMailBodies *result, NSError *error) {
+																																	  if (result) {
+																																		  _body = result.messages[0];
+																																		  [cacheRecord.managedObjectContext performBlock:^{
+																																			  cacheRecord.date = result.eveapi.cacheDate;
+																																			  cacheRecord.expireDate = result.eveapi.cachedUntil;
+																																			  cacheRecord.data.data = _body;
+																																			  [cacheRecord.managedObjectContext save:nil];
+																																		  }];
+																																	  }
+																																	  dispatch_async(dispatch_get_main_queue(), ^{
+																																		  completionBlock(_body, error);
+																																	  });
+																																  } progressBlock:nil];
+				}];
 			}
-		}
+			else
+				dispatch_async(dispatch_get_main_queue(), ^{
+					completionBlock(_body, nil);
+				});
+		}];
 	}
-	return _body;
+	else if (completionBlock)
+		completionBlock(_body, nil);
 }
 
 - (void) clearCache {
@@ -111,7 +110,7 @@
 }
 
 - (BOOL) isRead {
-	return [self.mailBox.readedMessagesIDs containsObject:@(self.header.messageID)] || self.header.read;
+	return [self.mailBox.readedMessagesIDs containsObject:@(self.header.messageID)];
 }
 
 #pragma mark - NSCoding
@@ -152,7 +151,7 @@
 @synthesize numberOfUnreadMessages = _numberOfUnreadMessages;
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy inTask:(NCTask*) task {
-	__block NCAccount* account = nil;
+/*	__block NCAccount* account = nil;
 	NCStorage* storage = [NCStorage sharedStorage];
 	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
 
@@ -325,7 +324,7 @@
 		self.cacheRecord.expireDate = messageHeaders.cacheExpireDate;
 		[cache saveContext];
 	}];
-	[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];
+	[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];*/
 }
 
 - (void) markAsRead:(NSArray*) messages {

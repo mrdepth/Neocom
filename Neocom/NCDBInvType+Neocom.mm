@@ -10,7 +10,7 @@
 #import "NCDBInvMetaGroup.h"
 #import "NCDatabase.h"
 #import <objc/runtime.h>
-#import "eufe.h"
+#import <eufe/eufe.h>
 
 @implementation NCDBInvType (Neocom)
 
@@ -19,14 +19,7 @@
 	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
 	request.predicate = [NSPredicate predicateWithFormat:@"typeID == %d", typeID];
 	request.fetchLimit = 1;
-	__block NSArray* result;
-	if ([NSThread isMainThread])
-		result = [database.managedObjectContext executeFetchRequest:request error:nil];
-	else
-		[database.backgroundManagedObjectContext performBlockAndWait:^{
-			result = [database.backgroundManagedObjectContext executeFetchRequest:request error:nil];
-		}];
-	return result.count > 0 ? result[0] : nil;
+	return [[database.managedObjectContext executeFetchRequest:request error:nil] lastObject];
 }
 
 + (instancetype) invTypeWithTypeName:(NSString*) typeName {
@@ -37,14 +30,7 @@
 	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
 	request.predicate = [NSPredicate predicateWithFormat:@"typeName LIKE[C] %@", typeName];
 	request.fetchLimit = 1;
-	__block NSArray* result;
-	if ([NSThread isMainThread])
-		result = [database.managedObjectContext executeFetchRequest:request error:nil];
-	else
-		[database.backgroundManagedObjectContext performBlockAndWait:^{
-			result = [database.backgroundManagedObjectContext executeFetchRequest:request error:nil];
-		}];
-	return result.count > 0 ? result[0] : nil;
+	return [[database.managedObjectContext executeFetchRequest:request error:nil] lastObject];
 }
 
 - (NSString*) metaGroupName {

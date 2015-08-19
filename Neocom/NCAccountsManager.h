@@ -19,4 +19,5 @@
 - (id) initWithStorage:(NCStorage*) storage;
 - (void) addAPIKeyWithKeyID:(int32_t) keyID vCode:(NSString*) vCode completionBlock:(void(^)(NSError* error)) completionBlock;
 - (void) removeAccount:(NCAccount*) account;
+- (void) loadAccountsWithCompletionBlock:(void(^)(NSArray* accounts)) completionBlock;
 @end

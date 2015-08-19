@@ -328,7 +328,7 @@ static NCStorage* sharedStorage;
 }
 
 - (BOOL) transferDataFromFallbackToCloud {
-	if (self.storageType != NCStorageTypeCloud)
+/*	if (self.storageType != NCStorageTypeCloud)
 		return NO;
 	NCStorage* fallbackStorage = [NCStorage fallbackStorage];
 	
@@ -410,7 +410,7 @@ static NCStorage* sharedStorage;
 		}
 		
 		[self saveContext];
-	}];
+	}];*/
 
 	return YES;
 }

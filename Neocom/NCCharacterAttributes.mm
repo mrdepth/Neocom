@@ -7,13 +7,13 @@
 //
 
 #import "NCCharacterAttributes.h"
-#import "EVEOnlineAPI.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCTrainingQueue.h"
 #include <map>
 #include <limits>
 
 @interface NCCharacterAttributes ()
-- (NSInteger) effectiveAttributeValueWithAttributeID:(NSInteger) attributeID;
+- (int32_t) effectiveAttributeValueWithAttributeID:(int32_t) attributeID;
 @end
 
 @implementation NCCharacterAttributes
@@ -29,21 +29,25 @@
 }
 
 + (instancetype) optimalAttributesWithTrainingQueue:(NCTrainingQueue*) trainingQueue {
-	std::map<int, NSInteger> skillPoints;
-	for (NCSkillData* skill in trainingQueue.skills) {
-		NCDBDgmTypeAttribute *primaryAttribute = skill.type.attributesDictionary[@(180)];
-		NCDBDgmTypeAttribute *secondaryAttribute = skill.type.attributesDictionary[@(181)];
-		int primaryAttributeID = 1 << ((int) primaryAttribute.value - 164);
-		int secondaryAttributeID = 1 << ((int) secondaryAttribute.value - 164);
-		skillPoints[primaryAttributeID | (secondaryAttributeID << 16)] += skill.skillPointsToLevelUp;
-	}
+	NCCharacterAttributes* characterAttributes = [NCCharacterAttributes defaultCharacterAttributes];
+
+	__block std::map<int, NSInteger> skillPoints;
+
+	[[[NCDatabase sharedDatabase] managedObjectContext] performBlockAndWait:^{
+		for (NCSkillData* skill in trainingQueue.skills) {
+			NCDBDgmTypeAttribute *primaryAttribute = skill.type.attributesDictionary[@(NCPrimaryAttributeAttribteID)];
+			NCDBDgmTypeAttribute *secondaryAttribute = skill.type.attributesDictionary[@(NCSecondaryAttributeAttribteID)];
+			int primaryAttributeID = 1 << ((int) primaryAttribute.value - NCCharismaAttributeID);
+			int secondaryAttributeID = 1 << ((int) secondaryAttribute.value - NCCharismaAttributeID);
+			skillPoints[primaryAttributeID | (secondaryAttributeID << 16)] += skill.skillPointsToLevelUp;
+		}
+	}];
 	
 	int basePoints = 17;
 	int bonusPoints = 14;
 	int maxPoints = 27;
 	int totalMaxPoints = basePoints * 5 + bonusPoints;
 	float minTrainingTime = std::numeric_limits<float>().max();
-	NCCharacterAttributes* characterAttributes = [NCCharacterAttributes defaultCharacterAttributes];
 	
 	for (int intelligence = basePoints; intelligence <= maxPoints; intelligence++) {
 		for (int memory = basePoints; memory <= maxPoints; memory++) {
@@ -132,10 +136,7 @@
 			self.perception = characterSheet.attributes.perception;
 			self.willpower = characterSheet.attributes.willpower;
 			
-			NCDatabase* database = [NCDatabase sharedDatabase];
-			NSManagedObjectContext* context = [NSThread isMainThread] ? database.managedObjectContext : database.backgroundManagedObjectContext;
-
-			[context performBlockAndWait:^{
+			[[[NCDatabase sharedDatabase] managedObjectContext] performBlockAndWait:^{
 				for (EVECharacterSheetImplant* implant in characterSheet.implants) {
 					NCDBInvType* type = [NCDBInvType invTypeWithTypeID:implant.typeID];
 					self.charisma += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value];
@@ -158,12 +159,21 @@
 }
 
 - (float) skillpointsPerSecondForSkill:(NCDBInvType*) skill {
-	NCDBDgmTypeAttribute *primaryAttribute = skill.attributesDictionary[@(180)];
-	NCDBDgmTypeAttribute *secondaryAttribute = skill.attributesDictionary[@(181)];
-	NSInteger effectivePrimaryAttribute = [self effectiveAttributeValueWithAttributeID:primaryAttribute.value];
-	NSInteger effectiveSecondaryAttribute = [self effectiveAttributeValueWithAttributeID:secondaryAttribute.value];
+	__block float skillpointsPerSecond = 0;
+	[skill.managedObjectContext performBlockAndWait:^{
+		NCDBDgmTypeAttribute *primaryAttribute = skill.attributesDictionary[@(NCPrimaryAttributeAttribteID)];
+		NCDBDgmTypeAttribute *secondaryAttribute = skill.attributesDictionary[@(NCSecondaryAttributeAttribteID)];
+		skillpointsPerSecond = [self skillpointsPerSecondWithPrimaryAttribute:primaryAttribute.value secondaryAttribute:secondaryAttribute.value];
+	}];
+	return skillpointsPerSecond;
+}
+
+- (float) skillpointsPerSecondWithPrimaryAttribute:(int32_t) primaryAttributeID secondaryAttribute:(int32_t) secondaryAttributeID {
+	int32_t effectivePrimaryAttribute = [self effectiveAttributeValueWithAttributeID:primaryAttributeID];
+	int32_t effectiveSecondaryAttribute = [self effectiveAttributeValueWithAttributeID:secondaryAttributeID];
 	return (effectivePrimaryAttribute + effectiveSecondaryAttribute / 2.0) / 60.0;
 }
+
 
 #pragma mark - NSCoding
 
@@ -188,23 +198,18 @@
 
 #pragma mark - Private
 
-- (NSInteger) effectiveAttributeValueWithAttributeID:(NSInteger) attributeID {
+- (int32_t) effectiveAttributeValueWithAttributeID:(int32_t) attributeID {
 	switch (attributeID) {
-		case 164:
+		case NCCharismaAttributeID:
 			return self.charisma;
-			break;
-		case 165:
+		case NCIntelligenceAttributeID:
 			return self.intelligence;
-			break;
-		case 166:
+		case NCMemoryAttributeID:
 			return self.memory;
-			break;
-		case 167:
+		case NCPerceptionAttributeID:
 			return self.perception;
-			break;
-		case 168:
+		case NCWillpowerAttributeID:
 			return self.willpower;
-			break;
 		default:
 			break;
 	}

@@ -112,6 +112,8 @@
 }
 
 - (NCFitCharacter*) characterWithAccount:(NCAccount*) account {
+#warning TODO
+	/*
 	NCAccount* localAccount = (NCAccount*) [self existingObjectWithID:account.objectID error:nil];
 	if (!localAccount)
 		return nil;
@@ -134,7 +136,8 @@
 		[implants addObject:@(implant.typeID)];
 	character.implants = implants;
 	
-	return character;
+	return character;*/
+	return nil;
 }
 
 - (NCFitCharacter*) characterWithSkillsLevel:(NSInteger) skillsLevel {

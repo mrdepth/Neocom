@@ -10,17 +10,21 @@
 #import "NCSkillData.h"
 
 @class NCAccount;
+@class EVECharacterSheet;
+@class EVESkillQueue;
 @interface NCTrainingQueue : NSObject<NSCopying>
-@property (nonatomic, copy) NSArray* skills;
+@property (nonatomic, copy, readonly) NSArray* skills;
 @property (nonatomic, readonly, assign) NSTimeInterval trainingTime;
+@property (nonatomic, strong) EVECharacterSheet* characterSheet;
+@property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
 
-- (id) initWithAccount:(NCAccount*) account;
-- (id) initWithAccount:(NCAccount*) account xmlData:(NSData*) data skillPlanName:(NSString**) skillPlanName;
+- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet;
+- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet xmlData:(NSData*) data skillPlanName:(NSString**) skillPlanName;
+
 - (void) addRequiredSkillsForType:(NCDBInvType*) type;
 - (void) addSkill:(NCDBInvType*) skill withLevel:(int32_t) level;
 - (void) addMastery:(NCDBCertMastery*) mastery;
 - (void) removeSkill:(NCSkillData*) skill;
-- (void) updateSkillPointsFromAccount:(NCAccount*) account;
 - (NSString*) xmlRepresentationWithSkillPlanName:(NSString*) skillPlanName;
 - (NSTimeInterval) trainingTimeWithCharacterAttributes:(NCCharacterAttributes*) characterAttributes;
 

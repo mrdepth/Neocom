@@ -6,13 +6,14 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
+@import EventKit;
 #import "NCNotificationsManager.h"
 #import "NCTaskManager.h"
 #import "NCAccountsManager.h"
 #import "NCTodayRow.h"
 #import "NCStorage.h"
 #import "NCSetting.h"
-#import "NSString+HTML.h"
+//#import "NSString+HTML.h"
 
 //#define NCNotificationsManagerUpdateTime (60 * 30)
 #define NCNotificationsManagerUpdateTime (60 * 10)
@@ -98,7 +99,7 @@
 }
 
 - (void) updateNotificationsIfNeededWithCompletionHandler:(void(^)(BOOL completed)) completionHandler {
-	[self updateEventsIfNeeded];
+/*	[self updateEventsIfNeeded];
 	
 	NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
 	if (!accountsManager) {
@@ -251,7 +252,7 @@
 		
 		if (completionHandler)
 			completionHandler(NO);
-	}
+	}*/
 }
 
 #pragma mark - Private
@@ -262,7 +263,7 @@
 }
 
 - (void) updateEventsIfNeeded {
-	if (!self.eventsUpdating && (!self.lastEventsUpdate || [self.lastEventsUpdate timeIntervalSinceNow] < -NCNotificationsManagerUpdateTime)) {
+/*	if (!self.eventsUpdating && (!self.lastEventsUpdate || [self.lastEventsUpdate timeIntervalSinceNow] < -NCNotificationsManagerUpdateTime)) {
 		NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
 		BOOL shouldContinue = NO;
 		for (NCAccount* account in accountsManager.accounts)
@@ -308,11 +309,11 @@
 		}
 		else
 			self.eventsUpdating = NO;
-	}
+	}*/
 }
 
 - (void) updateEventsWithEventStore:(EKEventStore*) eventStore completionHandler:(void(^)(BOOL completed)) completionHandler {
-	if (eventStore) {
+/*	if (eventStore) {
 		NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
 		if (accountsManager) {
 			NCSetting* setting = [[NCStorage sharedStorage] settingWithKey:@"NCNotificationsManagerEvents"];
@@ -431,7 +432,7 @@
 			completionHandler(NO);
 	}
 	else if (completionHandler)
-		completionHandler(NO);
+		completionHandler(NO);*/
 }
 
 @end

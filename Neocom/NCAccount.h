@@ -16,6 +16,7 @@
 #import "NCStorage.h"
 
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
+#define NCCurrentAccountDidChangeNotification @"NCCurrentAccountDidChangeNotification"
 #define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
 
 typedef NS_ENUM(NSInteger, NCAccountType) {
@@ -41,18 +42,6 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 
 @property (nonatomic, assign, readonly) NCAccountType accountType;
 
-@property (nonatomic, strong, readonly) EVECharacterInfo* characterInfo;
-@property (nonatomic, strong, readonly) EVECharacterSheet* characterSheet;
-@property (nonatomic, strong, readonly) EVECorporationSheet* corporationSheet;
-@property (nonatomic, strong, readonly) EVESkillQueue* skillQueue;
-
-@property (nonatomic, strong, readonly) NCCharacterAttributes* characterAttributes;
-
-@property (nonatomic, strong, readonly) NSError* characterInfoError;
-@property (nonatomic, strong, readonly) NSError* characterSheetError;
-@property (nonatomic, strong, readonly) NSError* corporationSheetError;
-@property (nonatomic, strong, readonly) NSError* skillQueueError;
-
 @property (nonatomic, strong, readonly) EVEAPIKey* eveAPIKey;
 
 + (instancetype) currentAccount;
@@ -63,7 +52,6 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 - (void) loadCorporationSheetWithCompletionBlock:(void(^)(EVECorporationSheet* corporationSheet, NSError* error)) completionBlock;
 - (void) loadSkillQueueWithCompletionBlock:(void(^)(EVESkillQueue* skillQueue, NSError* error)) completionBlock;
 - (void) loadCharacterAttributesWithCompletionBlock:(void(^)(NCCharacterAttributes* characterAttributes, NSError* error)) completionBlock;
-
-- (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
+- (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
 
 @end

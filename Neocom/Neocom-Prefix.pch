@@ -29,15 +29,9 @@
 #define NCSettingsSkillQueueNotificationTimeKey @"NCSettingsSkillQueueNotificationTimeKey"
 #define NCSettingsMarketPricesMonitorKey @"NCSettingsMarketPricesMonitorKey"
 #define NCSettingsCalendarIdentifierKey @"NCSettingsCalendarIdentifierKey"
-#define NCSettingsDontNeedsCloudTransfer @"NCSettingsDontNeedsCloudTransfer"
-#define NCSettingsDontNeedsCloudReset @"NCSettingsDontNeedsCloudReset"
-#define NCSettingsStorageType @"NCSettingsStorageType"
 
 #define NCSettingsSkillsViewControllerModeKey @"NCSettingsSkillsViewControllerModeKey"
 
-#define NCSettingsUseCloudKey @"NCSettingsUseCloudKey"
-#define NCSettingsCloudTokenKey @"NCSettingsCloudTokenKey"
-#define NCSettingsMigratedToCloudKey @"NCSettingsMigratedToCloudKey"
 
 #define NCBattleClinicAPIKey @"D8368891670D2D7079B17A59B4268C0B95D663FF"
 
@@ -55,18 +49,12 @@
 #define NCHangarOrOfficeGroupID 471
 #define NCShipMaintenanceArrayGroupID 363
 
-#define NCCharismaBonusAttributeID 175
-#define NCIntelligenceBonusAttributeID 176
-#define NCMemoryBonusAttributeID 177
-#define NCPerceptionBonusAttributeID 178
-#define NCWillpowerBonusAttributeID 179
-
 #define NCInAppFullProductID @"com.shimanski.eveuniverse.full"
 #define NCInAppDonate1ProductID @"com.shimanski.eveuniverse.donation"
 #define NCInAppDonate5ProductID @"com.shimanski.eveuniverse.donation5"
 #define NCInAppDonate10ProductID @"com.shimanski.eveuniverse.donation10"
 
-#define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
+#define NCCurrentAccountDidChangeNotification @"NCCurrentAccountDidChangeNotification"
 #define NCApplicationDidRemoveAddsNotification @"NCApplicationDidRemoveAddsNotification"
 
 #define NCMarketPricesMonitorDidChangeNotification @"NCMarketPricesMonitorDidChangeNotification"

@@ -7,8 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
 #define NCStorageDidChangeNotification @"NCStorageDidChangeNotification"
+
+#define NCSettingsDontNeedsCloudTransfer @"NCSettingsDontNeedsCloudTransfer"
+#define NCSettingsDontNeedsCloudReset @"NCSettingsDontNeedsCloudReset"
+#define NCSettingsStorageType @"NCSettingsStorageType"
+#define NCSettingsUseCloudKey @"NCSettingsUseCloudKey"
+#define NCSettingsCloudTokenKey @"NCSettingsCloudTokenKey"
+#define NCSettingsMigratedToCloudKey @"NCSettingsMigratedToCloudKey"
 
 typedef NS_ENUM(NSInteger, NCStorageType) {
 	NCStorageTypeFallback,

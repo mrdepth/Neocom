@@ -303,11 +303,16 @@
 		12564B861B84AE62000F68D8 /* NCDBRamActivity+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BBE19530EAD00E5CD4F /* NCDBRamActivity+Neocom.m */; };
 		12564B871B84AE62000F68D8 /* NCDBMapRegion+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BC419531D5C00E5CD4F /* NCDBMapRegion+Neocom.m */; };
 		12564B881B84AE62000F68D8 /* NCDBWhType+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 1216EB891AE0E0EA0026AF58 /* NCDBWhType+Neocom.m */; };
-		12564C011B84B0C0000F68D8 /* libeufe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1271239518978236005F46EE /* libeufe.a */; };
+		12564C011B84B0C0000F68D8 /* eufe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1271239518978236005F46EE /* eufe.framework */; };
 		12564C021B84B144000F68D8 /* NCNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */; };
 		12564C031B84B14D000F68D8 /* NCMailBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5E918922FB20010BEE8 /* NCMailBox.m */; };
 		12564C041B84B4DC000F68D8 /* NCTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211122D185989E1009E5106 /* NCTaskManager.m */; };
 		12564C051B84B4DC000F68D8 /* NCTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211123018598B09009E5106 /* NCTask.m */; };
+		12564C441B871DAC000F68D8 /* eufe.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 120F98A41B539E220047A019 /* eufe.sqlite */; };
+		12564C451B871DAC000F68D8 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 120F98A51B539E220047A019 /* NCDatabase.sqlite */; };
+		12564C461B871E67000F68D8 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */; };
+		12564C4A1B87297C000F68D8 /* NCCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1211123C18599396009E5106 /* NCCache.xcdatamodeld */; };
+		12564C4B1B875474000F68D8 /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12436DA91945A0310090D4A6 /* NCDatabase.xcdatamodeld */; };
 		1256923D1A37799A008F6468 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1256923C1A37799A008F6468 /* EventKit.framework */; };
 		125AEFFC1AE7A8C6008B9EAF /* NCDBVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 125AEFFB1AE7A8C6008B9EAF /* NCDBVersion.m */; };
 		125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F681918852DA9005732FA /* NCSkillsViewController.m */; };
@@ -359,7 +364,7 @@
 		127123A018979E40005F46EE /* NCFittingSectionGenericHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1271239F18979E40005F46EE /* NCFittingSectionGenericHeaderView.xib */; };
 		127123A318979F55005F46EE /* NCFittingSectionGenericHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 127123A218979F55005F46EE /* NCFittingSectionGenericHeaderView.m */; };
 		127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 127123A81897A94E005F46EE /* NCProgressLabel.m */; };
-		127123AA1897ABF3005F46EE /* libeufe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1271239518978236005F46EE /* libeufe.a */; };
+		127123AA1897ABF3005F46EE /* eufe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1271239518978236005F46EE /* eufe.framework */; };
 		127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */; };
 		127C50B718CF52DA0074877C /* clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50B618CF52D90074877C /* clear.png */; };
 		127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */; };
@@ -1625,7 +1630,7 @@
 				12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */,
 				123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */,
 				1219C14A1AA4FF0000FF6205 /* GoogleMobileAds.framework in Frameworks */,
-				127123AA1897ABF3005F46EE /* libeufe.a in Frameworks */,
+				127123AA1897ABF3005F46EE /* eufe.framework in Frameworks */,
 				84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */,
 				129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */,
 				121112401859A54D009E5106 /* CoreData.framework in Frameworks */,
@@ -1639,7 +1644,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				12564C011B84B0C0000F68D8 /* libeufe.a in Frameworks */,
+				12564C011B84B0C0000F68D8 /* eufe.framework in Frameworks */,
 				1248CE7F1B7DDD1C000266BE /* AFNetworking.framework in Frameworks */,
 				1248CE801B7DDD1C000266BE /* EVEAPI.framework in Frameworks */,
 			);
@@ -2701,7 +2706,7 @@
 			children = (
 				1271239318978236005F46EE /* compiler */,
 				12E038511A55690700499546 /* dbpatch */,
-				1271239518978236005F46EE /* libeufe.a */,
+				1271239518978236005F46EE /* eufe.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4331,10 +4336,10 @@
 			remoteRef = 1271239218978236005F46EE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		1271239518978236005F46EE /* libeufe.a */ = {
+		1271239518978236005F46EE /* eufe.framework */ = {
 			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libeufe.a;
+			fileType = wrapper.framework;
+			path = eufe.framework;
 			remoteRef = 1271239418978236005F46EE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -4547,6 +4552,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12564C451B871DAC000F68D8 /* NCDatabase.sqlite in Resources */,
+				12564C441B871DAC000F68D8 /* eufe.sqlite in Resources */,
 				1248CE581B7DDCBF000266BE /* Main.storyboard in Resources */,
 				1248CE5D1B7DDCBF000266BE /* LaunchScreen.xib in Resources */,
 				1248CE5A1B7DDCBF000266BE /* Images.xcassets in Resources */,
@@ -4902,6 +4909,7 @@
 				1248CEB41B7E12C8000266BE /* NCShoppingList.m in Sources */,
 				1248CEBE1B7E12C8000266BE /* NCAPIKey.m in Sources */,
 				12564B791B84AE62000F68D8 /* NCDBRamInstallationTypeContent.m in Sources */,
+				12564C4A1B87297C000F68D8 /* NCCache.xcdatamodeld in Sources */,
 				1248CEB91B7E12C8000266BE /* NCLoadout.m in Sources */,
 				1215F5881B846E9700C16649 /* NCSkillData.m in Sources */,
 				12564C041B84B4DC000F68D8 /* NCTaskManager.m in Sources */,
@@ -4918,6 +4926,7 @@
 				12564B811B84AE62000F68D8 /* NCDBInvGroup+Neocom.m in Sources */,
 				12564B751B84AE62000F68D8 /* NCDBMapSolarSystem.m in Sources */,
 				1248CE551B7DDCBF000266BE /* ViewController.m in Sources */,
+				12564C461B871E67000F68D8 /* NCStorage.xcdatamodeld in Sources */,
 				12564B771B84AE62000F68D8 /* NCDBRamActivity.m in Sources */,
 				12564B541B84AE62000F68D8 /* NCDBWhType.m in Sources */,
 				1248CEBC1B7E12C8000266BE /* NCSkillPlan.m in Sources */,
@@ -4952,6 +4961,7 @@
 				12564B4E1B84AE46000F68D8 /* NCCacheRecordData.m in Sources */,
 				12564B5B1B84AE62000F68D8 /* NCDBDgmAttributeType.m in Sources */,
 				12564B681B84AE62000F68D8 /* NCDBIndRequiredSkill.m in Sources */,
+				12564C4B1B875474000F68D8 /* NCDatabase.xcdatamodeld in Sources */,
 				12564B4C1B84AE46000F68D8 /* NCCache.m in Sources */,
 				1248CEBB1B7E12C8000266BE /* NCFitCharacter.m in Sources */,
 				12564B7B1B84AE62000F68D8 /* NCDBTxtDescription.m in Sources */,
@@ -5223,6 +5233,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -5241,6 +5252,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

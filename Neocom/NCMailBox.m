@@ -95,14 +95,11 @@
 
 - (void) clearCache {
 	NCCache* cache = [NCCache sharedCache];
-	[cache.managedObjectContext performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSManagedObjectContext* context = [[NCCache sharedCache] managedObjectContext];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:context];
-		[fetchRequest setEntity:entity];
-		[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recordID == %@", [NSString stringWithFormat:@"NCMailBoxMessage.%d", self.header.messageID]]];
+	[cache.managedObjectContext performBlock:^{
+		NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Record"];
+		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"recordID == %@", [NSString stringWithFormat:@"NCMailBoxMessage.%d", self.header.messageID]];
 		
-		NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:nil];
+		NSArray *fetchedObjects = [cache.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 		for (NCCacheRecord* record in fetchedObjects)
 			[cache.managedObjectContext deleteObject:record];
 		[cache saveContext];
@@ -118,8 +115,6 @@
 - (void) encodeWithCoder:(NSCoder *)aCoder {
 	if (self.header)
 		[aCoder encodeObject:self.header forKey:@"header"];
-	if (self.sender)
-		[aCoder encodeObject:self.sender forKey:@"sender"];
 	if (self.recipients)
 		[aCoder encodeObject:self.recipients forKey:@"recipients"];
 }
@@ -127,7 +122,6 @@
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
 		self.header = [aDecoder decodeObjectForKey:@"header"];
-		self.sender = [aDecoder decodeObjectForKey:@"sender"];
 		self.recipients = [aDecoder decodeObjectForKey:@"recipients"];
 	}
 	return self;
@@ -139,6 +133,7 @@
 @property (nonatomic, strong) NCCacheRecord* cacheRecord;
 @property (nonatomic, assign, readwrite) NSInteger numberOfUnreadMessages;
 - (void) updateNumberOfUnreadMessages;
+- (void) loadMissingContacts:(NSDictionary*) existingContacts forMessages:(NSArray*) messages withCompletionBlock:(void(^)(NSDictionary* contacts)) completionBlock api:(EVEOnlineAPI*) api;
 @end
 
 @implementation NCMailBox
@@ -150,181 +145,79 @@
 @synthesize cacheRecord = _cacheRecord;
 @synthesize numberOfUnreadMessages = _numberOfUnreadMessages;
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy inTask:(NCTask*) task {
-/*	__block NCAccount* account = nil;
-	NCStorage* storage = [NCStorage sharedStorage];
-	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-
-	[context performBlockAndWait:^{
-		account = self.account;
-	}];
-
-	if (account.accountType == NCAccountTypeCorporate)
-		return;
+- (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock {
 	
-	NCCache* cache = [NCCache sharedCache];
+	[self.managedObjectContext performBlock:^{
+		EVEAPIKey* apiKey = self.account.eveAPIKey;
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:apiKey cachePolicy:cachePolicy];
 
-	__block NCMailBoxCacheData* data;
-	[cache.managedObjectContext performBlockAndWait:^{
-		data = self.cacheRecord.data.data;
-	}];
-	
-	EVEMailMessages* messageHeaders = [EVEMailMessages mailMessagesWithKeyID:account.apiKey.keyID
-																	   vCode:account.apiKey.vCode
-																 cachePolicy:cachePolicy
-																 characterID:account.characterID
-																	   error:nil
-															 progressHandler:^(CGFloat progress, BOOL *stop) {
-															 }];
-	if (!messageHeaders)
-		return;
-	
-	NSMutableDictionary* messagesDic = [NSMutableDictionary new];
-	for (NCMailBoxMessage* message in data.messages)
-		messagesDic[@(message.header.messageID)] = message;
-
-	for (EVEMailMessagesItem* header in messageHeaders.mailMessages) {
-		NCMailBoxMessage* message = messagesDic[@(header.messageID)];
-		if (!message) {
-			NCMailBoxMessage* message = [NCMailBoxMessage new];
-			message.header = header;
-			message.mailBox = self;
-			messagesDic[@(message.header.messageID)] = message;
+		if (self.account.accountType == NCAccountTypeCorporate) {
+			if (completionBlock)
+				dispatch_async(dispatch_get_main_queue(), ^{
+					completionBlock(nil);
+				});
+			return;
 		}
-	}
-	
-	NSArray* messages = [[messagesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"header.sentDate" ascending:NO]]];
-	if (messages.count > NCMailBoxMessagesLimit) {
-		NSArray* toDelete = [messages subarrayWithRange:NSMakeRange(NCMailBoxMessagesLimit, messages.count - NCMailBoxMessagesLimit)];
-		for (NCMailBoxMessage* message in toDelete) {
-			[message clearCache];
-		}
-		
-		messages = [messages subarrayWithRange:NSMakeRange(0, NCMailBoxMessagesLimit)];
-	}
-	
-	NSMutableDictionary* ids = [NSMutableDictionary new];
-	NSMutableDictionary* contacts = [NSMutableDictionary new];
-	NSMutableDictionary* mailingListIDs = [NSMutableDictionary new];
 
-	for (NCMailBoxMessage* message in messages) {
-		NSMutableArray* recipients = [NSMutableArray new];
+		NCCache* cache = [NCCache sharedCache];
+		NSString* uuid = self.account.uuid;
 		
-		for (NSNumber* charID in message.header.toCharacterIDs) {
-			NCMailBoxContact* recipient = contacts[charID];
-			if (!recipient) {
-				recipient = data.contacts[charID];
-				
-				if (!recipient.name) {
-					recipient = [NCMailBoxContact new];
-					recipient.contactID = [charID intValue];
-					recipient.type = NCMailBoxContactTypeCharacter;
-					ids[charID] = recipient;
-				}
-				contacts[@(recipient.contactID)] = recipient;
+		[cache.managedObjectContext performBlock:^{
+			NCMailBoxCacheData* data = _cacheRecord.data.data;
+			if (!_cacheRecord) {
+				_cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", uuid]];
+				for (NCMailBoxMessage* message in data.messages)
+					message.mailBox = self;
 			}
-			[recipients addObject:recipient];
-		}
-		for (NSNumber* mailingListID in message.header.toListID) {
-			NCMailBoxContact* recipient = contacts[mailingListID];
-			if (!recipient) {
-				recipient = data.contacts[mailingListID];
+			[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];
 			
-				if (!recipient.name) {
-					recipient = [NCMailBoxContact new];
-					recipient.contactID = [mailingListID intValue];
-					recipient.type = NCMailBoxContactTypeMailingList;
-					mailingListIDs[mailingListID] = recipient;
+			[api mailMessagesWithCompletionBlock:^(EVEMailMessages *messageHeaders, NSError *error) {
+				if (messageHeaders) {
+					NSMutableDictionary* messagesDic = [NSMutableDictionary new];
+					for (NCMailBoxMessage* message in data.messages)
+						messagesDic[@(message.header.messageID)] = message;
+					
+					for (EVEMailMessagesItem* header in messageHeaders.mailMessages) {
+						NCMailBoxMessage* message = messagesDic[@(header.messageID)];
+						if (!message) {
+							NCMailBoxMessage* message = [NCMailBoxMessage new];
+							message.header = header;
+							message.mailBox = self;
+							messagesDic[@(message.header.messageID)] = message;
+						}
+					}
+					
+					NSArray* messages = [[messagesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"header.sentDate" ascending:NO]]];
+					if (messages.count > NCMailBoxMessagesLimit) {
+						NSArray* toDelete = [messages subarrayWithRange:NSMakeRange(NCMailBoxMessagesLimit, messages.count - NCMailBoxMessagesLimit)];
+						for (NCMailBoxMessage* message in toDelete) {
+							[message clearCache];
+						}
+						
+						messages = [messages subarrayWithRange:NSMakeRange(0, NCMailBoxMessagesLimit)];
+					}
+					
+					[self loadMissingContacts:data.contacts forMessages:messages withCompletionBlock:^(NSDictionary *contacts) {
+						NCMailBoxCacheData* data = [NCMailBoxCacheData new];
+						
+						data.messages = messages;
+						data.contacts = contacts;
+						
+						self.updateDate = messageHeaders.eveapi.cacheDate;
+						[cache.managedObjectContext performBlock:^{
+							self.cacheRecord.data.data = data;
+							self.cacheRecord.date = self.updateDate;
+							self.cacheRecord.expireDate = messageHeaders.eveapi.cachedUntil;
+							[cache.managedObjectContext save:nil];
+						}];
+						[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];
+					} api:api];
 				}
-				contacts[@(recipient.contactID)] = recipient;
-			}
-			[recipients addObject:recipient];
-		}
-		if (message.header.toCorpOrAllianceID) {
-			NCMailBoxContact* recipient = contacts[@(message.header.toCorpOrAllianceID)];
-			if (!recipient) {
-				recipient = data.contacts[@(message.header.toCorpOrAllianceID)];
-
-				if (!recipient) {
-					recipient = [NCMailBoxContact new];
-					recipient.contactID = message.header.toCorpOrAllianceID;
-					recipient.type = NCMailBoxContactTypeCorporation;
-					ids[@(message.header.toCorpOrAllianceID)] = recipient;
-				}
-				contacts[@(recipient.contactID)] = recipient;
-			}
-			[recipients addObject:recipient];
-		}
-		message.recipients = recipients;
-		
-		NCMailBoxContact* sender = contacts[@(message.header.senderID)];
-		if (!sender) {
-			sender = data.contacts[@(message.header.senderID)];
-			if (!sender) {
-				sender = [NCMailBoxContact new];
-				sender.contactID = message.header.senderID;
-				
-				if (message.header.senderTypeID > 0) {
-					sender.type = NCMailBoxContactTypeCharacter;
-					ids[@(message.header.senderID)] = sender;
-				}
-				else {
-					sender.type = NCMailBoxContactTypeMailingList;
-					mailingListIDs[@(message.header.senderTypeID)] = sender;
-				}
-				contacts[@(sender.contactID)] = sender;
-			}
-		}
-		message.sender = sender;
-	}
-
-	NSArray* allIDs = [ids allKeys];
-	NSRange range = NSMakeRange(0, MIN(allIDs.count, 250));
-	while (range.length > 0) {
-		EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:[allIDs subarrayWithRange:range]
-																	 cachePolicy:cachePolicy
-																		   error:nil
-																 progressHandler:^(CGFloat progress, BOOL *stop) {
-																 }];
-		
-		[characterName.characters enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NSString* name, BOOL *stop) {
-			NCMailBoxContact* contact = ids[key];
-			contact.name = name;
+				else if (completionBlock)
+					completionBlock(error);
+			} progressBlock:nil];
 		}];
-		
-		range.location += range.length;
-		range.length = allIDs.count - range.location;
-		if (range.length > 250)
-			range.length = 250;
-	}
-	
-	if (mailingListIDs.count > 0) {
-		EVEMailingLists* mailingLists = [EVEMailingLists mailingListsWithKeyID:account.apiKey.keyID
-																		 vCode:account.apiKey.vCode
-																   cachePolicy:cachePolicy
-																   characterID:account.characterID
-																		 error:nil
-															   progressHandler:^(CGFloat progress, BOOL *stop) {
-															   }];
-		for (EVEMailingListsItem* mailingList in mailingLists.mailingLists) {
-			NCMailBoxContact* contact = mailingListIDs[@(mailingList.listID)];
-			contact.name = mailingList.displayName ? mailingList.displayName : NSLocalizedString(@"Unknown Mailing List", nil);
-		}
-	}
-	
-	data = [NCMailBoxCacheData new];
-	
-	data.messages = messages;
-	data.contacts = contacts;
-	
-	self.updateDate = messageHeaders.cacheDate;
-	[cache.managedObjectContext performBlockAndWait:^{
-		self.cacheRecord.data.data = data;
-		self.cacheRecord.date = self.updateDate;
-		self.cacheRecord.expireDate = messageHeaders.cacheExpireDate;
-		[cache saveContext];
 	}];
-	[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];*/
 }
 
 - (void) markAsRead:(NSArray*) messages {
@@ -333,10 +226,7 @@
 		for (NCMailBoxMessage* message in messages)
 			[set addObject:@(message.header.messageID)];
 		
-		NCStorage* storage = [NCStorage sharedStorage];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-
-		[context performBlockAndWait:^{
+		[self.managedObjectContext performBlockAndWait:^{
 			self.readedMessagesIDs = set;
 //			if ([self.managedObjectContext hasChanges])
 //				[self.managedObjectContext save:nil];
@@ -358,35 +248,110 @@
 
 #pragma mark - Private
 
-- (NCCacheRecord*) cacheRecord {
-	if (!_cacheRecord) {
-		__block NCAccount* account = nil;
-		NCStorage* storage = [NCStorage sharedStorage];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-
-		[context performBlockAndWait:^{
-			account = self.account;
-		}];
-
-		[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
-			_cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", account.uuid]];
-			for (NCMailBoxMessage* message in [_cacheRecord.data.data messages]) {
-				message.mailBox = self;
+- (void) updateNumberOfUnreadMessages {
+	[_cacheRecord.managedObjectContext performBlock:^{
+		NCMailBoxCacheData* data = _cacheRecord.data.data;
+		[self.managedObjectContext performBlock:^{
+			NSInteger numberOfUnreadMessages = 0;
+			for (NCMailBoxMessage* message in data.messages) {
+				if (![message isRead])
+					numberOfUnreadMessages++;
 			}
+			self.numberOfUnreadMessages = numberOfUnreadMessages;
 		}];
-		[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];
-	}
-	return _cacheRecord;
+	}];
 }
 
-- (void) updateNumberOfUnreadMessages {
-	NSInteger numberOfUnreadMessages = 0;
-	NCMailBoxCacheData* data = _cacheRecord.data.data;
-	for (NCMailBoxMessage* message in data.messages) {
-		if (![message isRead])
-			numberOfUnreadMessages++;
+- (void) loadMissingContacts:(NSDictionary*) existingContacts forMessages:(NSArray*) messages withCompletionBlock:(void(^)(NSDictionary* contacts)) completionBlock api:(EVEOnlineAPI*) api{
+	NSMutableDictionary* ids = [NSMutableDictionary new];
+	NSMutableDictionary* contacts = [NSMutableDictionary new];
+	NSMutableDictionary* mailingListIDs = [NSMutableDictionary new];
+	
+	for (NCMailBoxMessage* message in messages) {
+		NSMutableArray* recipients = [NSMutableArray new];
+		
+		for (NSNumber* charID in message.header.toCharacterIDs) {
+			NCMailBoxContact* recipient = contacts[charID];
+			if (!recipient) {
+				recipient = existingContacts[charID];
+				
+				if (!recipient.name) {
+					recipient = [NCMailBoxContact new];
+					recipient.contactID = [charID intValue];
+					recipient.type = NCMailBoxContactTypeCharacter;
+					ids[charID] = recipient;
+				}
+				contacts[@(recipient.contactID)] = recipient;
+			}
+			[recipients addObject:recipient];
+		}
+		for (NSNumber* mailingListID in message.header.toListID) {
+			NCMailBoxContact* recipient = contacts[mailingListID];
+			if (!recipient) {
+				recipient = existingContacts[mailingListID];
+				
+				if (!recipient.name) {
+					recipient = [NCMailBoxContact new];
+					recipient.contactID = [mailingListID intValue];
+					recipient.type = NCMailBoxContactTypeMailingList;
+					mailingListIDs[mailingListID] = recipient;
+				}
+				contacts[@(recipient.contactID)] = recipient;
+			}
+			[recipients addObject:recipient];
+		}
+		if (message.header.toCorpOrAllianceID) {
+			NCMailBoxContact* recipient = contacts[@(message.header.toCorpOrAllianceID)];
+			if (!recipient) {
+				recipient = existingContacts[@(message.header.toCorpOrAllianceID)];
+				
+				if (!recipient) {
+					recipient = [NCMailBoxContact new];
+					recipient.contactID = message.header.toCorpOrAllianceID;
+					recipient.type = NCMailBoxContactTypeCorporation;
+					ids[@(message.header.toCorpOrAllianceID)] = recipient;
+				}
+				contacts[@(recipient.contactID)] = recipient;
+			}
+			[recipients addObject:recipient];
+		}
+		message.recipients = recipients;
 	}
-	self.numberOfUnreadMessages = numberOfUnreadMessages;
+	
+	NSMutableArray* operations = [NSMutableArray new];
+	
+	NSArray* allIDs = [ids allKeys];
+	NSRange range = NSMakeRange(0, MIN(allIDs.count, 250));
+	while (range.length > 0) {
+		[operations addObject:[api characterNameWithIDs:[allIDs subarrayWithRange:range] completionBlock:^(EVECharacterName *result, NSError *error) {
+			for (EVECharacterIDItem* character in result.characters) {
+				NCMailBoxContact* contact = ids[@(character.characterID)];
+				contact.name = character.name;
+			}
+		} progressBlock:nil]];
+
+		range.location += range.length;
+		range.length = allIDs.count - range.location;
+		if (range.length > 250)
+			range.length = 250;
+	}
+	
+	if (mailingListIDs.count > 0) {
+		[operations addObject:[api mailingListsWithCompletionBlock:^(EVEMailingLists *result, NSError *error) {
+			for (EVEMailingListsItem* mailingList in result.mailingLists) {
+				NCMailBoxContact* contact = mailingListIDs[@(mailingList.listID)];
+				contact.name = mailingList.displayName ? mailingList.displayName : NSLocalizedString(@"Unknown Mailing List", nil);
+			}
+		} progressBlock:nil]];
+	}
+	if (operations.count > 0) {
+		NSOperation* operation = [[AFHTTPRequestOperation batchOfRequestOperations:operations progressBlock:nil completionBlock:^void(NSArray * operations) {
+			completionBlock(contacts);
+		}] lastObject];
+		[api.httpRequestOperationManager.operationQueue addOperation:operation];
+	}
+	else
+		completionBlock(contacts);
 }
 
 @end

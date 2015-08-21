@@ -19,6 +19,8 @@
 	NSMutableArray* _completionBlocks;
 }
 
+@property (nonatomic, strong) NCTrainingQueue* trainingQueue;
+
 - (void) accountDidChange:(NSNotification*) notification;
 
 @end
@@ -58,50 +60,44 @@
 }
 
 - (void) save {
-	NSMutableArray* skills = [NSMutableArray new];
-	[[NCDatabase sharedDatabase] performBlockAndWait:^{
-		for (NCSkillData* skill in self.trainingQueue.skills) {
-			NSDictionary* item = @{NCSkillPlanTypeIDKey: @(skill.type.typeID), NCSkillPlanTargetLevelKey: @(skill.targetLevel)};
-			[skills addObject:item];
-		}
-	}];
-	
-	self.skills = skills;
+	if (_trainingQueue) {
+		[[[NCDatabase sharedDatabase] managedObjectContext] performBlock:^{
+			NSMutableArray* skills = [NSMutableArray new];
+			for (NCSkillData* skill in _trainingQueue.skills) {
+				NSDictionary* item = @{NCSkillPlanTypeIDKey: @(skill.type.typeID), NCSkillPlanTargetLevelKey: @(skill.targetLevel)};
+				[skills addObject:item];
+			}
+			
+			[self.managedObjectContext performBlock:^{
+				self.skills = skills;
+				if ([self.managedObjectContext hasChanges])
+					[self.managedObjectContext save:nil];
+			}];
 
-	[self.managedObjectContext performBlock:^{
-		if ([self.managedObjectContext hasChanges])
-			[self.managedObjectContext save:nil];
-	}];
+		}];
+	}
 }
 
-- (void) mergeWithTrainingQueue:(NCTrainingQueue*) trainingQueue {
-	[[NCDatabase sharedDatabase] performBlockAndWait:^{
-		NCTrainingQueue* newTrainingQueue = [self.trainingQueue copy];
-		for (NCSkillData* skillData in trainingQueue.skills)
-			[newTrainingQueue addSkill:skillData.type withLevel:skillData.targetLevel];
-		self.trainingQueue = newTrainingQueue;
+- (void) mergeWithTrainingQueue:(NCTrainingQueue*) trainingQueue completionBlock:(void(^)(NCTrainingQueue* trainingQueue)) completionBlock {
+	[self loadTrainingQueueWithCompletionBlock:^(NCTrainingQueue *trainingQueue) {
+		[[NCDatabase sharedDatabase] performBlockAndWait:^{
+			NCTrainingQueue* newTrainingQueue = [trainingQueue copy];
+			for (NCSkillData* skillData in trainingQueue.skills)
+				[newTrainingQueue addSkill:skillData.type withLevel:skillData.targetLevel];
+			self.trainingQueue = newTrainingQueue;
+		}];
+		[self save];
 	}];
-	[self save];
-}
-
-- (void) removeSkill:(NCSkillData *)skill {
-	NCTrainingQueue* newTrainingQueue = [self.trainingQueue copy];
-	[newTrainingQueue removeSkill:skill];
-	self.trainingQueue = newTrainingQueue;
-	[self save];
 }
 
 - (void) clear {
 	self.skills = nil;
-	self.trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:self.trainingQueue.characterSheet];
+	if (self.trainingQueue)
+		self.trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:self.trainingQueue.characterSheet];
 }
 
-- (BOOL) isLoaded {
-	return _trainingQueue != nil;
-}
-
-- (void) loadWithCompletionBlock:(void(^)()) completionBlock {
-	if (![self isLoaded]) {
+- (void) loadTrainingQueueWithCompletionBlock:(void(^)(NCTrainingQueue* trainingQueue)) completionBlock {
+	if (!_trainingQueue) {
 		BOOL load;
 		@synchronized(self) {
 			load = !_completionBlocks || _completionBlocks.count == 0;
@@ -113,28 +109,33 @@
 			return;
 
 		[self.account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
-			[[[NCDatabase sharedDatabase] managedObjectContext] performBlock:^{
-				NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet];
-				for (NSDictionary* item in self.skills) {
-					int32_t typeID = [item[NCSkillPlanTypeIDKey] intValue];
-					int32_t targetLevel = [item[NCSkillPlanTargetLevelKey] intValue];
-					NCDBInvType* type = [NCDBInvType invTypeWithTypeID:typeID];
-					if (type)
-						[trainingQueue addSkill:type withLevel:targetLevel];
-				}
-				_trainingQueue = trainingQueue;
-				dispatch_async(dispatch_get_main_queue(), ^{
-					@synchronized(self) {
-						for (void(^block)() in _completionBlocks)
-							block();
-						_completionBlocks = nil;
+			[self.managedObjectContext performBlock:^{
+				NSArray* skills = self.skills;
+				
+				[[[NCDatabase sharedDatabase] managedObjectContext] performBlock:^{
+					NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet];
+					for (NSDictionary* item in skills) {
+						int32_t typeID = [item[NCSkillPlanTypeIDKey] intValue];
+						int32_t targetLevel = [item[NCSkillPlanTargetLevelKey] intValue];
+						NCDBInvType* type = [NCDBInvType invTypeWithTypeID:typeID];
+						if (type)
+							[trainingQueue addSkill:type withLevel:targetLevel];
 					}
-				});
+					_trainingQueue = trainingQueue;
+					dispatch_async(dispatch_get_main_queue(), ^{
+						@synchronized(self) {
+							for (void(^block)(NCTrainingQueue*) in _completionBlocks)
+								block(trainingQueue);
+							_completionBlocks = nil;
+						}
+					});
+				}];
+
 			}];
 		}];
 	}
 	else
-		completionBlock();
+		completionBlock(_trainingQueue);
 }
 
 #pragma mark - Private

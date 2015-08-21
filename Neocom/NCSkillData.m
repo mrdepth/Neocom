@@ -39,9 +39,9 @@
 		self.type = type;
 		[type.managedObjectContext performBlockAndWait:^{
 			self.typeID = type.typeID;
-			self.rank = [type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] intValue];
-			self.primaryAttributeID = [type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] intValue];
-			self.secondaryAttributeID = [type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] intValue];
+			self.rank = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
+			self.primaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
+			self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
 		}];
 	}
 	return self;
@@ -85,6 +85,7 @@
 }
 
 - (void) setTargetLevel:(int32_t)targetLevel {
+	_targetLevel = targetLevel;
 	_targetSkillPoints = [self skillPointsAtLevel:targetLevel];
 	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -166,9 +167,9 @@
 		self.typeID = [aDecoder decodeInt32ForKey:@"typeID"];
 		[[[NCDatabase sharedDatabase] managedObjectContext] performBlockAndWait:^{
 			self.type = [NCDBInvType invTypeWithTypeID:self.typeID];
-			self.rank = [self.type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] intValue];
-			self.primaryAttributeID = [self.type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] intValue];
-			self.secondaryAttributeID = [self.type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] intValue];
+			self.rank = [(NCDBDgmTypeAttribute*) self.type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
+			self.primaryAttributeID = [(NCDBDgmTypeAttribute*) self.type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
+			self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) self.type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
 		}];
 		self.currentLevel = [aDecoder decodeInt32ForKey:@"currentLevel"];
 		self.targetLevel = [aDecoder decodeInt32ForKey:@"targetLevel"];

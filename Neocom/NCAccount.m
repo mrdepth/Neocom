@@ -41,39 +41,6 @@ static NCAccount* currentAccount = nil;
 @property (nonatomic, strong) NSCache* cache;
 @end
 
-@implementation NCStorage(NCAccount)
-
-- (NSArray*) allAccounts {
-	NSManagedObjectContext* context = [NSThread isMainThread] ? self.managedObjectContext : self.backgroundManagedObjectContext;
-	
-	__block NSArray* accounts = nil;
-	[context performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:context];
-		[fetchRequest setEntity:entity];
-		[fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"characterID" ascending:YES]]];
-		
-		accounts = [context executeFetchRequest:fetchRequest error:nil];
-	}];
-	return accounts;
-}
-
-- (NCAccount*) accountWithUUID:(NSString*) uuid {
-	NSManagedObjectContext* context = [NSThread isMainThread] ? self.managedObjectContext : self.backgroundManagedObjectContext;
-	
-	__block NSArray* accounts = nil;
-	[context performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:context];
-		[fetchRequest setEntity:entity];
-		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
-		accounts = [context executeFetchRequest:fetchRequest error:nil];
-	}];
-	return accounts.count > 0 ? accounts[0] : nil;
-}
-
-@end
-
 @implementation NCAccount
 
 @dynamic characterID;
@@ -82,6 +49,8 @@ static NCAccount* currentAccount = nil;
 @dynamic skillPlans;
 @dynamic mailBox;
 @dynamic uuid;
+
+@synthesize cache = _cache;
 
 @synthesize activeSkillPlan = _activeSkillPlan;
 
@@ -114,16 +83,8 @@ static NCAccount* currentAccount = nil;
 - (void) awakeFromInsert {
 	[super awakeFromInsert];
 	self.cache = [NSCache new];
-	NCStorage* storage = [NCStorage sharedStorage];
-	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-
-	self.mailBox = [[NCMailBox alloc] initWithEntity:[NSEntityDescription entityForName:@"MailBox" inManagedObjectContext:context]
-					  insertIntoManagedObjectContext:context];
-}
-
-- (void) awakeFromFetch {
-	[super awakeFromFetch];
-	self.cache = [NSCache new];
+	self.mailBox = [[NCMailBox alloc] initWithEntity:[NSEntityDescription entityForName:@"MailBox" inManagedObjectContext:self.managedObjectContext]
+					  insertIntoManagedObjectContext:self.managedObjectContext];
 }
 
 - (void) willSave {
@@ -153,12 +114,9 @@ static NCAccount* currentAccount = nil;
 
 - (NCSkillPlan*) activeSkillPlan {
 	if (!_activeSkillPlan || [_activeSkillPlan isDeleted]) {
-		NCStorage* storage = [NCStorage sharedStorage];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-		
 		if (self.skillPlans.count == 0) {
-			_activeSkillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:context]
-								   insertIntoManagedObjectContext:context];
+			_activeSkillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:self.managedObjectContext]
+								   insertIntoManagedObjectContext:self.managedObjectContext];
 			_activeSkillPlan.active = YES;
 			_activeSkillPlan.account = self;
 			_activeSkillPlan.name = NSLocalizedString(@"Default Skill Plan", nil);
@@ -179,8 +137,8 @@ static NCAccount* currentAccount = nil;
 			else
 				_activeSkillPlan = [skillPlans anyObject];
 		}
-		if ([context hasChanges])
-			[context save:nil];
+		if ([self.managedObjectContext hasChanges])
+			[self.managedObjectContext save:nil];
 	}
 	return _activeSkillPlan;
 }
@@ -357,25 +315,6 @@ static NCAccount* currentAccount = nil;
 	}];
 }
 
-- (void) loadCharacterAttributesWithCompletionBlock:(void(^)(NCCharacterAttributes* characterAttributes, NSError* error)) completionBlock {
-	NSString* key = @"characterAttributes";
-	NCCharacterAttributes* attributes = self.cache[key];
-	if (!attributes) {
-		[self loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
-			dispatch_async(dispatch_get_main_queue(), ^{
-				if (characterSheet) {
-					NCCharacterAttributes* attributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
-					self.cache[key] = attributes;
-					completionBlock(attributes, nil);
-				}
-				else
-					completionBlock(nil, error);
-			});
-		}];
-	}
-	completionBlock(attributes, nil);
-}
-
 - (EVEAPIKey*) eveAPIKey {
 	return [EVEAPIKey apiKeyWithKeyID:self.apiKey.keyID vCode:self.apiKey.vCode characterID:self.characterID corporate:self.accountType == NCAccountTypeCorporate];
 }
@@ -384,6 +323,7 @@ static NCAccount* currentAccount = nil;
 	[self.managedObjectContext performBlock:^{
 		NSString* uuid = self.uuid;
 		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:self.eveAPIKey cachePolicy:cachePolicy];
+		NCAccountType accountType = self.accountType;
 		
 		[[[NCCache sharedCache] managedObjectContext] performBlock:^{
 			NSDate* currentDate = [NSDate date];
@@ -416,88 +356,104 @@ static NCAccount* currentAccount = nil;
 			NCCacheRecord* characterInfoCacheRecord = loadCacheRecord([NSString stringWithFormat:@"%@.characterInfo", uuid]);
 			characterInfo = characterInfoCacheRecord.data.data;
 			if (updateRequired(characterInfoCacheRecord))
-				[operations addObject:[api characterInfoWithCharacterID:self.characterID completionBlock:nil progressBlock:nil]];
+				[operations addObject:[api characterInfoWithCharacterID:self.characterID completionBlock:^(EVECharacterInfo *result, NSError *error) {
+					characterInfo = result;
+				} progressBlock:nil]];
 			
-			NCCacheRecord* characterSheetCacheRecord = loadCacheRecord([NSString stringWithFormat:@"%@.characterSheet", uuid]);
-			characterSheet = characterSheetCacheRecord.data.data;
-			if (updateRequired(characterSheetCacheRecord))
-				[operations addObject:[api characterSheetWithCompletionBlock:nil progressBlock:nil]];
-
-			NCCacheRecord* corporationSheetCacheRecord = loadCacheRecord([NSString stringWithFormat:@"%@.corporationSheet", uuid]);
-			corporationSheet = corporationSheetCacheRecord.data.data;
-			if (updateRequired(corporationSheetCacheRecord))
-				[operations addObject:[api corporationSheetWithCorporationID:0 completionBlock:nil progressBlock:nil]];
-			
-			NCCacheRecord* skillQueueCacheRecord = loadCacheRecord([NSString stringWithFormat:@"%@.skillQueue", uuid]);
-			skillQueue = skillQueueCacheRecord.data.data;
-			if (updateRequired(skillQueueCacheRecord))
-				[operations addObject:[api characterSheetWithCompletionBlock:nil progressBlock:nil]];
+			if (accountType == NCAccountTypeCharacter) {
+				NCCacheRecord* characterSheetCacheRecord = loadCacheRecord([NSString stringWithFormat:@"%@.characterSheet", uuid]);
+				characterSheet = characterSheetCacheRecord.data.data;
+				if (updateRequired(characterSheetCacheRecord))
+					[operations addObject:[api characterSheetWithCompletionBlock:^(EVECharacterSheet *result, NSError *error) {
+						characterSheet = result;
+					} progressBlock:nil]];
+				
+				NCCacheRecord* skillQueueCacheRecord = loadCacheRecord([NSString stringWithFormat:@"%@.skillQueue", uuid]);
+				skillQueue = skillQueueCacheRecord.data.data;
+				if (updateRequired(skillQueueCacheRecord))
+					[operations addObject:[api skillQueueWithCompletionBlock:^(EVESkillQueue *result, NSError *error) {
+						skillQueue = result;
+					} progressBlock:nil]];
+			}
+			else {
+				NCCacheRecord* corporationSheetCacheRecord = loadCacheRecord([NSString stringWithFormat:@"%@.corporationSheet", uuid]);
+				corporationSheet = corporationSheetCacheRecord.data.data;
+				if (updateRequired(corporationSheetCacheRecord))
+					[operations addObject:[api corporationSheetWithCorporationID:0 completionBlock:^(EVECorporationSheet *result, NSError *error) {
+						corporationSheet = result;
+					} progressBlock:nil]];
+			}
 			
 			if (operations.count > 0) {
-				[AFHTTPRequestOperation batchOfRequestOperations:operations
-												   progressBlock:^void(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
-													   if (progressBlock)
-														   progressBlock((float) totalNumberOfOperations / (float) numberOfFinishedOperations);
-												   }
-												 completionBlock:^void(NSArray * operations) {
-													 NSError* error = nil;
-													 for (AFHTTPRequestOperation* operation in operations) {
-														 error = error ?: operation.error;
-														 if ([operation.responseObject isKindOfClass:[EVECharacterInfo class]])
-															 characterInfo = operation.responseObject;
-														 else if ([operation.responseObject isKindOfClass:[EVECharacterSheet class]])
-															 characterSheet = operation.responseObject;
-														 else if ([operation.responseObject isKindOfClass:[EVECorporationSheet class]])
-															 corporationSheet = operation.responseObject;
-														 else if ([operation.responseObject isKindOfClass:[EVESkillQueue class]])
-															 skillQueue = operation.responseObject;
-													 }
-													 
-													 NSMutableDictionary* userInfo = [NSMutableDictionary new];
-													 
-													 if (characterSheet) {
-														 if (characterInfo) {
-															 int32_t skillPoints = 0;
-															 for (EVECharacterSheetSkill* skill in characterSheet.skills)
-																 skillPoints += skill.skillpoints;
-															 characterInfo.skillPoints = skillPoints;
-														 }
-														 if (skillQueue)
-															 [characterSheet attachSkillQueue:skillQueue];
-													 }
-													 
-													 if (characterInfo)
-														 userInfo[@"characterInfo"] = characterInfo;
-													 if (characterSheet)
-														 userInfo[@"characterSheet"] = characterSheet;
-													 if (skillQueue)
-														 userInfo[@"skillQueue"] = skillQueue;
-													 if (corporationSheet)
-														 userInfo[@"corporationSheet"] = corporationSheet;
-													 
-													 [[[NCCache sharedCache] managedObjectContext] performBlock:^{
-														 for (NSString* item in @[@"characterInfo", @"characterSheet", @"skillQueue", @"corporationSheet"]) {
-															 NSString* key = [NSString stringWithFormat:@"%@.%@", uuid, item];
-															 NCCacheRecord* cacheRecord = self.cache[key];
-															 if (!cacheRecord)
-																 self.cache[key] = cacheRecord = [NCCacheRecord cacheRecordWithRecordID:key];
-															 [cacheRecord cacheResult:userInfo[item]];
-														 }
-													 }];
-													 
-													 dispatch_async(dispatch_get_main_queue(), ^{
-														 if (completionBlock)
-															 completionBlock(error);
-														 [[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:self userInfo:userInfo];
-													 });
-													 
-												 }];
+				NSOperation* operation = [[AFHTTPRequestOperation batchOfRequestOperations:operations
+																			 progressBlock:^void(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
+																				 if (progressBlock)
+																					 progressBlock((float) totalNumberOfOperations / (float) numberOfFinishedOperations);
+																			 }
+																		   completionBlock:^void(NSArray * operations) {
+																			   NSError* error = nil;
+																			   for (AFHTTPRequestOperation* operation in operations)
+																				   error = error ?: operation.error;
+																			   
+																			   NSMutableDictionary* userInfo = [NSMutableDictionary new];
+																			   
+																			   if (characterSheet) {
+																				   if (characterInfo) {
+																					   int32_t skillPoints = 0;
+																					   for (EVECharacterSheetSkill* skill in characterSheet.skills)
+																						   skillPoints += skill.skillpoints;
+																					   characterInfo.skillPoints = skillPoints;
+																				   }
+																				   if (skillQueue)
+																					   [characterSheet attachSkillQueue:skillQueue];
+																			   }
+																			   
+																			   if (characterInfo)
+																				   userInfo[@"characterInfo"] = characterInfo;
+																			   if (characterSheet)
+																				   userInfo[@"characterSheet"] = characterSheet;
+																			   if (skillQueue)
+																				   userInfo[@"skillQueue"] = skillQueue;
+																			   if (corporationSheet)
+																				   userInfo[@"corporationSheet"] = corporationSheet;
+																			   
+																			   [[[NCCache sharedCache] managedObjectContext] performBlock:^{
+																				   for (NSString* item in @[@"characterInfo", @"characterSheet", @"skillQueue", @"corporationSheet"]) {
+																					   NSString* key = [NSString stringWithFormat:@"%@.%@", uuid, item];
+																					   NCCacheRecord* cacheRecord = self.cache[key];
+																					   if (!cacheRecord)
+																						   self.cache[key] = cacheRecord = [NCCacheRecord cacheRecordWithRecordID:key];
+																					   [cacheRecord cacheResult:userInfo[item]];
+																				   }
+																			   }];
+																			   
+																			   dispatch_async(dispatch_get_main_queue(), ^{
+																				   if (completionBlock)
+																					   completionBlock(error);
+																				   [[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:self userInfo:userInfo];
+																			   });
+																			   
+																		   }] lastObject];
+				[api.httpRequestOperationManager.operationQueue addOperation:operation];
 			}
+			else
+				dispatch_async(dispatch_get_main_queue(), ^{
+					completionBlock(nil);
+				});
 		}];
 	}];
 }
 
 #pragma mark - Private
 
+- (NSCache*) cache {
+	if (!_cache) {
+		@synchronized(self) {
+			if (!_cache)
+				_cache = [NSCache new];
+		}
+	}
+	return _cache;
+}
 
 @end

@@ -39,7 +39,7 @@ static NCAccountsManager* sharedManager = nil;
 - (id) initWithStorage:(NCStorage*) storage {
 	assert(storage);
 	if (self = [super init]) {
-		self.managedObjectContext = storage.managedObjectContext;
+		self.managedObjectContext = [storage createManagedObjectContext];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStorage:) name:NCStorageDidChangeNotification object:nil];
 		self.storage = storage;
@@ -51,7 +51,7 @@ static NCAccountsManager* sharedManager = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCStorageDidChangeNotification object:nil];
 }
 
-- (void) addAPIKeyWithKeyID:(int32_t) keyID vCode:(NSString*) vCode completionBlock:(void(^)(NSError* error)) completionBlock {
+- (void) addAPIKeyWithKeyID:(int32_t) keyID vCode:(NSString*) vCode completionBlock:(void(^)(NSArray* accounts, NSError* error)) completionBlock {
 	EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:[EVEAPIKey apiKeyWithKeyID:keyID vCode:vCode] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
 	[api apiKeyInfoWithCompletionBlock:^(EVEAPIKeyInfo *result, NSError *error) {
 		if (result && !result.eveapi.error) {
@@ -75,6 +75,7 @@ static NCAccountsManager* sharedManager = nil;
 					apiKey.apiKeyInfo = result;
 				}
 				
+				NSMutableArray* accounts = [NSMutableArray new];
 				for (EVEAPIKeyInfoCharactersItem* character in result.key.characters) {
 					NCAccount* account = nil;
 					for (account in apiKey.accounts)
@@ -86,6 +87,7 @@ static NCAccountsManager* sharedManager = nil;
 						account.characterID = character.characterID;
 						account.order = INT32_MAX;
 						account.uuid = [[NSUUID UUID] UUIDString];
+						[accounts addObject:account];
 					}
 				}
 
@@ -96,12 +98,12 @@ static NCAccountsManager* sharedManager = nil;
 				if ([self.managedObjectContext hasChanges])
 					[self.managedObjectContext save:nil];
 				dispatch_async(dispatch_get_main_queue(), ^{
-					completionBlock(nil);
+					completionBlock(accounts, nil);
 				});
 			}];
 		}
 		else
-			completionBlock(error ? error : result.eveapi.error);
+			completionBlock(nil, error ?: result.eveapi.error);
 	} progressBlock:nil];
 }
 
@@ -139,8 +141,8 @@ static NCAccountsManager* sharedManager = nil;
 #pragma mark - Private
 
 - (void) didChangeStorage:(NSNotification*) notification {
-	self.storage = [NCStorage sharedStorage];
-	self.managedObjectContext = [self.storage managedObjectContext];
+//	self.storage = [NCStorage sharedStorage];
+//	self.managedObjectContext = [self.storage createManagedObjectContext];
 }
 
 @end

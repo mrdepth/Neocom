@@ -24,11 +24,6 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 	NCAccountTypeCorporate
 };
 
-@interface NCStorage(NCAccount)
-- (NSArray*) allAccounts;
-- (NCAccount*) accountWithUUID:(NSString*) uuid;
-@end
-
 @interface NCAccount : NSManagedObject
 
 @property (nonatomic) int32_t characterID;
@@ -51,7 +46,6 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 - (void) loadCharacterSheetWithCompletionBlock:(void(^)(EVECharacterSheet* characterSheet, NSError* error)) completionBlock;
 - (void) loadCorporationSheetWithCompletionBlock:(void(^)(EVECorporationSheet* corporationSheet, NSError* error)) completionBlock;
 - (void) loadSkillQueueWithCompletionBlock:(void(^)(EVESkillQueue* skillQueue, NSError* error)) completionBlock;
-- (void) loadCharacterAttributesWithCompletionBlock:(void(^)(NCCharacterAttributes* characterAttributes, NSError* error)) completionBlock;
 - (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
 
 @end

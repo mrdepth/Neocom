@@ -18,14 +18,10 @@
 @property (nonatomic, retain) NSArray* skills;
 @property (nonatomic, strong) NCAccount* account;
 
-@property (nonatomic, strong) NCTrainingQueue* trainingQueue;
-
 - (void) save;
-- (void) mergeWithTrainingQueue:(NCTrainingQueue*) trainingQueue;
-- (void) removeSkill:(NCSkillData*) skill;
+- (void) mergeWithTrainingQueue:(NCTrainingQueue*) trainingQueue completionBlock:(void(^)(NCTrainingQueue* trainingQueue)) completionBlock;
 - (void) clear;
 
-- (BOOL) isLoaded;
-- (void) loadWithCompletionBlock:(void(^)()) completionBlock;
+- (void) loadTrainingQueueWithCompletionBlock:(void(^)(NCTrainingQueue* trainingQueue)) completionBlock;
 
 @end

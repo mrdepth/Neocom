@@ -7,6 +7,9 @@
 //
 
 #import "AppDelegate.h"
+#import "NCStorage.h"
+#import "NCAccountsManager.h"
+#import "NCCache.h"
 
 @interface AppDelegate ()
 
@@ -16,6 +19,24 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	[NCStorage setSharedStorage:[[NCStorage alloc] initLocalStorage]];
+	[NCAccountsManager setSharedManager:[[NCAccountsManager alloc] initWithStorage:[NCStorage sharedStorage]]];
+	
+	[[NCAccountsManager sharedManager] loadAccountsWithCompletionBlock:^(NSArray *accounts) {
+		NCAccount* account = [accounts lastObject];
+		[account.managedObjectContext performBlock:^{
+			[account.activeSkillPlan loadTrainingQueueWithCompletionBlock:^(NCTrainingQueue *trainingQueue) {
+				[[[NCDatabase sharedDatabase] managedObjectContext] performBlock:^{
+					[trainingQueue addRequiredSkillsForType:[NCDBInvType invTypeWithTypeID:671]];
+					[account.managedObjectContext performBlock:^{
+						[account.activeSkillPlan save];
+					}];
+				}];
+			}];
+		}];
+		[account reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(NSError *error) {
+		} progressBlock:nil];
+	}];
 	// Override point for customization after application launch.
 	return YES;
 }

@@ -8,8 +8,6 @@
 
 #import "NCCache.h"
 
-static NCCache* sharedCache;
-
 @interface NCCache()
 @property (readwrite, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readwrite, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
@@ -22,18 +20,14 @@ static NCCache* sharedCache;
 @implementation NCCache
 
 + (id) sharedCache {
-	@synchronized(self) {
-		if (!sharedCache) {
-			sharedCache = [[NCCache alloc] init];
-		}
-		return sharedCache;
+	static NCCache* sharedCache;
+	if (!sharedCache) {
+		static dispatch_once_t onceToken;
+		dispatch_once(&onceToken, ^{
+			sharedCache = [NCCache new];
+		});
 	}
-}
-
-+ (void) cleanup {
-	@synchronized(self) {
-		sharedCache = nil;
-	}
+	return sharedCache;
 }
 
 - (id) init {

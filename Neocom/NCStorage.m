@@ -75,23 +75,13 @@ static NCStorage* sharedStorage;
 
 @implementation NCStorage
 
-@synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-@synthesize backgroundManagedObjectContext = _backgroundManagedObjectContext;
 
 + (instancetype) sharedStorage {
 	@synchronized(self) {
 		return sharedStorage.observer ? nil : sharedStorage;
 	}
-}
-
-+ (instancetype) fallbackStorage {
-	return [[self alloc] initFallbackStorage];
-}
-
-+ (instancetype) cloudStorage {
-	return [[self alloc] initCloudStorage];
 }
 
 + (void) setSharedStorage:(NCStorage*) storage {
@@ -117,7 +107,6 @@ static NCStorage* sharedStorage;
 																				  [[NSUserDefaults standardUserDefaults] synchronize];
 																				  self.storageType = NCStorageTypeCloud;
 																			  }
-//																			  [self removeDuplicatesFromPersistentStoreCoordinator:self.persistentStoreCoordinator];
 																		  }
 																		  
 																		  [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
@@ -143,9 +132,9 @@ static NCStorage* sharedStorage;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id) initFallbackStorage {
+- (id) initLocalStorage {
 	if (self = [self init]) {
-		self.storageType = NCStorageTypeFallback;
+		self.storageType = NCStorageTypeLocal;
 		NSString* directory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store"];
 		[[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
 		
@@ -198,10 +187,6 @@ static NCStorage* sharedStorage;
 
 - (id) initCloudStorage {
 	if (self = [self init]) {
-		BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey];
-		if (!useCloud)
-			return nil;
-		
 		id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
 
 		
@@ -305,7 +290,7 @@ static NCStorage* sharedStorage;
 	return self;
 }
 
-- (void)saveContext
+/*- (void)saveContext
 {
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
 	[managedObjectContext performBlockAndWait:^{
@@ -325,95 +310,7 @@ static NCStorage* sharedStorage;
 			}
 		}
 	}];
-}
-
-- (BOOL) transferDataFromFallbackToCloud {
-/*	if (self.storageType != NCStorageTypeCloud)
-		return NO;
-	NCStorage* fallbackStorage = [NCStorage fallbackStorage];
-	
-	if (!fallbackStorage)
-		return NO;
-
-	NCStorage* storage = [NCStorage sharedStorage];
-	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-
-	[context performBlockAndWait:^{
-		for (NCAccount* account in [fallbackStorage allAccounts]) {
-			if (![self accountWithUUID:account.uuid]) {
-				NCAccount* copyAccount = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
-				[copyAccount setValuesForKeysWithDictionary:[account dictionaryWithValuesForKeys:[[account.entity attributesByName] allKeys]]];
-				
-				copyAccount.apiKey = [NSEntityDescription insertNewObjectForEntityForName:@"APIKey" inManagedObjectContext:context];
-				[copyAccount.apiKey setValuesForKeysWithDictionary:[account.apiKey dictionaryWithValuesForKeys:[[account.apiKey.entity attributesByName] allKeys]]];
-				
-				copyAccount.mailBox = [NSEntityDescription insertNewObjectForEntityForName:@"MailBox" inManagedObjectContext:context];
-				[copyAccount.mailBox setValuesForKeysWithDictionary:[account.mailBox dictionaryWithValuesForKeys:[[account.mailBox.entity attributesByName] allKeys]]];
-				
-				for (NCSkillPlan* skillPlan in account.skillPlans) {
-					NCSkillPlan* copySkillPlan = [NSEntityDescription insertNewObjectForEntityForName:@"SkillPlan" inManagedObjectContext:context];
-					[copySkillPlan setValuesForKeysWithDictionary:[skillPlan dictionaryWithValuesForKeys:[[skillPlan.entity attributesByName] allKeys]]];
-					copySkillPlan.account = copyAccount;
-				}
-			}
-		}
-		
-		for (NCLoadout* loadout in [fallbackStorage loadouts]) {
-			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Loadout"];
-			request.entity = [NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.managedObjectContext];
-			request.predicate = [NSPredicate predicateWithFormat:@"typeID == %d AND data.data == %@", loadout.typeID, loadout.data.data];
-			request.fetchLimit = 1;
-			
-			if ([context executeFetchRequest:request error:nil].count == 0) {
-				NCLoadout* copyLoadout = [NSEntityDescription insertNewObjectForEntityForName:@"Loadout" inManagedObjectContext:context];
-				[copyLoadout setValuesForKeysWithDictionary:[loadout dictionaryWithValuesForKeys:[[loadout.entity attributesByName] allKeys]]];
-				
-				copyLoadout.data = [NSEntityDescription insertNewObjectForEntityForName:@"LoadoutData" inManagedObjectContext:context];
-				[copyLoadout.data setValuesForKeysWithDictionary:[loadout.data dictionaryWithValuesForKeys:[[loadout.data.entity attributesByName] allKeys]]];
-			}
-		}
-		
-		for (NCImplantSet* implantSet in [fallbackStorage implantSets]) {
-			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"ImplantSet"];
-			request.entity = [NSEntityDescription entityForName:@"ImplantSet" inManagedObjectContext:context];
-			request.predicate = [NSPredicate predicateWithFormat:@"name == %@ AND data == %@", implantSet.name, implantSet.data];
-			request.fetchLimit = 1;
-			
-			if ([context executeFetchRequest:request error:nil].count == 0) {
-				NCImplantSet* copyImplantSet = [NSEntityDescription insertNewObjectForEntityForName:@"ImplantSet" inManagedObjectContext:context];
-				[copyImplantSet setValuesForKeysWithDictionary:[implantSet dictionaryWithValuesForKeys:[[implantSet.entity attributesByName] allKeys]]];
-			}
-		}
-		
-		for (NCDamagePattern* damagePattern in [fallbackStorage damagePatterns]) {
-			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DamagePattern"];
-			request.entity = [NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:context];
-			request.predicate = [NSPredicate predicateWithFormat:@"name == %@", damagePattern.name];
-			request.fetchLimit = 1;
-			
-			if ([context executeFetchRequest:request error:nil].count == 0) {
-				NCDamagePattern* copyDamagePattern = [NSEntityDescription insertNewObjectForEntityForName:@"DamagePattern" inManagedObjectContext:context];
-				[copyDamagePattern setValuesForKeysWithDictionary:[damagePattern dictionaryWithValuesForKeys:[[damagePattern.entity attributesByName] allKeys]]];
-			}
-		}
-		
-		for (NCFitCharacter* character in [fallbackStorage characters]) {
-			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"FitCharacter"];
-			request.entity = [NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:context];
-			request.predicate = [NSPredicate predicateWithFormat:@"name == %@", character.name];
-			request.fetchLimit = 1;
-			
-			if ([context executeFetchRequest:request error:nil].count == 0) {
-				NCFitCharacter* copyCharacter = [NSEntityDescription insertNewObjectForEntityForName:@"FitCharacter" inManagedObjectContext:context];
-				[copyCharacter setValuesForKeysWithDictionary:[character dictionaryWithValuesForKeys:[[character.entity attributesByName] allKeys]]];
-			}
-		}
-		
-		[self saveContext];
-	}];*/
-
-	return YES;
-}
+}*/
 
 - (BOOL) backupCloudData {
 	NSURL* url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
@@ -488,47 +385,19 @@ static NCStorage* sharedStorage;
 
 #pragma mark - Core Data stack
 
-// Returns the managed object context for the application.
-// If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
-- (NSManagedObjectContext *)managedObjectContext
-{
-	@synchronized(self) {
-		if (_managedObjectContext != nil) {
-			return _managedObjectContext;
-		}
-		
-		NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-		if (coordinator != nil) {
-			_managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-			[_managedObjectContext setPersistentStoreCoordinator:coordinator];
-			[_managedObjectContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSRollbackMergePolicyType]];
-		}
-		return _managedObjectContext;
+- (NSManagedObjectContext*) createManagedObjectContext {
+	NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+	if (coordinator != nil) {
+		NSManagedObjectContext* managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+		[managedObjectContext setPersistentStoreCoordinator:coordinator];
+		[managedObjectContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSRollbackMergePolicyType]];
+		return managedObjectContext;
 	}
+	else
+		return nil;
 }
 
-- (NSManagedObjectContext *)backgroundManagedObjectContext
-{
-	return self.managedObjectContext;
-	@synchronized(self) {
-		if (_backgroundManagedObjectContext != nil) {
-			return _backgroundManagedObjectContext;
-		}
-		
-		NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-		if (coordinator != nil) {
-			_backgroundManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-			[_backgroundManagedObjectContext setParentContext:self.managedObjectContext];
-			//			[_backgroundManagedObjectContext setPersistentStoreCoordinator:coordinator];
-		}
-		return _backgroundManagedObjectContext;
-	}
-}
-
-// Returns the managed object model for the application.
-// If the model doesn't already exist, it is created from the application's model.
-- (NSManagedObjectModel *)managedObjectModel
-{
+- (NSManagedObjectModel*) managedObjectModel {
 	@synchronized(self) {
 		if (_managedObjectModel != nil) {
 			return _managedObjectModel;
@@ -541,7 +410,7 @@ static NCStorage* sharedStorage;
 
 #pragma mark - Private
 
-- (void) didUpdateCloud:(NSNotification*) notification {
+/*- (void) didUpdateCloud:(NSNotification*) notification {
 	[self.managedObjectContext performBlock:^{
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
 		NSError* error = nil;
@@ -559,22 +428,15 @@ static NCStorage* sharedStorage;
 			});
 		}
 	}];
-}
+}*/
 
 - (void) notifyStorageChange {
 	NCAccount* account = [NCAccount currentAccount];
-	if ([NSThread isMainThread]) {
+	dispatch_async(dispatch_get_main_queue(), ^{
 		if (account && !account.managedObjectContext)
 			[NCAccount setCurrentAccount:nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:NCStorageDidChangeNotification object:self userInfo:nil];
-	}
-	else {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (account && !account.managedObjectContext)
-				[NCAccount setCurrentAccount:nil];
-			[[NSNotificationCenter defaultCenter] postNotificationName:NCStorageDidChangeNotification object:self userInfo:nil];
-		});
-	}
+	});
 }
 
 - (void) removeDuplicatesFromPersistentStoreCoordinator:(NSPersistentStoreCoordinator*) persistentStoreCoordinator {

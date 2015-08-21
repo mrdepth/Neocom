@@ -29,7 +29,6 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 @property (nonatomic, weak) NCMailBox* mailBox;
 @property (nonatomic, strong) EVEMailMessagesItem* header;
 @property (nonatomic, strong) EVEMailBodiesItem* body;
-@property (nonatomic, strong) NCMailBoxContact* sender;
 @property (nonatomic, strong) NSArray* recipients;
 @property (nonatomic, getter = isRead) BOOL read;
 
@@ -46,7 +45,7 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 @property (nonatomic, strong, readonly) NSArray* messages;
 @property (nonatomic, assign, readonly) NSInteger numberOfUnreadMessages;
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy inTask:(NCTask*) task;
+- (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
 - (void) markAsRead:(NSArray*) messages;
 
 @end

@@ -41,7 +41,7 @@
 		
 		NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
 		if (coordinator != nil) {
-			_managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+			_managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
 			[_managedObjectContext setPersistentStoreCoordinator:coordinator];
 		}
 		return _managedObjectContext;
@@ -95,9 +95,7 @@
 													   configuration:nil
 																 URL:[[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"sqlite"]
 															 options:@{NSReadOnlyPersistentStoreOption: @(YES),
-																	   NSSQLitePragmasOption:@{@"journal_mode": @"OFF"},
-																	   NSMigratePersistentStoresAutomaticallyOption: @(YES),
-																	   NSInferMappingModelAutomaticallyOption: @(YES)}
+																	   NSSQLitePragmasOption:@{@"journal_mode": @"OFF"}}
 															   error:&error]) {
 		}
 		return _persistentStoreCoordinator;

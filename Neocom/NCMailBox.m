@@ -141,11 +141,10 @@
 @dynamic account;
 @dynamic updateDate;
 
-@synthesize messages = _messages;
 @synthesize cacheRecord = _cacheRecord;
 @synthesize numberOfUnreadMessages = _numberOfUnreadMessages;
 
-- (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock {
+- (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSArray* messages, NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock {
 	
 	[self.managedObjectContext performBlock:^{
 		EVEAPIKey* apiKey = self.account.eveAPIKey;
@@ -154,7 +153,7 @@
 		if (self.account.accountType == NCAccountTypeCorporate) {
 			if (completionBlock)
 				dispatch_async(dispatch_get_main_queue(), ^{
-					completionBlock(nil);
+					completionBlock(nil, nil);
 				});
 			return;
 		}
@@ -210,11 +209,12 @@
 							self.cacheRecord.expireDate = messageHeaders.eveapi.cachedUntil;
 							[cache.managedObjectContext save:nil];
 						}];
+						completionBlock(data.messages, nil);
 						[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];
 					} api:api];
 				}
 				else if (completionBlock)
-					completionBlock(error);
+					completionBlock(nil, error);
 			} progressBlock:nil];
 		}];
 	}];
@@ -235,14 +235,20 @@
 	}
 }
 
-- (NSArray*) messages {
-	@synchronized(self) {
-		NCMailBoxCacheData* data = self.cacheRecord.data.data;
-		if (!data && ![NSThread isMainThread]) {
-			[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy inTask:nil];
-			data = self.cacheRecord.data.data;
-		}
-		return data.messages;
+- (void) loadMessagesWithCompletionBlock:(void(^)(NSArray* messages, NSError* error)) completionBlock {
+	if (!_cacheRecord) {
+		[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy
+					completionBlock:^(NSArray* messages, NSError *error) {
+						completionBlock(messages, error);
+					} progressBlock:nil];
+	}
+	else {
+		[_cacheRecord.managedObjectContext performBlock:^{
+			NCMailBoxCacheData* data = _cacheRecord.data.data;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				completionBlock(data.messages, nil);
+			});
+		}];
 	}
 }
 

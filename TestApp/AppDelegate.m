@@ -20,6 +20,28 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	[NCStorage setSharedStorage:[[NCStorage alloc] initLocalStorage]];
+	
+	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+	request.fetchLimit = 1;
+	NSManagedObjectContext* db = [[NCDatabase sharedDatabase] managedObjectContext];
+	
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+		__block NSManagedObjectContext* context = [[NCStorage sharedStorage] createManagedObjectContext];
+		[[[NCDatabase sharedDatabase] managedObjectContext] performBlockAndWait:^{
+			[context performBlockAndWait:^{
+				NCDBInvType* type = [NCDBInvType invTypeWithTypeID:645];
+				[type category];
+				NSLog(@"%@", type);
+				context = nil;
+				//NSLog(@"a %@", [[db executeFetchRequest:request error:nil] valueForKey:@"typeID"]);
+			}];
+			NSLog(@"b %@", [[db executeFetchRequest:request error:nil] valueForKey:@"typeID"]);
+		}];
+	});
+
+	[[[NCDatabase sharedDatabase] managedObjectContext] performBlock:^{
+	}];
+/*	[NCStorage setSharedStorage:[[NCStorage alloc] initLocalStorage]];
 	[NCAccountsManager setSharedManager:[[NCAccountsManager alloc] initWithStorage:[NCStorage sharedStorage]]];
 	
 	[[NCAccountsManager sharedManager] loadAccountsWithCompletionBlock:^(NSArray *accounts) {
@@ -36,7 +58,7 @@
 		}];
 		[account reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(NSError *error) {
 		} progressBlock:nil];
-	}];
+	}];*/
 	// Override point for customization after application launch.
 	return YES;
 }

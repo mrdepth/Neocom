@@ -24,7 +24,9 @@
 
 - (NCDBInvType*) type {
 	if (!_type) {
-		_type = [NCDBInvType invTypeWithTypeID:self.typeID];
+		[[[NCDatabase sharedDatabase] managedObjectContext] performBlockAndWait:^{
+			_type = [NCDBInvType invTypeWithTypeID:self.typeID];
+		}];
 	}
 	return _type;
 }
@@ -37,7 +39,11 @@
 }
 
 - (NCLoadoutCategory) category {
-	return self.type.group.category.categoryID == NCCategoryIDShip ? NCLoadoutCategoryShip : NCLoadoutCategoryPOS;
+	__block NCLoadoutCategory category;
+	[[[NCDatabase sharedDatabase] managedObjectContext] performBlockAndWait:^{
+		category = self.type.group.category.categoryID == NCCategoryIDShip ? NCLoadoutCategoryShip : NCLoadoutCategoryPOS;
+	}];
+	return category;
 }
 
 @end

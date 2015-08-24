@@ -70,4 +70,8 @@
 @dynamic variations;
 @dynamic wormhole;
 
+- (void) awakeFromFetch {
+	[super awakeFromFetch];
+}
+
 @end

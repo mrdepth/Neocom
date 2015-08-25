@@ -14,7 +14,6 @@
 #import "NSString+Neocom.h"
 #import "NSString+Neocom.h"
 #import "NCDefaultTableViewCell.h"
-#import "EVECentralAPI.h"
 #import "NCSplitViewController.h"
 
 #define NCPlexTypeID 29668

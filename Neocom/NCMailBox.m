@@ -129,7 +129,9 @@
 
 @end
 
-@interface NCMailBox()
+@interface NCMailBox() {
+	dispatch_group_t _loadDispatchGroup;
+}
 @property (nonatomic, strong) NCCacheRecord* cacheRecord;
 @property (nonatomic, assign, readwrite) NSInteger numberOfUnreadMessages;
 - (void) updateNumberOfUnreadMessages;
@@ -146,15 +148,32 @@
 
 - (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSArray* messages, NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock {
 	
+	BOOL load = NO;
+	dispatch_group_t loadDispatchGroup;
+	@synchronized(self) {
+		if (!_loadDispatchGroup) {
+			_loadDispatchGroup = dispatch_group_create();
+			load = YES;
+			loadDispatchGroup = _loadDispatchGroup;
+			dispatch_group_enter(loadDispatchGroup);
+			dispatch_set_finalizer_f(loadDispatchGroup, (dispatch_function_t) &CFRelease);
+		}
+	}
+	if (load) {
+		
+	}
+	
+	dispatch_group_notify(loadDispatchGroup, dispatch_get_main_queue(), ^{
+		NSDictionary* result = (__bridge NSDictionary*) dispatch_get_context(loadDispatchGroup);
+		completionBlock(result[@"messages"], result[@"error"]);
+	});
+	
 	[self.managedObjectContext performBlock:^{
 		EVEAPIKey* apiKey = self.account.eveAPIKey;
 		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:apiKey cachePolicy:cachePolicy];
 
 		if (self.account.accountType == NCAccountTypeCorporate) {
-			if (completionBlock)
-				dispatch_async(dispatch_get_main_queue(), ^{
-					completionBlock(nil, nil);
-				});
+			dispatch_group_leave(loadDispatchGroup);
 			return;
 		}
 
@@ -209,12 +228,18 @@
 							self.cacheRecord.expireDate = messageHeaders.eveapi.cachedUntil;
 							[cache.managedObjectContext save:nil];
 						}];
-						completionBlock(data.messages, nil);
+						if (data.messages)
+							dispatch_set_context(loadDispatchGroup, (__bridge_retained void*)@{@"messages":data.messages});
+						dispatch_group_leave(loadDispatchGroup);
+						
 						[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];
 					} api:api];
 				}
-				else if (completionBlock)
-					completionBlock(nil, error);
+				else {
+					if (error)
+						dispatch_set_context(loadDispatchGroup, (__bridge_retained void*)@{@"error":error});
+					dispatch_group_leave(loadDispatchGroup);
+				}
 			} progressBlock:nil];
 		}];
 	}];

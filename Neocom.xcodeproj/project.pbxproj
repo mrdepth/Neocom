@@ -468,6 +468,16 @@
 		12B97D3818AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3718AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm */; };
 		12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3B18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m */; };
 		12B992351913718900448D01 /* NCAssetsAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B992341913718900448D01 /* NCAssetsAccountsViewController.m */; };
+		12B9A63D1B8C6F63005624D5 /* NCPriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12056E5D18C45F2E008D8755 /* NCPriceManager.m */; };
+		12B9A6411B8C73B1005624D5 /* NCCharacterID.m in Sources */ = {isa = PBXBuildFile; fileRef = 128C9B0318BF034E0086F7B3 /* NCCharacterID.m */; };
+		12B9A6431B8C91C6005624D5 /* NCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 121112331859929E009E5106 /* NCTableViewController.m */; };
+		12B9A6441B8C9FC3005624D5 /* NCTableViewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29B018BDBD23003B8E03 /* NCTableViewHeaderView.m */; };
+		12B9A6451B8C9FC3005624D5 /* NCTableViewCollapsedHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29B918BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m */; };
+		12B9A6461B8C9FD5005624D5 /* CollapsableTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D25A8187E923200E2062C /* CollapsableTableView.m */; };
+		12B9A6471B8C9FE3005624D5 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
+		12B9A6481B8C9FE9005624D5 /* NCAdaptivePopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 124097BF1B2F200F002AC442 /* NCAdaptivePopoverSegue.m */; };
+		12B9A6491B8C9FEB005624D5 /* NCAdaptiveModalSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F4C0711B2862C100AF3389 /* NCAdaptiveModalSegue.m */; };
+		12B9A64A1B8C9FFF005624D5 /* NCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1235E3F318E562E300BC2607 /* NCNavigationController.m */; };
 		12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
 		12C107D61ADD0451008D60DF /* mass.png in Resources */ = {isa = PBXBuildFile; fileRef = 12C107D51ADD0451008D60DF /* mass.png */; };
 		12C107E01ADD584C008D60DF /* NCDatabaseFetchedResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C107DF1ADD584C008D60DF /* NCDatabaseFetchedResultsViewController.m */; };
@@ -4916,12 +4926,14 @@
 				12564B691B84AE62000F68D8 /* NCDBInvCategory.m in Sources */,
 				12564B6B1B84AE62000F68D8 /* NCDBInvControlTowerResource.m in Sources */,
 				12564B6F1B84AE62000F68D8 /* NCDBInvMetaGroup.m in Sources */,
+				12B9A6431B8C91C6005624D5 /* NCTableViewController.m in Sources */,
 				12564B6E1B84AE62000F68D8 /* NCDBInvMarketGroup.m in Sources */,
 				12564B5F1B84AE62000F68D8 /* NCDBEufeItemCategory.m in Sources */,
 				12564B5A1B84AE62000F68D8 /* NCDBDgmAttributeCategory.m in Sources */,
 				12564B7A1B84AE62000F68D8 /* NCDBStaStation.m in Sources */,
 				12564B821B84AE62000F68D8 /* NCDBMapSolarSystem+Neocom.m in Sources */,
 				12564B701B84AE62000F68D8 /* NCDBInvType.m in Sources */,
+				12B9A6441B8C9FC3005624D5 /* NCTableViewHeaderView.m in Sources */,
 				12564B841B84AE62000F68D8 /* NCDBStaStation+Neocom.m in Sources */,
 				12564B811B84AE62000F68D8 /* NCDBInvGroup+Neocom.m in Sources */,
 				12564B751B84AE62000F68D8 /* NCDBMapSolarSystem.m in Sources */,
@@ -4932,6 +4944,7 @@
 				1248CEBC1B7E12C8000266BE /* NCSkillPlan.m in Sources */,
 				12564B781B84AE62000F68D8 /* NCDBRamAssemblyLineType.m in Sources */,
 				1248CE521B7DDCBF000266BE /* AppDelegate.m in Sources */,
+				12B9A6451B8C9FC3005624D5 /* NCTableViewCollapsedHeaderView.m in Sources */,
 				12564B7C1B84AE62000F68D8 /* NCDatabase.m in Sources */,
 				12564B611B84AE62000F68D8 /* NCDBEveIcon.m in Sources */,
 				1248CEB21B7E12C8000266BE /* NCShoppingGroup.m in Sources */,
@@ -4949,7 +4962,9 @@
 				1248CE4F1B7DDCBF000266BE /* main.m in Sources */,
 				12564B531B84AE62000F68D8 /* NCDBVersion.m in Sources */,
 				12564B831B84AE62000F68D8 /* NCDBEufeItemCategory+Neocom.mm in Sources */,
+				12B9A6491B8C9FEB005624D5 /* NCAdaptiveModalSegue.m in Sources */,
 				12564B641B84AE62000F68D8 /* NCDBIndActivity.m in Sources */,
+				12B9A64A1B8C9FFF005624D5 /* NCNavigationController.m in Sources */,
 				1215F5861B84634D00C16649 /* NCCharacterAttributes.mm in Sources */,
 				12564C021B84B144000F68D8 /* NCNotificationsManager.m in Sources */,
 				1248CEBD1B7E12C8000266BE /* NCSetting.m in Sources */,
@@ -4969,7 +4984,9 @@
 				1248CEB81B7E12C8000266BE /* NCLoadoutData.m in Sources */,
 				12564B591B84AE62000F68D8 /* NCDBChrRace.m in Sources */,
 				1248CEB11B7E12A9000266BE /* NSManagedObjectContext+NCStorage.m in Sources */,
+				12B9A6461B8C9FD5005624D5 /* CollapsableTableView.m in Sources */,
 				12564B561B84AE62000F68D8 /* NCDBCertMastery.m in Sources */,
+				12B9A6481B8C9FE9005624D5 /* NCAdaptivePopoverSegue.m in Sources */,
 				12564B741B84AE62000F68D8 /* NCDBMapRegion.m in Sources */,
 				12564B5E1B84AE62000F68D8 /* NCDBEufeItem.m in Sources */,
 				12564B7F1B84AE62000F68D8 /* NCDBInvType+Neocom.mm in Sources */,
@@ -4980,8 +4997,11 @@
 				12564B601B84AE62000F68D8 /* NCDBEufeItemGroup.m in Sources */,
 				12564B6D1B84AE62000F68D8 /* NCDBInvGroup.m in Sources */,
 				12564B7E1B84AE62000F68D8 /* NCDBEveIcon+Neocom.m in Sources */,
+				12B9A63D1B8C6F63005624D5 /* NCPriceManager.m in Sources */,
 				12564C051B84B4DC000F68D8 /* NCTask.m in Sources */,
 				12564B551B84AE62000F68D8 /* NCDBCertCertificate.m in Sources */,
+				12B9A6411B8C73B1005624D5 /* NCCharacterID.m in Sources */,
+				12B9A6471B8C9FE3005624D5 /* NCTableViewCell.m in Sources */,
 				12564B6C1B84AE62000F68D8 /* NCDBInvControlTowerResourcePurpose.m in Sources */,
 				12564B761B84AE62000F68D8 /* NCDBNpcGroup.m in Sources */,
 				12564B721B84AE62000F68D8 /* NCDBMapConstellation.m in Sources */,

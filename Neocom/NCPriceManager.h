@@ -7,12 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "EVECentralAPI.h"
 
 @interface NCPriceManager : NSObject
 + (instancetype) sharedManager;
-- (EVECentralMarketStatType*) priceWithType:(NSInteger) typeID;
-- (NSDictionary*) pricesWithTypes:(NSArray*) types;
+- (void) requestPriceWithType:(NSInteger) typeID completionBlock:(void(^)(NSNumber* price)) completionBlock;
+- (void) requestPricesWithTypes:(NSArray*) typeIDs completionBlock:(void(^)(NSDictionary* prices)) completionBlock;
 - (void) updateIfNeeded;
 
 @end

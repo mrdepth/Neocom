@@ -8,10 +8,11 @@
 
 #import "NCPriceManager.h"
 #import "NCCache.h"
-#import "ASURLConnection.h"
+#import <EVEAPI/EVEAPI.h>
 
 
 @interface NCPriceManager()
+@property (nonatomic, strong) AFHTTPRequestOperationManager* manager;
 @property (atomic, assign) BOOL updating;
 @end
 
@@ -28,30 +29,45 @@
 
 - (id) init {
 	if (self = [super init]) {
+		AFHTTPRequestSerializer* requestSerializer = [AFHTTPRequestSerializer serializer];
+		[requestSerializer setValue:@"application/vnd.ccp.eve.Api-v1+json" forHTTPHeaderField:@"Accept"];
+		self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://public-crest.eveonline.com"]];
+		self.manager.requestSerializer = requestSerializer;
+		self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
+		self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"*/*"];
 		[self updateIfNeeded];
 	}
 	return self;
 }
 
-- (EVECentralMarketStatType*) priceWithType:(NSInteger) typeID {
-	return [self pricesWithTypes:@[@(typeID)]][@(typeID)];
+- (void) requestPriceWithType:(NSInteger) typeID completionBlock:(void(^)(NSNumber* price)) completionBlock {
+	[self requestPricesWithTypes:@[@(typeID)] completionBlock:^(NSDictionary *prices) {
+		completionBlock(prices[@(typeID)]);
+	}];
 }
 
-- (NSDictionary*) pricesWithTypes:(NSArray*) types {
+- (void) requestPricesWithTypes:(NSArray*) typeIDs completionBlock:(void(^)(NSDictionary* prices)) completionBlock {
 	NCCache* cache = [NCCache sharedCache];
-	NSMutableDictionary* prices = [NSMutableDictionary new];
-	[cache.managedObjectContext performBlockAndWait:^{
+	[cache.managedObjectContext performBlock:^{
+		NSMutableDictionary* prices = [NSMutableDictionary new];
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Price"];
-		request.predicate = [NSPredicate predicateWithFormat:@"typeID in %@", types];
+		request.predicate = [NSPredicate predicateWithFormat:@"typeID in %@", typeIDs];
 		for (NCCachePrice* price in [cache.managedObjectContext executeFetchRequest:request error:nil])
 			prices[@(price.typeID)] = @(price.price);
+		dispatch_async(dispatch_get_main_queue(), ^{
+			completionBlock(prices);
+		});
 	}];
-	return prices;
 }
 
 - (void) updateIfNeeded {
-	if (self.updating)
+	static int triesLeft = 5;
+	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+	
+	if (self.updating || triesLeft <= 0) {
+		triesLeft = 0;
 		return;
+	}
 	
 	self.updating = YES;
 	NCCache* cache = [NCCache sharedCache];
@@ -59,41 +75,38 @@
 		NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:@"NCPriceManager"];
 		NSDate* date = cacheRecord.expireDate;
 		if (!date || [date timeIntervalSinceNow] < 0) {
-			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-				@autoreleasepool {
-					NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://public-crest.eveonline.com/market/prices/"]];
-					[request setValue:@"application/vnd.ccp.eve.Api-v1+json" forHTTPHeaderField:@"Accept"];
-					NSData* data = [ASURLConnection sendSynchronousRequest:request returningResponse:nil error:nil progressHandler:nil];
-					if (data) {
-						NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-						if ([dic isKindOfClass:[NSDictionary class]]) {
-							[cache.managedObjectContext performBlock:^{
-								NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Price"];
-								for (NCCachePrice* record in [cache.managedObjectContext executeFetchRequest:request error:nil])
-									[cache.managedObjectContext deleteObject:record];
-
-								for (NSDictionary* item in dic[@"items"]) {
-									int32_t typeID = [item[@"type"][@"id"] intValue];
-									NCCachePrice* record = [NSEntityDescription insertNewObjectForEntityForName:@"Price" inManagedObjectContext:cache.managedObjectContext];
-									record.typeID = typeID;
-									double adjustedPrice = [item[@"adjustedPrice"] doubleValue];
-									double averagePrice = [item[@"averagePrice"] doubleValue];
-									record.price = averagePrice > 0 ? averagePrice : adjustedPrice;
-								}
-								cacheRecord.date = [NSDate date];
-								cacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:3600 * 24];
-								if ([cache.managedObjectContext hasChanges])
-									[cache.managedObjectContext save:nil];
-								self.updating = NO;
-							}];
+			[self.manager GET:@"https://public-crest.eveonline.com/market/prices/" parameters:nil success:^void(AFHTTPRequestOperation * operation, id dic) {
+				if ([dic isKindOfClass:[NSDictionary class]]) {
+					[cache.managedObjectContext performBlock:^{
+						NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Price"];
+						for (NCCachePrice* record in [cache.managedObjectContext executeFetchRequest:request error:nil])
+							[cache.managedObjectContext deleteObject:record];
+						
+						for (NSDictionary* item in dic[@"items"]) {
+							int32_t typeID = [item[@"type"][@"id"] intValue];
+							NCCachePrice* record = [NSEntityDescription insertNewObjectForEntityForName:@"Price" inManagedObjectContext:cache.managedObjectContext];
+							record.typeID = typeID;
+							double adjustedPrice = [item[@"adjustedPrice"] doubleValue];
+							double averagePrice = [item[@"averagePrice"] doubleValue];
+							record.price = averagePrice > 0 ? averagePrice : adjustedPrice;
 						}
-						else
-							self.updating = NO;
-					}
-					else
+						cacheRecord.date = [NSDate date];
+						cacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:3600 * 24];
+						if ([cache.managedObjectContext hasChanges])
+							[cache.managedObjectContext save:nil];
 						self.updating = NO;
+						triesLeft = 5;
+					}];
 				}
-			});
+				else {
+					triesLeft--;
+					self.updating = NO;
+				}
+			} failure:^void(AFHTTPRequestOperation * operation, NSError * error) {
+				triesLeft--;
+				self.updating = NO;
+				[self performSelector:@selector(updateIfNeeded) withObject:0 afterDelay:10];
+			}];
 		}
 		else
 			self.updating = NO;

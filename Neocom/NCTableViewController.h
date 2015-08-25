@@ -12,6 +12,7 @@
 #import "NCTaskManager.h"
 #import "CollapsableTableView.h"
 #import "NCDefaultTableViewCell.h"
+#import "NSManagedObjectContext+NCStorage.h"
 
 @interface NCTableViewController : UITableViewController<UISearchDisplayDelegate, CollapsableTableViewDelegate>
 @property (nonatomic, strong, readonly) NCTaskManager* taskManager;
@@ -19,8 +20,9 @@
 @property (nonatomic, strong, readonly) id data;
 @property (nonatomic, strong) UISearchController* searchController;
 @property (nonatomic, weak) NCTableViewController* searchContentsController;
+@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 
-- (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
+- (void) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
 - (void) didUpdateData:(id) data;
 - (void) didFailLoadDataWithError:(NSError*) error;
 - (void) didChangeStorage;

@@ -16,7 +16,7 @@
 
 @interface NCSkillPlan() {
 	NSMutableArray* _skills;
-	NSMutableArray* _completionBlocks;
+	dispatch_group_t _loadDispatchGroup;
 }
 
 @property (nonatomic, strong) NCTrainingQueue* trainingQueue;
@@ -80,59 +80,60 @@
 
 - (void) mergeWithTrainingQueue:(NCTrainingQueue*) trainingQueue completionBlock:(void(^)(NCTrainingQueue* trainingQueue)) completionBlock {
 	[self loadTrainingQueueWithCompletionBlock:^(NCTrainingQueue *trainingQueue) {
-		[[NCDatabase sharedDatabase] performBlockAndWait:^{
+		[[NCDatabase sharedDatabase] performBlock:^{
 			NCTrainingQueue* newTrainingQueue = [trainingQueue copy];
 			for (NCSkillData* skillData in trainingQueue.skills)
 				[newTrainingQueue addSkill:skillData.type withLevel:skillData.targetLevel];
 			self.trainingQueue = newTrainingQueue;
+			if (completionBlock)
+				completionBlock(trainingQueue);
+			
+			[self save];
 		}];
-		[self save];
 	}];
 }
 
 - (void) clear {
 	self.skills = nil;
-	if (self.trainingQueue)
-		self.trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:self.trainingQueue.characterSheet];
+	self.trainingQueue = nil;
 }
 
 - (void) loadTrainingQueueWithCompletionBlock:(void(^)(NCTrainingQueue* trainingQueue)) completionBlock {
 	if (!_trainingQueue) {
-		BOOL load;
+		BOOL load = NO;
+		dispatch_group_t loadDispatchGroup;
 		@synchronized(self) {
-			load = !_completionBlocks || _completionBlocks.count == 0;
-			if (!_completionBlocks)
-				_completionBlocks = [NSMutableArray new];
-			[_completionBlocks addObject:completionBlock];
+			if (!_loadDispatchGroup) {
+				_loadDispatchGroup = loadDispatchGroup = dispatch_group_create();
+				dispatch_group_enter(loadDispatchGroup);
+				load = YES;
+			}
 		}
-		if (!load)
-			return;
-
-		[self.account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+		if (load) {
 			[self.managedObjectContext performBlock:^{
 				NSArray* skills = self.skills;
-				
-				[[[NCDatabase sharedDatabase] managedObjectContext] performBlock:^{
-					NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet];
-					for (NSDictionary* item in skills) {
-						int32_t typeID = [item[NCSkillPlanTypeIDKey] intValue];
-						int32_t targetLevel = [item[NCSkillPlanTargetLevelKey] intValue];
-						NCDBInvType* type = [NCDBInvType invTypeWithTypeID:typeID];
-						if (type)
-							[trainingQueue addSkill:type withLevel:targetLevel];
-					}
-					_trainingQueue = trainingQueue;
-					dispatch_async(dispatch_get_main_queue(), ^{
-						@synchronized(self) {
-							for (void(^block)(NCTrainingQueue*) in _completionBlocks)
-								block(trainingQueue);
-							_completionBlocks = nil;
+				[self.account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+					[[[NCDatabase sharedDatabase] managedObjectContext] performBlock:^{
+						NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet];
+						for (NSDictionary* item in skills) {
+							int32_t typeID = [item[NCSkillPlanTypeIDKey] intValue];
+							int32_t targetLevel = [item[NCSkillPlanTargetLevelKey] intValue];
+							NCDBInvType* type = [NCDBInvType invTypeWithTypeID:typeID];
+							if (type)
+								[trainingQueue addSkill:type withLevel:targetLevel];
 						}
-					});
+						_trainingQueue = trainingQueue;
+						dispatch_group_leave(loadDispatchGroup);
+						@synchronized(self) {
+							_loadDispatchGroup = nil;
+						}
+					}];
 				}];
-
 			}];
-		}];
+		}
+		dispatch_group_notify(loadDispatchGroup, dispatch_get_main_queue(), ^{
+			completionBlock(_trainingQueue);
+		});
 	}
 	else
 		completionBlock(_trainingQueue);
@@ -144,8 +145,12 @@
 	if (self.trainingQueue) {
 		EVECharacterSheet* characterSheet = notification.userInfo[@"characterSheet"];
 		if (characterSheet) {
-			self.trainingQueue.characterSheet = characterSheet;
-			self.trainingQueue.characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
+			[[NCDatabase sharedDatabase] performBlock:^{
+				NCTrainingQueue* trainingQueue = [self.trainingQueue copy];
+				trainingQueue.characterSheet = characterSheet;
+				trainingQueue.characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
+				self.trainingQueue = trainingQueue;
+			}];
 		}
 	}
 }

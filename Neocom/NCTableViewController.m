@@ -21,11 +21,13 @@
 @interface NCTableViewController ()<UISearchResultsUpdating>
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
 @property (nonatomic, strong, readwrite) NCCacheRecord* cacheRecord;
+@property (nonatomic, retain) NSDate * cacheExpireDate;
 @property (nonatomic, strong, readwrite) id data;
 @property (nonatomic, strong) NSMutableDictionary* sectionsCollapsState;
 @property (nonatomic, strong) NSDictionary* previousCollapsState;
 @property (nonatomic, strong) NSMutableDictionary* offscreenCells;
 @property (nonatomic, strong) NSMutableDictionary* estimatedRowHeights;
+@property (nonatomic, assign) BOOL loadingFromCache;
 
 - (IBAction) onRefresh:(id) sender;
 
@@ -96,16 +98,21 @@
 	
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
 		NSString* key = NSStringFromClass(self.class);
-		NCStorage* storage = [NCStorage sharedStorage];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-		[context performBlockAndWait:^{
-			NCSetting* setting = [[NCStorage sharedStorage] settingWithKey:key];
+
+		[self.managedObjectContext performBlock:^{
+			NCSetting* setting = [self.managedObjectContext settingWithKey:key];
 			self.previousCollapsState = setting.value;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self update];
+			});
 		}];
 	}
+	else {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self update];
+		});
+	}
 	self.sectionsCollapsState = [NSMutableDictionary new];
-	
-	[self performSelector:@selector(update) withObject:nil afterDelay:0];
 }
 
 - (void) dealloc {
@@ -123,13 +130,12 @@
     [super didReceiveMemoryWarning];
 	if ([self isViewLoaded] && self.view.window == nil) {
 		self.cacheRecord = nil;
+		self.cacheExpireDate = nil;
 		self.data = nil;
 		if (self.searchDisplayController && self.searchDisplayController.active)
 			[self.searchDisplayController setActive:NO animated:NO];
 	}
 }
-
-
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
@@ -146,15 +152,12 @@
 	
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
 		NSString* key = NSStringFromClass(self.class);
-		NCStorage* storage = [NCStorage sharedStorage];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-		[context performBlockAndWait:^{
-			NCSetting* setting = [[NCStorage sharedStorage] settingWithKey:key];
-			if (![self.sectionsCollapsState isEqualToDictionary:setting.value]) {
-				if (![setting.value isEqualToDictionary:self.sectionsCollapsState]) {
-					setting.value = self.sectionsCollapsState;
-					[[NCStorage sharedStorage] saveContext];
-				}
+		id sectionsCollapsState = self.sectionsCollapsState;
+		[self.managedObjectContext performBlock:^{
+			NCSetting* setting = [self.managedObjectContext settingWithKey:key];
+			if (![sectionsCollapsState isEqualToDictionary:setting.value]) {
+				setting.value = sectionsCollapsState;
+				[self.managedObjectContext save:nil];
 			}
 		}];
 	}
@@ -221,78 +224,78 @@
 	return _taskManager;
 }
 
+- (NSManagedObjectContext*) managedObjectContext {
+	@synchronized (self) {
+		if (_managedObjectContext)
+			_managedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+		return _managedObjectContext;
+	}
+}
+
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
     //[self.refreshControl beginRefreshing];
 }
 
 - (BOOL) shouldReloadData {
-	return [self isViewLoaded] && ([[self.cacheRecord expireDate] compare:[NSDate date]] == NSOrderedAscending ||
-								   (![self.cacheRecord.data isFault] && !self.cacheRecord.data.data));
+	return [self isViewLoaded] && ([self.cacheExpireDate compare:[NSDate date]] == NSOrderedAscending || !self.data);
 }
 
 - (void) reloadFromCache {
-	if (!self.searchContentsController && self.recordID) {
-
+	if (!self.searchContentsController && self.recordID && !self.loadingFromCache) {
 		NCCache* cache = [NCCache sharedCache];
 		NSManagedObjectContext* context = cache.managedObjectContext;
-		[context performBlockAndWait:^{
-			self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
-		}];
-		
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 [context performBlockAndWait:^{
-													 [self performSelectorOnMainThread:@selector(progressStepWithTask:) withObject:task waitUntilDone:NO];
-													 [self.cacheRecord.managedObjectContext performBlockAndWait:^{
-														 [self.cacheRecord.data data];
-													 }];
-												 }];
-											 }
-								 completionHandler:^(NCTask *task) {
-									 [NSObject cancelPreviousPerformRequestsWithTarget:self];
-									 if (![task isCancelled]) {
-										 if (!self.cacheRecord.data.data) {
-											 [self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
-										 }
-										 else {
-											 self.data = self.cacheRecord.data.data;
-											 [self update];
-											 
-											 if ([self shouldReloadData])
-												 [self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
-										 }
-									 }
-								 }];
+		if (context) {
+			self.loadingFromCache = YES;
+			[context performBlock:^{
+				NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
+				id data = cacheRecord.data.data;
+				NSDate* cacheExpireDate = cacheRecord.expireDate;
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.cacheRecord = cacheRecord;
+					self.cacheExpireDate = cacheExpireDate;
+					
+					if (data) {
+						self.data = data;
+						[self update];
+						if ([self shouldReloadData])
+							[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
+					}
+					else
+						[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
+					self.loadingFromCache = NO;
+				});
+			}];
+		}
 	}
 }
 
-- (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
+- (void) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
 	self.data = data;
 	if (data) {
 		NSString* recordID = self.recordID;
 		NCCache* cache = [NCCache sharedCache];
-		[cache.managedObjectContext performBlockAndWait:^{
+		[cache.managedObjectContext performBlock:^{
 			if (!self.cacheRecord || ![self.cacheRecord.recordID isEqualToString:recordID])
 				self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:recordID];
 			self.cacheRecord.recordID = recordID;
 			self.cacheRecord.data.data = data;
 			self.cacheRecord.date = cacheDate;
 			self.cacheRecord.expireDate = expireDate;
-			[cache saveContext];
+			self.cacheExpireDate = expireDate;
+			[cache.managedObjectContext save:nil];
 		}];
+		self.cacheExpireDate = expireDate;
 	}
 	[self update];
-	return self.cacheRecord;
 }
 
 - (void) didUpdateData:(id) data {
 	if (data) {
 		self.data = data;
 		NCCache* cache = [NCCache sharedCache];
-		[cache.managedObjectContext performBlockAndWait:^{
+		[cache.managedObjectContext performBlock:^{
 			self.cacheRecord.data.data = data;
-			[cache saveContext];
+			[cache.managedObjectContext save:nil];
 		}];
 
 	}

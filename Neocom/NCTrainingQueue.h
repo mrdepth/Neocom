@@ -14,7 +14,7 @@
 @class EVESkillQueue;
 @interface NCTrainingQueue : NSObject<NSCopying>
 @property (nonatomic, copy, readonly) NSArray* skills;
-@property (nonatomic, readonly, assign) NSTimeInterval trainingTime;
+@property (nonatomic, readonly) NSTimeInterval trainingTime;
 @property (nonatomic, strong) EVECharacterSheet* characterSheet;
 @property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
 

@@ -37,23 +37,17 @@
 
 	if (self = [super init]) {
 		self.type = type;
-		[type.managedObjectContext performBlockAndWait:^{
-			self.typeID = type.typeID;
-			self.rank = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
-			self.primaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
-			self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
-		}];
+		self.typeID = type.typeID;
+		self.rank = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
+		self.primaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
+		self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
 	}
 	return self;
 }
 
 - (id) initWithTypeID:(int32_t) typeID {
-	__block id obj = self;
-	[[[NCDatabase sharedDatabase] managedObjectContext] performBlockAndWait:^{
-		if ((obj = [obj initWithInvType:[NCDBInvType invTypeWithTypeID:typeID]])) {
-		}
-	}];
-	self = obj;
+	if (self = [self initWithInvType:[NCDBInvType invTypeWithTypeID:typeID]]) {
+	}
 	return self;
 }
 
@@ -120,9 +114,7 @@
 
 - (NSString*) skillName {
 	if (!_skillName) {
-		[self.type.managedObjectContext performBlockAndWait:^{
-			_skillName = [NSString stringWithFormat:@"%@ (x%d)", self.type.typeName, self.rank];
-		}];
+		_skillName = [NSString stringWithFormat:@"%@ (x%d)", self.type.typeName, self.rank];
 	}
 	return _skillName;
 }
@@ -165,12 +157,10 @@
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
 		self.typeID = [aDecoder decodeInt32ForKey:@"typeID"];
-		[[[NCDatabase sharedDatabase] managedObjectContext] performBlockAndWait:^{
-			self.type = [NCDBInvType invTypeWithTypeID:self.typeID];
-			self.rank = [(NCDBDgmTypeAttribute*) self.type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
-			self.primaryAttributeID = [(NCDBDgmTypeAttribute*) self.type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
-			self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) self.type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
-		}];
+		self.type = [NCDBInvType invTypeWithTypeID:self.typeID];
+		self.rank = [(NCDBDgmTypeAttribute*) self.type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
+		self.primaryAttributeID = [(NCDBDgmTypeAttribute*) self.type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
+		self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) self.type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
 		self.currentLevel = [aDecoder decodeInt32ForKey:@"currentLevel"];
 		self.targetLevel = [aDecoder decodeInt32ForKey:@"targetLevel"];
 		self.characterAttributes = [aDecoder decodeObjectForKey:@"characterAttributes"];

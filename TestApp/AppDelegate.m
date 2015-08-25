@@ -11,6 +11,18 @@
 #import "NCAccountsManager.h"
 #import "NCCache.h"
 
+@interface MyClass : NSObject
+
+@end
+
+@implementation MyClass
+
+- (void) dealloc {
+	NSLog(@"dealloc");
+}
+
+@end
+
 @interface AppDelegate ()
 
 @end
@@ -19,28 +31,32 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	[NCStorage setSharedStorage:[[NCStorage alloc] initLocalStorage]];
+/*
+	dispatch_group_t dg = dispatch_group_create();
+	dispatch_group_enter(dg);
 	
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
-	request.fetchLimit = 1;
-	NSManagedObjectContext* db = [[NCDatabase sharedDatabase] managedObjectContext];
+	//dispatch_set_context(dg, (__bridge_retained void*)@{@"error":[NSError errorWithDomain:@"domain" code:123 userInfo:nil], @"obj":[MyClass new]});
+	dispatch_set_context(dg, (__bridge_retained void*)[MyClass new]);
 	
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-		__block NSManagedObjectContext* context = [[NCStorage sharedStorage] createManagedObjectContext];
-		[[[NCDatabase sharedDatabase] managedObjectContext] performBlockAndWait:^{
-			[context performBlockAndWait:^{
-				NCDBInvType* type = [NCDBInvType invTypeWithTypeID:645];
-				[type category];
-				NSLog(@"%@", type);
-				context = nil;
-				//NSLog(@"a %@", [[db executeFetchRequest:request error:nil] valueForKey:@"typeID"]);
-			}];
-			NSLog(@"b %@", [[db executeFetchRequest:request error:nil] valueForKey:@"typeID"]);
-		}];
+	dispatch_group_notify(dg, dispatch_get_main_queue(), ^{
+		NSDictionary* context = (__bridge NSDictionary*) dispatch_get_context(dg);
+		NSLog(@"%@", context);
 	});
+	
+	dispatch_group_notify(dg, dispatch_get_main_queue(), ^{
+		NSDictionary* context = (__bridge NSDictionary*) dispatch_get_context(dg);
+		NSLog(@"%@", context);
+	});
+	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		NSLog(@"4");
+		dispatch_group_leave(dg);
+		dispatch_set_finalizer_f(dg, (dispatch_function_t) &CFRelease);
+	});
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+	});
+	NSLog(@"3");*/
 
-	[[[NCDatabase sharedDatabase] managedObjectContext] performBlock:^{
-	}];
 /*	[NCStorage setSharedStorage:[[NCStorage alloc] initLocalStorage]];
 	[NCAccountsManager setSharedManager:[[NCAccountsManager alloc] initWithStorage:[NCStorage sharedStorage]]];
 	

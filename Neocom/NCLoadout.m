@@ -14,7 +14,7 @@
 #define NCCategoryIDShip 6
 
 @implementation NCLoadout
-@synthesize type = _type;
+//@synthesize type = _type;
 
 @dynamic name;
 @dynamic typeID;
@@ -22,7 +22,7 @@
 @dynamic data;
 @dynamic tag;
 
-- (NCDBInvType*) type {
+/*- (NCDBInvType*) type {
 	if (!_type) {
 		int32_t typeID;
 		[[[NCDatabase sharedDatabase] managedObjectContext] performBlockAndWait:^{
@@ -46,6 +46,6 @@
 		category = type.group.category.categoryID == NCCategoryIDShip ? NCLoadoutCategoryShip : NCLoadoutCategoryPOS;
 	}];
 	return category;
-}
+}*/
 
 @end

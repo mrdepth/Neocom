@@ -9,7 +9,7 @@
 #import "NCCache.h"
 
 @interface NCCache()
-@property (readwrite, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+//@property (readwrite, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readwrite, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readwrite, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
@@ -36,46 +36,46 @@
 	return self;
 }
 
-- (void)saveContext
+/*- (void)saveContext
 {
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
 	NSError* error;
 	if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
 	}
-}
+}*/
 
 - (void) clear {
-	[self.managedObjectContext performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:self.managedObjectContext];
-		[fetchRequest setEntity:entity];
+	NSManagedObjectContext* managedObjectContext = [self createManagedObjectContext];
+	[managedObjectContext performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Record"];
 		
-		NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+		NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
 		for (NCCacheRecord* record in fetchedObjects) {
 			record.expireDate = [NSDate distantPast];
 			record.date = [NSDate distantPast];
 			record.data.data = nil;
 		}
-		[self saveContext];
+		[managedObjectContext save:nil];
 	}];
 }
 
 - (void) clearInvalidData {
-	[self.managedObjectContext performBlockAndWait:^{
+	NSManagedObjectContext* managedObjectContext = [self createManagedObjectContext];
+	[managedObjectContext performBlockAndWait:^{
 		@try {
 			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-			NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:self.managedObjectContext];
+			NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:managedObjectContext];
 			[fetchRequest setEntity:entity];
 			fetchRequest.predicate = [NSPredicate predicateWithFormat:@"expireDate <= %@", [NSDate dateWithTimeIntervalSinceNow:-3600 * 24 * 7]];
 			
-			NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+			NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
 			for (NCCacheRecord* record in fetchedObjects) {
 				if ([record isFault])
-					[self.managedObjectContext deleteObject:record];
+					[managedObjectContext deleteObject:record];
 				else
 					record.data.data = nil;
 			}
-			[self saveContext];
+			[managedObjectContext save:nil];
 		}
 		@catch (NSException *exception) {
 			NSString* cacheDirectory = [NCCache cacheDirectory];
@@ -92,11 +92,23 @@
 }
 
 
+- (NSManagedObjectContext*) createManagedObjectContext {
+	NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+	if (coordinator != nil) {
+		NSManagedObjectContext* managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+		[managedObjectContext setPersistentStoreCoordinator:coordinator];
+		[managedObjectContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSRollbackMergePolicyType]];
+		return managedObjectContext;
+	}
+	else
+		return nil;
+}
+
 #pragma mark - Core Data stack
 
 // Returns the managed object context for the application.
 // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
-- (NSManagedObjectContext *)managedObjectContext
+/*- (NSManagedObjectContext *)managedObjectContext
 {
 	@synchronized(self) {
 		if (_managedObjectContext != nil) {
@@ -110,11 +122,11 @@
 		}
 		return _managedObjectContext;
 	}
-}
+}*/
 
 // Returns the managed object model for the application.
 // If the model doesn't already exist, it is created from the application's model.
-- (NSManagedObjectModel *)managedObjectModel
+/*- (NSManagedObjectModel *)managedObjectModel
 {
 	@synchronized(self) {
 		if (_managedObjectModel != nil) {
@@ -124,7 +136,7 @@
 		_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 		return _managedObjectModel;
 	}
-}
+}*/
 
 // Returns the persistent store coordinator for the application.
 // If the coordinator doesn't already exist, it is created and the application's store added to it.

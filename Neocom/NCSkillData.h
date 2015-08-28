@@ -30,7 +30,7 @@
 @property (nonatomic, readonly) int32_t skillPointsToLevelUp;
 
 - (id) initWithInvType:(NCDBInvType*) type;
-- (id) initWithTypeID:(int32_t) typeID;
+//- (id) initWithTypeID:(int32_t) typeID;
 - (NSTimeInterval) trainingTimeToLevelUpWithCharacterAttributes:(NCCharacterAttributes*) attributes;
 - (NSTimeInterval) trainingTimeToFinishWithCharacterAttributes:(NCCharacterAttributes*) attributes;
 

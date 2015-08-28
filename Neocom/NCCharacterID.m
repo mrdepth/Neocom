@@ -14,15 +14,17 @@
 @property (nonatomic, assign, readwrite) NCCharacterIDType type;
 @property (nonatomic, assign, readwrite) int32_t characterID;
 @property (nonatomic, strong, readwrite) NSString* name;
+@property (nonatomic, strong) NSManagedObjectContext* cacheManagedObjectContext;
+
 @end
 
 @implementation NCCharacterID
 
 + (void) requestCharacterIDWithName:(NSString*) name completionBlock:(void(^)(NCCharacterID* characterID, NSError* error)) completionBlock {
 	name = [name lowercaseString];
-	NCCache* cache = [NCCache sharedCache];
+	__block NSManagedObjectContext* managedObjectContext = [[NCCache sharedCache] createManagedObjectContext];
 	
-	[cache.managedObjectContext performBlock:^{
+	[managedObjectContext performBlock:^{
 		NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:@"NCCharacterID"];
 		NSMutableDictionary* nameToCharacterID = [cacheRecord.data.data mutableCopy];
 		
@@ -47,21 +49,25 @@
 					characterID.name = ownerIDItem.ownerName;
 					nameToCharacterID[name] = characterID;
 					
-					[cache.managedObjectContext performBlock:^{
+					[managedObjectContext performBlock:^{
 						if (![nameToCharacterID isEqualToDictionary:cacheRecord.data.data])
 							cacheRecord.data.data = nameToCharacterID;
-						[cache.managedObjectContext save:nil];
+						[managedObjectContext save:nil];
+						managedObjectContext = nil;
 					}];
 					completionBlock(characterID, nil);
 				}
-				else
+				else {
 					completionBlock(nil, error);
+					managedObjectContext = nil;
+				}
 			}
 					progressBlock:nil];
 		}
 		else {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				completionBlock(characterID, nil);
+				managedObjectContext = nil;
 			});
 		}
 	}];

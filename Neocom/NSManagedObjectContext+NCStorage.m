@@ -80,13 +80,13 @@
 	return loadouts;
 }
 
-- (NSArray*) shipLoadouts {
+/*- (NSArray*) shipLoadouts {
 	return [[self loadouts] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category == %d", NCLoadoutCategoryShip]];
 }
 
 - (NSArray*) posLoadouts {
 	return [[self loadouts] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category == %d", NCLoadoutCategoryPOS]];
-}
+}*/
 
 //NCAccount
 - (NSArray*) allAccounts {
@@ -140,7 +140,7 @@
 	return nil;
 }
 
-- (NCFitCharacter*) characterWithSkillsLevel:(NSInteger) skillsLevel {
+/*- (NCFitCharacter*) characterWithSkillsLevel:(NSInteger) skillsLevel {
 	NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:self] insertIntoManagedObjectContext:nil];
 	character.name = [NSString stringWithFormat:NSLocalizedString(@"All Skills %d", nil), (int32_t) skillsLevel];
 	
@@ -162,7 +162,7 @@
 	character.skills = skills;
 	
 	return character;
-}
+}*/
 
 //NCSetting
 - (NCSetting*) settingWithKey:(NSString*) key {

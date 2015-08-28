@@ -15,7 +15,6 @@
 static NCAccountsManager* sharedManager = nil;
 
 @interface NCAccountsManager()
-@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic, strong, readwrite) NCStorage* storage;
 
 - (void) didChangeStorage:(NSNotification*) notification;
@@ -39,7 +38,7 @@ static NCAccountsManager* sharedManager = nil;
 - (id) initWithStorage:(NCStorage*) storage {
 	assert(storage);
 	if (self = [super init]) {
-		self.managedObjectContext = [storage createManagedObjectContext];
+		self.storageManagedObjectContext = [storage createManagedObjectContext];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStorage:) name:NCStorageDidChangeNotification object:nil];
 		self.storage = storage;
@@ -55,21 +54,21 @@ static NCAccountsManager* sharedManager = nil;
 	EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:[EVEAPIKey apiKeyWithKeyID:keyID vCode:vCode] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
 	[api apiKeyInfoWithCompletionBlock:^(EVEAPIKeyInfo *result, NSError *error) {
 		if (result && !result.eveapi.error) {
-			[self.managedObjectContext performBlock:^{
+			[self.storageManagedObjectContext performBlock:^{
 				NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 				fetchRequest.predicate = [NSPredicate predicateWithFormat:@"keyID == %d", keyID];
 				fetchRequest.fetchLimit = 1;
-				NSEntityDescription *entity = [NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:self.managedObjectContext];
+				NSEntityDescription *entity = [NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:self.storageManagedObjectContext];
 				[fetchRequest setEntity:entity];
-				NCAPIKey* apiKey = [[self.managedObjectContext executeFetchRequest:fetchRequest error:nil] lastObject];
+				NCAPIKey* apiKey = [[self.storageManagedObjectContext executeFetchRequest:fetchRequest error:nil] lastObject];
 				
 				if (apiKey && ![apiKey.vCode isEqualToString:vCode]) {
-					[self.managedObjectContext deleteObject:apiKey];
+					[self.storageManagedObjectContext deleteObject:apiKey];
 					apiKey = nil;
 				}
 
 				if (!apiKey) {
-					apiKey = [[NCAPIKey alloc] initWithEntity:[NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:self.managedObjectContext] insertIntoManagedObjectContext:self.managedObjectContext];
+					apiKey = [[NCAPIKey alloc] initWithEntity:[NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
 					apiKey.keyID = keyID;
 					apiKey.vCode = vCode;
 					apiKey.apiKeyInfo = result;
@@ -82,7 +81,7 @@ static NCAccountsManager* sharedManager = nil;
 						if (account.characterID == character.characterID)
 							break;
 					if (!account) {
-						account = [[NCAccount alloc] initWithEntity:[NSEntityDescription entityForName:@"Account" inManagedObjectContext:self.managedObjectContext] insertIntoManagedObjectContext:self.managedObjectContext];
+						account = [[NCAccount alloc] initWithEntity:[NSEntityDescription entityForName:@"Account" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
 						account.apiKey = apiKey;
 						account.characterID = character.characterID;
 						account.order = INT32_MAX;
@@ -92,11 +91,11 @@ static NCAccountsManager* sharedManager = nil;
 				}
 
 				int32_t order = 0;
-				for (NCAccount* account in [self.managedObjectContext allAccounts])
+				for (NCAccount* account in [self.storageManagedObjectContext allAccounts])
 					account.order = order++;
 				
-				if ([self.managedObjectContext hasChanges])
-					[self.managedObjectContext save:nil];
+				if ([self.storageManagedObjectContext hasChanges])
+					[self.storageManagedObjectContext save:nil];
 				dispatch_async(dispatch_get_main_queue(), ^{
 					completionBlock(accounts, nil);
 				});
@@ -108,32 +107,33 @@ static NCAccountsManager* sharedManager = nil;
 }
 
 - (void) removeAccount:(NCAccount*) account {
-	[self.managedObjectContext performBlock:^{
+	[self.storageManagedObjectContext performBlock:^{
 		if ([NCAccount currentAccount] == account)
 			[NCAccount setCurrentAccount:nil];
 
 		NCAPIKey* apiKey = account.apiKey;
-		[self.managedObjectContext deleteObject:account];
+		[self.storageManagedObjectContext deleteObject:account];
 		
 		if (apiKey.accounts.count == 0)
-			[self.managedObjectContext deleteObject:apiKey];
+			[self.storageManagedObjectContext deleteObject:apiKey];
 		
 		int32_t order = 0;
-		for (NCAccount* account in [self.managedObjectContext allAccounts])
+		for (NCAccount* account in [self.storageManagedObjectContext allAccounts])
 			account.order = order++;
 		
-		if ([self.managedObjectContext hasChanges])
-			[self.managedObjectContext save:nil];
+		if ([self.storageManagedObjectContext hasChanges])
+			[self.storageManagedObjectContext save:nil];
 	}];
 	[[NCNotificationsManager sharedManager] setNeedsUpdateNotifications];
 }
 
-- (void) loadAccountsWithCompletionBlock:(void(^)(NSArray* accounts)) completionBlock {
-	[self.managedObjectContext performBlock:^{
-		NSArray* accounts = [self.managedObjectContext allAccounts];
+- (void) loadAccountsWithCompletionBlock:(void(^)(NSArray* accounts, NSArray* apiKeys)) completionBlock {
+	[self.storageManagedObjectContext performBlock:^{
+		NSArray* accounts = [self.storageManagedObjectContext allAccounts];
+		NSArray* apiKeys = [self.storageManagedObjectContext allAPIKeys];
 		if (completionBlock)
 			dispatch_async(dispatch_get_main_queue(), ^{
-				completionBlock(accounts);
+				completionBlock(accounts, apiKeys);
 			});
 	}];
 }

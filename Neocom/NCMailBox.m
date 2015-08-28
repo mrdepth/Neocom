@@ -61,7 +61,7 @@
 
 - (void) loadBodyWithCompletionBlock:(void(^)(EVEMailBodiesItem* body, NSError* error)) completionBlock {
 	if (!_body) {
-		[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
+		[self.cacheManagedObjectContext performBlock:^{
 			 NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBoxMessage.%d", self.header.messageID]];
 			_body = cacheRecord.data.data;
 			if (!_body) {
@@ -94,15 +94,14 @@
 }
 
 - (void) clearCache {
-	NCCache* cache = [NCCache sharedCache];
-	[cache.managedObjectContext performBlock:^{
+	[self.cacheManagedObjectContext performBlock:^{
 		NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Record"];
 		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"recordID == %@", [NSString stringWithFormat:@"NCMailBoxMessage.%d", self.header.messageID]];
 		
-		NSArray *fetchedObjects = [cache.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+		NSArray *fetchedObjects = [self.cacheManagedObjectContext executeFetchRequest:fetchRequest error:nil];
 		for (NCCacheRecord* record in fetchedObjects)
-			[cache.managedObjectContext deleteObject:record];
-		[cache saveContext];
+			[self.cacheManagedObjectContext deleteObject:record];
+		[self.cacheManagedObjectContext save:nil];
 	}];
 }
 
@@ -145,6 +144,7 @@
 
 @synthesize cacheRecord = _cacheRecord;
 @synthesize numberOfUnreadMessages = _numberOfUnreadMessages;
+@synthesize cacheManagedObjectContext = _cacheManagedObjectContext;
 
 - (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSArray* messages, NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock {
 	
@@ -165,6 +165,10 @@
 	
 	dispatch_group_notify(loadDispatchGroup, dispatch_get_main_queue(), ^{
 		NSDictionary* result = (__bridge NSDictionary*) dispatch_get_context(loadDispatchGroup);
+		NSManagedObjectContext* context = self.cacheManagedObjectContext;
+		for (NCMailBoxMessage* message in result[@"messages"])
+			message.cacheManagedObjectContext = context;
+		
 		completionBlock(result[@"messages"], result[@"error"]);
 	});
 	
@@ -177,10 +181,9 @@
 			return;
 		}
 
-		NCCache* cache = [NCCache sharedCache];
 		NSString* uuid = self.account.uuid;
 		
-		[cache.managedObjectContext performBlock:^{
+		[self.cacheManagedObjectContext performBlock:^{
 			NCMailBoxCacheData* data = _cacheRecord.data.data;
 			if (!_cacheRecord) {
 				_cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", uuid]];
@@ -222,11 +225,11 @@
 						data.contacts = contacts;
 						
 						self.updateDate = messageHeaders.eveapi.cacheDate;
-						[cache.managedObjectContext performBlock:^{
+						[self.cacheManagedObjectContext performBlock:^{
 							self.cacheRecord.data.data = data;
 							self.cacheRecord.date = self.updateDate;
 							self.cacheRecord.expireDate = messageHeaders.eveapi.cachedUntil;
-							[cache.managedObjectContext save:nil];
+							[self.cacheManagedObjectContext save:nil];
 						}];
 						if (data.messages)
 							dispatch_set_context(loadDispatchGroup, (__bridge_retained void*)@{@"messages":data.messages});
@@ -275,6 +278,12 @@
 			});
 		}];
 	}
+}
+
+- (NSManagedObjectContext*) cacheManagedObjectContext {
+	if (!_cacheManagedObjectContext)
+		_cacheManagedObjectContext = [[NCCache sharedCache] createManagedObjectContext];
+	return _cacheManagedObjectContext;
 }
 
 #pragma mark - Private
@@ -349,7 +358,7 @@
 		message.recipients = recipients;
 	}
 	
-	NSMutableArray* operations = [NSMutableArray new];
+	NSMutableSet* operations = [NSMutableSet new];
 	
 	NSArray* allIDs = [ids allKeys];
 	NSRange range = NSMakeRange(0, MIN(allIDs.count, 250));
@@ -376,10 +385,10 @@
 		} progressBlock:nil]];
 	}
 	if (operations.count > 0) {
-		NSOperation* operation = [[AFHTTPRequestOperation batchOfRequestOperations:operations progressBlock:nil completionBlock:^void(NSArray * operations) {
+		NSArray* batchedOperations = [AFHTTPRequestOperation batchOfRequestOperations:[operations allObjects] progressBlock:nil completionBlock:^void(NSArray * operations) {
 			completionBlock(contacts);
-		}] lastObject];
-		[api.httpRequestOperationManager.operationQueue addOperation:operation];
+		}];
+		[api.httpRequestOperationManager.operationQueue addOperations:batchedOperations waitUntilFinished:NO];
 	}
 	else
 		completionBlock(contacts);

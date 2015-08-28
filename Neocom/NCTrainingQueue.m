@@ -15,6 +15,7 @@
 	NSMutableArray* _skills;
 	NSString* _skillPlanName;
 }
+@property (nonatomic, strong, readwrite) NSManagedObjectContext* databaseManagedObjectContext;
 
 - (void) _addRequiredSkillsForType:(NCDBInvType*) type;
 - (void) _addSkill:(NCDBInvType*) skill withLevel:(int32_t) level;
@@ -36,17 +37,18 @@
 	return self;
 }
 
-- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet {
+- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext {
 	if (self = [super init]) {
 		self.characterSheet = characterSheet;
-		self.characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
+		self.characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:databaseManagedObjectContext];
+		self.databaseManagedObjectContext = databaseManagedObjectContext;
 		_skills = [NSMutableArray new];
 	}
 	return self;
 }
 
-- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet xmlData:(NSData*) data skillPlanName:(NSString**) skillPlanName {
-	if (self = [self initWithCharacterSheet:characterSheet]) {
+- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet xmlData:(NSData*) data skillPlanName:(NSString**) skillPlanName databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext {
+	if (self = [self initWithCharacterSheet:characterSheet databaseManagedObjectContext:databaseManagedObjectContext]) {
 		NSXMLParser* parser = [[NSXMLParser alloc] initWithData:data];
 		parser.delegate = self;
 		[parser parse];
@@ -65,11 +67,17 @@
 }
 
 - (void) addRequiredSkillsForType:(NCDBInvType*) type {
-	[self _addRequiredSkillsForType:type];
+	if (type.managedObjectContext != self.databaseManagedObjectContext)
+		[self _addRequiredSkillsForType:(NCDBInvType*) [self.databaseManagedObjectContext objectWithID:type.objectID]];
+	else
+		[self _addRequiredSkillsForType:type];
 }
 
 - (void) addSkill:(NCDBInvType*) skill withLevel:(int32_t) level {
-	[self _addSkill:skill withLevel:level];
+	if (skill.managedObjectContext != self.databaseManagedObjectContext)
+		[self _addSkill:(NCDBInvType*) [self.databaseManagedObjectContext objectWithID:skill.objectID] withLevel:level];
+	else
+		[self _addSkill:skill withLevel:level];
 }
 
 - (void) removeSkill:(NCSkillData*) skill {
@@ -77,7 +85,10 @@
 }
 
 - (void) addMastery:(NCDBCertMastery*) mastery {
-	[self _addMastery:mastery];
+	if (mastery.managedObjectContext != self.databaseManagedObjectContext)
+		[self _addMastery:(NCDBCertMastery*) [self.databaseManagedObjectContext objectWithID:mastery.objectID]];
+	else
+		[self _addMastery:mastery];
 }
 
 - (NSTimeInterval) trainingTime {
@@ -122,6 +133,7 @@
 	trainingQueue.characterSheet = self.characterSheet;
 	trainingQueue.characterAttributes = self.characterAttributes;
 	trainingQueue.skills = self.skills;
+	trainingQueue.databaseManagedObjectContext = self.databaseManagedObjectContext;
 	return trainingQueue;
 }
 
@@ -131,7 +143,7 @@
 	if ([elementName isEqualToString:@"entry"]) {
 		int32_t typeID = [attributeDict[@"skillID"] intValue];
 		int32_t level = [attributeDict[@"level"] intValue];
-		NCDBInvType* skill = [NCDBInvType invTypeWithTypeID:typeID];
+		NCDBInvType* skill = [self.databaseManagedObjectContext invTypeWithTypeID:typeID];
 		if (skill)
 			[self addSkill:skill withLevel:level];
 	}

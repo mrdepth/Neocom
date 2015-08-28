@@ -11,10 +11,10 @@
 
 @implementation NCDatabase
 
-@synthesize managedObjectContext = _managedObjectContext;
+//@synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-@synthesize backgroundManagedObjectContext = _backgroundManagedObjectContext;
+//@synthesize backgroundManagedObjectContext = _backgroundManagedObjectContext;
 
 + (id) sharedDatabase {
 	@synchronized(self) {
@@ -32,7 +32,7 @@
 
 // Returns the managed object context for the application.
 // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
-- (NSManagedObjectContext *)managedObjectContext
+/*- (NSManagedObjectContext *)managedObjectContext
 {
 	@synchronized(self) {
 		if (_managedObjectContext != nil) {
@@ -46,9 +46,9 @@
 		}
 		return _managedObjectContext;
 	}
-}
+}*/
 
-- (NSManagedObjectContext *)backgroundManagedObjectContext
+/*- (NSManagedObjectContext *)backgroundManagedObjectContext
 {
 	@synchronized(self) {
 		if (_backgroundManagedObjectContext != nil) {
@@ -63,7 +63,7 @@
 		}
 		return _backgroundManagedObjectContext;
 	}
-}
+}*/
 
 
 // Returns the managed object model for the application.
@@ -100,6 +100,18 @@
 		}
 		return _persistentStoreCoordinator;
 	}
+}
+
+- (NSManagedObjectContext*) createManagedObjectContext {
+	NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+	if (coordinator != nil) {
+		NSManagedObjectContext* managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+		[managedObjectContext setPersistentStoreCoordinator:coordinator];
+		[managedObjectContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSRollbackMergePolicyType]];
+		return managedObjectContext;
+	}
+	else
+		return nil;
 }
 
 @end

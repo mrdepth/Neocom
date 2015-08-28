@@ -12,6 +12,7 @@
 
 
 @interface NCPriceManager()
+@property (nonatomic, strong) NSManagedObjectContext* cacheManagedObjectContext;
 @property (nonatomic, strong) AFHTTPRequestOperationManager* manager;
 @property (atomic, assign) BOOL updating;
 @end
@@ -35,6 +36,7 @@
 		self.manager.requestSerializer = requestSerializer;
 		self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
 		self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"*/*"];
+		self.cacheManagedObjectContext = [[NCCache sharedCache] createManagedObjectContext];
 		[self updateIfNeeded];
 	}
 	return self;
@@ -47,12 +49,11 @@
 }
 
 - (void) requestPricesWithTypes:(NSArray*) typeIDs completionBlock:(void(^)(NSDictionary* prices)) completionBlock {
-	NCCache* cache = [NCCache sharedCache];
-	[cache.managedObjectContext performBlock:^{
+	[self.cacheManagedObjectContext performBlock:^{
 		NSMutableDictionary* prices = [NSMutableDictionary new];
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Price"];
 		request.predicate = [NSPredicate predicateWithFormat:@"typeID in %@", typeIDs];
-		for (NCCachePrice* price in [cache.managedObjectContext executeFetchRequest:request error:nil])
+		for (NCCachePrice* price in [self.cacheManagedObjectContext executeFetchRequest:request error:nil])
 			prices[@(price.typeID)] = @(price.price);
 		dispatch_async(dispatch_get_main_queue(), ^{
 			completionBlock(prices);
@@ -70,21 +71,20 @@
 	}
 	
 	self.updating = YES;
-	NCCache* cache = [NCCache sharedCache];
-	[cache.managedObjectContext performBlock:^{
+	[self.cacheManagedObjectContext performBlock:^{
 		NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:@"NCPriceManager"];
 		NSDate* date = cacheRecord.expireDate;
 		if (!date || [date timeIntervalSinceNow] < 0) {
 			[self.manager GET:@"https://public-crest.eveonline.com/market/prices/" parameters:nil success:^void(AFHTTPRequestOperation * operation, id dic) {
 				if ([dic isKindOfClass:[NSDictionary class]]) {
-					[cache.managedObjectContext performBlock:^{
+					[self.cacheManagedObjectContext performBlock:^{
 						NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Price"];
-						for (NCCachePrice* record in [cache.managedObjectContext executeFetchRequest:request error:nil])
-							[cache.managedObjectContext deleteObject:record];
+						for (NCCachePrice* record in [self.cacheManagedObjectContext executeFetchRequest:request error:nil])
+							[self.cacheManagedObjectContext deleteObject:record];
 						
 						for (NSDictionary* item in dic[@"items"]) {
 							int32_t typeID = [item[@"type"][@"id"] intValue];
-							NCCachePrice* record = [NSEntityDescription insertNewObjectForEntityForName:@"Price" inManagedObjectContext:cache.managedObjectContext];
+							NCCachePrice* record = [NSEntityDescription insertNewObjectForEntityForName:@"Price" inManagedObjectContext:self.cacheManagedObjectContext];
 							record.typeID = typeID;
 							double adjustedPrice = [item[@"adjustedPrice"] doubleValue];
 							double averagePrice = [item[@"averagePrice"] doubleValue];
@@ -92,8 +92,8 @@
 						}
 						cacheRecord.date = [NSDate date];
 						cacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:3600 * 24];
-						if ([cache.managedObjectContext hasChanges])
-							[cache.managedObjectContext save:nil];
+						if ([self.cacheManagedObjectContext hasChanges])
+							[self.cacheManagedObjectContext save:nil];
 						self.updating = NO;
 						triesLeft = 5;
 					}];

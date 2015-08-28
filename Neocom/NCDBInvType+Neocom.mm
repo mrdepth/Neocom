@@ -14,25 +14,6 @@
 
 @implementation NCDBInvType (Neocom)
 
-+ (instancetype) invTypeWithTypeID:(int32_t) typeID {
-	NCDatabase* database = [NCDatabase sharedDatabase];
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
-	request.predicate = [NSPredicate predicateWithFormat:@"typeID == %d", typeID];
-	request.fetchLimit = 1;
-	return [[database.managedObjectContext executeFetchRequest:request error:nil] lastObject];
-}
-
-+ (instancetype) invTypeWithTypeName:(NSString*) typeName {
-	if (!typeName)
-		return nil;
-	
-	NCDatabase* database = [NCDatabase sharedDatabase];
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
-	request.predicate = [NSPredicate predicateWithFormat:@"typeName LIKE[C] %@", typeName];
-	request.fetchLimit = 1;
-	return [[database.managedObjectContext executeFetchRequest:request error:nil] lastObject];
-}
-
 - (NSString*) metaGroupName {
 	return self.metaGroup.metaGroupName;
 }

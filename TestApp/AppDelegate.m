@@ -31,6 +31,25 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+/*	EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];
+	id op1 = [api callListWithCompletionBlock:^(EVECallList *result, NSError *error) {
+		NSLog(@"%@", result);
+	} progressBlock:^(float progress) {
+		
+	}];
+	
+	id op2 = [api callListWithCompletionBlock:^(EVECallList *result, NSError *error) {
+		NSLog(@"%@", result);
+	} progressBlock:^(float progress) {
+		
+	}];
+	
+	[api.httpRequestOperationManager.operationQueue addOperation:[[AFHTTPRequestOperation batchOfRequestOperations:@[op1, op2]
+									   progressBlock:nil
+									 completionBlock:^ void(NSArray * operations) {
+										 NSLog(@"%@", operations);
+									 }] lastObject]];*/
+
 /*
 	dispatch_group_t dg = dispatch_group_create();
 	dispatch_group_enter(dg);
@@ -57,10 +76,10 @@
 	});
 	NSLog(@"3");*/
 
-/*	[NCStorage setSharedStorage:[[NCStorage alloc] initLocalStorage]];
+	[NCStorage setSharedStorage:[[NCStorage alloc] initLocalStorage]];
 	[NCAccountsManager setSharedManager:[[NCAccountsManager alloc] initWithStorage:[NCStorage sharedStorage]]];
 	
-	[[NCAccountsManager sharedManager] loadAccountsWithCompletionBlock:^(NSArray *accounts) {
+/*	[[NCAccountsManager sharedManager] loadAccountsWithCompletionBlock:^(NSArray *accounts) {
 		NCAccount* account = [accounts lastObject];
 		[account.managedObjectContext performBlock:^{
 			[account.activeSkillPlan loadTrainingQueueWithCompletionBlock:^(NCTrainingQueue *trainingQueue) {

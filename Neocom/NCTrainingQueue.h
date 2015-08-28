@@ -17,9 +17,10 @@
 @property (nonatomic, readonly) NSTimeInterval trainingTime;
 @property (nonatomic, strong) EVECharacterSheet* characterSheet;
 @property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* databaseManagedObjectContext;
 
-- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet;
-- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet xmlData:(NSData*) data skillPlanName:(NSString**) skillPlanName;
+- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext;
+- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet xmlData:(NSData*) data skillPlanName:(NSString**) skillPlanName databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext;
 
 - (void) addRequiredSkillsForType:(NCDBInvType*) type;
 - (void) addSkill:(NCDBInvType*) skill withLevel:(int32_t) level;

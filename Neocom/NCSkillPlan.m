@@ -20,6 +20,7 @@
 }
 
 @property (nonatomic, strong) NCTrainingQueue* trainingQueue;
+@property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
 
 - (void) accountDidChange:(NSNotification*) notification;
 
@@ -33,6 +34,7 @@
 @dynamic account;
 
 @synthesize trainingQueue = _trainingQueue;
+@synthesize databaseManagedObjectContext = _databaseManagedObjectContext;
 
 - (void) awakeFromFetch {
 	[super awakeFromFetch];
@@ -61,7 +63,7 @@
 
 - (void) save {
 	if (_trainingQueue) {
-		[[[NCDatabase sharedDatabase] managedObjectContext] performBlock:^{
+		[self.databaseManagedObjectContext performBlock:^{
 			NSMutableArray* skills = [NSMutableArray new];
 			for (NCSkillData* skill in _trainingQueue.skills) {
 				NSDictionary* item = @{NCSkillPlanTypeIDKey: @(skill.type.typeID), NCSkillPlanTargetLevelKey: @(skill.targetLevel)};
@@ -80,7 +82,7 @@
 
 - (void) mergeWithTrainingQueue:(NCTrainingQueue*) trainingQueue completionBlock:(void(^)(NCTrainingQueue* trainingQueue)) completionBlock {
 	[self loadTrainingQueueWithCompletionBlock:^(NCTrainingQueue *trainingQueue) {
-		[[NCDatabase sharedDatabase] performBlock:^{
+		[self.databaseManagedObjectContext performBlock:^{
 			NCTrainingQueue* newTrainingQueue = [trainingQueue copy];
 			for (NCSkillData* skillData in trainingQueue.skills)
 				[newTrainingQueue addSkill:skillData.type withLevel:skillData.targetLevel];
@@ -113,12 +115,12 @@
 			[self.managedObjectContext performBlock:^{
 				NSArray* skills = self.skills;
 				[self.account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
-					[[[NCDatabase sharedDatabase] managedObjectContext] performBlock:^{
-						NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet];
+					[self.databaseManagedObjectContext performBlock:^{
+						NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:self.databaseManagedObjectContext];
 						for (NSDictionary* item in skills) {
 							int32_t typeID = [item[NCSkillPlanTypeIDKey] intValue];
 							int32_t targetLevel = [item[NCSkillPlanTargetLevelKey] intValue];
-							NCDBInvType* type = [NCDBInvType invTypeWithTypeID:typeID];
+							NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:typeID];
 							if (type)
 								[trainingQueue addSkill:type withLevel:targetLevel];
 						}
@@ -139,16 +141,22 @@
 		completionBlock(_trainingQueue);
 }
 
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	if (_databaseManagedObjectContext)
+		_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+	return _databaseManagedObjectContext;
+}
+
 #pragma mark - Private
 
 - (void) accountDidChange:(NSNotification*) notification {
 	if (self.trainingQueue) {
 		EVECharacterSheet* characterSheet = notification.userInfo[@"characterSheet"];
 		if (characterSheet) {
-			[[NCDatabase sharedDatabase] performBlock:^{
+			[self.databaseManagedObjectContext performBlock:^{
 				NCTrainingQueue* trainingQueue = [self.trainingQueue copy];
 				trainingQueue.characterSheet = characterSheet;
-				trainingQueue.characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
+				trainingQueue.characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:self.databaseManagedObjectContext];
 				self.trainingQueue = trainingQueue;
 			}];
 		}

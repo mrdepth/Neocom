@@ -20,46 +20,63 @@
 #import "NSAttributedString+Neocom.h"
 #import "UIColor+Neocom.h"
 
-@interface NCAccountsViewControllerDataAccount : NSObject<NSCoding>
+@interface NCAccountsViewControllerDataAccount : NSObject<NSSecureCoding>
 @property (nonatomic, strong) NCAccount* account;
+@property (nonatomic, assign) int32_t characterID;
+@property (nonatomic, strong) NCAPIKey* apiKey;
+@property (nonatomic, strong) NSError* error;
+
+@property (nonatomic, strong) NSString* uuid;
 @property (nonatomic, strong) EVEAccountStatus* accountStatus;
 @property (nonatomic, strong) EVEAccountBalance* accountBalance;
-@property (nonatomic, strong) NSString* currentSkill;
+@property (nonatomic, strong) EVECharacterInfo* characterInfo;
+@property (nonatomic, strong) EVECharacterSheet* characterSheet;
+@property (nonatomic, strong) EVECorporationSheet* corporationSheet;
+@property (nonatomic, strong) EVESkillQueue* skillQueue;
+@property (nonatomic, assign) NCAccountType accountType;
+@property (nonatomic) int32_t keyID;
+@property (nonatomic, strong) EVEAPIKeyInfo* apiKeyInfo;
+@property (nonatomic, strong) NCSkillData* trainingSkill;
+@property (nonatomic, strong) NSString* trainingSkillTypeName;
 @end
 
 @implementation NCAccountsViewControllerDataAccount
 
++ (BOOL) supportsSecureCoding {
+	return YES;
+}
+
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
-		NSString* udid = [aDecoder decodeObjectForKey:@"account"];
-		if (udid) {
-			self.account = [[NCStorage sharedStorage] accountWithUUID:udid];
-			if (!self.account)
-				return nil;
-			
-			self.accountStatus = [aDecoder decodeObjectForKey:@"accountStatus"];
-			if (![self.accountStatus isKindOfClass:[EVEAccountStatus class]])
-				self.accountStatus = nil;
-			
-			self.accountBalance = [aDecoder decodeObjectForKey:@"accountBalance"];
-			if (![self.accountBalance isKindOfClass:[EVEAccountBalance class]])
-				self.accountBalance = nil;
-			
-			self.currentSkill = [aDecoder decodeObjectForKey:@"currentSkill"];
-		}
+		self.uuid = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"uuid"];
+		self.characterID = [aDecoder decodeInt32ForKey:@"characterID"];
+		self.accountStatus = [aDecoder decodeObjectOfClass:[EVEAccountStatus class] forKey:@"accountStatus"];
+		self.accountBalance = [aDecoder decodeObjectOfClass:[EVEAccountBalance class] forKey:@"accountBalance"];
+		self.characterInfo = [aDecoder decodeObjectOfClass:[EVECharacterInfo class] forKey:@"characterInfo"];
+		self.characterSheet = [aDecoder decodeObjectOfClass:[EVECharacterSheet class] forKey:@"characterSheet"];
+		self.corporationSheet = [aDecoder decodeObjectOfClass:[EVECorporationSheet class] forKey:@"corporationSheet"];
+		self.skillQueue = [aDecoder decodeObjectOfClass:[EVESkillQueue class] forKey:@"skillQueue"];
+		self.accountType = [aDecoder decodeIntegerForKey:@"accountType"];
+		self.keyID = [aDecoder decodeInt32ForKey:@"keyID"];
+		self.apiKeyInfo = [aDecoder decodeObjectOfClass:[EVEAPIKeyInfo class] forKey:@"apiKeyInfo"];
+		self.trainingSkillTypeName = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"trainingSkillTypeName"];
 	}
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	if (self.account)
-		[aCoder encodeObject:self.account.uuid forKey:@"account"];
-	if (self.accountStatus)
-		[aCoder encodeObject:self.accountStatus forKey:@"accountStatus"];
-	if (self.accountBalance)
-		[aCoder encodeObject:self.accountBalance forKey:@"accountBalance"];
-	if (self.currentSkill)
-		[aCoder encodeObject:self.currentSkill forKey:@"currentSkill"];
+	[aCoder encodeObject:self.uuid forKey:@"account"];
+	[aCoder encodeInt32:self.characterID forKey:@"characterID"];
+	[aCoder encodeObject:self.accountStatus forKey:@"accountStatus"];
+	[aCoder encodeObject:self.accountBalance forKey:@"accountBalance"];
+	[aCoder encodeObject:self.characterInfo forKey:@"characterInfo"];
+	[aCoder encodeObject:self.characterSheet forKey:@"characterSheet"];
+	[aCoder encodeObject:self.corporationSheet forKey:@"corporationSheet"];
+	[aCoder encodeObject:self.skillQueue forKey:@"skillQueue"];
+	[aCoder encodeInteger:self.accountType forKey:@"accountType"];
+	[aCoder encodeInt32:self.keyID forKey:@"keyID"];
+	[aCoder encodeObject:self.apiKeyInfo forKey:@"apiKeyInfo"];
+	[aCoder encodeObject:self.trainingSkillTypeName forKey:@"trainingSkillTypeName"];
 }
 
 - (NSString*) description {
@@ -70,7 +87,6 @@
 
 @interface NCAccountsViewControllerData : NSObject<NSCoding>
 @property (nonatomic, strong) NSMutableArray* accounts;
-@property (nonatomic, strong) NSMutableArray* apiKeys;
 @end
 
 
@@ -80,12 +96,6 @@
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
         self.accounts = [[aDecoder decodeObjectForKey:@"accounts"] mutableCopy];
-		NCStorage* storage = [NCStorage sharedStorage];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-
-        [context performBlockAndWait:^{
-            self.apiKeys = [NSMutableArray arrayWithArray:[[NCStorage sharedStorage] allAPIKeys]];
-        }];
 	}
 	return self;
 }
@@ -99,7 +109,7 @@
 
 
 @interface NCAccountsViewController ()
-@property (nonatomic, strong) NCSetting* modeSetting;
+@property (nonatomic, assign) NSInteger mode;
 @end
 
 @implementation NCAccountsViewController
@@ -116,11 +126,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[[NCAccountsManager sharedManager] reload];
+	self.storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.logoutItem.enabled = [NCAccount currentAccount] != nil;
-	self.modeSetting = [[NCStorage sharedStorage] settingWithKey:@"NCAccountsViewController.mode"];
-	self.modeSegmentedControl.selectedSegmentIndex = [self.modeSetting.value boolValue] ? 1 : 0;
+	[self.storageManagedObjectContext performBlock:^{
+		NSInteger mode = [[[self.storageManagedObjectContext settingWithKey:@"NCAccountsViewController.mode"] value] integerValue];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.mode = mode;
+			self.modeSegmentedControl.selectedSegmentIndex = self.mode;
+			[self.tableView reloadData];
+		});
+	}];
 }
 
 - (void)didReceiveMemoryWarning
@@ -156,7 +172,6 @@
 }
 
 - (IBAction)onChangeMode:(id)sender {
-	self.modeSetting.value = @(self.modeSegmentedControl.selectedSegmentIndex == 1);
 	[self.tableView reloadData];
 }
 
@@ -186,9 +201,6 @@
 		NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 		
 		[tableView beginUpdates];
-//		if ([NCAccount currentAccount] == account.account) {
-//			[tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-//		}
 		if ([NCAccount currentAccount] == account.account) {
 			[NCAccount setCurrentAccount:nil];
 		}
@@ -198,8 +210,7 @@
 		
 		NCAccountsViewControllerData* updatedData = [NCAccountsViewControllerData new];
 		updatedData.accounts = data.accounts;
-		updatedData.apiKeys = data.apiKeys;
-		[self didUpdateData:updatedData];
+		[self updateData:updatedData];
 		
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		
@@ -217,40 +228,19 @@
 	[data.accounts removeObjectAtIndex:fromIndexPath.row];
 	[data.accounts insertObject:account atIndex:toIndexPath.row];
 	
-	NCStorage* storage = [NCStorage sharedStorage];
-	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-	
-	[context performBlockAndWait:^{
+	[self.storageManagedObjectContext performBlock:^{
 		int32_t order = 0;
 		for (NCAccountsViewControllerDataAccount* account in data.accounts)
 			account.account.order = order++;
 		
-		[storage saveContext];
+		if ([self.storageManagedObjectContext hasChanges])
+			[self.storageManagedObjectContext save:nil];
 	}];
 
 	NCAccountsViewControllerData* updatedData = [NCAccountsViewControllerData new];
 	updatedData.accounts = data.accounts;
-	updatedData.apiKeys = data.apiKeys;
-	[self didUpdateData:updatedData];
-	
-	[[NCAccountsManager sharedManager] reload];
+	[self updateData:updatedData];
 }
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
 
 #pragma mark - Table view delegate
 
@@ -258,97 +248,111 @@
 	return 102;
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a story board-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
- {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- 
- */
-
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return NSStringFromClass(self.class);
+- (void) requestRecordIDWithCompletionBlock:(void (^)(NSString *))completionBlock {
+	completionBlock(NSStringFromClass(self.class));
 }
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
-	NCAccountsViewControllerData* data = [NCAccountsViewControllerData new];
-    data.accounts = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
-											 if (!accountsManager)
-												 return;
-											 
-											 float p = 0;
-											 float dp = 1.0 / (accountsManager.accounts.count + accountsManager.apiKeys.count);
-											 NSMutableDictionary* accountStatuses = [NSMutableDictionary new];
-											 
-											 for (NCAPIKey* apiKey in accountsManager.apiKeys) {
-												 if (task.isCancelled)
-													 return;
+- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void (^)(id, NSDate *, NSDate *, NSError *))completionBlock progressBlock:(void(^)(float progress)) progressBlock {
+	[[NCAccountsManager sharedManager] loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray* apiKeys) {
+		NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
+		if (!accountsManager) {
+			completionBlock(nil, nil, nil, nil);
+			return;
+		}
+		
+		[accountsManager loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray* apiKeys) {
+			[self.storageManagedObjectContext performBlock:^{
+				NCAccountsViewControllerData* data = [NCAccountsViewControllerData new];
+				data.accounts = [NSMutableArray new];
 
-												 NSError* error = nil;
-												 EVEAccountStatus* accountStatus = [EVEAccountStatus accountStatusWithKeyID:apiKey.keyID vCode:apiKey.vCode cachePolicy:cachePolicy error:&error progressHandler:nil];
-												 if (accountStatus)
-													 accountStatuses[@([apiKey hash])] = accountStatus;
-												 task.progress = p += dp;
-											 }
-											 
-											 for (NCAccount* account in accountsManager.accounts) {
-												 if (task.isCancelled)
-													 return;
-												 
-												 [account reloadWithCachePolicy:cachePolicy error:&error progressHandler:^(CGFloat progress, BOOL *stop) {
-													 if (task.isCancelled)
-														 *stop = YES;
-												 }];
-												 
-												 if (task.isCancelled)
-													 return;
-												 
-                                                 NCAccountsViewControllerDataAccount* dataAccount = [NCAccountsViewControllerDataAccount new];
-                                                 dataAccount.account = account;
-                                                 dataAccount.accountStatus = accountStatuses[@([account.apiKey hash])];
-												 BOOL corporate = account.accountType == NCAccountTypeCorporate;
-												 if (corporate)
-													 dataAccount.accountBalance = [EVEAccountBalance accountBalanceWithKeyID:account.apiKey.keyID vCode:account.apiKey.vCode cachePolicy:cachePolicy characterID:account.characterID corporate:corporate error:nil progressHandler:nil];
-                                                 [data.accounts addObject:dataAccount];
-												 task.progress = p += dp;
-												 
-												 if (account.skillQueue.skillQueue.count > 0) {
-													 EVESkillQueueItem* item = account.skillQueue.skillQueue[0];
-													 NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
-													 dataAccount.currentSkill = [NSString stringWithFormat:NSLocalizedString(@"> %@ Level %d", nil), type.typeName, item.level];
-												 }
-											 }
-											 NCStorage* storage = accountsManager.storage;
-											 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+				for (NCAccount* account in accounts) {
+					BOOL corporate = account.accountType == NCAccountTypeCorporate;
 
-                                             [context performBlockAndWait:^{
-                                                 data.apiKeys = [[NSMutableArray alloc] initWithArray:[accountsManager.storage allAPIKeys]];
-                                             }];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-//									 if (error) {
-//										 [self didFailLoadDataWithError:error];
-//									 }
-//									 else {
-                                         [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]]];
-//									 }
-								 }
-							 }];
+					NCAccountsViewControllerDataAccount* dataAccount = [NCAccountsViewControllerDataAccount new];
+					dataAccount.account = account;
+					dataAccount.characterID = account.characterID;
+					dataAccount.apiKey = account.apiKey;
+					dataAccount.keyID = account.apiKey.keyID;
+					dataAccount.uuid = account.uuid;
+					dataAccount.apiKeyInfo = account.apiKey.apiKeyInfo;
+
+					NSMutableSet* operations = [NSMutableSet new];
+					EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+					api.startImmediately = NO;
+					[operations addObject:[api accountStatusWithCompletionBlock:^(EVEAccountStatus *result, NSError *error) {
+						dataAccount.accountStatus = result;
+					} progressBlock:nil]];
+					
+					if (corporate)
+						[operations addObject:[api accountBalanceWithCompletionBlock:^(EVEAccountBalance *result, NSError *error) {
+							dataAccount.accountBalance = result;
+						} progressBlock:nil]];
+					
+					void (^reload)() = ^{
+						dispatch_async(dispatch_get_main_queue(), ^{
+							NCAccountsViewControllerData* data = self.data;
+							if (data) {
+								NSInteger i = [data.accounts indexOfObject:dataAccount];
+								if (i != NSNotFound)
+									[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+							}
+							[self updateData:data];
+							[self.refreshControl endRefreshing];
+						});
+					};
+
+					NSArray* batchedOperations = [AFHTTPRequestOperation batchOfRequestOperations:[operations allObjects] progressBlock:nil completionBlock:^void(NSArray * operations) {
+						[account reloadWithCachePolicy:cachePolicy completionBlock:^(NSError *error) {
+							[account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
+								dataAccount.error = error;
+								dataAccount.characterInfo = characterInfo;
+								if (corporate) {
+									[account loadCorporationSheetWithCompletionBlock:^(EVECorporationSheet *corporationSheet, NSError *error) {
+										dataAccount.corporationSheet = corporationSheet;
+										reload();
+									}];
+								}
+								else {
+									[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+										dataAccount.characterSheet = characterSheet;
+										[account loadSkillQueueWithCompletionBlock:^(EVESkillQueue *skillQueue, NSError *error) {
+											dataAccount.skillQueue = skillQueue;
+											if (skillQueue.skillQueue.count > 0) {
+												EVESkillQueueItem* item = skillQueue.skillQueue[0];
+												[self.databaseManagedObjectContext performBlock:^{
+													NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+													dataAccount.trainingSkill = [[NCSkillData alloc] initWithInvType:type];
+													dataAccount.trainingSkillTypeName = type.typeName;
+													reload();
+												}];
+											}
+											else
+												reload();
+										}];
+									}];
+								}
+							}];
+						} progressBlock:nil];
+					}];
+					[api.httpRequestOperationManager.operationQueue addOperations:batchedOperations waitUntilFinished:NO];
+					[data.accounts addObject:dataAccount];
+				}
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					completionBlock(data, [NSDate date], [NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]], nil);
+				});
+			}];
+		}];
+	}];
 }
 
-- (BOOL) shouldReloadData {
+- (void) update {
+	[super update];
+}
+
+/*- (BOOL) shouldReloadData {
 	BOOL shouldReloadData = [super shouldReloadData];
 	if (!shouldReloadData) {
 		for (NCAccount* account in [[NCAccountsManager sharedManager] accounts]) {
@@ -385,234 +389,275 @@
 		}
 	}
 	return shouldReloadData;
-}
+}*/
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCAccountsViewControllerData* data = self.data;
 	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 	
-	BOOL detailed = ![self.modeSetting.value boolValue];
-
+	BOOL detailed = self.modeSegmentedControl.selectedSegmentIndex == 0;
 	
-	if (account.account.accountType == NCAccountTypeCharacter) {
-		NSMutableAttributedString* s = [NSMutableAttributedString new];
-		NCAccountCharacterCell *cell = (NCAccountCharacterCell*) tableViewCell;
-		
-		cell.characterImageView.image = nil;
-		cell.corporationImageView.image = nil;
-		cell.allianceImageView.image = nil;
-		
-		[cell.characterImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.account.characterID size:EVEImageSizeRetina64 error:nil]];
-		EVECharacterInfo* characterInfo = account.account.characterInfo;
-		EVECharacterSheet* characterSheet = account.account.characterSheet;
-		
-		NSAttributedString* lastKnownLocation;
-		NSAttributedString* skills;
-		NSAttributedString* balance;
-		NSAttributedString* skillQueue;
-		NSAttributedString* subscription;
-		NSAttributedString* currentSkill;
-		NSAttributedString* apiKeyMask;
-
-		if (detailed && characterInfo.lastKnownLocation && characterInfo.shipTypeName) {
-			NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:[characterInfo.lastKnownLocation stringByAppendingString:@", "] attributes:nil];
-			[s appendAttributedString:[NSAttributedString attributedStringWithString:characterInfo.shipTypeName
-																				 url:[NSURL URLWithString:[NSString stringWithFormat:@"showinfo:%d", characterInfo.shipTypeID]]]];
-			lastKnownLocation = s;
-		}
-
-		if (characterInfo) {
-			[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:characterInfo.corporationID size:EVEImageSizeRetina32 error:nil]];
-			if (characterInfo.allianceID)
-				[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:characterInfo.allianceID size:EVEImageSizeRetina32 error:nil]];
-			
-			if (detailed) {
-				NSMutableAttributedString* sp = [[NSMutableAttributedString alloc] initWithString:[NSString shortStringWithFloat:characterInfo.skillPoints unit:nil]
-																					   attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
-				[sp appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@" SP", nil) attributes:nil]];
+	if (!account.characterInfo) {
+		EVEAPIKeyInfoCharactersItem* item = [[account.apiKeyInfo.key.characters filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"characterID == %d", account.characterID]] lastObject];
+		if (item) {
+			if (account.accountType == NCAccountTypeCharacter) {
+				NCAccountCharacterCell* cell = (NCAccountCharacterCell*) tableViewCell;
+				cell.characterImageView.image = nil;
+				cell.corporationImageView.image = nil;
+				cell.allianceImageView.image = nil;
 				
-				if (characterSheet) {
-					[sp appendAttributedString:[[NSAttributedString alloc] initWithString:@" (" attributes:nil]];
-					[sp appendAttributedString:[[NSAttributedString alloc] initWithString:[NSNumberFormatter neocomLocalizedStringFromNumber:@(characterSheet.skills.count)]
-																			   attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}]];
-					[sp appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@" skills)", nil) attributes:nil]];
-				}
-				skills = sp;
-			}
-		}
-		
-		if (detailed)
-			balance = [NSAttributedString shortAttributedStringWithFloat:characterSheet.balance unit:NSLocalizedString(@"ISK", nil)];
-		
-		cell.characterNameLabel.text = characterInfo.characterName ? characterInfo.characterName : NSLocalizedString(@"Unknown Error", nil);
-		cell.corporationNameLabel.text = characterInfo.corporation;
-		cell.allianceNameLabel.text = characterInfo.alliance;
-		
-		
-		if (account.account.skillQueue) {
-			NSString *text;
-			UIColor *color = nil;
-			EVESkillQueue* sq = account.account.skillQueue;
-			if (sq.skillQueue.count > 0) {
-				NSTimeInterval timeLeft = [sq timeLeft];
-				if (timeLeft > 3600 * 24)
-					color = [UIColor greenColor];
-				else
-					color = [UIColor yellowColor];
-				text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], sq.skillQueue.count];
+				cell.characterNameLabel.text = item.characterName;
+				cell.corporationNameLabel.text = item.corporationName;
+				cell.allianceNameLabel.text = item.allianceName;
 				
-				if (detailed) {
-					EVESkillQueueItem* item = sq.skillQueue[0];
-					EVECharacterSheetSkill* characterSheetSkill = characterSheet.skillsMap[@(item.typeID)];
-
-					NCSkillData* skillData = [[NCSkillData alloc] initWithTypeID:item.typeID];
-					float sp = characterSheetSkill.skillpoints;
-					float start = [skillData skillPointsAtLevel:item.level - 1];
-					float end = [skillData skillPointsAtLevel:item.level];
-					float progress = (sp - start) / (end - start);
-					NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithAttributedString:[NSAttributedString attributedStringWithString:[NSString stringWithFormat:@"%@ %d", skillData.type.typeName, item.level] url:[NSURL URLWithString:[NSString stringWithFormat:@"showinfo:%d", item.typeID]]]];
-					[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" (%.0f%%)", progress * 100] attributes:nil]];
-					currentSkill = s;
-				}
+				if (item.characterID)
+					[cell.characterImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:item.characterID size:EVEImageSizeRetina64 error:nil]];
+				if (item.corporationID)
+					[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:item.corporationID size:EVEImageSizeRetina32 error:nil]];
+				if (item.allianceID)
+					[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:item.allianceID size:EVEImageSizeRetina32 error:nil]];
+				cell.detailsLabel.text = account.error ? [account.error localizedDescription] : NSLocalizedString(@"Loading", nil);
 			}
 			else {
-				text = NSLocalizedString(@"Training queue is inactive", nil);
-				color = [UIColor redColor];
+				NCAccountCorporationCell* cell = (NCAccountCorporationCell*) tableViewCell;
+				cell.corporationImageView.image = nil;
+				cell.allianceImageView.image = nil;
+				
+				cell.corporationNameLabel.text = item.corporationName;
+				cell.allianceNameLabel.text = item.allianceName;
+				
+				if (item.corporationID)
+					[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:item.corporationID size:EVEImageSizeRetina32 error:nil]];
+				if (item.allianceID)
+					[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:item.allianceID size:EVEImageSizeRetina32 error:nil]];
+				cell.detailsLabel.text = account.error ? [account.error localizedDescription] : NSLocalizedString(@"Loading", nil);
 			}
-			skillQueue = [[NSAttributedString alloc] initWithString:text attributes:@{NSForegroundColorAttributeName:color}];
 		}
-		
-		
-		if (detailed && account.accountStatus) {
-			UIColor *color;
-			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-			[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
-			[dateFormatter setDateFormat:@"yyyy.MM.dd"];
-			int days = [account.accountStatus.paidUntil timeIntervalSinceNow] / (60 * 60 * 24);
-			if (days < 0)
-				days = 0;
-			if (days > 7)
-				color = [UIColor greenColor];
-			else if (days == 0)
-				color = [UIColor redColor];
-			else
-				color = [UIColor yellowColor];
-			subscription = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Paid until %@ (%d days remaining)", nil), [dateFormatter stringFromDate:account.accountStatus.paidUntil], days]
-														   attributes:@{NSForegroundColorAttributeName:color}];
+		else {
+			NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+			cell.titleLabel.text = account.error ? [account.error localizedDescription] : NSLocalizedString(@"Loading", nil);
 		}
-		
-		if (detailed)
-			apiKeyMask = [NSAttributedString attributedStringWithString:[NSString stringWithFormat:NSLocalizedString(@"API Key %d. Tap to see Access Mask", nil), account.account.apiKey.keyID]
-																	url:[NSURL URLWithString:[NSString stringWithFormat:@"showinfo:%@", account.account.objectID.URIRepresentation.absoluteString]]];
-		
-		NSAttributedString* crlf = [[NSAttributedString alloc] initWithString:@"\n" attributes:nil];
-		if (lastKnownLocation) {
-			[s appendAttributedString:lastKnownLocation];
-			[s appendAttributedString:crlf];
-		}
-		if (skills) {
-			[s appendAttributedString:skills];
-			if (balance) {
-				[s appendAttributedString:[[NSAttributedString alloc] initWithString:@", " attributes:nil]];
-				[s appendAttributedString:balance];
-			}
-			[s appendAttributedString:crlf];
-		}
-		else if (balance) {
-			[s appendAttributedString:balance];
-			[s appendAttributedString:crlf];
-		}
-		if (currentSkill) {
-			[s appendAttributedString:currentSkill];
-			[s appendAttributedString:crlf];
-		}
-		if (skillQueue) {
-			[s appendAttributedString:skillQueue];
-			[s appendAttributedString:crlf];
-		}
-		if (subscription) {
-			[s appendAttributedString:subscription];
-			[s appendAttributedString:crlf];
-		}
-		if (apiKeyMask)
-			[s appendAttributedString:apiKeyMask];
-		if ([s.string characterAtIndex:s.string.length - 1] == '\n')
-			[s deleteCharactersInRange:NSMakeRange(s.string.length - 1, 1)];
-		cell.detailsLabel.attributedText = s;
 	}
 	else {
-		NCAccountCorporationCell *cell = (NCAccountCorporationCell*) tableViewCell;
-		
-		cell.corporationImageView.image = nil;
-		cell.allianceImageView.image = nil;
-		
-		EVECorporationSheet* corporationSheet = account.account.corporationSheet;
-		
-		if (corporationSheet) {
-			cell.corporationNameLabel.text = [NSString stringWithFormat:@"%@ [%@]", corporationSheet.corporationName, corporationSheet.ticker];
-			[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:corporationSheet.corporationID size:EVEImageSizeRetina128 error:nil]];
-			if (corporationSheet.allianceID)
-				[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:corporationSheet.allianceID size:EVEImageSizeRetina32 error:nil]];
-		}
-		else
-			cell.corporationNameLabel.text = NSLocalizedString(@"Unknown Error", nil);
-		
-		
-		cell.allianceNameLabel.text = corporationSheet.allianceName;
-		
-		NSAttributedString* ceo;
-		NSAttributedString* members;
-		NSAttributedString* balance;
-		NSAttributedString* apiKeyMask;
-		
-		if (detailed)
-			ceo = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"CEO: %@", nil), corporationSheet.ceoName] attributes:nil];
-
-		if (detailed) {
-			NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ / %@ ",
-																							  [NSNumberFormatter neocomLocalizedStringFromInteger:corporationSheet.memberCount],
-																							  [NSNumberFormatter neocomLocalizedStringFromInteger:corporationSheet.memberLimit]] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-			[s appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"members", nil) attributes:nil]];
-			members = s;
-		}
-		
-		if (detailed && account.accountBalance) {
-			float sum = 0.0;
-			for (EVEAccountBalanceItem* item in account.accountBalance.accounts)
-				sum += item.balance;
+		if (account.accountType == NCAccountTypeCharacter) {
+			NSMutableAttributedString* s = [NSMutableAttributedString new];
+			NCAccountCharacterCell *cell = (NCAccountCharacterCell*) tableViewCell;
 			
-			balance = [NSAttributedString shortAttributedStringWithFloat:sum unit:NSLocalizedString(@"ISK", nil)];
-		}
-		
-		if (detailed)
-			apiKeyMask = [NSAttributedString attributedStringWithString:[NSString stringWithFormat:NSLocalizedString(@"API Key %d. Tap to see Access Mask", nil), account.account.apiKey.keyID]
-																	url:[NSURL URLWithString:[NSString stringWithFormat:@"showinfo:%@", account.account.objectID.URIRepresentation.absoluteString]]];
-		NSAttributedString* crlf = [[NSAttributedString alloc] initWithString:@"\n" attributes:nil];
-		
-		NSMutableAttributedString* s = [NSMutableAttributedString new];
-		if (ceo) {
-			[s appendAttributedString:ceo];
-			[s appendAttributedString:crlf];
-		}
-		if (members) {
-			[s appendAttributedString:members];
-			if (balance) {
-				[s appendAttributedString:[[NSAttributedString alloc] initWithString:@", " attributes:nil]];
-				[s appendAttributedString:balance];
+			cell.characterImageView.image = nil;
+			cell.corporationImageView.image = nil;
+			cell.allianceImageView.image = nil;
+			
+			[cell.characterImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina64 error:nil]];
+			EVECharacterInfo* characterInfo = account.characterInfo;
+			EVECharacterSheet* characterSheet = account.characterSheet;
+			
+			NSAttributedString* lastKnownLocation;
+			NSAttributedString* skills;
+			NSAttributedString* balance;
+			NSAttributedString* skillQueue;
+			NSAttributedString* subscription;
+			NSAttributedString* currentSkill;
+			NSAttributedString* apiKeyMask;
+			
+			if (detailed && characterInfo.lastKnownLocation && characterInfo.shipTypeName) {
+				NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:[characterInfo.lastKnownLocation stringByAppendingString:@", "] attributes:nil];
+				[s appendAttributedString:[NSAttributedString attributedStringWithString:characterInfo.shipTypeName
+																					 url:[NSURL URLWithString:[NSString stringWithFormat:@"showinfo:%d", characterInfo.shipTypeID]]]];
+				lastKnownLocation = s;
 			}
-			[s appendAttributedString:crlf];
-		}
-		else if (balance) {
-			[s appendAttributedString:balance];
-			[s appendAttributedString:crlf];
-		}
-		if (apiKeyMask)
-			[s appendAttributedString:apiKeyMask];
-		if (s.length > 0) {
+			
+			if (characterInfo) {
+				[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:characterInfo.corporationID size:EVEImageSizeRetina32 error:nil]];
+				if (characterInfo.allianceID)
+					[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:characterInfo.allianceID size:EVEImageSizeRetina32 error:nil]];
+				
+				if (detailed) {
+					NSMutableAttributedString* sp = [[NSMutableAttributedString alloc] initWithString:[NSString shortStringWithFloat:characterInfo.skillPoints unit:nil]
+																						   attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+					[sp appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@" SP", nil) attributes:nil]];
+					
+					if (characterSheet) {
+						[sp appendAttributedString:[[NSAttributedString alloc] initWithString:@" (" attributes:nil]];
+						[sp appendAttributedString:[[NSAttributedString alloc] initWithString:[NSNumberFormatter neocomLocalizedStringFromNumber:@(characterSheet.skills.count)]
+																				   attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}]];
+						[sp appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@" skills)", nil) attributes:nil]];
+					}
+					skills = sp;
+				}
+			}
+			
+			if (detailed)
+				balance = [NSAttributedString shortAttributedStringWithFloat:characterSheet.balance unit:NSLocalizedString(@"ISK", nil)];
+			
+			cell.characterNameLabel.text = characterInfo.characterName ? characterInfo.characterName : NSLocalizedString(@"Unknown Error", nil);
+			cell.corporationNameLabel.text = characterInfo.corporation;
+			cell.allianceNameLabel.text = characterInfo.alliance;
+			
+			
+			EVESkillQueue* sq = account.skillQueue;
+			if (sq) {
+				NSString *text;
+				UIColor *color = nil;
+				if (sq.skillQueue.count > 0) {
+					NSTimeInterval timeLeft = [sq timeLeft];
+					if (timeLeft > 3600 * 24)
+						color = [UIColor greenColor];
+					else
+						color = [UIColor yellowColor];
+					text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], sq.skillQueue.count];
+					
+					if (detailed) {
+						EVESkillQueueItem* item = sq.skillQueue[0];
+						EVECharacterSheetSkill* characterSheetSkill = characterSheet.skillsMap[@(item.typeID)];
+						
+						float sp = characterSheetSkill.skillpoints;
+						float start = [account.trainingSkill skillPointsAtLevel:item.level - 1];
+						float end = [account.trainingSkill skillPointsAtLevel:item.level];
+						float progress = (sp - start) / (end - start);
+						NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithAttributedString:[NSAttributedString attributedStringWithString:[NSString stringWithFormat:@"%@ %d", account.trainingSkillTypeName, item.level] url:[NSURL URLWithString:[NSString stringWithFormat:@"showinfo:%d", item.typeID]]]];
+						[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" (%.0f%%)", progress * 100] attributes:nil]];
+						currentSkill = s;
+					}
+				}
+				else {
+					text = NSLocalizedString(@"Training queue is inactive", nil);
+					color = [UIColor redColor];
+				}
+				skillQueue = [[NSAttributedString alloc] initWithString:text attributes:@{NSForegroundColorAttributeName:color}];
+			}
+			
+			
+			if (detailed && account.accountStatus) {
+				UIColor *color;
+				NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+				[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+				[dateFormatter setDateFormat:@"yyyy.MM.dd"];
+				int days = [account.accountStatus.paidUntil timeIntervalSinceNow] / (60 * 60 * 24);
+				if (days < 0)
+					days = 0;
+				if (days > 7)
+					color = [UIColor greenColor];
+				else if (days == 0)
+					color = [UIColor redColor];
+				else
+					color = [UIColor yellowColor];
+				subscription = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Paid until %@ (%d days remaining)", nil), [dateFormatter stringFromDate:account.accountStatus.paidUntil], days]
+															   attributes:@{NSForegroundColorAttributeName:color}];
+			}
+			
+			if (detailed)
+				apiKeyMask = [NSAttributedString attributedStringWithString:[NSString stringWithFormat:NSLocalizedString(@"API Key %d. Tap to see Access Mask", nil), account.keyID]
+																		url:[NSURL URLWithString:[NSString stringWithFormat:@"showinfo:%@", account.account.objectID.URIRepresentation.absoluteString]]];
+			
+			NSAttributedString* crlf = [[NSAttributedString alloc] initWithString:@"\n" attributes:nil];
+			if (lastKnownLocation) {
+				[s appendAttributedString:lastKnownLocation];
+				[s appendAttributedString:crlf];
+			}
+			if (skills) {
+				[s appendAttributedString:skills];
+				if (balance) {
+					[s appendAttributedString:[[NSAttributedString alloc] initWithString:@", " attributes:nil]];
+					[s appendAttributedString:balance];
+				}
+				[s appendAttributedString:crlf];
+			}
+			else if (balance) {
+				[s appendAttributedString:balance];
+				[s appendAttributedString:crlf];
+			}
+			if (currentSkill) {
+				[s appendAttributedString:currentSkill];
+				[s appendAttributedString:crlf];
+			}
+			if (skillQueue) {
+				[s appendAttributedString:skillQueue];
+				[s appendAttributedString:crlf];
+			}
+			if (subscription) {
+				[s appendAttributedString:subscription];
+				[s appendAttributedString:crlf];
+			}
+			if (apiKeyMask)
+				[s appendAttributedString:apiKeyMask];
 			if ([s.string characterAtIndex:s.string.length - 1] == '\n')
 				[s deleteCharactersInRange:NSMakeRange(s.string.length - 1, 1)];
+			cell.detailsLabel.attributedText = s;
 		}
-		cell.detailsLabel.attributedText = s;
+		else {
+			NCAccountCorporationCell *cell = (NCAccountCorporationCell*) tableViewCell;
+			
+			cell.corporationImageView.image = nil;
+			cell.allianceImageView.image = nil;
+			
+			EVECorporationSheet* corporationSheet = account.corporationSheet;
+			
+			if (corporationSheet) {
+				cell.corporationNameLabel.text = [NSString stringWithFormat:@"%@ [%@]", corporationSheet.corporationName, corporationSheet.ticker];
+				[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:corporationSheet.corporationID size:EVEImageSizeRetina128 error:nil]];
+				if (corporationSheet.allianceID)
+					[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:corporationSheet.allianceID size:EVEImageSizeRetina32 error:nil]];
+			}
+			else
+				cell.corporationNameLabel.text = NSLocalizedString(@"Unknown Error", nil);
+			
+			
+			cell.allianceNameLabel.text = corporationSheet.allianceName;
+			
+			NSAttributedString* ceo;
+			NSAttributedString* members;
+			NSAttributedString* balance;
+			NSAttributedString* apiKeyMask;
+			
+			if (detailed)
+				ceo = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"CEO: %@", nil), corporationSheet.ceoName] attributes:nil];
+			
+			if (detailed) {
+				NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ / %@ ",
+																								  [NSNumberFormatter neocomLocalizedStringFromInteger:corporationSheet.memberCount],
+																								  [NSNumberFormatter neocomLocalizedStringFromInteger:corporationSheet.memberLimit]] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+				[s appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"members", nil) attributes:nil]];
+				members = s;
+			}
+			
+			if (detailed && account.accountBalance) {
+				float sum = 0.0;
+				for (EVEAccountBalanceItem* item in account.accountBalance.accounts)
+					sum += item.balance;
+				
+				balance = [NSAttributedString shortAttributedStringWithFloat:sum unit:NSLocalizedString(@"ISK", nil)];
+			}
+			
+			if (detailed)
+				apiKeyMask = [NSAttributedString attributedStringWithString:[NSString stringWithFormat:NSLocalizedString(@"API Key %d. Tap to see Access Mask", nil), account.keyID]
+																		url:[NSURL URLWithString:[NSString stringWithFormat:@"showinfo:%@", account.account.objectID.URIRepresentation.absoluteString]]];
+			NSAttributedString* crlf = [[NSAttributedString alloc] initWithString:@"\n" attributes:nil];
+			
+			NSMutableAttributedString* s = [NSMutableAttributedString new];
+			if (ceo) {
+				[s appendAttributedString:ceo];
+				[s appendAttributedString:crlf];
+			}
+			if (members) {
+				[s appendAttributedString:members];
+				if (balance) {
+					[s appendAttributedString:[[NSAttributedString alloc] initWithString:@", " attributes:nil]];
+					[s appendAttributedString:balance];
+				}
+				[s appendAttributedString:crlf];
+			}
+			else if (balance) {
+				[s appendAttributedString:balance];
+				[s appendAttributedString:crlf];
+			}
+			if (apiKeyMask)
+				[s appendAttributedString:apiKeyMask];
+			if (s.length > 0) {
+				if ([s.string characterAtIndex:s.string.length - 1] == '\n')
+					[s deleteCharactersInRange:NSMakeRange(s.string.length - 1, 1)];
+			}
+			cell.detailsLabel.attributedText = s;
+		}
 	}
 }
 
@@ -620,8 +665,13 @@
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCAccountsViewControllerData* data = self.data;
 	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
+	if (!account.characterInfo) {
+		EVEAPIKeyInfoCharactersItem* item = [[account.apiKeyInfo.key.characters filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"characterID == %d", account.characterID]] lastObject];
+		if (!item)
+			return @"Cell";
+	}
 	
-	if (account.account.accountType == NCAccountTypeCharacter)
+	if (account.accountType == NCAccountTypeCharacter)
 		return @"NCAccountCharacterCell";
 	else
 		return @"NCAccountCorporationCell";
@@ -630,8 +680,8 @@
 #pragma mark - Unwind
 
 - (IBAction) unwindToAccounts:(UIStoryboardSegue*) segue {
-	if ([self shouldReloadData])
-		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+//	if ([self shouldReloadData])
+//		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 }
 
 @end

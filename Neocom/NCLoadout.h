@@ -27,8 +27,8 @@ typedef NS_ENUM(NSInteger, NCLoadoutCategory) {
 @property (nonatomic, retain) NSString * tag;
 @property (nonatomic, retain) NCLoadoutData *data;
 
-@property (nonatomic, readonly, strong) NCDBInvType* type;
-@property (nonatomic, readonly) NCLoadoutCategory category;
+//@property (nonatomic, readonly, strong) NCDBInvType* type;
+//@property (nonatomic, readonly) NCLoadoutCategory category;
 
 
 @end

@@ -26,8 +26,8 @@
 
 //NCLoadout
 - (NSArray*) loadouts;
-- (NSArray*) shipLoadouts;
-- (NSArray*) posLoadouts;
+//- (NSArray*) shipLoadouts;
+//- (NSArray*) posLoadouts;
 
 //NCAccount
 - (NSArray*) allAccounts;

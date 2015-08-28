@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
 #define NCCharismaBonusAttributeID 175
 #define NCIntelligenceBonusAttributeID 176
@@ -34,7 +35,7 @@
 
 + (instancetype) defaultCharacterAttributes;
 + (instancetype) optimalAttributesWithTrainingQueue:(NCTrainingQueue*) trainingQueue;
-- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet;
+- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext;
 - (float) skillpointsPerSecondForSkill:(NCDBInvType*) skill;
 - (float) skillpointsPerSecondWithPrimaryAttribute:(int32_t) primaryAttributeID secondaryAttribute:(int32_t) secondaryAttributeID;
 

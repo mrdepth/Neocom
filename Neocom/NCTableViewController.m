@@ -20,14 +20,14 @@
 
 @interface NCTableViewController ()<UISearchResultsUpdating>
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
-@property (nonatomic, strong, readwrite) NCCacheRecord* cacheRecord;
-@property (nonatomic, retain) NSDate * cacheExpireDate;
+@property (nonatomic, strong) NCCacheRecord* cacheRecord;
 @property (nonatomic, strong, readwrite) id data;
 @property (nonatomic, strong) NSMutableDictionary* sectionsCollapsState;
 @property (nonatomic, strong) NSDictionary* previousCollapsState;
 @property (nonatomic, strong) NSMutableDictionary* offscreenCells;
 @property (nonatomic, strong) NSMutableDictionary* estimatedRowHeights;
 @property (nonatomic, assign) BOOL loadingFromCache;
+@property (nonatomic, assign) BOOL reloading;
 
 - (IBAction) onRefresh:(id) sender;
 
@@ -39,6 +39,7 @@
 - (void) collapsAll:(UIMenuController*) controller;
 - (void) expandAll:(UIMenuController*) controller;
 - (void) reloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy;
+- (BOOL) shouldReloadData;
 
 
 @end
@@ -57,8 +58,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//	self.tableView.estimatedRowHeight = self.tableView.rowHeight;
-//	self.tableView.rowHeight = UITableViewAutomaticDimension;
 	
 	self.estimatedRowHeights = [NSMutableDictionary new];
 	
@@ -99,8 +98,8 @@
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
 		NSString* key = NSStringFromClass(self.class);
 
-		[self.managedObjectContext performBlock:^{
-			NCSetting* setting = [self.managedObjectContext settingWithKey:key];
+		[self.storageManagedObjectContext performBlock:^{
+			NCSetting* setting = [self.storageManagedObjectContext settingWithKey:key];
 			self.previousCollapsState = setting.value;
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self update];
@@ -130,7 +129,6 @@
     [super didReceiveMemoryWarning];
 	if ([self isViewLoaded] && self.view.window == nil) {
 		self.cacheRecord = nil;
-		self.cacheExpireDate = nil;
 		self.data = nil;
 		if (self.searchDisplayController && self.searchDisplayController.active)
 			[self.searchDisplayController setActive:NO animated:NO];
@@ -142,8 +140,6 @@
 	self.taskManager.active = YES;
 	if (!self.cacheRecord)
 		[self reloadFromCache];
-	else if ([self shouldReloadData])
-		[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -153,15 +149,14 @@
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
 		NSString* key = NSStringFromClass(self.class);
 		id sectionsCollapsState = self.sectionsCollapsState;
-		[self.managedObjectContext performBlock:^{
-			NCSetting* setting = [self.managedObjectContext settingWithKey:key];
+		[self.storageManagedObjectContext performBlock:^{
+			NCSetting* setting = [self.storageManagedObjectContext settingWithKey:key];
 			if (![sectionsCollapsState isEqualToDictionary:setting.value]) {
 				setting.value = sectionsCollapsState;
-				[self.managedObjectContext save:nil];
+				[self.storageManagedObjectContext save:nil];
 			}
 		}];
 	}
-
 }
 
 - (void) willMoveToParentViewController:(UIViewController *)parent {
@@ -224,89 +219,79 @@
 	return _taskManager;
 }
 
-- (NSManagedObjectContext*) managedObjectContext {
+- (NSManagedObjectContext*) storageManagedObjectContext {
 	@synchronized (self) {
-		if (_managedObjectContext)
-			_managedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
-		return _managedObjectContext;
+		if (!_storageManagedObjectContext)
+			_storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+		return _storageManagedObjectContext;
 	}
 }
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
-    //[self.refreshControl beginRefreshing];
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	@synchronized (self) {
+		if (!_databaseManagedObjectContext)
+			_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+		return _databaseManagedObjectContext;
+	}
 }
 
-- (BOOL) shouldReloadData {
-	return [self isViewLoaded] && ([self.cacheExpireDate compare:[NSDate date]] == NSOrderedAscending || !self.data);
+- (NSManagedObjectContext*) cacheManagedObjectContext {
+	@synchronized (self) {
+		if (!_cacheManagedObjectContext)
+			_cacheManagedObjectContext = [[NCCache sharedCache] createManagedObjectContext];
+		return _cacheManagedObjectContext;
+	}
+}
+
+- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(id data, NSDate* cacheDate, NSDate* expireDate, NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock {
+	completionBlock(nil, nil, nil, nil);
 }
 
 - (void) reloadFromCache {
-	if (!self.searchContentsController && self.recordID && !self.loadingFromCache) {
-		NCCache* cache = [NCCache sharedCache];
-		NSManagedObjectContext* context = cache.managedObjectContext;
-		if (context) {
-			self.loadingFromCache = YES;
-			[context performBlock:^{
-				NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
-				id data = cacheRecord.data.data;
-				NSDate* cacheExpireDate = cacheRecord.expireDate;
-				dispatch_async(dispatch_get_main_queue(), ^{
+	if (!self.searchContentsController && !self.loadingFromCache) {
+		self.loadingFromCache = YES;
+		[self requestRecordIDWithCompletionBlock:^(NSString *recordID) {
+			if (self.cacheManagedObjectContext) {
+				[self.cacheManagedObjectContext performBlock:^{
+					NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:recordID];
+					id data = cacheRecord.data.data;
 					self.cacheRecord = cacheRecord;
-					self.cacheExpireDate = cacheExpireDate;
-					
-					if (data) {
-						self.data = data;
-						[self update];
-						if ([self shouldReloadData])
+
+					BOOL shouldReload = [self shouldReloadData];
+					dispatch_async(dispatch_get_main_queue(), ^{
+						
+						if (data) {
+							self.data = data;
+							[self update];
+							if ([self isViewLoaded] && shouldReload)
+								[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
+						}
+						else
 							[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
-					}
-					else
-						[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
-					self.loadingFromCache = NO;
-				});
-			}];
-		}
-	}
-}
-
-- (void) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
-	self.data = data;
-	if (data) {
-		NSString* recordID = self.recordID;
-		NCCache* cache = [NCCache sharedCache];
-		[cache.managedObjectContext performBlock:^{
-			if (!self.cacheRecord || ![self.cacheRecord.recordID isEqualToString:recordID])
-				self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:recordID];
-			self.cacheRecord.recordID = recordID;
-			self.cacheRecord.data.data = data;
-			self.cacheRecord.date = cacheDate;
-			self.cacheRecord.expireDate = expireDate;
-			self.cacheExpireDate = expireDate;
-			[cache.managedObjectContext save:nil];
+						self.loadingFromCache = NO;
+					});
+				}];
+			}
+			else
+				self.loadingFromCache = NO;
 		}];
-		self.cacheExpireDate = expireDate;
 	}
-	[self update];
 }
 
-- (void) didUpdateData:(id) data {
+- (void) updateData:(id) data {
 	if (data) {
 		self.data = data;
-		NCCache* cache = [NCCache sharedCache];
-		[cache.managedObjectContext performBlock:^{
+		[self.cacheManagedObjectContext performBlock:^{
 			self.cacheRecord.data.data = data;
-			[cache.managedObjectContext save:nil];
+			[self.cacheManagedObjectContext save:nil];
 		}];
-
 	}
 }
 
 - (void) didChangeStorage {
-	[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
-}
+	[self reloadFromCache];
 
-- (void) didFailLoadDataWithError:(NSError*) error {
-    [self.refreshControl endRefreshing];
+//	[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
 }
 
 - (void) update {
@@ -319,13 +304,17 @@
 	return 60 * 60;
 }
 
-- (NSString*) recordID {
+- (void) requestRecordIDWithCompletionBlock:(void(^)(NSString* recordID)) completionBlock {
 	NCAccount* account = [NCAccount currentAccount];
-	if (account) {
-		return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), account.uuid];
-	}
+	if (account)
+		[account.managedObjectContext performBlock:^{
+			NSString* recordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), account.uuid];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				completionBlock(recordID);
+			});
+		}];
 	else
-		return NSStringFromClass(self.class);
+		completionBlock(NSStringFromClass(self.class));
 }
 
 - (void) didChangeAccount:(NCAccount *)account {
@@ -334,10 +323,6 @@
 
 - (void) searchWithSearchString:(NSString*) searchString {
 	
-}
-
-- (NSDate*) cacheDate {
-	return self.cacheRecord.date;
 }
 
 - (id) identifierForSection:(NSInteger)section {
@@ -541,16 +526,20 @@
 }
 
 - (void) updateCacheTime {
-	NSTimeInterval time = -[[self cacheDate] timeIntervalSinceNow];
-	NSString* title;
-	if (time < 60)
-		title = NSLocalizedString(@"Updated a moment ago", nil);
-	else
-		title = [NSString stringWithFormat:NSLocalizedString(@"Updated %@ ago", nil),  [NSString stringWithTimeLeft:time componentsLimit:1]];
-	
-	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
-																		  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],
-																					   NSForegroundColorAttributeName: [UIColor whiteColor]}];
+	[self.cacheRecord.managedObjectContext performBlock:^{
+		NSTimeInterval time = -[[self.cacheRecord date] timeIntervalSinceNow];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			NSString* title;
+			if (time < 60)
+				title = NSLocalizedString(@"Updated a moment ago", nil);
+			else
+				title = [NSString stringWithFormat:NSLocalizedString(@"Updated %@ ago", nil),  [NSString stringWithTimeLeft:time componentsLimit:1]];
+			
+			self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
+																				  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],
+																							   NSForegroundColorAttributeName: [UIColor whiteColor]}];
+		});
+	}];
 }
 
 - (void) didChangeAccountNotification:(NSNotification*) notification {
@@ -558,10 +547,15 @@
 }
 
 - (void) didBecomeActive:(NSNotification *)notification {
-	if ([self shouldReloadData])
-		[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
-	else
-		[self update];
+	[self.cacheManagedObjectContext performBlock:^{
+		BOOL shouldReload = [self shouldReloadData];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if ([self isViewLoaded] && shouldReload)
+				[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
+			else
+				[self update];
+		});
+	}];
 }
 
 - (void) onLongPress:(UILongPressGestureRecognizer*) recognizer {
@@ -586,8 +580,33 @@
 - (void) reloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy {
     if (self.searchContentsController)
         [self update];
-    else
-        [self reloadDataWithCachePolicy:cachePolicy];
+	else if (!self.reloading) {
+		self.reloading = YES;
+        [self reloadDataWithCachePolicy:cachePolicy completionBlock:^(id data, NSDate *cacheDate, NSDate* expireDate, NSError *error) {
+			self.data = data;
+			if (data) {
+				[self requestRecordIDWithCompletionBlock:^(NSString *recordID) {
+					[self.cacheManagedObjectContext performBlock:^{
+						if (!self.cacheRecord || ![self.cacheRecord.recordID isEqualToString:recordID])
+							self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:recordID];
+						self.cacheRecord.recordID = recordID;
+						self.cacheRecord.data.data = data;
+						self.cacheRecord.date = cacheDate;
+						self.cacheRecord.expireDate = expireDate;
+						[self.cacheManagedObjectContext save:nil];
+					}];
+				}];
+			}
+			self.reloading = NO;
+			[self update];
+		} progressBlock:^(float progress) {
+			
+		}];
+	}
+}
+
+- (BOOL) shouldReloadData {
+	return !self.cacheRecord || !self.cacheRecord.data.data || [self.cacheRecord.expireDate compare:[NSDate date]] == NSOrderedAscending;
 }
 
 @end

@@ -20,8 +20,7 @@
 
 @interface NCTableViewController ()<UISearchResultsUpdating>
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
-@property (nonatomic, strong) NCCacheRecord* cacheRecord;
-@property (nonatomic, strong, readwrite) id data;
+@property (nonatomic, strong, readwrite) NCCacheRecord* cacheRecord;
 @property (nonatomic, strong) NSMutableDictionary* sectionsCollapsState;
 @property (nonatomic, strong) NSDictionary* previousCollapsState;
 @property (nonatomic, strong) NSMutableDictionary* offscreenCells;
@@ -38,7 +37,7 @@
 - (void) onLongPress:(UILongPressGestureRecognizer*) recognizer;
 - (void) collapsAll:(UIMenuController*) controller;
 - (void) expandAll:(UIMenuController*) controller;
-- (void) reloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy;
+- (void) downloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy;
 - (BOOL) shouldReloadData;
 
 
@@ -102,14 +101,9 @@
 			NCSetting* setting = [self.storageManagedObjectContext settingWithKey:key];
 			self.previousCollapsState = setting.value;
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[self update];
+				[self.tableView reloadData];
 			});
 		}];
-	}
-	else {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self update];
-		});
 	}
 	self.sectionsCollapsState = [NSMutableDictionary new];
 }
@@ -138,8 +132,18 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.taskManager.active = YES;
-	if (!self.cacheRecord)
+	if (!self.cacheRecord && self.cacheRecordID)
 		[self reloadFromCache];
+	else if (self.cacheRecord) {
+		NCCacheRecord* cacheRecord = self.cacheRecord;
+		[cacheRecord.managedObjectContext performBlock:^{
+			if (!cacheRecord.data.data || [cacheRecord.expireDate compare:[NSDate date]] == NSOrderedAscending) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self downloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
+				});
+			}
+		}];
+	}
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -243,46 +247,51 @@
 	}
 }
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(id data, NSDate* cacheDate, NSDate* expireDate, NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock {
-	completionBlock(nil, nil, nil, nil);
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock {
+	completionBlock(nil);
+}
+
+- (void) reloadData:(id) data withCompletionBlock:(void(^)()) completionBlock {
+	completionBlock();
 }
 
 - (void) reloadFromCache {
 	if (!self.searchContentsController && !self.loadingFromCache) {
-		self.loadingFromCache = YES;
-		[self requestRecordIDWithCompletionBlock:^(NSString *recordID) {
-			if (self.cacheManagedObjectContext) {
-				[self.cacheManagedObjectContext performBlock:^{
-					NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:recordID];
-					id data = cacheRecord.data.data;
+		if (self.cacheManagedObjectContext) {
+			self.loadingFromCache = YES;
+			[self.cacheManagedObjectContext performBlock:^{
+				NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.cacheRecordID];
+				id data = cacheRecord.data.data;
+				
+				BOOL shouldReload = !cacheRecord.data.data || [cacheRecord.expireDate compare:[NSDate date]] == NSOrderedAscending;
+				dispatch_async(dispatch_get_main_queue(), ^{
 					self.cacheRecord = cacheRecord;
-
-					BOOL shouldReload = [self shouldReloadData];
-					dispatch_async(dispatch_get_main_queue(), ^{
+					
+					if (data) {
+						self.data = data;
 						
-						if (data) {
-							self.data = data;
-							[self update];
-							if ([self isViewLoaded] && shouldReload)
-								[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
-						}
-						else
-							[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
-						self.loadingFromCache = NO;
-					});
-				}];
-			}
-			else
-				self.loadingFromCache = NO;
-		}];
+						[self reloadData:data withCompletionBlock:^{
+							[self.tableView reloadData];
+							if (shouldReload && [self isViewLoaded] && self.view.window)
+								[self downloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
+						}];
+					}
+					else
+						[self downloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
+					self.loadingFromCache = NO;
+				});
+			}];
+		}
 	}
 }
 
-- (void) updateData:(id) data {
+- (void) saveCachedData:(id) data cacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
 	if (data) {
 		self.data = data;
 		[self.cacheManagedObjectContext performBlock:^{
 			self.cacheRecord.data.data = data;
+			self.cacheRecord.date = cacheDate;
+			self.cacheRecord.expireDate = expireDate;
 			[self.cacheManagedObjectContext save:nil];
 		}];
 	}
@@ -294,11 +303,6 @@
 //	[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
 }
 
-- (void) update {
-	[self.tableView reloadData];
-	[self.refreshControl endRefreshing];
-	[self updateCacheTime];
-}
 
 - (NSTimeInterval) defaultCacheExpireTime {
 	return 60 * 60;
@@ -352,6 +356,14 @@
 	return nil;
 }
 
+- (void) setCacheRecordID:(NSString *)cacheRecordID {
+	if (![_cacheRecordID isEqual:cacheRecordID]) {
+		_cacheRecordID = cacheRecordID;
+		self.cacheRecordID = nil;
+		if (cacheRecordID && [self isViewLoaded] && self.view.window)
+			[self reloadFromCache];
+	}
+}
 
 #pragma mark - UISearchDisplayDelegate
 
@@ -516,7 +528,7 @@
 #pragma mark - Private
 
 - (IBAction) onRefresh:(id) sender {
-    [self reloadDataWithCachePolicyInternal:NSURLRequestReloadIgnoringLocalCacheData];
+    [self downloadDataWithCachePolicyInternal:NSURLRequestReloadIgnoringLocalCacheData];
 }
 
 - (void) progressStepWithTask:(NCTask*) task {
@@ -551,7 +563,7 @@
 		BOOL shouldReload = [self shouldReloadData];
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if ([self isViewLoaded] && shouldReload)
-				[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
+				[self downloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
 			else
 				[self update];
 		});
@@ -577,31 +589,15 @@
 	[(CollapsableTableView*) self.tableView expandAll];
 }
 
-- (void) reloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy {
+- (void) downloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy {
     if (self.searchContentsController)
         [self update];
 	else if (!self.reloading) {
 		self.reloading = YES;
-        [self reloadDataWithCachePolicy:cachePolicy completionBlock:^(id data, NSDate *cacheDate, NSDate* expireDate, NSError *error) {
-			self.data = data;
-			if (data) {
-				[self requestRecordIDWithCompletionBlock:^(NSString *recordID) {
-					[self.cacheManagedObjectContext performBlock:^{
-						if (!self.cacheRecord || ![self.cacheRecord.recordID isEqualToString:recordID])
-							self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:recordID];
-						self.cacheRecord.recordID = recordID;
-						self.cacheRecord.data.data = data;
-						self.cacheRecord.date = cacheDate;
-						self.cacheRecord.expireDate = expireDate;
-						[self.cacheManagedObjectContext save:nil];
-					}];
-				}];
-			}
+		[self downloadDataWithCachePolicy:cachePolicy completionBlock:^(NSError *error) {
 			self.reloading = NO;
 			[self update];
-		} progressBlock:^(float progress) {
-			
-		}];
+		} progressBlock:nil];
 	}
 }
 

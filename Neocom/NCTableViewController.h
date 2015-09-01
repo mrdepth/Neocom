@@ -16,21 +16,23 @@
 
 @interface NCTableViewController : UITableViewController<UISearchDisplayDelegate, CollapsableTableViewDelegate>
 @property (nonatomic, strong, readonly) NCTaskManager* taskManager;
-@property (nonatomic, strong, readonly) id data;
+@property (nonatomic, strong) id data;
 @property (nonatomic, strong) UISearchController* searchController;
 @property (nonatomic, weak) NCTableViewController* searchContentsController;
 @property (nonatomic, strong) NSManagedObjectContext* storageManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext* cacheManagedObjectContext;
+@property (nonatomic, strong) NSString* cacheRecordID;
+@property (nonatomic, strong, readonly) NCCacheRecord* cacheRecord;
 
-- (void) updateData:(id) data;
+- (void) saveCachedData:(id) data cacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
 - (void) didChangeStorage;
 - (void) reloadFromCache;
 
 #pragma mark - Override
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(id data, NSDate* cacheDate, NSDate* expireDate, NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
+- (void) reloadData:(id) data withCompletionBlock:(void(^)()) completionBlock;
 
-- (void) update;
 - (NSTimeInterval) defaultCacheExpireTime;
 - (void) requestRecordIDWithCompletionBlock:(void(^)(NSString* recordID)) completionBlock;
 

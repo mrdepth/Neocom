@@ -256,6 +256,7 @@
 		completionBlock(nil);
 		return;
 	}
+	NCAccountsViewControllerData* cacheData = self.cacheData;
 
 	[accountsManager loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray* apiKeys) {
 		[self.storageManagedObjectContext performBlock:^{
@@ -269,8 +270,10 @@
 				dispatch_group_enter(finishGroup);
 				BOOL corporate = account.accountType == NCAccountTypeCorporate;
 				
-				NCAccountsViewControllerDataAccount* dataAccount = [NCAccountsViewControllerDataAccount new];
+				NCAccountsViewControllerDataAccount* dataAccount = [[cacheData.accounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", account.uuid]] lastObject] ?: [NCAccountsViewControllerDataAccount new];
+				
 				dataAccount.account = account;
+				dataAccount.accountType = account.accountType;
 				dataAccount.characterID = account.characterID;
 				dataAccount.apiKey = account.apiKey;
 				dataAccount.keyID = account.apiKey.keyID;

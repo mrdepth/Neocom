@@ -79,6 +79,12 @@
 	[NCStorage setSharedStorage:[[NCStorage alloc] initLocalStorage]];
 	[NCAccountsManager setSharedManager:[[NCAccountsManager alloc] initWithStorage:[NCStorage sharedStorage]]];
 	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		[[NCAccountsManager sharedManager] addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" completionBlock:^(NSArray *accounts, NSError *error) {
+			
+		}];
+	});
+	
 /*	[[NCAccountsManager sharedManager] loadAccountsWithCompletionBlock:^(NSArray *accounts) {
 		NCAccount* account = [accounts lastObject];
 		[account.managedObjectContext performBlock:^{

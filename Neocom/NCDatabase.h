@@ -62,5 +62,6 @@
 + (id) sharedDatabase;
 
 - (NSManagedObjectContext*) createManagedObjectContext;
+- (NSManagedObjectContext*) createManagedObjectContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType) concurrencyType;
 
 @end

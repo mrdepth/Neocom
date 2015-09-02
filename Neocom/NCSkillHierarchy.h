@@ -21,11 +21,11 @@ typedef NS_ENUM(NSInteger, NCSkillHierarchyAvailability) {
 @property (nonatomic, assign) NCSkillHierarchyAvailability availability;
 @end
 
-@class NCAccount;
+@class EVECharacterSheet;
 @interface NCSkillHierarchy : NSObject
 @property (nonatomic, strong, readonly) NSArray* skills;
 
-- (id) initWithSkill:(NCDBInvTypeRequiredSkill*) skill account:(NCAccount*) account;
-- (id) initWithSkillType:(NCDBInvType*) skill level:(int32_t) level account:(NCAccount*) account;
+- (id) initWithSkill:(NCDBInvTypeRequiredSkill*) skill characterSheet:(EVECharacterSheet*) characterSheet;
+- (id) initWithSkillType:(NCDBInvType*) skill level:(int32_t) level characterSheet:(EVECharacterSheet*) characterSheet;
 
 @end

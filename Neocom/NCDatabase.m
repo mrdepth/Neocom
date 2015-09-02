@@ -103,11 +103,14 @@
 }
 
 - (NSManagedObjectContext*) createManagedObjectContext {
+	return [self createManagedObjectContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
+}
+
+- (NSManagedObjectContext*) createManagedObjectContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType) concurrencyType {
 	NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
 	if (coordinator != nil) {
-		NSManagedObjectContext* managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+		NSManagedObjectContext* managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:concurrencyType];
 		[managedObjectContext setPersistentStoreCoordinator:coordinator];
-		[managedObjectContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSRollbackMergePolicyType]];
 		return managedObjectContext;
 	}
 	else

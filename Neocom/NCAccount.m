@@ -191,7 +191,7 @@ static NCAccount* currentAccount = nil;
 		}
 		else
 			dispatch_async(dispatch_get_main_queue(), ^{
-				completionBlock(characterInfo, nil);
+				completionBlock(characterInfo, error);
 			});
 	};
 	

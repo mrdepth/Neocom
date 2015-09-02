@@ -31,10 +31,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	if (self.group)
+	if (self.group) {
+		self.databaseManagedObjectContext = self.group.managedObjectContext;
 		self.title = self.group.groupName;
-	else if (self.category)
+	}
+	else if (self.category) {
+		self.databaseManagedObjectContext = self.group.managedObjectContext;
 		self.title = self.category.categoryName;
+	}
+	else
+		self.databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+
 	self.refreshControl = nil;
 	
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
@@ -47,9 +54,6 @@
         }
     }
     
-	if (!self.result) {
-		[self reload];
-	}
 	if (self.filter == NCDatabaseFilterAll)
 		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"All", nil);
 	else if (self.filter == NCDatabaseFilterPublished)
@@ -65,12 +69,13 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-//	[self.searchController setActive:YES];
+	if (!self.result) {
+		[self reload];
+	}
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-//	[self.searchController setActive:NO];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -92,7 +97,7 @@
 			controller = segue.destinationViewController;
 		
 		id row = [sender object];
-		controller.type = row;
+		controller.typeID = [row objectID];
 	}
 }
 
@@ -137,10 +142,6 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
 - (void) searchWithSearchString:(NSString*) searchString {
 	if (searchString.length >= 2) {
 		if (self.group) {
@@ -154,9 +155,8 @@
 			else
 				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND typeName LIKE[C] %@", self.group, searchString];
 			
-			NCDatabase* database = [NCDatabase sharedDatabase];
 			request.fetchBatchSize = 50;
-			self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+			self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 		}
 		else if (self.category) {
 			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
@@ -169,9 +169,8 @@
 			else
 				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND typeName LIKE[C] %@", self.category, searchString];
 			
-			NCDatabase* database = [NCDatabase sharedDatabase];
 			request.fetchBatchSize = 50;
-			self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+			self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 		}
 		else {
 			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
@@ -184,9 +183,8 @@
 			else
 				request.predicate = [NSPredicate predicateWithFormat:@"typeName CONTAINS[C] %@", searchString];
 			
-			NCDatabase* database = [NCDatabase sharedDatabase];
 			request.fetchBatchSize = 50;
-			self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+			self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 		}
 		NSError* error = nil;
 		[self.searchResult performFetch:&error];
@@ -210,7 +208,7 @@
 	if ([row isKindOfClass:[NCDBInvType class]]) {
 		NCDBInvType* type = row;
 		cell.titleLabel.text = type.typeName;
-		cell.iconView.image = type.icon ? type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+		cell.iconView.image = type.icon ? type.icon.image.image : [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
 		cell.object = row;
 	}
 	else {
@@ -226,7 +224,7 @@
 		}
 		
 		if (!cell.iconView.image)
-			cell.iconView.image = [[[NCDBEveIcon defaultGroupIcon] image] image];
+			cell.iconView.image = [[[self.databaseManagedObjectContext defaultGroupIcon] image] image];
 		cell.object = row;
 	}
 }
@@ -256,8 +254,7 @@
 		else
 			request.predicate = [NSPredicate predicateWithFormat:@"group == %@", self.group];
 
-		NCDatabase* database = [NCDatabase sharedDatabase];
-		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"metaGroupName" cacheName:nil];
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:@"metaGroupName" cacheName:nil];
 	}
 	else if (self.category) {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvGroup"];
@@ -270,8 +267,7 @@
 		else
 			request.predicate = [NSPredicate predicateWithFormat:@"category == %@", self.category];
 
-		NCDatabase* database = [NCDatabase sharedDatabase];
-		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	}
 	else {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvCategory"];
@@ -282,8 +278,7 @@
 		else if (self.filter == NCDatabaseFilterUnpublished)
 			request.predicate = [NSPredicate predicateWithFormat:@"published == FALSE"];
 
-		NCDatabase* database = [NCDatabase sharedDatabase];
-		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	}
 	NSError* error = nil;
 	[self.result performFetch:&error];

@@ -16,7 +16,6 @@
 #import "NCTrainingQueue.h"
 #import "NCSkillHierarchy.h"
 #import "NCDatabaseViewController.h"
-#import "NSString+HTML.h"
 #import "UIAlertView+Block.h"
 #import "NCDatabaseTypeMasteryViewController.h"
 #import "NCTableViewCell.h"
@@ -30,6 +29,7 @@
 #import "NCNewShoppingItemViewController.h"
 #import "NCDatabaseFetchedResultsViewController.h"
 #import "NCAdaptivePopoverSegue.h"
+@import CoreText;
 
 #define EVEDBUnitIDMillisecondsID 101
 #define EVEDBUnitIDInverseAbsolutePercentID 108
@@ -65,6 +65,7 @@
 @end
 
 @interface NCDatabaseTypeInfoViewController ()
+@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, strong) NSArray* sections;
 @property (nonatomic, assign) BOOL needsLayout;
 @property (nonatomic, strong) NCDBEveIcon* defaultAttributeIcon;
@@ -94,6 +95,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+	
 	self.tableView.tableHeaderView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	if (self.navigationController.viewControllers[0] != self)
 		self.navigationItem.leftBarButtonItem = nil;
@@ -102,8 +105,6 @@
 	self.refreshControl = nil;
 	if (self.type.marketGroup.marketGroupID == 0)
 		self.navigationItem.rightBarButtonItem = nil;
-	self.defaultAttributeIcon = [NCDBEveIcon eveIconWithIconFile:@"105_32"];
-	self.defaultIcon = [NCDBEveIcon defaultTypeIcon];
 }
 
 - (void) viewDidLayoutSubviews {
@@ -213,20 +214,34 @@
 	
 }
 
+- (NCDBInvType*) type {
+	if (!_type)
+		_type = (NCDBInvType*) [self.databaseManagedObjectContext objectWithID:self.typeID];
+	return _type;
+}
+
+- (NCDBEveIcon*) defaultAttributeIcon {
+	if (!_defaultAttributeIcon)
+		_defaultAttributeIcon = [self.databaseManagedObjectContext eveIconWithIconFile:@"105_32"];
+	return _defaultAttributeIcon;
+}
+
+- (NCDBEveIcon*) defaultIcon {
+	if (!_defaultIcon)
+		_defaultIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+	return _defaultIcon;
+}
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
 	if ([self isViewLoaded])
 		[self reload];
 }
 
-- (void) didChangeStorage {
+- (void) didChangeStorage:(NSNotification *)notification {
+	[super didChangeStorage:notification];
 	[self reload];
 }
 
@@ -285,13 +300,14 @@
 						 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
 							 if (selectedButtonIndex != alertView.cancelButtonIndex) {
 								 NCSkillPlan* skillPlan = [[NCAccount currentAccount] activeSkillPlan];
-								 [skillPlan mergeWithTrainingQueue:trainingQueue];
+								 [skillPlan mergeWithTrainingQueue:trainingQueue completionBlock:nil];
 							 }
 						 }
 							 cancelBlock:nil] show];
 	}
 	else if ([row.object isKindOfClass:[NCShoppingList class]]) {
-		NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
+		NCAccount* account = [NCAccount currentAccount];
+		NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:account.managedObjectContext]
 												  insertIntoManagedObjectContext:nil];
 		NCDBInvMarketGroup* marketGroup;
 		for (marketGroup = self.type.marketGroup; marketGroup.parentGroup; marketGroup = marketGroup.parentGroup);
@@ -325,41 +341,7 @@
 	
 	self.titleLabel.attributedText = title;
 	self.imageView.image = type.icon.image.image ? type.icon.image.image : self.defaultIcon.image.image;
-	
-	/*if (type.typeDescription.text.length > 0) {
-		NSMutableAttributedString* descriptionAttributesString = [[NSMutableAttributedString alloc] initWithString:type.typeDescription.text
-																								   attributes:@{NSFontAttributeName: self.descriptionLabel.font,
-																												NSForegroundColorAttributeName: self.descriptionLabel.textColor}];
-		
-		
-		
-		NSRegularExpression* expression = [NSRegularExpression regularExpressionWithPattern:@"(<b>)([^<]*)(</b>)"
-																					options:NSRegularExpressionCaseInsensitive
-																					  error:nil];
-		
-		NSDictionary* boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:self.descriptionLabel.font.pointSize], NSForegroundColorAttributeName: [UIColor whiteColor]};
-		[expression enumerateMatchesInString:type.typeDescription.text
-									 options:0
-									   range:NSMakeRange(0, type.typeDescription.text.length)
-								  usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-									  if (result.numberOfRanges == 4) {
-										  NSRange r = [result rangeAtIndex:2];
-										  [descriptionAttributesString addAttributes:boldAttributes
-																			   range:r];
-									  }
-								  }];
-		
-		expression = [NSRegularExpression regularExpressionWithPattern:@"(</?b>)"
-															   options:NSRegularExpressionCaseInsensitive
-																 error:nil];
-		[expression replaceMatchesInString:descriptionAttributesString.mutableString options:0 range:NSMakeRange(0, descriptionAttributesString.length) withTemplate:@""];
-		self.descriptionLabel.attributedText = descriptionAttributesString;
-	}
-	else
-		self.descriptionLabel.text = nil;*/
 	self.descriptionLabel.attributedText = type.typeDescription.text;
-
-	
 	
 	self.needsLayout = YES;
 	[self.view setNeedsLayout];
@@ -376,374 +358,367 @@
 
 - (void) loadItemAttributes {
 	NCAccount *account = [NCAccount currentAccount];
-	NCCharacterAttributes* attributes = [account characterAttributes];
-	if (!attributes)
-		attributes = [NCCharacterAttributes defaultCharacterAttributes];
-	
-	NSMutableArray* sections = [NSMutableArray new];
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-									   title:NCTaskManagerDefaultTitle
-									   block:^(NCTask *task) {
-										   NCDatabase* database = [NCDatabase sharedDatabase];
-										   [database.backgroundManagedObjectContext performBlockAndWait:^{
-											   NCDBInvType* type = (NCDBInvType*) [database.backgroundManagedObjectContext objectWithID:self.type.objectID];
-											   
-											   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
-											   [trainingQueue addRequiredSkillsForType:type];
-											   
-											   if (type.marketGroup) {
-												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-												   section[@"title"] = NSLocalizedString(@"Shopping List", nil);
-												   NSMutableArray* rows = [NSMutableArray array];
-												   section[@"rows"] = rows;
-												   
-												   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-												   row.title = NSLocalizedString(@"Add to Shopping List", nil);
-												   
-												   NCTask* priceTask = [[self taskManager] addTaskWithIndentifier:nil
-																											title:NCTaskManagerDefaultTitle
-																											block:^(NCTask *task) {
-																												NSDictionary* prices = [[NCPriceManager sharedManager] pricesWithTypes:@[@(type.typeID)]];
-																												double price = [prices[@(type.typeID)] doubleValue];
-																												if (price > 0)
-																													row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(price)]];
-																											} completionHandler:^(NCTask *task) {
-																												if ([self.tableView numberOfSections] > 0 && [self.tableView numberOfRowsInSection:0] > 0)
-																													[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-																											}];
-												   [priceTask addDependency:task];
-												   
-												   row.cellIdentifier = @"Cell";
-												   row.image = [UIImage imageNamed:@"note.png"];
-												   row.object = [NCShoppingList currentShoppingList];
-												   [rows addObject:row];
-												   [sections addObject:section];
-											   }
-											   
-											   NSInteger count = type.parentType ? type.parentType.variations.count : type.variations.count;
-											   if (count > 0) {
-												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-												   section[@"title"] = NSLocalizedString(@"Variations", nil);
-												   NSMutableArray* rows = [NSMutableArray array];
-												   section[@"rows"] = rows;
-												   
-												   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-												   row.title = NSLocalizedString(@"Variations", nil);
-												   row.detail = [NSString stringWithFormat:@"%d", (int32_t) count + 1];
-												   row.icon = [NCDBEveIcon eveIconWithIconFile:@"09_07"];
-												   row.cellIdentifier = @"VariationsCell";
-												   [rows addObject:row];
-												   [sections addObject:section];
-											   }
-											   
-											   if (account && account.activeSkillPlan) {
-												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-												   section[@"title"] = NSLocalizedString(@"Skill Plan", nil);
-												   NSMutableArray* rows = [NSMutableArray array];
-												   section[@"rows"] = rows;
-												   
-												   if (type.group.category.categoryID == 16) {
-													   EVECharacterSheetSkill* characterSkill = account.characterSheet.skillsMap[@(type.typeID)];
-													   for (int32_t level = characterSkill.level + 1; level <= 5; level++) {
-														   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
-														   [trainingQueue addSkill:type withLevel:level];
-														   
-														   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-														   row.title = [NSString stringWithFormat:NSLocalizedString(@"Train to level %d", nil), level];
-														   row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
-														   row.icon = [NCDBEveIcon eveIconWithIconFile:@"50_13"];
-														   row.object = trainingQueue;
-														   
-														   [rows addObject:row];
-													   }
-												   }
-												   else if (trainingQueue.skills.count > 0){
-													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-													   row.title = NSLocalizedString(@"Add required skills to training plan", nil);
-													   row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
-													   row.icon = [NCDBEveIcon eveIconWithIconFile:@"50_13"];
-													   row.object = trainingQueue;
-													   [rows addObject:row];
-												   }
-												   if (rows.count > 0)
-													   [sections addObject:section];
-											   }
-											   
-											   if (type.certificates.count > 0) {
-												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-												   
-												   section[@"title"] = NSLocalizedString(@"Mastery", nil);
-												   NSMutableArray* rows = [NSMutableArray array];
-												   section[@"rows"] = rows;
-												   
-												   NSMutableDictionary* masteries = [NSMutableDictionary new];
-												   for (NCDBCertCertificate* certificate in type.certificates) {
-													   for (NCDBCertMastery* mastery in certificate.masteries) {
-														   NSMutableArray* array = masteries[@(mastery.level.level)];
-														   if (!array)
-															   masteries[@(mastery.level.level)] = array = [NSMutableArray new];
-														   [array addObject:mastery];
-													   }
-												   }
-												   NCDBEveIcon* unlcaimedIcon = [NCDBEveIcon certificateUnclaimedIcon];
-												   for (NSString* key in [[masteries allKeys] sortedArrayUsingSelector:@selector(compare:)]) {
-													   NSArray* array = masteries[key];
-													   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
-													   NCDBCertMasteryLevel* level = [(NCDBCertMastery*) array[0] level];
-													   for (NCDBCertMastery* mastery in array)
-														   [trainingQueue addMastery:mastery];
-													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-													   row.title = [NSString stringWithFormat:NSLocalizedString(@"Mastery %d", nil), [key intValue] + 1];
-													   if (trainingQueue.trainingTime > 0) {
-														   row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
-														   row.icon = unlcaimedIcon;
-													   }
-													   else
-														   row.icon = level.icon;
-													   row.cellIdentifier = @"MasteryCell";
-													   row.object = level;
-													   [rows addObject:row];
-												   }
-												   if (rows.count > 0)
-													   [sections addObject:section];
-											   }
-											   
-											   if (type.products) {
-												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-												   NSMutableArray *rows = [NSMutableArray array];
-												   for (NCDBIndProduct* product in type.products) {
-													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-													   row.title = NSLocalizedString(@"Blueprint", nil);
-													   row.detail = [product.activity.blueprintType.type typeName];
-													   row.icon = product.activity.blueprintType.type.icon ? product.activity.blueprintType.type.icon : self.defaultIcon;
-													   row.object = product.activity.blueprintType.type;
-													   row.cellIdentifier = @"TypeCell";
-													   [rows addObject:row];
-												   }
-												   if (rows.count > 0) {
-													   section[@"title"] = NSLocalizedString(@"Manufacturing", nil);
-													   section[@"rows"] = rows;
-													   [sections addObject:section];
-												   }
-											   }
-											   
-											   NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DgmTypeAttribute"];
-											   request.predicate = [NSPredicate predicateWithFormat:@"type == %@ AND attributeType.published == TRUE", type];
-											   request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"attributeType.attributeCategory.categoryName" ascending:YES],
-																		   [NSSortDescriptor sortDescriptorWithKey:@"attributeType.displayName" ascending:YES]];
-											   NSFetchedResultsController* controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-																															managedObjectContext:database.backgroundManagedObjectContext
-																															  sectionNameKeyPath:@"attributeType.attributeCategory.categoryName"
-																																	   cacheName:nil];
-											   [controller performFetch:nil];
-											   
-											   for (id<NSFetchedResultsSectionInfo> sectionInfo in controller.sections) {
-												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-												   NSMutableArray *rows = [NSMutableArray array];
-												   
-												   NCDBDgmAttributeCategory* category = [[(NCDBDgmTypeAttribute*) sectionInfo.objects[0] attributeType] attributeCategory];
-												   
-												   if (category.categoryID == 8 && trainingQueue.trainingTime > 0) {
-													   NSString *title = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
-													   section[@"title"] = title;
-												   }
-												   else
-													   section[@"title"] = category.categoryID == 9 ? @"Other" : category.categoryName;
-												   
-												   section[@"rows"] = rows;
-												   
-												   NCDBEveIcon* skillIcon = [NCDBEveIcon eveIconWithIconFile:@"50_11"];
-												   for (NCDBDgmTypeAttribute *attribute in sectionInfo.objects) {
-													   if (attribute.attributeType.unit.unitID == EVEDBUnitIDTypeID) {
-														   int32_t typeID = attribute.value;
-														   for (NCDBInvTypeRequiredSkill* requiredSkill in type.requiredSkills) {
-															   if (requiredSkill.skillType.typeID == typeID) {
-																   NCSkillHierarchy* hierarchy = [[NCSkillHierarchy alloc] initWithSkill:requiredSkill account:account];
-																   
-																   for (NCSkillHierarchySkill* skill in hierarchy.skills) {
-																	   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-																	   row.title = [NSString stringWithFormat:@"%@ %d", skill.type.typeName, skill.targetLevel];
-																	   row.object = skill.type;
-																	   row.cellIdentifier = @"TypeCell";
-																	   row.indentationLevel = skill.nestingLevel;
-																	   row.icon = skillIcon;
-																	   
-																	   switch (skill.availability) {
-																		   case NCSkillHierarchyAvailabilityLearned:
-																			   row.accessoryIcon = [NCDBEveIcon eveIconWithIconFile:@"38_193"];
-																			   break;
-																		   case NCSkillHierarchyAvailabilityNotLearned:
-																			   row.accessoryIcon = [NCDBEveIcon eveIconWithIconFile:@"38_194"];
-																			   break;
-																		   case NCSkillHierarchyAvailabilityLowLevel:
-																			   row.accessoryIcon = [NCDBEveIcon eveIconWithIconFile:@"38_195"];
-																			   break;
-																		   default:
-																			   break;
-																	   }
-																	   
-																	   if (skill.availability != NCSkillHierarchyAvailabilityLearned)
-																		   row.detail = [NSString stringWithTimeLeft:[skill trainingTimeToFinishWithCharacterAttributes:attributes]];
-																	   
-																	   [rows addObject:row];
-																   }
-																   break;
-															   }
-														   }
-													   }
-													   else {
-														   if (attribute.attributeType.displayName.length == 0 && attribute.attributeType.attributeName.length == 0)
-															   continue;
-														   NSNumber* modifiedValue = self.attributes[@(attribute.attributeType.attributeID)];
-														   float value = modifiedValue ? [modifiedValue floatValue] : attribute.value;
-														   
-														   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-														   row.title = attribute.attributeType.displayName.length > 0 ? attribute.attributeType.displayName : attribute.attributeType.attributeName;
-														   
-														   if (attribute.attributeType.unit.unitID == EVEDBUnitIDAttributeID) {
-															   NCDBDgmAttributeType *attributeType = [NCDBDgmAttributeType dgmAttributeTypeWithAttributeTypeID:attribute.value];
-															   row.detail = attributeType.displayName;
-															   row.icon = attributeType.icon;
-															   [rows addObject:row];
-														   }
-														   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDGroupID) {
-															   NCDBInvGroup *group = [NCDBInvGroup invGroupWithGroupID:attribute.value];
-															   row.detail = group.groupName;
-															   row.icon = attribute.attributeType.icon ? attribute.attributeType.icon : group.icon;
-															   row.object = group;
-															   row.cellIdentifier = @"GroupCell";
-															   [rows addObject:row];
-														   }
-														   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDSizeClass) {
-															   row.icon = attribute.attributeType.icon;
-															   
-															   int size = attribute.value;
-															   if (size == 1)
-																   row.detail = NSLocalizedString(@"Small", nil);
-															   else if (size == 2)
-																   row.detail = NSLocalizedString(@"Medium", nil);
-															   else
-																   row.detail = NSLocalizedString(@"Large", nil);
-															   
-															   [rows addObject:row];
-														   }
-														   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDBoolean) {
-															   row.icon = attribute.attributeType.icon;
-															   row.detail = value == 0.0 ? NSLocalizedString(@"Yes", nil) : NSLocalizedString(@"No", nil);
-															   [rows addObject:row];
-														   }
-														   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDBonus) {
-															   row.icon = attribute.attributeType.icon;
-															   row.detail = [NSString stringWithFormat:@"+%@",
-																			 [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)]];
-															   [rows addObject:row];
-														   }
-														   else {
-															   row.icon = attribute.attributeType.icon;
-															   
-															   if (attribute.attributeType.attributeID == EVEDBAttributeIDSKillLevel) {
-																   int32_t level = 0;
-																   EVECharacterSheetSkill *skill = account.characterSheet.skillsMap[@(type.typeID)];
-																   if (skill)
-																	   level = skill.level;
-																   row.detail = [NSString stringWithFormat:@"%d", level];
-															   }
-															   else {
-																   NSString *unit;
-																   
-																   if (attribute.attributeType.attributeID == EVEDBAttributeIDBaseWarpSpeed) {
-																	   value = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(EVEDBAttributeIDWarpSpeedMultiplier)] value];
-																	   unit = NSLocalizedString(@"AU/sec", nil);
-																   }
-																   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDInverseAbsolutePercentID || attribute.attributeType.unit.unitID == EVEDBUnitIDInversedModifierPercentID) {
-																	   value = (1 - value) * 100;
-																	   unit = attribute.attributeType.unit.displayName;
-																   }
-																   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDModifierPercentID) {
-																	   value = (value - 1) * 100;
-																	   unit = attribute.attributeType.unit.displayName;
-																   }
-																   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDAbsolutePercentID) {
-																	   value = value * 100;
-																	   unit = attribute.attributeType.unit.displayName;
-																   }
-																   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDMillisecondsID) {
-																	   value = value / 1000.0;
-																	   unit = attribute.attributeType.unit.displayName;
-																   }
-																   else {
-																	   value = value;
-																	   unit = attribute.attributeType.unit.displayName;
-																   }
-																   row.detail = [NSString stringWithFormat:@"%@ %@",
-																				 [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)],
-																				 unit ? unit : @""];
-															   }
-															   [rows addObject:row];
-														   }
-													   }
-												   }
-												   if (rows.count > 0)
-													   [sections addObject:section];
-											   }
-											   if (type.group.category.categoryID == EVEDBCategoryIDSkill) { //Skill
-												   NSInteger requiredForCount = type.requiredForSkill.count;
-												   if (requiredForCount > 0) {
-													   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-													   NSMutableArray *rows = [NSMutableArray array];
-													   section[@"title"] = NSLocalizedString(@"Required for", nil);
-													   section[@"rows"] = rows;
-													   
-													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-													   row.title = [NSString stringWithFormat:NSLocalizedString(@"%ld items", nil), (long) requiredForCount];
-													   row.icon = [NCDBEveIcon eveIconWithIconFile:@"09_07"];
-													   row.cellIdentifier = @"RequirementsCell";
-													   [rows addObject:row];
-													   [sections addObject:section];
-												   }
-												   
-												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-												   NSMutableArray *rows = [NSMutableArray array];
-												   section[@"title"] = NSLocalizedString(@"Training time", nil);
-												   section[@"rows"] = rows;
-												   
-												   float startSP = 0;
-												   float endSP;
-												   NCSkillData* skillData = [[NCSkillData alloc] initWithInvType:type];
-												   NCDBEveIcon* skillIcon = [NCDBEveIcon eveIconWithIconFile:@"50_13"];
-												   for (int32_t i = 1; i <= 5; i++) {
-													   endSP = [skillData skillPointsAtLevel:i];
-													   NSTimeInterval needsTime = (endSP - startSP) / [attributes skillpointsPerSecondForSkill:type];
-													   NSString *text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@)", nil),
-																		 [NSNumberFormatter neocomLocalizedStringFromInteger:endSP],
-																		 [NSString stringWithTimeLeft:needsTime]];
-													   
-													   NSString* rank = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), i];
-													   
-													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-													   row.title = rank;
-													   row.detail = text;
-													   row.icon = skillIcon;
-													   [rows addObject:row];
-													   startSP = endSP;
-												   }
-												   [sections addObject:section];
-											   }
+	[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+		NSManagedObjectContext* managedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+		[managedObjectContext performBlock:^{
+			NSMutableArray* sections = [NSMutableArray new];
 
-											   
-										   }];
-									   }
-						   completionHandler:^(NCTask *task) {
-							   if (![task isCancelled]) {
-								   self.sections = sections;
-								   [self update];
-							   }
-						   }];
+			NCCharacterAttributes* attributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:managedObjectContext];
+			NCDBInvType* type = (NCDBInvType*) [managedObjectContext objectWithID:self.typeID];
+			
+			NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:managedObjectContext];
+			[trainingQueue addRequiredSkillsForType:type];
+			
+			if (type.marketGroup) {
+				NSMutableDictionary *section = [NSMutableDictionary dictionary];
+				section[@"title"] = NSLocalizedString(@"Shopping List", nil);
+				NSMutableArray* rows = [NSMutableArray array];
+				section[@"rows"] = rows;
+				
+				NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+				row.title = NSLocalizedString(@"Add to Shopping List", nil);
+				
+				[[NCPriceManager sharedManager] requestPricesWithTypes:@[@(type.typeID)] completionBlock:^(NSDictionary *prices) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						double price = [prices[@(type.typeID)] doubleValue];
+						if (price > 0)
+							row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(price)]];
+						
+						if ([self.tableView numberOfSections] > 0 && [self.tableView numberOfRowsInSection:0] > 0)
+							[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+					});
+				}];
+				
+				row.cellIdentifier = @"Cell";
+				row.image = [UIImage imageNamed:@"note.png"];
+				[[account managedObjectContext] performBlock:^{
+					row.object = [account.managedObjectContext currentShoppingList];
+				}];
+				[rows addObject:row];
+				[sections addObject:section];
+			}
+			
+			NSInteger count = type.parentType ? type.parentType.variations.count : type.variations.count;
+			if (count > 0) {
+				NSMutableDictionary *section = [NSMutableDictionary dictionary];
+				section[@"title"] = NSLocalizedString(@"Variations", nil);
+				NSMutableArray* rows = [NSMutableArray array];
+				section[@"rows"] = rows;
+				
+				NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+				row.title = NSLocalizedString(@"Variations", nil);
+				row.detail = [NSString stringWithFormat:@"%d", (int32_t) count + 1];
+				row.icon = [managedObjectContext eveIconWithIconFile:@"09_07"];
+				row.cellIdentifier = @"VariationsCell";
+				[rows addObject:row];
+				[sections addObject:section];
+			}
+			
+			if (account && account.activeSkillPlan) {
+				NSMutableDictionary *section = [NSMutableDictionary dictionary];
+				section[@"title"] = NSLocalizedString(@"Skill Plan", nil);
+				NSMutableArray* rows = [NSMutableArray array];
+				section[@"rows"] = rows;
+				
+				if (type.group.category.categoryID == 16) {
+					EVECharacterSheetSkill* characterSkill = characterSheet.skillsMap[@(type.typeID)];
+					for (int32_t level = characterSkill.level + 1; level <= 5; level++) {
+						NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:managedObjectContext];
+						[trainingQueue addSkill:type withLevel:level];
+						
+						NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+						row.title = [NSString stringWithFormat:NSLocalizedString(@"Train to level %d", nil), level];
+						row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+						row.icon = [managedObjectContext eveIconWithIconFile:@"50_13"];
+						row.object = trainingQueue;
+						
+						[rows addObject:row];
+					}
+				}
+				else if (trainingQueue.skills.count > 0){
+					NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+					row.title = NSLocalizedString(@"Add required skills to training plan", nil);
+					row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+					row.icon = [managedObjectContext eveIconWithIconFile:@"50_13"];
+					row.object = trainingQueue;
+					[rows addObject:row];
+				}
+				if (rows.count > 0)
+					[sections addObject:section];
+			}
+			
+			if (type.certificates.count > 0) {
+				NSMutableDictionary *section = [NSMutableDictionary dictionary];
+				
+				section[@"title"] = NSLocalizedString(@"Mastery", nil);
+				NSMutableArray* rows = [NSMutableArray array];
+				section[@"rows"] = rows;
+				
+				NSMutableDictionary* masteries = [NSMutableDictionary new];
+				for (NCDBCertCertificate* certificate in type.certificates) {
+					for (NCDBCertMastery* mastery in certificate.masteries) {
+						NSMutableArray* array = masteries[@(mastery.level.level)];
+						if (!array)
+							masteries[@(mastery.level.level)] = array = [NSMutableArray new];
+						[array addObject:mastery];
+					}
+				}
+				NCDBEveIcon* unlcaimedIcon = [managedObjectContext certificateUnclaimedIcon];
+				for (NSString* key in [[masteries allKeys] sortedArrayUsingSelector:@selector(compare:)]) {
+					NSArray* array = masteries[key];
+					NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:managedObjectContext];
+					NCDBCertMasteryLevel* level = [(NCDBCertMastery*) array[0] level];
+					for (NCDBCertMastery* mastery in array)
+						[trainingQueue addMastery:mastery];
+					NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+					row.title = [NSString stringWithFormat:NSLocalizedString(@"Mastery %d", nil), [key intValue] + 1];
+					if (trainingQueue.trainingTime > 0) {
+						row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+						row.icon = unlcaimedIcon;
+					}
+					else
+						row.icon = level.icon;
+					row.cellIdentifier = @"MasteryCell";
+					row.object = level;
+					[rows addObject:row];
+				}
+				if (rows.count > 0)
+					[sections addObject:section];
+			}
+			
+			if (type.products) {
+				NSMutableDictionary *section = [NSMutableDictionary dictionary];
+				NSMutableArray *rows = [NSMutableArray array];
+				for (NCDBIndProduct* product in type.products) {
+					NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+					row.title = NSLocalizedString(@"Blueprint", nil);
+					row.detail = [product.activity.blueprintType.type typeName];
+					row.icon = product.activity.blueprintType.type.icon ? product.activity.blueprintType.type.icon : self.defaultIcon;
+					row.object = product.activity.blueprintType.type;
+					row.cellIdentifier = @"TypeCell";
+					[rows addObject:row];
+				}
+				if (rows.count > 0) {
+					section[@"title"] = NSLocalizedString(@"Manufacturing", nil);
+					section[@"rows"] = rows;
+					[sections addObject:section];
+				}
+			}
+			
+			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DgmTypeAttribute"];
+			request.predicate = [NSPredicate predicateWithFormat:@"type == %@ AND attributeType.published == TRUE", type];
+			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"attributeType.attributeCategory.categoryName" ascending:YES],
+										[NSSortDescriptor sortDescriptorWithKey:@"attributeType.displayName" ascending:YES]];
+			NSFetchedResultsController* controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+																						 managedObjectContext:managedObjectContext
+																						   sectionNameKeyPath:@"attributeType.attributeCategory.categoryName"
+																									cacheName:nil];
+			[controller performFetch:nil];
+			
+			for (id<NSFetchedResultsSectionInfo> sectionInfo in controller.sections) {
+				NSMutableDictionary *section = [NSMutableDictionary dictionary];
+				NSMutableArray *rows = [NSMutableArray array];
+				
+				NCDBDgmAttributeCategory* category = [[(NCDBDgmTypeAttribute*) sectionInfo.objects[0] attributeType] attributeCategory];
+				
+				if (category.categoryID == 8 && trainingQueue.trainingTime > 0) {
+					NSString *title = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+					section[@"title"] = title;
+				}
+				else
+					section[@"title"] = category.categoryID == 9 ? @"Other" : category.categoryName;
+				
+				section[@"rows"] = rows;
+				
+				NCDBEveIcon* skillIcon = [managedObjectContext eveIconWithIconFile:@"50_11"];
+				for (NCDBDgmTypeAttribute *attribute in sectionInfo.objects) {
+					if (attribute.attributeType.unit.unitID == EVEDBUnitIDTypeID) {
+						int32_t typeID = attribute.value;
+						for (NCDBInvTypeRequiredSkill* requiredSkill in type.requiredSkills) {
+							if (requiredSkill.skillType.typeID == typeID) {
+								NCSkillHierarchy* hierarchy = [[NCSkillHierarchy alloc] initWithSkill:requiredSkill characterSheet:characterSheet];
+								
+								for (NCSkillHierarchySkill* skill in hierarchy.skills) {
+									NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+									row.title = [NSString stringWithFormat:@"%@ %d", skill.type.typeName, skill.targetLevel];
+									row.object = skill.type;
+									row.cellIdentifier = @"TypeCell";
+									row.indentationLevel = skill.nestingLevel;
+									row.icon = skillIcon;
+									
+									switch (skill.availability) {
+										case NCSkillHierarchyAvailabilityLearned:
+											row.accessoryIcon = [managedObjectContext eveIconWithIconFile:@"38_193"];
+											break;
+										case NCSkillHierarchyAvailabilityNotLearned:
+											row.accessoryIcon = [managedObjectContext eveIconWithIconFile:@"38_194"];
+											break;
+										case NCSkillHierarchyAvailabilityLowLevel:
+											row.accessoryIcon = [managedObjectContext eveIconWithIconFile:@"38_195"];
+											break;
+										default:
+											break;
+									}
+									
+									if (skill.availability != NCSkillHierarchyAvailabilityLearned)
+										row.detail = [NSString stringWithTimeLeft:[skill trainingTimeToFinishWithCharacterAttributes:attributes]];
+									
+									[rows addObject:row];
+								}
+								break;
+							}
+						}
+					}
+					else {
+						if (attribute.attributeType.displayName.length == 0 && attribute.attributeType.attributeName.length == 0)
+							continue;
+						NSNumber* modifiedValue = self.attributes[@(attribute.attributeType.attributeID)];
+						float value = modifiedValue ? [modifiedValue floatValue] : attribute.value;
+						
+						NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+						row.title = attribute.attributeType.displayName.length > 0 ? attribute.attributeType.displayName : attribute.attributeType.attributeName;
+						
+						if (attribute.attributeType.unit.unitID == EVEDBUnitIDAttributeID) {
+							NCDBDgmAttributeType *attributeType = [managedObjectContext dgmAttributeTypeWithAttributeTypeID:attribute.value];
+							row.detail = attributeType.displayName;
+							row.icon = attributeType.icon;
+							[rows addObject:row];
+						}
+						else if (attribute.attributeType.unit.unitID == EVEDBUnitIDGroupID) {
+							NCDBInvGroup *group = [managedObjectContext invGroupWithGroupID:attribute.value];
+							row.detail = group.groupName;
+							row.icon = attribute.attributeType.icon ? attribute.attributeType.icon : group.icon;
+							row.object = group;
+							row.cellIdentifier = @"GroupCell";
+							[rows addObject:row];
+						}
+						else if (attribute.attributeType.unit.unitID == EVEDBUnitIDSizeClass) {
+							row.icon = attribute.attributeType.icon;
+							
+							int size = attribute.value;
+							if (size == 1)
+								row.detail = NSLocalizedString(@"Small", nil);
+							else if (size == 2)
+								row.detail = NSLocalizedString(@"Medium", nil);
+							else
+								row.detail = NSLocalizedString(@"Large", nil);
+							
+							[rows addObject:row];
+						}
+						else if (attribute.attributeType.unit.unitID == EVEDBUnitIDBoolean) {
+							row.icon = attribute.attributeType.icon;
+							row.detail = value == 0.0 ? NSLocalizedString(@"Yes", nil) : NSLocalizedString(@"No", nil);
+							[rows addObject:row];
+						}
+						else if (attribute.attributeType.unit.unitID == EVEDBUnitIDBonus) {
+							row.icon = attribute.attributeType.icon;
+							row.detail = [NSString stringWithFormat:@"+%@",
+										  [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)]];
+							[rows addObject:row];
+						}
+						else {
+							row.icon = attribute.attributeType.icon;
+							
+							if (attribute.attributeType.attributeID == EVEDBAttributeIDSKillLevel) {
+								int32_t level = 0;
+								EVECharacterSheetSkill *skill = characterSheet.skillsMap[@(type.typeID)];
+								if (skill)
+									level = skill.level;
+								row.detail = [NSString stringWithFormat:@"%d", level];
+							}
+							else {
+								NSString *unit;
+								
+								if (attribute.attributeType.attributeID == EVEDBAttributeIDBaseWarpSpeed) {
+									value = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(EVEDBAttributeIDWarpSpeedMultiplier)] value];
+									unit = NSLocalizedString(@"AU/sec", nil);
+								}
+								else if (attribute.attributeType.unit.unitID == EVEDBUnitIDInverseAbsolutePercentID || attribute.attributeType.unit.unitID == EVEDBUnitIDInversedModifierPercentID) {
+									value = (1 - value) * 100;
+									unit = attribute.attributeType.unit.displayName;
+								}
+								else if (attribute.attributeType.unit.unitID == EVEDBUnitIDModifierPercentID) {
+									value = (value - 1) * 100;
+									unit = attribute.attributeType.unit.displayName;
+								}
+								else if (attribute.attributeType.unit.unitID == EVEDBUnitIDAbsolutePercentID) {
+									value = value * 100;
+									unit = attribute.attributeType.unit.displayName;
+								}
+								else if (attribute.attributeType.unit.unitID == EVEDBUnitIDMillisecondsID) {
+									value = value / 1000.0;
+									unit = attribute.attributeType.unit.displayName;
+								}
+								else {
+									value = value;
+									unit = attribute.attributeType.unit.displayName;
+								}
+								row.detail = [NSString stringWithFormat:@"%@ %@",
+											  [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)],
+											  unit ? unit : @""];
+							}
+							[rows addObject:row];
+						}
+					}
+				}
+				if (rows.count > 0)
+					[sections addObject:section];
+			}
+			if (type.group.category.categoryID == EVEDBCategoryIDSkill) { //Skill
+				NSInteger requiredForCount = type.requiredForSkill.count;
+				if (requiredForCount > 0) {
+					NSMutableDictionary *section = [NSMutableDictionary dictionary];
+					NSMutableArray *rows = [NSMutableArray array];
+					section[@"title"] = NSLocalizedString(@"Required for", nil);
+					section[@"rows"] = rows;
+					
+					NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+					row.title = [NSString stringWithFormat:NSLocalizedString(@"%ld items", nil), (long) requiredForCount];
+					row.icon = [managedObjectContext eveIconWithIconFile:@"09_07"];
+					row.cellIdentifier = @"RequirementsCell";
+					[rows addObject:row];
+					[sections addObject:section];
+				}
+				
+				NSMutableDictionary *section = [NSMutableDictionary dictionary];
+				NSMutableArray *rows = [NSMutableArray array];
+				section[@"title"] = NSLocalizedString(@"Training time", nil);
+				section[@"rows"] = rows;
+				
+				float startSP = 0;
+				float endSP;
+				NCSkillData* skillData = [[NCSkillData alloc] initWithInvType:type];
+				NCDBEveIcon* skillIcon = [managedObjectContext eveIconWithIconFile:@"50_13"];
+				for (int32_t i = 1; i <= 5; i++) {
+					endSP = [skillData skillPointsAtLevel:i];
+					NSTimeInterval needsTime = (endSP - startSP) / [attributes skillpointsPerSecondForSkill:type];
+					NSString *text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@)", nil),
+									  [NSNumberFormatter neocomLocalizedStringFromInteger:endSP],
+									  [NSString stringWithTimeLeft:needsTime]];
+					
+					NSString* rank = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), i];
+					
+					NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+					row.title = rank;
+					row.detail = text;
+					row.icon = skillIcon;
+					[rows addObject:row];
+					startSP = endSP;
+				}
+				[sections addObject:section];
+			}
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.sections = sections;
+				[self.tableView reloadData];
+			});
+		}];
+	}];
+	
 }
 
 - (void) loadBlueprintAttributes {
-	NCAccount *account = [NCAccount currentAccount];
+/*	NCAccount *account = [NCAccount currentAccount];
 	NCCharacterAttributes* attributes = [account characterAttributes];
 	if (!attributes)
 		attributes = [NCCharacterAttributes defaultCharacterAttributes];
@@ -857,201 +832,7 @@
 													 }
 												 }
 												 
-/*												 NSMutableArray *rows = [NSMutableArray new];
-												 NCDatabaseTypeInfoViewControllerRow* row;
-												 
-												 NCDBInvType* productType = type.blueprintType.productType;
-												 NCDBInvBlueprintType* blueprintType = type.blueprintType;
-												 
-												 row = [NCDatabaseTypeInfoViewControllerRow new];
-												 row.title = NSLocalizedString(@"Product", nil);
-												 row.detail = productType.typeName;
-												 row.icon = productType.icon;
-												 row.object = productType;
-												 row.cellIdentifier = @"TypeCell";
-												 [rows addObject:row];
-												 
-												 row = [NCDatabaseTypeInfoViewControllerRow new];
-												 row.title = NSLocalizedString(@"Waste Factor", nil);
-												 row.detail = [NSString stringWithFormat:@"%d %%", blueprintType.wasteFactor];
-												 [rows addObject:row];
-												 
-												 row = [NCDatabaseTypeInfoViewControllerRow new];
-												 row.title = NSLocalizedString(@"Production Limit", nil);
-												 row.detail = [NSNumberFormatter neocomLocalizedStringFromInteger:blueprintType.maxProductionLimit];
-												 [rows addObject:row];
-												 
-												 row = [NCDatabaseTypeInfoViewControllerRow new];
-												 row.title = NSLocalizedString(@"Productivity Modifier", nil);
-												 row.detail = [NSNumberFormatter neocomLocalizedStringFromInteger:blueprintType.productivityModifier];
-												 [rows addObject:row];
-												 
-												 row = [NCDatabaseTypeInfoViewControllerRow new];
-												 row.title = NSLocalizedString(@"Manufacturing Time", nil);
-												 row.detail = [NSString stringWithTimeLeft:blueprintType.productionTime];
-												 [rows addObject:row];
-												 
-												 row = [NCDatabaseTypeInfoViewControllerRow new];
-												 row.title = NSLocalizedString(@"Research Manufacturing Time", nil);
-												 row.detail = [NSString stringWithTimeLeft:blueprintType.researchProductivityTime];
-												 [rows addObject:row];
-												 
-												 row = [NCDatabaseTypeInfoViewControllerRow new];
-												 row.title = NSLocalizedString(@"Research Material Time", nil);
-												 row.detail = [NSString stringWithTimeLeft:blueprintType.researchMaterialTime];
-												 [rows addObject:row];
-												 
-												 row = [NCDatabaseTypeInfoViewControllerRow new];
-												 row.title = NSLocalizedString(@"Research Copy Time", nil);
-												 row.detail = [NSString stringWithTimeLeft:blueprintType.researchCopyTime];
-												 [rows addObject:row];
-												 
-												 row = [NCDatabaseTypeInfoViewControllerRow new];
-												 row.title = NSLocalizedString(@"Research Tech Time", nil);
-												 row.detail = [NSString stringWithTimeLeft:blueprintType.researchTechTime];
-												 [rows addObject:row];
-												 
-												 [sections addObject:@{@"title" : NSLocalizedString(@"Blueprint", nil), @"rows" : rows}];
-												 
-												 NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
-												 [trainingQueue addRequiredSkillsForType:type];
-												 
-												 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DgmTypeAttribute"];
-												 request.predicate = [NSPredicate predicateWithFormat:@"type == %@ AND attributeType.published == TRUE", type];
-												 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"attributeType.attributeCategory.categoryName" ascending:YES],
-																			 [NSSortDescriptor sortDescriptorWithKey:@"attributeType.displayName" ascending:YES]];
-												 NSFetchedResultsController* controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-																															  managedObjectContext:database.backgroundManagedObjectContext
-																																sectionNameKeyPath:@"attributeType.attributeCategory.categoryName"
-																																		 cacheName:nil];
-												 [controller performFetch:nil];
-												 
-												 for (id<NSFetchedResultsSectionInfo> sectionInfo in controller.sections) {
-													 NSMutableArray *rows = [NSMutableArray array];
-													 
-													 NCDBDgmAttributeCategory* category = [[(NCDBDgmTypeAttribute*) sectionInfo.objects[0] attributeType] attributeCategory];
-													 
-													 NSString* title = nil;
-													 
-													 if (category.categoryID == 8 && trainingQueue.trainingTime > 0)
-														 title = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
-													 else
-														 title = category.categoryID == 9 ? @"Other" : category.categoryName;
-													 
-													 for (NCDBDgmTypeAttribute *attribute in sectionInfo.objects) {
-														 NSString *unit = attribute.attributeType.unit.displayName;
-														 
-														 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-														 row.title = attribute.attributeType.displayName;
-														 row.detail = [NSString stringWithFormat:@"%@ %@", [NSNumberFormatter neocomLocalizedStringFromNumber:@(attribute.value)], unit ? unit : @""];
-														 row.icon = attribute.attributeType.icon;
-														 [rows addObject:row];
-													 }
-													 if (rows.count > 0)
-														 [sections addObject:@{@"title" : title, @"rows" : rows}];
-												 }
-												 
-												 NSArray* activities = [[blueprintType activities] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"activityID" ascending:YES]]];;
-												 NCDBEveIcon* skillIcon = [NCDBEveIcon eveIconWithIconFile:@"50_11"];
-												 for (NCDBRamActivity* activity in activities) {
-													 NSArray* requiredSkills = [[type.blueprintType requiredSkillsForActivity:activity] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"requiredType.typeName" ascending:YES]]];
-													 NCTrainingQueue* requiredSkillsQueue = [[NCTrainingQueue alloc] initWithAccount:account];
-													 for (NCDBRamTypeRequirement* skill in requiredSkills)
-														 [requiredSkillsQueue addSkill:skill.requiredType withLevel:skill.quantity];
-													 
-													 NSMutableArray *rows = [NSMutableArray array];
-													 NSString* title = nil;
-													 
-													 if (requiredSkillsQueue.trainingTime > 0)
-														 title = [NSString stringWithFormat:NSLocalizedString(@"%@ - Skills (%@)", nil), activity.activityName, [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]];
-													 else
-														 title = [NSString stringWithFormat:NSLocalizedString(@"%@ - Skills", nil), activity.activityName];
-													 
-													 
-													 if (requiredSkillsQueue.skills.count && account && account.activeSkillPlan) {
-														 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-														 row.title = NSLocalizedString(@"Add required skills to training plan", nil);
-														 row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]];
-														 row.icon = [NCDBEveIcon eveIconWithIconFile:@"50_13"];
-														 row.object = requiredSkillsQueue;
-														 [rows addObject:row];
-													 }
-													 
-													 
-													 for (NCDBRamTypeRequirement* skill in requiredSkills) {
-														 NCSkillHierarchy* hierarchy = [[NCSkillHierarchy alloc] initWithSkillType:skill.requiredType level:skill.quantity account:account];
-														 
-														 for (NCSkillHierarchySkill* skill in hierarchy.skills) {
-															 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-															 row.title = [NSString stringWithFormat:@"%@ %d", skill.type.typeName, skill.targetLevel];
-															 row.object = skill.type;
-															 row.cellIdentifier = @"TypeCell";
-															 row.indentationLevel = skill.nestingLevel;
-															 row.icon = skillIcon;
-															 
-															 switch (skill.availability) {
-																 case NCSkillHierarchyAvailabilityLearned:
-																	 row.accessoryIcon = [NCDBEveIcon eveIconWithIconFile:@"38_193"];
-																	 break;
-																 case NCSkillHierarchyAvailabilityNotLearned:
-																	 row.accessoryIcon = [NCDBEveIcon eveIconWithIconFile:@"38_194"];
-																	 break;
-																 case NCSkillHierarchyAvailabilityLowLevel:
-																	 row.accessoryIcon = [NCDBEveIcon eveIconWithIconFile:@"38_195"];
-																	 break;
-																 default:
-																	 break;
-															 }
-															 
-															 if (skill.availability != NCSkillHierarchyAvailabilityLearned)
-																 row.detail = [NSString stringWithTimeLeft:[skill trainingTimeToFinishWithCharacterAttributes:attributes]];
-															 
-															 [rows addObject:row];
-														 }
-													 }
-													 if (rows.count > 0)
-														 [sections addObject:@{@"title" : title, @"rows" : rows}];
-													 
-													 rows = [NSMutableArray array];
-													 
-													 for (NCDBRamTypeRequirement* requirement in [[type.blueprintType requiredMaterialsForActivity:activity] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"requiredType.typeName" ascending:YES]]]) {
-														 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-														 row.title = [requirement requiredType].typeName;
-														 row.detail = [NSNumberFormatter neocomLocalizedStringFromInteger:[[requirement valueForKey:@"quantity"] intValue]];
-														 row.icon = requirement.requiredType.icon;
-														 row.object = [requirement requiredType];
-														 row.cellIdentifier = @"TypeCell";
-														 [rows addObject:row];
-													 }
-													 if (activity.activityID == 1) {//Manufacturing
-														 for (NCDBInvTypeMaterial* material in [blueprintType.materials sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"quantity" ascending:NO]]]) {
-															 float waste = blueprintType.wasteFactor / 100.0;
-															 NSInteger quantity = material.quantity * (1.0 + waste);
-															 NSInteger perfect = material.quantity;
-															 
-															 NSInteger materialLevel  = quantity * 2.0 * (waste / (1.0 + waste)) - 1;
-															 NSString* value;
-															 if (materialLevel > 0)
-																 value = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@ at ME: %@)", nil),
-																		  [NSNumberFormatter neocomLocalizedStringFromInteger:quantity],
-																		  [NSNumberFormatter neocomLocalizedStringFromInteger:perfect],
-																		  [NSNumberFormatter neocomLocalizedStringFromInteger:materialLevel]];
-															 else
-																 value = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:quantity] numberStyle:NSNumberFormatterDecimalStyle];
-															 
-															 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-															 row.title = material.materialType.typeName;
-															 row.detail = value;
-															 row.icon = material.materialType.icon;
-															 row.object = material.materialType;
-															 row.cellIdentifier = @"TypeCell";
-															 [rows addObject:row];
-														 }
-													 }
-													 
-													 if (rows.count > 0)
-														 [sections addObject:@{@"title" : [NSString stringWithFormat:NSLocalizedString(@"%@ - Material / Mineral", nil), activity.activityName], @"rows" : rows}];
-												 }*/
+
 
 											 }];
 										 }
@@ -1060,11 +841,11 @@
 									 self.sections = sections;
 									 [self update];
 								 }
-							 }];
+							 }];*/
 }
 
 - (void) loadNPCAttributes {
-	NSMutableArray* sections = [NSMutableArray new];
+/*	NSMutableArray* sections = [NSMutableArray new];
 	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
@@ -2060,7 +1841,7 @@
 									 self.sections = sections;
 									 [self update];
 								 }
-							 }];
+							 }];*/
 }
 
 @end

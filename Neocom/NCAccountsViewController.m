@@ -65,7 +65,7 @@
 }
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	[aCoder encodeObject:self.uuid forKey:@"account"];
+	[aCoder encodeObject:self.uuid forKey:@"uuid"];
 	[aCoder encodeInt32:self.characterID forKey:@"characterID"];
 	[aCoder encodeObject:self.accountStatus forKey:@"accountStatus"];
 	[aCoder encodeObject:self.accountBalance forKey:@"accountBalance"];
@@ -134,9 +134,9 @@
 		dispatch_async(dispatch_get_main_queue(), ^{
 			self.mode = mode;
 			self.modeSegmentedControl.selectedSegmentIndex = self.mode;
-			[self.tableView reloadData];
 		});
 	}];
+	self.cacheRecordID = NSStringFromClass(self.class);
 }
 
 - (void)didReceiveMemoryWarning
@@ -152,7 +152,7 @@
 	if (segue.identifier) {
 		if ([segue.identifier isEqualToString:@"NCSelectCharAccount"] || [segue.identifier isEqualToString:@"NCSelectCorpAccount"]) {
 			NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
-			NCAccountsViewControllerData* data = self.data;
+			NCAccountsViewControllerData* data = self.cacheData;
 			NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 			[NCAccount setCurrentAccount:account.account];
 		}
@@ -164,7 +164,7 @@
 			id cell = [sender superview];
 			for (;![cell isKindOfClass:[UITableViewCell class]]; cell = [cell superview]);
 			NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
-			NCAccountsViewControllerData* data = self.data;
+			NCAccountsViewControllerData* data = self.cacheData;
 			NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 			controller.account = account.account;
 		}
@@ -184,7 +184,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	NCAccountsViewControllerData* data = self.data;
+	NCAccountsViewControllerData* data = self.cacheData;
 	return data.accounts.count;
 }
 
@@ -197,7 +197,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		NCAccountsViewControllerData* data = self.data;
+		NCAccountsViewControllerData* data = self.cacheData;
 		NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 		
 		[tableView beginUpdates];
@@ -210,7 +210,7 @@
 		
 		NCAccountsViewControllerData* updatedData = [NCAccountsViewControllerData new];
 		updatedData.accounts = data.accounts;
-		[self updateData:updatedData];
+		[self saveCacheData:self.cacheData cacheDate:nil expireDate:nil];
 		
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		
@@ -223,7 +223,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-	NCAccountsViewControllerData* data = self.data;
+	NCAccountsViewControllerData* data = self.cacheData;
 	NCAccountsViewControllerDataAccount* account = data.accounts[fromIndexPath.row];
 	[data.accounts removeObjectAtIndex:fromIndexPath.row];
 	[data.accounts insertObject:account atIndex:toIndexPath.row];
@@ -239,7 +239,7 @@
 
 	NCAccountsViewControllerData* updatedData = [NCAccountsViewControllerData new];
 	updatedData.accounts = data.accounts;
-	[self updateData:updatedData];
+	[self saveCacheData:self.cacheData cacheDate:nil expireDate:nil];
 }
 
 #pragma mark - Table view delegate
@@ -250,106 +250,141 @@
 
 #pragma mark - NCTableViewController
 
-- (void) requestRecordIDWithCompletionBlock:(void (^)(NSString *))completionBlock {
-	completionBlock(NSStringFromClass(self.class));
-}
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock {
+	NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
+	if (!accountsManager) {
+		completionBlock(nil);
+		return;
+	}
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void (^)(id, NSDate *, NSDate *, NSError *))completionBlock progressBlock:(void(^)(float progress)) progressBlock {
-	[[NCAccountsManager sharedManager] loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray* apiKeys) {
-		NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
-		if (!accountsManager) {
-			completionBlock(nil, nil, nil, nil);
-			return;
-		}
-		
-		[accountsManager loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray* apiKeys) {
-			[self.storageManagedObjectContext performBlock:^{
-				NCAccountsViewControllerData* data = [NCAccountsViewControllerData new];
-				data.accounts = [NSMutableArray new];
-
-				for (NCAccount* account in accounts) {
-					BOOL corporate = account.accountType == NCAccountTypeCorporate;
-
-					NCAccountsViewControllerDataAccount* dataAccount = [NCAccountsViewControllerDataAccount new];
-					dataAccount.account = account;
-					dataAccount.characterID = account.characterID;
-					dataAccount.apiKey = account.apiKey;
-					dataAccount.keyID = account.apiKey.keyID;
-					dataAccount.uuid = account.uuid;
-					dataAccount.apiKeyInfo = account.apiKey.apiKeyInfo;
-
-					NSMutableSet* operations = [NSMutableSet new];
-					EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
-					api.startImmediately = NO;
-					[operations addObject:[api accountStatusWithCompletionBlock:^(EVEAccountStatus *result, NSError *error) {
-						dataAccount.accountStatus = result;
+	[accountsManager loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray* apiKeys) {
+		[self.storageManagedObjectContext performBlock:^{
+			NCAccountsViewControllerData* data = [NCAccountsViewControllerData new];
+			data.accounts = [NSMutableArray new];
+			
+			
+			__block dispatch_group_t finishGroup = dispatch_group_create();
+			
+			for (NCAccount* account in accounts) {
+				dispatch_group_enter(finishGroup);
+				BOOL corporate = account.accountType == NCAccountTypeCorporate;
+				
+				NCAccountsViewControllerDataAccount* dataAccount = [NCAccountsViewControllerDataAccount new];
+				dataAccount.account = account;
+				dataAccount.characterID = account.characterID;
+				dataAccount.apiKey = account.apiKey;
+				dataAccount.keyID = account.apiKey.keyID;
+				dataAccount.uuid = account.uuid;
+				dataAccount.apiKeyInfo = account.apiKey.apiKeyInfo;
+				
+				NSMutableSet* operations = [NSMutableSet new];
+				EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+				api.startImmediately = NO;
+				[operations addObject:[api accountStatusWithCompletionBlock:^(EVEAccountStatus *result, NSError *error) {
+					dataAccount.accountStatus = result;
+				} progressBlock:nil]];
+				
+				if (corporate)
+					[operations addObject:[api accountBalanceWithCompletionBlock:^(EVEAccountBalance *result, NSError *error) {
+						dataAccount.accountBalance = result;
 					} progressBlock:nil]];
-					
-					if (corporate)
-						[operations addObject:[api accountBalanceWithCompletionBlock:^(EVEAccountBalance *result, NSError *error) {
-							dataAccount.accountBalance = result;
-						} progressBlock:nil]];
-					
-					void (^reload)() = ^{
-						dispatch_async(dispatch_get_main_queue(), ^{
-							NCAccountsViewControllerData* data = self.data;
-							if (data) {
-								NSInteger i = [data.accounts indexOfObject:dataAccount];
-								if (i != NSNotFound)
-									[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+				
+				void (^reload)() = ^{
+					dispatch_async(dispatch_get_main_queue(), ^{
+						NCAccountsViewControllerData* data = self.cacheData;
+						if (data) {
+							[self saveCacheData:data cacheDate:nil expireDate:nil];
+							NSInteger i = [data.accounts indexOfObject:dataAccount];
+							if (i != NSNotFound)
+								[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+						}
+						dispatch_group_leave(finishGroup);
+					});
+				};
+				
+				NSArray* batchedOperations = [AFHTTPRequestOperation batchOfRequestOperations:[operations allObjects] progressBlock:nil completionBlock:^void(NSArray * operations) {
+					[account reloadWithCachePolicy:cachePolicy completionBlock:^(NSError *error) {
+						[account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
+							dataAccount.error = error;
+							dataAccount.characterInfo = characterInfo;
+							if (corporate) {
+								[account loadCorporationSheetWithCompletionBlock:^(EVECorporationSheet *corporationSheet, NSError *error) {
+									dataAccount.corporationSheet = corporationSheet;
+									reload();
+								}];
 							}
-							[self updateData:data];
-							[self.refreshControl endRefreshing];
-						});
-					};
-
-					NSArray* batchedOperations = [AFHTTPRequestOperation batchOfRequestOperations:[operations allObjects] progressBlock:nil completionBlock:^void(NSArray * operations) {
-						[account reloadWithCachePolicy:cachePolicy completionBlock:^(NSError *error) {
-							[account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
-								dataAccount.error = error;
-								dataAccount.characterInfo = characterInfo;
-								if (corporate) {
-									[account loadCorporationSheetWithCompletionBlock:^(EVECorporationSheet *corporationSheet, NSError *error) {
-										dataAccount.corporationSheet = corporationSheet;
+							else {
+								[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+									dataAccount.characterSheet = characterSheet;
+									[account loadSkillQueueWithCompletionBlock:^(EVESkillQueue *skillQueue, NSError *error) {
+										dataAccount.skillQueue = skillQueue;
 										reload();
 									}];
-								}
-								else {
-									[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
-										dataAccount.characterSheet = characterSheet;
-										[account loadSkillQueueWithCompletionBlock:^(EVESkillQueue *skillQueue, NSError *error) {
-											dataAccount.skillQueue = skillQueue;
-											if (skillQueue.skillQueue.count > 0) {
-												EVESkillQueueItem* item = skillQueue.skillQueue[0];
-												[self.databaseManagedObjectContext performBlock:^{
-													NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
-													dataAccount.trainingSkill = [[NCSkillData alloc] initWithInvType:type];
-													dataAccount.trainingSkillTypeName = type.typeName;
-													reload();
-												}];
-											}
-											else
-												reload();
-										}];
-									}];
-								}
-							}];
-						} progressBlock:nil];
-					}];
-					[api.httpRequestOperationManager.operationQueue addOperations:batchedOperations waitUntilFinished:NO];
-					[data.accounts addObject:dataAccount];
-				}
-				
-				dispatch_async(dispatch_get_main_queue(), ^{
-					completionBlock(data, [NSDate date], [NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]], nil);
-				});
-			}];
+								}];
+							}
+						}];
+					} progressBlock:nil];
+				}];
+				[api.httpRequestOperationManager.operationQueue addOperations:batchedOperations waitUntilFinished:NO];
+				[data.accounts addObject:dataAccount];
+			}
+			
+			dispatch_group_notify(finishGroup, dispatch_get_main_queue(), ^{
+				completionBlock(nil);
+				finishGroup = nil;
+			});
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self saveCacheData:data cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
+				[self.tableView reloadData];
+			});
 		}];
 	}];
 }
 
-- (void) update {
-	[super update];
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NCAccountsViewControllerData* data = cacheData;
+	[self.storageManagedObjectContext performBlock:^{
+		for (NCAccountsViewControllerDataAccount* account in data.accounts) {
+			if (!account.account)
+				account.account = [self.storageManagedObjectContext accountWithUUID:account.uuid];
+			if (!account.apiKey)
+				account.apiKey = [self.storageManagedObjectContext apiKeyWithKeyID:account.keyID];
+		}
+		[self.databaseManagedObjectContext performBlock:^{
+			for (NCAccountsViewControllerDataAccount* account in data.accounts) {
+				if (account.skillQueue.skillQueue.count > 0 && !account.trainingSkill) {
+					EVESkillQueueItem* item = account.skillQueue.skillQueue[0];
+					NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+					account.trainingSkill = [[NCSkillData alloc] initWithInvType:type];
+					account.trainingSkillTypeName = type.typeName;
+				}
+			}
+			dispatch_async(dispatch_get_main_queue(), ^{
+				completionBlock();
+			});
+		}];
+	}];
+}
+
+- (void) didChangeStorage:(NSNotification*) notification {
+	[super didChangeStorage:notification];
+	[self reload];
+}
+
+- (void) managedObjectContextDidSave:(NSNotification*) notification {
+	[super managedObjectContextDidSave:notification];
+	[notification.userInfo enumerateKeysAndObjectsUsingBlock:^(id key, NSSet* set, BOOL *stop) {
+		for (NSManagedObject* object in set)
+			if ([object isKindOfClass:[NCAccount class]]) {
+				*stop = YES;
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self invalidateCache];
+					[self reload];
+				});
+				break;
+			}
+	}];
 }
 
 /*- (BOOL) shouldReloadData {
@@ -392,7 +427,7 @@
 }*/
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCAccountsViewControllerData* data = self.data;
+	NCAccountsViewControllerData* data = self.cacheData;
 	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 	
 	BOOL detailed = self.modeSegmentedControl.selectedSegmentIndex == 0;
@@ -663,7 +698,7 @@
 
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCAccountsViewControllerData* data = self.data;
+	NCAccountsViewControllerData* data = self.cacheData;
 	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 	if (!account.characterInfo) {
 		EVEAPIKeyInfoCharactersItem* item = [[account.apiKeyInfo.key.characters filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"characterID == %d", account.characterID]] lastObject];

@@ -18,6 +18,6 @@
 @property (nonatomic, retain) NSDate * expireDate;
 @property (nonatomic, retain) NSManagedObject *section;
 
-+ (instancetype) cacheRecordWithRecordID:(NSString*) recordID;
+- (BOOL) isExpired;
 
 @end

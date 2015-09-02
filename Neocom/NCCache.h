@@ -11,6 +11,8 @@
 #import "NCCachePrice.h"
 #import "NSManagedObjectContext+NCCache.h"
 
+#define NCCacheDefaultExpireTime (60 * 60)
+
 @interface NCCache : NSObject
 //@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;

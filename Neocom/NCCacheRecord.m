@@ -17,4 +17,8 @@
 @dynamic expireDate;
 @dynamic section;
 
+- (BOOL) isExpired {
+	return !self.date || !self.expireDate || [self.expireDate compare:[NSDate date]] == NSOrderedAscending;
+}
+
 @end

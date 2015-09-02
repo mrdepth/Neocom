@@ -14,7 +14,6 @@
 @property (nonatomic, assign, readwrite) NCCharacterIDType type;
 @property (nonatomic, assign, readwrite) int32_t characterID;
 @property (nonatomic, strong, readwrite) NSString* name;
-@property (nonatomic, strong) NSManagedObjectContext* cacheManagedObjectContext;
 
 @end
 
@@ -25,7 +24,7 @@
 	__block NSManagedObjectContext* managedObjectContext = [[NCCache sharedCache] createManagedObjectContext];
 	
 	[managedObjectContext performBlock:^{
-		NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:@"NCCharacterID"];
+		NCCacheRecord* cacheRecord = [managedObjectContext cacheRecordWithRecordID:@"NCCharacterID"];
 		NSMutableDictionary* nameToCharacterID = [cacheRecord.data.data mutableCopy];
 		
 		if (!nameToCharacterID) {

@@ -62,7 +62,7 @@
 - (void) loadBodyWithCompletionBlock:(void(^)(EVEMailBodiesItem* body, NSError* error)) completionBlock {
 	if (!_body) {
 		[self.cacheManagedObjectContext performBlock:^{
-			 NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBoxMessage.%d", self.header.messageID]];
+			 NCCacheRecord* cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBoxMessage.%d", self.header.messageID]];
 			_body = cacheRecord.data.data;
 			if (!_body) {
 				[self.mailBox.managedObjectContext performBlock:^{
@@ -186,7 +186,7 @@
 		[self.cacheManagedObjectContext performBlock:^{
 			NCMailBoxCacheData* data = _cacheRecord.data.data;
 			if (!_cacheRecord) {
-				_cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", uuid]];
+				_cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", uuid]];
 				for (NCMailBoxMessage* message in data.messages)
 					message.mailBox = self;
 			}

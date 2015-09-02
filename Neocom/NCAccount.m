@@ -245,7 +245,7 @@ static NCAccount* currentAccount = nil;
 		[self.cacheManagedObjectContext performBlock:^{
 			NCCacheRecord* cacheRecord = self.cache[key];
 			if (!cacheRecord)
-				self.cache[key] = cacheRecord = [NCCacheRecord cacheRecordWithRecordID:key];
+				self.cache[key] = cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:key];
 			EVECharacterSheet* characterSheet = cacheRecord.data.data;
 			if (!characterSheet) {
 				[self.managedObjectContext performBlock:^{
@@ -270,7 +270,7 @@ static NCAccount* currentAccount = nil;
 		[self.cacheManagedObjectContext performBlock:^{
 			NCCacheRecord* cacheRecord = self.cache[key];
 			if (!cacheRecord)
-				self.cache[key] = cacheRecord = [NCCacheRecord cacheRecordWithRecordID:key];
+				self.cache[key] = cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:key];
 			EVECorporationSheet* corporationSheet = cacheRecord.data.data;
 			if (!corporationSheet) {
 				[self.managedObjectContext performBlock:^{
@@ -304,7 +304,7 @@ static NCAccount* currentAccount = nil;
 		[self.cacheManagedObjectContext performBlock:^{
 			NCCacheRecord* cacheRecord = self.cache[key];
 			if (!cacheRecord)
-				self.cache[key] = cacheRecord = [NCCacheRecord cacheRecordWithRecordID:key];
+				self.cache[key] = cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:key];
 			EVESkillQueue* skillQueue = cacheRecord.data.data;
 			if (!skillQueue) {
 				[self.managedObjectContext performBlock:^{
@@ -358,7 +358,7 @@ static NCAccount* currentAccount = nil;
 			NCCacheRecord* (^loadCacheRecord)(NSString*) = ^(NSString* key) {
 				NCCacheRecord* cacheRecord = self.cache[key];
 				if (!cacheRecord)
-					self.cache[key] = cacheRecord = [NCCacheRecord cacheRecordWithRecordID:key];
+					self.cache[key] = cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:key];
 				return cacheRecord;
 			};
 			
@@ -439,7 +439,7 @@ static NCAccount* currentAccount = nil;
 																					   NSString* key = [NSString stringWithFormat:@"%@.%@", uuid, item];
 																					   NCCacheRecord* cacheRecord = self.cache[key];
 																					   if (!cacheRecord)
-																						   self.cache[key] = cacheRecord = [NCCacheRecord cacheRecordWithRecordID:key];
+																						   self.cache[key] = cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:key];
 																					   [cacheRecord cacheResult:userInfo[item]];
 																				   }
 																			   }];

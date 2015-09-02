@@ -72,7 +72,7 @@
 	
 	self.updating = YES;
 	[self.cacheManagedObjectContext performBlock:^{
-		NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:@"NCPriceManager"];
+		NCCacheRecord* cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:@"NCPriceManager"];
 		NSDate* date = cacheRecord.expireDate;
 		if (!date || [date timeIntervalSinceNow] < 0) {
 			[self.manager GET:@"https://public-crest.eveonline.com/market/prices/" parameters:nil success:^void(AFHTTPRequestOperation * operation, id dic) {

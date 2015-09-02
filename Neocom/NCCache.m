@@ -126,7 +126,7 @@
 
 // Returns the managed object model for the application.
 // If the model doesn't already exist, it is created from the application's model.
-/*- (NSManagedObjectModel *)managedObjectModel
+- (NSManagedObjectModel *)managedObjectModel
 {
 	@synchronized(self) {
 		if (_managedObjectModel != nil) {
@@ -136,7 +136,7 @@
 		_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 		return _managedObjectModel;
 	}
-}*/
+}
 
 // Returns the persistent store coordinator for the application.
 // If the coordinator doesn't already exist, it is created and the application's store added to it.

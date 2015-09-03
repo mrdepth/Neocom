@@ -25,6 +25,7 @@
 @end
 
 @interface NCDatabaseTypeMasteryViewController ()
+@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, strong) NSArray* sections;
 - (void) reload;
 @end
@@ -46,6 +47,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+	self.type = (NCDBInvType*) [self.databaseManagedObjectContext objectWithID:self.typeID];
 	self.title = self.type.typeName;
 	self.refreshControl = nil;
 	[self reload];
@@ -67,7 +70,7 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.type = row.object;
+		controller.typeID = [row.object objectID];
 	}
 }
 
@@ -99,7 +102,7 @@
 						 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
 							 if (selectedButtonIndex != alertView.cancelButtonIndex) {
 								 NCSkillPlan* skillPlan = [[NCAccount currentAccount] activeSkillPlan];
-								 [skillPlan mergeWithTrainingQueue:trainingQueue];
+								 [skillPlan mergeWithTrainingQueue:trainingQueue completionBlock:nil];
 							 }
 						 }
 							 cancelBlock:nil] show];

@@ -329,6 +329,10 @@
 		126E0F961B972F3D0093E97F /* NCSkillHierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EEA11886CFB100F90763 /* NCSkillHierarchy.m */; };
 		126E0F971B97301A0093E97F /* NCTableViewHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128D29B618BDC73A003B8E03 /* NCTableViewHeaderView.xib */; };
 		126E0F981B9730270093E97F /* NCTableViewCollapsedHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128D29B318BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib */; };
+		126E0FC61B9897420093E97F /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841534EF188A9A7500B42433 /* Database.storyboard */; };
+		126E0FC71B98976D0093E97F /* UIStoryboard+Multiple.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */; };
+		126E0FC81B9897C40093E97F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
+		126E0FC91B989A8D0093E97F /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
 		126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */; };
 		126ED32D188144370009FA39 /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 126ED32C188144370009FA39 /* mainMenu.plist */; };
 		126F1BC219531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BC119531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.m */; };
@@ -4543,6 +4547,7 @@
 			files = (
 				12B9A6821B904C43005624D5 /* NCDefaultTableViewCell.xib in Resources */,
 				12564C451B871DAC000F68D8 /* NCDatabase.sqlite in Resources */,
+				126E0FC61B9897420093E97F /* Database.storyboard in Resources */,
 				126E0F981B9730270093E97F /* NCTableViewCollapsedHeaderView.xib in Resources */,
 				12564C441B871DAC000F68D8 /* eufe.sqlite in Resources */,
 				1248CE581B7DDCBF000266BE /* Main.storyboard in Resources */,
@@ -4976,9 +4981,12 @@
 				12B9A6851B904C98005624D5 /* UIImageView+URL.m in Sources */,
 				12564B5E1B84AE62000F68D8 /* NCDBEufeItem.m in Sources */,
 				12564B7F1B84AE62000F68D8 /* NCDBInvType+Neocom.mm in Sources */,
+				126E0FC71B98976D0093E97F /* UIStoryboard+Multiple.m in Sources */,
+				126E0FC81B9897C40093E97F /* NCDatabaseTypeVariationsViewController.m in Sources */,
 				1248CEB31B7E12C8000266BE /* NCShoppingItem.m in Sources */,
 				12564B7D1B84AE62000F68D8 /* NCDBImageValueTransformer.m in Sources */,
 				12564B4B1B84AE46000F68D8 /* NCCachePrice.m in Sources */,
+				126E0FC91B989A8D0093E97F /* NCDatabaseTypeMasteryViewController.m in Sources */,
 				12564B601B84AE62000F68D8 /* NCDBEufeItemGroup.m in Sources */,
 				12564B6D1B84AE62000F68D8 /* NCDBInvGroup.m in Sources */,
 				12B9A63D1B8C6F63005624D5 /* NCPriceManager.m in Sources */,

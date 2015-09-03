@@ -18,6 +18,7 @@ static NCAccountsManager* sharedManager = nil;
 @property (nonatomic, strong, readwrite) NCStorage* storage;
 
 - (void) didChangeStorage:(NSNotification*) notification;
+- (void) managedObjectContextDidSave:(NSNotification*) notification;
 
 @end
 
@@ -41,13 +42,15 @@ static NCAccountsManager* sharedManager = nil;
 		self.storageManagedObjectContext = [storage createManagedObjectContext];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStorage:) name:NCStorageDidChangeNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+
 		self.storage = storage;
 	}
 	return self;
 }
 
 - (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCStorageDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void) addAPIKeyWithKeyID:(int32_t) keyID vCode:(NSString*) vCode completionBlock:(void(^)(NSArray* accounts, NSError* error)) completionBlock {
@@ -143,6 +146,15 @@ static NCAccountsManager* sharedManager = nil;
 - (void) didChangeStorage:(NSNotification*) notification {
 //	self.storage = [NCStorage sharedStorage];
 //	self.managedObjectContext = [self.storage createManagedObjectContext];
+}
+
+- (void) managedObjectContextDidSave:(NSNotification*) notification {
+	NSManagedObjectContext* context = notification.object;
+	if (context.persistentStoreCoordinator == _storageManagedObjectContext.persistentStoreCoordinator) {
+		[self.storageManagedObjectContext performBlock:^{
+			[self.storageManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+		}];
+	}
 }
 
 @end

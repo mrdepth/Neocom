@@ -276,228 +276,34 @@
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="8y7-Xs-mh5" kind="relationship" relationship="rootViewController" id="ZY1-Qi-2hL"/>
+                        <segue destination="kkw-lJ-kcI" kind="relationship" relationship="rootViewController" id="k9i-Rk-I9c"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pco-Ym-5eV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2347" y="471"/>
         </scene>
-        <!--Database-->
-        <scene sceneID="ehh-oH-RFF">
+        <!--View Controller-->
+        <scene sceneID="832-NE-oUc">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseViewController" id="8y7-Xs-mh5" customClass="NCDatabaseViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="YVx-A3-Ngb">
+                <viewController storyboardIdentifier="NCDatabaseViewController" id="kkw-lJ-kcI" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Sih-zB-EqW"/>
+                        <viewControllerLayoutGuide type="bottom" id="Rn3-sN-MYU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="VjE-Ov-bso">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="zkl-Vg-hXX">
-                            <rect key="frame" x="0.0" y="64" width="600" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="8y7-Xs-mh5" id="Wps-FE-dPk"/>
-                            </connections>
-                        </searchBar>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoryGroupCell" rowHeight="41" id="AI2-wa-JrC" customClass="NCDefaultTableViewCell">
-                                <rect key="frame" x="0.0" y="130" width="320" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AI2-wa-JrC" id="wck-2k-Pse">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="40"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="8y7-Xs-mh5" kind="show" identifier="NCDatabaseViewController" id="ctr-S0-pH8"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="mia-hi-Wdp" customClass="NCDefaultTableViewCell">
-                                <rect key="frame" x="0.0" y="171" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mia-hi-Wdp" id="IFi-Me-j0X">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="Hqm-87-8zC" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveModalSegue" id="Whk-aC-Kaf"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="8y7-Xs-mh5" id="tps-Uz-Yvk"/>
-                            <outlet property="delegate" destination="8y7-Xs-mh5" id="IKT-Eu-0cM"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Database" id="18R-8e-HVU">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="3EQ-FQ-FEM"/>
-                        <barButtonItem key="rightBarButtonItem" title="All" id="iSc-vP-uLd">
-                            <connections>
-                                <action selector="onFilter:" destination="8y7-Xs-mh5" id="847-Rs-K6i"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="searchDisplayController" destination="w6J-Vh-ICw" id="i0i-Ra-7uT"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ahl-yK-SGf" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="w6J-Vh-ICw">
-                    <connections>
-                        <outlet property="delegate" destination="8y7-Xs-mh5" id="Du1-ZD-KwG"/>
-                        <outlet property="searchBar" destination="zkl-Vg-hXX" id="9Pr-AR-hus"/>
-                        <outlet property="searchContentsController" destination="8y7-Xs-mh5" id="hXc-M6-pug"/>
-                        <outlet property="searchResultsDataSource" destination="8y7-Xs-mh5" id="K7t-Ox-Nth"/>
-                        <outlet property="searchResultsDelegate" destination="8y7-Xs-mh5" id="una-0F-Bl9"/>
-                    </connections>
-                </searchDisplayController>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="8HO-1a-ZFd"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cRO-qa-DGi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1603.125" y="471.12676056338023"/>
-        </scene>
-        <!--Info-->
-        <scene sceneID="fP3-cq-RTR">
-            <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseTypeInfoViewController" id="Hqm-87-8zC" customClass="NCDatabaseTypeInfoViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="VkF-Zr-TBS" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="fi3-4S-qXY">
-                            <rect key="frame" x="0.0" y="64" width="600" height="297"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Ht-Wq-8JF">
-                                    <rect key="frame" x="15" y="15" width="64" height="64"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="64" id="dCd-CU-uxr"/>
-                                        <constraint firstAttribute="width" constant="64" id="ge2-VL-YBn"/>
-                                    </constraints>
-                                </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="2ti-tV-TZW">
-                                    <rect key="frame" x="87" y="59" width="498" height="20"/>
-                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="HPU-BL-yh4" customClass="NCLabel">
-                                    <rect key="frame" x="15" y="79" width="570" height="218"/>
-                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="trailing" secondItem="2ti-tV-TZW" secondAttribute="trailing" constant="15" id="1jL-dG-Nv4"/>
-                                <constraint firstItem="2ti-tV-TZW" firstAttribute="leading" secondItem="7Ht-Wq-8JF" secondAttribute="trailing" constant="8" id="Huh-ev-VuH"/>
-                                <constraint firstItem="HPU-BL-yh4" firstAttribute="trailing" secondItem="2ti-tV-TZW" secondAttribute="trailing" id="KsG-fF-O3t"/>
-                                <constraint firstItem="7Ht-Wq-8JF" firstAttribute="bottom" secondItem="2ti-tV-TZW" secondAttribute="bottom" id="LRx-Sb-6Tr"/>
-                                <constraint firstItem="7Ht-Wq-8JF" firstAttribute="leading" secondItem="fi3-4S-qXY" secondAttribute="leading" constant="15" id="UPT-Kj-38V"/>
-                                <constraint firstItem="HPU-BL-yh4" firstAttribute="top" secondItem="2ti-tV-TZW" secondAttribute="bottom" id="bXW-va-N4C"/>
-                                <constraint firstAttribute="bottom" secondItem="HPU-BL-yh4" secondAttribute="bottom" id="bdO-MP-70N"/>
-                                <constraint firstItem="HPU-BL-yh4" firstAttribute="leading" secondItem="7Ht-Wq-8JF" secondAttribute="leading" id="ejg-Jh-E00"/>
-                                <constraint firstItem="7Ht-Wq-8JF" firstAttribute="top" secondItem="fi3-4S-qXY" secondAttribute="top" constant="15" id="htW-gJ-aK2"/>
-                                <constraint firstItem="2ti-tV-TZW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fi3-4S-qXY" secondAttribute="top" constant="4" id="vUL-aM-E9x"/>
-                            </constraints>
-                        </view>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="aa7-IB-wIA" customClass="NCDefaultTableViewCell">
-                                <rect key="frame" x="0.0" y="383" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aa7-IB-wIA" id="hYk-FE-MMC">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" id="VNP-Sz-D5b" customClass="NCDefaultTableViewCell">
-                                <rect key="frame" x="0.0" y="427" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VNP-Sz-D5b" id="xGR-qs-moS">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="8y7-Xs-mh5" kind="show" identifier="NCDatabaseViewController" id="1AU-3G-nl6"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="THV-2O-bOe" customClass="NCDefaultTableViewCell">
-                                <rect key="frame" x="0.0" y="471" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="THV-2O-bOe" id="lbF-yZ-NYA">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="Hqm-87-8zC" kind="show" identifier="NCDatabaseTypeInfoViewController" id="Fp3-9u-STt"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VariationsCell" id="KNr-gk-HUI" customClass="NCDefaultTableViewCell">
-                                <rect key="frame" x="0.0" y="515" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KNr-gk-HUI" id="7uG-8h-sYc">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MasteryCell" id="dCC-tH-1qW" customClass="NCDefaultTableViewCell">
-                                <rect key="frame" x="0.0" y="559" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dCC-tH-1qW" id="Hdf-ZS-d1X">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RequirementsCell" id="izf-bU-lPn" customClass="NCDefaultTableViewCell">
-                                <rect key="frame" x="0.0" y="559" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="izf-bU-lPn" id="zIK-Ee-xUz">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ResultsCell" id="mbQ-y7-KIT" customClass="NCDefaultTableViewCell">
-                                <rect key="frame" x="0.0" y="559" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mbQ-y7-KIT" id="KZy-Rj-xYW">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="Hqm-87-8zC" id="Pk1-LU-WAZ"/>
-                            <outlet property="delegate" destination="Hqm-87-8zC" id="gfA-j2-EaU"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Info" id="AhM-TR-NaP">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="vrC-6G-8C8"/>
-                        <barButtonItem key="rightBarButtonItem" title="Market" id="hKz-nB-993"/>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="descriptionLabel" destination="HPU-BL-yh4" id="JrT-Mx-gjp"/>
-                        <outlet property="imageView" destination="7Ht-Wq-8JF" id="5zB-by-t2d"/>
-                        <outlet property="titleLabel" destination="2ti-tV-TZW" id="vl8-f3-2nC"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="GB1-f6-9xn" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-653" y="471"/>
+            <point key="canvasLocation" x="-1489" y="471"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="Whk-aC-Kaf"/>
-        <segue reference="ZY1-Qi-2hL"/>
-    </inferredMetricsTieBreakers>
 </document>

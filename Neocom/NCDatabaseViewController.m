@@ -14,6 +14,8 @@
 @interface NCDatabaseViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* result;
 @property (nonatomic, strong) NSFetchedResultsController* searchResult;
+@property (nonatomic, strong) NCDBEveIcon* defaultGroupIcon;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 
 - (void) reload;
 @end
@@ -39,14 +41,16 @@
 		self.databaseManagedObjectContext = self.group.managedObjectContext;
 		self.title = self.category.categoryName;
 	}
-	else
-		self.databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+	
+	self.defaultGroupIcon = [self.databaseManagedObjectContext defaultGroupIcon];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 
 	self.refreshControl = nil;
 	
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
         if (self.parentViewController) {
             self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseViewController"]];
+			[(NCDatabaseViewController*) self.searchController.searchResultsController setDatabaseManagedObjectContext:self.databaseManagedObjectContext];
         }
         else {
             self.tableView.tableHeaderView = nil;
@@ -208,7 +212,7 @@
 	if ([row isKindOfClass:[NCDBInvType class]]) {
 		NCDBInvType* type = row;
 		cell.titleLabel.text = type.typeName;
-		cell.iconView.image = type.icon ? type.icon.image.image : [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
+		cell.iconView.image = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
 		cell.object = row;
 	}
 	else {
@@ -224,7 +228,7 @@
 		}
 		
 		if (!cell.iconView.image)
-			cell.iconView.image = [[[self.databaseManagedObjectContext defaultGroupIcon] image] image];
+			cell.iconView.image = self.defaultGroupIcon.image.image;
 		cell.object = row;
 	}
 }

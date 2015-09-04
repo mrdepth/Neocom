@@ -13,6 +13,7 @@
 @interface NCDatabaseTypeVariationsViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* result;
 @property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 
 @end
 
@@ -30,8 +31,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
 	self.type = (NCDBInvType*) [self.databaseManagedObjectContext objectWithID:self.typeID];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 
 	self.refreshControl = nil;
 	
@@ -88,10 +89,6 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return @"Cell";
 }
@@ -102,7 +99,7 @@
 	
 	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	cell.titleLabel.text = [row typeName];
-	cell.iconView.image = row.icon.image.image ? row.icon.image.image : [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
+	cell.iconView.image = row.icon.image.image ? row.icon.image.image : self.defaultTypeIcon.image.image;
 	cell.object = row;
 }
 

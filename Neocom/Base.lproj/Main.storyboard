@@ -72,7 +72,7 @@
         <!--Main Menu Container View Controller-->
         <scene sceneID="3b5-FD-zTD">
             <objects>
-                <viewController id="51P-Kd-T7T" customClass="NCMainMenuContainerViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCMainMenuContainerViewController" id="51P-Kd-T7T" customClass="NCMainMenuContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qgO-Rq-eR4"/>
                         <viewControllerLayoutGuide type="bottom" id="Tcl-jw-yYT"/>

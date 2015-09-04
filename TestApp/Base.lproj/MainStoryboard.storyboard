@@ -286,7 +286,7 @@
         <!--View Controller-->
         <scene sceneID="832-NE-oUc">
             <objects>
-                <viewController storyboardIdentifier="NCDatabaseViewController" id="kkw-lJ-kcI" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCMainMenuContainerViewController" id="kkw-lJ-kcI" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Sih-zB-EqW"/>
                         <viewControllerLayoutGuide type="bottom" id="Rn3-sN-MYU"/>
@@ -298,7 +298,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="8HO-1a-ZFd"/>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Main"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cRO-qa-DGi" userLabel="First Responder" sceneMemberID="firstResponder"/>

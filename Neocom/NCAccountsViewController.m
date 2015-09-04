@@ -354,7 +354,7 @@
 			if (!account.apiKey)
 				account.apiKey = [self.storageManagedObjectContext apiKeyWithKeyID:account.keyID];
 		}
-		[self.databaseManagedObjectContext performBlock:^{
+		dispatch_async(dispatch_get_main_queue(), ^{
 			for (NCAccountsViewControllerDataAccount* account in data.accounts) {
 				if (account.skillQueue.skillQueue.count > 0 && !account.trainingSkill) {
 					EVESkillQueueItem* item = account.skillQueue.skillQueue[0];
@@ -363,10 +363,8 @@
 					account.trainingSkillTypeName = type.typeName;
 				}
 			}
-			dispatch_async(dispatch_get_main_queue(), ^{
-				completionBlock();
-			});
-		}];
+			completionBlock();
+		});
 	}];
 }
 

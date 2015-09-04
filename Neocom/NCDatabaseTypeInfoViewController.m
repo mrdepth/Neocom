@@ -67,11 +67,11 @@
 @end
 
 @interface NCDatabaseTypeInfoViewController ()
-@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, strong) NSArray* sections;
 @property (nonatomic, assign) BOOL needsLayout;
+@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, strong) NCDBEveIcon* defaultAttributeIcon;
-@property (nonatomic, strong) NCDBEveIcon* defaultIcon;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 - (void) reload;
 - (void) loadItemAttributes;
 - (void) loadBlueprintAttributes;
@@ -97,8 +97,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
-	
+	self.type = (NCDBInvType*) [self.databaseManagedObjectContext objectWithID:self.typeID];
+	self.defaultAttributeIcon = [self.databaseManagedObjectContext eveIconWithIconFile:@"105_32"];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+
 	self.tableView.tableHeaderView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	if (self.navigationController.viewControllers[0] != self)
 		self.navigationItem.leftBarButtonItem = nil;
@@ -189,12 +191,12 @@
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeMasteryViewController"]) {
 		NCDatabaseTypeMasteryViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.type = self.type;
-		destinationViewController.masteryLevel = row.object;
+		destinationViewController.typeID = self.typeID;
+		destinationViewController.masteryLevelID = row.object;
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeRequirementsViewController"]) {
 		NCDatabaseTypeRequirementsViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.type = self.type;
+		destinationViewController.typeID = self.typeID;
 	}
 	else if ([segue.identifier isEqualToString:@"NCNewShoppingItemViewController"]) {
 		NCNewShoppingItemViewController* controller;
@@ -210,7 +212,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		controller.result = row.object;
+		controller.request = row.object;
 		controller.title = row.title;
 	}
 }
@@ -219,23 +221,6 @@
 	
 }
 
-- (NCDBInvType*) type {
-	if (!_type)
-		_type = (NCDBInvType*) [self.databaseManagedObjectContext objectWithID:self.typeID];
-	return _type;
-}
-
-- (NCDBEveIcon*) defaultAttributeIcon {
-	if (!_defaultAttributeIcon)
-		_defaultAttributeIcon = [self.databaseManagedObjectContext eveIconWithIconFile:@"105_32"];
-	return _defaultAttributeIcon;
-}
-
-- (NCDBEveIcon*) defaultIcon {
-	if (!_defaultIcon)
-		_defaultIcon = [self.databaseManagedObjectContext defaultTypeIcon];
-	return _defaultIcon;
-}
 
 #pragma mark - NCTableViewController
 
@@ -318,7 +303,7 @@
 	}
 	else if ([row.object isKindOfClass:[NSManagedObjectID class]]) {
 		NSManagedObjectID* objectID = row.object;
-		if ([NSClassFromString(objectID.entity.managedObjectClassName) isSubclassOfClass:[NCShoppingList class]]) {
+		if (NSClassFromString(objectID.entity.managedObjectClassName) == [NCShoppingList class]) {
 			NCDBInvMarketGroup* marketGroup;
 			for (marketGroup = self.type.marketGroup; marketGroup.parentGroup; marketGroup = marketGroup.parentGroup);
 			NSString* marketGroupName = marketGroup.marketGroupName;
@@ -361,7 +346,7 @@
 							  range:typeIDRange];
 	
 	self.titleLabel.attributedText = title;
-	self.imageView.image = type.icon.image.image ? type.icon.image.image : self.defaultIcon.image.image;
+	self.imageView.image = type.icon.image.image ? type.icon.image.image : self.defaultTypeIcon.image.image;
 	self.descriptionLabel.attributedText = type.typeDescription.text;
 	
 	self.needsLayout = YES;
@@ -515,7 +500,7 @@
 					NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 					row.title = NSLocalizedString(@"Blueprint", nil);
 					row.detail = [product.activity.blueprintType.type typeName];
-					row.iconID = product.activity.blueprintType.type.icon ? [product.activity.blueprintType.type.icon objectID] : [self.defaultIcon objectID];
+					row.iconID = product.activity.blueprintType.type.icon ? [product.activity.blueprintType.type.icon objectID] : [self.defaultTypeIcon objectID];
 					row.object = [product.activity.blueprintType.type objectID];
 					row.cellIdentifier = @"TypeCell";
 					[rows addObject:row];

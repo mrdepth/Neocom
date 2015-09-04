@@ -16,6 +16,8 @@
 #import "NCDefaultTableViewCell.h"
 #import "NCSplitViewController.h"
 
+#define NCMarketPricesMonitorDidChangeNotification @"NCMarketPricesMonitorDidChangeNotification"
+
 #define NCPlexTypeID 29668
 #define NCTritaniumTypeID 34
 #define NCPyeriteTypeID 35
@@ -36,7 +38,6 @@
 @property (nonatomic, strong) EVECharacterSheet* characterSheet;
 @property (nonatomic, strong) EVESkillQueue* skillQueue;
 @property (nonatomic, strong) EVEServerStatus* serverStatus;
-@property (nonatomic, strong) EVECentralMarketStat* marketStat;
 @property (nonatomic, readonly) NSString* skillsDetails;
 @property (nonatomic, readonly) NSString* skillQueueDetails;
 @property (nonatomic, readonly) NSString* mailsDetails;
@@ -87,14 +88,14 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(marketPricesMonitorDidChange:) name:NCMarketPricesMonitorDidChangeNotification object:nil];
 	
 	[super viewWillAppear:animated];
-	[self update];
+	[self.tableView reloadData];
 	if (self.serverStatus) {
 		self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
 		[self onTimer:self.timer];
 	}
 	else
 		[self updateServerStatus];
-	[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+	//[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 	[self updateMarqueeLabel];
 }
 
@@ -165,43 +166,15 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
 	if ([self isViewLoaded])
 		[self reload];
 }
 
-- (void) didChangeStorage {
+- (void) didChangeStorage:(NSNotification *)notification {
+	[super didChangeStorage:notification];
 	[self reload];
-}
-
-- (BOOL) shouldReloadData {
-	return YES;
-}
-
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reload) object:nil];
-	NSTimeInterval delay = 0;
-	if (self.skillQueue)
-		delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];
-	else if (self.characterSheet)
-		delay = [self.characterSheet.cacheExpireDate timeIntervalSinceNow];
-	if (delay > 0)
-		[self performSelector:@selector(reload) withObject:nil afterDelay:delay];
-	else
-		[self reload];
-
-	if (self.marketStat.cacheExpireDate)
-		delay = [self.marketStat.cacheExpireDate timeIntervalSinceNow];
-	if (delay > 0)
-		[self performSelector:@selector(updatePrices) withObject:nil afterDelay:delay];
-	else
-		[self updatePrices];
-	[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -235,49 +208,52 @@
 - (void) reload {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reload) object:nil];
 	NCAccount* account = [NCAccount currentAccount];
-	NSInteger apiKeyAccessMask = account.apiKey.apiKeyInfo.key.accessMask;
-	NSString* accessMaskKey = account.accountType == NCAccountTypeCorporate ? @"corpAccessMask" : @"charAccessMask" ;
 	
-	self.sections = [NSMutableArray new];
-	for (NSArray* rows in self.allSections) {
-		NSMutableArray* section = [NSMutableArray new];
-		for (NSDictionary* row in rows) {
-			NSInteger accessMask = [[row valueForKey:accessMaskKey] integerValue];
-			if ((accessMask & apiKeyAccessMask) == accessMask) {
-				[section addObject:row];
+	void (^reload)(NSInteger, NSString*) = ^(NSInteger apiKeyAccessMask, NSString* accessMaskKey) {
+		self.sections = [NSMutableArray new];
+		for (NSArray* rows in self.allSections) {
+			NSMutableArray* section = [NSMutableArray new];
+			for (NSDictionary* row in rows) {
+				NSInteger accessMask = [row[accessMaskKey] integerValue];
+				if ((accessMask & apiKeyAccessMask) == accessMask) {
+					[section addObject:row];
+				}
 			}
+			if (section.count > 0)
+				[self.sections addObject:section];
 		}
-		if (section.count > 0)
-			[self.sections addObject:section];
-	}
+		
+		[self.tableView reloadData];
+	};
 	
-	[self update];
-
-	__block EVECharacterSheet* characterSheet;
-	__block EVESkillQueue* skillQueue;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 characterSheet = account.characterSheet;
-											 skillQueue = account.skillQueue;
-											 [account.mailBox messages];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.characterSheet = characterSheet;
-									 self.skillQueue = skillQueue;
-									 [self update];
-									 
-									 NSTimeInterval delay = 0;
-									 if (self.skillQueue)
-										delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];
-									 else if (self.characterSheet)
-										 delay = [self.characterSheet.cacheExpireDate timeIntervalSinceNow];
-									 if (delay > 0)
-										 [self performSelector:@selector(reload) withObject:nil afterDelay:delay];
-
-								 }
-							 }];
+	if (account) {
+		[account.managedObjectContext performBlock:^{
+			NSInteger apiKeyAccessMask = account.apiKey.apiKeyInfo.key.accessMask;
+			NSString* accessMaskKey = account.accountType == NCAccountTypeCorporate ? @"corpAccessMask" : @"charAccessMask" ;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				reload(apiKeyAccessMask, accessMaskKey);
+				
+				[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+					[account loadSkillQueueWithCompletionBlock:^(EVESkillQueue *skillQueue, NSError *error) {
+						self.characterSheet = characterSheet;
+						self.skillQueue = skillQueue;
+						[self.tableView reloadData];
+						
+						NSTimeInterval delay = 0;
+						if (self.skillQueue)
+							delay = [[self.skillQueue.eveapi localTimeWithServerTime:self.skillQueue.eveapi.cachedUntil] timeIntervalSinceNow];
+						else if (self.characterSheet)
+							delay = [[self.characterSheet.eveapi localTimeWithServerTime:self.characterSheet.eveapi.cachedUntil] timeIntervalSinceNow];
+						if (delay > 0)
+							[self performSelector:@selector(reload) withObject:nil afterDelay:delay];
+					}];
+				}];
+			});
+		}];
+	}
+	else {
+		reload(0, @"charAccessMask");
+	}
 }
 
 - (NSString*) skillsDetails {
@@ -319,11 +295,7 @@
 
 - (void) onTimer:(NSTimer*) timer {
 	if (self.serverStatus) {
-		self.serverTimeLabel.text = [self.dateFormatter stringFromDate:[self.serverStatus serverTimeWithLocalTime:[NSDate date]]];
-//		if ([[self.serverStatus cacheExpireDate] compare:[NSDate date]] == NSOrderedAscending) {
-//			[self updateServerStatus];
-//			self.timer = nil;
-//		}
+		self.serverTimeLabel.text = [self.dateFormatter stringFromDate:[self.serverStatus.eveapi serverTimeWithLocalTime:[NSDate date]]];
 	}
 	else {
 		self.timer = nil;
@@ -336,7 +308,7 @@
 }
 
 - (void) updateServerStatus {
-	__block EVEServerStatus* serverStatus = nil;
+/*	__block EVEServerStatus* serverStatus = nil;
 	__block NSError* error = nil;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
@@ -362,11 +334,11 @@
 										 [self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:60.];
 									 }
 								 }
-							 }];
+							 }];*/
 }
 
 - (void) updatePrices {
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updatePrices) object:nil];
+/*	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updatePrices) object:nil];
 	__block EVECentralMarketStat* marketStat = nil;
 	__block NSError* error = nil;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
@@ -391,11 +363,11 @@
 										 [self performSelector:@selector(updatePrices) withObject:nil afterDelay:60.];
 									 }
 								 }
-							 }];
+							 }];*/
 }
 
 - (void) updateMarqueeLabel {
-	if (!self.marketStat) {
+/*	if (!self.marketStat) {
 		self.marqueeLabel.text = nil;
 		return;
 	}
@@ -441,7 +413,7 @@
 		if (morph)
 			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Morph: %@", nil), [NSString shortStringWithFloat:morph.sell.percentile unit:@"ISK"]]];
 	}
-	self.marqueeLabel.text = [components componentsJoinedByString:@"  "];
+	self.marqueeLabel.text = [components componentsJoinedByString:@"  "];*/
 }
 
 - (void) marketPricesMonitorDidChange:(NSNotification*) notification {

@@ -234,7 +234,7 @@
 - (NSManagedObjectContext*) databaseManagedObjectContext {
 	@synchronized (self) {
 		if (!_databaseManagedObjectContext)
-			_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+			_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
 		return _databaseManagedObjectContext;
 	}
 }

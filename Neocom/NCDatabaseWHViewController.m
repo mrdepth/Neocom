@@ -10,26 +10,10 @@
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NSNumberFormatter+Neocom.h"
 
-@interface NCDatabaseWHViewControllerRow : NSObject
-@property (nonatomic, strong) NCDBInvType* type;
-@property (nonatomic, strong) NSString* details;
-@end
-
-@interface NCDatabaseWHViewControllerSection : NSObject
-@property (nonatomic, strong) NSMutableArray* rows;
-@property (nonatomic, strong) NSString* title;
-@property (nonatomic, assign) NSInteger targetSystemClass;
-@end
-
-@implementation NCDatabaseWHViewControllerSection
-@end
-
-@implementation NCDatabaseWHViewControllerRow
-@end
-
 @interface NCDatabaseWHViewController()
 @property (nonatomic, strong) NSFetchedResultsController* result;
 @property (nonatomic, strong) NSFetchedResultsController* searchResult;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 - (void) reload;
 @end
 
@@ -38,17 +22,18 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	self.refreshControl = nil;
-    
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
         if (self.parentViewController) {
             self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseWHViewController"]];
+			[(NCDatabaseWHViewController*) self.searchController.searchResultsController setDatabaseManagedObjectContext:self.databaseManagedObjectContext];
         }
         else {
             self.tableView.tableHeaderView = nil;
             return;
         }
     }
-
     
 	if (!self.result)
 		[self reload];
@@ -67,7 +52,7 @@
 			controller = segue.destinationViewController;
 		
 		id row = [sender object];
-		controller.type = row;
+		controller.typeID = [row objectID];
 	}
 }
 
@@ -91,17 +76,13 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
 - (void) searchWithSearchString:(NSString*) searchString {
 	if (searchString.length >= 1) {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"WhType"];
 		request.predicate = [NSPredicate predicateWithFormat:@"type.typeName CONTAINS[C] %@", searchString];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"targetSystemClass" ascending:YES],
 									[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]];
-		NSFetchedResultsController* controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[NCDatabase sharedDatabase] managedObjectContext] sectionNameKeyPath:@"targetSystemClassDisplayName" cacheName:nil];
+		NSFetchedResultsController* controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:@"targetSystemClassDisplayName" cacheName:nil];
 		
 		[controller performFetch:nil];
 		self.searchResult = controller;
@@ -128,8 +109,7 @@
 		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ / %@ kg", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.maxJumpMass)], [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.maxStableMass)]];
 	else
 		cell.subtitleLabel.text = nil;
-//	cell.subtitleLabel.text = row.details;
-	cell.iconView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	cell.iconView.image = row.type.icon ? row.type.icon.image.image : self.defaultTypeIcon.image.image;
 	cell.object = row.type;
 }
 
@@ -143,7 +123,7 @@
 	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"WhType"];
 	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"targetSystemClass" ascending:YES],
 								[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]];
-	NSFetchedResultsController* controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[NCDatabase sharedDatabase] managedObjectContext] sectionNameKeyPath:@"targetSystemClassDisplayName" cacheName:nil];
+	NSFetchedResultsController* controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:@"targetSystemClassDisplayName" cacheName:nil];
 	
 	[controller performFetch:nil];
 	self.result = controller;

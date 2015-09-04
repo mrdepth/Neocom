@@ -220,7 +220,7 @@
 		1248CE4F1B7DDCBF000266BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248CE4E1B7DDCBF000266BE /* main.m */; };
 		1248CE521B7DDCBF000266BE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248CE511B7DDCBF000266BE /* AppDelegate.m */; };
 		1248CE551B7DDCBF000266BE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248CE541B7DDCBF000266BE /* ViewController.m */; };
-		1248CE581B7DDCBF000266BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1248CE561B7DDCBF000266BE /* Main.storyboard */; };
+		1248CE581B7DDCBF000266BE /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1248CE561B7DDCBF000266BE /* MainStoryboard.storyboard */; };
 		1248CE5A1B7DDCBF000266BE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1248CE591B7DDCBF000266BE /* Images.xcassets */; };
 		1248CE5D1B7DDCBF000266BE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248CE5B1B7DDCBF000266BE /* LaunchScreen.xib */; };
 		1248CE7F1B7DDD1C000266BE /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1248CE7C1B7DDCE1000266BE /* AFNetworking.framework */; };
@@ -333,6 +333,24 @@
 		126E0FC71B98976D0093E97F /* UIStoryboard+Multiple.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */; };
 		126E0FC81B9897C40093E97F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		126E0FC91B989A8D0093E97F /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
+		126E0FCC1B99877B0093E97F /* NCDatabaseTypeRequirementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1219C1531AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m */; };
+		126E0FD01B9993700093E97F /* NCDatabaseCertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */; };
+		126E0FD11B999B470093E97F /* NCDatabaseCertificateInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1296C6C11890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m */; };
+		126E0FD21B99A9680093E97F /* NCDatabaseWHViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12190BF81ADFE7E0009E1C5E /* NCDatabaseWHViewController.m */; };
+		126E0FD31B99AAED0093E97F /* NCDatabaseFetchedResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C107DF1ADD584C008D60DF /* NCDatabaseFetchedResultsViewController.m */; };
+		126E0FD41B99C1E70093E97F /* NCDatabaseNPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771418969E590078F526 /* NCDatabaseNPCViewController.m */; };
+		126E0FD51B99C6170093E97F /* NCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D257D187E8CB400E2062C /* NCMainMenuViewController.m */; };
+		126E0FDC1B99E6E40093E97F /* NCTableViewEmptyHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CC8D6B188178570058C5DF /* NCTableViewEmptyHeaderView.m */; };
+		126E0FDD1B99E8A00093E97F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 120968641845F0CB00921A37 /* Main.storyboard */; };
+		126E0FDE1B99E8BF0093E97F /* NCMainMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D2638187E929800E2062C /* NCMainMenuContainerViewController.m */; };
+		126E0FDF1B99E8C90093E97F /* NCNavigationCharacterButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D263C187E98C100E2062C /* NCNavigationCharacterButton.m */; };
+		126E0FE01B99E8C90093E97F /* NCNavigationCharacterButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129D263E187E98D500E2062C /* NCNavigationCharacterButton.xib */; };
+		126E0FE11B99E9EA0093E97F /* UIView+Nib.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D25CF187E923200E2062C /* UIView+Nib.m */; };
+		126E0FE21B99EA3B0093E97F /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
+		126E0FE31B99EADE0093E97F /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 126ED32C188144370009FA39 /* mainMenu.plist */; };
+		126E0FE41B99EB2A0093E97F /* NCBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F9560118CDB5D4005CEAD6 /* NCBannerViewController.m */; };
+		126E0FE51B99EB400093E97F /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1219C1491AA4FF0000FF6205 /* GoogleMobileAds.framework */; };
+		126E0FE61B99EB890093E97F /* ASInAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D25A5187E923200E2062C /* ASInAppPurchase.m */; };
 		126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */; };
 		126ED32D188144370009FA39 /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 126ED32C188144370009FA39 /* mainMenu.plist */; };
 		126F1BC219531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BC119531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.m */; };
@@ -1093,7 +1111,7 @@
 		1248CE511B7DDCBF000266BE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1248CE531B7DDCBF000266BE /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		1248CE541B7DDCBF000266BE /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		1248CE571B7DDCBF000266BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1248CE571B7DDCBF000266BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		1248CE591B7DDCBF000266BE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1248CE5C1B7DDCBF000266BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EVEOnlineAPI.xcodeproj; path = EVEOnlineAPI/EVEOnlineAPI.xcodeproj; sourceTree = "<group>"; };
@@ -1653,6 +1671,7 @@
 			files = (
 				12564C011B84B0C0000F68D8 /* eufe.framework in Frameworks */,
 				1248CE7F1B7DDD1C000266BE /* AFNetworking.framework in Frameworks */,
+				126E0FE51B99EB400093E97F /* GoogleMobileAds.framework in Frameworks */,
 				1248CE801B7DDD1C000266BE /* EVEAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2349,7 +2368,7 @@
 				1248CE511B7DDCBF000266BE /* AppDelegate.m */,
 				1248CE531B7DDCBF000266BE /* ViewController.h */,
 				1248CE541B7DDCBF000266BE /* ViewController.m */,
-				1248CE561B7DDCBF000266BE /* Main.storyboard */,
+				1248CE561B7DDCBF000266BE /* MainStoryboard.storyboard */,
 				1248CE591B7DDCBF000266BE /* Images.xcassets */,
 				1248CE5B1B7DDCBF000266BE /* LaunchScreen.xib */,
 				1248CE4C1B7DDCBF000266BE /* Supporting Files */,
@@ -2858,8 +2877,8 @@
 				84C1182A18983E6B00A35516 /* NCDatabaseTypePickerContentViewController */,
 				1243771218969E390078F526 /* NCDatabaseNPCViewController */,
 				12C107DD1ADD5820008D60DF /* NCDatabaseFetchedResultsViewController */,
-				12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */,
 				12190BF31ADFE7C3009E1C5E /* NCDatabaseWHViewController */,
+				12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -4545,12 +4564,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				126E0FE01B99E8C90093E97F /* NCNavigationCharacterButton.xib in Resources */,
 				12B9A6821B904C43005624D5 /* NCDefaultTableViewCell.xib in Resources */,
+				126E0FE31B99EADE0093E97F /* mainMenu.plist in Resources */,
+				126E0FDD1B99E8A00093E97F /* Main.storyboard in Resources */,
 				12564C451B871DAC000F68D8 /* NCDatabase.sqlite in Resources */,
 				126E0FC61B9897420093E97F /* Database.storyboard in Resources */,
 				126E0F981B9730270093E97F /* NCTableViewCollapsedHeaderView.xib in Resources */,
 				12564C441B871DAC000F68D8 /* eufe.sqlite in Resources */,
-				1248CE581B7DDCBF000266BE /* Main.storyboard in Resources */,
+				1248CE581B7DDCBF000266BE /* MainStoryboard.storyboard in Resources */,
 				1248CE5D1B7DDCBF000266BE /* LaunchScreen.xib in Resources */,
 				1248CE5A1B7DDCBF000266BE /* Images.xcassets in Resources */,
 				126E0F971B97301A0093E97F /* NCTableViewHeaderView.xib in Resources */,
@@ -4901,9 +4923,11 @@
 				12564C4A1B87297C000F68D8 /* NCCache.xcdatamodeld in Sources */,
 				1248CEB91B7E12C8000266BE /* NCLoadout.m in Sources */,
 				1215F5881B846E9700C16649 /* NCSkillData.m in Sources */,
+				126E0FD21B99A9680093E97F /* NCDatabaseWHViewController.m in Sources */,
 				12B9A6751B8F3C3A005624D5 /* NCAccountCharacterCell.m in Sources */,
 				12564C041B84B4DC000F68D8 /* NCTaskManager.m in Sources */,
 				12564B691B84AE62000F68D8 /* NCDBInvCategory.m in Sources */,
+				126E0FCC1B99877B0093E97F /* NCDatabaseTypeRequirementsViewController.m in Sources */,
 				12564B6B1B84AE62000F68D8 /* NCDBInvControlTowerResource.m in Sources */,
 				12B9A6831B904C6D005624D5 /* NSString+Neocom.m in Sources */,
 				12564B6F1B84AE62000F68D8 /* NCDBInvMetaGroup.m in Sources */,
@@ -4919,6 +4943,7 @@
 				12B9A6441B8C9FC3005624D5 /* NCTableViewHeaderView.m in Sources */,
 				12564B751B84AE62000F68D8 /* NCDBMapSolarSystem.m in Sources */,
 				1248CE551B7DDCBF000266BE /* ViewController.m in Sources */,
+				126E0FD31B99AAED0093E97F /* NCDatabaseFetchedResultsViewController.m in Sources */,
 				12564C461B871E67000F68D8 /* NCStorage.xcdatamodeld in Sources */,
 				12564B771B84AE62000F68D8 /* NCDBRamActivity.m in Sources */,
 				12564B541B84AE62000F68D8 /* NCDBWhType.m in Sources */,
@@ -4927,6 +4952,7 @@
 				1248CE521B7DDCBF000266BE /* AppDelegate.m in Sources */,
 				126E0F951B9726C50093E97F /* NCDatabaseTypeInfoViewController.m in Sources */,
 				12B9A6451B8C9FC3005624D5 /* NCTableViewCollapsedHeaderView.m in Sources */,
+				126E0FDF1B99E8C90093E97F /* NCNavigationCharacterButton.m in Sources */,
 				12564B7C1B84AE62000F68D8 /* NCDatabase.m in Sources */,
 				12564B611B84AE62000F68D8 /* NCDBEveIcon.m in Sources */,
 				1248CEB21B7E12C8000266BE /* NCShoppingGroup.m in Sources */,
@@ -4940,21 +4966,26 @@
 				12564B571B84AE62000F68D8 /* NCDBCertMasteryLevel.m in Sources */,
 				12564B581B84AE62000F68D8 /* NCDBCertSkill.m in Sources */,
 				12B9A68B1B90607E005624D5 /* NSManagedObjectContext+NCDatabase.m in Sources */,
+				126E0FD51B99C6170093E97F /* NCMainMenuViewController.m in Sources */,
 				12B9A6871B904C98005624D5 /* UIImage+Neocom.m in Sources */,
 				12B9A6761B8F3C3A005624D5 /* NCAccountCorporationCell.m in Sources */,
+				126E0FDC1B99E6E40093E97F /* NCTableViewEmptyHeaderView.m in Sources */,
 				1248CEB51B7E12C8000266BE /* NCStorage.m in Sources */,
 				12B9A6861B904C98005624D5 /* UIImageView+Neocom.m in Sources */,
 				1248CE851B7DDD3F000266BE /* NCAccountsManager.m in Sources */,
 				12B9A68A1B905EAF005624D5 /* NSNumberFormatter+Neocom.m in Sources */,
 				12564B731B84AE62000F68D8 /* NCDBMapDenormalize.m in Sources */,
+				126E0FE41B99EB2A0093E97F /* NCBannerViewController.m in Sources */,
 				1248CE4F1B7DDCBF000266BE /* main.m in Sources */,
 				12564B531B84AE62000F68D8 /* NCDBVersion.m in Sources */,
 				12B9A6491B8C9FEB005624D5 /* NCAdaptiveModalSegue.m in Sources */,
+				126E0FDE1B99E8BF0093E97F /* NCMainMenuContainerViewController.m in Sources */,
 				12564B641B84AE62000F68D8 /* NCDBIndActivity.m in Sources */,
 				12B9A64A1B8C9FFF005624D5 /* NCNavigationController.m in Sources */,
 				1215F5861B84634D00C16649 /* NCCharacterAttributes.mm in Sources */,
 				12564C021B84B144000F68D8 /* NCNotificationsManager.m in Sources */,
 				1248CEBD1B7E12C8000266BE /* NCSetting.m in Sources */,
+				126E0FE61B99EB890093E97F /* ASInAppPurchase.m in Sources */,
 				12564B5C1B84AE62000F68D8 /* NCDBDgmEffect.m in Sources */,
 				12564B621B84AE62000F68D8 /* NCDBEveIconImage.m in Sources */,
 				1215F5871B846E9000C16649 /* NCTrainingQueue.m in Sources */,
@@ -4974,22 +5005,27 @@
 				1248CEB81B7E12C8000266BE /* NCLoadoutData.m in Sources */,
 				12564B591B84AE62000F68D8 /* NCDBChrRace.m in Sources */,
 				1248CEB11B7E12A9000266BE /* NSManagedObjectContext+NCStorage.m in Sources */,
+				126E0FD01B9993700093E97F /* NCDatabaseCertificatesViewController.m in Sources */,
 				12B9A6461B8C9FD5005624D5 /* CollapsableTableView.m in Sources */,
 				12564B561B84AE62000F68D8 /* NCDBCertMastery.m in Sources */,
 				12B9A6481B8C9FE9005624D5 /* NCAdaptivePopoverSegue.m in Sources */,
+				126E0FD41B99C1E70093E97F /* NCDatabaseNPCViewController.m in Sources */,
 				12564B741B84AE62000F68D8 /* NCDBMapRegion.m in Sources */,
 				12B9A6851B904C98005624D5 /* UIImageView+URL.m in Sources */,
 				12564B5E1B84AE62000F68D8 /* NCDBEufeItem.m in Sources */,
+				126E0FD11B999B470093E97F /* NCDatabaseCertificateInfoViewController.m in Sources */,
 				12564B7F1B84AE62000F68D8 /* NCDBInvType+Neocom.mm in Sources */,
 				126E0FC71B98976D0093E97F /* UIStoryboard+Multiple.m in Sources */,
 				126E0FC81B9897C40093E97F /* NCDatabaseTypeVariationsViewController.m in Sources */,
 				1248CEB31B7E12C8000266BE /* NCShoppingItem.m in Sources */,
+				126E0FE11B99E9EA0093E97F /* UIView+Nib.m in Sources */,
 				12564B7D1B84AE62000F68D8 /* NCDBImageValueTransformer.m in Sources */,
 				12564B4B1B84AE46000F68D8 /* NCCachePrice.m in Sources */,
 				126E0FC91B989A8D0093E97F /* NCDatabaseTypeMasteryViewController.m in Sources */,
 				12564B601B84AE62000F68D8 /* NCDBEufeItemGroup.m in Sources */,
 				12564B6D1B84AE62000F68D8 /* NCDBInvGroup.m in Sources */,
 				12B9A63D1B8C6F63005624D5 /* NCPriceManager.m in Sources */,
+				126E0FE21B99EA3B0093E97F /* NCSideMenuViewController.m in Sources */,
 				12564C051B84B4DC000F68D8 /* NCTask.m in Sources */,
 				12564B551B84AE62000F68D8 /* NCDBCertCertificate.m in Sources */,
 				12B9A6411B8C73B1005624D5 /* NCCharacterID.m in Sources */,
@@ -5065,12 +5101,12 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		1248CE561B7DDCBF000266BE /* Main.storyboard */ = {
+		1248CE561B7DDCBF000266BE /* MainStoryboard.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				1248CE571B7DDCBF000266BE /* Base */,
 			);
-			name = Main.storyboard;
+			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";
 		};
 		1248CE5B1B7DDCBF000266BE /* LaunchScreen.xib */ = {
@@ -5237,6 +5273,10 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ThirdParty/admob",
+				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -5260,6 +5300,10 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ThirdParty/admob",
+				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = TestApp/Info.plist;

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define NCPriceManagerDidUpdateNotification @"NCPriceManagerDidUpdateNotification"
+
 @interface NCPriceManager : NSObject
 + (instancetype) sharedManager;
 - (void) requestPriceWithType:(NSInteger) typeID completionBlock:(void(^)(NSNumber* price)) completionBlock;

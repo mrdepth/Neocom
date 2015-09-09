@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSManagedObjectContext* cacheManagedObjectContext;
 @property (nonatomic, strong) AFHTTPRequestOperationManager* manager;
 @property (atomic, assign) BOOL updating;
+@property (assign, nonatomic) NSInteger triesLeft;
 @end
 
 @implementation NCPriceManager
@@ -35,8 +36,9 @@
 		self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://public-crest.eveonline.com"]];
 		self.manager.requestSerializer = requestSerializer;
 		self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
-		self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"*/*"];
+		self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"*/*", @"application/vnd.ccp.eve.markettypepricecollection-v1+json", nil];
 		self.cacheManagedObjectContext = [[NCCache sharedCache] createManagedObjectContext];
+		self.triesLeft = 5;
 		[self updateIfNeeded];
 	}
 	return self;
@@ -62,11 +64,10 @@
 }
 
 - (void) updateIfNeeded {
-	static int triesLeft = 5;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	
-	if (self.updating || triesLeft <= 0) {
-		triesLeft = 0;
+	if (self.updating || self.triesLeft <= 0) {
+		self.triesLeft = 0;
 		return;
 	}
 	
@@ -95,15 +96,18 @@
 						if ([self.cacheManagedObjectContext hasChanges])
 							[self.cacheManagedObjectContext save:nil];
 						self.updating = NO;
-						triesLeft = 5;
+						self.triesLeft = 5;
+						dispatch_async(dispatch_get_main_queue(), ^{
+							[[NSNotificationCenter defaultCenter] postNotificationName:NCPriceManagerDidUpdateNotification object:nil];
+						});
 					}];
 				}
 				else {
-					triesLeft--;
+					self.triesLeft--;
 					self.updating = NO;
 				}
 			} failure:^void(AFHTTPRequestOperation * operation, NSError * error) {
-				triesLeft--;
+				self.triesLeft--;
 				self.updating = NO;
 				[self performSelector:@selector(updateIfNeeded) withObject:0 afterDelay:10];
 			}];

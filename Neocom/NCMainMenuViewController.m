@@ -43,6 +43,7 @@
 @property (nonatomic, readonly) NSString* mailsDetails;
 @property (nonatomic, strong) NSTimer* timer;
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
+@property (nonatomic, assign) BOOL reloading;
 - (void) reload;
 - (void) onTimer:(NSTimer*) timer;
 - (void) updateServerStatus;
@@ -85,18 +86,15 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(marketPricesMonitorDidChange:) name:NCMarketPricesMonitorDidChangeNotification object:nil];
 	
-	[super viewWillAppear:animated];
-	[self.tableView reloadData];
-	if (self.serverStatus) {
-		self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
-		[self onTimer:self.timer];
-	}
-	else
-		[self updateServerStatus];
-	//[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+	self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
+	[self updateServerStatus];
+	
 	[self updateMarqueeLabel];
+	[self reload];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -168,13 +166,14 @@
 
 - (void) didChangeAccount:(NSNotification *)notification {
 	[super didChangeAccount:notification];
-	if ([self isViewLoaded])
+	if ([self isViewLoaded] && self.view.window)
 		[self reload];
 }
 
 - (void) didChangeStorage:(NSNotification *)notification {
 	[super didChangeStorage:notification];
-	[self reload];
+	if ([self isViewLoaded] && self.view.window)
+		[self reload];
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -207,6 +206,10 @@
 
 - (void) reload {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reload) object:nil];
+	if (self.reloading)
+		return;
+	
+	self.reloading = YES;
 	NCAccount* account = [NCAccount currentAccount];
 	
 	void (^reload)(NSInteger, NSString*) = ^(NSInteger apiKeyAccessMask, NSString* accessMaskKey) {
@@ -224,6 +227,7 @@
 		}
 		
 		[self.tableView reloadData];
+		self.reloading = NO;
 	};
 	
 	if (account) {
@@ -297,9 +301,6 @@
 	if (self.serverStatus) {
 		self.serverTimeLabel.text = [self.dateFormatter stringFromDate:[self.serverStatus.eveapi serverTimeWithLocalTime:[NSDate date]]];
 	}
-	else {
-		self.timer = nil;
-	}
 }
 
 - (void) setTimer:(NSTimer *)timer {
@@ -308,6 +309,46 @@
 }
 
 - (void) updateServerStatus {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateServerStatus) object:nil];
+
+	void (^update)(EVEAPIKey* apiKey) = ^(EVEAPIKey* apiKey) {
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:apiKey cachePolicy:NSURLRequestUseProtocolCachePolicy];
+		[api serverStatusWithCompletionBlock:^(EVEServerStatus *result, NSError *error) {
+			self.serverStatus = result;
+			if (result) {
+				if (result.serverOpen)
+					self.serverStatusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ players online", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:result.onlinePlayers]];
+				else
+					self.serverStatusLabel.text = NSLocalizedString(@"Server offline", nil);
+				
+				[self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:[[result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil] timeIntervalSinceNow]];
+				[self onTimer:self.timer];
+			}
+			else {
+				self.serverStatusLabel.text = [error localizedDescription];
+				[self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:60];
+			}
+			
+		} progressBlock:nil];
+	};
+	
+	if (!self.serverStatus || !self.serverStatus.eveapi.cachedUntil || [[self.serverStatus.eveapi localTimeWithServerTime:self.serverStatus.eveapi.cachedUntil] compare:[NSDate date]] == NSOrderedAscending) {
+		NCAccount* account = [NCAccount currentAccount];
+		if (account)
+			[account.managedObjectContext performBlock:^{
+				EVEAPIKey* apiKey = account.eveAPIKey;
+				dispatch_async(dispatch_get_main_queue(), ^{
+					update(apiKey);
+				});
+			}];
+		else
+			update(nil);
+	}
+	else if (self.serverStatus) {
+		[self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:[[self.serverStatus.eveapi localTimeWithServerTime:self.serverStatus.eveapi.cachedUntil] timeIntervalSinceNow]];
+	}
+	
+	
 /*	__block EVEServerStatus* serverStatus = nil;
 	__block NSError* error = nil;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto

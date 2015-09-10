@@ -7,11 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "EVEOnlineAPI.h"
+#import <EVEAPI/EVEAPI.h>
 
 @class EVEKillNetLogEntry;
 @class NCDBInvType;
 @class NCDBMapSolarSystem;
+
+@class EVEKillLogKill;
+
 @interface NCKillMailPilot : NSObject<NSCoding>
 @property (nonatomic, assign) int32_t allianceID;
 @property (nonatomic, strong) NSString *allianceName;

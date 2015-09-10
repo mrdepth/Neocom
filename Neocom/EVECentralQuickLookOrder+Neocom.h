@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "EVECentralQuickLook.h"
+#import <EVEAPI/EVEAPI.h>
 
 @class NCDBMapRegion;
 @class NCDBStaStation;

@@ -11,7 +11,7 @@
 #import "NCStorage.h"
 #import "UIAlertView+Error.h"
 #import "UIAlertView+Block.h"
-#import "EVEOnlineAPI.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCNotificationsManager.h"
 #import "NSString+UUID.h"
 #import "NSData+Neocom.h"
@@ -29,6 +29,8 @@
 #import "NCSplashScreenViewController.h"
 #import "NCSkillPlanViewController.h"
 #import "NCPriceManager.h"
+
+
 
 static NSUncaughtExceptionHandler* handler;
 

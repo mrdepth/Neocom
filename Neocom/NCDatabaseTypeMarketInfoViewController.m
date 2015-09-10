@@ -8,7 +8,7 @@
 
 #import "NCDatabaseTypeMarketInfoViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
-#import "EVECentralAPI.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCDatabaseTypeMarketInfoCell.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "UIColor+Neocom.h"

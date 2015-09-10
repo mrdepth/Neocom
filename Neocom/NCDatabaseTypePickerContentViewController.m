@@ -20,6 +20,8 @@
 @interface NCDatabaseTypePickerContentViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* result;
 @property (nonatomic, strong) NSFetchedResultsController* searchResult;
+@property (nonatomic, strong) NCDBEveIcon* defaultGroupIcon;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 
 @end
 
@@ -38,7 +40,15 @@
 {
     [super viewDidLoad];
 	self.refreshControl = nil;
-    
+	
+	if (self.group) {
+		self.databaseManagedObjectContext = self.group.managedObjectContext;
+		self.title = self.group.groupName;
+	}
+
+	self.defaultGroupIcon = [self.databaseManagedObjectContext defaultGroupIcon];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
         if (self.parentViewController) {
             self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]];
@@ -81,7 +91,7 @@
 		else
 			controller = segue.destinationViewController;
 		NCDBEufeItem* item = [sender object];
-		controller.type = item.type;
+		controller.typeID = [item.type objectID];
 	}
 }
 
@@ -116,10 +126,6 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
 - (void) searchWithSearchString:(NSString*) searchString {
 	if (searchString.length > 1) {
 		NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
@@ -131,8 +137,7 @@
 		
 		request.predicate = [NSPredicate predicateWithFormat:@"ANY groups.category == %@ AND type.typeName CONTAINS[C] %@", navigationController.category, searchString];
 		
-		NCDatabase* database = [NCDatabase sharedDatabase];
-		self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
+		self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
 		NSError* error = nil;
 		[self.searchResult performFetch:&error];
 	}
@@ -171,7 +176,7 @@
 		cell.iconView.image = item.type.icon.image.image;
 		cell.object = row;
 		if (!cell.iconView.image)
-			cell.iconView.image = [[[NCDBEveIcon defaultTypeIcon] image] image];
+			cell.iconView.image = self.defaultTypeIcon.image.image;
 	}
 	else {
 		if ([row isKindOfClass:[NCDBEufeItemGroup class]]) {
@@ -181,7 +186,7 @@
 		}
 		
 		if (!cell.iconView.image)
-			cell.iconView.image = [[[NCDBEveIcon defaultGroupIcon] image] image];
+			cell.iconView.image = self.defaultGroupIcon.image.image;
 		cell.object = row;
 	}
 }
@@ -190,8 +195,6 @@
 
 - (void) reload {
 	NSFetchRequest* request;
-	NCDatabase* database = [NCDatabase sharedDatabase];
-
 	request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItem"];
 	request.sortDescriptors = @[
 								[NSSortDescriptor sortDescriptorWithKey:@"type.metaGroup.metaGroupID" ascending:YES],
@@ -200,7 +203,7 @@
 	
 	request.predicate = [NSPredicate predicateWithFormat:@"ANY groups == %@", self.group];
 	
-	self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
+	self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
 	[self.result performFetch:nil];
 
 	if (self.result.fetchedObjects.count == 0) {
@@ -209,8 +212,7 @@
 		
 		request.predicate = [NSPredicate predicateWithFormat:@"parentGroup == %@", self.group];
 		
-		NCDatabase* database = [NCDatabase sharedDatabase];
-		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 		[self.result performFetch:nil];
 	}
 	[self.tableView reloadData];

@@ -62,12 +62,11 @@
 		if (self.viewControllers.count > 1)
 			[self setViewControllers:@[[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]] animated:NO];
 		
-		NCDatabase* database = [NCDatabase sharedDatabase];
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItemGroup"];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
 		request.predicate = [NSPredicate predicateWithFormat:@"category == %@ AND parentGroup == NULL", category];
 		request.fetchLimit = 1;
-		NSArray* result = [database.managedObjectContext executeFetchRequest:request error:nil];
+		NSArray* result = [category.managedObjectContext executeFetchRequest:request error:nil];
 		
 		NCDatabaseTypePickerContentViewController* contentViewController = self.viewControllers[0];
 		contentViewController.group = result.count == 1 ? result[0] : nil;

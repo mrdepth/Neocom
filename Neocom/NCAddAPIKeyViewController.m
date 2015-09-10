@@ -76,32 +76,24 @@
 	int32_t keyID = [self.keyIDTextField.text intValue];
 	NSString* vCode = self.vCodeTextField.text;
 	
-	__block NSError* error = nil;
-	__block BOOL success = NO;
-	[[self taskManager] addTaskWithIndentifier:nil
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
-											 if (accountsManager)
-												 success = [accountsManager addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
-											 
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!success) {
-									 [[UIAlertView alertViewWithError:error] show];
-								 }
-								 else {
-									 [[UIAlertView alertViewWithTitle:nil
-															  message:NSLocalizedString(@"API Key added", nil)
-													cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-													otherButtonTitles:nil
-													  completionBlock:nil
-														  cancelBlock:nil] show];
-									 self.keyIDTextField.text = nil;
-									 self.vCodeTextField.text = nil;
-									 self.navigationItem.rightBarButtonItem.enabled = NO;
-								 }
-							 }];
+	NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
+	if (accountsManager)
+		[accountsManager addAPIKeyWithKeyID:keyID vCode:vCode completionBlock:^(NSArray *accounts, NSError *error) {
+			if (error) {
+				[[UIAlertView alertViewWithError:error] show];
+			}
+			else {
+				[[UIAlertView alertViewWithTitle:nil
+										 message:NSLocalizedString(@"API Key added", nil)
+							   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+							   otherButtonTitles:nil
+								 completionBlock:nil
+									 cancelBlock:nil] show];
+				self.keyIDTextField.text = nil;
+				self.vCodeTextField.text = nil;
+				self.navigationItem.rightBarButtonItem.enabled = NO;
+			}
+		}];
 }
 
 #pragma mark - Table view delegate
@@ -146,53 +138,47 @@
 
 - (void) server:(ASHTTPServer*) server didReceiveRequest:(NSURLRequest*) request {
 	NSDictionary* arguments = request.arguments;
+	int32_t keyID = [arguments[@"keyID"] intValue];
+	NSString* vCode = arguments[@"vCode"];
 	
-	__block NSData* bodyData = nil;
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NSMutableString *page = [NSMutableString stringWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"]] encoding:NSUTF8StringEncoding error:nil];
-											 if (arguments.count > 0) {
-												 NSString* errorDescription = nil;
-												 if ([arguments[@"keyID"] length] == 0)
-													 errorDescription = @"Error: Enter <b>KeyID</b>";
-												 else if ([arguments[@"vCode"] length] == 0)
-													 errorDescription = @"Error: Enter <b>Verification Code</b>";
-												 
-												 if (!errorDescription) {
-													 int32_t keyID = [arguments[@"keyID"] intValue];
-													 NSString* vCode = arguments[@"vCode"];
-													 NSError* error = nil;
-													 if (![[NCAccountsManager sharedManager] addAPIKeyWithKeyID:keyID vCode:vCode error:&error])
-														 errorDescription = [error localizedDescription];
-												 }
-												 
-												 if (errorDescription) {
-													 [page replaceOccurrencesOfString:@"{error}" withString:errorDescription options:0 range:NSMakeRange(0, page.length)];
-													 [page replaceOccurrencesOfString:@"{keyID}" withString:arguments[@"keyID"] ? arguments[@"keyID"] : @"" options:0 range:NSMakeRange(0, page.length)];
-													 [page replaceOccurrencesOfString:@"{vCode}" withString:arguments[@"vCode"] ? arguments[@"vCode"] : @"" options:0 range:NSMakeRange(0, page.length)];
-												 }
-												 else {
-													 [page replaceOccurrencesOfString:@"{error}" withString:NSLocalizedString(@"Key added", nil) options:0 range:NSMakeRange(0, page.length)];
-													 [page replaceOccurrencesOfString:@"{keyID}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
-													 [page replaceOccurrencesOfString:@"{vCode}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
-												 }
-											 }
-											 else {
-												 [page replaceOccurrencesOfString:@"{error}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
-												 [page replaceOccurrencesOfString:@"{keyID}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
-												 [page replaceOccurrencesOfString:@"{vCode}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
-											 }
-											 bodyData = [page dataUsingEncoding:NSUTF8StringEncoding];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 NSHTTPURLResponse* response = [[NSHTTPURLResponse alloc] initWithURL:request.URL
-																						   statusCode:200
-																							 bodyData:bodyData
-																						 headerFields:nil];
-								 [server finishRequest:request withResponse:response];
-							 }];
+	NSMutableString *page = [NSMutableString stringWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"]] encoding:NSUTF8StringEncoding error:nil];
+
+	NCAccountsManager* manager = [NCAccountsManager sharedManager];
+	if (keyID > 0 && vCode.length > 0 && manager) {
+		[manager addAPIKeyWithKeyID:keyID vCode:vCode completionBlock:^(NSArray *accounts, NSError *error) {
+			[page replaceOccurrencesOfString:@"{error}" withString:NSLocalizedString(@"Key added", nil) options:0 range:NSMakeRange(0, page.length)];
+			[page replaceOccurrencesOfString:@"{keyID}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
+			[page replaceOccurrencesOfString:@"{vCode}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
+			NSHTTPURLResponse* response = [[NSHTTPURLResponse alloc] initWithURL:request.URL
+																	  statusCode:200
+																		bodyData:[page dataUsingEncoding:NSUTF8StringEncoding]
+																	headerFields:nil];
+			[server finishRequest:request withResponse:response];
+		}];
+	}
+	else {
+		if (arguments.count > 0) {
+			NSString* errorDescription = nil;
+			if (keyID == 0)
+				errorDescription = @"Error: Enter <b>KeyID</b>";
+			else if (!vCode || vCode.length == 0)
+				errorDescription = @"Error: Enter <b>Verification Code</b>";
+			
+			[page replaceOccurrencesOfString:@"{error}" withString:errorDescription options:0 range:NSMakeRange(0, page.length)];
+			[page replaceOccurrencesOfString:@"{keyID}" withString:arguments[@"keyID"] ? arguments[@"keyID"] : @"" options:0 range:NSMakeRange(0, page.length)];
+			[page replaceOccurrencesOfString:@"{vCode}" withString:arguments[@"vCode"] ? arguments[@"vCode"] : @"" options:0 range:NSMakeRange(0, page.length)];
+		}
+		else {
+			[page replaceOccurrencesOfString:@"{error}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
+			[page replaceOccurrencesOfString:@"{keyID}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
+			[page replaceOccurrencesOfString:@"{vCode}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
+		}
+		NSHTTPURLResponse* response = [[NSHTTPURLResponse alloc] initWithURL:request.URL
+																  statusCode:200
+																	bodyData:[page dataUsingEncoding:NSUTF8StringEncoding]
+																headerFields:nil];
+		[server finishRequest:request withResponse:response];
+	}
 }
 
 

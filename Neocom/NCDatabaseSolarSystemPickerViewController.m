@@ -11,8 +11,8 @@
 #import "NCDatabaseSolarSystemPickerRegionCell.h"
 
 @interface NCDatabaseSolarSystemPickerViewController ()
-@property (nonatomic, strong) NSArray* rows;
-@property (nonatomic, strong) NSArray* searchResults;
+@property (nonatomic, strong) NSFetchedResultsController* result;
+@property (nonatomic, strong) NSFetchedResultsController* searchResult;
 @end
 
 @implementation NCDatabaseSolarSystemPickerViewController
@@ -28,8 +28,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+
+	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
         if (self.parentViewController) {
             self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseSolarSystemPickerViewController"]];
         }
@@ -39,25 +39,27 @@
         }
     }
 
-	if (self.region)
+	if (self.region) {
 		self.title = self.region.regionName;
+		self.databaseManagedObjectContext = self.region.managedObjectContext;
+	}
 	
 	self.refreshControl = nil;
 	
-	NCDatabase* database = [NCDatabase sharedDatabase];
-	if (!self.rows) {
+	if (!self.result) {
 		if (self.region) {
 			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
 			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"solarSystemName" ascending:YES]];
 			request.predicate = [NSPredicate predicateWithFormat:@"constellation.region == %@", self.region];
 			request.fetchBatchSize = 50;
-			self.rows = [database.managedObjectContext executeFetchRequest:request error:nil];
+			self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
+			[self.result performFetch:nil];
 		}
 		else {
 			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapRegion"];
 			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"regionName" ascending:YES]];
 			request.fetchBatchSize = 50;
-			self.rows = [database.managedObjectContext executeFetchRequest:request error:nil];
+			self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 		}
 	}
 }
@@ -96,67 +98,42 @@
 	if (tableView == self.tableView && !self.searchContentsController)
 		return 1;
 	else
-		return self.searchResults.count;
+		return self.searchResult.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if (tableView == self.tableView && !self.searchContentsController)
-		return self.rows.count;
-	else
-		return [self.searchResults[section][@"rows"] count];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	return sectionInfo.numberOfObjects;
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (tableView == self.tableView && !self.searchContentsController)
-		return nil;
-	else
-		return self.searchResults[section][@"title"];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	return sectionInfo.name.length > 0 ? sectionInfo.name : nil;
 }
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
 - (void) searchWithSearchString:(NSString*) searchString {
-	NSMutableArray* searchResults = [NSMutableArray new];
-	
-	NCDatabase* database = [NCDatabase sharedDatabase];
 	if (self.region) {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
-		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"solarSystemName" ascending:YES]];
+		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"constellation.region.regionName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"solarSystemName" ascending:YES]];
 		request.predicate = [NSPredicate predicateWithFormat:@"constellation.region == %@ AND solarSystemName CONTAINS[C] %@", self.region, searchString];
 		request.fetchBatchSize = 50;
-		NSArray* solarSystems = [database.managedObjectContext executeFetchRequest:request error:nil];
-		if (solarSystems.count > 0)
-			[searchResults addObject:@{@"rows": solarSystems}];
+		self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:@"constellation.region.regionName" cacheName:nil];
 	}
 	else {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
-		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"solarSystemName" ascending:YES]];
+		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"constellation.region.regionName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"solarSystemName" ascending:YES]];
 		request.predicate = [NSPredicate predicateWithFormat:@"solarSystemName CONTAINS[C] %@", searchString];
 		request.fetchBatchSize = 50;
-		NSArray* solarSystems = [database.managedObjectContext executeFetchRequest:request error:nil];
-
-		
-		request = [NSFetchRequest fetchRequestWithEntityName:@"MapRegion"];
-		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"regionName" ascending:YES]];
-		request.predicate = [NSPredicate predicateWithFormat:@"regionName CONTAINS[C] %@", searchString];
-		request.fetchBatchSize = 50;
-		NSArray* regions = [database.managedObjectContext executeFetchRequest:request error:nil];
-		
-		if (regions.count > 0)
-			[searchResults addObject:@{@"rows": regions, @"title": NSLocalizedString(@"Regions", nil)}];
-		if (solarSystems.count > 0)
-			[searchResults addObject:@{@"rows": solarSystems, @"title": NSLocalizedString(@"Solar Systems", nil)}];
+		self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:@"constellation.region.regionName" cacheName:nil];
 	}
-	self.searchResults = searchResults;
-    
+	[self.searchResult performFetch:nil];
+	
     if (self.searchController) {
         NCDatabaseSolarSystemPickerViewController* searchResultsController = (NCDatabaseSolarSystemPickerViewController*) self.searchController.searchResultsController;
-        searchResultsController.searchResults = self.searchResults;
+        searchResultsController.searchResult = self.searchResult;
         [searchResultsController.tableView reloadData];
     }
     else if (self.searchDisplayController)
@@ -164,11 +141,7 @@
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	id row;
-	if (tableView == self.tableView && !self.searchContentsController)
-		row = self.rows[indexPath.row];
-	else
-		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
+	id row = tableView == self.tableView && !self.searchContentsController ? [self.result objectAtIndexPath:indexPath] : [self.searchResult objectAtIndexPath:indexPath];
 	
 	if ([row isKindOfClass:[NCDBMapRegion class]])
 		return @"RegionCell";
@@ -177,11 +150,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id row;
-	if (tableView == self.tableView && !self.searchContentsController)
-		row = self.rows[indexPath.row];
-	else
-		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
+	id row = tableView == self.tableView && !self.searchContentsController ? [self.result objectAtIndexPath:indexPath] : [self.searchResult objectAtIndexPath:indexPath];
 	
 	if ([row isKindOfClass:[NCDBMapRegion class]]) {
 		NCDatabaseSolarSystemPickerRegionCell* cell = (NCDatabaseSolarSystemPickerRegionCell*) tableViewCell;

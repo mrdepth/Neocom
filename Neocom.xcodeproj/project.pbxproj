@@ -7,25 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1202FC7618A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1202FC7518A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m */; };
-		1203B69718B4A4FC003A0D72 /* NCWalletJournalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1203B69618B4A4FC003A0D72 /* NCWalletJournalViewController.m */; };
-		1203B69B18B4DD7C003A0D72 /* NCWalletJournalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1203B69A18B4DD7C003A0D72 /* NCWalletJournalCell.m */; };
-		12041557189A449E00B15BB5 /* NCFittingShipWeaponsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041556189A449E00B15BB5 /* NCFittingShipWeaponsCell.m */; };
-		1204155A189A44AC00B15BB5 /* NCFittingShipResourcesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041559189A44AC00B15BB5 /* NCFittingShipResourcesCell.m */; };
-		1204155D189A44CF00B15BB5 /* NCFittingResistancesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1204155C189A44CF00B15BB5 /* NCFittingResistancesCell.m */; };
-		12041560189A44F400B15BB5 /* NCFittingShipCapacitorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1204155F189A44F400B15BB5 /* NCFittingShipCapacitorCell.m */; };
-		12041563189A450200B15BB5 /* NCFittingShipFirepowerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041562189A450200B15BB5 /* NCFittingShipFirepowerCell.m */; };
-		12041566189A451E00B15BB5 /* NCFittingShipTankCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041565189A451E00B15BB5 /* NCFittingShipTankCell.m */; };
-		12041569189A453F00B15BB5 /* NCFittingShipMiscCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041568189A453F00B15BB5 /* NCFittingShipMiscCell.m */; };
-		1204156C189A454A00B15BB5 /* NCFittingShipPriceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1204156B189A454A00B15BB5 /* NCFittingShipPriceCell.m */; };
-		12041572189A4C3D00B15BB5 /* NCFittingEHPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041571189A4C3D00B15BB5 /* NCFittingEHPCell.m */; };
-		12045E461ACB20D100AD32F8 /* NCShoppingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12045E451ACB20D100AD32F8 /* NCShoppingListViewController.m */; };
-		12045E4D1AD161CF00AD32F8 /* NCShoppingItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12045E4C1AD161CF00AD32F8 /* NCShoppingItemCell.m */; };
 		12045E521AD16E9800AD32F8 /* map.png in Resources */ = {isa = PBXBuildFile; fileRef = 12045E511AD16E9800AD32F8 /* map.png */; };
 		12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12056E5D18C45F2E008D8755 /* NCPriceManager.m */; };
 		1206C5EA18922FB20010BEE8 /* NCMailBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5E918922FB20010BEE8 /* NCMailBox.m */; };
-		1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */; };
-		1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5F118929B960010BEE8 /* NCMessageCell.m */; };
 		120968531845F0CB00921A37 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968521845F0CB00921A37 /* Foundation.framework */; };
 		120968551845F0CB00921A37 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968541845F0CB00921A37 /* CoreGraphics.framework */; };
 		120968571845F0CB00921A37 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968561845F0CB00921A37 /* UIKit.framework */; };
@@ -109,9 +93,6 @@
 		120C338E19CAB0AB0093EECA /* NCDBDgmTypeAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 120C338D19CAB0AB0093EECA /* NCDBDgmTypeAttribute.m */; };
 		120C339119CAB0AB0093EECA /* NCDBDgmAttributeType.m in Sources */ = {isa = PBXBuildFile; fileRef = 120C339019CAB0AB0093EECA /* NCDBDgmAttributeType.m */; };
 		120C339419CAB0AC0093EECA /* NCDBInvGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 120C339319CAB0AC0093EECA /* NCDBInvGroup.m */; };
-		120D5B4218B1FE5B007ED9B4 /* NCLocationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4118B1FE5B007ED9B4 /* NCLocationsManager.m */; };
-		120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */; };
-		120D5B5318B22AC0007ED9B4 /* NCMarketOrdersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */; };
 		120E77B81B25D91300816E1C /* NCSplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120E77B71B25D91300816E1C /* NCSplashScreenViewController.m */; };
 		120F98A61B539E220047A019 /* eufe.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 120F98A41B539E220047A019 /* eufe.sqlite */; };
 		120F98A71B539E220047A019 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 120F98A51B539E220047A019 /* NCDatabase.sqlite */; };
@@ -170,44 +151,22 @@
 		121FF9C71B4BDF1700091AFE /* tracking.png in Resources */ = {isa = PBXBuildFile; fileRef = 121FF9C61B4BDF1700091AFE /* tracking.png */; };
 		1225A0B71A400954005DD73B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1225A0B61A400954005DD73B /* Launch Screen.xib */; };
 		1226D2D31B58F04F000C69EC /* NCCachePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1226D2D21B58F04F000C69EC /* NCCachePrice.m */; };
-		1229475D18EA8B2E0093FAB8 /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; };
-		122947EB18EAA51D0093FAB8 /* NCSkillsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */; };
-		122947F318EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122947F218EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm */; };
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
-		122C98A318B5DC3800386EDE /* NCContractsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98A218B5DC3800386EDE /* NCContractsCell.m */; };
-		122C98A718B5DD5700386EDE /* NCIndustryJobsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98A618B5DD5700386EDE /* NCIndustryJobsViewController.m */; };
-		122C98AB18B5EAF900386EDE /* NCIndustryJobsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98AA18B5EAF900386EDE /* NCIndustryJobsCell.m */; };
-		122C98AE18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */; };
-		122C98B318B6026100386EDE /* NCIndustryJobsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */; };
 		122F01C819483D2100D04D60 /* NCDBInvType+Neocom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122F01C719483D2100D04D60 /* NCDBInvType+Neocom.mm */; };
-		12331DC118F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12331DC018F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.m */; };
 		1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1235E3F318E562E300BC2607 /* NCNavigationController.m */; };
 		123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 123A97F218C7017E001045F5 /* MessageUI.framework */; };
 		123A97F718C708FE001045F5 /* NSString+Temp.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A97F618C708FE001045F5 /* NSString+Temp.m */; };
 		123A97FC18C714B7001045F5 /* rss.png in Resources */ = {isa = PBXBuildFile; fileRef = 123A97FA18C714B7001045F5 /* rss.png */; };
 		123A97FD18C714B7001045F5 /* rss@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 123A97FB18C714B7001045F5 /* rss@2x.png */; };
-		123A980218C71516001045F5 /* NCRSSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980118C71516001045F5 /* NCRSSViewController.m */; };
 		123A980418C71548001045F5 /* rssFeeds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 123A980318C71548001045F5 /* rssFeeds.plist */; };
-		123A980818C715EA001045F5 /* NCRSSFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980718C715EA001045F5 /* NCRSSFeedViewController.m */; };
-		123A980C18C716B9001045F5 /* NCRSSFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980B18C716B9001045F5 /* NCRSSFeedCell.m */; };
-		123A981018C71F2E001045F5 /* NCRSSItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980F18C71F2D001045F5 /* NCRSSItemViewController.m */; };
-		123A981418C721C7001045F5 /* RSSItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A981318C721C7001045F5 /* RSSItem+Neocom.m */; };
 		123C628218DB1E6A00B03156 /* NCLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 123C628118DB1E6A00B03156 /* NCLabel.m */; };
 		123EE6F818F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 123EE6F718F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.m */; };
-		123F0ACE18C5990100D53602 /* NCSkillPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */; };
 		123F0AD118C5B5FF00D53602 /* NSData+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0AD018C5B5FF00D53602 /* NSData+Neocom.m */; };
 		123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F0AD218C5B78500D53602 /* libz.dylib */; };
-		123F0AD818C5BCC700D53602 /* NCSkillPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0AD718C5BCC700D53602 /* NCSkillPlanViewController.m */; };
 		123F0ADB18C5C8AC00D53602 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 123F0ADA18C5C8AC00D53602 /* evemon.html */; };
-		124097B91B2EDDE4002AC442 /* NCFittingPOSStructuresViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 124097B81B2EDDE4002AC442 /* NCFittingPOSStructuresViewController.mm */; };
-		124097BC1B2F021A002AC442 /* NCFittingPOSAssemblyLinesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 124097BB1B2F021A002AC442 /* NCFittingPOSAssemblyLinesViewController.mm */; };
 		124097C01B2F200F002AC442 /* NCAdaptivePopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 124097BF1B2F200F002AC442 /* NCAdaptivePopoverSegue.m */; };
 		124097C31B2F2021002AC442 /* NCPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 124097C21B2F2021002AC442 /* NCPopoverController.m */; };
-		12422FC118E409F70051FD24 /* NCSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12422FC018E409F70051FD24 /* NCSettingsViewController.m */; };
-		12430BAF18C852550025D971 /* NCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BAE18C852550025D971 /* NCAboutViewController.m */; };
-		12430BB318C875910025D971 /* NCDonationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB218C875910025D971 /* NCDonationViewController.m */; };
-		12430BB718C87C1B0025D971 /* NCDonationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB618C87C1B0025D971 /* NCDonationCell.m */; };
 		12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12430BB818C87F760025D971 /* StoreKit.framework */; };
 		12430BBB18C881EA0025D971 /* Help.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12430BBA18C881EA0025D971 /* Help.storyboard */; };
 		12436DAB1945A0310090D4A6 /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12436DA91945A0310090D4A6 /* NCDatabase.xcdatamodeld */; };
@@ -215,7 +174,6 @@
 		12436E141946E4670090D4A6 /* NCDBImageValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436E131946E4670090D4A6 /* NCDBImageValueTransformer.m */; };
 		1243761C189653980078F526 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1243761B189653980078F526 /* Character.storyboard */; };
 		1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771418969E590078F526 /* NCDatabaseNPCViewController.m */; };
-		124638331AD25A84001F8780 /* NCShoppingAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 124638321AD25A84001F8780 /* NCShoppingAssetsViewController.m */; };
 		1246383E1AD421E4001F8780 /* stationcontainer.png in Resources */ = {isa = PBXBuildFile; fileRef = 1246383D1AD421E4001F8780 /* stationcontainer.png */; };
 		1248CE4F1B7DDCBF000266BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248CE4E1B7DDCBF000266BE /* main.m */; };
 		1248CE521B7DDCBF000266BE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248CE511B7DDCBF000266BE /* AppDelegate.m */; };
@@ -242,7 +200,6 @@
 		1248CEBD1B7E12C8000266BE /* NCSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE381860326E00F75FA6 /* NCSetting.m */; };
 		1248CEBE1B7E12C8000266BE /* NCAPIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE351860326E00F75FA6 /* NCAPIKey.m */; };
 		124D38941AD4F872000D92CE /* note.png in Resources */ = {isa = PBXBuildFile; fileRef = 124D38931AD4F872000D92CE /* note.png */; };
-		1251E95B18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1251E95A18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m */; };
 		12564B4B1B84AE46000F68D8 /* NCCachePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1226D2D21B58F04F000C69EC /* NCCachePrice.m */; };
 		12564B4C1B84AE46000F68D8 /* NCCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211123718599339009E5106 /* NCCache.m */; };
 		12564B4D1B84AE46000F68D8 /* NCCacheRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211124C1859E1AF009E5106 /* NCCacheRecord.m */; };
@@ -304,26 +261,11 @@
 		12564C4B1B875474000F68D8 /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12436DA91945A0310090D4A6 /* NCDatabase.xcdatamodeld */; };
 		1256923D1A37799A008F6468 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1256923C1A37799A008F6468 /* EventKit.framework */; };
 		125AEFFC1AE7A8C6008B9EAF /* NCDBVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 125AEFFB1AE7A8C6008B9EAF /* NCDBVersion.m */; };
-		125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F681918852DA9005732FA /* NCSkillsViewController.m */; };
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
 		125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 125F6824188537FF005732FA /* NCCharacterAttributes.mm */; };
-		12614EEF1AC92522007620DA /* NCShoppingListsManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */; };
 		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
-		1263EA141AEA85C80052DC27 /* NCLoadoutsParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1263EA131AEA85C80052DC27 /* NCLoadoutsParser.mm */; };
-		12640AFA18B72E43005C311D /* NCStarbasesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640AF918B72E43005C311D /* NCStarbasesViewController.m */; };
-		12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0018B7306C005C311D /* EVEStarbaseListItem+Neocom.m */; };
-		12640B0418B74048005C311D /* NCStarbasesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0318B74048005C311D /* NCStarbasesCell.m */; };
-		12640B0918B74CBF005C311D /* NCStarbasesDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0818B74CBF005C311D /* NCStarbasesDetailsViewController.m */; };
-		12640B0E18B77A2D005C311D /* NCKillMailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0D18B77A2D005C311D /* NCKillMailsViewController.m */; };
-		12640B1218B77B87005C311D /* NCKillMail.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12640B1118B77B87005C311D /* NCKillMail.mm */; };
-		12640B1518BB274C005C311D /* EVEKillLogKill+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B1418BB274C005C311D /* EVEKillLogKill+Neocom.m */; };
-		12640B1818BB27D2005C311D /* EVEKillLogVictim+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B1718BB27D2005C311D /* EVEKillLogVictim+Neocom.m */; };
-		12640B1C18BB2947005C311D /* NCKillMailsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B1B18BB2947005C311D /* NCKillMailsCell.m */; };
-		12640C4C18BB73A4005C311D /* NCKillMailDetailsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12640C4B18BB73A4005C311D /* NCKillMailDetailsViewController.mm */; };
-		126648F418C07D1000ADBBE1 /* NCZKillBoardSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126648F318C07D1000ADBBE1 /* NCZKillBoardSearchResultsViewController.m */; };
 		126703061A8FD22700F816F9 /* NSAttributedString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126703051A8FD22700F816F9 /* NSAttributedString+Neocom.m */; };
 		1267030C1A911A0900F816F9 /* NSMutableAttributedString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 1267030B1A911A0800F816F9 /* NSMutableAttributedString+Neocom.m */; };
-		126DC6A218D1ABD3009EEA86 /* NCCharacterAttributesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 126DC6A118D1ABD3009EEA86 /* NCCharacterAttributesCell.m */; };
 		126E0F911B9724230093E97F /* NCDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */; };
 		126E0F951B9726C50093E97F /* NCDatabaseTypeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EE6A1886741900F90763 /* NCDatabaseTypeInfoViewController.m */; };
 		126E0F961B972F3D0093E97F /* NCSkillHierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EEA11886CFB100F90763 /* NCSkillHierarchy.m */; };
@@ -351,9 +293,7 @@
 		126E0FE41B99EB2A0093E97F /* NCBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F9560118CDB5D4005CEAD6 /* NCBannerViewController.m */; };
 		126E0FE51B99EB400093E97F /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1219C1491AA4FF0000FF6205 /* GoogleMobileAds.framework */; };
 		126E0FE61B99EB890093E97F /* ASInAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D25A5187E923200E2062C /* ASInAppPurchase.m */; };
-		126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */; };
 		126ED32D188144370009FA39 /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 126ED32C188144370009FA39 /* mainMenu.plist */; };
-		126F1BC219531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BC119531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.m */; };
 		126F1CD41954047100E5CD4F /* droneRange.png in Resources */ = {isa = PBXBuildFile; fileRef = 126F1CCF1954047100E5CD4F /* droneRange.png */; };
 		126F1CD51954047100E5CD4F /* priceFitting.png in Resources */ = {isa = PBXBuildFile; fileRef = 126F1CD01954047100E5CD4F /* priceFitting.png */; };
 		126F1CD61954047100E5CD4F /* priceShip.png in Resources */ = {isa = PBXBuildFile; fileRef = 126F1CD11954047100E5CD4F /* priceShip.png */; };
@@ -368,8 +308,6 @@
 		126F1CEC195407B500E5CD4F /* collapsed.png in Resources */ = {isa = PBXBuildFile; fileRef = 126F1CEA195407B500E5CD4F /* collapsed.png */; };
 		126F1CED195407B500E5CD4F /* expanded.png in Resources */ = {isa = PBXBuildFile; fileRef = 126F1CEB195407B500E5CD4F /* expanded.png */; };
 		127082A7190109E900822F00 /* EUStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 127082A5190109E900822F00 /* EUStorage.xcdatamodeld */; };
-		1271238118977E8C005F46EE /* NCFittingShipModuleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1271238018977E8C005F46EE /* NCFittingShipModuleCell.m */; };
-		1271238518978148005F46EE /* NCFittingShipViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1271238418978148005F46EE /* NCFittingShipViewController.mm */; };
 		127123A018979E40005F46EE /* NCFittingSectionGenericHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1271239F18979E40005F46EE /* NCFittingSectionGenericHeaderView.xib */; };
 		127123A318979F55005F46EE /* NCFittingSectionGenericHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 127123A218979F55005F46EE /* NCFittingSectionGenericHeaderView.m */; };
 		127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 127123A81897A94E005F46EE /* NCProgressLabel.m */; };
@@ -377,14 +315,11 @@
 		127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */; };
 		127C50B718CF52DA0074877C /* clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50B618CF52D90074877C /* clear.png */; };
 		127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */; };
-		128A1F32189906A400005C4F /* NCFittingShipWorkspaceViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F31189906A400005C4F /* NCFittingShipWorkspaceViewController.mm */; };
 		128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F3518990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m */; };
 		128A1F3818990DA200005C4F /* NCFittingSectionHiSlotHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128A1F3718990DA200005C4F /* NCFittingSectionHiSlotHeaderView.xib */; };
-		128A1F3B1899141200005C4F /* NCFittingShipDroneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F3A1899141200005C4F /* NCFittingShipDroneCell.m */; };
 		128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */; };
 		128C9B0418BF034E0086F7B3 /* NCCharacterID.m in Sources */ = {isa = PBXBuildFile; fileRef = 128C9B0318BF034E0086F7B3 /* NCCharacterID.m */; };
 		128C9B0918BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128C9B0818BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m */; };
-		128D29AB18BDAE6D003B8E03 /* NCZKillBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29AA18BDAE6D003B8E03 /* NCZKillBoardViewController.m */; };
 		128D29B118BDBD23003B8E03 /* NCTableViewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29B018BDBD23003B8E03 /* NCTableViewHeaderView.m */; };
 		128D29B418BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128D29B318BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib */; };
 		128D29B718BDC73A003B8E03 /* NCTableViewHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128D29B618BDC73A003B8E03 /* NCTableViewHeaderView.xib */; };
@@ -393,15 +328,7 @@
 		129421AC187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421AB187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m */; };
 		129421B81880321900977CB8 /* NCAccountCorporationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421B71880321900977CB8 /* NCAccountCorporationCell.m */; };
 		1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1296C6C11890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m */; };
-		1297FCED1B2AACD000176BF0 /* NCFittingShipModulesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1297FCEC1B2AACD000176BF0 /* NCFittingShipModulesViewController.mm */; };
-		1297FCF61B2ABC1D00176BF0 /* NCFittingShipDronesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1297FCF51B2ABC1D00176BF0 /* NCFittingShipDronesViewController.mm */; };
-		1297FCFA1B2ABF1800176BF0 /* NCFittingShipImplantsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1297FCF91B2ABF1800176BF0 /* NCFittingShipImplantsViewController.mm */; };
-		1297FCFE1B2ABF5300176BF0 /* NCFittingShipFleetViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1297FCFD1B2ABF5300176BF0 /* NCFittingShipFleetViewController.mm */; };
-		1298CA1818C4B1B700F3F550 /* NCSkillPlanImportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1298CA1718C4B1B700F3F550 /* NCSkillPlanImportViewController.m */; };
 		129C585718AA02B200CA8787 /* POSFitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 129C585618AA02B200CA8787 /* POSFitting.storyboard */; };
-		129C585D18AA06AA00CA8787 /* NCPOSFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 129C585C18AA06AA00CA8787 /* NCPOSFit.mm */; };
-		129C586218AA2CF900CA8787 /* NCFittingPOSViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 129C586118AA2CF900CA8787 /* NCFittingPOSViewController.mm */; };
-		129C586518AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 129C586418AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.mm */; };
 		129D257E187E8CB400E2062C /* NCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D257D187E8CB400E2062C /* NCMainMenuViewController.m */; };
 		129D2600187E923200E2062C /* ASCaptionTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D2583187E923200E2062C /* ASCaptionTextField.m */; };
 		129D260F187E923300E2062C /* ASInAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D25A5187E923200E2062C /* ASInAppPurchase.m */; };
@@ -448,35 +375,22 @@
 		12A7DB9918B3497B00343D25 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 12A7DB9818B3497B00343D25 /* index.html */; };
 		12A7DB9C18B34B0900343D25 /* NSString+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A7DB9B18B34B0900343D25 /* NSString+ASHTTPServer.m */; };
 		12A7DB9F18B34D6200343D25 /* NSURLRequest+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A7DB9E18B34D6200343D25 /* NSURLRequest+ASHTTPServer.m */; };
-		12A7DBA618B36B1A00343D25 /* NCWalletTransactionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A7DBA518B36B1A00343D25 /* NCWalletTransactionsViewController.m */; };
 		12A7DBA818B36B2F00343D25 /* Market.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12A7DBA718B36B2F00343D25 /* Market.storyboard */; };
-		12A7DBAF18B3739B00343D25 /* NCWalletTransactionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A7DBAE18B3739B00343D25 /* NCWalletTransactionsCell.m */; };
 		12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */; };
 		12ACDCA118A0AC4A00566DFE /* NCDamagePattern.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA018A0AC4A00566DFE /* NCDamagePattern.m */; };
-		12ACDCA618A0AD2600566DFE /* NCFittingDamagePatternsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */; };
-		12ACDCAA18A0B12D00566DFE /* NCFittingDamagePatternCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */; };
 		12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */; };
-		12B42E6C1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B42E6B1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m */; };
 		12B42E6E1AC7182000A0D956 /* ShoppingList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B42E6D1AC7182000A0D956 /* ShoppingList.storyboard */; };
-		12B42E711AC8432900A0D956 /* NCShoppingItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B42E701AC8432900A0D956 /* NCShoppingItem+Neocom.m */; };
 		12B42E741ACB113D00A0D956 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B42E731ACB113D00A0D956 /* folder.png */; };
 		12B5EFF21ACBC154003CDF65 /* NCShoppingList.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFF11ACBC154003CDF65 /* NCShoppingList.m */; };
 		12B5EFF51ACBC154003CDF65 /* NCShoppingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFF41ACBC154003CDF65 /* NCShoppingItem.m */; };
 		12B5EFFE1ACBC33A003CDF65 /* NCShoppingGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFFD1ACBC33A003CDF65 /* NCShoppingGroup.m */; };
-		12B5F0011ACBC6AD003CDF65 /* NCShoppingGroup+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5F0001ACBC6AD003CDF65 /* NCShoppingGroup+Neocom.m */; };
 		12B68569195EB1B30043B30A /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12B68568195EB1B30043B30A /* NotificationCenter.framework */; };
 		12B6856F195EB1B30043B30A /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B6856E195EB1B30043B30A /* TodayViewController.m */; };
 		12B68571195EB1B30043B30A /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B68570195EB1B30043B30A /* MainInterface.storyboard */; };
 		12B68574195EB1B30043B30A /* com.shimanski.eveuniverse.today.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 12B68567195EB1B20043B30A /* com.shimanski.eveuniverse.today.appex */; };
 		12B9509A1ADB8D5E009E31DB /* fits.html in Resources */ = {isa = PBXBuildFile; fileRef = 12B950991ADB8D5E009E31DB /* fits.html */; };
-		12B950A11ADB8D96009E31DB /* NCFittingExportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B950A01ADB8D96009E31DB /* NCFittingExportViewController.mm */; };
 		12B950A31ADB8EC7009E31DB /* augmentations.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B950A21ADB8EC7009E31DB /* augmentations.png */; };
 		12B950A51ADB8F15009E31DB /* browser.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B950A41ADB8F15009E31DB /* browser.png */; };
-		12B971A718EC2A11008F8740 /* NCFittingPOSStatsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B971A618EC2A11008F8740 /* NCFittingPOSStatsViewController.mm */; };
-		12B97D3318AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3218AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m */; };
-		12B97D3818AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3718AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm */; };
-		12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3B18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m */; };
-		12B992351913718900448D01 /* NCAssetsAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B992341913718900448D01 /* NCAssetsAccountsViewController.m */; };
 		12B9A63D1B8C6F63005624D5 /* NCPriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12056E5D18C45F2E008D8755 /* NCPriceManager.m */; };
 		12B9A6411B8C73B1005624D5 /* NCCharacterID.m in Sources */ = {isa = PBXBuildFile; fileRef = 128C9B0318BF034E0086F7B3 /* NCCharacterID.m */; };
 		12B9A6431B8C91C6005624D5 /* NCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 121112331859929E009E5106 /* NCTableViewController.m */; };
@@ -510,10 +424,7 @@
 		12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
 		12C107D61ADD0451008D60DF /* mass.png in Resources */ = {isa = PBXBuildFile; fileRef = 12C107D51ADD0451008D60DF /* mass.png */; };
 		12C107E01ADD584C008D60DF /* NCDatabaseFetchedResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C107DF1ADD584C008D60DF /* NCDatabaseFetchedResultsViewController.m */; };
-		12C5074F189B6F170064AC32 /* NCShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C5074E189B6F170064AC32 /* NCShipFit.mm */; };
-		12C50757189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C50756189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m */; };
 		12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C5075E189BCC110064AC32 /* UIImage+Neocom.m */; };
-		12C50763189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C50762189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m */; };
 		12C66E4E18D026690037124A /* arrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12C66E4D18D026690037124A /* arrowDown@2x.png */; };
 		12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EE6A1886741900F90763 /* NCDatabaseTypeInfoViewController.m */; };
 		12C7EE9E1886B51D00F90763 /* NCTrainingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EE9D1886B51D00F90763 /* NCTrainingQueue.m */; };
@@ -523,7 +434,6 @@
 		12CDB7E0188E7D1C002079C0 /* ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7DF188E7D1C002079C0 /* ASHTTPServer.m */; };
 		12CDB7EF188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7EE188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m */; };
 		12CDB7F2188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7F1188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m */; };
-		12D011BC18A20BE600C0A228 /* NCFittingNPCPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D011BB18A20BE600C0A228 /* NCFittingNPCPickerViewController.m */; };
 		12D011BF18A2101400C0A228 /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BD18A2101400C0A228 /* checkmark.png */; };
 		12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BE18A2101400C0A228 /* checkmark@2x.png */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
@@ -534,17 +444,10 @@
 		12E86946195EC7E1004B66D0 /* NSString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421A8187FDF7200977CB8 /* NSString+Neocom.m */; };
 		12EC0AC118C0B18D0010169C /* KillBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12EC0AC018C0B18D0010169C /* KillBoard.storyboard */; };
 		12EC0AC618C0BAA20010169C /* NCNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */; };
-		12ED82DA1AC13CD500C593C4 /* NCPlanetaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */; };
-		12ED82E91AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82E81AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.m */; };
 		12F407551A8D181D0031FB35 /* NCDefaultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */; };
 		12F407591A8D25220031FB35 /* NCDefaultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */; };
 		12F4C0721B2862C100AF3389 /* NCAdaptiveModalSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F4C0711B2862C100AF3389 /* NCAdaptiveModalSegue.m */; };
-		12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */; };
 		12F82A5018AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A4F18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m */; };
-		12F82A5418AC98B100A967B5 /* NCFittingAPIFlagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5318AC98B100A967B5 /* NCFittingAPIFlagsViewController.m */; };
-		12F82A5A18ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5918ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m */; };
-		12F82A5D18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5C18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm */; };
-		12F82A6718ADFAB500A967B5 /* NCAssetsContainerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.mm */; };
 		12F8E1F418E9A47400CEA658 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 12F8E1F318E9A47300CEA658 /* logo.png */; };
 		12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F8E1F718E9A53700CEA658 /* NCSplitViewController.m */; };
 		12F955E818CDA2A0005CEAD6 /* EUStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F955E718CDA2A0005CEAD6 /* EUStorage.m */; };
@@ -553,7 +456,6 @@
 		12F955F418CDA3CD005CEAD6 /* ShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F955F318CDA3CD005CEAD6 /* ShipFit.mm */; };
 		12F955F718CDA3DD005CEAD6 /* POSFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F955F618CDA3DD005CEAD6 /* POSFit.mm */; };
 		12F955FA18CDA3FC005CEAD6 /* SkillPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F955F918CDA3FC005CEAD6 /* SkillPlan.m */; };
-		12F955FD18CDA5DE005CEAD6 /* NCMigrationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F955FC18CDA5DE005CEAD6 /* NCMigrationManager.mm */; };
 		12F9560218CDB5D4005CEAD6 /* NCBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F9560118CDB5D4005CEAD6 /* NCBannerViewController.m */; };
 		12F9561A18CDB802005CEAD6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F9561918CDB802005CEAD6 /* AudioToolbox.framework */; };
 		12F9561C18CDB80E005CEAD6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F9561B18CDB80E005CEAD6 /* MobileCoreServices.framework */; };
@@ -565,29 +467,14 @@
 		12FA32AC18E157920053DDC5 /* NCMarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FA32AB18E157920053DDC5 /* NCMarqueeLabel.m */; };
 		12FA32AF18E1673D0053DDC5 /* UIView+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FA32AE18E1673D0053DDC5 /* UIView+Neocom.m */; };
 		12FDA32E18E00710007B091D /* NCImplantSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDA32D18E00710007B091D /* NCImplantSet.m */; };
-		12FDA33218E00FFA007B091D /* NCFittingImplantSetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDA33118E00FFA007B091D /* NCFittingImplantSetsViewController.m */; };
-		12FDA33518E03172007B091D /* NCFittingAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDA33418E03172007B091D /* NCFittingAmountCell.m */; };
-		12FF5866189F6D9100E2D70A /* NCFittingCharacterEditorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */; };
 		12FF586D189F8EF200E2D70A /* NCStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF586C189F8EF200E2D70A /* NCStoryboardPopoverSegue.m */; };
-		12FF5871189FC2D100E2D70A /* NCFittingFitPickerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5870189FC2D100E2D70A /* NCFittingFitPickerViewController.mm */; };
 		841534EC188A921200B42433 /* NCDatabaseMarketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841534EB188A921200B42433 /* NCDatabaseMarketViewController.m */; };
 		841534F0188A9A7500B42433 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841534EF188A9A7500B42433 /* Database.storyboard */; };
 		8416386D1893BEA000968ADF /* NSDate+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 8416386C1893BEA000968ADF /* NSDate+Neocom.m */; };
-		8418BB14189186D900B99A7E /* NCCalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB13189186D900B99A7E /* NCCalendarEventsViewController.m */; };
-		8418BB171891873800B99A7E /* NCCalendarEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB161891873800B99A7E /* NCCalendarEventCell.m */; };
 		8418BB1C1891970500B99A7E /* eventTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 8418BB1B1891970500B99A7E /* eventTemplate.html */; };
-		8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */; };
 		84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
-		8435C87718A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8435C87618A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m */; };
-		843C2F0218AD41CF00221721 /* NCAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843C2F0118AD41CF00221721 /* NCAssetsViewController.m */; };
-		84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84442A5C189FFF230021CB24 /* NCFittingTargetsViewController.mm */; };
 		8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8452190D189AEEA700E7E3C1 /* NCLoadout.m */; };
 		84521911189AEEA800E7E3C1 /* NCLoadoutData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84521910189AEEA800E7E3C1 /* NCLoadoutData.m */; };
-		8456E86C18AAA13A000DAE75 /* NCFittingPOSStructureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8456E86B18AAA13A000DAE75 /* NCFittingPOSStructureCell.m */; };
-		8456E87518AAAEE2000DAE75 /* NCFittingPOSResourcesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8456E87418AAAEE2000DAE75 /* NCFittingPOSResourcesCell.m */; };
-		8456E87818AAAFBD000DAE75 /* NCFittingPOSDefenseOffenseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8456E87718AAAFBD000DAE75 /* NCFittingPOSDefenseOffenseCell.m */; };
-		845B7C6F18B53F64006DA157 /* NCContractsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845B7C6E18B53F64006DA157 /* NCContractsViewController.m */; };
-		845B7C7318B54247006DA157 /* EVEContractsItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 845B7C7218B54247006DA157 /* EVEContractsItem+Neocom.m */; };
 		849B9F771896CA5400D4DD2B /* gallenteFederation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9F761896CA5400D4DD2B /* gallenteFederation@2x.png */; };
 		849B9F7A1896D0CF00D4DD2B /* battleclinic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9F791896D0CF00D4DD2B /* battleclinic@2x.png */; };
 		849B9FAD1896D24A00D4DD2B /* active.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9F7C1896D24900D4DD2B /* active.png */; };
@@ -638,17 +525,12 @@
 		849B9FDB1896D24A00D4DD2B /* thumbsUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9FAA1896D24A00D4DD2B /* thumbsUp.png */; };
 		849B9FDC1896D24A00D4DD2B /* turrets.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9FAB1896D24A00D4DD2B /* turrets.png */; };
 		849B9FDD1896D24A00D4DD2B /* velocity.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9FAC1896D24A00D4DD2B /* velocity.png */; };
-		849B9FE11896D31B00D4DD2B /* NCFittingMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */; };
 		849FEE3218A419A200A4F85E /* Fitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 849FEE3118A419A200A4F85E /* Fitting.storyboard */; };
-		849FEE3E18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE3D18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m */; };
-		849FEE4218A42C4300A4F85E /* NCFittingTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE4118A42C4300A4F85E /* NCFittingTypeVariationsViewController.m */; };
-		84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */; };
 		84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E52018A174F100231735 /* NCProgressTextField.m */; };
 		84AC540D18A94034000C308C /* ShipFitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84AC540C18A94034000C308C /* ShipFitting.storyboard */; };
 		84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182718983B2D00A35516 /* NCDatabaseTypePickerViewController.m */; };
 		84C1182D1898443900A35516 /* NCDatabaseTypePickerContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182C1898443900A35516 /* NCDatabaseTypePickerContentViewController.m */; };
 		84C118301898457E00A35516 /* UIViewController+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182F1898457E00A35516 /* UIViewController+Neocom.m */; };
-		84E4331B18951AA800DF2061 /* NCMailBoxMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E4331A18951AA800DF2061 /* NCMailBoxMessageViewController.m */; };
 		84E4331D18951B2400DF2061 /* mailMessageTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 84E4331C18951B2400DF2061 /* mailMessageTemplate.html */; };
 		84E4332218951C3500DF2061 /* NCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E4332118951C3500DF2061 /* NCViewController.m */; };
 		84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EC7941188BD4B20001BCE3 /* NSArray+Neocom.m */; };
@@ -666,13 +548,10 @@
 		84EEFCEE1896C69C007962A0 /* thukkerTribe@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCE01896C69C007962A0 /* thukkerTribe@2x.png */; };
 		84EEFCEF1896C69C007962A0 /* menuIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCE11896C69C007962A0 /* menuIcon@2x.png */; };
 		84EEFCF01896C69C007962A0 /* navigationArrowUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCE21896C69C007962A0 /* navigationArrowUp@2x.png */; };
-		84F8E2C918AD75A3005D968F /* EVEAssetListItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E2C818AD75A3005D968F /* EVEAssetListItem+Neocom.m */; };
-		84FA63DE188C4FC1008FD761 /* NCSkillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FA63DD188C4FC1008FD761 /* NCSkillCell.m */; };
 		84FA63E1188C50A2008FD761 /* UIImageView+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FA63E0188C50A2008FD761 /* UIImageView+Neocom.m */; };
 		84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FA63E2188C5227008FD761 /* ImageIO.framework */; };
 		84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F56187840910004073C /* NCAccountsViewController.m */; };
 		84FC4F6018785CCC0004073C /* NCAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F5F18785CCC0004073C /* NCAccount.m */; };
-		84FFB56D18ABD31700A30772 /* NCFittingAPIViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84FFB56C18ABD31700A30772 /* NCFittingAPIViewController.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -4601,191 +4480,107 @@
 				84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */,
 				1226D2D31B58F04F000C69EC /* NCCachePrice.m in Sources */,
 				12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */,
-				1263EA141AEA85C80052DC27 /* NCLoadoutsParser.mm in Sources */,
 				129D2632187E923300E2062C /* UIImageView+URL.m in Sources */,
 				12C7EE9E1886B51D00F90763 /* NCTrainingQueue.m in Sources */,
-				129C585D18AA06AA00CA8787 /* NCPOSFit.mm in Sources */,
-				129C586518AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.mm in Sources */,
-				12640B1C18BB2947005C311D /* NCKillMailsCell.m in Sources */,
-				12640B0918B74CBF005C311D /* NCStarbasesDetailsViewController.m in Sources */,
 				12FA32AF18E1673D0053DDC5 /* UIView+Neocom.m in Sources */,
-				12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */,
-				12B971A718EC2A11008F8740 /* NCFittingPOSStatsViewController.mm in Sources */,
 				1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */,
 				128D29BA18BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m in Sources */,
-				12B950A11ADB8D96009E31DB /* NCFittingExportViewController.mm in Sources */,
-				12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */,
 				12FDA32E18E00710007B091D /* NCImplantSet.m in Sources */,
 				12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */,
-				124097B91B2EDDE4002AC442 /* NCFittingPOSStructuresViewController.mm in Sources */,
-				843C2F0218AD41CF00221721 /* NCAssetsViewController.m in Sources */,
 				12FA32AC18E157920053DDC5 /* NCMarqueeLabel.m in Sources */,
 				128C9B0918BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m in Sources */,
-				8435C87718A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m in Sources */,
-				8418BB14189186D900B99A7E /* NCCalendarEventsViewController.m in Sources */,
 				120C333119CAB0A60093EECA /* NCDBEufeItem.m in Sources */,
 				120C332819CAB0A60093EECA /* NCDBInvTypeRequiredSkill.m in Sources */,
-				84FA63DE188C4FC1008FD761 /* NCSkillCell.m in Sources */,
 				123F0AD118C5B5FF00D53602 /* NSData+Neocom.m in Sources */,
-				122C98AB18B5EAF900386EDE /* NCIndustryJobsCell.m in Sources */,
 				12E86940195EC14D004B66D0 /* NCTodayRow.m in Sources */,
-				1202FC7618A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m in Sources */,
 				12A7DB9C18B34B0900343D25 /* NSString+ASHTTPServer.m in Sources */,
-				1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */,
 				126703061A8FD22700F816F9 /* NSAttributedString+Neocom.m in Sources */,
 				12F4C0721B2862C100AF3389 /* NCAdaptiveModalSegue.m in Sources */,
 				123EE6F818F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.m in Sources */,
-				84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */,
 				120C335E19CAB0A90093EECA /* NCDBMapConstellation.m in Sources */,
 				129D261E187E923300E2062C /* NSString+MD5.m in Sources */,
 				12F955EE18CDA3A8005CEAD6 /* APIKey.m in Sources */,
 				120C335819CAB0A80093EECA /* NCDBMapSolarSystem.m in Sources */,
-				84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */,
-				12B97D3318AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m in Sources */,
-				12ED82E91AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.m in Sources */,
 				12F955F718CDA3DD005CEAD6 /* POSFit.mm in Sources */,
-				126F1BC219531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.m in Sources */,
-				123A980818C715EA001045F5 /* NCRSSFeedViewController.m in Sources */,
-				12D011BC18A20BE600C0A228 /* NCFittingNPCPickerViewController.m in Sources */,
 				120C333719CAB0A70093EECA /* NCDBCertMasteryLevel.m in Sources */,
 				84FA63E1188C50A2008FD761 /* UIImageView+Neocom.m in Sources */,
 				1206C5EA18922FB20010BEE8 /* NCMailBox.m in Sources */,
 				120C334019CAB0A70093EECA /* NCDBEveIcon.m in Sources */,
-				128A1F32189906A400005C4F /* NCFittingShipWorkspaceViewController.mm in Sources */,
 				120C336719CAB0A90093EECA /* NCDBIndRequiredSkill.m in Sources */,
 				84FC4F6018785CCC0004073C /* NCAccount.m in Sources */,
 				84C118301898457E00A35516 /* UIViewController+Neocom.m in Sources */,
-				1271238118977E8C005F46EE /* NCFittingShipModuleCell.m in Sources */,
 				12A7DB9618B33AC500343D25 /* NCAddAPIKeyViewController.m in Sources */,
-				12640B0418B74048005C311D /* NCStarbasesCell.m in Sources */,
 				120C333419CAB0A70093EECA /* NCDBIndBlueprintType.m in Sources */,
-				12F955FD18CDA5DE005CEAD6 /* NCMigrationManager.mm in Sources */,
-				12B42E6C1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m in Sources */,
 				127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */,
 				8416386D1893BEA000968ADF /* NSDate+Neocom.m in Sources */,
 				120C337319CAB0AA0093EECA /* NCDBRamAssemblyLineType.m in Sources */,
 				120E77B81B25D91300816E1C /* NCSplashScreenViewController.m in Sources */,
-				126648F418C07D1000ADBBE1 /* NCZKillBoardSearchResultsViewController.m in Sources */,
-				12F82A6718ADFAB500A967B5 /* NCAssetsContainerViewController.mm in Sources */,
 				120C339419CAB0AC0093EECA /* NCDBInvGroup.m in Sources */,
 				125F682218853230005732FA /* NCSkillData.m in Sources */,
 				129D2628187E923300E2062C /* NSBundle+Retina4.m in Sources */,
 				121112341859929E009E5106 /* NCTableViewController.m in Sources */,
 				129D262C187E923300E2062C /* UIActionSheet+Block.m in Sources */,
 				12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */,
-				120D5B4218B1FE5B007ED9B4 /* NCLocationsManager.m in Sources */,
 				129D2618187E923300E2062C /* LUISearchBar.m in Sources */,
-				12430BAF18C852550025D971 /* NCAboutViewController.m in Sources */,
-				12430BB318C875910025D971 /* NCDonationViewController.m in Sources */,
 				12A7DB9F18B34D6200343D25 /* NSURLRequest+ASHTTPServer.m in Sources */,
-				8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */,
 				120C336419CAB0A90093EECA /* NCDBChrRace.m in Sources */,
 				129421B81880321900977CB8 /* NCAccountCorporationCell.m in Sources */,
 				120C333D19CAB0A70093EECA /* NCDBRamActivity.m in Sources */,
 				84E4332218951C3500DF2061 /* NCViewController.m in Sources */,
-				123A980218C71516001045F5 /* NCRSSViewController.m in Sources */,
-				12F82A5A18ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m in Sources */,
 				129D2630187E923300E2062C /* UIDevice+IP.m in Sources */,
 				12B9A68E1B9092F1005624D5 /* NSManagedObjectContext+NCCache.m in Sources */,
 				129FEE391860326E00F75FA6 /* NCSetting.m in Sources */,
 				125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */,
-				12041572189A4C3D00B15BB5 /* NCFittingEHPCell.m in Sources */,
 				12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */,
-				123A981418C721C7001045F5 /* RSSItem+Neocom.m in Sources */,
-				126DC6A218D1ABD3009EEA86 /* NCCharacterAttributesCell.m in Sources */,
 				84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */,
 				129D2611187E923300E2062C /* NSObject+Debug.m in Sources */,
 				129D262D187E923300E2062C /* UIAlertView+Block.m in Sources */,
 				120C332E19CAB0A60093EECA /* NCDBCertMastery.m in Sources */,
-				123A981018C71F2E001045F5 /* NCRSSItemViewController.m in Sources */,
 				1211123E18599396009E5106 /* NCCache.xcdatamodeld in Sources */,
-				122C98AE18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m in Sources */,
 				1211122E185989E1009E5106 /* NCTaskManager.m in Sources */,
-				12041563189A450200B15BB5 /* NCFittingShipFirepowerCell.m in Sources */,
-				12640B0E18B77A2D005C311D /* NCKillMailsViewController.m in Sources */,
 				12F955FA18CDA3FC005CEAD6 /* SkillPlan.m in Sources */,
-				1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */,
-				1204155A189A44AC00B15BB5 /* NCFittingShipResourcesCell.m in Sources */,
-				1251E95B18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m in Sources */,
 				120C336119CAB0A90093EECA /* NCDBInvCategory.m in Sources */,
-				1271238518978148005F46EE /* NCFittingShipViewController.mm in Sources */,
 				1219C1541AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m in Sources */,
-				1297FCED1B2AACD000176BF0 /* NCFittingShipModulesViewController.mm in Sources */,
 				129D263D187E98C100E2062C /* NCNavigationCharacterButton.m in Sources */,
 				12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */,
-				12041569189A453F00B15BB5 /* NCFittingShipMiscCell.m in Sources */,
 				1211123118598B09009E5106 /* NCTask.m in Sources */,
 				120C332519CAB0A60093EECA /* NCDBInvControlTowerResourcePurpose.m in Sources */,
 				129D261D187E923300E2062C /* NSData+MD5.m in Sources */,
 				129D2624187E923300E2062C /* NSString+Email.m in Sources */,
-				12640AFA18B72E43005C311D /* NCStarbasesViewController.m in Sources */,
 				84C1182D1898443900A35516 /* NCDatabaseTypePickerContentViewController.m in Sources */,
-				12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */,
 				12436DAE1945A06B0090D4A6 /* NCDatabase.m in Sources */,
-				12FDA33518E03172007B091D /* NCFittingAmountCell.m in Sources */,
 				12190BF91ADFE7E0009E1C5E /* NCDatabaseWHViewController.m in Sources */,
 				129D261C187E923300E2062C /* LUIToolbar.m in Sources */,
 				12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */,
-				12640C4C18BB73A4005C311D /* NCKillMailDetailsViewController.mm in Sources */,
 				129D2625187E923300E2062C /* NSString+UTI.m in Sources */,
-				123A980C18C716B9001045F5 /* NCRSSFeedCell.m in Sources */,
 				12B5EFF21ACBC154003CDF65 /* NCShoppingList.m in Sources */,
 				12F9560218CDB5D4005CEAD6 /* NCBannerViewController.m in Sources */,
-				120D5B5318B22AC0007ED9B4 /* NCMarketOrdersCell.m in Sources */,
 				12436E141946E4670090D4A6 /* NCDBImageValueTransformer.m in Sources */,
 				129D2620187E923300E2062C /* UITableViewCell+Nib.m in Sources */,
-				1297FCF61B2ABC1D00176BF0 /* NCFittingShipDronesViewController.mm in Sources */,
 				120C338519CAB0AB0093EECA /* NCDBStaStation.m in Sources */,
 				12FF586D189F8EF200E2D70A /* NCStoryboardPopoverSegue.m in Sources */,
 				12F955F418CDA3CD005CEAD6 /* ShipFit.mm in Sources */,
-				1298CA1818C4B1B700F3F550 /* NCSkillPlanImportViewController.m in Sources */,
-				12640B1518BB274C005C311D /* EVEKillLogKill+Neocom.m in Sources */,
-				849FEE3E18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m in Sources */,
-				123F0ACE18C5990100D53602 /* NCSkillPlansViewController.m in Sources */,
 				129FEE361860326E00F75FA6 /* NCAPIKey.m in Sources */,
 				120C335219CAB0A80093EECA /* NCDBTxtDescription.m in Sources */,
 				120C334F19CAB0A80093EECA /* NCDBEveIconImage.m in Sources */,
-				849B9FE11896D31B00D4DD2B /* NCFittingMenuViewController.mm in Sources */,
 				120C332B19CAB0A60093EECA /* NCDBCertCertificate.m in Sources */,
-				1203B69B18B4DD7C003A0D72 /* NCWalletJournalCell.m in Sources */,
-				125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */,
 				120C334319CAB0A70093EECA /* NCDBIndRequiredMaterial.m in Sources */,
 				120C333A19CAB0A70093EECA /* NCDBInvMarketGroup.m in Sources */,
-				84FFB56D18ABD31700A30772 /* NCFittingAPIViewController.mm in Sources */,
-				1297FCFA1B2ABF1800176BF0 /* NCFittingShipImplantsViewController.mm in Sources */,
 				123A97F718C708FE001045F5 /* NSString+Temp.m in Sources */,
 				129421AC187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m in Sources */,
 				120C337919CAB0AA0093EECA /* NCDBCertSkill.m in Sources */,
-				845B7C7318B54247006DA157 /* EVEContractsItem+Neocom.m in Sources */,
-				12C50763189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m in Sources */,
-				12FF5871189FC2D100E2D70A /* NCFittingFitPickerViewController.mm in Sources */,
 				1209685F1845F0CB00921A37 /* main.m in Sources */,
 				129D262F187E923300E2062C /* UIColor+NSNumber.m in Sources */,
-				12422FC118E409F70051FD24 /* NCSettingsViewController.m in Sources */,
-				12640B1218B77B87005C311D /* NCKillMail.mm in Sources */,
-				12614EEF1AC92522007620DA /* NCShoppingListsManagerViewController.m in Sources */,
 				127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */,
 				129D2600187E923200E2062C /* ASCaptionTextField.m in Sources */,
-				12FDA33218E00FFA007B091D /* NCFittingImplantSetsViewController.m in Sources */,
 				84521911189AEEA800E7E3C1 /* NCLoadoutData.m in Sources */,
-				12041566189A451E00B15BB5 /* NCFittingShipTankCell.m in Sources */,
-				12640B1818BB27D2005C311D /* EVEKillLogVictim+Neocom.m in Sources */,
-				1204155D189A44CF00B15BB5 /* NCFittingResistancesCell.m in Sources */,
-				1297FCFE1B2ABF5300176BF0 /* NCFittingShipFleetViewController.mm in Sources */,
-				122C98A718B5DD5700386EDE /* NCIndustryJobsViewController.m in Sources */,
-				12A7DBA618B36B1A00343D25 /* NCWalletTransactionsViewController.m in Sources */,
-				8456E87518AAAEE2000DAE75 /* NCFittingPOSResourcesCell.m in Sources */,
-				845B7C6F18B53F64006DA157 /* NCContractsViewController.m in Sources */,
 				1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */,
 				127082A7190109E900822F00 /* EUStorage.xcdatamodeld in Sources */,
 				129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */,
-				12FF5866189F6D9100E2D70A /* NCFittingCharacterEditorCell.m in Sources */,
 				125AEFFC1AE7A8C6008B9EAF /* NCDBVersion.m in Sources */,
 				84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */,
 				120C335519CAB0A80093EECA /* NCDBInvControlTowerResource.m in Sources */,
-				122947F318EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm in Sources */,
 				127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */,
-				12430BB718C87C1B0025D971 /* NCDonationCell.m in Sources */,
 				129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */,
 				120C337F19CAB0AB0093EECA /* NCDBDgmEffect.m in Sources */,
 				128D29B118BDBD23003B8E03 /* NCTableViewHeaderView.m in Sources */,
@@ -4797,42 +4592,27 @@
 				120C339119CAB0AB0093EECA /* NCDBDgmAttributeType.m in Sources */,
 				122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */,
 				129D2616187E923300E2062C /* LUIButton.m in Sources */,
-				126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */,
-				128D29AB18BDAE6D003B8E03 /* NCZKillBoardViewController.m in Sources */,
-				12ACDCA618A0AD2600566DFE /* NCFittingDamagePatternsViewController.m in Sources */,
-				12331DC118F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.m in Sources */,
 				129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */,
 				12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */,
-				849FEE4218A42C4300A4F85E /* NCFittingTypeVariationsViewController.m in Sources */,
-				124638331AD25A84001F8780 /* NCShoppingAssetsViewController.m in Sources */,
 				12EC0AC618C0BAA20010169C /* NCNotificationsManager.m in Sources */,
 				120C338219CAB0AB0093EECA /* NCDBIndProduct.m in Sources */,
 				8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */,
 				1216EB841AE0DFE20026AF58 /* NCDBWhType.m in Sources */,
 				124097C01B2F200F002AC442 /* NCAdaptivePopoverSegue.m in Sources */,
-				12A7DBAF18B3739B00343D25 /* NCWalletTransactionsCell.m in Sources */,
 				129D261A187E923300E2062C /* LUITextField.m in Sources */,
 				12CDB7EF188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m in Sources */,
-				8456E86C18AAA13A000DAE75 /* NCFittingPOSStructureCell.m in Sources */,
 				127123A318979F55005F46EE /* NCFittingSectionGenericHeaderView.m in Sources */,
-				8456E87818AAAFBD000DAE75 /* NCFittingPOSDefenseOffenseCell.m in Sources */,
 				123C628218DB1E6A00B03156 /* NCLabel.m in Sources */,
-				124097BC1B2F021A002AC442 /* NCFittingPOSAssemblyLinesViewController.mm in Sources */,
 				12B5EFFE1ACBC33A003CDF65 /* NCShoppingGroup.m in Sources */,
 				12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */,
 				12F9562918CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m in Sources */,
 				129D2623187E923300E2062C /* NSDate+DaysAgo.m in Sources */,
 				120C334C19CAB0A80093EECA /* NCDBEufeItemGroup.m in Sources */,
 				12CDB7E0188E7D1C002079C0 /* ASHTTPServer.m in Sources */,
-				1204156C189A454A00B15BB5 /* NCFittingShipPriceCell.m in Sources */,
 				120C334619CAB0A80093EECA /* NCDBDgmAttributeCategory.m in Sources */,
-				128A1F3B1899141200005C4F /* NCFittingShipDroneCell.m in Sources */,
-				12C5074F189B6F170064AC32 /* NCShipFit.mm in Sources */,
 				120C338819CAB0AB0093EECA /* NCDBEufeItemCategory.m in Sources */,
 				1216EB8A1AE0E0EA0026AF58 /* NCDBWhType+Neocom.m in Sources */,
-				12041560189A44F400B15BB5 /* NCFittingShipCapacitorCell.m in Sources */,
 				128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */,
-				12045E461ACB20D100AD32F8 /* NCShoppingListViewController.m in Sources */,
 				12F407591A8D25220031FB35 /* NCDefaultTableViewCell.m in Sources */,
 				1215F57E1B831E9B00C16649 /* NSCache+Neocom.m in Sources */,
 				128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m in Sources */,
@@ -4841,68 +4621,46 @@
 				120C337C19CAB0AA0093EECA /* NCDBNpcGroup.m in Sources */,
 				120C336D19CAB0AA0093EECA /* NCDBMapDenormalize.m in Sources */,
 				12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */,
-				122947EB18EAA51D0093FAB8 /* NCSkillsContainerViewController.m in Sources */,
 				1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */,
 				122F01C819483D2100D04D60 /* NCDBInvType+Neocom.mm in Sources */,
-				1203B69718B4A4FC003A0D72 /* NCWalletJournalViewController.m in Sources */,
 				120968631845F0CB00921A37 /* NCAppDelegate.mm in Sources */,
-				12045E4D1AD161CF00AD32F8 /* NCShoppingItemCell.m in Sources */,
 				120C332219CAB0A50093EECA /* NCDBIndActivity.m in Sources */,
 				129D2621187E923300E2062C /* UIView+Nib.m in Sources */,
 				120C337019CAB0AA0093EECA /* NCDBMapRegion.m in Sources */,
 				129FEE181860313D00F75FA6 /* NCStorage.m in Sources */,
-				12ACDCAA18A0B12D00566DFE /* NCFittingDamagePatternCell.m in Sources */,
 				84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */,
 				12F955E818CDA2A0005CEAD6 /* EUStorage.m in Sources */,
-				12041557189A449E00B15BB5 /* NCFittingShipWeaponsCell.m in Sources */,
 				12ACDCA118A0AC4A00566DFE /* NCDamagePattern.m in Sources */,
 				120C338B19CAB0AB0093EECA /* NCDBRamInstallationTypeContent.m in Sources */,
-				1229475D18EA8B2E0093FAB8 /* NCSkillQueueViewController.m in Sources */,
-				12C50757189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m in Sources */,
 				129D2615187E923300E2062C /* LUIBarButtonItem.m in Sources */,
 				12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */,
 				84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */,
-				122C98A318B5DC3800386EDE /* NCContractsCell.m in Sources */,
-				12B42E711AC8432900A0D956 /* NCShoppingItem+Neocom.m in Sources */,
-				84F8E2C918AD75A3005D968F /* EVEAssetListItem+Neocom.m in Sources */,
 				129D2631187E923300E2062C /* UIImage+Resize.m in Sources */,
 				841534EC188A921200B42433 /* NCDatabaseMarketViewController.m in Sources */,
 				129D261B187E923300E2062C /* LUITextView.m in Sources */,
 				12F955F118CDA3BE005CEAD6 /* Fit.mm in Sources */,
-				129C586218AA2CF900CA8787 /* NCFittingPOSViewController.mm in Sources */,
 				128C9B0418BF034E0086F7B3 /* NCCharacterID.m in Sources */,
-				12B97D3818AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm in Sources */,
 				120C337619CAB0AA0093EECA /* NCDBInvType.m in Sources */,
-				12F82A5418AC98B100A967B5 /* NCFittingAPIFlagsViewController.m in Sources */,
 				122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */,
 				129D2617187E923300E2062C /* LUILabel.m in Sources */,
 				1248CEB01B7E1149000266BE /* NSManagedObjectContext+NCStorage.m in Sources */,
 				129D2619187E923300E2062C /* LUISegmentedControl.m in Sources */,
-				123F0AD818C5BCC700D53602 /* NCSkillPlanViewController.m in Sources */,
 				12B9A6731B8F0D38005624D5 /* NSManagedObjectContext+NCDatabase.m in Sources */,
 				12124AAF1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m in Sources */,
 				129D257E187E8CB400E2062C /* NCMainMenuViewController.m in Sources */,
-				12F82A5D18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm in Sources */,
 				12F82A5018AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m in Sources */,
 				120C338E19CAB0AB0093EECA /* NCDBDgmTypeAttribute.m in Sources */,
 				120C336A19CAB0A90093EECA /* NCDBInvControlTower.m in Sources */,
-				12B5F0011ACBC6AD003CDF65 /* NCShoppingGroup+Neocom.m in Sources */,
 				129D2610187E923300E2062C /* CollapsableTableView.m in Sources */,
 				12436DAB1945A0310090D4A6 /* NCDatabase.xcdatamodeld in Sources */,
-				12B992351913718900448D01 /* NCAssetsAccountsViewController.m in Sources */,
 				1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */,
 				12CC8D6C188178570058C5DF /* NCTableViewEmptyHeaderView.m in Sources */,
 				124097C31B2F2021002AC442 /* NCPopoverController.m in Sources */,
 				1267030C1A911A0900F816F9 /* NSMutableAttributedString+Neocom.m in Sources */,
-				120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */,
 				12E86944195EC700004B66D0 /* NCTodayCell.m in Sources */,
 				120C335B19CAB0A90093EECA /* NCDBEveUnit.m in Sources */,
-				84E4331B18951AA800DF2061 /* NCMailBoxMessageViewController.m in Sources */,
 				1211123818599339009E5106 /* NCCache.m in Sources */,
-				8418BB171891873800B99A7E /* NCCalendarEventCell.m in Sources */,
-				122C98B318B6026100386EDE /* NCIndustryJobsDetailsViewController.m in Sources */,
 				129D262E187E923300E2062C /* UIAlertView+Error.m in Sources */,
-				12ED82DA1AC13CD500C593C4 /* NCPlanetaryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

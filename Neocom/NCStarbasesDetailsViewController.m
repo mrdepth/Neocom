@@ -53,7 +53,7 @@
     [super viewDidLoad];
 	self.refreshControl = nil;
 	
-	float hours = [[self.starbase.details serverTimeWithLocalTime:[NSDate date]] timeIntervalSinceDate:self.starbase.details.currentTime] / 3600.0;
+	float hours = [[self.starbase.details.eveapi serverTimeWithLocalTime:[NSDate date]] timeIntervalSinceDate:self.starbase.details.eveapi.currentTime] / 3600.0;
 	if (hours < 0)
 		hours = 0;
 	float bonus = self.starbase.resourceConsumptionBonus;
@@ -134,7 +134,7 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.type = [sender object];
+		controller.typeID = [sender object];
 	}
 }
 

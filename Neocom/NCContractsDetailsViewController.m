@@ -145,7 +145,7 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.type = [sender object];
+		controller.typeID = [sender object];
 	}
 }
 
@@ -157,7 +157,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NCContractsDetailsViewControllerData* data = self.data;
+	NCContractsDetailsViewControllerData* data = self.cacheData;
 	if (section == 0)
 		return data.rows.count;
 	else if (section == 1)

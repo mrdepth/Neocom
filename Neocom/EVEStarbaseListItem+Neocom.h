@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "EVEStarbaseList.h"
+#import <EVEAPI/EVEAPI.h>
 
 @class EVEStarbaseDetail;
 @class NCDBInvType;

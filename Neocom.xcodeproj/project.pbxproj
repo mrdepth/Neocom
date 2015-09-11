@@ -145,7 +145,6 @@
 		1219C1401A9F8F5400FF6205 /* criminal.png in Resources */ = {isa = PBXBuildFile; fileRef = 1219C13F1A9F8F5400FF6205 /* criminal.png */; };
 		1219C1421A9F8FC400FF6205 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 1219C1411A9F8FC400FF6205 /* settings.png */; };
 		1219C14A1AA4FF0000FF6205 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1219C1491AA4FF0000FF6205 /* GoogleMobileAds.framework */; };
-		1219C14C1AA4FFF100FF6205 /* libFlurry_6.2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1219C14B1AA4FFF100FF6205 /* libFlurry_6.2.0.a */; };
 		1219C1541AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1219C1531AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m */; };
 		121FF9C71B4BDF1700091AFE /* tracking.png in Resources */ = {isa = PBXBuildFile; fileRef = 121FF9C61B4BDF1700091AFE /* tracking.png */; };
 		1225A0B71A400954005DD73B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1225A0B61A400954005DD73B /* Launch Screen.xib */; };
@@ -440,6 +439,7 @@
 		12D963E61BA1F5BC00292321 /* NCMigrationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F955FC18CDA5DE005CEAD6 /* NCMigrationManager.mm */; };
 		12D963E71BA1F60600292321 /* NCShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C5074E189B6F170064AC32 /* NCShipFit.mm */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
+		12E7D95F1BA3151700621B6F /* libFlurry_7.1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E7D95E1BA3151700621B6F /* libFlurry_7.1.0.a */; settings = {ASSET_TAGS = (); }; };
 		12E86940195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
 		12E86941195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
 		12E86944195EC700004B66D0 /* NCTodayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E86943195EC700004B66D0 /* NCTodayCell.m */; };
@@ -888,7 +888,6 @@
 		1219C13F1A9F8F5400FF6205 /* criminal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = criminal.png; sourceTree = "<group>"; };
 		1219C1411A9F8FC400FF6205 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		1219C1491AA4FF0000FF6205 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
-		1219C14B1AA4FFF100FF6205 /* libFlurry_6.2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_6.2.0.a; sourceTree = "<group>"; };
 		1219C1521AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeRequirementsViewController.h; sourceTree = "<group>"; };
 		1219C1531AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeRequirementsViewController.m; sourceTree = "<group>"; };
 		121FF9C61B4BDF1700091AFE /* tracking.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tracking.png; sourceTree = "<group>"; };
@@ -1010,7 +1009,6 @@
 		125F6824188537FF005732FA /* NCCharacterAttributes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCCharacterAttributes.mm; sourceTree = "<group>"; };
 		12614EED1AC92522007620DA /* NCShoppingListsManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingListsManagerViewController.h; sourceTree = "<group>"; };
 		12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingListsManagerViewController.m; sourceTree = "<group>"; };
-		1261594718EE7F9C0049B9CE /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		1261594A18EE7FCB0049B9CE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1263AAE219055A9000AF522A /* Neocom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Neocom.entitlements; sourceTree = "<group>"; };
 		1263EA121AEA85C80052DC27 /* NCLoadoutsParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLoadoutsParser.h; sourceTree = "<group>"; };
@@ -1305,6 +1303,9 @@
 		12D011BE18A2101400C0A228 /* checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@2x.png"; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
+		12E7D95C1BA3151700621B6F /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		12E7D95D1BA3151700621B6F /* FlurryWatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryWatch.h; sourceTree = "<group>"; };
+		12E7D95E1BA3151700621B6F /* libFlurry_7.1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_7.1.0.a; sourceTree = "<group>"; };
 		12E8693E195EC14D004B66D0 /* NCTodayRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTodayRow.h; sourceTree = "<group>"; };
 		12E8693F195EC14D004B66D0 /* NCTodayRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTodayRow.m; sourceTree = "<group>"; };
 		12E86942195EC700004B66D0 /* NCTodayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTodayCell.h; sourceTree = "<group>"; };
@@ -1529,12 +1530,12 @@
 				123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */,
 				12F9562218CDB835005CEAD6 /* AdSupport.framework in Frameworks */,
 				12F9562018CDB822005CEAD6 /* AVFoundation.framework in Frameworks */,
-				1219C14C1AA4FFF100FF6205 /* libFlurry_6.2.0.a in Frameworks */,
 				12F9561E18CDB81C005CEAD6 /* SystemConfiguration.framework in Frameworks */,
 				12F9561C18CDB80E005CEAD6 /* MobileCoreServices.framework in Frameworks */,
 				12F9561A18CDB802005CEAD6 /* AudioToolbox.framework in Frameworks */,
 				12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */,
 				123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */,
+				12E7D95F1BA3151700621B6F /* libFlurry_7.1.0.a in Frameworks */,
 				1219C14A1AA4FF0000FF6205 /* GoogleMobileAds.framework in Frameworks */,
 				127123AA1897ABF3005F46EE /* eufe.framework in Frameworks */,
 				84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */,
@@ -2337,8 +2338,9 @@
 		1261594618EE7F9C0049B9CE /* flurry */ = {
 			isa = PBXGroup;
 			children = (
-				1261594718EE7F9C0049B9CE /* Flurry.h */,
-				1219C14B1AA4FFF100FF6205 /* libFlurry_6.2.0.a */,
+				12E7D95C1BA3151700621B6F /* Flurry.h */,
+				12E7D95D1BA3151700621B6F /* FlurryWatch.h */,
+				12E7D95E1BA3151700621B6F /* libFlurry_7.1.0.a */,
 			);
 			path = flurry;
 			sourceTree = "<group>";
@@ -4142,7 +4144,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = NC;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Artem Shimanski";
 				TargetAttributes = {
 					1209684E1845F0CB00921A37 = {
@@ -4896,6 +4898,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4958,6 +4961,7 @@
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ThirdParty/admob",
@@ -4970,7 +4974,7 @@
 					/Developer/Tools/boost,
 				);
 				INFOPLIST_FILE = "Neocom/Neocom-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/shimanski/Documents/git/EVEUniverse/ThirdParty/admob,
@@ -4978,6 +4982,7 @@
 					"$(PROJECT_DIR)/ThirdParty/admob",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.eveuniverse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4996,6 +5001,7 @@
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ThirdParty/admob",
@@ -5008,7 +5014,7 @@
 					/Developer/Tools/boost,
 				);
 				INFOPLIST_FILE = "Neocom/Neocom-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/shimanski/Documents/git/EVEUniverse/ThirdParty/admob,
@@ -5016,6 +5022,7 @@
 					"$(PROJECT_DIR)/ThirdParty/admob",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.eveuniverse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5046,6 +5053,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -5069,6 +5077,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -5090,6 +5099,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "com.shimanski.eveuniverse.$(TARGET_NAME:rfc1034identifier)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
@@ -5110,6 +5120,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "com.shimanski.eveuniverse.$(TARGET_NAME:rfc1034identifier)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;

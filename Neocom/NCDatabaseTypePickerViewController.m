@@ -22,6 +22,7 @@
 @interface NCDatabaseTypePickerViewController ()
 @property (nonatomic, copy) void (^completionHandler)(NCDBInvType* type);
 @property (nonatomic, strong) NCDBEufeItemCategory* category;
+@property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
 
 @end
 
@@ -38,6 +39,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+	NCDatabaseTypePickerContentViewController* contentViewController = self.viewControllers[0];
+	contentViewController.databaseManagedObjectContext = self.databaseManagedObjectContext;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,7 +55,8 @@
 
 - (void) presentWithCategory:(NCDBEufeItemCategory*) category inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(NCDBInvType* type)) completion {
 	if (![self.category isEqual:category]) {
-		self.category = category;
+		self.category = [self.databaseManagedObjectContext objectWithID:category.objectID];
+		
 		for (NCTableViewController* controller in self.viewControllers) {
 			if (controller.searchController.isActive)
 				[controller.searchController setActive:NO];
@@ -64,9 +69,9 @@
 		
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItemGroup"];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
-		request.predicate = [NSPredicate predicateWithFormat:@"category == %@ AND parentGroup == NULL", category];
+		request.predicate = [NSPredicate predicateWithFormat:@"category == %@ AND parentGroup == NULL", self.category];
 		request.fetchLimit = 1;
-		NSArray* result = [category.managedObjectContext executeFetchRequest:request error:nil];
+		NSArray* result = [self.category.managedObjectContext executeFetchRequest:request error:nil];
 		
 		NCDatabaseTypePickerContentViewController* contentViewController = self.viewControllers[0];
 		contentViewController.group = result.count == 1 ? result[0] : nil;

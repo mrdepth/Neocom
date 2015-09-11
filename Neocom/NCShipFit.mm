@@ -8,9 +8,9 @@
 
 #import "NCShipFit.h"
 #import "NCStorage.h"
-#import "BattleClinicAPI.h"
-#import "NeocomAPI.h"
-#import "EVEOnlineAPI.h"
+//#import "BattleClinicAPI.h"
+//#import "NeocomAPI.h"
+#import <EVEAPI/EVEAPI.h>
 #import "EVEAssetListItem+Neocom.h"
 #import "NCKillMail.h"
 #import "NCDatabase.h"
@@ -186,7 +186,7 @@
 
 @implementation NCShipFit
 
-- (id) initWithLoadout:(NCLoadout*) loadout {
+/*- (id) initWithLoadout:(NCLoadout*) loadout {
 	if (self = [super init]) {
 		NCStorage* storage = [NCStorage sharedStorage];
 		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
@@ -1095,6 +1095,6 @@
 	}];
 	self.pilot->setSkillLevels(levels);
 
-}
+}*/
 
 @end

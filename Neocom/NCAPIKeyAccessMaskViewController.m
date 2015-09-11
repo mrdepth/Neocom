@@ -56,7 +56,7 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-	EVECalllistCallsItem *call = self.sections[indexPath.section][indexPath.row];
+	EVECallListCallsItem *call = self.sections[indexPath.section][indexPath.row];
 	cell.textLabel.text = call.name;
 	
 	UIImage* accessoryImage = nil;
@@ -76,11 +76,11 @@
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
 	__block NSError* error = nil;
 	
-	__block EVECalllist* calllist = nil;
+	__block EVECallList* calllist = nil;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 calllist = [EVECalllist calllistWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:&error progressHandler:nil];
+											 calllist = [EVECallList calllistWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:&error progressHandler:nil];
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (!task.isCancelled) {

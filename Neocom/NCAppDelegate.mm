@@ -107,22 +107,27 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 
 		void (^loadAccount)() = ^() {
-			NCStorage* storage = [NCStorage sharedStorage];
-			NCAccount* account = nil;
+			NSString* uuidFromNotifications = nil;
 			if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
 				UILocalNotification* notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
-				NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
-				if (uuid)
-					account = [storage accountWithUUID:uuid];
+				uuidFromNotifications = notification.userInfo[NCSettingsCurrentAccountKey];
 			}
 			
-			if (!account) {
-				NSString* uuid = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCurrentAccountKey];
-				if (uuid)
-					account = [storage accountWithUUID:uuid];
+			NSString* uuidFromDefaults = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCurrentAccountKey];
+			if (uuidFromNotifications || uuidFromDefaults) {
+				NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+				[storageManagedObjectContext performBlock:^{
+					NCAccount* account;
+					if (uuidFromNotifications)
+						account = [storageManagedObjectContext accountWithUUID:uuidFromNotifications];
+					if (!account && uuidFromDefaults)
+						account = [storageManagedObjectContext accountWithUUID:uuidFromDefaults];
+					if (account)
+						dispatch_async(dispatch_get_main_queue(), ^{
+							[NCAccount setCurrentAccount:account];
+						});
+				}];
 			}
-			if (account)
-				[NCAccount setCurrentAccount:account];
 			
 			if ([application respondsToSelector:@selector(setMinimumBackgroundFetchInterval:)])
 				[application setMinimumBackgroundFetchInterval:60 * 60 * 4];
@@ -131,27 +136,26 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 		void (^initStorage)(BOOL) = ^(BOOL useCloud) {
 			if (!useCloud) {
-				NCStorage* storage = [NCStorage fallbackStorage];
+				NCStorage* storage = [[NCStorage alloc] initLocalStorage];
 				[NCStorage setSharedStorage:storage];
 				NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
 				[NCAccountsManager setSharedManager:accountsManager];
 				loadAccount();
 			}
 			else {
-				[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-													 title:NCTaskManagerDefaultTitle
-													 block:^(NCTask *task) {
-														 NCStorage* storage = [NCStorage cloudStorage];
-														 if (!storage)
-															 storage = [NCStorage fallbackStorage];
+				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+					NCStorage* storage = [[NCStorage alloc] initCloudStorage];
+					if (!storage)
+						storage = [[NCStorage alloc] initLocalStorage];
+					
+					[NCStorage setSharedStorage:storage];
+					NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
+					[NCAccountsManager setSharedManager:accountsManager];
 
-														 [NCStorage setSharedStorage:storage];
-														 NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
-														 [NCAccountsManager setSharedManager:accountsManager];
-													 }
-										 completionHandler:^(NCTask *task) {
-											 loadAccount();
-										 }];
+					dispatch_async(dispatch_get_main_queue(), ^{
+						loadAccount();
+					});
+				});
 			}
 		};
 		
@@ -180,7 +184,6 @@ void uncaughtExceptionHandler(NSException* exception) {
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-	[[NCStorage sharedStorage] saveContext];
 	[[NCCache sharedCache] clearInvalidData];
 }
 
@@ -207,7 +210,6 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-	[[NCStorage sharedStorage] saveContext];
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
@@ -230,11 +232,16 @@ void uncaughtExceptionHandler(NSException* exception) {
 			NSMutableString* uuid = [NSMutableString stringWithString:[url absoluteString]];
 			[uuid replaceOccurrencesOfString:@"ncaccount://" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, uuid.length)];
 			[uuid replaceOccurrencesOfString:@"ncaccount:" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, uuid.length)];
-			NCAccount* account = nil;
-			if (uuid)
-				account = [[NCStorage sharedStorage] accountWithUUID:uuid];
-			if (account)
-				[NCAccount setCurrentAccount:account];
+			if (uuid) {
+				NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+				[storageManagedObjectContext performBlock:^{
+					NCAccount* account = [storageManagedObjectContext accountWithUUID:uuid];
+					if (account)
+						dispatch_async(dispatch_get_main_queue(), ^{
+							[NCAccount setCurrentAccount:account];
+						});
+				}];
+			}
 		}
 	});
 	return YES;
@@ -254,17 +261,22 @@ void uncaughtExceptionHandler(NSException* exception) {
 	}
 	else if (application.applicationState == UIApplicationStateInactive) {
 		NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
-		NCAccount* account = nil;
-		if (uuid)
-			account = [[NCStorage sharedStorage] accountWithUUID:uuid];
-		if (account)
-			[NCAccount setCurrentAccount:account];
+		if (uuid) {
+			NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+			[storageManagedObjectContext performBlock:^{
+				NCAccount* account = [storageManagedObjectContext accountWithUUID:uuid];
+				if (account)
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[NCAccount setCurrentAccount:account];
+					});
+			}];
+		}
 		
 	}
 }
 
 - (void) reconnectStoreIfNeeded {
-	NCStorage* storage = [NCStorage sharedStorage];
+/*	NCStorage* storage = [NCStorage sharedStorage];
 	if (storage) {
 		id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
 		
@@ -333,7 +345,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 		else if ((useCloud && tokenChanged) || settingsChanged) {
 			initStorage(useCloud);
 		}
-	}
+	}*/
 }
 
 - (UIInterfaceOrientationMask) application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
@@ -429,31 +441,24 @@ void uncaughtExceptionHandler(NSException* exception) {
 			}
 		}
 	}
-	__block NSError* error = nil;
-	__block BOOL success = NO;
-	[[self taskManager] addTaskWithIndentifier:nil
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 int32_t keyID = [properties[@"keyid"] intValue];
-											 NSString* vCode = properties[@"vcode"];
-											 NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
-											 if (accountsManager)
-												 success = [accountsManager addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
+	
+	int32_t keyID = [properties[@"keyid"] intValue];
+	NSString* vCode = properties[@"vcode"];
 
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!success) {
-									 [[UIAlertView alertViewWithError:error] show];
-								 }
-								 else {
-								 [[UIAlertView alertViewWithTitle:nil
-														  message:NSLocalizedString(@"API Key added", nil)
-												cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-												otherButtonTitles:nil
-												  completionBlock:nil
-													  cancelBlock:nil] show];
-								 }
-							 }];
+	if (keyID > 0 && vCode.length > 0)
+	[[NCAccountsManager sharedManager] addAPIKeyWithKeyID:keyID vCode:vCode completionBlock:^(NSArray *accounts, NSError *error) {
+		if (error) {
+			[[UIAlertView alertViewWithError:error] show];
+		}
+		else {
+			[[UIAlertView alertViewWithTitle:nil
+									 message:NSLocalizedString(@"API Key added", nil)
+						   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+						   otherButtonTitles:nil
+							 completionBlock:nil
+								 cancelBlock:nil] show];
+		}
+	}];
 }
 
 - (void) openFitWithURL:(NSURL*) url {
@@ -524,15 +529,18 @@ void uncaughtExceptionHandler(NSException* exception) {
 		[resourceSpecifier replaceCharactersInRange:NSMakeRange(0, 2) withString:@""];
 	
 	NSArray* components = [resourceSpecifier pathComponents];
+	
+	NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+	
 	if (components.count > 0) {
-		NCDBInvType* type = [NCDBInvType invTypeWithTypeID:[components[0] intValue]];
+		NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:[components[0] intValue]];
 		if (type && type.attributesDictionary.count > 0) {
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 				UIViewController* presentedViewController = nil;
 				for (presentedViewController = self.window.rootViewController; presentedViewController.presentedViewController; presentedViewController = presentedViewController.presentedViewController);
 				if ([presentedViewController isKindOfClass:[UINavigationController class]]) {
 					NCDatabaseTypeInfoViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewController"];
-					controller.type = (id) type;
+					controller.typeID = [type objectID];
 					[(UINavigationController*) presentedViewController pushViewController:controller animated:YES];
 				}
 				else {
@@ -540,13 +548,13 @@ void uncaughtExceptionHandler(NSException* exception) {
 					navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 					NCDatabaseTypeInfoViewController* controller = navigationController.viewControllers[0];
 					controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)];
-					controller.type = (id) type;
+					controller.typeID = [type objectID];
 					[presentedViewController presentViewController:navigationController animated:YES completion:nil];
 				}
 			}
 			else {
 				NCDatabaseTypeInfoViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewController"];
-				controller.type = (id) type;
+				controller.typeID = [type objectID];
 
 				UINavigationController* navigationController = (UINavigationController*) self.window.rootViewController.childViewControllers[0];
 				if ([navigationController isKindOfClass:[UINavigationController class]])
@@ -556,11 +564,11 @@ void uncaughtExceptionHandler(NSException* exception) {
 		else {
 			NSURL* url = [NSURL URLWithString:resourceSpecifier];
 			if (url) {
-				NCStorage* storage = [NCStorage sharedStorage];
-				[storage.managedObjectContext performBlock:^{
-					NSManagedObjectID* objectID = [storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url];
+				NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+				[storageManagedObjectContext performBlock:^{
+					NSManagedObjectID* objectID = [storageManagedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:url];
 					if (objectID) {
-						NCAccount* account = (NCAccount*) [storage.managedObjectContext existingObjectWithID:objectID error:nil];
+						NCAccount* account = (NCAccount*) [storageManagedObjectContext existingObjectWithID:objectID error:nil];
 						if ([account isKindOfClass:[NCAccount class]]) {
 							dispatch_async(dispatch_get_main_queue(), ^{
 								if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

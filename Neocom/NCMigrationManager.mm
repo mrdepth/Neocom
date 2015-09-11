@@ -49,7 +49,7 @@
 	NCMigrationManager* migrationManager = [NCMigrationManager new];
 
 	if ([fileManager fileExistsAtPath:path isDirectory:NULL]) {
-		migrationManager.storage = [NCStorage fallbackStorage];
+//		migrationManager.storage = [NCStorage fallbackStorage];
 		migrationManager.accountsManager = [[NCAccountsManager alloc] initWithStorage:migrationManager.storage];
 		migrationManager.oldStorage = [EUStorage new];
 		@try {
@@ -57,9 +57,9 @@
 			[migrationManager transferShipLoadouts];
 			[migrationManager transferPOSLoadouts];
 			[migrationManager transferSkillPlans];
-			[migrationManager.storage.managedObjectContext performBlockAndWait:^{
-				[migrationManager.storage saveContext];
-			}];
+//			[migrationManager.storage.managedObjectContext performBlockAndWait:^{
+//				[migrationManager.storage saveContext];
+//			}];
 			if ([migrationManager.oldStorage.managedObjectContext hasChanges])
 				[migrationManager.oldStorage.managedObjectContext save:nil];
 			
@@ -70,9 +70,6 @@
 	}
 	
 	@try {
-//		if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
-//			[migrationManager transferCloudToLocal];
-//		}
 	}
 	@catch(NSException* exc) {
 	}
@@ -97,7 +94,7 @@
 
 #pragma mark - Private
 
-- (BOOL) transferAPIKeysWithError:(NSError**) errorPtr {
+/*- (BOOL) transferAPIKeysWithError:(NSError**) errorPtr {
 	NSFetchRequest *fetchRequest = [NSFetchRequest new];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:self.oldStorage.managedObjectContext];
 	[fetchRequest setEntity:entity];
@@ -444,6 +441,6 @@
 	}
 	else
 		migrate();
-}
+}*/
 
 @end

@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "EVEAssetList.h"
-#import "EVEOnlineAPI.h"
+#import <EVEAPI/EVEAPI.h>
 
 @class NCDBInvType;
 @interface EVEAssetListItem (Neocom)

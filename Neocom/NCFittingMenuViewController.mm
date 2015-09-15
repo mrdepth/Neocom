@@ -18,9 +18,29 @@
 #import "NCFittingPOSViewController.h"
 #import "NCFittingCharacterPickerViewController.h"
 
+#define NCCategoryIDShip 6
+
+
+@interface NCFittingMenuViewControllerRow : NSObject
+@property (nonatomic, strong) NSManagedObjectID* loadoutID;
+@property (nonatomic, assign) int32_t typeID;
+@property (nonatomic, assign) NCDBInvType* type;
+@property (nonatomic, strong) NSString* loadoutName;
+@property (nonatomic, strong) NSString* typeName;
+@property (nonatomic, strong) NSManagedObjectID* iconID;
+@property (nonatomic, strong) NCDBEveIcon* icon;
+@property (nonatomic, assign) NCLoadoutCategory category;
+
+@end
+
+@implementation NCFittingMenuViewControllerRow
+
+@end
+
 @interface NCFittingMenuViewController ()
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
 @property (nonatomic, strong) NSMutableArray* sections;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 @end
 
 @implementation NCFittingMenuViewController
@@ -39,7 +59,7 @@
     [super viewDidLoad];
 	self.refreshControl = nil;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	// Do any additional setup after loading the view.
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -100,12 +120,9 @@
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		NSMutableArray* array = self.sections[indexPath.section - 1];
 		NCLoadout* loadout = array[indexPath.row];
-		NCStorage* storage = [NCStorage sharedStorage];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-
-		[context performBlockAndWait:^{
-			[loadout.managedObjectContext deleteObject:loadout];
-			[storage saveContext];
+		[self.storageManagedObjectContext performBlock:^{
+			[self.storageManagedObjectContext deleteObject:loadout];
+			[self.storageManagedObjectContext save:nil];
 		}];
 		
 		if (array.count == 1) {
@@ -136,52 +153,52 @@
 		if (indexPath.row == 1) {
 			self.typePickerViewController.title = NSLocalizedString(@"Ships", nil);
 			
-			[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
+			[self.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext shipsCategory]
 											  inViewController:self
 													  fromRect:cell.bounds
 														inView:cell
 													  animated:YES
 											 completionHandler:^(NCDBInvType *type) {
-												 NCShipFit* fit = [[NCShipFit alloc] initWithType:type];
+												 /*NCShipFit* fit = [[NCShipFit alloc] initWithType:type];
 												 NCStorage* storage = [NCStorage sharedStorage];
 												 [storage.managedObjectContext performBlockAndWait:^{
 													 fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 													 fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 												 }];
 												 
-												 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+												 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];*/
 												 [self.typePickerViewController dismissAnimated];
 											 }];
 		}
 		else if (indexPath.row == 2) {
 			self.typePickerViewController.title = NSLocalizedString(@"Control Towers", nil);
-			[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory controlTowersCategory]
+			[self.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext controlTowersCategory]
 //										 presentWithConditions:@[@"invTypes.marketGroupID = 478"]
 											  inViewController:self
 													  fromRect:cell.bounds
 														inView:cell
 													  animated:YES
 											 completionHandler:^(NCDBInvType *type) {
-												 NCPOSFit* fit = [[NCPOSFit alloc] initWithType:type];
+												 /*NCPOSFit* fit = [[NCPOSFit alloc] initWithType:type];
 												 NCStorage* storage = [NCStorage sharedStorage];
 												 fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 												 fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 												 
-												 [self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
+												 [self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];*/
 												 [self.typePickerViewController dismissAnimated];
 											 }];
 		}
 	}
 	else {
 		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
-		if (loadout.category == NCLoadoutCategoryShip) {
+/*		if (loadout.category == NCLoadoutCategoryShip) {
 			NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
 			[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
 		}
 		else {
 			NCPOSFit* fit = [[NCPOSFit alloc] initWithLoadout:loadout];
 			[self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
-		}
+		}*/
 	}
 }
 
@@ -209,10 +226,13 @@
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	if (indexPath.section > 0) {
 		NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
-		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
-		cell.titleLabel.text = loadout.type.typeName;
-		cell.subtitleLabel.text = loadout.name;
-		cell.iconView.image = loadout.type.icon ? loadout.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+		NCFittingMenuViewControllerRow* row = self.sections[indexPath.section - 1][indexPath.row];
+		if (!row.icon && row.iconID)
+			row.icon = [self.databaseManagedObjectContext objectWithID:row.iconID];
+		
+		cell.titleLabel.text = row.typeName;
+		cell.subtitleLabel.text = row.loadoutName;
+		cell.iconView.image = row.icon ? row.icon.image.image : self.defaultTypeIcon.image.image;
 	}
 }
 
@@ -220,8 +240,57 @@
 #pragma mark - Private
 
 - (void) reload {
-	NSMutableArray* sections = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+	[self.storageManagedObjectContext performBlock:^{
+		NSMutableArray* loadouts = [NSMutableArray new];
+		for (NCLoadout* loadout in [self.storageManagedObjectContext loadouts]) {
+			NCFittingMenuViewControllerRow* row = [NCFittingMenuViewControllerRow new];
+			row.loadoutID = [loadout objectID];
+			row.loadoutName = loadout.name;
+			row.typeID = loadout.typeID;
+			[loadouts addObject:row];
+		};
+		NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
+		[databaseManagedObjectContext performBlock:^{
+			NSMutableArray* shipLoadouts = [NSMutableArray new];
+			NSMutableArray* posLoadouts = [NSMutableArray new];
+			for (NCFittingMenuViewControllerRow* row in loadouts) {
+				row.type = [databaseManagedObjectContext invTypeWithTypeID:row.typeID];
+				row.typeName = row.type.typeName;
+				row.iconID = [row.type.icon objectID];
+				if (row.type && row.type.group.category.categoryID == NCCategoryIDShip) {
+					row.category = NCLoadoutCategoryShip;
+					[shipLoadouts addObject:row];
+				}
+				else if (row.type) {
+					row.category = NCLoadoutCategoryPOS;
+					[posLoadouts addObject:row];
+				}
+			}
+			[shipLoadouts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+			[posLoadouts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+			
+			NSMutableArray* sections = [NSMutableArray new];
+			for (NSArray* array in [shipLoadouts arrayGroupedByKey:@"type.group.groupID"])
+				[sections addObject:[array mutableCopy]];
+
+			[sections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+				NCFittingMenuViewControllerRow* a = obj1[0];
+				NCFittingMenuViewControllerRow* b = obj2[0];
+				return [a.type.group.groupName compare:b.type.group.groupName];
+			}];
+
+			if (posLoadouts.count > 0)
+				[sections addObject:[posLoadouts mutableCopy]];
+			[loadouts setValue:nil forKey:@"type"];
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.sections = sections;
+				[self.tableView reloadData];
+			});
+		}];
+	}];
+	
+/*	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 NCStorage* storage = [NCStorage sharedStorage];
@@ -253,7 +322,7 @@
 								 self.sections = sections;
 								 [self update];
 								 
-							 }];
+							 }];*/
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {

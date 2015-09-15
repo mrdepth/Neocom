@@ -59,7 +59,7 @@
 @property (nonatomic, strong) NSString* loadoutName;
 @property (nonatomic, assign) eufe::Character* pilot;
 @property (nonatomic, strong) NCFitCharacter* character;
-@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, assign) int32_t typeID;
 @property (nonatomic, readonly) NSString* canonicalName;
 @property (nonatomic, readonly) NSString* dnaRepresentation;
 @property (nonatomic, readonly) NSString* eveXMLRepresentation;
@@ -77,6 +77,6 @@
 
 - (void) flush;
 - (void) save;
-- (void) load;
+- (void) loadWithCompletionBlock:(void(^)()) completionBlock;
 
 @end

@@ -39,7 +39,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
 	NCDatabaseTypePickerContentViewController* contentViewController = self.viewControllers[0];
 	contentViewController.databaseManagedObjectContext = self.databaseManagedObjectContext;
 }
@@ -96,6 +95,13 @@
 	[super setTitle:title];
 	if (self.viewControllers.count > 0)
 		[self.viewControllers[0] setTitle:self.title];
+}
+
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	if (!_databaseManagedObjectContext) {
+		_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+	}
+	return _databaseManagedObjectContext;
 }
 
 

@@ -181,21 +181,19 @@
 
 @interface NCShipFit()
 @property (nonatomic, strong) NCLoadoutDataShip* loadoutData;
+@property (nonatomic, strong) NSManagedObjectContext* storageManagedObjectContext;
+@property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
 - (void) setSkillLevels:(NSDictionary*) skillLevels;
 @end
 
 @implementation NCShipFit
 
-/*- (id) initWithLoadout:(NCLoadout*) loadout {
+- (id) initWithLoadout:(NCLoadout*) loadout {
 	if (self = [super init]) {
-		NCStorage* storage = [NCStorage sharedStorage];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-		[context performBlockAndWait:^{
-			self.loadout = loadout;
-			self.loadoutName = loadout.name;
-			self.loadoutData = loadout.data.data;
-			self.type = self.loadout.type;
-		}];
+		self.loadout = loadout;
+		self.loadoutName = loadout.name;
+		self.loadoutData = loadout.data.data;
+		self.typeID = loadout.typeID;
 	}
 	return self;
 }
@@ -203,12 +201,12 @@
 - (id) initWithType:(NCDBInvType*) type {
 	if (self = [super init]) {
 		self.loadoutName = type.typeName;
-		self.type = type;
+		self.typeID = type.typeID;
 	}
 	return self;
 }
 
-- (id) initWithBattleClinicLoadout:(BCEveLoadout*) bcLoadout {
+/*- (id) initWithBattleClinicLoadout:(BCEveLoadout*) bcLoadout {
 	if (self = [super init]) {
 		NSMutableArray* components = [NSMutableArray arrayWithArray:[bcLoadout.fitting componentsSeparatedByString:@":"]];
 		[components removeObjectAtIndex:0];
@@ -730,12 +728,13 @@
 		self.loadoutData.boosters = @[];
 	}
 	return self;
-}
+}*/
 
 
 - (void) flush {
 	if (!self.pilot)
 		return;
+	eufe::Engine::ScopedLock lock (self.pilot->getEngine());
 	
 	eufe::Ship* ship = self.pilot->getShip();
 	if (!ship)
@@ -834,18 +833,18 @@
 - (void) save {
 	[self flush];
 
-	NCDBInvType* type;
-
-	eufe::Ship* ship = self.pilot ? self.pilot->getShip() : nullptr;
-	if (ship)
-		type = [NCDBInvType invTypeWithTypeID:ship->getTypeID()];
-	else
-		type = self.loadout.type;
-
-	NCStorage* storage = [NCStorage sharedStorage];
-	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-
-	[context performBlockAndWait:^{
+	int32_t typeID = self.typeID;
+	
+	if (self.pilot) {
+		eufe::Engine::ScopedLock lock(self.pilot->getEngine());
+		eufe::Ship* ship = self.pilot->getShip();
+		if (ship)
+			typeID = ship->getTypeID();
+	}
+	
+	NSManagedObjectContext* context = self.loadout.managedObjectContext ? self.loadout.managedObjectContext : self.storageManagedObjectContext;
+	
+	[context performBlock:^{
 		if (!self.loadout) {
 			self.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
 			self.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
@@ -853,8 +852,8 @@
 
 		if (![self.loadout.data.data isEqual:self.loadoutData])
 			self.loadout.data.data = self.loadoutData;
-		if (self.loadout.typeID != type.typeID)
-			self.loadout.typeID = type.typeID;
+		if (self.loadout.typeID != typeID)
+			self.loadout.typeID = typeID;
 		if (![self.loadoutName isEqualToString:self.loadout.name])
 			self.loadout.name = self.loadoutName;
 		if ([context hasChanges])
@@ -862,63 +861,71 @@
 	}];
 }
 
-- (void) load {
-	eufe::Ship* ship = self.pilot->setShip(self.type.typeID);
-	if (ship) {
-		for (NSString* key in @[@"subsystems", @"rigSlots", @"lowSlots", @"medSlots", @"hiSlots"]) {
-			for (NCLoadoutDataShipModule* item in [self.loadoutData valueForKey:key]) {
-				eufe::Module* module = ship->addModule(item.typeID);
-				if (module) {
-					module->setState(item.state);
-					if (item.chargeID)
-						module->setCharge(item.chargeID);
+- (void) loadWithCompletionBlock:(void(^)()) completionBlock {
+	[self.databaseManagedObjectContext performBlock:^{
+		eufe::Engine::ScopedLock lock(self.pilot->getEngine());
+		
+		eufe::Ship* ship = self.pilot->setShip(self.typeID);
+		if (ship) {
+			for (NSString* key in @[@"subsystems", @"rigSlots", @"lowSlots", @"medSlots", @"hiSlots"]) {
+				for (NCLoadoutDataShipModule* item in [self.loadoutData valueForKey:key]) {
+					eufe::Module* module = ship->addModule(item.typeID);
+					if (module) {
+						module->setState(item.state);
+						if (item.chargeID)
+							module->setCharge(item.chargeID);
+					}
 				}
 			}
-		}
-		
-		for (NCLoadoutDataShipDrone* item in self.loadoutData.drones) {
-			for (int n = item.count; n > 0; n--) {
-				eufe::Drone* drone = ship->addDrone(item.typeID);
-				if (!drone)
-					break;
-				drone->setActive(item.active);
-			}
-		}
-		
-		for (NCLoadoutDataShipImplant* item in self.loadoutData.implants)
-			self.pilot->addImplant(item.typeID);
-		
-		for (NCLoadoutDataShipBooster* item in self.loadoutData.boosters)
-			self.pilot->addBooster(item.typeID);
-		
-		for (NCLoadoutDataShipCargoItem* item in self.loadoutData.cargo) {
-			NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
-			if (type.group.category.categoryID == NCChargeCategoryID) {
-				for (auto module: ship->getModules()) {
-					if (!module->getCharge())
-						module->setCharge(item.typeID);
+			
+			for (NCLoadoutDataShipDrone* item in self.loadoutData.drones) {
+				for (int n = item.count; n > 0; n--) {
+					eufe::Drone* drone = ship->addDrone(item.typeID);
+					if (!drone)
+						break;
+					drone->setActive(item.active);
 				}
 			}
-		}
-		
-		if (ship->getFreeSlots(eufe::Module::SLOT_MODE) > 0) {
-			eufe::TypeID modeID = self.loadoutData.mode;
-			if (!modeID) {
-				NCDBEufeItemCategory* category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotMode size:ship->getTypeID() race:nil];
-				NCDBEufeItemGroup* group = [category.itemGroups anyObject];
-				NCDBEufeItem* item = [group.items anyObject];
-				modeID = item.type.typeID;
+			
+			for (NCLoadoutDataShipImplant* item in self.loadoutData.implants)
+				self.pilot->addImplant(item.typeID);
+			
+			for (NCLoadoutDataShipBooster* item in self.loadoutData.boosters)
+				self.pilot->addBooster(item.typeID);
+			
+			for (NCLoadoutDataShipCargoItem* item in self.loadoutData.cargo) {
+				NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+				if (type.group.category.categoryID == NCChargeCategoryID) {
+					for (auto module: ship->getModules()) {
+						if (!module->getCharge())
+							module->setCharge(item.typeID);
+					}
+				}
 			}
-			if (modeID > 0)
-				ship->addModule(modeID);
+			
+			if (ship->getFreeSlots(eufe::Module::SLOT_MODE) > 0) {
+				eufe::TypeID modeID = self.loadoutData.mode;
+				if (!modeID) {
+					NCDBEufeItemCategory* category = [self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotMode size:ship->getTypeID() race:nil];
+					NCDBEufeItemGroup* group = [category.itemGroups anyObject];
+					NCDBEufeItem* item = [group.items anyObject];
+					modeID = item.type.typeID;
+				}
+				if (modeID > 0)
+					ship->addModule(modeID);
+			}
 		}
-	}
+		dispatch_async(dispatch_get_main_queue(), ^{
+			completionBlock();
+		});
+	}];
 }
 
 - (void) setCharacter:(NCFitCharacter *)character {
 	_character = character;
+	eufe::Engine::ScopedLock lock(self.pilot->getEngine());
 	if (self.pilot) {
-		self.pilot->setCharacterName([character.name UTF8String]);
+		//self.pilot->setCharacterName([character.name UTF8String]);
 		[self setSkillLevels:character.skills];
 		for (NSNumber* implantID in character.implants)
 			self.pilot->addImplant([implantID intValue]);
@@ -928,7 +935,8 @@
 - (void) setPilot:(eufe::Character *)pilot {
 	_pilot = pilot;
 	if (self.character && pilot) {
-		self.pilot->setCharacterName([self.character.name UTF8String]);
+		eufe::Engine::ScopedLock lock(pilot->getEngine());
+		//self.pilot->setCharacterName([self.character.name UTF8String]);
 		[self setSkillLevels:self.character.skills];
 	}
 }
@@ -980,7 +988,7 @@
 		s = [NSString stringWithFormat:@"%d:%d", pair.first, pair.second];
 		[drones addObject:s];
 	}
-	NSString* s = [NSString stringWithFormat:@"%d|%@|%@", self.type.typeID, [modules componentsJoinedByString:@";"],  [drones componentsJoinedByString:@";"]];
+	NSString* s = [NSString stringWithFormat:@"%d|%@|%@", self.typeID, [modules componentsJoinedByString:@";"],  [drones componentsJoinedByString:@";"]];
 	return s;
 }
 
@@ -1010,7 +1018,7 @@
 			[drones addObject:typeID];
 	}
 	
-	NSMutableString* dna = [NSMutableString stringWithFormat:@"%d:", self.type.typeID];
+	NSMutableString* dna = [NSMutableString stringWithFormat:@"%d:", self.typeID];
 	
 	for (NSCountedSet* set in @[subsystems, hiSlots, medSlots, lowSlots, rigSlots, drones, charges]) {
 		for (NSNumber* typeID in set) {
@@ -1021,7 +1029,7 @@
 
 	return dna;
 }
-
+/*
 - (NSString*) eveXMLRepresentation {
 	NSMutableString* xml = [NSMutableString string];
 	[xml appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
@@ -1084,7 +1092,7 @@
 - (NSString*) hyperlinkTag {
 	NSString* dna = self.dnaRepresentation;
 	return [NSString stringWithFormat:@"<a href=\"javascript:if (typeof CCPEVE != 'undefined') CCPEVE.showFitting('%@'); else window.open('fitting:%@');\">%@ - %@</a>", dna, dna, self.type.typeName, self.loadoutName];
-}
+}*/
 
 #pragma mark - Private
 
@@ -1094,7 +1102,20 @@
 		levels[[typeID intValue]] = [level intValue];
 	}];
 	self.pilot->setSkillLevels(levels);
+}
 
-}*/
+- (NSManagedObjectContext*) storageManagedObjectContext {
+	if (!_storageManagedObjectContext) {
+		_storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+	}
+	return _storageManagedObjectContext;
+}
+
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	if (!_databaseManagedObjectContext) {
+		_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+	}
+	return _databaseManagedObjectContext;
+}
 
 @end

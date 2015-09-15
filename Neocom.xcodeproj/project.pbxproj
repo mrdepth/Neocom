@@ -151,6 +151,7 @@
 		1226D2D31B58F04F000C69EC /* NCCachePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1226D2D21B58F04F000C69EC /* NCCachePrice.m */; };
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
+		122DB6621BA6AAE400649A55 /* NCFittingMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */; settings = {ASSET_TAGS = (); }; };
 		122F01C819483D2100D04D60 /* NCDBInvType+Neocom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122F01C719483D2100D04D60 /* NCDBInvType+Neocom.mm */; };
 		1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1235E3F318E562E300BC2607 /* NCNavigationController.m */; };
 		123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 123A97F218C7017E001045F5 /* MessageUI.framework */; };
@@ -4625,6 +4626,7 @@
 				120C336D19CAB0AA0093EECA /* NCDBMapDenormalize.m in Sources */,
 				12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */,
 				1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */,
+				122DB6621BA6AAE400649A55 /* NCFittingMenuViewController.mm in Sources */,
 				122F01C819483D2100D04D60 /* NCDBInvType+Neocom.mm in Sources */,
 				120968631845F0CB00921A37 /* NCAppDelegate.mm in Sources */,
 				120C332219CAB0A50093EECA /* NCDBIndActivity.m in Sources */,

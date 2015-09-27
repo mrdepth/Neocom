@@ -13,6 +13,8 @@
 @interface NCDatabaseMarketViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* result;
 @property (nonatomic, strong) NSFetchedResultsController* searchResult;
+@property (nonatomic, strong) NCDBEveIcon* defaultGroupIcon;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 
 - (void) reload;
 @end
@@ -23,19 +25,17 @@
 {
     [super viewDidLoad];
 	self.refreshControl = nil;
-    
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-        if (!self.searchContentsController) {
-            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseMarketViewController"]];
-        }
-        else {
-            self.tableView.tableHeaderView = nil;
-            return;
-        }
-    }
-    
-    if (self.marketGroup)
-        self.title = self.marketGroup.marketGroupName;
+
+	if (self.marketGroup) {
+		self.databaseManagedObjectContext = self.marketGroup.managedObjectContext;
+		self.title = self.marketGroup.marketGroupName;
+	}
+
+	self.defaultGroupIcon = [self.databaseManagedObjectContext defaultGroupIcon];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+
+	
+	
     [self reload];
 }
 
@@ -55,7 +55,6 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-
 		controller.type = row;
 	}
 }
@@ -84,15 +83,14 @@
 	return nil;
 }
 
-- (void) searchWithSearchString:(NSString*) searchString {
+- (void) searchWithSearchString:(NSString*) searchString completionBlock:(void (^)())completionBlock {
 	if (searchString.length >= 2) {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
 		request.predicate = [NSPredicate predicateWithFormat:@"marketGroup <> NULL AND published == TRUE AND typeName CONTAINS[C] %@", searchString];
 		
-		NCDatabase* database = [NCDatabase sharedDatabase];
 		request.fetchBatchSize = 50;
-		self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 
 		NSError* error = nil;
 		[self.searchResult performFetch:&error];
@@ -101,14 +99,8 @@
 		self.searchResult = nil;
 	}
     
-    if (self.searchController) {
-        NCDatabaseMarketViewController* searchResultsController = (NCDatabaseMarketViewController*) self.searchController.searchResultsController;
-        searchResultsController.searchResult = self.searchResult;
-        [searchResultsController.tableView reloadData];
-    }
-    else if (self.searchDisplayController)
-        [self.searchDisplayController.searchResultsTableView reloadData];
-
+	[(NCDatabaseMarketViewController*) self.searchController.searchResultsController setResult:self.searchResult];
+	completionBlock();
 }
 
 - (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -128,7 +120,7 @@
 	if ([row isKindOfClass:[NCDBInvType class]]) {
 		NCDBInvType* type = row;
 		cell.titleLabel.text = type.typeName;
-		cell.iconView.image = type.icon ? type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+		cell.iconView.image = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
 		cell.object = row;
 	}
 	else {
@@ -147,7 +139,7 @@
 	}
 	
 	if (!cell.iconView.image)
-		cell.iconView.image = [[[NCDBEveIcon defaultGroupIcon] image] image];
+		cell.iconView.image = self.defaultTypeIcon.image.image;
 }
 
 #pragma mark - Private
@@ -160,8 +152,7 @@
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"marketGroupName" ascending:YES]];
 		request.predicate = [NSPredicate predicateWithFormat:@"parentGroup == %@", self.marketGroup];
 		
-		NCDatabase* database = [NCDatabase sharedDatabase];
-		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 		[self.result performFetch:&error];
 		if (self.result.fetchedObjects.count == 0) {
 			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
@@ -170,7 +161,7 @@
 										[NSSortDescriptor sortDescriptorWithKey:@"metaLevel" ascending:YES],
 										[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
 			request.predicate = [NSPredicate predicateWithFormat:@"marketGroup == %@ AND published == TRUE", self.marketGroup];
-			self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"metaGroupName" cacheName:nil];
+			self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:@"metaGroupName" cacheName:nil];
 			[self.result performFetch:&error];
 		}
 	}
@@ -178,8 +169,7 @@
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvMarketGroup"];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"marketGroupName" ascending:YES]];
 		request.predicate = [NSPredicate predicateWithFormat:@"parentGroup == NULL"];
-		NCDatabase* database = [NCDatabase sharedDatabase];
-		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 		[self.result performFetch:&error];
 	}
 }

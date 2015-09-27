@@ -37,11 +37,20 @@
 #define ActionButtonAllSimilarModules NSLocalizedString(@"All Similar Modules", nil)
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 
+@interface NCFittingShipModulesViewControllerRow : NSObject
+@property (strong, nonatomic) UIImage* typeImage;
+@property (strong, nonatomic) NSString* typeName;
+@property (strong, nonatomic) NSString* charge;
+@property (strong, nonatomic) NSString* optimal;
+@property (strong, nonatomic) NSString* lifetime;
+@property (strong, nonatomic) NSAttributedString* tracking;
+@property (strong, nonatomic) UIImage* stateImage;
+@property (strong, nonatomic) UIImage* targetImage;
 
-@interface NCFittingShipModulesViewControllerSection : NSObject {
-	std::vector<eufe::Module*> _modules;
-}
-@property (nonatomic, readonly) std::vector<eufe::Module*>& modules;
+@end
+
+@interface NCFittingShipModulesViewControllerSection : NSObject
+@property (nonatomic, strong) NSArray* rows;
 @property (nonatomic, assign) eufe::Module::Slot slot;
 @property (nonatomic, assign) int numberOfSlots;
 @end
@@ -55,6 +64,7 @@
 @property (nonatomic, assign) int totalTurretHardpoints;
 @property (nonatomic, assign) int usedMissileHardpoints;
 @property (nonatomic, assign) int totalMissileHardpoints;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 
 @property (nonatomic, strong) NSArray* sections;
 
@@ -66,60 +76,142 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+	
 	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionHiSlotHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionHiSlotHeaderView"];
 }
 
 - (void) reload {
 	NSMutableArray* sections = [NSMutableArray new];
-	if (!self.controller.fit.pilot)
-		return;
 	__block float usedTurretHardpoints;
 	__block float totalTurretHardpoints;
 	__block float usedMissileHardpoints;
 	__block float totalMissileHardpoints;
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 if (!self.controller.fit.pilot)
-												 return;
-											 
-											 eufe::Ship* ship = self.controller.fit.pilot->getShip();
-											 
-											 eufe::Module::Slot slots[] = {eufe::Module::SLOT_MODE, eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
-											 int n = sizeof(slots) / sizeof(eufe::Module::Slot);
-											 
-											 for (int i = 0; i < n; i++) {
-												 int numberOfSlots = ship->getNumberOfSlots(slots[i]);
-												 if (numberOfSlots > 0) {
-													 eufe::ModulesList modules;
-													 ship->getModules(slots[i], std::inserter(modules, modules.end()));
-													 
-													 NCFittingShipModulesViewControllerSection* section = [NCFittingShipModulesViewControllerSection new];
-													 section.slot = slots[i];
-													 section.numberOfSlots = numberOfSlots;
-													 section.modules.insert(section.modules.begin(), modules.begin(), modules.end());
-													 [sections addObject:section];
-													 
-													 usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
-													 totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
-													 usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-													 totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-
-												 }
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.sections = sections;
-								 
-								 self.usedTurretHardpoints = usedTurretHardpoints;
-								 self.totalTurretHardpoints = totalTurretHardpoints;
-								 self.usedMissileHardpoints = usedMissileHardpoints;
-								 self.totalMissileHardpoints = totalMissileHardpoints;
-								 
-								 [self.tableView reloadData];
-							 }];
+	[self.controller.fit.engine performBlockAndWait:^{
+		if (!self.controller.fit.pilot)
+			return;
+		
+		
+		eufe::Ship* ship = self.controller.fit.pilot->getShip();
+		
+		eufe::Module::Slot slots[] = {eufe::Module::SLOT_MODE, eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
+		int n = sizeof(slots) / sizeof(eufe::Module::Slot);
+		
+		for (int i = 0; i < n; i++) {
+			int numberOfSlots = ship->getNumberOfSlots(slots[i]);
+			if (numberOfSlots > 0) {
+				eufe::ModulesList modules;
+				ship->getModules(slots[i], std::inserter(modules, modules.end()));
+				
+				NCFittingShipModulesViewControllerSection* section = [NCFittingShipModulesViewControllerSection new];
+				section.slot = slots[i];
+				section.numberOfSlots = numberOfSlots;
+				NSMutableArray* rows = [NSMutableArray new];
+				
+				for (auto module: modules) {
+					NCFittingShipModulesViewControllerRow* row = [NCFittingShipModulesViewControllerRow new];
+					
+					NCDBInvType* type = [self.controller typeWithItem:module];
+					row.typeName = type.typeName;
+					row.typeImage = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
+					
+					eufe::Charge* charge = module->getCharge();
+					eufe::Ship* ship = self.controller.fit.pilot->getShip();
+					
+					if (charge) {
+						type = [self.controller typeWithItem:charge];
+						float volume = charge->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
+						float capacity = module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
+						if (volume > 0 && capacity > 0)
+							row.charge = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
+						else
+							row.charge = type.typeName;
+					}
+					
+					float optimal = module->getMaxRange();
+					float falloff = module->getFalloff();
+					float trackingSpeed = module->getTrackingSpeed();
+					float lifeTime = module->getLifeTime();
+					
+					if (optimal > 0) {
+						NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+						if (falloff > 0)
+							[s appendFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+						row.optimal = s;
+					}
+					
+					if (trackingSpeed > 0) {
+						float v0 = ship->getMaxVelocityInOrbit(optimal);
+						float v1 = ship->getMaxVelocityInOrbit(optimal + falloff);
+						
+						double r = ship->getOrbitRadiusWithAngularVelocity(trackingSpeed);
+						
+						UIColor* color = trackingSpeed * optimal > v0 ? [UIColor greenColor] : (trackingSpeed * (optimal + falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
+						
+						NSMutableAttributedString* s = [NSMutableAttributedString new];
+						
+						[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@ rad/sec (", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]]
+																				  attributes:nil]];
+						NSTextAttachment* icon;
+						icon = [NSTextAttachment new];
+						icon.image = [UIImage imageNamed:@"targetingRange.png"];
+						icon.bounds = CGRectMake(0, -7 -cell.trackingLabel.font.descender, 15, 15);
+						[s appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
+						[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@+ m)", nil),
+																							  [NSNumberFormatter neocomLocalizedStringFromNumber:@(r)]]
+																				  attributes:nil]];
+						row.trackingLabel.attributedText = s;
+						row.trackingLabel.textColor = color;
+					}
+					
+					
+					if (lifeTime > 0)
+						cell.lifetimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];
+					else
+						cell.lifetimeLabel.text = nil;
+					
+					eufe::Module::Slot slot = module->getSlot();
+					if (slot == eufe::Module::SLOT_HI || slot == eufe::Module::SLOT_MED || slot == eufe::Module::SLOT_LOW) {
+						switch (module->getState()) {
+							case eufe::Module::STATE_ACTIVE:
+								cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
+								break;
+							case eufe::Module::STATE_ONLINE:
+								cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
+								break;
+							case eufe::Module::STATE_OVERLOADED:
+								cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
+								break;
+							default:
+								cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
+								break;
+						}
+					}
+					else
+						cell.stateImageView.image = nil;
+					
+					cell.targetImageView.image = module->getTarget() != NULL ? [[[type.managedObjectContext eveIconWithIconFile:@"04_12"] image] image] : nil;
+				}
+				
+				
+				[sections addObject:section];
+				
+				usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
+				totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
+				usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+				totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+			}
+		}
+	}];
+	self.sections = sections;
 	
+	self.usedTurretHardpoints = usedTurretHardpoints;
+	self.totalTurretHardpoints = totalTurretHardpoints;
+	self.usedMissileHardpoints = usedMissileHardpoints;
+	self.totalMissileHardpoints = totalMissileHardpoints;
+	
+	[self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -191,19 +283,19 @@
 		switch (section.slot) {
 			case eufe::Module::SLOT_HI:
 				title = NSLocalizedString(@"Hi slot", nil);
-				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotHi size:0 race:nil];
+				category = [type.managedObjectContext categoryWithSlot:NCDBEufeItemSlotHi size:0 race:nil];
 				break;
 			case eufe::Module::SLOT_MED:
 				title = NSLocalizedString(@"Med slot", nil);
-				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotMed size:0 race:nil];
+				category = [type.managedObjectContext categoryWithSlot:NCDBEufeItemSlotMed size:0 race:nil];
 				break;
 			case eufe::Module::SLOT_LOW:
 				title = NSLocalizedString(@"Low slot", nil);
-				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotLow size:0 race:nil];
+				category = [type.managedObjectContext categoryWithSlot:NCDBEufeItemSlotLow size:0 race:nil];
 				break;
 			case eufe::Module::SLOT_RIG:
 				title = NSLocalizedString(@"Rigs", nil);
-				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotRig size:ship->getAttribute(1547)->getValue() race:nil];
+				category = [type.managedObjectContext categoryWithSlot:NCDBEufeItemSlotRig size:ship->getAttribute(1547)->getValue() race:nil];
 				break;
 			case eufe::Module::SLOT_SUBSYSTEM: {
 				int32_t raceID = static_cast<int32_t>(ship->getAttribute(eufe::RACE_ID_ATTRIBUTE_ID)->getValue());
@@ -221,12 +313,12 @@
 						title = NSLocalizedString(@"Gallente Subsystems", nil);
 						break;
 				}
-				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotSubsystem size:0 race:type.race];
+				category = [type.managedObjectContext categoryWithSlot:NCDBEufeItemSlotSubsystem size:0 race:type.race];
 				break;
 			}
 			case eufe::Module::SLOT_MODE:
 				title = NSLocalizedString(@"Tactical Mode", nil);
-				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotMode size:ship->getTypeID() race:nil];
+				category = [type.managedObjectContext categoryWithSlot:NCDBEufeItemSlotMode size:ship->getTypeID() race:nil];
 				break;
 			default:
 				return;
@@ -308,7 +400,7 @@
 		eufe::Module* module = section.modules[indexPath.row];
 		NCDBInvType* type = [self.controller typeWithItem:module];
 		cell.typeNameLabel.text = type.typeName;
-		cell.typeImageView.image = type.icon ? type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+		cell.typeImageView.image = type.icon ? type.icon.image.image : [[[type.managedObjectContext defaultTypeIcon] image] image];
 		
 		eufe::Charge* charge = module->getCharge();
 		eufe::Ship* ship = self.controller.fit.pilot->getShip();
@@ -359,17 +451,6 @@
 			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@+ m)", nil),
 																				  [NSNumberFormatter neocomLocalizedStringFromNumber:@(r)]]
 																	  attributes:nil]];
-			
-			
-/*			icon = [NSTextAttachment new];
-			icon.image = [UIImage imageNamed:@"falloff.png"];
-			icon.bounds = CGRectMake(0, -7 -cell.trackingLabel.font.descender, 15, 15);
-			[s appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
-			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@ m/s", nil),
-																				  [NSNumberFormatter neocomLocalizedStringFromNumber:@((optimal + falloff) * trackingSpeed)]]
-																	  attributes:@{NSForegroundColorAttributeName: falloffColor}]];
-
-			[s appendAttributedString:[[NSAttributedString alloc] initWithString:@")" attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor]}]];*/
 			cell.trackingLabel.attributedText = s;
 			cell.trackingLabel.textColor = color;
 		}
@@ -402,8 +483,9 @@
 		else
 			cell.stateImageView.image = nil;
 		
-		cell.targetImageView.image = module->getTarget() != NULL ? [[[NCDBEveIcon eveIconWithIconFile:@"04_12"] image] image] : nil;
+		cell.targetImageView.image = module->getTarget() != NULL ? [[[type.managedObjectContext eveIconWithIconFile:@"04_12"] image] image] : nil;
 		//		}
+		
 	}
 }
 

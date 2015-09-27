@@ -24,17 +24,6 @@
 	self.refreshControl = nil;
 	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-        if (self.parentViewController) {
-            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseWHViewController"]];
-			[(NCDatabaseWHViewController*) self.searchController.searchResultsController setDatabaseManagedObjectContext:self.databaseManagedObjectContext];
-        }
-        else {
-            self.tableView.tableHeaderView = nil;
-            return;
-        }
-    }
-    
 	if (!self.result)
 		[self reload];
 }
@@ -76,7 +65,7 @@
 
 #pragma mark - NCTableViewController
 
-- (void) searchWithSearchString:(NSString*) searchString {
+- (void) searchWithSearchString:(NSString*) searchString completionBlock:(void (^)())completionBlock {
 	if (searchString.length >= 1) {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"WhType"];
 		request.predicate = [NSPredicate predicateWithFormat:@"type.typeName CONTAINS[C] %@", searchString];
@@ -91,14 +80,8 @@
 		self.searchResult = nil;
 	}
     
-    if (self.searchController) {
-        NCDatabaseWHViewController* searchResultsController = (NCDatabaseWHViewController*) self.searchController.searchResultsController;
-        searchResultsController.searchResult = self.searchResult;
-        [searchResultsController.tableView reloadData];
-    }
-    else if (self.searchDisplayController)
-        [self.searchDisplayController.searchResultsTableView reloadData];
-
+	[(NCDatabaseWHViewController*) self.searchController.searchResultsController setResult:self.searchResult];
+	completionBlock();
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {

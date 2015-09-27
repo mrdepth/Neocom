@@ -19,7 +19,7 @@
 	return NO;
 }
 
-- (NSUInteger) supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask) supportedInterfaceOrientations {
 	if (self.view.window.screen.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact && self.view.window.screen.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact)
 		return UIInterfaceOrientationMaskPortrait;
 	else

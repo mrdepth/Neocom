@@ -11,8 +11,10 @@
 #import <EVEAPI/EVEAPI.h>
 #import <objc/runtime.h>
 
-@interface NCSkillData()
-@property (nonatomic, strong, readwrite) NSString* skillName;
+@interface NCSkillData() {
+	NSNumber* _hash;
+}
+@property (nonatomic, strong, readwrite) NCDBInvType* type;
 @property (nonatomic, assign) int32_t rank;
 @property (nonatomic, assign) int32_t typeID;
 @property (nonatomic, assign) int32_t primaryAttributeID;
@@ -36,21 +38,10 @@
 		return nil;
 
 	if (self = [super init]) {
-		self.typeID = type.typeID;
 		self.type = type;
-//		self.rank = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
-//		self.primaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
-//		self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
 	}
 	return self;
 }
-
-/*- (id) initWithTypeID:(int32_t) typeID {
-	if (self = [self initWithInvType:[NCDBInvType invTypeWithTypeID:typeID]]) {
-	}
-	return self;
-}*/
-
 
 - (float) skillPointsAtLevel:(int32_t) level {
 	if (level == 0)
@@ -81,17 +72,17 @@
 - (void) setTargetLevel:(int32_t)targetLevel {
 	_targetLevel = targetLevel;
 	_targetSkillPoints = [self skillPointsAtLevel:targetLevel];
-	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	_hash = nil;
 }
 
 - (void) setCurrentLevel:(int32_t)currentLevel {
 	_currentLevel = currentLevel;
-	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	_hash = nil;
 }
 
 - (void) setCharacterSkill:(EVECharacterSheetSkill *)characterSkill {
 	_characterSkill = characterSkill;
-	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	_hash = nil;
 }
 
 - (int32_t) trainedLevel {
@@ -112,11 +103,12 @@
 	return NO;
 }
 
-- (NSString*) skillName {
-	if (!_skillName) {
-		_skillName = [NSString stringWithFormat:@"%@ (x%d)", self.type.typeName, self.rank];
-	}
-	return _skillName;
+- (NSString*) description {
+	__block NSString* description;
+	[self.type.managedObjectContext performBlockAndWait:^{
+		description = [NSString stringWithFormat:@"%@ (x%d)", self.type.typeName, self.rank];
+	}];
+	return description;
 }
 
 - (NSTimeInterval) trainingTimeToLevelUp {
@@ -132,25 +124,27 @@
 }
 
 - (NSUInteger) hash {
-	NSNumber* hash = objc_getAssociatedObject(self, @"hash");
-	if (!hash) {
+	if (!_hash) {
 		NSInteger data[] = {self.typeID, self.targetLevel, self.currentLevel, self.trainedLevel};
 		NSUInteger hash = [[NSData dataWithBytes:data length:sizeof(data)] hash];
-		objc_setAssociatedObject(self, @"hash", @(hash), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		_hash = @(hash);
 		return hash;
 	}
 	else
-		return [hash unsignedIntegerValue];
+		return [_hash unsignedIntegerValue];
 }
 
 - (void) setType:(NCDBInvType *)type {
 	_type = type;
-	self.rank = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
-	self.primaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
-	self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
+	[type.managedObjectContext performBlockAndWait:^{
+		self.typeID = type.typeID;
+		self.rank = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
+		self.primaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
+		self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
+	}];
 }
 
-#pragma mark - NSCoding
+/*#pragma mark - NSCoding
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeInt32:self.typeID forKey:@"typeID"];
@@ -164,16 +158,12 @@
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
 		self.typeID = [aDecoder decodeInt32ForKey:@"typeID"];
-//		self.type = [NCDBInvType invTypeWithTypeID:self.typeID];
-//		self.rank = [(NCDBDgmTypeAttribute*) self.type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
-//		self.primaryAttributeID = [(NCDBDgmTypeAttribute*) self.type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
-//		self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) self.type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
 		self.currentLevel = [aDecoder decodeInt32ForKey:@"currentLevel"];
 		self.targetLevel = [aDecoder decodeInt32ForKey:@"targetLevel"];
 		self.characterAttributes = [aDecoder decodeObjectForKey:@"characterAttributes"];
 		self.characterSkill = [aDecoder decodeObjectForKey:@"characterSkill"];
 	}
 	return self;
-}
+}*/
 
 @end

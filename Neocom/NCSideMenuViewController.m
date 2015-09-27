@@ -274,7 +274,7 @@
 	return shouldAutorotate;
 }
 
-- (NSUInteger)supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
 	NSUInteger supportedInterfaceOrientations = [super supportedInterfaceOrientations];
 	if (self.menuViewController)
 		supportedInterfaceOrientations &= [self.menuViewController supportedInterfaceOrientations];

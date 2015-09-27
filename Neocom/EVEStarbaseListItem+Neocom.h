@@ -9,14 +9,10 @@
 #import <EVEAPI/EVEAPI.h>
 
 @class EVEStarbaseDetail;
-@class NCDBInvType;
 @class NCDBMapSolarSystem;
-@class NCDBMapDenormalize;
 @interface EVEStarbaseListItem (Neocom)
 @property (nonatomic, strong) EVEStarbaseDetail* details;
 @property (nonatomic, assign) float resourceConsumptionBonus;
 @property (nonatomic, strong) NCDBMapSolarSystem* solarSystem;
-@property (nonatomic, strong) NCDBMapDenormalize* moon;
-@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, strong) NSString* title;
 @end

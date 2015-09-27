@@ -370,7 +370,7 @@
 		[managedObjectContext performBlock:^{
 			NSMutableArray* sections = [NSMutableArray new];
 			
-			NCCharacterAttributes* attributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:managedObjectContext];
+			NCCharacterAttributes* attributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
 			NCDBInvType* type = (NCDBInvType*) [managedObjectContext objectWithID:self.typeID];
 			
 			NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:managedObjectContext];
@@ -739,7 +739,7 @@
 		[managedObjectContext performBlock:^{
 			NSMutableArray* sections = [NSMutableArray new];
 
-			NCCharacterAttributes* attributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:managedObjectContext];
+			NCCharacterAttributes* attributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
 			NCDBInvType* type = (NCDBInvType*) [managedObjectContext objectWithID:self.typeID];
 
 			NCDBIndBlueprintType* blueprintType = type.blueprintType;

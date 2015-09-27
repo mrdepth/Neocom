@@ -35,7 +35,7 @@
 
 + (instancetype) defaultCharacterAttributes;
 + (instancetype) optimalAttributesWithTrainingQueue:(NCTrainingQueue*) trainingQueue;
-- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext;
+- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet;
 - (float) skillpointsPerSecondForSkill:(NCDBInvType*) skill;
 - (float) skillpointsPerSecondWithPrimaryAttribute:(int32_t) primaryAttributeID secondaryAttribute:(int32_t) secondaryAttributeID;
 

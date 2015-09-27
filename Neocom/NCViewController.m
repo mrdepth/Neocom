@@ -8,6 +8,9 @@
 
 #import "NCViewController.h"
 #import "NCAdaptivePopoverSegue.h"
+#import "NCDatabase.h"
+#import "NCStorage.h"
+#import "NCCache.h"
 
 @interface NCViewController ()
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
@@ -63,6 +66,30 @@
         NCAdaptivePopoverSegue* popoverSegue = (NCAdaptivePopoverSegue*) segue;
         popoverSegue.sender = sender;
     }
+}
+
+- (NSManagedObjectContext*) storageManagedObjectContext {
+	@synchronized (self) {
+		if (!_storageManagedObjectContext)
+			_storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+		return _storageManagedObjectContext;
+	}
+}
+
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	@synchronized (self) {
+		if (!_databaseManagedObjectContext)
+			_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+		return _databaseManagedObjectContext;
+	}
+}
+
+- (NSManagedObjectContext*) cacheManagedObjectContext {
+	@synchronized (self) {
+		if (!_cacheManagedObjectContext)
+			_cacheManagedObjectContext = [[NCCache sharedCache] createManagedObjectContext];
+		return _cacheManagedObjectContext;
+	}
 }
 
 @end

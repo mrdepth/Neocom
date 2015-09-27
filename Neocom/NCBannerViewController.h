@@ -8,8 +8,6 @@
 
 #import "NCNavigationController.h"
 
-#define NCApplicationDidRemoveAddsNotification @"NCApplicationDidRemoveAddsNotification"
-#define NCInAppFullProductID @"NCInAppFullProductID"
 
 @interface NCBannerView : UIView
 

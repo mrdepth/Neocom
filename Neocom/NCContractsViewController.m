@@ -102,6 +102,7 @@
 @interface NCContractsViewController ()
 @property (nonatomic, strong) NSDate* currentDate;
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
+@property (nonatomic, strong) NCAccount* account;
 @end
 
 @implementation NCContractsViewController
@@ -121,6 +122,7 @@
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	[self.dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	self.account = [NCAccount currentAccount];
 }
 
 - (void)didReceiveMemoryWarning
@@ -145,139 +147,154 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NCContractsViewControllerData* data = self.data;
+	NCContractsViewControllerData* data = self.cacheData;
 	return data.activeContracts.count + data.finishedContracts.count > 0 ? 2 : 0;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NCContractsViewControllerData* data = self.data;
+	NCContractsViewControllerData* data = self.cacheData;
 	return section == 0 ? data.activeContracts.count : data.finishedContracts.count;
 }
 
 #pragma mark - NCTableViewController
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
-	NCAccount* account = [NCAccount currentAccount];
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock progressBlock:(void (^)(float))progressBlock {
+	NCAccount* account = self.account;
 	if (!account) {
-		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
+		completionBlock(nil);
 		return;
 	}
 	
-	NCContractsViewControllerData* data = [NCContractsViewControllerData new];
-	__block NSDate* cacheExpireDate = [NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]];
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:4];
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 BOOL corporate = account.accountType == NCAccountTypeCorporate;
-											 
-											 EVEContracts* contracts = [EVEContracts contractsWithKeyID:account.apiKey.keyID
-																								  vCode:account.apiKey.vCode
-																							cachePolicy:cachePolicy
-																							characterID:account.characterID
-																							  corporate:corporate
-																								  error:&error
-																						progressHandler:^(CGFloat progress, BOOL *stop) {
-																							task.progress = progress;
-																						}];
-											 if (contracts) {
-												 cacheExpireDate = contracts.cacheExpireDate;
-												 
-												 NSMutableSet* locationsIDs = [NSMutableSet new];
-												 NSMutableSet* characterIDs = [NSMutableSet new];
-												 
-												 NSMutableArray* activeContracts = [NSMutableArray new];
-												 NSMutableArray* finishedContracts = [NSMutableArray new];
-
-												 for (EVEContractsItem* contract in contracts.contractList) {
-													 if (contract.startStationID)
-														 [locationsIDs addObject:@(contract.startStationID)];
-													 if (contract.endStationID)
-														 [locationsIDs addObject:@(contract.endStationID)];
-													 if (contract.issuerID)
-														 [characterIDs addObject:@(contract.issuerID)];
-													 if (contract.issuerCorpID)
-														 [characterIDs addObject:@(contract.issuerCorpID)];
-													 if (contract.acceptorID)
-														 [characterIDs addObject:@(contract.acceptorID)];
-													 if (contract.assigneeID)
-														 [characterIDs addObject:@(contract.assigneeID)];
-													 if (contract.forCorp)
-														 [characterIDs addObject:@(contract.forCorp)];
-													 if (contract.status <= EVEContractStatusCompletedByContractor || contract.status >= EVEContractStatusCancelled)
-														 [finishedContracts addObject:contract];
-													 else
-														 [activeContracts addObject:contract];
-
-												 }
-												 
-												 NSDictionary* locationNames = nil;
-												 if (locationsIDs.count > 0)
-													 locationNames = [[NCLocationsManager defaultManager] locationsNamesWithIDs:[locationsIDs allObjects]];
-												 
-												 EVECharacterName* characterName = nil;
-												 if (characterIDs.count > 0)
-													 characterName = [EVECharacterName characterNameWithIDs:[characterIDs sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(compare:)]]]
-																								cachePolicy:NSURLRequestUseProtocolCachePolicy
-																									  error:nil
-																							progressHandler:nil];
-												 
-												 for (EVEContractsItem* contract in contracts.contractList) {
-													 contract.startStation = locationNames[@(contract.startStationID)];
-													 contract.endStation = locationNames[@(contract.endStationID)];
-													 contract.issuerName = characterName.characters[@(contract.issuerID)];
-													 contract.issuerCorpName = characterName.characters[@(contract.issuerCorpID)];
-													 contract.acceptorName = characterName.characters[@(contract.acceptorID)];
-													 contract.assigneeName = characterName.characters[@(contract.assigneeID)];
-													 contract.forCorpName = characterName.characters[@(contract.forCorp)];
-													 
-													 
-												 }
-												 [activeContracts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"dateExpired" ascending:YES]]];
-												 [finishedContracts sortUsingComparator:^NSComparisonResult(EVEContractsItem* obj1, EVEContractsItem* obj2) {
-													 NSDate* a = obj1.dateCompleted ? obj1.dateCompleted : obj1.dateExpired;
-													 NSDate* b = obj2.dateCompleted ? obj2.dateCompleted : obj2.dateExpired;
-													 return [b compare:a];
-												 }];
-												 
-												 data.activeContracts = activeContracts;
-												 data.finishedContracts = finishedContracts;
-												 data.currentTime = contracts.currentTime;
-												 data.cacheDate = contracts.cacheDate;
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:cacheExpireDate];
-									 }
-								 }
-							 }];
+	[account.managedObjectContext performBlock:^{
+		__block NSError* lastError = nil;
+		NCContractsViewControllerData* data = [NCContractsViewControllerData new];
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+		[api contractsWithContractID:0 completionBlock:^(EVEContracts *result, NSError *error) {
+			progress.completedUnitCount++;
+			if (error)
+				lastError = error;
+			
+			NSMutableSet* locationsIDs = [NSMutableSet new];
+			NSMutableSet* characterIDs = [NSMutableSet new];
+			
+			NSMutableArray* activeContracts = [NSMutableArray new];
+			NSMutableArray* finishedContracts = [NSMutableArray new];
+			
+			for (EVEContractsItem* contract in result.contractList) {
+				if (contract.startStationID)
+					[locationsIDs addObject:@(contract.startStationID)];
+				if (contract.endStationID)
+					[locationsIDs addObject:@(contract.endStationID)];
+				if (contract.issuerID)
+					[characterIDs addObject:@(contract.issuerID)];
+				if (contract.issuerCorpID)
+					[characterIDs addObject:@(contract.issuerCorpID)];
+				if (contract.acceptorID)
+					[characterIDs addObject:@(contract.acceptorID)];
+				if (contract.assigneeID)
+					[characterIDs addObject:@(contract.assigneeID)];
+				if (contract.forCorp)
+					[characterIDs addObject:@(contract.forCorp)];
+				if (contract.status <= EVEContractStatusCompletedByContractor || contract.status >= EVEContractStatusCancelled)
+					[finishedContracts addObject:contract];
+				else
+					[activeContracts addObject:contract];
+				
+			}
+			
+			dispatch_group_t finishDispatchGroup = dispatch_group_create();
+			__block NSDictionary* locationsNames;
+			if (locationsIDs.count > 0) {
+				dispatch_group_enter(finishDispatchGroup);
+				[[NCLocationsManager defaultManager] requestLocationsNamesWithIDs:[locationsIDs allObjects] completionBlock:^(NSDictionary *result) {
+					locationsNames = result;
+					dispatch_group_leave(finishDispatchGroup);
+					@synchronized(progress) {
+						progress.completedUnitCount++;
+					}
+				}];
+			}
+			else
+				@synchronized(progress) {
+					progress.completedUnitCount++;
+				}
+			
+			__block NSDictionary* characterName;
+			if (characterIDs.count > 0) {
+				dispatch_group_enter(finishDispatchGroup);
+				[api characterNameWithIDs:[characterIDs sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(compare:)]]]
+						  completionBlock:^(EVECharacterName *result, NSError *error) {
+							  NSMutableDictionary* dic = [NSMutableDictionary new];
+							  for (EVECharacterIDItem* item in result.characters)
+								  dic[@(item.characterID)] = item.name;
+							  characterName = dic;
+							  dispatch_group_leave(finishDispatchGroup);
+							  @synchronized(progress) {
+								  progress.completedUnitCount++;
+							  }
+						  } progressBlock:nil];
+			}
+			else
+				@synchronized(progress) {
+					progress.completedUnitCount++;
+				}
+			
+			dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+				@autoreleasepool {
+					for (EVEContractsItem* contract in result.contractList) {
+						contract.startStation = locationsNames[@(contract.startStationID)];
+						contract.endStation = locationsNames[@(contract.endStationID)];
+						contract.issuerName = characterName[@(contract.issuerID)];
+						contract.issuerCorpName = characterName[@(contract.issuerCorpID)];
+						contract.acceptorName = characterName[@(contract.acceptorID)];
+						contract.assigneeName = characterName[@(contract.assigneeID)];
+						contract.forCorpName = characterName[@(contract.forCorp)];
+					}
+					[activeContracts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"dateExpired" ascending:YES]]];
+					[finishedContracts sortUsingComparator:^NSComparisonResult(EVEContractsItem* obj1, EVEContractsItem* obj2) {
+						NSDate* a = obj1.dateCompleted ? obj1.dateCompleted : obj1.dateExpired;
+						NSDate* b = obj2.dateCompleted ? obj2.dateCompleted : obj2.dateExpired;
+						return [b compare:a];
+					}];
+					
+					data.activeContracts = activeContracts;
+					data.finishedContracts = finishedContracts;
+					data.currentTime = result.eveapi.currentTime;
+					data.cacheDate = result.eveapi.cacheDate;
+					
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[self saveCacheData:data cacheDate:[NSDate date] expireDate:[result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]];
+						completionBlock(lastError);
+						progress.completedUnitCount++;
+					});
+				}
+			});
+		} progressBlock:nil];
+	}];
 }
 
-- (void) update {
-	[super update];
-	NCContractsViewControllerData* data = self.data;
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NCContractsViewControllerData* data = cacheData;
 	self.currentDate = [NSDate dateWithTimeInterval:[data.currentTime timeIntervalSinceDate:data.cacheDate] sinceDate:[NSDate date]];
+	completionBlock();
 }
 
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
-		[self reloadFromCache];
+
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
+	self.account = [NCAccount currentAccount];
 }
+
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return @"Cell";
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCContractsViewControllerData* data = self.data;
+	NCContractsViewControllerData* data = self.cacheData;
 	EVEContractsItem* row = indexPath.section == 0 ? data.activeContracts[indexPath.row] : data.finishedContracts[indexPath.row];
 	NCContractsCell* cell = (NCContractsCell*) tableViewCell;
 	
@@ -348,6 +365,18 @@
 	}
 	cell.statusLabel.text = status;
 	cell.statusLabel.textColor = color;
+}
+
+#pragma mark - Private
+
+- (void) setAccount:(NCAccount *)account {
+	_account = account;
+	[account.managedObjectContext performBlock:^{
+		NSString* uuid = account.uuid;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.cacheRecordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), uuid];
+		});
+	}];
 }
 
 @end

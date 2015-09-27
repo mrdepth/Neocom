@@ -17,6 +17,7 @@
 #import "UIColor+Neocom.h"
 #import "NCTableViewCell.h"
 #import "NCAdaptivePopoverSegue.h"
+#import "UIStoryboard+Multiple.h"
 
 @interface NCTableViewController ()<UISearchResultsUpdating>
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
@@ -29,6 +30,9 @@
 @property (nonatomic, assign) BOOL loadingFromCache;
 @property (nonatomic, assign) BOOL reloading;
 @property (nonatomic, assign) BOOL initialSetupFinished;
+@property (nonatomic, strong) dispatch_group_t searchingDispatchGroup;
+@property (nonatomic, strong) UIProgressView* progressView;
+@property (nonatomic, strong) NSProgress* progress;
 
 - (IBAction) onRefresh:(id) sender;
 
@@ -39,7 +43,8 @@
 - (void) expandAll:(UIMenuController*) controller;
 - (void) downloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy;
 - (void) reloadIfNeeded;
-
+- (void) searchWithSearchString:(NSString*) searchString;
+- (void) progressStepWithProgress:(NSProgress*) progress;
 @end
 
 @implementation NCTableViewController
@@ -117,6 +122,18 @@
 	else
 		self.initialSetupFinished = YES;
 	self.sectionsCollapsState = [NSMutableDictionary new];
+	
+	if ([self.tableView.tableHeaderView isKindOfClass:[UISearchBar class]]) {
+		if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+			if (self.parentViewController) {
+				self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:self.storyboardIdentifier]];
+			}
+			else {
+				self.tableView.tableHeaderView = nil;
+				return;
+			}
+		}
+	}
 }
 
 - (void) dealloc {
@@ -126,6 +143,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCStorageDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 	[_taskManager cancelAllOperations];
+	[_progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:nil];
 //	self.searchDisplayController.searchResultsDataSource = nil;
 //	self.searchDisplayController.searchResultsDelegate = nil;
 //	self.searchDisplayController.delegate = nil;
@@ -224,26 +242,38 @@
 }
 
 - (NSManagedObjectContext*) storageManagedObjectContext {
-	@synchronized (self) {
-		if (!_storageManagedObjectContext)
-			_storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
-		return _storageManagedObjectContext;
+	if (self.searchContentsController)
+		return self.searchContentsController.storageManagedObjectContext;
+	else {
+		@synchronized (self) {
+			if (!_storageManagedObjectContext)
+				_storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+			return _storageManagedObjectContext;
+		}
 	}
 }
 
 - (NSManagedObjectContext*) databaseManagedObjectContext {
-	@synchronized (self) {
-		if (!_databaseManagedObjectContext)
-			_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
-		return _databaseManagedObjectContext;
+	if (self.searchContentsController)
+		return self.searchContentsController.databaseManagedObjectContext;
+	else {
+		@synchronized (self) {
+			if (!_databaseManagedObjectContext)
+				_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+			return _databaseManagedObjectContext;
+		}
 	}
 }
 
 - (NSManagedObjectContext*) cacheManagedObjectContext {
-	@synchronized (self) {
-		if (!_cacheManagedObjectContext)
-			_cacheManagedObjectContext = [[NCCache sharedCache] createManagedObjectContext];
-		return _cacheManagedObjectContext;
+	if (self.searchContentsController)
+		return self.searchContentsController.cacheManagedObjectContext;
+	else {
+		@synchronized (self) {
+			if (!_cacheManagedObjectContext)
+				_cacheManagedObjectContext = [[NCCache sharedCache] createManagedObjectContext];
+			return _cacheManagedObjectContext;
+		}
 	}
 }
 
@@ -301,7 +331,7 @@
 }
 
 
-- (void) searchWithSearchString:(NSString*) searchString {
+- (void) searchWithSearchString:(NSString*) searchString completionBlock:(void(^)()) completionBlock {
 }
 
 - (void) setCacheRecordID:(NSString *)cacheRecordID {
@@ -311,6 +341,22 @@
 		if (cacheRecordID && [self isViewLoaded] && self.view.window)
 			[self reloadIfNeeded];
 	}
+}
+
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+	if ([keyPath isEqualToString:@"fractionCompleted"]) {
+		double progress = [change[NSKeyValueChangeNewKey] doubleValue];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self.progressView setProgress:progress animated:NO];
+//			self.progressView.frame = CGRectMake(0, [self.topLayoutGuide length] + self.tableView.contentOffset.y, self.view.frame.size.width, self.view.frame.size.height);
+		});
+	}
+}
+
+- (void) viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	_progressView.frame = CGRectMake(0, [self.topLayoutGuide length] + self.tableView.contentOffset.y, self.view.frame.size.width, self.view.frame.size.height);
 }
 
 #pragma mark - Notifications
@@ -546,6 +592,14 @@
 		[self performSelector:@selector(progressStepWithTask:) withObject:task afterDelay:0.1];
 }
 
+- (void) progressStepWithProgress:(NSProgress*) progress {
+	if (self.progress) {
+		progress.completedUnitCount++;
+		if (progress.completedUnitCount < progress.totalUnitCount)
+			[self performSelector:@selector(progressStepWithProgress:) withObject:progress afterDelay:0.1];
+	}
+}
+
 - (void) updateCacheTime {
 	[self.cacheRecord.managedObjectContext performBlock:^{
 		NSTimeInterval time = -[[self.cacheRecord date] timeIntervalSinceNow];
@@ -590,13 +644,24 @@
 	else if (!self.reloading) {
 		self.reloading = YES;
 		[self.refreshControl beginRefreshing];
+		self.progress = [NSProgress progressWithTotalUnitCount:2];
+		[self.progress becomeCurrentWithPendingUnitCount:1];
 		[self downloadDataWithCachePolicy:cachePolicy completionBlock:^(NSError *error) {
-			self.reloading = NO;
-			[self loadCacheData:self.cacheData withCompletionBlock:^{
-				[self.tableView reloadData];
-				[self.refreshControl endRefreshing];
-			}];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(progressStepWithProgress:) object:nil];
+				self.progress = nil;
+				self.reloading = NO;
+				[self loadCacheData:self.cacheData withCompletionBlock:^{
+					[self.tableView reloadData];
+					[self.refreshControl endRefreshing];
+				}];
+			});
 		} progressBlock:nil];
+		[self.progress resignCurrent];
+		[self.progress becomeCurrentWithPendingUnitCount:1];
+		NSProgress* progress = [NSProgress progressWithTotalUnitCount:30];
+		[self progressStepWithProgress:progress];
+		[self.progress resignCurrent];
 	}
 }
 
@@ -616,6 +681,59 @@
 			}
 		}];
 	}
+}
+
+- (void) searchWithSearchString:(NSString*) searchString {
+	if (self.searchingDispatchGroup) {
+		dispatch_set_context(self.searchingDispatchGroup, (__bridge_retained void*)searchString);
+	}
+	else {
+		self.searchingDispatchGroup = dispatch_group_create();
+		dispatch_set_finalizer_f(self.searchingDispatchGroup, (dispatch_function_t) &CFRelease);
+		
+		dispatch_group_enter(self.searchingDispatchGroup);
+		dispatch_group_notify(self.searchingDispatchGroup, dispatch_get_main_queue(), ^{
+			NSString* searchString = (__bridge NSString*) dispatch_get_context(self.searchingDispatchGroup);
+			self.searchingDispatchGroup = nil;
+			if (searchString) {
+				[self searchWithSearchString:searchString];
+			}
+		});
+		
+		[self searchWithSearchString:searchString completionBlock:^{
+			dispatch_async(dispatch_get_main_queue(), ^{
+				if (self.searchController) {
+					NCTableViewController* searchResultsController = (NCTableViewController*) self.searchController.searchResultsController;
+					[searchResultsController.tableView reloadData];
+				}
+				else if (self.searchDisplayController)
+					[self.searchDisplayController.searchResultsTableView reloadData];
+				dispatch_group_leave(self.searchingDispatchGroup);
+			});
+		}];
+	}
+}
+
+- (void) setProgress:(NSProgress *)progress {
+	[_progress removeObserver:self forKeyPath:@"fractionCompleted"];
+	_progress = progress;
+	[_progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:nil];
+	self.progressView.progress = progress.fractionCompleted;
+	self.progressView.hidden = progress == nil;
+}
+
+- (UIProgressView*) progressView {
+	if (!_progressView) {
+		_progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+		_progressView.translatesAutoresizingMaskIntoConstraints = NO;
+		_progressView.layer.zPosition = FLT_MAX;
+		_progressView.trackTintColor = [UIColor clearColor];
+		_progressView.progressTintColor = [UIColor whiteColor];
+		
+		[self.view addSubview:_progressView];
+		_progressView.frame = CGRectMake(0, [self.topLayoutGuide length] + self.tableView.contentOffset.y, self.view.frame.size.width, self.view.frame.size.height);
+	}
+	return _progressView;
 }
 
 @end

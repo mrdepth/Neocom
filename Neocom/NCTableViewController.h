@@ -39,7 +39,7 @@
 - (void) didChangeStorage:(NSNotification*) notification;
 - (void) managedObjectContextDidSave:(NSNotification*) notification;
 
-- (void) searchWithSearchString:(NSString*) searchString;
+- (void) searchWithSearchString:(NSString*) searchString completionBlock:(void(^)()) completionBlock;
 - (id) identifierForSection:(NSInteger) section;
 - (BOOL) initiallySectionIsCollapsed:(NSInteger) section;
 

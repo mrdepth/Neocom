@@ -61,10 +61,6 @@
 				NSDictionary* details = starbaseDetails[@(starbase.itemID)];
 				starbase.details = details[@"details"];
 				starbase.resourceConsumptionBonus = [details[@"resourceConsumptionBonus"] floatValue];
-				
-				starbase.type = [NCDBInvType invTypeWithTypeID:starbase.typeID];
-				starbase.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:starbase.locationID];
-				starbase.moon = [NCDBMapDenormalize mapDenormalizeWithItemID:starbase.moonID];
 				starbase.title = details[@"title"];
 			}
 		}
@@ -99,10 +95,16 @@
 @end
 
 @interface NCStarbasesViewController ()
-@property (nonatomic, strong) NCCacheRecord* sovereigntyCacheRecord;
-@property (nonatomic, strong) EVESovereignty* sovereignty;
 @property (nonatomic, strong) NSDate* currentDate;
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
+@property (nonatomic, strong) NSMutableDictionary* types;
+@property (nonatomic, strong) NSMutableDictionary* solarSystems;
+@property (nonatomic, strong) NSMutableDictionary* moons;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
+@property (nonatomic, strong) NCDBEveIcon* unknownTypeIcon;
+@property (nonatomic, strong) NCAccount* account;
+
+- (void) loadSovereigntyWithCompletionBlock:(void (^)(EVESovereignty* sovereignty))completionBlock;
 @end
 
 @implementation NCStarbasesViewController
@@ -122,6 +124,12 @@
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	[self.dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+	self.unknownTypeIcon = 	[self.databaseManagedObjectContext eveIconWithIconFile:@"74_14"];
+	self.types = [NSMutableDictionary new];
+	self.solarSystems = [NSMutableDictionary new];
+	self.moons = [NSMutableDictionary new];
+	self.account = [NCAccount currentAccount];
 }
 
 - (void)didReceiveMemoryWarning
@@ -146,136 +154,147 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NCStarbasesViewControllerData* data = self.data;
+	NCStarbasesViewControllerData* data = self.cacheData;
 	return data.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NCStarbasesViewControllerData* data = self.data;
+	NCStarbasesViewControllerData* data = self.cacheData;
 	return [[data.sections[section] starbases] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
-	NCStarbasesViewControllerData* data = self.data;
+	NCStarbasesViewControllerData* data = self.cacheData;
 	NCStarbasesViewControllerDataSection* section = data.sections[sectionIndex];
 	return section.title;
 }
 
 #pragma mark - NCTableViewController
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
-	NCAccount* account = [NCAccount currentAccount];
-	if (!account || account.accountType != NCAccountTypeCorporate) {
-		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock progressBlock:(void (^)(float))progressBlock {
+	__block NSError* lastError = nil;
+	NCAccount* account = self.account;
+	if (!account) {
+		completionBlock(nil);
 		return;
 	}
 	
-	NCStarbasesViewControllerData* data = [NCStarbasesViewControllerData new];
-	__block NSDate* cacheExpireDate = [NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]];
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:5];
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 EVEStarbaseList* starbases = [EVEStarbaseList starbaseListWithKeyID:account.apiKey.keyID
-																										   vCode:account.apiKey.vCode
-																									 cachePolicy:cachePolicy
-																									 characterID:account.characterID
-																										   error:&error
-																								 progressHandler:^(CGFloat progress, BOOL *stop) {
-																									 task.progress = progress / 2.0;
-																								 }];
-											 
-											 if (starbases) {
-												 cacheExpireDate = starbases.cacheExpireDate;
-												 
-												 float i = 0;
-												 float n = starbases.starbases.count;
-												 NSMutableArray* itemIDs = [NSMutableArray new];
-												 for (EVEStarbaseListItem* starbase in starbases.starbases) {
-													 if ([task isCancelled])
-														 return;
-													 
-													 starbase.details = [EVEStarbaseDetail starbaseDetailWithKeyID:account.apiKey.keyID
-																											 vCode:account.apiKey.vCode
-																									   cachePolicy:cachePolicy
-																									   characterID:account.characterID
-																											itemID:starbase.itemID
-																											 error:&error
-																								   progressHandler:^(CGFloat progress, BOOL *stop) {
-																									   task.progress = 0.5 + (i + progress) / n;
-																								   }];
-													 
-													 starbase.type = [NCDBInvType invTypeWithTypeID:starbase.typeID];
-													 starbase.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:starbase.locationID];
-													 starbase.moon = [NCDBMapDenormalize mapDenormalizeWithItemID:starbase.moonID];
+	[account.managedObjectContext performBlock:^{
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+		[account loadCorporationSheetWithCompletionBlock:^(EVECorporationSheet *corporationSheet, NSError *error) {
+			if (error)
+				lastError = error;
+			@synchronized(progress) {
+				progress.completedUnitCount++;
+			}
+			
+			[self loadSovereigntyWithCompletionBlock:^(EVESovereignty *sovereignty) {
+				@synchronized(progress) {
+					progress.completedUnitCount++;
+				}
+				[api starbaseListWithCompletionBlock:^(EVEStarbaseList *result, NSError *error) {
+					NCStarbasesViewControllerData* data = [NCStarbasesViewControllerData new];
 
-													 if (account.corporationSheet.allianceID) {
-														 for (EVESovereigntyItem* sovereignty in self.sovereignty.solarSystems) {
-															 if (sovereignty.solarSystemID == starbase.locationID) {
-																 if (sovereignty.allianceID == account.corporationSheet.allianceID)
-																	 starbase.resourceConsumptionBonus = 0.75;
-																 else
-																	 starbase.resourceConsumptionBonus = 1.0;
-																 break;
-															 }
-														 }
-													 }
-													 else
-														 starbase.resourceConsumptionBonus = 1.0;
-													 [itemIDs addObject:@(starbase.itemID)];
-													 i += 1.0;
-												 }
-												 
-												 NSMutableDictionary* titles = [NSMutableDictionary new];
-												 EVELocations* eveLocations = [EVELocations locationsWithKeyID:account.apiKey.keyID vCode:account.apiKey.vCode cachePolicy:cachePolicy characterID:account.characterID ids:itemIDs corporate:YES error:nil progressHandler:nil];
-												 for (EVELocationsItem* location in eveLocations.locations)
-													 titles[@(location.itemID)] = location.itemName;
-												 for (EVEStarbaseListItem* starbase in starbases.starbases) {
-													 starbase.title = titles[@(starbase.itemID)];
-													 if (!starbase.title)
-														 starbase.title = starbase.type.typeName;
-												 }
+					if (error)
+						lastError = error;
+					progress.completedUnitCount++;
+					
+					[progress becomeCurrentWithPendingUnitCount:1];
+					NSProgress* detailsProgress = [NSProgress progressWithTotalUnitCount:result.starbases.count];
+					[progress resignCurrent];
+					
+					dispatch_group_t finishDispatchGroup = dispatch_group_create();
+					
+					NSMutableArray* itemIDs = [NSMutableArray new];
+					for (EVEStarbaseListItem* starbase in result.starbases) {
+						dispatch_group_enter(finishDispatchGroup);
+						[api starbaseDetailWithItemID:starbase.itemID completionBlock:^(EVEStarbaseDetail *result, NSError *error) {
+							starbase.details = result;
+							if (corporationSheet.allianceID) {
+								for (EVESovereigntyItem* item in sovereignty.solarSystems) {
+									if (item.solarSystemID == starbase.locationID) {
+										if (item.allianceID == corporationSheet.allianceID)
+											starbase.resourceConsumptionBonus = 0.75;
+										else
+											starbase.resourceConsumptionBonus = 1.0;
+										break;
+									}
+								}
+							}
+							else
+								starbase.resourceConsumptionBonus = 1.0;
+							@synchronized(detailsProgress) {
+								detailsProgress.completedUnitCount++;
+							}
+							dispatch_group_leave(finishDispatchGroup);
 
-												 
-												 NSArray* rows = [starbases.starbases sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"solarSystem.solarSystemName" ascending:YES]]];
-												 NSMutableArray* sections = [NSMutableArray new];
-												 for (NSArray* array in [rows arrayGroupedByKey:@"solarSystem.constellation.region.regionID"]) {
-													 NCStarbasesViewControllerDataSection* section = [NCStarbasesViewControllerDataSection new];
-													 NCDBMapSolarSystem* solarSystem = [array[0] solarSystem];
-													 section.title = solarSystem.constellation.region.regionName;
-													 section.starbases = array;
-													 [sections addObject:section];
-												 }
-												 [sections sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
-												 data.sections = sections;
-												 data.currentTime = starbases.currentTime;
-												 data.cacheDate = starbases.cacheDate;
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:cacheExpireDate];
-									 }
-								 }
-							 }];
+						} progressBlock:nil];
+						
+						[itemIDs addObject:@(starbase.itemID)];
+					}
+					
+					NSMutableArray* sections = [NSMutableArray new];
+
+					dispatch_group_enter(finishDispatchGroup);
+					[api locationsWithIDs:itemIDs completionBlock:^(EVELocations *locations, NSError *error) {
+						NSMutableDictionary* titles = [NSMutableDictionary new];
+						for (EVELocationsItem* location in locations.locations)
+							titles[@(location.itemID)] = location.itemName;
+						NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+						[databaseManagedObjectContext performBlock:^{
+							for (EVEStarbaseListItem* starbase in result.starbases) {
+								starbase.title = titles[@(starbase.itemID)];
+								if (!starbase.title) {
+									NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:starbase.typeID];
+									starbase.title = type.typeName ?: [NSString stringWithFormat:@"%d", starbase.typeID];
+								}
+								starbase.solarSystem = [databaseManagedObjectContext mapSolarSystemWithSolarSystemID:starbase.locationID];
+							}
+							
+							NSArray* rows = [result.starbases sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"solarSystem.solarSystemName" ascending:YES]]];
+							for (NSArray* array in [rows arrayGroupedByKey:@"solarSystem.constellation.region.regionID"]) {
+								NCStarbasesViewControllerDataSection* section = [NCStarbasesViewControllerDataSection new];
+								NCDBMapSolarSystem* solarSystem = [array[0] solarSystem];
+								section.title = solarSystem.constellation.region.regionName;
+								section.starbases = array;
+								[sections addObject:section];
+							}
+							[sections sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+							[result.starbases setValue:nil forKey:@"solarSystem"];
+							@synchronized(progress) {
+								progress.completedUnitCount++;
+							}
+							dispatch_group_leave(finishDispatchGroup);
+						}];
+																				
+					} progressBlock:nil];
+
+					dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+						data.sections = sections;
+						data.currentTime = result.eveapi.currentTime;
+						data.cacheDate = result.eveapi.cacheDate;
+						[self saveCacheData:data cacheDate:[NSDate date] expireDate:[result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]];
+						completionBlock(lastError);
+					});
+				} progressBlock:nil];
+			}];
+		}];
+	}];
 }
 
-- (void) update {
-	[super update];
-	NCStarbasesViewControllerData* data = self.data;
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NCStarbasesViewControllerData* data = cacheData;
 	self.currentDate = [NSDate dateWithTimeInterval:[data.currentTime timeIntervalSinceDate:data.cacheDate] sinceDate:[NSDate date]];
+	completionBlock();
 }
 
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
-		[self reloadFromCache];
+
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
+	self.account = [NCAccount currentAccount];
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -283,30 +302,52 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCStarbasesViewControllerData* data = self.data;
+	NCStarbasesViewControllerData* data = self.cacheData;
 	NCStarbasesViewControllerDataSection* section = data.sections[indexPath.section];
 	EVEStarbaseListItem* row = section.starbases[indexPath.row];
 	
 	NCStarbasesCell* cell = (NCStarbasesCell*) tableViewCell;
 	cell.object = row;
-	cell.typeImageView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	
+	NCDBInvType* type = self.types[@(row.typeID)];
+	if (!type) {
+		type = [self.databaseManagedObjectContext invTypeWithTypeID:row.typeID];
+		if (type)
+			self.types[@(row.typeID)] = type;
+	}
+
+	
+	cell.typeImageView.image = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
 	cell.titleLabel.text = row.title;
 	
-	
+	NCDBMapDenormalize* moon = self.moons[@(row.moonID)];
+	if (!moon) {
+		moon = [self.databaseManagedObjectContext mapDenormalizeWithItemID:row.moonID];
+		if (moon)
+			self.moons[@(row.moonID)] = moon;
+	}
+
+	NCDBMapSolarSystem* solarSystem = self.solarSystems[@(row.locationID)];
+	if (!solarSystem) {
+		solarSystem = [self.databaseManagedObjectContext mapSolarSystemWithSolarSystemID:row.locationID];
+		if (solarSystem)
+			self.solarSystems[@(row.locationID)] = solarSystem;
+	}
+
 	NSString* location = nil;
-	if (row.moon && row.solarSystem)
-		location = [NSString stringWithFormat:@"%@ / %@", row.solarSystem.solarSystemName, row.moon.itemName];
-	else if (row.moon)
-		location = [NSString stringWithFormat:@"%@ / %@", row.moon.solarSystem.solarSystemName, row.moon.itemName];
-	else if (row.solarSystem)
+	if (moon && solarSystem)
+		location = [NSString stringWithFormat:@"%@ / %@", solarSystem.solarSystemName, moon.itemName];
+	else if (moon)
+		location = [NSString stringWithFormat:@"%@ / %@", moon.solarSystem.solarSystemName, moon.itemName];
+	else if (solarSystem)
 		location = row.solarSystem.solarSystemName;
 	
 	float security = 1.0;
 	if (location) {
-		if (row.solarSystem)
-			security = row.solarSystem.security;
-		else if (row.moon)
-			security = row.moon.security;
+		if (solarSystem)
+			security = solarSystem.security;
+		else if (moon)
+			security = moon.security;
 		
 		NSString* ss = [NSString stringWithFormat:@"%.1f", security];
 		NSString* s = [NSString stringWithFormat:@"%@ %@", ss, location];
@@ -353,7 +394,7 @@
 	cell.stateLabel.text = state;
 	cell.stateLabel.textColor = color;
 	
-	float hours = [[row.details serverTimeWithLocalTime:[NSDate date]] timeIntervalSinceDate:row.details.currentTime] / 3600.0;
+	float hours = [[row.details.eveapi serverTimeWithLocalTime:[NSDate date]] timeIntervalSinceDate:row.details.eveapi.currentTime] / 3600.0;
 	if (hours < 0)
 		hours = 0;
 	float bonus = row.resourceConsumptionBonus;
@@ -362,7 +403,7 @@
 	int minQuantity = 0;
 	NCDBInvControlTowerResource *minResource = nil;
 	
-	for (NCDBInvControlTowerResource *resource in row.type.controlTower.resources) {
+	for (NCDBInvControlTowerResource *resource in type.controlTower.resources) {
 		if (resource.purpose.purposeID != 1 ||
 			(resource.minSecurityLevel > 0 && security < resource.minSecurityLevel) ||
 			(resource.factionID > 0 && row.solarSystem.constellation.region.factionID != resource.factionID))
@@ -398,7 +439,7 @@
 	}
 	
 	if (minResource)
-		cell.resourceTypeImageView.image = minResource.resourceType.icon ? minResource.resourceType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+		cell.resourceTypeImageView.image = minResource.resourceType.icon ? minResource.resourceType.icon.image.image : self.defaultTypeIcon.image.image;
 	else
 		cell.resourceTypeImageView.image = nil;
 	cell.fuelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Fuel: %@", nil), state];
@@ -407,39 +448,45 @@
 
 #pragma mark - Private
 
-- (NCCacheRecord*) sovereigntyCacheRecord {
-	@synchronized(self) {
-		if (!_sovereigntyCacheRecord) {
-			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
-				_sovereigntyCacheRecord = [NCCacheRecord cacheRecordWithRecordID:@"EVESovereignty"];
-			}];
-		}
-		return _sovereigntyCacheRecord;
-	}
+- (void) setAccount:(NCAccount *)account {
+	_account = account;
+	[account.managedObjectContext performBlock:^{
+		NSString* uuid = account.uuid;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.cacheRecordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), uuid];
+		});
+	}];
 }
 
-- (EVESovereignty*) sovereignty {
-	@synchronized(self) {
-		if (!_sovereignty) {
-			_sovereignty = self.sovereigntyCacheRecord.data.data;
-			
-			if (!_sovereignty || [self.sovereigntyCacheRecord.expireDate compare:[NSDate date]] == NSOrderedAscending) {
-				EVESovereignty* sovereignty = [EVESovereignty sovereigntyWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
-				if (sovereignty) {
-					_sovereignty = sovereignty;
-					NCCache* cache = [NCCache sharedCache];
-					[cache.managedObjectContext performBlockAndWait:^{
-						self.cacheRecord.data.data = sovereignty;
-						self.cacheRecord.date = sovereignty.cacheDate;
-						self.cacheRecord.expireDate = [sovereignty.cacheExpireDate laterDate:[NSDate dateWithTimeIntervalSinceNow:3600 * 24]];
-						[cache saveContext];
-					}];
-					
-				}
+- (void) loadSovereigntyWithCompletionBlock:(void (^)(EVESovereignty* sovereignty))completionBlock {
+	NCAccount* account = self.account;
+	[account.managedObjectContext performBlock:^{
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:self.account.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy];
+		
+		[self.cacheManagedObjectContext performBlock:^{
+			NSString* cacheRecordID = @"EVESovereignty";
+			NCCacheRecord* cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:cacheRecordID];
+			__block EVESovereignty* sovereignty = cacheRecord.data.data;
+			if (!sovereignty || [cacheRecord isExpired]) {
+				[api sovereigntyWithCompletionBlock:^(EVESovereignty *result, NSError *error) {
+					if (result) {
+						sovereignty = result;
+						[self.cacheManagedObjectContext performBlock:^{
+							cacheRecord.data.data = result;
+							cacheRecord.date = result.eveapi.cacheDate;
+							cacheRecord.expireDate = result.eveapi.cachedUntil;
+						}];
+					}
+					completionBlock(sovereignty);
+				} progressBlock:nil];
+				
 			}
-		}
-		return _sovereignty;
-	}
+			else {
+				completionBlock(sovereignty);
+			}
+		}];
+	}];
 }
+
 
 @end

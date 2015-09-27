@@ -47,17 +47,6 @@
 
 	self.refreshControl = nil;
 	
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-        if (self.parentViewController) {
-            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseViewController"]];
-			[(NCDatabaseViewController*) self.searchController.searchResultsController setDatabaseManagedObjectContext:self.databaseManagedObjectContext];
-        }
-        else {
-            self.tableView.tableHeaderView = nil;
-            return;
-        }
-    }
-    
 	if (self.filter == NCDatabaseFilterAll)
 		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"All", nil);
 	else if (self.filter == NCDatabaseFilterPublished)
@@ -146,7 +135,7 @@
 
 #pragma mark - NCTableViewController
 
-- (void) searchWithSearchString:(NSString*) searchString {
+- (void) searchWithSearchString:(NSString*) searchString completionBlock:(void (^)())completionBlock {
 	if (searchString.length >= 2) {
 		if (self.group) {
 			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
@@ -197,13 +186,8 @@
 		self.searchResult = nil;
 	}
 	
-	if (self.searchController) {
-		NCDatabaseViewController* searchResultsController = (NCDatabaseViewController*) self.searchController.searchResultsController;
-		searchResultsController.result = self.searchResult;
-		[searchResultsController.tableView reloadData];
-	}
-	else if (self.searchDisplayController)
-		[self.searchDisplayController.searchResultsTableView reloadData];
+	[(NCDatabaseViewController*) self.searchController.searchResultsController setResult:self.searchResult];
+	completionBlock();
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {

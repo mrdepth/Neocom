@@ -16,7 +16,7 @@
 #import "NCAssetsAccountsViewController.h"
 #import "NCStoryboardPopoverSegue.h"
 #import "NCPriceManager.h"
-#import "EVECentralAPI.h"
+#import "NCAccountsManager.h"
 
 @interface NCAssetsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* assets;
@@ -63,18 +63,18 @@
 		self.sections = [aDecoder decodeObjectForKey:@"sections"];
 		NSDictionary* assetsDetails = [aDecoder decodeObjectForKey:@"assetsDetails"];
 
-		NSMutableDictionary* types = [NSMutableDictionary new];
+//		NSMutableDictionary* types = [NSMutableDictionary new];
 
 		__weak __block void (^weakProcess)(EVEAssetListItem*);
 		void (^process)(EVEAssetListItem*) = ^(EVEAssetListItem* asset) {
-			NCDBInvType* type = types[@(asset.typeID)];
+/*			NCDBInvType* type = types[@(asset.typeID)];
 			if (!type) {
 				type = [NCDBInvType invTypeWithTypeID:asset.typeID];
 				if (type) {
 					types[@(asset.typeID)] = type;
 				}
 			}
-			asset.type = type;
+			asset.type = type;*/
 			
 			NSDictionary* details = assetsDetails[@(asset.itemID)];
 			asset.owner = details[@"owner"];
@@ -130,6 +130,9 @@
 
 @interface NCAssetsViewController ()
 @property (nonatomic, strong) NSArray* accounts;
+@property (nonatomic, strong) NSSet* typeIDs;
+@property (nonatomic, strong) NSMutableDictionary* types;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 @end
 
 @implementation NCAssetsViewController
@@ -145,7 +148,7 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
+	[super viewDidLoad];
     
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
         if (!self.searchContentsController) {
@@ -157,15 +160,22 @@
         }
     }
 
+
+	self.types = [NSMutableDictionary new];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+
 	NCAccount* account = [NCAccount currentAccount];
 	if (account) {
 		NSArray* accounts = self.accounts;
 		if (!accounts)
 			self.accounts = @[account];
+/*		[account.managedObjectContext performBlock:^{
+			NSString* uuid = account.uuid;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.cacheRecordID = uuid;
+			});
+		}];*/
 	}
-
-    
-	// Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning
@@ -193,7 +203,7 @@
 			controller = segue.destinationViewController;
 		
 		EVEAssetListItem* asset = [sender object];
-		controller.type = asset.type;
+		controller.typeID = [[self.databaseManagedObjectContext invTypeWithTypeID:asset.typeID] objectID];
 	}
 	else if ([segue.identifier isEqualToString:@"NCAssetsContainerViewController"]) {
 		NCAssetsContainerViewController* destinationViewController = segue.destinationViewController;
@@ -206,7 +216,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		controller.selectedAccounts = self.accounts;
+		controller.selectedAccounts = [self.accounts valueForKey:@"objectID"];
 		controller.delegate = self;
 	}
 }
@@ -214,18 +224,18 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.data : self.searchResults;
+	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.cacheData : self.searchResults;
 	return data.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.data : self.searchResults;
+	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.cacheData : self.searchResults;
 	return [[data.sections[section] assets] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
-	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.data : self.searchResults;
+	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.cacheData : self.searchResults;
 	NCAssetsViewControllerDataSection* section = data.sections[sectionIndex];
 	return [NSString stringWithFormat:@"%@ (%@)", section.title, [NSNumberFormatter neocomLocalizedStringFromInteger:section.assets.count]];
 }
@@ -234,7 +244,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.data : self.searchResults;
+	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.cacheData : self.searchResults;
 	NCAssetsViewControllerDataSection* section = data.sections[indexPath.section];
 	EVEAssetListItem* asset = section.assets[indexPath.row];
 	if (asset.contents.count == 0)
@@ -245,223 +255,258 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	NSMutableArray* ids = [NSMutableArray new];
-	for (NCAccount* account in self.accounts)
-		[ids addObject:account.uuid];
-	[ids sortUsingSelector:@selector(compare:)];
-	
-	return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), [ids componentsJoinedByString:@","]];
-}
-
-- (void) update {
-	[super update];
-	NCAssetsViewControllerData* data = self.data;
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NCAssetsViewControllerData* data = cacheData;
 	if (data.balance > 0)
 		self.balanceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.balance)]];
 	else
 		self.balanceLabel.text = nil;
+	
+	NSMutableSet* typeIDs = [NSMutableSet new];
+	__weak __block void (^weakSearch)(EVEAssetListItem*);
+	void (^search)(EVEAssetListItem*) = ^(EVEAssetListItem* asset) {
+		[typeIDs addObject:@(asset.typeID)];
+		for (EVEAssetListItem* item in asset.contents)
+			weakSearch(item);
+	};
+	weakSearch = search;
+	
+	for (NCAssetsViewControllerDataSection* section in data.sections) {
+		for (EVEAssetListItem* asset in section.assets) {
+			search(asset);
+		}
+	}
+	self.typeIDs = typeIDs;
+	
+	completionBlock();
 }
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock progressBlock:(void (^)(float))progressBlock {
+	__block NSError* lastError = nil;
 	NCAccount* account = [NCAccount currentAccount];
 	if (!account) {
-		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
+		completionBlock(nil);
 		return;
 	}
 	NSArray* accounts = self.accounts;
 	
 	NCAssetsViewControllerData* data = [NCAssetsViewControllerData new];
-	__block NSDate* cacheExpireDate = [NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]];
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 float totalProgress = 0;
-											 float dp = 1.0 / accounts.count;
-											 
-											 NSMutableArray* sections = [NSMutableArray new];
+	NSMutableArray* sections = [NSMutableArray new];
+	
+	NSMutableDictionary* types = [NSMutableDictionary new];
+	
+	NSMutableArray* controlTowers = [NSMutableArray new];
+	NSMutableArray* freeSpaceItems = [NSMutableArray new];
+	NSMutableArray* topLevelAssets = [NSMutableArray new];
+	NSMutableSet* locationIDs = [NSMutableSet new];
+	
+	NSMutableDictionary* typeIDs = [NSMutableDictionary new];
+	
+	dispatch_group_t finishGroup = dispatch_group_create();
+	NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+	
+	NSProgress* loadingProgress = [NSProgress progressWithTotalUnitCount:accounts.count];
+	NSProgress* processingProgress = [NSProgress progressWithTotalUnitCount:2];
 
-											 NSMutableDictionary* types = [NSMutableDictionary new];
-											 
-											 NSMutableArray* controlTowers = [NSMutableArray new];
-											 NSMutableArray* freeSpaceItems = [NSMutableArray new];
-											 NSMutableArray* topLevelAssets = [NSMutableArray new];
-											 NSMutableSet* locationIDs = [NSMutableSet new];
-											 
-											 NSMutableDictionary* typeIDs = [NSMutableDictionary new];
+	for (NCAccount* account in accounts) {
+		dispatch_group_enter(finishGroup);
+		
+		[account.managedObjectContext performBlock:^{
+			EVEAPIKeyInfoKey* apiKeyInfo = account.apiKey.apiKeyInfo.key;
+			EVEAPIKey* apiKey = account.eveAPIKey;
+			BOOL corporate = account.accountType == NCAccountTypeCorporate;
+			
+			void (^loadAssets)(NSString* owner) = ^(NSString* owner) {
+				EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:apiKey cachePolicy:cachePolicy];
+				[api assetListWithCompletionBlock:^(EVEAssetList *result, NSError *error) {
+					lastError = error;
+					[databaseManagedObjectContext performBlock:^{
+						[topLevelAssets addObjectsFromArray:result.assets];
 
-											 for (NCAccount* account in accounts) {
-												 BOOL corporate = account.accountType == NCAccountTypeCorporate;
-												 NSString* owner = corporate ? account.corporationSheet.corporationName : account.characterInfo.characterName;
-												 
-												 EVEAssetList* assetsList = [EVEAssetList assetListWithKeyID:account.apiKey.keyID vCode:account.apiKey.vCode cachePolicy:cachePolicy characterID:account.characterID corporate:corporate error:&error progressHandler:^(CGFloat progress, BOOL *stop) {
-													 task.progress = totalProgress + progress * dp;
-												 }];
-												 totalProgress += dp;
-												 task.progress = totalProgress;
-												 
-												 if (!assetsList)
-													 continue;
-												 cacheExpireDate = [cacheExpireDate laterDate:assetsList.cacheExpireDate];
-												 [topLevelAssets addObjectsFromArray:assetsList.assets];
-												 
-												 NSMutableSet* itemIDs = [NSMutableSet new];
+						NSMutableSet* itemIDs = [NSMutableSet new];
 
-												 
-												 __weak __block void (^weakProcess)(EVEAssetListItem*) = nil;
-												 
-												 void (^process)(EVEAssetListItem*) = ^(EVEAssetListItem* asset) {
-													 asset.owner = owner;
-													 
-													 NCDBInvType* type = types[@(asset.typeID)];
-													 if (!type) {
-														 type = [NCDBInvType invTypeWithTypeID:asset.typeID];
-														 if (type) {
-															 types[@(asset.typeID)] = type;
-														 }
-													 }
-													 
-													 asset.type = type;
+						__weak __block void (^weakProcess)(EVEAssetListItem*) = nil;
+						
+						void (^process)(EVEAssetListItem*) = ^(EVEAssetListItem* asset) {
+							asset.owner = owner;
+							
+							NCDBInvType* type = types[@(asset.typeID)];
+							if (!type) {
+								type = [databaseManagedObjectContext invTypeWithTypeID:asset.typeID];
+								if (type) {
+									types[@(asset.typeID)] = type;
+								}
+							}
+							
+							asset.typeName = type.typeName;
+							
+							if (type.marketGroup)
+								typeIDs[@(asset.typeID)] = @([typeIDs[@(asset.typeID)] longLongValue] + asset.quantity);
+							
+							if (asset.locationID > 0) {
+								[locationIDs addObject:@(asset.locationID)];
+								if (type.group.groupID == 365) { // ControlTower
+									[controlTowers addObject:asset];
+									[itemIDs addObject:@(asset.itemID)];
+								}
+								else if (type.group.category.categoryID == NCControlTowerGroupID ||
+										 type.group.category.categoryID == NCShipCategoryID ||
+										 type.group.groupID == NCSecureContainerGroupID) {
+									[freeSpaceItems addObject:asset];
+									[itemIDs addObject:@(asset.itemID)];
+								}
+							}
+							for (EVEAssetListItem* item in asset.contents)
+								weakProcess(item);
+						};
+						weakProcess = process;
+						
+						for (EVEAssetListItem* asset in result.assets)
+							process(asset);
+						
+						if (itemIDs.count > 0 && ((corporate && apiKeyInfo.accessMask & 16777216) ||
+												  (!corporate && apiKeyInfo.accessMask & 134217728))) {
+							
+							NSMutableDictionary* locations = [NSMutableDictionary dictionary];
+							NSArray* allIDs = [[itemIDs allObjects] sortedArrayUsingSelector:@selector(compare:)];
+							
+							[api locationsWithIDs:allIDs completionBlock:^(EVELocations *result, NSError *error) {
+								[databaseManagedObjectContext performBlock:^{
+									for (EVELocationsItem* location in result.locations)
+										locations[@(location.itemID)] = location;
+									
+									for (NSArray* array in @[controlTowers, freeSpaceItems])
+										for (EVEAssetListItem* asset in array)
+											asset.location = locations[@(asset.itemID)];
+									
+									for (EVEAssetListItem* controlTower in controlTowers) {
+										EVELocationsItem* controlTowerLocation = controlTower.location;
+										NSMutableArray* contents = [controlTower.contents mutableCopy] ?: [NSMutableArray new];
+										if (controlTower.location){
+											float x0 = controlTowerLocation.x;
+											float y0 = controlTowerLocation.y;
+											float z0 = controlTowerLocation.z;
+											for (EVEAssetListItem* asset in [freeSpaceItems copy]) {
+												EVELocationsItem* assetLocation = asset.location;
+												if (assetLocation && asset.locationID == controlTower.locationID) {
+													float x1 = assetLocation.x;
+													float y1 = assetLocation.y;
+													float z1 = assetLocation.z;
+													float dx = fabsf(x0 - x1);
+													float dy = fabsf(y0 - y1);
+													float dz = fabsf(z0 - z1);
+													if (dx < 100000 && dy < 100000 && dz < 100000) {
+														[contents addObject:asset];
+														asset.parent = controlTower;
+														asset.locationID = 0;
+														[freeSpaceItems removeObject:asset];
+														[topLevelAssets removeObject:asset];
+													}
+												}
+											}
+										}
+										controlTower.contents = contents;
+									}
+									dispatch_group_leave(finishGroup);
+									@synchronized(loadingProgress) {
+										loadingProgress.completedUnitCount++;
+									}
+								}];
+							} progressBlock:nil];
+						}
+						else {
+							dispatch_group_leave(finishGroup);
+							@synchronized(loadingProgress) {
+								loadingProgress.completedUnitCount++;
+							}
+						}
+					}];
+				} progressBlock:nil];
+			};
+			
+			if (corporate)
+				[account loadCorporationSheetWithCompletionBlock:^(EVECorporationSheet *corporationSheet, NSError *error) {
+					loadAssets(corporationSheet.corporationName);
+				}];
+			else
+				[account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
+					loadAssets(characterInfo.characterName);
+				}];
+		}];
+	}
 
-													 if (type.marketGroup)
-														 typeIDs[@(asset.typeID)] = @([typeIDs[@(asset.typeID)] longLongValue] + asset.quantity);
-
-													 if (asset.locationID > 0) {
-														 [locationIDs addObject:@(asset.locationID)];
-														 if (type.group.groupID == 365) { // ControlTower
-															 [controlTowers addObject:asset];
-															 [itemIDs addObject:@(asset.itemID)];
-														 }
-														 else if (type.group.category.categoryID == NCControlTowerGroupID ||
-																  type.group.category.categoryID == NCShipCategoryID ||
-																  type.group.groupID == NCSecureContainerGroupID) {
-															 [freeSpaceItems addObject:asset];
-															 [itemIDs addObject:@(asset.itemID)];
-														 }
-													 }
-													 for (EVEAssetListItem* item in asset.contents)
-														 weakProcess(item);
-												 };
-												 weakProcess = process;
-												 
-												 for (EVEAssetListItem* asset in assetsList.assets)
-													 process(asset);
-
-												 if (itemIDs.count > 0 && ((corporate && account.apiKey.apiKeyInfo.key.accessMask & 16777216) ||
-																		   (!corporate && account.apiKey.apiKeyInfo.key.accessMask & 134217728))) {
-													 
-													 EVELocations* eveLocations = nil;
-													 NSMutableDictionary* locations = [NSMutableDictionary dictionary];
-													 NSArray* allIDs = [[itemIDs allObjects] sortedArrayUsingSelector:@selector(compare:)];
-													 
-													 int32_t first = 0;
-													 int32_t left = (int32_t) itemIDs.count;
-													 while (left > 0) {
-														 int32_t length = left > 100 ? 100 : left;
-														 NSArray* subArray = [allIDs subarrayWithRange:NSMakeRange(first, length)];
-														 first += length;
-														 left -= length;
-														 NSError* error = nil;
-														 eveLocations = [EVELocations locationsWithKeyID:account.apiKey.keyID vCode:account.apiKey.vCode cachePolicy:cachePolicy characterID:account.characterID ids:subArray corporate:corporate error:&error progressHandler:nil];
-														 for (EVELocationsItem* location in eveLocations.locations)
-															 locations[@(location.itemID)] = location;
-													 }
-													 
-													 
-													 for (NSArray* array in @[controlTowers, freeSpaceItems])
-														 for (EVEAssetListItem* asset in array)
-															 asset.location = locations[@(asset.itemID)];
-													 
-													 for (EVEAssetListItem* controlTower in controlTowers) {
-														 EVELocationsItem* controlTowerLocation = controlTower.location;
-														 if (controlTower.location){
-															 float x0 = controlTowerLocation.x;
-															 float y0 = controlTowerLocation.y;
-															 float z0 = controlTowerLocation.z;
-															 for (EVEAssetListItem* asset in [freeSpaceItems copy]) {
-																 EVELocationsItem* assetLocation = asset.location;
-																 if (assetLocation && asset.locationID == controlTower.locationID) {
-																	 float x1 = assetLocation.x;
-																	 float y1 = assetLocation.y;
-																	 float z1 = assetLocation.z;
-																	 float dx = fabsf(x0 - x1);
-																	 float dy = fabsf(y0 - y1);
-																	 float dz = fabsf(z0 - z1);
-																	 if (dx < 100000 && dy < 100000 && dz < 100000) {
-																		 [controlTower.contents addObject:asset];
-																		 asset.parent = controlTower;
-																		 asset.locationID = 0;
-																		 [freeSpaceItems removeObject:asset];
-																		 [topLevelAssets removeObject:asset];
-																	 }
-																 }
-															 }
-														 }
-													 }
-												 }
-											 }
-											 
-											 if (locationIDs.count > 0) {
-												 NSDictionary* locationsNames = [[NCLocationsManager defaultManager] locationsNamesWithIDs:[locationIDs allObjects]];
-												 [locationsNames enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NCLocationsManagerItem* item, BOOL *stop) {
-													 
-													 NSMutableArray* locationAssets = [NSMutableArray new];
-													 long long locationID = [key longLongValue];
-													 for (EVEAssetListItem* asset in [NSArray arrayWithArray:topLevelAssets]) {
-														 if (asset.locationID == locationID) {
-															 [locationAssets addObject:asset];
-															 [topLevelAssets removeObject:asset];
-														 }
-													 }
-													 [locationAssets sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
-													 NCAssetsViewControllerDataSection* section = [NCAssetsViewControllerDataSection new];
-													 section.assets = locationAssets;
-													 if (item.name)
-														 section.title = item.name;
-													 else if (item.solarSystem)
-														 section.title = item.solarSystem.solarSystemName;
-													 else
-														 section.title = NSLocalizedString(@"Unknown location", nil);
-													 section.identifier = key;
-													 [sections addObject:section];
-												 }];
-											 }
-											 
-											 if (topLevelAssets.count > 0) {
-												 NCAssetsViewControllerDataSection* section = [NCAssetsViewControllerDataSection new];
-												 section.assets = topLevelAssets;
-												 section.title = NSLocalizedString(@"Unknown location", nil);
-												 section.identifier = @(0);
-												 [sections addObject:section];
-											 }
-											 
-											 NSDictionary* prices = [[NCPriceManager sharedManager] pricesWithTypes:[typeIDs allKeys]];
-											 __block double balance = 0;
-											 [typeIDs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-												 double price = [prices[key] doubleValue];
-												 balance += price * [obj longLongValue];
-											 }];
-
-											 [sections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
-											 data.sections = sections;
-											 data.balance = balance;
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:cacheExpireDate];
-									 }
-								 }
-							 }];
+	dispatch_group_notify(finishGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+		@autoreleasepool {
+			dispatch_group_t finishGroup = dispatch_group_create();
+			
+			if (locationIDs.count > 0) {
+				dispatch_group_enter(finishGroup);
+				[[NCLocationsManager defaultManager] requestLocationsNamesWithIDs:[locationIDs allObjects] completionBlock:^(NSDictionary *locationsNames) {
+					[databaseManagedObjectContext performBlock:^{
+						[locationsNames enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NCLocationsManagerItem* item, BOOL *stop) {
+							
+							NSMutableArray* locationAssets = [NSMutableArray new];
+							long long locationID = [key longLongValue];
+							for (EVEAssetListItem* asset in [NSArray arrayWithArray:topLevelAssets]) {
+								if (asset.locationID == locationID) {
+									[locationAssets addObject:asset];
+									[topLevelAssets removeObject:asset];
+								}
+							}
+							[locationAssets sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
+							NCAssetsViewControllerDataSection* section = [NCAssetsViewControllerDataSection new];
+							section.assets = locationAssets;
+							if (item.name)
+								section.title = item.name;
+							else if (item.solarSystemID)
+								section.title = [[databaseManagedObjectContext mapSolarSystemWithSolarSystemID:item.solarSystemID] solarSystemName];
+							else
+								section.title = NSLocalizedString(@"Unknown location", nil);
+							section.identifier = key;
+							[sections addObject:section];
+						}];
+						dispatch_group_leave(finishGroup);
+					}];
+				}];
+			}
+			
+			dispatch_group_notify(finishGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+				@autoreleasepool {
+					processingProgress.completedUnitCount++;
+					if (topLevelAssets.count > 0) {
+						NCAssetsViewControllerDataSection* section = [NCAssetsViewControllerDataSection new];
+						section.assets = topLevelAssets;
+						section.title = NSLocalizedString(@"Unknown location", nil);
+						section.identifier = @(0);
+						[sections addObject:section];
+					}
+					
+					[[NCPriceManager sharedManager] requestPricesWithTypes:[typeIDs allKeys]
+														   completionBlock:^(NSDictionary *prices) {
+															   __block double balance = 0;
+															   [typeIDs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+																   double price = [prices[key] doubleValue];
+																   balance += price * [obj longLongValue];
+															   }];
+															   [sections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+															   data.sections = sections;
+															   data.balance = balance;
+															   dispatch_async(dispatch_get_main_queue(), ^{
+																   [self saveCacheData:data cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
+																   completionBlock(lastError);
+																   processingProgress.completedUnitCount++;
+															   });
+														   }];
+				}
+			});
+		}
+	});
 }
 
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
+	NCAccount* account = [NCAccount currentAccount];
 	
 	if (account)
 		self.accounts = @[account];
@@ -470,76 +515,75 @@
 
 	
 	if ([self isViewLoaded])
-		[self reloadFromCache];
+		[self reload];
 }
 
-- (void) searchWithSearchString:(NSString*) searchString {
+- (void) searchWithSearchString:(NSString*) searchString completionBlock:(void (^)())completionBlock {
 	NCAssetsViewControllerData* searchResults = [NCAssetsViewControllerData new];
-	NCAssetsViewControllerData* data = self.data;
+	NCAssetsViewControllerData* data = self.cacheData;
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:nil
-										 block:^(NCTask *task) {
-											 if ([task isCancelled])
-												 return;
-											 if (searchString.length >= 2) {
-												 __weak __block void (^weakSearch)(EVEAssetListItem*, NSMutableArray*);
-												 void (^search)(EVEAssetListItem*, NSMutableArray*) = ^(EVEAssetListItem* asset, NSMutableArray* sectionAssets) {
-													 if ((asset.title && [asset.title rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
-														 (asset.type.typeName && [asset.type.typeName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
-														 (asset.type.group.groupName && [asset.type.group.groupName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
-														 (asset.type.group.category.categoryName && [asset.type.group.category.categoryName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
-														 (asset.owner && [asset.owner rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound)) {
-														 [sectionAssets addObject:asset];
-													 }
-													 for (EVEAssetListItem* item in asset.contents) {
-														 if ([task isCancelled])
-															 return;
-														 weakSearch(item, sectionAssets);
-													 }
-												 };
-												 weakSearch = search;
-												 
-												 NSMutableArray* sections = [NSMutableArray new];
-												 for (NCAssetsViewControllerDataSection* section in data.sections) {
-													 NSMutableArray* sectionAssets = [NSMutableArray new];
-													 if (section.title && [section.title rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) {
-														 [sectionAssets addObjectsFromArray:section.assets];
-													 }
-													 else {
-														 for (EVEAssetListItem* asset in section.assets) {
-															 if ([task isCancelled])
-																 return;
-															 search(asset, sectionAssets);
-														 }
-													 }
-													 if (sectionAssets.count > 0) {
-														 NCAssetsViewControllerDataSection* searchSection = [NCAssetsViewControllerDataSection new];
-														 searchSection.assets = sectionAssets;
-														 searchSection.title = section.title;
-														 [sections addObject:searchSection];
-													 }
-												 }
-												 searchResults.sections = sections;
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.searchResults = searchResults;
-                                     
-                                     if (self.searchController) {
-                                         NCAssetsViewController* searchResultsController = (NCAssetsViewController*) self.searchController.searchResultsController;
-                                         searchResultsController.searchResults = self.searchResults;
-                                         [searchResultsController.tableView reloadData];
-                                     }
-                                     else if (self.searchDisplayController)
-                                         [self.searchDisplayController.searchResultsTableView reloadData];
-								 }
-							 }];
+	NSSet* typeIDs = self.typeIDs;
+	if (searchString.length >= 2 && typeIDs.count > 0) {
+		
+		NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+		[databaseManagedObjectContext performBlock:^{
+			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+			request.predicate = [NSPredicate predicateWithFormat:@"typeID IN %@ AND (typeName CONTAINS[C] %@ OR group.groupName CONTAINS[C] %@ OR group.category.categoryName CONTAINS[C] %@)", typeIDs, searchString, searchString, searchString];
+			request.resultType = NSDictionaryResultType;
+			request.propertiesToFetch = @[[[NSEntityDescription entityForName:@"InvType" inManagedObjectContext:databaseManagedObjectContext] propertiesByName][@"typeID"]];
+			NSArray* filteredTypeIDs = [[databaseManagedObjectContext executeFetchRequest:request error:nil] valueForKey:@"typeID"];
+			
+			__weak __block void (^weakSearch)(EVEAssetListItem*, NSMutableArray*);
+			void (^search)(EVEAssetListItem*, NSMutableArray*) = ^(EVEAssetListItem* asset, NSMutableArray* sectionAssets) {
+				if ([filteredTypeIDs containsObject:@(asset.typeID)]) {
+					[sectionAssets addObject:asset];
+				}
+				for (EVEAssetListItem* item in asset.contents) {
+					weakSearch(item, sectionAssets);
+				}
+			};
+			weakSearch = search;
+			
+			NSMutableArray* sections = [NSMutableArray new];
+			for (NCAssetsViewControllerDataSection* section in data.sections) {
+				NSMutableArray* sectionAssets = [NSMutableArray new];
+				if (section.title && [section.title rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) {
+					[sectionAssets addObjectsFromArray:section.assets];
+				}
+				else {
+					for (EVEAssetListItem* asset in section.assets) {
+						search(asset, sectionAssets);
+					}
+				}
+				if (sectionAssets.count > 0) {
+					NCAssetsViewControllerDataSection* searchSection = [NCAssetsViewControllerDataSection new];
+					searchSection.assets = sectionAssets;
+					searchSection.title = section.title;
+					[sections addObject:searchSection];
+				}
+			}
+			searchResults.sections = sections;
+			
+			self.searchResults = searchResults;
+			if (self.searchController) {
+				NCAssetsViewController* searchResultsController = (NCAssetsViewController*) self.searchController.searchResultsController;
+			 searchResultsController.searchResults = self.searchResults;
+			}
+			completionBlock();
+		}];
+	}
+	else {
+		self.searchResults = nil;
+		if (self.searchController) {
+			NCAssetsViewController* searchResultsController = (NCAssetsViewController*) self.searchController.searchResultsController;
+			searchResultsController.searchResults = self.searchResults;
+		}
+		completionBlock();
+	}
 }
 
 - (id) identifierForSection:(NSInteger)sectionIndex {
-	NCAssetsViewControllerData* data = self.data;
+	NCAssetsViewControllerData* data = self.cacheData;
 	NCAssetsViewControllerDataSection* section = data.sections[sectionIndex];
 	return section.identifier;
 }
@@ -549,12 +593,18 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.data : self.searchResults;
+	NCAssetsViewControllerData* data = tableView == self.tableView && !self.searchContentsController ? self.cacheData : self.searchResults;
 	NCAssetsViewControllerDataSection* section = data.sections[indexPath.section];
 	EVEAssetListItem* asset = section.assets[indexPath.row];
 	
 	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
-	cell.iconView.image = asset.type.icon ? asset.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	NCDBInvType* type = self.types[@(asset.typeID)];
+	if (!type) {
+		type = [self.databaseManagedObjectContext invTypeWithTypeID:asset.typeID];
+		if (type)
+			self.types[@(asset.typeID)] = type;
+	}
+	cell.iconView.image = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
 	
 	cell.titleLabel.text = asset.title;
 	cell.object = asset;
@@ -577,8 +627,17 @@
 #pragma mark - NCAssetsAccountsViewControllerDelegate
 
 - (void) assetsAccountsViewController:(NCAssetsAccountsViewController *)controller didSelectAccounts:(NSArray *)accounts {
-	self.accounts = accounts;
-	[self reloadFromCache];
+	NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+	[storageManagedObjectContext performBlock:^{
+		NSMutableArray* objects = [NSMutableArray new];
+		for (NSManagedObjectID* objectID in accounts) {
+			NCAccount* account = [storageManagedObjectContext existingObjectWithID:objectID error:nil];
+			[objects addObject:account];
+		}
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.accounts = objects;
+		});
+	}];
 }
 
 #pragma mark - Private
@@ -587,19 +646,38 @@
 	_accounts = accounts;
 	if (accounts.count == 1) {
 		NCAccount* account = self.accounts[0];
-		NSString* title = nil;
-		if (account.accountType == NCAccountTypeCharacter)
-			title = account.characterInfo.characterName;
-		else
-			title = account.corporationSheet.corporationName;
-		if (!title)
-			title = NSLocalizedString(@"Unknown account", nil);
-		self.navigationItem.rightBarButtonItem.title = title;
+		[account.managedObjectContext performBlock:^{
+			if (account.accountType == NCAccountTypeCorporate) {
+				[account loadCorporationSheetWithCompletionBlock:^(EVECorporationSheet *corporationSheet, NSError *error) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						self.navigationItem.rightBarButtonItem.title = corporationSheet.corporationName ?: NSLocalizedString(@"Unknown account", nil);
+					});
+				}];
+			}
+			else {
+				[account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						self.navigationItem.rightBarButtonItem.title = characterInfo.characterName ?: NSLocalizedString(@"Unknown account", nil);
+					});
+				}];
+			}
+		}];
 	}
 	else if (accounts.count > 1)
 		self.navigationItem.rightBarButtonItem.title = [NSString stringWithFormat:NSLocalizedString(@"%ld Accounts", nil), (long) accounts.count];
 	else
 		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Accounts", nil);
+	
+	[[[NCAccountsManager sharedManager] storageManagedObjectContext] performBlock:^{
+		NSMutableArray* ids = [NSMutableArray new];
+	 for (NCAccount* account in accounts)
+		 [ids addObject:account.uuid];
+	 [ids sortUsingSelector:@selector(compare:)];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.cacheRecordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), [ids componentsJoinedByString:@","]];
+		});
+	}];
+
 }
 
 @end

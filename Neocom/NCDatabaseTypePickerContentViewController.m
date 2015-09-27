@@ -49,15 +49,6 @@
 	self.defaultGroupIcon = [self.databaseManagedObjectContext defaultGroupIcon];
 	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-        if (self.parentViewController) {
-            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]];
-        }
-        else {
-            self.tableView.tableHeaderView = nil;
-            return;
-        }
-    }
 }
 
 - (void) dealloc {
@@ -126,7 +117,7 @@
 
 #pragma mark - NCTableViewController
 
-- (void) searchWithSearchString:(NSString*) searchString {
+- (void) searchWithSearchString:(NSString*) searchString completionBlock:(void (^)())completionBlock {
 	if (searchString.length > 1) {
 		NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItem"];
@@ -144,15 +135,9 @@
 	else {
 		self.searchResult = nil;
 	}
-    
-    if (self.searchController) {
-        NCDatabaseTypePickerContentViewController* searchResultsController = (NCDatabaseTypePickerContentViewController*) self.searchController.searchResultsController;
-        searchResultsController.searchResult = self.searchResult;
-        [searchResultsController.tableView reloadData];
-    }
-    else if (self.searchDisplayController)
-        [self.searchDisplayController.searchResultsTableView reloadData];
-
+	
+	[(NCDatabaseTypePickerContentViewController*) self.searchController.searchResultsController setResult:self.searchResult];
+	completionBlock();
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {

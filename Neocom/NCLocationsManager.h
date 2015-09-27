@@ -11,11 +11,11 @@
 @class NCDBMapSolarSystem;
 @interface NCLocationsManagerItem : NSObject<NSCoding>
 @property (nonatomic, strong) NSString* name;
-@property (nonatomic, strong) NCDBMapSolarSystem* solarSystem;
-- (id) initWithName:(NSString*) name solarSystem:(NCDBMapSolarSystem*) solarSystem;
+@property (nonatomic, assign) int32_t solarSystemID;
+- (id) initWithName:(NSString*) name solarSystemID:(int32_t) solarSystemID;
 @end
 
 @interface NCLocationsManager : NSObject
 + (instancetype) defaultManager;
-- (NSDictionary*) locationsNamesWithIDs:(NSArray*) ids;
+- (void) requestLocationsNamesWithIDs:(NSArray*) ids completionBlock:(void(^)(NSDictionary* locationsNames)) completionBlock;
 @end

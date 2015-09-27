@@ -12,6 +12,7 @@
 #import "NCTableViewCell.h"
 #import "UIImageView+URL.h"
 #import "NCDatabaseTypeInfoViewController.h"
+#import "NSString+Neocom.h"
 
 @interface NCIndustryJobsDetailsViewControllerRow : NSObject
 @property (nonatomic, strong) NSString* title;
@@ -59,9 +60,11 @@
 	self.refreshControl = nil;
 	NSMutableArray* rows = [NSMutableArray new];
 	
-	if (self.job.activity)
+	NCDBRamActivity* activity = [self.databaseManagedObjectContext ramActivityWithActivityID:self.job.activityID];
+	
+	if (activity)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Activity", nil)
-																		   desciption:self.job.activity.activityName
+																		   desciption:activity.activityName
 																				 icon:nil
 																			 imageURL:nil]];
 	[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"State", nil)
@@ -69,21 +72,24 @@
 																			 icon:nil
 																		 imageURL:nil]];
 	
-	
-	if (self.job.blueprintType) {
+	NCDBInvType* blueprintType = [self.databaseManagedObjectContext invTypeWithTypeID:self.job.blueprintTypeID];
+	if (blueprintType) {
 		NCIndustryJobsDetailsViewControllerRow* row = [[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Input", nil)
-																										 desciption:self.job.blueprintType.typeName
-																											   icon:self.job.blueprintType.icon ? self.job.blueprintType.icon : [NCDBEveIcon defaultTypeIcon]
+																										 desciption:blueprintType.typeName
+																											   icon:blueprintType.icon ?: [self.databaseManagedObjectContext defaultTypeIcon]
 																										   imageURL:nil];
-		row.object = self.job.blueprintType;
+		row.object = blueprintType;
 		[rows addObject:row];
+		self.title = blueprintType.typeName;
 	}
-	if (self.job.productType) {
+	
+	NCDBInvType* productType = [self.databaseManagedObjectContext invTypeWithTypeID:self.job.productTypeID];
+	if (productType) {
 		NCIndustryJobsDetailsViewControllerRow* row = [[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Output", nil)
-																										 desciption:self.job.productType.typeName
-																											   icon:self.job.blueprintType.icon ? self.job.blueprintType.icon : [NCDBEveIcon defaultTypeIcon]
+																										 desciption:productType.typeName
+																											   icon:productType.icon ?: [self.databaseManagedObjectContext defaultTypeIcon]
 																										   imageURL:nil];
-		row.object = self.job.productType;
+		row.object = productType;
 		[rows addObject:row];
 	}
 	
@@ -113,6 +119,13 @@
 	[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 
+	if (self.job.startDate && self.job.endDate) {
+		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Production Time", nil)
+																		   desciption:[NSString stringWithTimeLeft:[self.job.endDate timeIntervalSinceDate:self.job.startDate]]
+																				 icon:nil
+																			 imageURL:nil]];
+	}
+
 	if (self.job.startDate)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Begin Production Time", nil)
 																		   desciption:[dateFormatter stringFromDate:self.job.startDate]
@@ -123,7 +136,6 @@
 																		   desciption:[dateFormatter stringFromDate:self.job.endDate]
 																				 icon:nil
 																			 imageURL:nil]];
-	
 	self.rows = rows;
 }
 
@@ -141,7 +153,7 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.type = [sender object];
+		controller.typeID = [[sender object] objectID];
 	}
 }
 
@@ -161,6 +173,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return self.rows.count;
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - NCTableViewController

@@ -63,7 +63,7 @@
 
 - (void) save {
 	if (_trainingQueue) {
-		[self.databaseManagedObjectContext performBlock:^{
+		[_trainingQueue.databaseManagedObjectContext performBlock:^{
 			NSMutableArray* skills = [NSMutableArray new];
 			for (NCSkillData* skill in _trainingQueue.skills) {
 				NSDictionary* item = @{NCSkillPlanTypeIDKey: @(skill.type.typeID), NCSkillPlanTargetLevelKey: @(skill.targetLevel)};
@@ -156,7 +156,7 @@
 			[self.databaseManagedObjectContext performBlock:^{
 				NCTrainingQueue* trainingQueue = [self.trainingQueue copy];
 				trainingQueue.characterSheet = characterSheet;
-				trainingQueue.characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:self.databaseManagedObjectContext];
+				trainingQueue.characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
 				self.trainingQueue = trainingQueue;
 			}];
 		}

@@ -159,14 +159,11 @@
 														inView:cell
 													  animated:YES
 											 completionHandler:^(NCDBInvType *type) {
-												 /*NCShipFit* fit = [[NCShipFit alloc] initWithType:type];
-												 NCStorage* storage = [NCStorage sharedStorage];
-												 [storage.managedObjectContext performBlockAndWait:^{
-													 fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-													 fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-												 }];
+												 NCShipFit* fit = [[NCShipFit alloc] initWithType:type];
+												 fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+												 fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
 												 
-												 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];*/
+												 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
 												 [self.typePickerViewController dismissAnimated];
 											 }];
 		}

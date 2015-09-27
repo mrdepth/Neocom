@@ -10,6 +10,7 @@
 #import "NCLoadout.h"
 #import "eufe.h"
 #import "NCFitCharacter.h"
+#import "NCFittingEngine.h"
 
 @interface NCLoadoutDataShip : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* hiSlots;
@@ -55,6 +56,7 @@
 @class NCKillMail;
 @class NCDBInvType;
 @interface NCShipFit : NSObject
+@property (nonatomic, strong) NCFittingEngine* engine;
 @property (nonatomic, strong) NCLoadout* loadout;
 @property (nonatomic, strong) NSString* loadoutName;
 @property (nonatomic, assign) eufe::Character* pilot;
@@ -77,6 +79,6 @@
 
 - (void) flush;
 - (void) save;
-- (void) loadWithCompletionBlock:(void(^)()) completionBlock;
+- (void) load;
 
 @end

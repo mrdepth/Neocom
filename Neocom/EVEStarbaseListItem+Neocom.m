@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "EVEStarbaseListItem+Neocom.h"
+#import "EVEStarbaseListItem+Neocom.h"s
 #import <objc/runtime.h>
 
 @implementation EVEStarbaseListItem (Neocom)
@@ -33,22 +33,6 @@
 
 - (void) setSolarSystem:(NCDBMapSolarSystem *)solarSystem {
 	objc_setAssociatedObject(self, @"solarSystem", solarSystem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (NCDBMapDenormalize*) moon {
-	return objc_getAssociatedObject(self, @"moon");
-}
-
-- (void) setMoon:(NCDBMapDenormalize *)moon {
-	objc_setAssociatedObject(self, @"moon", moon, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (NCDBInvType*) type {
-	return objc_getAssociatedObject(self, @"type");
-}
-
-- (void) setType:(NCDBInvType *)type {
-	objc_setAssociatedObject(self, @"type", type, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (NSString*) title {

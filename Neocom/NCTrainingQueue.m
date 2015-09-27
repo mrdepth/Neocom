@@ -26,7 +26,6 @@
 @end
 
 @implementation NCTrainingQueue
-@synthesize trainingTime = _trainingTime;
 @synthesize skills = _skills;
 
 - (id) init {
@@ -40,8 +39,8 @@
 - (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext {
 	if (self = [super init]) {
 		self.characterSheet = characterSheet;
-		self.characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:databaseManagedObjectContext];
-		self.databaseManagedObjectContext = databaseManagedObjectContext;
+		self.characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
+		self.databaseManagedObjectContext = databaseManagedObjectContext ?: [[NCDatabase sharedDatabase] createManagedObjectContext];
 		_skills = [NSMutableArray new];
 	}
 	return self;
@@ -49,9 +48,11 @@
 
 - (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet xmlData:(NSData*) data skillPlanName:(NSString**) skillPlanName databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext {
 	if (self = [self initWithCharacterSheet:characterSheet databaseManagedObjectContext:databaseManagedObjectContext]) {
-		NSXMLParser* parser = [[NSXMLParser alloc] initWithData:data];
-		parser.delegate = self;
-		[parser parse];
+		[self.databaseManagedObjectContext performBlockAndWait:^{
+			NSXMLParser* parser = [[NSXMLParser alloc] initWithData:data];
+			parser.delegate = self;
+			[parser parse];
+		}];
 		if (skillPlanName)
 			*skillPlanName = _skillPlanName;
 	}
@@ -60,39 +61,47 @@
 
 - (void) setSkills:(NSArray *)skills {
 	_skills = [[NSMutableArray alloc] initWithArray:skills copyItems:YES];
-	for (NCSkillData* skillData in self.skills)
-		skillData.characterSkill = self.characterSheet.skillsMap[@(skillData.type.typeID)];
-
-	_trainingTime = -1;
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		for (NCSkillData* skillData in self.skills)
+			skillData.characterSkill = self.characterSheet.skillsMap[@(skillData.type.typeID)];
+	}];
 }
 
 - (void) addRequiredSkillsForType:(NCDBInvType*) type {
-	if (type.managedObjectContext != self.databaseManagedObjectContext)
-		[self _addRequiredSkillsForType:(NCDBInvType*) [self.databaseManagedObjectContext objectWithID:type.objectID]];
-	else
-		[self _addRequiredSkillsForType:type];
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		if (type.managedObjectContext != self.databaseManagedObjectContext)
+			[self _addRequiredSkillsForType:(NCDBInvType*) [self.databaseManagedObjectContext objectWithID:type.objectID]];
+		else
+			[self _addRequiredSkillsForType:type];
+	}];
 }
 
 - (void) addSkill:(NCDBInvType*) skill withLevel:(int32_t) level {
-	if (skill.managedObjectContext != self.databaseManagedObjectContext)
-		[self _addSkill:(NCDBInvType*) [self.databaseManagedObjectContext objectWithID:skill.objectID] withLevel:level];
-	else
-		[self _addSkill:skill withLevel:level];
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		if (skill.managedObjectContext != self.databaseManagedObjectContext)
+			[self _addSkill:(NCDBInvType*) [self.databaseManagedObjectContext objectWithID:skill.objectID] withLevel:level];
+		else
+			[self _addSkill:skill withLevel:level];
+	}];
 }
 
 - (void) removeSkill:(NCSkillData*) skill {
-	[self _removeSkill:skill];
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		[self _removeSkill:skill];
+	}];
 }
 
 - (void) addMastery:(NCDBCertMastery*) mastery {
-	if (mastery.managedObjectContext != self.databaseManagedObjectContext)
-		[self _addMastery:(NCDBCertMastery*) [self.databaseManagedObjectContext objectWithID:mastery.objectID]];
-	else
-		[self _addMastery:mastery];
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		if (mastery.managedObjectContext != self.databaseManagedObjectContext)
+			[self _addMastery:(NCDBCertMastery*) [self.databaseManagedObjectContext objectWithID:mastery.objectID]];
+		else
+			[self _addMastery:mastery];
+	}];
 }
 
 - (NSTimeInterval) trainingTime {
-	return [self trainingTimeWithCharacterAttributes:self.characterAttributes];;
+	return [self trainingTimeWithCharacterAttributes:self.characterAttributes];
 }
 
 - (NSString*) xmlRepresentationWithSkillPlanName:(NSString*) skillPlanName {
@@ -100,20 +109,24 @@
 	[xml appendString:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"];
 	[xml appendFormat:@"<plan xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" name=\"%@\" revision=\"2798\">\n", skillPlanName];
 
-	for (NCSkillData* skill in self.skills) {
-		[xml appendFormat:@"<entry skillID=\"%d\" skill=\"%@\" level=\"%d\" priority=\"1\" type=\"Planned\"/>\n", skill.type.typeID, skill.type.typeName, skill.targetLevel];
-	}
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		for (NCSkillData* skill in self.skills) {
+			[xml appendFormat:@"<entry skillID=\"%d\" skill=\"%@\" level=\"%d\" priority=\"1\" type=\"Planned\"/>\n", skill.type.typeID, skill.type.typeName, skill.targetLevel];
+		}
+	}];
 	
 	[xml appendString:@"</plan>\n<!-- Generated by Neocom https://itunes.apple.com/us/app/neocom/id418895101?mt=8 -->"];
 	return xml;
 }
 
 - (NSTimeInterval) trainingTimeWithCharacterAttributes:(NCCharacterAttributes*) characterAttributes {
-	NSTimeInterval trainingTime = 0;
-	for (NCSkillData *skill in self.skills) {
-		if (skill.currentLevel < skill.targetLevel)
-			trainingTime += [skill trainingTimeToLevelUpWithCharacterAttributes:characterAttributes];
-	}
+	__block NSTimeInterval trainingTime = 0;
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		for (NCSkillData *skill in self.skills) {
+			if (skill.currentLevel < skill.targetLevel)
+				trainingTime += [skill trainingTimeToLevelUpWithCharacterAttributes:characterAttributes];
+		}
+	}];
 	
 	return trainingTime;
 }
@@ -122,8 +135,11 @@
 	_characterSheet = characterSheet;
 	[self.skills setValue:nil forKey:@"characterSkill"];
 	
-	for (NCSkillData* skillData in self.skills)
-		skillData.characterSkill = characterSheet.skillsMap[@(skillData.type.typeID)];
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		for (NCSkillData* skillData in self.skills)
+			skillData.characterSkill = characterSheet.skillsMap[@(skillData.type.typeID)];
+	}];
+	
 }
 
 #pragma mark - NSCopying
@@ -186,19 +202,21 @@
 			[_skills addObject:skillData];
 		}
 	}
-	_trainingTime = -1;
 }
 
 - (void) _removeSkill:(NCSkillData*) skill {
-	NSInteger typeID = skill.type.typeID;
+	int32_t typeID;
+	if (skill.type.managedObjectContext != self.databaseManagedObjectContext)
+		typeID = [(NCDBInvType*) [self.databaseManagedObjectContext objectWithID:skill.type.objectID] typeID];
+	else
+		typeID = skill.type.typeID;
+	
 	NSInteger level = skill.targetLevel;
 	NSInteger index = 0;
 	NSMutableIndexSet* indexes = [NSMutableIndexSet indexSet];
 	for (NCSkillData* skillData in self.skills) {
-		if (skillData.type.typeID == typeID && skillData.targetLevel >= level) {
-			_trainingTime -= skillData.trainingTimeToLevelUp;
+		if (skillData.type.typeID == typeID && skillData.targetLevel >= level)
 			[indexes addIndex:index];
-		}
 		index++;
 	}
 	[_skills removeObjectsAtIndexes:indexes];

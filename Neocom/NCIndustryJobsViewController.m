@@ -35,44 +35,13 @@
 		if (!self.finishedJobs)
 			self.finishedJobs = @[];
 		
-		NSMutableDictionary* types = [NSMutableDictionary new];
-		NSMutableDictionary* activities = [NSMutableDictionary new];
-		
+		NSDictionary* locations = [aDecoder decodeObjectForKey:@"locations"];
+		NSDictionary* names = [aDecoder decodeObjectForKey:@"names"];
 		for (NSArray* array in @[self.activeJobs, self.finishedJobs]) {
 			for (EVEIndustryJobsItem* job in array) {
-				if (job.blueprintTypeID) {
-					NCDBInvType* type = types[@(job.blueprintTypeID)];
-					if (!type) {
-						type = [NCDBInvType invTypeWithTypeID:job.blueprintTypeID];
-						if (type) {
-							types[@(job.blueprintTypeID)] = type;
-						}
-					}
-					job.blueprintType = type;
-				}
-				
-				if (job.productTypeID) {
-					NCDBInvType* type = types[@(job.productTypeID)];
-					if (!type) {
-						type = [NCDBInvType invTypeWithTypeID:job.productTypeID];
-						if (type) {
-							types[@(job.productTypeID)] = type;
-						}
-					}
-					job.productType = type;
-				}
-				
-				if (job.activityID) {
-					NCDBRamActivity* activity = activities[@(job.activityID)];
-					if (!activity) {
-						activity = [NCDBRamActivity ramActivityWithActivityID:job.activityID];
-						if (activity) {
-							activities[@(job.activityID)] = activity;
-						}
-					}
-					job.activity = activity;
-				}
-
+				job.blueprintLocation = locations[@(job.blueprintLocationID)];
+				job.outputLocation = locations[@(job.outputLocationID)];
+				job.installerName = names[@(job.installerID)];
 			}
 		}
 	}
@@ -118,6 +87,12 @@
 @property (nonatomic, strong) NCIndustryJobsViewControllerData* searchResults;
 @property (nonatomic, strong) NSDate* currentDate;
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
+@property (nonatomic, strong) NSMutableDictionary* types;
+@property (nonatomic, strong) NSMutableDictionary* solarSystems;
+@property (nonatomic, strong) NSMutableDictionary* activities;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
+@property (nonatomic, strong) NCDBEveIcon* unknownTypeIcon;
+@property (nonatomic, strong) NCAccount* account;
 
 @end
 
@@ -138,6 +113,12 @@
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	[self.dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+	self.unknownTypeIcon = 	[self.databaseManagedObjectContext eveIconWithIconFile:@"74_14"];
+	self.types = [NSMutableDictionary new];
+	self.solarSystems = [NSMutableDictionary new];
+	self.activities = [NSMutableDictionary new];
+	self.account = [NCAccount currentAccount];
 }
 
 - (void)didReceiveMemoryWarning
@@ -162,152 +143,141 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NCIndustryJobsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCIndustryJobsViewControllerData* data = tableView == self.tableView ? self.cacheData : self.searchResults;
     return data.activeJobs.count + data.finishedJobs.count > 0 ? 2 : 0;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NCIndustryJobsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCIndustryJobsViewControllerData* data = tableView == self.tableView ? self.cacheData : self.searchResults;
 	return section == 0 ? data.activeJobs.count : data.finishedJobs.count;
 }
 
 #pragma mark - NCTableViewController
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
-	NCAccount* account = [NCAccount currentAccount];
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock progressBlock:(void (^)(float))progressBlock {
+	NCAccount* account = self.account;
 	if (!account) {
-		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
+		completionBlock(nil);
 		return;
 	}
 	
-	NCIndustryJobsViewControllerData* data = [NCIndustryJobsViewControllerData new];
-	__block NSDate* cacheExpireDate = [NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]];
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:4];
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 BOOL corporate = account.accountType == NCAccountTypeCorporate;
-											 
-											 EVEIndustryJobs* industryJobs = [EVEIndustryJobs industryJobsWithKeyID:account.apiKey.keyID
-																											  vCode:account.apiKey.vCode
-																										cachePolicy:cachePolicy
-																										characterID:account.characterID
-																										  corporate:corporate
-																											  error:&error
-																									progressHandler:^(CGFloat progress, BOOL *stop) {
-																										task.progress = progress;
-																									}];
-											 if (industryJobs) {
-												 cacheExpireDate = industryJobs.cacheExpireDate;
-												 
-												 NSMutableArray* activeJobs = [NSMutableArray new];
-												 NSMutableArray* finishedJobs = [NSMutableArray new];
-												 
-												 NSMutableSet* locationsIDs = [NSMutableSet new];
-												 NSMutableSet* characterIDs = [NSMutableSet new];
-												 
-												 NSMutableDictionary* types = [NSMutableDictionary new];
-												 NSMutableDictionary* activities = [NSMutableDictionary new];
-
-												 for (EVEIndustryJobsItem* job in industryJobs.jobs) {
-													 if (job.blueprintLocationID)
-														 [locationsIDs addObject:@(job.blueprintLocationID)];
-													 if (job.outputLocationID)
-														 [locationsIDs addObject:@(job.outputLocationID)];
-													 if (job.installerID)
-														 [characterIDs addObject:@(job.installerID)];
-													 
-													 if (job.productTypeID) {
-														 NCDBInvType* type = types[@(job.productTypeID)];
-														 if (!type) {
-															 type = [NCDBInvType invTypeWithTypeID:job.productTypeID];
-															 if (type) {
-																 types[@(job.productTypeID)] = type;
-															 }
-														 }
-														 job.productTypeID = type.typeID;
-													 }
-													 
-													 if (job.blueprintTypeID) {
-														 NCDBInvType* type = types[@(job.blueprintTypeID)];
-														 if (!type) {
-															 type = [NCDBInvType invTypeWithTypeID:job.blueprintTypeID];
-															 if (type) {
-																 types[@(job.blueprintTypeID)] = type;
-															 }
-														 }
-														 job.blueprintType = type;
-													 }
-													 
-													 if (job.activityID) {
-														 NCDBRamActivity* activity = activities[@(job.activityID)];
-														 if (!activity) {
-															 activity = [NCDBRamActivity ramActivityWithActivityID:job.activityID];
-															 if (activity) {
-																 activities[@(job.activityID)] = activity;
-															 }
-														 }
-														 job.activity = activity;
-													 }
-//													 if (job.completed)
-//														 [finishedJobs addObject:job];
-//													 else
-														 [activeJobs addObject:job];
-												 }
-												 
-												 NSDictionary* locationNames = nil;
-												 if (locationsIDs.count > 0)
-													 locationNames = [[NCLocationsManager defaultManager] locationsNamesWithIDs:[locationsIDs allObjects]];
-												 
-												 EVECharacterName* characterName = nil;
-												 if (characterIDs.count > 0)
-													 characterName = [EVECharacterName characterNameWithIDs:[characterIDs sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(compare:)]]]
-																								cachePolicy:NSURLRequestUseProtocolCachePolicy
-																									  error:nil
-																							progressHandler:nil];
-                         
-												 for (EVEIndustryJobsItem* job in industryJobs.jobs) {
-													 job.blueprintLocation = locationNames[@(job.blueprintLocationID)];
-													 job.outputLocation = locationNames[@(job.outputLocationID)];
-													 job.installerName = characterName.characters[@(job.installerID)];
-												 }
-												 
-												 [activeJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"endDate" ascending:YES]]];
-												 [finishedJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"completedDate" ascending:NO]]];
-												 
-												 data.activeJobs = activeJobs;
-												 data.finishedJobs = finishedJobs;
-												 
-												 data.currentTime = industryJobs.currentTime;
-												 data.cacheDate = industryJobs.cacheDate;
-
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:cacheExpireDate];
-									 }
-								 }
-							 }];
+	[account.managedObjectContext performBlock:^{
+		__block NSError* lastError = nil;
+		NCIndustryJobsViewControllerData* data = [NCIndustryJobsViewControllerData new];
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+		[api industryJobsHistoryWithCompletionBlock:^(EVEIndustryJobsHistory *result, NSError *error) {
+			progress.completedUnitCount++;
+			if (error)
+				lastError = error;
+			
+			NSMutableArray* activeJobs = [NSMutableArray new];
+			NSMutableArray* finishedJobs = [NSMutableArray new];
+			
+			NSMutableSet* locationsIDs = [NSMutableSet new];
+			NSMutableSet* characterIDs = [NSMutableSet new];
+			
+			for (EVEIndustryJobsItem* job in result.jobs) {
+				if (job.blueprintLocationID)
+					[locationsIDs addObject:@(job.blueprintLocationID)];
+				if (job.outputLocationID)
+					[locationsIDs addObject:@(job.outputLocationID)];
+				if (job.installerID)
+					[characterIDs addObject:@(job.installerID)];
+				
+				switch (job.status) {
+					case EVEIndustryJobStatusActive:
+						[activeJobs addObject:job];
+						break;
+					case EVEIndustryJobStatusPaused:
+					case EVEIndustryJobStatusReady:
+					case EVEIndustryJobStatusDelivered:
+					case EVEIndustryJobStatusCancelled:
+					case EVEIndustryJobStatusReverted:
+					default:
+						[finishedJobs addObject:job];
+						break;
+				}
+			}
+			
+			dispatch_group_t finishDispatchGroup = dispatch_group_create();
+			__block NSDictionary* locationsNames;
+			if (locationsIDs.count > 0) {
+				dispatch_group_enter(finishDispatchGroup);
+				[[NCLocationsManager defaultManager] requestLocationsNamesWithIDs:[locationsIDs allObjects] completionBlock:^(NSDictionary *result) {
+					locationsNames = result;
+					dispatch_group_leave(finishDispatchGroup);
+					@synchronized(progress) {
+						progress.completedUnitCount++;
+					}
+				}];
+			}
+			else
+				@synchronized(progress) {
+					progress.completedUnitCount++;
+				}
+			
+			__block NSDictionary* characterName;
+			if (characterIDs.count > 0) {
+				dispatch_group_enter(finishDispatchGroup);
+				[api characterNameWithIDs:[characterIDs sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(compare:)]]]
+						  completionBlock:^(EVECharacterName *result, NSError *error) {
+							  NSMutableDictionary* dic = [NSMutableDictionary new];
+							  for (EVECharacterIDItem* item in result.characters)
+								  dic[@(item.characterID)] = item.name;
+							  characterName = dic;
+							  dispatch_group_leave(finishDispatchGroup);
+							  @synchronized(progress) {
+								  progress.completedUnitCount++;
+							  }
+						  } progressBlock:nil];
+			}
+			else
+				@synchronized(progress) {
+					progress.completedUnitCount++;
+				}
+			
+			dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+				@autoreleasepool {
+					for (EVEIndustryJobsItem* job in result.jobs) {
+						job.blueprintLocation = locationsNames[@(job.blueprintLocationID)];
+						job.outputLocation = locationsNames[@(job.outputLocationID)];
+						job.installerName = characterName[@(job.installerID)];
+					}
+					
+					[activeJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"endDate" ascending:YES]]];
+					[finishedJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"completedDate" ascending:NO]]];
+					
+					data.activeJobs = activeJobs;
+					data.finishedJobs = finishedJobs;
+					
+					data.currentTime = result.eveapi.currentTime;
+					data.cacheDate = result.eveapi.cacheDate;
+					
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[self saveCacheData:data cacheDate:[NSDate date] expireDate:[result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]];
+						completionBlock(lastError);
+						progress.completedUnitCount++;
+					});
+					
+				}
+			});
+		} progressBlock:nil];
+	}];
 }
 
-- (void) update {
-	[super update];
-	NCIndustryJobsViewControllerData* data = self.data;
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NCIndustryJobsViewControllerData* data = cacheData;
 	self.currentDate = [NSDate dateWithTimeInterval:[data.currentTime timeIntervalSinceDate:data.cacheDate] sinceDate:[NSDate date]];
+	completionBlock();
 }
 
 
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
-		[self reloadFromCache];
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
+	self.account = [NCAccount currentAccount];
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -315,32 +285,100 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCIndustryJobsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCIndustryJobsViewControllerData* data = tableView == self.tableView ? self.cacheData : self.searchResults;
 	EVEIndustryJobsItem* row = indexPath.section == 0 ? data.activeJobs[indexPath.row] : data.finishedJobs[indexPath.row];
 	
 	NCIndustryJobsCell* cell = (NCIndustryJobsCell*) tableViewCell;
 	cell.object = row;
 	
-	if (row.blueprintType) {
-		cell.typeImageView.image = row.blueprintType.icon ? row.blueprintType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-		cell.titleLabel.text = row.blueprintType.typeName;
+	NCDBInvType* blueprintType = self.types[@(row.blueprintTypeID)];
+	if (!blueprintType) {
+		blueprintType = [self.databaseManagedObjectContext invTypeWithTypeID:row.blueprintTypeID];
+		if (blueprintType)
+			self.types[@(row.blueprintTypeID)] = blueprintType;
+	}
+
+	NCDBInvType* productType = self.types[@(row.productTypeID)];
+	if (!productType) {
+		productType = [self.databaseManagedObjectContext invTypeWithTypeID:row.productTypeID];
+		if (productType)
+			self.types[@(row.productTypeID)] = productType;
+	}
+
+	NCDBRamActivity* activity = self.activities[@(row.activityID)];
+	if (!activity) {
+		activity = [self.databaseManagedObjectContext ramActivityWithActivityID:row.activityID];
+		if (activity)
+			self.activities[@(row.activityID)] = activity;
+	}
+
+	
+	if (blueprintType) {
+		cell.typeImageView.image = blueprintType.icon ? blueprintType.icon.image.image : self.defaultTypeIcon.image.image;
+		cell.titleLabel.text = blueprintType.typeName;
 	}
 	else {
-		cell.typeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"74_14"] image] image];
-		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.blueprintType];
+		cell.typeImageView.image = self.unknownTypeIcon.image.image;
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.blueprintTypeID];
 	}
 	
 	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.endDate];
-	cell.activityLabel.text = row.activity.activityName;
-	cell.activityImageView.image = row.activity.icon.image.image;
+	cell.activityLabel.text = activity.activityName;
+	cell.activityImageView.image = activity.icon.image.image;
 	cell.characterLabel.text = row.installerName;
-	cell.locationLabel.text = row.blueprintLocation.name;
+	
+	if (row.blueprintLocation.name)
+		cell.locationLabel.text = row.blueprintLocation.name;
+	else if (row.blueprintLocation.solarSystemID) {
+		NCDBMapSolarSystem* solarSystem = self.solarSystems[@(row.blueprintLocation.solarSystemID)];
+		if (!solarSystem) {
+			solarSystem = [self.databaseManagedObjectContext mapSolarSystemWithSolarSystemID:row.blueprintLocation.solarSystemID];
+			if (solarSystem)
+				self.solarSystems[@(row.blueprintLocation.solarSystemID)] = solarSystem;
+		};
+		cell.locationLabel.text = solarSystem.solarSystemName;
+	}
+	else
+		cell.locationLabel.text = NSLocalizedString(@"Unknown location", nil);
+
 	
 	NSString* status = [row localizedStateWithCurrentDate:self.currentDate];
-	UIColor* statusColor = nil;
-	statusColor = [UIColor yellowColor];
+	
+	NSTimeInterval remainsTime = [row.endDate timeIntervalSinceDate:self.currentDate];
+	UIColor* statusColor;
+	
+	switch (row.status) {
+		case EVEIndustryJobStatusActive:
+			statusColor = remainsTime <= 0 ? [UIColor greenColor] : [UIColor yellowColor];
+			break;
+		case EVEIndustryJobStatusPaused:
+			statusColor = [UIColor yellowColor];
+			break;
+		case EVEIndustryJobStatusReady:
+		case EVEIndustryJobStatusDelivered:
+			statusColor = [UIColor greenColor];
+			break;
+		case EVEIndustryJobStatusCancelled:
+		case EVEIndustryJobStatusReverted:
+		default:
+			statusColor = [UIColor redColor];
+			break;
+	}
+
 	cell.stateLabel.text = status;
 	cell.stateLabel.textColor = statusColor;
+}
+
+#pragma mark - Private
+
+- (void) setAccount:(NCAccount *)account {
+	_account = account;
+	[account.managedObjectContext performBlock:^{
+		NSString* uuid = account.uuid;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.cacheRecordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), uuid];
+		});
+	}];
 }
 
 @end

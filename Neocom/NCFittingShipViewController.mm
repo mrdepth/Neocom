@@ -102,30 +102,45 @@
 	if (!self.fits)
 		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
 	NCShipFit* fit = self.fit;
+	if (!fit.engine)
+		fit.engine = [NCFittingEngine new];
+
+	[fit.engine performBlockAndWait:^{
+		if (!fit.pilot) {
+			fit.pilot = engine->getGang()->addPilot();
+			NCAccount* account = [NCAccount currentAccount];
+			
+			void (^load)() = ^ {
+				dispatch_async(dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_DEFAULT), ^{
+					@autoreleasepool {
+						[fit load];
+						dispatch_async(dispatch_get_main_queue(), ^{
+							self.engine = engine;
+							[self reload];
+						});
+					}
+				});
+			};
+			if (account)
+				[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+					[self.storageManagedObjectContext performBlock:^{
+						if (characterSheet)
+							fit.character = [self.storageManagedObjectContext characterWithAccount:account];
+						else
+							fit.character = [self.storageManagedObjectContext characterWithSkillsLevel:5];
+						load();
+					}];
+				}];
+			else {
+				fit.character = [self.storageManagedObjectContext characterWithSkillsLevel:5];
+				load();
+			}
+		}
+	}];
+
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-//											 @synchronized(self) {
-												 if (!fit.pilot) {
-													 fit.pilot = engine->getGang()->addPilot();
-													 NCAccount* account = [NCAccount currentAccount];
-													 NCFitCharacter* character;
-													 
-													 if (account.characterSheet)
-														 character = [[NCStorage sharedStorage] characterWithAccount:account];
-													 else
-														 character = [[NCStorage sharedStorage] characterWithSkillsLevel:5];
-													 
-													 fit.character = character;
-													 [fit load];
-												 }
-//											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.engine = engine;
-								 [self reload];
-							 }];
+	[self.storageManagedObjectContext performBlock:^{
+	}];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -164,7 +179,10 @@
 				[fit save];
 		}
 		self.fits = nil;
-		[[NCStorage sharedStorage] saveContext];
+		[self.storageManagedObjectContext performBlock:^{
+			if ([self.storageManagedObjectContext hasChanges])
+				[self.storageManagedObjectContext save:nil];
+		}];
 	}
 	[super viewWillDisappear:animated];
 }
@@ -263,7 +281,7 @@
 			attributes[@(attribute.attributeType.attributeID)] = @(item->getAttribute(attribute.attributeType.attributeID)->getValue());
 		}
 		
-		controller.type = (id) type;
+		controller.typeID = [type objectID];
 		controller.attributes = attributes;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingDamagePatternsViewController"]) {
@@ -282,7 +300,7 @@
 			controller = segue.destinationViewController;
 		eufe::Area* area = self.engine->getArea();
 		if (area)
-			controller.selectedAreaEffect = [NCDBInvType invTypeWithTypeID:area->getTypeID()];
+			controller.selectedAreaEffect = [self.databaseManagedObjectContext invTypeWithTypeID:area->getTypeID()];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingTypeVariationsViewController"]) {
 		NCFittingTypeVariationsViewController* controller;
@@ -294,7 +312,7 @@
 		controller.object = modules;
 		eufe::Item* item = reinterpret_cast<eufe::Item*>([modules[0] pointerValue]);
 		NCDBInvType* type = [self typeWithItem:item];
-		controller.type = type.parentType ? type.parentType : type;
+		controller.typeID = type.parentType ? [type.parentType objectID] : [type objectID];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingRequiredSkillsViewController"]) {
 		NCFittingRequiredSkillsViewController* controller;
@@ -370,7 +388,7 @@
 		type = self.typesCache[@(typeID)];
 	}
 	if (!type) {
-		type = [NCDBInvType invTypeWithTypeID:typeID];
+		type = [self.databaseManagedObjectContext invTypeWithTypeID:typeID];
 		if (type) {
 			@synchronized(self) {
 				self.typesCache[@(typeID)] = type;
@@ -459,7 +477,7 @@
 }
 
 - (IBAction)onAction:(id)sender {
-	if (!self.fit.character)
+	/*if (!self.fit.character)
 		return;
 	
 	NSMutableArray* buttons = [NSMutableArray new];
@@ -495,14 +513,12 @@
 	
 	void (^save)() = ^() {
 		[self.fit save];
-		[[NCStorage sharedStorage] saveContext];
 	};
 	
 	void (^duplicate)() = ^() {
 		[self.fit save];
-		NCStorage* storage = [NCStorage sharedStorage];
-		self.fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-		self.fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+		self.fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+		self.fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
 		self.fit.loadoutName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.loadoutName ? self.fit.loadoutName : @""];
 		self.title = self.fit.loadoutName;
 	};
@@ -688,7 +704,7 @@
 												   action();
 											   }
 										   } cancelBlock:nil];
-	[self.actionSheet showFromBarButtonItem:sender animated:YES];
+	[self.actionSheet showFromBarButtonItem:sender animated:YES];*/
 }
 
 - (void) setFit:(NCShipFit *)fit {
@@ -721,17 +737,17 @@
 #pragma mark - Private
 
 - (IBAction) unwindFromCharacterPicker:(UIStoryboardSegue*) segue {
-	NCFittingCharacterPickerViewController* sourceViewController = segue.sourceViewController;
+/*	NCFittingCharacterPickerViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedCharacter)
 		sourceViewController.fit.character = sourceViewController.selectedCharacter;
 	else if ([sourceViewController.fit.character isDeleted]) {
 		sourceViewController.fit.character = [[NCStorage sharedStorage] characterWithSkillsLevel:5];
 	}
-	[self reload];
+	[self reload];*/
 }
 
 - (IBAction) unwindFromFitPicker:(UIStoryboardSegue*) segue {
-	NCFittingFitPickerViewController* sourceViewController = segue.sourceViewController;
+/*	NCFittingFitPickerViewController* sourceViewController = segue.sourceViewController;
 	NCShipFit* fit = sourceViewController.selectedFit;
 	if (!fit)
 		return;
@@ -761,7 +777,7 @@
 							 completionHandler:^(NCTask *task) {
 								 [self.fits addObject:fit];
 								 [self reload];
-							 }];
+							 }];*/
 }
 
 - (IBAction) unwindFromTargets:(UIStoryboardSegue*) segue {
@@ -864,7 +880,7 @@
 }
 
 - (void) performExport {
-	if (self.actionSheet) {
+/*	if (self.actionSheet) {
 		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
 		self.actionSheet = nil;
 	}
@@ -898,47 +914,6 @@
 																	  otherButtonTitles:nil
 																		completionBlock:nil
 																			cancelBlock:nil] show];
-
-													  /* __block NSString* shortenLink = nil;
-													   __block NSError* error = nil;
-
-													   [[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-																							title:NCTaskManagerDefaultTitle
-																							block:^(NCTask *task) {
-																								NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://is.gd/create.php?format=json&url=fitting:%@", dna]]];
-																								NSData* data = [NSURLConnection sendSynchronousRequest:request
-																																	 returningResponse:nil
-																																				 error:&error];
-																								if (data) {
-																									NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-																									if ([result isKindOfClass:[NSDictionary class]])
-																										shortenLink = result[@"shorturl"];
-																									else
-																										error = [NSError errorWithDomain:@"is.gd"
-																																	code:0
-																																userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Unknown Error", nil)}];
-																								}
-																							}
-																				completionHandler:^(NCTask *task) {
-																					if (!error) {
-																						[[UIPasteboard generalPasteboard] setString:shortenLink];
-																						[[UIAlertView alertViewWithTitle:nil
-																												 message:NSLocalizedString(@"Link has been copied to clipboard", nil)
-																									   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-																									   otherButtonTitles:nil
-																										 completionBlock:nil
-																											 cancelBlock:nil] show];
-																					}
-																					else {
-																						[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Error", nil)
-																												 message:[error localizedDescription]
-																									   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-																									   otherButtonTitles:nil
-																										 completionBlock:nil
-																											 cancelBlock:nil] show];
-																					}
-																				}];
-													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"fitting:%@", self.fit.dnaRepresentation]];*/
 												   }
 												   else if (selectedButtonIndex == 1)
 													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"fitting:%@", self.fit.dnaRepresentation]];
@@ -974,7 +949,7 @@
 												   }
 											   }
 										   } cancelBlock:nil];
-	[self.actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+	[self.actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];*/
 }
 
 @end

@@ -32,14 +32,17 @@
 	NCCharacterAttributes* characterAttributes = [NCCharacterAttributes defaultCharacterAttributes];
 
 	__block std::map<int, NSInteger> skillPoints;
+	
+	[trainingQueue.databaseManagedObjectContext performBlockAndWait:^{
+		for (NCSkillData* skill in trainingQueue.skills) {
+			NCDBDgmTypeAttribute *primaryAttribute = skill.type.attributesDictionary[@(NCPrimaryAttributeAttribteID)];
+			NCDBDgmTypeAttribute *secondaryAttribute = skill.type.attributesDictionary[@(NCSecondaryAttributeAttribteID)];
+			int primaryAttributeID = 1 << ((int) primaryAttribute.value - NCCharismaAttributeID);
+			int secondaryAttributeID = 1 << ((int) secondaryAttribute.value - NCCharismaAttributeID);
+			skillPoints[primaryAttributeID | (secondaryAttributeID << 16)] += skill.skillPointsToLevelUp;
+		}
+	}];
 
-	for (NCSkillData* skill in trainingQueue.skills) {
-		NCDBDgmTypeAttribute *primaryAttribute = skill.type.attributesDictionary[@(NCPrimaryAttributeAttribteID)];
-		NCDBDgmTypeAttribute *secondaryAttribute = skill.type.attributesDictionary[@(NCSecondaryAttributeAttribteID)];
-		int primaryAttributeID = 1 << ((int) primaryAttribute.value - NCCharismaAttributeID);
-		int secondaryAttributeID = 1 << ((int) secondaryAttribute.value - NCCharismaAttributeID);
-		skillPoints[primaryAttributeID | (secondaryAttributeID << 16)] += skill.skillPointsToLevelUp;
-	}
 	
 	int basePoints = 17;
 	int bonusPoints = 14;
@@ -125,7 +128,7 @@
 	return characterAttributes;
 }
 
-- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext {
+- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet {
 	if (self = [super init]) {
 		if (characterSheet) {
 			self.charisma = characterSheet.attributes.charisma;
@@ -133,15 +136,17 @@
 			self.memory = characterSheet.attributes.memory;
 			self.perception = characterSheet.attributes.perception;
 			self.willpower = characterSheet.attributes.willpower;
-			
-			for (EVECharacterSheetImplant* implant in characterSheet.implants) {
-				NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:implant.typeID];
-				self.charisma += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value];
-				self.intelligence += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value];
-				self.memory += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value];
-				self.perception += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value];
-				self.willpower += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value];
-			}
+			NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+			[databaseManagedObjectContext performBlockAndWait:^{
+				for (EVECharacterSheetImplant* implant in characterSheet.implants) {
+					NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:implant.typeID];
+					self.charisma += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value];
+					self.intelligence += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value];
+					self.memory += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value];
+					self.perception += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value];
+					self.willpower += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value];
+				}
+			}];
 		}
 		else {
 			self.charisma = 19;

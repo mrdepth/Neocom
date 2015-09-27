@@ -29,16 +29,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-        if (self.parentViewController) {
-            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseSolarSystemPickerViewController"]];
-        }
-        else {
-            self.tableView.tableHeaderView = nil;
-            return;
-        }
-    }
-
 	if (self.region) {
 		self.title = self.region.regionName;
 		self.databaseManagedObjectContext = self.region.managedObjectContext;
@@ -114,7 +104,7 @@
 
 #pragma mark - NCTableViewController
 
-- (void) searchWithSearchString:(NSString*) searchString {
+- (void) searchWithSearchString:(NSString*) searchString completionBlock:(void (^)())completionBlock {
 	if (self.region) {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"constellation.region.regionName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"solarSystemName" ascending:YES]];
@@ -131,13 +121,8 @@
 	}
 	[self.searchResult performFetch:nil];
 	
-    if (self.searchController) {
-        NCDatabaseSolarSystemPickerViewController* searchResultsController = (NCDatabaseSolarSystemPickerViewController*) self.searchController.searchResultsController;
-        searchResultsController.searchResult = self.searchResult;
-        [searchResultsController.tableView reloadData];
-    }
-    else if (self.searchDisplayController)
-        [self.searchDisplayController.searchResultsTableView reloadData];
+	[(NCDatabaseSolarSystemPickerViewController*) self.searchController.searchResultsController setResult:self.searchResult];
+	completionBlock();
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {

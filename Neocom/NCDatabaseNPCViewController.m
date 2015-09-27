@@ -41,18 +41,6 @@
 
 	self.refreshControl = nil;
     
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-        if (self.parentViewController) {
-            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseNPCViewController"]];
-			[(NCDatabaseNPCViewController*) self.searchController.searchResultsController setDatabaseManagedObjectContext:self.databaseManagedObjectContext];
-        }
-        else {
-            self.tableView.tableHeaderView = nil;
-            return;
-        }
-    }
-    
-
 	[self reload];
 }
 
@@ -92,7 +80,7 @@
 
 #pragma mark - NCTableViewController
 
-- (void) searchWithSearchString:(NSString*) searchString {
+- (void) searchWithSearchString:(NSString*) searchString completionBlock:(void (^)())completionBlock {
 	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
 	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
 	
@@ -101,14 +89,9 @@
 	request.fetchBatchSize = 50;
 	self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	[self.searchResult performFetch:nil];
-    
-    if (self.searchController) {
-        NCDatabaseNPCViewController* searchResultsController = (NCDatabaseNPCViewController*) self.searchController.searchResultsController;
-        searchResultsController.searchResult = self.searchResult;
-        [searchResultsController.tableView reloadData];
-    }
-    else if (self.searchDisplayController)
-        [self.searchDisplayController.searchResultsTableView reloadData];
+	
+	[(NCDatabaseNPCViewController*) self.searchController.searchResultsController setResult:self.searchResult];
+	completionBlock();
 }
 
 - (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {

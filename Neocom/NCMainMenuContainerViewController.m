@@ -86,7 +86,7 @@
 
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
-	[self updateInsetsForView:self.view];
+//	[self updateInsetsForView:self.view];
 }
 
 #pragma mark - Private
@@ -103,7 +103,7 @@
 
 		CGRect frame = self.menuViewController.view.superview.bounds;
 		dropDownViewController.view.frame = frame;
-		[self updateInsetsForView:dropDownViewController.view];
+//		[self updateInsetsForView:dropDownViewController.view];
 		dropDownViewController.view.layer.zPosition = 1.0;
 		dropDownViewController.view.transform = CGAffineTransformMakeTranslation(0.0f, -frame.size.height);
 		dropDownViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
@@ -144,7 +144,7 @@
 		UIViewController* dropDownViewController = self.dropDownViewController;
 		CGRect frame = dropDownViewController.view.superview.bounds;
 		self.menuViewController.view.frame = frame;
-		[self updateInsetsForView:self.menuViewController.view];
+//		[self updateInsetsForView:self.menuViewController.view];
 
 		[self transitionFromViewController:dropDownViewController
 						  toViewController:self.menuViewController

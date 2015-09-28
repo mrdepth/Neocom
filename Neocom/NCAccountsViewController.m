@@ -257,14 +257,21 @@
 		return;
 	}
 	NCAccountsViewControllerData* cacheData = self.cacheData;
+	
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:1];
 
 	[accountsManager loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray* apiKeys) {
 		[self.storageManagedObjectContext performBlock:^{
+			__block NSError* lastError;
 			NCAccountsViewControllerData* data = [NCAccountsViewControllerData new];
 			data.accounts = [NSMutableArray new];
 			
 			
 			__block dispatch_group_t finishGroup = dispatch_group_create();
+			[progress becomeCurrentWithPendingUnitCount:1];
+			NSProgress* accountsTotalProgress = [NSProgress progressWithTotalUnitCount:accounts.count];
+			[progress resignCurrent];
+			
 			
 			for (NCAccount* account in accounts) {
 				dispatch_group_enter(finishGroup);
@@ -280,17 +287,36 @@
 				dataAccount.uuid = account.uuid;
 				dataAccount.apiKeyInfo = account.apiKey.apiKeyInfo;
 				
-				NSMutableSet* operations = [NSMutableSet new];
 				EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
-				api.startImmediately = NO;
-				[operations addObject:[api accountStatusWithCompletionBlock:^(EVEAccountStatus *result, NSError *error) {
-					dataAccount.accountStatus = result;
-				} progressBlock:nil]];
+				dispatch_group_t partialFinishDispatchGroup = dispatch_group_create();
 				
-				if (corporate)
-					[operations addObject:[api accountBalanceWithCompletionBlock:^(EVEAccountBalance *result, NSError *error) {
+				[accountsTotalProgress becomeCurrentWithPendingUnitCount:1];
+				NSProgress* accountProgress = [NSProgress progressWithTotalUnitCount:4];
+				[accountsTotalProgress resignCurrent];
+
+				dispatch_group_enter(partialFinishDispatchGroup);
+				[api accountStatusWithCompletionBlock:^(EVEAccountStatus *result, NSError *error) {
+					dataAccount.accountStatus = result;
+					dispatch_group_leave(partialFinishDispatchGroup);
+					@synchronized(accountProgress) {
+						accountProgress.completedUnitCount++;
+					}
+				} progressBlock:nil];
+				
+				if (corporate) {
+					dispatch_group_enter(partialFinishDispatchGroup);
+					[api accountBalanceWithCompletionBlock:^(EVEAccountBalance *result, NSError *error) {
 						dataAccount.accountBalance = result;
-					} progressBlock:nil]];
+						dispatch_group_leave(partialFinishDispatchGroup);
+						@synchronized(accountProgress) {
+							accountProgress.completedUnitCount++;
+						}
+					} progressBlock:nil];
+				}
+				else
+					@synchronized(accountProgress) {
+						accountProgress.completedUnitCount++;
+					}
 				
 				void (^reload)() = ^{
 					dispatch_async(dispatch_get_main_queue(), ^{
@@ -302,12 +328,20 @@
 								[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 						}
 						dispatch_group_leave(finishGroup);
+						@synchronized(accountProgress) {
+							accountProgress.completedUnitCount++;
+						}
 					});
 				};
 				
-				NSArray* batchedOperations = [AFHTTPRequestOperation batchOfRequestOperations:[operations allObjects] progressBlock:nil completionBlock:^void(NSArray * operations) {
+				dispatch_group_notify(partialFinishDispatchGroup, dispatch_get_main_queue(), ^{
 					[account reloadWithCachePolicy:cachePolicy completionBlock:^(NSError *error) {
+						if (error)
+							lastError = error;
 						[account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
+							@synchronized(accountProgress) {
+								accountProgress.completedUnitCount++;
+							}
 							dataAccount.error = error;
 							dataAccount.characterInfo = characterInfo;
 							if (corporate) {
@@ -327,13 +361,13 @@
 							}
 						}];
 					} progressBlock:nil];
-				}];
-				[api.httpRequestOperationManager.operationQueue addOperations:batchedOperations waitUntilFinished:NO];
+				});
+				
 				[data.accounts addObject:dataAccount];
 			}
 			
 			dispatch_group_notify(finishGroup, dispatch_get_main_queue(), ^{
-				completionBlock(nil);
+				completionBlock(lastError);
 				finishGroup = nil;
 			});
 

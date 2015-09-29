@@ -121,7 +121,7 @@
     [super viewDidLoad];
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	[self.dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
-	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 	self.account = [NCAccount currentAccount];
 }
 

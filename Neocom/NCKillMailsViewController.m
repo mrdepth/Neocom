@@ -93,7 +93,7 @@
     [super viewDidLoad];
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	[self.dateFormatter setDateFormat:@"HH:mm"];
-	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -166,7 +166,7 @@
 												 cacheExpireDate = killLog.cacheExpireDate;
 												 NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
 												 [dateFormatter setDateFormat:@"yyyy.MM.dd"];
-												 [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+												 [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 												 NSMutableDictionary* kills = [NSMutableDictionary new];
 												 NSMutableDictionary* losses = [NSMutableDictionary new];
 

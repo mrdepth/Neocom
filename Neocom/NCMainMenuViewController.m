@@ -77,7 +77,7 @@
 	[self reload];
 	
 	self.dateFormatter = [NSDateFormatter new];
-	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 	self.dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 	[self.dateFormatter setDateFormat:@"HH:mm:ss"];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

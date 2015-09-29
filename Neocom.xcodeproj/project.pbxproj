@@ -197,6 +197,9 @@
 		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
 		126703061A8FD22700F816F9 /* NSAttributedString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126703051A8FD22700F816F9 /* NSAttributedString+Neocom.m */; };
 		1267030C1A911A0900F816F9 /* NSMutableAttributedString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 1267030B1A911A0800F816F9 /* NSMutableAttributedString+Neocom.m */; };
+		126AACEE1BBA67C00068AA99 /* NCDatabaseTypeMarketInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAA188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m */; settings = {ASSET_TAGS = (); }; };
+		126AACEF1BBA72110068AA99 /* NCDatabaseGroupPickerViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A4F18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m */; settings = {ASSET_TAGS = (); }; };
+		126AACF01BBA72940068AA99 /* NCCharacterSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */; settings = {ASSET_TAGS = (); }; };
 		126ED32D188144370009FA39 /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 126ED32C188144370009FA39 /* mainMenu.plist */; };
 		126F1CD41954047100E5CD4F /* droneRange.png in Resources */ = {isa = PBXBuildFile; fileRef = 126F1CCF1954047100E5CD4F /* droneRange.png */; };
 		126F1CD51954047100E5CD4F /* priceFitting.png in Resources */ = {isa = PBXBuildFile; fileRef = 126F1CD01954047100E5CD4F /* priceFitting.png */; };
@@ -4324,6 +4327,7 @@
 				12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */,
 				84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */,
 				129D2611187E923300E2062C /* NSObject+Debug.m in Sources */,
+				126AACF01BBA72940068AA99 /* NCCharacterSheetViewController.m in Sources */,
 				129D262D187E923300E2062C /* UIAlertView+Block.m in Sources */,
 				120C332E19CAB0A60093EECA /* NCDBCertMastery.m in Sources */,
 				1211123E18599396009E5106 /* NCCache.xcdatamodeld in Sources */,
@@ -4384,6 +4388,7 @@
 				129421A9187FDF7200977CB8 /* NSString+Neocom.m in Sources */,
 				125A19C31BB6AE3900C5BAD8 /* NCContractsCell.m in Sources */,
 				127A1AB71BADECC40066A5EE /* NCShipFit.mm in Sources */,
+				126AACEE1BBA67C00068AA99 /* NCDatabaseTypeMarketInfoViewController.m in Sources */,
 				120C339119CAB0AB0093EECA /* NCDBDgmAttributeType.m in Sources */,
 				125A19751BB54CB600C5BAD8 /* NCMarketOrdersViewController.m in Sources */,
 				122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */,
@@ -4461,6 +4466,7 @@
 				12436DAB1945A0310090D4A6 /* NCDatabase.xcdatamodeld in Sources */,
 				1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */,
 				12CC8D6C188178570058C5DF /* NCTableViewEmptyHeaderView.m in Sources */,
+				126AACEF1BBA72110068AA99 /* NCDatabaseGroupPickerViewContoller.m in Sources */,
 				124097C31B2F2021002AC442 /* NCPopoverController.m in Sources */,
 				1267030C1A911A0900F816F9 /* NSMutableAttributedString+Neocom.m in Sources */,
 				12E86944195EC700004B66D0 /* NCTodayCell.m in Sources */,

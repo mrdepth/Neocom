@@ -59,8 +59,6 @@
 		for (NCTableViewController* controller in self.viewControllers) {
 			if (controller.searchController.isActive)
 				[controller.searchController setActive:NO];
-			else if (controller.searchDisplayController.isActive)
-				[controller.searchDisplayController setActive:NO animated:NO];
 		}
 		
 		if (self.viewControllers.count > 1)

@@ -123,7 +123,7 @@
     [super viewDidLoad];
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	[self.dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
-	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 	self.unknownTypeIcon = 	[self.databaseManagedObjectContext eveIconWithIconFile:@"74_14"];
 	self.types = [NSMutableDictionary new];

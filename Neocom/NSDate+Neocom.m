@@ -15,7 +15,7 @@
 	NSInteger days = [self daysAgo];
 	if (days == 0) {
 		NSDateFormatter* dateFormatter = [NSDateFormatter new];
-		[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+		[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 		[dateFormatter setDateFormat:@"HH:mm"];
 		return [dateFormatter stringFromDate:self];
 	}
@@ -23,7 +23,7 @@
 		return NSLocalizedString(@"Yesterday", nil);
 	else {
 		NSDateFormatter* dateFormatter = [NSDateFormatter new];
-		[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+		[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 		[dateFormatter setDateFormat:@"yyyy.MM.dd"];
 		return [dateFormatter stringFromDate:self];
 	}

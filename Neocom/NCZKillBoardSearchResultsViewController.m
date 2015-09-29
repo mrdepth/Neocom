@@ -90,7 +90,7 @@
     [super viewDidLoad];
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	[self.dateFormatter setDateFormat:@"HH:mm"];
-	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -234,7 +234,7 @@
 											 if (search) {
 												 NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
 												 [dateFormatter setDateFormat:@"yyyy.MM.dd"];
-												 [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+												 [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 												 NSMutableDictionary* sections = [NSMutableDictionary new];
 												 
 												 for (EVEKillLogKill* kill in search.kills) {

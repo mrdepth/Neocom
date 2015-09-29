@@ -61,7 +61,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 	self.refreshControl = nil;
 	self.dateFormatter = [NSDateFormatter new];
 	[self.dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 
 	
 	self.cellIdentifiers = [NSMutableArray new];
@@ -129,7 +129,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 		
 		if (self.date) {
 			NSDateFormatter* dateFormatter = [NSDateFormatter new];
-			[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+			[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 			[dateFormatter setDateFormat:@"yyyyMMdd'T'HHmmss"];
 			filter[EVEzKillBoardSearchFilterStartTimeKey] = [dateFormatter stringFromDate:self.date];
 		}

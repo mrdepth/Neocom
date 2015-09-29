@@ -31,6 +31,7 @@
 #pragma mark - Override
 - (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
 - (void) loadCacheData:(id) cacheData withCompletionBlock:(void(^)()) completionBlock;
+- (void) managedObjectContextDidFinishSave:(NSNotification*) notification;
 
 //Notifications
 - (void) didChangeAccount:(NSNotification*) notification;

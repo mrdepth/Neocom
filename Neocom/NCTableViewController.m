@@ -155,8 +155,6 @@
 	if ([self isViewLoaded] && self.view.window == nil) {
 		self.cacheRecord = nil;
 		self.cacheData = nil;
-		if (self.searchDisplayController && self.searchDisplayController.active)
-			[self.searchDisplayController setActive:NO animated:NO];
 	}
 }
 
@@ -182,10 +180,16 @@
 			}
 		}];
 	}
-	[self.cacheManagedObjectContext performBlock:^{
-		if ([self.cacheManagedObjectContext hasChanges])
-			[self.cacheManagedObjectContext save:nil];
+	[_cacheManagedObjectContext performBlock:^{
+		if ([_cacheManagedObjectContext hasChanges])
+			[_cacheManagedObjectContext save:nil];
 	}];
+	
+	[_storageManagedObjectContext performBlock:^{
+		if ([_storageManagedObjectContext hasChanges])
+			[_storageManagedObjectContext save:nil];
+	}];
+	
 }
 
 - (void) willMoveToParentViewController:(UIViewController *)parent {
@@ -285,6 +289,10 @@
 	completionBlock();
 }
 
+- (void) managedObjectContextDidFinishSave:(NSNotification*) notification {
+	
+}
+
 - (void) reload {
 	if (!self.searchContentsController && !self.loadingFromCache) {
 		if (self.cacheManagedObjectContext) {
@@ -374,17 +382,24 @@
 }
 
 - (void) willResignActive:(NSNotification*) notification {
-	[self.cacheManagedObjectContext performBlock:^{
-		if ([self.cacheManagedObjectContext hasChanges])
-			[self.cacheManagedObjectContext save:nil];
+	[_cacheManagedObjectContext performBlock:^{
+		if ([_cacheManagedObjectContext hasChanges])
+			[_cacheManagedObjectContext save:nil];
+	}];
+	[_storageManagedObjectContext performBlock:^{
+		if ([_storageManagedObjectContext hasChanges])
+			[_storageManagedObjectContext save:nil];
 	}];
 }
 
 - (void) managedObjectContextDidSave:(NSNotification*) notification {
 	NSManagedObjectContext* context = notification.object;
 	if (context.persistentStoreCoordinator == _storageManagedObjectContext.persistentStoreCoordinator) {
-		[self.storageManagedObjectContext performBlock:^{
-			[self.storageManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+		[_storageManagedObjectContext performBlock:^{
+			[_storageManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self managedObjectContextDidFinishSave:notification];
+			});
 		}];
 	}
 }

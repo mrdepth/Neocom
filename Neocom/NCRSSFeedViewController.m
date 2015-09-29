@@ -126,7 +126,7 @@
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 NSDateFormatter* dateFormatter = [NSDateFormatter new];
-											 [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+											 [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 											 [dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 
 											 RSS* rss = [RSS rssWithContentsOfURL:self.url error:&error progressHandler:^(CGFloat progress, BOOL *stop) {

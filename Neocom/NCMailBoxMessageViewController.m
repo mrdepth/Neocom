@@ -64,7 +64,7 @@
 																range:NSMakeRange(0, template.length)];
 								 
 								 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-								 [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+								 [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 								 [dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 								 
 								 [template replaceOccurrencesOfString:@"{date}"

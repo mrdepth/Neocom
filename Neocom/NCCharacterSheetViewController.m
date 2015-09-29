@@ -8,7 +8,7 @@
 
 #import "NCCharacterSheetViewController.h"
 #import "NCStorage.h"
-#import "EVEOnlineAPI.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NSNumberFormatter+Neocom.h"
 #import "UIImageView+URL.h"
 #import "NSString+Neocom.h"
@@ -77,6 +77,7 @@
 @interface NCCharacterSheetViewController ()
 @property (nonatomic, assign) BOOL needsLayout;
 @property (nonatomic, strong) NSArray* jumpClones;
+@property (nonatomic, strong) NCAccount* account;
 - (void) loadJumpClones;
 
 @end
@@ -97,6 +98,7 @@
     [super viewDidLoad];
 	self.tableHeaderView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	self.tableView.tableHeaderView = nil;
+	self.account = [NCAccount currentAccount];
 	// Do any additional setup after loading the view.
 }
 
@@ -150,7 +152,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		controller.type = [sender object];
+		controller.typeID = [[sender object] objectID];
 	}
 }
 
@@ -170,62 +172,82 @@
 	NCCharacterSheetViewControllerJumpClone* jumpClone = self.jumpClones[section];
 	NSString* location = jumpClone.location.name.length > 0 ? jumpClone.location.name : NSLocalizedString(@"Unknown Location", nil);
 	NSString* name = jumpClone.jumpClone.cloneName.length > 0 ? jumpClone.jumpClone.cloneName : NSLocalizedString(@"Jump Clone", nil);
-	return [NSString stringWithFormat:@"%@ - %@", name, location];
+	return [NSString stringWithFormat:@"%@ / %@", name, location];
 }
 
 
 #pragma mark - NCTableViewController
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock progressBlock:(void (^)(float))progressBlock {
+	__block NSError* lastError = nil;
 	NCAccount* account = [NCAccount currentAccount];
-	if (!account || account.accountType == NCAccountTypeCorporate) {
-		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
+	if (!account) {
+		completionBlock(nil);
 		return;
 	}
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:5];
 	
-	NCCharacterSheetViewControllerData* data = [NCCharacterSheetViewControllerData new];
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 
-											 [account reloadWithCachePolicy:cachePolicy
-																	  error:&error
-															progressHandler:^(CGFloat progress, BOOL *stop) {
-																task.progress = (2.0 + progress) / 4.0;
-																if (task.isCancelled)
-																	*stop = YES;
-															}];
-											 if ([task isCancelled])
-												 return;
-											 data.characterSheet = account.characterSheet;
-											 data.characterInfo = account.characterInfo;
-											 data.skillQueue = account.skillQueue;
-											 
-											 if ([task isCancelled])
-												 return;
-											 data.accountStatus = [EVEAccountStatus accountStatusWithKeyID:account.apiKey.keyID
-																									 vCode:account.apiKey.vCode
-																							   cachePolicy:cachePolicy
-																									 error:nil
-																						   progressHandler:^(CGFloat progress, BOOL *stop) {
-																							   if ([task isCancelled])
-																								   *stop = YES;
-																							   else
-																								   task.progress = (3.0 + progress) / 4.0;
-																						   }];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:data withCacheDate:data.characterSheet.cacheDate expireDate:data.characterSheet.cacheExpireDate];
-									 }
-								 }
-							 }];
+	[account.managedObjectContext performBlock:^{
+		if (account.accountType == NCAccountTypeCharacter) {
+			EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+			[account reloadWithCachePolicy:cachePolicy completionBlock:^(NSError *error) {
+				progress.completedUnitCount++;
+				
+				NCCharacterSheetViewControllerData* data = [NCCharacterSheetViewControllerData new];
+
+				dispatch_group_t finishDispatchGroup = dispatch_group_create();
+				
+				dispatch_group_enter(finishDispatchGroup);
+				[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+					if (error)
+						lastError = error;
+					data.characterSheet = characterSheet;
+					@synchronized(progress) {
+						progress.completedUnitCount++;
+					}
+					dispatch_group_leave(finishDispatchGroup);
+				}];
+				
+				dispatch_group_enter(finishDispatchGroup);
+				[account loadSkillQueueWithCompletionBlock:^(EVESkillQueue *skillQueue, NSError *error) {
+					data.skillQueue = skillQueue;
+					@synchronized(progress) {
+						progress.completedUnitCount++;
+					}
+					dispatch_group_leave(finishDispatchGroup);
+				}];
+				
+				dispatch_group_enter(finishDispatchGroup);
+				[account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
+					data.characterInfo = characterInfo;
+					@synchronized(progress) {
+						progress.completedUnitCount++;
+					}
+					dispatch_group_leave(finishDispatchGroup);
+				}];
+				
+				dispatch_group_enter(finishDispatchGroup);
+				[api accountStatusWithCompletionBlock:^(EVEAccountStatus *result, NSError *error) {
+					data.accountStatus = result;
+					@synchronized(progress) {
+						progress.completedUnitCount++;
+					}
+					dispatch_group_leave(finishDispatchGroup);
+				} progressBlock:nil];
+
+				
+				dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+					[self saveCacheData:data cacheDate:[NSDate date] expireDate:[data.characterSheet.eveapi localTimeWithServerTime:data.characterSheet.eveapi.cachedUntil]];
+					completionBlock(lastError);
+				});
+			} progressBlock:nil];
+		}
+		else {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				completionBlock(nil);
+			});
+		}
+	}];
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -239,7 +261,7 @@
 		EVECharacterSheetJumpCloneImplant* implant = jumpClone.implants[indexPath.row];
 		NCDBInvType* type = objc_getAssociatedObject(implant, @"type");
 		if (!type) {
-			type = [NCDBInvType invTypeWithTypeID:implant.typeID];
+			type = [self.databaseManagedObjectContext invTypeWithTypeID:implant.typeID];
 			objc_setAssociatedObject(implant, @"type", type, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		}
 		cell.titleLabel.text = implant.typeName;
@@ -256,8 +278,8 @@
 	}
 }
 
-- (void) update {
-	NCCharacterSheetViewControllerData* data = self.data;
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NCCharacterSheetViewControllerData* data = self.cacheData;
 	self.characterImageView.image = nil;
 	self.corporationImageView.image = nil;
 	self.allianceImageView.image = nil;
@@ -278,7 +300,16 @@
 	if (characterSheet.allianceID)
 		[self.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:characterSheet.allianceID size:EVEImageSizeRetina32 error:nil]];
 
-	self.characterNameLabel.text = characterSheet.name;
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+	[dateFormatter setDateFormat:@"yyyy.MM.dd"];
+	
+
+	NSMutableAttributedString* characterName = [[NSMutableAttributedString alloc] initWithString:characterSheet.name attributes:nil];
+	[characterName appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", [dateFormatter stringFromDate:characterSheet.DoB]] attributes:@{NSFontAttributeName: [self.characterNameLabel.font fontWithSize:self.characterNameLabel.font.pointSize * 0.5],
+																																														//(__bridge NSString*) (kCTSuperscriptAttributeName): @(-1),
+																																														NSForegroundColorAttributeName: [UIColor lightTextColor]}]];
+	self.characterNameLabel.attributedText = characterName;
 	self.corporationNameLabel.text = characterSheet.corporationName;
 	self.allianceNameLabel.text = characterSheet.allianceName;
 	
@@ -288,10 +319,10 @@
 		self.securityStatusLabel.text = [NSString stringWithFormat:@"%.1f", characterInfo.securityStatus];
 		self.securityStatusLabel.textColor = [UIColor colorWithPlayerSecurityStatus:characterInfo.securityStatus];
 		
-		NSCalendar* calendaer = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		NSCalendar* calendaer = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 		NSDateComponents* dateComponents = [calendaer components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay
 														fromDate:characterInfo.corporationDate
-														  toDate:characterInfo.currentTime
+														  toDate:characterInfo.eveapi.currentTime
 														 options:0];
 		NSMutableArray* components = [NSMutableArray new];
 		if (dateComponents.year)
@@ -305,7 +336,7 @@
 		if (characterInfo.allianceDate) {
 			dateComponents = [calendaer components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay
 															fromDate:characterInfo.allianceDate
-															  toDate:characterInfo.currentTime
+															  toDate:characterInfo.eveapi.currentTime
 															 options:0];
 			[components removeAllObjects];
 			if (dateComponents.year)
@@ -319,7 +350,7 @@
 		else
 			self.allianceTimeLabel.text = nil;
 		
-		NCDBMapSolarSystem* solarSystem = characterInfo.lastKnownLocation ? [NCDBMapSolarSystem mapSolarSystemWithName:characterInfo.lastKnownLocation] : nil;
+		NCDBMapSolarSystem* solarSystem = characterInfo.lastKnownLocation ? [self.databaseManagedObjectContext mapSolarSystemWithName:characterInfo.lastKnownLocation] : nil;
 		
 		if (solarSystem) {
 			NSString* ss = [NSString stringWithFormat:@"%.1f", solarSystem.security];
@@ -349,7 +380,7 @@
 				text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], (int32_t) skillQueue.skillQueue.count];
 
 				EVESkillQueueItem* item = skillQueue.skillQueue[0];
-				NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
+				NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
 				self.currentSkillLabel.text = [NSString stringWithFormat:NSLocalizedString(@"> %@ Level %d", nil), type.typeName, (int32_t) item.level];
 			}
 			else {
@@ -379,9 +410,6 @@
 	
 	if (accountStatus) {
 		UIColor *color;
-		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-		[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
-		[dateFormatter setDateFormat:@"yyyy.MM.dd"];
 		int days = [accountStatus.paidUntil timeIntervalSinceNow] / (60 * 60 * 24);
 		if (days < 0)
 			days = 0;
@@ -398,29 +426,25 @@
 		self.subscriptionLabel.text = nil;
 	}
 	
-	NCDatabase* database = [NCDatabase sharedDatabase];
-	NSManagedObjectContext* context = [NSThread isMainThread] ? database.managedObjectContext : database.backgroundManagedObjectContext;
-	__block NCDBInvType* charismaEnhancer = nil;
-	__block NCDBInvType* intelligenceEnhancer = nil;
-	__block NCDBInvType* memoryEnhancer = nil;
-	__block NCDBInvType* perceptionEnhancer = nil;
-	__block NCDBInvType* willpowerEnhancer = nil;
+	NCDBInvType* charismaEnhancer = nil;
+	NCDBInvType* intelligenceEnhancer = nil;
+	NCDBInvType* memoryEnhancer = nil;
+	NCDBInvType* perceptionEnhancer = nil;
+	NCDBInvType* willpowerEnhancer = nil;
 
-	[context performBlockAndWait:^{
-		for (EVECharacterSheetImplant* implant in characterSheet.implants) {
-			NCDBInvType* type = [NCDBInvType invTypeWithTypeID:implant.typeID];
-			if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[(NCDBDgmTypeAttribute*) @(NCCharismaBonusAttributeID)] value] > 0)
-				charismaEnhancer = type;
-			else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value] > 0)
-				intelligenceEnhancer = type;
-			else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value] > 0)
-				memoryEnhancer = type;
-			else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value] > 0)
-				perceptionEnhancer = type;
-			else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value] > 0)
-				willpowerEnhancer = type;
-		}
-	}];
+	for (EVECharacterSheetImplant* implant in characterSheet.implants) {
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:implant.typeID];
+		if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[(NCDBDgmTypeAttribute*) @(NCCharismaBonusAttributeID)] value] > 0)
+			charismaEnhancer = type;
+		else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value] > 0)
+			intelligenceEnhancer = type;
+		else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value] > 0)
+			memoryEnhancer = type;
+		else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value] > 0)
+			perceptionEnhancer = type;
+		else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value] > 0)
+			willpowerEnhancer = type;
+	}
 	
 	if (intelligenceEnhancer) {
 		int32_t value = [(NCDBDgmTypeAttribute*) intelligenceEnhancer.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value];
@@ -477,28 +501,51 @@
 	[self.view setNeedsLayout];
 	
 	[self loadJumpClones];
-	[super update];
+	
+	completionBlock();
 }
 
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
-		[self reloadFromCache];
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
+	self.account = [NCAccount currentAccount];
 }
+
 
 - (void) loadJumpClones {
-	NCCharacterSheetViewControllerData* data = self.data;
+	NCCharacterSheetViewControllerData* data = self.cacheData;
 
 	NSMutableArray* jumpClones = [NSMutableArray new];
+	NSMutableSet* locationIDs = [NSMutableSet new];
 	for (EVECharacterSheetJumpClone* eveClone in data.characterSheet.jumpClones) {
 		NCCharacterSheetViewControllerJumpClone* jumpClone = [NCCharacterSheetViewControllerJumpClone new];
 		jumpClone.jumpClone = eveClone;
 		jumpClone.implants = [data.characterSheet.jumpCloneImplants filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"jumpCloneID == %d", eveClone.jumpCloneID]];
 		
-		jumpClone.location = [[NCLocationsManager defaultManager] locationsNamesWithIDs:@[@(eveClone.locationID)]][@(eveClone.locationID)];
+		[locationIDs addObject:@(eveClone.locationID)];
 		[jumpClones addObject:jumpClone];
 	}
+	if (locationIDs.count > 0) {
+		[[NCLocationsManager defaultManager] requestLocationsNamesWithIDs:[locationIDs allObjects] completionBlock:^(NSDictionary *locationsNames) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				for (NCCharacterSheetViewControllerJumpClone* jumpClone in jumpClones)
+					jumpClone.location = locationsNames[@(jumpClone.jumpClone.locationID)];
+				[self.tableView reloadData];
+			});
+		}];
+	}
+	else
+		[self.tableView reloadData];
 	self.jumpClones = jumpClones;
+}
+
+- (void) setAccount:(NCAccount *)account {
+	_account = account;
+	[account.managedObjectContext performBlock:^{
+		NSString* uuid = account.uuid;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.cacheRecordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), uuid];
+		});
+	}];
 }
 
 @end

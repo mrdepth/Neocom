@@ -15,7 +15,7 @@ typedef NS_ENUM(NSInteger, NCDatabaseTypeMarketInfoViewControllerMode) {
 };
 
 @interface NCDatabaseTypeMarketInfoViewController : NCTableViewController
-@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, strong) NSManagedObjectID* typeID;
 
 @property (nonatomic, assign) NCDatabaseTypeMarketInfoViewControllerMode mode;
 

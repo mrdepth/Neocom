@@ -72,7 +72,7 @@
 	
 	NSDateFormatter* dateFormatter = [NSDateFormatter new];
 	[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
-	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 	self.dateLabel.text = [dateFormatter stringFromDate:self.killMail.killTime];
 	self.damageTakenLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Damage taken: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:self.killMail.victim.damageTaken]];
 	

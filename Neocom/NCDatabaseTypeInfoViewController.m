@@ -186,7 +186,7 @@
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeMarketInfoViewController"]) {
 		NCDatabaseTypeMarketInfoViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.type = self.type;
+		destinationViewController.typeID = [self.type objectID];
 		destinationViewController.navigationItem.rightBarButtonItem = nil;
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeMasteryViewController"]) {

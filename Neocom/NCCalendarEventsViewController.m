@@ -159,7 +159,7 @@
 	static NSDateFormatter* dateFormatter = nil;
 	if (!dateFormatter) {
 		dateFormatter = [NSDateFormatter new];
-		[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+		[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 		[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 		[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 	}

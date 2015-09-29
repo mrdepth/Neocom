@@ -600,7 +600,7 @@
 			if (detailed && account.accountStatus) {
 				UIColor *color;
 				NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-				[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+				[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 				[dateFormatter setDateFormat:@"yyyy.MM.dd"];
 				int days = [account.accountStatus.paidUntil timeIntervalSinceNow] / (60 * 60 * 24);
 				if (days < 0)

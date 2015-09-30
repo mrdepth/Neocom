@@ -19,15 +19,45 @@
 #import "NCCharacterAttributesCell.h"
 #import "NCDefaultTableViewCell.h"
 
+@interface NCSkillQueueViewControllerData : NSObject<NSCoding>
+@property (nonatomic, strong) EVESkillQueue* skillQueue;
+@property (nonatomic, strong) EVECharacterSheet* characterSheet;
+@property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
+@end
+
+@implementation NCSkillQueueViewControllerData
+
+#pragma mark - NSCoding
+
+- (id) initWithCoder:(NSCoder *)aDecoder {
+	if (self = [super init]) {
+		self.skillQueue = [aDecoder decodeObjectForKey:@"skillQueue"];
+		self.characterSheet = [aDecoder decodeObjectForKey:@"characterSheet"];
+		self.characterAttributes = [aDecoder decodeObjectForKey:@"characterAttributes"];
+	}
+	return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeObject:self.skillQueue forKey:@"skillQueue"];
+	[aCoder encodeObject:self.characterSheet forKey:@"characterSheet"];
+	[aCoder encodeObject:self.characterAttributes forKey:@"characterAttributes"];
+}
+
+@end
+
 @interface NCSkillQueueViewController ()
 @property (nonatomic, strong) NCSkillPlan* skillPlan;
-@property (nonatomic, strong) NSMutableArray* skillPlanSkills;
+@property (nonatomic, strong) NSString* skillPlanName;
 @property (nonatomic, strong) NCAccount* account;
 @property (nonatomic, strong) NSArray* skillQueueRows;
 @property (nonatomic, strong) NCCharacterAttributes* optimalAttributes;
 @property (nonatomic, assign) NSTimeInterval optimalTrainingTime;
 @property (nonatomic, strong) UIDocumentInteractionController* documentInteractionController;
 @property (nonatomic, strong) NCTrainingQueue* fullTrainingQueue;
+@property (nonatomic, strong) NCTrainingQueue* skillPlanTrainingQueue;
+@property (nonatomic, strong) NSMutableDictionary* types;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 
 - (IBAction)onSkills:(id)sender;
 
@@ -51,6 +81,8 @@
 												  [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skills", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onSkills:)],
 												  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onAction:)]]
 									   animated:YES];
+	self.types = [NSMutableDictionary new];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 }
 
 - (void)didReceiveMemoryWarning
@@ -78,11 +110,15 @@
 								 [self performSegueWithIdentifier:@"NCSkillPlansViewController" sender:nil];
 							 }
 							 else if (selectedButtonIndex == 3) {
-								 NSData* data = [[self.skillPlan.trainingQueue xmlRepresentationWithSkillPlanName:self.skillPlan.name] dataUsingEncoding:NSUTF8StringEncoding];
-								 NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.emp", self.account.characterInfo.characterName, self.skillPlan.name]];
-								 [data writeCompressedToFile:path];
-								 self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
-								 [self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+								 [self.account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
+									 dispatch_async(dispatch_get_main_queue(), ^{
+										 NSData* data = [[self.skillPlanTrainingQueue xmlRepresentationWithSkillPlanName:self.skillPlanName] dataUsingEncoding:NSUTF8StringEncoding];
+										 NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.emp", characterInfo.characterName, self.skillPlanName]];
+										 [data writeCompressedToFile:path];
+										 self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
+										 [self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+									 });
+								 }];
 							 }
 						 } cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
 }
@@ -94,15 +130,15 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		controller.type = [[sender skillData] type];
+		controller.typeID = [[self.databaseManagedObjectContext invTypeWithTypeID:[[sender skillData] typeID]] objectID];
 	}
 }
 
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+/*- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	if ([keyPath isEqualToString:@"trainingQueue"]) {
 		if ([NSThread isMainThread]) {
 			NCTrainingQueue* newQueue = change[NSKeyValueChangeNewKey];
-			if (![self.skillPlanSkills isEqualToArray:newQueue.skills]) {
+			if (![self.skillPlanTrainingQueue.skills isEqualToArray:newQueue.skills]) {
 				self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:newQueue.skills];
 				[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationFade];
 			}
@@ -120,7 +156,7 @@
 			});
 		}
 	}
-}
+}*/
 
 - (void) dealloc {
 	self.account = nil;
@@ -139,22 +175,23 @@
 	else if (section == 1)
 		return self.skillQueueRows.count;
 	else if (section == 2)
-		return self.skillPlan.trainingQueue.skills.count;
+		return self.skillPlanTrainingQueue.skills.count;
 	else
 		return 0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	NCSkillQueueViewControllerData* data = self.cacheData;
 	if (section == 0)
 		return NSLocalizedString(@"Optimal neural remap", nil);
 	else if (section == 1)
-		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:[self.account.skillQueue timeLeft]], (int32_t) self.skillQueueRows.count];
+		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:[data.skillQueue timeLeft]], (int32_t) self.skillQueueRows.count];
 	else if (section == 2) {
-		if (self.skillPlan.trainingQueue.skills.count > 0)
+		if (self.skillPlanTrainingQueue.skills.count > 0)
 			return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills) in %@", nil),
-					[NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime],
-					(int32_t) self.skillPlan.trainingQueue.skills.count,
-					self.skillPlan.name.length > 0 ? self.skillPlan.name : NSLocalizedString(@"<noname>", nil)];
+					[NSString stringWithTimeLeft:self.skillPlanTrainingQueue.trainingTime],
+					(int32_t) self.skillPlanTrainingQueue.skills.count,
+					self.skillPlanName.length > 0 ? self.skillPlanName : NSLocalizedString(@"<noname>", nil)];
 		else
 			return NSLocalizedString(@"Skill plan is empty", nil);
 	}
@@ -172,7 +209,8 @@
 
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		[self.skillPlan removeSkill:self.skillPlanSkills[indexPath.row]];
+		[self.skillPlanTrainingQueue removeSkill:self.skillPlanTrainingQueue.skills[indexPath.row]];
+		[self.skillPlan save];
 	}
 }
 
@@ -181,12 +219,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-	id object = self.skillPlanSkills[sourceIndexPath.row];
-	[self.skillPlanSkills removeObjectAtIndex:sourceIndexPath.row];
-	[self.skillPlanSkills insertObject:object atIndex:destinationIndexPath.row];
-	NCTrainingQueue* trainingQueue = [self.skillPlan.trainingQueue copy];
-	trainingQueue.skills = self.skillPlanSkills;
-	self.skillPlan.trainingQueue = trainingQueue;
+	[self.skillPlanTrainingQueue moveSkillAdIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
 	[self.skillPlan save];
 }
 
@@ -208,14 +241,6 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
-- (NSDate*) cacheDate {
-	return self.account.skillQueue.cacheDate;
-}
-
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0)
@@ -229,7 +254,7 @@
 		if (indexPath.section == 1)
 			row = self.skillQueueRows[indexPath.row];
 		else if (indexPath.section == 2)
-			row = self.skillPlan.trainingQueue.skills[indexPath.row];
+			row = self.skillPlanTrainingQueue.skills[indexPath.row];
 		
 		if (row.trainedLevel >= 0)
 			return @"NCSkillCell";
@@ -239,35 +264,37 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCSkillQueueViewControllerData* data = self.cacheData;
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			NCCharacterAttributesCell* cell = (NCCharacterAttributesCell*) tableViewCell;
-			EVECharacterSheet* characterSheet = self.account.characterSheet;
+			EVECharacterSheet* characterSheet = data.characterSheet;
 
+			NCDBInvType* charismaEnhancer = nil;
+			NCDBInvType* intelligenceEnhancer = nil;
+			NCDBInvType* memoryEnhancer = nil;
+			NCDBInvType* perceptionEnhancer = nil;
+			NCDBInvType* willpowerEnhancer = nil;
 			
-			NCDatabase* database = [NCDatabase sharedDatabase];
-			NSManagedObjectContext* context = [NSThread isMainThread] ? database.managedObjectContext : database.backgroundManagedObjectContext;
-			__block NCDBInvType* charismaEnhancer = nil;
-			__block NCDBInvType* intelligenceEnhancer = nil;
-			__block NCDBInvType* memoryEnhancer = nil;
-			__block NCDBInvType* perceptionEnhancer = nil;
-			__block NCDBInvType* willpowerEnhancer = nil;
-			
-			[context performBlockAndWait:^{
-				for (EVECharacterSheetImplant* implant in characterSheet.implants) {
-					NCDBInvType* type = [NCDBInvType invTypeWithTypeID:implant.typeID];
-					if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value] > 0)
-						charismaEnhancer = type;
-					else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value] > 0)
-						intelligenceEnhancer = type;
-					else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value] > 0)
-						memoryEnhancer = type;
-					else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value] > 0)
-						perceptionEnhancer = type;
-					else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value] > 0)
-						willpowerEnhancer = type;
+			for (EVECharacterSheetImplant* implant in characterSheet.implants) {
+				NCDBInvType* type = self.types[@(implant.typeID)];
+				if (!type) {
+					type = [self.databaseManagedObjectContext invTypeWithTypeID:implant.typeID];
+					if (type)
+						self.types[@(implant.typeID)] = type;
 				}
-			}];
+				
+				if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value] > 0)
+					charismaEnhancer = type;
+				else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value] > 0)
+					intelligenceEnhancer = type;
+				else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value] > 0)
+					memoryEnhancer = type;
+				else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value] > 0)
+					perceptionEnhancer = type;
+				else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value] > 0)
+					willpowerEnhancer = type;
+			}
 
 			
 			NSAttributedString* (^attributesString)(int32_t, int32_t, int32_t) = ^(int32_t attribute, int32_t enhancer, int32_t currentAttribute) {
@@ -313,15 +340,21 @@
 	}
 	else {
 		NCSkillData* row;
-		
 		if (indexPath.section == 1)
 			row = self.skillQueueRows[indexPath.row];
 		else if (indexPath.section == 2)
-			row = self.skillPlan.trainingQueue.skills[indexPath.row];
+			row = self.skillPlanTrainingQueue.skills[indexPath.row];
 		
 		
 		NCSkillCell* cell = (NCSkillCell*) tableViewCell;
 		cell.skillData = row;
+		
+		NCDBInvType* type = self.types[@(row.typeID)];
+		if (!type) {
+			type = [self.databaseManagedObjectContext invTypeWithTypeID:row.typeID];
+			if (type)
+				self.types[@(row.typeID)] = type;
+		}
 		
 		if (row.trainedLevel >= 0) {
 			float progress = 0;
@@ -337,18 +370,18 @@
 			
 			cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@ SP/h)", nil),
 										  [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.skillPoints)],
-										  [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.account.characterAttributes skillpointsPerSecondForSkill:row.type] * 3600)]];
+										  [NSNumberFormatter neocomLocalizedStringFromNumber:@([data.characterAttributes skillpointsPerSecondForSkill:type] * 3600)]];
 			cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), MAX(row.targetLevel, row.trainedLevel)];
 			[cell.levelImageView setGIFImageWithContentsOfURL:[[NSBundle mainBundle] URLForResource:[NSString stringWithFormat:@"level_%d%d%d", row.trainedLevel, row.targetLevel, row.active] withExtension:@"gif"]];
 			cell.dateLabel.text = row.trainingTimeToLevelUp > 0 ? [NSString stringWithFormat:@"%@ (%.0f%%)", [NSString stringWithTimeLeft:row.trainingTimeToLevelUp], progress * 100] : nil;
 		}
 		else {
-			cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.account.characterAttributes skillpointsPerSecondForSkill:row.type] * 3600)]];
+			cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([data.characterAttributes skillpointsPerSecondForSkill:type] * 3600)]];
 			cell.levelLabel.text = nil;
 			cell.levelImageView.image = nil;
 			cell.dateLabel.text = nil;
 		}
-		cell.titleLabel.text = row.skillName;
+		cell.titleLabel.text = row.description;
 	}
 }
 

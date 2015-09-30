@@ -14,12 +14,12 @@
 @interface NCSkillData() {
 	NSNumber* _hash;
 }
-@property (nonatomic, strong, readwrite) NCDBInvType* type;
+//@property (nonatomic, strong, readwrite) NCDBInvType* type;
+@property (nonatomic, strong) NSString* typeName;
 @property (nonatomic, assign) int32_t rank;
 @property (nonatomic, assign) int32_t typeID;
 @property (nonatomic, assign) int32_t primaryAttributeID;
 @property (nonatomic, assign) int32_t secondaryAttributeID;
-
 
 @end
 
@@ -38,7 +38,13 @@
 		return nil;
 
 	if (self = [super init]) {
-		self.type = type;
+		[type.managedObjectContext performBlockAndWait:^{
+			self.typeID = type.typeID;
+			self.rank = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
+			self.primaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
+			self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
+			self.typeName = type.typeName;
+		}];
 	}
 	return self;
 }
@@ -104,10 +110,7 @@
 }
 
 - (NSString*) description {
-	__block NSString* description;
-	[self.type.managedObjectContext performBlockAndWait:^{
-		description = [NSString stringWithFormat:@"%@ (x%d)", self.type.typeName, self.rank];
-	}];
+	NSString* description = [NSString stringWithFormat:@"%@ (x%d)", self.typeName, self.rank];
 	return description;
 }
 
@@ -132,16 +135,6 @@
 	}
 	else
 		return [_hash unsignedIntegerValue];
-}
-
-- (void) setType:(NCDBInvType *)type {
-	_type = type;
-	[type.managedObjectContext performBlockAndWait:^{
-		self.typeID = type.typeID;
-		self.rank = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
-		self.primaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
-		self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
-	}];
 }
 
 /*#pragma mark - NSCoding

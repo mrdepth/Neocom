@@ -55,27 +55,24 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
 }
 
-- (void) setTrainingQueue:(NCTrainingQueue *)trainingQueue {
+/*- (void) setTrainingQueue:(NCTrainingQueue *)trainingQueue {
 	[self willChangeValueForKey:@"trainingQueue"];
 	_trainingQueue = trainingQueue;
 	[self didChangeValueForKey:@"trainingQueue"];
-}
+}*/
 
 - (void) save {
 	if (_trainingQueue) {
-		[_trainingQueue.databaseManagedObjectContext performBlock:^{
-			NSMutableArray* skills = [NSMutableArray new];
-			for (NCSkillData* skill in _trainingQueue.skills) {
-				NSDictionary* item = @{NCSkillPlanTypeIDKey: @(skill.type.typeID), NCSkillPlanTargetLevelKey: @(skill.targetLevel)};
-				[skills addObject:item];
-			}
-			
-			[self.managedObjectContext performBlock:^{
-				self.skills = skills;
-				if ([self.managedObjectContext hasChanges])
-					[self.managedObjectContext save:nil];
-			}];
-
+		NSMutableArray* skills = [NSMutableArray new];
+		for (NCSkillData* skill in _trainingQueue.skills) {
+			NSDictionary* item = @{NCSkillPlanTypeIDKey: @(skill.typeID), NCSkillPlanTargetLevelKey: @(skill.targetLevel)};
+			[skills addObject:item];
+		}
+		
+		[self.managedObjectContext performBlock:^{
+			self.skills = skills;
+			if ([self.managedObjectContext hasChanges])
+				[self.managedObjectContext save:nil];
 		}];
 	}
 }
@@ -85,7 +82,8 @@
 		[self.databaseManagedObjectContext performBlock:^{
 			NCTrainingQueue* newTrainingQueue = [trainingQueue copy];
 			for (NCSkillData* skillData in trainingQueue.skills)
-				[newTrainingQueue addSkill:skillData.type withLevel:skillData.targetLevel];
+				[newTrainingQueue addSkill:[self.databaseManagedObjectContext invTypeWithTypeID:skillData.typeID]
+								 withLevel:skillData.targetLevel];
 			self.trainingQueue = newTrainingQueue;
 			if (completionBlock)
 				completionBlock(trainingQueue);

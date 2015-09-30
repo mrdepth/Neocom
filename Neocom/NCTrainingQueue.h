@@ -28,5 +28,6 @@
 - (void) removeSkill:(NCSkillData*) skill;
 - (NSString*) xmlRepresentationWithSkillPlanName:(NSString*) skillPlanName;
 - (NSTimeInterval) trainingTimeWithCharacterAttributes:(NCCharacterAttributes*) characterAttributes;
+- (void) moveSkillAdIndex:(NSInteger) from toIndex:(NSInteger) to;
 
 @end

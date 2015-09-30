@@ -546,9 +546,10 @@
 								NCSkillHierarchy* hierarchy = [[NCSkillHierarchy alloc] initWithSkill:requiredSkill characterSheet:characterSheet];
 								
 								for (NCSkillHierarchySkill* skill in hierarchy.skills) {
+									NCDBInvType* skillType = [managedObjectContext invTypeWithTypeID:skill.typeID];
 									NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-									row.title = [NSString stringWithFormat:@"%@ %d", skill.type.typeName, skill.targetLevel];
-									row.object = [skill.type objectID];
+									row.title = [NSString stringWithFormat:@"%@ %d", skillType.typeName, skill.targetLevel];
+									row.object = [skillType objectID];
 									row.cellIdentifier = @"TypeCell";
 									row.indentationLevel = skill.nestingLevel;
 									row.iconID = [skillIcon objectID];
@@ -809,9 +810,10 @@
 						NCSkillHierarchy* hierarchy = [[NCSkillHierarchy alloc] initWithSkillType:skill.skillType level:skill.skillLevel characterSheet:characterSheet];
 						
 						for (NCSkillHierarchySkill* skill in hierarchy.skills) {
+							NCDBInvType* skillType = [managedObjectContext invTypeWithTypeID:skill.typeID];
 							NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-							row.title = [NSString stringWithFormat:@"%@ %d", skill.type.typeName, skill.targetLevel];
-							row.object = [skill.type objectID];
+							row.title = [NSString stringWithFormat:@"%@ %d", skillType.typeName, skill.targetLevel];
+							row.object = [skillType objectID];
 							row.cellIdentifier = @"TypeCell";
 							row.indentationLevel = skill.nestingLevel;
 							row.iconID = [skillIcon objectID];

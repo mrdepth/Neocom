@@ -14,7 +14,8 @@
 @class NCCharacterAttributes;
 @class EVECharacterSheetSkill;
 @interface NCSkillData : NSObject//<NSCoding>
-@property (nonatomic, strong, readonly) NCDBInvType* type;
+//@property (nonatomic, strong, readonly) NCDBInvType* type;
+@property (nonatomic, assign, readonly) int32_t typeID;
 @property (nonatomic, strong) EVECharacterSheetSkill* characterSkill;
 @property (nonatomic, assign, readonly) int32_t skillPoints;
 @property (nonatomic, assign) int32_t currentLevel;

@@ -61,10 +61,8 @@
 
 - (void) setSkills:(NSArray *)skills {
 	_skills = [[NSMutableArray alloc] initWithArray:skills copyItems:YES];
-	[self.databaseManagedObjectContext performBlockAndWait:^{
-		for (NCSkillData* skillData in self.skills)
-			skillData.characterSkill = self.characterSheet.skillsMap[@(skillData.type.typeID)];
-	}];
+	for (NCSkillData* skillData in self.skills)
+		skillData.characterSkill = self.characterSheet.skillsMap[@(skillData.typeID)];
 }
 
 - (void) addRequiredSkillsForType:(NCDBInvType*) type {
@@ -111,7 +109,8 @@
 
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		for (NCSkillData* skill in self.skills) {
-			[xml appendFormat:@"<entry skillID=\"%d\" skill=\"%@\" level=\"%d\" priority=\"1\" type=\"Planned\"/>\n", skill.type.typeID, skill.type.typeName, skill.targetLevel];
+			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:skill.typeID];
+			[xml appendFormat:@"<entry skillID=\"%d\" skill=\"%@\" level=\"%d\" priority=\"1\" type=\"Planned\"/>\n", skill.typeID, type.typeName, skill.targetLevel];
 		}
 	}];
 	
@@ -135,11 +134,14 @@
 	_characterSheet = characterSheet;
 	[self.skills setValue:nil forKey:@"characterSkill"];
 	
-	[self.databaseManagedObjectContext performBlockAndWait:^{
-		for (NCSkillData* skillData in self.skills)
-			skillData.characterSkill = characterSheet.skillsMap[@(skillData.type.typeID)];
-	}];
-	
+	for (NCSkillData* skillData in self.skills)
+		skillData.characterSkill = characterSheet.skillsMap[@(skillData.typeID)];
+}
+
+- (void) moveSkillAdIndex:(NSInteger) from toIndex:(NSInteger) to {
+	NCSkillData* skill = _skills[from];
+	[_skills removeObjectAtIndex:from];
+	[_skills insertObject:skill atIndex:to];
 }
 
 #pragma mark - NSCopying
@@ -184,7 +186,7 @@
 	for (int32_t skillLevel = characterSkill.level + 1; skillLevel <= level; skillLevel++) {
 		BOOL isExist = NO;
 		for (NCSkillData *item in self.skills) {
-			if (item.type.typeID == skill.typeID && item.targetLevel == skillLevel) {
+			if (item.typeID == skill.typeID && item.targetLevel == skillLevel) {
 				isExist = YES;
 				break;
 			}
@@ -205,17 +207,17 @@
 }
 
 - (void) _removeSkill:(NCSkillData*) skill {
-	int32_t typeID;
-	if (skill.type.managedObjectContext != self.databaseManagedObjectContext)
-		typeID = [(NCDBInvType*) [self.databaseManagedObjectContext objectWithID:skill.type.objectID] typeID];
-	else
-		typeID = skill.type.typeID;
+	int32_t typeID = skill.typeID;
+//	if (skill.type.managedObjectContext != self.databaseManagedObjectContext)
+//		typeID = [(NCDBInvType*) [self.databaseManagedObjectContext objectWithID:skill.type.objectID] typeID];
+//	else
+//		typeID = skill.type.typeID;
 	
 	NSInteger level = skill.targetLevel;
 	NSInteger index = 0;
 	NSMutableIndexSet* indexes = [NSMutableIndexSet indexSet];
 	for (NCSkillData* skillData in self.skills) {
-		if (skillData.type.typeID == typeID && skillData.targetLevel >= level)
+		if (skillData.typeID == typeID && skillData.targetLevel >= level)
 			[indexes addIndex:index];
 		index++;
 	}

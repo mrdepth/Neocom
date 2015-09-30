@@ -35,8 +35,9 @@
 	
 	[trainingQueue.databaseManagedObjectContext performBlockAndWait:^{
 		for (NCSkillData* skill in trainingQueue.skills) {
-			NCDBDgmTypeAttribute *primaryAttribute = skill.type.attributesDictionary[@(NCPrimaryAttributeAttribteID)];
-			NCDBDgmTypeAttribute *secondaryAttribute = skill.type.attributesDictionary[@(NCSecondaryAttributeAttribteID)];
+			NCDBInvType* type = [trainingQueue.databaseManagedObjectContext invTypeWithTypeID:skill.typeID];
+			NCDBDgmTypeAttribute *primaryAttribute = type.attributesDictionary[@(NCPrimaryAttributeAttribteID)];
+			NCDBDgmTypeAttribute *secondaryAttribute = type.attributesDictionary[@(NCSecondaryAttributeAttribteID)];
 			int primaryAttributeID = 1 << ((int) primaryAttribute.value - NCCharismaAttributeID);
 			int secondaryAttributeID = 1 << ((int) secondaryAttribute.value - NCCharismaAttributeID);
 			skillPoints[primaryAttributeID | (secondaryAttributeID << 16)] += skill.skillPointsToLevelUp;

@@ -83,6 +83,7 @@
 									   animated:YES];
 	self.types = [NSMutableDictionary new];
 	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+	self.account = [NCAccount currentAccount];
 }
 
 - (void)didReceiveMemoryWarning
@@ -316,7 +317,7 @@
 				}
 				else if (dif < 0) {
 					difString = [NSString stringWithFormat:@" %d", dif];
-					color = [UIColor redColor];
+					color = [UIColor yellowColor];
 				}
 				else
 					difString = @"";
@@ -385,94 +386,176 @@
 	}
 }
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
-	__block NSError* error = nil;
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock progressBlock:(void (^)(float))progressBlock {
+	__block NSError* lastError = nil;
 	NCAccount* account = self.account;
-	
 	if (!account) {
-		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
+		completionBlock(nil);
 		return;
 	}
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:3];
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 [account reloadWithCachePolicy:cachePolicy
-																	  error:&error
-															progressHandler:^(CGFloat progress, BOOL *stop) {
-																task.progress = progress;
-																if (task.isCancelled)
-																	*stop = YES;
-															}];
-											 if ([task isCancelled])
-												 return;
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
-									 }
-								 }
-							 }];
+	[account.managedObjectContext performBlock:^{
+		if (account.accountType == NCAccountTypeCharacter) {
+			[account reloadWithCachePolicy:cachePolicy completionBlock:^(NSError *error) {
+				if (error)
+					lastError = error;
+				@synchronized(progress) {
+					progress.completedUnitCount++;
+				}
+				NCSkillQueueViewControllerData* data = [NCSkillQueueViewControllerData new];
+				
+				dispatch_group_t finishDispatchGroup = dispatch_group_create();
+
+				dispatch_group_enter(finishDispatchGroup);
+				[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+					if (error)
+						lastError = error;
+					data.characterSheet = characterSheet;
+					data.characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
+					dispatch_group_leave(finishDispatchGroup);
+					@synchronized(progress) {
+						progress.completedUnitCount++;
+					}
+				}];
+				
+				dispatch_group_enter(finishDispatchGroup);
+				[account loadSkillQueueWithCompletionBlock:^(EVESkillQueue *skillQueue, NSError *error) {
+					if (error)
+						lastError = error;
+					data.skillQueue = skillQueue;
+					dispatch_group_leave(finishDispatchGroup);
+					@synchronized(progress) {
+						progress.completedUnitCount++;
+					}
+				}];
+				
+				dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+					if (data.skillQueue)
+						[data.characterSheet attachSkillQueue:data.skillQueue];
+					
+					[self saveCacheData:data cacheDate:[data.skillQueue.eveapi localTimeWithServerTime:data.skillQueue.eveapi.cacheDate] expireDate:[data.skillQueue.eveapi localTimeWithServerTime:data.skillQueue.eveapi.cachedUntil]];
+					completionBlock(lastError);
+				});
+			} progressBlock:nil];
+		}
+		else {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				completionBlock(nil);
+			});
+		}
+	}];
 }
 
-- (void) update {
-	NCAccount* account = [NCAccount currentAccount];
-	self.account = account;
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NCAccount* account = self.account;
+	if (account) {
+		NCSkillQueueViewControllerData* data = cacheData;
+		
+		dispatch_group_t finishDispatchGroup = dispatch_group_create();
+		
+		NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+		NSMutableArray* skillQueueRows = [NSMutableArray new];
+		dispatch_group_enter(finishDispatchGroup);
+		[databaseManagedObjectContext performBlock:^{
+			for (EVESkillQueueItem *item in data.skillQueue.skillQueue) {
+				NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+				if (!type)
+					continue;
+				
+				NCSkillData* skillData = [[NCSkillData alloc] initWithInvType:type];
+				skillData.targetLevel = item.level;
+				skillData.currentLevel = item.level - 1;
+				skillData.characterSkill = data.characterSheet.skillsMap[@(item.typeID)];
+				skillData.characterAttributes = data.characterAttributes;
+				[skillQueueRows addObject:skillData];
+			}
+			dispatch_group_leave(finishDispatchGroup);
+		}];
 
-	[super update];
-	
-	[account.characterSheet updateSkillPointsFromSkillQueue:account.skillQueue];
-	[account.activeSkillPlan updateSkillPoints];
-	
-	NSMutableArray* skillQueueRows = [NSMutableArray new];
-	
-	EVESkillQueue* skillQueue = self.account.skillQueue;
-	EVECharacterSheet* characterSheet = self.account.characterSheet;
-	NCCharacterAttributes* characterAttributes = self.account.characterAttributes;
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 for (EVESkillQueueItem *item in skillQueue.skillQueue) {
-												 NCSkillData* skillData = [[NCSkillData alloc] initWithTypeID:item.typeID];
-												 if (!skillData)
-													 continue;
-												 EVECharacterSheetSkill* characterSheetSkill = characterSheet.skillsMap[@(item.typeID)];
+		__block NSString* skillPlanName;
+		__block NCTrainingQueue* trainingQueue;
+		__block NCSkillPlan* activeSkillPlan;
+		dispatch_group_enter(finishDispatchGroup);
+		[account.managedObjectContext performBlock:^{
+			activeSkillPlan = account.activeSkillPlan;
+			skillPlanName = activeSkillPlan.name;
+			[activeSkillPlan loadTrainingQueueWithCompletionBlock:^(NCTrainingQueue *result) {
+				trainingQueue = result;
+				dispatch_group_leave(finishDispatchGroup);
+			}];
+		}];
+		
+		dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+			[trainingQueue.databaseManagedObjectContext performBlock:^{
+				NCTrainingQueue* fullTrainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:data.characterSheet databaseManagedObjectContext:trainingQueue.databaseManagedObjectContext];
+				NSMutableDictionary* types = [NSMutableDictionary new];
+				for (NCSkillData* skillData in trainingQueue.skills ? [skillQueueRows arrayByAddingObjectsFromArray:trainingQueue.skills] : skillQueueRows) {
+					NCDBInvType* type = types[@(skillData.typeID)];
+					if (!type) {
+						type = [trainingQueue.databaseManagedObjectContext invTypeWithTypeID:skillData.typeID];
+						if (type)
+							types[@(skillData.typeID)] = type;
+						else
+							continue;
+					}
+					[fullTrainingQueue addSkill:type withLevel:skillData.targetLevel];
+				}
+				
+				NCCharacterAttributes* optimalAttributes = [NCCharacterAttributes optimalAttributesWithTrainingQueue:fullTrainingQueue];
+				
+				NCCharacterAttributes* finalAttributes = [NCCharacterAttributes new];
+				finalAttributes.charisma = optimalAttributes.charisma;
+				finalAttributes.intelligence = optimalAttributes.intelligence;
+				finalAttributes.memory = optimalAttributes.memory;
+				finalAttributes.perception = optimalAttributes.perception;
+				finalAttributes.willpower = optimalAttributes.willpower;
+				
+				if (data.characterSheet) {
+					
+					for (EVECharacterSheetImplant* implant in data.characterSheet.implants) {
+						NCDBInvType* type = types[@(implant.typeID)];
+						if (!type) {
+							type = [trainingQueue.databaseManagedObjectContext invTypeWithTypeID:implant.typeID];
+							if (type)
+								types[@(implant.typeID)] = type;
+							else
+								continue;
+						}
 
-												 skillData.targetLevel = item.level;
-												 skillData.currentLevel = item.level - 1;
-												 skillData.skillPoints = characterSheetSkill.skillpoints;
-												 skillData.trainedLevel = characterSheetSkill.level;
-												 skillData.active = item.queuePosition == 0;
-												 skillData.characterAttributes = characterAttributes;
-												 [skillQueueRows addObject:skillData];
-											 }
-											 
-											 if ([task isCancelled])
-												 return;
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.skillQueueRows = skillQueueRows;
-									 self.skillPlan = account.activeSkillPlan;
-									 [self.tableView reloadData];
-								 }
-							 }];
+						finalAttributes.charisma += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value];
+						finalAttributes.intelligence += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value];
+						finalAttributes.memory += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value];
+						finalAttributes.perception += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value];
+						finalAttributes.willpower += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value];
+					}
+				}
+				NSTimeInterval optimalTrainingTime = [fullTrainingQueue trainingTimeWithCharacterAttributes:finalAttributes];
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.optimalTrainingTime = optimalTrainingTime;
+					self.optimalAttributes = optimalAttributes;
+					self.fullTrainingQueue = fullTrainingQueue;
+					self.skillPlan = activeSkillPlan;
+					self.skillPlanName = skillPlanName;
+					self.skillPlanTrainingQueue = trainingQueue;
+					self.skillQueueRows = skillQueueRows;
+					completionBlock();
+				});
+			}];
+
+
+			
+		});
+	}
+	else
+		completionBlock();
 }
 
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
-		[self update];
-}
-
-- (void) didChangeStorage {
-	if ([self isViewLoaded])
-		[self update];
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
+	self.account = [NCAccount currentAccount];
+	[self reload];
 }
 
 - (id) identifierForSection:(NSInteger)section {
@@ -487,59 +570,18 @@
 
 #pragma mark - Private
 
-- (void) setSkillPlan:(NCSkillPlan *)skillPlan {
-	[_skillPlan removeObserver:self forKeyPath:@"trainingQueue"];
-	_skillPlan = skillPlan;
-	self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:skillPlan.trainingQueue.skills];
-	[_skillPlan addObserver:self forKeyPath:@"trainingQueue" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+- (IBAction)onSkills:(id)sender {
+	[self performSegueWithIdentifier:@"NCSkillsViewController" sender:nil];
 }
 
 - (void) setAccount:(NCAccount *)account {
-	[_account removeObserver:self forKeyPath:@"activeSkillPlan"];
 	_account = account;
-	[_account addObserver:self forKeyPath:@"activeSkillPlan" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
-}
-
-- (void) setSkillPlanSkills:(NSMutableArray *)skillPlanSkills {
-	_skillPlanSkills = skillPlanSkills;
-	NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:self.account];
-	for (NCSkillData* skillData in self.skillQueueRows)
-		[trainingQueue addSkill:skillData.type withLevel:skillData.targetLevel];
-	for (NCSkillData* skillData in self.skillPlan.trainingQueue.skills)
-		[trainingQueue addSkill:skillData.type withLevel:skillData.targetLevel];
-	
-	_optimalAttributes = [NCCharacterAttributes optimalAttributesWithTrainingQueue:trainingQueue];
-	EVECharacterSheet* characterSheet = self.account.characterSheet;
-	
-	NCCharacterAttributes* optimalAttributes = [NCCharacterAttributes new];
-	optimalAttributes.charisma = _optimalAttributes.charisma;
-	optimalAttributes.intelligence = _optimalAttributes.intelligence;
-	optimalAttributes.memory = _optimalAttributes.memory;
-	optimalAttributes.perception = _optimalAttributes.perception;
-	optimalAttributes.willpower = _optimalAttributes.willpower;
-	
-	if (characterSheet) {
-		
-		NCDatabase* database = [NCDatabase sharedDatabase];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? database.managedObjectContext : database.backgroundManagedObjectContext;
-		
-		[context performBlockAndWait:^{
-			for (EVECharacterSheetImplant* implant in characterSheet.implants) {
-				NCDBInvType* type = [NCDBInvType invTypeWithTypeID:implant.typeID];
-				optimalAttributes.charisma += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value];
-				optimalAttributes.intelligence += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value];
-				optimalAttributes.memory += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value];
-				optimalAttributes.perception += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value];
-				optimalAttributes.willpower += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value];
-			}
-		}];
-	}
-	_optimalTrainingTime = [trainingQueue trainingTimeWithCharacterAttributes:optimalAttributes];
-	self.fullTrainingQueue = trainingQueue;
-}
-
-- (IBAction)onSkills:(id)sender {
-	[self performSegueWithIdentifier:@"NCSkillsViewController" sender:nil];
+	[account.managedObjectContext performBlock:^{
+		NSString* uuid = account.uuid;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.cacheRecordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), uuid];
+		});
+	}];
 }
 
 @end

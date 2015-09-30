@@ -580,7 +580,7 @@
 						EVESkillQueueItem* item = sq.skillQueue[0];
 						EVECharacterSheetSkill* characterSheetSkill = characterSheet.skillsMap[@(item.typeID)];
 						
-						float sp = characterSheetSkill.skillpoints;
+						float sp = characterSheetSkill.skillPoints;
 						float start = [account.trainingSkill skillPointsAtLevel:item.level - 1];
 						float end = [account.trainingSkill skillPointsAtLevel:item.level];
 						float progress = (sp - start) / (end - start);

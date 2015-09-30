@@ -96,7 +96,7 @@
 }
 
 - (int32_t) skillPoints {
-	return self.characterSkill.skillpoints;
+	return self.characterSkill.skillPoints;
 }
 
 - (BOOL) isActive {

@@ -179,7 +179,7 @@ static NCAccount* currentAccount = nil;
 				if (characterSheet) {
 					int32_t skillPoints = 0;
 					for (EVECharacterSheetSkill* skill in characterSheet.skills)
-						skillPoints += skill.skillpoints;
+						skillPoints += skill.skillPoints;
 					characterInfo.skillPoints = skillPoints;
 				}
 				dispatch_async(dispatch_get_main_queue(), ^{
@@ -420,7 +420,7 @@ static NCAccount* currentAccount = nil;
 					if (characterInfo) {
 						int32_t skillPoints = 0;
 						for (EVECharacterSheetSkill* skill in characterSheet.skills)
-							skillPoints += skill.skillpoints;
+							skillPoints += skill.skillPoints;
 						characterInfo.skillPoints = skillPoints;
 					}
 					if (skillQueue)

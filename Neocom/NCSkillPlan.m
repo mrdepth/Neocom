@@ -140,7 +140,7 @@
 }
 
 - (NSManagedObjectContext*) databaseManagedObjectContext {
-	if (_databaseManagedObjectContext)
+	if (!_databaseManagedObjectContext)
 		_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
 	return _databaseManagedObjectContext;
 }

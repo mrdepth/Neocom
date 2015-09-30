@@ -195,6 +195,10 @@
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
 		125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 125F6824188537FF005732FA /* NCCharacterAttributes.mm */; };
 		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
+		1264FD6E1BBC576E002AFDF3 /* NCSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F681918852DA9005732FA /* NCSkillsViewController.m */; settings = {ASSET_TAGS = (); }; };
+		1264FD741BBC5776002AFDF3 /* NCSkillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FA63DD188C4FC1008FD761 /* NCSkillCell.m */; settings = {ASSET_TAGS = (); }; };
+		1264FD751BBC5776002AFDF3 /* NCCharacterAttributesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 126DC6A118D1ABD3009EEA86 /* NCCharacterAttributesCell.m */; settings = {ASSET_TAGS = (); }; };
+		1264FD761BBC57F6002AFDF3 /* NCSkillsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */; settings = {ASSET_TAGS = (); }; };
 		126703061A8FD22700F816F9 /* NSAttributedString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126703051A8FD22700F816F9 /* NSAttributedString+Neocom.m */; };
 		1267030C1A911A0900F816F9 /* NSMutableAttributedString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 1267030B1A911A0800F816F9 /* NSMutableAttributedString+Neocom.m */; };
 		126AACEE1BBA67C00068AA99 /* NCDatabaseTypeMarketInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAA188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m */; settings = {ASSET_TAGS = (); }; };
@@ -4311,6 +4315,7 @@
 				120E77B81B25D91300816E1C /* NCSplashScreenViewController.m in Sources */,
 				120C339419CAB0AC0093EECA /* NCDBInvGroup.m in Sources */,
 				125F682218853230005732FA /* NCSkillData.m in Sources */,
+				1264FD6E1BBC576E002AFDF3 /* NCSkillsViewController.m in Sources */,
 				129D2628187E923300E2062C /* NSBundle+Retina4.m in Sources */,
 				121112341859929E009E5106 /* NCTableViewController.m in Sources */,
 				129D262C187E923300E2062C /* UIActionSheet+Block.m in Sources */,
@@ -4353,6 +4358,7 @@
 				12B5EFF21ACBC154003CDF65 /* NCShoppingList.m in Sources */,
 				12F9560218CDB5D4005CEAD6 /* NCBannerViewController.m in Sources */,
 				12436E141946E4670090D4A6 /* NCDBImageValueTransformer.m in Sources */,
+				1264FD761BBC57F6002AFDF3 /* NCSkillsContainerViewController.m in Sources */,
 				129D2620187E923300E2062C /* UITableViewCell+Nib.m in Sources */,
 				120C338519CAB0AB0093EECA /* NCDBStaStation.m in Sources */,
 				12FF586D189F8EF200E2D70A /* NCStoryboardPopoverSegue.m in Sources */,
@@ -4446,6 +4452,7 @@
 				129D2615187E923300E2062C /* LUIBarButtonItem.m in Sources */,
 				12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */,
 				84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */,
+				1264FD751BBC5776002AFDF3 /* NCCharacterAttributesCell.m in Sources */,
 				129D2631187E923300E2062C /* UIImage+Resize.m in Sources */,
 				125A197D1BB5A5EF00C5BAD8 /* NCWalletJournalViewController.m in Sources */,
 				129D261B187E923300E2062C /* LUITextView.m in Sources */,
@@ -4462,6 +4469,7 @@
 				12B9A6731B8F0D38005624D5 /* NSManagedObjectContext+NCDatabase.m in Sources */,
 				12124AAF1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m in Sources */,
 				129D257E187E8CB400E2062C /* NCMainMenuViewController.m in Sources */,
+				1264FD741BBC5776002AFDF3 /* NCSkillCell.m in Sources */,
 				120C338E19CAB0AB0093EECA /* NCDBDgmTypeAttribute.m in Sources */,
 				120C336A19CAB0A90093EECA /* NCDBInvControlTower.m in Sources */,
 				129D2610187E923300E2062C /* CollapsableTableView.m in Sources */,

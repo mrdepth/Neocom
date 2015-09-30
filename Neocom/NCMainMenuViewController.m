@@ -269,7 +269,7 @@
 	if (self.characterSheet) {
 		NSInteger skillPoints = 0;
 		for (EVECharacterSheetSkill* skill in self.characterSheet.skills)
-			skillPoints += skill.skillpoints;
+			skillPoints += skill.skillPoints;
 
 		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)\n%@", nil),
 				[NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], (int32_t) self.characterSheet.skills.count,

@@ -29,7 +29,7 @@
 - (void) invalidateCache;
 
 #pragma mark - Override
-- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock;
 - (void) loadCacheData:(id) cacheData withCompletionBlock:(void(^)()) completionBlock;
 - (void) managedObjectContextDidFinishSave:(NSNotification*) notification;
 

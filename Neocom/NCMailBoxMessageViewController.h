@@ -9,7 +9,9 @@
 #import "NCViewController.h"
 
 @class NCMailBoxMessage;
+@class NCMailBox;
 @interface NCMailBoxMessageViewController : NCViewController
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @property (strong, nonatomic) NCMailBoxMessage* message;
+@property (strong, nonatomic) NCMailBox* mailBox;
 @end

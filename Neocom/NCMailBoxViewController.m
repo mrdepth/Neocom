@@ -13,31 +13,13 @@
 #import "NSDate+Neocom.h"
 #import "NCMailBoxMessageViewController.h"
 
-@interface NCMailBoxViewControllerData : NSObject<NSCoding>
-@property (nonatomic, strong) NSArray* messages;
-@end
-
-@implementation NCMailBoxViewControllerData
-
-#pragma mark - NSCoding
-
-- (void) encodeWithCoder:(NSCoder *)aCoder {
-	if (self.messages)
-		[aCoder encodeObject:self.messages forKey:@"messages"];
-}
-
-- (id) initWithCoder:(NSCoder *)aDecoder {
-	if (self = [super init]) {
-		self.messages = [aDecoder decodeObjectForKey:@"messages"];
-	}
-	return self;
-}
-
-@end
-
 @interface NCMailBoxViewController ()
+@property (nonatomic, strong) NCAccount* account;
 @property (nonatomic, strong) NCMailBox* mailBox;
+@property (nonatomic, assign) int32_t characterID;
 @property (nonatomic, strong) NSArray* sections;
+
+- (void) mailBoxDidUpdateNotification:(NSNotification*) notification;
 @end
 
 @implementation NCMailBoxViewController
@@ -52,26 +34,20 @@
 }
 
 - (void) dealloc {
+	self.account = nil;
 	self.mailBox = nil;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	NCAccount* account = [NCAccount currentAccount];
-	self.mailBox = account.mailBox;
+	self.account = [NCAccount currentAccount];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	if ([NSThread isMainThread]) {
-		[self update];
-	}
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -81,14 +57,14 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		
+		controller.mailBox = self.mailBox;
 		controller.message = [(NCMessageCell*) sender message];
 	}
 }
 
 - (IBAction)markAsRead:(id)sender {
-	NCMailBoxViewControllerData* data = self.data;
-	[self.mailBox markAsRead:data.messages];
+	NSArray* data = self.cacheData;
+	[self.mailBox markAsRead:data];
 }
 
 
@@ -112,123 +88,109 @@
 
 #pragma mark - NCTableViewController
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
-	NCAccount* account = [NCAccount currentAccount];
-	if (!account || account.accountType == NCAccountTypeCorporate) {
-		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
+	__block NSError* lastError = nil;
+	NCAccount* account = self.account;
+	if (!account) {
+		completionBlock(nil);
 		return;
 	}
-	self.mailBox = account.mailBox;
-	NCMailBoxViewControllerData* data = [NCMailBoxViewControllerData new];
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:1];
+	[account.managedObjectContext performBlock:^{
+		[progress becomeCurrentWithPendingUnitCount:1];
+		[account.mailBox reloadWithCachePolicy:cachePolicy completionBlock:^(NSArray *messages, NSError *error) {
+			lastError = error;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self saveCacheData:messages cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
+				completionBlock(error);
+			});
+		} progressBlock:nil];
+		[progress resignCurrent];
+	}];
+}
+
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NSArray* data = cacheData;
+	int32_t myID = self.characterID;
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 [account.mailBox reloadDataWithCachePolicy:cachePolicy inTask:task];
-											 //data.mailBox = account.mailBox;
-											 data.messages = account.mailBox.messages;
-											 //[data loadDataInTask:task];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:data withCacheDate:account.mailBox.updateDate expireDate:[NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]]];
-									 }
-								 }
-							 }];
+	[self.account.managedObjectContext performBlock:^{
+
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+			@autoreleasepool {
+				NSMutableArray* sections = [NSMutableArray new];
+				NSMutableArray* sent = [NSMutableArray new];
+				NSMutableArray* inbox = [NSMutableArray new];
+				NSMutableDictionary* corps = [NSMutableDictionary new];
+				NSMutableDictionary* mailingLists = [NSMutableDictionary new];
+				
+				for (NCMailBoxMessage* message in data) {
+					BOOL inInbox = NO;
+					
+					if (message.sender.contactID == myID)
+						[sent addObject:message];
+					else {
+						for (NCMailBoxContact* contact in message.recipients) {
+							if (contact.type == NCMailBoxContactTypeCharacter && contact.contactID == myID)
+								inInbox = YES;
+							else if (contact.type == NCMailBoxContactTypeCorporation) {
+								NSDictionary* corp = corps[@(contact.contactID)];
+								if (!corp)
+									corps[@(contact.contactID)] = corp = @{@"contact": contact, @"messages": [NSMutableArray new]};
+								[corp[@"messages"] addObject:message];
+							}
+							else if (contact.type == NCMailBoxContactTypeMailingList) {
+								NSDictionary* mailingList = mailingLists[@(contact.contactID)];
+								if (!mailingList)
+									mailingLists[@(contact.contactID)] = mailingList = @{@"contact": contact, @"messages": [NSMutableArray new]};
+								[mailingList[@"messages"] addObject:message];
+							}
+						}
+					}
+					if (inInbox)
+						[inbox addObject:message];
+				}
+				
+				NSInteger (^numberOfUnreadMessages)(NSArray*) = ^(NSArray* messages) {
+					NSInteger numberOfUnreadMessages = 0;
+					for (NCMailBoxMessage* message in messages)
+						if (![message isRead])
+							numberOfUnreadMessages++;
+					return numberOfUnreadMessages;
+				};
+				
+				
+				NSInteger n = numberOfUnreadMessages(inbox);
+				NSString* title = n > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Inbox (%d)", nil), (int32_t) n] : NSLocalizedString(@"Inbox", nil);
+				[sections addObject:@{@"title": title, @"rows": inbox, @"sectionID": @(0)}];
+				
+				for (NSDictionary* dictionary in @[corps, mailingLists]) {
+					NSArray* values = [[dictionary allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"contact.name" ascending:YES]]];
+					for (NSDictionary* dic in values) {
+						NSInteger n = numberOfUnreadMessages(dic[@"messages"]);
+						NCMailBoxContact* contact = dic[@"contact"];
+						NSString* name = [dic[@"contact"] name];
+						if (!name)
+							name = NSLocalizedString(@"Unknown Contact", nil);
+						NSString* title = n > 0 ? [NSString stringWithFormat:@"%@ (%d)", name, (int32_t)n] : name;
+						[sections addObject:@{@"title": title, @"rows": dic[@"messages"], @"sectionID": @(contact.contactID)}];
+					}
+				}
+				
+				n = numberOfUnreadMessages(sent);
+				title = n > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Sent (%d)", nil), (int32_t) n] : NSLocalizedString(@"Sent", nil);
+				[sections addObject:@{@"title": title, @"rows": sent, @"sectionID": @(1)}];
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.sections = sections;
+					completionBlock();
+				});
+			}
+		});
+	}];
 }
 
-- (void) update {
-	[super update];
-	NCMailBoxViewControllerData* data = self.data;
-	NCMailBox* mailBox = self.mailBox;
-	NCAccount* account = mailBox.account;
-
-	NSMutableArray* sections = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NSMutableArray* sent = [NSMutableArray new];
-											 NSMutableArray* inbox = [NSMutableArray new];
-											 NSMutableDictionary* corps = [NSMutableDictionary new];
-											 NSMutableDictionary* mailingLists = [NSMutableDictionary new];
-											 
-											 NSInteger myID = account.characterID;
-											 for (NCMailBoxMessage* message in data.messages) {
-												 if (!message.mailBox)
-													 message.mailBox = mailBox;
-												 BOOL inInbox = NO;
-												 
-												 if (message.sender.contactID == myID)
-													 [sent addObject:message];
-												 else {
-													 for (NCMailBoxContact* contact in message.recipients) {
-														 if (contact.type == NCMailBoxContactTypeCharacter && contact.contactID == account.characterID)
-															 inInbox = YES;
-														 else if (contact.type == NCMailBoxContactTypeCorporation) {
-															 NSDictionary* corp = corps[@(contact.contactID)];
-															 if (!corp)
-																 corps[@(contact.contactID)] = corp = @{@"contact": contact, @"messages": [NSMutableArray new]};
-															 [corp[@"messages"] addObject:message];
-														 }
-														 else if (contact.type == NCMailBoxContactTypeMailingList) {
-															 NSDictionary* mailingList = mailingLists[@(contact.contactID)];
-															 if (!mailingList)
-																 mailingLists[@(contact.contactID)] = mailingList = @{@"contact": contact, @"messages": [NSMutableArray new]};
-															 [mailingList[@"messages"] addObject:message];
-														 }
-													 }
-												 }
-												 if (inInbox)
-													 [inbox addObject:message];
-											 }
-											 
-											 NSInteger (^numberOfUnreadMessages)(NSArray*) = ^(NSArray* messages) {
-												 NSInteger numberOfUnreadMessages = 0;
-												 for (NCMailBoxMessage* message in messages)
-													 if (![message isRead])
-														 numberOfUnreadMessages++;
-												 return numberOfUnreadMessages;
-											 };
-											 
-											 
-											 NSInteger n = numberOfUnreadMessages(inbox);
-											 NSString* title = n > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Inbox (%d)", nil), (int32_t) n] : NSLocalizedString(@"Inbox", nil);
-											 [sections addObject:@{@"title": title, @"rows": inbox, @"sectionID": @(0)}];
-											 
-											 for (NSDictionary* dictionary in @[corps, mailingLists]) {
-												 NSArray* values = [[dictionary allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"contact.name" ascending:YES]]];
-												 for (NSDictionary* dic in values) {
-													 NSInteger n = numberOfUnreadMessages(dic[@"messages"]);
-													 NCMailBoxContact* contact = dic[@"contact"];
-													 NSString* name = [dic[@"contact"] name];
-													 if (!name)
-														 name = NSLocalizedString(@"Unknown Contact", nil);
-													 NSString* title = n > 0 ? [NSString stringWithFormat:@"%@ (%d)", name, (int32_t)n] : name;
-													 [sections addObject:@{@"title": title, @"rows": dic[@"messages"], @"sectionID": @(contact.contactID)}];
-												 }
-											 }
-											 
-											 n = numberOfUnreadMessages(sent);
-											 title = n > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Sent (%d)", nil), (int32_t) n] : NSLocalizedString(@"Sent", nil);
-											 [sections addObject:@{@"title": title, @"rows": sent, @"sectionID": @(1)}];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.sections = sections;
-									 [self.tableView reloadData];
-								 }
-							 }];
-}
-
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
-		[self reloadFromCache];
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
+	self.account = [NCAccount currentAccount];
 }
 
 - (id) identifierForSection:(NSInteger)section {
@@ -262,11 +224,35 @@
 
 #pragma mark - Private
 
+- (void) setAccount:(NCAccount *)account {
+	_account = account;
+	[account.managedObjectContext performBlock:^{
+		NSString* uuid = account.uuid;
+		NCMailBox* mailBox = account.mailBox;
+		int32_t characterID = account.characterID;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.characterID = characterID;
+			self.mailBox = mailBox;
+			self.cacheRecordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), uuid];
+		});
+	}];
+}
+
 - (void) setMailBox:(NCMailBox *)mailBox {
 	if (_mailBox)
-		[_mailBox removeObserver:self forKeyPath:@"readedMessagesIDs"];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:NCMailBoxDidUpdateNotification object:_mailBox];
 	_mailBox = mailBox;
-	[_mailBox addObserver:self forKeyPath:@"readedMessagesIDs" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+	if (_mailBox)
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mailBoxDidUpdateNotification:) name:NCMailBoxDidUpdateNotification object:_mailBox];
+}
+
+- (void) mailBoxDidUpdateNotification:(NSNotification*) notification {
+	[self.mailBox loadMessagesWithCompletionBlock:^(NSArray *messages, NSError *error) {
+		if (messages) {
+			[self saveCacheData:messages cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
+			[self reload];
+		}
+	} progressBlock:nil];
 }
 
 @end

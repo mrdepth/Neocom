@@ -281,7 +281,7 @@
 	}
 }
 
-- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock {
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock {
 	completionBlock(nil);
 }
 
@@ -671,7 +671,7 @@
 					[self.refreshControl endRefreshing];
 				}];
 			});
-		} progressBlock:nil];
+		}];
 		[self.progress resignCurrent];
 		[self.progress becomeCurrentWithPendingUnitCount:1];
 		NSProgress* progress = [NSProgress progressWithTotalUnitCount:30];

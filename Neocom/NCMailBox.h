@@ -10,6 +10,8 @@
 #import <CoreData/CoreData.h>
 #import "NCTaskManager.h"
 
+#define NCMailBoxDidUpdateNotification @"NCMailBoxDidUpdateNotification"
+
 typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 	NCMailBoxContactTypeCharacter,
 	NCMailBoxContactTypeCorporation,
@@ -26,15 +28,12 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 @class EVEMailMessagesItem;
 @class EVEMailBodiesItem;
 @interface NCMailBoxMessage : NSObject<NSCoding>
-@property (nonatomic, weak) NCMailBox* mailBox;
 @property (nonatomic, strong) EVEMailMessagesItem* header;
 @property (nonatomic, strong) EVEMailBodiesItem* body;
+@property (nonatomic, strong) NCMailBoxContact* sender;
 @property (nonatomic, strong) NSArray* recipients;
 @property (nonatomic, getter = isRead) BOOL read;
-@property (nonatomic, strong) NSManagedObjectContext* cacheManagedObjectContext;
 
-- (void) loadBodyWithCompletionBlock:(void(^)(EVEMailBodiesItem* body, NSError* error)) completionBlock;
-- (void) clearCache;
 @end
 
 @class NCAccount;
@@ -48,6 +47,8 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 
 - (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSArray* messages, NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
 - (void) markAsRead:(NSArray*) messages;
-- (void) loadMessagesWithCompletionBlock:(void(^)(NSArray* messages, NSError* error)) completionBlock;
+- (void) loadMessagesWithCompletionBlock:(void(^)(NSArray* messages, NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
+
+- (void) loadBodyForMessage:(NCMailBoxMessage*) message withCompletionBlock:(void(^)(EVEMailBodiesItem* body, NSError* error)) completionBlock;
 
 @end

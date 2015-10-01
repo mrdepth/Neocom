@@ -234,7 +234,7 @@
 
 #pragma mark - NCTableViewController
 
-- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock progressBlock:(void (^)(float))progressBlock {
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
 	__block NSError* lastError = nil;
 	
 	NSProgress* progress = [NSProgress progressWithTotalUnitCount:5];

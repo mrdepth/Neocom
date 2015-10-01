@@ -155,7 +155,7 @@
 
 #pragma mark - NCTableViewController
 
-- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock progressBlock:(void (^)(float))progressBlock {
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
 	NCAccount* account = self.account;
 	if (!account) {
 		completionBlock(nil);

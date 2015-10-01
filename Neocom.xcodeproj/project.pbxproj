@@ -236,6 +236,9 @@
 		127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */; };
 		128310091BBC39920018C8AC /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; settings = {ASSET_TAGS = (); }; };
 		128310141BBD3D6D0018C8AC /* NCSkillPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */; settings = {ASSET_TAGS = (); }; };
+		1283101A1BBD5C430018C8AC /* NCMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5F118929B960010BEE8 /* NCMessageCell.m */; settings = {ASSET_TAGS = (); }; };
+		1283101D1BBD6AE80018C8AC /* NCMailBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */; settings = {ASSET_TAGS = (); }; };
+		1283101E1BBD746A0018C8AC /* NCMailBoxMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E4331A18951AA800DF2061 /* NCMailBoxMessageViewController.m */; settings = {ASSET_TAGS = (); }; };
 		128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F3518990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m */; };
 		128A1F3818990DA200005C4F /* NCFittingSectionHiSlotHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128A1F3718990DA200005C4F /* NCFittingSectionHiSlotHeaderView.xib */; };
 		128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */; };
@@ -4344,6 +4347,7 @@
 				12F955FA18CDA3FC005CEAD6 /* SkillPlan.m in Sources */,
 				120C336119CAB0A90093EECA /* NCDBInvCategory.m in Sources */,
 				127A1AB91BADEEBD0066A5EE /* NCLocationsManager.m in Sources */,
+				1283101A1BBD5C430018C8AC /* NCMessageCell.m in Sources */,
 				1219C1541AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m in Sources */,
 				129D263D187E98C100E2062C /* NCNavigationCharacterButton.m in Sources */,
 				12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */,
@@ -4351,6 +4355,7 @@
 				120C332519CAB0A60093EECA /* NCDBInvControlTowerResourcePurpose.m in Sources */,
 				129D261D187E923300E2062C /* NSData+MD5.m in Sources */,
 				129D2624187E923300E2062C /* NSString+Email.m in Sources */,
+				1283101E1BBD746A0018C8AC /* NCMailBoxMessageViewController.m in Sources */,
 				84C1182D1898443900A35516 /* NCDatabaseTypePickerContentViewController.m in Sources */,
 				12436DAE1945A06B0090D4A6 /* NCDatabase.m in Sources */,
 				12190BF91ADFE7E0009E1C5E /* NCDatabaseWHViewController.m in Sources */,
@@ -4434,6 +4439,7 @@
 				1215F57E1B831E9B00C16649 /* NSCache+Neocom.m in Sources */,
 				128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m in Sources */,
 				129D2626187E923300E2062C /* NSString+UUID.m in Sources */,
+				1283101D1BBD6AE80018C8AC /* NCMailBoxViewController.m in Sources */,
 				12C107E01ADD584C008D60DF /* NCDatabaseFetchedResultsViewController.m in Sources */,
 				120C337C19CAB0AA0093EECA /* NCDBNpcGroup.m in Sources */,
 				120C336D19CAB0AA0093EECA /* NCDBMapDenormalize.m in Sources */,

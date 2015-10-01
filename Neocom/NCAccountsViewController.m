@@ -250,7 +250,7 @@
 
 #pragma mark - NCTableViewController
 
-- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock {
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock {
 	NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
 	if (!accountsManager) {
 		completionBlock(nil);

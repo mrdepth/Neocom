@@ -145,6 +145,7 @@
 		121FF9C71B4BDF1700091AFE /* tracking.png in Resources */ = {isa = PBXBuildFile; fileRef = 121FF9C61B4BDF1700091AFE /* tracking.png */; };
 		1225A0B71A400954005DD73B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1225A0B61A400954005DD73B /* Launch Screen.xib */; };
 		1226D2D31B58F04F000C69EC /* NCCachePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1226D2D21B58F04F000C69EC /* NCCachePrice.m */; };
+		122753741BBDADDB008148BE /* NCPlanetaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */; settings = {ASSET_TAGS = (); }; };
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
 		122DB6621BA6AAE400649A55 /* NCFittingMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */; settings = {ASSET_TAGS = (); }; };
@@ -1186,8 +1187,6 @@
 		12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNotificationsManager.m; sourceTree = "<group>"; };
 		12ED82D81AC13CD500C593C4 /* NCPlanetaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPlanetaryViewController.h; sourceTree = "<group>"; };
 		12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPlanetaryViewController.m; sourceTree = "<group>"; };
-		12ED82E71AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEPlanetaryPinsItem+Neocom.h"; sourceTree = "<group>"; };
-		12ED82E81AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEPlanetaryPinsItem+Neocom.m"; sourceTree = "<group>"; };
 		12ED82F21AC3D36400C593C4 /* NCStorage 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NCStorage 2.xcdatamodel"; sourceTree = "<group>"; };
 		12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultTableViewCell.xib; sourceTree = "<group>"; };
 		12F407571A8D25220031FB35 /* NCDefaultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDefaultTableViewCell.h; sourceTree = "<group>"; };
@@ -3357,8 +3356,6 @@
 			children = (
 				12ED82D81AC13CD500C593C4 /* NCPlanetaryViewController.h */,
 				12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */,
-				12ED82E71AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.h */,
-				12ED82E81AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.m */,
 			);
 			name = NCPlanetaryViewController;
 			sourceTree = "<group>";
@@ -4436,6 +4433,7 @@
 				12CDB7E0188E7D1C002079C0 /* ASHTTPServer.m in Sources */,
 				127A1ABB1BB16FDE0066A5EE /* EVEAssetListItem+Neocom.m in Sources */,
 				120C334619CAB0A80093EECA /* NCDBDgmAttributeCategory.m in Sources */,
+				122753741BBDADDB008148BE /* NCPlanetaryViewController.m in Sources */,
 				120C338819CAB0AB0093EECA /* NCDBEufeItemCategory.m in Sources */,
 				1216EB8A1AE0E0EA0026AF58 /* NCDBWhType+Neocom.m in Sources */,
 				125A19C71BB719F800C5BAD8 /* NCStarbasesCell.m in Sources */,

@@ -7,8 +7,7 @@
 //
 
 #import "NCCalendarEventsViewController.h"
-#import "EVEOnlineAPI.h"
-#import "NSString+HTML.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCCalendarEventCell.h"
 #import "NCCalendarEventDetailsViewController.h"
 
@@ -37,6 +36,7 @@
 @end
 
 @interface NCCalendarEventsViewController ()
+@property (nonatomic, strong) NCAccount* account;
 
 @end
 
@@ -54,6 +54,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.account = [NCAccount currentAccount];
 	// Do any additional setup after loading the view.
 }
 
@@ -78,67 +79,53 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return self.data ? 1 : 0;
+	return self.cacheData ? 1 : 0;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NSArray* rows = self.data;
+	NSArray* rows = self.cacheData;
 	return rows.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	NSArray* rows = self.data;
+	NSArray* rows = self.cacheData;
 	return rows.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"%d events", nil), (int32_t)rows.count] : NSLocalizedString(@"No events", nil);
 }
 
 
 #pragma mark - NCTableViewController
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
-	NCAccount* account = [NCAccount currentAccount];
-	if (!account || account.accountType == NCAccountTypeCorporate) {
-		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
+	NCAccount* account = self.account;
+	if (!account) {
+		completionBlock(nil);
 		return;
 	}
-	NSMutableArray* rows = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 EVEUpcomingCalendarEvents* calendarEvents = [EVEUpcomingCalendarEvents upcomingCalendarEventsWithKeyID:account.apiKey.keyID
-																																			  vCode:account.apiKey.vCode
-																																		cachePolicy:cachePolicy
-																																		characterID:account.characterID
-																																			  error:&error
-																																	progressHandler:^(CGFloat progress, BOOL *stop) {
-																																		task.progress = progress;
-																																		if ([task isCancelled])
-																																			*stop = YES;
-																																	}];
-											 for (EVEUpcomingCalendarEventsItem* event in calendarEvents.upcomingCalendarEvents) {
-												 NCCalendarEventsViewControllerRow* row = [NCCalendarEventsViewControllerRow new];
-												 row.event = event;
-												 row.shortDescription = [[event.eventText stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
-												 [rows addObject:row];
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:rows withCacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]]];
-									 }
-								 }
-							 }];
+	
+	[account.managedObjectContext performBlock:^{
+		__block NSError* lastError = nil;
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+		[api upcomingCalendarEventsWithCompletionBlock:^(EVEUpcomingCalendarEvents *result, NSError *error) {
+			NSMutableArray* rows = [NSMutableArray new];
+			for (EVEUpcomingCalendarEventsItem* event in result.upcomingEvents) {
+				NCCalendarEventsViewControllerRow* row = [NCCalendarEventsViewControllerRow new];
+				row.event = event;
+				row.shortDescription = [[event.eventText stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
+				[rows addObject:row];
+			}
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self saveCacheData:rows cacheDate:[NSDate date] expireDate:[result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]];
+				completionBlock(lastError);
+			});
+
+		} progressBlock:nil];
+	}];
 }
 
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
-		[self reloadFromCache];
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
+	self.account = [NCAccount currentAccount];
 }
 
 - (NSString *)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -146,7 +133,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NSArray* rows = self.data;
+	NSArray* rows = self.cacheData;
 	NCCalendarEventsViewControllerRow* row = rows[indexPath.row];
 	
 	NCCalendarEventCell* cell = (NCCalendarEventCell*) tableViewCell;
@@ -167,6 +154,18 @@
 						   [dateFormatter stringFromDate:row.event.eventDate],
 						   row.event.ownerID == 1 ? @"CCP" : row.event.ownerName];
 	cell.eventTextLabel.text = row.shortDescription;
+}
+
+#pragma mark - Private
+
+- (void) setAccount:(NCAccount *)account {
+	_account = account;
+	[account.managedObjectContext performBlock:^{
+		NSString* uuid = account.uuid;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.cacheRecordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), uuid];
+		});
+	}];
 }
 
 @end

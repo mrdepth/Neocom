@@ -69,31 +69,22 @@ static NCAccount* currentAccount = nil;
 	@synchronized(self) {
 		changed = currentAccount != account;
 		
-		void (^save)() = ^() {
-			if (changed) {
-				currentAccount = account;
-				if (account)
-					[[NSUserDefaults standardUserDefaults] setValue:account.uuid forKey:NCSettingsCurrentAccountKey];
-				else
-					[[NSUserDefaults standardUserDefaults] removeObjectForKey:NCSettingsCurrentAccountKey];
-				[[NSUserDefaults standardUserDefaults] synchronize];
-
-				[[NSNotificationCenter defaultCenter] postNotificationName:NCCurrentAccountDidChangeNotification object:account];
-			}
-			
-		};
-
 		if (changed) {
-			if (account && [account isFault]) {
-				[[account managedObjectContext] performBlock:^{
-					[account uuid];
-					dispatch_async(dispatch_get_main_queue(), save);
-				}];
-			}
-			else
-				save();
+			currentAccount = account;
+			[account.managedObjectContext performBlock:^{
+				NSString* uuid = account.uuid;
+				dispatch_async(dispatch_get_main_queue(), ^{
+					if (account)
+						[[NSUserDefaults standardUserDefaults] setValue:uuid forKey:NCSettingsCurrentAccountKey];
+					else
+						[[NSUserDefaults standardUserDefaults] removeObjectForKey:NCSettingsCurrentAccountKey];
+					[[NSUserDefaults standardUserDefaults] synchronize];
+				});
+			}];
 		}
 	}
+	if (changed)
+		[[NSNotificationCenter defaultCenter] postNotificationName:NCCurrentAccountDidChangeNotification object:account];
 }
 
 - (void) awakeFromInsert {

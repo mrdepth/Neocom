@@ -510,6 +510,7 @@
 	self.account = [NCAccount currentAccount];
 }
 
+#pragma mark - Private
 
 - (void) loadJumpClones {
 	NCCharacterSheetViewControllerData* data = self.cacheData;

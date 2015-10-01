@@ -239,6 +239,9 @@
 		1283101A1BBD5C430018C8AC /* NCMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5F118929B960010BEE8 /* NCMessageCell.m */; settings = {ASSET_TAGS = (); }; };
 		1283101D1BBD6AE80018C8AC /* NCMailBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */; settings = {ASSET_TAGS = (); }; };
 		1283101E1BBD746A0018C8AC /* NCMailBoxMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E4331A18951AA800DF2061 /* NCMailBoxMessageViewController.m */; settings = {ASSET_TAGS = (); }; };
+		1283101F1BBD7C5D0018C8AC /* NCCalendarEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB161891873800B99A7E /* NCCalendarEventCell.m */; settings = {ASSET_TAGS = (); }; };
+		128310201BBD7C610018C8AC /* NCCalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB13189186D900B99A7E /* NCCalendarEventsViewController.m */; settings = {ASSET_TAGS = (); }; };
+		128310231BBD81ED0018C8AC /* NCCalendarEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */; settings = {ASSET_TAGS = (); }; };
 		128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F3518990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m */; };
 		128A1F3818990DA200005C4F /* NCFittingSectionHiSlotHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128A1F3718990DA200005C4F /* NCFittingSectionHiSlotHeaderView.xib */; };
 		128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */; };
@@ -4289,6 +4292,7 @@
 				12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */,
 				128310091BBC39920018C8AC /* NCSkillQueueViewController.m in Sources */,
 				12FA32AC18E157920053DDC5 /* NCMarqueeLabel.m in Sources */,
+				128310201BBD7C610018C8AC /* NCCalendarEventsViewController.m in Sources */,
 				128C9B0918BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m in Sources */,
 				120C333119CAB0A60093EECA /* NCDBEufeItem.m in Sources */,
 				120C332819CAB0A60093EECA /* NCDBInvTypeRequiredSkill.m in Sources */,
@@ -4364,6 +4368,8 @@
 				129D2625187E923300E2062C /* NSString+UTI.m in Sources */,
 				12B5EFF21ACBC154003CDF65 /* NCShoppingList.m in Sources */,
 				12F9560218CDB5D4005CEAD6 /* NCBannerViewController.m in Sources */,
+				128310231BBD81ED0018C8AC /* NCCalendarEventDetailsViewController.m in Sources */,
+				1283101F1BBD7C5D0018C8AC /* NCCalendarEventCell.m in Sources */,
 				12436E141946E4670090D4A6 /* NCDBImageValueTransformer.m in Sources */,
 				1264FD761BBC57F6002AFDF3 /* NCSkillsContainerViewController.m in Sources */,
 				129D2620187E923300E2062C /* UITableViewCell+Nib.m in Sources */,

@@ -7,7 +7,7 @@
 //
 
 #import "NCCalendarEventDetailsViewController.h"
-#import "EVEOnlineAPI.h"
+#import <EVEAPI/EVEAPI.h>
 
 @interface NCCalendarEventDetailsViewController ()
 

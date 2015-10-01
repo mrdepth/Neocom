@@ -20,7 +20,7 @@
 - (void) _addRequiredSkillsForType:(NCDBInvType*) type;
 - (void) _addSkill:(NCDBInvType*) skill withLevel:(int32_t) level;
 - (void) _addMastery:(NCDBCertMastery*) mastery;
-- (void) _removeSkill:(NCSkillData*) skill;
+- (NSIndexSet*) _removeSkill:(NCSkillData*) skill;
 
 
 @end
@@ -83,10 +83,12 @@
 	}];
 }
 
-- (void) removeSkill:(NCSkillData*) skill {
+- (NSIndexSet*) removeSkill:(NCSkillData*) skill {
+	__block NSIndexSet* indexes;
 	[self.databaseManagedObjectContext performBlockAndWait:^{
-		[self _removeSkill:skill];
+		indexes = [self _removeSkill:skill];
 	}];
+	return indexes;
 }
 
 - (void) addMastery:(NCDBCertMastery*) mastery {
@@ -206,7 +208,7 @@
 	}
 }
 
-- (void) _removeSkill:(NCSkillData*) skill {
+- (NSIndexSet*) _removeSkill:(NCSkillData*) skill {
 	int32_t typeID = skill.typeID;
 //	if (skill.type.managedObjectContext != self.databaseManagedObjectContext)
 //		typeID = [(NCDBInvType*) [self.databaseManagedObjectContext objectWithID:skill.type.objectID] typeID];
@@ -222,6 +224,7 @@
 		index++;
 	}
 	[_skills removeObjectsAtIndexes:indexes];
+	return indexes;
 }
 
 - (void) _addMastery:(NCDBCertMastery*) mastery {

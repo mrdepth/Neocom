@@ -283,12 +283,11 @@
 
 - (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock progressBlock:(void (^)(float))progressBlock {
 	__block NSError* lastError = nil;
-	NCAccount* account = [NCAccount currentAccount];
-	if (!account) {
+	NSArray* accounts = self.accounts;
+	if (accounts.count == 0) {
 		completionBlock(nil);
 		return;
 	}
-	NSArray* accounts = self.accounts;
 	
 	NCAssetsViewControllerData* data = [NCAssetsViewControllerData new];
 	

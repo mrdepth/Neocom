@@ -180,7 +180,7 @@
 
 - (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock progressBlock:(void (^)(float))progressBlock {
 	__block NSError* lastError = nil;
-	NCAccount* account = [NCAccount currentAccount];
+	NCAccount* account = self.account;
 	if (!account) {
 		completionBlock(nil);
 		return;

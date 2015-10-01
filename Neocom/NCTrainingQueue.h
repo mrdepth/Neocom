@@ -25,7 +25,7 @@
 - (void) addRequiredSkillsForType:(NCDBInvType*) type;
 - (void) addSkill:(NCDBInvType*) skill withLevel:(int32_t) level;
 - (void) addMastery:(NCDBCertMastery*) mastery;
-- (void) removeSkill:(NCSkillData*) skill;
+- (NSIndexSet*) removeSkill:(NCSkillData*) skill;
 - (NSString*) xmlRepresentationWithSkillPlanName:(NSString*) skillPlanName;
 - (NSTimeInterval) trainingTimeWithCharacterAttributes:(NCCharacterAttributes*) characterAttributes;
 - (void) moveSkillAdIndex:(NSInteger) from toIndex:(NSInteger) to;

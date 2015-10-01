@@ -137,6 +137,22 @@
 		return [_hash unsignedIntegerValue];
 }
 
+#pragma mark - NSCopying
+
+- (id) copyWithZone:(NSZone *)zone {
+	NCSkillData* other = [NCSkillData new];
+	other.typeName = self.typeName;
+	other.rank = self.rank;
+	other.typeID = self.typeID;
+	other.primaryAttributeID = self.primaryAttributeID;
+	other.secondaryAttributeID = self.secondaryAttributeID;
+	other.characterSkill = self.characterSkill;
+	other.currentLevel = self.currentLevel;
+	other.targetLevel = self.targetLevel;
+	other.characterAttributes = self.characterAttributes;
+	return other;
+}
+
 /*#pragma mark - NSCoding
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {

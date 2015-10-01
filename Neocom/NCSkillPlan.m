@@ -77,11 +77,11 @@
 	}
 }
 
-- (void) mergeWithTrainingQueue:(NCTrainingQueue*) trainingQueue completionBlock:(void(^)(NCTrainingQueue* trainingQueue)) completionBlock {
+- (void) mergeWithTrainingQueue:(NCTrainingQueue*) mergedTrainingQueue completionBlock:(void(^)(NCTrainingQueue* trainingQueue)) completionBlock {
 	[self loadTrainingQueueWithCompletionBlock:^(NCTrainingQueue *trainingQueue) {
 		[self.databaseManagedObjectContext performBlock:^{
 			NCTrainingQueue* newTrainingQueue = [trainingQueue copy];
-			for (NCSkillData* skillData in trainingQueue.skills)
+			for (NCSkillData* skillData in mergedTrainingQueue.skills)
 				[newTrainingQueue addSkill:[self.databaseManagedObjectContext invTypeWithTypeID:skillData.typeID]
 								 withLevel:skillData.targetLevel];
 			self.trainingQueue = newTrainingQueue;
@@ -89,6 +89,10 @@
 				completionBlock(trainingQueue);
 			
 			[self save];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				if (newTrainingQueue)
+					[[NSNotificationCenter defaultCenter] postNotificationName:NCSkillPlanDidChangeTrainingQueueNotification object:self userInfo:@{NCSkillPlanTrainingQueueKey: newTrainingQueue}];
+			});
 		}];
 	}];
 }

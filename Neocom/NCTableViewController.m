@@ -103,8 +103,8 @@
 	else
 		[self.tableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
 	
-	if (self.searchDisplayController)
-		[self.searchDisplayController.searchResultsTableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
+//	if (self.searchDisplayController)
+//		[self.searchDisplayController.searchResultsTableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
 	
 	//Collapse/expand support
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
@@ -721,8 +721,8 @@
 					NCTableViewController* searchResultsController = (NCTableViewController*) self.searchController.searchResultsController;
 					[searchResultsController.tableView reloadData];
 				}
-				else if (self.searchDisplayController)
-					[self.searchDisplayController.searchResultsTableView reloadData];
+//				else if (self.searchDisplayController)
+//					[self.searchDisplayController.searchResultsTableView reloadData];
 				dispatch_group_leave(self.searchingDispatchGroup);
 			});
 		}];

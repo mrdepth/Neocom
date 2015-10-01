@@ -60,6 +60,8 @@
 @property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 
 - (IBAction)onSkills:(id)sender;
+- (void) didChangeTrainingQueue:(NSNotification*) notification;
+- (void) calculateOptimalAttributesWithData:(NCSkillQueueViewControllerData*) data completionBlock:(void(^)()) completionBlock;
 
 @end
 
@@ -167,7 +169,8 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 3;
+	NCSkillQueueViewControllerData* data = self.cacheData;
+	return data ? 3 : 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -212,6 +215,10 @@
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		[self.skillPlanTrainingQueue removeSkill:self.skillPlanTrainingQueue.skills[indexPath.row]];
 		[self.skillPlan save];
+		[tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationFade];
+		[self calculateOptimalAttributesWithData:self.cacheData completionBlock:^{
+			[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+		}];
 	}
 }
 
@@ -486,66 +493,15 @@
 			}];
 		}];
 		
-		dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-			[trainingQueue.databaseManagedObjectContext performBlock:^{
-				NCTrainingQueue* fullTrainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:data.characterSheet databaseManagedObjectContext:trainingQueue.databaseManagedObjectContext];
-				NSMutableDictionary* types = [NSMutableDictionary new];
-				for (NCSkillData* skillData in trainingQueue.skills ? [skillQueueRows arrayByAddingObjectsFromArray:trainingQueue.skills] : skillQueueRows) {
-					NCDBInvType* type = types[@(skillData.typeID)];
-					if (!type) {
-						type = [trainingQueue.databaseManagedObjectContext invTypeWithTypeID:skillData.typeID];
-						if (type)
-							types[@(skillData.typeID)] = type;
-						else
-							continue;
-					}
-					[fullTrainingQueue addSkill:type withLevel:skillData.targetLevel];
-				}
-				
-				NCCharacterAttributes* optimalAttributes = [NCCharacterAttributes optimalAttributesWithTrainingQueue:fullTrainingQueue];
-				
-				NCCharacterAttributes* finalAttributes = [NCCharacterAttributes new];
-				finalAttributes.charisma = optimalAttributes.charisma;
-				finalAttributes.intelligence = optimalAttributes.intelligence;
-				finalAttributes.memory = optimalAttributes.memory;
-				finalAttributes.perception = optimalAttributes.perception;
-				finalAttributes.willpower = optimalAttributes.willpower;
-				
-				if (data.characterSheet) {
-					
-					for (EVECharacterSheetImplant* implant in data.characterSheet.implants) {
-						NCDBInvType* type = types[@(implant.typeID)];
-						if (!type) {
-							type = [trainingQueue.databaseManagedObjectContext invTypeWithTypeID:implant.typeID];
-							if (type)
-								types[@(implant.typeID)] = type;
-							else
-								continue;
-						}
+		dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+			self.skillPlan = activeSkillPlan;
+			self.skillPlanName = skillPlanName;
+			self.skillPlanTrainingQueue = trainingQueue;
+			self.skillQueueRows = skillQueueRows;
 
-						finalAttributes.charisma += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value];
-						finalAttributes.intelligence += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value];
-						finalAttributes.memory += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value];
-						finalAttributes.perception += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value];
-						finalAttributes.willpower += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value];
-					}
-				}
-				NSTimeInterval optimalTrainingTime = [fullTrainingQueue trainingTimeWithCharacterAttributes:finalAttributes];
-				
-				dispatch_async(dispatch_get_main_queue(), ^{
-					self.optimalTrainingTime = optimalTrainingTime;
-					self.optimalAttributes = optimalAttributes;
-					self.fullTrainingQueue = fullTrainingQueue;
-					self.skillPlan = activeSkillPlan;
-					self.skillPlanName = skillPlanName;
-					self.skillPlanTrainingQueue = trainingQueue;
-					self.skillQueueRows = skillQueueRows;
-					completionBlock();
-				});
+			[self calculateOptimalAttributesWithData:data completionBlock:^{
+				completionBlock();
 			}];
-
-
-			
 		});
 	}
 	else
@@ -580,6 +536,76 @@
 		NSString* uuid = account.uuid;
 		dispatch_async(dispatch_get_main_queue(), ^{
 			self.cacheRecordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), uuid];
+		});
+	}];
+}
+
+- (void) setSkillPlan:(NCSkillPlan *)skillPlan {
+	if (_skillPlan)
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:NCSkillPlanDidChangeTrainingQueueNotification object:_skillPlan];
+	_skillPlan = skillPlan;
+	if (_skillPlan)
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeTrainingQueue:) name:NCSkillPlanDidChangeTrainingQueueNotification object:_skillPlan];
+}
+
+- (void) didChangeTrainingQueue:(NSNotification*) notification {
+	self.skillPlanTrainingQueue = notification.userInfo[NCSkillPlanTrainingQueueKey];
+	[self reload];
+}
+
+- (void) calculateOptimalAttributesWithData:(NCSkillQueueViewControllerData*) data completionBlock:(void(^)()) completionBlock {
+	NCTrainingQueue* trainingQueue = self.skillPlanTrainingQueue;
+	NSArray* skillQueueRows = self.skillQueueRows;
+	[trainingQueue.databaseManagedObjectContext performBlock:^{
+		NCTrainingQueue* fullTrainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:data.characterSheet databaseManagedObjectContext:trainingQueue.databaseManagedObjectContext];
+		NSMutableDictionary* types = [NSMutableDictionary new];
+		for (NCSkillData* skillData in trainingQueue.skills ? [skillQueueRows arrayByAddingObjectsFromArray:trainingQueue.skills] : skillQueueRows) {
+			NCDBInvType* type = types[@(skillData.typeID)];
+			if (!type) {
+				type = [trainingQueue.databaseManagedObjectContext invTypeWithTypeID:skillData.typeID];
+				if (type)
+					types[@(skillData.typeID)] = type;
+				else
+					continue;
+			}
+			[fullTrainingQueue addSkill:type withLevel:skillData.targetLevel];
+		}
+		
+		NCCharacterAttributes* optimalAttributes = [NCCharacterAttributes optimalAttributesWithTrainingQueue:fullTrainingQueue];
+		
+		NCCharacterAttributes* finalAttributes = [NCCharacterAttributes new];
+		finalAttributes.charisma = optimalAttributes.charisma;
+		finalAttributes.intelligence = optimalAttributes.intelligence;
+		finalAttributes.memory = optimalAttributes.memory;
+		finalAttributes.perception = optimalAttributes.perception;
+		finalAttributes.willpower = optimalAttributes.willpower;
+		
+		if (data.characterSheet) {
+			
+			for (EVECharacterSheetImplant* implant in data.characterSheet.implants) {
+				NCDBInvType* type = types[@(implant.typeID)];
+				if (!type) {
+					type = [trainingQueue.databaseManagedObjectContext invTypeWithTypeID:implant.typeID];
+					if (type)
+						types[@(implant.typeID)] = type;
+					else
+						continue;
+				}
+				
+				finalAttributes.charisma += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value];
+				finalAttributes.intelligence += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value];
+				finalAttributes.memory += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value];
+				finalAttributes.perception += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value];
+				finalAttributes.willpower += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value];
+			}
+		}
+		NSTimeInterval optimalTrainingTime = [fullTrainingQueue trainingTimeWithCharacterAttributes:finalAttributes];
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.optimalTrainingTime = optimalTrainingTime;
+			self.optimalAttributes = optimalAttributes;
+			self.fullTrainingQueue = fullTrainingQueue;
+			completionBlock();
 		});
 	}];
 }

@@ -10,6 +10,9 @@
 #import <CoreData/CoreData.h>
 #import "NCTrainingQueue.h"
 
+#define NCSkillPlanDidChangeTrainingQueueNotification @"NCSkillPlanDidChangeTrainingQueueNotification"
+#define NCSkillPlanTrainingQueueKey @"NCSkillPlanTrainingQueueKey"
+
 @class NCAccount;
 @interface NCSkillPlan : NSManagedObject
 

@@ -235,6 +235,7 @@
 		127C50B718CF52DA0074877C /* clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50B618CF52D90074877C /* clear.png */; };
 		127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */; };
 		128310091BBC39920018C8AC /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; settings = {ASSET_TAGS = (); }; };
+		128310141BBD3D6D0018C8AC /* NCSkillPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */; settings = {ASSET_TAGS = (); }; };
 		128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F3518990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m */; };
 		128A1F3818990DA200005C4F /* NCFittingSectionHiSlotHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128A1F3718990DA200005C4F /* NCFittingSectionHiSlotHeaderView.xib */; };
 		128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */; };
@@ -4265,6 +4266,7 @@
 			files = (
 				129D261F187E923300E2062C /* NSURL+MD5.m in Sources */,
 				12CDB7F2188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m in Sources */,
+				128310141BBD3D6D0018C8AC /* NCSkillPlansViewController.m in Sources */,
 				12B5EFF51ACBC154003CDF65 /* NCShoppingItem.m in Sources */,
 				125A19C41BB6AE3D00C5BAD8 /* NCContractsViewController.m in Sources */,
 				129D260F187E923300E2062C /* ASInAppPurchase.m in Sources */,

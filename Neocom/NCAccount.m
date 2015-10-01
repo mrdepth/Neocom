@@ -170,6 +170,11 @@ static NCAccount* currentAccount = nil;
 	activeSkillPlan.active = YES;
 	_activeSkillPlan = activeSkillPlan;
 	[self didChangeValueForKey:@"activeSkillPlan"];
+	if (activeSkillPlan) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeActiveSkillPlanNotification object:self userInfo:@{NCAccountActiveSkillPlanKey:activeSkillPlan}];
+		});
+	}
 }
 
 - (void) loadCharacterInfoWithCompletionBlock:(void(^)(EVECharacterInfo* characterInfo, NSError* error)) completionBlock {

@@ -18,6 +18,8 @@
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
 #define NCCurrentAccountDidChangeNotification @"NCCurrentAccountDidChangeNotification"
 #define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
+#define NCAccountDidChangeActiveSkillPlanNotification @"NCAccountDidChangeActiveSkillPlanNotification"
+#define NCAccountActiveSkillPlanKey @"NCAccountActiveSkillPlanKey"
 
 typedef NS_ENUM(NSInteger, NCAccountType) {
 	NCAccountTypeCharacter,

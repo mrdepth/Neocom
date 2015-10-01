@@ -15,10 +15,23 @@
 #import "UIAlertView+Block.h"
 #import "NSString+Neocom.h"
 
-@interface NCSkillPlansViewController ()
-@property (nonatomic, strong) NSArray* skillPlans;
-- (void) renameSkillPlanAtIndexPath:(NSIndexPath*) indexPath;
+@interface NCSkillPlansViewControllerRow : NSObject
+@property (nonatomic, strong) NCSkillPlan* skillPlan;
+@property (nonatomic, strong) NCTrainingQueue* trainingQueue;
+@property (nonatomic, strong) NSString* skillPlanName;
+@property (nonatomic, assign) BOOL active;
 @end
+
+@implementation NCSkillPlansViewControllerRow
+@end
+
+@interface NCSkillPlansViewController ()
+@property (nonatomic, strong) NSArray* rows;
+@property (nonatomic, strong) NCAccount* account;
+- (void) renameSkillPlanAtIndexPath:(NSIndexPath*) indexPath;
+- (void) reload;
+@end
+
 
 @implementation NCSkillPlansViewController
 
@@ -36,6 +49,8 @@
     [super viewDidLoad];
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.refreshControl = nil;
+	self.account = [NCAccount currentAccount];
+	[self reload];
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,8 +60,11 @@
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
-	NCStorage* storage = [NCStorage sharedStorage];
-	[storage saveContext];
+	[super viewWillDisappear:animated];
+	[self.account.managedObjectContext performBlock:^{
+		if ([self.account.managedObjectContext hasChanges])
+			[self.account.managedObjectContext save:nil];
+	}];
 }
 
 #pragma mark - Table view data source
@@ -58,22 +76,18 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.skillPlans.count + 1;
+    return self.rows.count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (indexPath.row < self.skillPlans.count) {
+	if (indexPath.row < self.rows.count) {
 		NCDefaultTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-		NCSkillPlan* skillPlan = self.skillPlans[indexPath.row];
-		cell.object = skillPlan;
-		cell.titleLabel.text = skillPlan.name.length > 0 ? skillPlan.name : NSLocalizedString(@"Unnamed", nil);
-		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:skillPlan.trainingQueue.trainingTime], (int32_t) skillPlan.trainingQueue.skills.count];
-
-		if (skillPlan.active)
-			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
-		else
-			cell.accessoryView = nil;
+		NCSkillPlansViewControllerRow* row = self.rows[indexPath.row];
+		cell.object = row;
+		cell.titleLabel.text = row.skillPlanName.length > 0 ? row.skillPlanName : NSLocalizedString(@"Unnamed", nil);
+		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:row.trainingQueue.trainingTime], (int32_t) row.trainingQueue.skills.count];
+		cell.accessoryView = row.active ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
 		return cell;
 	}
 	else
@@ -87,69 +101,79 @@
 }
 
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-		NSMutableArray* skillPlans = [self.skillPlans mutableCopy];
-		NCSkillPlan* skillPlan = skillPlans[indexPath.row];
-		BOOL active = skillPlan.active;
+		NSMutableArray* rows = [self.rows mutableCopy];
+		NCSkillPlansViewControllerRow* row = rows[indexPath.row];
+		BOOL active = row.active;
 		
-		NCStorage* storage = [NCStorage sharedStorage];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-		[context performBlockAndWait:^{
-			[context deleteObject:skillPlan];
-			[storage saveContext];
+		NSManagedObjectContext* context = row.skillPlan.managedObjectContext;
+		[context performBlock:^{
+			[context deleteObject:row.skillPlan];
+			[context save:nil];
 		}];
 		
-		[skillPlans removeObjectAtIndex:indexPath.row];
-		self.skillPlans = skillPlans;
+		[rows removeObjectAtIndex:indexPath.row];
+		self.rows = rows;
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		if (active) {
-			if (self.skillPlans.count > 0)
-				[[NCAccount currentAccount] setActiveSkillPlan:self.skillPlans[0]];
+			if (self.rows.count > 0) {
+				[self.rows[0] setActive:YES];
+				[context performBlock:^{
+					[[NCAccount currentAccount] setActiveSkillPlan:[self.rows[0] skillPlan]];
+				}];
+			}
 			else {
-				NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext]
-								 insertIntoManagedObjectContext:storage.managedObjectContext];
-				skillPlan.active = YES;
-				skillPlan.account = [NCAccount currentAccount];
-				skillPlan.name = NSLocalizedString(@"Default Skill Plan", nil);
-
-				[[NCAccount currentAccount] setActiveSkillPlan:skillPlan];
+				[context performBlock:^{
+					NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:context]
+												  insertIntoManagedObjectContext:context];
+					skillPlan.active = YES;
+					skillPlan.account = self.account;
+					skillPlan.name = NSLocalizedString(@"Default Skill Plan", nil);
+					
+					[self.account setActiveSkillPlan:skillPlan];
+				}];
 			}
 		}
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
-		NSMutableArray* skillPlans = [self.skillPlans mutableCopy];
-		NCStorage* storage = [NCStorage sharedStorage];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-		[context performBlockAndWait:^{
+		NSMutableArray* rows = [self.rows mutableCopy];
+		NSManagedObjectContext* context = self.account.managedObjectContext;
+		[context performBlock:^{
 			NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:context]
 										  insertIntoManagedObjectContext:context];
 			skillPlan.name = NSLocalizedString(@"Skill Plan", nil);
 			skillPlan.account = [NCAccount currentAccount];
-			[skillPlans addObject:skillPlan];
+			
+			NCSkillPlansViewControllerRow* row = [NCSkillPlansViewControllerRow new];
+			[rows addObject:row];
+			row.skillPlan = skillPlan;
+			row.skillPlanName = skillPlan.name;
+			row.active = skillPlan.active;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.rows = rows;
+				[tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+				[self renameSkillPlanAtIndexPath:indexPath];
+			});
 		}];
-		self.skillPlans = skillPlans;
-		[tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-		[self renameSkillPlanAtIndexPath:indexPath];
     }
 }
 
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == self.skillPlans.count)
+	if (indexPath.row == self.rows.count)
 		return 37;
 	else
 		return 42;
 }
 
 - (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return indexPath.row < self.skillPlans.count ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleInsert;
+	return indexPath.row < self.rows.count ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleInsert;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == self.skillPlans.count) {
+	if (indexPath.row == self.rows.count) {
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
 	}
@@ -168,7 +192,11 @@
 									 [self renameSkillPlanAtIndexPath:indexPath];
 								 }
 								 else if (selectedButtonIndex == 2) {
-									 [[NCAccount currentAccount] setActiveSkillPlan:cell.object];
+									 [self.rows setValue:@(NO) forKey:@"active"];
+									 [cell.object setActive:YES];
+									 [self.account.managedObjectContext performBlock:^{
+										 [self.account setActiveSkillPlan:[cell.object skillPlan]];
+									 }];
 									 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 								 }
 							 }
@@ -180,49 +208,18 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
 
-- (void) update {
-	//self.skillPlans = [[[NCAccount currentAccount] skillPlans] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
-	NCAccount* account = [NCAccount currentAccount];
-	[super update];
-	__block NSArray* skillPlans = nil;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NCStorage* storage = [NCStorage sharedStorage];
-											 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-											 [context performBlockAndWait:^{
-												skillPlans = [[account skillPlans] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
-											 }];
-											 for (NCSkillPlan* skillPlan in skillPlans)
-												 [skillPlan.trainingQueue trainingTime];
-											 
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.skillPlans = skillPlans;
-								 [self.tableView reloadData];
-							 }];
-}
-
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
-		[self update];
-}
-
-- (void) didChangeStorage {
-	if ([self isViewLoaded])
-		[self update];
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
+	self.account = [NCAccount currentAccount];
+	[self reload];
 }
 
 #pragma mark - Private
 
 - (void) renameSkillPlanAtIndexPath:(NSIndexPath*) indexPath {
 	NCTableViewCell* cell = (NCTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
-	NCSkillPlan* skillPlan = cell.object;
+	NCSkillPlansViewControllerRow* row = cell.object;
 
 	UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename", nil)
 													 message:nil
@@ -231,14 +228,43 @@
 											 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
 												 if (selectedButtonIndex != alertView.cancelButtonIndex) {
 													 UITextField* textField = [alertView textFieldAtIndex:0];
-													 skillPlan.name = textField.text;
+													 row.skillPlanName = textField.text;
+													 row.skillPlan.name = row.skillPlanName;
 													 [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 												 }
 											 } cancelBlock:nil];
 	alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
 	UITextField* textField = [alertView textFieldAtIndex:0];
-	textField.text = skillPlan.name;
+	textField.text = row.skillPlanName;
 	[alertView show];
+}
+
+- (void) reload {
+	if (self.account) {
+		[self.account.managedObjectContext performBlock:^{
+			NSArray* skillPlans = [self.account.skillPlans sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+			NSMutableArray* rows = [NSMutableArray new];
+			
+			dispatch_group_t finishDispatchGroup = dispatch_group_create();
+			for (NCSkillPlan* skillPlan in skillPlans) {
+				dispatch_group_enter(finishDispatchGroup);
+				NCSkillPlansViewControllerRow* row = [NCSkillPlansViewControllerRow new];
+				[rows addObject:row];
+				row.skillPlan = skillPlan;
+				row.skillPlanName = skillPlan.name;
+				row.active = skillPlan.active;
+				[skillPlan loadTrainingQueueWithCompletionBlock:^(NCTrainingQueue *trainingQueue) {
+					row.trainingQueue = trainingQueue;
+					dispatch_group_leave(finishDispatchGroup);
+				}];
+			}
+			
+			dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+				self.rows = rows;
+				[self.tableView reloadData];
+			});
+		}];
+	}
 }
 
 @end

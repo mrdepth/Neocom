@@ -36,6 +36,7 @@ typedef NS_ENUM(NSInteger, NCStorageType) {
 - (id) initCloudStorage;
 
 - (NSManagedObjectContext*) createManagedObjectContext;
+- (NSManagedObjectContext*) createManagedObjectContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType) concurrencyType;
 
 - (BOOL) backupCloudData;
 - (BOOL) restoreCloudData;

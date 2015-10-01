@@ -61,6 +61,7 @@
 
 - (IBAction)onSkills:(id)sender;
 - (void) didChangeTrainingQueue:(NSNotification*) notification;
+- (void) didChangeActiveSkillPlan:(NSNotification*) notification;
 - (void) calculateOptimalAttributesWithData:(NCSkillQueueViewControllerData*) data completionBlock:(void(^)()) completionBlock;
 
 @end
@@ -104,7 +105,7 @@
 							 if (selectedButtonIndex == actionSheet.destructiveButtonIndex) {
 								 [self.skillPlan clear];
 								 [self.skillPlan save];
-								 [self.tableView reloadData];
+								 [self reload];
 							 }
 							 else if (selectedButtonIndex == 1) {
 								 [self performSegueWithIdentifier:@"NCSkillPlanImportViewController" sender:nil];
@@ -531,7 +532,12 @@
 }
 
 - (void) setAccount:(NCAccount *)account {
+	if (_account)
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeActiveSkillPlanNotification object:_account];
 	_account = account;
+	if (_account)
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeActiveSkillPlan:) name:NCAccountDidChangeActiveSkillPlanNotification object:_account];
+	
 	[account.managedObjectContext performBlock:^{
 		NSString* uuid = account.uuid;
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -552,6 +558,12 @@
 	self.skillPlanTrainingQueue = notification.userInfo[NCSkillPlanTrainingQueueKey];
 	[self reload];
 }
+
+- (void) didChangeActiveSkillPlan:(NSNotification*) notification {
+	self.skillPlan = notification.userInfo[NCAccountActiveSkillPlanKey];
+	[self reload];
+}
+
 
 - (void) calculateOptimalAttributesWithData:(NCSkillQueueViewControllerData*) data completionBlock:(void(^)()) completionBlock {
 	NCTrainingQueue* trainingQueue = self.skillPlanTrainingQueue;

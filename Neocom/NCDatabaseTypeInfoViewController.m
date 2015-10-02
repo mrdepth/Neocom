@@ -309,13 +309,13 @@
 			NSString* marketGroupName = marketGroup.marketGroupName;
 			NSString* iconFile = marketGroup.icon.iconFile;
 
-			NCAccount* account = [NCAccount currentAccount];
-			[account.managedObjectContext performBlock:^{
-				NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:account.managedObjectContext]
+			int32_t typeID = self.type.typeID;
+			[self.storageManagedObjectContext performBlock:^{
+				NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:self.storageManagedObjectContext]
 														  insertIntoManagedObjectContext:nil];
 				shoppingGroup.name = marketGroupName;
 				shoppingGroup.immutable = NO;
-				NCShoppingItem* shoppingItem = [NCShoppingItem shoppingItemWithType:self.type quantity:1];
+				NCShoppingItem* shoppingItem = [[NCShoppingItem alloc] initWithTypeID:typeID quantity:1 entity:[NSEntityDescription entityForName:@"ShoppingItem" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:nil];
 				shoppingItem.shoppingGroup = shoppingGroup;
 				shoppingGroup.iconFile = iconFile;
 				[shoppingGroup addShoppingItemsObject:shoppingItem];
@@ -364,6 +364,8 @@
 
 - (void) loadItemAttributes {
 	NCAccount *account = [NCAccount currentAccount];
+	
+	__block NSManagedObjectID* shoppingListID;
 
 	void (^load)(EVECharacterSheet*) = ^(EVECharacterSheet* characterSheet) {
 		NSManagedObjectContext* managedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
@@ -398,9 +400,7 @@
 				
 				row.cellIdentifier = @"Cell";
 				row.image = [UIImage imageNamed:@"note.png"];
-				[self.storageManagedObjectContext performBlock:^{
-					row.object = [[self.storageManagedObjectContext currentShoppingList] objectID];
-				}];
+				row.object = shoppingListID;
 				[rows addObject:row];
 				[sections addObject:section];
 			}
@@ -723,13 +723,17 @@
 		}];
 	};
 	
-	if (account) {
-		[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
-			load(characterSheet);
-		}];
-	}
-	else
-		load(nil);
+	[self.storageManagedObjectContext performBlock:^{
+		shoppingListID = [[self.storageManagedObjectContext currentShoppingList] objectID];
+		if (account) {
+			[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+				load(characterSheet);
+			}];
+		}
+		else
+			load(nil);
+	}];
+	
 }
 
 - (void) loadBlueprintAttributes {

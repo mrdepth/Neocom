@@ -243,6 +243,8 @@
 		1283101F1BBD7C5D0018C8AC /* NCCalendarEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB161891873800B99A7E /* NCCalendarEventCell.m */; settings = {ASSET_TAGS = (); }; };
 		128310201BBD7C610018C8AC /* NCCalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB13189186D900B99A7E /* NCCalendarEventsViewController.m */; settings = {ASSET_TAGS = (); }; };
 		128310231BBD81ED0018C8AC /* NCCalendarEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */; settings = {ASSET_TAGS = (); }; };
+		128310281BBE7F7D0018C8AC /* NCShoppingItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B42E701AC8432900A0D956 /* NCShoppingItem+Neocom.m */; settings = {ASSET_TAGS = (); }; };
+		1283102E1BBE810A0018C8AC /* NCNewShoppingItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B42E6B1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m */; settings = {ASSET_TAGS = (); }; };
 		128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F3518990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m */; };
 		128A1F3818990DA200005C4F /* NCFittingSectionHiSlotHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128A1F3718990DA200005C4F /* NCFittingSectionHiSlotHeaderView.xib */; };
 		128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */; };
@@ -4324,6 +4326,7 @@
 				1264FD6E1BBC576E002AFDF3 /* NCSkillsViewController.m in Sources */,
 				129D2628187E923300E2062C /* NSBundle+Retina4.m in Sources */,
 				121112341859929E009E5106 /* NCTableViewController.m in Sources */,
+				1283102E1BBE810A0018C8AC /* NCNewShoppingItemViewController.m in Sources */,
 				129D262C187E923300E2062C /* UIActionSheet+Block.m in Sources */,
 				12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */,
 				129D2618187E923300E2062C /* LUISearchBar.m in Sources */,
@@ -4495,6 +4498,7 @@
 				120C335B19CAB0A90093EECA /* NCDBEveUnit.m in Sources */,
 				1211123818599339009E5106 /* NCCache.m in Sources */,
 				129D262E187E923300E2062C /* UIAlertView+Error.m in Sources */,
+				128310281BBE7F7D0018C8AC /* NCShoppingItem+Neocom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

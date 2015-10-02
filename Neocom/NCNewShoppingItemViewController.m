@@ -15,9 +15,23 @@
 #import "NCShoppingGroup+Neocom.h"
 #import "UIViewController+Neocom.h"
 
+@interface NCNewShoppingItemViewControllerItem : NSObject
+@property (nonatomic, strong) NCShoppingItem* item;
+@property (nonatomic, strong) NSManagedObjectID* typeID;
+@property (nonatomic, assign) int32_t quantity;
+@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, assign) double price;
+@end
+
+@interface NCNewShoppingItemViewControllerGroup : NSObject
+@property (nonatomic, strong) NSArray* contents;
+@property (nonatomic, strong) NCShoppingGroup* group;
+@property (nonatomic, assign) double price;
+@end
+
 @interface NCNewShoppingItemViewController()
 @property (nonatomic, strong) NSMutableArray* rows;
-@property (nonatomic, strong) NSArray* contents;
+@property (nonatomic, strong) NSArray* shoppingItems;
 @property (nonatomic, strong) NCShoppingList* shoppingList;
 @property (nonatomic, strong) NSString* shoppingListName;
 @property (nonatomic, assign) double totalPrice;
@@ -34,9 +48,15 @@
     self.navigationController.toolbar.barStyle = UIBarStyleBlack;
     self.navigationController.toolbar.tintColor = [UIColor whiteColor];
 	self.refreshControl = nil;
-	self.shoppingList = [NCShoppingList currentShoppingList];
-	if (self.shoppingList)
-		[self reload];
+	[self.storageManagedObjectContext performBlock:^{
+		NCShoppingList* shoppingList = [self.storageManagedObjectContext currentShoppingList];
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.shoppingList = shoppingList;
+			if (self.shoppingList)
+				[self reload];
+		});
+	}];
 }
 
 - (IBAction)onChangeQuantity:(id)sender {
@@ -118,10 +138,6 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[self.navigationController setToolbarHidden:NO animated:animated];
-	if (self.shoppingList != [NCShoppingList currentShoppingList]) {
-		self.shoppingList = [NCShoppingList currentShoppingList];
-		[self reload];
-	}
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -132,8 +148,15 @@
 #pragma mark - Navigation
 
 - (IBAction)unwindFromShoppingListsManager:(UIStoryboardSegue*) segue {
-	self.shoppingList = [NCShoppingList currentShoppingList];
-	[self reload];
+	[self.storageManagedObjectContext performBlock:^{
+		NCShoppingList* shoppingList = [self.storageManagedObjectContext currentShoppingList];
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.shoppingList = shoppingList;
+			if (self.shoppingList)
+				[self reload];
+		});
+	}];
 }
 
 #pragma mark - Table view data source
@@ -204,7 +227,7 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	if (indexPath.section == 0) {
-		NCShoppingItem* item = self.rows[indexPath.row];
+		NCNewShoppingItemViewControllerRow* item = self.rows[indexPath.row];
 		cell.titleLabel.text = item.type.typeName;
 		if (item.price)
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"x%d, %@", nil), item.quantity * (int32_t) self.stepper.value, [NSString shortStringWithFloat:item.price * item.quantity * self.stepper.value unit:@"ISK"]];
@@ -245,16 +268,29 @@
 #pragma mark - Private
 
 - (void) reload {
-	self.title = self.shoppingGroup.name;
 	
-	__block NSMutableArray* rows;
-	__block NSArray* shoppingGroups;
-	self.stepper.enabled = NO;
+	if (self.shoppingGroup.managedObjectContext)
+		[self.shoppingGroup.managedObjectContext performBlock:^{
+			NSString* name = self.shoppingGroup.name;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.title = name;
+			});
+		}];
+	else
+		self.title = self.shoppingGroup.name;
 	
 	if (self.shoppingList) {
-		NSString* name = self.shoppingList.name;
-		self.navigationItem.rightBarButtonItem.title = name;
+		[self.shoppingList.managedObjectContext performBlock:^{
+			NSString* name = self.shoppingList.name;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.navigationItem.rightBarButtonItem.title = name;
+			});
+		}];
 	}
+
+	self.stepper.enabled = NO;
+	__block NSMutableArray* rows;
+	__block NSArray* shoppingGroups;
 
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 									   title:NCTaskManagerDefaultTitle

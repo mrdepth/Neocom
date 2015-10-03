@@ -108,16 +108,18 @@
 	
 	//Collapse/expand support
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
-		NSString* key = NSStringFromClass(self.class);
-
-		[self.storageManagedObjectContext performBlock:^{
-			NCSetting* setting = [self.storageManagedObjectContext settingWithKey:key];
-			self.previousCollapsState = setting.value;
-			dispatch_async(dispatch_get_main_queue(), ^{
-				self.initialSetupFinished = YES;
-				[self reloadIfNeeded];
-			});
-		}];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			NSString* key = NSStringFromClass(self.class);
+			
+			[self.storageManagedObjectContext performBlock:^{
+				NCSetting* setting = [self.storageManagedObjectContext settingWithKey:key];
+				self.previousCollapsState = setting.value;
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.initialSetupFinished = YES;
+					[self reloadIfNeeded];
+				});
+			}];
+		});
 	}
 	else
 		self.initialSetupFinished = YES;

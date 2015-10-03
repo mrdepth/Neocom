@@ -57,11 +57,11 @@
 @class NCDBInvType;
 @interface NCShipFit : NSObject
 @property (nonatomic, strong) NCFittingEngine* engine;
-@property (nonatomic, strong) NCLoadout* loadout;
+@property (nonatomic, strong, readonly) NCLoadout* loadout;
 @property (nonatomic, strong) NSString* loadoutName;
 @property (nonatomic, assign) eufe::Character* pilot;
 @property (nonatomic, strong) NCFitCharacter* character;
-@property (nonatomic, assign) int32_t typeID;
+@property (nonatomic, assign, readonly) int32_t typeID;
 @property (nonatomic, readonly) NSString* canonicalName;
 @property (nonatomic, readonly) NSString* dnaRepresentation;
 @property (nonatomic, readonly) NSString* eveXMLRepresentation;

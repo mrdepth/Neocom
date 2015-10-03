@@ -16,26 +16,44 @@
 #import "UIViewController+Neocom.h"
 
 @interface NCNewShoppingItemViewControllerItem : NSObject
-@property (nonatomic, strong) NCShoppingItem* item;
-@property (nonatomic, strong) NSManagedObjectID* typeID;
-@property (nonatomic, assign) int32_t quantity;
+@property (nonatomic, strong) NCShoppingItem* shoppingItem;
 @property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, assign) double price;
+@property (nonatomic, readonly) double cost;
+
 @end
 
 @interface NCNewShoppingItemViewControllerGroup : NSObject
-@property (nonatomic, strong) NSArray* contents;
-@property (nonatomic, strong) NCShoppingGroup* group;
+@property (nonatomic, strong) NCShoppingGroup* shoppingGroup;
+@property (nonatomic, strong) NSArray* items;
 @property (nonatomic, assign) double price;
+@property (nonatomic, strong) NCDBEveIcon* icon;
+@property (nonatomic, readonly) double cost;
+@end
+
+@implementation NCNewShoppingItemViewControllerItem
+
+- (double) cost {
+	return self.price * self.shoppingItem.quantity;
+}
+
+@end
+
+@implementation NCNewShoppingItemViewControllerGroup
+
+- (double) cost {
+	return [[self.items valueForKeyPath:@"@sum.cost"] doubleValue] * self.shoppingGroup.quantity;
+}
+
 @end
 
 @interface NCNewShoppingItemViewController()
-@property (nonatomic, strong) NSMutableArray* rows;
-@property (nonatomic, strong) NSArray* shoppingItems;
+@property (nonatomic, strong) NSArray* shoppingGroups;
+@property (nonatomic, strong) NSMutableArray* shoppingItems;
 @property (nonatomic, strong) NCShoppingList* shoppingList;
-@property (nonatomic, strong) NSString* shoppingListName;
 @property (nonatomic, assign) double totalPrice;
 @property (nonatomic, assign) double totalContentsPrice;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 
 - (void) reload;
 - (void) reloadSummary;
@@ -45,18 +63,17 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
+	self.storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
     self.navigationController.toolbar.barStyle = UIBarStyleBlack;
     self.navigationController.toolbar.tintColor = [UIColor whiteColor];
 	self.refreshControl = nil;
-	[self.storageManagedObjectContext performBlock:^{
-		NCShoppingList* shoppingList = [self.storageManagedObjectContext currentShoppingList];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			self.shoppingList = shoppingList;
-			if (self.shoppingList)
-				[self reload];
-		});
-	}];
+	
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+	
+	NCShoppingList* shoppingList = [self.storageManagedObjectContext currentShoppingList];
+	self.shoppingList = shoppingList;
+	if (self.shoppingList)
+		[self reload];
 }
 
 - (IBAction)onChangeQuantity:(id)sender {
@@ -91,44 +108,43 @@
 	NCShoppingList* shoppingList = self.shoppingList;
 	int quantity = self.stepper.value;
 	
-	[shoppingList.managedObjectContext performBlock:^{
-		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"ShoppingGroup"];
-		request.predicate = [NSPredicate predicateWithFormat:@"shoppingList == %@ AND identifier == %@", shoppingList, self.shoppingGroup.identifier];
-		request.fetchLimit = 1;
-		NCShoppingGroup* group = [[shoppingList.managedObjectContext executeFetchRequest:request error:nil] lastObject];
-		
-		if (!group) {
-			[self.shoppingList.managedObjectContext insertObject:self.shoppingGroup];
-			for (NCShoppingItem* item in self.shoppingGroup.shoppingItems)
-				[self.shoppingList.managedObjectContext insertObject:item];
-			self.shoppingGroup.shoppingList = self.shoppingList;
-			self.shoppingGroup.quantity = quantity;
+	self.shoppingGroup.identifier = [self.shoppingGroup defaultIdentifier];
+	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"ShoppingGroup"];
+	request.predicate = [NSPredicate predicateWithFormat:@"shoppingList == %@ AND identifier == %@", shoppingList, self.shoppingGroup.identifier];
+	request.fetchLimit = 1;
+	NCShoppingGroup* group = [[shoppingList.managedObjectContext executeFetchRequest:request error:nil] lastObject];
+	
+	if (!group) {
+		[self.shoppingList.managedObjectContext insertObject:self.shoppingGroup];
+		for (NCShoppingItem* item in self.shoppingGroup.shoppingItems)
+			[self.shoppingList.managedObjectContext insertObject:item];
+		self.shoppingGroup.shoppingList = self.shoppingList;
+		self.shoppingGroup.quantity = quantity;
+	}
+	else {
+		if (group.immutable) {
+			group.quantity += quantity;
 		}
 		else {
-			if (group.immutable) {
-				group.quantity += quantity;
-			}
-			else {
-				NSMutableDictionary* items = [NSMutableDictionary new];
-				for (NCShoppingItem* item in group.shoppingItems)
-					items[@(item.typeID)] = item;
-				for (NCShoppingItem* item in self.shoppingGroup.shoppingItems) {
-					NCShoppingItem* item2 = items[@(item.typeID)];
-					if (item2)
-						item2.quantity += item.quantity * quantity;
-					else {
-						[item.shoppingGroup removeShoppingItemsObject:item];
-						[group.managedObjectContext insertObject:item];
-						item.shoppingGroup = group;
-						item.quantity *= quantity;
-					}
+			NSMutableDictionary* items = [NSMutableDictionary new];
+			for (NCShoppingItem* item in group.shoppingItems)
+				items[@(item.typeID)] = item;
+			for (NCShoppingItem* item in self.shoppingGroup.shoppingItems) {
+				NCShoppingItem* item2 = items[@(item.typeID)];
+				if (item2)
+					item2.quantity += item.quantity * quantity;
+				else {
+					[item.shoppingGroup removeShoppingItemsObject:item];
+					[group.managedObjectContext insertObject:item];
+					item.shoppingGroup = group;
+					item.quantity *= quantity;
 				}
 			}
 		}
-		
-		if ([shoppingList.managedObjectContext hasChanges])
-			[shoppingList.managedObjectContext save:nil];
-	}];
+	}
+	
+	if ([shoppingList.managedObjectContext hasChanges])
+		[shoppingList.managedObjectContext save:nil];
 //	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		//[self dismissViewControllerAnimated:YES completion:nil];
 //	else
@@ -169,17 +185,17 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if (section == 0)
-		return self.rows.count;
+		return self.shoppingItems.count;
 	else
-		return self.contents.count;
+		return self.shoppingGroups.count;
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0) {
-		if (self.rows.count > 1)
+		if (self.shoppingItems.count > 1)
 			return [NSString stringWithFormat:NSLocalizedString(@"x%d, %d items, %@", nil),
 					(int) self.stepper.value,
-					(int) self.rows.count,
+					(int) self.shoppingItems.count,
 					[NSString shortStringWithFloat:self.totalPrice * self.stepper.value unit:@"ISK"]];
 		else
 			return [NSString stringWithFormat:NSLocalizedString(@"x%d, %@", nil),
@@ -188,10 +204,7 @@
 
 	}
 	else {
-		int records = 0;
-		for (NCShoppingGroup* group in self.contents)
-			records += group.shoppingItems.count;
-
+		int records = [[self.shoppingGroups valueForKeyPath:@"@sum.items.@count"] intValue];
 		return [NSString stringWithFormat:NSLocalizedString(@"Contents: %d items, %@", nil),
 				records,
 				[NSString shortStringWithFloat:self.totalContentsPrice unit:@"ISK"]];
@@ -204,13 +217,13 @@
 
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete && indexPath.section == 0) {
-		[self.shoppingGroup removeShoppingItemsObject:self.rows[indexPath.row]];
-		[self.rows removeObjectAtIndex:indexPath.row];
-		self.shoppingGroup.identifier = [self.shoppingGroup defaultIdentifier];
-		//[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		[self.shoppingGroup removeShoppingItemsObject:[self.shoppingItems[indexPath.row] shoppingItem]];
+		[self.shoppingItems removeObjectAtIndex:indexPath.row];
 		[self reloadSummary];
 		[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 	}
+	if (self.shoppingItems.count == 0)
+		[self performSegueWithIdentifier:@"Unwind" sender:nil];
 }
 
 #pragma mark - Table View Delegate
@@ -221,38 +234,32 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
 - (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	if (indexPath.section == 0) {
-		NCNewShoppingItemViewControllerRow* item = self.rows[indexPath.row];
+		NCNewShoppingItemViewControllerItem* item = self.shoppingItems[indexPath.row];
 		cell.titleLabel.text = item.type.typeName;
 		if (item.price)
-			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"x%d, %@", nil), item.quantity * (int32_t) self.stepper.value, [NSString shortStringWithFloat:item.price * item.quantity * self.stepper.value unit:@"ISK"]];
+			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"x%d, %@", nil), item.shoppingItem.quantity * (int32_t) self.stepper.value, [NSString shortStringWithFloat:item.price * item.shoppingItem.quantity * self.stepper.value unit:@"ISK"]];
 		else
-			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"x%d", nil), item.quantity * (int32_t) self.stepper.value];
-		cell.iconView.image = item.type.icon ? item.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"x%d", nil), item.shoppingItem.quantity * (int32_t) self.stepper.value];
+		cell.iconView.image = item.type.icon ? item.type.icon.image.image : self.defaultTypeIcon.image.image;
 		cell.object = item.type;
 	}
 	else {
-		NCShoppingGroup* group = self.contents[indexPath.row];
-		cell.titleLabel.text = group.name;
+		NCNewShoppingItemViewControllerGroup* group = self.shoppingGroups[indexPath.row];
+		cell.titleLabel.text = group.shoppingGroup.name;
 		double price = group.price;
 		NSMutableString* s = [NSMutableString new];
-		if (group.immutable)
-			[s appendFormat:NSLocalizedString(@"x%d, %d items", nil), group.quantity, group.shoppingItems.count];
+		if (group.shoppingGroup.immutable)
+			[s appendFormat:NSLocalizedString(@"x%d, %d items", nil), group.shoppingGroup.quantity, group.items.count];
 		else
-			[s appendFormat:NSLocalizedString(@"%d items", nil), group.shoppingItems.count];
+			[s appendFormat:NSLocalizedString(@"%d items", nil), group.items.count];
 		
 		if (price > 0)
 			[s appendFormat:NSLocalizedString(@", %@", nil), [NSString shortStringWithFloat:price unit:@"ISK"]];
 		
 		cell.subtitleLabel.text = s;
-		cell.iconView.image = group.iconFile ? [[[NCDBEveIcon eveIconWithIconFile:group.iconFile] image] image] : [[[NCDBEveIcon defaultTypeIcon] image] image];
-		if (!cell.iconView.image)
-			cell.iconView.image = [[[NCDBEveIcon defaultTypeIcon] image] image];
+		cell.iconView.image = group.icon ? group.icon.image.image : self.defaultTypeIcon.image.image;
 		cell.object = group;
 	}
 }
@@ -268,84 +275,63 @@
 #pragma mark - Private
 
 - (void) reload {
+	self.title = self.shoppingGroup.name;
+	self.navigationItem.rightBarButtonItem.title = self.shoppingList.name;
+
+	NSMutableDictionary* types = [NSMutableDictionary new];
 	
-	if (self.shoppingGroup.managedObjectContext)
-		[self.shoppingGroup.managedObjectContext performBlock:^{
-			NSString* name = self.shoppingGroup.name;
-			dispatch_async(dispatch_get_main_queue(), ^{
-				self.title = name;
-			});
-		}];
-	else
-		self.title = self.shoppingGroup.name;
+	NSMutableArray* allItems = [NSMutableArray new];
 	
-	if (self.shoppingList) {
-		[self.shoppingList.managedObjectContext performBlock:^{
-			NSString* name = self.shoppingList.name;
-			dispatch_async(dispatch_get_main_queue(), ^{
-				self.navigationItem.rightBarButtonItem.title = name;
-			});
-		}];
+	NSArray* (^loadShoppingGroup)(NCShoppingGroup*) = ^ (NCShoppingGroup* group){
+		NSMutableArray* items = [NSMutableArray new];
+		for (NCShoppingItem* item in group.shoppingItems) {
+			NCNewShoppingItemViewControllerItem* row = [NCNewShoppingItemViewControllerItem new];
+			row.shoppingItem = item;
+			NCDBInvType* type = types[@(item.typeID)];
+			if (!type) {
+				type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+				if (type)
+					types[@(item.typeID)] = type;
+			}
+			
+			row.type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+			[items addObject:row];
+			[allItems addObject:row];
+		}
+		return items;
+	};
+	
+	NSArray* shoppingItems = loadShoppingGroup(self.shoppingGroup);
+	
+	NSMutableArray* shoppingGroups = [NSMutableArray new];
+	NSArray* groups = [self.shoppingList.shoppingGroups sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+	for (NCShoppingGroup* shoppingGroup in groups) {
+		NCNewShoppingItemViewControllerGroup* group = [NCNewShoppingItemViewControllerGroup new];
+		group.shoppingGroup = shoppingGroup;
+		group.items = loadShoppingGroup(shoppingGroup);
+		if (shoppingGroup.iconFile)
+			group.icon = [self.databaseManagedObjectContext eveIconWithIconFile:shoppingGroup.iconFile];
+		[shoppingGroups addObject:group];
 	}
 
 	self.stepper.enabled = NO;
-	__block NSMutableArray* rows;
-	__block NSArray* shoppingGroups;
-
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-									   title:NCTaskManagerDefaultTitle
-									   block:^(NCTask *task) {
-										   NCStorage* storage = [NCStorage sharedStorage];
-										   NSMutableArray* itemsWithoutPrice = [NSMutableArray new];
-
-										   [storage.backgroundManagedObjectContext performBlockAndWait:^{
-											   rows = [[self.shoppingGroup.shoppingItems allObjects] mutableCopy];
-											   [rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
-											   shoppingGroups = [self.shoppingList.shoppingGroups sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
-											   
-											   [itemsWithoutPrice addObjectsFromArray:[rows filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"price == nil"]]];
-											   for (NCShoppingGroup* group in shoppingGroups)
-												   [itemsWithoutPrice addObjectsFromArray:[[group.shoppingItems allObjects] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"price == nil"]]];
-										   }];
-										   
-										   if (itemsWithoutPrice.count > 0) {
-											   NCPriceManager* priceManager = [NCPriceManager sharedManager];
-											   NSDictionary* prices = [priceManager pricesWithTypes:[itemsWithoutPrice valueForKey:@"typeID"]];
-											   for (NCShoppingItem* item in itemsWithoutPrice)
-												   item.price = [prices[@(item.typeID)] doubleValue];
-										   }
-
-									   }
-						   completionHandler:^(NCTask *task) {
-							   if (![task isCancelled]) {
-								   self.rows = rows;
-								   self.contents = shoppingGroups;
-								   [self reloadSummary];
-								   [self.shoppingList.managedObjectContext performBlockAndWait:^{
-									   self.shoppingListName = self.shoppingList.name;
-								   }];
-								   if (!self.shoppingListName)
-									   self.shoppingListName = NSLocalizedString(@"Default", nil);
-								   [self.tableView reloadData];
-								   self.stepper.enabled = YES;
-							   }
-						   }];
+	[[NCPriceManager sharedManager] requestPricesWithTypes:[allItems valueForKeyPath:@"shoppingItem.typeID"] completionBlock:^(NSDictionary *prices) {
+		for (NCNewShoppingItemViewControllerItem* item in allItems) {
+			item.price = [prices[@(item.shoppingItem.typeID)] doubleValue];
+		}
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.shoppingGroups = shoppingGroups;
+			self.shoppingItems = [shoppingItems mutableCopy];
+			self.stepper.enabled = YES;
+			[self reloadSummary];
+			[self.tableView reloadData];
+		});
+	}];
 }
 
 - (void) reloadSummary {
-	__block double totalPrice = 0;
-	__block double totalContentsPrice = 0;
-	
-	NCStorage* storage = [NCStorage sharedStorage];
-	[storage.managedObjectContext performBlockAndWait:^{
-		for (NCShoppingItem* item in self.rows)
-			totalPrice += item.quantity * item.price;
-		for (NCShoppingGroup* group in self.contents)
-			totalContentsPrice += group.price;
-	}];
-
-	self.totalPrice = totalPrice;
-	self.totalContentsPrice = totalContentsPrice;
+	self.totalPrice = [[self.shoppingItems valueForKeyPath:@"@sum.cost"] doubleValue];
+	self.totalContentsPrice = [[self.shoppingGroups valueForKeyPath:@"@sum.cost"] doubleValue];
 }
 
 @end

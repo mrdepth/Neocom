@@ -54,7 +54,7 @@
 	[self.cacheManagedObjectContext performBlock:^{
 		NSMutableDictionary* prices = [NSMutableDictionary new];
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Price"];
-		request.predicate = [NSPredicate predicateWithFormat:@"typeID in %@", typeIDs];
+		request.predicate = [NSPredicate predicateWithFormat:@"typeID in %@", [NSSet setWithArray:typeIDs]];
 		for (NCCachePrice* price in [self.cacheManagedObjectContext executeFetchRequest:request error:nil])
 			prices[@(price.typeID)] = @(price.price);
 		dispatch_async(dispatch_get_main_queue(), ^{

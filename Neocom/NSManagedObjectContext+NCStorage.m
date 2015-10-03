@@ -38,7 +38,7 @@
 	if (!shoppingList) {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"ShoppingList"];
 		request.fetchLimit = 1;
-		NCShoppingList* shoppingList = [[self executeFetchRequest:request error:nil] lastObject];
+		shoppingList = [[self executeFetchRequest:request error:nil] lastObject];
 		if (!shoppingList) {
 			shoppingList = [[NCShoppingList alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingList" inManagedObjectContext:self] insertIntoManagedObjectContext:self];
 			shoppingList.name = NSLocalizedString(@"Default", nil);

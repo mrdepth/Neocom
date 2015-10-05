@@ -111,14 +111,11 @@
 	return [self executeFetchRequest:fetchRequest error:nil];
 }
 
-- (NCFitCharacter*) characterWithAccount:(NCAccount*) account {
-#warning TODO
-	/*
-	NCAccount* localAccount = (NCAccount*) [self existingObjectWithID:account.objectID error:nil];
-	if (!localAccount)
+/*- (NCFitCharacter*) characterWithAccount:(NCAccount*) account {
+	if (!account)
 		return nil;
 	
-	if (localAccount.accountType == NCAccountTypeCorporate)
+	if (account.accountType == NCAccountTypeCorporate)
 		return nil;
 	
 	NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:self] insertIntoManagedObjectContext:nil];
@@ -136,33 +133,30 @@
 		[implants addObject:@(implant.typeID)];
 	character.implants = implants;
 	
-	return character;*/
-	return nil;
-}
+	return character;
+}*/
 
-/*- (NCFitCharacter*) characterWithSkillsLevel:(NSInteger) skillsLevel {
+- (NCFitCharacter*) characterWithSkillsLevel:(NSInteger) skillsLevel {
 	NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:self] insertIntoManagedObjectContext:nil];
 	character.name = [NSString stringWithFormat:NSLocalizedString(@"All Skills %d", nil), (int32_t) skillsLevel];
 	
-	NCDatabase* database = [NCDatabase sharedDatabase];
-	NSManagedObjectContext* context = database.managedObjectContext;
-	
+	NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
 	NSMutableDictionary* skills = [NSMutableDictionary new];
 
-	[context performBlockAndWait:^{
-		NSEntityDescription* entity = [NSEntityDescription entityForName:@"InvType" inManagedObjectContext:context];
+	[databaseManagedObjectContext performBlockAndWait:^{
+		NSEntityDescription* entity = [NSEntityDescription entityForName:@"InvType" inManagedObjectContext:databaseManagedObjectContext];
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
 		request.predicate = [NSPredicate predicateWithFormat:@"published == TRUE AND group.category.categoryID == 16"];
 		request.resultType = NSDictionaryResultType;
 		request.propertiesToFetch = @[entity.propertiesByName[@"typeID"]];
-		for (NSDictionary* object in [context executeFetchRequest:request error:nil]) {
+		for (NSDictionary* object in [databaseManagedObjectContext executeFetchRequest:request error:nil]) {
 			skills[object[@"typeID"]] = @(skillsLevel);
 		}
 	}];
 	character.skills = skills;
 	
 	return character;
-}*/
+}
 
 //NCSetting
 - (NCSetting*) settingWithKey:(NSString*) key {

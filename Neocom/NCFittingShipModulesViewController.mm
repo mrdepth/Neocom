@@ -38,15 +38,18 @@
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 
 @interface NCFittingShipModulesViewControllerRow : NSObject
-@property (strong, nonatomic) UIImage* typeImage;
-@property (strong, nonatomic) NSString* typeName;
-@property (strong, nonatomic) NSString* charge;
-@property (strong, nonatomic) NSString* optimal;
-@property (strong, nonatomic) NSString* lifetime;
-@property (strong, nonatomic) NSAttributedString* tracking;
-@property (strong, nonatomic) UIImage* stateImage;
-@property (strong, nonatomic) UIImage* targetImage;
-
+@property (nonatomic, assign) int32_t typeID;
+@property (nonatomic, assign) int32_t chargeID;
+@property (nonatomic, assign) float chargeVolume;
+@property (nonatomic, assign) float capacity;
+@property (nonatomic, assign) float optimal;
+@property (nonatomic, assign) float falloff;
+@property (nonatomic, assign) float trackingSpeed;
+@property (nonatomic, assign) float lifeTime;
+@property (nonatomic, assign) float orbitRadius;
+@property (nonatomic, strong) UIColor* trackingColor;
+@property (nonatomic, strong) UIImage* stateImage;
+@property (nonatomic, assign) BOOL hasTarget;
 @end
 
 @interface NCFittingShipModulesViewControllerSection : NSObject
@@ -111,87 +114,50 @@
 				
 				for (auto module: modules) {
 					NCFittingShipModulesViewControllerRow* row = [NCFittingShipModulesViewControllerRow new];
-					
-					NCDBInvType* type = [self.controller typeWithItem:module];
-					row.typeName = type.typeName;
-					row.typeImage = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
-					
+					row.typeID = module->getTypeID();
 					eufe::Charge* charge = module->getCharge();
-					eufe::Ship* ship = self.controller.fit.pilot->getShip();
 					
 					if (charge) {
-						type = [self.controller typeWithItem:charge];
-						float volume = charge->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
-						float capacity = module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
-						if (volume > 0 && capacity > 0)
-							row.charge = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
-						else
-							row.charge = type.typeName;
+						row.chargeID = charge->getTypeID();
+						row.chargeVolume = charge->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
+						row.capacity = module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
 					}
 					
-					float optimal = module->getMaxRange();
-					float falloff = module->getFalloff();
-					float trackingSpeed = module->getTrackingSpeed();
-					float lifeTime = module->getLifeTime();
+					row.optimal = module->getMaxRange();
+					row.falloff = module->getFalloff();
+					row.trackingSpeed = module->getTrackingSpeed();
+					row.lifeTime = module->getLifeTime();
 					
-					if (optimal > 0) {
-						NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-						if (falloff > 0)
-							[s appendFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-						row.optimal = s;
+					if (row.trackingSpeed > 0) {
+						float v0 = ship->getMaxVelocityInOrbit(row.optimal);
+						float v1 = ship->getMaxVelocityInOrbit(row.optimal + row.falloff);
+						row.orbitRadius = ship->getOrbitRadiusWithAngularVelocity(row.trackingSpeed);
+						row.trackingColor = row.trackingSpeed * row.optimal > v0 ? [UIColor greenColor] : (row.trackingSpeed * (row.optimal + row.falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
 					}
 					
-					if (trackingSpeed > 0) {
-						float v0 = ship->getMaxVelocityInOrbit(optimal);
-						float v1 = ship->getMaxVelocityInOrbit(optimal + falloff);
-						
-						double r = ship->getOrbitRadiusWithAngularVelocity(trackingSpeed);
-						
-						UIColor* color = trackingSpeed * optimal > v0 ? [UIColor greenColor] : (trackingSpeed * (optimal + falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
-						
-						NSMutableAttributedString* s = [NSMutableAttributedString new];
-						
-						[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@ rad/sec (", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]]
-																				  attributes:nil]];
-						NSTextAttachment* icon;
-						icon = [NSTextAttachment new];
-						icon.image = [UIImage imageNamed:@"targetingRange.png"];
-						icon.bounds = CGRectMake(0, -7 -cell.trackingLabel.font.descender, 15, 15);
-						[s appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
-						[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@+ m)", nil),
-																							  [NSNumberFormatter neocomLocalizedStringFromNumber:@(r)]]
-																				  attributes:nil]];
-						row.trackingLabel.attributedText = s;
-						row.trackingLabel.textColor = color;
-					}
-					
-					
-					if (lifeTime > 0)
-						cell.lifetimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];
-					else
-						cell.lifetimeLabel.text = nil;
 					
 					eufe::Module::Slot slot = module->getSlot();
 					if (slot == eufe::Module::SLOT_HI || slot == eufe::Module::SLOT_MED || slot == eufe::Module::SLOT_LOW) {
 						switch (module->getState()) {
 							case eufe::Module::STATE_ACTIVE:
-								cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
+								row.stateImage = [UIImage imageNamed:@"active.png"];
 								break;
 							case eufe::Module::STATE_ONLINE:
-								cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
+								row.stateImage = [UIImage imageNamed:@"online.png"];
 								break;
 							case eufe::Module::STATE_OVERLOADED:
-								cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
+								row.stateImage = [UIImage imageNamed:@"overheated.png"];
 								break;
 							default:
-								cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
+								row.stateImage = [UIImage imageNamed:@"offline.png"];
 								break;
 						}
 					}
 					else
-						cell.stateImageView.image = nil;
+						row.stateImage = nil;
 					
-					cell.targetImageView.image = module->getTarget() != NULL ? [[[type.managedObjectContext eveIconWithIconFile:@"04_12"] image] image] : nil;
+					row.hasTarget = module->getTarget() != NULL;
+					[rows addObject:row];
 				}
 				
 				
@@ -204,6 +170,8 @@
 			}
 		}
 	}];
+	
+	
 	self.sections = sections;
 	
 	self.usedTurretHardpoints = usedTurretHardpoints;

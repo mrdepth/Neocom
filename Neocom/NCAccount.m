@@ -326,6 +326,42 @@ static NCAccount* currentAccount = nil;
 	}];
 }
 
+- (void) loadFitCharacterWithCompletioBlock:(void(^)(NCFitCharacter* fitCharacter)) completionBlock {
+	[self.managedObjectContext performBlock:^{
+		NSString* key = [NSString stringWithFormat:@"%@.characterSheet", self.uuid];
+		[self.cacheManagedObjectContext performBlock:^{
+			NCCacheRecord* cacheRecord = self.cache[key];
+			if (!cacheRecord)
+				self.cache[key] = cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:key];
+			EVECharacterSheet* characterSheet = cacheRecord.data.data;
+			if (characterSheet) {
+				NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:self.managedObjectContext] insertIntoManagedObjectContext:nil];
+				
+				character.name = characterSheet.name;
+				
+				NSMutableDictionary* skills = [NSMutableDictionary new];
+				for (EVECharacterSheetSkill* skill in characterSheet.skills)
+					skills[@(skill.typeID)] = @(skill.level);
+				character.skills = skills;
+				
+				NSMutableArray* implants = [NSMutableArray new];
+				
+				for (EVECharacterSheetImplant* implant in characterSheet.implants)
+					[implants addObject:@(implant.typeID)];
+				character.implants = implants;
+				dispatch_async(dispatch_get_main_queue(), ^{
+					completionBlock(character);
+				});
+			}
+			else {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					completionBlock(nil);
+				});
+			}
+		}];
+	}];
+}
+
 - (EVEAPIKey*) eveAPIKey {
 	return [EVEAPIKey apiKeyWithKeyID:self.apiKey.keyID vCode:self.apiKey.vCode characterID:self.characterID corporate:self.accountType == NCAccountTypeCorporate];
 }

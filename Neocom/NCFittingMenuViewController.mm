@@ -159,11 +159,15 @@
 														inView:cell
 													  animated:YES
 											 completionHandler:^(NCDBInvType *type) {
-												 NCShipFit* fit = [[NCShipFit alloc] initWithType:type];
-												 fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-												 fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-												 
-												 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+												 [self.storageManagedObjectContext performBlock:^{
+													 NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+													 loadout.typeID = type.typeID;
+													 loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+													 NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
+													 dispatch_async(dispatch_get_main_queue(), ^{
+														 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+													 });
+												 }];
 												 [self.typePickerViewController dismissAnimated];
 											 }];
 		}
@@ -187,15 +191,23 @@
 		}
 	}
 	else {
-		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
-/*		if (loadout.category == NCLoadoutCategoryShip) {
-			NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
-			[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
-		}
-		else {
-			NCPOSFit* fit = [[NCPOSFit alloc] initWithLoadout:loadout];
-			[self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
-		}*/
+		NCFittingMenuViewControllerRow* row = self.sections[indexPath.section - 1][indexPath.row];
+		[self.storageManagedObjectContext performBlock:^{
+			NCLoadout* loadout = [self.storageManagedObjectContext objectWithID:row.loadoutID];
+			if (row.category == NCLoadoutCategoryShip) {
+				NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+				});
+			}
+			else {
+//				NCPOSFit* fit = [[NCPOSFit alloc] initWithLoadout:loadout];
+				dispatch_async(dispatch_get_main_queue(), ^{
+//					[self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
+				});
+			}
+
+		}];
 	}
 }
 

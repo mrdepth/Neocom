@@ -10,10 +10,13 @@
 #import "eufe.h"
 
 @class NCDBInvType;
+@class NCShipFit;
 @interface NCFittingEngine : NSObject
 @property (nonatomic, assign, readonly) eufe::Engine* engine;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* databaseManagedObjectContext;
 
 - (void)performBlockAndWait:(void (^)())block;
-- (NCDBInvType*) typeWithItem:(eufe::Item*) item;
+- (NCDBInvType*) invTypeWithTypeID:(int32_t) typeID;
+- (void) loadShipFit:(NCShipFit*) fit;
 
 @end

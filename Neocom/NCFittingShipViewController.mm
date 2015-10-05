@@ -57,7 +57,7 @@
 
 @interface NCFittingShipViewController ()<MFMailComposeViewControllerDelegate>
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
-@property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Engine> engine;
+@property (nonatomic, strong, readwrite) NCFittingEngine* engine;
 
 @property (nonatomic, weak) NCFittingShipModulesViewController* modulesViewController;
 @property (nonatomic, weak) NCFittingShipDronesViewController* dronesViewController;
@@ -97,50 +97,45 @@
 	
 
 	
-	std::shared_ptr<eufe::Engine> engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
-	
+	NCFittingEngine* engine = [NCFittingEngine new];
+
 	if (!self.fits)
 		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
-	NCShipFit* fit = self.fit;
-	if (!fit.engine)
-		fit.engine = [NCFittingEngine new];
-
-	[fit.engine performBlockAndWait:^{
-		if (!fit.pilot) {
-			fit.pilot = engine->getGang()->addPilot();
-			NCAccount* account = [NCAccount currentAccount];
+	
+	NCAccount* account = [NCAccount currentAccount];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+		@autoreleasepool {
+			[self.engine loadShipFit:self.fit];
 			
-			void (^load)() = ^ {
-				dispatch_async(dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_DEFAULT), ^{
-					@autoreleasepool {
-						[fit load];
+			void (^loadDefaultCharacter)() = ^{
+				[self.storageManagedObjectContext performBlock:^{
+					NCFitCharacter* character = [self.storageManagedObjectContext characterWithSkillsLevel:5];
+					self.fit.character = character;
+					dispatch_async(dispatch_get_main_queue(), ^{
+						self.engine = engine;
+						[self reload];
+					});
+				}];
+			};
+			
+			if (account) {
+				[account loadFitCharacterWithCompletioBlock:^(NCFitCharacter *fitCharacter) {
+					if (fitCharacter) {
+						self.fit.character = fitCharacter;
 						dispatch_async(dispatch_get_main_queue(), ^{
 							self.engine = engine;
 							[self reload];
 						});
 					}
-				});
-			};
-			if (account)
-				[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
-					[self.storageManagedObjectContext performBlock:^{
-						if (characterSheet)
-							fit.character = [self.storageManagedObjectContext characterWithAccount:account];
-						else
-							fit.character = [self.storageManagedObjectContext characterWithSkillsLevel:5];
-						load();
-					}];
+					else
+						loadDefaultCharacter();
 				}];
+			}
 			else {
-				fit.character = [self.storageManagedObjectContext characterWithSkillsLevel:5];
-				load();
+				loadDefaultCharacter();
 			}
 		}
-	}];
-
-	
-	[self.storageManagedObjectContext performBlock:^{
-	}];
+	});
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -298,7 +293,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		eufe::Area* area = self.engine->getArea();
+		eufe::Area* area = self.engine.engine->getArea();
 		if (area)
 			controller.selectedAreaEffect = [self.databaseManagedObjectContext invTypeWithTypeID:area->getTypeID()];
 	}
@@ -818,7 +813,7 @@
 - (IBAction) unwindFromAreaEffectPicker:(UIStoryboardSegue*) segue {
 	NCFittingAreaEffectPickerViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedAreaEffect) {
-		self.engine->setArea(sourceViewController.selectedAreaEffect.typeID);
+		self.engine.engine->setArea(sourceViewController.selectedAreaEffect.typeID);
 		[self reload];
 	}
 }

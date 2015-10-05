@@ -50,10 +50,8 @@
 	return [self.controller taskManager];
 }
 
-#pragma mark - NCTableViewController
-
-- (NSString*) recordID {
-	return nil;
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	return self.controller.databaseManagedObjectContext;
 }
 
 @end

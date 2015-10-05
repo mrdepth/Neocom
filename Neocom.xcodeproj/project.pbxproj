@@ -293,6 +293,9 @@
 		129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D2638187E929800E2062C /* NCMainMenuContainerViewController.m */; };
 		129D263D187E98C100E2062C /* NCNavigationCharacterButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D263C187E98C100E2062C /* NCNavigationCharacterButton.m */; };
 		129D263F187E98D500E2062C /* NCNavigationCharacterButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129D263E187E98D500E2062C /* NCNavigationCharacterButton.xib */; };
+		129E23971BC2BB8F00E311BF /* NCFittingShipViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1271238418978148005F46EE /* NCFittingShipViewController.mm */; settings = {ASSET_TAGS = (); }; };
+		129E23981BC2BDEE00E311BF /* NCFittingShipWorkspaceViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F31189906A400005C4F /* NCFittingShipWorkspaceViewController.mm */; settings = {ASSET_TAGS = (); }; };
+		129E23991BC2BE7A00E311BF /* NCFittingShipModulesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1297FCEC1B2AACD000176BF0 /* NCFittingShipModulesViewController.mm */; settings = {ASSET_TAGS = (); }; };
 		129FEE15186030FD00F75FA6 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */; };
 		129FEE181860313D00F75FA6 /* NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE171860313D00F75FA6 /* NCStorage.m */; };
 		129FEE361860326E00F75FA6 /* NCAPIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE351860326E00F75FA6 /* NCAPIKey.m */; };
@@ -4316,6 +4319,7 @@
 				84FC4F6018785CCC0004073C /* NCAccount.m in Sources */,
 				84C118301898457E00A35516 /* UIViewController+Neocom.m in Sources */,
 				12A7DB9618B33AC500343D25 /* NCAddAPIKeyViewController.m in Sources */,
+				129E23981BC2BDEE00E311BF /* NCFittingShipWorkspaceViewController.mm in Sources */,
 				120C333419CAB0A70093EECA /* NCDBIndBlueprintType.m in Sources */,
 				127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */,
 				8416386D1893BEA000968ADF /* NSDate+Neocom.m in Sources */,
@@ -4404,6 +4408,7 @@
 				125A19C91BB71A9E00C5BAD8 /* NCStarbasesViewController.m in Sources */,
 				129FEE15186030FD00F75FA6 /* NCStorage.xcdatamodeld in Sources */,
 				125A197B1BB5A09900C5BAD8 /* NCWalletTransactionsCell.m in Sources */,
+				129E23971BC2BB8F00E311BF /* NCFittingShipViewController.mm in Sources */,
 				120C334919CAB0A80093EECA /* NCDBInvMetaGroup.m in Sources */,
 				129D2629187E923300E2062C /* UIImage+Retina4.m in Sources */,
 				129421A9187FDF7200977CB8 /* NSString+Neocom.m in Sources */,
@@ -4461,6 +4466,7 @@
 				120C337019CAB0AA0093EECA /* NCDBMapRegion.m in Sources */,
 				129FEE181860313D00F75FA6 /* NCStorage.m in Sources */,
 				84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */,
+				129E23991BC2BE7A00E311BF /* NCFittingShipModulesViewController.mm in Sources */,
 				12F955E818CDA2A0005CEAD6 /* EUStorage.m in Sources */,
 				12ACDCA118A0AC4A00566DFE /* NCDamagePattern.m in Sources */,
 				120C338B19CAB0AB0093EECA /* NCDBRamInstallationTypeContent.m in Sources */,

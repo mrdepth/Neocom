@@ -14,6 +14,7 @@
 #import "NCMailBox.h"
 #import "NCSkillPlan.h"
 #import "NCStorage.h"
+#import "NCFitCharacter.h"
 
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
 #define NCCurrentAccountDidChangeNotification @"NCCurrentAccountDidChangeNotification"
@@ -49,5 +50,5 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 - (void) loadCorporationSheetWithCompletionBlock:(void(^)(EVECorporationSheet* corporationSheet, NSError* error)) completionBlock;
 - (void) loadSkillQueueWithCompletionBlock:(void(^)(EVESkillQueue* skillQueue, NSError* error)) completionBlock;
 - (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
-
+- (void) loadFitCharacterWithCompletioBlock:(void(^)(NCFitCharacter* fitCharacter)) completionBlock;
 @end

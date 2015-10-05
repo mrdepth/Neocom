@@ -180,6 +180,11 @@
 
 
 @interface NCShipFit()
+@property (nonatomic, strong, readwrite) NCFittingEngine* engine;
+@property (nonatomic, strong, readwrite) NCLoadout* loadout;
+@property (nonatomic, assign, readwrite) int32_t typeID;
+@property (nonatomic, assign, readwrite) eufe::Character* pilot;
+
 @property (nonatomic, strong) NCLoadoutDataShip* loadoutData;
 @property (nonatomic, strong) NSManagedObjectContext* storageManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
@@ -203,8 +208,8 @@
 - (id) initWithType:(NCDBInvType*) type {
 	if (self = [super init]) {
 		[type.managedObjectContext performBlockAndWait:^{
-			self.loadoutName = type.typeName;
 			self.typeID = type.typeID;
+			self.loadoutName = type.typeName;
 		}];
 	}
 	return self;
@@ -929,10 +934,15 @@
 	if (character && self.pilot) {
 		__block NSDictionary* skills;
 		__block NSArray* implants;
-		[character.managedObjectContext performBlockAndWait:^{
+		if (character.managedObjectContext)
+			[character.managedObjectContext performBlockAndWait:^{
+				skills = character.skills;
+				implants = character.implants;
+			}];
+		else {
 			skills = character.skills;
 			implants = character.implants;
-		}];
+		}
 		[self.engine performBlockAndWait:^{
 			[self setSkillLevels:skills];
 			for (NSNumber* implantID in implants)
@@ -941,7 +951,7 @@
 	}
 }
 
-- (void) setPilot:(eufe::Character *)pilot {
+/*- (void) setPilot:(eufe::Character *)pilot {
 	_pilot = pilot;
 	if (self.character && pilot) {
 		__block NSDictionary* skills;
@@ -956,7 +966,7 @@
 				self.pilot->addImplant([implantID intValue]);
 		}];
 	}
-}
+}*/
 
 - (NSString*) canonicalName {
 	[self flush];

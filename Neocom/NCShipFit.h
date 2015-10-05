@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSArray* implants;
 @property (nonatomic, strong) NSArray* boosters;
 @property (nonatomic, assign) eufe::TypeID mode;
+
 @end
 
 @interface NCLoadoutDataShipModule : NSObject<NSCoding>
@@ -56,10 +57,10 @@
 @class NCKillMail;
 @class NCDBInvType;
 @interface NCShipFit : NSObject
-@property (nonatomic, strong) NCFittingEngine* engine;
+@property (nonatomic, strong, readonly) NCFittingEngine* engine;
 @property (nonatomic, strong, readonly) NCLoadout* loadout;
 @property (nonatomic, strong) NSString* loadoutName;
-@property (nonatomic, assign) eufe::Character* pilot;
+@property (nonatomic, assign, readonly) eufe::Character* pilot;
 @property (nonatomic, strong) NCFitCharacter* character;
 @property (nonatomic, assign, readonly) int32_t typeID;
 @property (nonatomic, readonly) NSString* canonicalName;

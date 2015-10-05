@@ -13,6 +13,7 @@
 #import "NCFittingShipWorkspaceViewController.h"
 #import "NCDamagePattern.h"
 #import "NCProgressLabel.h"
+#import "NCFittingEngine.h"
 
 @interface NCFittingShipViewController : NCViewController<UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControl;
@@ -27,7 +28,7 @@
 @property (nonatomic, strong, readonly) NCDatabaseTypePickerViewController* typePickerViewController;
 
 @property (nonatomic, strong, readonly) NSMutableArray* fits;
-@property (nonatomic, assign, readonly) std::shared_ptr<eufe::Engine> engine;
+@property (nonatomic, strong, readonly) NCFittingEngine* engine;
 
 @property (nonatomic, strong) NCShipFit* fit;
 

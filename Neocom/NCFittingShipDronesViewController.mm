@@ -31,6 +31,12 @@
 }
 @property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, readonly) eufe::DronesList& drones;
+
+@property (nonatomic, strong) NSString* typeName;
+@property (nonatomic, strong) UIImage* typeImage;
+@property (nonatomic, strong) NSString* optimalText;
+@property (nonatomic, strong) UIImage* targetImage;
+@property (nonatomic, strong) UIImage* stateImage;
 @end
 
 @interface NCFittingShipDronesViewControllerPickerRow : NSObject
@@ -49,6 +55,8 @@
 @property (nonatomic, strong) NCDBInvType* activeAmountType;
 @property (nonatomic, assign) NSInteger maximumAmount;
 @property (nonatomic, strong) NSArray* rows;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
+@property (nonatomic, strong) NCDBEveIcon* targetIcon;
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath;
 
@@ -56,52 +64,52 @@
 
 @implementation NCFittingShipDronesViewController
 
+- (void) viewDidLoad {
+	[super viewDidLoad];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+	self.targetIcon = [self.databaseManagedObjectContext eveIconWithIconFile:@"04_12"];
+}
+
 - (void) reload {
 	__block NSMutableArray* rows = nil;
-	self.tableView.userInteractionEnabled = NO;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NSMutableDictionary* dronesDic = [NSMutableDictionary new];
-											 eufe::DronesList drones;
-											 if (!self.controller.fit.pilot)
-												 return;
-											 
-											 eufe::Ship* ship = self.controller.fit.pilot->getShip();
-											 drones = ship->getDrones();
-											 
-											 for (auto drone: drones) {
-												 NSInteger typeID = drone->getTypeID();
-												 NCFittingShipDronesViewControllerRow* row = dronesDic[@(typeID)];
-												 if (!row) {
-													 row = [NCFittingShipDronesViewControllerRow new];
-													 row.type = [self.controller typeWithItem:drone];
-													 dronesDic[@(typeID)] = row;
-												 }
-												 row.drones.push_back(drone);
-											 }
-											 
-											 rows = [[[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
-											 if (self.activeAmountType) {
-												 NSInteger i = 1;
-												 for (NCFittingShipDronesViewControllerRow* row in rows) {
-													 if (row.type.typeID == self.activeAmountType.typeID) {
-														 NCFittingShipDronesViewControllerPickerRow* pickerRow = [NCFittingShipDronesViewControllerPickerRow new];
-														 pickerRow.associatedRow = row;
-														 [rows insertObject:pickerRow atIndex:i];
-														 break;
-													 }
-													 i++;
-												 }
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.rows = rows;
-									 [self.tableView reloadData];
-									 self.tableView.userInteractionEnabled = YES;
-								 }
-							 }];
+	[self.controller.engine performBlockAndWait:^{
+		rows = [NSMutableArray new];
+		if (!self.controller.fit.pilot)
+			return;
+
+		NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+		eufe::DronesList drones;
+		if (!self.controller.fit.pilot)
+			return;
+		
+		auto ship = self.controller.fit.pilot->getShip();
+		for (auto drone: ship->getDrones()) {
+			int32_t typeID = drone->getTypeID();
+			NCFittingShipDronesViewControllerRow* row = dronesDic[@(typeID)];
+			if (!row) {
+				row = [NCFittingShipDronesViewControllerRow new];
+				row.type = [self.controller.engine invTypeWithTypeID:typeID];
+				dronesDic[@(typeID)] = row;
+			}
+			row.drones.push_back(drone);
+		}
+		
+		rows = [[[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
+		if (self.activeAmountType) {
+			NSInteger i = 1;
+			for (NCFittingShipDronesViewControllerRow* row in rows) {
+				if (row.type.typeID == self.activeAmountType.typeID) {
+					NCFittingShipDronesViewControllerPickerRow* pickerRow = [NCFittingShipDronesViewControllerPickerRow new];
+					pickerRow.associatedRow = row;
+					[rows insertObject:pickerRow atIndex:i];
+					break;
+				}
+				i++;
+			}
+		}
+	}];
+	self.rows = rows;
+	[self.tableView reloadData];
 }
 
 
@@ -109,8 +117,7 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return self.controller.engine ? 1 : 0;
-	//return self.view.window ? 1 : 0;
+	return self.rows ? 1 : 0;
 }
 
 
@@ -159,33 +166,32 @@
 	if (indexPath.row >= self.rows.count) {
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Drones", nil);
 		
-		[self.controller.typePickerViewController presentWithCategory:[NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotDrone size:0 race:nil]
+		[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotDrone size:0 race:nil]
 													 inViewController:self.controller
 															 fromRect:cell.bounds
 															   inView:cell
 															 animated:YES
 													completionHandler:^(NCDBInvType *type) {
-														eufe::TypeID typeID = type.typeID;
-														eufe::Ship* ship = self.controller.fit.pilot->getShip();
-														
-														const eufe::DronesList& drones = ship->getDrones();
-														eufe::Drone* sameDrone = NULL;
-														eufe::DronesList::const_iterator i, end = drones.end();
-														for (i = drones.begin(); i != end; i++) {
-															if ((*i)->getTypeID() == typeID) {
-																sameDrone = *i;
-																break;
+														[self.controller.engine performBlockAndWait:^{
+															eufe::TypeID typeID = type.typeID;
+															auto ship = self.controller.fit.pilot->getShip();
+															
+															std::shared_ptr<eufe::Drone> sameDrone = nullptr;
+															for (auto i: ship->getDrones()) {
+																if (i->getTypeID() == typeID) {
+																	sameDrone = i;
+																	break;
+																}
 															}
-														}
-														eufe::Drone* drone = ship->addDrone(type.typeID);
-														
-														if (sameDrone)
-															drone->setTarget(sameDrone->getTarget());
-														else {
-															int dronesLeft = ship->getMaxActiveDrones() - 1;
-															for (;dronesLeft > 0; dronesLeft--)
-																ship->addDrone(new eufe::Drone(*drone));
-														}
+															int dronesLeft = std::max(ship->getMaxActiveDrones() - 1, 1);
+															for (;dronesLeft > 0; dronesLeft--) {
+																auto drone = ship->addDrone(typeID);
+																if (sameDrone) {
+																	drone->setTarget(sameDrone->getTarget());
+																	drone->setActive(sameDrone->isActive());
+																}
+															}
+														}];
 														
 														[self.controller reload];
 														[self.controller dismissAnimated];
@@ -216,34 +222,36 @@
 	NSInteger i = 0;
 	for (NCFittingShipDronesViewControllerPickerRow* row in self.rows) {
 		if ([row isKindOfClass:[NCFittingShipDronesViewControllerPickerRow class]]) {
-			eufe::Ship* ship = self.controller.fit.pilot->getShip();
-			eufe::TypeID typeID = row.associatedRow.drones.front()->getTypeID();
-			
-			if (row.associatedRow.drones.size() > amount) {
-				int n = (int) row.associatedRow.drones.size() - amount;
-				for (auto drone: row.associatedRow.drones) {
-					if (n <= 0)
-						break;
-					ship->removeDrone(drone);
-					n--;
+			[self.controller.engine performBlockAndWait:^{
+				auto ship = self.controller.fit.pilot->getShip();
+				eufe::TypeID typeID = row.associatedRow.drones.front()->getTypeID();
+				
+				if (row.associatedRow.drones.size() > amount) {
+					int n = (int) row.associatedRow.drones.size() - amount;
+					for (auto drone: row.associatedRow.drones) {
+						if (n <= 0)
+							break;
+						ship->removeDrone(drone);
+						n--;
+					}
 				}
-			}
-			else {
-				int n = amount - (int) row.associatedRow.drones.size();
-				eufe::Drone* drone = row.associatedRow.drones.front();
-				for (int i = 0; i < n; i++) {
-					eufe::Drone* newDrone = ship->addDrone(drone->getTypeID());
-					newDrone->setActive(drone->isActive());
-					newDrone->setTarget(drone->getTarget());
+				else {
+					int n = amount - (int) row.associatedRow.drones.size();
+					auto drone = row.associatedRow.drones.front();
+					for (int i = 0; i < n; i++) {
+						auto newDrone = ship->addDrone(drone->getTypeID());
+						newDrone->setActive(drone->isActive());
+						newDrone->setTarget(drone->getTarget());
+					}
 				}
-			}
-			row.associatedRow.drones.clear();
-			for (auto drone: ship->getDrones()) {
-				if (drone->getTypeID() == typeID)
-					row.associatedRow.drones.push_back(drone);
-			}
-			[NSObject cancelPreviousPerformRequestsWithTarget:self.controller selector:@selector(reload) object:nil];
-			[self.controller performSelector:@selector(reload) withObject:nil afterDelay:0.25];
+				row.associatedRow.drones.clear();
+				for (auto drone: ship->getDrones()) {
+					if (drone->getTypeID() == typeID)
+						row.associatedRow.drones.push_back(drone);
+				}
+				[NSObject cancelPreviousPerformRequestsWithTarget:self.controller selector:@selector(reload) object:nil];
+				[self.controller performSelector:@selector(reload) withObject:nil afterDelay:0.25];
+			}];
 		}
 		i++;
 	}
@@ -255,69 +263,76 @@
 	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
 	NCFittingShipDronesViewControllerRow* row = self.rows[indexPath.row];
 	
-	eufe::Ship* ship = self.controller.fit.pilot->getShip();
-	eufe::Drone* drone = row.drones.front();
+	auto ship = self.controller.fit.pilot->getShip();
+	auto drone = row.drones.front();
 	
 	void (^remove)(eufe::DronesList) = ^(eufe::DronesList drones){
-		for (auto drone: drones)
-			ship->removeDrone(drone);
-		NSMutableArray* rows = [self.rows mutableCopy];
-		[rows removeObjectAtIndex:indexPath.row];
-		self.rows = rows;
+		[self.controller.engine performBlockAndWait:^{
+			for (auto drone: drones)
+				ship->removeDrone(drone);
+		}];
 		[self.controller reload];
 	};
 	
 	void (^activate)(eufe::DronesList) = ^(eufe::DronesList drones){
-		for (auto drone: drones)
-			drone->setActive(true);
+		[self.controller.engine performBlockAndWait:^{
+			for (auto drone: drones)
+				drone->setActive(true);
+		}];
 		[self.controller reload];
 	};
 	
 	void (^deactivate)(eufe::DronesList) = ^(eufe::DronesList drones){
-		for (auto drone: drones)
-			drone->setActive(false);
+		[self.controller.engine performBlockAndWait:^{
+			for (auto drone: drones)
+				drone->setActive(false);
+		}];
 		[self.controller reload];
 	};
 	
 	void (^setTarget)(eufe::DronesList) = ^(eufe::DronesList drones){
 		NSMutableArray* array = [NSMutableArray new];
 		for (auto drone: drones)
-			[array addObject:[NSValue valueWithPointer:drone]];
+			[array addObject:[NCFittingEngineItemPointer pointerWithItem:drone]];
 		[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController"
 											 sender:@{@"sender": cell, @"object": array}];
 	};
 	
 	void (^clearTarget)(eufe::DronesList) = ^(eufe::DronesList drones){
-		for (auto drone: drones)
-			drone->clearTarget();
+		[self.controller.engine performBlockAndWait:^{
+			for (auto drone: drones)
+				drone->clearTarget();
+		}];
 		[self.controller reload];
 	};
 	
 	void (^setAmount)(eufe::DronesList) = ^(eufe::DronesList drones) {
-		self.activeAmountType = row.type;
 		NSMutableArray* rows = [self.rows mutableCopy];
-		NCFittingShipDronesViewControllerPickerRow* pickerRow = [NCFittingShipDronesViewControllerPickerRow new];
-		pickerRow.associatedRow = row;
-		
-		float volume = drone->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
-		int droneBay = ship->getTotalDroneBay() / volume;
-		int maxActive = ship->getMaxActiveDrones();
-		self.maximumAmount = std::min(std::max(droneBay, maxActive), 50);
-		
-		
-		[rows insertObject:pickerRow atIndex:indexPath.row + 1];
+		[self.controller.engine performBlockAndWait:^{
+			self.activeAmountType = row.type;
+			NCFittingShipDronesViewControllerPickerRow* pickerRow = [NCFittingShipDronesViewControllerPickerRow new];
+			pickerRow.associatedRow = row;
+			
+			float volume = drone->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
+			int droneBay = ship->getTotalDroneBay() / volume;
+			int maxActive = ship->getMaxActiveDrones();
+			self.maximumAmount = std::min(std::max(droneBay, maxActive), 50);
+			
+			
+			[rows insertObject:pickerRow atIndex:indexPath.row + 1];
+		}];
 		self.rows = rows;
 		[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 	};
 	
 	void (^showInfo)(eufe::DronesList) = ^(eufe::DronesList drones) {
 		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
-											 sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:drone]}];
+											 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:drone]}];
 	};
 	
 	void (^affectingSkills)(eufe::DronesList) = ^(eufe::DronesList drones){
 		[self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
-											 sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:drone]}];
+											 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:drone]}];
 	};
 	
 	
@@ -390,37 +405,39 @@
 	else {
 		NCFittingShipDronesViewControllerRow* row = self.rows[indexPath.row];
 		if (![row isKindOfClass:[NCFittingShipDronesViewControllerPickerRow class]]) {
-			//			@synchronized(self.controller) {
+			if (!row.typeName) {
+				[self.controller.engine performBlockAndWait:^{
+					auto drone = row.drones.front();
+					int optimal = (int) drone->getMaxRange();
+					int falloff = (int) drone->getFalloff();
+					float trackingSpeed = drone->getTrackingSpeed();
+					
+					NCDBInvType* type = row.type;
+					row.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.drones.size()];
+					row.typeImage = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
+					
+					if (optimal > 0) {
+						NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+						if (falloff > 0)
+							s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+						if (trackingSpeed > 0)
+							s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+						row.optimalText = s;
+						row.stateImage = drone->isActive() ? [UIImage imageNamed:@"active.png"] : [UIImage imageNamed:@"offline.png"];
+						row.targetImage = drone->getTarget() != nullptr ? self.targetIcon.image.image : nil;
+					}
+
+				}];
+			}
 			
-			eufe::Drone* drone = row.drones.front();
-			
-			int optimal = (int) drone->getMaxRange();
-			int falloff = (int) drone->getFalloff();
-			float trackingSpeed = drone->getTrackingSpeed();
 			
 			NCFittingShipDroneCell* cell = (NCFittingShipDroneCell*) tableViewCell;
 			
-			cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.drones.size()];
-			cell.typeImageView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-			
-			if (optimal > 0) {
-				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-				if (falloff > 0)
-					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-				if (trackingSpeed > 0)
-					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-				cell.optimalLabel.text = s;
-			}
-			else
-				cell.optimalLabel.text = nil;
-			
-			if (drone->isActive())
-				cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
-			else
-				cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
-			
-			cell.targetImageView.image = drone->getTarget() != NULL ? [[[NCDBEveIcon eveIconWithIconFile:@"04_12"] image] image] : nil;
-			//			}
+			cell.typeNameLabel.text = row.typeName;
+			cell.typeImageView.image = row.typeImage;
+			cell.optimalLabel.text = row.optimalText;
+			cell.stateImageView.image = row.stateImage;
+			cell.targetImageView.image = row.targetImage;
 		}
 	}
 }

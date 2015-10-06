@@ -25,12 +25,19 @@
 #define ActionButtonRemoveBooster NSLocalizedString(@"Remove Booster", nil)
 
 @interface NCFittingShipFleetViewController()
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath;
-- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath;
+//- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath;
 @end
 
 @implementation NCFittingShipFleetViewController
+
+- (void) viewDidLoad {
+	[super viewDidLoad];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+}
+
 
 - (void) reload {
 	[self.tableView reloadData];
@@ -71,8 +78,8 @@
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
 	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
 	NCShipFit* fit = self.controller.fits[indexPath.row];
-	eufe::Character* character = fit.pilot;
-	eufe::Gang* gang = self.controller.engine->getGang();
+	auto character = fit.pilot;
+	auto gang = self.controller.engine.engine->getGang();
 	
 	void (^setFleetBooster)() = ^(){
 		gang->setFleetBooster(character);
@@ -169,7 +176,7 @@
 	
 	void (^showInfo)() = ^{
 		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
-											 sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:character->getShip()]}];
+											 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:character->getShip()]}];
 		
 		/*		ItemInfo* itemInfo = self.pilots[indexPath.row][@"ship"];
 		 ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
@@ -230,7 +237,7 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	if (indexPath.row >= self.controller.fits.count) {
-		cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"17_04"] image] image];
+		cell.iconView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"17_04"] image] image];
 		cell.titleLabel.text = NSLocalizedString(@"Add Fleet Member", nil);
 		cell.subtitleLabel.text = nil;
 		cell.accessoryView = nil;
@@ -238,13 +245,13 @@
 	else {
 		//		@synchronized(self.controller) {
 		NCShipFit* fit = self.controller.fits[indexPath.row];
-		eufe::Gang* gang = self.controller.engine->getGang();
+		auto gang = self.controller.engine.engine->getGang();
 		if (!fit || !fit.pilot || !gang)
 			return;
 		
-		eufe::Character* fleetBooster = gang->getFleetBooster();
-		eufe::Character* wingBooster = gang->getWingBooster();
-		eufe::Character* squadBooster = gang->getSquadBooster();
+		auto fleetBooster = gang->getFleetBooster();
+		auto wingBooster = gang->getWingBooster();
+		auto squadBooster = gang->getSquadBooster();
 		
 		NSString *booster = nil;
 		
@@ -257,10 +264,10 @@
 		else
 			booster = @"";
 		
-		
-		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s%@", fit.type.typeName, fit.pilot->getCharacterName(), booster];
+		NCDBInvType* type = [self.controller.engine invTypeWithTypeID:fit.pilot->getShip()->getTypeID()];;
+		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s%@", type.typeName, fit.pilot->getCharacterName(), booster];
 		cell.subtitleLabel.text = fit.loadoutName;
-		cell.iconView.image = fit.type.icon ? fit.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+		cell.iconView.image = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
 		if (self.controller.fit == fit)
 			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
 		else

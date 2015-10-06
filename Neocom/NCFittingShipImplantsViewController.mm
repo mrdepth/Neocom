@@ -19,8 +19,9 @@
 
 
 @interface NCFittingShipImplantsViewController()
-@property (nonatomic, assign) std::vector<eufe::Implant*> implants;
-@property (nonatomic, assign) std::vector<eufe::Booster*> boosters;
+@property (nonatomic, assign) std::vector<std::shared_ptr<eufe::Implant>> implants;
+@property (nonatomic, assign) std::vector<std::shared_ptr<eufe::Booster>> boosters;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath;
 
@@ -28,38 +29,36 @@
 
 @implementation NCFittingShipImplantsViewController
 
+- (void) viewDidLoad {
+	[super viewDidLoad];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+}
+
 - (void) reload {
-	__block std::vector<eufe::Implant*> implants(10, nullptr);
-	__block std::vector<eufe::Booster*> boosters(4, nullptr);
+	__block std::vector<std::shared_ptr<eufe::Implant>> implants(10, nullptr);
+	__block std::vector<std::shared_ptr<eufe::Booster>> boosters(4, nullptr);
 	
-	self.tableView.userInteractionEnabled = NO;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 eufe::Character* character = self.controller.fit.pilot;
-											 if (!character)
-												 return;
-											 
-											 for (auto implant: character->getImplants()) {
-												 int slot = implant->getSlot() - 1;
-												 if (slot >= 0 && slot < 10)
-													 implants[slot] = implant;
-											 }
-											 
-											 for (auto booster: character->getBoosters()) {
-												 int slot = booster->getSlot() - 1;
-												 if (slot >= 0 && slot < 4)
-													 boosters[slot] = booster;
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.implants = implants;
-									 self.boosters = boosters;
-									 [self.tableView reloadData];
-									 self.tableView.userInteractionEnabled = YES;
-								 }
-							 }];
+	[self.controller.engine performBlockAndWait:^{
+		auto character = self.controller.fit.pilot;
+		if (!character)
+			return;
+		
+		for (auto implant: character->getImplants()) {
+			int slot = implant->getSlot() - 1;
+			if (slot >= 0 && slot < 10)
+				implants[slot] = implant;
+		}
+		
+		for (auto booster: character->getBoosters()) {
+			int slot = booster->getSlot() - 1;
+			if (slot >= 0 && slot < 4)
+				boosters[slot] = booster;
+		}
+	}];
+	
+	self.implants = implants;
+	self.boosters = boosters;
+	[self.tableView reloadData];
 }
 
 #pragma mark -
@@ -124,24 +123,26 @@
 	}
 	else {
 		NCDBInvType* type;
-		eufe::Item* item = nil;
+		std::shared_ptr<eufe::Item> item = nullptr;
 		
 		if (indexPath.section == 1)
 			item = self.implants[indexPath.row];
 		else
 			item = self.boosters[indexPath.row];
-		type = [self.controller typeWithItem:item];
+		type = item ? [self.controller.engine invTypeWithTypeID:item->getTypeID()] : nil;
 		
 		if (!type) {
 			if (indexPath.section == 1) {
 				self.controller.typePickerViewController.title = NSLocalizedString(@"Implants", nil);
-				[self.controller.typePickerViewController presentWithCategory:[NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotImplant size:(int32_t) indexPath.row + 1 race:nil]
+				[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotImplant size:(int32_t) indexPath.row + 1 race:nil]
 															 inViewController:self.controller
 																	 fromRect:cell.bounds
 																	   inView:cell
 																	 animated:YES
 															completionHandler:^(NCDBInvType *type) {
-																self.controller.fit.pilot->addImplant(type.typeID);
+																[self.controller.engine performBlockAndWait:^{
+																	self.controller.fit.pilot->addImplant(type.typeID);
+																}];
 																[self.controller reload];
 																if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 																	[self.controller dismissAnimated];
@@ -149,13 +150,15 @@
 			}
 			else {
 				self.controller.typePickerViewController.title = NSLocalizedString(@"Boosters", nil);
-				[self.controller.typePickerViewController presentWithCategory:[NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotBooster size:(int32_t) indexPath.row + 1 race:nil]
+				[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotBooster size:(int32_t) indexPath.row + 1 race:nil]
 															 inViewController:self.controller
 																	 fromRect:cell.bounds
 																	   inView:cell
 																	 animated:YES
 															completionHandler:^(NCDBInvType *type) {
-																self.controller.fit.pilot->addBooster(type.typeID);
+																[self.controller.engine performBlockAndWait:^{
+																	self.controller.fit.pilot->addBooster(type.typeID);
+																}];
 																[self.controller reload];
 																if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 																	[self.controller dismissAnimated];
@@ -182,11 +185,11 @@
 									 }
 									 else if (selectedButtonIndex == 1) {
 										 [self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
-																			  sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:item]}];
+																			  sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:item]}];
 									 }
 									 else if (selectedButtonIndex == 2) {
 										 [self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
-																			  sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:item]}];
+																			  sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:item]}];
 									 }
 								 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
 		}
@@ -214,10 +217,13 @@
 	}
 	else {
 		NCDBInvType* type;
+		std::shared_ptr<eufe::Item> item = nullptr;
+		
 		if (indexPath.section == 1)
-			type = [self.controller typeWithItem:self.implants[indexPath.row]];
+			item = self.implants[indexPath.row];
 		else
-			type = [self.controller typeWithItem:self.boosters[indexPath.row]];
+			item = self.boosters[indexPath.row];
+		type = item ? [self.controller.engine invTypeWithTypeID:item->getTypeID()] : nil;
 		
 		
 		if (!type) {
@@ -226,7 +232,7 @@
 		}
 		else {
 			cell.titleLabel.text = type.typeName;
-			cell.iconView.image = type.icon ? type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+			cell.iconView.image = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
 		}
 	}
 }

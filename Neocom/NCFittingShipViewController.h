@@ -37,7 +37,6 @@
 
 - (IBAction)onChangeSection:(UISegmentedControl*)sender;
 - (IBAction)onAction:(id)sender;
-- (NCDBInvType*) typeWithItem:(eufe::Item*) item;
 - (void) reload;
 
 @end

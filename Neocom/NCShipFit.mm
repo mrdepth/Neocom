@@ -181,9 +181,9 @@
 
 @interface NCShipFit()
 @property (nonatomic, strong, readwrite) NCFittingEngine* engine;
-@property (nonatomic, strong, readwrite) NCLoadout* loadout;
+//@property (nonatomic, strong, readwrite) NCLoadout* loadout;
 @property (nonatomic, assign, readwrite) int32_t typeID;
-@property (nonatomic, assign, readwrite) eufe::Character* pilot;
+@property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Character> pilot;
 
 @property (nonatomic, strong) NCLoadoutDataShip* loadoutData;
 @property (nonatomic, strong) NSManagedObjectContext* storageManagedObjectContext;
@@ -745,7 +745,7 @@
 		if (!self.pilot)
 			return;
 
-		eufe::Ship* ship = self.pilot->getShip();
+		auto ship = self.pilot->getShip();
 		if (!ship)
 			return;
 		
@@ -764,7 +764,7 @@
 		eufe::TypeID modeID = 0;
 		
 		for(auto i : ship->getModules()) {
-			eufe::Charge* charge = i->getCharge();
+			auto charge = i->getCharge();
 			NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 			module.typeID = i->getTypeID();
 			module.chargeID = charge ? charge->getTypeID() : 0;
@@ -847,7 +847,7 @@
 	
 	[self.engine performBlockAndWait:^{
 		if (self.pilot) {
-			eufe::Ship* ship = self.pilot->getShip();
+			auto ship = self.pilot->getShip();
 			if (ship)
 				typeID = ship->getTypeID();
 		}
@@ -875,11 +875,11 @@
 - (void) load {
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		[self.engine performBlockAndWait:^{
-			eufe::Ship* ship = self.pilot->setShip(self.typeID);
+			auto ship = self.pilot->setShip(self.typeID);
 			if (ship) {
 				for (NSString* key in @[@"subsystems", @"rigSlots", @"lowSlots", @"medSlots", @"hiSlots"]) {
 					for (NCLoadoutDataShipModule* item in [self.loadoutData valueForKey:key]) {
-						eufe::Module* module = ship->addModule(item.typeID);
+						auto module = ship->addModule(item.typeID);
 						if (module) {
 							module->setState(item.state);
 							if (item.chargeID)
@@ -890,7 +890,7 @@
 				
 				for (NCLoadoutDataShipDrone* item in self.loadoutData.drones) {
 					for (int n = item.count; n > 0; n--) {
-						eufe::Drone* drone = ship->addDrone(item.typeID);
+						auto drone = ship->addDrone(item.typeID);
 						if (!drone)
 							break;
 						drone->setActive(item.active);

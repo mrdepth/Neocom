@@ -115,10 +115,10 @@
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 //														@synchronized(self.controller) {
-											 eufe::Character* character = self.controller.fit.pilot;
+											 auto character = self.controller.fit.pilot;
 											 if (!character)
 												 return;
-											 eufe::Ship* ship = character->getShip();
+											 auto ship = character->getShip();
 											 
 											 stats.totalPG = ship->getTotalPowerGrid();
 											 stats.usedPG = ship->getPowerGridUsed();
@@ -302,10 +302,10 @@
 											 
 											 if (!self.controller.engine)
 												 return;
-											 eufe::Character* character = self.controller.fit.pilot;
+											 auto character = self.controller.fit.pilot;
 											 if (!character)
 												 return;
-											 eufe::Ship* ship = character->getShip();
+											 auto ship = character->getShip();
 											 if (!ship)
 												 return;
 											 shipTypeID = ship->getTypeID();
@@ -321,7 +321,8 @@
 											 }
 											 //														}
 											 
-											 NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
+//											 NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
+											 NSDictionary* prices;
 											 __block float shipPrice = 0;
 											 __block float fittingsPrice = 0;
 											 __block float dronesPrice = 0;

@@ -12,11 +12,19 @@
 @class NCDBInvType;
 @class NCShipFit;
 @interface NCFittingEngine : NSObject
-@property (nonatomic, assign, readonly) eufe::Engine* engine;
+@property (nonatomic, assign, readonly) std::shared_ptr<eufe::Engine> engine;
 @property (nonatomic, strong, readonly) NSManagedObjectContext* databaseManagedObjectContext;
 
 - (void)performBlockAndWait:(void (^)())block;
+- (void)performBlock:(void (^)())block;
 - (NCDBInvType*) invTypeWithTypeID:(int32_t) typeID;
 - (void) loadShipFit:(NCShipFit*) fit;
 
+@end
+
+@interface NCFittingEngineItemPointer : NSObject
+@property (nonatomic, assign, readonly) std::shared_ptr<eufe::Item> item;
+
++ (instancetype) pointerWithItem:(std::shared_ptr<eufe::Item>) item;
+- (id) initWithItem:(std::shared_ptr<eufe::Item>) item;
 @end

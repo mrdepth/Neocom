@@ -65,7 +65,6 @@
 @property (nonatomic, weak) NCFittingShipFleetViewController* fleetViewController;
 @property (nonatomic, weak) NCFittingShipStatsViewController* statsViewController;
 
-@property (nonatomic, strong) NSMutableDictionary* typesCache;
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
 
 @property (nonatomic, strong) UIActionSheet* actionSheet;
@@ -105,7 +104,7 @@
 	NCAccount* account = [NCAccount currentAccount];
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 		@autoreleasepool {
-			[self.engine loadShipFit:self.fit];
+			[engine loadShipFit:self.fit];
 			
 			void (^loadDefaultCharacter)() = ^{
 				[self.storageManagedObjectContext performBlock:^{
@@ -237,13 +236,13 @@
 			controller = segue.destinationViewController;
 
 		NSArray* items = sender[@"object"];
-		eufe::Item* item = reinterpret_cast<eufe::Item*>([items[0] pointerValue]);
+		auto item = [(NCFittingEngineItemPointer*) items[0] item];
 		controller.items = items;
 		
-		eufe::Module* module = dynamic_cast<eufe::Module*>(item);
-		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(item);
+		auto module = std::dynamic_pointer_cast<eufe::Module>(item);
+		auto drone = std::dynamic_pointer_cast<eufe::Drone>(item);
 		
-		eufe::Ship* target = nullptr;
+		std::shared_ptr<eufe::Ship> target = nullptr;
 		if (module)
 			target = module->getTarget();
 		else if (drone)
@@ -268,13 +267,15 @@
 		else
 			controller = segue.destinationViewController;
 
-		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender[@"object"] pointerValue]);
-		NCDBInvType* type = [self typeWithItem:item];
+		auto item = [(NCFittingEngineItemPointer*) sender[@"object"] item];
+		NCDBInvType* type = [self.engine invTypeWithTypeID:item->getTypeID()];
 		
 		NSMutableDictionary* attributes = [NSMutableDictionary new];
-		for (NCDBDgmTypeAttribute* attribute in type.attributes) {
-			attributes[@(attribute.attributeType.attributeID)] = @(item->getAttribute(attribute.attributeType.attributeID)->getValue());
-		}
+		[self.engine performBlockAndWait:^{
+			for (NCDBDgmTypeAttribute* attribute in type.attributes) {
+				attributes[@(attribute.attributeType.attributeID)] = @(item->getAttribute(attribute.attributeType.attributeID)->getValue());
+			}
+		}];
 		
 		controller.typeID = [type objectID];
 		controller.attributes = attributes;
@@ -293,7 +294,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		eufe::Area* area = self.engine.engine->getArea();
+		auto area = self.engine.engine->getArea();
 		if (area)
 			controller.selectedAreaEffect = [self.databaseManagedObjectContext invTypeWithTypeID:area->getTypeID()];
 	}
@@ -305,8 +306,8 @@
 			controller = segue.destinationViewController;
 		NSArray* modules = sender[@"object"];
 		controller.object = modules;
-		eufe::Item* item = reinterpret_cast<eufe::Item*>([modules[0] pointerValue]);
-		NCDBInvType* type = [self typeWithItem:item];
+		auto item = [(NCFittingEngineItemPointer*) modules[0] item];
+		NCDBInvType* type = [self.engine invTypeWithTypeID:item->getTypeID()];
 		controller.typeID = type.parentType ? [type.parentType objectID] : [type objectID];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingRequiredSkillsViewController"]) {
@@ -326,11 +327,11 @@
 			controller = segue.destinationViewController;
 		
 		NSMutableArray* typeIDs = [NSMutableArray new];
-		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender[@"object"] pointerValue]);
+		auto item = [(NCFittingEngineItemPointer*) sender[@"object"] item];
 		for (auto item: item->getAffectors()) {
-			eufe::Skill* skill = dynamic_cast<eufe::Skill*>(item);
+			auto skill = std::dynamic_pointer_cast<eufe::Skill>(item);
 			if (skill) {
-				[typeIDs addObject:@((NSInteger) item->getTypeID())];
+				[typeIDs addObject:@(item->getTypeID())];
 			}
 		}
 		
@@ -369,30 +370,6 @@
 	}
 }
 
-- (NCDBInvType*) typeWithItem:(eufe::Item*) item {
-	if (!item)
-		return nil;
-	@synchronized(self) {
-		if (!self.typesCache)
-			self.typesCache = [NSMutableDictionary new];
-	}
-	int typeID = item->getTypeID();
-	
-	NCDBInvType* type;
-	@synchronized(self) {
-		type = self.typesCache[@(typeID)];
-	}
-	if (!type) {
-		type = [self.databaseManagedObjectContext invTypeWithTypeID:typeID];
-		if (type) {
-			@synchronized(self) {
-				self.typesCache[@(typeID)] = type;
-			}
-		}
-	}
-	return type;
-}
-
 - (void) reload {
 	[self.modulesViewController reload];
 	[self.dronesViewController reload];
@@ -418,46 +395,39 @@
 	__block int activeDrones;
 	
 
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 eufe::Ship* ship = self.fit.pilot->getShip();
-											 
-											 totalPG = ship->getTotalPowerGrid();
-											 usedPG = ship->getPowerGridUsed();
-											 totalCPU = ship->getTotalCpu();
-											 usedCPU = ship->getCpuUsed();
-											 totalCalibration = ship->getTotalCalibration();
-											 usedCalibration = ship->getCalibrationUsed();
-											 
-											 totalDB = ship->getTotalDroneBay();
-											 usedDB = ship->getDroneBayUsed();
-											 totalBandwidth = ship->getTotalDroneBandwidth();
-											 usedBandwidth = ship->getDroneBandwidthUsed();
-											 maxActiveDrones = ship->getMaxActiveDrones();
-											 activeDrones = ship->getActiveDrones();
-
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
-								 self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
-								 self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
-								 self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
-								 self.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
-								 self.calibrationLabel.progress = totalCalibration > 0 ? usedCalibration / totalCalibration : 0;
-								 
-								 
-								 
-								 self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
-								 self.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
-								 self.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
-								 self.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
-								 self.dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
-								 if (activeDrones > maxActiveDrones)
-									 self.dronesCountLabel.textColor = [UIColor redColor];
-								 else
-									 self.dronesCountLabel.textColor = [UIColor whiteColor];
-							 }];
+	[self.engine performBlockAndWait:^{
+		auto ship = self.fit.pilot->getShip();
+		
+		totalPG = ship->getTotalPowerGrid();
+		usedPG = ship->getPowerGridUsed();
+		totalCPU = ship->getTotalCpu();
+		usedCPU = ship->getCpuUsed();
+		totalCalibration = ship->getTotalCalibration();
+		usedCalibration = ship->getCalibrationUsed();
+		
+		totalDB = ship->getTotalDroneBay();
+		usedDB = ship->getDroneBayUsed();
+		totalBandwidth = ship->getTotalDroneBandwidth();
+		usedBandwidth = ship->getDroneBandwidthUsed();
+		maxActiveDrones = ship->getMaxActiveDrones();
+		activeDrones = ship->getActiveDrones();
+	}];
+	self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
+	self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
+	self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
+	self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
+	self.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
+	self.calibrationLabel.progress = totalCalibration > 0 ? usedCalibration / totalCalibration : 0;
+	
+	self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
+	self.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
+	self.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
+	self.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
+	self.dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
+	if (activeDrones > maxActiveDrones)
+		self.dronesCountLabel.textColor = [UIColor redColor];
+	else
+		self.dronesCountLabel.textColor = [UIColor whiteColor];
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {
@@ -472,20 +442,20 @@
 }
 
 - (IBAction)onAction:(id)sender {
-	/*if (!self.fit.character)
+	if (!self.fit.character)
 		return;
 	
 	NSMutableArray* buttons = [NSMutableArray new];
 	NSMutableArray* actions = [NSMutableArray new];
 	
 	void (^clearAreaEffect)() = ^() {
-		self.engine->clearArea();
+		self.engine.engine->clearArea();
 		[self reload];
 	};
 	
 	void (^shipInfo)() = ^() {
 		[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
-								  sender:@{@"sender": sender, @"object": [NSValue valueWithPointer:self.fit.pilot->getShip()]}];
+								  sender:@{@"sender": sender, @"object": [NCFittingEngineItemPointer pointerWithItem:self.fit.pilot->getShip()]}];
 	};
 	
 	void (^rename)() = ^() {
@@ -536,42 +506,36 @@
 	};
 	
 	void (^requiredSkills)() = ^() {
-		NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:[NCAccount currentAccount]];
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 //@synchronized(self) {
-													 std::set<eufe::TypeID> typeIDs;
-													 eufe::Character* character = self.fit.pilot;
-													 eufe::Ship* ship = character->getShip();
-													 typeIDs.insert(ship->getTypeID());
-													 
-													 for (auto module: ship->getModules()) {
-														 typeIDs.insert(module->getTypeID());
-														 eufe::Charge* charge = module->getCharge();
-														 if (charge)
-															 typeIDs.insert(charge->getTypeID());
-													 }
-													 
-													 for (auto drone: ship->getDrones())
-														 typeIDs.insert(drone->getTypeID());
-
-													 for (auto implant: character->getImplants())
-														 typeIDs.insert(implant->getTypeID());
-
-													 for (auto booster: character->getBoosters())
-														 typeIDs.insert(booster->getTypeID());
-
-													 for (auto typeID: typeIDs)
-														 [trainingQueue addRequiredSkillsForType:[NCDBInvType invTypeWithTypeID:typeID]];
-												 //}
-											 }
-								 completionHandler:^(NCTask *task) {
-									 if (![task isCancelled]) {
-										 [self performSegueWithIdentifier:@"NCFittingRequiredSkillsViewController"
-																   sender:@{@"sender": sender, @"object": trainingQueue}];
-									 }
-								 }];
+		[[NCAccount currentAccount] loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:self.databaseManagedObjectContext];
+				std::set<eufe::TypeID> typeIDs;
+				auto character = self.fit.pilot;
+				auto ship = character->getShip();
+				typeIDs.insert(ship->getTypeID());
+				
+				for (auto module: ship->getModules()) {
+					typeIDs.insert(module->getTypeID());
+					auto charge = module->getCharge();
+					if (charge)
+						typeIDs.insert(charge->getTypeID());
+				}
+				
+				for (auto drone: ship->getDrones())
+					typeIDs.insert(drone->getTypeID());
+				
+				for (auto implant: character->getImplants())
+					typeIDs.insert(implant->getTypeID());
+				
+				for (auto booster: character->getBoosters())
+					typeIDs.insert(booster->getTypeID());
+				
+				for (auto typeID: typeIDs)
+					[trainingQueue addRequiredSkillsForType:[self.databaseManagedObjectContext invTypeWithTypeID:typeID]];
+				[self performSegueWithIdentifier:@"NCFittingRequiredSkillsViewController"
+										  sender:@{@"sender": sender, @"object": trainingQueue}];
+			});
+		}];
 	};
 	
 	void (^exportFit)() = ^() {
@@ -580,25 +544,26 @@
 	
 	void (^affectingSkills)(eufe::ModulesList) = ^(eufe::ModulesList modules){
 		[self performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
-								  sender:@{@"sender": sender, @"object": [NSValue valueWithPointer:self.fit.pilot->getShip()]}];
+								  sender:@{@"sender": sender, @"object": [NCFittingEngineItemPointer pointerWithItem:self.fit.pilot->getShip()]}];
 	};
 	
 	void (^addToShoppingList)() = ^() {
 		NSMutableDictionary* items = [NSMutableDictionary new];
 		
-		eufe::Character* character = self.fit.pilot;
-		eufe::Ship* ship = character->getShip();
+		auto character = self.fit.pilot;
+		auto ship = character->getShip();
 		
-		NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
+		NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:self.storageManagedObjectContext]
 												  insertIntoManagedObjectContext:nil];
-		shoppingGroup.name = self.fit.loadout.name.length > 0 ? self.fit.loadout.name : self.fit.type.typeName;
+		NCDBInvType* type = [self.engine invTypeWithTypeID:self.fit.typeID];
+		shoppingGroup.name = self.fit.loadout.name.length > 0 ? self.fit.loadoutName : type.typeName;
 		shoppingGroup.quantity = 1;
 		
 
-		void (^addItem)(eufe::Item*, int32_t) = ^(eufe::Item* item, int32_t quanity) {
+		void (^addItem)(std::shared_ptr<eufe::Item>, int32_t) = ^(std::shared_ptr<eufe::Item> item, int32_t quanity) {
 			NCShoppingItem* shoppingItem = items[@(item->getTypeID())];
 			if (!shoppingItem) {
-				shoppingItem = [NCShoppingItem shoppingItemWithType:[self typeWithItem:item] quantity:quanity];
+				shoppingItem = [[NCShoppingItem alloc] initWithTypeID:item->getTypeID() quantity:quanity entity:[NSEntityDescription entityForName:@"ShoppingImage" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:nil];
 				shoppingItem.shoppingGroup = shoppingGroup;
 				[shoppingGroup addShoppingItemsObject:shoppingItem];
 				if (shoppingItem)
@@ -616,7 +581,7 @@
 			
 			addItem(module, 1);
 
-			eufe::Charge* charge = module->getCharge();
+			auto charge = module->getCharge();
 			if (charge) {
 				int n = module->getCharges();
 				if (n == 0)
@@ -631,13 +596,13 @@
 		
 		shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
 		shoppingGroup.immutable = YES;
-		shoppingGroup.iconFile = self.fit.loadout.type.icon.iconFile;
+		shoppingGroup.iconFile = type.icon.iconFile;
 		
 		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"sender": sender, @"object": shoppingGroup}];
 	};
 
 	
-	if (self.engine->getArea() != NULL)
+	if (self.engine.engine->getArea() != NULL)
 		[actions addObject:clearAreaEffect];
 	
 	[actions addObject:shipInfo];
@@ -690,7 +655,7 @@
 	self.actionSheet = [UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 													 title:nil
 										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-									destructiveButtonTitle:self.engine->getArea() != NULL ? ActionButtonClearAreaEffect : nil
+									destructiveButtonTitle:self.engine.engine->getArea() != NULL ? ActionButtonClearAreaEffect : nil
 										 otherButtonTitles:buttons
 										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
 											   self.actionSheet = nil;
@@ -699,7 +664,7 @@
 												   action();
 											   }
 										   } cancelBlock:nil];
-	[self.actionSheet showFromBarButtonItem:sender animated:YES];*/
+	[self.actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
 - (void) setFit:(NCShipFit *)fit {
@@ -732,13 +697,13 @@
 #pragma mark - Private
 
 - (IBAction) unwindFromCharacterPicker:(UIStoryboardSegue*) segue {
-/*	NCFittingCharacterPickerViewController* sourceViewController = segue.sourceViewController;
+	NCFittingCharacterPickerViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedCharacter)
 		sourceViewController.fit.character = sourceViewController.selectedCharacter;
 	else if ([sourceViewController.fit.character isDeleted]) {
-		sourceViewController.fit.character = [[NCStorage sharedStorage] characterWithSkillsLevel:5];
+		sourceViewController.fit.character = [self.storageManagedObjectContext characterWithSkillsLevel:5];
 	}
-	[self reload];*/
+	[self reload];
 }
 
 - (IBAction) unwindFromFitPicker:(UIStoryboardSegue*) segue {
@@ -777,7 +742,7 @@
 
 - (IBAction) unwindFromTargets:(UIStoryboardSegue*) segue {
 	NCFittingTargetsViewController* sourceViewController = segue.sourceViewController;
-	eufe::Ship* target = sourceViewController.selectedTarget ? sourceViewController.selectedTarget.pilot->getShip() : nullptr;
+	auto target = sourceViewController.selectedTarget ? sourceViewController.selectedTarget.pilot->getShip() : nullptr;
 
 	for (NSValue* value in sourceViewController.items) {
 		eufe::Item* item = reinterpret_cast<eufe::Item*>([value pointerValue]);
@@ -803,7 +768,7 @@
 		
 		self.damagePattern = sourceViewController.selectedDamagePattern;
 		for (NCShipFit* fit in self.fits) {
-			eufe::Ship* ship = fit.pilot->getShip();
+			auto ship = fit.pilot->getShip();
 			ship->setDamagePattern(damagePattern);
 		}
 		[self reload];
@@ -821,12 +786,12 @@
 - (IBAction) unwindFromTypeVariations:(UIStoryboardSegue*) segue {
 	NCFittingTypeVariationsViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedType) {
-		eufe::Ship* ship = self.fit.pilot->getShip();
+		auto ship = self.fit.pilot->getShip();
 		eufe::TypeID typeID = sourceViewController.selectedType.typeID;
 
 		for (NSValue* value in sourceViewController.object) {
 			eufe::Module* module = reinterpret_cast<eufe::Module*>([value pointerValue]);
-			ship->replaceModule(module, typeID);
+			ship->replaceModule(module->shared_from_this(), typeID);
 		}
 		[self reload];
 	}
@@ -835,7 +800,7 @@
 - (IBAction) unwindFromImplantSets:(UIStoryboardSegue*) segue {
 	NCFittingImplantSetsViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedImplantSet) {
-		eufe::Character* character = self.fit.pilot;
+		auto character = self.fit.pilot;
 		eufe::ImplantsList implants = character->getImplants();
 		for (auto implant: implants)
 			character->removeImplant(implant);
@@ -875,7 +840,7 @@
 }
 
 - (void) performExport {
-/*	if (self.actionSheet) {
+	if (self.actionSheet) {
 		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
 		self.actionSheet = nil;
 	}
@@ -899,7 +864,7 @@
 										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
 											   self.actionSheet = nil;
 											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-												   
+												   NCDBInvType* type = [self.engine invTypeWithTypeID:self.fit.typeID];
 												   if (selectedButtonIndex == 0) {
 													   NSString* dna = self.fit.dnaRepresentation;
 													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"http://neocom.by/api/fitting?dna=%@", [dna stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
@@ -918,14 +883,14 @@
 													   [[UIPasteboard generalPasteboard] setString:self.fit.eveXMLRepresentation];
 												   else if (selectedButtonIndex == 4) {
 													   NSData* data = [[self.fit eveXMLRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
-													   NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.xml", self.fit.type.typeName, self.fit.loadoutName]];
+													   NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.xml", type.typeName, self.fit.loadoutName]];
 													   [data writeToFile:path atomically:YES];
 													   self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
 													   [self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 												   }
 												   else if (selectedButtonIndex == 5) {
 													   NSData* data = [[self.fit eftRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
-													   NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.cfg", self.fit.type.typeName, self.fit.loadoutName]];
+													   NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.cfg", type.typeName, self.fit.loadoutName]];
 													   [data writeToFile:path atomically:YES];
 													   self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
 													   [self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
@@ -934,7 +899,7 @@
 													   NSString* tag = self.fit.hyperlinkTag;
 													   NSMutableString* message = [NSMutableString stringWithFormat:@"%@\n<pre>\n%@\n</pre>Generated by <a href=\"https://itunes.apple.com/us/app/neocom/id418895101?mt=8\">Neocom</a>", tag, self.fit.eftRepresentation];
 													   MFMailComposeViewController* controller = [MFMailComposeViewController new];
-													   [controller setSubject:[NSString stringWithFormat:@"%@ - %@", self.fit.type.typeName, self.fit.loadoutName]];
+													   [controller setSubject:[NSString stringWithFormat:@"%@ - %@", type.typeName, self.fit.loadoutName]];
 													   [controller setMessageBody:message isHTML:YES];
 													   [controller addAttachmentData:[self.fit.eveXMLRepresentation dataUsingEncoding:NSUTF8StringEncoding]
 																			mimeType:@"application/xml"
@@ -944,7 +909,7 @@
 												   }
 											   }
 										   } cancelBlock:nil];
-	[self.actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];*/
+	[self.actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }
 
 @end

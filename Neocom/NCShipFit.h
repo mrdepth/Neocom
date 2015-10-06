@@ -58,9 +58,10 @@
 @class NCDBInvType;
 @interface NCShipFit : NSObject
 @property (nonatomic, strong, readonly) NCFittingEngine* engine;
-@property (nonatomic, strong, readonly) NCLoadout* loadout;
+//@property (nonatomic, strong, readonly) NCLoadout* loadout;
+@property (nonatomic, strong) NCLoadout* loadout;
 @property (nonatomic, strong) NSString* loadoutName;
-@property (nonatomic, assign, readonly) eufe::Character* pilot;
+@property (nonatomic, assign, readonly) std::shared_ptr<eufe::Character> pilot;
 @property (nonatomic, strong) NCFitCharacter* character;
 @property (nonatomic, assign, readonly) int32_t typeID;
 @property (nonatomic, readonly) NSString* canonicalName;

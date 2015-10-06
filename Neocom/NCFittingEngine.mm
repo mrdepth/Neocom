@@ -13,7 +13,7 @@
 
 @interface NCShipFit()
 @property (nonatomic, strong, readwrite) NCFittingEngine* engine;
-@property (nonatomic, assign, readwrite) eufe::Character* pilot;
+@property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Character> pilot;
 @end
 
 @interface NCFittingEngine()
@@ -32,25 +32,34 @@
 
 - (id) init {
 	if (self = [super init]) {
-		_engine = new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]));
-		self.databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
-		self.typesCache = [NSCache new];
 //		self.privateQueue = dispatch_queue_create(0, DISPATCH_QUEUE_SERIAL);
 	}
 	return self;
 }
 
+- (std::shared_ptr<eufe::Engine>) engine {
+	@synchronized(self) {
+		if (!_engine)
+			_engine = std::make_shared<eufe::Engine>(std::make_shared<eufe::SqliteConnector>([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]));
+		return _engine;
+	}
+}
+
 - (void) dealloc {
-	delete _engine;
 }
 
 - (void)performBlockAndWait:(void (^)())block {
-//	dispatch_sync(self.privateQueue, ^{
-//		@autoreleasepool {
-			eufe::Engine::ScopedLock lock(_engine);
-			block();
-//		}
-//	});
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		eufe::Engine::ScopedLock lock(self.engine);
+		block();
+	}];
+}
+
+- (void) performBlock:(void (^)())block {
+	[self.databaseManagedObjectContext performBlock:^{
+		eufe::Engine::ScopedLock lock(self.engine);
+		block();
+	}];
 }
 
 - (NCDBInvType*) invTypeWithTypeID:(int32_t) typeID {
@@ -75,16 +84,17 @@
 		}];
 	}
 	
-	NSMutableSet* charges = [NSMutableSet new];
-	__block eufe::TypeID modeID = loadoutData.mode;
-	[self.databaseManagedObjectContext performBlockAndWait:^{
+	[self performBlockAndWait:^{
+		NSMutableSet* charges = [NSMutableSet new];
+		eufe::TypeID modeID = loadoutData.mode;
+
 		for (NCLoadoutDataShipCargoItem* item in loadoutData.cargo) {
 			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
 			if (type.group.category.categoryID == NCChargeCategoryID) {
 				[charges addObject:@(item.typeID)];
 			}
 		}
-
+		
 		if (!modeID) {
 			NCDBEufeItemCategory* category = [self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotMode size:fit.typeID race:nil];
 			if (category) {
@@ -93,17 +103,16 @@
 				modeID = item.type.typeID;
 			}
 		}
-	}];
-	
-	[self performBlockAndWait:^{
+
+		
 		NSAssert(fit.pilot == nullptr, @"NCShipFit already loaded");
-		eufe::Character* pilot = self.engine->getGang()->addPilot();
+		auto pilot = self.engine->getGang()->addPilot();
 		fit.pilot = pilot;
-		eufe::Ship* ship = pilot->setShip(static_cast<eufe::TypeID>(fit.typeID));
+		auto ship = pilot->setShip(static_cast<eufe::TypeID>(fit.typeID));
 		if (ship) {
 			for (NSString* key in @[@"subsystems", @"rigSlots", @"lowSlots", @"medSlots", @"hiSlots"]) {
 				for (NCLoadoutDataShipModule* item in [loadoutData valueForKey:key]) {
-					eufe::Module* module = ship->addModule(item.typeID);
+					auto module = ship->addModule(item.typeID);
 					if (module) {
 						module->setState(item.state);
 						if (item.chargeID)
@@ -114,7 +123,7 @@
 			
 			for (NCLoadoutDataShipDrone* item in loadoutData.drones) {
 				for (int n = item.count; n > 0; n--) {
-					eufe::Drone* drone = ship->addDrone(item.typeID);
+					auto drone = ship->addDrone(item.typeID);
 					if (!drone)
 						break;
 					drone->setActive(item.active);
@@ -358,6 +367,39 @@
 		loadoutData.boosters = @[];
 	}];
 	return loadoutData;
+}
+
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	@synchronized(self) {
+		if (!_databaseManagedObjectContext)
+			//_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
+			_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+		return _databaseManagedObjectContext;
+	}
+}
+
+- (NSCache*) typesCache {
+	@synchronized(self) {
+		if (!_typesCache)
+			_typesCache = [NSCache new];
+		return _typesCache;
+	}
+}
+
+@end
+
+@implementation NCFittingEngineItemPointer
+@synthesize item = _item;
+
++ (instancetype) pointerWithItem:(std::shared_ptr<eufe::Item>) item {
+	return [[self alloc] initWithItem:item];
+}
+
+- (id) initWithItem:(std::shared_ptr<eufe::Item>) item {
+	if (self = [super init]) {
+		_item = item;
+	}
+	return self;
 }
 
 

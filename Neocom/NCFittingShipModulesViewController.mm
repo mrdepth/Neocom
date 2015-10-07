@@ -37,12 +37,14 @@
 #define ActionButtonAllSimilarModules NSLocalizedString(@"All Similar Modules", nil)
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 
-@interface NCFittingShipModulesViewControllerRow : NSObject
+@interface NCFittingShipModulesViewControllerRow : NSObject<NSCopying>
 @property (nonatomic, assign) std::shared_ptr<eufe::Module> module;
 
+@property (nonatomic, assign) BOOL isUpToDate;
 @property (nonatomic, strong) NCDBInvType* type;
 
 @property (nonatomic, strong) NSString* typeName;
+@property (nonatomic, strong) UIColor* typeNameColor;
 @property (nonatomic, strong) UIImage* typeImage;
 @property (nonatomic, strong) NSString* chargeText;
 @property (nonatomic, strong) NSString* optimalText;
@@ -51,9 +53,32 @@
 @property (nonatomic, strong) NSString* lifeTimeText;
 @property (nonatomic, strong) UIImage* stateImage;
 @property (nonatomic, strong) UIImage* targetImage;
+
+@property (nonatomic, assign) float trackingSpeed;
+@property (nonatomic, assign) float orbitRadius;
 @end
 
 @implementation NCFittingShipModulesViewControllerRow
+
+- (id) copyWithZone:(NSZone *)zone {
+	NCFittingShipModulesViewControllerRow* other = [NCFittingShipModulesViewControllerRow new];
+	other.module = self.module;
+	other.isUpToDate = self.isUpToDate;
+	other.type = self.type;
+	other.typeName = self.typeName;
+	other.typeImage = self.typeImage;
+	other.chargeText = self.chargeText;
+	other.optimalText = self.optimalText;
+	other.trackingColor = self.trackingColor;
+	other.trackingText = self.trackingText;
+	other.lifeTimeText = self.lifeTimeText;
+	other.stateImage = self.stateImage;
+	other.targetImage = self.targetImage;
+	other.trackingSpeed = self.trackingSpeed;
+	other.orbitRadius = self.orbitRadius;
+	return other;
+}
+
 @end
 
 @interface NCFittingShipModulesViewControllerSection : NSObject
@@ -71,8 +96,6 @@
 @property (nonatomic, assign) int totalTurretHardpoints;
 @property (nonatomic, assign) int usedMissileHardpoints;
 @property (nonatomic, assign) int totalMissileHardpoints;
-@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
-@property (nonatomic, strong) NCDBEveIcon* targetIcon;
 
 @property (nonatomic, strong) NSArray* sections;
 
@@ -84,8 +107,6 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
-	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
-	self.targetIcon = [self.databaseManagedObjectContext eveIconWithIconFile:@"04_12"];
 	
 	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionHiSlotHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionHiSlotHeaderView"];
 }
@@ -97,9 +118,14 @@
 	__block float usedMissileHardpoints;
 	__block float totalMissileHardpoints;
 	
-	[self.controller.engine performBlockAndWait:^{
+	NSArray* oldSections = self.sections;
+	[self.controller.engine performBlock:^{
 		if (!self.controller.fit.pilot)
 			return;
+		NSMutableDictionary* oldRows = [NSMutableDictionary new];
+		for (NCFittingShipModulesViewControllerSection* section in oldSections)
+			for (NCFittingShipModulesViewControllerRow* row in section.rows)
+				oldRows[@((uintptr_t) row.module.get())] = row;
 		
 		
 		auto ship = self.controller.fit.pilot->getShip();
@@ -109,40 +135,41 @@
 		
 		for (int i = 0; i < n; i++) {
 			int numberOfSlots = ship->getNumberOfSlots(slots[i]);
-			if (numberOfSlots > 0) {
-				eufe::ModulesList modules;
-				ship->getModules(slots[i], std::inserter(modules, modules.end()));
-				
+			eufe::ModulesList modules;
+			ship->getModules(slots[i], std::inserter(modules, modules.end()));
+			if (numberOfSlots > 0 || modules.size() > 0) {
 				NCFittingShipModulesViewControllerSection* section = [NCFittingShipModulesViewControllerSection new];
 				section.slot = slots[i];
 				section.numberOfSlots = numberOfSlots;
 				NSMutableArray* rows = [NSMutableArray new];
 				
 				for (auto module: modules) {
-					NCFittingShipModulesViewControllerRow* row = [NCFittingShipModulesViewControllerRow new];
+					NCFittingShipModulesViewControllerRow* row = [oldRows[@((uintptr_t) module.get())] copy] ?: [NCFittingShipModulesViewControllerRow new];
 					row.module = module;
+					row.isUpToDate = NO;
 					[rows addObject:row];
 				}
 				section.rows = rows;
 				[sections addObject:section];
-				
-				usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
-				totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
-				usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-				totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
 			}
 		}
+		
+		usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
+		totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
+		usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+		totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.sections = sections;
+			
+			self.usedTurretHardpoints = usedTurretHardpoints;
+			self.totalTurretHardpoints = totalTurretHardpoints;
+			self.usedMissileHardpoints = usedMissileHardpoints;
+			self.totalMissileHardpoints = totalMissileHardpoints;
+			
+			[self.tableView reloadData];
+		});
 	}];
-	
-	
-	self.sections = sections;
-	
-	self.usedTurretHardpoints = usedTurretHardpoints;
-	self.totalTurretHardpoints = totalTurretHardpoints;
-	self.usedMissileHardpoints = usedMissileHardpoints;
-	self.totalMissileHardpoints = totalMissileHardpoints;
-	
-	[self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -261,13 +288,16 @@
 															   inView:cell
 															 animated:YES
 													completionHandler:^(NCDBInvType *type) {
-														if (section.slot == eufe::Module::SLOT_MODE) {
-															eufe::ModulesList modes;
-															ship->getModules(eufe::Module::SLOT_MODE, std::inserter(modes, modes.end()));
-															for (auto i:modes)
-																ship->removeModule(i);
-														}
-														ship->addModule(type.typeID);
+														int32_t typeID = type.typeID;
+														[self.controller.engine performBlockAndWait:^{
+															if (section.slot == eufe::Module::SLOT_MODE) {
+																eufe::ModulesList modes;
+																ship->getModules(eufe::Module::SLOT_MODE, std::inserter(modes, modes.end()));
+																for (auto i:modes)
+																	ship->removeModule(i);
+															}
+															ship->addModule(typeID);
+														}];
 														[self.controller reload];
 														if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 															[self.controller dismissAnimated];
@@ -283,7 +313,8 @@
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCFittingShipModulesViewControllerSection* section = self.sections[indexPath.section];
-	if (indexPath.row >= section.rows.count)
+	NCFittingShipModulesViewControllerRow* row = indexPath.row < section.rows.count ? section.rows[indexPath.row] : nil;
+	if (!row.typeName)
 		return @"Cell";
 	else
 		return @"NCFittingShipModuleCell";
@@ -291,7 +322,8 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCFittingShipModulesViewControllerSection* section = self.sections[indexPath.section];
-	if (indexPath.row >= section.rows.count) {
+	NCFittingShipModulesViewControllerRow* row = indexPath.row < section.rows.count ? section.rows[indexPath.row] : nil;
+	if (!row.typeName) {
 		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 		cell.subtitleLabel.text = nil;
 		cell.accessoryView = nil;
@@ -326,112 +358,126 @@
 		}
 	}
 	else {
-		//		@synchronized(self.controller) {
 		NCFittingShipModuleCell* cell = (NCFittingShipModuleCell*) tableViewCell;
-		NCFittingShipModulesViewControllerRow* row = section.rows[indexPath.row];
-		if (!row.type) {
-			[self.controller.engine performBlockAndWait:^{
-				auto ship = self.controller.fit.pilot->getShip();
-				auto module = row.module;
-				NCDBInvType* type = [self.controller.engine invTypeWithTypeID:module->getTypeID()];
-				row.type = type;
-				row.typeName = type.typeName;
-				row.typeImage = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
 
-				auto charge = module->getCharge();
-				if (charge) {
-					float volume = charge->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
-					float capacity = module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
-					NCDBInvType* type = [self.controller.engine invTypeWithTypeID:charge->getTypeID()];
-					if (volume > 0 && volume > 0)
-						row.chargeText = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
-					else
-						row.chargeText = type.typeName;
-				}
-				
-				float optimal = module->getMaxRange();
-				float falloff = module->getFalloff();
-				float trackingSpeed = module->getTrackingSpeed();
-				float lifeTime = module->getLifeTime();
-
-				if (trackingSpeed > 0) {
-					float v0 = ship->getMaxVelocityInOrbit(optimal);
-					float v1 = ship->getMaxVelocityInOrbit(optimal + falloff);
-					float orbitRadius = ship->getOrbitRadiusWithAngularVelocity(trackingSpeed);
-					row.trackingColor = trackingSpeed * optimal > v0 ? [UIColor greenColor] : (trackingSpeed * (optimal + falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
-					
-					NSMutableAttributedString* s = [NSMutableAttributedString new];
-					
-					[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@ rad/sec (", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]]
-																			  attributes:nil]];
-					NSTextAttachment* icon;
-					icon = [NSTextAttachment new];
-					icon.image = [UIImage imageNamed:@"targetingRange.png"];
-					icon.bounds = CGRectMake(0, -7 -cell.trackingLabel.font.descender, 15, 15);
-					[s appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
-					[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@+ m)", nil),
-																						  [NSNumberFormatter neocomLocalizedStringFromNumber:@(orbitRadius)]]
-																			  attributes:nil]];
-					row.trackingText = s;
-
-				}
-				
-				if (optimal > 0) {
-					NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-					if (falloff > 0)
-						[s appendFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-					row.optimalText = s;
-				}
-				
-				if (lifeTime > 0)
-					row.lifeTimeText = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];
-
-				eufe::Module::Slot slot = module->getSlot();
-				if (slot == eufe::Module::SLOT_HI || slot == eufe::Module::SLOT_MED || slot == eufe::Module::SLOT_LOW) {
-					switch (module->getState()) {
-						case eufe::Module::STATE_ACTIVE:
-							row.stateImage = [UIImage imageNamed:@"active.png"];
-							break;
-						case eufe::Module::STATE_ONLINE:
-							row.stateImage = [UIImage imageNamed:@"online.png"];
-							break;
-						case eufe::Module::STATE_OVERLOADED:
-							row.stateImage = [UIImage imageNamed:@"overheated.png"];
-							break;
-						default:
-							row.stateImage = [UIImage imageNamed:@"offline.png"];
-							break;
-					}
-				}
-				else
-					row.stateImage = nil;
-				
-				row.targetImage = module->getTarget() != nullptr ? self.targetIcon.image.image : nil;
-				
-			}];
-		}
-		
 		cell.typeNameLabel.text = row.typeName;
+		cell.typeNameLabel.textColor = row.typeNameColor;
 		cell.typeImageView.image = row.typeImage;
 		cell.chargeLabel.text = row.chargeText;
 		cell.optimalLabel.text = row.optimalText;
+		if (!row.trackingText && row.trackingSpeed > 0) {
+			NSMutableAttributedString* s = [NSMutableAttributedString new];
+			
+			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@ rad/sec (", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.trackingSpeed)]]
+																	  attributes:nil]];
+			NSTextAttachment* icon;
+			icon = [NSTextAttachment new];
+			icon.image = [UIImage imageNamed:@"targetingRange.png"];
+			icon.bounds = CGRectMake(0, -7 -cell.trackingLabel.font.descender, 15, 15);
+			[s appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
+			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@+ m)", nil),
+																				  [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.orbitRadius)]]
+																	  attributes:nil]];
+			row.trackingText = s;
+		}
 		cell.trackingLabel.attributedText = row.trackingText;
 		cell.trackingLabel.textColor = row.trackingColor;
 		cell.lifetimeLabel.text = row.lifeTimeText;
 		cell.stateImageView.image = row.stateImage;
 		cell.targetImageView.image = row.targetImage;
-		
+	}
+	if (row.module && !row.isUpToDate) {
+		row.isUpToDate = YES;
+		[self.controller.engine performBlock:^{
+			auto ship = self.controller.fit.pilot->getShip();
+			auto module = row.module;
+			NCDBInvType* type = [self.controller.engine invTypeWithTypeID:module->getTypeID()];
+			row.type = type;
+			row.typeName = type.typeName;
+			row.typeNameColor = module->isEnabled() ? [UIColor whiteColor] : [UIColor redColor];
+			row.typeImage = type.icon ? type.icon.image.image : self.defaultTypeImage;
+			
+			auto charge = module->getCharge();
+			if (charge) {
+				float volume = charge->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
+				float capacity = module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
+				NCDBInvType* type = [self.controller.engine invTypeWithTypeID:charge->getTypeID()];
+				if (volume > 0 && volume > 0)
+					row.chargeText = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
+				else
+					row.chargeText = type.typeName;
+			}
+			else
+				row.chargeText = nil;
+			
+			float optimal = module->getMaxRange();
+			float falloff = module->getFalloff();
+			float trackingSpeed = module->getTrackingSpeed();
+			float lifeTime = module->getLifeTime();
+			
+			row.trackingText = nil;
+			if (trackingSpeed > 0) {
+				float v0 = ship->getMaxVelocityInOrbit(optimal);
+				float v1 = ship->getMaxVelocityInOrbit(optimal + falloff);
+				float orbitRadius = ship->getOrbitRadiusWithAngularVelocity(trackingSpeed);
+				row.trackingColor = trackingSpeed * optimal > v0 ? [UIColor greenColor] : (trackingSpeed * (optimal + falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
+				row.trackingSpeed = trackingSpeed;
+				row.orbitRadius = orbitRadius;
+			}
+			
+			if (optimal > 0) {
+				NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+				if (falloff > 0)
+					[s appendFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+				row.optimalText = s;
+			}
+			else
+				row.optimalText = nil;
+			
+			if (lifeTime > 0)
+				row.lifeTimeText = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];
+			else
+				row.lifeTimeText = nil;
+			
+			eufe::Module::Slot slot = module->getSlot();
+			if (slot == eufe::Module::SLOT_HI || slot == eufe::Module::SLOT_MED || slot == eufe::Module::SLOT_LOW) {
+				switch (module->getState()) {
+					case eufe::Module::STATE_ACTIVE:
+						row.stateImage = [UIImage imageNamed:@"active.png"];
+						break;
+					case eufe::Module::STATE_ONLINE:
+						row.stateImage = [UIImage imageNamed:@"online.png"];
+						break;
+					case eufe::Module::STATE_OVERLOADED:
+						row.stateImage = [UIImage imageNamed:@"overheated.png"];
+						break;
+					default:
+						row.stateImage = [UIImage imageNamed:@"offline.png"];
+						break;
+				}
+			}
+			else
+				row.stateImage = nil;
+			
+			row.targetImage = module->getTarget() != nullptr ? self.targetImage : nil;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			});
+		}];
 	}
 }
 
 #pragma mark - Private
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCFittingShipModulesViewControllerSection* section = self.sections[indexPath.section];
+	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+	
+	NCFittingShipModulesViewControllerRow* row = section.rows[indexPath.row];
+
+	NSMutableArray* actions = [NSMutableArray new];
+
 	[self.controller.engine performBlockAndWait:^{
-		NCFittingShipModulesViewControllerSection* section = self.sections[indexPath.section];
-		UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-		
-		NCFittingShipModulesViewControllerRow* row = section.rows[indexPath.row];
 		auto ship = self.controller.fit.pilot->getShip();
 		auto module = row.module;
 		NCDBInvType* type = [self.controller.engine invTypeWithTypeID:row.module->getTypeID()];
@@ -449,304 +495,224 @@
 		
 		eufe::Module::State state = module->getState();
 		
-		void (^remove)(eufe::ModulesList) = ^(eufe::ModulesList modules){
+		void (^setState)(eufe::ModulesList, eufe::Module::State) = ^(eufe::ModulesList modules, eufe::Module::State state) {
 			[self.controller.engine performBlockAndWait:^{
-				for (auto module: modules) {
-					//			section.modules.erase(std::find(section.modules.begin(), section.modules.end(), module));
-					ship->removeModule(module);
-				}
+				for (auto module: modules)
+					module->setState(state);
 			}];
 			[self.controller reload];
 		};
 		
-		void (^putOffline)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[self.controller.engine performBlockAndWait:^{
-				for (auto module: modules)
-					module->setState(eufe::Module::STATE_OFFLINE);
-			}];
-			[self.controller reload];
-		};
-		void (^putOnline)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[self.controller.engine performBlockAndWait:^{
-				for (auto module: modules) {
-					if (module->canHaveState(eufe::Module::STATE_ACTIVE))
-						module->setState(eufe::Module::STATE_ACTIVE);
-					else
-						module->setState(eufe::Module::STATE_ONLINE);
-				}
-			}];
-			[self.controller reload];
-		};
-		void (^activate)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[self.controller.engine performBlockAndWait:^{
-				for (auto module: modules)
-					module->setState(eufe::Module::STATE_ACTIVE);
-			}];
-			[self.controller reload];
-		};
-		void (^deactivate)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[self.controller.engine performBlockAndWait:^{
-				for (auto module: modules)
-					module->setState(eufe::Module::STATE_ONLINE);
-			}];
-			[self.controller reload];
-		};
-		void (^enableOverheating)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[self.controller.engine performBlockAndWait:^{
-				for (auto module: modules)
-					module->setState(eufe::Module::STATE_OVERLOADED);
-			}];
-			[self.controller reload];
-		};
-		void (^disableOverheating)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[self.controller.engine performBlockAndWait:^{
-				for (auto module: modules)
-					module->setState(eufe::Module::STATE_ACTIVE);
-			}];
-			[self.controller reload];
-		};
-		
-		NSMutableArray* statesButtons = [NSMutableArray new];
-		NSMutableArray* statesActions = [NSMutableArray new];
-		
-		if (state >= eufe::Module::STATE_ACTIVE) {
-			[statesButtons addObject:ActionButtonOffline];
-			[statesActions addObject:putOffline];
+		NSArray* (^statesActions)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
+			NSMutableArray* statesActions = [NSMutableArray new];
 			
-			[statesButtons addObject:ActionButtonDeactivate];
-			[statesActions addObject:deactivate];
-			
-			if (module->canHaveState(eufe::Module::STATE_OVERLOADED)) {
-				if (state == eufe::Module::STATE_OVERLOADED) {
-					[statesButtons addObject:ActionButtonOverheatOff];
-					[statesActions addObject:disableOverheating];
-				}
-				else {
-					[statesButtons addObject:ActionButtonOverheatOn];
-					[statesActions addObject:enableOverheating];
-				}
-			}
+			if (state != eufe::Module::STATE_OFFLINE && module->canHaveState(eufe::Module::STATE_OFFLINE))
+				[statesActions addObject:[UIAlertAction actionWithTitle:ActionButtonOffline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+					setState(modules, eufe::Module::STATE_OFFLINE);
+				}]];
+			if (state != eufe::Module::STATE_ONLINE && module->canHaveState(eufe::Module::STATE_ONLINE))
+				[statesActions addObject:[UIAlertAction actionWithTitle:state > eufe::Module::STATE_ONLINE ? ActionButtonDeactivate : ActionButtonOnline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+					setState(modules, eufe::Module::STATE_ONLINE);
+				}]];
+			if (state != eufe::Module::STATE_ACTIVE && module->canHaveState(eufe::Module::STATE_ACTIVE))
+				[statesActions addObject:[UIAlertAction actionWithTitle:state < eufe::Module::STATE_ACTIVE ? ActionButtonActivate : ActionButtonOverheatOff style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+					setState(modules, eufe::Module::STATE_ACTIVE);
+				}]];
+			if (state != eufe::Module::STATE_OVERLOADED && module->canHaveState(eufe::Module::STATE_OVERLOADED))
+				[statesActions addObject:[UIAlertAction actionWithTitle:ActionButtonOverheatOn style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+					setState(modules, eufe::Module::STATE_OVERLOADED);
+				}]];
+			return statesActions;
+		};
+
+		UIAlertAction* (^removeAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
+			return [UIAlertAction actionWithTitle:ActionButtonDelete style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+				[self.controller.engine performBlockAndWait:^{
+					for (auto module: modules)
+						ship->removeModule(module);
+				}];
+				[self.controller reload];
+			}];
+		};
+		
+		eufe::ModulesList modules;
+		modules.push_back(module);
+		[actions addObject:removeAction(modules)];
+		
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonShowModuleInfo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
+												 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:module]}];
+		}]];
+
+		
+		if (module->getCharge() != NULL) {
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonShowAmmoInfo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				__block NCFittingEngineItemPointer* pointer;
+				[self.controller.engine performBlockAndWait:^{
+					pointer = [NCFittingEngineItemPointer pointerWithItem:row.module->getCharge()];
+				}];
+				[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
+													 sender:@{@"sender": cell, @"object": pointer}];
+			}]];
 		}
-		else if (state == eufe::Module::STATE_ONLINE) {
-			[statesButtons addObject:ActionButtonOffline];
-			[statesActions addObject:putOffline];
-			if (module->canHaveState(eufe::Module::STATE_ACTIVE)) {
-				[statesButtons addObject:ActionButtonActivate];
-				[statesActions addObject:activate];
-			}
-		}
-		else {
-			if (module->canHaveState(eufe::Module::STATE_ONLINE)) {
-				[statesButtons addObject:ActionButtonOnline];
-				[statesActions addObject:putOnline];
+		
+		
+		NSArray* states = statesActions(modules);
+		if (states.count > 0) {
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+				[actions addObjectsFromArray:states];
+			else {
+				[actions addObject:[UIAlertAction actionWithTitle:ActionButtonChangeState style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+					UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+					for (UIAlertAction* action in states)
+						[controller addAction:action];
+					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+						
+					}]];
+					[self.controller presentViewController:controller animated:YES completion:nil];
+				}]];
 			}
 		}
 		
-		void (^setAmmo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[self.controller.engine performBlockAndWait:^{
-				int chargeSize = module->getChargeSize();
-				
-				NSMutableArray *groups = [NSMutableArray new];
-				for (auto i: module->getChargeGroups())
-					[groups addObject:[NSString stringWithFormat:@"%d", i]];
+		
+		UIAlertAction* (^ammoAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
+			return [UIAlertAction actionWithTitle:ActionButtonAmmo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				__block NSManagedObjectID* categoryID;
+				[self.controller.engine performBlockAndWait:^{
+					categoryID = [type.eufeItem.charge objectID];
+				}];
 				
 				self.controller.typePickerViewController.title = NSLocalizedString(@"Ammo", nil);
-				NSArray* conditions;
-				if (chargeSize)
-					conditions = @[@"invTypes.typeID=dgmTypeAttributes.typeID",
-								   @"dgmTypeAttributes.attributeID=128",
-								   [NSString stringWithFormat:@"dgmTypeAttributes.value=%d", chargeSize],
-								   [NSString stringWithFormat:@"groupID IN (%@)", [groups componentsJoinedByString:@","]]];
-				else
-					conditions = @[[NSString stringWithFormat:@"groupID IN (%@)", [groups componentsJoinedByString:@","]],
-								   [NSString stringWithFormat:@"invTypes.volume <= %f", module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()]];
-				
-				[self.controller.typePickerViewController presentWithCategory:type.eufeItem.charge
+				[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext objectWithID:categoryID]
 															 inViewController:self.controller
 																	 fromRect:cell.bounds
 																	   inView:cell
 																	 animated:YES
 															completionHandler:^(NCDBInvType *type) {
-																for (auto module: modules)
-																	module->setCharge(type.typeID);
+																int32_t typeID = type.typeID;
+																[self.controller.engine performBlockAndWait:^{
+																	for (auto module: modules)
+																		module->setCharge(typeID);
+																}];
 																[self.controller reload];
 																[self.controller dismissAnimated];
 															}];
 			}];
 		};
-		void (^unloadAmmo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[self.controller.engine performBlockAndWait:^{
-				for (auto module: modules)
-					module->clearCharge();
-			}];
-			[self.controller reload];
-		};
-		
-		void (^changeState)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-										   title:nil
-							   cancelButtonTitle:NSLocalizedString(@"Cancel", )
-						  destructiveButtonTitle:nil
-							   otherButtonTitles:statesButtons
-								 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-									 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-										 void (^block)(eufe::ModulesList) = statesActions[selectedButtonIndex];
-										 eufe::ModulesList modules;
-										 modules.push_back(module);
-										 block(modules);
-									 }
-								 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
-		};
-		
-		void (^moduleInfo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
-												 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:module]}];
-		};
-		void (^ammoInfo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[self.controller.engine performBlockAndWait:^{
-				[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
-													 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:row.module->getCharge()]}];
+
+		UIAlertAction* (^unloadAmmoAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
+			return [UIAlertAction actionWithTitle:ActionButtonUnloadAmmo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self.controller.engine performBlockAndWait:^{
+					for (auto module: modules)
+						module->clearCharge();
+				}];
+				[self.controller reload];
 			}];
 		};
-		
-		void (^setTarget)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			NSMutableArray* array = [NSMutableArray new];
-			for (auto module: modules)
-				[array addObject:[NCFittingEngineItemPointer pointerWithItem:module]];
-			[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController"
-												 sender:@{@"sender": cell, @"object": array}];
-		};
-		void (^clearTarget)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			for (auto module: modules)
-				module->clearTarget();
-			[self.controller reload];
-		};
-		
-		void (^variations)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			NSMutableArray* array = [NSMutableArray new];
-			for (auto module: modules)
-				[array addObject:[NCFittingEngineItemPointer pointerWithItem:module]];
-			
-			[self.controller performSegueWithIdentifier:@"NCFittingTypeVariationsViewController"
-												 sender:@{@"sender": cell, @"object": array}];
-		};
-		
-		void (^similarModules)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[self.controller.engine performBlockAndWait:^{
-				NSMutableArray* buttons = [NSMutableArray new];
-				NSMutableArray* actions = [NSMutableArray new];
-				
-				[actions addObject:remove];
-				[buttons addObjectsFromArray:statesButtons];
-				[actions addObjectsFromArray:statesActions];
-				
-				if (module->getChargeGroups().size() > 0) {
-					[buttons addObject:ActionButtonAmmo];
-					[actions addObject:setAmmo];
-					
-					if (module->getCharge() != nil) {
-						[buttons addObject:ActionButtonUnloadAmmo];
-						[actions addObject:unloadAmmo];
-					}
-				}
-				[buttons addObject:ActionButtonVariations];
-				[actions addObject:variations];
-				
-				if (module->requireTarget() && self.controller.fits.count > 1) {
-					[buttons addObject:ActionButtonSetTarget];
-					[actions addObject:setTarget];
-					if (module->getTarget() != NULL) {
-						[buttons addObject:ActionButtonClearTarget];
-						[actions addObject:clearTarget];
-					}
-				}
-				
-				[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-											   title:nil
-								   cancelButtonTitle:NSLocalizedString(@"Cancel", )
-							  destructiveButtonTitle:ActionButtonDelete
-								   otherButtonTitles:buttons
-									 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-										 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-											 void (^block)(eufe::ModulesList) = actions[selectedButtonIndex];
-											 block(allSimilarModules);
-										 }
-									 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
-			}];
-		};
-		
-		void (^affectingSkills)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-			[self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
-												 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:module]}];
-		};
-		
-		NSMutableArray* buttons = [NSMutableArray new];
-		NSMutableArray* actions = [NSMutableArray new];
-		
-		[actions addObject:remove];
-		
-		[buttons addObject:ActionButtonShowModuleInfo];
-		[actions addObject:moduleInfo];
-		if (module->getCharge() != NULL) {
-			[buttons addObject:ActionButtonShowAmmoInfo];
-			[actions addObject:ammoInfo];
-		}
-		
-		
-		
-		if (statesButtons.count > 0) {
-			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-				[buttons addObjectsFromArray:statesButtons];
-				[actions addObjectsFromArray:statesActions];
-			}
-			else {
-				[buttons addObject:ActionButtonChangeState];
-				[actions addObject:changeState];
-			}
-		}
 		
 		if (module->getChargeGroups().size() > 0) {
-			[buttons addObject:ActionButtonAmmo];
-			[actions addObject:setAmmo];
+			[actions addObject:ammoAction(modules)];
+
 			
-			if (module->getCharge() != nil) {
-				[buttons addObject:ActionButtonUnloadAmmo];
-				[actions addObject:unloadAmmo];
+			if (module->getCharge() != nullptr) {
+				[actions addObject:unloadAmmoAction(modules)];
 			}
 		}
-		if (module->requireTarget() && self.controller.fits.count > 1) {
-			[buttons addObject:ActionButtonSetTarget];
-			[actions addObject:setTarget];
-			if (module->getTarget() != NULL) {
-				[buttons addObject:ActionButtonClearTarget];
-				[actions addObject:clearTarget];
-			}
-		}
-		[buttons addObject:ActionButtonVariations];
-		[actions addObject:variations];
 		
-		[buttons addObject:ActionButtonAffectingSkills];
-		[actions addObject:affectingSkills];
+		UIAlertAction* (^setTargetAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
+			return [UIAlertAction actionWithTitle:ActionButtonSetTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				NSMutableArray* array = [NSMutableArray new];
+				[self.controller.engine performBlockAndWait:^{
+					for (auto module: modules)
+						[array addObject:[NCFittingEngineItemPointer pointerWithItem:module]];
+				}];
+				[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController"
+													 sender:@{@"sender": cell, @"object": array}];
+			}];
+		};
+		
+		
+		UIAlertAction* (^clearTargetAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
+			return [UIAlertAction actionWithTitle:ActionButtonSetTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self.controller.engine performBlockAndWait:^{
+					for (auto module: modules)
+						module->clearTarget();
+					[self.controller reload];
+				}];
+			}];
+		};
+		
+		if (module->requireTarget() && self.controller.fits.count > 1) {
+			[actions addObject:setTargetAction(modules)];
+
+			if (module->getTarget() != nullptr) {
+				[actions addObject:clearTargetAction(modules)];
+			}
+		}
+		
+		UIAlertAction* (^variationsAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
+			return [UIAlertAction actionWithTitle:ActionButtonSetTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				NSMutableArray* array = [NSMutableArray new];
+				[self.controller.engine performBlockAndWait:^{
+					for (auto module: modules)
+						[array addObject:[NCFittingEngineItemPointer pointerWithItem:module]];
+				}];
+				[self.controller performSegueWithIdentifier:@"NCFittingTypeVariationsViewController"
+													 sender:@{@"sender": cell, @"object": array}];
+			}];
+		};
+
+		
+		[actions addObject:variationsAction(modules)];
+
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAffectingSkills style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
+												 sender:@{@"sender": cell, @"object": @[[NCFittingEngineItemPointer pointerWithItem:module]]}];
+		}]];
+
 		
 		if (multiple) {
-			[buttons addObject:ActionButtonAllSimilarModules];
-			[actions addObject:similarModules];
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAllSimilarModules style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				NSMutableArray* actions = [NSMutableArray new];
+				
+				[self.controller.engine performBlockAndWait:^{
+					
+					[actions addObject:removeAction(allSimilarModules)];
+					
+					if (module->getChargeGroups().size() > 0) {
+						[actions addObject:ammoAction(allSimilarModules)];
+						
+						if (module->getCharge() != nil) {
+							[actions addObject:unloadAmmoAction(allSimilarModules)];
+						}
+					}
+					[actions addObject:variationsAction(allSimilarModules)];
+					
+					if (module->requireTarget() && self.controller.fits.count > 1) {
+						[actions addObject:setTargetAction(allSimilarModules)];
+						if (module->getTarget() != nullptr) {
+							[actions addObject:clearTargetAction(allSimilarModules)];
+						}
+					}
+					NSArray* states = statesActions(allSimilarModules);
+					if (states.count > 0)
+						[actions addObjectsFromArray:states];
+
+				}];
+				UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+				for (UIAlertAction* action in actions)
+					[controller addAction:action];
+				[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+				[self.controller presentViewController:controller animated:YES completion:nil];
+			}]];
 		}
-		
-		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-									   title:nil
-						   cancelButtonTitle:NSLocalizedString(@"Cancel", )
-					  destructiveButtonTitle:ActionButtonDelete
-						   otherButtonTitles:buttons
-							 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-								 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-									 void (^block)(eufe::ModulesList) = actions[selectedButtonIndex];
-									 eufe::ModulesList modules;
-									 modules.push_back(module);
-									 block(modules);
-								 }
-							 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
 	}];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	for (UIAlertAction* action in actions)
+		[controller addAction:action];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+	[self.controller presentViewController:controller animated:YES completion:nil];
+	
 }
 
 @end

@@ -69,7 +69,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //#warning Enable Flurry
-#if !TARGET_IPHONE_SIMULATOR
+#if !TARGET_OS_SIMULATOR
 	[Flurry setCrashReportingEnabled:YES];
 	[Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
 #endif

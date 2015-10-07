@@ -93,55 +93,15 @@
 	self.taskManager.maxConcurrentOperationCount = 1;
 	
 	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
-	
 
-	
 	NCFittingEngine* engine = [NCFittingEngine new];
 
 	if (!self.fits)
 		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
 	
-	NCAccount* account = [NCAccount currentAccount];
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-		@autoreleasepool {
-			[engine loadShipFit:self.fit];
-			
-			void (^loadDefaultCharacter)() = ^{
-				[self.storageManagedObjectContext performBlock:^{
-					NCFitCharacter* character = [self.storageManagedObjectContext characterWithSkillsLevel:5];
-					self.fit.character = character;
-					dispatch_async(dispatch_get_main_queue(), ^{
-						self.engine = engine;
-						[self reload];
-					});
-				}];
-			};
-			
-			if (account) {
-				[account loadFitCharacterWithCompletioBlock:^(NCFitCharacter *fitCharacter) {
-					if (fitCharacter) {
-						self.fit.character = fitCharacter;
-						dispatch_async(dispatch_get_main_queue(), ^{
-							self.engine = engine;
-							[self reload];
-						});
-					}
-					else
-						loadDefaultCharacter();
-				}];
-			}
-			else {
-				loadDefaultCharacter();
-			}
-		}
-	});
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
 	for (id controller in self.childViewControllers) {
-		if (![(UIViewController*) controller view].window)
-			continue;
+//		if (![(UIViewController*) controller view].window)
+//			continue;
 		if ([controller isKindOfClass:[NCFittingShipModulesViewController class]])
 			self.modulesViewController = controller;
 		else if ([controller isKindOfClass:[NCFittingShipDronesViewController class]])
@@ -153,7 +113,45 @@
 		else if ([controller isKindOfClass:[NCFittingShipStatsViewController class]])
 			self.statsViewController = controller;
 	}
-	[self reload];
+
+	
+	NCAccount* account = [NCAccount currentAccount];
+	[engine performBlock:^{
+		[engine loadShipFit:self.fit];
+		
+		void (^loadDefaultCharacter)() = ^{
+			[self.storageManagedObjectContext performBlock:^{
+				NCFitCharacter* character = [self.storageManagedObjectContext characterWithSkillsLevel:5];
+				self.fit.character = character;
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.engine = engine;
+					[self reload];
+				});
+			}];
+		};
+		
+		if (account) {
+			[account loadFitCharacterWithCompletioBlock:^(NCFitCharacter *fitCharacter) {
+				if (fitCharacter) {
+					self.fit.character = fitCharacter;
+					dispatch_async(dispatch_get_main_queue(), ^{
+						self.engine = engine;
+						[self reload];
+					});
+				}
+				else
+					loadDefaultCharacter();
+			}];
+		}
+		else {
+			loadDefaultCharacter();
+		}
+	}];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+//	[self reload];
 }
 
 - (void)didReceiveMemoryWarning

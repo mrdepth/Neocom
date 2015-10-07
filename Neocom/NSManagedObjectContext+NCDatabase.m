@@ -7,6 +7,13 @@
 //
 
 #import "NSManagedObjectContext+NCDatabase.h"
+#import <objc/runtime.h>
+
+@interface NSManagedObjectContext (Cache)
+@property (nonatomic, strong, readonly) NSMutableDictionary* invTypes;
+@property (nonatomic, strong, readonly) NSMutableDictionary* eveIcons;
+@property (nonatomic, strong, readonly) NSMutableDictionary* mapSolarSystems;
+@end
 
 @implementation NSManagedObjectContext (NCDatabase)
 
@@ -24,29 +31,50 @@
 }
 
 - (NCDBEveIcon*) eveIconWithIconFile:(NSString*) iconFile {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EveIcon"];
-	request.predicate = [NSPredicate predicateWithFormat:@"iconFile == %@", iconFile];
-	request.fetchLimit = 1;
-	return [[self executeFetchRequest:request error:nil] lastObject];
+	if (!iconFile)
+		return nil;
+	
+	NCDBEveIcon* icon = self.eveIcons[iconFile];
+	if (!icon) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EveIcon"];
+		request.predicate = [NSPredicate predicateWithFormat:@"iconFile == %@", iconFile];
+		request.fetchLimit = 1;
+		icon = [[self executeFetchRequest:request error:nil] lastObject];
+		if (icon)
+			self.eveIcons[iconFile] = icon;
+	}
+	return icon;
 }
 
 
 //NCDBInvType
 - (NCDBInvType*) invTypeWithTypeID:(int32_t) typeID {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
-	request.predicate = [NSPredicate predicateWithFormat:@"typeID == %d", typeID];
-	request.fetchLimit = 1;
-	return [[self executeFetchRequest:request error:nil] lastObject];
+	NCDBInvType* type = self.invTypes[@(typeID)];
+	if (!type) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+		request.predicate = [NSPredicate predicateWithFormat:@"typeID == %d", typeID];
+		request.fetchLimit = 1;
+		type = [[self executeFetchRequest:request error:nil] lastObject];
+		if (type)
+			self.invTypes[@(typeID)] = type;
+	}
+	return type;
 }
 
 - (NCDBInvType*) invTypeWithTypeName:(NSString*) typeName {
 	if (!typeName)
 		return nil;
-	
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
-	request.predicate = [NSPredicate predicateWithFormat:@"typeName LIKE[C] %@", typeName];
-	request.fetchLimit = 1;
-	return [[self executeFetchRequest:request error:nil] lastObject];
+
+	NCDBInvType* type = self.invTypes[typeName];
+	if (!type) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+		request.predicate = [NSPredicate predicateWithFormat:@"typeName LIKE[C] %@", typeName];
+		request.fetchLimit = 1;
+		type = [[self executeFetchRequest:request error:nil] lastObject];
+		if (type)
+			self.invTypes[typeName] = type;
+	}
+	return type;
 }
 
 //NCDBDgmAttributeType
@@ -131,6 +159,35 @@
 	request.predicate = [NSPredicate predicateWithFormat:@"regionID == %d", regionID];
 	request.fetchLimit = 1;
 	return [[self executeFetchRequest:request error:nil] lastObject];
+}
+
+#pragma mark - Cache
+
+- (NSMutableDictionary*) invTypes {
+	NSMutableDictionary* invTypes = objc_getAssociatedObject(self, @"invTypes");
+	if (!invTypes) {
+		invTypes = [NSMutableDictionary new];
+		objc_setAssociatedObject(self, @"invTypes", invTypes, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	return invTypes;
+}
+
+- (NSMutableDictionary*) eveIcons {
+	NSMutableDictionary* eveIcons = objc_getAssociatedObject(self, @"eveIcons");
+	if (!eveIcons) {
+		eveIcons = [NSMutableDictionary new];
+		objc_setAssociatedObject(self, @"eveIcons", eveIcons, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	return eveIcons;
+}
+
+- (NSMutableDictionary*) mapSolarSystems {
+	NSMutableDictionary* mapSolarSystems = objc_getAssociatedObject(self, @"mapSolarSystems");
+	if (!mapSolarSystems) {
+		mapSolarSystems = [NSMutableDictionary new];
+		objc_setAssociatedObject(self, @"mapSolarSystems", mapSolarSystems, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	return mapSolarSystems;
 }
 
 @end

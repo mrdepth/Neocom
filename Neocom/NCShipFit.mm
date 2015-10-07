@@ -872,7 +872,7 @@
 	}];
 }
 
-- (void) load {
+/*- (void) load {
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		[self.engine performBlockAndWait:^{
 			auto ship = self.pilot->setShip(self.typeID);
@@ -927,7 +927,7 @@
 			}
 		}];
 	}];
-}
+}*/
 
 - (void) setCharacter:(NCFitCharacter *)character {
 	_character = character;

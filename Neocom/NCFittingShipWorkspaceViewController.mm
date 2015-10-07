@@ -54,4 +54,17 @@
 	return self.controller.databaseManagedObjectContext;
 }
 
+- (UIImage*) defaultTypeImage {
+	if (!_defaultTypeImage)
+		_defaultTypeImage = [self.databaseManagedObjectContext defaultTypeIcon].image.image;
+	return _defaultTypeImage;
+}
+
+- (UIImage*) targetImage {
+	if (!_targetImage)
+		_targetImage = [self.databaseManagedObjectContext eveIconWithIconFile:@"04_12"].image.image;
+	return _targetImage;
+}
+
+
 @end

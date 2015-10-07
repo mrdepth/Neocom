@@ -538,7 +538,8 @@
 	if (height)
 		return [height floatValue];
 	else
-		return self.tableView.rowHeight;
+		return UITableViewAutomaticDimension;
+//		return self.tableView.rowHeight;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

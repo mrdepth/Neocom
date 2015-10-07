@@ -11,8 +11,15 @@
 
 @interface NSManagedObjectContext (Cache)
 @property (nonatomic, strong, readonly) NSMutableDictionary* invTypes;
+@property (nonatomic, strong, readonly) NSMutableDictionary* invGroups;
 @property (nonatomic, strong, readonly) NSMutableDictionary* eveIcons;
+@property (nonatomic, strong, readonly) NSMutableDictionary* eufeItemCategories;
+@property (nonatomic, strong, readonly) NSMutableDictionary* staStations;
+@property (nonatomic, strong, readonly) NSMutableDictionary* ramActivities;
+@property (nonatomic, strong, readonly) NSMutableDictionary* mapRegions;
+@property (nonatomic, strong, readonly) NSMutableDictionary* mapDenormalizes;
 @property (nonatomic, strong, readonly) NSMutableDictionary* mapSolarSystems;
+@property (nonatomic, strong, readonly) NSMutableDictionary* dgmAttributeTypes;
 @end
 
 @implementation NSManagedObjectContext (NCDatabase)
@@ -79,33 +86,60 @@
 
 //NCDBDgmAttributeType
 - (NCDBDgmAttributeType*) dgmAttributeTypeWithAttributeTypeID:(int32_t) attributeTypeID {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DgmAttributeType"];
-	request.predicate = [NSPredicate predicateWithFormat:@"attributeID == %d", attributeTypeID];
-	request.fetchLimit = 1;
-	return [[self executeFetchRequest:request error:nil] lastObject];
+	NCDBDgmAttributeType* attributeType = self.dgmAttributeTypes[@(attributeTypeID)];
+	if (!attributeType) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DgmAttributeType"];
+		request.predicate = [NSPredicate predicateWithFormat:@"attributeID == %d", attributeTypeID];
+		request.fetchLimit = 1;
+		attributeType = [[self executeFetchRequest:request error:nil] lastObject];
+		if (attributeType)
+			self.attributeTypes[@(attributeTypeID)] = attributeType;
+	}
+	return attributeType;
 }
 
 //NCDBInvGroup
 - (NCDBInvGroup*) invGroupWithGroupID:(int32_t) groupID {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvGroup"];
-	request.predicate = [NSPredicate predicateWithFormat:@"groupID == %d", groupID];
-	request.fetchLimit = 1;
-	return [[self executeFetchRequest:request error:nil] lastObject];
+	NCDBInvGroup* group = self.invGroups[@(groupID)];
+	if (!group) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvGroup"];
+		request.predicate = [NSPredicate predicateWithFormat:@"groupID == %d", groupID];
+		request.fetchLimit = 1;
+		group = [[self executeFetchRequest:request error:nil] lastObject];
+		if (group)
+			self.invGroups[@(groupID)] = group;
+	}
+	return group;
 }
 
 //NCDBMapSolarSystem
 - (NCDBMapSolarSystem*) mapSolarSystemWithName:(NSString*) name {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
-	request.predicate = [NSPredicate predicateWithFormat:@"solarSystemName == %@", name];
-	request.fetchLimit = 1;
-	return [[self executeFetchRequest:request error:nil] lastObject];
+	if (!name)
+		return nil;
+	
+	NCDBMapSolarSystem* solarSystem = self.mapSolarSystems[name];
+	if (!solarSystem) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
+		request.predicate = [NSPredicate predicateWithFormat:@"solarSystemName == %@", name];
+		request.fetchLimit = 1;
+		solarSystem = [[self executeFetchRequest:request error:nil] lastObject];
+		if (solarSystem)
+			self.invGroups[name] = solarSystem;
+	}
+	return solarSystem;
 }
 
 - (NCDBMapSolarSystem*) mapSolarSystemWithSolarSystemID:(int32_t) systemID {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
-	request.predicate = [NSPredicate predicateWithFormat:@"solarSystemID == %d", systemID];
-	request.fetchLimit = 1;
-	return [[self executeFetchRequest:request error:nil] lastObject];
+	NCDBMapSolarSystem* solarSystem = self.mapSolarSystems[@(systemID)];
+	if (!solarSystem) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
+		request.predicate = [NSPredicate predicateWithFormat:@"solarSystemID == %d", systemID];
+		request.fetchLimit = 1;
+		solarSystem = [[self executeFetchRequest:request error:nil] lastObject];
+		if (solarSystem)
+			self.invGroups[@(systemID)] = solarSystem;
+	}
+	return solarSystem;
 }
 
 //NCDBEufeItemCategory
@@ -172,6 +206,15 @@
 	return invTypes;
 }
 
+- (NSMutableDictionary*) invGroups {
+	NSMutableDictionary* invGroups = objc_getAssociatedObject(self, @"invGroups");
+	if (!invGroups) {
+		invGroups = [NSMutableDictionary new];
+		objc_setAssociatedObject(self, @"invGroups", invGroups, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	return invGroups;
+}
+
 - (NSMutableDictionary*) eveIcons {
 	NSMutableDictionary* eveIcons = objc_getAssociatedObject(self, @"eveIcons");
 	if (!eveIcons) {
@@ -181,6 +224,51 @@
 	return eveIcons;
 }
 
+- (NSMutableDictionary*) eufeItemCategories {
+	NSMutableDictionary* eufeItemCategories = objc_getAssociatedObject(self, @"eufeItemCategories");
+	if (!eufeItemCategories) {
+		eufeItemCategories = [NSMutableDictionary new];
+		objc_setAssociatedObject(self, @"eufeItemCategories", eufeItemCategories, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	return eufeItemCategories;
+}
+
+- (NSMutableDictionary*) staStations {
+	NSMutableDictionary* staStations = objc_getAssociatedObject(self, @"staStations");
+	if (!staStations) {
+		staStations = [NSMutableDictionary new];
+		objc_setAssociatedObject(self, @"staStations", staStations, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	return staStations;
+}
+
+- (NSMutableDictionary*) ramActivities {
+	NSMutableDictionary* ramActivities = objc_getAssociatedObject(self, @"ramActivities");
+	if (!ramActivities) {
+		ramActivities = [NSMutableDictionary new];
+		objc_setAssociatedObject(self, @"ramActivities", ramActivities, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	return ramActivities;
+}
+
+- (NSMutableDictionary*) mapRegions {
+	NSMutableDictionary* mapRegions = objc_getAssociatedObject(self, @"mapRegions");
+	if (!mapRegions) {
+		mapRegions = [NSMutableDictionary new];
+		objc_setAssociatedObject(self, @"mapRegions", mapRegions, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	return mapRegions;
+}
+
+- (NSMutableDictionary*) mapDenormalizes {
+	NSMutableDictionary* mapDenormalizes = objc_getAssociatedObject(self, @"mapDenormalizes");
+	if (!mapDenormalizes) {
+		mapDenormalizes = [NSMutableDictionary new];
+		objc_setAssociatedObject(self, @"mapDenormalizes", mapDenormalizes, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	return mapDenormalizes;
+}
+
 - (NSMutableDictionary*) mapSolarSystems {
 	NSMutableDictionary* mapSolarSystems = objc_getAssociatedObject(self, @"mapSolarSystems");
 	if (!mapSolarSystems) {
@@ -188,6 +276,15 @@
 		objc_setAssociatedObject(self, @"mapSolarSystems", mapSolarSystems, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	return mapSolarSystems;
+}
+
+- (NSMutableDictionary*) dgmAttributeTypes {
+	NSMutableDictionary* dgmAttributeTypes = objc_getAssociatedObject(self, @"dgmAttributeTypes");
+	if (!dgmAttributeTypes) {
+		dgmAttributeTypes = [NSMutableDictionary new];
+		objc_setAssociatedObject(self, @"dgmAttributeTypes", dgmAttributeTypes, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	return dgmAttributeTypes;
 }
 
 @end

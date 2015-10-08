@@ -264,7 +264,7 @@
 		else
 			booster = @"";
 		
-		NCDBInvType* type = [self.controller.engine invTypeWithTypeID:fit.pilot->getShip()->getTypeID()];;
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:fit.pilot->getShip()->getTypeID()];;
 		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s%@", type.typeName, fit.pilot->getCharacterName(), booster];
 		cell.subtitleLabel.text = fit.loadoutName;
 		cell.iconView.image = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;

@@ -26,37 +26,40 @@
 #define ActionButtonClearTarget NSLocalizedString(@"Clear Target", nil)
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 
-@interface NCFittingShipDronesViewControllerRow : NSObject {
+@interface NCFittingShipDronesViewControllerRow : NSObject<NSCopying> {
 	eufe::DronesList _drones;
 }
+@property (nonatomic, assign) BOOL isUpToDate;
 @property (nonatomic, strong) NCDBInvType* type;
-@property (nonatomic, readonly) eufe::DronesList& drones;
 
+@property (nonatomic, readonly) eufe::DronesList& drones;
 @property (nonatomic, strong) NSString* typeName;
 @property (nonatomic, strong) UIImage* typeImage;
 @property (nonatomic, strong) NSString* optimalText;
 @property (nonatomic, strong) UIImage* targetImage;
 @property (nonatomic, strong) UIImage* stateImage;
-@end
-
-@interface NCFittingShipDronesViewControllerPickerRow : NSObject
-@property (nonatomic, strong) NCFittingShipDronesViewControllerRow* associatedRow;
+@property (nonatomic, strong) id sortKey;
 @end
 
 @implementation NCFittingShipDronesViewControllerRow
 
+- (id) copyWithZone:(NSZone *)zone {
+	NCFittingShipDronesViewControllerRow* other = [NCFittingShipDronesViewControllerRow new];
+	other.isUpToDate = self.isUpToDate;
+	other->_drones = _drones;
+	other.typeName = self.typeName;
+	other.typeImage = self.typeImage;
+	other.optimalText = self.optimalText;
+	other.targetImage = self.targetImage;
+	other.stateImage = self.stateImage;
+	other.sortKey = self.sortKey;
+	return other;
+}
+
 @end
 
-@implementation NCFittingShipDronesViewControllerPickerRow
-
-@end
-
-@interface NCFittingShipDronesViewController()<UIPickerViewDataSource, UIPickerViewDelegate>
-@property (nonatomic, strong) NCDBInvType* activeAmountType;
-@property (nonatomic, assign) NSInteger maximumAmount;
+@interface NCFittingShipDronesViewController()
 @property (nonatomic, strong) NSArray* rows;
-@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
-@property (nonatomic, strong) NCDBEveIcon* targetIcon;
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath;
 
@@ -66,50 +69,47 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
-	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
-	self.targetIcon = [self.databaseManagedObjectContext eveIconWithIconFile:@"04_12"];
 }
 
-- (void) reload {
-	__block NSMutableArray* rows = nil;
-	[self.controller.engine performBlockAndWait:^{
-		rows = [NSMutableArray new];
-		if (!self.controller.fit.pilot)
-			return;
-
-		NSMutableDictionary* dronesDic = [NSMutableDictionary new];
-		eufe::DronesList drones;
-		if (!self.controller.fit.pilot)
-			return;
+- (void) reloadWithCompletionBlock:(void (^)())completionBlock {
+	auto pilot = self.controller.fit.pilot;
+	if (pilot) {
+		NSArray* oldRows = self.rows;
 		
-		auto ship = self.controller.fit.pilot->getShip();
-		for (auto drone: ship->getDrones()) {
-			int32_t typeID = drone->getTypeID();
-			NCFittingShipDronesViewControllerRow* row = dronesDic[@(typeID)];
-			if (!row) {
-				row = [NCFittingShipDronesViewControllerRow new];
-				row.type = [self.controller.engine invTypeWithTypeID:typeID];
-				dronesDic[@(typeID)] = row;
-			}
-			row.drones.push_back(drone);
-		}
-		
-		rows = [[[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
-		if (self.activeAmountType) {
-			NSInteger i = 1;
-			for (NCFittingShipDronesViewControllerRow* row in rows) {
-				if (row.type.typeID == self.activeAmountType.typeID) {
-					NCFittingShipDronesViewControllerPickerRow* pickerRow = [NCFittingShipDronesViewControllerPickerRow new];
-					pickerRow.associatedRow = row;
-					[rows insertObject:pickerRow atIndex:i];
-					break;
+		[self.controller.engine performBlock:^{
+			NSMutableDictionary* oldDronesDic = [NSMutableDictionary new];
+			for (NCFittingShipDronesViewControllerRow* row in oldRows)
+				oldDronesDic[@(row.drones.front()->getTypeID())] = row;
+			
+			
+			NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+			eufe::DronesList drones;
+			if (!self.controller.fit.pilot)
+				return;
+			
+			auto ship = self.controller.fit.pilot->getShip();
+			for (auto drone: ship->getDrones()) {
+				int32_t typeID = drone->getTypeID();
+				NCFittingShipDronesViewControllerRow* row = dronesDic[@(typeID)];
+				if (!row) {
+					row = [oldDronesDic[@(typeID)] copy] ?: [NCFittingShipDronesViewControllerRow new];
+					row.sortKey = [NSString stringWithCString:drone->getTypeName() encoding:NSUTF8StringEncoding];
+					row.isUpToDate = NO;
+					row.drones.clear();
+					dronesDic[@(typeID)] = row;
 				}
-				i++;
+				row.drones.push_back(drone);
 			}
-		}
-	}];
-	self.rows = rows;
-	[self.tableView reloadData];
+			
+			NSArray* rows = [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"sortKey" ascending:YES]]];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.rows = rows;
+				completionBlock();
+			});
+		}];
+	}
+	else
+		completionBlock();
 }
 
 
@@ -130,38 +130,7 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	[super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
-	if ([cell isKindOfClass:[NCFittingAmountCell class]]) {
-		NCFittingShipDronesViewControllerPickerRow* pickerRow = self.rows[indexPath.row];
-		NCFittingAmountCell* amountCell = (NCFittingAmountCell*) cell;
-		amountCell.pickerView.dataSource = self;
-		amountCell.pickerView.delegate = self;
-		[amountCell.pickerView reloadAllComponents];
-		[amountCell.pickerView selectRow:pickerRow.associatedRow.drones.size() - 1 inComponent:0 animated:NO];
-	}
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSInteger i = 0;
-	for (NCFittingShipDronesViewControllerRow* row in self.rows) {
-		if ([row isKindOfClass:[NCFittingShipDronesViewControllerPickerRow class]]) {
-			self.activeAmountType = nil;
-			NSMutableArray* rows = [self.rows mutableCopy];
-			[rows removeObjectAtIndex:i];
-			self.rows = rows;
-			[tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-			if (indexPath.row == i - 1) {
-				[tableView deselectRowAtIndexPath:indexPath animated:YES];
-				return;
-			}
-			else if (indexPath.row > i)
-				indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
-			break;
-		}
-		i++;
-	}
-	
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.row >= self.rows.count) {
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Drones", nil);
@@ -203,7 +172,70 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark - UIPickerViewDataSource
+- (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCFittingShipDronesViewControllerRow* row = indexPath.row < self.rows.count ? self.rows[indexPath.row] : nil;
+	if (!row.typeName)
+		return @"Cell";
+	else
+		return @"NCFittingShipDroneCell";
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCFittingShipDronesViewControllerRow* row = indexPath.row < self.rows.count ? self.rows[indexPath.row] : nil;
+
+	if (!row.typeName) {
+		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+		if (indexPath.row >= self.rows.count) {
+			cell.iconView.image = [UIImage imageNamed:@"drone.png"];
+			cell.titleLabel.text = NSLocalizedString(@"Add Drone", nil);
+		}
+		else {
+			cell.iconView.image = nil;
+			cell.titleLabel.text = nil;
+		}
+		cell.subtitleLabel.text = nil;
+		cell.accessoryView = nil;
+	}
+	else {
+		NCFittingShipDroneCell* cell = (NCFittingShipDroneCell*) tableViewCell;
+		
+		cell.typeNameLabel.text = row.typeName;
+		cell.typeImageView.image = row.typeImage;
+		cell.optimalLabel.text = row.optimalText;
+		cell.stateImageView.image = row.stateImage;
+		cell.targetImageView.image = row.targetImage;
+	}
+	if (row && !row.isUpToDate) {
+		row.isUpToDate = YES;
+		[self.controller.engine performBlock:^{
+			auto drone = row.drones.front();
+			int optimal = (int) drone->getMaxRange();
+			int falloff = (int) drone->getFalloff();
+			float trackingSpeed = drone->getTrackingSpeed();
+			
+			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];
+			row.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.drones.size()];
+			row.typeImage = type.icon ? type.icon.image.image : self.defaultTypeImage;
+			
+			if (optimal > 0) {
+				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+				if (falloff > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+				if (trackingSpeed > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+				row.optimalText = s;
+				row.stateImage = drone->isActive() ? [UIImage imageNamed:@"active.png"] : [UIImage imageNamed:@"offline.png"];
+				row.targetImage = drone->getTarget() != nullptr ? self.targetImage : nil;
+			}
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			});
+		}];
+	}
+}
+
+
+/*#pragma mark - UIPickerViewDataSource
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
 	return 1;
@@ -255,7 +287,7 @@
 		}
 		i++;
 	}
-}
+}*/
 
 #pragma mark - Private
 
@@ -309,7 +341,7 @@
 	void (^setAmount)(eufe::DronesList) = ^(eufe::DronesList drones) {
 		NSMutableArray* rows = [self.rows mutableCopy];
 		[self.controller.engine performBlockAndWait:^{
-			self.activeAmountType = row.type;
+/*			self.activeAmountType = row.type;
 			NCFittingShipDronesViewControllerPickerRow* pickerRow = [NCFittingShipDronesViewControllerPickerRow new];
 			pickerRow.associatedRow = row;
 			
@@ -319,7 +351,7 @@
 			self.maximumAmount = std::min(std::max(droneBay, maxActive), 50);
 			
 			
-			[rows insertObject:pickerRow atIndex:indexPath.row + 1];
+			[rows insertObject:pickerRow atIndex:indexPath.row + 1];*/
 		}];
 		self.rows = rows;
 		[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -380,66 +412,6 @@
 							 }
 						 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
 	
-}
-
-- (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row >= self.rows.count)
-		return @"Cell";
-	else {
-		NCFittingShipDronesViewControllerRow* row = self.rows[indexPath.row];
-		if ([row isKindOfClass:[NCFittingShipDronesViewControllerPickerRow class]])
-			return @"NCFittingAmountCell";
-		else
-			return @"NCFittingShipDroneCell";
-	}
-}
-
-- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	if (indexPath.row >= self.rows.count) {
-		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
-		cell.iconView.image = [UIImage imageNamed:@"drone.png"];
-		cell.titleLabel.text = NSLocalizedString(@"Add Drone", nil);
-		cell.subtitleLabel.text = nil;
-		cell.accessoryView = nil;
-	}
-	else {
-		NCFittingShipDronesViewControllerRow* row = self.rows[indexPath.row];
-		if (![row isKindOfClass:[NCFittingShipDronesViewControllerPickerRow class]]) {
-			if (!row.typeName) {
-				[self.controller.engine performBlockAndWait:^{
-					auto drone = row.drones.front();
-					int optimal = (int) drone->getMaxRange();
-					int falloff = (int) drone->getFalloff();
-					float trackingSpeed = drone->getTrackingSpeed();
-					
-					NCDBInvType* type = row.type;
-					row.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.drones.size()];
-					row.typeImage = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
-					
-					if (optimal > 0) {
-						NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-						if (falloff > 0)
-							s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-						if (trackingSpeed > 0)
-							s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-						row.optimalText = s;
-						row.stateImage = drone->isActive() ? [UIImage imageNamed:@"active.png"] : [UIImage imageNamed:@"offline.png"];
-						row.targetImage = drone->getTarget() != nullptr ? self.targetIcon.image.image : nil;
-					}
-
-				}];
-			}
-			
-			
-			NCFittingShipDroneCell* cell = (NCFittingShipDroneCell*) tableViewCell;
-			
-			cell.typeNameLabel.text = row.typeName;
-			cell.typeImageView.image = row.typeImage;
-			cell.optimalLabel.text = row.optimalText;
-			cell.stateImageView.image = row.stateImage;
-			cell.targetImageView.image = row.targetImage;
-		}
-	}
 }
 
 @end

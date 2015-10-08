@@ -15,4 +15,6 @@
 @property (nonatomic, readonly) NCFittingShipViewController* controller;
 
 - (void) reload;
+- (void) reloadWithCompletionBlock:(void(^)()) completionBlock;
+- (void) updateVisibility;
 @end

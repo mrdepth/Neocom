@@ -41,7 +41,6 @@
 @property (nonatomic, assign) std::shared_ptr<eufe::Module> module;
 
 @property (nonatomic, assign) BOOL isUpToDate;
-@property (nonatomic, strong) NCDBInvType* type;
 
 @property (nonatomic, strong) NSString* typeName;
 @property (nonatomic, strong) UIColor* typeNameColor;
@@ -64,7 +63,6 @@
 	NCFittingShipModulesViewControllerRow* other = [NCFittingShipModulesViewControllerRow new];
 	other.module = self.module;
 	other.isUpToDate = self.isUpToDate;
-	other.type = self.type;
 	other.typeName = self.typeName;
 	other.typeImage = self.typeImage;
 	other.chargeText = self.chargeText;
@@ -111,65 +109,67 @@
 	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionHiSlotHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionHiSlotHeaderView"];
 }
 
-- (void) reload {
-	NSMutableArray* sections = [NSMutableArray new];
-	__block float usedTurretHardpoints;
-	__block float totalTurretHardpoints;
-	__block float usedMissileHardpoints;
-	__block float totalMissileHardpoints;
-	
-	NSArray* oldSections = self.sections;
-	[self.controller.engine performBlock:^{
-		if (!self.controller.fit.pilot)
-			return;
-		NSMutableDictionary* oldRows = [NSMutableDictionary new];
-		for (NCFittingShipModulesViewControllerSection* section in oldSections)
-			for (NCFittingShipModulesViewControllerRow* row in section.rows)
-				oldRows[@((uintptr_t) row.module.get())] = row;
+- (void) reloadWithCompletionBlock:(void(^)()) completionBlock {
+	auto pilot = self.controller.fit.pilot;
+	if (pilot) {
+		NSMutableArray* sections = [NSMutableArray new];
+		__block float usedTurretHardpoints;
+		__block float totalTurretHardpoints;
+		__block float usedMissileHardpoints;
+		__block float totalMissileHardpoints;
 		
-		
-		auto ship = self.controller.fit.pilot->getShip();
-		
-		eufe::Module::Slot slots[] = {eufe::Module::SLOT_MODE, eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
-		int n = sizeof(slots) / sizeof(eufe::Module::Slot);
-		
-		for (int i = 0; i < n; i++) {
-			int numberOfSlots = ship->getNumberOfSlots(slots[i]);
-			eufe::ModulesList modules;
-			ship->getModules(slots[i], std::inserter(modules, modules.end()));
-			if (numberOfSlots > 0 || modules.size() > 0) {
-				NCFittingShipModulesViewControllerSection* section = [NCFittingShipModulesViewControllerSection new];
-				section.slot = slots[i];
-				section.numberOfSlots = numberOfSlots;
-				NSMutableArray* rows = [NSMutableArray new];
-				
-				for (auto module: modules) {
-					NCFittingShipModulesViewControllerRow* row = [oldRows[@((uintptr_t) module.get())] copy] ?: [NCFittingShipModulesViewControllerRow new];
-					row.module = module;
-					row.isUpToDate = NO;
-					[rows addObject:row];
+		NSArray* oldSections = self.sections;
+		[self.controller.engine performBlock:^{
+			NSMutableDictionary* oldRows = [NSMutableDictionary new];
+			for (NCFittingShipModulesViewControllerSection* section in oldSections)
+				for (NCFittingShipModulesViewControllerRow* row in section.rows)
+					oldRows[@((uintptr_t) row.module.get())] = row;
+			
+			
+			auto ship = pilot->getShip();
+			
+			eufe::Module::Slot slots[] = {eufe::Module::SLOT_MODE, eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
+			int n = sizeof(slots) / sizeof(eufe::Module::Slot);
+			
+			for (int i = 0; i < n; i++) {
+				int numberOfSlots = ship->getNumberOfSlots(slots[i]);
+				eufe::ModulesList modules;
+				ship->getModules(slots[i], std::inserter(modules, modules.end()));
+				if (numberOfSlots > 0 || modules.size() > 0) {
+					NCFittingShipModulesViewControllerSection* section = [NCFittingShipModulesViewControllerSection new];
+					section.slot = slots[i];
+					section.numberOfSlots = numberOfSlots;
+					NSMutableArray* rows = [NSMutableArray new];
+					
+					for (auto module: modules) {
+						NCFittingShipModulesViewControllerRow* row = [oldRows[@((uintptr_t) module.get())] copy] ?: [NCFittingShipModulesViewControllerRow new];
+						row.module = module;
+						row.isUpToDate = NO;
+						[rows addObject:row];
+					}
+					section.rows = rows;
+					[sections addObject:section];
 				}
-				section.rows = rows;
-				[sections addObject:section];
 			}
-		}
-		
-		usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
-		totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
-		usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-		totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-
-		dispatch_async(dispatch_get_main_queue(), ^{
-			self.sections = sections;
 			
-			self.usedTurretHardpoints = usedTurretHardpoints;
-			self.totalTurretHardpoints = totalTurretHardpoints;
-			self.usedMissileHardpoints = usedMissileHardpoints;
-			self.totalMissileHardpoints = totalMissileHardpoints;
+			usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
+			totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
+			usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+			totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
 			
-			[self.tableView reloadData];
-		});
-	}];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.sections = sections;
+				
+				self.usedTurretHardpoints = usedTurretHardpoints;
+				self.totalTurretHardpoints = totalTurretHardpoints;
+				self.usedMissileHardpoints = usedMissileHardpoints;
+				self.totalMissileHardpoints = totalMissileHardpoints;
+				completionBlock();
+			});
+		}];
+	}
+	else
+		completionBlock();
 }
 
 #pragma mark - Table view data source
@@ -234,49 +234,62 @@
 	NCFittingShipModulesViewControllerSection* section = self.sections[indexPath.section];
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.row >= section.rows.count || section.slot == eufe::Module::SLOT_MODE) {
-		auto ship = self.controller.fit.pilot->getShip();
-		NCDBInvType* type = [self.controller.engine invTypeWithTypeID:ship->getTypeID()];
-		NSString* title;
+		//auto ship = self.controller.fit.pilot->getShip();
+//
+		__block NSString* title;
 		NCDBEufeItemCategory* category;
 		switch (section.slot) {
 			case eufe::Module::SLOT_HI:
 				title = NSLocalizedString(@"Hi slot", nil);
-				category = [type.managedObjectContext categoryWithSlot:NCDBEufeItemSlotHi size:0 race:nil];
+				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotHi size:0 race:nil];
 				break;
 			case eufe::Module::SLOT_MED:
 				title = NSLocalizedString(@"Med slot", nil);
-				category = [type.managedObjectContext categoryWithSlot:NCDBEufeItemSlotMed size:0 race:nil];
+				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotMed size:0 race:nil];
 				break;
 			case eufe::Module::SLOT_LOW:
 				title = NSLocalizedString(@"Low slot", nil);
-				category = [type.managedObjectContext categoryWithSlot:NCDBEufeItemSlotLow size:0 race:nil];
+				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotLow size:0 race:nil];
 				break;
-			case eufe::Module::SLOT_RIG:
+			case eufe::Module::SLOT_RIG: {
 				title = NSLocalizedString(@"Rigs", nil);
-				category = [type.managedObjectContext categoryWithSlot:NCDBEufeItemSlotRig size:ship->getAttribute(1547)->getValue() race:nil];
+				__block int32_t size = 0;
+				[self.controller.engine performBlockAndWait:^{
+					auto ship = self.controller.fit.pilot->getShip();
+					size = ship->getAttribute(1547)->getValue();
+				}];
+
+				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotRig size:size race:nil];
 				break;
+			}
 			case eufe::Module::SLOT_SUBSYSTEM: {
-				int32_t raceID = static_cast<int32_t>(ship->getAttribute(eufe::RACE_ID_ATTRIBUTE_ID)->getValue());
-				switch(raceID) {
-					case 1: //Caldari
-						title = NSLocalizedString(@"Caldari Subsystems", nil);
-						break;
-					case 2: //Minmatar
-						title = NSLocalizedString(@"Minmatar Subsystems", nil);
-						break;
-					case 4: //Amarr
-						title = NSLocalizedString(@"Amarr Subsystems", nil);
-						break;
-					case 8: //Gallente
-						title = NSLocalizedString(@"Gallente Subsystems", nil);
-						break;
-				}
-				category = [type.managedObjectContext categoryWithSlot:NCDBEufeItemSlotSubsystem size:0 race:type.race];
+				__block NSManagedObjectID* raceObjectID;
+				[self.controller.engine performBlockAndWait:^{
+					auto ship = self.controller.fit.pilot->getShip();
+					NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:ship->getTypeID()];
+					int32_t raceID = static_cast<int32_t>(ship->getAttribute(eufe::RACE_ID_ATTRIBUTE_ID)->getValue());
+					switch(raceID) {
+						case 1: //Caldari
+							title = NSLocalizedString(@"Caldari Subsystems", nil);
+							break;
+						case 2: //Minmatar
+							title = NSLocalizedString(@"Minmatar Subsystems", nil);
+							break;
+						case 4: //Amarr
+							title = NSLocalizedString(@"Amarr Subsystems", nil);
+							break;
+						case 8: //Gallente
+							title = NSLocalizedString(@"Gallente Subsystems", nil);
+							break;
+					}
+					raceObjectID = type.race.objectID;
+				}];
+				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotSubsystem size:0 race:[self.databaseManagedObjectContext objectWithID:raceObjectID]];
 				break;
 			}
 			case eufe::Module::SLOT_MODE:
 				title = NSLocalizedString(@"Tactical Mode", nil);
-				category = [type.managedObjectContext categoryWithSlot:NCDBEufeItemSlotMode size:ship->getTypeID() race:nil];
+				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotMode size:self.controller.fit.typeID race:nil];
 				break;
 			default:
 				return;
@@ -290,6 +303,7 @@
 													completionHandler:^(NCDBInvType *type) {
 														int32_t typeID = type.typeID;
 														[self.controller.engine performBlockAndWait:^{
+															auto ship = self.controller.fit.pilot->getShip();
 															if (section.slot == eufe::Module::SLOT_MODE) {
 																eufe::ModulesList modes;
 																ship->getModules(eufe::Module::SLOT_MODE, std::inserter(modes, modes.end()));
@@ -391,8 +405,7 @@
 		[self.controller.engine performBlock:^{
 			auto ship = self.controller.fit.pilot->getShip();
 			auto module = row.module;
-			NCDBInvType* type = [self.controller.engine invTypeWithTypeID:module->getTypeID()];
-			row.type = type;
+			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:module->getTypeID()];
 			row.typeName = type.typeName;
 			row.typeNameColor = module->isEnabled() ? [UIColor whiteColor] : [UIColor redColor];
 			row.typeImage = type.icon ? type.icon.image.image : self.defaultTypeImage;
@@ -401,7 +414,7 @@
 			if (charge) {
 				float volume = charge->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
 				float capacity = module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
-				NCDBInvType* type = [self.controller.engine invTypeWithTypeID:charge->getTypeID()];
+				NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:charge->getTypeID()];
 				if (volume > 0 && volume > 0)
 					row.chargeText = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
 				else
@@ -480,13 +493,13 @@
 	[self.controller.engine performBlockAndWait:^{
 		auto ship = self.controller.fit.pilot->getShip();
 		auto module = row.module;
-		NCDBInvType* type = [self.controller.engine invTypeWithTypeID:row.module->getTypeID()];
+		NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:row.module->getTypeID()];
 		
 		eufe::ModulesList allSimilarModules;
 		
 		bool multiple = false;
 		for (NCFittingShipModulesViewControllerRow* module in section.rows) {
-			NCDBInvType* moduleType = [self.controller.engine invTypeWithTypeID:module.module->getTypeID()];
+			NCDBInvType* moduleType = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:module.module->getTypeID()];
 			if (type.marketGroup.marketGroupID == moduleType.marketGroup.marketGroupID)
 				allSimilarModules.push_back(module.module);
 		}

@@ -18,12 +18,12 @@
 
 @interface NCFittingEngine()
 @property (nonatomic, strong, readwrite) NSManagedObjectContext* databaseManagedObjectContext;
-@property (nonatomic, strong) NSCache* typesCache;
 //@property (nonatomic, strong) dispatch_queue_t privateQueue;
 - (NCLoadoutDataShip*) loadoutShipDataWithAsset:(EVEAssetListItem*) asset;
 - (NCLoadoutDataShip*) loadoutShipDataWithAPILoadout:(NAPISearchItem*) apiLoadout;
 - (NCLoadoutDataShip*) loadoutShipDataWithKillMail:(NCKillMail*) killMail;
 - (NCLoadoutDataShip*) loadoutShipDataWithDNA:(NSString*) dna;
+- (void)didReceiveMemoryWarning;
 
 @end
 
@@ -32,6 +32,7 @@
 
 - (id) init {
 	if (self = [super init]) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 //		self.privateQueue = dispatch_queue_create(0, DISPATCH_QUEUE_SERIAL);
 	}
 	return self;
@@ -46,6 +47,7 @@
 }
 
 - (void) dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)performBlockAndWait:(void (^)())block {
@@ -60,18 +62,6 @@
 		eufe::Engine::ScopedLock lock(self.engine);
 		block();
 	}];
-}
-
-- (NCDBInvType*) invTypeWithTypeID:(int32_t) typeID {
-	__block NCDBInvType* type = [self.typesCache objectForKey:@(typeID)];
-	if (!type) {
-		[self.databaseManagedObjectContext performBlockAndWait:^{
-			type = [self.databaseManagedObjectContext invTypeWithTypeID:typeID];
-		}];
-		if (type)
-			[self.typesCache setObject:type forKey:@(typeID)];
-	}
-	return type;
 }
 
 - (void) loadShipFit:(NCShipFit*) fit {
@@ -290,7 +280,7 @@
 				amount = [[components objectAtIndex:1] intValue];
 			
 			if (amount > 0) {
-				NCDBInvType* type = [self invTypeWithTypeID:typeID];
+				NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:typeID];
 				
 				
 				if (type) {
@@ -378,13 +368,10 @@
 	}
 }
 
-- (NSCache*) typesCache {
-	@synchronized(self) {
-		if (!_typesCache)
-			_typesCache = [NSCache new];
-		return _typesCache;
-	}
+- (void)didReceiveMemoryWarning {
+	self.databaseManagedObjectContext = nil;
 }
+
 
 @end
 

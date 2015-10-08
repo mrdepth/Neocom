@@ -12,7 +12,8 @@
 #import "NCFittingShipViewController.h"
 
 @interface NCFittingShipWorkspaceViewController ()
-
+@property (nonatomic, assign) BOOL needsReload;
+@property (nonatomic, readonly) BOOL isVisible;
 @end
 
 @implementation NCFittingShipWorkspaceViewController
@@ -24,6 +25,11 @@
         // Custom initialization
     }
     return self;
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	[self updateVisibility];
 }
 
 - (void)viewDidLoad {
@@ -39,7 +45,15 @@
 }
 
 - (void) reload {
-	
+	[self reloadWithCompletionBlock:^{
+		self.needsReload = !self.isVisible;
+		if (self.isVisible)
+			[self.tableView reloadData];
+	}];
+}
+
+- (void) reloadWithCompletionBlock:(void(^)()) completionBlock {
+	completionBlock();
 }
 
 - (NCFittingShipViewController*) controller {
@@ -66,5 +80,20 @@
 	return _targetImage;
 }
 
+- (void) updateVisibility {
+	if (self.needsReload && self.isVisible) {
+		[self.tableView reloadData];
+		self.needsReload = NO;
+	}
+}
+
+#pragma mark - Private
+
+- (BOOL) isVisible {
+	if (!self.view.window)
+		return NO;
+	CGRect rect = [self.view.window convertRect:self.view.bounds fromCoordinateSpace:self.view];
+	return CGRectIntersectsRect(rect, self.view.window.frame);
+}
 
 @end

@@ -129,7 +129,7 @@
 			item = self.implants[indexPath.row];
 		else
 			item = self.boosters[indexPath.row];
-		type = item ? [self.controller.engine invTypeWithTypeID:item->getTypeID()] : nil;
+		type = item ? [self.databaseManagedObjectContext invTypeWithTypeID:item->getTypeID()] : nil;
 		
 		if (!type) {
 			if (indexPath.section == 1) {
@@ -223,7 +223,7 @@
 			item = self.implants[indexPath.row];
 		else
 			item = self.boosters[indexPath.row];
-		type = item ? [self.controller.engine invTypeWithTypeID:item->getTypeID()] : nil;
+		type = item ? [self.databaseManagedObjectContext invTypeWithTypeID:item->getTypeID()] : nil;
 		
 		
 		if (!type) {

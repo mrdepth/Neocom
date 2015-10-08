@@ -33,6 +33,7 @@
 @property (nonatomic, strong) dispatch_group_t searchingDispatchGroup;
 @property (nonatomic, strong) UIProgressView* progressView;
 @property (nonatomic, strong) NSProgress* progress;
+@property (nonatomic, assign) BOOL internalDatabaseManagedObjectContext;
 
 - (IBAction) onRefresh:(id) sender;
 
@@ -48,6 +49,7 @@
 @end
 
 @implementation NCTableViewController
+@synthesize databaseManagedObjectContext = _databaseManagedObjectContext;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -145,11 +147,10 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCStorageDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 	[_taskManager cancelAllOperations];
-	[_progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:nil];
+	[_progress removeObserver:self forKeyPath:@"fractionCompleted"];
 //	self.searchDisplayController.searchResultsDataSource = nil;
 //	self.searchDisplayController.searchResultsDelegate = nil;
 //	self.searchDisplayController.delegate = nil;
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -157,6 +158,8 @@
 	if ([self isViewLoaded] && self.view.window == nil) {
 		self.cacheRecord = nil;
 		self.cacheData = nil;
+		if (self.internalDatabaseManagedObjectContext)
+			self.databaseManagedObjectContext = nil;
 	}
 }
 
@@ -264,11 +267,18 @@
 		return self.searchContentsController.databaseManagedObjectContext;
 	else {
 		@synchronized (self) {
-			if (!_databaseManagedObjectContext)
+			if (!_databaseManagedObjectContext) {
 				_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+				self.internalDatabaseManagedObjectContext = YES;
+			}
 			return _databaseManagedObjectContext;
 		}
 	}
+}
+
+- (void) setDatabaseManagedObjectContext:(NSManagedObjectContext *)databaseManagedObjectContext {
+	_databaseManagedObjectContext = databaseManagedObjectContext;
+	self.internalDatabaseManagedObjectContext = NO;
 }
 
 - (NSManagedObjectContext*) cacheManagedObjectContext {

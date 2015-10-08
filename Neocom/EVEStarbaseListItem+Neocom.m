@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "EVEStarbaseListItem+Neocom.h"s
+#import "EVEStarbaseListItem+Neocom.h"
 #import <objc/runtime.h>
 
 @implementation EVEStarbaseListItem (Neocom)

@@ -8,6 +8,7 @@
 
 #import "NSManagedObjectContext+NCDatabase.h"
 #import <objc/runtime.h>
+#import "NCDatabase.h"
 
 @interface NSManagedObjectContext (Cache)
 @property (nonatomic, strong, readonly) NSMutableDictionary* invTypes;
@@ -93,7 +94,7 @@
 		request.fetchLimit = 1;
 		attributeType = [[self executeFetchRequest:request error:nil] lastObject];
 		if (attributeType)
-			self.attributeTypes[@(attributeTypeID)] = attributeType;
+			self.dgmAttributeTypes[@(attributeTypeID)] = attributeType;
 	}
 	return attributeType;
 }
@@ -124,7 +125,7 @@
 		request.fetchLimit = 1;
 		solarSystem = [[self executeFetchRequest:request error:nil] lastObject];
 		if (solarSystem)
-			self.invGroups[name] = solarSystem;
+			self.mapSolarSystems[name] = solarSystem;
 	}
 	return solarSystem;
 }
@@ -137,7 +138,7 @@
 		request.fetchLimit = 1;
 		solarSystem = [[self executeFetchRequest:request error:nil] lastObject];
 		if (solarSystem)
-			self.invGroups[@(systemID)] = solarSystem;
+			self.mapSolarSystems[@(systemID)] = solarSystem;
 	}
 	return solarSystem;
 }
@@ -152,47 +153,80 @@
 }
 
 - (NCDBEufeItemCategory*) categoryWithSlot:(NCDBEufeItemSlot) slot size:(int32_t) size race:(NCDBChrRace*) race {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItemCategory"];
-	NSPredicate* predicate = [NSPredicate predicateWithFormat:@"category == %d", (int32_t) slot, size];
-	if (size)
-		predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"subcategory == %d", size]]];
-	if (race)
-		predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"race == %@", race]]];
-	request.predicate = predicate;
-	request.fetchLimit = 1;
-	return [[self executeFetchRequest:request error:nil] lastObject];
+	int64_t key = ((((int64_t) size << 8) + slot) << 8) + race.raceID;
+
+	NCDBEufeItemCategory* itemCategory = self.eufeItemCategories[@(key)];
+	if (!itemCategory) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItemCategory"];
+		NSPredicate* predicate = [NSPredicate predicateWithFormat:@"category == %d", (int32_t) slot, size];
+		if (size)
+			predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"subcategory == %d", size]]];
+		if (race)
+			predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"race == %@", race]]];
+		request.predicate = predicate;
+		request.fetchLimit = 1;
+		itemCategory = [[self executeFetchRequest:request error:nil] lastObject];
+		if (itemCategory)
+			self.eufeItemCategories[@(key)] = itemCategory;
+	}
+
+	return itemCategory;
 }
 
 //NCDBStaStation
 - (NCDBStaStation*) staStationWithStationID:(int32_t) stationID {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"StaStation"];
-	request.predicate = [NSPredicate predicateWithFormat:@"stationID == %d", stationID];
-	request.fetchLimit = 1;
-	return [[self executeFetchRequest:request error:nil] lastObject];
+	NCDBStaStation* station = self.staStations[@(stationID)];
+	if (!station) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"StaStation"];
+		request.predicate = [NSPredicate predicateWithFormat:@"stationID == %d", stationID];
+		request.fetchLimit = 1;
+		station = [[self executeFetchRequest:request error:nil] lastObject];
+		if (station)
+			self.staStations[@(stationID)] = station;
+	}
+	return station;
 }
 
 //NCDBMapDenormalize
 - (NCDBMapDenormalize*) mapDenormalizeWithItemID:(int32_t) itemID {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapDenormalize"];
-	request.predicate = [NSPredicate predicateWithFormat:@"itemID == %d", itemID];
-	request.fetchLimit = 1;
-	return [[self executeFetchRequest:request error:nil] lastObject];
+	NCDBMapDenormalize* item = self.mapDenormalizes[@(itemID)];
+	if (!item) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapDenormalize"];
+		request.predicate = [NSPredicate predicateWithFormat:@"itemID == %d", itemID];
+		request.fetchLimit = 1;
+		item = [[self executeFetchRequest:request error:nil] lastObject];
+		if (item)
+			self.mapDenormalizes[@(itemID)] = item;
+	}
+	return item;
 }
 
 //NCDBRamActivity
 - (NCDBRamActivity*) ramActivityWithActivityID:(int32_t) activityID {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"RamActivity"];
-	request.predicate = [NSPredicate predicateWithFormat:@"activityID == %d", activityID];
-	request.fetchLimit = 1;
-	return [[self executeFetchRequest:request error:nil] lastObject];
+	NCDBRamActivity* activity = self.ramActivities[@(activityID)];
+	if (!activity) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"RamActivity"];
+		request.predicate = [NSPredicate predicateWithFormat:@"activityID == %d", activityID];
+		request.fetchLimit = 1;
+		activity = [[self executeFetchRequest:request error:nil] lastObject];
+		if (activity)
+			self.ramActivities[@(activityID)] = activity;
+	}
+	return activity;
 }
 
 //NCDBMapRegion
 - (NCDBMapRegion*) mapRegionWithRegionID:(int32_t) regionID {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapRegion"];
-	request.predicate = [NSPredicate predicateWithFormat:@"regionID == %d", regionID];
-	request.fetchLimit = 1;
-	return [[self executeFetchRequest:request error:nil] lastObject];
+	NCDBMapRegion* region = self.mapRegions[@(regionID)];
+	if (!region) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapRegion"];
+		request.predicate = [NSPredicate predicateWithFormat:@"regionID == %d", regionID];
+		request.fetchLimit = 1;
+		region = [[self executeFetchRequest:request error:nil] lastObject];
+		if (region)
+			self.mapRegions[@(regionID)] = region;
+	}
+	return region;
 }
 
 #pragma mark - Cache

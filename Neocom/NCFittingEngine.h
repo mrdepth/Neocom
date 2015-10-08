@@ -17,7 +17,6 @@
 
 - (void)performBlockAndWait:(void (^)())block;
 - (void)performBlock:(void (^)())block;
-- (NCDBInvType*) invTypeWithTypeID:(int32_t) typeID;
 - (void) loadShipFit:(NCShipFit*) fit;
 
 @end

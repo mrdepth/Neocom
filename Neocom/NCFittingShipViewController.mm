@@ -265,18 +265,18 @@
 		else
 			controller = segue.destinationViewController;
 
-		auto item = [(NCFittingEngineItemPointer*) sender[@"object"] item];
-		NCDBInvType* type = [self.engine invTypeWithTypeID:item->getTypeID()];
-		
-		NSMutableDictionary* attributes = [NSMutableDictionary new];
 		[self.engine performBlockAndWait:^{
+			auto item = [(NCFittingEngineItemPointer*) sender[@"object"] item];
+			NCDBInvType* type = [self.engine.databaseManagedObjectContext invTypeWithTypeID:item->getTypeID()];
+			
+			NSMutableDictionary* attributes = [NSMutableDictionary new];
 			for (NCDBDgmTypeAttribute* attribute in type.attributes) {
 				attributes[@(attribute.attributeType.attributeID)] = @(item->getAttribute(attribute.attributeType.attributeID)->getValue());
 			}
+			controller.typeID = [type objectID];
+			controller.attributes = attributes;
 		}];
 		
-		controller.typeID = [type objectID];
-		controller.attributes = attributes;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingDamagePatternsViewController"]) {
 		NCFittingDamagePatternsViewController* controller;
@@ -302,11 +302,14 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		NSArray* modules = sender[@"object"];
-		controller.object = modules;
-		auto item = [(NCFittingEngineItemPointer*) modules[0] item];
-		NCDBInvType* type = [self.engine invTypeWithTypeID:item->getTypeID()];
-		controller.typeID = type.parentType ? [type.parentType objectID] : [type objectID];
+
+		[self.engine performBlockAndWait:^{
+			NSArray* modules = sender[@"object"];
+			controller.object = modules;
+			auto item = [(NCFittingEngineItemPointer*) modules[0] item];
+			NCDBInvType* type = [self.engine.databaseManagedObjectContext invTypeWithTypeID:item->getTypeID()];
+			controller.typeID = type.parentType ? [type.parentType objectID] : [type objectID];
+		}];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingRequiredSkillsViewController"]) {
 		NCFittingRequiredSkillsViewController* controller;
@@ -553,7 +556,7 @@
 		
 		NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:self.storageManagedObjectContext]
 												  insertIntoManagedObjectContext:nil];
-		NCDBInvType* type = [self.engine invTypeWithTypeID:self.fit.typeID];
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.fit.typeID];
 		shoppingGroup.name = self.fit.loadout.name.length > 0 ? self.fit.loadoutName : type.typeName;
 		shoppingGroup.quantity = 1;
 		
@@ -683,6 +686,10 @@
 		NSInteger page = round(self.scrollView.contentOffset.x / self.scrollView.frame.size.width);
 		page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
 		self.sectionSegmentedControl.selectedSegmentIndex = page;
+	}
+	for (NCFittingShipWorkspaceViewController* controller in self.childViewControllers) {
+		if ([controller isKindOfClass:[NCFittingShipWorkspaceViewController class]])
+			[controller updateVisibility];
 	}
 }
 
@@ -862,7 +869,7 @@
 										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
 											   self.actionSheet = nil;
 											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-												   NCDBInvType* type = [self.engine invTypeWithTypeID:self.fit.typeID];
+												   NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.fit.typeID];
 												   if (selectedButtonIndex == 0) {
 													   NSString* dna = self.fit.dnaRepresentation;
 													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"http://neocom.by/api/fitting?dna=%@", [dna stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];

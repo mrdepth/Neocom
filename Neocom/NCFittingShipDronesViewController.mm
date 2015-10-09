@@ -141,8 +141,8 @@
 															   inView:cell
 															 animated:YES
 													completionHandler:^(NCDBInvType *type) {
+														eufe::TypeID typeID = type.typeID;
 														[self.controller.engine performBlockAndWait:^{
-															eufe::TypeID typeID = type.typeID;
 															auto ship = self.controller.fit.pilot->getShip();
 															
 															std::shared_ptr<eufe::Drone> sameDrone = nullptr;
@@ -294,123 +294,128 @@
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
 	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
 	NCFittingShipDronesViewControllerRow* row = self.rows[indexPath.row];
-	
-	auto ship = self.controller.fit.pilot->getShip();
-	auto drone = row.drones.front();
-	
-	void (^remove)(eufe::DronesList) = ^(eufe::DronesList drones){
-		[self.controller.engine performBlockAndWait:^{
-			for (auto drone: drones)
-				ship->removeDrone(drone);
-		}];
-		[self.controller reload];
-	};
-	
-	void (^activate)(eufe::DronesList) = ^(eufe::DronesList drones){
-		[self.controller.engine performBlockAndWait:^{
-			for (auto drone: drones)
-				drone->setActive(true);
-		}];
-		[self.controller reload];
-	};
-	
-	void (^deactivate)(eufe::DronesList) = ^(eufe::DronesList drones){
-		[self.controller.engine performBlockAndWait:^{
-			for (auto drone: drones)
-				drone->setActive(false);
-		}];
-		[self.controller reload];
-	};
-	
-	void (^setTarget)(eufe::DronesList) = ^(eufe::DronesList drones){
-		NSMutableArray* array = [NSMutableArray new];
-		for (auto drone: drones)
-			[array addObject:[NCFittingEngineItemPointer pointerWithItem:drone]];
-		[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController"
-											 sender:@{@"sender": cell, @"object": array}];
-	};
-	
-	void (^clearTarget)(eufe::DronesList) = ^(eufe::DronesList drones){
-		[self.controller.engine performBlockAndWait:^{
-			for (auto drone: drones)
-				drone->clearTarget();
-		}];
-		[self.controller reload];
-	};
-	
-	void (^setAmount)(eufe::DronesList) = ^(eufe::DronesList drones) {
-		NSMutableArray* rows = [self.rows mutableCopy];
-		[self.controller.engine performBlockAndWait:^{
-/*			self.activeAmountType = row.type;
-			NCFittingShipDronesViewControllerPickerRow* pickerRow = [NCFittingShipDronesViewControllerPickerRow new];
-			pickerRow.associatedRow = row;
-			
-			float volume = drone->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
-			int droneBay = ship->getTotalDroneBay() / volume;
-			int maxActive = ship->getMaxActiveDrones();
-			self.maximumAmount = std::min(std::max(droneBay, maxActive), 50);
-			
-			
-			[rows insertObject:pickerRow atIndex:indexPath.row + 1];*/
-		}];
-		self.rows = rows;
-		[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-	};
-	
-	void (^showInfo)(eufe::DronesList) = ^(eufe::DronesList drones) {
-		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
-											 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:drone]}];
-	};
-	
-	void (^affectingSkills)(eufe::DronesList) = ^(eufe::DronesList drones){
-		[self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
-											 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:drone]}];
-	};
-	
-	
-	NSMutableArray* buttons = [NSMutableArray new];
 	NSMutableArray* actions = [NSMutableArray new];
-	
-	[actions addObject:remove];
-	
-	[buttons addObject:ActionButtonShowInfo];
-	[actions addObject:showInfo];
-	if (drone->isActive()) {
-		[buttons addObject:ActionButtonDeactivate];
-		[actions addObject:deactivate];
-	}
-	else {
-		[buttons addObject:ActionButtonActivate];
-		[actions addObject:activate];
-	}
-	
-	[buttons addObject:ActionButtonAmount];
-	[actions addObject:setAmount];
-	
-	[buttons addObject:ActionButtonAffectingSkills];
-	[actions addObject:affectingSkills];
-	
-	if (self.controller.fits.count > 1) {
-		[buttons addObject:ActionButtonSetTarget];
-		[actions addObject:setTarget];
-		if (drone->getTarget() != NULL) {
-			[buttons addObject:ActionButtonClearTarget];
-			[actions addObject:clearTarget];
+
+	[self.controller.engine performBlockAndWait:^{
+		auto ship = self.controller.fit.pilot->getShip();
+		auto drone = row.drones.front();
+		auto drones = row.drones;
+		NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];
+		
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDelete style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self.controller.engine performBlockAndWait:^{
+				for (auto drone: drones)
+					ship->removeDrone(drone);
+			}];
+			[self.controller reload];
+		}]];
+
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonShowInfo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
+												 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:drone]}];
+		}]];
+
+		
+		if (drone->isActive()) {
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDeactivate style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self.controller.engine performBlockAndWait:^{
+					for (auto drone: drones)
+						drone->setActive(false);
+				}];
+				[self.controller reload];
+			}]];
 		}
-	}
+		else {
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonActivate style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self.controller.engine performBlockAndWait:^{
+					for (auto drone: drones)
+						drone->setActive(true);
+				}];
+				[self.controller reload];
+			}]];
+		}
+		
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAmount style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			__block NSString* typeName;
+			[self.controller.engine performBlockAndWait:^{
+				typeName = type.typeName;
+			}];
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ amount", nil), typeName] message:nil preferredStyle:UIAlertControllerStyleAlert];
+			[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+				textField.keyboardType = UIKeyboardTypeNumberPad;
+				textField.text = [NSString stringWithFormat:@"%d", (int) row.drones.size()];
+			}];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				int amount = [[controller.textFields[0] text] intValue];
+				if (amount > 0) {
+					if (amount > 50)
+						amount = 50;
+					
+					int n = (int) row.drones.size() - amount;
+					[self.controller.engine performBlock:^{
+						if (n > 0) {
+							int i = n;
+							for (auto drone: row.drones) {
+								if (i <= 0)
+									break;
+								ship->removeDrone(drone);
+								i--;
+							}
+						}
+						else {
+							auto drone = row.drones.front();
+							for (int i = n; i < 0; i++) {
+								auto newDrone = ship->addDrone(drone->getTypeID());
+								newDrone->setActive(drone->isActive());
+								newDrone->setTarget(drone->getTarget());
+							}
+						}
+						dispatch_async(dispatch_get_main_queue(), ^{
+							//self.progress = nil;
+							[self.controller reload];
+						});
+					}];
+				}
+			}]];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+			}]];
+			[self.controller presentViewController:controller animated:YES completion:nil];
+		}]];
+
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAffectingSkills style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
+												 sender:@{@"sender": cell, @"object": @[[NCFittingEngineItemPointer pointerWithItem:drone]]}];
+		}]];
+
+		if (self.controller.fits.count > 1) {
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				NSMutableArray* array = [NSMutableArray new];
+				[self.controller.engine performBlockAndWait:^{
+					for (auto drone: drones)
+						[array addObject:[NCFittingEngineItemPointer pointerWithItem:drone]];
+				}];
+				[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController"
+													 sender:@{@"sender": cell, @"object": array}];
+			}]];
+			if (drone->getTarget() != NULL) {
+				[actions addObject:[UIAlertAction actionWithTitle:ActionButtonClearTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+					[self.controller.engine performBlockAndWait:^{
+						for (auto drone: drones)
+							drone->clearTarget();
+					}];
+					[self.controller reload];
+				}]];
+			}
+		}
+
+	}];
 	
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", )
-				  destructiveButtonTitle:ActionButtonDelete
-					   otherButtonTitles:buttons
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 void (^block)(eufe::DronesList) = actions[selectedButtonIndex];
-								 block(row.drones);
-							 }
-						 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
+	
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	for (UIAlertAction* action in actions)
+		[controller addAction:action];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+	[self.controller presentViewController:controller animated:YES completion:nil];
 	
 }
 

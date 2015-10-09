@@ -32,7 +32,6 @@
 @property (nonatomic, assign) BOOL initialSetupFinished;
 @property (nonatomic, strong) dispatch_group_t searchingDispatchGroup;
 @property (nonatomic, strong) UIProgressView* progressView;
-@property (nonatomic, strong) NSProgress* progress;
 @property (nonatomic, assign) BOOL internalDatabaseManagedObjectContext;
 
 - (IBAction) onRefresh:(id) sender;
@@ -377,6 +376,14 @@
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
 	_progressView.frame = CGRectMake(0, [self.topLayoutGuide length] + self.tableView.contentOffset.y, self.view.frame.size.width, self.view.frame.size.height);
+}
+
+- (void) setProgress:(NSProgress *)progress {
+	[_progress removeObserver:self forKeyPath:@"fractionCompleted"];
+	_progress = progress;
+	[_progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:nil];
+	self.progressView.progress = progress.fractionCompleted;
+	self.progressView.hidden = progress == nil;
 }
 
 #pragma mark - Notifications
@@ -740,14 +747,6 @@
 			});
 		}];
 	}
-}
-
-- (void) setProgress:(NSProgress *)progress {
-	[_progress removeObserver:self forKeyPath:@"fractionCompleted"];
-	_progress = progress;
-	[_progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:nil];
-	self.progressView.progress = progress.fractionCompleted;
-	self.progressView.hidden = progress == nil;
 }
 
 - (UIProgressView*) progressView {

@@ -485,9 +485,7 @@
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCFittingShipModulesViewControllerSection* section = self.sections[indexPath.section];
 	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-	
 	NCFittingShipModulesViewControllerRow* row = section.rows[indexPath.row];
-
 	NSMutableArray* actions = [NSMutableArray new];
 
 	[self.controller.engine performBlockAndWait:^{

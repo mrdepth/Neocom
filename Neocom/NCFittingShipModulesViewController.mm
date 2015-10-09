@@ -113,13 +113,12 @@
 	auto pilot = self.controller.fit.pilot;
 	if (pilot) {
 		NSMutableArray* sections = [NSMutableArray new];
-		__block float usedTurretHardpoints;
-		__block float totalTurretHardpoints;
-		__block float usedMissileHardpoints;
-		__block float totalMissileHardpoints;
-		
 		NSArray* oldSections = self.sections;
 		[self.controller.engine performBlock:^{
+			float usedTurretHardpoints;
+			float totalTurretHardpoints;
+			float usedMissileHardpoints;
+			float totalMissileHardpoints;
 			NSMutableDictionary* oldRows = [NSMutableDictionary new];
 			for (NCFittingShipModulesViewControllerSection* section in oldSections)
 				for (NCFittingShipModulesViewControllerRow* row in section.rows)

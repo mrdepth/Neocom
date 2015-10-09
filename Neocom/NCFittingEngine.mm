@@ -58,10 +58,12 @@
 }
 
 - (void) performBlock:(void (^)())block {
-	[self.databaseManagedObjectContext performBlock:^{
-		eufe::Engine::ScopedLock lock(self.engine);
-		block();
-	}];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+		[self.databaseManagedObjectContext performBlock:^{
+			eufe::Engine::ScopedLock lock(self.engine);
+			block();
+		}];
+	});
 }
 
 - (void) loadShipFit:(NCShipFit*) fit {

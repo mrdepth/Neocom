@@ -25,37 +25,28 @@
 #define ActionButtonRemoveBooster NSLocalizedString(@"Remove Booster", nil)
 
 @interface NCFittingShipFleetViewController()
-@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
+@property (nonatomic, strong) NSArray* fits;
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath;
-//- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath;
 @end
 
 @implementation NCFittingShipFleetViewController
 
-- (void) viewDidLoad {
-	[super viewDidLoad];
-	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
-}
-
-
-- (void) reload {
-	[self.tableView reloadData];
+- (void) reloadWithCompletionBlock:(void (^)())completionBlock {
+	self.fits = self.controller.fits;
+	completionBlock();
 }
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	// Return the number of sections.
 	return self.controller.engine ? 1 : 0;
-	//return self.view.window ? 1 : 0;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	// Return the number of rows in the section.
-	return self.controller.fits.count + 1;
+	return self.fits.count + 1;
 }
 
 
@@ -64,171 +55,11 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == self.controller.fits.count) {
+	if (indexPath.row == self.controller.fits.count)
 		[self.controller performSegueWithIdentifier:@"NCFittingFitPickerViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
-	}
-	else {
+	else
 		[self performActionForRowAtIndexPath:indexPath];
-	}
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-#pragma mark - Private
-
-- (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
-	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-	NCShipFit* fit = self.controller.fits[indexPath.row];
-	auto character = fit.pilot;
-	auto gang = self.controller.engine.engine->getGang();
-	
-	void (^setFleetBooster)() = ^(){
-		gang->setFleetBooster(character);
-		[self.controller reload];
-	};
-	
-	void (^setWingBooster)() = ^(){
-		gang->setWingBooster(character);
-		[self.controller reload];
-	};
-	
-	void (^setSquadBooster)() = ^(){
-		gang->setFleetBooster(character);
-		[self.controller reload];
-	};
-	
-	void (^removeBooster)() = ^(){
-		if (gang->getFleetBooster() == character)
-			gang->removeFleetBooster();
-		else if (gang->getWingBooster() == character)
-			gang->removeWingBooster();
-		else if (gang->getSquadBooster() == character)
-			gang->removeSquadBooster();
-		[self.controller reload];
-	};
-	
-	NSMutableArray* boosterButtons = [NSMutableArray new];
-	NSMutableArray* boosterActions = [NSMutableArray new];
-	
-	bool isBooster = false;
-	if (gang->getFleetBooster() != character) {
-		[boosterButtons addObject:ActionButtonSetFleetBooster];
-		[boosterActions addObject:setFleetBooster];
-	}
-	else
-		isBooster = true;
-	
-	if (gang->getWingBooster() != character) {
-		[boosterButtons addObject:ActionButtonSetWingBooster];
-		[boosterActions addObject:setWingBooster];
-	}
-	else
-		isBooster = true;
-	
-	if (gang->getSquadBooster() != character) {
-		[boosterButtons addObject:ActionButtonSetSquadBooster];
-		[boosterActions addObject:setSquadBooster];
-	}
-	else
-		isBooster = true;
-	
-	if (isBooster && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-		[boosterActions insertObject:removeBooster atIndex:0];
-	
-	void (^remove)() = ^(){
-		if (self.controller.fit == fit) {
-			NSInteger i = [self.controller.fits indexOfObject:fit];
-			if (i > 0)
-				self.controller.fit = self.controller.fits[i - 1];
-			else
-				self.controller.fit = self.controller.fits[i + 1];
-		}
-		[self.controller.fits removeObject:fit];
-		gang->removePilot(character);
-		[self.controller reload];
-	};
-	
-	void (^setCharacter)() = ^(){
-		[self.controller performSegueWithIdentifier:@"NCFittingCharacterPickerViewController"
-											 sender:@{@"sender": cell, @"object": fit}];
-	};
-	
-	
-	void (^select)() = ^(){
-		self.controller.fit = fit;
-		[self.controller reload];
-	};
-	
-	void (^booster)() = ^(){
-		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-									   title:nil
-						   cancelButtonTitle:NSLocalizedString(@"Cancel", )
-					  destructiveButtonTitle:isBooster && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? ActionButtonRemoveBooster : nil
-						   otherButtonTitles:boosterButtons
-							 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-								 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-									 void (^block)() = boosterActions[selectedButtonIndex];
-									 block();
-								 }
-							 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
-	};
-	
-	
-	
-	void (^showInfo)() = ^{
-		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
-											 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:character->getShip()]}];
-		
-		/*		ItemInfo* itemInfo = self.pilots[indexPath.row][@"ship"];
-		 ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
-		 [itemInfo updateAttributes];
-		 itemViewController.type = itemInfo;
-		 [itemViewController setActivePage:ItemViewControllerActivePageInfo];
-		 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self.fittingViewController presentViewController:navController animated:YES completion:nil];
-		 }
-		 else
-			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];*/
-	};
-	
-	NSMutableArray* buttons = [NSMutableArray new];
-	NSMutableArray* actions = [NSMutableArray new];
-	
-	[actions addObject:remove];
-	
-	[buttons addObject:ActionButtonShowShipInfo];
-	[actions addObject:showInfo];
-	
-	[buttons addObject:ActionButtonCharacter];
-	[actions addObject:setCharacter];
-	
-	if (fit != self.controller.fit) {
-		[buttons addObject:ActionButtonSelect];
-		[actions addObject:select];
-	}
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[buttons addObjectsFromArray:boosterButtons];
-		[actions addObjectsFromArray:boosterActions];
-	}
-	else {
-		[buttons addObject:ActionButtonBooster];
-		[actions addObject:booster];
-	}
-	
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", )
-				  destructiveButtonTitle:ActionButtonDelete
-					   otherButtonTitles:buttons
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 void (^block)() = actions[selectedButtonIndex];
-								 block();
-							 }
-						 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
-	
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -243,37 +74,157 @@
 		cell.accessoryView = nil;
 	}
 	else {
-		//		@synchronized(self.controller) {
 		NCShipFit* fit = self.controller.fits[indexPath.row];
-		auto gang = self.controller.engine.engine->getGang();
-		if (!fit || !fit.pilot || !gang)
-			return;
+		__block NSString *booster = nil;
+		__block NSString* characterName = nil;
+		[self.controller.engine performBlockAndWait:^{
+			auto gang = self.controller.engine.engine->getGang();
+			if (!fit || !fit.pilot || !gang)
+				return;
+			
+			auto fleetBooster = gang->getFleetBooster();
+			auto wingBooster = gang->getWingBooster();
+			auto squadBooster = gang->getSquadBooster();
+			
+			if (fit.pilot == fleetBooster)
+				booster = NSLocalizedString(@" (Fleet Booster)", nil);
+			else if (fit.pilot == wingBooster)
+				booster = NSLocalizedString(@" (Wing Booster)", nil);
+			else if (fit.pilot == squadBooster)
+				booster = NSLocalizedString(@" (Squad Booster)", nil);
+			else
+				booster = @"";
+			characterName = [NSString stringWithCString:fit.pilot->getCharacterName() encoding:NSUTF8StringEncoding];
+		}];
 		
-		auto fleetBooster = gang->getFleetBooster();
-		auto wingBooster = gang->getWingBooster();
-		auto squadBooster = gang->getSquadBooster();
-		
-		NSString *booster = nil;
-		
-		if (fit.pilot == fleetBooster)
-			booster = NSLocalizedString(@" (Fleet Booster)", nil);
-		else if (fit.pilot == wingBooster)
-			booster = NSLocalizedString(@" (Wing Booster)", nil);
-		else if (fit.pilot == squadBooster)
-			booster = NSLocalizedString(@" (Squad Booster)", nil);
-		else
-			booster = @"";
-		
-		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:fit.pilot->getShip()->getTypeID()];;
-		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s%@", type.typeName, fit.pilot->getCharacterName(), booster];
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:fit.typeID];
+		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %@%@", type.typeName, characterName, booster];
 		cell.subtitleLabel.text = fit.loadoutName;
-		cell.iconView.image = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
+		cell.iconView.image = type.icon ? type.icon.image.image : self.defaultTypeImage;
 		if (self.controller.fit == fit)
 			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
 		else
 			cell.accessoryView = nil;
-		//		}
 	}
 }
+
+#pragma mark - Private
+
+- (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
+	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+	NCShipFit* fit = self.controller.fits[indexPath.row];
+	
+	NSMutableArray* actions = [NSMutableArray new];
+	[self.controller.engine performBlockAndWait:^{
+		auto character = fit.pilot;
+		auto gang = self.controller.engine.engine->getGang();
+		auto ship = character->getShip();
+		
+		if (self.fits.count > 1) {
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDelete style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+				if (self.controller.fit == fit) {
+					NSInteger i = [self.controller.fits indexOfObject:fit];
+					if (i > 0)
+						self.controller.fit = self.controller.fits[i - 1];
+					else
+						self.controller.fit = self.controller.fits[i + 1];
+				}
+				[self.controller.fits removeObject:fit];
+				[self.controller.engine performBlockAndWait:^{
+					gang->removePilot(character);
+				}];
+				[self.controller reload];
+			}]];
+		}
+		
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonShowShipInfo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
+												 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:ship]}];
+		}]];
+		
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonCharacter style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self.controller performSegueWithIdentifier:@"NCFittingCharacterPickerViewController"
+												 sender:@{@"sender": cell, @"object": fit}];
+		}]];
+		
+		if (fit != self.controller.fit) {
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSelect style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				self.controller.fit = fit;
+				[self.controller reload];
+			}]];
+		}
+		
+		NSMutableArray* boosterActions = [NSMutableArray new];
+		bool isBooster = false;
+		
+		if (gang->getFleetBooster() != character)
+			[boosterActions addObject:[UIAlertAction actionWithTitle:ActionButtonSetFleetBooster style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self.controller.engine performBlockAndWait:^{
+					gang->setFleetBooster(character);
+				}];
+				[self.controller reload];
+			}]];
+		else
+			isBooster = true;
+		
+		if (gang->getWingBooster() != character)
+			[boosterActions addObject:[UIAlertAction actionWithTitle:ActionButtonSetWingBooster style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self.controller.engine performBlockAndWait:^{
+					gang->setWingBooster(character);
+				}];
+				[self.controller reload];
+			}]];
+		else
+			isBooster = true;
+		
+		if (gang->getSquadBooster() != character)
+			[boosterActions addObject:[UIAlertAction actionWithTitle:ActionButtonSetSquadBooster style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self.controller.engine performBlockAndWait:^{
+					gang->setSquadBooster(character);
+				}];
+				[self.controller reload];
+			}]];
+		else
+			isBooster = true;
+		
+		//void (^removeBoosterHandler)(UIAlertAction* _Nonnull) = ^(UIAlertAction * _Nonnull action) {
+		auto removeBoosterHandler = ^(UIAlertAction * _Nonnull action) {
+			[self.controller.engine performBlockAndWait:^{
+				if (gang->getFleetBooster() == character)
+					gang->removeFleetBooster();
+				else if (gang->getWingBooster() == character)
+					gang->removeWingBooster();
+				else if (gang->getSquadBooster() == character)
+					gang->removeSquadBooster();
+			}];
+			[self.controller reload];
+		};
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			if (isBooster)
+				[boosterActions addObject:[UIAlertAction actionWithTitle:ActionButtonRemoveBooster style:UIAlertActionStyleDefault handler:removeBoosterHandler]];
+			[actions addObjectsFromArray:boosterActions];
+		}
+		else {
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonBooster style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+				if (isBooster)
+					[controller addAction:[UIAlertAction actionWithTitle:ActionButtonRemoveBooster style:UIAlertActionStyleDestructive handler:removeBoosterHandler]];
+				for (UIAlertAction* action in boosterActions)
+					[controller addAction:action];
+				[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+				[self.controller presentViewController:controller animated:YES completion:nil];
+			}]];
+		}
+	}];
+	
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	for (UIAlertAction* action in actions)
+		[controller addAction:action];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+	[self.controller presentViewController:controller animated:YES completion:nil];
+}
+
+
 
 @end

@@ -235,60 +235,6 @@
 }
 
 
-/*#pragma mark - UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-	return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-	return self.maximumAmount;
-}
-
-- (NSString*) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-	return [NSString stringWithFormat:@"%ld", (long)(row + 1)];
-}
-
-- (void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)rowIndex inComponent:(NSInteger)component {
-	int amount = (int) (rowIndex + 1);
-	NSInteger i = 0;
-	for (NCFittingShipDronesViewControllerPickerRow* row in self.rows) {
-		if ([row isKindOfClass:[NCFittingShipDronesViewControllerPickerRow class]]) {
-			[self.controller.engine performBlockAndWait:^{
-				auto ship = self.controller.fit.pilot->getShip();
-				eufe::TypeID typeID = row.associatedRow.drones.front()->getTypeID();
-				
-				if (row.associatedRow.drones.size() > amount) {
-					int n = (int) row.associatedRow.drones.size() - amount;
-					for (auto drone: row.associatedRow.drones) {
-						if (n <= 0)
-							break;
-						ship->removeDrone(drone);
-						n--;
-					}
-				}
-				else {
-					int n = amount - (int) row.associatedRow.drones.size();
-					auto drone = row.associatedRow.drones.front();
-					for (int i = 0; i < n; i++) {
-						auto newDrone = ship->addDrone(drone->getTypeID());
-						newDrone->setActive(drone->isActive());
-						newDrone->setTarget(drone->getTarget());
-					}
-				}
-				row.associatedRow.drones.clear();
-				for (auto drone: ship->getDrones()) {
-					if (drone->getTypeID() == typeID)
-						row.associatedRow.drones.push_back(drone);
-				}
-				[NSObject cancelPreviousPerformRequestsWithTarget:self.controller selector:@selector(reload) object:nil];
-				[self.controller performSelector:@selector(reload) withObject:nil afterDelay:0.25];
-			}];
-		}
-		i++;
-	}
-}*/
-
 #pragma mark - Private
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
@@ -302,7 +248,7 @@
 		auto drones = row.drones;
 		NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];
 		
-		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDelete style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDelete style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
 			[self.controller.engine performBlockAndWait:^{
 				for (auto drone: drones)
 					ship->removeDrone(drone);
@@ -344,6 +290,7 @@
 			[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
 				textField.keyboardType = UIKeyboardTypeNumberPad;
 				textField.text = [NSString stringWithFormat:@"%d", (int) row.drones.size()];
+				textField.clearButtonMode = UITextFieldViewModeAlways;
 			}];
 			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				int amount = [[controller.textFields[0] text] intValue];
@@ -371,7 +318,6 @@
 							}
 						}
 						dispatch_async(dispatch_get_main_queue(), ^{
-							//self.progress = nil;
 							[self.controller reload];
 						});
 					}];

@@ -35,79 +35,14 @@
 @property (nonatomic, strong) NSArray* rows;
 @end
 
-@interface NCFittingShipStatsViewControllerShipStats : NSObject
-@property (nonatomic, assign) float totalPG;
-@property (nonatomic, assign) float usedPG;
-@property (nonatomic, assign) float totalCPU;
-@property (nonatomic, assign) float usedCPU;
-@property (nonatomic, assign) float totalCalibration;
-@property (nonatomic, assign) float usedCalibration;
-@property (nonatomic, assign) int usedTurretHardpoints;
-@property (nonatomic, assign) int totalTurretHardpoints;
-@property (nonatomic, assign) int usedMissileHardpoints;
-@property (nonatomic, assign) int totalMissileHardpoints;
-
-@property (nonatomic, assign) float totalDB;
-@property (nonatomic, assign) float usedDB;
-@property (nonatomic, assign) float totalBandwidth;
-@property (nonatomic, assign) float usedBandwidth;
-@property (nonatomic, assign) int maxActiveDrones;
-@property (nonatomic, assign) int activeDrones;
-@property (nonatomic, assign) eufe::Resistances resistances;
-@property (nonatomic, assign) eufe::HitPoints hp;
-@property (nonatomic, assign) float ehp;
-@property (nonatomic, assign) eufe::Tank rtank;
-@property (nonatomic, assign) eufe::Tank stank;
-@property (nonatomic, assign) eufe::Tank ertank;
-@property (nonatomic, assign) eufe::Tank estank;
-
-@property (nonatomic, assign) float capCapacity;
-@property (nonatomic, assign) BOOL capStable;
-@property (nonatomic, assign) float capState;
-@property (nonatomic, assign) float capacitorRechargeTime;
-@property (nonatomic, assign) float delta;
-
-@property (nonatomic, assign) float weaponDPS;
-@property (nonatomic, assign) float droneDPS;
-@property (nonatomic, assign) float volleyDamage;
-@property (nonatomic, assign) float dps;
-
-@property (nonatomic, assign) int targets;
-@property (nonatomic, assign) float targetRange;
-@property (nonatomic, assign) float scanRes;
-@property (nonatomic, assign) float sensorStr;
-@property (nonatomic, assign) float speed;
-@property (nonatomic, assign) float alignTime;
-@property (nonatomic, assign) float signature;
-@property (nonatomic, assign) float cargo;
-@property (nonatomic, assign) float mass;
-@property (nonatomic, strong) UIImage *sensorImage;
-@property (nonatomic, strong) NCDamagePattern* damagePattern;
-@property (nonatomic, assign) float droneRange;
-@property (nonatomic, assign) float warpSpeed;
-
+@implementation NCFittingShipStatsViewControllerRow
 @end
 
-@interface NCFittingShipStatsViewControllerPriceStats : NSObject
-@property (nonatomic, assign) float shipPrice;
-@property (nonatomic, assign) float fittingsPrice;
-@property (nonatomic, assign) float dronesPrice;
-@property (nonatomic, assign) float totalPrice;
+@implementation NCFittingShipStatsViewControllerSection
 @end
-
-@implementation NCFittingShipStatsViewControllerShipStats
-@end
-
-@implementation NCFittingShipStatsViewControllerPriceStats
-@end
-
 
 @interface NCFittingShipStatsViewController()
 @property (nonatomic, strong) NSArray* sections;
-@property (nonatomic, strong) NCFittingShipStatsViewControllerShipStats* shipStats;
-@property (nonatomic, strong) NCFittingShipStatsViewControllerPriceStats* priceStats;
-@property (nonatomic, strong) NCPriceManager* priceManager;
-@property (nonatomic, strong) NCTaskManager* pricesTaskManager;
 @end
 
 
@@ -115,9 +50,6 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
-	self.pricesTaskManager = [[NCTaskManager alloc] initWithViewController:self];
-	
-	self.priceManager = [NCPriceManager sharedManager];
 }
 
 - (void) reloadWithCompletionBlock:(void (^)())completionBlock {
@@ -256,7 +188,7 @@
 					NSArray* images = @[@"shield.png", @"armor.png", @"hull.png", @"damagePattern.png"];
 					for (int i = 0; i < 4; i++) {
 						row = [NCFittingShipStatsViewControllerRow new];
-						row.cellIdentifier = @"NCFittingEHPCell";
+						row.cellIdentifier = @"NCFittingResistancesCell";
 						row.configurationBlock = ^(id tableViewCell, NSDictionary* data) {
 							NCFittingResistancesCell* cell = (NCFittingResistancesCell*) tableViewCell;
 							NCProgressLabel* labels[] = {cell.emLabel, cell.thermalLabel, cell.kineticLabel, cell.explosiveLabel};
@@ -277,7 +209,7 @@
 									NSMutableArray* values = [NSMutableArray new];
 									NSMutableArray* texts = [NSMutableArray new];
 
-									if (i < 4) {
+									if (i < 3) {
 										auto resistances = ship->getResistances();
 										auto hp = ship->getHitPoints();
 										
@@ -655,81 +587,32 @@
 					section.rows = rows;
 				}
 				[sections addObject:section];
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.sections = sections;
+					completionBlock();
+				});
 			}];
 		}
 	}
 	else
 		completionBlock();
-	
-	NCFittingShipStatsViewControllerShipStats* stats = [NCFittingShipStatsViewControllerShipStats new];
-	if (self.tableView.dataSource == self)
-		[self.tableView reloadData];
-	
-	[self.controller.engine performBlockAndWait:^{
-		auto character = self.controller.fit.pilot;
-		if (!character)
-			return;
-		auto ship = character->getShip();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		stats.damagePattern = self.controller.damagePattern;
-	}];
-	self.shipStats = stats;
-	if (self.tableView.dataSource == self)
-		[self.tableView reloadData];
-	[self updatePrice];
 }
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	// Return the number of sections.
-	return 7;
-	//return self.view.window ? 7 : 0;
+	return self.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	switch(section) {
-		case 0:
-			return 2;
-		case 1:
-			return 6;
-		case 2:
-			return 1;
-		case 3:
-			return 3;
-		case 4:
-			return 1;
-		case 5:
-			return 1;
-		case 6:
-			return 1;
-	}
-	return 0;
+	return [[self.sections[section] rows] count];
 }
 
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (section == 0)
-	else if (section == 1)
-	else if (section == 2)
-	else if (section == 3)
-	else if (section == 4)
-	else if (section == 5)
-	else if (section == 6)
-		return NSLocalizedString(@"", nil);
-	else
-		return nil;
+	return [self.sections[section] title];
 }
 
 #pragma mark - Table view delegate
@@ -758,65 +641,25 @@
 }
 
 
-#pragma mark - Private
-
-- (void) updatePrice {
-	NCFittingShipStatsViewControllerPriceStats* stats = [NCFittingShipStatsViewControllerPriceStats new];
-	
-	
-	[[self pricesTaskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.priceStats = stats;
-									 [self.tableView reloadData];
-								 }
-							 }];
-}
-
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0) {
-	}
-	else if (indexPath.section == 1) {
-	}
-	else if (indexPath.section == 2)
-	else if (indexPath.section == 3) {
-	else if (indexPath.section == 4)
-	else if (indexPath.section == 5)
-		return @"";
-	else if (indexPath.section == 6)
-		return @"";
-	else
-		return nil;
+	NCFittingShipStatsViewControllerRow* row = [self.sections[indexPath.section] rows][indexPath.row];
+	return row.cellIdentifier;
 }
 
 // Customize the appearance of table view cells.
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0) {
-		if (indexPath.row == 0) {
-			if (self.shipStats) {
-			}
-		}
-		else {
-			if (self.shipStats) {
-			}
-		}
+	NCFittingShipStatsViewControllerRow* row = [self.sections[indexPath.section] rows][indexPath.row];
+	if (!row.isUpToDate) {
+		row.isUpToDate = YES;
+		row.loadingBlock(self, ^(NSDictionary* data) {
+			row.data = data;
+			//row.configurationBlock(tableViewCell, row.data);
+			if (data)
+				[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		});
 	}
-	else if (indexPath.section == 1) {
-	}
-	else if (indexPath.section == 2) {
-	}
-	else if (indexPath.section == 3) {
-	}
-	else if (indexPath.section == 4) {
-	}
-	else if (indexPath.section == 5) {
-	}
-	else if (indexPath.section == 6) {
-	}
+	if (row.data)
+		row.configurationBlock(tableViewCell, row.data);
 }
 
 @end

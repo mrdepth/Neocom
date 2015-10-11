@@ -64,6 +64,7 @@
 	other.module = self.module;
 	other.isUpToDate = self.isUpToDate;
 	other.typeName = self.typeName;
+	other.typeNameColor = self.typeNameColor;
 	other.typeImage = self.typeImage;
 	other.chargeText = self.chargeText;
 	other.optimalText = self.optimalText;

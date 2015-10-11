@@ -372,11 +372,13 @@
 }
 
 - (void) reload {
-	[self.modulesViewController reload];
+/*	[self.modulesViewController reload];
 	[self.dronesViewController reload];
 	[self.implantsViewController reload];
 	[self.fleetViewController reload];
-	[self.statsViewController reload];
+	[self.statsViewController reload];*/
+	for (NCFittingShipWorkspaceViewController* controller in self.childViewControllers)
+		[controller reload];
 	
 	if (!self.fit.pilot)
 		return;

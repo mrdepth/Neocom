@@ -235,6 +235,9 @@
 		127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */; };
 		127C50B718CF52DA0074877C /* clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50B618CF52D90074877C /* clear.png */; };
 		127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */; };
+		1282570E1BCBF42D00BC1F56 /* NCFittingCharacterPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C50756189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m */; settings = {ASSET_TAGS = (); }; };
+		128257141BCBFCBF00BC1F56 /* NCFittingCharacterEditorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */; settings = {ASSET_TAGS = (); }; };
+		128257151BCBFE3000BC1F56 /* NCFittingCharacterEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C50762189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m */; settings = {ASSET_TAGS = (); }; };
 		128310091BBC39920018C8AC /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; settings = {ASSET_TAGS = (); }; };
 		128310141BBD3D6D0018C8AC /* NCSkillPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */; settings = {ASSET_TAGS = (); }; };
 		1283101A1BBD5C430018C8AC /* NCMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5F118929B960010BEE8 /* NCMessageCell.m */; settings = {ASSET_TAGS = (); }; };
@@ -4313,6 +4316,7 @@
 				12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */,
 				128310091BBC39920018C8AC /* NCSkillQueueViewController.m in Sources */,
 				12FA32AC18E157920053DDC5 /* NCMarqueeLabel.m in Sources */,
+				128257151BCBFE3000BC1F56 /* NCFittingCharacterEditorViewController.m in Sources */,
 				128310201BBD7C610018C8AC /* NCCalendarEventsViewController.m in Sources */,
 				128C9B0918BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m in Sources */,
 				129E23AB1BC3FD3000E311BF /* NCFittingPOSResourcesCell.m in Sources */,
@@ -4370,6 +4374,7 @@
 				125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */,
 				12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */,
 				84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */,
+				128257141BCBFCBF00BC1F56 /* NCFittingCharacterEditorCell.m in Sources */,
 				129D2611187E923300E2062C /* NSObject+Debug.m in Sources */,
 				126AACF01BBA72940068AA99 /* NCCharacterSheetViewController.m in Sources */,
 				129D262D187E923300E2062C /* UIAlertView+Block.m in Sources */,
@@ -4419,6 +4424,7 @@
 				120C337919CAB0AA0093EECA /* NCDBCertSkill.m in Sources */,
 				1209685F1845F0CB00921A37 /* main.m in Sources */,
 				129D262F187E923300E2062C /* UIColor+NSNumber.m in Sources */,
+				1282570E1BCBF42D00BC1F56 /* NCFittingCharacterPickerViewController.m in Sources */,
 				127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */,
 				129D2600187E923200E2062C /* ASCaptionTextField.m in Sources */,
 				84521911189AEEA800E7E3C1 /* NCLoadoutData.m in Sources */,

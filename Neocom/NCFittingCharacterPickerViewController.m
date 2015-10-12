@@ -15,6 +15,15 @@
 #import "UIImage+Neocom.h"
 #import "UIImageView+URL.h"
 
+@interface NCFittingCharacterPickerViewControllerRow : NSObject
+@property (nonatomic, strong) NCAccount* account;
+@property (nonatomic, strong) EVECharacterSheet* characterSheet;
+
+@end
+
+@implementation NCFittingCharacterPickerViewControllerRow
+@end
+
 @interface NCFittingCharacterPickerViewController ()
 @property (nonatomic, strong) NSMutableArray* accounts;
 @property (nonatomic, strong) NSMutableArray* customCharacters;
@@ -36,31 +45,38 @@
     [super viewDidLoad];
 	self.refreshControl = nil;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	self.storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+	self.customCharacters = [[self.storageManagedObjectContext fitCharacters] mutableCopy];
 	
-	NSMutableArray* accounts = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 for (NCAccount* account in [[NCAccountsManager sharedManager] accounts]) {
-												 if (account.characterSheet)
-													 [accounts addObject:account];
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.accounts = accounts;
-								 [self update];
-							 }];
 	
-	self.customCharacters = [NSMutableArray arrayWithArray:[[NCStorage sharedStorage] characters]];
+	[[NCAccountsManager sharedManager] loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray *apiKeys) {
+		dispatch_group_t finishDispatchGroup = dispatch_group_create();
+		NSMutableArray* rows = [NSMutableArray new];
+		for (NCAccount* account in accounts) {
+			dispatch_group_enter(finishDispatchGroup);
+			[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+				if (characterSheet) {
+					NCFittingCharacterPickerViewControllerRow* row = [NCFittingCharacterPickerViewControllerRow new];
+					row.account = account;
+					row.characterSheet = characterSheet;
+					@synchronized(rows) {
+						[rows addObject:row];
+					}
+				}
+				dispatch_group_leave(finishDispatchGroup);
+			}];
+		}
+		
+		dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+			self.accounts = rows;
+			[self.tableView reloadData];
+		});
+	}];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[self update];
-}
-
-- (void) dealloc {
-	[[NCStorage sharedStorage] saveContext];
+	[self.tableView reloadData];;
 }
 
 - (void)didReceiveMemoryWarning
@@ -135,10 +151,9 @@
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
 	}
 	else if (editingStyle == UITableViewCellEditingStyleInsert) {
-		NCStorage* storage = [NCStorage sharedStorage];
 		NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter"
-																					   inManagedObjectContext:storage.managedObjectContext]
-											insertIntoManagedObjectContext:storage.managedObjectContext];
+																					   inManagedObjectContext:self.storageManagedObjectContext]
+											insertIntoManagedObjectContext:self.storageManagedObjectContext];
 		character.name = [NSString stringWithFormat:@"Character %d", (int32_t) self.customCharacters.count];
 		[self.customCharacters addObject:character];
 		[tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
@@ -154,39 +169,61 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.editing) {
-		NCFitCharacter* character;
-		if (indexPath.section == 0)
-			character = [[NCStorage sharedStorage] characterWithAccount:self.accounts[indexPath.row]];
-		else if (indexPath.section == 1) {
-			if (indexPath.row == self.customCharacters.count) {
-				[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
-				return;
+		if (indexPath.section == 0) {
+			if (indexPath.section == 0) {
+				NCFittingCharacterPickerViewControllerRow* row = self.accounts[indexPath.row];
+				[[UIApplication sharedApplication]  beginIgnoringInteractionEvents];
+				[row.account loadFitCharacterWithCompletioBlock:^(NCFitCharacter *fitCharacter) {
+					[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+					if (fitCharacter) {
+						[self performSegueWithIdentifier:@"NCFittingCharacterEditorViewController" sender:fitCharacter];
+					}
+				}];
+			}
+		}
+		else {
+			NCFitCharacter* character;
+			if (indexPath.section == 1) {
+				if (indexPath.row == self.customCharacters.count) {
+					[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
+					return;
+				}
+				else
+					character = self.customCharacters[indexPath.row];
 			}
 			else
-				character = self.customCharacters[indexPath.row];
+				character = [self.storageManagedObjectContext fitCharacterWithSkillsLevel:indexPath.row];
+			
+			if (!character.managedObjectContext) {
+				[self.storageManagedObjectContext insertObject:character];
+				[self.customCharacters addObject:character];
+				[self.customCharacters sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+				[tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.customCharacters indexOfObject:character] inSection:1]] withRowAnimation:UITableViewRowAnimationMiddle];
+			}
+			[self performSegueWithIdentifier:@"NCFittingCharacterEditorViewController" sender:character];
 		}
-		else
-			character = [[NCStorage sharedStorage] characterWithSkillsLevel:indexPath.row];
-		
-		if (!character.managedObjectContext) {
-			[[[NCStorage sharedStorage] managedObjectContext] insertObject:character];
-			[self.customCharacters addObject:character];
-			[self.customCharacters sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
-			[tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.customCharacters indexOfObject:character] inSection:1]] withRowAnimation:UITableViewRowAnimationMiddle];
-		}
-		[self performSegueWithIdentifier:@"NCFittingCharacterEditorViewController" sender:character];
-		
 	}
 	else {
-		NCFitCharacter* character;
-		if (indexPath.section == 0)
-			character = [[NCStorage sharedStorage] characterWithAccount:self.accounts[indexPath.row]];
-		else if (indexPath.section == 1)
-			character = self.customCharacters[indexPath.row];
-		else
-			character = [[NCStorage sharedStorage] characterWithSkillsLevel:indexPath.row];
-		self.selectedCharacter = character;
-		[self performSegueWithIdentifier:@"Unwind" sender:character];
+		if (indexPath.section == 0) {
+			NCFittingCharacterPickerViewControllerRow* row = self.accounts[indexPath.row];
+			[[UIApplication sharedApplication]  beginIgnoringInteractionEvents];
+			[row.account loadFitCharacterWithCompletioBlock:^(NCFitCharacter *fitCharacter) {
+				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+				if (fitCharacter) {
+					self.selectedCharacter = fitCharacter;
+					[self performSegueWithIdentifier:@"Unwind" sender:fitCharacter];
+				}
+			}];
+		}
+		else {
+			NCFitCharacter* character;
+			if (indexPath.section == 1)
+				character = self.customCharacters[indexPath.row];
+			else
+				character = [self.storageManagedObjectContext fitCharacterWithSkillsLevel:indexPath.row];
+			self.selectedCharacter = character;
+			[self performSegueWithIdentifier:@"Unwind" sender:character];
+		}
 	}
 }
 
@@ -208,10 +245,10 @@
 	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	
 	if (indexPath.section == 0) {
-		NCAccount* account = self.accounts[indexPath.row];
-		cell.titleLabel.text = account.characterSheet.name;
+		NCFittingCharacterPickerViewControllerRow* row = self.accounts[indexPath.row];
+		cell.titleLabel.text = row.characterSheet.name;
 		cell.iconView.image = [UIImage emptyImageWithSize:CGSizeMake(32, 32)];
-		[cell.iconView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina32 error:nil]];
+		[cell.iconView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:row.characterSheet.characterID size:EVEImageSizeRetina32 error:nil]];
 	}
 	else if (indexPath.section == 1) {
 		if (indexPath.row == self.customCharacters.count) {

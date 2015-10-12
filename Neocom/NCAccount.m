@@ -123,7 +123,7 @@ static NCAccount* currentAccount = nil;
 }
 
 - (NCSkillPlan*) activeSkillPlan {
-	if (!_activeSkillPlan || [_activeSkillPlan isDeleted]) {
+	if (self.accountType == NCAccountTypeCharacter && (!_activeSkillPlan || [_activeSkillPlan isDeleted])) {
 		if (self.skillPlans.count == 0) {
 			_activeSkillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:self.managedObjectContext]
 								   insertIntoManagedObjectContext:self.managedObjectContext];
@@ -237,92 +237,108 @@ static NCAccount* currentAccount = nil;
 	};
 
 	[self.managedObjectContext performBlock:^{
-		NSString* key = [NSString stringWithFormat:@"%@.characterSheet", self.uuid];
-		[self.cacheManagedObjectContext performBlock:^{
-			NCCacheRecord* cacheRecord = self.cache[key];
-			if (!cacheRecord)
-				self.cache[key] = cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:key];
-			EVECharacterSheet* characterSheet = cacheRecord.data.data;
-			if (!characterSheet) {
-				[self.managedObjectContext performBlock:^{
-					[[EVEOnlineAPI apiWithAPIKey:self.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy] characterSheetWithCompletionBlock:^(EVECharacterSheet *result, NSError *error) {
-						[self.cacheManagedObjectContext performBlock:^{
-							[cacheRecord cacheResult:result];
-						}];
-						finalize(result, error);
-					}
-																																	progressBlock:nil];
-				}];
-			}
-			else
-				finalize(characterSheet, nil);
-		}];
+		if (self.accountType == NCAccountTypeCharacter) {
+			NSString* key = [NSString stringWithFormat:@"%@.characterSheet", self.uuid];
+			[self.cacheManagedObjectContext performBlock:^{
+				NCCacheRecord* cacheRecord = self.cache[key];
+				if (!cacheRecord)
+					self.cache[key] = cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:key];
+				EVECharacterSheet* characterSheet = cacheRecord.data.data;
+				if (!characterSheet) {
+					[self.managedObjectContext performBlock:^{
+						[[EVEOnlineAPI apiWithAPIKey:self.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy] characterSheetWithCompletionBlock:^(EVECharacterSheet *result, NSError *error) {
+							[self.cacheManagedObjectContext performBlock:^{
+								[cacheRecord cacheResult:result];
+							}];
+							finalize(result, error);
+						}
+																																		progressBlock:nil];
+					}];
+				}
+				else
+					finalize(characterSheet, nil);
+			}];
+		}
+		else
+			finalize(nil, [NSError errorWithDomain:EVEOnlineErrorDomain code:EVEErrorCodeInvalidAPIKeyType userInfo:@{NSLocalizedDescriptionKey:EVEErrorCodeInvalidAPIKeyTypeText}]);
 	}];
 }
 
 - (void) loadCorporationSheetWithCompletionBlock:(void(^)(EVECorporationSheet* corporationSheet, NSError* error)) completionBlock {
 	[self.managedObjectContext performBlock:^{
-		NSString* key = [NSString stringWithFormat:@"%@.corporationSheet", self.uuid];
-		[self.cacheManagedObjectContext performBlock:^{
-			NCCacheRecord* cacheRecord = self.cache[key];
-			if (!cacheRecord)
-				self.cache[key] = cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:key];
-			EVECorporationSheet* corporationSheet = cacheRecord.data.data;
-			if (!corporationSheet) {
-				[self.managedObjectContext performBlock:^{
-					[[EVEOnlineAPI apiWithAPIKey:self.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy] corporationSheetWithCorporationID:0
-																																  completionBlock:^(EVECorporationSheet *result, NSError *error) {
-																																	  [self.cacheManagedObjectContext performBlock:^{
-																																		  [cacheRecord cacheResult:result];
-																																	  }];
-																																	  dispatch_async(dispatch_get_main_queue(), ^{
-																																		  completionBlock(result, error);
-																																		  if (result)
-																																			  [[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:self userInfo:@{@"corporationSheet":result}];
-																																		  
-																																	  });
-																																  }
-																																	progressBlock:nil];
-				}];
-			}
-			else {
-				dispatch_async(dispatch_get_main_queue(), ^{
-					completionBlock(corporationSheet, nil);
-				});
-			}
-		}];
+		if (self.accountType == NCAccountTypeCorporate) {
+			NSString* key = [NSString stringWithFormat:@"%@.corporationSheet", self.uuid];
+			[self.cacheManagedObjectContext performBlock:^{
+				NCCacheRecord* cacheRecord = self.cache[key];
+				if (!cacheRecord)
+					self.cache[key] = cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:key];
+				EVECorporationSheet* corporationSheet = cacheRecord.data.data;
+				if (!corporationSheet) {
+					[self.managedObjectContext performBlock:^{
+						[[EVEOnlineAPI apiWithAPIKey:self.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy] corporationSheetWithCorporationID:0
+																																	  completionBlock:^(EVECorporationSheet *result, NSError *error) {
+																																		  [self.cacheManagedObjectContext performBlock:^{
+																																			  [cacheRecord cacheResult:result];
+																																		  }];
+																																		  dispatch_async(dispatch_get_main_queue(), ^{
+																																			  completionBlock(result, error);
+																																			  if (result)
+																																				  [[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:self userInfo:@{@"corporationSheet":result}];
+																																			  
+																																		  });
+																																	  }
+																																		progressBlock:nil];
+					}];
+				}
+				else {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						completionBlock(corporationSheet, nil);
+					});
+				}
+			}];
+		}
+		else
+			dispatch_async(dispatch_get_main_queue(), ^{
+				completionBlock(nil, [NSError errorWithDomain:EVEOnlineErrorDomain code:EVEErrorCodeInvalidAPIKeyType userInfo:@{NSLocalizedDescriptionKey:EVEErrorCodeInvalidAPIKeyTypeText}]);
+			});
 	}];
 }
 
 - (void) loadSkillQueueWithCompletionBlock:(void(^)(EVESkillQueue* skillQueue, NSError* error)) completionBlock {
 	[self.managedObjectContext performBlock:^{
-		NSString* key = [NSString stringWithFormat:@"%@.skillQueue", self.uuid];
-		[self.cacheManagedObjectContext performBlock:^{
-			NCCacheRecord* cacheRecord = self.cache[key];
-			if (!cacheRecord)
-				self.cache[key] = cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:key];
-			EVESkillQueue* skillQueue = cacheRecord.data.data;
-			if (!skillQueue) {
-				[self.managedObjectContext performBlock:^{
-					[[EVEOnlineAPI apiWithAPIKey:self.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy] skillQueueWithCompletionBlock:^(EVESkillQueue *result, NSError *error) {
-						[self.cacheManagedObjectContext performBlock:^{
-							[cacheRecord cacheResult:result];
-						}];
-						dispatch_async(dispatch_get_main_queue(), ^{
-							if (result)
-								[[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:self userInfo:@{@"skillQueue":result}];
-							completionBlock(result, error);
-						});
-					}
-																																progressBlock:nil];
-				}];
-			}
-			else {
-				dispatch_async(dispatch_get_main_queue(), ^{
-					completionBlock(skillQueue, nil);
-				});
-			}
-		}];
+		if (self.accountType == NCAccountTypeCharacter) {
+			NSString* key = [NSString stringWithFormat:@"%@.skillQueue", self.uuid];
+			[self.cacheManagedObjectContext performBlock:^{
+				NCCacheRecord* cacheRecord = self.cache[key];
+				if (!cacheRecord)
+					self.cache[key] = cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:key];
+				EVESkillQueue* skillQueue = cacheRecord.data.data;
+				if (!skillQueue) {
+					[self.managedObjectContext performBlock:^{
+						[[EVEOnlineAPI apiWithAPIKey:self.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy] skillQueueWithCompletionBlock:^(EVESkillQueue *result, NSError *error) {
+							[self.cacheManagedObjectContext performBlock:^{
+								[cacheRecord cacheResult:result];
+							}];
+							dispatch_async(dispatch_get_main_queue(), ^{
+								if (result)
+									[[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:self userInfo:@{@"skillQueue":result}];
+								completionBlock(result, error);
+							});
+						}
+																																	progressBlock:nil];
+					}];
+				}
+				else {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						completionBlock(skillQueue, nil);
+					});
+				}
+			}];
+		}
+		else
+			dispatch_async(dispatch_get_main_queue(), ^{
+				completionBlock(nil, [NSError errorWithDomain:EVEOnlineErrorDomain code:EVEErrorCodeInvalidAPIKeyType userInfo:@{NSLocalizedDescriptionKey:EVEErrorCodeInvalidAPIKeyTypeText}]);
+			});
 	}];
 }
 

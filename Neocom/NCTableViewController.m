@@ -29,7 +29,6 @@
 @property (nonatomic, strong) NSMutableDictionary* estimatedRowHeights;
 @property (nonatomic, assign) BOOL loadingFromCache;
 @property (nonatomic, assign) BOOL reloading;
-@property (nonatomic, assign) BOOL initialSetupFinished;
 @property (nonatomic, strong) dispatch_group_t searchingDispatchGroup;
 @property (nonatomic, strong) UIProgressView* progressView;
 @property (nonatomic, assign) BOOL internalDatabaseManagedObjectContext;
@@ -109,21 +108,12 @@
 	
 	//Collapse/expand support
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			NSString* key = NSStringFromClass(self.class);
-			
-			[self.storageManagedObjectContext performBlock:^{
-				NCSetting* setting = [self.storageManagedObjectContext settingWithKey:key];
-				self.previousCollapsState = setting.value;
-				dispatch_async(dispatch_get_main_queue(), ^{
-					self.initialSetupFinished = YES;
-					[self reloadIfNeeded];
-				});
-			}];
-		});
+		NSManagedObjectContext* storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+		NSString* key = NSStringFromClass(self.class);
+		NCSetting* setting = [storageManagedObjectContext settingWithKey:key];
+		self.previousCollapsState = setting.value;
 	}
-	else
-		self.initialSetupFinished = YES;
+	
 	self.sectionsCollapsState = [NSMutableDictionary new];
 	
 	if ([self.tableView.tableHeaderView isKindOfClass:[UISearchBar class]]) {
@@ -174,15 +164,11 @@
 	self.taskManager.active = NO;
 	
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
+		NSManagedObjectContext* storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
 		NSString* key = NSStringFromClass(self.class);
-		id sectionsCollapsState = self.sectionsCollapsState;
-		[self.storageManagedObjectContext performBlock:^{
-			NCSetting* setting = [self.storageManagedObjectContext settingWithKey:key];
-			if (![sectionsCollapsState isEqualToDictionary:setting.value]) {
-				setting.value = sectionsCollapsState;
-				[self.storageManagedObjectContext save:nil];
-			}
-		}];
+		NCSetting* setting = [storageManagedObjectContext settingWithKey:key];
+		setting.value = self.sectionsCollapsState;
+		[storageManagedObjectContext save:nil];
 	}
 	[_cacheManagedObjectContext performBlock:^{
 		if ([_cacheManagedObjectContext hasChanges])
@@ -701,9 +687,6 @@
 }
 
 - (void) reloadIfNeeded {
-	if (!self.initialSetupFinished)
-		return;
-	
 	if (!self.cacheRecord && self.cacheRecordID)
 		[self reload];
 	else if (self.cacheRecord) {

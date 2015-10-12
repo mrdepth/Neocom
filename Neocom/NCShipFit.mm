@@ -934,19 +934,23 @@
 	if (character && self.pilot) {
 		__block NSDictionary* skills;
 		__block NSArray* implants;
+		__block NSString* characterName;
 		if (character.managedObjectContext)
 			[character.managedObjectContext performBlockAndWait:^{
 				skills = character.skills;
 				implants = character.implants;
+				characterName = character.name;
 			}];
 		else {
 			skills = character.skills;
 			implants = character.implants;
+			characterName = character.name;
 		}
 		[self.engine performBlockAndWait:^{
 			[self setSkillLevels:skills];
 			for (NSNumber* implantID in implants)
 				self.pilot->addImplant([implantID intValue]);
+			self.pilot->setCharacterName([characterName cStringUsingEncoding:NSUTF8StringEncoding]);
 		}];
 	}
 }

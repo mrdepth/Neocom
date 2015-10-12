@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "CBD3C72D1EC244FEC895CDE83582355773BC1B4F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "CBD3C72D1EC244FEC895CDE83582355773BC1B4F" : 0,
+    "CE59D664C95604646A8898B717A20F0AFC1A609F" : 0,
+    "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "863436D1-F8A0-4AA1-9700-DB889B84C607",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "CBD3C72D1EC244FEC895CDE83582355773BC1B4F" : "EVEUniverse",
+    "CE59D664C95604646A8898B717A20F0AFC1A609F" : "EVEUniverseThirdParty\/eufe",
+    "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0" : "EVEUniverseThirdParty\/EVEOnlineAPI"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "NCDatabase",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "dbTools\/NCDatabase\/NCDatabase.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrdepth\/EVEOnlineAPI.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:mrdepth\/EVEUniverse.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CBD3C72D1EC244FEC895CDE83582355773BC1B4F"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:mrdepth\/eufe.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CE59D664C95604646A8898B717A20F0AFC1A609F"
+    }
+  ]
+}

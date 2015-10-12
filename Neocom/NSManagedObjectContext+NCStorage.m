@@ -105,7 +105,7 @@
 }
 
 //NCFitCharacter
-- (NSArray*) characters {
+- (NSArray*) fitCharacters {
 	NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"FitCharacter"];
 	fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
 	return [self executeFetchRequest:fetchRequest error:nil];
@@ -136,7 +136,7 @@
 	return character;
 }*/
 
-- (NCFitCharacter*) characterWithSkillsLevel:(NSInteger) skillsLevel {
+- (NCFitCharacter*) fitCharacterWithSkillsLevel:(NSInteger) skillsLevel {
 	NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:self] insertIntoManagedObjectContext:nil];
 	character.name = [NSString stringWithFormat:NSLocalizedString(@"All Skills %d", nil), (int32_t) skillsLevel];
 	

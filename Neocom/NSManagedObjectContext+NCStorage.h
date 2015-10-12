@@ -34,9 +34,9 @@
 - (NCAccount*) accountWithUUID:(NSString*) uuid;
 
 //NCFitCharacter
-- (NSArray*) characters;
-- (NCFitCharacter*) characterWithAccount:(NCAccount*) account;
-- (NCFitCharacter*) characterWithSkillsLevel:(NSInteger) skillsLevel;
+- (NSArray*) fitCharacters;
+- (NCFitCharacter*) fitCharacterWithAccount:(NCAccount*) account;
+- (NCFitCharacter*) fitCharacterWithSkillsLevel:(NSInteger) skillsLevel;
 
 //NCSetting
 - (NCSetting*) settingWithKey:(NSString*) key;

@@ -152,7 +152,7 @@
 																	break;
 																}
 															}
-															int dronesLeft = std::max(ship->getMaxActiveDrones() - 1, 1);
+															int dronesLeft = std::max(ship->getMaxActiveDrones(), 1);
 															for (;dronesLeft > 0; dronesLeft--) {
 																auto drone = ship->addDrone(typeID);
 																if (sameDrone) {
@@ -287,13 +287,15 @@
 				typeName = type.typeName;
 			}];
 			UIAlertController* controller = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ amount", nil), typeName] message:nil preferredStyle:UIAlertControllerStyleAlert];
+			__block UITextField* amountTextField;
 			[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+				amountTextField = textField;
 				textField.keyboardType = UIKeyboardTypeNumberPad;
 				textField.text = [NSString stringWithFormat:@"%d", (int) row.drones.size()];
 				textField.clearButtonMode = UITextFieldViewModeAlways;
 			}];
 			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-				int amount = [[controller.textFields[0] text] intValue];
+				int amount = [amountTextField.text intValue];
 				if (amount > 0) {
 					if (amount > 50)
 						amount = 50;

@@ -7,6 +7,68 @@
 //
 
 #import "NCDatabase.h"
+#import "NCStorage.h"
+
+@interface NCDatabaseStore : NSIncrementalStore
+@property (nonatomic, strong) NSPersistentStoreCoordinator* pc;
+@property (nonatomic, strong, readonly) NSIncrementalStore* persistentStore;
+@end
+
+@implementation NCDatabaseStore
+
+- (NSPersistentStore*) persistentStore {
+	return [self.pc.persistentStores lastObject];
+}
+
+- (NSString*) type {
+	return @"MyClass";
+}
+
+- (id) initWithPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)root configurationName:(NSString *)name URL:(NSURL *)url options:(NSDictionary *)options {
+	if (self = [super initWithPersistentStoreCoordinator:root configurationName:name URL:url options:options]) {
+		self.pc = [[NCDatabase sharedDatabase] persistentStoreCoordinator];
+	}
+	return self;
+}
+
+- (BOOL) loadMetadata:(NSError * _Nullable __autoreleasing *)error {
+	return [self.persistentStore loadMetadata:error];
+}
+
+- (NSDictionary*) metadata {
+	NSMutableDictionary* metadata = [[self.persistentStore metadata] mutableCopy];
+	metadata[NSStoreTypeKey] = @"MyClass";
+	return @{NSStoreTypeKey:@"MyClass", NSStoreUUIDKey:metadata[NSStoreUUIDKey]};
+}
+
+- (nullable id)executeRequest:(NSPersistentStoreRequest *)request withContext:(nullable NSManagedObjectContext*)context error:(NSError **)error {
+	return [self.pc executeRequest:request withContext:context error:error];
+}
+
+- (nullable NSIncrementalStoreNode *)newValuesForObjectWithID:(NSManagedObjectID*)objectID withContext:(NSManagedObjectContext*)context error:(NSError**)error {
+	return [self.persistentStore newValuesForObjectWithID:objectID withContext:context error:error];
+}
+
+- (nullable id)newValueForRelationship:(NSRelationshipDescription*)relationship forObjectWithID:(NSManagedObjectID*)objectID withContext:(nullable NSManagedObjectContext *)context error:(NSError **)error {
+	return [self.persistentStore newValueForRelationship:relationship forObjectWithID:objectID withContext:context error:error];
+}
+
+
+- (nullable NSArray<NSManagedObjectID *> *)obtainPermanentIDsForObjects:(NSArray<NSManagedObject *> *)array error:(NSError **)error {
+	return [self.persistentStore obtainPermanentIDsForObjects:array error:error];
+}
+
+//- (NSManagedObjectID *)newObjectIDForEntity:(NSEntityDescription *)entity referenceObject:(id)data {
+//	return [self.persistentStore newObjectIDForEntity:entity referenceObject:data];
+//}
+
+//- (id)referenceObjectForObjectID:(NSManagedObjectID *)objectID {
+//	return [self.persistentStore referenceObjectForObjectID:objectID];
+//}
+
+
+
+@end
 
 
 @implementation NCDatabase
@@ -107,14 +169,31 @@
 }
 
 - (NSManagedObjectContext*) createManagedObjectContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType) concurrencyType {
-	NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+	static NSPersistentStoreCoordinator* pc;
+	if (!pc) {
+		NSManagedObjectModel* model1 = self.managedObjectModel;
+		NSManagedObjectModel* model2 = [[NCStorage sharedStorage] managedObjectModel];
+		pc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[NSManagedObjectModel modelByMergingModels:@[model2, model1]]];
+		[NSPersistentStoreCoordinator registerStoreClass:[NCDatabaseStore class] forStoreType:@"MyClass"];
+		NSError* error = nil;
+		id ps = [pc addPersistentStoreWithType:@"MyClass" configuration:@"NCDatabase" URL:[[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"sqlite"] options:@{NSReadOnlyPersistentStoreOption: @(YES),
+																																										 NSSQLitePragmasOption:@{@"journal_mode": @"OFF"},
+																																														NSIgnorePersistentStoreVersioningOption:@(YES)} error:&error];
+		NSLog(@"%@", error);
+	}
+
+	NSManagedObjectContext* managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:concurrencyType];
+	[managedObjectContext setPersistentStoreCoordinator:pc];
+	return managedObjectContext;
+	
+/*	NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
 	if (coordinator != nil) {
 		NSManagedObjectContext* managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:concurrencyType];
 		[managedObjectContext setPersistentStoreCoordinator:coordinator];
 		return managedObjectContext;
 	}
 	else
-		return nil;
+		return nil;*/
 }
 
 @end

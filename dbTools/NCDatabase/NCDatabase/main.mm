@@ -155,7 +155,9 @@ static NSManagedObjectModel *managedObjectModel()
 	path = [path stringByDeletingPathExtension];
     NSURL *modelURL = [NSURL fileURLWithPath:[path stringByAppendingPathExtension:@"momd"]];
     model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    
+	NSManagedObjectModel* storageModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"NCStorage.momd"]]];
+	model = [NSManagedObjectModel modelByMergingModels:@[storageModel, model]];
+	//return storageModel;
     return model;
 }
 
@@ -179,7 +181,7 @@ static NSManagedObjectContext *managedObjectContext()
         
         NSError *error;
         NSPersistentStore *newStore = [coordinator addPersistentStoreWithType:STORE_TYPE
-																configuration:nil
+																configuration:@"NCDatabase"
 																		  URL:url
 																	  options:@{NSSQLitePragmasOption:@{@"journal_mode": @"OFF"}}
 																		error:&error];

@@ -39,6 +39,7 @@
 	}
 	else if (self.category) {
 		self.databaseManagedObjectContext = self.group.managedObjectContext;
+		self.category = [self.databaseManagedObjectContext objectWithID:self.category.objectID];
 		self.title = self.category.categoryName;
 	}
 	

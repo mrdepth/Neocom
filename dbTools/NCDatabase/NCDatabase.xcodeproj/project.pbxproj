@@ -63,7 +63,6 @@
 		12476C8F19501A4D009E07C6 /* Charge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2119501A4C009E07C6 /* Charge.cpp */; };
 		12476C9119501A4D009E07C6 /* ControlTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2519501A4C009E07C6 /* ControlTower.cpp */; };
 		12476C9219501A4D009E07C6 /* DamagePattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2719501A4C009E07C6 /* DamagePattern.cpp */; };
-		12476C9319501A4D009E07C6 /* Decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2919501A4C009E07C6 /* Decoder.cpp */; };
 		12476C9419501A4D009E07C6 /* Drone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2B19501A4C009E07C6 /* Drone.cpp */; };
 		12476C9519501A4D009E07C6 /* Effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2D19501A4C009E07C6 /* Effect.cpp */; };
 		12476C9619501A4D009E07C6 /* EffectAdaptiveArmorHardener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2F19501A4C009E07C6 /* EffectAdaptiveArmorHardener.cpp */; };
@@ -77,7 +76,6 @@
 		12476C9E19501A4D009E07C6 /* EffectNaniteRepairPasteArmorDamageBonus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C4019501A4D009E07C6 /* EffectNaniteRepairPasteArmorDamageBonus.cpp */; };
 		12476C9F19501A4D009E07C6 /* EffectShieldBoostingInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C4219501A4D009E07C6 /* EffectShieldBoostingInterpreter.cpp */; };
 		12476CA019501A4D009E07C6 /* EffectSlotModifierInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C4419501A4D009E07C6 /* EffectSlotModifierInterpreter.cpp */; };
-		12476CA119501A4D009E07C6 /* Encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C4619501A4D009E07C6 /* Encoder.cpp */; };
 		12476CA219501A4D009E07C6 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C4819501A4D009E07C6 /* Engine.cpp */; };
 		12476CA319501A4D009E07C6 /* FetchResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C4F19501A4D009E07C6 /* FetchResult.cpp */; };
 		12476CA419501A4D009E07C6 /* Gang.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C5119501A4D009E07C6 /* Gang.cpp */; };
@@ -88,7 +86,6 @@
 		12476CA919501A4D009E07C6 /* LocationRequiredSkillModifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C5C19501A4D009E07C6 /* LocationRequiredSkillModifier.cpp */; };
 		12476CAB19501A4D009E07C6 /* Modifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C5F19501A4D009E07C6 /* Modifier.cpp */; };
 		12476CAC19501A4D009E07C6 /* Module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C6119501A4D009E07C6 /* Module.cpp */; };
-		12476CAD19501A4D009E07C6 /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C6319501A4D009E07C6 /* Mutex.cpp */; };
 		12476CAE19501A4D009E07C6 /* Ship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C6519501A4D009E07C6 /* Ship.cpp */; };
 		12476CAF19501A4D009E07C6 /* Skill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C6719501A4D009E07C6 /* Skill.cpp */; };
 		12476CB019501A4D009E07C6 /* SqlConnector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C6919501A4D009E07C6 /* SqlConnector.cpp */; };
@@ -146,6 +143,7 @@
 		127667471914C9A900530550 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127667461914C9A900530550 /* Foundation.framework */; };
 		1276674A1914C9A900530550 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 127667491914C9A900530550 /* main.mm */; };
 		127667511914C9A900530550 /* NCDatabase.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 127667501914C9A900530550 /* NCDatabase.1 */; };
+		128257191BCCF4C400BC1F56 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */; settings = {ASSET_TAGS = (); }; };
 		12A049D419EF0D4000B1FF1D /* NCDBVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A049D319EF0D4000B1FF1D /* NCDBVersion.m */; };
 		12D6DC8E1920CD0A003FC5ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D6DC8D1920CD0A003FC5ED /* libsqlite3.dylib */; };
 		12D6DCF41920D1D5003FC5ED /* NCDBImageValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */; };
@@ -281,8 +279,6 @@
 		12476C2619501A4C009E07C6 /* ControlTower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlTower.h; sourceTree = "<group>"; };
 		12476C2719501A4C009E07C6 /* DamagePattern.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DamagePattern.cpp; sourceTree = "<group>"; };
 		12476C2819501A4C009E07C6 /* DamagePattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DamagePattern.h; sourceTree = "<group>"; };
-		12476C2919501A4C009E07C6 /* Decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Decoder.cpp; sourceTree = "<group>"; };
-		12476C2A19501A4C009E07C6 /* Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Decoder.h; sourceTree = "<group>"; };
 		12476C2B19501A4C009E07C6 /* Drone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drone.cpp; sourceTree = "<group>"; };
 		12476C2C19501A4C009E07C6 /* Drone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drone.h; sourceTree = "<group>"; };
 		12476C2D19501A4C009E07C6 /* Effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Effect.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -310,8 +306,6 @@
 		12476C4319501A4D009E07C6 /* EffectShieldBoostingInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectShieldBoostingInterpreter.h; sourceTree = "<group>"; };
 		12476C4419501A4D009E07C6 /* EffectSlotModifierInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectSlotModifierInterpreter.cpp; sourceTree = "<group>"; };
 		12476C4519501A4D009E07C6 /* EffectSlotModifierInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectSlotModifierInterpreter.h; sourceTree = "<group>"; };
-		12476C4619501A4D009E07C6 /* Encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Encoder.cpp; sourceTree = "<group>"; };
-		12476C4719501A4D009E07C6 /* Encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Encoder.h; sourceTree = "<group>"; };
 		12476C4819501A4D009E07C6 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
 		12476C4919501A4D009E07C6 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
 		12476C4B19501A4D009E07C6 /* eufe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eufe.h; sourceTree = "<group>"; };
@@ -334,8 +328,6 @@
 		12476C6019501A4D009E07C6 /* Modifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Modifier.h; sourceTree = "<group>"; };
 		12476C6119501A4D009E07C6 /* Module.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Module.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		12476C6219501A4D009E07C6 /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Module.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		12476C6319501A4D009E07C6 /* Mutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mutex.cpp; sourceTree = "<group>"; };
-		12476C6419501A4D009E07C6 /* Mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mutex.h; sourceTree = "<group>"; };
 		12476C6519501A4D009E07C6 /* Ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ship.cpp; sourceTree = "<group>"; };
 		12476C6619501A4D009E07C6 /* Ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ship.h; sourceTree = "<group>"; };
 		12476C6719501A4D009E07C6 /* Skill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Skill.cpp; sourceTree = "<group>"; };
@@ -450,6 +442,8 @@
 		127667491914C9A900530550 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		1276674C1914C9A900530550 /* NCDatabase-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NCDatabase-Prefix.pch"; sourceTree = "<group>"; };
 		127667501914C9A900530550 /* NCDatabase.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = NCDatabase.1; sourceTree = "<group>"; };
+		128257171BCCF4C400BC1F56 /* NCStorage 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NCStorage 2.xcdatamodel"; sourceTree = "<group>"; };
+		128257181BCCF4C400BC1F56 /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
 		12A049D219EF0D4000B1FF1D /* NCDBVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBVersion.h; sourceTree = "<group>"; };
 		12A049D319EF0D4000B1FF1D /* NCDBVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBVersion.m; sourceTree = "<group>"; };
 		12D6DC8D1920CD0A003FC5ED /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -634,8 +628,6 @@
 				12476C2619501A4C009E07C6 /* ControlTower.h */,
 				12476C2719501A4C009E07C6 /* DamagePattern.cpp */,
 				12476C2819501A4C009E07C6 /* DamagePattern.h */,
-				12476C2919501A4C009E07C6 /* Decoder.cpp */,
-				12476C2A19501A4C009E07C6 /* Decoder.h */,
 				12476C2B19501A4C009E07C6 /* Drone.cpp */,
 				12476C2C19501A4C009E07C6 /* Drone.h */,
 				12476C2D19501A4C009E07C6 /* Effect.cpp */,
@@ -663,8 +655,6 @@
 				12476C4319501A4D009E07C6 /* EffectShieldBoostingInterpreter.h */,
 				12476C4419501A4D009E07C6 /* EffectSlotModifierInterpreter.cpp */,
 				12476C4519501A4D009E07C6 /* EffectSlotModifierInterpreter.h */,
-				12476C4619501A4D009E07C6 /* Encoder.cpp */,
-				12476C4719501A4D009E07C6 /* Encoder.h */,
 				12476C4819501A4D009E07C6 /* Engine.cpp */,
 				12476C4919501A4D009E07C6 /* Engine.h */,
 				12476C4B19501A4D009E07C6 /* eufe.h */,
@@ -687,8 +677,6 @@
 				12476C6019501A4D009E07C6 /* Modifier.h */,
 				12476C6119501A4D009E07C6 /* Module.cpp */,
 				12476C6219501A4D009E07C6 /* Module.h */,
-				12476C6319501A4D009E07C6 /* Mutex.cpp */,
-				12476C6419501A4D009E07C6 /* Mutex.h */,
 				12476C6519501A4D009E07C6 /* Ship.cpp */,
 				12476C6619501A4D009E07C6 /* Ship.h */,
 				12476C6719501A4D009E07C6 /* Skill.cpp */,
@@ -757,6 +745,7 @@
 				12D6DCF519211091003FC5ED /* NCDatabase.h */,
 				12D6DCF21920D1D5003FC5ED /* NCDBImageValueTransformer.h */,
 				12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */,
+				128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */,
 				12436EAB194701B80090D4A6 /* NCDatabase.xcdatamodeld */,
 				127667501914C9A900530550 /* NCDatabase.1 */,
 				1276674B1914C9A900530550 /* Supporting Files */,
@@ -944,7 +933,6 @@
 				12584EC119C9604D00847AB1 /* NCDBInvGroup.m in Sources */,
 				12476C9619501A4D009E07C6 /* EffectAdaptiveArmorHardener.cpp in Sources */,
 				12D6DCF41920D1D5003FC5ED /* NCDBImageValueTransformer.m in Sources */,
-				12476CA119501A4D009E07C6 /* Encoder.cpp in Sources */,
 				12584EA619C9604C00847AB1 /* NCDBCertSkill.m in Sources */,
 				12476CA219501A4D009E07C6 /* Engine.cpp in Sources */,
 				12436D81194596750090D4A6 /* EVEDBDgmTypeEffect.m in Sources */,
@@ -956,6 +944,7 @@
 				12436D83194596750090D4A6 /* EVEDBEveUnit.m in Sources */,
 				12436D7C194596750090D4A6 /* EVEDBDatabase.m in Sources */,
 				12476CA319501A4D009E07C6 /* FetchResult.cpp in Sources */,
+				128257191BCCF4C400BC1F56 /* NCStorage.xcdatamodeld in Sources */,
 				12476C8F19501A4D009E07C6 /* Charge.cpp in Sources */,
 				12584ED019C9604D00847AB1 /* NCDBInvControlTower.m in Sources */,
 				12476C9919501A4D009E07C6 /* EffectEnergyDestabilizationNewInterpreter.cpp in Sources */,
@@ -1027,7 +1016,6 @@
 				12476C8E19501A4D009E07C6 /* Character.cpp in Sources */,
 				12476C9219501A4D009E07C6 /* DamagePattern.cpp in Sources */,
 				12584EFA19C9604E00847AB1 /* NCDBDgmEffect.m in Sources */,
-				12476CAD19501A4D009E07C6 /* Mutex.cpp in Sources */,
 				12584E0A19C950C500847AB1 /* EVEDBIndustryActivityRace.m in Sources */,
 				12476C9C19501A4D009E07C6 /* EffectHullRepairInterpreter.cpp in Sources */,
 				12476CA919501A4D009E07C6 /* LocationRequiredSkillModifier.cpp in Sources */,
@@ -1044,7 +1032,6 @@
 				12436D8F194596750090D4A6 /* EVEDBInvType+Skill.m in Sources */,
 				12476CA419501A4D009E07C6 /* Gang.cpp in Sources */,
 				12476C8919501A4D009E07C6 /* Area.cpp in Sources */,
-				12476C9319501A4D009E07C6 /* Decoder.cpp in Sources */,
 				12584E8B19C9604B00847AB1 /* NCDBEveIconImage.m in Sources */,
 				12476CA719501A4D009E07C6 /* Item.cpp in Sources */,
 				12584E9119C9604B00847AB1 /* NCDBMapRegion.m in Sources */,
@@ -1189,6 +1176,18 @@
 			currentVersion = 12436EAC194701B80090D4A6 /* NCDatabase.xcdatamodel */;
 			name = NCDatabase.xcdatamodeld;
 			path = ../../../Neocom/db/NCDatabase.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				128257171BCCF4C400BC1F56 /* NCStorage 2.xcdatamodel */,
+				128257181BCCF4C400BC1F56 /* NCStorage.xcdatamodel */,
+			);
+			currentVersion = 128257171BCCF4C400BC1F56 /* NCStorage 2.xcdatamodel */;
+			name = NCStorage.xcdatamodeld;
+			path = ../../../Neocom/NCStorage.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

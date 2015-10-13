@@ -147,8 +147,8 @@ static NCStorage* sharedStorage;
 			if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 														   configuration:@"Cloud"
 																	 URL:storeURL
-																options:@{NSInferMappingModelAutomaticallyOption : @(YES),
-																		  NSMigratePersistentStoresAutomaticallyOption : @(YES)}
+																options:@{NSInferMappingModelAutomaticallyOption : @(NO),
+																		  NSMigratePersistentStoresAutomaticallyOption : @(NO)}
 																   error:&error])
 				break;
 			else
@@ -180,6 +180,15 @@ static NCStorage* sharedStorage;
 			});
 			return nil;
 		}
+		
+/*		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+													   configuration:@"NCDatabase"
+																 URL:[[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"sqlite"]
+															 options:@{NSReadOnlyPersistentStoreOption: @(YES),
+																	   NSSQLitePragmasOption:@{@"journal_mode": @"OFF"}}
+															   error:&error]) {
+		}*/
+
 		[self notifyStorageChange];
 	}
 	return self;
@@ -285,6 +294,8 @@ static NCStorage* sharedStorage;
 			});
 			return nil;
 		}
+		
+		
 		[self notifyStorageChange];
 	}
 	return self;
@@ -408,6 +419,10 @@ static NCStorage* sharedStorage;
 		}
 		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage" withExtension:@"momd"];
 		_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+		modelURL = [[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"momd"];
+		NSManagedObjectModel* databaseManagedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+		_managedObjectModel = [NSManagedObjectModel modelByMergingModels:@[_managedObjectModel, databaseManagedObjectModel]];
+
 		return _managedObjectModel;
 	}
 }

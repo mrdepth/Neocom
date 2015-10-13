@@ -32,6 +32,8 @@
 @property (nonatomic, strong) dispatch_group_t searchingDispatchGroup;
 @property (nonatomic, strong) UIProgressView* progressView;
 @property (nonatomic, assign) BOOL internalDatabaseManagedObjectContext;
+@property (nonatomic, strong) NSManagedObjectContext* settingsManagedObjectContext;
+@property (nonatomic, strong) NCSetting* sectionsCollapsSetting;
 
 - (IBAction) onRefresh:(id) sender;
 
@@ -44,6 +46,7 @@
 - (void) reloadIfNeeded;
 - (void) searchWithSearchString:(NSString*) searchString;
 - (void) progressStepWithProgress:(NSProgress*) progress;
+
 @end
 
 @implementation NCTableViewController
@@ -108,10 +111,9 @@
 	
 	//Collapse/expand support
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
-		NSManagedObjectContext* storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
 		NSString* key = NSStringFromClass(self.class);
-		NCSetting* setting = [storageManagedObjectContext settingWithKey:key];
-		self.previousCollapsState = setting.value;
+		self.sectionsCollapsSetting = [self.settingsManagedObjectContext settingWithKey:key];
+		self.previousCollapsState = self.sectionsCollapsSetting.value;
 	}
 	
 	self.sectionsCollapsState = [NSMutableDictionary new];
@@ -163,12 +165,9 @@
 	[super viewWillDisappear:animated];
 	self.taskManager.active = NO;
 	
-	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
-		NSManagedObjectContext* storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
-		NSString* key = NSStringFromClass(self.class);
-		NCSetting* setting = [storageManagedObjectContext settingWithKey:key];
-		setting.value = self.sectionsCollapsState;
-		[storageManagedObjectContext save:nil];
+	if (self.sectionsCollapsSetting) {
+		self.sectionsCollapsSetting.value = self.sectionsCollapsState;
+		[self.settingsManagedObjectContext save:nil];
 	}
 	[_cacheManagedObjectContext performBlock:^{
 		if ([_cacheManagedObjectContext hasChanges])

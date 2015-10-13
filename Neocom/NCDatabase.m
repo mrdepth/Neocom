@@ -42,7 +42,8 @@
 }
 
 - (nullable id)executeRequest:(NSPersistentStoreRequest *)request withContext:(nullable NSManagedObjectContext*)context error:(NSError **)error {
-	return [self.pc executeRequest:request withContext:context error:error];
+	id res = [self.pc executeRequest:request withContext:context error:error];
+	return res;
 }
 
 - (nullable NSIncrementalStoreNode *)newValuesForObjectWithID:(NSManagedObjectID*)objectID withContext:(NSManagedObjectContext*)context error:(NSError**)error {
@@ -58,13 +59,13 @@
 	return [self.persistentStore obtainPermanentIDsForObjects:array error:error];
 }
 
-//- (NSManagedObjectID *)newObjectIDForEntity:(NSEntityDescription *)entity referenceObject:(id)data {
-//	return [self.persistentStore newObjectIDForEntity:entity referenceObject:data];
-//}
+- (NSManagedObjectID *)newObjectIDForEntity:(NSEntityDescription *)entity referenceObject:(id)data {
+	return [self.persistentStore newObjectIDForEntity:entity referenceObject:data];
+}
 
-//- (id)referenceObjectForObjectID:(NSManagedObjectID *)objectID {
-//	return [self.persistentStore referenceObjectForObjectID:objectID];
-//}
+- (id)referenceObjectForObjectID:(NSManagedObjectID *)objectID {
+	return [self.persistentStore referenceObjectForObjectID:objectID];
+}
 
 
 
@@ -138,6 +139,9 @@
 		}
 		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"momd"];
 		_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+		//modelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage" withExtension:@"momd"];
+		//NSManagedObjectModel* model2 = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+		//_managedObjectModel = [NSManagedObjectModel modelByMergingModels:@[_managedObjectModel, model2]];
 		return _managedObjectModel;
 	}
 }
@@ -169,31 +173,14 @@
 }
 
 - (NSManagedObjectContext*) createManagedObjectContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType) concurrencyType {
-	static NSPersistentStoreCoordinator* pc;
-	if (!pc) {
-		NSManagedObjectModel* model1 = self.managedObjectModel;
-		NSManagedObjectModel* model2 = [[NCStorage sharedStorage] managedObjectModel];
-		pc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[NSManagedObjectModel modelByMergingModels:@[model2, model1]]];
-		[NSPersistentStoreCoordinator registerStoreClass:[NCDatabaseStore class] forStoreType:@"MyClass"];
-		NSError* error = nil;
-		id ps = [pc addPersistentStoreWithType:@"MyClass" configuration:@"NCDatabase" URL:[[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"sqlite"] options:@{NSReadOnlyPersistentStoreOption: @(YES),
-																																										 NSSQLitePragmasOption:@{@"journal_mode": @"OFF"},
-																																														NSIgnorePersistentStoreVersioningOption:@(YES)} error:&error];
-		NSLog(@"%@", error);
-	}
-
-	NSManagedObjectContext* managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:concurrencyType];
-	[managedObjectContext setPersistentStoreCoordinator:pc];
-	return managedObjectContext;
-	
-/*	NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+	NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
 	if (coordinator != nil) {
 		NSManagedObjectContext* managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:concurrencyType];
 		[managedObjectContext setPersistentStoreCoordinator:coordinator];
 		return managedObjectContext;
 	}
 	else
-		return nil;*/
+		return nil;
 }
 
 @end

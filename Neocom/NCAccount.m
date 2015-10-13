@@ -386,6 +386,7 @@ static NCAccount* currentAccount = nil;
 	[self.managedObjectContext performBlock:^{
 		NSString* uuid = self.uuid;
 		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:self.eveAPIKey cachePolicy:cachePolicy];
+		int32_t characterID = self.characterID;
 		NCAccountType accountType = self.accountType;
 		
 		[self.cacheManagedObjectContext performBlock:^{
@@ -420,7 +421,7 @@ static NCAccount* currentAccount = nil;
 			characterInfo = characterInfoCacheRecord.data.data;
 			if (updateRequired(characterInfoCacheRecord)) {
 				dispatch_group_enter(finishDispatchGroup);
-				[api characterInfoWithCharacterID:self.characterID completionBlock:^(EVECharacterInfo *result, NSError *error) {
+				[api characterInfoWithCharacterID:characterID completionBlock:^(EVECharacterInfo *result, NSError *error) {
 					if (error)
 						lastError = error;
 					characterInfo = result;

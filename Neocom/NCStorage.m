@@ -119,7 +119,7 @@ static NCStorage* sharedStorage;
 
 - (id) init {
 	if (self = [super init]) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+//		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willChange:) name:NSPersistentStoreCoordinatorStoresWillChangeNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChange:) name:NSPersistentStoreCoordinatorStoresDidChangeNotification object:nil];
 	}
@@ -224,7 +224,12 @@ static NCStorage* sharedStorage;
 								  NSPersistentStoreUbiquitousContentURLKey : url,
 								  NSInferMappingModelAutomaticallyOption : @(YES),
 								  NSMigratePersistentStoresAutomaticallyOption : @(YES)} mutableCopy];
-		
+		{
+			NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage" withExtension:@"momd"];
+			NSManagedObjectModel* model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+			//options[NSStoreModelVersionHashesKey] = [model entityVersionHashesByName];
+
+		}
 /*		if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudReset]) {
 			options[NSPersistentStoreRebuildFromUbiquitousContentOption] = @(YES);
 			[[NSUserDefaults standardUserDefaults] setInteger:NCStorageTypeFallback forKey:NCSettingsStorageType];
@@ -419,10 +424,9 @@ static NCStorage* sharedStorage;
 		}
 		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage" withExtension:@"momd"];
 		_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-		modelURL = [[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"momd"];
-		NSManagedObjectModel* databaseManagedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-		_managedObjectModel = [NSManagedObjectModel modelByMergingModels:@[_managedObjectModel, databaseManagedObjectModel]];
-
+		//modelURL = [[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"momd"];
+		//NSManagedObjectModel* databaseManagedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+		//_managedObjectModel = [NSManagedObjectModel modelByMergingModels:@[_managedObjectModel, databaseManagedObjectModel]];
 		return _managedObjectModel;
 	}
 }

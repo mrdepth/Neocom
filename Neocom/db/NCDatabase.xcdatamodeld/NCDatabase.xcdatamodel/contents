@@ -311,49 +311,6 @@
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="wormhole" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <fetchRequest name="DefaultIcon" entity="EveIcon" predicateString="iconFile == &quot;07_15&quot;" fetchLimit="1"/>
-    <configuration name="NCDatabase">
-        <memberEntity name="CertCertificate"/>
-        <memberEntity name="CertMastery"/>
-        <memberEntity name="CertMasteryLevel"/>
-        <memberEntity name="CertSkill"/>
-        <memberEntity name="ChrRace"/>
-        <memberEntity name="DgmAttributeCategory"/>
-        <memberEntity name="DgmAttributeType"/>
-        <memberEntity name="DgmEffect"/>
-        <memberEntity name="DgmTypeAttribute"/>
-        <memberEntity name="EufeItem"/>
-        <memberEntity name="EufeItemCategory"/>
-        <memberEntity name="EufeItemGroup"/>
-        <memberEntity name="EveIcon"/>
-        <memberEntity name="EveIconImage"/>
-        <memberEntity name="EveUnit"/>
-        <memberEntity name="IndActivity"/>
-        <memberEntity name="IndBlueprintType"/>
-        <memberEntity name="IndProduct"/>
-        <memberEntity name="IndRequiredMaterial"/>
-        <memberEntity name="IndRequiredSkill"/>
-        <memberEntity name="InvCategory"/>
-        <memberEntity name="InvControlTower"/>
-        <memberEntity name="InvControlTowerResource"/>
-        <memberEntity name="InvControlTowerResourcePurpose"/>
-        <memberEntity name="InvGroup"/>
-        <memberEntity name="InvMarketGroup"/>
-        <memberEntity name="InvMetaGroup"/>
-        <memberEntity name="InvType"/>
-        <memberEntity name="InvTypeRequiredSkill"/>
-        <memberEntity name="MapConstellation"/>
-        <memberEntity name="MapDenormalize"/>
-        <memberEntity name="MapRegion"/>
-        <memberEntity name="MapSolarSystem"/>
-        <memberEntity name="NpcGroup"/>
-        <memberEntity name="RamActivity"/>
-        <memberEntity name="RamAssemblyLineType"/>
-        <memberEntity name="RamInstallationTypeContent"/>
-        <memberEntity name="StaStation"/>
-        <memberEntity name="TxtDescription"/>
-        <memberEntity name="Version"/>
-        <memberEntity name="WhType"/>
-    </configuration>
     <elements>
         <element name="CertCertificate" positionX="-180" positionY="162" width="128" height="133"/>
         <element name="CertMastery" positionX="-189" positionY="180" width="128" height="88"/>

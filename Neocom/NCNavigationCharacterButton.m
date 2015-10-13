@@ -113,7 +113,7 @@
 				[account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
 					dispatch_async(dispatch_get_main_queue(), ^{
 						if (characterInfo) {
-							[self.logoImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil]];
+							[self.logoImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:characterInfo.characterID size:EVEImageSize64 error:nil]];
 							self.nameLabel.text = characterInfo.characterName;
 							self.subtitleLabel.text = characterInfo.corporation;
 						}

@@ -326,11 +326,13 @@
 - (void) saveCacheData:(id) data cacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
 	if (data) {
 		self.cacheData = data;
-		self.cacheRecord.data.data = data;
-		if (cacheDate)
-			self.cacheRecord.date = cacheDate;
-		if (expireDate)
-			self.cacheRecord.expireDate = expireDate;
+		[self.cacheRecord.managedObjectContext performBlock:^{
+			self.cacheRecord.data.data = data;
+			if (cacheDate)
+				self.cacheRecord.date = cacheDate;
+			if (expireDate)
+				self.cacheRecord.expireDate = expireDate;
+		}];
 	}
 }
 

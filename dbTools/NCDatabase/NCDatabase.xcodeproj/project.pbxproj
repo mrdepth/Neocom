@@ -92,7 +92,6 @@
 		12476CB119501A4D009E07C6 /* SqliteConnector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C6B19501A4D009E07C6 /* SqliteConnector.cpp */; };
 		12476CB219501A4D009E07C6 /* SqliteFetchResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C6D19501A4D009E07C6 /* SqliteFetchResult.cpp */; };
 		12476CB319501A4D009E07C6 /* Structure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C6F19501A4D009E07C6 /* Structure.cpp */; };
-		12476CC619501A4D009E07C6 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 12476C8519501A4D009E07C6 /* sqlite3.c */; };
 		12584D0C19C81DFD00847AB1 /* EVEDBIndustryActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 12584D0B19C81DFD00847AB1 /* EVEDBIndustryActivity.m */; };
 		12584E0119C94FEE00847AB1 /* EVEDBIndustryActivityMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 12584E0019C94FEE00847AB1 /* EVEDBIndustryActivityMaterial.m */; };
 		12584E0419C9504C00847AB1 /* EVEDBIndustryActivityProbability.m in Sources */ = {isa = PBXBuildFile; fileRef = 12584E0319C9504C00847AB1 /* EVEDBIndustryActivityProbability.m */; };
@@ -340,9 +339,6 @@
 		12476C6E19501A4D009E07C6 /* SqliteFetchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqliteFetchResult.h; sourceTree = "<group>"; };
 		12476C6F19501A4D009E07C6 /* Structure.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Structure.cpp; sourceTree = "<group>"; };
 		12476C7019501A4D009E07C6 /* Structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Structure.h; sourceTree = "<group>"; };
-		12476C8519501A4D009E07C6 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3.c; sourceTree = "<group>"; };
-		12476C8619501A4D009E07C6 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
-		12476C8719501A4D009E07C6 /* sqlite3ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3ext.h; sourceTree = "<group>"; };
 		12476C8819501A4D009E07C6 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		12584D0A19C81DFD00847AB1 /* EVEDBIndustryActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBIndustryActivity.h; sourceTree = "<group>"; };
 		12584D0B19C81DFD00847AB1 /* EVEDBIndustryActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBIndustryActivity.m; sourceTree = "<group>"; };
@@ -689,21 +685,10 @@
 				12476C6E19501A4D009E07C6 /* SqliteFetchResult.h */,
 				12476C6F19501A4D009E07C6 /* Structure.cpp */,
 				12476C7019501A4D009E07C6 /* Structure.h */,
-				12476C8419501A4D009E07C6 /* ThirdParty */,
 				12476C8819501A4D009E07C6 /* types.h */,
 			);
 			name = eufe;
 			path = ../../../ThirdParty/eufe/eufe;
-			sourceTree = "<group>";
-		};
-		12476C8419501A4D009E07C6 /* ThirdParty */ = {
-			isa = PBXGroup;
-			children = (
-				12476C8519501A4D009E07C6 /* sqlite3.c */,
-				12476C8619501A4D009E07C6 /* sqlite3.h */,
-				12476C8719501A4D009E07C6 /* sqlite3ext.h */,
-			);
-			path = ThirdParty;
 			sourceTree = "<group>";
 		};
 		127667381914C9A900530550 = {
@@ -876,7 +861,7 @@
 		127667391914C9A900530550 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0700;
 			};
 			buildConfigurationList = 1276673C1914C9A900530550 /* Build configuration list for PBXProject "NCDatabase" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1023,7 +1008,6 @@
 				12584EF419C9604E00847AB1 /* NCDBInvTypeRequiredSkill.m in Sources */,
 				12436D7A194596750090D4A6 /* EVEDBCrtRecommendation.m in Sources */,
 				12584EF119C9604E00847AB1 /* NCDBTxtDescription.m in Sources */,
-				12476CC619501A4D009E07C6 /* sqlite3.c in Sources */,
 				12436D7D194596750090D4A6 /* EVEDBDgmAttributeCategory.m in Sources */,
 				12584EDC19C9604D00847AB1 /* NCDBDgmAttributeCategory.m in Sources */,
 				12436D73194596750090D4A6 /* EVEDBCertCertificate.m in Sources */,
@@ -1059,6 +1043,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;

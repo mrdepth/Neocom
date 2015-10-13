@@ -82,7 +82,7 @@
 	[self.dateFormatter setDateFormat:@"HH:mm:ss"];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.view.translatesAutoresizingMaskIntoConstraints = YES;
-	self.priceManager = [NCPriceManager new];
+	//self.priceManager = [NCPriceManager new];
 }
 
 - (void)didReceiveMemoryWarning

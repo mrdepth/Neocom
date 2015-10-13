@@ -512,10 +512,10 @@
 			[self reload];
 		}]];
 		
-		if (self.fit.loadout.url)
+		/*if (self.fit.loadout.url)
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonViewInBrowser style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.fit.loadout.url]];
-			}]];
+			}]];*/
 
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAreaEffect style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 			[self performSegueWithIdentifier:@"NCFittingAreaEffectPickerViewController" sender:sender];

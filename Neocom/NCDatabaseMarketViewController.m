@@ -27,7 +27,6 @@
 	self.refreshControl = nil;
 
 	if (self.marketGroup) {
-		self.databaseManagedObjectContext = self.marketGroup.managedObjectContext;
 		self.title = self.marketGroup.marketGroupName;
 	}
 
@@ -57,6 +56,10 @@
 			controller = segue.destinationViewController;
 		controller.typeID = [row objectID];
 	}
+}
+
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	return self.marketGroup.managedObjectContext ?: [super databaseManagedObjectContext];
 }
 
 #pragma mark - Table view data source

@@ -22,7 +22,7 @@
 @interface NCDatabaseTypePickerViewController ()
 @property (nonatomic, copy) void (^completionHandler)(NCDBInvType* type);
 @property (nonatomic, strong) NCDBEufeItemCategory* category;
-@property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
+//@property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
 
 @end
 
@@ -39,8 +39,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	NCDatabaseTypePickerContentViewController* contentViewController = self.viewControllers[0];
-	contentViewController.databaseManagedObjectContext = self.databaseManagedObjectContext;
+//	NCDatabaseTypePickerContentViewController* contentViewController = self.viewControllers[0];
+//	contentViewController.databaseManagedObjectContext = self.databaseManagedObjectContext;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,7 +54,8 @@
 
 - (void) presentWithCategory:(NCDBEufeItemCategory*) category inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(NCDBInvType* type)) completion {
 	if (![self.category isEqual:category]) {
-		self.category = [self.databaseManagedObjectContext objectWithID:category.objectID];
+		self.category = category;
+//		self.category = [self.databaseManagedObjectContext objectWithID:category.objectID];
 		
 		for (NCTableViewController* controller in self.viewControllers) {
 			if (controller.searchController.isActive)
@@ -95,12 +96,12 @@
 		[self.viewControllers[0] setTitle:self.title];
 }
 
-- (NSManagedObjectContext*) databaseManagedObjectContext {
+/*- (NSManagedObjectContext*) databaseManagedObjectContext {
 	if (!_databaseManagedObjectContext) {
 		_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
 	}
 	return _databaseManagedObjectContext;
-}
+}*/
 
 
 @end

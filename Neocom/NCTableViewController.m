@@ -46,11 +46,14 @@
 - (void) reloadIfNeeded;
 - (void) searchWithSearchString:(NSString*) searchString;
 - (void) progressStepWithProgress:(NSProgress*) progress;
+- (void) managedObjectContextDidSave:(NSNotification*) notification;
 
 @end
 
 @implementation NCTableViewController
 @synthesize databaseManagedObjectContext = _databaseManagedObjectContext;
+@synthesize storageManagedObjectContext = _storageManagedObjectContext;
+@synthesize cacheManagedObjectContext = _cacheManagedObjectContext;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -240,7 +243,7 @@
 	else {
 		@synchronized (self) {
 			if (!_storageManagedObjectContext)
-				_storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+				_storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
 			return _storageManagedObjectContext;
 		}
 	}
@@ -285,10 +288,6 @@
 	completionBlock();
 }
 
-- (void) managedObjectContextDidFinishSave:(NSNotification*) notification {
-	
-}
-
 - (void) reload {
 	if (!self.searchContentsController && !self.loadingFromCache) {
 		if (self.cacheManagedObjectContext) {
@@ -320,7 +319,9 @@
 }
 
 - (void) invalidateCache {
-	self.cacheRecord.expireDate = [NSDate distantPast];
+	[self.cacheRecord.managedObjectContext performBlock:^{
+		self.cacheRecord.expireDate = [NSDate distantPast];
+	}];
 }
 
 - (void) saveCacheData:(id) data cacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
@@ -398,16 +399,8 @@
 	}];
 }
 
-- (void) managedObjectContextDidSave:(NSNotification*) notification {
-	NSManagedObjectContext* context = notification.object;
-	if (context.persistentStoreCoordinator == _storageManagedObjectContext.persistentStoreCoordinator) {
-		[_storageManagedObjectContext performBlock:^{
-			[_storageManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[self managedObjectContextDidFinishSave:notification];
-			});
-		}];
-	}
+- (void) managedObjectContextDidFinishUpdate:(NSNotification*) notification {
+	
 }
 
 #pragma mark - CollaplableTableView
@@ -745,6 +738,16 @@
 		_progressView.frame = CGRectMake(0, [self.topLayoutGuide length] + self.tableView.contentOffset.y, self.view.frame.size.width, self.view.frame.size.height);
 	}
 	return _progressView;
+}
+
+- (void) managedObjectContextDidSave:(NSNotification*) notification {
+	NSManagedObjectContext* context = notification.object;
+	if (context != _storageManagedObjectContext && context.persistentStoreCoordinator == _storageManagedObjectContext.persistentStoreCoordinator) {
+		[_storageManagedObjectContext performBlock:^{
+			[_storageManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+			[self managedObjectContextDidFinishUpdate:notification];
+		}];
+	}
 }
 
 @end

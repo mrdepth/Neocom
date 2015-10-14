@@ -31,7 +31,6 @@
 
 	if (self.region) {
 		self.title = self.region.regionName;
-		self.databaseManagedObjectContext = self.region.managedObjectContext;
 	}
 	
 	self.refreshControl = nil;
@@ -52,6 +51,10 @@
 			self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 		}
 	}
+}
+
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	return self.region.managedObjectContext ?: [super databaseManagedObjectContext];
 }
 
 - (void) viewWillAppear:(BOOL)animated {

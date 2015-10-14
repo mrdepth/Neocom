@@ -18,6 +18,7 @@
 #import "NSData+MD5.h"
 #import "NCMigrationManager.h"
 
+
 @interface NCValueTransformer : NSValueTransformer
 
 @end
@@ -181,14 +182,6 @@ static NCStorage* sharedStorage;
 			return nil;
 		}
 		
-/*		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-													   configuration:@"NCDatabase"
-																 URL:[[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"sqlite"]
-															 options:@{NSReadOnlyPersistentStoreOption: @(YES),
-																	   NSSQLitePragmasOption:@{@"journal_mode": @"OFF"}}
-															   error:&error]) {
-		}*/
-
 		[self notifyStorageChange];
 	}
 	return self;

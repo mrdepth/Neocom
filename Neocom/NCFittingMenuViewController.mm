@@ -18,13 +18,10 @@
 #import "NCFittingPOSViewController.h"
 #import "NCFittingCharacterPickerViewController.h"
 
-#define NCCategoryIDShip 6
-
 
 @interface NCFittingMenuViewControllerRow : NSObject
 @property (nonatomic, strong) NSManagedObjectID* loadoutID;
 @property (nonatomic, assign) int32_t typeID;
-@property (nonatomic, assign) NCDBInvType* type;
 @property (nonatomic, strong) NSString* loadoutName;
 @property (nonatomic, strong) NSString* typeName;
 @property (nonatomic, strong) NSManagedObjectID* iconID;
@@ -35,6 +32,15 @@
 
 @implementation NCFittingMenuViewControllerRow
 
+@end
+
+@interface NCFittingMenuViewControllerSection : NSObject
+@property (nonatomic, strong) NSMutableArray* rows;
+@property (nonatomic, assign) int32_t groupID;
+@property (nonatomic, strong) NSString* title;
+@end
+
+@implementation NCFittingMenuViewControllerSection
 @end
 
 @interface NCFittingMenuViewController ()
@@ -60,11 +66,11 @@
 	self.refreshControl = nil;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+	[self reload];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[self reload];
 }
 
 - (void)didReceiveMemoryWarning
@@ -88,6 +94,11 @@
 	[self reload];
 }
 
+- (void) managedObjectContextDidFinishUpdate:(NSNotification *)notification {
+	[super managedObjectContextDidFinishUpdate:notification];
+	[self reload];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -97,18 +108,15 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? 4 : [(NSArray*) self.sections[section - 1] count];
+    return section == 0 ? 4 : [[(NCFittingMenuViewControllerSection*) self.sections[section - 1] rows] count];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (section == 0)
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
+	if (sectionIndex == 0)
 		return nil;
 	else {
-		NSArray* rows = self.sections[section - 1];
-		if (rows.count > 0)
-			return [rows[0] valueForKeyPath:@"type.group.groupName"];
-		else
-			return nil;
+		NCFittingMenuViewControllerSection* section = self.sections[sectionIndex - 1];
+		return section.title;
 	}
 }
 
@@ -118,19 +126,18 @@
 
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		NSMutableArray* array = self.sections[indexPath.section - 1];
-		NCLoadout* loadout = array[indexPath.row];
-		[self.storageManagedObjectContext performBlock:^{
-			[self.storageManagedObjectContext deleteObject:loadout];
-			[self.storageManagedObjectContext save:nil];
-		}];
+		NCFittingMenuViewControllerSection* section = self.sections[indexPath.section - 1];
+		NCFittingMenuViewControllerRow* row = section.rows[indexPath.row];
+		NCLoadout* loadout = [self.storageManagedObjectContext objectWithID:row.loadoutID];
+		[self.storageManagedObjectContext deleteObject:loadout];
+		[self.storageManagedObjectContext save:nil];
 		
-		if (array.count == 1) {
+		if (section.rows.count == 1) {
 			[self.sections removeObjectAtIndex:indexPath.section - 1];
 			[tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationMiddle];
 		}
 		else {
-			[array removeObjectAtIndex:indexPath.row];
+			[section.rows removeObjectAtIndex:indexPath.row];
 			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
 		}
 	}
@@ -159,15 +166,11 @@
 														inView:cell
 													  animated:YES
 											 completionHandler:^(NCDBInvType *type) {
-												 [self.storageManagedObjectContext performBlock:^{
-													 NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-													 loadout.typeID = type.typeID;
-													 loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-													 NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
-													 dispatch_async(dispatch_get_main_queue(), ^{
-														 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
-													 });
-												 }];
+												 NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+												 loadout.typeID = type.typeID;
+												 loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+												 NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
+												 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
 												 [self.typePickerViewController dismissAnimated];
 											 }];
 		}
@@ -191,23 +194,19 @@
 		}
 	}
 	else {
-		NCFittingMenuViewControllerRow* row = self.sections[indexPath.section - 1][indexPath.row];
-		[self.storageManagedObjectContext performBlock:^{
-			NCLoadout* loadout = [self.storageManagedObjectContext objectWithID:row.loadoutID];
-			if (row.category == NCLoadoutCategoryShip) {
-				NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
-				dispatch_async(dispatch_get_main_queue(), ^{
-					[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
-				});
-			}
-			else {
-//				NCPOSFit* fit = [[NCPOSFit alloc] initWithLoadout:loadout];
-				dispatch_async(dispatch_get_main_queue(), ^{
-//					[self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
-				});
-			}
-
-		}];
+		NCFittingMenuViewControllerSection* section = self.sections[indexPath.section - 1];
+		NCFittingMenuViewControllerRow* row = section.rows[indexPath.row];
+		NCLoadout* loadout = [self.storageManagedObjectContext objectWithID:row.loadoutID];
+		if (row.category == NCLoadoutCategoryShip) {
+			NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
+			[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+		}
+		else {
+			//				NCPOSFit* fit = [[NCPOSFit alloc] initWithLoadout:loadout];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				//					[self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
+			});
+		}
 	}
 }
 
@@ -235,7 +234,8 @@
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	if (indexPath.section > 0) {
 		NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
-		NCFittingMenuViewControllerRow* row = self.sections[indexPath.section - 1][indexPath.row];
+		NCFittingMenuViewControllerSection* section = self.sections[indexPath.section - 1];
+		NCFittingMenuViewControllerRow* row = section.rows[indexPath.row];
 		if (!row.icon && row.iconID)
 			row.icon = [self.databaseManagedObjectContext objectWithID:row.iconID];
 		
@@ -245,13 +245,22 @@
 	}
 }
 
+- (id) identifierForSection:(NSInteger)sectionIndex {
+	if (sectionIndex > 0) {
+		NCFittingMenuViewControllerSection* section = self.sections[sectionIndex - 1];
+		return @(section.groupID);
+	}
+	return nil;
+}
+
 
 #pragma mark - Private
 
 - (void) reload {
-	[self.storageManagedObjectContext performBlock:^{
+	NSManagedObjectContext* storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+	[storageManagedObjectContext performBlock:^{
 		NSMutableArray* loadouts = [NSMutableArray new];
-		for (NCLoadout* loadout in [self.storageManagedObjectContext loadouts]) {
+		for (NCLoadout* loadout in [storageManagedObjectContext loadouts]) {
 			NCFittingMenuViewControllerRow* row = [NCFittingMenuViewControllerRow new];
 			row.loadoutID = [loadout objectID];
 			row.loadoutName = loadout.name;
@@ -260,37 +269,46 @@
 		};
 		NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
 		[databaseManagedObjectContext performBlock:^{
-			NSMutableArray* shipLoadouts = [NSMutableArray new];
-			NSMutableArray* posLoadouts = [NSMutableArray new];
+			NSMutableDictionary* shipLoadouts = [NSMutableDictionary new];
+			NCFittingMenuViewControllerSection* posLoadouts;
+			
 			for (NCFittingMenuViewControllerRow* row in loadouts) {
-				row.type = [databaseManagedObjectContext invTypeWithTypeID:row.typeID];
-				row.typeName = row.type.typeName;
-				row.iconID = [row.type.icon objectID];
-				if (row.type && row.type.group.category.categoryID == NCCategoryIDShip) {
+				NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:row.typeID];
+				row.typeName = type.typeName;
+				row.iconID = [type.icon objectID];
+				if (type && type.group.category.categoryID == NCCategoryIDShip) {
 					row.category = NCLoadoutCategoryShip;
-					[shipLoadouts addObject:row];
+					NCFittingMenuViewControllerSection* section = shipLoadouts[@(type.group.groupID)];
+					if (!section) {
+						section = [NCFittingMenuViewControllerSection new];
+						shipLoadouts[@(type.group.groupID)] = section;
+						section.title = type.group.groupName;
+						section.groupID = type.group.groupID;
+						section.rows = [NSMutableArray new];
+					}
+					[section.rows addObject:row];
 				}
-				else if (row.type) {
+				else if (type) {
 					row.category = NCLoadoutCategoryPOS;
-					[posLoadouts addObject:row];
+					if (!posLoadouts) {
+						posLoadouts = [NCFittingMenuViewControllerSection new];
+						posLoadouts.title = type.group.groupName;
+						posLoadouts.groupID = type.group.groupID;
+						posLoadouts.rows = [NSMutableArray new];
+					}
+					[posLoadouts.rows addObject:row];
 				}
 			}
-			[shipLoadouts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
-			[posLoadouts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+			NSMutableArray* sections = [[[shipLoadouts allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]] mutableCopy];
+
 			
-			NSMutableArray* sections = [NSMutableArray new];
-			for (NSArray* array in [shipLoadouts arrayGroupedByKey:@"type.group.groupID"])
-				[sections addObject:[array mutableCopy]];
+			for (NCFittingMenuViewControllerSection* section in sections)
+				[section.rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
 
-			[sections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-				NCFittingMenuViewControllerRow* a = obj1[0];
-				NCFittingMenuViewControllerRow* b = obj2[0];
-				return [a.type.group.groupName compare:b.type.group.groupName];
-			}];
-
-			if (posLoadouts.count > 0)
-				[sections addObject:[posLoadouts mutableCopy]];
-			[loadouts setValue:nil forKey:@"type"];
+			if (posLoadouts.rows.count > 0) {
+				[posLoadouts.rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
+				[sections addObject:posLoadouts];
+			}
 			
 			dispatch_async(dispatch_get_main_queue(), ^{
 				self.sections = sections;
@@ -298,40 +316,6 @@
 			});
 		}];
 	}];
-	
-/*	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NCStorage* storage = [NCStorage sharedStorage];
-											 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-											 [context performBlockAndWait:^{
-												 NSArray* shipLoadouts = [[storage shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
-												 task.progress = 0.25;
-												 
-												 for (NSArray* array in [shipLoadouts arrayGroupedByKey:@"type.group.groupID"])
-													 [sections addObject:[array mutableCopy]];
-												 
-												 task.progress = 0.5;
-												 [sections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-													 NCLoadout* a = [obj1 objectAtIndex:0];
-													 NCLoadout* b = [obj2 objectAtIndex:0];
-													 return [a.type.group.groupName compare:b.type.group.groupName];
-												 }];
-												 
-												 task.progress = 0.75;
-												 
-												 NSArray* posLoadouts = [[storage posLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
-												 if (posLoadouts.count > 0)
-													 [sections addObject:[posLoadouts mutableCopy]];
-												 
-												 task.progress = 1.0;
-											 }];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.sections = sections;
-								 [self update];
-								 
-							 }];*/
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {
@@ -339,15 +323,6 @@
 		_typePickerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerViewController"];
 	}
 	return _typePickerViewController;
-}
-
-- (id) identifierForSection:(NSInteger)section {
-	if (section > 0) {
-		NSArray* rows = self.sections[section - 1];
-		if (rows.count > 0)
-			return [rows[0] valueForKeyPath:@"type.group.groupID"];
-	}
-	return nil;
 }
 
 @end

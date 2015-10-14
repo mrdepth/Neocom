@@ -310,25 +310,21 @@
 			NSString* iconFile = marketGroup.icon.iconFile;
 
 			int32_t typeID = self.type.typeID;
-			[self.storageManagedObjectContext performBlock:^{
-				NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:self.storageManagedObjectContext]
-														  insertIntoManagedObjectContext:nil];
-				shoppingGroup.name = marketGroupName;
-				shoppingGroup.immutable = NO;
-				NCShoppingItem* shoppingItem = [[NCShoppingItem alloc] initWithTypeID:typeID quantity:1 entity:[NSEntityDescription entityForName:@"ShoppingItem" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:nil];
-				shoppingItem.shoppingGroup = shoppingGroup;
-				shoppingGroup.iconFile = iconFile;
-				[shoppingGroup addShoppingItemsObject:shoppingItem];
-				shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
-				
-				dispatch_async(dispatch_get_main_queue(), ^{
-					UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-					if (cell)
-						[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"sender":cell, @"object":shoppingGroup}];
-					else
-						[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"object":shoppingGroup}];
-				});
-			}];
+			NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:self.storageManagedObjectContext]
+													  insertIntoManagedObjectContext:nil];
+			shoppingGroup.name = marketGroupName;
+			shoppingGroup.immutable = NO;
+			NCShoppingItem* shoppingItem = [[NCShoppingItem alloc] initWithTypeID:typeID quantity:1 entity:[NSEntityDescription entityForName:@"ShoppingItem" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:nil];
+			shoppingItem.shoppingGroup = shoppingGroup;
+			shoppingGroup.iconFile = iconFile;
+			[shoppingGroup addShoppingItemsObject:shoppingItem];
+			shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
+
+			UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+			if (cell)
+				[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"sender":cell, @"object":shoppingGroup}];
+			else
+				[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"object":shoppingGroup}];
 		}
 	}
 }
@@ -723,17 +719,14 @@
 		}];
 	};
 	
-	[self.storageManagedObjectContext performBlock:^{
-		shoppingListID = [[self.storageManagedObjectContext currentShoppingList] objectID];
-		if (account) {
-			[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
-				load(characterSheet);
-			}];
-		}
-		else
-			load(nil);
-	}];
-	
+	shoppingListID = [[self.storageManagedObjectContext currentShoppingList] objectID];
+	if (account) {
+		[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+			load(characterSheet);
+		}];
+	}
+	else
+		load(nil);
 }
 
 - (void) loadBlueprintAttributes {

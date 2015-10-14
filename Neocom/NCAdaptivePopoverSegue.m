@@ -22,7 +22,8 @@
         [self.sourceViewController presentViewControllerInPopover:controller withSender:self.sender animated:YES];
 	}
 	else {
-		[[self.sourceViewController navigationController] pushViewController:self.destinationViewController animated:YES];
+		[self.sourceViewController showViewController:self.destinationViewController sender:self.sender];
+		//[[self.sourceViewController navigationController] pushViewController:self.destinationViewController animated:YES];
 	}
 }
 

@@ -36,7 +36,7 @@
 @property (nonatomic, strong) NSString* typeName;
 @property (nonatomic, strong) UIImage* typeImage;
 @property (nonatomic, strong) NSString* optimalText;
-@property (nonatomic, strong) UIImage* targetImage;
+@property (nonatomic, assign) BOOL hasTarget;
 @property (nonatomic, strong) UIImage* stateImage;
 @property (nonatomic, strong) id sortKey;
 @end
@@ -50,7 +50,7 @@
 	other.typeName = self.typeName;
 	other.typeImage = self.typeImage;
 	other.optimalText = self.optimalText;
-	other.targetImage = self.targetImage;
+	other.hasTarget = self.hasTarget;
 	other.stateImage = self.stateImage;
 	other.sortKey = self.sortKey;
 	return other;
@@ -203,7 +203,7 @@
 		cell.typeImageView.image = row.typeImage;
 		cell.optimalLabel.text = row.optimalText;
 		cell.stateImageView.image = row.stateImage;
-		cell.targetImageView.image = row.targetImage;
+		cell.targetImageView.image = row.hasTarget ? self.targetImage : nil;
 	}
 	if (row && !row.isUpToDate) {
 		row.isUpToDate = YES;
@@ -225,7 +225,7 @@
 					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
 				row.optimalText = s;
 				row.stateImage = drone->isActive() ? [UIImage imageNamed:@"active.png"] : [UIImage imageNamed:@"offline.png"];
-				row.targetImage = drone->getTarget() != nullptr ? self.targetImage : nil;
+				row.hasTarget = drone->getTarget() != nullptr;
 			}
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

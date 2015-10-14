@@ -17,7 +17,7 @@
 
 @implementation NCNavigationController
 
-- (UIViewController*) viewControllerForUnwindSegueAction:(SEL)action fromViewController:(UIViewController *)fromViewController withSender:(id)sender {
+/*- (UIViewController*) viewControllerForUnwindSegueAction:(SEL)action fromViewController:(UIViewController *)fromViewController withSender:(id)sender {
 	UIViewController* controller = [super viewControllerForUnwindSegueAction:action fromViewController:fromViewController withSender:sender];
 	if (!controller)
 		controller = [self.popover.presentingViewController viewControllerForUnwindSegueAction:action
@@ -42,7 +42,7 @@
 	}
 
 	return [super segueForUnwindingToViewController:toViewController fromViewController:fromViewController identifier:identifier];
-}
+}*/
 
 /*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

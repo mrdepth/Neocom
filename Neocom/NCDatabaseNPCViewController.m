@@ -32,10 +32,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	if (self.npcGroup) {
-		self.databaseManagedObjectContext = self.npcGroup.managedObjectContext;
-		self.title = self.npcGroup.npcGroupName;
-	}
 	self.defaultGroupIcon = [self.databaseManagedObjectContext defaultGroupIcon];
 	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 
@@ -63,6 +59,10 @@
 		
 		controller.typeID = [row objectID];
 	}
+}
+
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	return self.npcGroup.managedObjectContext ?: [super databaseManagedObjectContext];
 }
 
 #pragma mark - Table view data source

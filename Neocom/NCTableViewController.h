@@ -19,9 +19,9 @@
 @property (nonatomic, strong, readonly) id cacheData;
 @property (nonatomic, strong) UISearchController* searchController;
 @property (nonatomic, weak) NCTableViewController* searchContentsController;
-@property (nonatomic, strong) NSManagedObjectContext* storageManagedObjectContext;
-@property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
-@property (nonatomic, strong) NSManagedObjectContext* cacheManagedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* storageManagedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* databaseManagedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* cacheManagedObjectContext;
 @property (nonatomic, strong) NSString* cacheRecordID;
 @property (nonatomic, strong) NSProgress* progress;
 
@@ -32,14 +32,13 @@
 #pragma mark - Override
 - (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock;
 - (void) loadCacheData:(id) cacheData withCompletionBlock:(void(^)()) completionBlock;
-- (void) managedObjectContextDidFinishSave:(NSNotification*) notification;
 
 //Notifications
 - (void) didChangeAccount:(NSNotification*) notification;
 - (void) didBecomeActive:(NSNotification*) notification;
 - (void) willResignActive:(NSNotification*) notification;
 - (void) didChangeStorage:(NSNotification*) notification;
-- (void) managedObjectContextDidSave:(NSNotification*) notification;
+- (void) managedObjectContextDidFinishUpdate:(NSNotification*) notification;
 
 - (void) searchWithSearchString:(NSString*) searchString completionBlock:(void(^)()) completionBlock;
 - (id) identifierForSection:(NSInteger) section;

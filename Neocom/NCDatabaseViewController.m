@@ -34,11 +34,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	if (self.group) {
-		self.databaseManagedObjectContext = self.group.managedObjectContext;
 		self.title = self.group.groupName;
 	}
 	else if (self.category) {
-		self.databaseManagedObjectContext = self.group.managedObjectContext;
 		self.title = self.category.categoryName;
 	}
 	
@@ -92,6 +90,10 @@
 		id row = [sender object];
 		controller.typeID = [row objectID];
 	}
+}
+
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	return self.group.managedObjectContext ?: self.category.managedObjectContext ?: [super databaseManagedObjectContext];
 }
 
 - (IBAction)onFilter:(id)sender {

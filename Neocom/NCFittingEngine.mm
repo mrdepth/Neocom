@@ -18,6 +18,7 @@
 
 @interface NCFittingEngine()
 @property (nonatomic, strong, readwrite) NSManagedObjectContext* databaseManagedObjectContext;
+@property (nonatomic, strong, readwrite) NSManagedObjectContext* storageManagedObjectContext;
 //@property (nonatomic, strong) dispatch_queue_t privateQueue;
 - (NCLoadoutDataShip*) loadoutShipDataWithAsset:(EVEAssetListItem*) asset;
 - (NCLoadoutDataShip*) loadoutShipDataWithAPILoadout:(NAPISearchItem*) apiLoadout;
@@ -69,10 +70,11 @@
 - (void) loadShipFit:(NCShipFit*) fit {
 	fit.engine = self;
 	__block NCLoadoutDataShip* loadoutData;
-	if (fit.loadout) {
-		[fit.loadout.managedObjectContext performBlockAndWait:^{
-			if ([fit.loadout.data.data isKindOfClass:[NCLoadoutDataShip class]])
-				loadoutData = (NCLoadoutDataShip*) fit.loadout.data.data;
+	if (fit.loadoutID) {
+		[self.storageManagedObjectContext performBlockAndWait:^{
+			NCLoadout* loadout = [self.storageManagedObjectContext objectWithID:fit.loadoutID];
+			if ([loadout.data.data isKindOfClass:[NCLoadoutDataShip class]])
+				loadoutData = (NCLoadoutDataShip*) loadout.data.data;
 		}];
 	}
 	
@@ -367,6 +369,15 @@
 			_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
 			//_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
 		return _databaseManagedObjectContext;
+	}
+}
+
+- (NSManagedObjectContext*) storageManagedObjectContext {
+	@synchronized(self) {
+		if (!_storageManagedObjectContext)
+			_storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
+		//_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+		return _storageManagedObjectContext;
 	}
 }
 

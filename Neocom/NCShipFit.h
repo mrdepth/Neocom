@@ -59,10 +59,10 @@
 @interface NCShipFit : NSObject
 @property (nonatomic, strong, readonly) NCFittingEngine* engine;
 //@property (nonatomic, strong, readonly) NCLoadout* loadout;
-@property (nonatomic, strong) NCLoadout* loadout;
+@property (nonatomic, strong) NSManagedObjectID* loadoutID;
 @property (nonatomic, strong) NSString* loadoutName;
 @property (nonatomic, assign, readonly) std::shared_ptr<eufe::Character> pilot;
-@property (nonatomic, strong) NCFitCharacter* character;
+@property (nonatomic, strong, readonly) NCFitCharacter* character;
 @property (nonatomic, assign, readonly) int32_t typeID;
 @property (nonatomic, readonly) NSString* canonicalName;
 @property (nonatomic, readonly) NSString* dnaRepresentation;
@@ -78,9 +78,9 @@
 - (id) initWithAsset:(EVEAssetListItem*) asset;
 - (id) initWithKillMail:(NCKillMail*) killMail;
 - (id) initWithDNA:(NSString*) dna;
+- (void) setCharacter:(NCFitCharacter*) character withCompletionBlock:(void(^)()) completionBlock;
 
 - (void) flush;
 - (void) save;
-- (void) load;
 
 @end

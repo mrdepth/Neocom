@@ -63,7 +63,6 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
-	self.storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
     self.navigationController.toolbar.barStyle = UIBarStyleBlack;
     self.navigationController.toolbar.tintColor = [UIColor whiteColor];
 	self.refreshControl = nil;
@@ -164,15 +163,11 @@
 #pragma mark - Navigation
 
 - (IBAction)unwindFromShoppingListsManager:(UIStoryboardSegue*) segue {
-	[self.storageManagedObjectContext performBlock:^{
-		NCShoppingList* shoppingList = [self.storageManagedObjectContext currentShoppingList];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			self.shoppingList = shoppingList;
-			if (self.shoppingList)
-				[self reload];
-		});
-	}];
+	NCShoppingList* shoppingList = [self.storageManagedObjectContext currentShoppingList];
+	
+	self.shoppingList = shoppingList;
+	if (self.shoppingList)
+		[self reload];
 }
 
 #pragma mark - Table view data source

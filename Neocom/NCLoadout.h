@@ -11,6 +11,8 @@
 #import "NCLoadoutData.h"
 #import "NCStorage.h"
 
+#define NCCategoryIDShip 6
+
 typedef NS_ENUM(NSInteger, NCLoadoutCategory) {
 	NCLoadoutCategoryUnknown = -1,
 	NCLoadoutCategoryShip,

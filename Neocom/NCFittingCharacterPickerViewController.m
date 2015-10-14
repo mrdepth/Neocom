@@ -45,7 +45,6 @@
     [super viewDidLoad];
 	self.refreshControl = nil;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	self.storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
 	self.customCharacters = [[self.storageManagedObjectContext fitCharacters] mutableCopy];
 	
 	

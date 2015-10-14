@@ -11,8 +11,6 @@
 #import "NCStorage.h"
 #import "NCDatabase.h"
 
-#define NCCategoryIDShip 6
-
 @implementation NCLoadout
 //@synthesize type = _type;
 

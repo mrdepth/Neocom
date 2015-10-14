@@ -129,7 +129,8 @@
 					else
 						self.controller.fit = self.controller.fits[i + 1];
 				}
-				[self.controller.fits removeObject:fit];
+				//[self.controller.fits removeObject:fit];
+				[self.controller removeFit:fit];
 				[self.controller.engine performBlockAndWait:^{
 					gang->removePilot(character);
 				}];

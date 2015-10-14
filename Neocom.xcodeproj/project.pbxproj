@@ -238,6 +238,8 @@
 		1282570E1BCBF42D00BC1F56 /* NCFittingCharacterPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C50756189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m */; settings = {ASSET_TAGS = (); }; };
 		128257141BCBFCBF00BC1F56 /* NCFittingCharacterEditorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */; settings = {ASSET_TAGS = (); }; };
 		128257151BCBFE3000BC1F56 /* NCFittingCharacterEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C50762189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m */; settings = {ASSET_TAGS = (); }; };
+		1282571B1BCE6A2A00BC1F56 /* NCFittingFitPickerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5870189FC2D100E2D70A /* NCFittingFitPickerViewController.mm */; settings = {ASSET_TAGS = (); }; };
+		1282571C1BCE981F00BC1F56 /* NCFittingTargetsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84442A5C189FFF230021CB24 /* NCFittingTargetsViewController.mm */; settings = {ASSET_TAGS = (); }; };
 		128310091BBC39920018C8AC /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; settings = {ASSET_TAGS = (); }; };
 		128310141BBD3D6D0018C8AC /* NCSkillPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */; settings = {ASSET_TAGS = (); }; };
 		1283101A1BBD5C430018C8AC /* NCMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5F118929B960010BEE8 /* NCMessageCell.m */; settings = {ASSET_TAGS = (); }; };
@@ -4383,6 +4385,7 @@
 				1211122E185989E1009E5106 /* NCTaskManager.m in Sources */,
 				12F955FA18CDA3FC005CEAD6 /* SkillPlan.m in Sources */,
 				120C336119CAB0A90093EECA /* NCDBInvCategory.m in Sources */,
+				1282571B1BCE6A2A00BC1F56 /* NCFittingFitPickerViewController.mm in Sources */,
 				127A1AB91BADEEBD0066A5EE /* NCLocationsManager.m in Sources */,
 				1283101A1BBD5C430018C8AC /* NCMessageCell.m in Sources */,
 				1219C1541AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m in Sources */,
@@ -4503,6 +4506,7 @@
 				122DB6621BA6AAE400649A55 /* NCFittingMenuViewController.mm in Sources */,
 				122F01C819483D2100D04D60 /* NCDBInvType+Neocom.mm in Sources */,
 				120968631845F0CB00921A37 /* NCAppDelegate.mm in Sources */,
+				1282571C1BCE981F00BC1F56 /* NCFittingTargetsViewController.mm in Sources */,
 				120C332219CAB0A50093EECA /* NCDBIndActivity.m in Sources */,
 				129E23AE1BC3FDB000E311BF /* NCFittingShipStatsViewController.mm in Sources */,
 				129D2621187E923300E2062C /* UIView+Nib.m in Sources */,

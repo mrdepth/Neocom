@@ -192,11 +192,12 @@
 @end
 
 @implementation NCShipFit
+@synthesize character = _character;
 
 - (id) initWithLoadout:(NCLoadout*) loadout {
 	if (self = [super init]) {
 		[loadout.managedObjectContext performBlockAndWait:^{
-			self.loadout = loadout;
+			self.loadoutID = [loadout objectID];
 			self.loadoutName = loadout.name;
 			self.loadoutData = loadout.data.data;
 			self.typeID = loadout.typeID;
@@ -853,22 +854,27 @@
 		}
 	}];
 	
-	NSManagedObjectContext* context = self.loadout.managedObjectContext ? self.loadout.managedObjectContext : self.storageManagedObjectContext;
+	NSManagedObjectContext* context = self.storageManagedObjectContext;
 	
 	[context performBlock:^{
-		if (!self.loadout) {
-			self.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-			self.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+		NCLoadout* loadout;
+		if (!self.loadoutID) {
+			loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+			loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
 		}
+		else
+			loadout = [self.storageManagedObjectContext objectWithID:self.loadoutID];
 
-		if (![self.loadout.data.data isEqual:self.loadoutData])
-			self.loadout.data.data = self.loadoutData;
-		if (self.loadout.typeID != typeID)
-			self.loadout.typeID = typeID;
-		if (![self.loadoutName isEqualToString:self.loadout.name])
-			self.loadout.name = self.loadoutName;
-		if ([context hasChanges])
+		if (![loadout.data.data isEqual:self.loadoutData])
+			loadout.data.data = self.loadoutData;
+		if (loadout.typeID != typeID)
+			loadout.typeID = typeID;
+		if (![self.loadoutName isEqualToString:loadout.name])
+			loadout.name = self.loadoutName;
+		if ([context hasChanges]) {
 			[context save:nil];
+			self.loadoutID = loadout.objectID;
+		}
 	}];
 }
 
@@ -929,29 +935,36 @@
 	}];
 }*/
 
-- (void) setCharacter:(NCFitCharacter *)character {
+- (void) setCharacter:(NCFitCharacter*) character withCompletionBlock:(void(^)()) completionBlock {
+	NSAssert(self.pilot, @"Pilot is nil");
 	_character = character;
-	if (character && self.pilot) {
-		__block NSDictionary* skills;
-		__block NSArray* implants;
-		__block NSString* characterName;
-		if (character.managedObjectContext)
-			[character.managedObjectContext performBlockAndWait:^{
-				skills = character.skills;
-				implants = character.implants;
-				characterName = character.name;
-			}];
-		else {
-			skills = character.skills;
-			implants = character.implants;
-			characterName = character.name;
-		}
-		[self.engine performBlockAndWait:^{
+	
+	__block NSDictionary* skills;
+	__block NSArray* implants;
+	__block NSString* characterName;
+	
+	void (^load)() = ^{
+		[self.engine performBlock:^{
 			[self setSkillLevels:skills];
 			for (NSNumber* implantID in implants)
 				self.pilot->addImplant([implantID intValue]);
 			self.pilot->setCharacterName([characterName cStringUsingEncoding:NSUTF8StringEncoding]);
+			if (completionBlock)
+				dispatch_async(dispatch_get_main_queue(), completionBlock);
 		}];
+	};
+	if (character.managedObjectContext)
+		[character.managedObjectContext performBlockAndWait:^{
+			skills = character.skills;
+			implants = character.implants;
+			characterName = character.name;
+			load();
+		}];
+	else {
+		skills = character.skills;
+		implants = character.implants;
+		characterName = character.name;
+		load();
 	}
 }
 

@@ -51,7 +51,7 @@
 @property (nonatomic, strong) NSAttributedString* trackingText;
 @property (nonatomic, strong) NSString* lifeTimeText;
 @property (nonatomic, strong) UIImage* stateImage;
-@property (nonatomic, strong) UIImage* targetImage;
+@property (nonatomic, assign) BOOL hasTarget;
 
 @property (nonatomic, assign) float trackingSpeed;
 @property (nonatomic, assign) float orbitRadius;
@@ -72,7 +72,7 @@
 	other.trackingText = self.trackingText;
 	other.lifeTimeText = self.lifeTimeText;
 	other.stateImage = self.stateImage;
-	other.targetImage = self.targetImage;
+	other.hasTarget = self.hasTarget;
 	other.trackingSpeed = self.trackingSpeed;
 	other.orbitRadius = self.orbitRadius;
 	return other;
@@ -398,7 +398,7 @@
 		cell.trackingLabel.textColor = row.trackingColor;
 		cell.lifetimeLabel.text = row.lifeTimeText;
 		cell.stateImageView.image = row.stateImage;
-		cell.targetImageView.image = row.targetImage;
+		cell.targetImageView.image = row.hasTarget ? self.targetImage : nil;
 	}
 	if (row.module && !row.isUpToDate) {
 		row.isUpToDate = YES;
@@ -472,7 +472,7 @@
 			else
 				row.stateImage = nil;
 			
-			row.targetImage = module->getTarget() != nullptr ? self.targetImage : nil;
+			row.hasTarget = module->getTarget() != nullptr;
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 			});
@@ -644,7 +644,7 @@
 		
 		
 		UIAlertAction* (^clearTargetAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
-			return [UIAlertAction actionWithTitle:ActionButtonSetTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			return [UIAlertAction actionWithTitle:ActionButtonClearTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
 					for (auto module: modules)
 						module->clearTarget();
@@ -662,7 +662,7 @@
 		}
 		
 		UIAlertAction* (^variationsAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
-			return [UIAlertAction actionWithTitle:ActionButtonSetTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			return [UIAlertAction actionWithTitle:ActionButtonVariations style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				NSMutableArray* array = [NSMutableArray new];
 				[self.controller.engine performBlockAndWait:^{
 					for (auto module: modules)

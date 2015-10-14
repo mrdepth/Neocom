@@ -293,12 +293,12 @@
 }
 
 - (NSString*) mailsDetails {
-	NCAccount* account = [NCAccount currentAccount];
+/*	NCAccount* account = [NCAccount currentAccount];
 	if (account) {
 		NSInteger numberOfUnreadMessages = account.mailBox.numberOfUnreadMessages;
 		if (numberOfUnreadMessages > 0)
 			return [NSString stringWithFormat:NSLocalizedString(@"%d unread messages", nil), (int32_t) numberOfUnreadMessages];
-	}
+	}*/
 	return nil;
 }
 

@@ -107,6 +107,11 @@
 
 @end
 
+@interface NCDatabaseTypeMarketInfoViewController()
+@property (nonatomic, strong) NCSetting* modeSetting;
+
+@end
+
 @implementation NCDatabaseTypeMarketInfoViewController
 
 - (void)viewDidLoad
@@ -115,16 +120,9 @@
 
 	self.type = [self.databaseManagedObjectContext objectWithID:self.typeID];
 	
-	[self.storageManagedObjectContext performBlock:^{
-		NCSetting* modeSetting = [self.storageManagedObjectContext settingWithKey:@"NCDatabaseTypeMarketInfoViewController.mode"];
-		id value = modeSetting.value;
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (value)
-				self.mode = [value integerValue];
-			self.cacheRecordID = [NSString stringWithFormat:@"NCDatabaseTypeMarketInfoViewController.%d", self.type.typeID];
-			[self.tableView reloadData];
-		});
-	}];
+	self.modeSetting = [self.storageManagedObjectContext settingWithKey:@"NCDatabaseTypeMarketInfoViewController.mode"];
+	self.mode = [self.modeSetting.value integerValue];
+	self.cacheRecordID = [NSString stringWithFormat:@"NCDatabaseTypeMarketInfoViewController.%d", self.type.typeID];
 	
 	if (self.navigationController.viewControllers[0] != self)
 		self.navigationItem.leftBarButtonItem = nil;
@@ -134,8 +132,7 @@
 	self.regions = [NSMutableDictionary new];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
@@ -154,10 +151,7 @@
 								 else
 									 self.mode = NCDatabaseTypeMarketInfoViewControllerModeBuyOrders;
 								 [self.tableView reloadData];
-								 [self.storageManagedObjectContext performBlock:^{
-									 NCSetting* modeSetting = [self.storageManagedObjectContext settingWithKey:@"NCDatabaseTypeMarketInfoViewController.mode"];
-									 modeSetting.value = @(self.mode);
-								 }];
+								 self.modeSetting.value = @(self.mode);
 							 }
 						 }
 							 cancelBlock:nil] showFromRect:[sender bounds] inView:sender animated:YES];

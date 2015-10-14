@@ -27,7 +27,7 @@
 
 @property (nonatomic, strong, readonly) NCDatabaseTypePickerViewController* typePickerViewController;
 
-@property (nonatomic, strong, readonly) NSMutableArray* fits;
+@property (nonatomic, strong, readonly) NSArray* fits;
 @property (nonatomic, strong, readonly) NCFittingEngine* engine;
 
 @property (nonatomic, strong) NCShipFit* fit;
@@ -38,5 +38,6 @@
 - (IBAction)onChangeSection:(UISegmentedControl*)sender;
 - (IBAction)onAction:(id)sender;
 - (void) reload;
+- (void) removeFit:(NCShipFit*) fit;
 
 @end

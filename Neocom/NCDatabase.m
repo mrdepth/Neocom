@@ -9,67 +9,80 @@
 #import "NCDatabase.h"
 #import "NCStorage.h"
 
-@interface NCDatabaseStore : NSIncrementalStore
-@property (nonatomic, strong) NSPersistentStoreCoordinator* pc;
-@property (nonatomic, strong, readonly) NSIncrementalStore* persistentStore;
+/*@interface NCPersistentStore : NSIncrementalStore
+@property (nonatomic, strong) NSPersistentStoreCoordinator* databasePersistentStoreCoordinator;
+@property (nonatomic, strong) NSIncrementalStore* databaseStore;
+@property (nonatomic, strong) NSPersistentStoreCoordinator* storagePersistentStoreCoordinator;
+@property (nonatomic, strong) NSIncrementalStore* storageStore;
+@property (nonatomic, strong) NSManagedObjectModel* managedObjectModel;
 @end
 
-@implementation NCDatabaseStore
+@implementation NCPersistentStore
 
-- (NSPersistentStore*) persistentStore {
-	return [self.pc.persistentStores lastObject];
+- (id) initWithPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)root configurationName:(NSString *)name URL:(NSURL *)url options:(NSDictionary *)options {
+	if (self = [super initWithPersistentStoreCoordinator:root configurationName:name URL:url options:options]) {
+		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"momd"];
+		NSManagedObjectModel* model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+		self.pc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+		self.store = [self.pc addPersistentStoreWithType:NSSQLiteStoreType
+													   configuration:nil
+																 URL:[[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"sqlite"]
+															 options:@{NSReadOnlyPersistentStoreOption: @(YES),
+																	   NSSQLitePragmasOption:@{@"journal_mode": @"OFF"}}
+												   error:nil];
+	}
+	return self;
+}
+
+- (nullable id)executeRequest:(NSPersistentStoreRequest *)request withContext:(NSManagedObjectContext *)context error:(NSError**)error {
+	id res = [self.store executeRequest:request withContext:context error:error];
+	return res;
+}
+
+- (BOOL) respondsToSelector:(SEL)aSelector {
+	return [self.store respondsToSelector:aSelector];
+}
+
+- (NSMethodSignature*) methodSignatureForSelector:(SEL)sel {
+	return [self.store methodSignatureForSelector:sel];
+}
+
+- (void) forwardInvocation:(NSInvocation *)invocation {
+	NSLog(@"%@", NSStringFromSelector(invocation.selector));
+	[invocation invokeWithTarget:self.store];
 }
 
 - (NSString*) type {
 	return @"MyClass";
 }
 
-- (id) initWithPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)root configurationName:(NSString *)name URL:(NSURL *)url options:(NSDictionary *)options {
-	if (self = [super initWithPersistentStoreCoordinator:root configurationName:name URL:url options:options]) {
-		self.pc = [[NCDatabase sharedDatabase] persistentStoreCoordinator];
-	}
-	return self;
-}
-
 - (BOOL) loadMetadata:(NSError * _Nullable __autoreleasing *)error {
-	return [self.persistentStore loadMetadata:error];
+	return [self.store loadMetadata:error];
 }
 
 - (NSDictionary*) metadata {
-	NSMutableDictionary* metadata = [[self.persistentStore metadata] mutableCopy];
-	metadata[NSStoreTypeKey] = @"MyClass";
-	return @{NSStoreTypeKey:@"MyClass", NSStoreUUIDKey:metadata[NSStoreUUIDKey]};
-}
-
-- (nullable id)executeRequest:(NSPersistentStoreRequest *)request withContext:(nullable NSManagedObjectContext*)context error:(NSError **)error {
-	id res = [self.pc executeRequest:request withContext:context error:error];
-	return res;
+	NSMutableDictionary* dic = [self.store.metadata mutableCopy];
+	dic[NSStoreTypeKey] = @"MyClass";
+	dic[NSStoreModelVersionHashesKey] = self.persistentStoreCoordinator.managedObjectModel.entityVersionHashesByName;
+	return dic;
+	//return @{NSStoreTypeKey:@"MyClass",NSStoreUUIDKey:dic[NSStoreUUIDKey]};
 }
 
 - (nullable NSIncrementalStoreNode *)newValuesForObjectWithID:(NSManagedObjectID*)objectID withContext:(NSManagedObjectContext*)context error:(NSError**)error {
-	return [self.persistentStore newValuesForObjectWithID:objectID withContext:context error:error];
+	objectID = [self.pc managedObjectIDForURIRepresentation:objectID.URIRepresentation];
+	return [self.store newValuesForObjectWithID:objectID withContext:context error:error];
 }
 
 - (nullable id)newValueForRelationship:(NSRelationshipDescription*)relationship forObjectWithID:(NSManagedObjectID*)objectID withContext:(nullable NSManagedObjectContext *)context error:(NSError **)error {
-	return [self.persistentStore newValueForRelationship:relationship forObjectWithID:objectID withContext:context error:error];
-}
-
-
-- (nullable NSArray<NSManagedObjectID *> *)obtainPermanentIDsForObjects:(NSArray<NSManagedObject *> *)array error:(NSError **)error {
-	return [self.persistentStore obtainPermanentIDsForObjects:array error:error];
-}
-
-- (NSManagedObjectID *)newObjectIDForEntity:(NSEntityDescription *)entity referenceObject:(id)data {
-	return [self.persistentStore newObjectIDForEntity:entity referenceObject:data];
+	objectID = [self.pc managedObjectIDForURIRepresentation:objectID.URIRepresentation];
+	return [self.store newValueForRelationship:relationship forObjectWithID:objectID withContext:context error:error];
 }
 
 - (id)referenceObjectForObjectID:(NSManagedObjectID *)objectID {
-	return [self.persistentStore referenceObjectForObjectID:objectID];
+	return nil;
 }
 
-
-
-@end
+@end*/
 
 
 @implementation NCDatabase
@@ -139,9 +152,11 @@
 		}
 		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"momd"];
 		_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-		//modelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage" withExtension:@"momd"];
-		//NSManagedObjectModel* model2 = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-		//_managedObjectModel = [NSManagedObjectModel modelByMergingModels:@[_managedObjectModel, model2]];
+		
+		/*modelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage" withExtension:@"momd"];
+		NSManagedObjectModel* model2 = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+		_managedObjectModel = [NSManagedObjectModel modelByMergingModels:@[_managedObjectModel, model2]];*/
+		
 		return _managedObjectModel;
 	}
 }
@@ -156,6 +171,7 @@
 		}
 		
 		NSError *error = nil;
+		//[NSPersistentStoreCoordinator registerStoreClass:[NCPersistentStore class] forStoreType:@"MyClass"];
 		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
 		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 													   configuration:nil

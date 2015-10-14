@@ -32,14 +32,17 @@
 	}
 	else {
 		NCShoppingItem* item = [self.shoppingItems anyObject];
-		__block NCDBInvMarketGroup* marketGroup;
 		NSManagedObjectContext* context = [[NCDatabase sharedDatabase] createManagedObjectContext];
+		__block int32_t marketGroupID = 0;
 		[context performBlockAndWait:^{
+			NCDBInvMarketGroup* marketGroup;
 			NCDBInvType* type = [context invTypeWithTypeID:item.typeID];
 			for (marketGroup = type.marketGroup; marketGroup.parentGroup; marketGroup = marketGroup.parentGroup);
+			if (marketGroup)
+				marketGroupID = marketGroup.marketGroupID;
 		}];
-		if (marketGroup)
-			return [NSString stringWithFormat:@"%d", marketGroup.marketGroupID];
+		if (marketGroupID)
+			return [NSString stringWithFormat:@"%d", marketGroupID];
 		else
 			return @"none";
 	}

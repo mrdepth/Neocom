@@ -42,7 +42,6 @@
 	self.refreshControl = nil;
 	
 	if (self.group) {
-		self.databaseManagedObjectContext = self.group.managedObjectContext;
 		self.title = self.group.groupName;
 	}
 
@@ -85,6 +84,11 @@
 		controller.typeID = [item.type objectID];
 	}
 }
+
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	return self.group.managedObjectContext ?: [super databaseManagedObjectContext];
+}
+
 
 #pragma mark - Table view data source
 

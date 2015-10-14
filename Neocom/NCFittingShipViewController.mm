@@ -54,7 +54,7 @@
 #define ActionButtonAddToShoppingList NSLocalizedString(@"Add to Shopping List", nil)
 
 @interface NCFittingShipViewController ()<MFMailComposeViewControllerDelegate>
-@property (nonatomic, strong, readwrite) NSMutableArray* fits;
+@property (nonatomic, strong, readwrite) NSArray* fits;
 @property (nonatomic, strong, readwrite) NCFittingEngine* engine;
 
 @property (nonatomic, weak) NCFittingShipModulesViewController* modulesViewController;
@@ -62,6 +62,7 @@
 @property (nonatomic, weak) NCFittingShipImplantsViewController* implantsViewController;
 @property (nonatomic, weak) NCFittingShipFleetViewController* fleetViewController;
 @property (nonatomic, weak) NCFittingShipStatsViewController* statsViewController;
+@property (nonatomic, strong) NCFitCharacter* defaultCharacter;
 
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
 
@@ -94,7 +95,7 @@
 	NCFittingEngine* engine = [NCFittingEngine new];
 
 	if (!self.fits)
-		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
+		self.fits = @[self.fit];
 	
 	for (id controller in self.childViewControllers) {
 		if ([controller isKindOfClass:[NCFittingShipModulesViewController class]])
@@ -111,37 +112,46 @@
 
 	
 	NCAccount* account = [NCAccount currentAccount];
+	NCShipFit* fit = self.fit;
+	dispatch_group_t finishDispatchGroup = dispatch_group_create();
+	dispatch_group_enter(finishDispatchGroup);
 	[engine performBlock:^{
-		[engine loadShipFit:self.fit];
-		
-		void (^loadDefaultCharacter)() = ^{
-			[self.storageManagedObjectContext performBlock:^{
-				NCFitCharacter* character = [self.storageManagedObjectContext fitCharacterWithSkillsLevel:5];
-				self.fit.character = character;
-				dispatch_async(dispatch_get_main_queue(), ^{
-					self.engine = engine;
-					[self reload];
-				});
-			}];
-		};
-		
-		if (account) {
-			[account loadFitCharacterWithCompletioBlock:^(NCFitCharacter *fitCharacter) {
-				if (fitCharacter) {
-					self.fit.character = fitCharacter;
-					dispatch_async(dispatch_get_main_queue(), ^{
-						self.engine = engine;
-						[self reload];
-					});
-				}
-				else
-					loadDefaultCharacter();
-			}];
-		}
-		else {
-			loadDefaultCharacter();
-		}
+		[engine loadShipFit:fit];
+		dispatch_group_leave(finishDispatchGroup);
 	}];
+	__block NCFitCharacter* fitCharacter;
+	
+	void (^loadDefaultCharacter)() = ^{
+		dispatch_group_enter(finishDispatchGroup);
+		NSManagedObjectContext* storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+		[storageManagedObjectContext performBlock:^{
+			fitCharacter = [storageManagedObjectContext fitCharacterWithSkillsLevel:5];
+			dispatch_group_leave(finishDispatchGroup);
+		}];
+	};
+	
+	if (account) {
+		dispatch_group_enter(finishDispatchGroup);
+		[account loadFitCharacterWithCompletioBlock:^(NCFitCharacter *character) {
+			if (character) {
+				fitCharacter = character;
+			}
+			else
+				loadDefaultCharacter();
+			dispatch_group_leave(finishDispatchGroup);
+		}];
+	}
+	else {
+		loadDefaultCharacter();
+	}
+	
+	dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+		[fit setCharacter:fitCharacter withCompletionBlock:^{
+			self.defaultCharacter = fitCharacter;
+			self.engine = engine;
+			[self reload];
+		}];
+	});
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -162,7 +172,7 @@
 - (void) viewWillDisappear:(BOOL)animated {
 	if ([self isMovingFromParentViewController] || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		for (NCShipFit* fit in self.fits) {
-			if (fit.loadout)
+			if (fit.loadoutID)
 				[fit save];
 		}
 		self.fits = nil;
@@ -441,6 +451,12 @@
 	}];
 }
 
+- (void) removeFit:(NCShipFit *)fit {
+	NSMutableArray* fits = [self.fits mutableCopy];
+	[fits removeObject:fit];
+	self.fits = [fits copy];
+}
+
 - (NCDatabaseTypePickerViewController*) typePickerViewController {
 	if (!_typePickerViewController) {
 		_typePickerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerViewController"];
@@ -457,7 +473,7 @@
 }
 
 - (IBAction)onAction:(id)sender {
-	if (!self.fit.character)
+	if (!self.fit.pilot)
 		return;
 	
 	NSMutableArray* actions = [NSMutableArray new];
@@ -493,17 +509,17 @@
 			[self presentViewController:controller animated:YES completion:nil];
 		}]];
 
-		if (!self.fit.loadout.managedObjectContext)
+		if (!self.fit.loadoutID)
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSave style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.fit save];
 			}]];
 		else
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDuplicate style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-				[self.fit save];
-				self.fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-				self.fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-				self.fit.loadoutName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.loadoutName ? self.fit.loadoutName : @""];
-				self.title = self.fit.loadoutName;
+//				[self.fit save];
+//				self.fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+//				self.fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+//				self.fit.loadoutName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.loadoutName ? self.fit.loadoutName : @""];
+//				self.title = self.fit.loadoutName;
 			}]];
 
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonCharacter style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -577,7 +593,7 @@
 			NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:self.storageManagedObjectContext]
 													  insertIntoManagedObjectContext:nil];
 			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.fit.typeID];
-			shoppingGroup.name = self.fit.loadout.name.length > 0 ? self.fit.loadoutName : type.typeName;
+			shoppingGroup.name = self.fit.loadoutName > 0 ? self.fit.loadoutName : type.typeName;
 			shoppingGroup.quantity = 1;
 			
 			
@@ -670,61 +686,34 @@
 - (IBAction) unwindFromCharacterPicker:(UIStoryboardSegue*) segue {
 	NCFittingCharacterPickerViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedCharacter) {
-		sourceViewController.fit.character = sourceViewController.selectedCharacter;
-		[self reload];
-	}
-	else if ([sourceViewController.fit.character isDeleted]) {
-		[self.storageManagedObjectContext performBlock:^{
-			sourceViewController.fit.character = [self.storageManagedObjectContext fitCharacterWithSkillsLevel:5];
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[self reload];
-			});
+		[sourceViewController.fit setCharacter:sourceViewController.selectedCharacter withCompletionBlock:^{
+			[self reload];
 		}];
 	}
 }
 
 - (IBAction) unwindFromFitPicker:(UIStoryboardSegue*) segue {
-/*	NCFittingFitPickerViewController* sourceViewController = segue.sourceViewController;
+	NCFittingFitPickerViewController* sourceViewController = segue.sourceViewController;
 	NCShipFit* fit = sourceViewController.selectedFit;
 	if (!fit)
 		return;
-	std::shared_ptr<eufe::Engine> engine = self.engine;
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 @synchronized(self) {
-												 if (!fit.pilot) {
-													 fit.pilot = engine->getGang()->addPilot();
-													 NCAccount* account = [NCAccount currentAccount];
-													 NCFitCharacter* character;
-													 
-													 if (account.characterSheet)
-														 character = [[NCStorage sharedStorage] characterWithAccount:account];
-													 else
-														 character = [[NCStorage sharedStorage] characterWithSkillsLevel:5];
-													 
-													 fit.character = character;
-													 [fit load];
-												 }
-
-												 
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 [self.fits addObject:fit];
-								 [self reload];
-							 }];*/
+	[self.engine performBlock:^{
+		[self.engine loadShipFit:fit];
+		NSArray* fits = [self.fits arrayByAddingObject:fit];
+		[fit setCharacter:self.defaultCharacter withCompletionBlock:^{
+			self.fits = fits;
+			[self reload];
+		}];
+	}];
 }
 
 - (IBAction) unwindFromTargets:(UIStoryboardSegue*) segue {
 	NCFittingTargetsViewController* sourceViewController = segue.sourceViewController;
 	auto target = sourceViewController.selectedTarget ? sourceViewController.selectedTarget.pilot->getShip() : nullptr;
 	[self.engine performBlockAndWait:^{
-		for (NSValue* value in sourceViewController.items) {
-			eufe::Item* item = reinterpret_cast<eufe::Item*>([value pointerValue]);
-			eufe::Module* module = dynamic_cast<eufe::Module*>(item);
-			eufe::Drone* drone = dynamic_cast<eufe::Drone*>(item);
+		for (NCFittingEngineItemPointer* pointer in sourceViewController.items) {
+			std::shared_ptr<eufe::Module> module = std::dynamic_pointer_cast<eufe::Module>(pointer.item);
+			std::shared_ptr<eufe::Drone> drone = std::dynamic_pointer_cast<eufe::Drone>(pointer.item);
 			
 			if (module)
 				module->setTarget(target);
@@ -809,8 +798,9 @@
 - (IBAction) unwindFromAffectingSkills:(UIStoryboardSegue*) segue {
 	NCFittingShipAffectingSkillsViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.modified) {
-		self.fit.character = sourceViewController.character;
-		[self reload];
+		[[self fit] setCharacter:sourceViewController.character withCompletionBlock:^{
+			[self reload];
+		}];
 	}
 }
 

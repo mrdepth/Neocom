@@ -110,6 +110,7 @@
 
 @interface NCAccountsViewController ()
 @property (nonatomic, assign) NSInteger mode;
+@property (nonatomic, strong) NCSetting* modeSetting;
 @end
 
 @implementation NCAccountsViewController
@@ -126,16 +127,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+//	self.storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.logoutItem.enabled = [NCAccount currentAccount] != nil;
-	[self.storageManagedObjectContext performBlock:^{
-		NSInteger mode = [[[self.storageManagedObjectContext settingWithKey:@"NCAccountsViewController.mode"] value] integerValue];
-		dispatch_async(dispatch_get_main_queue(), ^{
-			self.mode = mode;
-			self.modeSegmentedControl.selectedSegmentIndex = self.mode;
-		});
-	}];
+	
+	self.modeSetting = [self.storageManagedObjectContext settingWithKey:@"NCAccountsViewController.mode"];
+	self.mode = [self.modeSetting.value integerValue];
+	self.modeSegmentedControl.selectedSegmentIndex = self.mode;
 	self.cacheRecordID = NSStringFromClass(self.class);
 }
 
@@ -173,6 +171,8 @@
 
 - (IBAction)onChangeMode:(id)sender {
 	[self.tableView reloadData];
+	self.mode = self.modeSegmentedControl.selectedSegmentIndex;
+	self.modeSetting.value = @(self.mode);
 }
 
 #pragma mark - Table view data source
@@ -228,13 +228,14 @@
 	[data.accounts removeObjectAtIndex:fromIndexPath.row];
 	[data.accounts insertObject:account atIndex:toIndexPath.row];
 	
-	[self.storageManagedObjectContext performBlock:^{
-		int32_t order = 0;
-		for (NCAccountsViewControllerDataAccount* account in data.accounts)
-			account.account.order = order++;
-		
-		if ([self.storageManagedObjectContext hasChanges])
-			[self.storageManagedObjectContext save:nil];
+	int32_t order = 0;
+	for (NCAccountsViewControllerDataAccount* account in data.accounts)
+		account.account.order = order++;
+
+	NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+	[storageManagedObjectContext performBlock:^{
+		if ([storageManagedObjectContext hasChanges])
+			[storageManagedObjectContext save:nil];
 	}];
 
 	NCAccountsViewControllerData* updatedData = [NCAccountsViewControllerData new];
@@ -260,8 +261,9 @@
 	
 	NSProgress* progress = [NSProgress progressWithTotalUnitCount:1];
 
+	NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
 	[accountsManager loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray* apiKeys) {
-		[self.storageManagedObjectContext performBlock:^{
+		[storageManagedObjectContext performBlock:^{
 			__block NSError* lastError;
 			NCAccountsViewControllerData* data = [NCAccountsViewControllerData new];
 			data.accounts = [NSMutableArray new];
@@ -381,12 +383,13 @@
 
 - (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
 	NCAccountsViewControllerData* data = cacheData;
-	[self.storageManagedObjectContext performBlock:^{
+	NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+	[storageManagedObjectContext performBlock:^{
 		for (NCAccountsViewControllerDataAccount* account in data.accounts) {
 			if (!account.account)
-				account.account = [self.storageManagedObjectContext accountWithUUID:account.uuid];
+				account.account = [storageManagedObjectContext accountWithUUID:account.uuid];
 			if (!account.apiKey)
-				account.apiKey = [self.storageManagedObjectContext apiKeyWithKeyID:account.keyID];
+				account.apiKey = [storageManagedObjectContext apiKeyWithKeyID:account.keyID];
 		}
 		dispatch_async(dispatch_get_main_queue(), ^{
 			for (NCAccountsViewControllerDataAccount* account in data.accounts) {
@@ -407,8 +410,8 @@
 	[self reload];
 }
 
-- (void) managedObjectContextDidSave:(NSNotification*) notification {
-	[super managedObjectContextDidSave:notification];
+- (void) managedObjectContextDidFinishUpdate:(NSNotification *)notification {
+	[super managedObjectContextDidFinishUpdate:notification];
 	[notification.userInfo enumerateKeysAndObjectsUsingBlock:^(id key, NSSet* set, BOOL *stop) {
 		for (NSManagedObject* object in set)
 			if ([object isKindOfClass:[NCAccount class]]) {

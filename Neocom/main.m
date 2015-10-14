@@ -11,8 +11,7 @@
 #import "NCAppDelegate.h"
 #import "NSObject+Debug.h"
 
-int main(int argc, char * argv[])
-{
+int main(int argc, char * argv[]) {
 	@autoreleasepool {
 //		NSLog(@"%@", [UIStoryboardPopoverSegue allMethods]);
 //		NSLog(@"%@", [UIStoryboardPopoverSegue allProperties]);

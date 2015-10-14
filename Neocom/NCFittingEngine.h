@@ -17,7 +17,7 @@
 
 - (void)performBlockAndWait:(void (^)())block;
 - (void)performBlock:(void (^)())block;
-- (void) loadShipFit:(NCShipFit*) fit;
+- (void)loadShipFit:(NCShipFit*) fit;
 
 @end
 

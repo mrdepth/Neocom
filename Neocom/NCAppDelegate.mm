@@ -68,15 +68,6 @@ void uncaughtExceptionHandler(NSException* exception) {
 @implementation NCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	NSManagedObjectContext* db = [[NCDatabase sharedDatabase] createManagedObjectContext];
-	[db performBlock:^{
-		NSLog(@"%@", [NSThread currentThread]);
-		NCDBInvType* type = [db invTypeWithTypeID:645];
-		type = [db objectWithID:type.objectID];
-		NSLog(@"%@", [type.requiredSkills array]);
-		for (id skill in type.requiredSkills)
-			NSLog(@"%@", skill);
-	}];
 //#warning Enable Flurry
 #if !TARGET_OS_SIMULATOR
 	[Flurry setCrashReportingEnabled:YES];

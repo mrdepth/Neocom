@@ -20,6 +20,8 @@
 @property (nonatomic, strong) NSMutableArray* rigSlots;
 @property (nonatomic, strong) NSMutableArray* subsystems;
 @property (nonatomic, strong) NSMutableArray* drones;
+@property (nonatomic, strong) NSManagedObjectContext* storageManagedObjectContext;
+@property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
 
 @end
 
@@ -29,13 +31,17 @@
 	NSXMLParser* xmlParser = [[NSXMLParser alloc] initWithData:[xml dataUsingEncoding:NSUTF8StringEncoding]];
 	NCLoadoutsParser* parser = [NCLoadoutsParser new];
 	xmlParser.delegate = parser;
-	[xmlParser parse];
+	[parser.databaseManagedObjectContext performBlockAndWait:^{
+		[xmlParser parse];
+	}];
 	return parser.loadouts;
 }
 
 - (id) init {
 	if (self = [super init]) {
 		self.loadouts = [NSMutableArray new];
+		self.storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+		self.databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
 	}
 	return self;
 }
@@ -49,7 +55,7 @@ didStartElement:(NSString *)elementName
 	attributes:(NSDictionary *)attributeDict {
 	if ([elementName compare:@"fitting" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
 		self.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout"
-																	 inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
+																	 inManagedObjectContext:self.storageManagedObjectContext]
 						  insertIntoManagedObjectContext:nil];
 		self.loadout.name = attributeDict[@"name"];
 		self.hiSlots = [NSMutableArray new];
@@ -60,14 +66,14 @@ didStartElement:(NSString *)elementName
 		self.drones = [NSMutableArray new];
 	}
 	else if ([elementName compare:@"shipType" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-		NCDBInvType* type = [NCDBInvType invTypeWithTypeName:attributeDict[@"value"]];
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeName:attributeDict[@"value"]];
 		if (type)
 			self.loadout.typeID = type.typeID;
 		else
 			self.loadout = nil;
 	}
 	else if ([elementName compare:@"hardware" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-		NCDBInvType* type = [NCDBInvType invTypeWithTypeName:attributeDict[@"type"]];
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeName:attributeDict[@"type"]];
 		if (type) {
 			NSString* slot = attributeDict[@"slot"];
 			if ([slot hasPrefix:@"drone bay"]) {
@@ -103,7 +109,7 @@ didStartElement:(NSString *)elementName
  qualifiedName:(NSString *)qName {
 	if ([elementName compare:@"fitting" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
 		if (self.loadout) {
-			self.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]] insertIntoManagedObjectContext:nil];
+			self.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:nil];
 			self.loadout.data.loadout = self.loadout;
 			NCLoadoutDataShip* ship = [NCLoadoutDataShip new];
 			ship.hiSlots = self.hiSlots;

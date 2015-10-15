@@ -77,6 +77,8 @@
 				loadoutData = (NCLoadoutDataShip*) loadout.data.data;
 		}];
 	}
+	else if (fit.apiLadout)
+		loadoutData = [self loadoutShipDataWithAPILoadout:fit.apiLadout];
 	
 	[self performBlockAndWait:^{
 		NSMutableSet* charges = [NSMutableSet new];
@@ -244,6 +246,115 @@
 - (NCLoadoutDataShip*) loadoutShipDataWithAPILoadout:(NAPISearchItem*) apiLoadout {
 	NCLoadoutDataShip* loadoutData = [NCLoadoutDataShip new];
 	[self.databaseManagedObjectContext performBlockAndWait:^{
+		NSArray* components = [apiLoadout.canonicalName componentsSeparatedByString:@"|"];
+		if (components.count > 0) {
+			NSMutableArray* hiSlots = [NSMutableArray new];
+			NSMutableArray* medSlots = [NSMutableArray new];
+			NSMutableArray* lowSlots = [NSMutableArray new];
+			NSMutableArray* rigSlots = [NSMutableArray new];
+			NSMutableArray* subsystems = [NSMutableArray new];
+			NSMutableArray* implants = [NSMutableArray new];
+			NSMutableArray* boosters = [NSMutableArray new];
+			NSArray* drones = nil;
+			NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+			
+			
+			if (components.count > 1) {
+				for (NSString* component in [components[1] componentsSeparatedByString:@";"]) {
+					NSArray* array = [component componentsSeparatedByString:@":"];
+					eufe::TypeID typeID = array.count > 0 ? [array[0] intValue] : 0;
+					eufe::TypeID chargeID = array.count > 1 ? [array[1] intValue] : 0;
+					int32_t count = array.count > 2 ? [array[2] intValue] : 1;
+					if (!typeID)
+						continue;
+					
+					NCDBInvType *type = [self.databaseManagedObjectContext invTypeWithTypeID:typeID];
+					if (!type)
+						continue;
+					
+					NSMutableArray* modules = nil;
+					switch (type.slot) {
+						case eufe::Module::SLOT_LOW:
+							modules = lowSlots;
+							break;
+						case eufe::Module::SLOT_MED:
+							modules = medSlots;
+							break;
+						case eufe::Module::SLOT_HI:
+							modules = hiSlots;
+							break;
+						case eufe::Module::SLOT_RIG:
+							modules = rigSlots;
+							break;
+						case eufe::Module::SLOT_SUBSYSTEM:
+							modules = subsystems;
+							break;
+						default:
+							break;
+					}
+					for (int i = 0; i < count; i++) {
+						NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
+						module.typeID = typeID;
+						module.state = eufe::Module::STATE_ACTIVE;
+						module.chargeID = chargeID;
+						[modules addObject:module];
+					}
+				}
+			}
+			
+			if (components.count > 2) {
+				for (NSString* component in [components[2] componentsSeparatedByString:@";"]) {
+					NSArray* array = [component componentsSeparatedByString:@":"];
+					eufe::TypeID typeID = array.count > 0 ? [array[0] intValue] : 0;
+					int32_t count = array.count > 1 ? [array[1] intValue] : 0;
+					if (!typeID)
+						continue;
+					
+					NCLoadoutDataShipDrone* drone = dronesDic[@(typeID)];
+					if (!drone) {
+						drone = [NCLoadoutDataShipDrone new];
+						drone.typeID = typeID;
+						drone.active = true;
+						dronesDic[@(typeID)] = drone;
+					}
+					drone.count += count;
+				}
+			}
+			
+			if (components.count > 3) {
+				for (NSString* component in [components[3] componentsSeparatedByString:@";"]) {
+					eufe::TypeID typeID = [component intValue];
+					if (typeID) {
+						NCLoadoutDataShipImplant* implant = [NCLoadoutDataShipImplant new];
+						implant.typeID = typeID;
+						[implants addObject:implant];
+					}
+				}
+			}
+			
+			if (components.count > 4) {
+				for (NSString* component in [components[4] componentsSeparatedByString:@";"]) {
+					eufe::TypeID typeID = [component intValue];
+					if (typeID) {
+						NCLoadoutDataShipBooster* booster = [NCLoadoutDataShipBooster new];
+						booster.typeID = typeID;
+						[boosters addObject:booster];
+					}
+				}
+			}
+			drones = [dronesDic allValues];
+			
+			loadoutData.hiSlots = hiSlots;
+			loadoutData.medSlots = medSlots;
+			loadoutData.lowSlots = lowSlots;
+			loadoutData.rigSlots = rigSlots;
+			loadoutData.subsystems = subsystems;
+			loadoutData.drones = drones;
+			loadoutData.cargo = @[];
+			loadoutData.implants = implants;
+			loadoutData.boosters = boosters;
+			
+		}
 	}];
 	return loadoutData;
 }

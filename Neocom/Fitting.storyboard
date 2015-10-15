@@ -1055,7 +1055,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="RIV-hT-Xf4">
                         <barButtonItem key="backBarButtonItem" title="Back" id="aQX-Tb-ZkO"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="hGN-2T-D2S">
+                        <barButtonItem key="rightBarButtonItem" title="Rename" id="hGN-2T-D2S">
                             <connections>
                                 <action selector="onAction:" destination="fa8-lY-EfW" id="X0W-oC-FJQ"/>
                             </connections>

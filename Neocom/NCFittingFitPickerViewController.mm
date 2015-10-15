@@ -106,6 +106,7 @@
 					  completionHandler:^(NCDBInvType *type) {
 						  NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
 						  loadout.typeID = type.typeID;
+						  loadout.name = type.typeName;
 						  loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
 						  NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
 						  self.selectedFit = fit;

@@ -66,11 +66,13 @@
 	self.refreshControl = nil;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
-	[self reload];
+	[self storageManagedObjectContext];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	if (!self.sections)
+		[self reload];
 }
 
 - (void)didReceiveMemoryWarning
@@ -96,7 +98,10 @@
 
 - (void) managedObjectContextDidFinishUpdate:(NSNotification *)notification {
 	[super managedObjectContextDidFinishUpdate:notification];
-	[self reload];
+	if ([self isViewLoaded] && self.view.window)
+		[self reload];
+	else
+		self.sections = nil;
 }
 
 #pragma mark - Table view data source
@@ -168,7 +173,9 @@
 											 completionHandler:^(NCDBInvType *type) {
 												 NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
 												 loadout.typeID = type.typeID;
+												 loadout.name = type.typeName;
 												 loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+												 [self.storageManagedObjectContext save:nil];
 												 NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
 												 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
 												 [self.typePickerViewController dismissAnimated];
@@ -177,7 +184,6 @@
 		else if (indexPath.row == 2) {
 			self.typePickerViewController.title = NSLocalizedString(@"Control Towers", nil);
 			[self.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext controlTowersCategory]
-//										 presentWithConditions:@[@"invTypes.marketGroupID = 478"]
 											  inViewController:self
 													  fromRect:cell.bounds
 														inView:cell

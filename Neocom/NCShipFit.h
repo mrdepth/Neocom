@@ -59,11 +59,14 @@
 @interface NCShipFit : NSObject
 @property (nonatomic, strong, readonly) NCFittingEngine* engine;
 //@property (nonatomic, strong, readonly) NCLoadout* loadout;
-@property (nonatomic, strong) NSManagedObjectID* loadoutID;
 @property (nonatomic, strong) NSString* loadoutName;
 @property (nonatomic, assign, readonly) std::shared_ptr<eufe::Character> pilot;
 @property (nonatomic, strong, readonly) NCFitCharacter* character;
+
 @property (nonatomic, assign, readonly) int32_t typeID;
+@property (nonatomic, strong, readonly) NSManagedObjectID* loadoutID;
+@property (nonatomic, strong, readonly) NAPISearchItem* apiLadout;
+
 @property (nonatomic, readonly) NSString* canonicalName;
 @property (nonatomic, readonly) NSString* dnaRepresentation;
 @property (nonatomic, readonly) NSString* eveXMLRepresentation;

@@ -75,31 +75,23 @@
 }
 
 - (IBAction)onAction:(id)sender {
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				  destructiveButtonTitle:nil
-					   otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename", nil)
-																				  message:nil
-																		cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-																		otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
-																		  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-																			  if (selectedButtonIndex != alertView.cancelButtonIndex) {
-																				  UITextField* textField = [alertView textFieldAtIndex:0];
-																				  self.damagePattern.name = textField.text;
-																				  self.title = self.damagePattern.name;
-																			  }
-																		  } cancelBlock:nil];
-								 alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-								 UITextField* textField = [alertView textFieldAtIndex:0];
-								 textField.text = self.damagePattern.name;
-								 [alertView show];
-							 }
-						 }
-							 cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Rename", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+	__block UITextField* renameTextField;
+	[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+		textField.text = self.damagePattern.name;
+		textField.clearButtonMode = UITextFieldViewModeAlways;
+		renameTextField = textField;
+	}];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Rename", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		if (renameTextField.text.length > 0) {
+			self.damagePattern.name = renameTextField.text;
+			self.title = self.damagePattern.name;
+		}
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[self presentViewController:controller animated:YES completion:nil];
 }
 
 #pragma mark - Table view delegate
@@ -137,12 +129,6 @@
 
 	
 	return NO;
-}
-
-#pragma mark - NCTableViewController
-
-- (NSString*) recordID {
-	return nil;
 }
 
 @end

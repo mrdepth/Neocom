@@ -293,7 +293,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		controller.selectedDamagePattern = self.damagePattern;
+//		controller.selectedDamagePattern = self.damagePattern;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingAreaEffectPickerViewController"]) {
 		NCFittingAreaEffectPickerViewController* controller;
@@ -341,12 +341,14 @@
 			controller = segue.destinationViewController;
 		
 		NSMutableArray* typeIDs = [NSMutableArray new];
-		auto item = [(NCFittingEngineItemPointer*) sender[@"object"] item];
 		[self.engine performBlockAndWait:^{
-			for (auto item: item->getAffectors()) {
-				auto skill = std::dynamic_pointer_cast<eufe::Skill>(item);
-				if (skill) {
-					[typeIDs addObject:@(item->getTypeID())];
+			for (NCFittingEngineItemPointer* pointer in sender[@"object"]) {
+				auto item = pointer.item;
+				for (auto item: item->getAffectors()) {
+					auto skill = std::dynamic_pointer_cast<eufe::Skill>(item);
+					if (skill) {
+						[typeIDs addObject:@(item->getTypeID())];
+					}
 				}
 			}
 		}];
@@ -581,8 +583,32 @@
 		}]];
 
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAffectingSkills style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-			[self performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
-									  sender:@{@"sender": sender, @"object": [NCFittingEngineItemPointer pointerWithItem:self.fit.pilot->getShip()]}];
+			[self.engine performBlock:^{
+				NSMutableDictionary* items = [NSMutableDictionary new];
+				void (^addItem)(std::shared_ptr<eufe::Item>) = ^(std::shared_ptr<eufe::Item> item) {
+					if (!items[@(item->getTypeID())])
+						items[@(item->getTypeID())] = [NCFittingEngineItemPointer pointerWithItem:item];
+				};
+				auto pilot = self.fit.pilot;
+				auto ship = pilot->getShip();
+				addItem(ship);
+				for (auto module: ship->getModules()) {
+					addItem(module);
+					auto charge = module->getCharge();
+					if (charge)
+						addItem(charge);
+				}
+				for (auto drone: ship->getDrones())
+					addItem(drone);
+				for (auto implant: pilot->getImplants())
+					addItem(implant);
+				for (auto booster: pilot->getBoosters())
+					addItem(booster);
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
+											  sender:@{@"sender": sender, @"object": [items allValues]}];
+				});
+ 			}];
 		}]];
 
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAddToShoppingList style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -669,9 +695,11 @@
 		page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
 		self.sectionSegmentedControl.selectedSegmentIndex = page;
 	}
-	for (NCFittingShipWorkspaceViewController* controller in self.childViewControllers) {
-		if ([controller isKindOfClass:[NCFittingShipWorkspaceViewController class]])
-			[controller updateVisibility];
+	else if (!scrollView.tracking && !scrollView.decelerating) {
+		for (NCFittingShipWorkspaceViewController* controller in self.childViewControllers) {
+			if ([controller isKindOfClass:[NCFittingShipWorkspaceViewController class]])
+				[controller updateVisibility];
+		}
 	}
 }
 
@@ -679,6 +707,10 @@
 	NSInteger page = round(self.scrollView.contentOffset.x / self.scrollView.frame.size.width);
 	page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
 	self.sectionSegmentedControl.selectedSegmentIndex = page;
+	for (NCFittingShipWorkspaceViewController* controller in self.childViewControllers) {
+		if ([controller isKindOfClass:[NCFittingShipWorkspaceViewController class]])
+			[controller updateVisibility];
+	}
 }
 
 #pragma mark - Private
@@ -733,7 +765,7 @@
 		damagePattern.kineticAmount = sourceViewController.selectedDamagePattern.kinetic;
 		damagePattern.explosiveAmount = sourceViewController.selectedDamagePattern.explosive;
 		
-		self.damagePattern = sourceViewController.selectedDamagePattern;
+//		self.damagePattern = sourceViewController.selectedDamagePattern;
 		[self.engine performBlockAndWait:^{
 			for (NCShipFit* fit in self.fits) {
 				auto ship = fit.pilot->getShip();
@@ -761,9 +793,10 @@
 		eufe::TypeID typeID = sourceViewController.selectedType.typeID;
 
 		[self.engine performBlockAndWait:^{
-			for (NSValue* value in sourceViewController.object) {
-				eufe::Module* module = reinterpret_cast<eufe::Module*>([value pointerValue]);
-				ship->replaceModule(module->shared_from_this(), typeID);
+			for (NCFittingEngineItemPointer* pointer in sourceViewController.object) {
+				auto module = std::dynamic_pointer_cast<eufe::Module>(pointer.item);
+				if (module)
+					ship->replaceModule(module, typeID);
 			}
 		}];
 		[self reload];

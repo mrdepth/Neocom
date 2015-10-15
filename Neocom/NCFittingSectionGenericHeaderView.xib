@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1552" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,42 +13,44 @@
             <subviews>
                 <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9pH-lB-hlJ">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="24"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="slotHigh.png" translatesAutoresizingMaskIntoConstraints="NO" id="zKj-AA-JAD">
                             <rect key="frame" x="15" y="0.0" width="24" height="24"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="24" id="zJv-ac-Ix4"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Hi slots" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="BlC-mA-GAf">
                             <rect key="frame" x="39" y="0.0" width="266" height="24"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </label>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="BlC-mA-GAf" firstAttribute="top" secondItem="9pH-lB-hlJ" secondAttribute="top" id="0Ip-Vh-HRD"/>
-                        <constraint firstAttribute="trailing" secondItem="BlC-mA-GAf" secondAttribute="trailing" constant="15" id="5B4-gw-KGU"/>
+                        <constraint firstAttribute="trailing" secondItem="BlC-mA-GAf" secondAttribute="trailing" priority="999" constant="15" id="5B4-gw-KGU"/>
                         <constraint firstItem="zKj-AA-JAD" firstAttribute="leading" secondItem="9pH-lB-hlJ" secondAttribute="leading" constant="15" id="Rx3-HB-V1d"/>
                         <constraint firstAttribute="bottom" secondItem="BlC-mA-GAf" secondAttribute="bottom" id="SXU-ht-OQH"/>
                         <constraint firstAttribute="bottom" secondItem="zKj-AA-JAD" secondAttribute="bottom" id="f8h-hh-meY"/>
                         <constraint firstItem="zKj-AA-JAD" firstAttribute="top" secondItem="9pH-lB-hlJ" secondAttribute="top" id="gy5-fH-grF"/>
                         <constraint firstItem="BlC-mA-GAf" firstAttribute="leading" secondItem="zKj-AA-JAD" secondAttribute="trailing" id="vXC-11-Vvi"/>
                     </constraints>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                 </view>
             </subviews>
+            <animations/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="9pH-lB-hlJ" secondAttribute="bottom" id="7ru-Qi-LwM"/>
                 <constraint firstAttribute="trailing" secondItem="9pH-lB-hlJ" secondAttribute="trailing" id="bKv-ix-oAY"/>
                 <constraint firstItem="9pH-lB-hlJ" firstAttribute="top" secondItem="Etq-Tj-9B3" secondAttribute="top" id="qy8-5I-CbC"/>
                 <constraint firstItem="9pH-lB-hlJ" firstAttribute="leading" secondItem="Etq-Tj-9B3" secondAttribute="leading" id="xQ4-Lc-PmG"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="imageView" destination="zKj-AA-JAD" id="eRZ-sh-HY0"/>
                 <outlet property="titleLabel" destination="BlC-mA-GAf" id="kZJ-sR-IFB"/>

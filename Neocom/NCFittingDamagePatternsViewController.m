@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSMutableArray* customDamagePatterns;
 @property (nonatomic, strong) NSArray* builtInDamagePatterns;
 @property (nonatomic, assign) BOOL unwindOnAppear;
+@property (nonatomic, strong) NSIndexPath* editingIndexPath;
 @end
 
 @implementation NCFittingDamagePatternsViewController
@@ -34,10 +35,9 @@
     [super viewDidLoad];
 	self.refreshControl = nil;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	NCStorage* storage = [NCStorage sharedStorage];
 	NSMutableArray* builtInDamagePatterns = [NSMutableArray new];
 	for (NSDictionary* dic in [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"damagePatterns" ofType:@"plist"]]) {
-		NCDamagePattern* damagePattern = [[NCDamagePattern alloc] initWithEntity:[NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:storage.managedObjectContext]
+		NCDamagePattern* damagePattern = [[NCDamagePattern alloc] initWithEntity:[NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:self.storageManagedObjectContext]
 												  insertIntoManagedObjectContext:nil];
 		damagePattern.name = dic[@"name"];
 		damagePattern.em = [dic[@"em"] floatValue];
@@ -47,7 +47,7 @@
 		[builtInDamagePatterns addObject:damagePattern];
 	}
 	self.builtInDamagePatterns = builtInDamagePatterns;
-	self.customDamagePatterns = [[storage damagePatterns] mutableCopy];
+	self.customDamagePatterns = [[self.storageManagedObjectContext damagePatterns] mutableCopy];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -56,8 +56,12 @@
 		[self performSegueWithIdentifier:@"Unwind" sender:nil];
 }
 
-- (void) dealloc {
-	[[NCStorage sharedStorage] saveContext];
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	if (self.editingIndexPath) {
+		[self.tableView reloadRowsAtIndexPaths:@[self.editingIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+		self.editingIndexPath = nil;
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -89,32 +93,33 @@
 		NCDamagePattern* damagePattern;
 		if (indexPath.section == 1) {
 			if (indexPath.row == self.customDamagePatterns.count) {
-				NCStorage* storage = [NCStorage sharedStorage];
-				
-				damagePattern = [[NCDamagePattern alloc] initWithEntity:[NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:storage.managedObjectContext]
-										 insertIntoManagedObjectContext:storage.managedObjectContext];
+				damagePattern = [[NCDamagePattern alloc] initWithEntity:[NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:self.storageManagedObjectContext]
+										 insertIntoManagedObjectContext:self.storageManagedObjectContext];
 				damagePattern.name = [NSString stringWithFormat:NSLocalizedString(@"Damage Pattern %d", nil), (int32_t)(self.customDamagePatterns.count + 1)];
 				damagePattern.em = 0.25;
 				damagePattern.kinetic = 0.25;
 				damagePattern.thermal = 0.25;
 				damagePattern.explosive = 0.25;
 				[self.customDamagePatterns addObject:damagePattern];
-				[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.customDamagePatterns.count - 1 inSection:1]] withRowAnimation:UITableViewRowAnimationTop];
+				self.editingIndexPath = [NSIndexPath indexPathForRow:self.customDamagePatterns.count - 1 inSection:1];
+				[self.tableView insertRowsAtIndexPaths:@[self.editingIndexPath] withRowAnimation:UITableViewRowAnimationTop];
 			}
 			else {
 				damagePattern = self.customDamagePatterns[indexPath.row];
+				self.editingIndexPath = [self.tableView indexPathForCell:sender];
 			}
 		}
 		else {
 			NCDamagePattern* builtInDamagePattern = self.builtInDamagePatterns[indexPath.row];
-			damagePattern = [[NCDamagePattern alloc] initWithEntity:builtInDamagePattern.entity insertIntoManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]];
+			damagePattern = [[NCDamagePattern alloc] initWithEntity:builtInDamagePattern.entity insertIntoManagedObjectContext:self.storageManagedObjectContext];
 			damagePattern.name = builtInDamagePattern.name;
 			damagePattern.em = builtInDamagePattern.em;
 			damagePattern.kinetic = builtInDamagePattern.kinetic;
 			damagePattern.thermal = builtInDamagePattern.thermal;
 			damagePattern.explosive = builtInDamagePattern.explosive;
 			[self.customDamagePatterns addObject:damagePattern];
-			[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.customDamagePatterns.count - 1 inSection:1]] withRowAnimation:UITableViewRowAnimationTop];
+			self.editingIndexPath = [NSIndexPath indexPathForRow:self.customDamagePatterns.count - 1 inSection:1];
+			[self.tableView insertRowsAtIndexPaths:@[self.editingIndexPath] withRowAnimation:UITableViewRowAnimationTop];
 		}
 		destinationViewController.damagePattern = damagePattern;
 	}
@@ -239,12 +244,13 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
 - (id) identifierForSection:(NSInteger)section {
 	return @(section);
+}
+
+- (void) managedObjectContextDidFinishUpdate:(NSNotification *)notification {
+	[super managedObjectContextDidFinishUpdate:notification];
+	[self reload];
 }
 
 #pragma mark - Private
@@ -252,10 +258,8 @@
 - (IBAction)unwindFromNPCPicker:(UIStoryboardSegue*)segue {
 	NCFittingNPCPickerViewController* sourceViewController = segue.sourceViewController;
 	NCDBInvType* type = sourceViewController.selectedNPCType;
-	NCStorage* storage = [NCStorage sharedStorage];
-	
-	NCDamagePattern* damagePattern = [[NCDamagePattern alloc] initWithEntity:[NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:storage.managedObjectContext]
-											  insertIntoManagedObjectContext:storage.managedObjectContext];
+	NCDamagePattern* damagePattern = [[NCDamagePattern alloc] initWithEntity:[NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:self.storageManagedObjectContext]
+											  insertIntoManagedObjectContext:self.storageManagedObjectContext];
 	
 	damagePattern.name = type.typeName;
 	
@@ -299,7 +303,7 @@
 	float intervalMissile = 0;
 	
 	if (type.effectsDictionary[@(569)]) {
-		NCDBInvType* missile = [NCDBInvType invTypeWithTypeID:(int32_t)[missileTypeIDAttribute value]];
+		NCDBInvType* missile = [self.databaseManagedObjectContext invTypeWithTypeID:(int32_t)[missileTypeIDAttribute value]];
 		if (missile) {
 			NCDBDgmTypeAttribute* emDamageAttribute = missile.attributesDictionary[@(114)];
 			NCDBDgmTypeAttribute* explosiveDamageAttribute = missile.attributesDictionary[@(116)];

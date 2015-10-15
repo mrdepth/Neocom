@@ -382,10 +382,10 @@
 				
 				NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 				row.title = NSLocalizedString(@"Add to Shopping List", nil);
-				
+				int32_t typeID = type.typeID;
 				[[NCPriceManager sharedManager] requestPricesWithTypes:@[@(type.typeID)] completionBlock:^(NSDictionary *prices) {
 					dispatch_async(dispatch_get_main_queue(), ^{
-						double price = [prices[@(type.typeID)] doubleValue];
+						double price = [prices[@(typeID)] doubleValue];
 						if (price > 0)
 							row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(price)]];
 						

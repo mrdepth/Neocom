@@ -93,23 +93,23 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return tableView == self.tableView && !self.searchContentsController ? self.result.sections.count : self.searchResult.sections.count;
+	return self.result.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[section] : self.searchResult.sections[section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[section];
 	return sectionInfo.numberOfObjects;
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[section] : self.searchResult.sections[section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[section];
 	return sectionInfo.name.length > 0 ? sectionInfo.name : nil;
 }
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 
 	if ([row isKindOfClass:[NCDBEufeItem class]]) {
@@ -145,7 +145,7 @@
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	
 	if ([row isKindOfClass:[NCDBEufeItem class]])
@@ -155,7 +155,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	
 	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;

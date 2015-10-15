@@ -14,10 +14,14 @@
 
 @interface NCViewController ()
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
+@property (nonatomic, assign) BOOL internalDatabaseManagedObjectContext;
 
 @end
 
 @implementation NCViewController
+@synthesize databaseManagedObjectContext = _databaseManagedObjectContext;
+@synthesize storageManagedObjectContext = _storageManagedObjectContext;
+@synthesize cacheManagedObjectContext = _cacheManagedObjectContext;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,6 +51,16 @@
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	self.taskManager.active = NO;
+	
+	[_cacheManagedObjectContext performBlock:^{
+		if ([_cacheManagedObjectContext hasChanges])
+			[_cacheManagedObjectContext save:nil];
+	}];
+	
+	[_storageManagedObjectContext performBlock:^{
+		if ([_storageManagedObjectContext hasChanges])
+			[_storageManagedObjectContext save:nil];
+	}];
 }
 
 - (void) willMoveToParentViewController:(UIViewController *)parent {
@@ -71,17 +85,24 @@
 - (NSManagedObjectContext*) storageManagedObjectContext {
 	@synchronized (self) {
 		if (!_storageManagedObjectContext)
-			_storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+			_storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
 		return _storageManagedObjectContext;
 	}
 }
 
 - (NSManagedObjectContext*) databaseManagedObjectContext {
 	@synchronized (self) {
-		if (!_databaseManagedObjectContext)
+		if (!_databaseManagedObjectContext) {
 			_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+			self.internalDatabaseManagedObjectContext = YES;
+		}
 		return _databaseManagedObjectContext;
 	}
+}
+
+- (void) setDatabaseManagedObjectContext:(NSManagedObjectContext *)databaseManagedObjectContext {
+	_databaseManagedObjectContext = databaseManagedObjectContext;
+	self.internalDatabaseManagedObjectContext = NO;
 }
 
 - (NSManagedObjectContext*) cacheManagedObjectContext {
@@ -91,5 +112,4 @@
 		return _cacheManagedObjectContext;
 	}
 }
-
 @end

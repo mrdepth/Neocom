@@ -183,6 +183,9 @@
 @property (nonatomic, strong, readwrite) NCFittingEngine* engine;
 //@property (nonatomic, strong, readwrite) NCLoadout* loadout;
 @property (nonatomic, assign, readwrite) int32_t typeID;
+@property (nonatomic, strong, readwrite) NSManagedObjectID* loadoutID;
+@property (nonatomic, strong, readwrite) NAPISearchItem* apiLadout;
+
 @property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Character> pilot;
 
 @property (nonatomic, strong) NCLoadoutDataShip* loadoutData;
@@ -212,6 +215,15 @@
 			self.typeID = type.typeID;
 			self.loadoutName = type.typeName;
 		}];
+	}
+	return self;
+}
+
+- (id) initWithAPILoadout:(NAPISearchItem *)apiLoadout {
+	if (self = [super init]) {
+		self.apiLadout = apiLoadout;
+		self.loadoutName = apiLoadout.typeName;
+		self.typeID = apiLoadout.typeID;
 	}
 	return self;
 }
@@ -1073,7 +1085,7 @@
 
 	return dna;
 }
-/*
+
 - (NSString*) eveXMLRepresentation {
 	NSMutableString* xml = [NSMutableString string];
 	[xml appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
@@ -1084,59 +1096,71 @@
 
 - (NSString*) eveXMLRecordRepresentation {
 	[self flush];
-	
-	NSMutableString* xml = [NSMutableString stringWithFormat:@"<fitting name=\"%@\">\n<description value=\"Neocom\"/>\n<shipType value=\"%@\"/>\n", self.loadoutName, self.type.typeName];
-	
-	NSString* keys[] = {@"hiSlots", @"medSlots", @"lowSlots", @"rigSlots", @"subsystems"};
-	NSString* slots[] = {@"hi slot", @"med slot", @"low slot", @"rig slot", @"subsystem slot"};
-	
-	for (NSInteger i = 0; i < 5; i++) {
-		int slot = 0;
-		for (NCLoadoutDataShipModule* item in [self.loadoutData valueForKey:keys[i]]) {
-			NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
-			[xml appendFormat:@"<hardware slot=\"%@ %d\" type=\"%@\"/>\n", slots[i], slot++, type.typeName];
+	NSMutableString* xml = [NSMutableString new];
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.typeID];
+		[xml appendFormat:@"<fitting name=\"%@\">\n<description value=\"Neocom\"/>\n<shipType value=\"%@\"/>\n", self.loadoutName, type.typeName];
+		
+		NSString* keys[] = {@"hiSlots", @"medSlots", @"lowSlots", @"rigSlots", @"subsystems"};
+		NSString* slots[] = {@"hi slot", @"med slot", @"low slot", @"rig slot", @"subsystem slot"};
+		
+		for (NSInteger i = 0; i < 5; i++) {
+			int slot = 0;
+			for (NCLoadoutDataShipModule* item in [self.loadoutData valueForKey:keys[i]]) {
+				NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+				[xml appendFormat:@"<hardware slot=\"%@ %d\" type=\"%@\"/>\n", slots[i], slot++, type.typeName];
+			}
 		}
-	}
-	
-	for (NCLoadoutDataShipDrone* drone in self.loadoutData.drones) {
-		NCDBInvType* type = [NCDBInvType invTypeWithTypeID:drone.typeID];
-		[xml appendFormat:@"<hardware slot=\"drone bay\" qty=\"%d\" type=\"%@\"/>\n", drone.count, type.typeName];
-	}
-	
-	[xml appendString:@"</fitting>\n"];
+		
+		for (NCLoadoutDataShipDrone* drone in self.loadoutData.drones) {
+			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:drone.typeID];
+			[xml appendFormat:@"<hardware slot=\"drone bay\" qty=\"%d\" type=\"%@\"/>\n", drone.count, type.typeName];
+		}
+		
+		[xml appendString:@"</fitting>\n"];
+	}];
 	return xml;
 }
 
 - (NSString*) eftRepresentation {
-	NSMutableString* eft = [NSMutableString stringWithFormat:@"[%@, %@]\n", self.type.typeName, self.loadoutName];
-	
-	for (NSString* key in @[@"lowSlots", @"medSlots", @"hiSlots", @"rigSlots", @"subsystems"]) {
-		NSArray* array = [self.loadoutData valueForKey:key];
-		if (array.count == 0)
-			continue;
-		for (NCLoadoutDataShipModule* item in array) {
-			NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
-			if (item.chargeID) {
-				NCDBInvType* charge = [NCDBInvType invTypeWithTypeID:item.chargeID];
-				[eft appendFormat:@"%@, %@\n", type.typeName, charge.typeName];
+	NSMutableString* eft = [NSMutableString new];
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.typeID];
+		[NSMutableString stringWithFormat:@"[%@, %@]\n", type.typeName, self.loadoutName];
+		
+		for (NSString* key in @[@"lowSlots", @"medSlots", @"hiSlots", @"rigSlots", @"subsystems"]) {
+			NSArray* array = [self.loadoutData valueForKey:key];
+			if (array.count == 0)
+				continue;
+			for (NCLoadoutDataShipModule* item in array) {
+				NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+				if (item.chargeID) {
+					NCDBInvType* charge = [self.databaseManagedObjectContext invTypeWithTypeID:item.chargeID];
+					[eft appendFormat:@"%@, %@\n", type.typeName, charge.typeName];
+				}
+				else
+					[eft appendFormat:@"%@\n", type.typeName];
 			}
-			else
-				[eft appendFormat:@"%@\n", type.typeName];
+			[eft appendString:@"\n"];
 		}
-		[eft appendString:@"\n"];
-	}
-
-	for (NCLoadoutDataShipDrone* item in self.loadoutData.drones) {
-		NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
-		[eft appendFormat:@"%@ x%d\n", type.typeName, item.count];
-	}
+		
+		for (NCLoadoutDataShipDrone* item in self.loadoutData.drones) {
+			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+			[eft appendFormat:@"%@ x%d\n", type.typeName, item.count];
+		}
+	}];
 	return eft;
 }
 
 - (NSString*) hyperlinkTag {
-	NSString* dna = self.dnaRepresentation;
-	return [NSString stringWithFormat:@"<a href=\"javascript:if (typeof CCPEVE != 'undefined') CCPEVE.showFitting('%@'); else window.open('fitting:%@');\">%@ - %@</a>", dna, dna, self.type.typeName, self.loadoutName];
-}*/
+	__block NSString* hyperlinkTag;
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		NSString* dna = self.dnaRepresentation;
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.typeID];
+		hyperlinkTag = [NSString stringWithFormat:@"<a href=\"javascript:if (typeof CCPEVE != 'undefined') CCPEVE.showFitting('%@'); else window.open('fitting:%@');\">%@ - %@</a>", dna, dna, type.typeName, self.loadoutName];;
+	}];
+	return hyperlinkTag;
+}
 
 #pragma mark - Private
 

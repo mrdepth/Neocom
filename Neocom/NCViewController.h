@@ -10,9 +10,9 @@
 #import "NCTaskManager.h"
 
 @interface NCViewController : UIViewController
-@property (nonatomic, strong) NSManagedObjectContext* storageManagedObjectContext;
-@property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
-@property (nonatomic, strong) NSManagedObjectContext* cacheManagedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* storageManagedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* databaseManagedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* cacheManagedObjectContext;
 @property (nonatomic, strong, readonly) NCTaskManager* taskManager;
 
 @end

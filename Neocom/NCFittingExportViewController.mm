@@ -17,6 +17,35 @@
 #import "UIColor+Neocom.h"
 #import "NCLoadoutsParser.h"
 #import "UIAlertView+Block.h"
+#import "NCStorage.h"
+
+@interface NCFittingExportViewControllerRow : NSObject
+@property (nonatomic, strong) NSManagedObjectID* loadoutID;
+@property (nonatomic, strong) NSString* eveXMLRepresentation;
+@property (nonatomic, strong) NSString* eveXMLRecordRepresentation;
+@property (nonatomic, strong) NSString* dnaRepresentation;
+@property (nonatomic, assign) int32_t typeID;
+@property (nonatomic, strong) NSString* loadoutName;
+@property (nonatomic, strong) NSString* typeName;
+@property (nonatomic, strong) NSString* iconFile;
+@property (nonatomic, assign) NCLoadoutCategory category;
+
+@end
+
+@implementation NCFittingExportViewControllerRow
+
+@end
+
+@interface NCFittingExportViewControllerSection : NSObject
+@property (nonatomic, strong) NSMutableArray* rows;
+@property (nonatomic, assign) int32_t groupID;
+@property (nonatomic, strong) NSString* title;
+@end
+
+@implementation NCFittingExportViewControllerSection
+@end
+
+
 
 @interface NCFittingExportViewController ()<ASHTTPServerDelegate>
 @property (nonatomic, strong) ASHTTPServer* server;
@@ -85,7 +114,7 @@
 	NSInteger statusCode = 404;
 	
 	if ([extension isEqualToString:@"png"]) {
-		NCDBEveIcon* icon = [NCDBEveIcon eveIconWithIconFile:[path lastPathComponent]];
+		NCDBEveIcon* icon = [self.databaseManagedObjectContext eveIconWithIconFile:[path lastPathComponent]];
 		if (icon) {
 			UIImage* image = icon.image.image;
 			bodyData = UIImagePNGRepresentation(image);
@@ -201,85 +230,93 @@
 		[htmlTemplate replaceCharactersInRange:[result rangeAtIndex:0] withString:@""];
 	}
 	
-	NSMutableArray* fits = [NSMutableArray new];
-	NSMutableString* allFits = [NSMutableString new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NSMutableArray* sections = [NSMutableArray new];
-											 NCStorage* storage = [NCStorage sharedStorage];
-											 NSMutableString* body = [NSMutableString new];
-											 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-											 [context performBlockAndWait:^{
-												 [allFits appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
-												 NSArray* shipLoadouts = [[storage shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
-												 task.progress = 0.25;
-												 
-												 for (NSArray* array in [shipLoadouts arrayGroupedByKey:@"type.group.groupID"])
-													 [sections addObject:[array mutableCopy]];
-												 
-												 task.progress = 0.5;
-												 [sections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-													 NCLoadout* a = [obj1 objectAtIndex:0];
-													 NCLoadout* b = [obj2 objectAtIndex:0];
-													 return [a.type.group.groupName compare:b.type.group.groupName];
-												 }];
-												 
-												 task.progress = 0.75;
-												 
-												 int32_t i = 0;
-												 for (NSArray* section in sections) {
-													 NCLoadout* loadout = [section lastObject];
-													 [body appendFormat:headerTemplate, loadout.type.group.groupName];
-													 for (NCLoadout* loadout in section) {
-														 NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
-														 [fits addObject:[fit eveXMLRepresentation]];
-														 [allFits appendString:[fit eveXMLRecordRepresentation]];
-														 NCDBInvType* type = loadout.type;
-														 [body appendFormat:rowTemplate,
-														  type.icon.iconFile, type.typeName, loadout.name, type.typeID, ++i, fit.dnaRepresentation];
-													 }
-												 }
-												 
-												 task.progress = 1.0;
-												 
-												 [allFits appendString:@"</fittings>"];
-												 
-											 }];
-											 [htmlTemplate replaceOccurrencesOfString:@"{body}" withString:body options:0 range:NSMakeRange(0, htmlTemplate.length)];
-										 } completionHandler:^(NCTask *task) {
-											 self.html = htmlTemplate;
-											 self.fits = fits;
-											 self.allFits = allFits;
-											 if (completionHandler)
-												 completionHandler();
-										 }];
+	NSManagedObjectContext* storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+	[storageManagedObjectContext performBlock:^{
+		NSMutableArray* loadouts = [NSMutableArray new];
+		for (NCLoadout* loadout in [storageManagedObjectContext loadouts]) {
+			NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
+			NCFittingExportViewControllerRow* row = [NCFittingExportViewControllerRow new];
+			row.loadoutID = [loadout objectID];
+			row.loadoutName = loadout.name;
+			row.typeID = loadout.typeID;
+			row.eveXMLRepresentation = fit.eveXMLRepresentation;
+			row.eveXMLRecordRepresentation = fit.eveXMLRecordRepresentation;
+			row.dnaRepresentation = fit.dnaRepresentation;
+			[loadouts addObject:row];
+		};
+		NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
+		[databaseManagedObjectContext performBlock:^{
+			NSMutableDictionary* shipLoadouts = [NSMutableDictionary new];
+			for (NCFittingExportViewControllerRow* row in loadouts) {
+				NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:row.typeID];
+				row.typeName = type.typeName;
+				row.iconFile = [type.icon iconFile];
+				if (type && type.group.category.categoryID == NCCategoryIDShip) {
+					row.category = NCLoadoutCategoryShip;
+					NCFittingExportViewControllerSection* section = shipLoadouts[@(type.group.groupID)];
+					if (!section) {
+						section = [NCFittingExportViewControllerSection new];
+						shipLoadouts[@(type.group.groupID)] = section;
+						section.title = type.group.groupName;
+						section.groupID = type.group.groupID;
+						section.rows = [NSMutableArray new];
+					}
+					[section.rows addObject:row];
+				}
+			}
+			NSMutableArray* sections = [[[shipLoadouts allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]] mutableCopy];
+			
+			for (NCFittingExportViewControllerSection* section in sections) {
+				[section.rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
+//				[fits addObjectsFromArray:section.rows];
+			}
+			
+			NSMutableArray* fits = [NSMutableArray new];
+			NSMutableString* allFits = [NSMutableString new];
+			[allFits appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
+
+			NSMutableString* body = [NSMutableString new];
+			int32_t i = 0;
+			for (NCFittingExportViewControllerSection* section in sections) {
+				[body appendFormat:headerTemplate, section.title];
+				for (NCFittingExportViewControllerRow* row in section.rows) {
+					[fits addObject:row.eveXMLRepresentation];
+					[allFits appendString:row.eveXMLRecordRepresentation];
+					[body appendFormat:rowTemplate,
+					 row.iconFile, row.typeName, row.loadoutName, row.typeID, ++i, row.dnaRepresentation];
+				}
+			}
+			
+			[allFits appendString:@"</fittings>"];
+			[htmlTemplate replaceOccurrencesOfString:@"{body}" withString:body options:0 range:NSMakeRange(0, htmlTemplate.length)];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.html = htmlTemplate;
+				self.fits = fits;
+				self.allFits = allFits;
+				if (completionHandler)
+					completionHandler();
+			});
+		}];
+	}];
 }
 
 - (void) performImportLoadouts:(NSArray*) loadouts withCompletionHandler:(void(^)()) completionHandler {
-	[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Import", nil)
-							 message:[NSString stringWithFormat:NSLocalizedString(@"Do you wish to import %ld loadouts?", nil), (long) loadouts.count]
-				   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				   otherButtonTitles:@[NSLocalizedString(@"Import", nil)]
-					 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-						 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-							 NSManagedObjectContext* context = [[NCStorage sharedStorage] managedObjectContext];
-							 [context performBlockAndWait:^{
-								 for (NCLoadout* loadout in loadouts) {
-									 [context insertObject:loadout];
-									 [context insertObject:loadout.data];
-								 }
-								 NSError* error = nil;
-								 [context save:&error];
-							 }];
-						 }
-						 if (completionHandler)
-							 completionHandler();
-					 }
-						 cancelBlock:^{
-							 if (completionHandler)
-								 completionHandler();
-						 }] show];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Import", nil) message:[NSString stringWithFormat:NSLocalizedString(@"Do you wish to import %ld loadouts?", nil), (long) loadouts.count] preferredStyle:UIAlertControllerStyleAlert];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Import", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		for (NCLoadout* loadout in loadouts) {
+			[self.storageManagedObjectContext insertObject:loadout];
+			[self.storageManagedObjectContext insertObject:loadout.data];
+		}
+		NSError* error = nil;
+		[self.storageManagedObjectContext save:&error];
+		if (completionHandler)
+			completionHandler();
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		if (completionHandler)
+			completionHandler();
+	}]];
+	[self presentViewController:controller animated:YES completion:nil];
 }
 
 @end

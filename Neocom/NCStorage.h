@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "NSManagedObjectContext+NCStorage.h"
 
 #define NCStorageDidChangeNotification @"NCStorageDidChangeNotification"
 

@@ -32,7 +32,7 @@
 
 @property (nonatomic, strong) NCShipFit* fit;
 
-@property (nonatomic, strong) NCDamagePattern* damagePattern;
+//@property (nonatomic, strong) NCDamagePattern* damagePattern;
 
 
 - (IBAction)onChangeSection:(UISegmentedControl*)sender;

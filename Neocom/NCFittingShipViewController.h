@@ -7,7 +7,7 @@
 //
 
 #import "NCViewController.h"
-#import "eufe.h"
+#import <eufe/eufe.h>
 #import "NCShipFit.h"
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCFittingShipWorkspaceViewController.h"
@@ -31,8 +31,6 @@
 @property (nonatomic, strong, readonly) NCFittingEngine* engine;
 
 @property (nonatomic, strong) NCShipFit* fit;
-
-//@property (nonatomic, strong) NCDamagePattern* damagePattern;
 
 
 - (IBAction)onChangeSection:(UISegmentedControl*)sender;

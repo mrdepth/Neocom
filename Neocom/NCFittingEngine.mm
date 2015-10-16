@@ -8,12 +8,17 @@
 
 #import "NCFittingEngine.h"
 #import "NCShipFit.h"
+#import "NCPOSFit.h"
 #import "NCDatabase.h"
 #import <EVEAPI/EVEAPI.h>
 
 @interface NCShipFit()
 @property (nonatomic, strong, readwrite) NCFittingEngine* engine;
 @property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Character> pilot;
+@end
+
+@interface NCPOSFit()
+@property (nonatomic, strong, readwrite) NCFittingEngine* engine;
 @end
 
 @interface NCFittingEngine()
@@ -24,6 +29,7 @@
 - (NCLoadoutDataShip*) loadoutShipDataWithAPILoadout:(NAPISearchItem*) apiLoadout;
 - (NCLoadoutDataShip*) loadoutShipDataWithKillMail:(NCKillMail*) killMail;
 - (NCLoadoutDataShip*) loadoutShipDataWithDNA:(NSString*) dna;
+- (NCLoadoutDataPOS*) loadoutPOSDataWithAsset:(EVEAssetListItem*) asset;
 - (void)didReceiveMemoryWarning;
 
 @end
@@ -79,6 +85,8 @@
 	}
 	else if (fit.apiLadout)
 		loadoutData = [self loadoutShipDataWithAPILoadout:fit.apiLadout];
+	else if (fit.asset)
+		loadoutData = [self loadoutShipDataWithAsset:fit.asset];
 	
 	[self performBlockAndWait:^{
 		NSMutableSet* charges = [NSMutableSet new];
@@ -147,6 +155,37 @@
 		}
 	}];
 }
+
+- (void) loadPOSFit:(NCPOSFit *)fit {
+	fit.engine = self;
+	__block NCLoadoutDataPOS* loadoutData;
+	if (fit.loadoutID) {
+		[self.storageManagedObjectContext performBlockAndWait:^{
+			NCLoadout* loadout = [self.storageManagedObjectContext objectWithID:fit.loadoutID];
+			if ([loadout.data.data isKindOfClass:[NCLoadoutDataPOS class]])
+				loadoutData = (NCLoadoutDataPOS*) loadout.data.data;
+		}];
+	}
+	else if (fit.asset)
+		loadoutData = [self loadoutPOSDataWithAsset:fit.asset];
+	
+	[self performBlockAndWait:^{
+		auto controlTower = self.engine->setControlTower(fit.typeID);
+		if (controlTower) {
+			for (NCLoadoutDataPOSStructure* item in loadoutData.structures) {
+				for (int n = item.count; n > 0; n--) {
+					auto structure = controlTower->addStructure(item.typeID);
+					if (!structure)
+						break;
+					structure->setState(item.state);
+					if (item.chargeID)
+						structure->setCharge(item.chargeID);
+				}
+			}
+		}
+	}];
+}
+
 
 #pragma mark - Private
 
@@ -470,6 +509,28 @@
 		loadoutData.cargo = cargo;
 		loadoutData.implants = @[];
 		loadoutData.boosters = @[];
+	}];
+	return loadoutData;
+}
+
+- (NCLoadoutDataPOS*) loadoutPOSDataWithAsset:(EVEAssetListItem*) asset {
+	NCLoadoutDataPOS* loadoutData = [NCLoadoutDataPOS new];
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		NSMutableDictionary* structuresDic = [NSMutableDictionary new];
+		for (EVEAssetListItem* item in asset.contents) {
+			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+			if (type.group.category.categoryID == eufe::STRUCTURE_CATEGORY_ID && type.group.groupID != eufe::CONTROL_TOWER_GROUP_ID) {
+				NCLoadoutDataPOSStructure* structure = structuresDic[@(item.typeID)];
+				if (!structure) {
+					structure = [NCLoadoutDataPOSStructure new];
+					structure.typeID = item.typeID;
+					structuresDic[@(item.typeID)] = structure;
+				}
+				structure.count += item.quantity;
+			}
+			
+		}
+		loadoutData.structures = [structuresDic allValues];
 	}];
 	return loadoutData;
 }

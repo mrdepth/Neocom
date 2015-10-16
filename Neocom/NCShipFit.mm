@@ -185,6 +185,7 @@
 @property (nonatomic, assign, readwrite) int32_t typeID;
 @property (nonatomic, strong, readwrite) NSManagedObjectID* loadoutID;
 @property (nonatomic, strong, readwrite) NAPISearchItem* apiLadout;
+@property (nonatomic, strong, readwrite) EVEAssetListItem* asset;
 
 @property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Character> pilot;
 
@@ -224,6 +225,15 @@
 		self.apiLadout = apiLoadout;
 		self.loadoutName = apiLoadout.typeName;
 		self.typeID = apiLoadout.typeID;
+	}
+	return self;
+}
+
+- (id) initWithAsset:(EVEAssetListItem *)asset {
+	if (self = [super init]) {
+		self.asset = asset;
+		self.typeID = asset.typeID;
+		self.loadoutName = asset.location.itemName ?: asset.typeName;
 	}
 	return self;
 }
@@ -867,7 +877,6 @@
 	}];
 	
 	NSManagedObjectContext* context = self.storageManagedObjectContext;
-	
 	[context performBlock:^{
 		NCLoadout* loadout;
 		if (!self.loadoutID) {

@@ -10,7 +10,6 @@
 #import "NCFittingPOSWorkspaceViewController.h"
 #import "NCFittingPOSStatsViewController.h"
 #import "NCDatabaseTypePickerViewController.h"
-#import "eufe.h"
 #import "NCPOSFit.h"
 #import "NCDamagePattern.h"
 #import "NCProgressLabel.h"
@@ -23,13 +22,11 @@
 
 @property (nonatomic, strong, readonly) NCDatabaseTypePickerViewController* typePickerViewController;
 
-@property (nonatomic, assign, readonly) std::shared_ptr<eufe::Engine> engine;
+@property (nonatomic, strong, readonly) NCFittingEngine* engine;
 @property (nonatomic, strong) NCPOSFit* fit;
-@property (nonatomic, strong) NCDamagePattern* damagePattern;
 
 
 - (IBAction)onChangeSection:(UISegmentedControl*)sender;
 - (IBAction)onAction:(id)sender;
-- (NCDBInvType*) typeWithItem:(eufe::Item*) item;
 - (void) reload;
 @end

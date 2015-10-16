@@ -7,11 +7,11 @@
 //
 
 #import "NCMigrationManager.h"
-#import "EUStorage.h"
-#import "ShipFit.h"
-#import "POSFit.h"
-#import "APIKey.h"
-#import "SkillPlan.h"
+//#import "EUStorage.h"
+//#import "ShipFit.h"
+//#import "POSFit.h"
+//#import "APIKey.h"
+//#import "SkillPlan.h"
 #import "NCAccountsManager.h"
 #import "NCShipFit.h"
 #import "NCPOSFit.h"
@@ -27,7 +27,6 @@
 @interface NCMigrationManager()
 @property (nonatomic, strong) NCStorage* storage;
 @property (nonatomic, strong) NCAccountsManager* accountsManager;
-@property (nonatomic, strong) EUStorage* oldStorage;
 @property (nonatomic, strong) id willChangeObserver;
 @property (nonatomic, strong) id didChangeObserver;
 @property (nonatomic, strong) id storeChangedObserver;
@@ -51,7 +50,6 @@
 	if ([fileManager fileExistsAtPath:path isDirectory:NULL]) {
 //		migrationManager.storage = [NCStorage fallbackStorage];
 		migrationManager.accountsManager = [[NCAccountsManager alloc] initWithStorage:migrationManager.storage];
-		migrationManager.oldStorage = [EUStorage new];
 		@try {
 			[migrationManager transferAPIKeysWithError:&error];
 			[migrationManager transferShipLoadouts];
@@ -60,9 +58,6 @@
 //			[migrationManager.storage.managedObjectContext performBlockAndWait:^{
 //				[migrationManager.storage saveContext];
 //			}];
-			if ([migrationManager.oldStorage.managedObjectContext hasChanges])
-				[migrationManager.oldStorage.managedObjectContext save:nil];
-			
 		}
 		@catch(NSException* exc) {
 			

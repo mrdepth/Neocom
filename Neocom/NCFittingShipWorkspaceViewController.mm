@@ -29,15 +29,16 @@
     return self;
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	[self updateVisibility];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.refreshControl = nil;
 	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionGenericHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionGenericHeaderView"];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	[self updateVisibility];
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,10 +61,6 @@
 
 - (NCFittingShipViewController*) controller {
 	return (NCFittingShipViewController*) self.parentViewController;
-}
-
-- (NCTaskManager*) taskManager {
-	return [self.controller taskManager];
 }
 
 - (NSManagedObjectContext*) databaseManagedObjectContext {

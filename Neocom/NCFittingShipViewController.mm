@@ -92,11 +92,6 @@
 	
 	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 
-	NCFittingEngine* engine = [NCFittingEngine new];
-
-	if (!self.fits)
-		self.fits = @[self.fit];
-	
 	for (id controller in self.childViewControllers) {
 		if ([controller isKindOfClass:[NCFittingShipModulesViewController class]])
 			self.modulesViewController = controller;
@@ -110,7 +105,11 @@
 			self.statsViewController = controller;
 	}
 
+	NCFittingEngine* engine = [NCFittingEngine new];
 	
+	if (!self.fits)
+		self.fits = @[self.fit];
+
 	NCAccount* account = [NCAccount currentAccount];
 	NCShipFit* fit = self.fit;
 	dispatch_group_t finishDispatchGroup = dispatch_group_create();
@@ -176,10 +175,8 @@
 				[fit save];
 		}
 		self.fits = nil;
-		[self.storageManagedObjectContext performBlock:^{
-			if ([self.storageManagedObjectContext hasChanges])
-				[self.storageManagedObjectContext save:nil];
-		}];
+		if ([self.storageManagedObjectContext hasChanges])
+			[self.storageManagedObjectContext save:nil];
 	}
 	[super viewWillDisappear:animated];
 }
@@ -274,14 +271,12 @@
 			auto item = [(NCFittingEngineItemPointer*) sender[@"object"] item];
 			__block NSManagedObjectID* objectID;
 			NSMutableDictionary* attributes = [NSMutableDictionary new];
-			[self.engine performBlockAndWait:^{
-				NCDBInvType* type = [self.engine.databaseManagedObjectContext invTypeWithTypeID:item->getTypeID()];
-				
-				for (NCDBDgmTypeAttribute* attribute in type.attributes) {
-					attributes[@(attribute.attributeType.attributeID)] = @(item->getAttribute(attribute.attributeType.attributeID)->getValue());
-				}
-				objectID = [type objectID];
-			}];
+			NCDBInvType* type = [self.engine.databaseManagedObjectContext invTypeWithTypeID:item->getTypeID()];
+			
+			for (NCDBDgmTypeAttribute* attribute in type.attributes) {
+				attributes[@(attribute.attributeType.attributeID)] = @(item->getAttribute(attribute.attributeType.attributeID)->getValue());
+			}
+			objectID = [type objectID];
 			controller.typeID = objectID;
 			controller.attributes = attributes;
 		}];
@@ -468,10 +463,6 @@
 
 - (IBAction)onChangeSection:(UISegmentedControl*)sender {
 	[self.scrollView setContentOffset:CGPointMake(self.scrollView.frame.size.width * sender.selectedSegmentIndex, 0) animated:NO];
-}
-
-- (void) dealloc {
-	
 }
 
 - (IBAction)onAction:(id)sender {

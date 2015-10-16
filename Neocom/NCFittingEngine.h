@@ -7,17 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "eufe.h"
+#import <eufe/eufe.h>
 
 @class NCDBInvType;
 @class NCShipFit;
+@class NCPOSFit;
 @interface NCFittingEngine : NSObject
 @property (nonatomic, assign, readonly) std::shared_ptr<eufe::Engine> engine;
 @property (nonatomic, strong, readonly) NSManagedObjectContext* databaseManagedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* storageManagedObjectContext;
 
 - (void)performBlockAndWait:(void (^)())block;
 - (void)performBlock:(void (^)())block;
 - (void)loadShipFit:(NCShipFit*) fit;
+- (void)loadPOSFit:(NCPOSFit*) fit;
 
 @end
 

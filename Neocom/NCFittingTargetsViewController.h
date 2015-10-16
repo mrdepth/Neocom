@@ -7,7 +7,6 @@
 //
 
 #import "NCTableViewController.h"
-#import "eufe.h"
 
 @class NCShipFit;
 @interface NCFittingTargetsViewController : NCTableViewController

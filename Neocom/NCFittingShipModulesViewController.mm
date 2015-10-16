@@ -376,7 +376,7 @@
 
 		cell.typeNameLabel.text = row.typeName;
 		cell.typeNameLabel.textColor = row.typeNameColor;
-		cell.typeImageView.image = row.typeImage;
+		cell.typeImageView.image = row.typeImage ?: self.defaultTypeImage;
 		cell.chargeLabel.text = row.chargeText;
 		cell.optimalLabel.text = row.optimalText;
 		if (!row.trackingText && row.trackingSpeed > 0) {
@@ -408,7 +408,7 @@
 			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:module->getTypeID()];
 			row.typeName = type.typeName;
 			row.typeNameColor = module->isEnabled() ? [UIColor whiteColor] : [UIColor redColor];
-			row.typeImage = type.icon ? type.icon.image.image : self.defaultTypeImage;
+			row.typeImage = type.icon.image.image;
 			
 			auto charge = module->getCharge();
 			if (charge) {
@@ -478,6 +478,11 @@
 			});
 		}];
 	}
+}
+
+- (id) identifierForSection:(NSInteger)sectionIndex {
+	NCFittingShipModulesViewControllerSection* section = self.sections[sectionIndex];
+	return @(section.slot);
 }
 
 #pragma mark - Private
@@ -556,7 +561,7 @@
 		}]];
 
 		
-		if (module->getCharge() != NULL) {
+		if (module->getCharge() != nullptr) {
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonShowAmmoInfo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				__block NCFittingEngineItemPointer* pointer;
 				[self.controller.engine performBlockAndWait:^{
@@ -623,8 +628,6 @@
 		
 		if (module->getChargeGroups().size() > 0) {
 			[actions addObject:ammoAction(modules)];
-
-			
 			if (module->getCharge() != nullptr) {
 				[actions addObject:unloadAmmoAction(modules)];
 			}

@@ -176,6 +176,7 @@
 												 loadout.name = type.typeName;
 												 loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
 												 [self.storageManagedObjectContext save:nil];
+												 [self reload];
 												 NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
 												 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
 												 [self.typePickerViewController dismissAnimated];
@@ -189,13 +190,24 @@
 														inView:cell
 													  animated:YES
 											 completionHandler:^(NCDBInvType *type) {
+												 NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+												 loadout.typeID = type.typeID;
+												 loadout.name = type.typeName;
+												 loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+												 [self.storageManagedObjectContext save:nil];
+												 [self reload];
+												 NCPOSFit* fit = [[NCPOSFit alloc] initWithLoadout:loadout];
+												 [self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
+												 [self.typePickerViewController dismissAnimated];
+
+												 
 												 /*NCPOSFit* fit = [[NCPOSFit alloc] initWithType:type];
 												 NCStorage* storage = [NCStorage sharedStorage];
 												 fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 												 fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 												 
-												 [self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];*/
-												 [self.typePickerViewController dismissAnimated];
+												 [self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
+												 [self.typePickerViewController dismissAnimated];*/
 											 }];
 		}
 	}
@@ -208,10 +220,8 @@
 			[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
 		}
 		else {
-			//				NCPOSFit* fit = [[NCPOSFit alloc] initWithLoadout:loadout];
-			dispatch_async(dispatch_get_main_queue(), ^{
-				//					[self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
-			});
+			NCPOSFit* fit = [[NCPOSFit alloc] initWithLoadout:loadout];
+			[self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
 		}
 	}
 }

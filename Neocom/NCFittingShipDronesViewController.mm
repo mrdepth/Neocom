@@ -30,7 +30,6 @@
 	eufe::DronesList _drones;
 }
 @property (nonatomic, assign) BOOL isUpToDate;
-@property (nonatomic, strong) NCDBInvType* type;
 
 @property (nonatomic, readonly) eufe::DronesList& drones;
 @property (nonatomic, strong) NSString* typeName;
@@ -83,10 +82,6 @@
 			
 			
 			NSMutableDictionary* dronesDic = [NSMutableDictionary new];
-			eufe::DronesList drones;
-			if (!self.controller.fit.pilot)
-				return;
-			
 			auto ship = self.controller.fit.pilot->getShip();
 			for (auto drone: ship->getDrones()) {
 				int32_t typeID = drone->getTypeID();
@@ -200,7 +195,7 @@
 		NCFittingShipDroneCell* cell = (NCFittingShipDroneCell*) tableViewCell;
 		
 		cell.typeNameLabel.text = row.typeName;
-		cell.typeImageView.image = row.typeImage;
+		cell.typeImageView.image = row.typeImage ?: self.defaultTypeImage;
 		cell.optimalLabel.text = row.optimalText;
 		cell.stateImageView.image = row.stateImage;
 		cell.targetImageView.image = row.hasTarget ? self.targetImage : nil;
@@ -215,7 +210,7 @@
 			
 			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];
 			row.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.drones.size()];
-			row.typeImage = type.icon ? type.icon.image.image : self.defaultTypeImage;
+			row.typeImage = type.icon.image.image;
 			
 			if (optimal > 0) {
 				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
@@ -224,9 +219,13 @@
 				if (trackingSpeed > 0)
 					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
 				row.optimalText = s;
-				row.stateImage = drone->isActive() ? [UIImage imageNamed:@"active.png"] : [UIImage imageNamed:@"offline.png"];
-				row.hasTarget = drone->getTarget() != nullptr;
 			}
+			else
+				row.optimalText = nil;
+			
+			row.stateImage = drone->isActive() ? [UIImage imageNamed:@"active.png"] : [UIImage imageNamed:@"offline.png"];
+			row.hasTarget = drone->getTarget() != nullptr;
+
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 			});
@@ -291,7 +290,7 @@
 			[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
 				amountTextField = textField;
 				textField.keyboardType = UIKeyboardTypeNumberPad;
-				textField.text = [NSString stringWithFormat:@"%d", (int) row.drones.size()];
+				textField.text = [NSString stringWithFormat:@"%d", (int) drones.size()];
 				textField.clearButtonMode = UITextFieldViewModeAlways;
 			}];
 			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -300,11 +299,11 @@
 					if (amount > 50)
 						amount = 50;
 					
-					int n = (int) row.drones.size() - amount;
+					int n = (int) drones.size() - amount;
 					[self.controller.engine performBlock:^{
 						if (n > 0) {
 							int i = n;
-							for (auto drone: row.drones) {
+							for (auto drone: drones) {
 								if (i <= 0)
 									break;
 								ship->removeDrone(drone);
@@ -312,7 +311,7 @@
 							}
 						}
 						else {
-							auto drone = row.drones.front();
+							auto drone = drones.front();
 							for (int i = n; i < 0; i++) {
 								auto newDrone = ship->addDrone(drone->getTypeID());
 								newDrone->setActive(drone->isActive());

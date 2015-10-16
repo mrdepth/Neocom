@@ -64,7 +64,6 @@
 		else {
 			[self.controller.engine performBlock:^{
 				NSMutableArray* sections = [NSMutableArray new];
-				
 				NCFittingShipStatsViewControllerSection* section;
 				NCFittingShipStatsViewControllerRow* row;
 				
@@ -141,14 +140,14 @@
 						if (character) {
 							[controller.controller.engine performBlock:^{
 								auto ship = character->getShip();
-								int totalPG = ship->getTotalPowerGrid();
-								int usedPG = ship->getPowerGridUsed();
-								int totalCPU = ship->getTotalCpu();
-								int usedCPU = ship->getCpuUsed();
-								int totalBandwidth = ship->getTotalDroneBandwidth();
-								int usedBandwidth = ship->getDroneBandwidthUsed();
-								int totalDB = ship->getTotalDroneBay();
-								int usedDB = ship->getDroneBayUsed();
+								float totalPG = ship->getTotalPowerGrid();
+								float usedPG = ship->getPowerGridUsed();
+								float totalCPU = ship->getTotalCpu();
+								float usedCPU = ship->getCpuUsed();
+								float totalBandwidth = ship->getTotalDroneBandwidth();
+								float usedBandwidth = ship->getDroneBandwidthUsed();
+								float totalDB = ship->getTotalDroneBay();
+								float usedDB = ship->getDroneBayUsed();
 								
 								NSDictionary* data =
 								@{@"powerGrid": [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"],
@@ -587,6 +586,7 @@
 					section.rows = rows;
 				}
 				[sections addObject:section];
+				
 				dispatch_async(dispatch_get_main_queue(), ^{
 					self.sections = sections;
 					completionBlock();
@@ -646,7 +646,6 @@
 	return row.cellIdentifier;
 }
 
-// Customize the appearance of table view cells.
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCFittingShipStatsViewControllerRow* row = [self.sections[indexPath.section] rows][indexPath.row];
 	if (!row.isUpToDate) {

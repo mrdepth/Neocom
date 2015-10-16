@@ -25,6 +25,13 @@
 
 @implementation NSManagedObjectContext (NCDatabase)
 
+//NCDBVersion
+- (NCDBVersion*) version {
+	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Version"];
+	request.fetchLimit = 1;
+	return [[self executeFetchRequest:request error:nil] lastObject];
+}
+
 //NCDBEveIcon
 - (NCDBEveIcon*) defaultTypeIcon {
 	return [self eveIconWithIconFile:@"07_15"];

@@ -60,6 +60,7 @@
 //@property (readonly, strong, nonatomic) NSManagedObjectContext *backgroundManagedObjectContext;
 
 + (id) sharedDatabase;
++ (NSString*) libraryDirectory;
 
 - (NSManagedObjectContext*) createManagedObjectContext;
 - (NSManagedObjectContext*) createManagedObjectContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType) concurrencyType;

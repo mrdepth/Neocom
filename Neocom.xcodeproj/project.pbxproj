@@ -260,6 +260,7 @@
 		128257881BD1035800BC1F56 /* NCFittingPOSStructuresViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 124097B81B2EDDE4002AC442 /* NCFittingPOSStructuresViewController.mm */; settings = {ASSET_TAGS = (); }; };
 		128257891BD121CC00BC1F56 /* NCFittingPOSAssemblyLinesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 124097BB1B2F021A002AC442 /* NCFittingPOSAssemblyLinesViewController.mm */; settings = {ASSET_TAGS = (); }; };
 		1282578A1BD1246000BC1F56 /* NCFittingPOSStatsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B971A618EC2A11008F8740 /* NCFittingPOSStatsViewController.mm */; settings = {ASSET_TAGS = (); }; };
+		1282578C1BD1370000BC1F56 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1282578B1BD1370000BC1F56 /* CloudKit.framework */; };
 		128310091BBC39920018C8AC /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; settings = {ASSET_TAGS = (); }; };
 		128310141BBD3D6D0018C8AC /* NCSkillPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */; settings = {ASSET_TAGS = (); }; };
 		1283101A1BBD5C430018C8AC /* NCMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5F118929B960010BEE8 /* NCMessageCell.m */; settings = {ASSET_TAGS = (); }; };
@@ -991,6 +992,7 @@
 		127C50B618CF52D90074877C /* clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear.png; sourceTree = "<group>"; };
 		127E1BDF188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCertificatesViewController.h; sourceTree = "<group>"; };
 		127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseCertificatesViewController.m; sourceTree = "<group>"; };
+		1282578B1BD1370000BC1F56 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		128A1F30189906A400005C4F /* NCFittingShipWorkspaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipWorkspaceViewController.h; sourceTree = "<group>"; };
 		128A1F31189906A400005C4F /* NCFittingShipWorkspaceViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipWorkspaceViewController.mm; sourceTree = "<group>"; };
 		128A1F3418990D9600005C4F /* NCFittingSectionHiSlotHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSectionHiSlotHeaderView.h; sourceTree = "<group>"; };
@@ -1455,6 +1457,7 @@
 				129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */,
 				121112401859A54D009E5106 /* CoreData.framework in Frameworks */,
 				120968551845F0CB00921A37 /* CoreGraphics.framework in Frameworks */,
+				1282578C1BD1370000BC1F56 /* CloudKit.framework in Frameworks */,
 				120968571845F0CB00921A37 /* UIKit.framework in Frameworks */,
 				120968531845F0CB00921A37 /* Foundation.framework in Frameworks */,
 			);
@@ -1558,6 +1561,7 @@
 		120968511845F0CB00921A37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1282578B1BD1370000BC1F56 /* CloudKit.framework */,
 				1256923C1A37799A008F6468 /* EventKit.framework */,
 				12A38E5A190BED24000102D4 /* iAd.framework */,
 				1261594A18EE7FCB0049B9CE /* Security.framework */,

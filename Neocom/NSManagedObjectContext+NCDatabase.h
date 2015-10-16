@@ -37,7 +37,11 @@ typedef NS_ENUM(NSInteger, NCDBEufeItemSlot) {
 @class NCDBMapDenormalize;
 @class NCDBRamActivity;
 @class NCDBMapRegion;
+@class NCDBVersion;
 @interface NSManagedObjectContext (NCDatabase)
+
+//NCDBVersion
+- (NCDBVersion*) version;
 
 //NCDBEveIcon
 - (NCDBEveIcon*) defaultTypeIcon;

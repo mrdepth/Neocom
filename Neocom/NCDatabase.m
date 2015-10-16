@@ -103,6 +103,10 @@
 	}
 }
 
++ (NSString*) libraryDirectory {
+	return [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"Database"];
+}
+
 
 #pragma mark - Core Data stack
 

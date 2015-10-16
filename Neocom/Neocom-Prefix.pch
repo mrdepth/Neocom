@@ -18,6 +18,7 @@
 	#import <StoreKit/StoreKit.h>
 	#import <CoreText/CoreText.h>
 	#import <EventKit/EventKit.h>
+	#import <CloudKit/CloudKit.h>
 #endif
 
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"

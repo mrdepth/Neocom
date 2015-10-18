@@ -103,6 +103,7 @@
 		1211123E18599396009E5106 /* NCCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1211123C18599396009E5106 /* NCCache.xcdatamodeld */; };
 		121112401859A54D009E5106 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1211123F1859A54D009E5106 /* CoreData.framework */; };
 		1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211124C1859E1AF009E5106 /* NCCacheRecord.m */; };
+		121147EB1BD4111000DDA220 /* NCUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 121147EA1BD4111000DDA220 /* NCUpdater.m */; settings = {ASSET_TAGS = (); }; };
 		12124AAF1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAE1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m */; };
 		1215F57E1B831E9B00C16649 /* NSCache+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 1215F57D1B831E9B00C16649 /* NSCache+Neocom.m */; };
 		12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12160494187EE2AA00BD1DCF /* NCAccountCharacterCell.m */; };
@@ -766,6 +767,8 @@
 		1211123F1859A54D009E5106 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		1211124B1859E1AF009E5106 /* NCCacheRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCacheRecord.h; sourceTree = "<group>"; };
 		1211124C1859E1AF009E5106 /* NCCacheRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCacheRecord.m; sourceTree = "<group>"; };
+		121147E91BD4111000DDA220 /* NCUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCUpdater.h; sourceTree = "<group>"; };
+		121147EA1BD4111000DDA220 /* NCUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCUpdater.m; sourceTree = "<group>"; };
 		12124AA9188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeMarketInfoViewController.h; sourceTree = "<group>"; };
 		12124AAA188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeMarketInfoViewController.m; sourceTree = "<group>"; };
 		12124AAD1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeMarketInfoCell.h; sourceTree = "<group>"; };
@@ -1778,6 +1781,15 @@
 			name = NCCache;
 			sourceTree = "<group>";
 		};
+		121147E31BD402BC00DDA220 /* NCUpdater */ = {
+			isa = PBXGroup;
+			children = (
+				121147E91BD4111000DDA220 /* NCUpdater.h */,
+				121147EA1BD4111000DDA220 /* NCUpdater.m */,
+			);
+			name = NCUpdater;
+			sourceTree = "<group>";
+		};
 		12124AA81889149F00F01C59 /* NCDatabaseTypeMarketInfoViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2355,6 +2367,7 @@
 				12EC0AC318C0BA680010169C /* NCNotificationsManager */,
 				128C9B0018BF03210086F7B3 /* NCCharacterID */,
 				12056E5B18C45CC4008D8755 /* NCPriceManager */,
+				121147E31BD402BC00DDA220 /* NCUpdater */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -4518,6 +4531,7 @@
 				1216EB8A1AE0E0EA0026AF58 /* NCDBWhType+Neocom.m in Sources */,
 				125A19C71BB719F800C5BAD8 /* NCStarbasesCell.m in Sources */,
 				128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */,
+				121147EB1BD4111000DDA220 /* NCUpdater.m in Sources */,
 				125A19CA1BB8533200C5BAD8 /* NCStarbasesDetailsViewController.m in Sources */,
 				12F407591A8D25220031FB35 /* NCDefaultTableViewCell.m in Sources */,
 				128257861BD0F79C00BC1F56 /* NCFittingPOSViewController.mm in Sources */,

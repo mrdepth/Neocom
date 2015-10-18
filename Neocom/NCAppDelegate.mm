@@ -29,7 +29,7 @@
 #import "NCSplashScreenViewController.h"
 #import "NCSkillPlanViewController.h"
 #import "NCPriceManager.h"
-
+#import "NCUpdater.h"
 
 
 static NSUncaughtExceptionHandler* handler;
@@ -48,9 +48,6 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 @interface NCAppDelegate()<SKPaymentTransactionObserver, UISplitViewControllerDelegate>
 @property (nonatomic, strong) NCTaskManager* taskManager;
-@property (nonatomic, strong) CKDatabase* database;
-@property (nonatomic, strong) CKQueryOperation* queryOperation;
-@property (nonatomic, strong) CKFetchRecordsOperation* fetchRecordsOperation;
 
 - (void) addAPIKeyWithURL:(NSURL*) url;
 - (void) openFitWithURL:(NSURL*) url;
@@ -67,9 +64,6 @@ void uncaughtExceptionHandler(NSException* exception) {
 - (void) askToUseCloudWithCompletionHandler:(void(^)(BOOL useCloud)) completionHandler;
 - (void) askToTransferDataWithCompletionHandler:(void(^)(BOOL transfer)) completionHandler;
 - (void) ubiquityIdentityDidChange:(NSNotification*) notification;
-- (void) checkDatabaseUpdates;
-- (void) downloadUpdateWithRecord:(CKRecord*) record;
-- (void) installUpdateWithRecord:(CKRecord*) record;
 @end
 
 @implementation NCAppDelegate
@@ -184,7 +178,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 		controller.delegate = self;
 	}
 
-	[self checkDatabaseUpdates];
+	[[NCUpdater sharedUpdater] checkUpdates];
     return YES;
 }
 
@@ -198,7 +192,6 @@ void uncaughtExceptionHandler(NSException* exception) {
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
 	[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:nil];
-	[self checkDatabaseUpdates];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -719,124 +712,6 @@ void uncaughtExceptionHandler(NSException* exception) {
 - (void) ubiquityIdentityDidChange:(NSNotification*) notification {
 	if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
 		[self reconnectStoreIfNeeded];
-}
-
-- (void) checkDatabaseUpdates {
-	if (!self.database)
-		self.database = [[CKContainer defaultContainer] publicCloudDatabase];
-
-	int NCDatabaseBuild = [[[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType] version].build;
-	[[NSFileManager defaultManager] createDirectoryAtPath:[NCDatabase libraryDirectory] withIntermediateDirectories:YES attributes:nil error:nil];
-	if (self.fetchRecordsOperation) {
-		return;
-	}
-	else {
-		NSString* downloadRecordPath = [[NCDatabase libraryDirectory] stringByAppendingPathComponent:@"Download.record"];
-		CKRecord* downloadRecord = [NSKeyedUnarchiver unarchiveObjectWithFile:downloadRecordPath];
-		if (downloadRecord) {
-			int build = [downloadRecord[@"NCDatabaseBuild"] intValue];
-			CKAsset* eufe = downloadRecord[@"eufe"];
-			CKAsset* database = downloadRecord[@"NCDatabase"];
-			database = eufe;
-			
-			if (build > NCDatabaseBuild) {
-				if (eufe && database) {
-					[self installUpdateWithRecord:downloadRecord];
-					return;
-				}
-				else {
-					[self downloadUpdateWithRecord:downloadRecord];
-					return;
-				}
-			}
-			else {
-				NSFileManager* fileManager = [NSFileManager defaultManager];
-				[fileManager removeItemAtPath:downloadRecordPath error:nil];
-				if (eufe && [fileManager fileExistsAtPath:eufe.fileURL.path])
-					[fileManager removeItemAtURL:eufe.fileURL error:nil];
-				if (database && [fileManager fileExistsAtPath:database.fileURL.path])
-					[fileManager removeItemAtURL:database.fileURL error:nil];
-			}
-		}
-	}
-	
-	if (!self.queryOperation) {
-		CKQuery* query = [[CKQuery alloc] initWithRecordType:@"Database" predicate:[NSPredicate predicateWithFormat:@"CFBundleVersion == %d AND NCDatabaseBuild > %d", 11856, NCDatabaseBuild]];
-		query.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"NCDatabaseBuild" ascending:NO]];
-		self.queryOperation = [[CKQueryOperation alloc] initWithQuery:query];
-		self.queryOperation.desiredKeys = @[@"NCDatabaseBuild"];
-		self.queryOperation.resultsLimit = 1;
-		self.queryOperation.qualityOfService = NSQualityOfServiceBackground;
-		[[self queryOperation] setRecordFetchedBlock:^(CKRecord * _Nonnull record) {
-			NSString* cachedRecordPath = [[NCDatabase libraryDirectory] stringByAppendingPathComponent:@"Database.record"];
-			[[NSFileManager defaultManager] removeItemAtPath:cachedRecordPath error:nil];
-			CKRecord* cachedRecord = [NSKeyedUnarchiver unarchiveObjectWithFile:cachedRecordPath];
-			if (cachedRecord && [cachedRecord[@"NCDatabaseBuild"] isEqual:record[@"NCDatabaseBuild"]]) {
-			}
-			else {
-				[NSKeyedArchiver archiveRootObject:record toFile:cachedRecordPath];
-				
-				dispatch_async(dispatch_get_main_queue(), ^{
-					UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Update", nil) message:NSLocalizedString(@"New database update available. Do you want to download it?", nil) preferredStyle:UIAlertControllerStyleAlert];
-					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Download", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-						[self downloadUpdateWithRecord:record];
-					}]];
-					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-					}]];
-					UIViewController* root = self.window.rootViewController;
-					for(;root.presentedViewController; root = root.presentedViewController);
-					[root presentViewController:controller animated:YES completion:nil];
-				});
-			}
-		}];
-		[[self queryOperation] setCompletionBlock:^{
-			self.queryOperation = nil;
-		}];
-		[self.database addOperation:self.queryOperation];
-	}
-	/*	[database performQuery:[[CKQuery alloc] initWithRecordType:@"Database" predicate:[NSPredicate predicateWithFormat:@"TRUEPREDICATE"]]
-	 inZoneWithID:nil
-	 completionHandler:^(NSArray<CKRecord *> * _Nullable results, NSError * _Nullable error) {
-	 NSData* data = [NSData dataWithContentsOfURL:asset.fileURL];
-	 NSLog(@"%@", results);
-	 }];*/
-}
-
-- (void) installUpdateWithRecord:(CKRecord*) record {
-	
-}
-
-- (void) downloadUpdateWithRecord:(CKRecord*) record {
-	NSString* downloadRecordPath = [[NCDatabase libraryDirectory] stringByAppendingPathComponent:@"Download.record"];
-	[NSKeyedArchiver archiveRootObject:record toFile:downloadRecordPath];
-	
-	self.fetchRecordsOperation = [[CKFetchRecordsOperation alloc] initWithRecordIDs:@[record.recordID]];
-	self.fetchRecordsOperation.qualityOfService = NSQualityOfServiceBackground;
-	[[self fetchRecordsOperation] setPerRecordProgressBlock:^(CKRecordID * record, double progress) {
-		NSLog(@"%f", (float) progress);
-	}];
-	[[self fetchRecordsOperation] setPerRecordCompletionBlock:^(CKRecord * _Nullable record, CKRecordID * __nullable recordID, NSError* error) {
-		if (error || !record) {
-			dispatch_async(dispatch_get_main_queue(), ^{
-				UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Unable to download database update", nil) message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
-				[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Close", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-				}]];
-				UIViewController* root = self.window.rootViewController;
-				for(;root.presentedViewController; root = root.presentedViewController);
-				[root presentViewController:controller animated:YES completion:nil];
-
-			});
-		}
-		else {
-			[NSKeyedArchiver archiveRootObject:record toFile:downloadRecordPath];
-			CKAsset* eufe = record[@"eufe"];
-			CKAsset* database = record[@"NCDatabase"];
-			if (eufe && database)
-				[self installUpdateWithRecord:record];
-		}
-	}];
-	
-	[self.database addOperation:self.fetchRecordsOperation];
 }
 
 @end

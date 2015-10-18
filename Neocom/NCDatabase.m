@@ -104,7 +104,12 @@
 }
 
 + (NSString*) libraryDirectory {
-	return [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"Database"];
+	static NSString* libraryDirectory;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		libraryDirectory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"Database"];
+	});
+	return libraryDirectory;
 }
 
 

@@ -46,7 +46,7 @@
 {
     [super viewDidLoad];
 	if (self.groupID) {
-		NCDBInvGroup* group = (NCDBInvGroup*) [self.databaseManagedObjectContext objectWithID:self.groupID];
+		NCDBInvGroup* group = (NCDBInvGroup*) [self.databaseManagedObjectContext existingObjectWithID:self.groupID error:nil];
 		self.title = group.groupName;
 	}
 	self.refreshControl = nil;
@@ -117,7 +117,7 @@
 	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	
 	if (!row.icon && row.iconID)
-		row.icon = (NCDBEveIcon*) [self.databaseManagedObjectContext objectWithID:row.iconID];
+		row.icon = (NCDBEveIcon*) [self.databaseManagedObjectContext existingObjectWithID:row.iconID error:nil];
 	
 	cell.titleLabel.text = row.title;
 	cell.subtitleLabel.text = row.subtitle;
@@ -136,7 +136,7 @@
 			NSMutableArray* rows = [NSMutableArray new];
 			
 			if (self.groupID) {
-				NCDBInvGroup* group = (NCDBInvGroup*) [managedObjectContext objectWithID:self.groupID];
+				NCDBInvGroup* group = (NCDBInvGroup*) [managedObjectContext existingObjectWithID:self.groupID error:nil];
 				NSArray* certificates = [group.certificates sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"certificateName" ascending:YES]]];
 				NCDBEveIcon* unclaimedIcon = [managedObjectContext certificateUnclaimedIcon];
 				for (NCDBCertCertificate* certificate in certificates) {

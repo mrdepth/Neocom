@@ -118,7 +118,7 @@
 {
 	[super viewDidLoad];
 
-	self.type = [self.databaseManagedObjectContext objectWithID:self.typeID];
+	self.type = [self.databaseManagedObjectContext existingObjectWithID:self.typeID error:nil];
 	
 	self.modeSetting = [self.storageManagedObjectContext settingWithKey:@"NCDatabaseTypeMarketInfoViewController.mode"];
 	self.mode = [self.modeSetting.value integerValue];

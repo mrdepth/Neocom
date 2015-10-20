@@ -37,6 +37,7 @@
 - (void) didBecomeActive:(NSNotification*) notification;
 - (void) willResignActive:(NSNotification*) notification;
 - (void) didChangeStorage:(NSNotification*) notification;
+- (void) didInstallUpdate:(NSNotification*) notification;
 - (void) managedObjectContextDidFinishUpdate:(NSNotification*) notification;
 
 - (void) searchWithSearchString:(NSString*) searchString completionBlock:(void(^)()) completionBlock;

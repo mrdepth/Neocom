@@ -68,7 +68,7 @@
 - (void) addRequiredSkillsForType:(NCDBInvType*) type {
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		if (type.managedObjectContext != self.databaseManagedObjectContext)
-			[self _addRequiredSkillsForType:(NCDBInvType*) [self.databaseManagedObjectContext objectWithID:type.objectID]];
+			[self _addRequiredSkillsForType:(NCDBInvType*) [self.databaseManagedObjectContext existingObjectWithID:type.objectID error:nil]];
 		else
 			[self _addRequiredSkillsForType:type];
 	}];
@@ -77,7 +77,7 @@
 - (void) addSkill:(NCDBInvType*) skill withLevel:(int32_t) level {
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		if (skill.managedObjectContext != self.databaseManagedObjectContext)
-			[self _addSkill:(NCDBInvType*) [self.databaseManagedObjectContext objectWithID:skill.objectID] withLevel:level];
+			[self _addSkill:(NCDBInvType*) [self.databaseManagedObjectContext existingObjectWithID:skill.objectID error:nil] withLevel:level];
 		else
 			[self _addSkill:skill withLevel:level];
 	}];
@@ -94,7 +94,7 @@
 - (void) addMastery:(NCDBCertMastery*) mastery {
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		if (mastery.managedObjectContext != self.databaseManagedObjectContext)
-			[self _addMastery:(NCDBCertMastery*) [self.databaseManagedObjectContext objectWithID:mastery.objectID]];
+			[self _addMastery:(NCDBCertMastery*) [self.databaseManagedObjectContext existingObjectWithID:mastery.objectID error:nil]];
 		else
 			[self _addMastery:mastery];
 	}];

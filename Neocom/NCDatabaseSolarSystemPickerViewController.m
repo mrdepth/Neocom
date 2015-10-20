@@ -49,6 +49,7 @@
 			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"regionName" ascending:YES]];
 			request.fetchBatchSize = 50;
 			self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
+			[self.result performFetch:nil];
 		}
 	}
 }

@@ -31,7 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.type = (NCDBInvType*) [self.databaseManagedObjectContext objectWithID:self.typeID];
+	self.type = (NCDBInvType*) [self.databaseManagedObjectContext existingObjectWithID:self.typeID error:nil];
 	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 
 	self.refreshControl = nil;

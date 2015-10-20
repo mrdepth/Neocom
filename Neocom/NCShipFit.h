@@ -67,6 +67,7 @@
 @property (nonatomic, strong, readonly) NSManagedObjectID* loadoutID;
 @property (nonatomic, strong, readonly) NAPISearchItem* apiLadout;
 @property (nonatomic, strong, readonly) EVEAssetListItem* asset;
+@property (nonatomic, strong, readonly) NCKillMail* killMail;
 
 //Export
 @property (nonatomic, readonly) NSString* canonicalName;

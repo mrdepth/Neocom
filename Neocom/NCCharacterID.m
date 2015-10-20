@@ -43,8 +43,13 @@
 						characterID.type = NCCharacterIDTypeCharacter;
 					else if (ownerIDItem.ownerGroupID == EVEOwnerGroupCorporation)
 						characterID.type = NCCharacterIDTypeCorporation;
-					else
+					else if (ownerIDItem.ownerGroupID == NCCharacterIDTypeAlliance)
 						characterID.type = NCCharacterIDTypeAlliance;
+					else {
+						completionBlock(nil, [NSError errorWithDomain:@"NCCharacterID" code:0 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Unknown owner name", nil)}]);
+						return;
+					}
+					
 					characterID.name = ownerIDItem.ownerName;
 					nameToCharacterID[name] = characterID;
 					

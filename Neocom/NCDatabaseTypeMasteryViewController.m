@@ -50,7 +50,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.type = (NCDBInvType*) [self.databaseManagedObjectContext objectWithID:self.typeID];
+	self.type = (NCDBInvType*) [self.databaseManagedObjectContext existingObjectWithID:self.typeID error:nil];
 	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 	self.title = self.type.typeName;
 	self.refreshControl = nil;
@@ -130,9 +130,9 @@
 	cell.subtitleLabel.text = row.detail;
 	
 	if (row.iconID && !row.icon)
-		row.icon = (NCDBEveIcon*) [self.databaseManagedObjectContext objectWithID:row.iconID];
+		row.icon = (NCDBEveIcon*) [self.databaseManagedObjectContext existingObjectWithID:row.iconID error:nil];
 	if (row.accessoryIconID && !row.accessoryIcon)
-		row.accessoryIcon = (NCDBEveIcon*) [self.databaseManagedObjectContext objectWithID:row.accessoryIconID];
+		row.accessoryIcon = (NCDBEveIcon*) [self.databaseManagedObjectContext existingObjectWithID:row.accessoryIconID error:nil];
 
 	
 	cell.iconView.image = row.icon ? row.icon.image.image : self.defaultTypeIcon.image.image;
@@ -159,8 +159,8 @@
 		[managedObjectContext performBlock:^{
 			NSMutableArray* sections = [NSMutableArray new];
 			
-			NCDBInvType* type = (NCDBInvType*) [managedObjectContext objectWithID:self.typeID];
-			NCDBCertMasteryLevel* masteryLevel = (NCDBCertMasteryLevel*) [managedObjectContext objectWithID:self.masteryLevelID];
+			NCDBInvType* type = (NCDBInvType*) [managedObjectContext existingObjectWithID:self.typeID error:nil];
+			NCDBCertMasteryLevel* masteryLevel = (NCDBCertMasteryLevel*) [managedObjectContext existingObjectWithID:self.masteryLevelID error:nil];
 			
 			NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:managedObjectContext];
 			NSMutableArray* rows = nil;

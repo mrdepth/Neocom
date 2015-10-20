@@ -14,8 +14,6 @@
 @property (nonatomic, strong) CKDatabase* database;
 @property (nonatomic, strong) CKQueryOperation* queryOperation;
 @property (nonatomic, strong) CKFetchRecordsOperation* fetchRecordsOperation;
-@property (nonatomic, retain) NSString* libraryDirectory;
-@property (nonatomic, retain) NSString* versionDirectory;
 @property (nonatomic, strong, readwrite) NSProgress* progress;
 
 - (void) setupDirectory;
@@ -56,11 +54,12 @@
 	return applicationVersion;
 }
 
-- (void) checkUpdates {
+- (void) checkForUpdates {
+	[self setupDirectory];
 	if (!self.database)
 		self.database = [[CKContainer defaultContainer] publicCloudDatabase];
 	
-	int NCDatabaseBuild = [[[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType] version].build;
+	int currentBuild = [[[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType] version].build;
 	
 	if (self.fetchRecordsOperation) {
 		return;
@@ -69,15 +68,15 @@
 		//Resume download/install
 		NSFileManager* fileManager = [NSFileManager defaultManager];
 
-		NSString* downloadRecordPath = [self.versionDirectory stringByAppendingPathComponent:@"Download.record"];
+		NSString* downloadRecordPath = [self.versionDirectory stringByAppendingPathComponent:@"download.record"];
 		CKRecord* downloadRecord = [NSKeyedUnarchiver unarchiveObjectWithFile:downloadRecordPath];
 		if (downloadRecord) {
-			int build = [downloadRecord[@"NCDatabaseBuild"] intValue];
+			int build = [downloadRecord[@"build"] intValue];
 			CKAsset* eufe = downloadRecord[@"eufe"];
-			CKAsset* database = downloadRecord[@"NCDatabase"];
+			CKAsset* database = downloadRecord[@"database"];
 			database = eufe;
 			
-			if (build > NCDatabaseBuild) {
+			if (build > currentBuild) {
 				if (eufe && database && [fileManager fileExistsAtPath:eufe.fileURL.path] && [fileManager fileExistsAtPath:database.fileURL.path]) {
 					self.progress.completedUnitCount = 1;
 					[self installUpdateWithRecord:downloadRecord];
@@ -100,24 +99,25 @@
 	
 	if (!self.queryOperation) {
 		//Check updates
-		CKQuery* query = [[CKQuery alloc] initWithRecordType:@"Database" predicate:[NSPredicate predicateWithFormat:@"CFBundleVersion == %d AND NCDatabaseBuild > %d", 11856, NCDatabaseBuild]];
-		query.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"NCDatabaseBuild" ascending:NO]];
+		CKQuery* query = [[CKQuery alloc] initWithRecordType:@"Database" predicate:[NSPredicate predicateWithFormat:@"applicationBuild == %d AND build > %d", self.applicationVersion, currentBuild]];
+		query.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"build" ascending:NO]];
 		self.queryOperation = [[CKQueryOperation alloc] initWithQuery:query];
-		self.queryOperation.desiredKeys = @[@"NCDatabaseBuild", @"size"];
+		self.queryOperation.desiredKeys = @[@"build", @"size", @"title"];
 		self.queryOperation.resultsLimit = 1;
 		self.queryOperation.qualityOfService = NSQualityOfServiceBackground;
 		
 		[[self queryOperation] setRecordFetchedBlock:^(CKRecord * _Nonnull record) {
-			NSString* cachedRecordPath = [self.versionDirectory stringByAppendingPathComponent:@"Database.record"];
-			[[NSFileManager defaultManager] removeItemAtPath:cachedRecordPath error:nil];
+			NSString* cachedRecordPath = [self.versionDirectory stringByAppendingPathComponent:@"database.record"];
 			CKRecord* cachedRecord = [NSKeyedUnarchiver unarchiveObjectWithFile:cachedRecordPath];
-			if (cachedRecord && [cachedRecord[@"NCDatabaseBuild"] isEqual:record[@"NCDatabaseBuild"]]) {
+			if (cachedRecord && [cachedRecord[@"build"] isEqual:record[@"build"]]) {
 			}
 			else {
 				[NSKeyedArchiver archiveRootObject:record toFile:cachedRecordPath];
 				
 				dispatch_async(dispatch_get_main_queue(), ^{
-					UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"New database update available", nil) message:[NSString stringWithFormat:NSLocalizedString(@"Would you like to update?\nSize: %.1fMB", nil), [record[@"size"] floatValue] / 1024 / 1024] preferredStyle:UIAlertControllerStyleAlert];
+					UIAlertController* controller = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ database update available (%.1f MiB)", nil), record[@"title"], [record[@"size"] floatValue] / 1024 / 1024]
+																						message:NSLocalizedString(@"Would you like to update?", nil)
+																				 preferredStyle:UIAlertControllerStyleAlert];
 					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Download and Update", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 						[self downloadUpdateWithRecord:record];
 					}]];
@@ -136,15 +136,19 @@
 }
 
 - (void) installUpdateWithRecord:(CKRecord*) record {
-	NSString* databaseBuild = [NSString stringWithFormat:@"%@", record[@"NCDatabaseBuild"]];
-	NSString* tmp = [[self.versionDirectory stringByAppendingPathComponent:@"_"] stringByAppendingPathExtension:databaseBuild];
 	NSFileManager* fileManager = [NSFileManager defaultManager];
+
+	NSString* downloadRecordPath = [self.versionDirectory stringByAppendingPathComponent:@"download.record"];
+	[fileManager removeItemAtPath:downloadRecordPath error:nil];
+
+	NSString* databaseBuild = [NSString stringWithFormat:@"%@", record[@"build"]];
+	NSString* tmp = [[self.versionDirectory stringByAppendingPathComponent:@"_"] stringByAppendingPathExtension:databaseBuild];
 	if ([fileManager fileExistsAtPath:tmp isDirectory:NULL])
 		[fileManager removeItemAtPath:tmp error:nil];
 	[fileManager createDirectoryAtPath:tmp withIntermediateDirectories:YES attributes:nil error:nil];
 	
 	CKAsset* eufe = record[@"eufe"];
-	CKAsset* database = record[@"NCDatabase"];
+	CKAsset* database = record[@"database"];
 	database = eufe;
 	[self.progress becomeCurrentWithPendingUnitCount:1];
 	NSProgress* progress = [NSProgress progressWithTotalUnitCount:2];
@@ -154,10 +158,10 @@
 	dispatch_async(queue, ^{
 		NSString* eufeDst = [tmp stringByAppendingPathComponent:@"eufe.sqlite"];
 		NSString* databaseDst = [tmp stringByAppendingPathComponent:@"NCDatabase.sqlite"];
-		//NSString* eufeSrc = @"/Users/shimanski/work/git/EVEUniverse/dbTools/dbinit/eufe.sqlite.gz";
-		//NSString* databaseSrc = @"/Users/shimanski/work/git/EVEUniverse/dbTools/dbinit/NCDatabase.sqlite.gz";
-		NSString* eufeSrc = eufe.fileURL.path;
-		NSString* databaseSrc = database.fileURL.path;
+		NSString* eufeSrc = @"/Users/shimanski/Documents/git/EVEUniverse/dbTools/dbinit/eufe.sqlite.gz";
+		NSString* databaseSrc = @"/Users/shimanski/Documents/git/EVEUniverse/dbTools/dbinit/NCDatabase2.sqlite.gz";
+		//NSString* eufeSrc = eufe.fileURL.path;
+		//NSString* databaseSrc = database.fileURL.path;
 		[progress becomeCurrentWithPendingUnitCount:1];
 		NSError* error;
 		[self decompressFileAtPath:eufeSrc toPath:eufeDst error:&error];
@@ -167,17 +171,27 @@
 			[self decompressFileAtPath:databaseSrc toPath:databaseDst error:&error];
 			[progress resignCurrent];
 			if (!error) {
-				[fileManager moveItemAtPath:tmp toPath:[self.versionDirectory stringByAppendingPathComponent:databaseBuild] error:nil];
+				dispatch_async(dispatch_get_main_queue(), ^{
+					NSString* dst = [self.versionDirectory stringByAppendingPathComponent:databaseBuild];
+					[fileManager removeItemAtPath:dst error:nil];
+					[fileManager moveItemAtPath:tmp toPath:dst error:nil];
+					[[NCDatabase sharedDatabase] reconnect];
+					[[NSNotificationCenter defaultCenter] postNotificationName:NCDatabaseDidInstallUpdateNotification object:nil];
+					UIAlertController* controller = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ update is installed", nil), record[@"title"]] message:nil preferredStyle:UIAlertControllerStyleAlert];
+					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+					}]];
+					[self.presentedViewController presentViewController:controller animated:YES completion:nil];
+				});
 			}
 		}
-		[fileManager removeItemAtPath:eufeSrc error:nil];
-		[fileManager removeItemAtPath:databaseSrc error:nil];
+//		[fileManager removeItemAtPath:eufeSrc error:nil];
+//		[fileManager removeItemAtPath:databaseSrc error:nil];
 		self.error = error;
 	});
 }
 
 - (void) downloadUpdateWithRecord:(CKRecord*) record {
-	NSString* downloadRecordPath = [self.versionDirectory stringByAppendingPathComponent:@"Download.record"];
+	NSString* downloadRecordPath = [self.versionDirectory stringByAppendingPathComponent:@"download.record"];
 	[NSKeyedArchiver archiveRootObject:record toFile:downloadRecordPath];
 	
 	self.fetchRecordsOperation = [[CKFetchRecordsOperation alloc] initWithRecordIDs:@[record.recordID]];
@@ -205,7 +219,7 @@
 		else {
 			[NSKeyedArchiver archiveRootObject:record toFile:downloadRecordPath];
 			CKAsset* eufe = record[@"eufe"];
-			CKAsset* database = record[@"NCDatabase"];
+			CKAsset* database = record[@"database"];
 			database = eufe;
 			if (eufe && database)
 				[self installUpdateWithRecord:record];
@@ -218,7 +232,12 @@
 #pragma mark - Private
 
 - (NSString*) libraryDirectory {
-	return [NCDatabase libraryDirectory];
+	static NSString* libraryDirectory;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		libraryDirectory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"Database"];
+	});
+	return libraryDirectory;
 }
 
 - (NSString*) versionDirectory {
@@ -235,7 +254,7 @@
 	NSString* version = [NSString stringWithFormat:@"%d", (int)[self applicationVersion]];
 	
 	NSFileManager* fileManager = [NSFileManager defaultManager];
-	[fileManager removeItemAtPath:self.libraryDirectory error:nil];
+//	[fileManager removeItemAtPath:self.libraryDirectory error:nil];
 	
 	for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:self.libraryDirectory error:nil]) {
 		if ([fileName isEqualToString:version])
@@ -250,6 +269,15 @@
 		[fileManager removeItemAtPath:self.libraryDirectory error:nil];
 		[fileManager createDirectoryAtPath:self.versionDirectory withIntermediateDirectories:nil attributes:nil error:nil];
 	}
+	
+	NSString* currentBuild = [NSString stringWithFormat:@"%d", [[[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType] version].build];
+	//currentBuild = @"912412";
+	for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:self.versionDirectory error:nil]) {
+		if ([fileName isEqualToString:currentBuild] || [[fileName pathExtension] isEqualToString:@"record"])
+			continue;
+		else
+			[fileManager removeItemAtPath:[self.versionDirectory stringByAppendingPathComponent:fileName] error:nil];
+	}
 }
 
 - (UIViewController*) presentedViewController {
@@ -259,7 +287,7 @@
 }
 
 - (BOOL) decompressFileAtPath:(NSString*) srcPath toPath:(NSString*) dstPath error:(NSError* _Nullable * _Nullable) error {
-	const int CHUNK = 1024;
+	const int CHUNK = 102400;
 
 	int ret;
 	unsigned have;

@@ -55,7 +55,7 @@
 	if (self.navigationController.viewControllers[0] != self)
 		self.navigationItem.leftBarButtonItem = nil;
 	self.refreshControl = nil;
-	self.certificate = (NCDBCertCertificate*) [self.databaseManagedObjectContext objectWithID:self.certificateID];
+	self.certificate = (NCDBCertCertificate*) [self.databaseManagedObjectContext existingObjectWithID:self.certificateID error:nil];
 	self.defaultIcon = [self.databaseManagedObjectContext eveIconWithIconFile:@"105_32"];
 	[self reload];
 }
@@ -195,9 +195,9 @@
 	cell.subtitleLabel.text = row.detail;
 	
 	if (row.iconID && !row.icon)
-		row.icon = (NCDBEveIcon*) [self.databaseManagedObjectContext objectWithID:row.iconID];
+		row.icon = (NCDBEveIcon*) [self.databaseManagedObjectContext existingObjectWithID:row.iconID error:nil];
 	if (row.accessoryIconID && !row.accessoryIcon)
-		row.accessoryIcon = (NCDBEveIcon*) [self.databaseManagedObjectContext objectWithID:row.accessoryIconID];
+		row.accessoryIcon = (NCDBEveIcon*) [self.databaseManagedObjectContext existingObjectWithID:row.accessoryIconID error:nil];
 
 	cell.iconView.image = row.icon ? row.icon.image.image : self.defaultIcon.image.image;
 	
@@ -216,7 +216,7 @@
 			NSArray* requiredForSections = nil;
 			NSManagedObjectID* certificateIconID;
 
-			NCDBCertCertificate* certificate = (NCDBCertCertificate*) [managedObjectContext objectWithID:self.certificateID];
+			NCDBCertCertificate* certificate = (NCDBCertCertificate*) [managedObjectContext existingObjectWithID:self.certificateID error:nil];
 			NSArray* masteries = [certificate.masteries sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"level.level" ascending:YES]]];
 			
 			NCDBEveIcon* skillIcon = [managedObjectContext eveIconWithIconFile:@"50_11"];
@@ -331,7 +331,7 @@
 				self.masteriesSections = masteriesSections;
 				self.requiredForSections = requiredForSections;
 				if (certificateIconID) {
-					NCDBEveIcon* certificateIcon = (NCDBEveIcon*) [self.databaseManagedObjectContext objectWithID:certificateIconID];
+					NCDBEveIcon* certificateIcon = (NCDBEveIcon*) [self.databaseManagedObjectContext existingObjectWithID:certificateIconID error:nil];
 					self.imageView.image = certificateIcon.image.image;
 				}
 				[self.tableView reloadData];

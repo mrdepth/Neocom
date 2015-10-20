@@ -58,11 +58,12 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 //@property (readonly, strong, nonatomic) NSManagedObjectContext *backgroundManagedObjectContext;
-
+@property (nonatomic, assign) NSString* databaseUpdateDirectory;
 + (id) sharedDatabase;
-+ (NSString*) libraryDirectory;
+
 
 - (NSManagedObjectContext*) createManagedObjectContext;
 - (NSManagedObjectContext*) createManagedObjectContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType) concurrencyType;
+- (void) reconnect;
 
 @end

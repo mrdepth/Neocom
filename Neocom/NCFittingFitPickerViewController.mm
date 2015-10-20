@@ -117,7 +117,7 @@
 	else {
 		NCFittingFitPickerViewControllerSection* section = self.sections[indexPath.section - 1];
 		NCFittingFitPickerViewControllerRow* row = section.rows[indexPath.row];
-		NCLoadout* loadout = [self.storageManagedObjectContext objectWithID:row.loadoutID];
+		NCLoadout* loadout = [self.storageManagedObjectContext existingObjectWithID:row.loadoutID error:nil];
 		NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
 		self.selectedFit = fit;
 		[self performSegueWithIdentifier:@"Unwind" sender:cell];
@@ -155,7 +155,7 @@
 		NCFittingFitPickerViewControllerSection* section = self.sections[indexPath.section - 1];
 		NCFittingFitPickerViewControllerRow* row = section.rows[indexPath.row];
 		if (!row.icon && row.iconID)
-			row.icon = [self.databaseManagedObjectContext objectWithID:row.iconID];
+			row.icon = [self.databaseManagedObjectContext existingObjectWithID:row.iconID error:nil];
 		
 		cell.titleLabel.text = row.typeName;
 		cell.subtitleLabel.text = row.loadoutName;

@@ -97,7 +97,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.type = (NCDBInvType*) [self.databaseManagedObjectContext objectWithID:self.typeID];
+	self.type = (NCDBInvType*) [self.databaseManagedObjectContext existingObjectWithID:self.typeID error:nil];
 	self.defaultAttributeIcon = [self.databaseManagedObjectContext eveIconWithIconFile:@"105_32"];
 	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 
@@ -173,7 +173,7 @@
 	else if ([segue.identifier isEqualToString:@"NCDatabaseViewController"]) {
 		NCDatabaseViewController* destinationViewController = segue.destinationViewController;
 		if ([row.object isKindOfClass:[NSManagedObjectID class]]) {
-			id object = [self.databaseManagedObjectContext objectWithID:row.object];
+			id object = [self.databaseManagedObjectContext existingObjectWithID:row.object error:nil];
 			if ([object isKindOfClass:[NCDBInvGroup class]])
 				destinationViewController.group = object;
 			else if ([object isKindOfClass:[NCDBInvCategory class]])
@@ -251,9 +251,9 @@
 	cell.subtitleLabel.text = row.detail;
 	
 	if (row.iconID && !row.icon)
-		row.icon = (NCDBEveIcon*) [self.databaseManagedObjectContext objectWithID:row.iconID];
+		row.icon = (NCDBEveIcon*) [self.databaseManagedObjectContext existingObjectWithID:row.iconID error:nil];
 	if (row.accessoryIconID && !row.accessoryIcon)
-		row.accessoryIcon = (NCDBEveIcon*) [self.databaseManagedObjectContext objectWithID:row.accessoryIconID];
+		row.accessoryIcon = (NCDBEveIcon*) [self.databaseManagedObjectContext existingObjectWithID:row.accessoryIconID error:nil];
 	
 	if (row.image)
 		cell.iconView.image = row.image;
@@ -369,7 +369,7 @@
 			NSMutableArray* sections = [NSMutableArray new];
 			
 			NCCharacterAttributes* attributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
-			NCDBInvType* type = (NCDBInvType*) [managedObjectContext objectWithID:self.typeID];
+			NCDBInvType* type = (NCDBInvType*) [managedObjectContext existingObjectWithID:self.typeID error:nil];
 			
 			NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:managedObjectContext];
 			[trainingQueue addRequiredSkillsForType:type];
@@ -738,7 +738,7 @@
 			NSMutableArray* sections = [NSMutableArray new];
 
 			NCCharacterAttributes* attributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
-			NCDBInvType* type = (NCDBInvType*) [managedObjectContext objectWithID:self.typeID];
+			NCDBInvType* type = (NCDBInvType*) [managedObjectContext existingObjectWithID:self.typeID error:nil];
 
 			NCDBIndBlueprintType* blueprintType = type.blueprintType;
 			NCDBEveIcon* skillIcon = [managedObjectContext eveIconWithIconFile:@"50_11"];
@@ -793,7 +793,7 @@
 						title = [NSString stringWithFormat:NSLocalizedString(@"%@ - Skills", nil), activity.activity.activityName];
 					
 					
-					if (requiredSkillsQueue.skills.count && account && account.activeSkillPlan) {
+					if (requiredSkillsQueue.skills.count && account) {
 						NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 						row.title = NSLocalizedString(@"Add required skills to training plan", nil);
 						row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]];
@@ -864,7 +864,7 @@
 	[managedObjectContext performBlock:^{
 		NSMutableArray* sections = [NSMutableArray new];
 		
-		NCDBInvType* type = (NCDBInvType*) [managedObjectContext objectWithID:self.typeID];
+		NCDBInvType* type = (NCDBInvType*) [managedObjectContext existingObjectWithID:self.typeID error:nil];
 
 		NCDBDgmTypeAttribute* emDamageAttribute = type.attributesDictionary[@(114)];
 		NCDBDgmTypeAttribute* explosiveDamageAttribute = type.attributesDictionary[@(116)];
@@ -1776,7 +1776,7 @@
 	[managedObjectContext performBlock:^{
 		NSMutableArray* sections = [NSMutableArray new];
 		
-		NCDBInvType* type = (NCDBInvType*) [managedObjectContext objectWithID:self.typeID];
+		NCDBInvType* type = (NCDBInvType*) [managedObjectContext existingObjectWithID:self.typeID error:nil];
 		
 		NCDBWhType* wh = type.wormhole;
 		

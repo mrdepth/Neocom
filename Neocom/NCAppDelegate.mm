@@ -178,7 +178,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 		controller.delegate = self;
 	}
 
-	[[NCUpdater sharedUpdater] checkUpdates];
+	[[NCUpdater sharedUpdater] checkForUpdates];
     return YES;
 }
 
@@ -626,7 +626,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 - (void) failedTransaction: (SKPaymentTransaction *)transaction
 {
-    if (transaction.error.code != SKErrorPaymentCancelled) {
+	if (![transaction.error.domain isEqualToString:SKErrorDomain] || transaction.error.code != SKErrorPaymentCancelled)	{
         [[UIAlertView alertViewWithError:transaction.error] show];
     }
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];

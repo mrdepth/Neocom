@@ -55,7 +55,6 @@
 - (void) presentWithCategory:(NCDBEufeItemCategory*) category inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(NCDBInvType* type)) completion {
 	if (![self.category isEqual:category]) {
 		self.category = category;
-//		self.category = [self.databaseManagedObjectContext objectWithID:category.objectID];
 		
 		for (NCTableViewController* controller in self.viewControllers) {
 			if (controller.searchController.isActive)

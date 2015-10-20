@@ -8,6 +8,7 @@
 
 #import "NCDatabase.h"
 #import "NCStorage.h"
+#import "NCUpdater.h"
 
 /*@interface NCPersistentStore : NSIncrementalStore
 @property (nonatomic, strong) NSPersistentStoreCoordinator* databasePersistentStoreCoordinator;
@@ -103,15 +104,16 @@
 	}
 }
 
-+ (NSString*) libraryDirectory {
-	static NSString* libraryDirectory;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		libraryDirectory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"Database"];
-	});
-	return libraryDirectory;
+- (id) init {
+	if (self = [super init]) {
+		
+	}
+	return self;
 }
 
+- (void) reconnect {
+	_persistentStoreCoordinator = nil;
+}
 
 #pragma mark - Core Data stack
 
@@ -150,6 +152,22 @@
 	}
 }*/
 
+- (NSString*) databaseUpdateDirectory {
+	NSString* versionDirectory = [[NCUpdater sharedUpdater] versionDirectory];
+	NSFileManager* fileManager = [NSFileManager defaultManager];
+	NSString* latest = nil;
+	for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:versionDirectory error:nil]) {
+		BOOL isDirectory = NO;
+		if ([fileManager fileExistsAtPath:[versionDirectory stringByAppendingPathComponent:fileName] isDirectory:&isDirectory] && isDirectory) {
+			if (!latest || [latest integerValue] < [fileName integerValue])
+				latest = fileName;
+		}
+	}
+	if (latest)
+		return [versionDirectory stringByAppendingPathComponent:latest];
+	else
+		return nil;
+}
 
 // Returns the managed object model for the application.
 // If the model doesn't already exist, it is created from the application's model.
@@ -180,14 +198,33 @@
 		}
 		
 		NSError *error = nil;
-		//[NSPersistentStoreCoordinator registerStoreClass:[NCPersistentStore class] forStoreType:@"MyClass"];
+		
 		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-													   configuration:nil
-																 URL:[[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"sqlite"]
-															 options:@{NSReadOnlyPersistentStoreOption: @(YES),
-																	   NSSQLitePragmasOption:@{@"journal_mode": @"OFF"}}
-															   error:&error]) {
+
+		NSString* databaseUpdateDirectory = self.databaseUpdateDirectory;
+		NSPersistentStore* persistentStore = nil;
+		if (databaseUpdateDirectory) {
+			NSFileManager* fileManager = [NSFileManager defaultManager];
+			NSString* databasePath = [databaseUpdateDirectory stringByAppendingPathComponent:@"NCDatabase.sqlite"];
+			NSString* eufePath = [databaseUpdateDirectory stringByAppendingPathComponent:@"eufe.sqlite"];
+			if ([fileManager fileExistsAtPath:databasePath isDirectory:NULL] && [fileManager fileExistsAtPath:eufePath isDirectory:NULL]) {
+				persistentStore = [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+																			configuration:nil
+																					  URL:[NSURL fileURLWithPath:databasePath]
+																				  options:@{NSReadOnlyPersistentStoreOption: @(YES),
+																							NSSQLitePragmasOption:@{@"journal_mode": @"OFF"}}
+																					error:&error];
+			}
+		}
+		
+		if (!persistentStore) {
+			if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+														   configuration:nil
+																	 URL:[[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"sqlite"]
+																 options:@{NSReadOnlyPersistentStoreOption: @(YES),
+																		   NSSQLitePragmasOption:@{@"journal_mode": @"OFF"}}
+																   error:&error]) {
+			}
 		}
 		return _persistentStoreCoordinator;
 	}

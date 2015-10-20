@@ -458,9 +458,11 @@
 	if (!row.isUpToDate) {
 		row.isUpToDate = YES;
 		row.loadingBlock(self, ^(NSDictionary* data) {
-			row.data = data;
-			if (data)
-				[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				row.data = data;
+				if (data)
+					[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			});
 		});
 	}
 	if (row.data)

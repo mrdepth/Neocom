@@ -284,7 +284,7 @@
 					}
 					raceObjectID = type.race.objectID;
 				}];
-				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotSubsystem size:0 race:[self.databaseManagedObjectContext objectWithID:raceObjectID]];
+				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotSubsystem size:0 race:[self.databaseManagedObjectContext existingObjectWithID:raceObjectID error:nil]];
 				break;
 			}
 			case eufe::Module::SLOT_MODE:
@@ -599,7 +599,7 @@
 				}];
 				
 				self.controller.typePickerViewController.title = NSLocalizedString(@"Ammo", nil);
-				[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext objectWithID:categoryID]
+				[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext existingObjectWithID:categoryID error:nil]
 															 inViewController:self.controller
 																	 fromRect:cell.bounds
 																	   inView:cell

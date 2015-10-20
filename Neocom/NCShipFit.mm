@@ -186,6 +186,7 @@
 @property (nonatomic, strong, readwrite) NSManagedObjectID* loadoutID;
 @property (nonatomic, strong, readwrite) NAPISearchItem* apiLadout;
 @property (nonatomic, strong, readwrite) EVEAssetListItem* asset;
+@property (nonatomic, strong, readwrite) NCKillMail* killMail;
 
 @property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Character> pilot;
 
@@ -234,6 +235,18 @@
 		self.asset = asset;
 		self.typeID = asset.typeID;
 		self.loadoutName = asset.location.itemName ?: asset.typeName;
+	}
+	return self;
+}
+
+- (id) initWithKillMail:(NCKillMail*) killMail {
+	if (self = [super init]) {
+		self.killMail = killMail;
+		self.typeID = killMail.victim.shipTypeID;
+		[self.databaseManagedObjectContext performBlockAndWait:^{
+			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:killMail.victim.shipTypeID];
+			self.loadoutName = [NSString stringWithFormat:@"%@ - %@", type.typeName , killMail.victim.characterName];
+		}];
 	}
 	return self;
 }
@@ -884,7 +897,7 @@
 			loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
 		}
 		else
-			loadout = [self.storageManagedObjectContext objectWithID:self.loadoutID];
+			loadout = [self.storageManagedObjectContext existingObjectWithID:self.loadoutID error:nil];
 
 		if (![loadout.data.data isEqual:self.loadoutData])
 			loadout.data.data = self.loadoutData;

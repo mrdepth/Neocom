@@ -184,7 +184,7 @@
 				loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
 			}
 			else
-				loadout = [self.storageManagedObjectContext objectWithID:self.loadoutID];
+				loadout = [self.storageManagedObjectContext existingObjectWithID:self.loadoutID error:nil];
 			
 			if (![loadout.data.data isEqual:self.loadoutData])
 				loadout.data.data = self.loadoutData;

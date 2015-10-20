@@ -13,8 +13,6 @@
 @class NCDBInvType;
 @class NCDBMapSolarSystem;
 
-@class EVEKillLogKill;
-
 @interface NCKillMailPilot : NSObject<NSCoding>
 @property (nonatomic, assign) int32_t allianceID;
 @property (nonatomic, strong) NSString *allianceName;
@@ -22,7 +20,7 @@
 @property (nonatomic, strong) NSString *characterName;
 @property (nonatomic, assign) int32_t corporationID;
 @property (nonatomic, strong) NSString *corporationName;
-@property (nonatomic, strong) NCDBInvType* shipType;
+@property (nonatomic, assign) int32_t shipTypeID;
 @end
 
 @interface NCKillMailVictim : NCKillMailPilot
@@ -33,13 +31,13 @@
 @property (nonatomic, assign) float securityStatus;
 @property (nonatomic, assign) int32_t damageDone;
 @property (nonatomic, assign) BOOL finalBlow;
-@property (nonatomic, strong) NCDBInvType* weaponType;
+@property (nonatomic, assign) int32_t weaponTypeID;
 @end
 
 @interface NCKillMailItem : NSObject<NSCoding>
 @property (nonatomic, assign) BOOL destroyed;
 @property (nonatomic, assign) int32_t qty;
-@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, assign) int32_t typeID;
 @property (nonatomic, assign) EVEInventoryFlag flag;
 @end
 
@@ -53,10 +51,11 @@
 @property (nonatomic, strong) NSArray* cargo;
 @property (nonatomic, strong) NSMutableArray* attackers;
 @property (nonatomic, strong) NCKillMailVictim* victim;
-@property (nonatomic, strong) NCDBMapSolarSystem* solarSystem;
+@property (nonatomic, assign) int32_t solarSystemID;
 @property (nonatomic, strong) NSDate* killTime;
 
-- (id) initWithKillLogKill:(EVEKillLogKill*) kill;
-- (id) initWithKillNetLogEntry:(EVEKillNetLogEntry*) kill;
+//- (id) initWithKillLogKill:(EVEKillLogKill*) kill;
+- (id) initWithKillMailsKill:(EVEKillMailsKill*) kill databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext;
+//- (id) initWithKillNetLogEntry:(EVEKillNetLogEntry*) kill;
 
 @end

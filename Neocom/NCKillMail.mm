@@ -7,11 +7,9 @@
 //
 
 #import "NCKillMail.h"
-#import "EVEOnlineAPI.h"
-#import "EVEKillLogKill+Neocom.h"
-#import "EVEKillLogVictim+Neocom.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCDatabase.h"
-#import "eufe.h"
+#import <eufe/eufe.h>
 
 @implementation NCKillMailPilot
 
@@ -23,7 +21,7 @@
 		self.characterName = [aDecoder decodeObjectForKey:@"characterName"];
 		self.corporationID = [aDecoder decodeInt32ForKey:@"corporationID"];
 		self.corporationName = [aDecoder decodeObjectForKey:@"corporationName"];
-		self.shipType = [NCDBInvType invTypeWithTypeID:[aDecoder decodeInt32ForKey:@"shipTypeID"]];
+		self.shipTypeID = [aDecoder decodeInt32ForKey:@"shipTypeID"];
 	}
 	return self;
 }
@@ -38,8 +36,7 @@
 		[aCoder encodeObject:self.allianceName forKey:@"characterName"];
 	if (self.corporationName)
 		[aCoder encodeObject:self.allianceName forKey:@"corporationName"];
-	if (self.shipType)
-		[aCoder encodeInt32:self.shipType.typeID forKey:@"shipTypeID"];
+	[aCoder encodeInt32:self.shipTypeID forKey:@"shipTypeID"];
 
 }
 
@@ -67,7 +64,7 @@
 		self.securityStatus = [aDecoder decodeFloatForKey:@"securityStatus"];
 		self.damageDone = [aDecoder decodeInt32ForKey:@"damageDone"];
 		self.finalBlow = [aDecoder decodeBoolForKey:@"finalBlow"];
-		self.weaponType = [NCDBInvType invTypeWithTypeID:[aDecoder decodeInt32ForKey:@"weaponTypeID"]];
+		self.weaponTypeID = [aDecoder decodeInt32ForKey:@"weaponTypeID"];
 	}
 	return self;
 }
@@ -76,8 +73,7 @@
 	[aCoder encodeFloat:self.securityStatus forKey:@"securityStatus"];
 	[aCoder encodeInt32:self.damageDone forKey:@"damageDone"];
 	[aCoder encodeBool:self.finalBlow forKey:@"finalBlow"];
-	if (self.weaponType)
-		[aCoder encodeInt32:self.weaponType.typeID forKey:@"weaponTypeID"];
+	[aCoder encodeInt32:self.weaponTypeID forKey:@"weaponTypeID"];
 }
 
 @end
@@ -88,7 +84,7 @@
 	if (self = [super init]) {
 		self.destroyed = [aDecoder decodeBoolForKey:@"destroyed"];
 		self.qty = [aDecoder decodeInt32ForKey:@"qty"];
-		self.type = [NCDBInvType invTypeWithTypeID:[aDecoder decodeInt32ForKey:@"typeID"]];
+		self.typeID = [aDecoder decodeInt32ForKey:@"typeID"];
 		self.flag = static_cast<EVEInventoryFlag>([aDecoder decodeInt32ForKey:@"flag"]);
 	}
 	return self;
@@ -97,8 +93,7 @@
 - (void) encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeBool:self.destroyed forKey:@"destroyed"];
 	[aCoder encodeInt32:self.qty forKey:@"qty"];
-	if (self.type)
-		[aCoder encodeInt32:self.type.typeID forKey:@"typeID"];
+	[aCoder encodeInt32:self.typeID forKey:@"typeID"];
 	[aCoder encodeInt32:self.flag forKey:@"flag"];
 	
 }
@@ -118,7 +113,7 @@
 		self.cargo = [aDecoder decodeObjectForKey:@"cargo"];
 		self.attackers = [aDecoder decodeObjectForKey:@"attackers"];
 		self.victim = [aDecoder decodeObjectForKey:@"victim"];
-		self.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:[aDecoder decodeInt32ForKey:@"solarSystemID"]];
+		self.solarSystemID = [aDecoder decodeInt32ForKey:@"solarSystemID"];
 		self.killTime = [aDecoder decodeObjectForKey:@"killTime"];
 	}
 	return self;
@@ -143,14 +138,13 @@
 		[aCoder encodeObject:self.attackers forKey:@"attackers"];
 	if (self.victim)
 		[aCoder encodeObject:self.victim forKey:@"victim"];
-	if (self.solarSystem)
-		[aCoder encodeInt32:self.solarSystem.solarSystemID forKey:@"solarSystemID"];
+	[aCoder encodeInt32:self.solarSystemID forKey:@"solarSystemID"];
 	if (self.killTime)
 		[aCoder encodeObject:self.killTime forKey:@"killTime"];
 	
 }
 
-- (id) initWithKillLogKill:(EVEKillLogKill*) kill {
+- (id) initWithKillMailsKill:(EVEKillMailsKill*) kill databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext {
 	if (self = [super init]) {
 		self.victim = [NCKillMailVictim new];
 		self.victim.characterName = kill.victim.characterName;
@@ -159,10 +153,10 @@
 		self.victim.corporationID = kill.victim.corporationID;
 		self.victim.allianceName = kill.victim.allianceName;
 		self.victim.allianceID = kill.victim.allianceID;
-		self.victim.shipType =  kill.victim.shipType;
+		self.victim.shipTypeID =  kill.victim.shipTypeID;
 		self.victim.damageTaken = kill.victim.damageTaken;
 
-		self.solarSystem = kill.solarSystem;
+		self.solarSystemID = kill.solarSystemID;
 		self.killTime = kill.killTime;
 		
 		NSMutableArray* hiSlots = [NSMutableArray new];
@@ -173,8 +167,8 @@
 		NSMutableArray* drones = [NSMutableArray new];
 		NSMutableArray* cargo = [NSMutableArray new];
 		
-		for (EVEKillLogItem* item in kill.items) {
-			NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
+		for (EVEKillMailsItem* item in kill.items) {
+			NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:item.typeID];
 			BOOL hiSlot = NO;
 			BOOL medSlot = NO;
 			BOOL lowSlot = NO;
@@ -231,7 +225,7 @@
 			
 			if (item.qtyDestroyed) {
 				NCKillMailItem* killMailItem = [NCKillMailItem new];
-				killMailItem.type = type;
+				killMailItem.typeID = item.typeID;
 				killMailItem.qty = item.qtyDestroyed;
 				killMailItem.destroyed = YES;
 				killMailItem.flag = item.flag;
@@ -239,7 +233,7 @@
 			}
 			if (item.qtyDropped) {
 				NCKillMailItem* killMailItem = [NCKillMailItem new];
-				killMailItem.type = type;
+				killMailItem.typeID = item.typeID;
 				killMailItem.qty = item.qtyDropped;
 				killMailItem.destroyed = NO;
 				killMailItem.flag = item.flag;
@@ -256,7 +250,7 @@
 		self.cargo = cargo;
 		
 		NSMutableArray* attackers = [NSMutableArray new];
-		for (EVEKillLogAttacker* item in kill.attackers) {
+		for (EVEKillMailsAttacker* item in kill.attackers) {
 			NCKillMailAttacker* attacker = [NCKillMailAttacker new];
 			attacker.characterName = item.characterName;
 			attacker.characterID = item.characterID;
@@ -264,8 +258,8 @@
 			attacker.corporationID = item.corporationID;
 			attacker.allianceName = item.allianceName;
 			attacker.allianceID = item.allianceID;
-			attacker.shipType = [NCDBInvType invTypeWithTypeID:item.shipTypeID];
-			attacker.weaponType = [NCDBInvType invTypeWithTypeID:item.weaponTypeID];
+			attacker.shipTypeID = item.shipTypeID;
+			attacker.weaponTypeID = item.weaponTypeID;
 			attacker.securityStatus = item.securityStatus;
 			attacker.damageDone = item.damageDone;
 			attacker.finalBlow = item.finalBlow;
@@ -278,10 +272,10 @@
 	return self;
 }
 
-- (id) initWithKillNetLogEntry:(EVEKillNetLogEntry*) kill {
+/*- (id) initWithKillNetLogEntry:(EVEKillNetLogEntry*) kill {
 	if (self = [super init]) {
 	}
 	return self;
-}
+}*/
 
 @end

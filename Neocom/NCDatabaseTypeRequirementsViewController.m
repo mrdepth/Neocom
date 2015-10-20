@@ -85,7 +85,7 @@
 	NCDatabaseTypeRequirementsViewControllerSection* section = self.sections[indexPath.section];
 	NCDatabaseTypeRequirementsViewControllerRow* row = section.rows[indexPath.row];
 	if (!row.icon && row.iconID)
-		row.icon = (NCDBEveIcon*) [self.databaseManagedObjectContext objectWithID:row.iconID];
+		row.icon = (NCDBEveIcon*) [self.databaseManagedObjectContext existingObjectWithID:row.iconID error:nil];
 	
 	cell.titleLabel.text = row.typeName;
 	cell.iconView.image = row.icon.image.image ?: self.defaultTypeIcon.image.image;
@@ -99,7 +99,7 @@
 	[managedObjectContext performBlock:^{
 		NSMutableDictionary* sections = [NSMutableDictionary new];
 		
-		NCDBInvType* type = (NCDBInvType*) [managedObjectContext objectWithID:self.typeID];
+		NCDBInvType* type = (NCDBInvType*) [managedObjectContext existingObjectWithID:self.typeID error:nil];
 		for (NCDBInvTypeRequiredSkill* requiredSkill in type.requiredForSkill) {
 			if (requiredSkill.type) {
 				NSInteger level = MAX(1, requiredSkill.skillLevel);

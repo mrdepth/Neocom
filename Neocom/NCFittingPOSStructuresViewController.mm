@@ -320,7 +320,7 @@
 					}];
 					
 					self.controller.typePickerViewController.title = NSLocalizedString(@"Ammo", nil);
-					[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext objectWithID:categoryID]
+					[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext existingObjectWithID:categoryID error:nil]
 																 inViewController:self.controller
 																		 fromRect:cell.bounds
 																		   inView:cell

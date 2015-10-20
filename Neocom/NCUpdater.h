@@ -8,13 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+#define NCDatabaseDidInstallUpdateNotification @"NCDatabaseDidInstallUpdateNotification"
+
 @interface NCUpdater : NSObject
 @property (nonatomic, strong, readonly) NSProgress* progress;
 @property (nonatomic, strong) NSError* error;
+@property (nonatomic, retain) NSString* libraryDirectory;
+@property (nonatomic, retain) NSString* versionDirectory;
 
 + (instancetype) sharedUpdater;
 
-- (void) checkUpdates;
+- (void) checkForUpdates;
 - (NSInteger) applicationVersion;
 
 @end

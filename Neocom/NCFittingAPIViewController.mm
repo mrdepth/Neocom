@@ -347,7 +347,7 @@
 - (IBAction)unwindFromGroupPicker:(UIStoryboardSegue*) segue {
 	NCDatabaseGroupPickerViewContoller* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedGroup) {
-		self.group = [self.databaseManagedObjectContext objectWithID:[sourceViewController.selectedGroup objectID]];
+		self.group = [self.databaseManagedObjectContext existingObjectWithID:[sourceViewController.selectedGroup objectID] error:nil];
 		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 		[self update];
 	}

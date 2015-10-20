@@ -133,7 +133,7 @@
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		NCFittingMenuViewControllerSection* section = self.sections[indexPath.section - 1];
 		NCFittingMenuViewControllerRow* row = section.rows[indexPath.row];
-		NCLoadout* loadout = [self.storageManagedObjectContext objectWithID:row.loadoutID];
+		NCLoadout* loadout = [self.storageManagedObjectContext existingObjectWithID:row.loadoutID error:nil];
 		[self.storageManagedObjectContext deleteObject:loadout];
 		[self.storageManagedObjectContext save:nil];
 		
@@ -214,7 +214,7 @@
 	else {
 		NCFittingMenuViewControllerSection* section = self.sections[indexPath.section - 1];
 		NCFittingMenuViewControllerRow* row = section.rows[indexPath.row];
-		NCLoadout* loadout = [self.storageManagedObjectContext objectWithID:row.loadoutID];
+		NCLoadout* loadout = [self.storageManagedObjectContext existingObjectWithID:row.loadoutID error:nil];
 		if (row.category == NCLoadoutCategoryShip) {
 			NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
 			[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
@@ -253,7 +253,7 @@
 		NCFittingMenuViewControllerSection* section = self.sections[indexPath.section - 1];
 		NCFittingMenuViewControllerRow* row = section.rows[indexPath.row];
 		if (!row.icon && row.iconID)
-			row.icon = [self.databaseManagedObjectContext objectWithID:row.iconID];
+			row.icon = [self.databaseManagedObjectContext existingObjectWithID:row.iconID error:nil];
 		
 		cell.titleLabel.text = row.typeName;
 		cell.subtitleLabel.text = row.loadoutName;

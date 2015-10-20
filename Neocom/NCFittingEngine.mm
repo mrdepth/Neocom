@@ -11,6 +11,7 @@
 #import "NCPOSFit.h"
 #import "NCDatabase.h"
 #import <EVEAPI/EVEAPI.h>
+#import "NCKillMail.h"
 
 @interface NCShipFit()
 @property (nonatomic, strong, readwrite) NCFittingEngine* engine;
@@ -47,8 +48,17 @@
 
 - (std::shared_ptr<eufe::Engine>) engine {
 	@synchronized(self) {
-		if (!_engine)
+		if (!_engine) {
+			NSString* path = [[[NCDatabase sharedDatabase] databaseUpdateDirectory] stringByAppendingPathComponent:@"eufe.sqlite"];
+			if (path) {
+				try {
+					_engine = std::make_shared<eufe::Engine>(std::make_shared<eufe::SqliteConnector>([path cStringUsingEncoding:NSUTF8StringEncoding]));
+					return _engine;
+				} catch (...) {
+				}
+			}
 			_engine = std::make_shared<eufe::Engine>(std::make_shared<eufe::SqliteConnector>([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]));
+		}
 		return _engine;
 	}
 }
@@ -78,7 +88,7 @@
 	__block NCLoadoutDataShip* loadoutData;
 	if (fit.loadoutID) {
 		[self.storageManagedObjectContext performBlockAndWait:^{
-			NCLoadout* loadout = [self.storageManagedObjectContext objectWithID:fit.loadoutID];
+			NCLoadout* loadout = [self.storageManagedObjectContext existingObjectWithID:fit.loadoutID error:nil];
 			if ([loadout.data.data isKindOfClass:[NCLoadoutDataShip class]])
 				loadoutData = (NCLoadoutDataShip*) loadout.data.data;
 		}];
@@ -87,6 +97,8 @@
 		loadoutData = [self loadoutShipDataWithAPILoadout:fit.apiLadout];
 	else if (fit.asset)
 		loadoutData = [self loadoutShipDataWithAsset:fit.asset];
+	else if (fit.killMail)
+		loadoutData = [self loadoutShipDataWithKillMail:fit.killMail];
 	
 	[self performBlockAndWait:^{
 		NSMutableSet* charges = [NSMutableSet new];
@@ -161,7 +173,7 @@
 	__block NCLoadoutDataPOS* loadoutData;
 	if (fit.loadoutID) {
 		[self.storageManagedObjectContext performBlockAndWait:^{
-			NCLoadout* loadout = [self.storageManagedObjectContext objectWithID:fit.loadoutID];
+			NCLoadout* loadout = [self.storageManagedObjectContext existingObjectWithID:fit.loadoutID error:nil];
 			if ([loadout.data.data isKindOfClass:[NCLoadoutDataPOS class]])
 				loadoutData = (NCLoadoutDataPOS*) loadout.data.data;
 		}];
@@ -401,6 +413,77 @@
 - (NCLoadoutDataShip*) loadoutShipDataWithKillMail:(NCKillMail*) killMail {
 	NCLoadoutDataShip* loadoutData = [NCLoadoutDataShip new];
 	[self.databaseManagedObjectContext performBlockAndWait:^{
+		NSMutableArray* hiSlots = [NSMutableArray new];
+		NSMutableArray* medSlots = [NSMutableArray new];
+		NSMutableArray* lowSlots = [NSMutableArray new];
+		NSMutableArray* rigSlots = [NSMutableArray new];
+		NSMutableArray* subsystems = [NSMutableArray new];
+		NSArray* drones = nil;
+		NSArray* cargo = nil;
+		NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+		NSMutableDictionary* cargoDic = [NSMutableDictionary new];
+		
+		NSMutableArray* slots[] = {hiSlots, medSlots, lowSlots, rigSlots, subsystems};
+		NSMutableDictionary* modules = [NSMutableDictionary new];
+		NSMutableDictionary* charges = [NSMutableDictionary new];
+		
+		NSArray* items[] = {killMail.hiSlots, killMail.medSlots, killMail.lowSlots, killMail.rigSlots, killMail.subsystemSlots};
+		for (int i = 0; i < 5; i++) {
+			for (NCKillMailItem* item in items[i]) {
+				NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+				if (type.category == NCTypeCategoryModule) {
+					for (int j = 0; j < item.qty; j++) {
+						NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
+						module.typeID = item.typeID;
+						module.state = eufe::Module::STATE_ACTIVE;
+						[slots[i] addObject:module];
+						modules[@(item.flag)] = module;
+					}
+				}
+				else
+					charges[@(item.flag)] = type;
+			}
+		}
+		
+		[charges enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NCDBInvType* obj, BOOL *stop) {
+			NCLoadoutDataShipModule* module = modules[key];
+			if (module)
+				module.chargeID = obj.typeID;
+		}];
+		
+		for (NCKillMailItem* item in killMail.droneBay) {
+			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+			NCLoadoutDataShipDrone* drone = dronesDic[@(type.typeID)];
+			if (!drone) {
+				drone = [NCLoadoutDataShipDrone new];
+				drone.typeID = type.typeID;
+				drone.active = true;
+				dronesDic[@(type.typeID)] = drone;
+			}
+			drone.count += item.qty;
+		}
+		for (NCKillMailItem* item in killMail.cargo) {
+			NCLoadoutDataShipCargoItem* cargo = cargoDic[@(item.typeID)];
+			if (!cargo) {
+				cargo = [NCLoadoutDataShipCargoItem new];
+				cargo.typeID = item.typeID;
+				cargoDic[@(item.typeID)] = cargo;
+			}
+			cargo.count += item.qty;
+		}
+		
+		drones = [dronesDic allValues];
+		cargo = [cargoDic allValues];
+		
+		loadoutData.hiSlots = hiSlots;
+		loadoutData.medSlots = medSlots;
+		loadoutData.lowSlots = lowSlots;
+		loadoutData.rigSlots = rigSlots;
+		loadoutData.subsystems = subsystems;
+		loadoutData.drones = drones;
+		loadoutData.cargo = cargo;
+		loadoutData.implants = @[];
+		loadoutData.boosters = @[];
 	}];
 	return loadoutData;
 }

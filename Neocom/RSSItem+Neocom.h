@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "RSSItem.h"
+#import <EVEAPI/EVEAPI.h>
 
 @interface RSSItem (Neocom)
 @property (nonatomic, strong) NSString* shortDescription;

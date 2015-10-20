@@ -18,6 +18,7 @@
 #import "NCTableViewCell.h"
 #import "NCAdaptivePopoverSegue.h"
 #import "UIStoryboard+Multiple.h"
+#import "NCUpdater.h"
 
 @interface NCTableViewController ()<UISearchResultsUpdating>
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
@@ -93,6 +94,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStorage:) name:NCStorageDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didInstallUpdate:) name:NCDatabaseDidInstallUpdateNotification object:nil];
 
 	//Refresh support
 	UIRefreshControl* refreshControl = [UIRefreshControl new];
@@ -140,6 +142,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCStorageDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCDatabaseDidInstallUpdateNotification object:nil];
 	[_taskManager cancelAllOperations];
 	[_progress removeObserver:self forKeyPath:@"fractionCompleted"];
 //	self.searchDisplayController.searchResultsDataSource = nil;
@@ -397,6 +400,10 @@
 		if ([_storageManagedObjectContext hasChanges])
 			[_storageManagedObjectContext save:nil];
 	}];
+}
+
+- (void) didInstallUpdate:(NSNotification *)notification {
+	_databaseManagedObjectContext = nil;
 }
 
 - (void) managedObjectContextDidFinishUpdate:(NSNotification*) notification {

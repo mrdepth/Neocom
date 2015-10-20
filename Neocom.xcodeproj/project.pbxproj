@@ -212,6 +212,7 @@
 		125DC67E1BD6377B005C2F79 /* NCShoppingItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12045E4C1AD161CF00AD32F8 /* NCShoppingItemCell.m */; settings = {ASSET_TAGS = (); }; };
 		125DC67F1BD646D0005C2F79 /* NCShoppingAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 124638321AD25A84001F8780 /* NCShoppingAssetsViewController.m */; settings = {ASSET_TAGS = (); }; };
 		125DC6801BD64946005C2F79 /* NCShoppingListsManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */; settings = {ASSET_TAGS = (); }; };
+		125DC6811BD64C08005C2F79 /* NCAPIKeyAccessMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */; settings = {ASSET_TAGS = (); }; };
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
 		125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 125F6824188537FF005732FA /* NCCharacterAttributes.mm */; };
 		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
@@ -975,8 +976,6 @@
 		126ED31C188129080009FA39 /* NCCharacterSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterSheetViewController.h; sourceTree = "<group>"; };
 		126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCharacterSheetViewController.m; sourceTree = "<group>"; };
 		126ED32C188144370009FA39 /* mainMenu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mainMenu.plist; sourceTree = "<group>"; };
-		126F1BC019531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVECentralQuickLookOrder+Neocom.h"; sourceTree = "<group>"; };
-		126F1BC119531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVECentralQuickLookOrder+Neocom.m"; sourceTree = "<group>"; };
 		126F1CCF1954047100E5CD4F /* droneRange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = droneRange.png; sourceTree = "<group>"; };
 		126F1CD01954047100E5CD4F /* priceFitting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = priceFitting.png; sourceTree = "<group>"; };
 		126F1CD11954047100E5CD4F /* priceShip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = priceShip.png; sourceTree = "<group>"; };
@@ -990,7 +989,6 @@
 		126F1CE41954069F00E5CD4F /* willpower.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = willpower.png; sourceTree = "<group>"; };
 		126F1CEA195407B500E5CD4F /* collapsed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = collapsed.png; sourceTree = "<group>"; };
 		126F1CEB195407B500E5CD4F /* expanded.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = expanded.png; sourceTree = "<group>"; };
-		127082A6190109E900822F00 /* EUStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EUStorage.xcdatamodel; sourceTree = "<group>"; };
 		1271237F18977E8C005F46EE /* NCFittingShipModuleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipModuleCell.h; sourceTree = "<group>"; };
 		1271238018977E8C005F46EE /* NCFittingShipModuleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingShipModuleCell.m; sourceTree = "<group>"; };
 		1271238318978148005F46EE /* NCFittingShipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipViewController.h; sourceTree = "<group>"; };
@@ -1270,18 +1268,6 @@
 		12F8E1F318E9A47300CEA658 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		12F8E1F618E9A53700CEA658 /* NCSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSplitViewController.h; sourceTree = "<group>"; };
 		12F8E1F718E9A53700CEA658 /* NCSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSplitViewController.m; sourceTree = "<group>"; };
-		12F955E618CDA2A0005CEAD6 /* EUStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUStorage.h; sourceTree = "<group>"; };
-		12F955E718CDA2A0005CEAD6 /* EUStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUStorage.m; sourceTree = "<group>"; };
-		12F955EC18CDA3A8005CEAD6 /* APIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIKey.h; sourceTree = "<group>"; };
-		12F955ED18CDA3A8005CEAD6 /* APIKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIKey.m; sourceTree = "<group>"; };
-		12F955EF18CDA3BE005CEAD6 /* Fit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fit.h; sourceTree = "<group>"; };
-		12F955F018CDA3BE005CEAD6 /* Fit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Fit.mm; sourceTree = "<group>"; };
-		12F955F218CDA3CD005CEAD6 /* ShipFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipFit.h; sourceTree = "<group>"; };
-		12F955F318CDA3CD005CEAD6 /* ShipFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ShipFit.mm; sourceTree = "<group>"; };
-		12F955F518CDA3DD005CEAD6 /* POSFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSFit.h; sourceTree = "<group>"; };
-		12F955F618CDA3DD005CEAD6 /* POSFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = POSFit.mm; sourceTree = "<group>"; };
-		12F955F818CDA3FC005CEAD6 /* SkillPlan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillPlan.h; sourceTree = "<group>"; };
-		12F955F918CDA3FC005CEAD6 /* SkillPlan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillPlan.m; sourceTree = "<group>"; };
 		12F955FB18CDA5DE005CEAD6 /* NCMigrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMigrationManager.h; sourceTree = "<group>"; };
 		12F955FC18CDA5DE005CEAD6 /* NCMigrationManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCMigrationManager.mm; sourceTree = "<group>"; };
 		12F9560018CDB5D4005CEAD6 /* NCBannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCBannerViewController.h; sourceTree = "<group>"; };
@@ -2736,8 +2722,6 @@
 				123F0AD018C5B5FF00D53602 /* NSData+Neocom.m */,
 				12FA32AD18E1673D0053DDC5 /* UIView+Neocom.h */,
 				12FA32AE18E1673D0053DDC5 /* UIView+Neocom.m */,
-				126F1BC019531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.h */,
-				126F1BC119531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.m */,
 				1267030A1A911A0800F816F9 /* NSMutableAttributedString+Neocom.h */,
 				1267030B1A911A0800F816F9 /* NSMutableAttributedString+Neocom.m */,
 				1215F57C1B831E9B00C16649 /* NSCache+Neocom.h */,
@@ -3516,31 +3500,10 @@
 		12F955E318CDA281005CEAD6 /* NCMigrationManager */ = {
 			isa = PBXGroup;
 			children = (
-				12F955E518CDA28E005CEAD6 /* EUStorage */,
 				12F955FB18CDA5DE005CEAD6 /* NCMigrationManager.h */,
 				12F955FC18CDA5DE005CEAD6 /* NCMigrationManager.mm */,
 			);
 			name = NCMigrationManager;
-			sourceTree = "<group>";
-		};
-		12F955E518CDA28E005CEAD6 /* EUStorage */ = {
-			isa = PBXGroup;
-			children = (
-				127082A5190109E900822F00 /* EUStorage.xcdatamodeld */,
-				12F955E618CDA2A0005CEAD6 /* EUStorage.h */,
-				12F955E718CDA2A0005CEAD6 /* EUStorage.m */,
-				12F955EC18CDA3A8005CEAD6 /* APIKey.h */,
-				12F955ED18CDA3A8005CEAD6 /* APIKey.m */,
-				12F955EF18CDA3BE005CEAD6 /* Fit.h */,
-				12F955F018CDA3BE005CEAD6 /* Fit.mm */,
-				12F955F218CDA3CD005CEAD6 /* ShipFit.h */,
-				12F955F318CDA3CD005CEAD6 /* ShipFit.mm */,
-				12F955F518CDA3DD005CEAD6 /* POSFit.h */,
-				12F955F618CDA3DD005CEAD6 /* POSFit.mm */,
-				12F955F818CDA3FC005CEAD6 /* SkillPlan.h */,
-				12F955F918CDA3FC005CEAD6 /* SkillPlan.m */,
-			);
-			name = EUStorage;
 			sourceTree = "<group>";
 		};
 		12F955FF18CDB5BA005CEAD6 /* NCBannerViewController */ = {
@@ -4398,6 +4361,7 @@
 				127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */,
 				8416386D1893BEA000968ADF /* NSDate+Neocom.m in Sources */,
 				120C337319CAB0AA0093EECA /* NCDBRamAssemblyLineType.m in Sources */,
+				125DC6811BD64C08005C2F79 /* NCAPIKeyAccessMaskViewController.m in Sources */,
 				120E77B81B25D91300816E1C /* NCSplashScreenViewController.m in Sources */,
 				120C339419CAB0AC0093EECA /* NCDBInvGroup.m in Sources */,
 				125F682218853230005732FA /* NCSkillData.m in Sources */,
@@ -4919,16 +4883,6 @@
 			currentVersion = 12436DAA1945A0310090D4A6 /* NCDatabase.xcdatamodel */;
 			name = NCDatabase.xcdatamodeld;
 			path = db/NCDatabase.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		127082A5190109E900822F00 /* EUStorage.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				127082A6190109E900822F00 /* EUStorage.xcdatamodel */,
-			);
-			currentVersion = 127082A6190109E900822F00 /* EUStorage.xcdatamodel */;
-			path = EUStorage.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

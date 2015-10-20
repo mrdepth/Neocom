@@ -709,9 +709,14 @@
 - (IBAction) unwindFromCharacterPicker:(UIStoryboardSegue*) segue {
 	NCFittingCharacterPickerViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedCharacter) {
-		[sourceViewController.fit setCharacter:sourceViewController.selectedCharacter withCompletionBlock:^{
-			[self reload];
-		}];
+		if (sourceViewController.selectedCharacter.managedObjectContext)
+			[sourceViewController.fit setCharacter:[self.storageManagedObjectContext existingObjectWithID:sourceViewController.selectedCharacter.objectID error:nil] withCompletionBlock:^{
+				[self reload];
+			}];
+		else
+			[sourceViewController.fit setCharacter:sourceViewController.selectedCharacter withCompletionBlock:^{
+				[self reload];
+			}];
 	}
 }
 

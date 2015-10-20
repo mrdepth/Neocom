@@ -145,7 +145,7 @@
 					drone->setActive(item.active);
 				}
 			}
-			
+
 			for (NCLoadoutDataShipImplant* item in loadoutData.implants)
 				pilot->addImplant(item.typeID);
 			
@@ -159,7 +159,6 @@
 						module->setCharge(chargeID);
 				}
 			}
-			
 			if (ship->getFreeSlots(eufe::Module::SLOT_MODE) > 0) {
 				if (modeID > 0)
 					ship->addModule(modeID);

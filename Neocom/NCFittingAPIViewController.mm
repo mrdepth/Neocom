@@ -423,27 +423,31 @@
 	NSString* userID = [[NSUserDefaults standardUserDefaults] objectForKey:NCSettingsUDIDKey];
 	NSManagedObjectContext* storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
 	[storageManagedObjectContext performBlock:^{
-		NSMutableArray* array = [NSMutableArray new];
-		for (NCLoadout* loadout in [storageManagedObjectContext loadouts]) {
+		NSMutableDictionary* loadouts = [NSMutableDictionary new];
+		
+		for (NCLoadout* loadout in [storageManagedObjectContext loadouts])
+			loadouts[@(loadout.typeID)] = loadout;
+		NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+		[databaseManagedObjectContext performBlockAndWait:^{
+			for (NSNumber* typeID in [loadouts allKeys]) {
+				NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:[typeID intValue]];
+				if (type.group.category.categoryID != NCShipCategoryID)
+					[loadouts removeObjectForKey:typeID];
+			}
+		}];
+		NSMutableArray* cannonicalNames = [NSMutableArray new];
+		[loadouts enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, NCLoadout*  _Nonnull loadout, BOOL * _Nonnull stop) {
 			NCShipFit* shipFit = [[NCShipFit alloc] initWithLoadout:loadout];
 			NSString* canonicalName = shipFit.canonicalName;
 			if (canonicalName)
-				[array addObject:@{@"canonicalName":canonicalName, @"typeID":@(loadout.typeID)}];
-		}
-		NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
-		[databaseManagedObjectContext performBlock:^{
-			NSMutableArray* cannonicalNames = [NSMutableArray new];
-			for (NSDictionary* dic in array) {
-				NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:[dic[@"typeID"] intValue]];
-				if (type.group.groupID == NCShipCategoryID)
-					[cannonicalNames addObject:dic[@"canonicalName"]];
-			}
-			
-			[[NeocomAPI new] uploadFitsWithCannonicalNames:cannonicalNames userID:userID completionBlock:^(NAPIUpload *result, NSError *error) {
-				if (!error)
-					[[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPINextSyncDateKey];
-			} progressBlock:nil];
+				[cannonicalNames addObject:canonicalName];
 		}];
+		
+		[[NeocomAPI new] uploadFitsWithCannonicalNames:cannonicalNames userID:userID completionBlock:^(NAPIUpload *result, NSError *error) {
+			if (!error)
+				[[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPINextSyncDateKey];
+		} progressBlock:nil];
+
 	}];
 }
 

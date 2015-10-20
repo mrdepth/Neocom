@@ -169,16 +169,21 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.editing) {
 		if (indexPath.section == 0) {
-			if (indexPath.section == 0) {
-				NCFittingCharacterPickerViewControllerRow* row = self.accounts[indexPath.row];
-				[[UIApplication sharedApplication]  beginIgnoringInteractionEvents];
-				[row.account loadFitCharacterWithCompletioBlock:^(NCFitCharacter *fitCharacter) {
-					[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-					if (fitCharacter) {
-						[self performSegueWithIdentifier:@"NCFittingCharacterEditorViewController" sender:fitCharacter];
+			NCFittingCharacterPickerViewControllerRow* row = self.accounts[indexPath.row];
+			[[UIApplication sharedApplication]  beginIgnoringInteractionEvents];
+			[row.account loadFitCharacterWithCompletioBlock:^(NCFitCharacter *fitCharacter) {
+				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+				if (fitCharacter) {
+					if (!fitCharacter.managedObjectContext) {
+						[self.storageManagedObjectContext insertObject:fitCharacter];
+						[self.customCharacters addObject:fitCharacter];
+						[self.customCharacters sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+						[tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.customCharacters indexOfObject:fitCharacter] inSection:1]] withRowAnimation:UITableViewRowAnimationMiddle];
 					}
-				}];
-			}
+
+					[self performSegueWithIdentifier:@"NCFittingCharacterEditorViewController" sender:fitCharacter];
+				}
+			}];
 		}
 		else {
 			NCFitCharacter* character;

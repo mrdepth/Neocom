@@ -13,10 +13,10 @@
 #import "NCCache.h"
 #import "NCAppDelegate.h"
 #import "UIColor+Neocom.h"
-#import "UIColor+Neocom.h"
+#import "NCUpdater.h"
 
 @interface NCSettingsViewController ()
-
+- (void) update;
 @end
 
 @implementation NCSettingsViewController
@@ -47,6 +47,13 @@
 	self.mineralsSwitch.on = (marketPricesMonitor & NCMarketPricesMonitorMinerals) == NCMarketPricesMonitorMinerals;
 	self.iCloudSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey];
 
+	NCDBVersion* version = [self.databaseManagedObjectContext version];
+	self.databaseCell.textLabel.text = [NSString stringWithFormat:@"%@ %@", version.expansion, version.version];
+	[self update];
+	
+	NCUpdater* updater = [NCUpdater sharedUpdater];
+	[updater addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
+	[updater.progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:nil];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -54,10 +61,22 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void) dealloc {
+	NCUpdater* updater = [NCUpdater sharedUpdater];
+	[updater removeObserver:self forKeyPath:@"state"];
+	[updater.progress removeObserver:self forKeyPath:@"fractionCompleted"];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self update];
+	});
 }
 
 - (IBAction)onChangeNotification:(id)sender {
@@ -90,19 +109,21 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 1) {
-		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Clear Cache?", nil)
-								 message:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-					   otherButtonTitles:@[NSLocalizedString(@"Clear", nil)]
-						 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-								 [[NSURLCache sharedURLCache] removeAllCachedResponses];
-								 [[NCCache sharedCache] clear];
-							 }
-						 }
-							 cancelBlock:nil] show];
+		UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Clear Cache?", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Clear", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[[NSURLCache sharedURLCache] removeAllCachedResponses];
+			[[NCCache sharedCache] clear];
+		}]];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+		[self presentViewController:controller animated:YES completion:nil];
 	}
-	else if (indexPath.section == 0) {
+	else if (indexPath.section == 2) {
+		NCUpdater* updater = [NCUpdater sharedUpdater];
+		if (updater.state == NCUpdaterStateWaitingForDownload || updater.state == NCUpdaterStateWaitingForInstall) {
+			[updater download];
+		}
+	}
+/*	else if (indexPath.section == 0) {
 		if (indexPath.row == 1) {
 			[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Backup", nil)
 									 message:NSLocalizedString(@"Do you wish to transfer data from iCloud to Local Storage.", nil)
@@ -139,13 +160,32 @@
 							 }
 								 cancelBlock:nil] show];
 		}
-	}
+	}*/
 }
 
-#pragma mark - NCTableViewController
+#pragma mark - Private
 
-- (NSString*) recordID {
-	return nil;
+- (void) update {
+	NCUpdater* updater = [NCUpdater sharedUpdater];
+	NSString* updateName = updater.updateName ? [NSString stringWithFormat:NSLocalizedString(@"%@ (%.1f MiB)", nil), updater.updateName, updater.updateSize / 1024.0f / 1024.0f] : @"Update";
+	
+	switch (updater.state) {
+		case NCUpdaterStateWaitingForDownload:
+			self.databaseCell.detailTextLabel.text = [updater.error localizedDescription] ?: [NSString stringWithFormat:NSLocalizedString(@"Click here to download %@", nil), updateName];
+//			break;
+		case NCUpdaterStateWaitingForInstall:
+			self.databaseCell.detailTextLabel.text = [updater.error localizedDescription] ?: [NSString stringWithFormat:NSLocalizedString(@"Click here to download %@", nil), updateName];
+			break;
+		case NCUpdaterStateDownloading:
+			self.databaseCell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@: downloading %.0f%%", nil), updateName, updater.progress.fractionCompleted * 100.0f];
+			break;
+		case NCUpdaterStateInstalling:
+			self.databaseCell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@: installing %.0f%%", nil), updateName, updater.progress.fractionCompleted * 100.0f];
+			break;
+		default:
+			self.databaseCell.detailTextLabel.text = NSLocalizedString(@"Your database is up to date", nil);
+			break;
+		}
 }
 
 @end

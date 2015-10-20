@@ -16,6 +16,7 @@
 #import "NCDefaultTableViewCell.h"
 #import "NCSplitViewController.h"
 #import "NCPriceManager.h"
+#import "NCUpdater.h"
 
 #define NCMarketPricesMonitorDidChangeNotification @"NCMarketPricesMonitorDidChangeNotification"
 
@@ -42,6 +43,7 @@
 @property (nonatomic, readonly) NSString* skillsDetails;
 @property (nonatomic, readonly) NSString* skillQueueDetails;
 @property (nonatomic, readonly) NSString* mailsDetails;
+@property (nonatomic, readonly) NSString* settingsDetails;
 @property (nonatomic, strong) NSTimer* timer;
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
 @property (nonatomic, assign) BOOL reloading;
@@ -207,6 +209,11 @@
 	return @"Cell";
 }
 
+- (void) didInstallUpdate:(NSNotification *)notification {
+	[super didInstallUpdate:notification];
+	[self.tableView reloadData];
+}
+
 #pragma mark - Private
 
 - (void) reload {
@@ -300,6 +307,14 @@
 			return [NSString stringWithFormat:NSLocalizedString(@"%d unread messages", nil), (int32_t) numberOfUnreadMessages];
 	}*/
 	return nil;
+}
+
+- (NSString*) settingsDetails {
+	NCUpdater* updater = [NCUpdater sharedUpdater];
+	if ((updater.state == NCUpdaterStateWaitingForDownload || updater.state == NCUpdaterStateWaitingForInstall) && updater.updateName)
+		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%.1f Mib) update available to download", nil), updater.updateName, updater.updateSize / 10240.0 / 1024.0];
+	else
+		return nil;
 }
 
 - (void) onTimer:(NSTimer*) timer {

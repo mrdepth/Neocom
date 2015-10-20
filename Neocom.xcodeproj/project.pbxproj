@@ -207,9 +207,7 @@
 		125DC6651BD529DA005C2F79 /* NCRSSFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980B18C716B9001045F5 /* NCRSSFeedCell.m */; settings = {ASSET_TAGS = (); }; };
 		125DC6661BD529E8005C2F79 /* NCRSSFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980718C715EA001045F5 /* NCRSSFeedViewController.m */; settings = {ASSET_TAGS = (); }; };
 		125DC6671BD52B83005C2F79 /* NCRSSItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980F18C71F2D001045F5 /* NCRSSItemViewController.m */; settings = {ASSET_TAGS = (); }; };
-		125DC6681BD533BF005C2F79 /* NCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BAE18C852550025D971 /* NCAboutViewController.m */; settings = {ASSET_TAGS = (); }; };
-		125DC6691BD533F0005C2F79 /* NCDonationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB618C87C1B0025D971 /* NCDonationCell.m */; settings = {ASSET_TAGS = (); }; };
-		125DC66A1BD533F3005C2F79 /* NCDonationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB218C875910025D971 /* NCDonationViewController.m */; settings = {ASSET_TAGS = (); }; };
+		125DC6771BD61BF3005C2F79 /* NCSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12422FC018E409F70051FD24 /* NCSettingsViewController.m */; settings = {ASSET_TAGS = (); }; };
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
 		125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 125F6824188537FF005732FA /* NCCharacterAttributes.mm */; };
 		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
@@ -4346,7 +4344,6 @@
 				1226D2D31B58F04F000C69EC /* NCCachePrice.m in Sources */,
 				125A19C51BB70E2800C5BAD8 /* EVEContractsItem+Neocom.m in Sources */,
 				12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */,
-				125DC6681BD533BF005C2F79 /* NCAboutViewController.m in Sources */,
 				129D2632187E923300E2062C /* UIImageView+URL.m in Sources */,
 				12C7EE9E1886B51D00F90763 /* NCTrainingQueue.m in Sources */,
 				127A1AB61BAC32ED0066A5EE /* NCFittingEngine.mm in Sources */,
@@ -4400,16 +4397,15 @@
 				120C339419CAB0AC0093EECA /* NCDBInvGroup.m in Sources */,
 				125F682218853230005732FA /* NCSkillData.m in Sources */,
 				1264FD6E1BBC576E002AFDF3 /* NCSkillsViewController.m in Sources */,
-				125DC66A1BD533F3005C2F79 /* NCDonationViewController.m in Sources */,
 				129E23A91BC3FD3000E311BF /* NCFittingShipPriceCell.m in Sources */,
 				1282573D1BCFF1E900BC1F56 /* NCFittingAPISearchResultsCell.m in Sources */,
+				125DC6771BD61BF3005C2F79 /* NCSettingsViewController.m in Sources */,
 				129D2628187E923300E2062C /* NSBundle+Retina4.m in Sources */,
 				128257281BCFAF0E00BC1F56 /* NCLoadoutsParser.mm in Sources */,
 				121112341859929E009E5106 /* NCTableViewController.m in Sources */,
 				1283102E1BBE810A0018C8AC /* NCNewShoppingItemViewController.m in Sources */,
 				129D262C187E923300E2062C /* UIActionSheet+Block.m in Sources */,
 				12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */,
-				125DC6691BD533F0005C2F79 /* NCDonationCell.m in Sources */,
 				129D2618187E923300E2062C /* LUISearchBar.m in Sources */,
 				12A7DB9F18B34D6200343D25 /* NSURLRequest+ASHTTPServer.m in Sources */,
 				129E23A81BC3FD3000E311BF /* NCFittingShipMiscCell.m in Sources */,

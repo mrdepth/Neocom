@@ -46,7 +46,7 @@
 
 - (void) clear {
 	NSManagedObjectContext* managedObjectContext = [self createManagedObjectContext];
-	[managedObjectContext performBlockAndWait:^{
+	[managedObjectContext performBlock:^{
 		NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Record"];
 		
 		NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:nil];

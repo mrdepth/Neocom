@@ -169,12 +169,6 @@
 		NSArray* accounts = self.accounts;
 		if (!accounts)
 			self.accounts = @[account];
-/*		[account.managedObjectContext performBlock:^{
-			NSString* uuid = account.uuid;
-			dispatch_async(dispatch_get_main_queue(), ^{
-				self.cacheRecordID = uuid;
-			});
-		}];*/
 	}
 }
 

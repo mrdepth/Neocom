@@ -208,6 +208,10 @@
 		125DC6661BD529E8005C2F79 /* NCRSSFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980718C715EA001045F5 /* NCRSSFeedViewController.m */; settings = {ASSET_TAGS = (); }; };
 		125DC6671BD52B83005C2F79 /* NCRSSItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980F18C71F2D001045F5 /* NCRSSItemViewController.m */; settings = {ASSET_TAGS = (); }; };
 		125DC6771BD61BF3005C2F79 /* NCSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12422FC018E409F70051FD24 /* NCSettingsViewController.m */; settings = {ASSET_TAGS = (); }; };
+		125DC67D1BD631FF005C2F79 /* NCShoppingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12045E451ACB20D100AD32F8 /* NCShoppingListViewController.m */; settings = {ASSET_TAGS = (); }; };
+		125DC67E1BD6377B005C2F79 /* NCShoppingItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12045E4C1AD161CF00AD32F8 /* NCShoppingItemCell.m */; settings = {ASSET_TAGS = (); }; };
+		125DC67F1BD646D0005C2F79 /* NCShoppingAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 124638321AD25A84001F8780 /* NCShoppingAssetsViewController.m */; settings = {ASSET_TAGS = (); }; };
+		125DC6801BD64946005C2F79 /* NCShoppingListsManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */; settings = {ASSET_TAGS = (); }; };
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
 		125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 125F6824188537FF005732FA /* NCCharacterAttributes.mm */; };
 		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
@@ -4336,6 +4340,7 @@
 				129D261F187E923300E2062C /* NSURL+MD5.m in Sources */,
 				12CDB7F2188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m in Sources */,
 				128310141BBD3D6D0018C8AC /* NCSkillPlansViewController.m in Sources */,
+				125DC67F1BD646D0005C2F79 /* NCShoppingAssetsViewController.m in Sources */,
 				12B5EFF51ACBC154003CDF65 /* NCShoppingItem.m in Sources */,
 				125A19C41BB6AE3D00C5BAD8 /* NCContractsViewController.m in Sources */,
 				1282571D1BCF817800BC1F56 /* NCFittingDamagePatternsViewController.m in Sources */,
@@ -4452,6 +4457,7 @@
 				129D2625187E923300E2062C /* NSString+UTI.m in Sources */,
 				125DC6371BD500CC005C2F79 /* NCKillMail.mm in Sources */,
 				12B5EFF21ACBC154003CDF65 /* NCShoppingList.m in Sources */,
+				125DC67E1BD6377B005C2F79 /* NCShoppingItemCell.m in Sources */,
 				129E23AA1BC3FD3000E311BF /* NCFittingPOSStructureCell.m in Sources */,
 				12F9560218CDB5D4005CEAD6 /* NCBannerViewController.m in Sources */,
 				128310231BBD81ED0018C8AC /* NCCalendarEventDetailsViewController.m in Sources */,
@@ -4474,6 +4480,7 @@
 				120C337919CAB0AA0093EECA /* NCDBCertSkill.m in Sources */,
 				1209685F1845F0CB00921A37 /* main.m in Sources */,
 				1282571E1BCF81FE00BC1F56 /* NCFittingDamagePatternCell.m in Sources */,
+				125DC6801BD64946005C2F79 /* NCShoppingListsManagerViewController.m in Sources */,
 				129D262F187E923300E2062C /* UIColor+NSNumber.m in Sources */,
 				1282570E1BCBF42D00BC1F56 /* NCFittingCharacterPickerViewController.m in Sources */,
 				127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */,
@@ -4485,6 +4492,7 @@
 				129E23AC1BC3FD3000E311BF /* NCFittingPOSDefenseOffenseCell.m in Sources */,
 				129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */,
 				125AEFFC1AE7A8C6008B9EAF /* NCDBVersion.m in Sources */,
+				125DC67D1BD631FF005C2F79 /* NCShoppingListViewController.m in Sources */,
 				84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */,
 				120C335519CAB0A80093EECA /* NCDBInvControlTowerResource.m in Sources */,
 				125DC6421BD51A0F005C2F79 /* NCZKillBoardViewController.m in Sources */,

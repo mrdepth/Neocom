@@ -8,19 +8,20 @@
 
 #import "NCNewShoppingItemViewController.h"
 #import "NCShoppingList.h"
-#import "NCShoppingItem+Neocom.h"
+#import "NCShoppingItem.h"
+#import "NCShoppingGroup.h"
+//#import "NCShoppingItem+Neocom.h"
 #import "NCPriceManager.h"
 #import "NSString+Neocom.h"
 #import "UIAlertView+Block.h"
-#import "NCShoppingGroup+Neocom.h"
+//#import "NCShoppingGroup+Neocom.h"
 #import "UIViewController+Neocom.h"
 
 @interface NCNewShoppingItemViewControllerItem : NSObject
 @property (nonatomic, strong) NCShoppingItem* shoppingItem;
-@property (nonatomic, strong) NCDBInvType* type;
+//@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, assign) double price;
 @property (nonatomic, readonly) double cost;
-
 @end
 
 @interface NCNewShoppingItemViewControllerGroup : NSObject
@@ -232,13 +233,14 @@
 - (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	if (indexPath.section == 0) {
 		NCNewShoppingItemViewControllerItem* item = self.shoppingItems[indexPath.row];
-		cell.titleLabel.text = item.type.typeName;
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.shoppingItem.typeID];
+		cell.titleLabel.text = type.typeName;
 		if (item.price)
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"x%d, %@", nil), item.shoppingItem.quantity * (int32_t) self.stepper.value, [NSString shortStringWithFloat:item.price * item.shoppingItem.quantity * self.stepper.value unit:@"ISK"]];
 		else
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"x%d", nil), item.shoppingItem.quantity * (int32_t) self.stepper.value];
-		cell.iconView.image = item.type.icon ? item.type.icon.image.image : self.defaultTypeIcon.image.image;
-		cell.object = item.type;
+		cell.iconView.image = type.icon.image.image ?: self.defaultTypeIcon.image.image;
+		cell.object = type;
 	}
 	else {
 		NCNewShoppingItemViewControllerGroup* group = self.shoppingGroups[indexPath.row];
@@ -289,7 +291,7 @@
 					types[@(item.typeID)] = type;
 			}
 			
-			row.type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+//			row.type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
 			[items addObject:row];
 			[allItems addObject:row];
 		}

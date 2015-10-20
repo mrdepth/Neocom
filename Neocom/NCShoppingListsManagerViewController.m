@@ -50,17 +50,15 @@
 		NCShoppingList* list = self.rows[indexPath.row][@"object"];
 		[self.rows removeObjectAtIndex:indexPath.row];
 
-		[list.managedObjectContext performBlockAndWait:^{
-			[list.managedObjectContext deleteObject:list];
-			[list.managedObjectContext save:nil];
-			if (list == [NCShoppingList currentShoppingList]) {
-				if (self.rows.count > 0)
-					[NCShoppingList setCurrentShoppingList:self.rows[0][@"object"]];
-				else
-					[NCShoppingList setCurrentShoppingList:nil];
-			}
-		}];
-		[self.delegate shoppingListsManagerViewController:self didSelectShoppingList:[NCShoppingList currentShoppingList]];
+		[list.managedObjectContext deleteObject:list];
+		if (list == [self.storageManagedObjectContext currentShoppingList]) {
+			if (self.rows.count > 0)
+				[NCShoppingList setCurrentShoppingList:self.rows[0][@"object"]];
+			else
+				[NCShoppingList setCurrentShoppingList:nil];
+		}
+		[self.storageManagedObjectContext save:nil];
+		[self.delegate shoppingListsManagerViewController:self didSelectShoppingList:[self.storageManagedObjectContext currentShoppingList]];
 
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
@@ -74,17 +72,11 @@
 														 UITextField* textField = [alertView textFieldAtIndex:0];
 														 NSString* name = textField.text.length > 0 ? textField.text : NSLocalizedString(@"Unnamed", nil);
 														 
-														 NCStorage* storage = [NCStorage sharedStorage];
-														 NSManagedObjectContext* context = [storage managedObjectContext];
-														 __block NCShoppingList* shoppingList;
-														 [context performBlockAndWait:^{
-															 shoppingList = [[NCShoppingList alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingList" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-															 shoppingList.name = name;
-															 [context save:nil];
-														 }];
+														 NCShoppingList* shoppingList = [[NCShoppingList alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingList" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+														 shoppingList.name = name;
+														 [self.storageManagedObjectContext save:nil];
 														 [NCShoppingList setCurrentShoppingList:shoppingList];
-														 [self.delegate shoppingListsManagerViewController:self didSelectShoppingList:[NCShoppingList currentShoppingList]];
-
+														 [self.delegate shoppingListsManagerViewController:self didSelectShoppingList:[self.storageManagedObjectContext currentShoppingList]];
 														 [self unwind];
 
 //														 [self.rows addObject:@{@"name":name, @"object":shoppingList}];
@@ -122,12 +114,8 @@
 															 UITextField* textField = [alertView textFieldAtIndex:0];
 															 NSString* name = textField.text.length > 0 ? textField.text : NSLocalizedString(@"Unnamed", nil);
 															 
-															 NCStorage* storage = [NCStorage sharedStorage];
-															 NSManagedObjectContext* context = [storage managedObjectContext];
-															 [context performBlockAndWait:^{
-																 shoppingList.name = name;
-																 [context save:nil];
-															 }];
+															 shoppingList.name = name;
+															 [self.storageManagedObjectContext save:nil];
 															 [self.rows replaceObjectAtIndex:indexPath.row withObject:@{@"name":name, @"object":shoppingList}];
 															 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 														 }
@@ -141,7 +129,7 @@
 		}
 		else {
 			[NCShoppingList setCurrentShoppingList:shoppingList];
-			[self.delegate shoppingListsManagerViewController:self didSelectShoppingList:[NCShoppingList currentShoppingList]];
+			[self.delegate shoppingListsManagerViewController:self didSelectShoppingList:[self.storageManagedObjectContext currentShoppingList]];
 			[self unwind];
 		}
 	}
@@ -163,7 +151,7 @@
 		cell.object = row[@"object"];
 		
 		UIImage* accessoryImage = nil;
-		if (cell.object == [NCShoppingList currentShoppingList])
+		if (cell.object == [self.storageManagedObjectContext currentShoppingList])
 			accessoryImage = [UIImage imageNamed:@"checkmark.png"];
 		cell.accessoryView = accessoryImage ? [[UIImageView alloc] initWithImage:accessoryImage] : nil;
 		cell.iconView.image = [UIImage imageNamed:@"note.png"];
@@ -189,25 +177,17 @@
 
 - (void) reload {
 	NSMutableArray* rows = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 for (NCShoppingList* shoppingList in [[NCStorage sharedStorage] allShoppingLists]) {
-												 NSInteger records = 0;
-												 for (NCShoppingGroup* group in shoppingList.shoppingGroups)
-													 records += group.shoppingItems.count;
-												 if (shoppingList.name)
-													 [rows addObject:@{@"object":shoppingList, @"records":@(records), @"name":shoppingList.name}];
-												 else
-													 [rows addObject:@{@"object":shoppingList, @"records":@(records)}];
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.rows = rows;
-									 [self.tableView reloadData];
-								 }
-							 }];
+	for (NCShoppingList* shoppingList in [self.storageManagedObjectContext allShoppingLists]) {
+		NSInteger records = 0;
+		for (NCShoppingGroup* group in shoppingList.shoppingGroups)
+			records += group.shoppingItems.count;
+		if (shoppingList.name)
+			[rows addObject:@{@"object":shoppingList, @"records":@(records), @"name":shoppingList.name}];
+		else
+			[rows addObject:@{@"object":shoppingList, @"records":@(records)}];
+	}
+	self.rows = rows;
+	[self.tableView reloadData];
 }
 
 - (void) unwind {

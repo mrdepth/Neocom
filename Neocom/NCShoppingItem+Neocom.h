@@ -11,7 +11,7 @@
 @class NCDBInvType;
 @class EVECentralMarketStatType;
 @interface NCShoppingItem (Neocom)
-@property (nonatomic, assign) double price;
+//@property (nonatomic, assign) double price;
 
 - (id) initWithTypeID:(int32_t) typeID quantity:(int32_t) quantity entity:(NSEntityDescription*) entity insertIntoManagedObjectContext:(NSManagedObjectContext*) context;
 @end

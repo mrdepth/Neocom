@@ -213,6 +213,11 @@
 		125DC67F1BD646D0005C2F79 /* NCShoppingAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 124638321AD25A84001F8780 /* NCShoppingAssetsViewController.m */; settings = {ASSET_TAGS = (); }; };
 		125DC6801BD64946005C2F79 /* NCShoppingListsManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */; settings = {ASSET_TAGS = (); }; };
 		125DC6811BD64C08005C2F79 /* NCAPIKeyAccessMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */; settings = {ASSET_TAGS = (); }; };
+		125DC68B1BD7753B005C2F79 /* NCSkillPlanImportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1298CA1718C4B1B700F3F550 /* NCSkillPlanImportViewController.m */; settings = {ASSET_TAGS = (); }; };
+		125DC6911BD77667005C2F79 /* NCSkillPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0AD718C5BCC700D53602 /* NCSkillPlanViewController.m */; settings = {ASSET_TAGS = (); }; };
+		125DC6921BD77E65005C2F79 /* NCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BAE18C852550025D971 /* NCAboutViewController.m */; settings = {ASSET_TAGS = (); }; };
+		125DC6931BD77E77005C2F79 /* NCDonationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB618C87C1B0025D971 /* NCDonationCell.m */; settings = {ASSET_TAGS = (); }; };
+		125DC6941BD77E77005C2F79 /* NCDonationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB218C875910025D971 /* NCDonationViewController.m */; settings = {ASSET_TAGS = (); }; };
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
 		125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 125F6824188537FF005732FA /* NCCharacterAttributes.mm */; };
 		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
@@ -4397,6 +4402,7 @@
 				1211123E18599396009E5106 /* NCCache.xcdatamodeld in Sources */,
 				1211122E185989E1009E5106 /* NCTaskManager.m in Sources */,
 				120C336119CAB0A90093EECA /* NCDBInvCategory.m in Sources */,
+				125DC6941BD77E77005C2F79 /* NCDonationViewController.m in Sources */,
 				1282571B1BCE6A2A00BC1F56 /* NCFittingFitPickerViewController.mm in Sources */,
 				127A1AB91BADEEBD0066A5EE /* NCLocationsManager.m in Sources */,
 				1283101A1BBD5C430018C8AC /* NCMessageCell.m in Sources */,
@@ -4459,6 +4465,7 @@
 				125DC67D1BD631FF005C2F79 /* NCShoppingListViewController.m in Sources */,
 				84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */,
 				120C335519CAB0A80093EECA /* NCDBInvControlTowerResource.m in Sources */,
+				125DC6911BD77667005C2F79 /* NCSkillPlanViewController.m in Sources */,
 				125DC6421BD51A0F005C2F79 /* NCZKillBoardViewController.m in Sources */,
 				129E239C1BC3F67500E311BF /* NCFittingShipDronesViewController.mm in Sources */,
 				127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */,
@@ -4499,6 +4506,7 @@
 				125A197C1BB5A5EA00C5BAD8 /* NCWalletJournalCell.m in Sources */,
 				129D261A187E923300E2062C /* LUITextField.m in Sources */,
 				129E23A61BC3FD3000E311BF /* NCFittingShipFirepowerCell.m in Sources */,
+				125DC68B1BD7753B005C2F79 /* NCSkillPlanImportViewController.m in Sources */,
 				125DC6671BD52B83005C2F79 /* NCRSSItemViewController.m in Sources */,
 				125DC63E1BD503B8005C2F79 /* NCKillMailsViewController.m in Sources */,
 				129E239E1BC3FC4700E311BF /* NCFittingShipFleetViewController.mm in Sources */,
@@ -4528,6 +4536,7 @@
 				128257861BD0F79C00BC1F56 /* NCFittingPOSViewController.mm in Sources */,
 				1215F57E1B831E9B00C16649 /* NSCache+Neocom.m in Sources */,
 				128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m in Sources */,
+				125DC6931BD77E77005C2F79 /* NCDonationCell.m in Sources */,
 				129D2626187E923300E2062C /* NSString+UUID.m in Sources */,
 				1283101D1BBD6AE80018C8AC /* NCMailBoxViewController.m in Sources */,
 				12C107E01ADD584C008D60DF /* NCDatabaseFetchedResultsViewController.m in Sources */,
@@ -4579,6 +4588,7 @@
 				120C336A19CAB0A90093EECA /* NCDBInvControlTower.m in Sources */,
 				129D2610187E923300E2062C /* CollapsableTableView.m in Sources */,
 				12436DAB1945A0310090D4A6 /* NCDatabase.xcdatamodeld in Sources */,
+				125DC6921BD77E65005C2F79 /* NCAboutViewController.m in Sources */,
 				128257241BCF964500BC1F56 /* NCFittingShipAffectingSkillsViewController.m in Sources */,
 				1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */,
 				12CC8D6C188178570058C5DF /* NCTableViewEmptyHeaderView.m in Sources */,

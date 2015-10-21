@@ -85,11 +85,12 @@
 				[newTrainingQueue addSkill:[self.databaseManagedObjectContext invTypeWithTypeID:skillData.typeID]
 								 withLevel:skillData.targetLevel];
 			self.trainingQueue = newTrainingQueue;
-			if (completionBlock)
-				completionBlock(trainingQueue);
 			
 			[self save];
 			dispatch_async(dispatch_get_main_queue(), ^{
+				if (completionBlock)
+					completionBlock(trainingQueue);
+
 				if (newTrainingQueue)
 					[[NSNotificationCenter defaultCenter] postNotificationName:NCSkillPlanDidChangeTrainingQueueNotification object:self userInfo:@{NCSkillPlanTrainingQueueKey: newTrainingQueue}];
 			});

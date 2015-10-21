@@ -187,6 +187,7 @@
 @property (nonatomic, strong, readwrite) NAPISearchItem* apiLadout;
 @property (nonatomic, strong, readwrite) EVEAssetListItem* asset;
 @property (nonatomic, strong, readwrite) NCKillMail* killMail;
+@property (nonatomic, strong, readwrite) NSString* dna;
 
 @property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Character> pilot;
 
@@ -246,6 +247,24 @@
 		[self.databaseManagedObjectContext performBlockAndWait:^{
 			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:killMail.victim.shipTypeID];
 			self.loadoutName = [NSString stringWithFormat:@"%@ - %@", type.typeName , killMail.victim.characterName];
+		}];
+	}
+	return self;
+}
+
+- (id) initWithDNA:(NSString *)dna {
+	if (self = [super init]) {
+		self.dna = dna;
+		[self.databaseManagedObjectContext performBlockAndWait:^{
+			NSArray* records = [dna componentsSeparatedByString:@":"];
+			if (records.count > 0) {
+				int32_t shipTypeID = [records[0] intValue];
+				if (shipTypeID) {
+					NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:shipTypeID];
+					self.typeID = shipTypeID;
+					self.loadoutName = type.typeName;
+				}
+			}
 		}];
 	}
 	return self;

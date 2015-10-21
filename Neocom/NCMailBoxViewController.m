@@ -181,6 +181,7 @@
 				[sections addObject:@{@"title": title, @"rows": sent, @"sectionID": @(1)}];
 				dispatch_async(dispatch_get_main_queue(), ^{
 					self.sections = sections;
+					self.backgrountText = sections.count > 0 ? nil : NSLocalizedString(@"No Results", nil);
 					completionBlock();
 				});
 			}
@@ -210,7 +211,7 @@
 	cell.subjectLabel.textColor = isRead ? [UIColor lightTextColor] : [UIColor whiteColor];
 	cell.dateLabel.text = [row.header.sentDate messageTimeLocalizedString];
 	
-	NSInteger myID = self.mailBox.account.characterID;
+	NSInteger myID = self.characterID;
 	
 	if (row.sender.contactID == myID) {
 		NSArray* recipients = [row.recipients valueForKey:@"name"];

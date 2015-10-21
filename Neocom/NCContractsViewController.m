@@ -279,6 +279,8 @@
 - (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
 	NCContractsViewControllerData* data = cacheData;
 	self.currentDate = [NSDate dateWithTimeInterval:[data.currentTime timeIntervalSinceDate:data.cacheDate] sinceDate:[NSDate date]];
+	self.backgrountText = data.activeContracts.count > 0 || data.finishedContracts.count > 0 ? nil : NSLocalizedString(@"No Results", nil);
+
 	completionBlock();
 }
 

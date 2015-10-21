@@ -138,6 +138,14 @@
 
 #pragma mark - NCTableViewController
 
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NCPlanetaryViewControllerData* data = cacheData;
+	self.backgrountText = data.colonies.count > 0 ? nil : NSLocalizedString(@"No Results", nil);
+	
+	completionBlock();
+}
+
+
 - (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
 	__block NSError* lastError = nil;
 	NCAccount* account = self.account;

@@ -90,11 +90,17 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	NSArray* rows = self.cacheData;
-	return rows.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"%d events", nil), (int32_t)rows.count] : NSLocalizedString(@"No events", nil);
+	return rows.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"%d events", nil), (int32_t)rows.count] : nil;
 }
 
 
 #pragma mark - NCTableViewController
+
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NSArray* rows = cacheData;
+	self.backgrountText = rows.count > 0 ? nil : NSLocalizedString(@"No Results", nil);
+	completionBlock();
+}
 
 - (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
 	NCAccount* account = self.account;
@@ -125,6 +131,7 @@
 
 - (void) didChangeAccount:(NSNotification *)notification {
 	[super didChangeAccount:notification];
+
 	self.account = [NCAccount currentAccount];
 }
 

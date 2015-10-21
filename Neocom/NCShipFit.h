@@ -68,6 +68,7 @@
 @property (nonatomic, strong, readonly) NAPISearchItem* apiLadout;
 @property (nonatomic, strong, readonly) EVEAssetListItem* asset;
 @property (nonatomic, strong, readonly) NCKillMail* killMail;
+@property (nonatomic, strong, readonly) NSString* dna;
 
 //Export
 @property (nonatomic, readonly) NSString* canonicalName;

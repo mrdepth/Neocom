@@ -23,6 +23,7 @@
 @property (nonatomic, strong, readonly) NSManagedObjectContext* cacheManagedObjectContext;
 @property (nonatomic, strong) NSString* cacheRecordID;
 @property (nonatomic, strong) NSProgress* progress;
+@property (nonatomic, strong) NSString* backgrountText;
 
 - (void) saveCacheData:(id) data cacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
 - (void) reload;

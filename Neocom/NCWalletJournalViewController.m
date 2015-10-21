@@ -149,6 +149,13 @@
 
 #pragma mark - NCTableViewController
 
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NCWalletJournalViewControllerData* data = cacheData;
+	self.backgrountText = data.accounts.count > 0 ? nil : NSLocalizedString(@"No Results", nil);
+
+	completionBlock();
+}
+
 - (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
 	NCAccount* account = self.account;
 	if (!account) {

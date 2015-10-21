@@ -288,6 +288,8 @@
 - (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
 	NCStarbasesViewControllerData* data = cacheData;
 	self.currentDate = [NSDate dateWithTimeInterval:[data.currentTime timeIntervalSinceDate:data.cacheDate] sinceDate:[NSDate date]];
+	self.backgrountText = data.sections.count > 0 ? nil : NSLocalizedString(@"No Results", nil);
+
 	completionBlock();
 }
 

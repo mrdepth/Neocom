@@ -272,6 +272,8 @@
 	}
 	self.typeIDs = typeIDs;
 	
+	self.backgrountText = data.sections.count > 0 ? nil : NSLocalizedString(@"No Results", nil);
+
 	completionBlock();
 }
 

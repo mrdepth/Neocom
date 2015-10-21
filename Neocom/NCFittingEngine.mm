@@ -99,6 +99,8 @@
 		loadoutData = [self loadoutShipDataWithAsset:fit.asset];
 	else if (fit.killMail)
 		loadoutData = [self loadoutShipDataWithKillMail:fit.killMail];
+	else if (fit.dna)
+		loadoutData = [self loadoutShipDataWithDNA:fit.dna];
 	
 	[self performBlockAndWait:^{
 		NSMutableSet* charges = [NSMutableSet new];

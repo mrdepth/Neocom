@@ -71,9 +71,15 @@
 
 	//Appearance
 	if (!self.tableView.backgroundView) {
-		UIView* view = [[UIView alloc] initWithFrame:CGRectZero];
-		view.backgroundColor = [UIColor clearColor];
-		self.tableView.backgroundView = view;
+		UILabel* label = [[UILabel alloc] initWithFrame:CGRectZero];
+		label.backgroundColor = [UIColor clearColor];
+		label.textColor = [UIColor darkGrayColor];
+		label.text = nil;
+		label.textAlignment = NSTextAlignmentCenter;
+		self.tableView.backgroundView = label;
+//		UIView* view = [[UIView alloc] initWithFrame:CGRectZero];
+//		view.backgroundColor = [UIColor clearColor];
+//		self.tableView.backgroundView = view;
 	}
 	
 	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
@@ -375,6 +381,11 @@
 	[_progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:nil];
 	self.progressView.progress = progress.fractionCompleted;
 	self.progressView.hidden = progress == nil;
+}
+
+- (void) setBackgrountText:(NSString *)backgrountText {
+	UILabel* label = (UILabel*) self.tableView.backgroundView;
+	label.text = backgrountText;
 }
 
 #pragma mark - Notifications

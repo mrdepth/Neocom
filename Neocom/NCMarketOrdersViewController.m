@@ -286,6 +286,9 @@
 - (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
 	NCMarketOrdersViewControllerData* data = cacheData;
 	self.currentDate = [NSDate dateWithTimeInterval:[data.currentTime timeIntervalSinceDate:data.cacheDate] sinceDate:[NSDate date]];
+
+	self.backgrountText = data.openOrders.count > 0 || data.closedOrders.count > 0 ? nil : NSLocalizedString(@"No Results", nil);
+
 	completionBlock();
 }
 

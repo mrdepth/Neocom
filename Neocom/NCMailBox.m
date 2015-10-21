@@ -152,10 +152,14 @@
 						
 						[contractsProgress becomeCurrentWithPendingUnitCount:10];
 						[self loadMissingContacts:contacts forMessages:messages withApi:api completionBlock:^(NSDictionary *contacts) {
-							self.updateDate = [messageHeaders.eveapi localTimeWithServerTime:messageHeaders.eveapi.cacheDate];
+							NSDate* updateDate = [messageHeaders.eveapi localTimeWithServerTime:messageHeaders.eveapi.cacheDate];
+							[self.managedObjectContext performBlock:^{
+								self.updateDate = updateDate;
+							}];
+							
 							[self.cacheManagedObjectContext performBlock:^{
 								self.cacheRecord.data.data = messages;
-								self.cacheRecord.date = self.updateDate;
+								self.cacheRecord.date = updateDate;
 								self.cacheRecord.expireDate = [messageHeaders.eveapi localTimeWithServerTime:messageHeaders.eveapi.cachedUntil];
 								[self.cacheManagedObjectContext save:nil];
 								[self updateNumberOfUnreadMessages];

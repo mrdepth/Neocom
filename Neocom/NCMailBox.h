@@ -42,7 +42,7 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 @property (nonatomic, strong) NCAccount* account;
 @property (nonatomic, strong) NSDate* updateDate;
 
-@property (nonatomic, assign, readonly) NSInteger numberOfUnreadMessages;
+//@property (nonatomic, assign, readonly) NSInteger numberOfUnreadMessages;
 @property (nonatomic, strong) NSManagedObjectContext* cacheManagedObjectContext;
 
 - (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSArray* messages, NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
@@ -50,5 +50,6 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 - (void) loadMessagesWithCompletionBlock:(void(^)(NSArray* messages, NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
 
 - (void) loadBodyForMessage:(NCMailBoxMessage*) message withCompletionBlock:(void(^)(EVEMailBodiesItem* body, NSError* error)) completionBlock;
+- (void) loadNumberOfUnreadMessagesWithCompletionBlock:(void(^)(NSInteger numberOfUnreadMessages, NSError* error)) completionBlock;
 
 @end

@@ -60,7 +60,7 @@
 }
 @property (nonatomic, strong) NCCacheRecord* cacheRecord;
 @property (nonatomic, assign, readwrite) NSInteger numberOfUnreadMessages;
-- (void) updateNumberOfUnreadMessages;
+//- (void) updateNumberOfUnreadMessages;
 - (void) loadMissingContacts:(NSDictionary*) existingContacts forMessages:(NSArray*) messages withApi:(EVEOnlineAPI*) api completionBlock:(void(^)(NSDictionary* contacts)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
 - (void) clearCacheForMessage:(NCMailBoxMessage*) message;
 @end
@@ -108,7 +108,7 @@
 				if (!_cacheRecord) {
 					_cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", uuid]];
 				}
-				[self updateNumberOfUnreadMessages];
+//				[self updateNumberOfUnreadMessages];
 				
 				[api mailMessagesWithCompletionBlock:^(EVEMailMessages *messageHeaders, NSError *error) {
 					progress.completedUnitCount++;
@@ -162,7 +162,7 @@
 								self.cacheRecord.date = updateDate;
 								self.cacheRecord.expireDate = [messageHeaders.eveapi localTimeWithServerTime:messageHeaders.eveapi.cachedUntil];
 								[self.cacheManagedObjectContext save:nil];
-								[self updateNumberOfUnreadMessages];
+//								[self updateNumberOfUnreadMessages];
 								if (messages)
 									dispatch_set_context(loadDispatchGroup, (__bridge_retained void*)@{@"messages":messages});
 								dispatch_group_leave(loadDispatchGroup);
@@ -216,7 +216,7 @@
 			NSArray* messages = _cacheRecord.data.data;
 			for (NCMailBoxMessage* message in messages)
 				message.read = [set containsObject:@(message.header.messageID)];
-			[self updateNumberOfUnreadMessages];
+//			[self updateNumberOfUnreadMessages];
 			
 			if ([_cacheRecord.managedObjectContext hasChanges])
 				[_cacheRecord.managedObjectContext save:nil];
@@ -284,9 +284,35 @@
 		completionBlock(message.body, nil);
 }
 
+- (void) loadNumberOfUnreadMessagesWithCompletionBlock:(void(^)(NSInteger numberOfUnreadMessages, NSError* error)) completionBlock {
+	void (^update)(NSError*) = ^(NSError* error) {
+		[self.cacheManagedObjectContext performBlock:^{
+			NSArray* messages = _cacheRecord.data.data;
+			NSInteger numberOfUnreadMessages = 0;
+			for (NCMailBoxMessage* message in messages) {
+				if (![message isRead])
+					numberOfUnreadMessages++;
+			}
+			dispatch_async(dispatch_get_main_queue(), ^{
+				completionBlock(numberOfUnreadMessages, error);
+			});
+		}];
+	};
+	
+	if (!_cacheRecord) {
+		[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy
+					completionBlock:^(NSArray* messages, NSError *error) {
+						update(error);
+					} progressBlock:nil];
+	}
+	else {
+		update(nil);
+	}
+}
+
 #pragma mark - Private
 
-- (void) updateNumberOfUnreadMessages {
+/*- (void) updateNumberOfUnreadMessages {
 	NSArray* messages = _cacheRecord.data.data;
 	NSInteger numberOfUnreadMessages = 0;
 	for (NCMailBoxMessage* message in messages) {
@@ -294,7 +320,7 @@
 			numberOfUnreadMessages++;
 	}
 	self.numberOfUnreadMessages = numberOfUnreadMessages;
-}
+}*/
 
 - (void) loadMissingContacts:(NSDictionary*) existingContacts forMessages:(NSArray*) messages withApi:(EVEOnlineAPI*) api completionBlock:(void(^)(NSDictionary* contacts)) completionBlock progressBlock:(void(^)(float progress)) progressBlock {
 	NSMutableDictionary* ids = [NSMutableDictionary new];

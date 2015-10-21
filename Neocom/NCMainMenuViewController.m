@@ -49,6 +49,7 @@
 @property (nonatomic, assign) BOOL reloading;
 @property (nonatomic, strong) NSDictionary* prices;
 @property (nonatomic, strong) NCPriceManager* priceManager;
+@property (nonatomic, assign) NSInteger numberOfUnreadMessages;
 - (void) reload;
 - (void) onTimer:(NSTimer*) timer;
 - (void) updateServerStatus;
@@ -56,6 +57,7 @@
 - (void) updateMarqueeLabel;
 - (void) marketPricesMonitorDidChange:(NSNotification*) notification;
 - (void) priceManagerDidUpdate:(NSNotification*) notification;
+- (void) mailBoxDidUpdateNotification:(NSNotification*) notification;
 @end
 
 @implementation NCMainMenuViewController
@@ -96,6 +98,7 @@
 	[super viewWillAppear:animated];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(marketPricesMonitorDidChange:) name:NCMarketPricesMonitorDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mailBoxDidUpdateNotification:) name:NCMailBoxDidUpdateNotification object:nil];
 	
 	self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
 	[self updateServerStatus];
@@ -109,6 +112,7 @@
 	self.timer = nil;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCMarketPricesMonitorDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCMailBoxDidUpdateNotification object:nil];
 }
 
 - (void) dealloc {
@@ -223,7 +227,7 @@
 	
 	self.reloading = YES;
 	NCAccount* account = [NCAccount currentAccount];
-	
+	self.numberOfUnreadMessages = 0;
 	void (^reload)(NSInteger, NSString*) = ^(NSInteger apiKeyAccessMask, NSString* accessMaskKey) {
 		self.sections = [NSMutableArray new];
 		for (NSArray* rows in self.allSections) {
@@ -244,6 +248,12 @@
 	
 	if (account) {
 		[account.managedObjectContext performBlock:^{
+			[account.mailBox loadNumberOfUnreadMessagesWithCompletionBlock:^(NSInteger numberOfUnreadMessages, NSError *error) {
+				self.numberOfUnreadMessages = numberOfUnreadMessages;
+				if (!self.reloading)
+					[self.tableView reloadData];
+			}];
+			
 			NSInteger apiKeyAccessMask = account.apiKey.apiKeyInfo.key.accessMask;
 			NSString* accessMaskKey = account.accountType == NCAccountTypeCorporate ? @"corpAccessMask" : @"charAccessMask" ;
 			dispatch_async(dispatch_get_main_queue(), ^{
@@ -251,17 +261,19 @@
 				
 				[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
 					[account loadSkillQueueWithCompletionBlock:^(EVESkillQueue *skillQueue, NSError *error) {
-						self.characterSheet = characterSheet;
-						self.skillQueue = skillQueue;
-						[self.tableView reloadData];
-						
-						NSTimeInterval delay = 0;
-						if (self.skillQueue)
-							delay = [[self.skillQueue.eveapi localTimeWithServerTime:self.skillQueue.eveapi.cachedUntil] timeIntervalSinceNow];
-						else if (self.characterSheet)
-							delay = [[self.characterSheet.eveapi localTimeWithServerTime:self.characterSheet.eveapi.cachedUntil] timeIntervalSinceNow];
-						if (delay > 0)
-							[self performSelector:@selector(reload) withObject:nil afterDelay:delay];
+						dispatch_async(dispatch_get_main_queue(), ^{
+							self.characterSheet = characterSheet;
+							self.skillQueue = skillQueue;
+							[self.tableView reloadData];
+							
+							NSTimeInterval delay = 0;
+							if (self.skillQueue)
+								delay = [[self.skillQueue.eveapi localTimeWithServerTime:self.skillQueue.eveapi.cachedUntil] timeIntervalSinceNow];
+							else if (self.characterSheet)
+								delay = [[self.characterSheet.eveapi localTimeWithServerTime:self.characterSheet.eveapi.cachedUntil] timeIntervalSinceNow];
+							if (delay > 0)
+								[self performSelector:@selector(reload) withObject:nil afterDelay:delay];
+						});
 					}];
 				}];
 			});
@@ -300,13 +312,10 @@
 }
 
 - (NSString*) mailsDetails {
-/*	NCAccount* account = [NCAccount currentAccount];
-	if (account) {
-		NSInteger numberOfUnreadMessages = account.mailBox.numberOfUnreadMessages;
-		if (numberOfUnreadMessages > 0)
-			return [NSString stringWithFormat:NSLocalizedString(@"%d unread messages", nil), (int32_t) numberOfUnreadMessages];
-	}*/
-	return nil;
+	if (self.numberOfUnreadMessages > 0)
+		return [NSString stringWithFormat:NSLocalizedString(@"%d unread messages", nil), (int32_t) self.numberOfUnreadMessages];
+	else
+		return nil;
 }
 
 - (NSString*) settingsDetails {
@@ -458,6 +467,10 @@
 
 - (void) priceManagerDidUpdate:(NSNotification*) notification {
 	[self updatePrices];
+}
+
+- (void) mailBoxDidUpdateNotification:(NSNotification*) notification {
+	[self reload];
 }
 
 @end

@@ -9,7 +9,6 @@
 #import "NCFittingDamagePatternEditorViewController.h"
 #import "NCDamagePattern.h"
 #import "NCStorage.h"
-#import "UIActionSheet+Block.h"
 #import "UIAlertView+Block.h"
 #import "UIColor+Neocom.h"
 

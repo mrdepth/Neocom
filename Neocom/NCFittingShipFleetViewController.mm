@@ -9,7 +9,6 @@
 #import "NCFittingShipFleetViewController.h"
 #import "NCFittingShipViewController.h"
 #import "NCTableViewCell.h"
-#import "UIActionSheet+Block.h"
 #import "NCFittingCharacterPickerViewController.h"
 
 #define ActionButtonCharacter NSLocalizedString(@"Switch Character", nil)

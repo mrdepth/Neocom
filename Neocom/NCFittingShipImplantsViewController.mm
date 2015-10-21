@@ -9,7 +9,6 @@
 #import "NCFittingShipImplantsViewController.h"
 #import "NCFittingShipViewController.h"
 #import "NCTableViewCell.h"
-#import "UIActionSheet+Block.h"
 #import "NCFittingSectionGenericHeaderView.h"
 
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)

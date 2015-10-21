@@ -10,7 +10,6 @@
 #import "NSArray+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NSString+Neocom.h"
-#import "UIActionSheet+Block.h"
 #import "NCSkillCell.h"
 #import "UIImageView+Neocom.h"
 #import "NCDatabaseTypeInfoViewController.h"
@@ -96,35 +95,34 @@
 }
 
 - (IBAction)onAction:(id)sender {
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				  destructiveButtonTitle:NSLocalizedString(@"Clear Skill Plan", nil)
-					   otherButtonTitles:@[NSLocalizedString(@"Import Skill Plan", nil), NSLocalizedString(@"Switch Skill Plan", nil), NSLocalizedString(@"Export Skill Plan", nil)]
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex == actionSheet.destructiveButtonIndex) {
-								 [self.skillPlan clear];
-								 [self.skillPlan save];
-								 [self reload];
-							 }
-							 else if (selectedButtonIndex == 1) {
-								 [self performSegueWithIdentifier:@"NCSkillPlanImportViewController" sender:nil];
-							 }
-							 else if (selectedButtonIndex == 2) {
-								 [self performSegueWithIdentifier:@"NCSkillPlansViewController" sender:nil];
-							 }
-							 else if (selectedButtonIndex == 3) {
-								 [self.account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
-									 dispatch_async(dispatch_get_main_queue(), ^{
-										 NSData* data = [[self.skillPlanTrainingQueue xmlRepresentationWithSkillPlanName:self.skillPlanName] dataUsingEncoding:NSUTF8StringEncoding];
-										 NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.emp", characterInfo.characterName, self.skillPlanName]];
-										 [data writeCompressedToFile:path];
-										 self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
-										 [self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
-									 });
-								 }];
-							 }
-						 } cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Clear Skill Plan", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+		[self.skillPlan clear];
+		[self.skillPlan save];
+		[self reload];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Import Skill Plan", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self performSegueWithIdentifier:@"NCSkillPlanImportViewController" sender:nil];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Switch Skill Plan", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self performSegueWithIdentifier:@"NCSkillPlansViewController" sender:nil];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Export Skill Plan", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self.account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				NSData* data = [[self.skillPlanTrainingQueue xmlRepresentationWithSkillPlanName:self.skillPlanName] dataUsingEncoding:NSUTF8StringEncoding];
+				NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.emp", characterInfo.characterName, self.skillPlanName]];
+				[data writeCompressedToFile:path];
+				self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
+				[self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+			});
+		}];
+	}]];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

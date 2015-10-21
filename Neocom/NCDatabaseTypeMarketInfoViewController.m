@@ -12,7 +12,6 @@
 #import "NCDatabaseTypeMarketInfoCell.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "UIColor+Neocom.h"
-#import "UIActionSheet+Block.h"
 #import "NCSetting.h"
 //#import "EVECentralQuickLookOrder+Neocom.h"
 
@@ -137,24 +136,26 @@
 }
 
 - (IBAction)onChangeMode:(id)sender {
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				  destructiveButtonTitle:nil
-					   otherButtonTitles:@[NSLocalizedString(@"Summary", nil), NSLocalizedString(@"Sell orders", nil), NSLocalizedString(@"Buy orders", nil)]
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 if (selectedButtonIndex == 0)
-									 self.mode = NCDatabaseTypeMarketInfoViewControllerModeSummary;
-								 else if (selectedButtonIndex == 1)
-									 self.mode = NCDatabaseTypeMarketInfoViewControllerModeSellOrders;
-								 else
-									 self.mode = NCDatabaseTypeMarketInfoViewControllerModeBuyOrders;
-								 [self.tableView reloadData];
-								 self.modeSetting.value = @(self.mode);
-							 }
-						 }
-							 cancelBlock:nil] showFromRect:[sender bounds] inView:sender animated:YES];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Summary", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.mode = NCDatabaseTypeMarketInfoViewControllerModeSummary;
+		[self.tableView reloadData];
+		self.modeSetting.value = @(self.mode);
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Sell orders", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.mode = NCDatabaseTypeMarketInfoViewControllerModeSellOrders;
+		[self.tableView reloadData];
+		self.modeSetting.value = @(self.mode);
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Buy orders", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.mode = NCDatabaseTypeMarketInfoViewControllerModeBuyOrders;
+		[self.tableView reloadData];
+		self.modeSetting.value = @(self.mode);
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+
+	[controller presentViewController:controller animated:YES completion:nil];
 }
 
 - (void) setMode:(NCDatabaseTypeMarketInfoViewControllerMode)mode {

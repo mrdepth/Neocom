@@ -11,7 +11,6 @@
 #import "NCSkillPlan.h"
 #import "NCStorage.h"
 #import "NCTableViewCell.h"
-#import "UIActionSheet+Block.h"
 #import "UIAlertView+Block.h"
 #import "NSString+Neocom.h"
 
@@ -179,30 +178,30 @@
 	}
 	else {
 		NCTableViewCell* cell = (NCTableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
-		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-									   title:nil
-						   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-					  destructiveButtonTitle:NSLocalizedString(@"Delete", nil)
-						   otherButtonTitles:@[NSLocalizedString(@"Rename", nil), NSLocalizedString(@"Switch", nil)]
-							 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-								 [tableView deselectRowAtIndexPath:indexPath animated:YES];
-								 if (selectedButtonIndex == 0)
-									 [self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:indexPath];
-								 else if (selectedButtonIndex == 1) {
-									 [self renameSkillPlanAtIndexPath:indexPath];
-								 }
-								 else if (selectedButtonIndex == 2) {
-									 [self.rows setValue:@(NO) forKey:@"active"];
-									 [cell.object setActive:YES];
-									 [self.account.managedObjectContext performBlock:^{
-										 [self.account setActiveSkillPlan:[cell.object skillPlan]];
-									 }];
-									 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-								 }
-							 }
-								 cancelBlock:^{
-									 [tableView deselectRowAtIndexPath:indexPath animated:YES];
-								 }] showFromRect:cell.bounds inView:cell animated:YES];
+		UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+			[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:indexPath];
+		}]];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Rename", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+			[self renameSkillPlanAtIndexPath:indexPath];
+		}]];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Switch", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+			[self.rows setValue:@(NO) forKey:@"active"];
+			[cell.object setActive:YES];
+			[self.account.managedObjectContext performBlock:^{
+				[self.account setActiveSkillPlan:[cell.object skillPlan]];
+			}];
+			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+		}]];
+		
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		}]];
+		
+		[self presentViewController:controller animated:YES completion:nil];
 	}
 }
 
@@ -221,22 +220,23 @@
 	NCTableViewCell* cell = (NCTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
 	NCSkillPlansViewControllerRow* row = cell.object;
 
-	UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename", nil)
-													 message:nil
-										   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-										   otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
-											 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-												 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-													 UITextField* textField = [alertView textFieldAtIndex:0];
-													 row.skillPlanName = textField.text;
-													 row.skillPlan.name = row.skillPlanName;
-													 [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-												 }
-											 } cancelBlock:nil];
-	alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-	UITextField* textField = [alertView textFieldAtIndex:0];
-	textField.text = row.skillPlanName;
-	[alertView show];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Enter skill plan name", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+	__block UITextField* nameTextField;
+	[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+		nameTextField = textField;
+		textField.clearButtonMode = UITextFieldViewModeAlways;
+		textField.text = row.skillPlanName;
+	}];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Rename", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		row.skillPlanName = nameTextField.text;
+		[row.skillPlan.managedObjectContext performBlock:^{
+			row.skillPlan.name = row.skillPlanName;
+		}];
+		[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	[self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void) reload {

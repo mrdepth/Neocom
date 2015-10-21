@@ -12,7 +12,6 @@
 #import "NCFittingPOSStructureCell.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NSString+Neocom.h"
-#import "UIActionSheet+Block.h"
 #import "UIView+Nib.h"
 #import "NCFittingAmountCell.h"
 

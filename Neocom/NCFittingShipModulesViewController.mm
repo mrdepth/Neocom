@@ -15,7 +15,6 @@
 #import "NCFittingShipModuleCell.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NCFittingSectionGenericHeaderView.h"
-#import "UIActionSheet+Block.h"
 #import "NCFittingSectionHiSlotHeaderView.h"
 
 #define ActionButtonOffline NSLocalizedString(@"Put Offline", nil)

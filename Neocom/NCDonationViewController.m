@@ -8,7 +8,6 @@
 
 #import "NCDonationViewController.h"
 #import "ASInAppPurchase.h"
-#import "UIActionSheet+Block.h"
 #import "NCDonationCell.h"
 #import "UIColor+Neocom.h"
 

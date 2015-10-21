@@ -18,7 +18,6 @@
 #import "NCShipFit.h"
 #import "NCLoadout.h"
 #import "NSString+Neocom.h"
-#import "UIActionSheet+Block.h"
 
 @interface NCFittingAPIViewController ()
 @property (nonatomic, strong) NCDBInvType* type;
@@ -29,7 +28,6 @@
 @property (nonatomic, strong) NCDatabaseTypePickerViewController* typePickerViewController;
 @property (nonatomic, strong) NAPILookup* lookup;
 @property (nonatomic, strong) NSError* error;
-@property (nonatomic, strong) UIActionSheet* actionSheet;
 
 
 - (IBAction)onClear:(id)sender;
@@ -155,20 +153,19 @@
 		if (timeInterval > 0)
 			title = [NSString stringWithFormat:@"Next sync in %@", [NSString stringWithTimeLeft:timeInterval]];
 	}
-	[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:NO];
 	
-	self.actionSheet = [UIActionSheet actionSheetWithTitle:title
-										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-									destructiveButtonTitle:nil
-										 otherButtonTitles:@[NSLocalizedString(@"Sync now", nil), alwaysUpload ? NSLocalizedString(@"Disable auto sync", nil) : NSLocalizedString(@"Enable auto sync", nil)]
-										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-											   if (selectedButtonIndex == 0)
-												   [self uploadFits];
-											   else if (selectedButtonIndex == 1) {
-												   [[NSUserDefaults standardUserDefaults] setBool:!alwaysUpload forKey:NCSettingsAPIAlwaysUploadFitsKey];
-											   }
-										   } cancelBlock:nil];
-	[self.actionSheet showFromBarButtonItem:sender animated:YES];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Sync now", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self uploadFits];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:alwaysUpload ? NSLocalizedString(@"Disable auto sync", nil) : NSLocalizedString(@"Enable auto sync", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[[NSUserDefaults standardUserDefaults] setBool:!alwaysUpload forKey:NCSettingsAPIAlwaysUploadFitsKey];
+	}]];
+
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[self presentViewController:controller animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source

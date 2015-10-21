@@ -11,7 +11,6 @@
 #import "NSArray+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NSString+Neocom.h"
-#import "UIActionSheet+Block.h"
 #import "NCSkillCell.h"
 #import "UIImageView+Neocom.h"
 #import "NCDatabaseTypeInfoViewController.h"

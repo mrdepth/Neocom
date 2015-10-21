@@ -9,7 +9,6 @@
 #import "NCDatabaseViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NCTableViewCell.h"
-#import "UIActionSheet+Block.h"
 
 @interface NCDatabaseViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* result;
@@ -97,24 +96,26 @@
 }
 
 - (IBAction)onFilter:(id)sender {
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				  destructiveButtonTitle:nil
-					   otherButtonTitles:@[NSLocalizedString(@"All", nil), NSLocalizedString(@"Published", nil), NSLocalizedString(@"Unpublished", nil)]
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 if (selectedButtonIndex == 0)
-									 self.filter = NCDatabaseFilterAll;
-								 else if (selectedButtonIndex == 1)
-									 self.filter = NCDatabaseFilterPublished;
-								 else if (selectedButtonIndex == 2)
-									 self.filter = NCDatabaseFilterUnpublished;
-								 self.navigationItem.rightBarButtonItem.title = [actionSheet buttonTitleAtIndex:selectedButtonIndex];
-								 [self reload];
-							 }
-						 }
-							 cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"All", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.filter = NCDatabaseFilterAll;
+		self.navigationItem.rightBarButtonItem.title = action.title;
+		[self reload];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Published", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.filter = NCDatabaseFilterPublished;
+		self.navigationItem.rightBarButtonItem.title = action.title;
+		[self reload];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Unpublished", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.filter = NCDatabaseFilterUnpublished;
+		self.navigationItem.rightBarButtonItem.title = action.title;
+		[self reload];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[controller presentViewController:controller animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source

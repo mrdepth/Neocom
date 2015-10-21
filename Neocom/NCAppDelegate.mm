@@ -9,8 +9,7 @@
 #import "NCAppDelegate.h"
 #import "NCAccountsManager.h"
 #import "NCStorage.h"
-#import "UIAlertView+Error.h"
-#import "UIAlertView+Block.h"
+#import "UIAlertController+Neocom.h"
 #import <EVEAPI/EVEAPI.h>
 #import "NCNotificationsManager.h"
 #import "NSString+UUID.h"
@@ -257,8 +256,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 - (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
 	if (application.applicationState == UIApplicationStateActive) {
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Neocom" message:notification.alertBody delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
-		[alert show];
+		[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithTitle:NSLocalizedString(@"Neocom", nil) message:notification.alertBody] animated:YES completion:nil];
 		application.applicationIconBadgeNumber = 0;
 	}
 	else if (application.applicationState == UIApplicationStateInactive) {
@@ -450,15 +448,10 @@ void uncaughtExceptionHandler(NSException* exception) {
 	if (keyID > 0 && vCode.length > 0)
 	[[NCAccountsManager sharedManager] addAPIKeyWithKeyID:keyID vCode:vCode completionBlock:^(NSArray *accounts, NSError *error) {
 		if (error) {
-			[[UIAlertView alertViewWithError:error] show];
+			[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
 		}
 		else {
-			[[UIAlertView alertViewWithTitle:nil
-									 message:NSLocalizedString(@"API Key added", nil)
-						   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-						   otherButtonTitles:nil
-							 completionBlock:nil
-								 cancelBlock:nil] show];
+			[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithTitle:nil message:NSLocalizedString(@"API Key added", nil)] animated:YES completion:nil];
 		}
 	}];
 }
@@ -501,12 +494,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 	NCAccount* currentAccount = [NCAccount currentAccount];
 	if (!currentAccount || currentAccount.accountType != NCAccountTypeCharacter) {
-		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Skill Plan Import", nil)
-								 message:NSLocalizedString(@"You should select the Character first to import Skill Plan", nil)
-					   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-					   otherButtonTitles:nil
-						 completionBlock:nil
-							 cancelBlock:nil] show];
+		[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithTitle:NSLocalizedString(@"Skill Plan Import", nil) message:NSLocalizedString(@"You should select the Character first to import Skill Plan", nil)] animated:YES completion:nil];
 	}
 	else {
 		NSData* data = [[NSData dataWithContentsOfURL:url] uncompressedData];
@@ -605,8 +593,8 @@ void uncaughtExceptionHandler(NSException* exception) {
 	ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
 	purchase.purchased = YES;
 	
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Thanks for the donation", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
-	[alertView show];
+	[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithTitle:nil message:NSLocalizedString(@"Thanks for the donation", nil)] animated:YES completion:nil];
+
 	[[NSNotificationCenter defaultCenter] postNotificationName:NCApplicationDidRemoveAddsNotification object:nil];
 	[[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 	
@@ -617,8 +605,8 @@ void uncaughtExceptionHandler(NSException* exception) {
 	ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
 	purchase.purchased = YES;
 	
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Your donation status has been restored", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
-	[alertView show];
+	[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithTitle:nil message:NSLocalizedString(@"Your donation status has been restored", nil)] animated:YES completion:nil];
+
 	[[NSNotificationCenter defaultCenter] postNotificationName:NCApplicationDidRemoveAddsNotification object:nil];
 	[[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 	
@@ -627,7 +615,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 - (void) failedTransaction: (SKPaymentTransaction *)transaction
 {
 	if (![transaction.error.domain isEqualToString:SKErrorDomain] || transaction.error.code != SKErrorPaymentCancelled)	{
-        [[UIAlertView alertViewWithError:transaction.error] show];
+		[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithError:transaction.error] animated:YES completion:nil];
     }
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 }
@@ -644,26 +632,22 @@ void uncaughtExceptionHandler(NSException* exception) {
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (error) {
-									 [[UIAlertView alertViewWithTitle:NSLocalizedString(@"Error", nil)
-															  message:[error localizedDescription]
-													cancelButtonTitle:NSLocalizedString(@"Discard", nil)
-													otherButtonTitles:@[NSLocalizedString(@"Retry", nil)]
-													  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-														  if (selectedButtonIndex != alertView.cancelButtonIndex)
-															  [self migrateWithCompletionHandler:completionHandler];
-														  else {
-															  NSFileManager* fileManager = [NSFileManager defaultManager];
-															  NSString* documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-															  for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:documents error:nil]) {
-																  if ([fileName isEqualToString:@"Inbox"])
-																	  continue;
-																  [fileManager removeItemAtPath:[documents stringByAppendingPathComponent:fileName] error:nil];
-															  }
-															  completionHandler();
-														  }
-													  } cancelBlock:^{
-														  
-													  }] show];
+									 UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", nil) message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
+									 
+									 [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+										 [self migrateWithCompletionHandler:completionHandler];
+									 }]];
+									 [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Discard", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+										 NSFileManager* fileManager = [NSFileManager defaultManager];
+										 NSString* documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+										 for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:documents error:nil]) {
+											 if ([fileName isEqualToString:@"Inbox"])
+												 continue;
+											 [fileManager removeItemAtPath:[documents stringByAppendingPathComponent:fileName] error:nil];
+										 }
+										 completionHandler();
+									 }]];
+									 [[UIAlertController frontMostViewController] presentViewController:controller animated:YES completion:nil];
 								 }
 								 else {
 									 completionHandler();
@@ -680,33 +664,31 @@ void uncaughtExceptionHandler(NSException* exception) {
 }
 
 - (void) askToUseCloudWithCompletionHandler:(void(^)(BOOL useCloud)) completionHandler {
-	[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose Storage Option", nil)
-							 message:NSLocalizedString(@"Should documents be stored in iCloud and available on all your devices?", nil)
-				   cancelButtonTitle:NSLocalizedString(@"Local Only", nil)
-				   otherButtonTitles:@[NSLocalizedString(@"iCloud", nil)]
-					 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-						 BOOL useCloud = selectedButtonIndex != alertView.cancelButtonIndex;
-						 [[NSUserDefaults standardUserDefaults] setBool:useCloud
-																 forKey:NCSettingsUseCloudKey];
-						 completionHandler(useCloud);
-					 }
-						 cancelBlock:^{
-							 completionHandler(NO);
-						 }] show];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Choose Storage Option", nil) message:NSLocalizedString(@"Should documents be stored in iCloud and available on all your devices?", nil) preferredStyle:UIAlertControllerStyleAlert];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"iCloud", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsUseCloudKey];
+		completionHandler(YES);
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Local Only", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:NCSettingsUseCloudKey];
+		completionHandler(NO);
+	}]];
+	[[UIAlertController frontMostViewController] presentViewController:controller animated:YES completion:nil];
 }
 
 - (void) askToTransferDataWithCompletionHandler:(void(^)(BOOL transfer)) completionHandler {
-	[[UIAlertView alertViewWithTitle:nil
-							 message:NSLocalizedString(@"Do you want to copy Local Data to iCloud?", nil)
-				   cancelButtonTitle:NSLocalizedString(@"No", nil)
-				   otherButtonTitles:@[NSLocalizedString(@"Copy", nil)]
-					 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-						 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NCSettingsMigratedToCloudKey"];
-						 completionHandler(selectedButtonIndex != alertView.cancelButtonIndex);
-					 }
-						 cancelBlock:^{
-							 completionHandler(NO);
-						 }] show];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"Do you want to copy Local Data to iCloud?", nil) preferredStyle:UIAlertControllerStyleAlert];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NCSettingsMigratedToCloudKey"];
+		completionHandler(YES);
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NO", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NCSettingsMigratedToCloudKey"];
+		completionHandler(NO);
+	}]];
+	[[UIAlertController frontMostViewController] presentViewController:controller animated:YES completion:nil];
 }
 
 - (void) ubiquityIdentityDidChange:(NSNotification*) notification {

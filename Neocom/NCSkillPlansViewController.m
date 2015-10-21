@@ -11,7 +11,6 @@
 #import "NCSkillPlan.h"
 #import "NCStorage.h"
 #import "NCTableViewCell.h"
-#import "UIAlertView+Block.h"
 #import "NSString+Neocom.h"
 
 @interface NCSkillPlansViewControllerRow : NSObject

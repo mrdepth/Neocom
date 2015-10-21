@@ -9,7 +9,6 @@
 #import "NCSettingsViewController.h"
 #import "NCNotificationsManager.h"
 #import "NCMainMenuViewController.h"
-#import "UIAlertView+Block.h"
 #import "NCCache.h"
 #import "NCAppDelegate.h"
 #import "UIColor+Neocom.h"

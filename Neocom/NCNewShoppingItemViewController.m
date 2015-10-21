@@ -13,7 +13,6 @@
 //#import "NCShoppingItem+Neocom.h"
 #import "NCPriceManager.h"
 #import "NSString+Neocom.h"
-#import "UIAlertView+Block.h"
 //#import "NCShoppingGroup+Neocom.h"
 #import "UIViewController+Neocom.h"
 
@@ -82,26 +81,28 @@
 }
 
 - (IBAction)onSetQuantity:(id)sender {
-	UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Enter Quantity", nil)
-													 message:nil
-										   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-										   otherButtonTitles:@[NSLocalizedString(@"Ok", nil)]
-											 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-												 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-													 UITextField* textField = [alertView textFieldAtIndex:0];
-													 int32_t quantity = [textField.text intValue];
-													 quantity = MIN(self.stepper.maximumValue, MAX(self.stepper.minimumValue, quantity));
-													 self.stepper.value = quantity;
-													 [self.quantityItem setTitle:[NSString stringWithFormat:@"%.0f", self.stepper.value]];
-													 [self.tableView reloadData];
-												 }
-											 }
-												 cancelBlock:nil];
-	alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-	UITextField* textField = [alertView textFieldAtIndex:0];
-	textField.keyboardType = UIKeyboardTypeDecimalPad;
-	textField.text = [NSString stringWithFormat:@"%.0f", self.stepper.value];
-	[alertView show];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Enter Quantity", nil)
+																		message:nil
+																 preferredStyle:UIAlertControllerStyleAlert];
+	__block UITextField* quantityTextField;
+	[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+		quantityTextField = textField;
+		textField.keyboardType = UIKeyboardTypeDecimalPad;
+		textField.text = [NSString stringWithFormat:@"%.0f", self.stepper.value];
+		textField.clearButtonMode = UITextFieldViewModeAlways;
+	}];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		int32_t quantity = [quantityTextField.text intValue];
+		quantity = MIN(self.stepper.maximumValue, MAX(self.stepper.minimumValue, quantity));
+		self.stepper.value = quantity;
+		[self.quantityItem setTitle:[NSString stringWithFormat:@"%.0f", self.stepper.value]];
+		[self.tableView reloadData];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[self presentViewController:controller animated:YES completion:nil];
 }
 
 - (IBAction)onAdd:(id)sender {

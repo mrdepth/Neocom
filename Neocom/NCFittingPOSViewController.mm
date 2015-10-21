@@ -7,7 +7,6 @@
 //
 
 #import "NCFittingPOSViewController.h"
-#import "UIAlertView+Block.h"
 #import "NCStorage.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NCFittingDamagePatternsViewController.h"

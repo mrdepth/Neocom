@@ -9,7 +9,6 @@
 #import "NCFittingImplantSetsViewController.h"
 #import "NCStorage.h"
 #import "NCTableViewCell.h"
-#import "UIAlertView+Block.h"
 
 @interface NCFittingImplantSetsViewControllerRow : NSObject
 @property (nonatomic, strong) NCImplantSet* implantSet;

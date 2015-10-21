@@ -13,7 +13,6 @@
 #import "NSNumberFormatter+Neocom.h"
 #import "NCAccount.h"
 #import "NCDatabaseTypeInfoViewController.h"
-#import "UIAlertView+Block.h"
 
 @interface NCFittingRequiredSkillsViewController ()
 @property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
@@ -58,7 +57,7 @@
 	UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
 																		message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.trainingQueue.trainingTime]]
 																 preferredStyle:UIAlertControllerStyleAlert];
-	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Yes", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Add", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 		NCAccount* account = [NCAccount currentAccount];
 		[account.managedObjectContext performBlock:^{
 			NCSkillPlan* skillPlan = account.activeSkillPlan;
@@ -67,7 +66,7 @@
 			}];
 		}];
 	}]];
-	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NO", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 	}]];
 	[self presentViewController:controller animated:YES completion:nil];
 }

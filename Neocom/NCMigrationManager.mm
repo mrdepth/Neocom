@@ -17,7 +17,6 @@
 #import "NCPOSFit.h"
 #import "NCStorage.h"
 #import "NCDatabase.h"
-#import "UIAlertView+Block.h"
 
 @interface NCStorage()
 - (void) notifyStorageChange;

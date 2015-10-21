@@ -10,8 +10,7 @@
 #import "ASHTTPServer.h"
 #import "UIDevice+IP.h"
 #import "NCAccountsManager.h"
-#import "UIAlertView+Error.h"
-#import "UIAlertView+Block.h"
+#import "UIAlertController+Neocom.h"
 #import "UIColor+Neocom.h"
 
 @interface NCAddAPIKeyViewController ()<ASHTTPServerDelegate>
@@ -80,15 +79,10 @@
 	if (accountsManager)
 		[accountsManager addAPIKeyWithKeyID:keyID vCode:vCode completionBlock:^(NSArray *accounts, NSError *error) {
 			if (error) {
-				[[UIAlertView alertViewWithError:error] show];
+				[self presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
 			}
 			else {
-				[[UIAlertView alertViewWithTitle:nil
-										 message:NSLocalizedString(@"API Key added", nil)
-							   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-							   otherButtonTitles:nil
-								 completionBlock:nil
-									 cancelBlock:nil] show];
+				[self presentViewController:[UIAlertController alertWithTitle:nil message:NSLocalizedString(@"API Key added", nil)] animated:YES completion:nil];
 				self.keyIDTextField.text = nil;
 				self.vCodeTextField.text = nil;
 				self.navigationItem.rightBarButtonItem.enabled = NO;

@@ -9,7 +9,6 @@
 #import "NCShoppingListsManagerViewController.h"
 #import "NCShoppingList.h"
 #import "NCStorage.h"
-#import "UIAlertView+Block.h"
 #import "NCShoppingGroup.h"
 
 @interface NCShoppingListsManagerViewController()
@@ -63,31 +62,29 @@
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
 	else if (editingStyle == UITableViewCellEditingStyleInsert) {
-		UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"New Shopping List", nil)
-														 message:nil
-											   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											   otherButtonTitles:@[NSLocalizedString(@"Create", nil)]
-												 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-													 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-														 UITextField* textField = [alertView textFieldAtIndex:0];
-														 NSString* name = textField.text.length > 0 ? textField.text : NSLocalizedString(@"Unnamed", nil);
-														 
-														 NCShoppingList* shoppingList = [[NCShoppingList alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingList" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-														 shoppingList.name = name;
-														 [self.storageManagedObjectContext save:nil];
-														 [NCShoppingList setCurrentShoppingList:shoppingList];
-														 [self.delegate shoppingListsManagerViewController:self didSelectShoppingList:[self.storageManagedObjectContext currentShoppingList]];
-														 [self unwind];
-
-//														 [self.rows addObject:@{@"name":name, @"object":shoppingList}];
-//														 [tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-													 }
-												 }
-													 cancelBlock:nil];
-		alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-		UITextField* textField = [alertView textFieldAtIndex:0];
-		textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-		[alertView show];
+		UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"New Shopping List", nil)
+																			message:nil
+																	 preferredStyle:UIAlertControllerStyleAlert];
+		__block UITextField* nameTextField;
+		[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+			nameTextField = textField;
+			textField.clearButtonMode = UITextFieldViewModeAlways;
+		}];
+		
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Create", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			NSString* name = nameTextField.text.length > 0 ? nameTextField.text : NSLocalizedString(@"Unnamed", nil);
+			
+			NCShoppingList* shoppingList = [[NCShoppingList alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingList" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+			shoppingList.name = name;
+			[self.storageManagedObjectContext save:nil];
+			[NCShoppingList setCurrentShoppingList:shoppingList];
+			[self.delegate shoppingListsManagerViewController:self didSelectShoppingList:[self.storageManagedObjectContext currentShoppingList]];
+			[self unwind];
+		}]];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		}]];
+		
+		[self presentViewController:controller animated:YES completion:nil];
 	}
 }
 
@@ -105,27 +102,28 @@
 		NCShoppingList* shoppingList = row[@"object"];
 
 		if (self.editing) {
-			UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename Shopping List", nil)
-															 message:nil
-												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-												   otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
-													 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-														 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-															 UITextField* textField = [alertView textFieldAtIndex:0];
-															 NSString* name = textField.text.length > 0 ? textField.text : NSLocalizedString(@"Unnamed", nil);
-															 
-															 shoppingList.name = name;
-															 [self.storageManagedObjectContext save:nil];
-															 [self.rows replaceObjectAtIndex:indexPath.row withObject:@{@"name":name, @"object":shoppingList}];
-															 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-														 }
-													 }
-														 cancelBlock:nil];
-			alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-			UITextField* textField = [alertView textFieldAtIndex:0];
-			textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-			textField.text = row[@"name"];
-			[alertView show];
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Rename Shopping List", nil)
+																				message:nil
+																		 preferredStyle:UIAlertControllerStyleAlert];
+			__block UITextField* nameTextField;
+			[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+				nameTextField = textField;
+				textField.text = row[@"name"];
+				textField.clearButtonMode = UITextFieldViewModeAlways;
+			}];
+			
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Rename", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				NSString* name = nameTextField.text.length > 0 ? nameTextField.text : NSLocalizedString(@"Unnamed", nil);
+				
+				shoppingList.name = name;
+				[self.storageManagedObjectContext save:nil];
+				[self.rows replaceObjectAtIndex:indexPath.row withObject:@{@"name":name, @"object":shoppingList}];
+				[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			}]];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+			}]];
+			
+			[self presentViewController:controller animated:YES completion:nil];
 		}
 		else {
 			[NCShoppingList setCurrentShoppingList:shoppingList];

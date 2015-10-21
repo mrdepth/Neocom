@@ -7,7 +7,6 @@
 //
 
 #import "NCStorage.h"
-#import "UIAlertView+Error.h"
 #import "NCAccount.h"
 #import "NCLoadout.h"
 #import "NCSkillPlan.h"
@@ -17,6 +16,7 @@
 #import <objc/runtime.h>
 #import "NSData+MD5.h"
 #import "NCMigrationManager.h"
+#import "UIAlertController+Neocom.h"
 
 
 @interface NCValueTransformer : NSValueTransformer
@@ -157,7 +157,7 @@ static NCStorage* sharedStorage;
 		}
 		if (error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[[UIAlertView alertViewWithError:error] show];
+				[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
 			});
 			return nil;
 		}
@@ -177,7 +177,7 @@ static NCStorage* sharedStorage;
 		}
 		if (error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[[UIAlertView alertViewWithError:error] show];
+				[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
 			});
 			return nil;
 		}
@@ -268,7 +268,7 @@ static NCStorage* sharedStorage;
 
 		if (error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[[UIAlertView alertViewWithError:error] show];
+				[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
 			});
 			return nil;
 		}
@@ -288,7 +288,7 @@ static NCStorage* sharedStorage;
 		}
 		if (error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[[UIAlertView alertViewWithError:error] show];
+				[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
 			});
 			return nil;
 		}

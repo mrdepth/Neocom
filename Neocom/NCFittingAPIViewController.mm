@@ -14,7 +14,6 @@
 #import "NCFittingAPIFlagsViewController.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NCFittingAPISearchResultsViewController.h"
-#import "UIAlertView+Block.h"
 #import "NCShipFit.h"
 #import "NCLoadout.h"
 #import "NSString+Neocom.h"
@@ -59,20 +58,21 @@
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsAPIAlwaysUploadFitsKey])
 			[self uploadFits];
 		else {
-			[[UIAlertView alertViewWithTitle:nil
-									 message:NSLocalizedString(@"Would you like to make your contribution to the Neocom community by sharing your fit?", nil)
-						   cancelButtonTitle:NSLocalizedString(@"Don't share this time", nil)
-						   otherButtonTitles:@[NSLocalizedString(@"Share this time", nil), NSLocalizedString(@"Always share", nil)]
-							 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-								 if (selectedButtonIndex == 2)
-									 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsAPIAlwaysUploadFitsKey];
-								 if (selectedButtonIndex != alertView.cancelButtonIndex)
-									 [self uploadFits];
-								 else {
-									 [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPIAlwaysUploadFitsKey];
-								 }
-							 } cancelBlock:^{
-							 }] show];
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil
+																				message:NSLocalizedString(@"Would you like to make your contribution to the Neocom community by sharing your fit?", nil)
+																		 preferredStyle:UIAlertControllerStyleAlert];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Share this time", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self uploadFits];
+			}]];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Always share", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsAPIAlwaysUploadFitsKey];
+				[self uploadFits];
+			}]];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Don't share this time", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+				[[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPIAlwaysUploadFitsKey];
+			}]];
+			
+			[self presentViewController:controller animated:YES completion:nil];
 		}
 	}
 }

@@ -10,7 +10,6 @@
 #import "NCFitCharacter.h"
 #import "NSArray+Neocom.h"
 #import "NCFittingCharacterEditorCell.h"
-#import "UIAlertView+Block.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NSString+Neocom.h"
 
@@ -94,11 +93,11 @@
 																						message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]]
 																				 preferredStyle:UIAlertControllerStyleAlert];
 					
-					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Yes", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Add", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 						[skillPlan mergeWithTrainingQueue:trainingQueue completionBlock:^(NCTrainingQueue *trainingQueue) {
 						}];
 					}]];
-					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"No", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 					}]];
 					[self presentViewController:controller animated:YES completion:nil];
 				}];

@@ -10,9 +10,9 @@
 #import <EVEAPI/EVEAPI.h>
 #import "NCKillMailsCell.h"
 #import "UIColor+Neocom.h"
-#import "UIAlertView+Error.h"
 #import "NCKillMailDetailsViewController.h"
 #import "NCKillMail.h"
+#import "UIAlertController+Neocom.h"
 
 @interface NCZKillBoardSearchResultsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* kills;
@@ -158,7 +158,7 @@
 		if (result.kills.count > 0)
 			[self performSegueWithIdentifier:@"NCKillMailDetailsViewController" sender:result.kills[0]];
 		else if (error)
-			[[UIAlertView alertViewWithError:error] show];
+			[self presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
 	} progressBlock:nil];
 }
 

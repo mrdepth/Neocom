@@ -10,7 +10,6 @@
 #import "NSString+Neocom.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import <objc/runtime.h>
-#import "UIAlertView+Block.h"
 #import "NCTableViewCell.h"
 #import "UIColor+Neocom.h"
 
@@ -140,20 +139,17 @@
 	
 	if (row.object && [row.object isKindOfClass:[NCTrainingQueue class]]) {
 		NCTrainingQueue* trainingQueue = row.object;
-		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
-								 message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]]
-					   cancelButtonTitle:NSLocalizedString(@"No", nil)
-					   otherButtonTitles:@[NSLocalizedString(@"Yes", nil)]
-						 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-								 NCAccount* account = [NCAccount currentAccount];
-								 [account.managedObjectContext performBlock:^{
-									 NCSkillPlan* skillPlan = [account activeSkillPlan];
-									 [skillPlan mergeWithTrainingQueue:trainingQueue completionBlock:nil];
-								 }];
-							 }
-						 }
-							 cancelBlock:nil] show];
+		UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
+																			message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]]
+																	 preferredStyle:UIAlertControllerStyleAlert];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Add", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			NCAccount* account = [NCAccount currentAccount];
+			[account.managedObjectContext performBlock:^{
+				[account.activeSkillPlan mergeWithTrainingQueue:trainingQueue completionBlock:nil];
+			}];
+		}]];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		}]];
 	}
 }
 

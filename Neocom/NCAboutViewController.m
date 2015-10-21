@@ -7,7 +7,6 @@
 //
 
 #import "NCAboutViewController.h"
-#import "UIAlertView+Block.h"
 #import "NCCache.h"
 #import "UIColor+Neocom.h"
 

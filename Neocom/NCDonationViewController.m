@@ -10,6 +10,7 @@
 #import "ASInAppPurchase.h"
 #import "NCDonationCell.h"
 #import "UIColor+Neocom.h"
+#import "UIAlertController+Neocom.h"
 
 @interface NCDonationViewController ()<SKPaymentTransactionObserver>
 @property (nonatomic, assign, getter = isAnAppActive) BOOL inAppActive;
@@ -134,24 +135,14 @@
 }
 
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
-	UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
-														message:NSLocalizedString(@"Sorry, but we haven't found your purchases.", nil)
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"Close", nil)
-											  otherButtonTitles:nil];
-	[alertView show];
+	[self presentViewController:[UIAlertController alertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Sorry, but we haven't found your purchases", nil)] animated:YES completion:nil];
 	self.inAppActive = NO;
 	[self.tableView reloadData];
 }
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
 	if (queue.transactions.count == 0) {
-		UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
-															message:NSLocalizedString(@"Sorry, but we haven't found your purchases.", nil)
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"Close", nil)
-												  otherButtonTitles:nil];
-		[alertView show];
+		[self presentViewController:[UIAlertController alertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Sorry, but we haven't found your purchases", nil)] animated:YES completion:nil];
 	}
 	self.inAppActive = NO;
 	[self.tableView reloadData];

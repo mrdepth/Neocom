@@ -38,6 +38,5 @@
 - (id) initWithAsset:(EVEAssetListItem*) asset;
 
 - (void) save;
-- (void) load;
 
 @end

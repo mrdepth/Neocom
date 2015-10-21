@@ -608,15 +608,6 @@
 		cell.subtitleLabel.text = asset.owner;
 	else
 		cell.subtitleLabel.text = nil;
-	
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
-		if (asset.parent) {
-			if (asset.owner)
-				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@ (%@)", nil), asset.parent.title, asset.owner];
-			else
-				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@", nil), asset.parent.title];
-		}
-	}
 }
 
 #pragma mark - NCAssetsAccountsViewControllerDelegate

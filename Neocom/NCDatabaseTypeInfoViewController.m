@@ -298,10 +298,6 @@
 			}];
 		}]];
 		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-			NCAccount* account = [NCAccount currentAccount];
-			[account.managedObjectContext performBlock:^{
-				[account.activeSkillPlan mergeWithTrainingQueue:trainingQueue completionBlock:nil];
-			}];
 		}]];
 		[self presentViewController:controller animated:YES completion:nil];
 	}

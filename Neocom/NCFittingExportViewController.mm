@@ -16,8 +16,8 @@
 #import "NSArray+Neocom.h"
 #import "UIColor+Neocom.h"
 #import "NCLoadoutsParser.h"
-#import "UIAlertView+Block.h"
 #import "NCStorage.h"
+#import "UIAlertController+Neocom.h"
 
 @interface NCFittingExportViewControllerRow : NSObject
 @property (nonatomic, strong) NSManagedObjectID* loadoutID;
@@ -183,12 +183,7 @@
 					}
 				}
 			}
-			[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Error", nil)
-									 message:NSLocalizedString(@"Invalid file format", nil)
-						   cancelButtonTitle:NSLocalizedString(@"Close", nil)
-						   otherButtonTitles:nil
-							 completionBlock:nil
-								 cancelBlock:nil] show];
+			[self presentViewController:[UIAlertController alertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Invalid file format", nil)] animated:YES completion:nil];
 		}
 		statusCode = 200;
 		headerFields[@"Content-Type"] = @"text/html; charset=UTF-8";

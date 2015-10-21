@@ -10,7 +10,6 @@
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCDatabaseGroupPickerViewContoller.h"
 #import "NCDatabaseSolarSystemPickerViewController.h"
-#import "UIAlertView+Block.h"
 #import "NCCharacterID.h"
 #import "NCZKillBoardSearchResultsViewController.h"
 #import <EVEAPI/EVEAPI.h>

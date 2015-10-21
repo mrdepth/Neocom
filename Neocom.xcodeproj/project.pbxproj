@@ -218,6 +218,7 @@
 		125DC6921BD77E65005C2F79 /* NCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BAE18C852550025D971 /* NCAboutViewController.m */; settings = {ASSET_TAGS = (); }; };
 		125DC6931BD77E77005C2F79 /* NCDonationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB618C87C1B0025D971 /* NCDonationCell.m */; settings = {ASSET_TAGS = (); }; };
 		125DC6941BD77E77005C2F79 /* NCDonationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB218C875910025D971 /* NCDonationViewController.m */; settings = {ASSET_TAGS = (); }; };
+		125DC69A1BD7BB6F005C2F79 /* UIAlertController+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 125DC6991BD7BB6F005C2F79 /* UIAlertController+Neocom.m */; settings = {ASSET_TAGS = (); }; };
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
 		125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 125F6824188537FF005732FA /* NCCharacterAttributes.mm */; };
 		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
@@ -942,6 +943,8 @@
 		1256923C1A37799A008F6468 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		125AEFFA1AE7A8C6008B9EAF /* NCDBVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBVersion.h; sourceTree = "<group>"; };
 		125AEFFB1AE7A8C6008B9EAF /* NCDBVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBVersion.m; sourceTree = "<group>"; };
+		125DC6981BD7BB6F005C2F79 /* UIAlertController+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+Neocom.h"; sourceTree = "<group>"; };
+		125DC6991BD7BB6F005C2F79 /* UIAlertController+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+Neocom.m"; sourceTree = "<group>"; };
 		125F681818852DA9005732FA /* NCSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillsViewController.h; sourceTree = "<group>"; };
 		125F681918852DA9005732FA /* NCSkillsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillsViewController.m; sourceTree = "<group>"; };
 		125F682018853230005732FA /* NCSkillData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillData.h; sourceTree = "<group>"; };
@@ -2731,6 +2734,8 @@
 				1267030B1A911A0800F816F9 /* NSMutableAttributedString+Neocom.m */,
 				1215F57C1B831E9B00C16649 /* NSCache+Neocom.h */,
 				1215F57D1B831E9B00C16649 /* NSCache+Neocom.m */,
+				125DC6981BD7BB6F005C2F79 /* UIAlertController+Neocom.h */,
+				125DC6991BD7BB6F005C2F79 /* UIAlertController+Neocom.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -4370,6 +4375,7 @@
 				120E77B81B25D91300816E1C /* NCSplashScreenViewController.m in Sources */,
 				120C339419CAB0AC0093EECA /* NCDBInvGroup.m in Sources */,
 				125F682218853230005732FA /* NCSkillData.m in Sources */,
+				125DC69A1BD7BB6F005C2F79 /* UIAlertController+Neocom.m in Sources */,
 				1264FD6E1BBC576E002AFDF3 /* NCSkillsViewController.m in Sources */,
 				129E23A91BC3FD3000E311BF /* NCFittingShipPriceCell.m in Sources */,
 				1282573D1BCFF1E900BC1F56 /* NCFittingAPISearchResultsCell.m in Sources */,

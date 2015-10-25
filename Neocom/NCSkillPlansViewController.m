@@ -85,7 +85,7 @@
 		cell.object = row;
 		cell.titleLabel.text = row.skillPlanName.length > 0 ? row.skillPlanName : NSLocalizedString(@"Unnamed", nil);
 		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:row.trainingQueue.trainingTime], (int32_t) row.trainingQueue.skills.count];
-		cell.accessoryView = row.active ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+		cell.accessoryView = row.active ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]] : nil;
 		return cell;
 	}
 	else

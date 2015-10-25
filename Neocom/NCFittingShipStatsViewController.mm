@@ -184,7 +184,7 @@
 					};
 					[rows addObject:row];
 					
-					NSArray* images = @[@"shield.png", @"armor.png", @"hull.png", @"damagePattern.png"];
+					NSArray* images = @[@"shield", @"armor", @"hull", @"damagePattern"];
 					for (int i = 0; i < 4; i++) {
 						row = [NCFittingShipStatsViewControllerRow new];
 						row.cellIdentifier = @"NCFittingResistancesCell";
@@ -478,19 +478,19 @@
 								UIImage* sensorImage;
 								switch(ship->getScanType()) {
 									case eufe::Ship::SCAN_TYPE_GRAVIMETRIC:
-										sensorImage = [UIImage imageNamed:@"Gravimetric.png"];
+										sensorImage = [UIImage imageNamed:@"gravimetric"];
 										break;
 									case eufe::Ship::SCAN_TYPE_LADAR:
-										sensorImage = [UIImage imageNamed:@"Ladar.png"];
+										sensorImage = [UIImage imageNamed:@"ladar"];
 										break;
 									case eufe::Ship::SCAN_TYPE_MAGNETOMETRIC:
-										sensorImage = [UIImage imageNamed:@"Magnetometric.png"];
+										sensorImage = [UIImage imageNamed:@"magnetometric"];
 										break;
 									case eufe::Ship::SCAN_TYPE_RADAR:
-										sensorImage = [UIImage imageNamed:@"Radar.png"];
+										sensorImage = [UIImage imageNamed:@"radar"];
 										break;
 									default:
-										sensorImage = [UIImage imageNamed:@"Multispectral.png"];
+										sensorImage = [UIImage imageNamed:@"multispectral"];
 										break;
 								}
 

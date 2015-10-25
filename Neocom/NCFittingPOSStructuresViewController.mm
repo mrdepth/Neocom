@@ -373,7 +373,7 @@
 
 	if (indexPath.row >= self.rows.count) {
 		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
-		cell.iconView.image = [UIImage imageNamed:@"slotRig.png"];
+		cell.iconView.image = [UIImage imageNamed:@"slotRig"];
 		cell.titleLabel.text = NSLocalizedString(@"Add Structure", nil);
 		cell.subtitleLabel.text = nil;
 		cell.accessoryView = nil;
@@ -419,16 +419,16 @@
 
 			switch (structure->getState()) {
 				case eufe::Module::STATE_ACTIVE:
-					row.stateImage = [UIImage imageNamed:@"active.png"];
+					row.stateImage = [UIImage imageNamed:@"active"];
 					break;
 				case eufe::Module::STATE_ONLINE:
-					row.stateImage = [UIImage imageNamed:@"online.png"];
+					row.stateImage = [UIImage imageNamed:@"online"];
 					break;
 				case eufe::Module::STATE_OVERLOADED:
-					row.stateImage = [UIImage imageNamed:@"overheated.png"];
+					row.stateImage = [UIImage imageNamed:@"overheated"];
 					break;
 				default:
-					row.stateImage = [UIImage imageNamed:@"offline.png"];
+					row.stateImage = [UIImage imageNamed:@"offline"];
 					break;
 			}
 

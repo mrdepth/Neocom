@@ -150,16 +150,16 @@
 		
 		UIImage* accessoryImage = nil;
 		if (cell.object == [self.storageManagedObjectContext currentShoppingList])
-			accessoryImage = [UIImage imageNamed:@"checkmark.png"];
+			accessoryImage = [UIImage imageNamed:@"checkmark"];
 		cell.accessoryView = accessoryImage ? [[UIImageView alloc] initWithImage:accessoryImage] : nil;
-		cell.iconView.image = [UIImage imageNamed:@"note.png"];
+		cell.iconView.image = [UIImage imageNamed:@"note"];
 	}
 	else {
 		cell.titleLabel.text = NSLocalizedString(@"Add Shopping List", nil);
 		cell.subtitleLabel.text = nil;
 		cell.object = nil;
 		cell.accessoryView = nil;
-		cell.iconView.image = [UIImage imageNamed:@"note.png"];
+		cell.iconView.image = [UIImage imageNamed:@"note"];
 	}
 }
 

@@ -180,7 +180,7 @@
 	if (!row.typeName) {
 		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 		if (indexPath.row >= self.rows.count) {
-			cell.iconView.image = [UIImage imageNamed:@"drone.png"];
+			cell.iconView.image = [UIImage imageNamed:@"drone"];
 			cell.titleLabel.text = NSLocalizedString(@"Add Drone", nil);
 		}
 		else {
@@ -222,7 +222,7 @@
 			else
 				row.optimalText = nil;
 			
-			row.stateImage = drone->isActive() ? [UIImage imageNamed:@"active.png"] : [UIImage imageNamed:@"offline.png"];
+			row.stateImage = drone->isActive() ? [UIImage imageNamed:@"active"] : [UIImage imageNamed:@"offline"];
 			row.hasTarget = drone->getTarget() != nullptr;
 
 			dispatch_async(dispatch_get_main_queue(), ^{

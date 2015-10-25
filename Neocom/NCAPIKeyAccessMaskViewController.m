@@ -64,7 +64,7 @@
 	
 	UIImage* accessoryImage = nil;
 	if (self.accessMask & call.accessMask)
-		accessoryImage = [UIImage imageNamed:@"checkmark.png"];
+		accessoryImage = [UIImage imageNamed:@"checkmark"];
 	cell.accessoryView = accessoryImage ? [[UIImageView alloc] initWithImage:accessoryImage] : nil;
     return cell;
 }

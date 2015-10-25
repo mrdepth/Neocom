@@ -123,21 +123,21 @@
 	else if (item.flags & NeocomAPIFlagMissileLaunchers)
 		cell.weaponTypeImageView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"12_12"] image] image];
 	else
-		cell.weaponTypeImageView.image = [UIImage imageNamed:@"turrets.png"];
+		cell.weaponTypeImageView.image = [UIImage imageNamed:@"turrets"];
 	
 	NSString* tankType;
 	if (item.flags & NeocomAPIFlagActiveTank) {
 		if (item.flags & NeocomAPIFlagArmorTank) {
-			cell.tankTypeImageView.image = [UIImage imageNamed:@"armorRepairer.png"];
+			cell.tankTypeImageView.image = [UIImage imageNamed:@"armorRepairer"];
 			tankType = NSLocalizedString(@"Active Armor", nil);
 		}
 		else {
-			cell.tankTypeImageView.image = [UIImage imageNamed:@"shieldBooster.png"];
+			cell.tankTypeImageView.image = [UIImage imageNamed:@"shieldBooster"];
 			tankType = NSLocalizedString(@"Active Shield", nil);
 		}
 	}
 	else {
-		cell.tankTypeImageView.image = [UIImage imageNamed:@"shieldRecharge.png"];
+		cell.tankTypeImageView.image = [UIImage imageNamed:@"shieldRecharge"];
 		tankType = NSLocalizedString(@"Passive", nil);
 	}
 	

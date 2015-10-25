@@ -1,3 +1,3 @@
 #!/bin/sh
 make clean
-make EXPANSION=Aegis
+make EXPANSION=Vanguard

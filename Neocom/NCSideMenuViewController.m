@@ -157,7 +157,7 @@
 - (void) setContentViewController:(UIViewController *)contentViewController animated:(BOOL)animated {
 	if ([contentViewController isKindOfClass:[UINavigationController class]]) {
 		UINavigationController* navigationController = (UINavigationController*) contentViewController;
-		navigationController.topViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menuIcon.png"] landscapeImagePhone:nil style:UIBarButtonItemStylePlain target:self action:@selector(onMenu:)];
+		navigationController.topViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menuIcon"] landscapeImagePhone:nil style:UIBarButtonItemStylePlain target:self action:@selector(onMenu:)];
 	}
 
 	contentViewController.view.userInteractionEnabled = !self.menuVisible;

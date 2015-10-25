@@ -121,9 +121,9 @@
 												 @(NeocomAPIFlagActiveTank | NeocomAPIFlagShieldTank),
 												 @(NeocomAPIFlagPassiveTank)];
 			
-			controller.icons = @[[UIImage imageNamed:@"armorRepairer.png"],
-								 [UIImage imageNamed:@"shieldBooster.png"],
-								 [UIImage imageNamed:@"shieldRecharge.png"]];
+			controller.icons = @[[UIImage imageNamed:@"armorRepairer"],
+								 [UIImage imageNamed:@"shieldBooster"],
+								 [UIImage imageNamed:@"shieldRecharge"]];
 			controller.selectedValue = @(self.flags & (NeocomAPIFlagActiveTank | NeocomAPIFlagArmorTank | NeocomAPIFlagShieldTank | NeocomAPIFlagPassiveTank));
 		}
 	}
@@ -289,23 +289,23 @@
 				if (self.flags & NeocomAPIFlagActiveTank) {
 					if (self.flags & NeocomAPIFlagArmorTank) {
 						cell.titleLabel.text = NSLocalizedString(@"Active Armor", nil);
-						cell.iconView.image = [UIImage imageNamed:@"armorRepairer.png"];
+						cell.iconView.image = [UIImage imageNamed:@"armorRepairer"];
 						cell.accessoryView = clearButton;
 					}
 					else {
 						cell.titleLabel.text = NSLocalizedString(@"Active Shield", nil);
-						cell.iconView.image = [UIImage imageNamed:@"shieldBooster.png"];
+						cell.iconView.image = [UIImage imageNamed:@"shieldBooster"];
 						cell.accessoryView = clearButton;
 					}
 				}
 				else if (self.flags & NeocomAPIFlagPassiveTank) {
 					cell.titleLabel.text = NSLocalizedString(@"Passive", nil);
-					cell.iconView.image = [UIImage imageNamed:@"shieldRecharge.png"];
+					cell.iconView.image = [UIImage imageNamed:@"shieldRecharge"];
 					cell.accessoryView = clearButton;
 				}
 				else {
 					cell.titleLabel.text = NSLocalizedString(@"Any Type of Tanking", nil);
-					cell.iconView.image = [UIImage imageNamed:@"shieldRecharge.png"];
+					cell.iconView.image = [UIImage imageNamed:@"shieldRecharge"];
 					cell.accessoryView = nil;
 				}
 			}
@@ -314,7 +314,7 @@
 			if (indexPath.row == 4) {
 				cell.titleLabel.text = NSLocalizedString(@"Only Cap Stable Fits", nil);
 				cell.subtitleLabel.text = nil;
-				cell.iconView.image = [UIImage imageNamed:@"capacitor.png"];
+				cell.iconView.image = [UIImage imageNamed:@"capacitor"];
 				UISwitch* switchView = [[UISwitch alloc] init];
 				switchView.on = (self.flags & NeocomAPIFlagCapStable) == NeocomAPIFlagCapStable;
 				[switchView addTarget:self action:@selector(onSwitch:) forControlEvents:UIControlEventValueChanged];

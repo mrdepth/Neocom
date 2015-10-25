@@ -201,19 +201,19 @@
 		NCFittingSectionGenericHeaderView* header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCFittingSectionGenericHeaderView"];
 		switch (section.slot) {
 			case eufe::Module::SLOT_MED:
-				header.imageView.image = [UIImage imageNamed:@"slotMed.png"];
+				header.imageView.image = [UIImage imageNamed:@"slotMed"];
 				header.titleLabel.text = NSLocalizedString(@"Med slots", nil);
 				break;
 			case eufe::Module::SLOT_LOW:
-				header.imageView.image = [UIImage imageNamed:@"slotLow.png"];
+				header.imageView.image = [UIImage imageNamed:@"slotLow"];
 				header.titleLabel.text = NSLocalizedString(@"Low slots", nil);
 				break;
 			case eufe::Module::SLOT_RIG:
-				header.imageView.image = [UIImage imageNamed:@"slotRig.png"];
+				header.imageView.image = [UIImage imageNamed:@"slotRig"];
 				header.titleLabel.text = NSLocalizedString(@"Rig slots", nil);
 				break;
 			case eufe::Module::SLOT_SUBSYSTEM:
-				header.imageView.image = [UIImage imageNamed:@"slotSubsystem.png"];
+				header.imageView.image = [UIImage imageNamed:@"slotSubsystem"];
 				header.titleLabel.text = NSLocalizedString(@"Subsystem slots", nil);
 				break;
 			case eufe::Module::SLOT_MODE:
@@ -342,27 +342,27 @@
 		cell.accessoryView = nil;
 		switch (section.slot) {
 			case eufe::Module::SLOT_HI:
-				cell.iconView.image = [UIImage imageNamed:@"slotHigh.png"];
+				cell.iconView.image = [UIImage imageNamed:@"slotHigh"];
 				cell.titleLabel.text = NSLocalizedString(@"High slot", nil);
 				break;
 			case eufe::Module::SLOT_MED:
-				cell.iconView.image = [UIImage imageNamed:@"slotMed.png"];
+				cell.iconView.image = [UIImage imageNamed:@"slotMed"];
 				cell.titleLabel.text = NSLocalizedString(@"Med slot", nil);
 				break;
 			case eufe::Module::SLOT_LOW:
-				cell.iconView.image = [UIImage imageNamed:@"slotLow.png"];
+				cell.iconView.image = [UIImage imageNamed:@"slotLow"];
 				cell.titleLabel.text = NSLocalizedString(@"Low slot", nil);
 				break;
 			case eufe::Module::SLOT_RIG:
-				cell.iconView.image = [UIImage imageNamed:@"slotRig.png"];
+				cell.iconView.image = [UIImage imageNamed:@"slotRig"];
 				cell.titleLabel.text = NSLocalizedString(@"Rig slot", nil);
 				break;
 			case eufe::Module::SLOT_SUBSYSTEM:
-				cell.iconView.image = [UIImage imageNamed:@"slotSubsystem.png"];
+				cell.iconView.image = [UIImage imageNamed:@"slotSubsystem"];
 				cell.titleLabel.text = NSLocalizedString(@"Subsystem slot", nil);
 				break;
 			case eufe::Module::SLOT_MODE:
-				cell.iconView.image = [UIImage imageNamed:@"ships.png"];
+				cell.iconView.image = [UIImage imageNamed:@"ships"];
 				cell.titleLabel.text = NSLocalizedString(@"Tactical mode", nil);
 				break;
 			default:
@@ -385,7 +385,7 @@
 																	  attributes:nil]];
 			NSTextAttachment* icon;
 			icon = [NSTextAttachment new];
-			icon.image = [UIImage imageNamed:@"targetingRange.png"];
+			icon.image = [UIImage imageNamed:@"targetingRange"];
 			icon.bounds = CGRectMake(0, -7 -cell.trackingLabel.font.descender, 15, 15);
 			[s appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
 			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@+ m)", nil),
@@ -455,16 +455,16 @@
 			if (slot == eufe::Module::SLOT_HI || slot == eufe::Module::SLOT_MED || slot == eufe::Module::SLOT_LOW) {
 				switch (module->getState()) {
 					case eufe::Module::STATE_ACTIVE:
-						row.stateImage = [UIImage imageNamed:@"active.png"];
+						row.stateImage = [UIImage imageNamed:@"active"];
 						break;
 					case eufe::Module::STATE_ONLINE:
-						row.stateImage = [UIImage imageNamed:@"online.png"];
+						row.stateImage = [UIImage imageNamed:@"online"];
 						break;
 					case eufe::Module::STATE_OVERLOADED:
-						row.stateImage = [UIImage imageNamed:@"overheated.png"];
+						row.stateImage = [UIImage imageNamed:@"overheated"];
 						break;
 					default:
-						row.stateImage = [UIImage imageNamed:@"offline.png"];
+						row.stateImage = [UIImage imageNamed:@"offline"];
 						break;
 				}
 			}

@@ -146,7 +146,7 @@
 	
 	NCDBInvType* row = [self.databaseManagedObjectContext invTypeWithTypeID:[self.sections[indexPath.section][indexPath.row] intValue]];
 	cell.titleLabel.text = row.typeName;
-	cell.accessoryView = self.selectedAreaEffect && self.selectedAreaEffect.typeID == row.typeID ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+	cell.accessoryView = self.selectedAreaEffect && self.selectedAreaEffect.typeID == row.typeID ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]] : nil;
 	cell.object = row;
 }
 

@@ -123,7 +123,7 @@
 					};
 					[rows addObject:row];
 					
-					NSArray* images = @[@"shield.png", @"armor.png", @"hull.png", @"damagePattern.png"];
+					NSArray* images = @[@"shield", @"armor", @"hull", @"damagePattern"];
 					for (int i = 0; i < 4; i++) {
 						row = [NCFittingPOSStatsViewControllerRow new];
 						row.cellIdentifier = @"NCFittingResistancesCell";

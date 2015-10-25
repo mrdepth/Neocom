@@ -93,7 +93,7 @@
 		cell.iconView.image = type.icon ? type.icon.image.image : [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
 		
 		if (fit == self.selectedTarget)
-			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
+			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]];
 		else
 			cell.accessoryView = nil;
 	}

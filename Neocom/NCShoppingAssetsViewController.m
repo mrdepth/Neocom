@@ -122,7 +122,7 @@
 			}
 			else {
 				row.title = NSLocalizedString(@"Hangar", nil);
-				row.icon = [UIImage imageNamed:@"stationcontainer.png"];
+				row.icon = [UIImage imageNamed:@"stationcontainer"];
 			}
 		}
 		row.quantity += asset.quantity;

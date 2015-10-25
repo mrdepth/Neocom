@@ -395,7 +395,7 @@
 				}];
 				
 				row.cellIdentifier = @"Cell";
-				row.image = [UIImage imageNamed:@"note.png"];
+				row.image = [UIImage imageNamed:@"note"];
 				row.object = shoppingListID;
 				[rows addObject:row];
 				[sections addObject:section];

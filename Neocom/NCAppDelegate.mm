@@ -410,7 +410,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 }
 
 - (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {
-	barButtonItem.image = [UIImage imageNamed:@"menuIcon.png"];
+	barButtonItem.image = [UIImage imageNamed:@"menuIcon"];
 	UINavigationController* navigationController = svc.viewControllers[1];
 	if ([navigationController isKindOfClass:[UINavigationController class]]) {
 		[[navigationController.viewControllers[0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];

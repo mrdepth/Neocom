@@ -147,7 +147,7 @@
 			[selectedAccounts removeObjectsAtIndexes:indexes];
 		
 		[selectedAccounts addObject:account.account.objectID];
-		cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
+		cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]];
 		self.selectedAccounts = selectedAccounts;
 		self.modified = YES;
 	}
@@ -191,7 +191,7 @@
 		cell.corporationNameLabel.text = characterInfo.corporation;
 		cell.allianceNameLabel.text = characterInfo.alliance;
 		
-		cell.accessoryView = [self.selectedAccounts containsObject:account.account.objectID] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+		cell.accessoryView = [self.selectedAccounts containsObject:account.account.objectID] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]] : nil;
 	}
 	else {
 		NCAccountCorporationCell *cell = (NCAccountCorporationCell*) tableViewCell;
@@ -213,7 +213,7 @@
 		
 		cell.allianceNameLabel.text = corporationSheet.allianceName;
 		
-		cell.accessoryView = [self.selectedAccounts containsObject:account.account.objectID] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+		cell.accessoryView = [self.selectedAccounts containsObject:account.account.objectID] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]] : nil;
 	}
 }
 

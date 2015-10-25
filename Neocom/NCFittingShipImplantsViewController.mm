@@ -87,11 +87,11 @@
 	else {
 		NCFittingSectionGenericHeaderView* header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCFittingSectionGenericHeaderView"];
 		if (sectionIndex == 1) {
-			header.imageView.image = [UIImage imageNamed:@"implant.png"];
+			header.imageView.image = [UIImage imageNamed:@"implant"];
 			header.titleLabel.text = NSLocalizedString(@"Implants", nil);
 		}
 		else {
-			header.imageView.image = [UIImage imageNamed:@"booster.png"];
+			header.imageView.image = [UIImage imageNamed:@"booster"];
 			header.titleLabel.text = NSLocalizedString(@"Boosters", nil);
 		}
 		return header;
@@ -199,11 +199,11 @@
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			cell.titleLabel.text = NSLocalizedString(@"Import Implant Set", nil);
-			cell.iconView.image = [UIImage imageNamed:@"augmentations.png"];
+			cell.iconView.image = [UIImage imageNamed:@"augmentations"];
 		}
 		else {
 			cell.titleLabel.text = NSLocalizedString(@"Save Implant Set", nil);
-			cell.iconView.image = [UIImage imageNamed:@"augmentations.png"];
+			cell.iconView.image = [UIImage imageNamed:@"augmentations"];
 		}
 	}
 	else {
@@ -219,7 +219,7 @@
 		
 		if (!type) {
 			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Slot %d", nil), (int32_t)(indexPath.row + 1)];
-			cell.iconView.image = [UIImage imageNamed:indexPath.section == 1 ? @"implant.png" : @"booster.png"];
+			cell.iconView.image = [UIImage imageNamed:indexPath.section == 1 ? @"implant" : @"booster"];
 		}
 		else {
 			cell.titleLabel.text = type.typeName;

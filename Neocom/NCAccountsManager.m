@@ -134,10 +134,38 @@ static NCAccountsManager* sharedManager = nil;
 	[self.storageManagedObjectContext performBlock:^{
 		NSArray* accounts = [self.storageManagedObjectContext allAccounts];
 		NSArray* apiKeys = [self.storageManagedObjectContext allAPIKeys];
-		if (completionBlock)
-			dispatch_async(dispatch_get_main_queue(), ^{
-				completionBlock(accounts, apiKeys);
-			});
+		
+		dispatch_group_t finishDispatchGroup = dispatch_group_create();
+		for (NCAPIKey* apiKey in apiKeys) {
+			if (!apiKey.apiKeyInfo) {
+				dispatch_group_enter(finishDispatchGroup);
+				EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:[[EVEAPIKey alloc] initWithKeyID:apiKey.keyID vCode:apiKey.vCode] cachePolicy:NSURLRequestUseProtocolCachePolicy];
+				[api apiKeyInfoWithCompletionBlock:^(EVEAPIKeyInfo *result, NSError *error) {
+					if (result) {
+						[apiKey.managedObjectContext performBlock:^{
+							apiKey.apiKeyInfo = result;
+							dispatch_group_leave(finishDispatchGroup);
+						}];
+					}
+					else
+						dispatch_group_leave(finishDispatchGroup);
+				} progressBlock:nil];
+			}
+		}
+		
+		dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+			[self.storageManagedObjectContext performBlock:^{
+				NSArray* validAccounts = [accounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"apiKey.apiKeyInfo <> NULL"]];
+				NSArray* validKeys = [apiKeys filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"apiKeyInfo <> NULL"]];
+				
+				if (completionBlock)
+					dispatch_async(dispatch_get_main_queue(), ^{
+						completionBlock(validAccounts, validKeys);
+					});
+
+			}];
+		});
+		
 	}];
 }
 

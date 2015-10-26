@@ -534,10 +534,12 @@
 			[self performSegueWithIdentifier:@"NCFittingDamagePatternsViewController" sender:sender];
 		}]];
 
-		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonRequiredSkills style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-			[[NCAccount currentAccount] loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
-				dispatch_async(dispatch_get_main_queue(), ^{
-					NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:self.databaseManagedObjectContext];
+		NCAccount* account = [NCAccount currentAccount];
+		if (account) {
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonRequiredSkills style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				NCAccount* account = [NCAccount currentAccount];
+				
+				void (^load)(NCTrainingQueue*) = ^(NCTrainingQueue* trainingQueue) {
 					__block std::set<eufe::TypeID> typeIDs;
 					[self.engine performBlockAndWait:^{
 						auto character = self.fit.pilot;
@@ -565,9 +567,20 @@
 						[trainingQueue addRequiredSkillsForType:[self.databaseManagedObjectContext invTypeWithTypeID:typeID]];
 					[self performSegueWithIdentifier:@"NCFittingRequiredSkillsViewController"
 											  sender:@{@"sender": sender, @"object": trainingQueue}];
-				});
-			}];
-		}]];
+				};
+				
+				if (account) {
+					[[NCAccount currentAccount] loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+						dispatch_async(dispatch_get_main_queue(), ^{
+							NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:self.databaseManagedObjectContext];
+							load(trainingQueue);
+						});
+					}];
+				}
+				else
+					load([NCTrainingQueue new]);
+			}]];
+		}
 		
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonExport style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 			[self performExport];
@@ -664,7 +677,19 @@
 	for (UIAlertAction* action in actions)
 		[controller addAction:action];
 	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
-	[self presentViewController:controller animated:YES completion:nil];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		if ([sender isKindOfClass:[UIBarButtonItem class]])
+			controller.popoverPresentationController.barButtonItem = sender;
+		else {
+			controller.popoverPresentationController.sourceView = sender;
+			controller.popoverPresentationController.sourceRect = [sender bounds];
+		}
+	}
+	else
+		[self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void) setFit:(NCShipFit *)fit {
@@ -886,7 +911,14 @@
 
 	
 	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
-	[self presentViewController:controller animated:YES completion:nil];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		controller.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItem;
+	}
+	else
+		[self presentViewController:controller animated:YES completion:nil];
 }
 
 @end

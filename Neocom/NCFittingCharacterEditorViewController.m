@@ -133,7 +133,19 @@
 		
 		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 		}]];
-		[self presentViewController:controller animated:YES completion:nil];
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			controller.modalPresentationStyle = UIModalPresentationPopover;
+			[self presentViewController:controller animated:YES completion:nil];
+			if ([sender isKindOfClass:[UIBarButtonItem class]])
+				controller.popoverPresentationController.barButtonItem = sender;
+			else {
+				controller.popoverPresentationController.sourceView = sender;
+				controller.popoverPresentationController.sourceRect = [sender bounds];
+			}
+		}
+		else
+			[self presentViewController:controller animated:YES completion:nil];
 	};
 	
 	if (account) {
@@ -188,7 +200,16 @@
 	
 	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 	}]];
-	[self presentViewController:controller animated:YES completion:nil];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		UITableViewCell* sender = [tableView cellForRowAtIndexPath:indexPath];
+		controller.popoverPresentationController.sourceView = sender;
+		controller.popoverPresentationController.sourceRect = [sender bounds];
+	}
+	else
+		[self presentViewController:controller animated:YES completion:nil];
 }
 
 

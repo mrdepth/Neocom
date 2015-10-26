@@ -83,8 +83,11 @@ static NCAccount* currentAccount = nil;
 			}];
 		}
 	}
-	if (changed)
+	if (changed) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:NCCurrentAccountDidChangeNotification object:account];
+		[account reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(NSError *error) {
+		} progressBlock:nil];
+	}
 }
 
 - (void) awakeFromInsert {

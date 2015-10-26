@@ -53,7 +53,7 @@
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		applicationVersion = [[[[NSBundle mainBundle] infoDictionary][(__bridge NSString*)kCFBundleVersionKey] pathExtension] integerValue];
-//		applicationVersion = 11856;
+		//applicationVersion = 12305;
 	});
 	return applicationVersion;
 }
@@ -78,7 +78,6 @@
 			int build = [downloadRecord[@"build"] intValue];
 			CKAsset* eufe = downloadRecord[@"eufe"];
 			CKAsset* database = downloadRecord[@"database"];
-			database = eufe;
 			
 			if (build > currentBuild) {
 				self.record = downloadRecord;
@@ -210,7 +209,10 @@
 - (UIViewController*) presentedViewController {
 	UIViewController* root = [UIApplication sharedApplication].delegate.window.rootViewController;
 	for(;root.presentedViewController; root = root.presentedViewController);
-	return root;
+	if ([root isKindOfClass:[UIAlertController class]])
+		return nil;
+	else
+		return root;
 }
 
 - (void) downloadUpdateWithRecord:(CKRecord*) record {
@@ -247,7 +249,6 @@
 			[NSKeyedArchiver archiveRootObject:record toFile:downloadRecordPath];
 			CKAsset* eufe = record[@"eufe"];
 			CKAsset* database = record[@"database"];
-			database = eufe;
 			if (eufe && database)
 				[self installUpdateWithRecord:record];
 		}
@@ -275,7 +276,6 @@
 	
 	CKAsset* eufe = record[@"eufe"];
 	CKAsset* database = record[@"database"];
-	database = eufe;
 	[self.progress becomeCurrentWithPendingUnitCount:1];
 	NSProgress* progress = [NSProgress progressWithTotalUnitCount:2];
 	[self.progress resignCurrent];

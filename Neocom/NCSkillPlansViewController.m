@@ -200,7 +200,15 @@
 			[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		}]];
 		
-		[self presentViewController:controller animated:YES completion:nil];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			controller.modalPresentationStyle = UIModalPresentationPopover;
+			[self presentViewController:controller animated:YES completion:nil];
+			UITableViewCell* sender = cell;
+			controller.popoverPresentationController.sourceView = sender;
+			controller.popoverPresentationController.sourceRect = [sender bounds];
+		}
+		else
+			[self presentViewController:controller animated:YES completion:nil];
 	}
 }
 

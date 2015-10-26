@@ -584,7 +584,16 @@
 					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 						
 					}]];
-					[self.controller presentViewController:controller animated:YES completion:nil];
+					
+					if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+						controller.modalPresentationStyle = UIModalPresentationPopover;
+						[self presentViewController:controller animated:YES completion:nil];
+						UITableViewCell* sender = cell;
+						controller.popoverPresentationController.sourceView = sender;
+						controller.popoverPresentationController.sourceRect = [sender bounds];
+					}
+					else
+						[self presentViewController:controller animated:YES completion:nil];
 				}]];
 			}
 		}
@@ -716,16 +725,32 @@
 				for (UIAlertAction* action in actions)
 					[controller addAction:action];
 				[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
-				[self.controller presentViewController:controller animated:YES completion:nil];
-			}]];
+				
+				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+					controller.modalPresentationStyle = UIModalPresentationPopover;
+					[self presentViewController:controller animated:YES completion:nil];
+					UITableViewCell* sender = cell;
+					controller.popoverPresentationController.sourceView = sender;
+					controller.popoverPresentationController.sourceRect = [sender bounds];
+				}
+				else
+					[self presentViewController:controller animated:YES completion:nil];			}]];
 		}
 	}];
 	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 	for (UIAlertAction* action in actions)
 		[controller addAction:action];
 	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
-	[self.controller presentViewController:controller animated:YES completion:nil];
 	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		UITableViewCell* sender = cell;
+		controller.popoverPresentationController.sourceView = sender;
+		controller.popoverPresentationController.sourceRect = [sender bounds];
+	}
+	else
+		[self presentViewController:controller animated:YES completion:nil];
 }
 
 @end

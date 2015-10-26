@@ -24,7 +24,10 @@
 
 + (UIViewController*) frontMostViewController {
 	UIViewController* frontMostViewController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-	for (; frontMostViewController.presentedViewController; frontMostViewController = frontMostViewController.presentedViewController);
+	for (; frontMostViewController.presentedViewController; frontMostViewController = frontMostViewController.presentedViewController)
+		if ([frontMostViewController.presentedViewController isKindOfClass:[UIAlertController class]])
+			break;
+	
 	return frontMostViewController;
 }
 

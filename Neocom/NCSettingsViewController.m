@@ -181,10 +181,13 @@
 		case NCUpdaterStateInstalling:
 			self.databaseCell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@: installing %.0f%%", nil), updateName, updater.progress.fractionCompleted * 100.0f];
 			break;
-		default:
+		default: {
+			NCDBVersion* version = [self.databaseManagedObjectContext version];
+			self.databaseCell.textLabel.text = [NSString stringWithFormat:@"%@ %@", version.expansion, version.version];
 			self.databaseCell.detailTextLabel.text = NSLocalizedString(@"Your database is up to date", nil);
 			break;
 		}
+	}
 }
 
 @end

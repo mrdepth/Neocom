@@ -407,6 +407,7 @@
 
 - (void) didChangeStorage:(NSNotification*) notification {
 	[super didChangeStorage:notification];
+	[self invalidateCache];
 	[self reload];
 }
 

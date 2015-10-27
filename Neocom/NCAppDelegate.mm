@@ -248,7 +248,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 				NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
 				[storageManagedObjectContext performBlock:^{
 					NCAccount* account = [storageManagedObjectContext accountWithUUID:uuid];
-					if (account)
+					if (account.apiKey.apiKeyInfo)
 						dispatch_async(dispatch_get_main_queue(), ^{
 							[NCAccount setCurrentAccount:account];
 						});

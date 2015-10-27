@@ -289,12 +289,14 @@
 					if (eventStore) {
 						[eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
 							if (granted)
-								[self updateEventsWithEventStore:eventStore accounts:accounts completionHandler:^(BOOL completed) {
-									if (completed) {
-										self.lastEventsUpdate = [NSDate date];
-										[[NSUserDefaults standardUserDefaults] setValue:self.lastEventsUpdate forKey:NCSettingsNotificationsLastEventsUpdateTimeKey];
-									}
-									self.eventsUpdating = NO;
+								[accountsManager.storageManagedObjectContext performBlock:^{
+									[self updateEventsWithEventStore:eventStore accounts:accounts completionHandler:^(BOOL completed) {
+										if (completed) {
+											self.lastEventsUpdate = [NSDate date];
+											[[NSUserDefaults standardUserDefaults] setValue:self.lastEventsUpdate forKey:NCSettingsNotificationsLastEventsUpdateTimeKey];
+										}
+										self.eventsUpdating = NO;
+									}];
 								}];
 							else
 								self.eventsUpdating = NO;

@@ -20,6 +20,7 @@
 		1209D16A1BDFB14D006FEF67 /* Attributes.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1209D1691BDFB14D006FEF67 /* Attributes.xcassets */; };
 		1209D16F1BDFB9DE006FEF67 /* MainMenu.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1209D16D1BDFB9DE006FEF67 /* MainMenu.xcassets */; };
 		1209D1701BDFB9DE006FEF67 /* UI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1209D16E1BDFB9DE006FEF67 /* UI.xcassets */; };
+		1209D1721BDFCB77006FEF67 /* libFlurry_7.2.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1209D1711BDFCB77006FEF67 /* libFlurry_7.2.1.a */; };
 		120B506D18FCFFCB0033AF78 /* level_000.gif in Resources */ = {isa = PBXBuildFile; fileRef = 120B504918FCFFCB0033AF78 /* level_000.gif */; };
 		120B506E18FCFFCB0033AF78 /* level_010.gif in Resources */ = {isa = PBXBuildFile; fileRef = 120B504A18FCFFCB0033AF78 /* level_010.gif */; };
 		120B506F18FCFFCB0033AF78 /* level_011.gif in Resources */ = {isa = PBXBuildFile; fileRef = 120B504B18FCFFCB0033AF78 /* level_011.gif */; };
@@ -362,7 +363,6 @@
 		12D963E51BA1F1A100292321 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1248CE7C1B7DDCE1000266BE /* AFNetworking.framework */; };
 		12D963E61BA1F5BC00292321 /* NCMigrationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F955FC18CDA5DE005CEAD6 /* NCMigrationManager.mm */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
-		12E7D95F1BA3151700621B6F /* libFlurry_7.1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E7D95E1BA3151700621B6F /* libFlurry_7.1.0.a */; };
 		12E86940195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
 		12E86941195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
 		12E86944195EC700004B66D0 /* NCTodayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E86943195EC700004B66D0 /* NCTodayCell.m */; };
@@ -540,6 +540,7 @@
 		1209D1691BDFB14D006FEF67 /* Attributes.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Attributes.xcassets; sourceTree = "<group>"; };
 		1209D16D1BDFB9DE006FEF67 /* MainMenu.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MainMenu.xcassets; sourceTree = "<group>"; };
 		1209D16E1BDFB9DE006FEF67 /* UI.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = UI.xcassets; sourceTree = "<group>"; };
+		1209D1711BDFCB77006FEF67 /* libFlurry_7.2.1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_7.2.1.a; sourceTree = "<group>"; };
 		120B504918FCFFCB0033AF78 /* level_000.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_000.gif; sourceTree = "<group>"; };
 		120B504A18FCFFCB0033AF78 /* level_010.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_010.gif; sourceTree = "<group>"; };
 		120B504B18FCFFCB0033AF78 /* level_011.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_011.gif; sourceTree = "<group>"; };
@@ -1073,7 +1074,6 @@
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
 		12E7D95C1BA3151700621B6F /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		12E7D95D1BA3151700621B6F /* FlurryWatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryWatch.h; sourceTree = "<group>"; };
-		12E7D95E1BA3151700621B6F /* libFlurry_7.1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_7.1.0.a; sourceTree = "<group>"; };
 		12E8693E195EC14D004B66D0 /* NCTodayRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTodayRow.h; sourceTree = "<group>"; };
 		12E8693F195EC14D004B66D0 /* NCTodayRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTodayRow.m; sourceTree = "<group>"; };
 		12E86942195EC700004B66D0 /* NCTodayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTodayCell.h; sourceTree = "<group>"; };
@@ -1225,9 +1225,9 @@
 				12F9561A18CDB802005CEAD6 /* AudioToolbox.framework in Frameworks */,
 				12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */,
 				123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */,
-				12E7D95F1BA3151700621B6F /* libFlurry_7.1.0.a in Frameworks */,
 				1219C14A1AA4FF0000FF6205 /* GoogleMobileAds.framework in Frameworks */,
 				127123AA1897ABF3005F46EE /* eufe.framework in Frameworks */,
+				1209D1721BDFCB77006FEF67 /* libFlurry_7.2.1.a in Frameworks */,
 				84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */,
 				129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */,
 				121112401859A54D009E5106 /* CoreData.framework in Frameworks */,
@@ -1960,7 +1960,7 @@
 			children = (
 				12E7D95C1BA3151700621B6F /* Flurry.h */,
 				12E7D95D1BA3151700621B6F /* FlurryWatch.h */,
-				12E7D95E1BA3151700621B6F /* libFlurry_7.1.0.a */,
+				1209D1711BDFCB77006FEF67 /* libFlurry_7.2.1.a */,
 			);
 			path = flurry;
 			sourceTree = "<group>";

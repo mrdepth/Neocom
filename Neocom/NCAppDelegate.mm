@@ -115,6 +115,17 @@ void uncaughtExceptionHandler(NSException* exception) {
 			
 			NSString* uuidFromDefaults = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCurrentAccountKey];
 			if (uuidFromNotifications || uuidFromDefaults) {
+/*				[[NCAccountsManager sharedManager] loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray *apiKeys) {
+					NCAccount* account;
+					if (uuidFromNotifications)
+						account = [[accounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuidFromNotifications]] lastObject];
+					if (!account && uuidFromDefaults)
+						account = [[accounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuidFromDefaults]] lastObject];
+					if (account)
+						dispatch_async(dispatch_get_main_queue(), ^{
+							[NCAccount setCurrentAccount:account];
+						});
+				}];*/
 				NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
 				[storageManagedObjectContext performBlock:^{
 					NCAccount* account;
@@ -122,7 +133,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 						account = [storageManagedObjectContext accountWithUUID:uuidFromNotifications];
 					if (!account && uuidFromDefaults)
 						account = [storageManagedObjectContext accountWithUUID:uuidFromDefaults];
-					if (account)
+					if (account.apiKey.apiKeyInfo)
 						dispatch_async(dispatch_get_main_queue(), ^{
 							[NCAccount setCurrentAccount:account];
 						});

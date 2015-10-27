@@ -155,6 +155,8 @@ static NCAccountsManager* sharedManager = nil;
 		
 		dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
 			[self.storageManagedObjectContext performBlock:^{
+				if ([self.storageManagedObjectContext hasChanges])
+					[self.storageManagedObjectContext save:nil];
 				NSArray* validAccounts = [accounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"apiKey.apiKeyInfo <> NULL"]];
 				NSArray* validKeys = [apiKeys filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"apiKeyInfo <> NULL"]];
 				

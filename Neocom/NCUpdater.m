@@ -193,7 +193,7 @@
 		[fileManager createDirectoryAtPath:self.versionDirectory withIntermediateDirectories:YES attributes:nil error:nil];
 	else if (!isDirectory) {
 		[fileManager removeItemAtPath:self.libraryDirectory error:nil];
-		[fileManager createDirectoryAtPath:self.versionDirectory withIntermediateDirectories:nil attributes:nil error:nil];
+		[fileManager createDirectoryAtPath:self.versionDirectory withIntermediateDirectories:YES attributes:nil error:nil];
 	}
 	
 	NSString* currentBuild = [NSString stringWithFormat:@"%d", [[[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType] version].build];

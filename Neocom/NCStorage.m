@@ -69,7 +69,7 @@ static NCStorage* sharedStorage;
 @property (nonatomic, assign, readwrite) NCStorageType storageType;
 @property (nonatomic, strong) id observer;
 
-- (void) didUpdateCloud:(NSNotification*) notification;
+//- (void) didUpdateCloud:(NSNotification*) notification;
 - (void) notifyStorageChange;
 
 @end
@@ -218,8 +218,8 @@ static NCStorage* sharedStorage;
 								  NSInferMappingModelAutomaticallyOption : @(YES),
 								  NSMigratePersistentStoresAutomaticallyOption : @(YES)} mutableCopy];
 		{
-			NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage" withExtension:@"momd"];
-			NSManagedObjectModel* model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+			//NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage" withExtension:@"momd"];
+			//NSManagedObjectModel* model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 			//options[NSStoreModelVersionHashesKey] = [model entityVersionHashesByName];
 
 		}

@@ -30,11 +30,11 @@
 @property (nonatomic, strong) id didChangeObserver;
 @property (nonatomic, strong) id storeChangedObserver;
 
-- (BOOL) transferAPIKeysWithError:(NSError**) errorPtr;
+/*- (BOOL) transferAPIKeysWithError:(NSError**) errorPtr;
 - (void) transferShipLoadouts;
 - (void) transferPOSLoadouts;
 - (void) transferSkillPlans;
-- (void) transferCloudToLocal;
+- (void) transferCloudToLocal;*/
 @end
 
 @implementation NCMigrationManager
@@ -50,10 +50,10 @@
 //		migrationManager.storage = [NCStorage fallbackStorage];
 		migrationManager.accountsManager = [[NCAccountsManager alloc] initWithStorage:migrationManager.storage];
 		@try {
-			[migrationManager transferAPIKeysWithError:&error];
-			[migrationManager transferShipLoadouts];
-			[migrationManager transferPOSLoadouts];
-			[migrationManager transferSkillPlans];
+//			[migrationManager transferAPIKeysWithError:&error];
+//			[migrationManager transferShipLoadouts];
+//			[migrationManager transferPOSLoadouts];
+//			[migrationManager transferSkillPlans];
 //			[migrationManager.storage.managedObjectContext performBlockAndWait:^{
 //				[migrationManager.storage saveContext];
 //			}];

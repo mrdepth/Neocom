@@ -35,7 +35,7 @@
 
 //NCFitCharacter
 - (NSArray*) fitCharacters;
-- (NCFitCharacter*) fitCharacterWithAccount:(NCAccount*) account;
+//- (NCFitCharacter*) fitCharacterWithAccount:(NCAccount*) account;
 - (NCFitCharacter*) fitCharacterWithSkillsLevel:(NSInteger) skillsLevel;
 
 //NCSetting

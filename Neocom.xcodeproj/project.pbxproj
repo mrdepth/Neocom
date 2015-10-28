@@ -703,8 +703,6 @@
 		1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillQueueViewController.m; sourceTree = "<group>"; };
 		122947E918EAA51D0093FAB8 /* NCSkillsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillsContainerViewController.h; sourceTree = "<group>"; };
 		122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillsContainerViewController.m; sourceTree = "<group>"; };
-		122947EC18EAB3950093FAB8 /* Fitting_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Fitting_iPad.storyboard; sourceTree = "<group>"; };
-		122947EE18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShipFitting_iPad.storyboard; sourceTree = "<group>"; };
 		122947F118EACAAF0093FAB8 /* NCFittingShipStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipStatsViewController.h; sourceTree = "<group>"; };
 		122947F218EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = NCFittingShipStatsViewController.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		122C51EF188FA746000AEC2C /* NCCacheRecordData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCacheRecordData.h; sourceTree = "<group>"; };
@@ -725,11 +723,8 @@
 		122F01C719483D2100D04D60 /* NCDBInvType+Neocom.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NCDBInvType+Neocom.mm"; sourceTree = "<group>"; };
 		12331DBF18F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCZKillBoardSwitchCell.h; sourceTree = "<group>"; };
 		12331DC018F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCZKillBoardSwitchCell.m; sourceTree = "<group>"; };
-		1235E3EE18E552C100BC2607 /* Database_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Database_iPad.storyboard; sourceTree = "<group>"; };
 		1235E3F218E562E300BC2607 /* NCNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNavigationController.h; sourceTree = "<group>"; };
 		1235E3F318E562E300BC2607 /* NCNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNavigationController.m; sourceTree = "<group>"; };
-		1235E3F518E56F0B00BC2607 /* Character_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Character_iPad.storyboard; sourceTree = "<group>"; };
-		1235E3F718E5825800BC2607 /* Market_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Market_iPad.storyboard; sourceTree = "<group>"; };
 		123A97F218C7017E001045F5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		123A97F518C708FE001045F5 /* NSString+Temp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Temp.h"; sourceTree = "<group>"; };
 		123A97F618C708FE001045F5 /* NSString+Temp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Temp.m"; sourceTree = "<group>"; };
@@ -848,7 +843,6 @@
 		127A1AB51BAC32ED0066A5EE /* NCFittingEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingEngine.mm; sourceTree = "<group>"; };
 		127AAFE918841F6B008003E5 /* UIColor+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Neocom.h"; sourceTree = "<group>"; };
 		127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Neocom.m"; sourceTree = "<group>"; };
-		127BF2601AD79B240037A401 /* ShoppingList_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShoppingList_iPad.storyboard; sourceTree = "<group>"; };
 		127E1BDF188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCertificatesViewController.h; sourceTree = "<group>"; };
 		127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseCertificatesViewController.m; sourceTree = "<group>"; };
 		1282578B1BD1370000BC1F56 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -999,7 +993,6 @@
 		12ACDCA818A0B12D00566DFE /* NCFittingDamagePatternCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternCell.h; sourceTree = "<group>"; };
 		12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternCell.m; sourceTree = "<group>"; };
 		12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = damagePatterns.plist; sourceTree = "<group>"; };
-		12B3198718DAFA8C00025C53 /* Main_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_iPad.storyboard; sourceTree = "<group>"; };
 		12B42E6A1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNewShoppingItemViewController.h; sourceTree = "<group>"; };
 		12B42E6B1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNewShoppingItemViewController.m; sourceTree = "<group>"; };
 		12B42E6D1AC7182000A0D956 /* ShoppingList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShoppingList.storyboard; sourceTree = "<group>"; };
@@ -1023,11 +1016,8 @@
 		12B950991ADB8D5E009E31DB /* fits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = fits.html; sourceTree = "<group>"; };
 		12B9509F1ADB8D96009E31DB /* NCFittingExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingExportViewController.h; sourceTree = "<group>"; };
 		12B950A01ADB8D96009E31DB /* NCFittingExportViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingExportViewController.mm; sourceTree = "<group>"; };
-		12B971A218EC28D2008F8740 /* POSFitting_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = POSFitting_iPad.storyboard; sourceTree = "<group>"; };
 		12B971A518EC2A11008F8740 /* NCFittingPOSStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPOSStatsViewController.h; sourceTree = "<group>"; };
 		12B971A618EC2A11008F8740 /* NCFittingPOSStatsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = NCFittingPOSStatsViewController.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		12B971A818EC3D08008F8740 /* KillBoard_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KillBoard_iPad.storyboard; sourceTree = "<group>"; };
-		12B971AA18EC4A38008F8740 /* Help_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Help_iPad.storyboard; sourceTree = "<group>"; };
 		12B97D3118AB75F900ECCFC3 /* NCFittingBattleClinicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingBattleClinicViewController.h; sourceTree = "<group>"; };
 		12B97D3218AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NCFittingBattleClinicViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		12B97D3618AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingBattleClinicSearchResultsViewController.h; sourceTree = "<group>"; };
@@ -1393,25 +1383,15 @@
 				126ED32C188144370009FA39 /* mainMenu.plist */,
 				123A980318C71548001045F5 /* rssFeeds.plist */,
 				120968641845F0CB00921A37 /* Main.storyboard */,
-				12B3198718DAFA8C00025C53 /* Main_iPad.storyboard */,
 				841534EF188A9A7500B42433 /* Database.storyboard */,
-				1235E3EE18E552C100BC2607 /* Database_iPad.storyboard */,
 				1243761B189653980078F526 /* Character.storyboard */,
-				1235E3F518E56F0B00BC2607 /* Character_iPad.storyboard */,
 				12A7DBA718B36B2F00343D25 /* Market.storyboard */,
-				1235E3F718E5825800BC2607 /* Market_iPad.storyboard */,
 				849FEE3118A419A200A4F85E /* Fitting.storyboard */,
-				122947EC18EAB3950093FAB8 /* Fitting_iPad.storyboard */,
 				84AC540C18A94034000C308C /* ShipFitting.storyboard */,
-				122947EE18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard */,
 				129C585618AA02B200CA8787 /* POSFitting.storyboard */,
-				12B971A218EC28D2008F8740 /* POSFitting_iPad.storyboard */,
 				12EC0AC018C0B18D0010169C /* KillBoard.storyboard */,
-				12B971A818EC3D08008F8740 /* KillBoard_iPad.storyboard */,
 				12430BBA18C881EA0025D971 /* Help.storyboard */,
-				12B971AA18EC4A38008F8740 /* Help_iPad.storyboard */,
 				12B42E6D1AC7182000A0D956 /* ShoppingList.storyboard */,
-				127BF2601AD79B240037A401 /* ShoppingList_iPad.storyboard */,
 				1209686A1845F0CB00921A37 /* Images.xcassets */,
 				1209685A1845F0CB00921A37 /* Neocom-Info.plist */,
 				1209685B1845F0CB00921A37 /* InfoPlist.strings */,
@@ -4270,8 +4250,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4328,8 +4308,8 @@
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = today/com.shimanski.eveuniverse.today.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = today/Info.plist;

@@ -257,7 +257,7 @@
 			NSMutableDictionary *buyOrdersSectionsDic = [NSMutableDictionary new];
 
 			NSArray* sellOrders = [quickLook.sellOrders sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:YES]]];
-			NSArray* buyOrders = [quickLook.buyOrders sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:YES]]];
+			NSArray* buyOrders = [quickLook.buyOrders sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:NO]]];
 			progress.completedUnitCount++;
 
 			for (EVECentralQuickLookOrder *order in sellOrders) {
@@ -295,14 +295,14 @@
 			data.buyOrdersSections = [[buyOrdersSectionsDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
 			
 			NSMutableArray* sell = [NSMutableArray new];
-			for (EVECentralQuickLookOrder *order in quickLook.sellOrders) {
+			for (EVECentralQuickLookOrder *order in sellOrders) {
 				NCDatabaseTypeMarketInfoViewControllerRow* row = [NCDatabaseTypeMarketInfoViewControllerRow new];
 				row.order = order;
 				[sell addObject:row];
 			}
 			
 			NSMutableArray* buy = [NSMutableArray new];
-			for (EVECentralQuickLookOrder *order in quickLook.buyOrders) {
+			for (EVECentralQuickLookOrder *order in buyOrders) {
 				NCDatabaseTypeMarketInfoViewControllerRow* row = [NCDatabaseTypeMarketInfoViewControllerRow new];
 				row.order = order;
 				[buy addObject:row];

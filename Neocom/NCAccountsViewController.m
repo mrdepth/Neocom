@@ -111,6 +111,7 @@
 @interface NCAccountsViewController ()
 @property (nonatomic, assign) NSInteger mode;
 @property (nonatomic, strong) NCSetting* modeSetting;
+@property (nonatomic, assign) BOOL isInitialized;
 @end
 
 @implementation NCAccountsViewController
@@ -401,6 +402,16 @@
 				}
 			}
 			completionBlock();
+			if (!self.isInitialized) {
+				self.isInitialized = YES;
+				[[NCAccountsManager sharedManager] loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray *apiKeys) {
+					NSSet* accs = [NSSet setWithArray:[data.accounts valueForKey:@"account"]];
+					if (![accs isEqualToSet:[NSSet setWithArray:accounts]]) {
+						[self invalidateCache];
+						[self reload];
+					};
+				}];
+			}
 		});
 	}];
 }

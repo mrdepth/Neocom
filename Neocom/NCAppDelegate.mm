@@ -12,7 +12,6 @@
 #import "UIAlertController+Neocom.h"
 #import <EVEAPI/EVEAPI.h>
 #import "NCNotificationsManager.h"
-#import "NSString+UUID.h"
 #import "NSData+Neocom.h"
 #import "NCCache.h"
 #import "NCMigrationManager.h"
@@ -82,12 +81,14 @@ void uncaughtExceptionHandler(NSException* exception) {
 		purchase.purchased = YES;
 		[[NSUserDefaults standardUserDefaults] setValue:nil forKeyPath:@"SettingsNoAds"];
 	}*/
+//	ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
+//	purchase.purchased = NO;
 
 	[self setupAppearance];
 	[self setupDefaultSettings];
 	
 	if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUDIDKey])
-		[[NSUserDefaults standardUserDefaults] setValue:[NSString uuidString] forKey:NCSettingsUDIDKey];
+		[[NSUserDefaults standardUserDefaults] setValue:[[NSUUID UUID] UUIDString] forKey:NCSettingsUDIDKey];
 	
 	if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
 		[application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert
@@ -287,6 +288,58 @@ void uncaughtExceptionHandler(NSException* exception) {
 }
 
 - (void) reconnectStoreIfNeeded {
+	NCStorage* storage = [NCStorage sharedStorage];
+	if (storage) {
+		id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+		
+		id lastCloudToken = nil;
+		NSData *tokenData = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCloudTokenKey];
+		if (tokenData)
+			lastCloudToken = [NSKeyedUnarchiver unarchiveObjectWithData:tokenData];
+		
+		BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey];
+		
+		BOOL needsAsk = ![[NSUserDefaults standardUserDefaults] valueForKeyPath:NCSettingsUseCloudKey];
+		BOOL tokenChanged = currentCloudToken != lastCloudToken && ![currentCloudToken isEqual:lastCloudToken];
+		BOOL settingsChanged = (storage.storageType == NCStorageTypeCloud && !useCloud)  || (storage.storageType == NCStorageTypeLocal && (useCloud && currentCloudToken));
+		
+		void (^initStorage)(BOOL) = ^(BOOL useCloud) {
+			
+			if (!useCloud || !currentCloudToken) {
+				[NCAccount setCurrentAccount:nil];
+				[NCShoppingList setCurrentShoppingList:nil];
+				
+				NCStorage* storage = [[NCStorage alloc] initLocalStorage];
+				[NCStorage setSharedStorage:storage];
+				NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
+				[NCAccountsManager setSharedManager:accountsManager];
+				[[NSNotificationCenter defaultCenter] postNotificationName:NCStorageDidChangeNotification object:storage userInfo:nil];
+				[[NCNotificationsManager sharedManager] setNeedsUpdateNotifications];
+				[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:nil];
+			}
+			else {
+				[NCAccount setCurrentAccount:nil];
+				[NCShoppingList setCurrentShoppingList:nil];
+				
+				NCStorage* storage = [[NCStorage alloc] initCloudStorage];
+				[NCStorage setSharedStorage:storage];
+				NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
+				[NCAccountsManager setSharedManager:accountsManager];
+				[[NSNotificationCenter defaultCenter] postNotificationName:NCStorageDidChangeNotification object:storage userInfo:nil];
+				[[NCNotificationsManager sharedManager] setNeedsUpdateNotifications];
+				[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:nil];
+			}
+		};
+		
+		if (needsAsk) {
+			[self askToUseCloudWithCompletionHandler:^(BOOL useCloud) {
+				initStorage(useCloud);
+			}];
+		}
+		else if ((useCloud && tokenChanged) || settingsChanged) {
+			initStorage(useCloud);
+		}
+	}
 /*	NCStorage* storage = [NCStorage sharedStorage];
 	if (storage) {
 		id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];

@@ -69,6 +69,7 @@
 @property (nonatomic, strong) UIDocumentInteractionController* documentInteractionController;
 
 - (void) performExport;
+- (void) updateSectionSegmentedControlWithTraitCollection:(UITraitCollection*) traitCollection;
 @end
 
 @implementation NCFittingShipViewController
@@ -86,7 +87,8 @@
 {
     [super viewDidLoad];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
+		[self updateSectionSegmentedControlWithTraitCollection:self.traitCollection];
+		//[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
 	
 	self.taskManager.maxConcurrentOperationCount = 1;
 	
@@ -697,6 +699,12 @@
 	self.title = fit.loadoutName;
 }
 
+- (void) willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+	[super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self updateSectionSegmentedControlWithTraitCollection:newCollection];
+}
+
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
@@ -919,6 +927,17 @@
 	}
 	else
 		[self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void) updateSectionSegmentedControlWithTraitCollection:(UITraitCollection*) traitCollection {
+	if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+		if (self.sectionSegmentedControl.numberOfSegments == 4)
+			[self.sectionSegmentedControl insertSegmentWithTitle:NSLocalizedString(@"Stats", nil) atIndex:4 animated:NO];
+	}
+	else if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+		if (self.sectionSegmentedControl.numberOfSegments == 5)
+			[self.sectionSegmentedControl removeSegmentAtIndex:4 animated:NO];
+	}
 }
 
 @end

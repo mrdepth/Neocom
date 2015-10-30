@@ -35,6 +35,7 @@
 @property (nonatomic, weak) NCFittingPOSStructuresViewController* structuresViewController;
 @property (nonatomic, weak) NCFittingPOSAssemblyLinesViewController* assemblyLinesViewController;
 @property (nonatomic, weak) NCFittingPOSStatsViewController* statsViewController;
+- (void) updateSectionSegmentedControlWithTraitCollection:(UITraitCollection*) traitCollection;
 
 @end
 
@@ -53,7 +54,8 @@
 {
     [super viewDidLoad];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
+		[self updateSectionSegmentedControlWithTraitCollection:self.traitCollection];
+//		[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
 
 	self.taskManager.maxConcurrentOperationCount = 1;
 	self.title = self.fit.loadoutName;
@@ -314,6 +316,13 @@
 		[self presentViewController:controller animated:YES completion:nil];
 }
 
+- (void) willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+	[super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self updateSectionSegmentedControlWithTraitCollection:newCollection];
+}
+
+
 #pragma mark - UIScrollViewDelegate
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -363,6 +372,17 @@
 
 - (IBAction) unwindFromNewShoppingItem:(UIStoryboardSegue*)segue {
 	
+}
+
+- (void) updateSectionSegmentedControlWithTraitCollection:(UITraitCollection*) traitCollection {
+	if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+		if (self.sectionSegmentedControl.numberOfSegments == 2)
+			[self.sectionSegmentedControl insertSegmentWithTitle:NSLocalizedString(@"Stats", nil) atIndex:2 animated:NO];
+	}
+	else if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+		if (self.sectionSegmentedControl.numberOfSegments == 3)
+			[self.sectionSegmentedControl removeSegmentAtIndex:2 animated:NO];
+	}
 }
 
 @end

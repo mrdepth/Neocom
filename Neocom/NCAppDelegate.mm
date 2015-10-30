@@ -466,11 +466,15 @@ void uncaughtExceptionHandler(NSException* exception) {
 }
 
 - (void) splitViewController:(UISplitViewController *)svc willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
-	if (displayMode == UISplitViewControllerDisplayModeAllVisible) {
-		[[svc.viewControllers[1] viewControllers][0] navigationItem].leftBarButtonItem = nil;
+	if (svc.viewControllers.count > 1) {
+		UINavigationController* navigationController = svc.viewControllers[1];
+		if ([navigationController isKindOfClass:[UINavigationController class]] && navigationController.viewControllers.count > 0) {
+			if (displayMode == UISplitViewControllerDisplayModeAllVisible)
+				[[navigationController viewControllers][0] navigationItem].leftBarButtonItem = nil;
+			else
+				[[navigationController viewControllers][0] navigationItem].leftBarButtonItem = svc.displayModeButtonItem;
+		}
 	}
-	else
-		[[svc.viewControllers[1] viewControllers][0] navigationItem].leftBarButtonItem = svc.displayModeButtonItem;
 }
 
 - (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {

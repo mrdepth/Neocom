@@ -229,12 +229,13 @@
 	[data.accounts removeObjectAtIndex:fromIndexPath.row];
 	[data.accounts insertObject:account atIndex:toIndexPath.row];
 	
-	int32_t order = 0;
-	for (NCAccountsViewControllerDataAccount* account in data.accounts)
-		account.account.order = order++;
 
 	NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
 	[storageManagedObjectContext performBlock:^{
+		int32_t order = 0;
+		for (NCAccountsViewControllerDataAccount* account in data.accounts)
+			account.account.order = order++;
+		
 		if ([storageManagedObjectContext hasChanges])
 			[storageManagedObjectContext save:nil];
 	}];

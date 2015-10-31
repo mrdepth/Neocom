@@ -300,6 +300,7 @@
 - (void) reload {
 	if (!self.searchContentsController && !self.loadingFromCache) {
 		if (self.cacheManagedObjectContext) {
+
 			self.loadingFromCache = YES;
 			[self.cacheManagedObjectContext performBlock:^{
 				NCCacheRecord* cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:self.cacheRecordID];

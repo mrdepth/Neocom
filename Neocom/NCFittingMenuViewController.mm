@@ -47,6 +47,7 @@
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
 @property (nonatomic, strong) NSMutableArray* sections;
 @property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
+@property (nonatomic, assign) BOOL loading;
 @end
 
 @implementation NCFittingMenuViewController
@@ -273,6 +274,11 @@
 #pragma mark - Private
 
 - (void) reload {
+	if (self.loading)
+		return;
+	else
+		self.loading = YES;
+	
 	NSManagedObjectContext* storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
 	[storageManagedObjectContext performBlock:^{
 		NSMutableArray* loadouts = [NSMutableArray new];
@@ -328,6 +334,7 @@
 			
 			dispatch_async(dispatch_get_main_queue(), ^{
 				self.sections = sections;
+				self.loading = NO;
 				[self.tableView reloadData];
 			});
 		}];

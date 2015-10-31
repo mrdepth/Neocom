@@ -104,11 +104,12 @@ static NCAccount* currentAccount = nil;
 
 - (void) willSave {
 	if ([self isDeleted]) {
+		NSString* uuid = self.uuid;
 		[self.cacheManagedObjectContext performBlock:^{
 			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 			NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:self.cacheManagedObjectContext];
 			[fetchRequest setEntity:entity];
-			[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recordID like %@", [NSString stringWithFormat:@"*%@*", self.uuid]]];
+			[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recordID like %@", [NSString stringWithFormat:@"*%@*", uuid]]];
 
 			NSArray *fetchedObjects = [self.cacheManagedObjectContext executeFetchRequest:fetchRequest error:nil];
 			for (NCCacheRecord* record in fetchedObjects)

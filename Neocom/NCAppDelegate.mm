@@ -630,9 +630,11 @@ void uncaughtExceptionHandler(NSException* exception) {
 						if ([account isKindOfClass:[NCAccount class]]) {
 							dispatch_async(dispatch_get_main_queue(), ^{
 								if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-									UINavigationController* navigationController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCAPIKeyAccessMaskViewController"];
+									NCAPIKeyAccessMaskViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCAPIKeyAccessMaskViewController"];
+									UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
 									navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-									NCAPIKeyAccessMaskViewController* controller = navigationController.viewControllers[0];
+									navigationController.navigationBar.barStyle = UIBarStyleBlack;
+									navigationController.navigationBar.tintColor = [UIColor whiteColor];
 									controller.account = account;
 									controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)];
 									[self.window.rootViewController presentViewController:navigationController animated:YES completion:nil];

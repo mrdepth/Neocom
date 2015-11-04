@@ -423,7 +423,7 @@
 	}
 	
 	if (mailingListIDs.count > 0) {
-		dispatch_group_leave(finishDispatchGroup);
+		dispatch_group_enter(finishDispatchGroup);
 		[api mailingListsWithCompletionBlock:^(EVEMailingLists *result, NSError *error) {
 			for (EVEMailingListsItem* mailingList in result.mailingLists) {
 				NCMailBoxContact* contact = mailingListIDs[@(mailingList.listID)];

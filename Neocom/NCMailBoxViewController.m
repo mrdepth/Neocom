@@ -169,8 +169,12 @@
 						NSInteger n = numberOfUnreadMessages(dic[@"messages"]);
 						NCMailBoxContact* contact = dic[@"contact"];
 						NSString* name = [dic[@"contact"] name];
-						if (!name)
-							name = NSLocalizedString(@"Unknown Contact", nil);
+						if (!name) {
+							if (contact.type == NCMailBoxContactTypeMailingList)
+								name = NSLocalizedString(@"Unknown Mailing List", nil);
+							else
+								name = NSLocalizedString(@"Unknown Contact", nil);
+						}
 						NSString* title = n > 0 ? [NSString stringWithFormat:@"%@ (%d)", name, (int32_t)n] : name;
 						[sections addObject:@{@"title": title, @"rows": dic[@"messages"], @"sectionID": @(contact.contactID)}];
 					}

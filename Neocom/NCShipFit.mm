@@ -188,6 +188,7 @@
 @property (nonatomic, strong, readwrite) EVEAssetListItem* asset;
 @property (nonatomic, strong, readwrite) NCKillMail* killMail;
 @property (nonatomic, strong, readwrite) NSString* dna;
+@property (nonatomic, strong, readwrite) CRFitting* crFitting;
 
 @property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Character> pilot;
 
@@ -266,6 +267,15 @@
 				}
 			}
 		}];
+	}
+	return self;
+}
+
+- (id) initWithCRFitting:(CRFitting *)fitting {
+	if (self = [super init]) {
+		self.crFitting = fitting;
+		self.typeID = fitting.ship.typeID;
+		self.loadoutName = fitting.name;
 	}
 	return self;
 }
@@ -1128,6 +1138,7 @@
 }
 
 - (NSString*) eveXMLRepresentation {
+	[self flush];
 	NSMutableString* xml = [NSMutableString string];
 	[xml appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
 	[xml appendString:[self eveXMLRecordRepresentation]];
@@ -1164,6 +1175,7 @@
 }
 
 - (NSString*) eftRepresentation {
+	[self flush];
 	NSMutableString* eft = [NSMutableString new];
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.typeID];
@@ -1194,6 +1206,7 @@
 }
 
 - (NSString*) hyperlinkTag {
+	[self flush];
 	__block NSString* hyperlinkTag;
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		NSString* dna = self.dnaRepresentation;
@@ -1201,6 +1214,53 @@
 		hyperlinkTag = [NSString stringWithFormat:@"<a href=\"javascript:if (typeof CCPEVE != 'undefined') CCPEVE.showFitting('%@'); else window.open('fitting:%@');\">%@ - %@</a>", dna, dna, type.typeName, self.loadoutName];;
 	}];
 	return hyperlinkTag;
+}
+
+- (CRFitting*) crFittingRepresentation {
+	CRFitting* fitting = [CRFitting new];
+	
+	[self.databaseManagedObjectContext performBlockAndWait:^{
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.typeID];
+		fitting.ship = [CRFittingType new];
+		fitting.ship.typeID = self.typeID;
+		fitting.ship.name = type.typeName ?: @"Unknown";
+		fitting.name = self.loadoutName ?: fitting.ship.name;
+		fitting.fittingDescription = NSLocalizedString(@"Created with Neocom on iOS", nil);
+		
+		int flags[] = {EVEInventoryFlagLoSlot0, EVEInventoryFlagMedSlot0, EVEInventoryFlagHiSlot0, EVEInventoryFlagRigSlot0, EVEInventoryFlagSubSystem0};
+		int n = 0;
+		NSMutableArray* items = [NSMutableArray new];
+		for (NSString* key in @[@"lowSlots", @"medSlots", @"hiSlots", @"rigSlots", @"subsystems"]) {
+			int flag = flags[n++];
+			NSArray* array = [self.loadoutData valueForKey:key];
+			if (array.count == 0)
+				continue;
+			for (NCLoadoutDataShipModule* module in array) {
+				NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:module.typeID];
+				CRFittingItem* item = [CRFittingItem new];
+				item.quantity = 1;
+				item.flag = flag++;
+				item.type = [CRFittingType new];
+				item.type.typeID = module.typeID;
+				item.type.name = type.typeName ?: @"Unknown";
+				[items addObject:item];
+			}
+		}
+		for (NCLoadoutDataShipDrone* drone in self.loadoutData.drones) {
+			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:drone.typeID];
+			CRFittingItem* item = [CRFittingItem new];
+			item.quantity = drone.count;
+			item.flag = EVEInventoryFlagDroneBay;
+			item.type = [CRFittingType new];
+			item.type.typeID = drone.typeID;
+			item.type.name = type.typeName ?: @"Unknown";
+			[items addObject:item];
+		}
+		fitting.items = items;
+	}];
+
+	
+	return fitting;
 }
 
 #pragma mark - Private

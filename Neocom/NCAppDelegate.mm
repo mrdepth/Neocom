@@ -241,23 +241,30 @@ void uncaughtExceptionHandler(NSException* exception) {
 		else if ([scheme isEqualToString:@"showinfo"]) {
 			[self showTypeInfoWithURL:url];
 		}
-		else if ([scheme isEqualToString:@"ncaccount"]) {
-			NSMutableString* uuid = [NSMutableString stringWithString:[url absoluteString]];
-			[uuid replaceOccurrencesOfString:@"ncaccount://" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, uuid.length)];
-			[uuid replaceOccurrencesOfString:@"ncaccount:" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, uuid.length)];
-			if (uuid) {
-				NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
-				[storageManagedObjectContext performBlock:^{
-					NCAccount* account = [storageManagedObjectContext accountWithUUID:uuid];
-					if (account.apiKey.apiKeyInfo)
-						dispatch_async(dispatch_get_main_queue(), ^{
-							[NCAccount setCurrentAccount:account];
-						});
-				}];
+		else if ([scheme isEqualToString:@"neocom"]) {
+			NSString* host = [url host];
+			if ([host isEqualToString:@"account"]) {
+				NSString* uuid = [url lastPathComponent];
+				if (uuid) {
+					NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+					[storageManagedObjectContext performBlock:^{
+						NCAccount* account = [storageManagedObjectContext accountWithUUID:uuid];
+						if (account.apiKey.apiKeyInfo)
+							dispatch_async(dispatch_get_main_queue(), ^{
+								[NCAccount setCurrentAccount:account];
+							});
+					}];
+				}
 			}
+			else if ([host isEqualToString:@"sso"])
+				[CRAPI handleOpenURL:url];
 		}
 	});
 	return YES;
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options {
+	return [self application:app openURL:url sourceApplication:options[UIApplicationLaunchOptionsSourceApplicationKey] annotation:options[UIApplicationLaunchOptionsAnnotationKey]];
 }
 
 - (void) application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {

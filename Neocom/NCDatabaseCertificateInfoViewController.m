@@ -150,7 +150,9 @@
 		}]];
 		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 		}]];
+		[self presentViewController:controller animated:YES completion:nil];
 	}
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - NCTableViewController

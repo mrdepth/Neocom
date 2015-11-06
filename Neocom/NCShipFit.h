@@ -55,6 +55,7 @@
 @class EVEAssetListItem;
 @class NCKillMail;
 @class NCDBInvType;
+@class CRFitting;
 @interface NCShipFit : NSObject
 @property (nonatomic, strong) NSString* loadoutName;
 @property (nonatomic, assign, readonly) int32_t typeID;
@@ -69,6 +70,7 @@
 @property (nonatomic, strong, readonly) EVEAssetListItem* asset;
 @property (nonatomic, strong, readonly) NCKillMail* killMail;
 @property (nonatomic, strong, readonly) NSString* dna;
+@property (nonatomic, strong, readonly) CRFitting* crFitting;
 
 //Export
 @property (nonatomic, readonly) NSString* canonicalName;
@@ -77,6 +79,7 @@
 @property (nonatomic, readonly) NSString* eveXMLRecordRepresentation;
 @property (nonatomic, readonly) NSString* eftRepresentation;
 @property (nonatomic, readonly) NSString* hyperlinkTag;
+@property (nonatomic, readonly) CRFitting* crFittingRepresentation;
 
 - (id) initWithLoadout:(NCLoadout*) loadout;
 - (id) initWithType:(NCDBInvType*) type;
@@ -84,6 +87,7 @@
 - (id) initWithAsset:(EVEAssetListItem*) asset;
 - (id) initWithKillMail:(NCKillMail*) killMail;
 - (id) initWithDNA:(NSString*) dna;
+- (id) initWithCRFitting:(CRFitting*) fitting;
 //- (id) initWithBattleClinicLoadout:(BCEveLoadout*) bcLoadout;
 - (void) setCharacter:(NCFitCharacter*) character withCompletionBlock:(void(^)()) completionBlock;
 

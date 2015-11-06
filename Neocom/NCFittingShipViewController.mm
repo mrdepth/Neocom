@@ -25,6 +25,7 @@
 #import "NCShoppingItem+Neocom.h"
 #import "NCShoppingGroup.h"
 #import "NCNewShoppingItemViewController.h"
+#import "NCFittingCRESTFitExportViewController.h"
 
 #import "NSString+Neocom.h"
 
@@ -384,6 +385,10 @@
 		else
 			controller = segue.destinationViewController;
 		controller.shoppingGroup = sender[@"object"];
+	}
+	else if ([segue.identifier isEqualToString:@"NCFittingCRESTFitExportViewController"]) {
+		NCFittingCRESTFitExportViewController* controller = segue.destinationViewController;
+		controller.fitting = self.fit.crFittingRepresentation;
 	}
 }
 
@@ -870,6 +875,10 @@
 	
 }
 
+- (IBAction) unwindFromCRESTFitExport:(UIStoryboardSegue*)segue {
+	
+}
+
 - (void) performExport {
 	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy Link", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -916,6 +925,10 @@
 			controller.mailComposeDelegate = self;
 			[self presentViewController:controller animated:YES completion:nil];
 		}]];
+
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Save Ingame", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self performSegueWithIdentifier:@"NCFittingCRESTFitExportViewController" sender:self.navigationItem.rightBarButtonItem];
+	}]];
 
 	
 	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];

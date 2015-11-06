@@ -1,3 +1,3 @@
 #!/bin/sh
 make clean
-make EXPANSION=Vanguard
+make EXPANSION=Parallax

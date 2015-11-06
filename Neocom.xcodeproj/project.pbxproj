@@ -140,6 +140,9 @@
 		12436E141946E4670090D4A6 /* NCDBImageValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436E131946E4670090D4A6 /* NCDBImageValueTransformer.m */; };
 		1243761C189653980078F526 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1243761B189653980078F526 /* Character.storyboard */; };
 		1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771418969E590078F526 /* NCDatabaseNPCViewController.m */; };
+		1247B1121BECA8AD00608852 /* NCFittingCRESTAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1247B1111BECA8AD00608852 /* NCFittingCRESTAccountsViewController.m */; };
+		1247B11D1BECBD2E00608852 /* NCFittingCRESTFitsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1247B11C1BECBD2E00608852 /* NCFittingCRESTFitsViewController.mm */; };
+		1247B1211BECE0A400608852 /* NCFittingCRESTFitExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1247B1201BECE0A400608852 /* NCFittingCRESTFitExportViewController.m */; };
 		1248CEB01B7E1149000266BE /* NSManagedObjectContext+NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248CEAF1B7E1149000266BE /* NSManagedObjectContext+NCStorage.m */; };
 		124A13941BDFAE78004A41EF /* Fitting.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 124A13931BDFAE78004A41EF /* Fitting.xcassets */; };
 		1256923D1A37799A008F6468 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1256923C1A37799A008F6468 /* EventKit.framework */; };
@@ -779,6 +782,12 @@
 		1243771418969E590078F526 /* NCDatabaseNPCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseNPCViewController.m; sourceTree = "<group>"; };
 		124638311AD25A84001F8780 /* NCShoppingAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingAssetsViewController.h; sourceTree = "<group>"; };
 		124638321AD25A84001F8780 /* NCShoppingAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingAssetsViewController.m; sourceTree = "<group>"; };
+		1247B1101BECA8AD00608852 /* NCFittingCRESTAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCRESTAccountsViewController.h; sourceTree = "<group>"; };
+		1247B1111BECA8AD00608852 /* NCFittingCRESTAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingCRESTAccountsViewController.m; sourceTree = "<group>"; };
+		1247B11B1BECBD2E00608852 /* NCFittingCRESTFitsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCRESTFitsViewController.h; sourceTree = "<group>"; };
+		1247B11C1BECBD2E00608852 /* NCFittingCRESTFitsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCRESTFitsViewController.mm; sourceTree = "<group>"; };
+		1247B11F1BECE0A400608852 /* NCFittingCRESTFitExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCRESTFitExportViewController.h; sourceTree = "<group>"; };
+		1247B1201BECE0A400608852 /* NCFittingCRESTFitExportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingCRESTFitExportViewController.m; sourceTree = "<group>"; };
 		1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EVEOnlineAPI.xcodeproj; path = EVEOnlineAPI/EVEOnlineAPI.xcodeproj; sourceTree = "<group>"; };
 		1248CEAE1B7E1149000266BE /* NSManagedObjectContext+NCStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+NCStorage.h"; sourceTree = "<group>"; };
 		1248CEAF1B7E1149000266BE /* NSManagedObjectContext+NCStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+NCStorage.m"; sourceTree = "<group>"; };
@@ -1865,6 +1874,33 @@
 				1243771418969E590078F526 /* NCDatabaseNPCViewController.m */,
 			);
 			name = NCDatabaseNPCViewController;
+			sourceTree = "<group>";
+		};
+		1247B10F1BECA88E00608852 /* NCFittingCRESTAccountsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1247B1101BECA8AD00608852 /* NCFittingCRESTAccountsViewController.h */,
+				1247B1111BECA8AD00608852 /* NCFittingCRESTAccountsViewController.m */,
+			);
+			name = NCFittingCRESTAccountsViewController;
+			sourceTree = "<group>";
+		};
+		1247B1151BECBD1400608852 /* NCFittingCRESTFitsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1247B11B1BECBD2E00608852 /* NCFittingCRESTFitsViewController.h */,
+				1247B11C1BECBD2E00608852 /* NCFittingCRESTFitsViewController.mm */,
+			);
+			name = NCFittingCRESTFitsViewController;
+			sourceTree = "<group>";
+		};
+		1247B11E1BECE08700608852 /* NCFittingCRESTFitExportViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1247B11F1BECE0A400608852 /* NCFittingCRESTFitExportViewController.h */,
+				1247B1201BECE0A400608852 /* NCFittingCRESTFitExportViewController.m */,
+			);
+			name = NCFittingCRESTFitExportViewController;
 			sourceTree = "<group>";
 		};
 		1248CE741B7DDCE1000266BE /* Products */ = {
@@ -3379,6 +3415,9 @@
 		849B9FDE1896D2F900D4DD2B /* Fitting */ = {
 			isa = PBXGroup;
 			children = (
+				1247B1151BECBD1400608852 /* NCFittingCRESTFitsViewController */,
+				1247B10F1BECA88E00608852 /* NCFittingCRESTAccountsViewController */,
+				1247B11E1BECE08700608852 /* NCFittingCRESTFitExportViewController */,
 				12C5074C189B6ED70064AC32 /* NCShipFit */,
 				129C585A18AA068F00CA8787 /* NCPOSFit */,
 				127123991897968E005F46EE /* Headers */,
@@ -3795,6 +3834,7 @@
 				1282571D1BCF817800BC1F56 /* NCFittingDamagePatternsViewController.m in Sources */,
 				129D260F187E923300E2062C /* ASInAppPurchase.m in Sources */,
 				84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */,
+				1247B1211BECE0A400608852 /* NCFittingCRESTFitExportViewController.m in Sources */,
 				1226D2D31B58F04F000C69EC /* NCCachePrice.m in Sources */,
 				125A19C51BB70E2800C5BAD8 /* EVEContractsItem+Neocom.m in Sources */,
 				12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */,
@@ -3805,6 +3845,7 @@
 				1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */,
 				125A19C11BB6A3EA00C5BAD8 /* NCIndustryJobsViewController.m in Sources */,
 				128D29BA18BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m in Sources */,
+				1247B11D1BECBD2E00608852 /* NCFittingCRESTFitsViewController.mm in Sources */,
 				12FDA32E18E00710007B091D /* NCImplantSet.m in Sources */,
 				125A19C81BB719FB00C5BAD8 /* EVEStarbaseListItem+Neocom.m in Sources */,
 				12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */,
@@ -3877,6 +3918,7 @@
 				12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */,
 				84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */,
 				128257141BCBFCBF00BC1F56 /* NCFittingCharacterEditorCell.m in Sources */,
+				1247B1121BECA8AD00608852 /* NCFittingCRESTAccountsViewController.m in Sources */,
 				129D2611187E923300E2062C /* NSObject+Debug.m in Sources */,
 				126AACF01BBA72940068AA99 /* NCCharacterSheetViewController.m in Sources */,
 				129D262D187E923300E2062C /* UIAlertView+Block.m in Sources */,

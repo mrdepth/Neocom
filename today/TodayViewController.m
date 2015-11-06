@@ -112,10 +112,10 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (self.rows.count > 0) {
 		NCTodayRow* row = self.rows[indexPath.row];
-		[self.extensionContext openURL:[NSURL URLWithString:[NSString stringWithFormat:@"ncaccount:%@", row.uuid]] completionHandler:nil];
+		[self.extensionContext openURL:[NSURL URLWithString:[NSString stringWithFormat:@"neocom://account/%@", row.uuid]] completionHandler:nil];
 	}
 	else
-		[self.extensionContext openURL:[NSURL URLWithString:@"ncaccount:"] completionHandler:nil];
+		[self.extensionContext openURL:[NSURL URLWithString:@"neocom://account/"] completionHandler:nil];
 }
 
 #pragma mark - Private

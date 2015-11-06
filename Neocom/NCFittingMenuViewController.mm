@@ -114,7 +114,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? 4 : [[(NCFittingMenuViewControllerSection*) self.sections[section - 1] rows] count];
+    return section == 0 ? 5 : [[(NCFittingMenuViewControllerSection*) self.sections[section - 1] rows] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
@@ -235,11 +235,6 @@
 
 
 #pragma mark - NCTableViewController
-
-- (NSString*) recordID {
-	return nil;
-}
-
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0)

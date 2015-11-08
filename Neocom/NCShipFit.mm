@@ -1217,6 +1217,7 @@
 }
 
 - (CRFitting*) crFittingRepresentation {
+	[self flush];
 	CRFitting* fitting = [CRFitting new];
 	
 	[self.databaseManagedObjectContext performBlockAndWait:^{

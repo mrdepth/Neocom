@@ -35,6 +35,7 @@
 @property (nonatomic, assign) BOOL internalDatabaseManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext* settingsManagedObjectContext;
 @property (nonatomic, strong) NCSetting* sectionsCollapsSetting;
+@property (nonatomic, strong) NSError* error;
 
 - (IBAction) onRefresh:(id) sender;
 
@@ -635,6 +636,12 @@
 }
 
 - (void) updateCacheTime {
+	if (self.error) {
+		self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[self.error localizedDescription]
+																			  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],
+																						   NSForegroundColorAttributeName: [UIColor whiteColor]}];
+	}
+	else
 	[self.cacheRecord.managedObjectContext performBlock:^{
 		NSTimeInterval time = -[[self.cacheRecord date] timeIntervalSinceNow];
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -685,6 +692,7 @@
 				[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(progressStepWithProgress:) object:nil];
 				self.progress = nil;
 				self.reloading = NO;
+				self.error = error;
 				[self loadCacheData:self.cacheData withCompletionBlock:^{
 					[self.tableView reloadData];
 					[self.refreshControl endRefreshing];

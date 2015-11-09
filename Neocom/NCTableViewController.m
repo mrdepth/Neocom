@@ -92,7 +92,7 @@
 	self.offscreenCells = [NSMutableDictionary new];
 
 	//Popover support
-	self.preferredContentSize = CGSizeMake(320, 768);
+//	self.preferredContentSize = CGSizeMake(320, 768);
 
 
 	//Application lifetime

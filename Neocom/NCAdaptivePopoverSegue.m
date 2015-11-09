@@ -18,7 +18,7 @@
 		NCNavigationController* controller = [[NCNavigationController alloc] initWithRootViewController:self.destinationViewController];
 		controller.navigationBar.barStyle = UIBarStyleBlack;
 		controller.navigationBar.tintColor = [UIColor whiteColor];
-		
+		//controller.preferredContentSize = CGSizeMake(320, 768);
         [self.sourceViewController presentViewControllerInPopover:controller withSender:self.sender animated:YES];
 	}
 	else {

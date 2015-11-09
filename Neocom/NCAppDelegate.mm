@@ -28,6 +28,7 @@
 #import "NCSkillPlanViewController.h"
 #import "NCPriceManager.h"
 #import "NCUpdater.h"
+#import "NCKillMailDetailsViewController.h"
 
 
 static NSUncaughtExceptionHandler* handler;
@@ -51,6 +52,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 - (void) openFitWithURL:(NSURL*) url;
 - (void) openSkillPlanWithURL:(NSURL*) url;
 - (void) showTypeInfoWithURL:(NSURL*) url;
+- (void) showKillReportWithURL:(NSURL*) url;
 - (void) completeTransaction: (SKPaymentTransaction *)transaction;
 - (void) restoreTransaction: (SKPaymentTransaction *)transaction;
 - (void) failedTransaction: (SKPaymentTransaction *)transaction;
@@ -259,6 +261,10 @@ void uncaughtExceptionHandler(NSException* exception) {
 			else if ([host isEqualToString:@"sso"])
 				[CRAPI handleOpenURL:url];
 		}
+		else if ([scheme isEqualToString:@"killreport"]) {
+			[self showKillReportWithURL:url];
+		}
+
 	});
 	return YES;
 }
@@ -661,6 +667,57 @@ void uncaughtExceptionHandler(NSException* exception) {
 				}];
 			}
 		}
+	}
+}
+
+- (void) showKillReportWithURL:(NSURL*) url {
+	NSArray* components = [[url lastPathComponent] componentsSeparatedByString:@":"];
+	if (components.count == 2) {
+		static BOOL loading = NO;
+		if (loading)
+			return;
+		loading = YES;
+		[[CRAPI publicApiWithCachePolicy:NSURLRequestUseProtocolCachePolicy] loadKillMailWithID:[components[0] longLongValue] hash:components[1] completionBlock:^(CRKillMail *killMail, NSError *error) {
+			loading = NO;
+			if (killMail) {
+				NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+				[databaseManagedObjectContext performBlock:^{
+					NCKillMail* kill = [[NCKillMail alloc] initWithKillMailsKill:killMail databaseManagedObjectContext:databaseManagedObjectContext];
+					dispatch_async(dispatch_get_main_queue(), ^{
+						if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+							UIViewController* presentedViewController = nil;
+							for (presentedViewController = self.window.rootViewController; presentedViewController.presentedViewController; presentedViewController = presentedViewController.presentedViewController);
+							if ([presentedViewController isKindOfClass:[UINavigationController class]]) {
+								NCKillMailDetailsViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCKillMailDetailsViewController"];
+								controller.killMail = kill;
+								[(UINavigationController*) presentedViewController pushViewController:controller animated:YES];
+							}
+							else {
+								UINavigationController* navigationController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCKillMailDetailsViewNavigationController"];
+								navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+								NCKillMailDetailsViewController* controller = navigationController.viewControllers[0];
+								controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)];
+								controller.killMail = kill;
+								[presentedViewController presentViewController:navigationController animated:YES completion:nil];
+							}
+						}
+						else {
+							NCKillMailDetailsViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCKillMailDetailsViewController"];
+							controller.killMail = kill;
+							
+							UINavigationController* navigationController = (UINavigationController*) self.window.rootViewController.childViewControllers[0];
+							if ([navigationController isKindOfClass:[UINavigationController class]])
+								[navigationController pushViewController:controller animated:YES];
+						}
+					});
+				}];
+
+
+			}
+			else if (error) {
+				[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
+			}
+		}];
 	}
 }
 

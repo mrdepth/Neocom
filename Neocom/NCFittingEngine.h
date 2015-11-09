@@ -12,6 +12,7 @@
 @class NCDBInvType;
 @class NCShipFit;
 @class NCPOSFit;
+@class NCLoadoutDataShip;
 @interface NCFittingEngine : NSObject
 @property (nonatomic, assign, readonly) std::shared_ptr<eufe::Engine> engine;
 @property (nonatomic, strong, readonly) NSManagedObjectContext* databaseManagedObjectContext;
@@ -21,6 +22,7 @@
 - (void)performBlock:(void (^)())block;
 - (void)loadShipFit:(NCShipFit*) fit;
 - (void)loadPOSFit:(NCPOSFit*) fit;
+- (NCLoadoutDataShip*) loadoutDataShipWithFit:(NCShipFit*) fit;
 
 @end
 

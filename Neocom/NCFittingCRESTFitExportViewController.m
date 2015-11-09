@@ -15,7 +15,7 @@
 
 
 @interface NCFittingCRESTFitExportViewController ()
-
+@property (nonatomic, assign) BOOL busy;
 @end
 
 @implementation NCFittingCRESTFitExportViewController
@@ -42,26 +42,32 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
-		CRToken* token = self.tokens[indexPath.row];
-		if (token.accessToken) {
-			CRAPI* api = [CRAPI apiWithCachePolicy:NSURLRequestUseProtocolCachePolicy clientID:CRAPIClientID secretKey:CRAPISecretKey token:token callbackURL:[NSURL URLWithString:CRAPICallbackURLString]];
-			[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-			[api postFitting:self.fitting withCompletionBlock:^(BOOL completed, NSError *error) {
-				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-				if (error)
-					[self presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
-				else {
-					UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Loadout Saved", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
-					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Done", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-						[self performSegueWithIdentifier:@"Unwind" sender:nil];
-					}]];
-					[self presentViewController:controller animated:YES completion:nil];
-				}
-			}];
+		if (!self.busy) {
+			CRToken* token = self.tokens[indexPath.row];
+			if (token.accessToken) {
+				CRAPI* api = [CRAPI apiWithCachePolicy:NSURLRequestUseProtocolCachePolicy clientID:CRAPIClientID secretKey:CRAPISecretKey token:token callbackURL:[NSURL URLWithString:CRAPICallbackURLString]];
+				self.busy = YES;
+				self.progress = [NSProgress progressWithTotalUnitCount:30];
+				[self simulateProgress:self.progress];
+				[api postFitting:self.fitting withCompletionBlock:^(BOOL completed, NSError *error) {
+					self.progress = nil;
+					self.busy = NO;
+					if (error)
+						[self presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
+					else {
+						UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Loadout Saved", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+						[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Done", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+							[self performSegueWithIdentifier:@"Unwind" sender:nil];
+						}]];
+						[self presentViewController:controller animated:YES completion:nil];
+					}
+				}];
+			}
+			else
+				[UIAlertController alertWithTitle:NSLocalizedString(@"Invalid Token", nil) message:nil];
 		}
-		else
-			[UIAlertController alertWithTitle:NSLocalizedString(@"Invalid Token", nil) message:nil];
 	}
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

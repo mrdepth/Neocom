@@ -88,7 +88,6 @@
 - (id) initWithKillMail:(NCKillMail*) killMail;
 - (id) initWithDNA:(NSString*) dna;
 - (id) initWithCRFitting:(CRFitting*) fitting;
-//- (id) initWithBattleClinicLoadout:(BCEveLoadout*) bcLoadout;
 - (void) setCharacter:(NCFitCharacter*) character withCompletionBlock:(void(^)()) completionBlock;
 
 - (void) flush;

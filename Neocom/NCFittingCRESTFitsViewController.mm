@@ -9,9 +9,10 @@
 #import "NCFittingCRESTFitsViewController.h"
 #import <EVEAPI/EVEAPI.h>
 #import "NCFittingShipViewController.h"
+#import "UIAlertController+Neocom.h"
 
 @interface NCFittingCRESTFitsViewControllerSection : NSObject<NSCoding>
-@property (nonatomic, strong) NSArray* rows;
+@property (nonatomic, strong) NSMutableArray* rows;
 @property (nonatomic, strong) NSString* title;
 @end
 
@@ -19,7 +20,7 @@
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
-		self.rows = [aDecoder decodeObjectForKey:@"rows"];
+		self.rows = [[aDecoder decodeObjectForKey:@"rows"] mutableCopy];
 		self.title = [aDecoder decodeObjectForKey:@"title"];
 	}
 	return self;
@@ -33,13 +34,17 @@
 @end
 
 @interface NCFittingCRESTFitsViewController ()
+@property (nonatomic, assign) BOOL busy;
+@property (nonatomic, strong) NSMutableSet* imported;
 @end
 
 @implementation NCFittingCRESTFitsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.cacheRecordID = [NSString stringWithFormat:@"%@.%d", NSStringFromClass(self.class), self.token.characterID];
+	self.imported = [NSMutableSet new];
     // Do any additional setup after loading the view.
 }
 
@@ -77,6 +82,66 @@
 	NSArray* data = self.cacheData;
 	NCFittingCRESTFitsViewControllerSection* section = data[sectionIndex];
 	return section.title;
+}
+
+- (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	return YES;
+}
+
+- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return UITableViewCellEditingStyleDelete;
+}
+
+- (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+	}
+}
+
+- (NSArray<UITableViewRowAction*> *) tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSMutableArray* data = self.cacheData;
+	NCFittingCRESTFitsViewControllerSection* section = data[indexPath.section];
+	CRFitting* fitting = section.rows[indexPath.row];
+
+	UITableViewRowAction* deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:NSLocalizedString(@"Delete", nil) handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+		if (self.busy)
+			return;
+		if (self.token) {
+			self.busy = YES;
+			
+			CRAPI* api = [CRAPI apiWithCachePolicy:NSURLRequestUseProtocolCachePolicy clientID:CRAPIClientID secretKey:CRAPISecretKey token:self.token callbackURL:[NSURL URLWithString:CRAPICallbackURLString]];
+			self.progress = [NSProgress progressWithTotalUnitCount:30];
+			[self simulateProgress:self.progress];
+			[api deleteFittingWithID:fitting.fittingID completionBlock:^(BOOL completed, NSError *error) {
+				self.progress = nil;
+				self.busy = NO;
+				if (completed) {
+					[section.rows removeObjectAtIndex:indexPath.row];
+					if (section.rows.count == 0) {
+						[data removeObjectAtIndex:indexPath.section];
+						[tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+					}
+					else
+						[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+					[self saveCacheData:data cacheDate:nil expireDate:nil];
+				}
+				else if (error) {
+					[self presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
+				}
+			}];
+		}
+	}];
+	if (![self.imported containsObject:@(fitting.fittingID)]) {
+		UITableViewRowAction* importAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"Import", nil) handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+			[self.imported addObject:@(fitting.fittingID)];
+			NCShipFit* fit = [[NCShipFit alloc] initWithCRFitting:fitting];
+			[fit save];
+			[self setEditing:NO animated:YES];
+		}];
+		importAction.backgroundColor = [UIColor darkGrayColor];
+		return @[deleteAction, importAction];
+	}
+	else
+		return @[deleteAction];
 }
 
 #pragma mark - NCTableViewController
@@ -124,9 +189,9 @@
 						[(NSMutableArray*) section.rows addObject:fitting];
 					}
 				}
-				NSArray* sections = [[dic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+				NSMutableArray* sections = [[[dic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]] mutableCopy];
 				for (NCFittingCRESTFitsViewControllerSection* section in sections)
-					[(NSMutableArray*) section.rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"ship.name" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+					[section.rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"ship.name" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
 				
 				dispatch_async(dispatch_get_main_queue(), ^{
 					[self saveCacheData:sections cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];

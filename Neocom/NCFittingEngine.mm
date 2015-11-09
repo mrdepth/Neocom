@@ -26,11 +26,11 @@
 @property (nonatomic, strong, readwrite) NSManagedObjectContext* databaseManagedObjectContext;
 @property (nonatomic, strong, readwrite) NSManagedObjectContext* storageManagedObjectContext;
 //@property (nonatomic, strong) dispatch_queue_t privateQueue;
-- (NCLoadoutDataShip*) loadoutShipDataWithAsset:(EVEAssetListItem*) asset;
-- (NCLoadoutDataShip*) loadoutShipDataWithAPILoadout:(NAPISearchItem*) apiLoadout;
-- (NCLoadoutDataShip*) loadoutShipDataWithKillMail:(NCKillMail*) killMail;
-- (NCLoadoutDataShip*) loadoutShipDataWithDNA:(NSString*) dna;
-- (NCLoadoutDataShip*) loadoutShipDataWithCRFitting:(CRFitting*) fitting;
+- (NCLoadoutDataShip*) loadoutDataShipWithAsset:(EVEAssetListItem*) asset;
+- (NCLoadoutDataShip*) loadoutDataShipWithAPILoadout:(NAPISearchItem*) apiLoadout;
+- (NCLoadoutDataShip*) loadoutDataShipWithKillMail:(NCKillMail*) killMail;
+- (NCLoadoutDataShip*) loadoutDataShipWithDNA:(NSString*) dna;
+- (NCLoadoutDataShip*) loadoutDataShipWithCRFitting:(CRFitting*) fitting;
 - (NCLoadoutDataPOS*) loadoutPOSDataWithAsset:(EVEAssetListItem*) asset;
 - (void)didReceiveMemoryWarning;
 
@@ -86,24 +86,8 @@
 
 - (void) loadShipFit:(NCShipFit*) fit {
 	fit.engine = self;
-	__block NCLoadoutDataShip* loadoutData;
-	if (fit.loadoutID) {
-		[self.storageManagedObjectContext performBlockAndWait:^{
-			NCLoadout* loadout = [self.storageManagedObjectContext existingObjectWithID:fit.loadoutID error:nil];
-			if ([loadout.data.data isKindOfClass:[NCLoadoutDataShip class]])
-				loadoutData = (NCLoadoutDataShip*) loadout.data.data;
-		}];
-	}
-	else if (fit.apiLadout)
-		loadoutData = [self loadoutShipDataWithAPILoadout:fit.apiLadout];
-	else if (fit.asset)
-		loadoutData = [self loadoutShipDataWithAsset:fit.asset];
-	else if (fit.killMail)
-		loadoutData = [self loadoutShipDataWithKillMail:fit.killMail];
-	else if (fit.dna)
-		loadoutData = [self loadoutShipDataWithDNA:fit.dna];
-	else if (fit.crFitting)
-		loadoutData = [self loadoutShipDataWithCRFitting:fit.crFitting];
+	NCLoadoutDataShip* loadoutData = [self loadoutDataShipWithFit:fit];
+
 	
 	[self performBlockAndWait:^{
 		NSMutableSet* charges = [NSMutableSet new];
@@ -202,10 +186,32 @@
 	}];
 }
 
+- (NCLoadoutDataShip*) loadoutDataShipWithFit:(NCShipFit *)fit {
+	__block NCLoadoutDataShip* loadoutData;
+	if (fit.loadoutID) {
+		[self.storageManagedObjectContext performBlockAndWait:^{
+			NCLoadout* loadout = [self.storageManagedObjectContext existingObjectWithID:fit.loadoutID error:nil];
+			if ([loadout.data.data isKindOfClass:[NCLoadoutDataShip class]])
+				loadoutData = (NCLoadoutDataShip*) loadout.data.data;
+		}];
+	}
+	else if (fit.apiLadout)
+		loadoutData = [self loadoutDataShipWithAPILoadout:fit.apiLadout];
+	else if (fit.asset)
+		loadoutData = [self loadoutDataShipWithAsset:fit.asset];
+	else if (fit.killMail)
+		loadoutData = [self loadoutDataShipWithKillMail:fit.killMail];
+	else if (fit.dna)
+		loadoutData = [self loadoutDataShipWithDNA:fit.dna];
+	else if (fit.crFitting)
+		loadoutData = [self loadoutDataShipWithCRFitting:fit.crFitting];
+	return loadoutData;
+}
 
 #pragma mark - Private
 
-- (NCLoadoutDataShip*) loadoutShipDataWithAsset:(EVEAssetListItem*) asset {
+
+- (NCLoadoutDataShip*) loadoutDataShipWithAsset:(EVEAssetListItem*) asset {
 	NCLoadoutDataShip* loadoutData = [NCLoadoutDataShip new];
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		
@@ -298,7 +304,7 @@
 	return loadoutData;
 }
 
-- (NCLoadoutDataShip*) loadoutShipDataWithAPILoadout:(NAPISearchItem*) apiLoadout {
+- (NCLoadoutDataShip*) loadoutDataShipWithAPILoadout:(NAPISearchItem*) apiLoadout {
 	NCLoadoutDataShip* loadoutData = [NCLoadoutDataShip new];
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		NSArray* components = [apiLoadout.canonicalName componentsSeparatedByString:@"|"];
@@ -414,7 +420,7 @@
 	return loadoutData;
 }
 
-- (NCLoadoutDataShip*) loadoutShipDataWithKillMail:(NCKillMail*) killMail {
+- (NCLoadoutDataShip*) loadoutDataShipWithKillMail:(NCKillMail*) killMail {
 	NCLoadoutDataShip* loadoutData = [NCLoadoutDataShip new];
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		NSMutableArray* hiSlots = [NSMutableArray new];
@@ -492,7 +498,7 @@
 	return loadoutData;
 }
 
-- (NCLoadoutDataShip*) loadoutShipDataWithDNA:(NSString*) dna {
+- (NCLoadoutDataShip*) loadoutDataShipWithDNA:(NSString*) dna {
 	NCLoadoutDataShip* loadoutData = [NCLoadoutDataShip new];
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		NSMutableArray* records = [[dna componentsSeparatedByString:@":"] mutableCopy];
@@ -600,7 +606,7 @@
 	return loadoutData;
 }
 
-- (NCLoadoutDataShip*) loadoutShipDataWithCRFitting:(CRFitting *)fitting {
+- (NCLoadoutDataShip*) loadoutDataShipWithCRFitting:(CRFitting *)fitting {
 	NCLoadoutDataShip* loadoutData = [NCLoadoutDataShip new];
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		

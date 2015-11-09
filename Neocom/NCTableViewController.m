@@ -378,6 +378,7 @@
 }
 
 - (void) setProgress:(NSProgress *)progress {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(progressStepWithProgress:) object:nil];
 	[_progress removeObserver:self forKeyPath:@"fractionCompleted"];
 	_progress = progress;
 	[_progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:nil];
@@ -388,6 +389,10 @@
 - (void) setBackgrountText:(NSString *)backgrountText {
 	UILabel* label = (UILabel*) self.tableView.backgroundView;
 	label.text = backgrountText;
+}
+
+- (void) simulateProgress:(NSProgress*) progress {
+	[self progressStepWithProgress:progress];
 }
 
 #pragma mark - Notifications
@@ -702,7 +707,7 @@
 		[self.progress resignCurrent];
 		[self.progress becomeCurrentWithPendingUnitCount:1];
 		NSProgress* progress = [NSProgress progressWithTotalUnitCount:30];
-		[self progressStepWithProgress:progress];
+		[self simulateProgress:progress];
 		[self.progress resignCurrent];
 	}
 }

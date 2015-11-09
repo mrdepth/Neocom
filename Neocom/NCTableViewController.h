@@ -28,6 +28,7 @@
 - (void) saveCacheData:(id) data cacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
 - (void) reload;
 - (void) invalidateCache;
+- (void) simulateProgress:(NSProgress*) progress;
 
 #pragma mark - Override
 - (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock;

@@ -344,6 +344,7 @@
 				self.cacheRecord.date = cacheDate;
 			if (expireDate)
 				self.cacheRecord.expireDate = expireDate;
+			[self.cacheRecord.managedObjectContext save:nil];
 		}];
 	}
 }

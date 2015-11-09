@@ -34,6 +34,16 @@
 
 @implementation NCMailBoxMessage
 
+- (id) copyWithZone:(NSZone *)zone {
+	NCMailBoxMessage* other = [NCMailBoxMessage new];
+	other.header = self.header;
+	other.body = self.body;
+	other.sender = self.sender;
+	other.recipients = self.recipients;
+	other.read = self.read;
+	return other;
+}
+
 #pragma mark - NSCoding
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
@@ -213,11 +223,18 @@
 				_cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", uuid]];
 			}
 			
-			NSArray* messages = _cacheRecord.data.data;
-			for (NCMailBoxMessage* message in messages)
-				message.read = [set containsObject:@(message.header.messageID)];
+			NSMutableArray* messages = [_cacheRecord.data.data mutableCopy];
+			NSInteger i = 0;
+			for (NCMailBoxMessage* message in [messages copy]) {
+				if ([set containsObject:@(message.header.messageID)]) {
+					NCMailBoxMessage* other = [message copy];
+					other.read = YES;
+					[messages replaceObjectAtIndex:i withObject:other];
+				}
+				i++;
+			}
 //			[self updateNumberOfUnreadMessages];
-			
+			_cacheRecord.data.data = messages;
 			if ([_cacheRecord.managedObjectContext hasChanges])
 				[_cacheRecord.managedObjectContext save:nil];
 			dispatch_async(dispatch_get_main_queue(), ^{

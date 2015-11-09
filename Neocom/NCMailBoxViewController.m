@@ -254,7 +254,7 @@
 - (void) mailBoxDidUpdateNotification:(NSNotification*) notification {
 	[self.mailBox loadMessagesWithCompletionBlock:^(NSArray *messages, NSError *error) {
 		if (messages) {
-			[self saveCacheData:messages cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
+			[self saveCacheData:[NSArray arrayWithArray:messages] cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
 			[self reload];
 		}
 	} progressBlock:nil];

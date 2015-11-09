@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 @class NCMailBox;
 @class EVEMailMessagesItem;
 @class EVEMailBodiesItem;
-@interface NCMailBoxMessage : NSObject<NSCoding>
+@interface NCMailBoxMessage : NSObject<NSCoding, NSCopying>
 @property (nonatomic, strong) EVEMailMessagesItem* header;
 @property (nonatomic, strong) EVEMailBodiesItem* body;
 @property (nonatomic, strong) NCMailBoxContact* sender;

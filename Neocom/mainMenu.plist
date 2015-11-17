@@ -59,6 +59,18 @@
 			<key>corpAccessMask</key>
 			<integer>-1</integer>
 		</dict>
+		<dict>
+			<key>segueIdentifier</key>
+			<string>NCWealthViewController</string>
+			<key>title</key>
+			<string>Wealth</string>
+			<key>image</key>
+			<string>calendar</string>
+			<key>charAccessMask</key>
+			<integer>1</integer>
+			<key>corpAccessMask</key>
+			<integer>-1</integer>
+		</dict>
 	</array>
 	<array>
 		<dict>

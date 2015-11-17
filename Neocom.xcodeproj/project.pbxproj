@@ -99,6 +99,7 @@
 		120E77B81B25D91300816E1C /* NCSplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120E77B71B25D91300816E1C /* NCSplashScreenViewController.m */; };
 		120F98A61B539E220047A019 /* eufe.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 120F98A41B539E220047A019 /* eufe.sqlite */; };
 		120F98A71B539E220047A019 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 120F98A51B539E220047A019 /* NCDatabase.sqlite */; };
+		1210C7DE1BF4D77800B94154 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1210C7DD1BF4D77800B94154 /* QuartzCore.framework */; };
 		1211122E185989E1009E5106 /* NCTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211122D185989E1009E5106 /* NCTaskManager.m */; };
 		1211123118598B09009E5106 /* NCTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211123018598B09009E5106 /* NCTask.m */; };
 		121112341859929E009E5106 /* NCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 121112331859929E009E5106 /* NCTableViewController.m */; };
@@ -145,6 +146,8 @@
 		1247B1211BECE0A400608852 /* NCFittingCRESTFitExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1247B1201BECE0A400608852 /* NCFittingCRESTFitExportViewController.m */; };
 		1248CEB01B7E1149000266BE /* NSManagedObjectContext+NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248CEAF1B7E1149000266BE /* NSManagedObjectContext+NCStorage.m */; };
 		124A13941BDFAE78004A41EF /* Fitting.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 124A13931BDFAE78004A41EF /* Fitting.xcassets */; };
+		124DDE741BF38AB500596A38 /* NCWealthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 124DDE731BF38AB500596A38 /* NCWealthViewController.m */; };
+		124DDE771BF38B4B00596A38 /* NCPieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 124DDE761BF38B4B00596A38 /* NCPieChartView.m */; };
 		1256923D1A37799A008F6468 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1256923C1A37799A008F6468 /* EventKit.framework */; };
 		125A19751BB54CB600C5BAD8 /* NCMarketOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */; };
 		125A19791BB5555300C5BAD8 /* NCMarketOrdersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */; };
@@ -351,6 +354,7 @@
 		12B9509A1ADB8D5E009E31DB /* fits.html in Resources */ = {isa = PBXBuildFile; fileRef = 12B950991ADB8D5E009E31DB /* fits.html */; };
 		12B9A6731B8F0D38005624D5 /* NSManagedObjectContext+NCDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B9A6721B8F0D38005624D5 /* NSManagedObjectContext+NCDatabase.m */; };
 		12B9A68E1B9092F1005624D5 /* NSManagedObjectContext+NCCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B9A68D1B9092F1005624D5 /* NSManagedObjectContext+NCCache.m */; };
+		12BE1EFF1BFDFABF009D6C7D /* NCWealthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BE1EFE1BFDFABF009D6C7D /* NCWealthCell.m */; };
 		12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
 		12C107E01ADD584C008D60DF /* NCDatabaseFetchedResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C107DF1ADD584C008D60DF /* NCDatabaseFetchedResultsViewController.m */; };
 		12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C5075E189BCC110064AC32 /* UIImage+Neocom.m */; };
@@ -668,6 +672,7 @@
 		120E77B71B25D91300816E1C /* NCSplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSplashScreenViewController.m; sourceTree = "<group>"; };
 		120F98A41B539E220047A019 /* eufe.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = eufe.sqlite; path = dbTools/dbinit/eufe.sqlite; sourceTree = SOURCE_ROOT; };
 		120F98A51B539E220047A019 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = dbTools/dbinit/NCDatabase.sqlite; sourceTree = SOURCE_ROOT; };
+		1210C7DD1BF4D77800B94154 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1211122C185989E1009E5106 /* NCTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTaskManager.h; sourceTree = "<group>"; };
 		1211122D185989E1009E5106 /* NCTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTaskManager.m; sourceTree = "<group>"; };
 		1211122F18598B09009E5106 /* NCTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTask.h; sourceTree = "<group>"; };
@@ -792,6 +797,10 @@
 		1248CEAE1B7E1149000266BE /* NSManagedObjectContext+NCStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+NCStorage.h"; sourceTree = "<group>"; };
 		1248CEAF1B7E1149000266BE /* NSManagedObjectContext+NCStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+NCStorage.m"; sourceTree = "<group>"; };
 		124A13931BDFAE78004A41EF /* Fitting.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Fitting.xcassets; sourceTree = "<group>"; };
+		124DDE721BF38AB500596A38 /* NCWealthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCWealthViewController.h; sourceTree = "<group>"; };
+		124DDE731BF38AB500596A38 /* NCWealthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCWealthViewController.m; sourceTree = "<group>"; };
+		124DDE751BF38B4B00596A38 /* NCPieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPieChartView.h; sourceTree = "<group>"; };
+		124DDE761BF38B4B00596A38 /* NCPieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPieChartView.m; sourceTree = "<group>"; };
 		1251E95918BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCKillMailDetailsAttackerCell.h; sourceTree = "<group>"; };
 		1251E95A18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCKillMailDetailsAttackerCell.m; sourceTree = "<group>"; };
 		1256923C1A37799A008F6468 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
@@ -1039,6 +1048,8 @@
 		12B9A6721B8F0D38005624D5 /* NSManagedObjectContext+NCDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+NCDatabase.m"; sourceTree = "<group>"; };
 		12B9A68C1B9092F1005624D5 /* NSManagedObjectContext+NCCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+NCCache.h"; sourceTree = "<group>"; };
 		12B9A68D1B9092F1005624D5 /* NSManagedObjectContext+NCCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+NCCache.m"; sourceTree = "<group>"; };
+		12BE1EFD1BFDFABF009D6C7D /* NCWealthCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCWealthCell.h; sourceTree = "<group>"; };
+		12BE1EFE1BFDFABF009D6C7D /* NCWealthCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCWealthCell.m; sourceTree = "<group>"; };
 		12BF345F18814CC700368CD4 /* NCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewCell.h; sourceTree = "<group>"; };
 		12BF346018814CC700368CD4 /* NCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewCell.m; sourceTree = "<group>"; };
 		12C107DE1ADD584C008D60DF /* NCDatabaseFetchedResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseFetchedResultsViewController.h; sourceTree = "<group>"; };
@@ -1210,6 +1221,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1210C7DE1BF4D77800B94154 /* QuartzCore.framework in Frameworks */,
 				12D963E51BA1F1A100292321 /* AFNetworking.framework in Frameworks */,
 				12D963E41BA1F17D00292321 /* EVEAPI.framework in Frameworks */,
 				1256923D1A37799A008F6468 /* EventKit.framework in Frameworks */,
@@ -1335,6 +1347,7 @@
 		120968511845F0CB00921A37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1210C7DD1BF4D77800B94154 /* QuartzCore.framework */,
 				1282578B1BD1370000BC1F56 /* CloudKit.framework */,
 				1256923C1A37799A008F6468 /* EventKit.framework */,
 				12A38E5A190BED24000102D4 /* iAd.framework */,
@@ -1377,6 +1390,7 @@
 				120EED571AC58FEF00947614 /* ShoppingList */,
 				120968611845F0CB00921A37 /* NCAppDelegate.h */,
 				120968621845F0CB00921A37 /* NCAppDelegate.mm */,
+				124DDE6C1BF38A9400596A38 /* NCWealthViewController */,
 				120968591845F0CB00921A37 /* Supporting Files */,
 			);
 			path = Neocom;
@@ -1911,6 +1925,19 @@
 				1248CE7E1B7DDCE1000266BE /* EVEAPI.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		124DDE6C1BF38A9400596A38 /* NCWealthViewController */ = {
+			isa = PBXGroup;
+			children = (
+				124DDE721BF38AB500596A38 /* NCWealthViewController.h */,
+				124DDE731BF38AB500596A38 /* NCWealthViewController.m */,
+				12BE1EFD1BFDFABF009D6C7D /* NCWealthCell.h */,
+				12BE1EFE1BFDFABF009D6C7D /* NCWealthCell.m */,
+				124DDE751BF38B4B00596A38 /* NCPieChartView.h */,
+				124DDE761BF38B4B00596A38 /* NCPieChartView.m */,
+			);
+			name = NCWealthViewController;
 			sourceTree = "<group>";
 		};
 		1251E95718BC6E3400DDAA62 /* NCKillMailDetailsAttackerCell */ = {
@@ -3937,6 +3964,7 @@
 				129D263D187E98C100E2062C /* NCNavigationCharacterButton.m in Sources */,
 				12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */,
 				1211123118598B09009E5106 /* NCTask.m in Sources */,
+				124DDE741BF38AB500596A38 /* NCWealthViewController.m in Sources */,
 				120C332519CAB0A60093EECA /* NCDBInvControlTowerResourcePurpose.m in Sources */,
 				129D261D187E923300E2062C /* NSData+MD5.m in Sources */,
 				129D2624187E923300E2062C /* NSString+Email.m in Sources */,
@@ -3949,6 +3977,7 @@
 				12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */,
 				128257881BD1035800BC1F56 /* NCFittingPOSStructuresViewController.mm in Sources */,
 				129D2625187E923300E2062C /* NSString+UTI.m in Sources */,
+				124DDE771BF38B4B00596A38 /* NCPieChartView.m in Sources */,
 				125DC6371BD500CC005C2F79 /* NCKillMail.mm in Sources */,
 				12B5EFF21ACBC154003CDF65 /* NCShoppingList.m in Sources */,
 				125DC67E1BD6377B005C2F79 /* NCShoppingItemCell.m in Sources */,
@@ -4077,6 +4106,7 @@
 				1282571F1BCF822700BC1F56 /* NCFittingDamagePatternEditorViewController.m in Sources */,
 				1282571C1BCE981F00BC1F56 /* NCFittingTargetsViewController.mm in Sources */,
 				120C332219CAB0A50093EECA /* NCDBIndActivity.m in Sources */,
+				12BE1EFF1BFDFABF009D6C7D /* NCWealthCell.m in Sources */,
 				129E23AE1BC3FDB000E311BF /* NCFittingShipStatsViewController.mm in Sources */,
 				129D2621187E923300E2062C /* UIView+Nib.m in Sources */,
 				120C337019CAB0AA0093EECA /* NCDBMapRegion.m in Sources */,

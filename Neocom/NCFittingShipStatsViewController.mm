@@ -197,7 +197,7 @@
 								labels[i].progress = [values[i] floatValue];
 								labels[i].text = texts[i];
 							}
-							cell.hpLabel.text = data[@"hp"];
+							cell.hpLabel.text = texts[4];
 							cell.categoryImageView.image = data[@"categoryImage"];
 						};
 						row.loadingBlock = ^(NCFittingShipStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
@@ -217,7 +217,7 @@
 											[texts addObject:[NSString stringWithFormat:@"%.1f%%", resistances.layers[i].resistances[j] * 100]];
 										}
 										[values addObject:@(hp.layers[i])];
-										[texts addObject:[NSString shortStringWithFloat:hp.layers[4] unit:nil]];
+										[texts addObject:[NSString shortStringWithFloat:hp.layers[i] unit:nil]];
 									}
 									else {
 										auto damagePattern = ship->getDamagePattern();

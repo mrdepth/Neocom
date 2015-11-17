@@ -29,6 +29,8 @@
 }
 
 + (instancetype) optimalAttributesWithTrainingQueue:(NCTrainingQueue*) trainingQueue {
+	if (trainingQueue.skills.count == 0)
+		return trainingQueue.characterAttributes ?: [NCCharacterAttributes defaultCharacterAttributes];
 	NCCharacterAttributes* characterAttributes = [NCCharacterAttributes defaultCharacterAttributes];
 
 	__block std::map<int, NSInteger> skillPoints;

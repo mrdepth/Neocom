@@ -22,6 +22,7 @@
 @interface NCDatabaseTypePickerViewController ()
 @property (nonatomic, copy) void (^completionHandler)(NCDBInvType* type);
 @property (nonatomic, strong) NCDBEufeItemCategory* category;
+//@property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
 
 @end
 
@@ -38,6 +39,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//	NCDatabaseTypePickerContentViewController* contentViewController = self.viewControllers[0];
+//	contentViewController.databaseManagedObjectContext = self.databaseManagedObjectContext;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -52,22 +55,20 @@
 - (void) presentWithCategory:(NCDBEufeItemCategory*) category inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(NCDBInvType* type)) completion {
 	if (![self.category isEqual:category]) {
 		self.category = category;
+		
 		for (NCTableViewController* controller in self.viewControllers) {
 			if (controller.searchController.isActive)
 				[controller.searchController setActive:NO];
-			else if (controller.searchDisplayController.isActive)
-				[controller.searchDisplayController setActive:NO animated:NO];
 		}
 		
 		if (self.viewControllers.count > 1)
 			[self setViewControllers:@[[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]] animated:NO];
 		
-		NCDatabase* database = [NCDatabase sharedDatabase];
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItemGroup"];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
-		request.predicate = [NSPredicate predicateWithFormat:@"category == %@ AND parentGroup == NULL", category];
+		request.predicate = [NSPredicate predicateWithFormat:@"category == %@ AND parentGroup == NULL", self.category];
 		request.fetchLimit = 1;
-		NSArray* result = [database.managedObjectContext executeFetchRequest:request error:nil];
+		NSArray* result = [self.category.managedObjectContext executeFetchRequest:request error:nil];
 		
 		NCDatabaseTypePickerContentViewController* contentViewController = self.viewControllers[0];
 		contentViewController.group = result.count == 1 ? result[0] : nil;
@@ -93,6 +94,13 @@
 	if (self.viewControllers.count > 0)
 		[self.viewControllers[0] setTitle:self.title];
 }
+
+/*- (NSManagedObjectContext*) databaseManagedObjectContext {
+	if (!_databaseManagedObjectContext) {
+		_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+	}
+	return _databaseManagedObjectContext;
+}*/
 
 
 @end

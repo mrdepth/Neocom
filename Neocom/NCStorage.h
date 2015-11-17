@@ -7,30 +7,37 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#import "NSManagedObjectContext+NCStorage.h"
+
+#define NCStorageDidChangeNotification @"NCStorageDidChangeNotification"
+
+#define NCSettingsDontNeedsCloudTransfer @"NCSettingsDontNeedsCloudTransfer"
+#define NCSettingsDontNeedsCloudReset @"NCSettingsDontNeedsCloudReset"
+#define NCSettingsStorageType @"NCSettingsStorageType"
+#define NCSettingsUseCloudKey @"NCSettingsUseCloudKey"
+#define NCSettingsCloudTokenKey @"NCSettingsCloudTokenKey"
+#define NCSettingsMigratedToCloudKey @"NCSettingsMigratedToCloudKey"
 
 typedef NS_ENUM(NSInteger, NCStorageType) {
-	NCStorageTypeFallback,
+	NCStorageTypeLocal,
 	NCStorageTypeCloud
 };
 
 
 @interface NCStorage : NSObject
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, assign, readonly) NCStorageType storageType;
-@property (readonly, strong, nonatomic) NSManagedObjectContext *backgroundManagedObjectContext;
 
 + (instancetype) sharedStorage;
-+ (instancetype) fallbackStorage;
-+ (instancetype) cloudStorage;
-
 + (void) setSharedStorage:(NCStorage*) storage;
-- (void) saveContext;
 
-- (id) initFallbackStorage;
+- (id) initLocalStorage;
 - (id) initCloudStorage;
-- (BOOL) transferDataFromFallbackToCloud;
+
+- (NSManagedObjectContext*) createManagedObjectContext;
+- (NSManagedObjectContext*) createManagedObjectContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType) concurrencyType;
 
 - (BOOL) backupCloudData;
 - (BOOL) restoreCloudData;

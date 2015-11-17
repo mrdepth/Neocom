@@ -14,8 +14,11 @@
 #import "NSString+Neocom.h"
 #import "NSString+Neocom.h"
 #import "NCDefaultTableViewCell.h"
-#import "EVECentralAPI.h"
 #import "NCSplitViewController.h"
+#import "NCPriceManager.h"
+#import "NCUpdater.h"
+
+#define NCMarketPricesMonitorDidChangeNotification @"NCMarketPricesMonitorDidChangeNotification"
 
 #define NCPlexTypeID 29668
 #define NCTritaniumTypeID 34
@@ -37,18 +40,24 @@
 @property (nonatomic, strong) EVECharacterSheet* characterSheet;
 @property (nonatomic, strong) EVESkillQueue* skillQueue;
 @property (nonatomic, strong) EVEServerStatus* serverStatus;
-@property (nonatomic, strong) EVECentralMarketStat* marketStat;
 @property (nonatomic, readonly) NSString* skillsDetails;
 @property (nonatomic, readonly) NSString* skillQueueDetails;
 @property (nonatomic, readonly) NSString* mailsDetails;
+@property (nonatomic, readonly) NSString* settingsDetails;
 @property (nonatomic, strong) NSTimer* timer;
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
+@property (nonatomic, assign) BOOL reloading;
+@property (nonatomic, strong) NSDictionary* prices;
+@property (nonatomic, strong) NCPriceManager* priceManager;
+@property (nonatomic, assign) NSInteger numberOfUnreadMessages;
 - (void) reload;
 - (void) onTimer:(NSTimer*) timer;
 - (void) updateServerStatus;
 - (void) updatePrices;
 - (void) updateMarqueeLabel;
 - (void) marketPricesMonitorDidChange:(NSNotification*) notification;
+- (void) priceManagerDidUpdate:(NSNotification*) notification;
+- (void) mailBoxDidUpdateNotification:(NSNotification*) notification;
 @end
 
 @implementation NCMainMenuViewController
@@ -72,11 +81,12 @@
 	[self reload];
 	
 	self.dateFormatter = [NSDateFormatter new];
-	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 	self.dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 	[self.dateFormatter setDateFormat:@"HH:mm:ss"];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.view.translatesAutoresizingMaskIntoConstraints = YES;
+	//self.priceManager = [NCPriceManager new];
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,18 +95,16 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(marketPricesMonitorDidChange:) name:NCMarketPricesMonitorDidChangeNotification object:nil];
-	
 	[super viewWillAppear:animated];
-	[self update];
-	if (self.serverStatus) {
-		self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
-		[self onTimer:self.timer];
-	}
-	else
-		[self updateServerStatus];
-	[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
-	[self updateMarqueeLabel];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(marketPricesMonitorDidChange:) name:NCMarketPricesMonitorDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mailBoxDidUpdateNotification:) name:NCMailBoxDidUpdateNotification object:nil];
+	
+	self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
+	[self updateServerStatus];
+	
+	[self updatePrices];
+	[self reload];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -104,6 +112,7 @@
 	self.timer = nil;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCMarketPricesMonitorDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCMailBoxDidUpdateNotification object:nil];
 }
 
 - (void) dealloc {
@@ -166,43 +175,16 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
+	if ([self isViewLoaded] && self.view.window)
 		[self reload];
 }
 
-- (void) didChangeStorage {
-	[self reload];
-}
-
-- (BOOL) shouldReloadData {
-	return YES;
-}
-
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reload) object:nil];
-	NSTimeInterval delay = 0;
-	if (self.skillQueue)
-		delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];
-	else if (self.characterSheet)
-		delay = [self.characterSheet.cacheExpireDate timeIntervalSinceNow];
-	if (delay > 0)
-		[self performSelector:@selector(reload) withObject:nil afterDelay:delay];
-	else
+- (void) didChangeStorage:(NSNotification *)notification {
+	[super didChangeStorage:notification];
+	if ([self isViewLoaded] && self.view.window)
 		[self reload];
-
-	if (self.marketStat.cacheExpireDate)
-		delay = [self.marketStat.cacheExpireDate timeIntervalSinceNow];
-	if (delay > 0)
-		[self performSelector:@selector(updatePrices) withObject:nil afterDelay:delay];
-	else
-		[self updatePrices];
-	[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -231,61 +213,82 @@
 	return @"Cell";
 }
 
+- (void) didInstallUpdate:(NSNotification *)notification {
+	[super didInstallUpdate:notification];
+	[self.tableView reloadData];
+}
+
 #pragma mark - Private
 
 - (void) reload {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reload) object:nil];
+	if (self.reloading)
+		return;
+	
+	self.reloading = YES;
 	NCAccount* account = [NCAccount currentAccount];
-	NSInteger apiKeyAccessMask = account.apiKey.apiKeyInfo.key.accessMask;
-	NSString* accessMaskKey = account.accountType == NCAccountTypeCorporate ? @"corpAccessMask" : @"charAccessMask" ;
-	
-	self.sections = [NSMutableArray new];
-	for (NSArray* rows in self.allSections) {
-		NSMutableArray* section = [NSMutableArray new];
-		for (NSDictionary* row in rows) {
-			NSInteger accessMask = [[row valueForKey:accessMaskKey] integerValue];
-			if ((accessMask & apiKeyAccessMask) == accessMask) {
-				[section addObject:row];
+	self.numberOfUnreadMessages = 0;
+	void (^reload)(NSInteger, NSString*) = ^(NSInteger apiKeyAccessMask, NSString* accessMaskKey) {
+		self.sections = [NSMutableArray new];
+		for (NSArray* rows in self.allSections) {
+			NSMutableArray* section = [NSMutableArray new];
+			for (NSDictionary* row in rows) {
+				NSInteger accessMask = [row[accessMaskKey] integerValue];
+				if ((accessMask & apiKeyAccessMask) == accessMask) {
+					[section addObject:row];
+				}
 			}
+			if (section.count > 0)
+				[self.sections addObject:section];
 		}
-		if (section.count > 0)
-			[self.sections addObject:section];
-	}
+		
+		[self.tableView reloadData];
+		self.reloading = NO;
+	};
 	
-	[self update];
-
-	__block EVECharacterSheet* characterSheet;
-	__block EVESkillQueue* skillQueue;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 characterSheet = account.characterSheet;
-											 skillQueue = account.skillQueue;
-											 [account.mailBox messages];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.characterSheet = characterSheet;
-									 self.skillQueue = skillQueue;
-									 [self update];
-									 
-									 NSTimeInterval delay = 0;
-									 if (self.skillQueue)
-										delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];
-									 else if (self.characterSheet)
-										 delay = [self.characterSheet.cacheExpireDate timeIntervalSinceNow];
-									 if (delay > 0)
-										 [self performSelector:@selector(reload) withObject:nil afterDelay:delay];
-
-								 }
-							 }];
+	if (account) {
+		[account.managedObjectContext performBlock:^{
+			[account.mailBox loadNumberOfUnreadMessagesWithCompletionBlock:^(NSInteger numberOfUnreadMessages, NSError *error) {
+				self.numberOfUnreadMessages = numberOfUnreadMessages;
+				if (!self.reloading)
+					[self.tableView reloadData];
+			}];
+			
+			NSInteger apiKeyAccessMask = account.apiKey.apiKeyInfo.key.accessMask;
+			NSString* accessMaskKey = account.accountType == NCAccountTypeCorporate ? @"corpAccessMask" : @"charAccessMask" ;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				reload(apiKeyAccessMask, accessMaskKey);
+				
+				[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+					[account loadSkillQueueWithCompletionBlock:^(EVESkillQueue *skillQueue, NSError *error) {
+						dispatch_async(dispatch_get_main_queue(), ^{
+							self.characterSheet = characterSheet;
+							self.skillQueue = skillQueue;
+							[self.tableView reloadData];
+							
+							NSTimeInterval delay = 0;
+							if (self.skillQueue)
+								delay = [[self.skillQueue.eveapi localTimeWithServerTime:self.skillQueue.eveapi.cachedUntil] timeIntervalSinceNow];
+							else if (self.characterSheet)
+								delay = [[self.characterSheet.eveapi localTimeWithServerTime:self.characterSheet.eveapi.cachedUntil] timeIntervalSinceNow];
+							if (delay > 0)
+								[self performSelector:@selector(reload) withObject:nil afterDelay:delay];
+						});
+					}];
+				}];
+			});
+		}];
+	}
+	else {
+		reload(0, @"charAccessMask");
+	}
 }
 
 - (NSString*) skillsDetails {
 	if (self.characterSheet) {
 		NSInteger skillPoints = 0;
 		for (EVECharacterSheetSkill* skill in self.characterSheet.skills)
-			skillPoints += skill.skillpoints;
+			skillPoints += skill.skillPoints;
 
 		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)\n%@", nil),
 				[NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], (int32_t) self.characterSheet.skills.count,
@@ -309,25 +312,23 @@
 }
 
 - (NSString*) mailsDetails {
-	NCAccount* account = [NCAccount currentAccount];
-	if (account) {
-		NSInteger numberOfUnreadMessages = account.mailBox.numberOfUnreadMessages;
-		if (numberOfUnreadMessages > 0)
-			return [NSString stringWithFormat:NSLocalizedString(@"%d unread messages", nil), (int32_t) numberOfUnreadMessages];
-	}
-	return nil;
+	if (self.numberOfUnreadMessages > 0)
+		return [NSString stringWithFormat:NSLocalizedString(@"%d unread messages", nil), (int32_t) self.numberOfUnreadMessages];
+	else
+		return nil;
+}
+
+- (NSString*) settingsDetails {
+	NCUpdater* updater = [NCUpdater sharedUpdater];
+	if ((updater.state == NCUpdaterStateWaitingForDownload || updater.state == NCUpdaterStateWaitingForInstall) && updater.updateName)
+		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%.1f Mib) update available to download", nil), updater.updateName, updater.updateSize / 10240.0 / 1024.0];
+	else
+		return nil;
 }
 
 - (void) onTimer:(NSTimer*) timer {
 	if (self.serverStatus) {
-		self.serverTimeLabel.text = [self.dateFormatter stringFromDate:[self.serverStatus serverTimeWithLocalTime:[NSDate date]]];
-//		if ([[self.serverStatus cacheExpireDate] compare:[NSDate date]] == NSOrderedAscending) {
-//			[self updateServerStatus];
-//			self.timer = nil;
-//		}
-	}
-	else {
-		self.timer = nil;
+		self.serverTimeLabel.text = [self.dateFormatter stringFromDate:[self.serverStatus.eveapi serverTimeWithLocalTime:[NSDate date]]];
 	}
 }
 
@@ -337,7 +338,47 @@
 }
 
 - (void) updateServerStatus {
-	__block EVEServerStatus* serverStatus = nil;
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateServerStatus) object:nil];
+
+	void (^update)(EVEAPIKey* apiKey) = ^(EVEAPIKey* apiKey) {
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:apiKey cachePolicy:NSURLRequestUseProtocolCachePolicy];
+		[api serverStatusWithCompletionBlock:^(EVEServerStatus *result, NSError *error) {
+			self.serverStatus = result;
+			if (result) {
+				if (result.serverOpen)
+					self.serverStatusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ players online", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:result.onlinePlayers]];
+				else
+					self.serverStatusLabel.text = NSLocalizedString(@"Server offline", nil);
+				
+				[self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:[[result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil] timeIntervalSinceNow]];
+				[self onTimer:self.timer];
+			}
+			else {
+				self.serverStatusLabel.text = [error localizedDescription];
+				[self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:60];
+			}
+			
+		} progressBlock:nil];
+	};
+	
+	if (!self.serverStatus || !self.serverStatus.eveapi.cachedUntil || [[self.serverStatus.eveapi localTimeWithServerTime:self.serverStatus.eveapi.cachedUntil] compare:[NSDate date]] == NSOrderedAscending) {
+		NCAccount* account = [NCAccount currentAccount];
+		if (account)
+			[account.managedObjectContext performBlock:^{
+				EVEAPIKey* apiKey = account.eveAPIKey;
+				dispatch_async(dispatch_get_main_queue(), ^{
+					update(apiKey);
+				});
+			}];
+		else
+			update(nil);
+	}
+	else if (self.serverStatus) {
+		[self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:[[self.serverStatus.eveapi localTimeWithServerTime:self.serverStatus.eveapi.cachedUntil] timeIntervalSinceNow]];
+	}
+	
+	
+/*	__block EVEServerStatus* serverStatus = nil;
 	__block NSError* error = nil;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
@@ -363,90 +404,73 @@
 										 [self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:60.];
 									 }
 								 }
-							 }];
+							 }];*/
 }
 
 - (void) updatePrices {
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updatePrices) object:nil];
-	__block EVECentralMarketStat* marketStat = nil;
-	__block NSError* error = nil;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 marketStat = [EVECentralMarketStat marketStatWithTypeIDs:@[@(NCPlexTypeID), @(NCTritaniumTypeID), @(NCPyeriteTypeID), @(NCMexallonTypeID), @(NCIsogenTypeID), @(NCNocxiumTypeID), @(NCZydrineTypeID), @(NCMegacyteTypeID), @(NCMorphiteTypeID)]
-																							regionIDs:@[@(NCTheForgeRegionID)]
-																								hours:0
-																								 minQ:0
-																						  cachePolicy:NSURLRequestUseProtocolCachePolicy
-																								error:&error
-																					  progressHandler:nil];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 if (marketStat) {
-										 self.marketStat = marketStat;
-										 [self performSelector:@selector(updatePrices) withObject:nil afterDelay:MAX([self.marketStat.cacheExpireDate timeIntervalSinceNow], 60)];
-										 [self updateMarqueeLabel];
-									 }
-									 else {
-										 [self performSelector:@selector(updatePrices) withObject:nil afterDelay:60.];
-									 }
-								 }
-							 }];
+	[self.priceManager requestPricesWithTypes:@[@(NCPlexTypeID), @(NCTritaniumTypeID), @(NCPyeriteTypeID), @(NCMexallonTypeID), @(NCIsogenTypeID), @(NCNocxiumTypeID), @(NCZydrineTypeID), @(NCMegacyteTypeID), @(NCMorphiteTypeID)]
+							  completionBlock:^(NSDictionary *prices) {
+								  self.prices = prices;
+								  [self updateMarqueeLabel];
+							  }];
 }
 
 - (void) updateMarqueeLabel {
-	if (!self.marketStat) {
+	if (!self.prices) {
 		self.marqueeLabel.text = nil;
 		return;
 	}
 	
-	NSMutableDictionary* types = [NSMutableDictionary new];
-	for (EVECentralMarketStatType* type in self.marketStat.types) {
-		types[@(type.typeID)] = type;
-	}
 	NSMutableArray* components = [NSMutableArray new];
-	EVECentralMarketStatType* plex = types[@(NCPlexTypeID)];
-	EVECentralMarketStatType* trit = types[@(NCTritaniumTypeID)];
-	EVECentralMarketStatType* pye = types[@(NCPyeriteTypeID)];
-	EVECentralMarketStatType* mex = types[@(NCMexallonTypeID)];
-	EVECentralMarketStatType* iso = types[@(NCIsogenTypeID)];
-	EVECentralMarketStatType* nocx = types[@(NCNocxiumTypeID)];
-	EVECentralMarketStatType* zyd = types[@(NCZydrineTypeID)];
-	EVECentralMarketStatType* mega = types[@(NCMegacyteTypeID)];
-	EVECentralMarketStatType* morph = types[@(NCMorphiteTypeID)];
+	NSNumber* plex = self.prices[@(NCPlexTypeID)];
+	NSNumber* trit = self.prices[@(NCTritaniumTypeID)];
+	NSNumber* pye = self.prices[@(NCPyeriteTypeID)];
+	NSNumber* mex = self.prices[@(NCMexallonTypeID)];
+	NSNumber* iso = self.prices[@(NCIsogenTypeID)];
+	NSNumber* nocx = self.prices[@(NCNocxiumTypeID)];
+	NSNumber* zyd = self.prices[@(NCZydrineTypeID)];
+	NSNumber* mega = self.prices[@(NCMegacyteTypeID)];
+	NSNumber* morph = self.prices[@(NCMorphiteTypeID)];
 	
 	NCMarketPricesMonitor settings = [[NSUserDefaults standardUserDefaults] integerForKey:NCSettingsMarketPricesMonitorKey];
 	
 	if (plex) {
 		if ((settings & NCMarketPricesMonitorExchangeRate) == NCMarketPricesMonitorExchangeRate)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"ISK 1B: $%.2f", nil), (NCPlexRate / plex.sell.percentile)]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"ISK 1B: $%.2f", nil), (NCPlexRate / [plex floatValue])]];
 		if ((settings & NCMarketPricesMonitorPlex) == NCMarketPricesMonitorPlex)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"PLEX: %@", nil), [NSString shortStringWithFloat:plex.sell.percentile unit:@"ISK"]]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"PLEX: %@", nil), [NSString shortStringWithFloat:[plex floatValue] unit:@"ISK"]]];
 	}
 	if ((settings & NCMarketPricesMonitorMinerals) == NCMarketPricesMonitorMinerals) {
 		if (trit)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Trit: %@", nil), [NSString shortStringWithFloat:trit.sell.percentile unit:@"ISK"]]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Trit: %@", nil), [NSString shortStringWithFloat:[trit floatValue] unit:@"ISK"]]];
 		if (pye)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Pye: %@", nil), [NSString shortStringWithFloat:pye.sell.percentile unit:@"ISK"]]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Pye: %@", nil), [NSString shortStringWithFloat:[pye floatValue] unit:@"ISK"]]];
 		if (mex)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Mex: %@", nil), [NSString shortStringWithFloat:mex.sell.percentile unit:@"ISK"]]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Mex: %@", nil), [NSString shortStringWithFloat:[mex floatValue] unit:@"ISK"]]];
 		if (iso)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Iso: %@", nil), [NSString shortStringWithFloat:iso.sell.percentile unit:@"ISK"]]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Iso: %@", nil), [NSString shortStringWithFloat:[iso floatValue] unit:@"ISK"]]];
 		if (nocx)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Nocx: %@", nil), [NSString shortStringWithFloat:nocx.sell.percentile unit:@"ISK"]]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Nocx: %@", nil), [NSString shortStringWithFloat:[nocx floatValue] unit:@"ISK"]]];
 		if (zyd)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Zyd: %@", nil), [NSString shortStringWithFloat:zyd.sell.percentile unit:@"ISK"]]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Zyd: %@", nil), [NSString shortStringWithFloat:[zyd floatValue] unit:@"ISK"]]];
 		if (mega)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Mega: %@", nil), [NSString shortStringWithFloat:mega.sell.percentile unit:@"ISK"]]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Mega: %@", nil), [NSString shortStringWithFloat:[mega floatValue] unit:@"ISK"]]];
 		if (morph)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Morph: %@", nil), [NSString shortStringWithFloat:morph.sell.percentile unit:@"ISK"]]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Morph: %@", nil), [NSString shortStringWithFloat:[morph floatValue] unit:@"ISK"]]];
 	}
 	self.marqueeLabel.text = [components componentsJoinedByString:@"  "];
 }
 
 - (void) marketPricesMonitorDidChange:(NSNotification*) notification {
 	[self updateMarqueeLabel];
+}
+
+- (void) priceManagerDidUpdate:(NSNotification*) notification {
+	[self updatePrices];
+}
+
+- (void) mailBoxDidUpdateNotification:(NSNotification*) notification {
+	[self reload];
 }
 
 @end

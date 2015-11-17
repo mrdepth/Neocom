@@ -13,37 +13,20 @@
 
 @implementation NCShoppingItem (Neocom)
 
-+ (instancetype) shoppingItemWithType:(NCDBInvType*) type quantity:(int32_t) quantity {
-	if (!type)
-		return nil;
-	
-	NSManagedObjectContext* context = [[NCStorage sharedStorage] managedObjectContext];
-	NCShoppingItem* item = [[NCShoppingItem alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingItem" inManagedObjectContext:context] insertIntoManagedObjectContext:nil];
-	item.type = type;
-	item.typeID = type.typeID;
-	item.quantity = quantity;
-	return item;
-}
-
-- (NCDBInvType*) type {
-	NCDBInvType* type = objc_getAssociatedObject(self, @"type");
-	if (!type) {
-		type = [NCDBInvType invTypeWithTypeID:self.typeID];
-		self.type = type;
+- (id) initWithTypeID:(int32_t) typeID quantity:(int32_t) quantity entity:(NSEntityDescription*) entity insertIntoManagedObjectContext:(NSManagedObjectContext*) context {
+	if (self = [super initWithEntity:entity insertIntoManagedObjectContext:context]) {
+		self.typeID = typeID;
+		self.quantity = quantity;
 	}
-	return type;
+	return self;
 }
 
-- (void) setType:(NCDBInvType *)type {
-	objc_setAssociatedObject(self, @"type", type, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (double) price {
+	return [objc_getAssociatedObject(self, @"price") doubleValue];
 }
 
-- (EVECentralMarketStatType*) price {
-	return objc_getAssociatedObject(self, @"price");
-}
-
-- (void) setPrice:(EVECentralMarketStatType *)price {
-	objc_setAssociatedObject(self, @"price", price, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void) setPrice:(double)price {
+	objc_setAssociatedObject(self, @"price", @(price), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

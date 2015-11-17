@@ -9,7 +9,7 @@
 #import "NCTableViewController.h"
 
 @interface NCDatabaseTypeMasteryViewController : NCTableViewController
-@property (nonatomic, strong) NCDBInvType* type;
-@property (nonatomic, assign) NCDBCertMasteryLevel* masteryLevel;
+@property (nonatomic, strong) NSManagedObjectID* typeID;
+@property (nonatomic, assign) NSManagedObjectID* masteryLevelID;
 
 @end

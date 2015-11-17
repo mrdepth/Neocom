@@ -8,7 +8,7 @@
 
 #import "NCSkillHierarchy.h"
 #import <objc/runtime.h>
-#import "NCAccount.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCSkillData.h"
 
 @implementation NCSkillHierarchySkill
@@ -18,23 +18,23 @@
 @interface NCSkillHierarchy()
 @property (nonatomic, strong, readwrite) NSMutableArray* skills;
 
-- (void) addRequiredSkill:(NCDBInvType*) skill withLevel:(int32_t) level nestingLevel:(int32_t) nestingLevel account:(NCAccount*) account;
+- (void) addRequiredSkill:(NCDBInvType*) skill withLevel:(int32_t) level nestingLevel:(int32_t) nestingLevel characterSheet:(EVECharacterSheet*) characterSheet;
 @end
 
 @implementation NCSkillHierarchy
 
-- (id) initWithSkill:(NCDBInvTypeRequiredSkill*) skill account:(NCAccount*) account {
+- (id) initWithSkill:(NCDBInvTypeRequiredSkill*) skill characterSheet:(EVECharacterSheet*) characterSheet {
 	if (self = [super init]) {
 		self.skills = [NSMutableArray new];
-		[self addRequiredSkill:skill.skillType withLevel:skill.skillLevel nestingLevel:0 account:account];
+		[self addRequiredSkill:skill.skillType withLevel:skill.skillLevel nestingLevel:0 characterSheet:characterSheet];
 	}
 	return self;
 }
 
-- (id) initWithSkillType:(NCDBInvType*) skill level:(int32_t) level account:(NCAccount*) account {
+- (id) initWithSkillType:(NCDBInvType*) skill level:(int32_t) level characterSheet:(EVECharacterSheet*) characterSheet {
 	if (self = [super init]) {
 		self.skills = [NSMutableArray new];
-		[self addRequiredSkill:skill withLevel:level nestingLevel:0 account:account];
+		[self addRequiredSkill:skill withLevel:level nestingLevel:0 characterSheet:characterSheet];
 	}
 	return self;
 }
@@ -42,14 +42,13 @@
 
 #pragma mark - Private
 
-- (void) addRequiredSkill:(NCDBInvType*) skill withLevel:(int32_t) level nestingLevel:(int32_t) nestingLevel account:(NCAccount*) account {
+- (void) addRequiredSkill:(NCDBInvType*) skill withLevel:(int32_t) level nestingLevel:(int32_t) nestingLevel characterSheet:(EVECharacterSheet*) characterSheet {
 	NCSkillHierarchySkill* skillData = [[NCSkillHierarchySkill alloc] initWithInvType:skill];
 	skillData.targetLevel = level;
 
-	if (account.characterSheet) {
-		EVECharacterSheetSkill* characterSkill = account.characterSheet.skillsMap[@(skill.typeID)];
-		skillData.currentLevel = characterSkill.level;
-		skillData.skillPoints = characterSkill.skillpoints;
+	if (characterSheet) {
+		EVECharacterSheetSkill* characterSkill = characterSheet.skillsMap[@(skill.typeID)];
+		skillData.characterSkill = characterSkill;
 		if (!characterSkill)
 			skillData.availability = NCSkillHierarchyAvailabilityNotLearned;
 		else if (characterSkill.level < skillData.targetLevel)
@@ -63,7 +62,7 @@
 	skillData.nestingLevel = nestingLevel;
 	[(NSMutableArray*) self.skills addObject:skillData];
 	for (NCDBInvTypeRequiredSkill* subSkill in skill.requiredSkills)
-		[self addRequiredSkill:subSkill.skillType withLevel:subSkill.skillLevel nestingLevel:nestingLevel + 1 account:account];
+		[self addRequiredSkill:subSkill.skillType withLevel:subSkill.skillLevel nestingLevel:nestingLevel + 1 characterSheet:characterSheet];
 }
 
 @end

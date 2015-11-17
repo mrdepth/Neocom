@@ -35,22 +35,6 @@
 	objc_setAssociatedObject(self, @"solarSystem", solarSystem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (NCDBMapDenormalize*) moon {
-	return objc_getAssociatedObject(self, @"moon");
-}
-
-- (void) setMoon:(NCDBMapDenormalize *)moon {
-	objc_setAssociatedObject(self, @"moon", moon, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (NCDBInvType*) type {
-	return objc_getAssociatedObject(self, @"type");
-}
-
-- (void) setType:(NCDBInvType *)type {
-	objc_setAssociatedObject(self, @"type", type, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
 - (NSString*) title {
 	return objc_getAssociatedObject(self, @"title");
 }

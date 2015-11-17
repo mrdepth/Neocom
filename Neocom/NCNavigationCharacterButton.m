@@ -23,7 +23,7 @@
 
 - (void) awakeFromNib {
 	self.taskManager = [NCTaskManager new];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:NCAccountDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:NCCurrentAccountDidChangeNotification object:nil];
 	self.account = [NCAccount currentAccount];
 }
 
@@ -90,55 +90,44 @@
 	_account = account;
 	self.logoImageView.image = nil;
 	if (account) {
-		__block EVECorporationSheet* corporationSheet = account.corporationSheet;
-		__block EVECharacterInfo* characterInfo = account.characterInfo;
-		
-		void (^update)() = ^ {
-			if (account.accountType == NCAccountTypeCorporate) {
-				if (corporationSheet) {
-					[self.logoImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:corporationSheet.corporationID size:EVEImageSizeRetina32 error:nil]];
-					self.nameLabel.text = [NSString stringWithFormat:@"%@ [%@]", corporationSheet.corporationName, corporationSheet.ticker];
-					self.subtitleLabel.text = corporationSheet.allianceName;
-				}
-				else if (account.corporationSheetError) {
-					self.nameLabel.text = [account.corporationSheetError localizedDescription];
-					self.subtitleLabel.text = nil;
-				}
-				else {
-					self.nameLabel.text = NSLocalizedString(@"Unknown Error", nil);
-					self.subtitleLabel.text = nil;
-				}
-			}
-			else {
-				if (characterInfo) {
-					[self.logoImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil]];
-					self.nameLabel.text = characterInfo.characterName;
-					self.subtitleLabel.text = characterInfo.corporation;
-				}
-				else if (account.characterInfoError) {
-					self.nameLabel.text = [account.characterInfoError localizedDescription];
-					self.subtitleLabel.text = nil;
-				}
-				else {
-					self.nameLabel.text = NSLocalizedString(@"Unknown Error", nil);
-					self.subtitleLabel.text = nil;
-				}
-			}
-		};
-		
-		update();
-		
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 if (account.accountType == NCAccountTypeCorporate)
-													 corporationSheet = account.corporationSheet;
-												 else
-													 characterInfo = account.characterInfo;
-											 }
-								 completionHandler:^(NCTask *task) {
-									 update();
-								 }];
+		[account.managedObjectContext performBlock:^{
+			if (account.accountType == NCAccountTypeCorporate)
+				[account loadCorporationSheetWithCompletionBlock:^(EVECorporationSheet *corporationSheet, NSError *error) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						if (corporationSheet) {
+							[self.logoImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:corporationSheet.corporationID size:EVEImageSizeRetina32 error:nil]];
+							self.nameLabel.text = [NSString stringWithFormat:@"%@ [%@]", corporationSheet.corporationName, corporationSheet.ticker];
+							self.subtitleLabel.text = corporationSheet.allianceName;
+						}
+						else if (error) {
+							self.nameLabel.text = [error localizedDescription];
+							self.subtitleLabel.text = nil;
+						}
+						else {
+							self.nameLabel.text = NSLocalizedString(@"Unknown Error", nil);
+							self.subtitleLabel.text = nil;
+						}
+					});
+				}];
+			else
+				[account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						if (characterInfo) {
+							[self.logoImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:characterInfo.characterID size:EVEImageSize64 error:nil]];
+							self.nameLabel.text = characterInfo.characterName;
+							self.subtitleLabel.text = characterInfo.corporation;
+						}
+						else if (error) {
+							self.nameLabel.text = [error localizedDescription];
+							self.subtitleLabel.text = nil;
+						}
+						else {
+							self.nameLabel.text = NSLocalizedString(@"Unknown Error", nil);
+							self.subtitleLabel.text = nil;
+						}
+					});
+				}];
+		}];
 	}
 	else {
 		self.nameLabel.text = NSLocalizedString(@"Select account", nil);

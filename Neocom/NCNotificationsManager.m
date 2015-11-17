@@ -6,13 +6,14 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
+@import EventKit;
 #import "NCNotificationsManager.h"
 #import "NCTaskManager.h"
 #import "NCAccountsManager.h"
 #import "NCTodayRow.h"
 #import "NCStorage.h"
 #import "NCSetting.h"
-#import "NSString+HTML.h"
+//#import "NSString+HTML.h"
 
 //#define NCNotificationsManagerUpdateTime (60 * 30)
 #define NCNotificationsManagerUpdateTime (60 * 10)
@@ -58,7 +59,7 @@
 @property (nonatomic, assign, getter = isEventsUpdating) BOOL eventsUpdating;
 - (void) skillQueueNotificationTimeDidChange:(NSNotification*) notification;
 - (void) updateEventsIfNeeded;
-- (void) updateEventsWithEventStore:(EKEventStore*) eventStore completionHandler:(void(^)(BOOL completed)) completionHandler;
+- (void) updateEventsWithEventStore:(EKEventStore*) eventStore accounts:(NSArray*) accounts completionHandler:(void(^)(BOOL completed)) completionHandler;
 @end
 
 @implementation NCNotificationsManager
@@ -110,126 +111,129 @@
 	if (!self.notificationsUpdating && (!self.lastUpdate || [self.lastUpdate timeIntervalSinceNow] < -NCNotificationsManagerUpdateTime)) {
 		self.notificationsUpdating = YES;
 		NSMutableArray* notifications = [NSMutableArray new];
-		NSMutableSet* accounts = [NSMutableSet new];
+		NSMutableSet* accountsSet = [NSMutableSet new];
 		
+		[[NCAccountsManager sharedManager] loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray *apiKeys) {
+			[[[NCAccountsManager sharedManager] storageManagedObjectContext] performBlock:^{
+				NSMutableArray* todayRows = [NSMutableArray new];
+				
+				dispatch_group_t finishDispatchGroup = dispatch_group_create();
+				for (NCAccount* account in accounts) {
+					if (account.accountType != NCAccountTypeCharacter)
+						continue;
+					if (!account.uuid)
+						continue;
+					
+					int32_t characterID = account.characterID;
+					NSString* uuid = account.uuid;
+					NCTodayRow* row = [NCTodayRow new];
+					[todayRows addObject:row];
+					
+					[account reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(NSError *error) {
+						
+					} progressBlock:nil];
 
-		[[self taskManager] addTaskWithIndentifier:nil
-											 title:nil
-											 block:^(NCTask *task) {
-												 NSMutableArray* todayRows = [NSMutableArray new];
-												 
-												 for (NCAccount* account in accountsManager.accounts) {
-													 if (account.accountType != NCAccountTypeCharacter)
-														 continue;
-													 if (!account.uuid)
-														 continue;
+					dispatch_group_enter(finishDispatchGroup);
+					[account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
+						row.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:characterID size:EVEImageSizeRetina64 error:nil]]];
+						row.name = characterInfo.characterName;
+						row.uuid = uuid;
+						
+						[account loadSkillQueueWithCompletionBlock:^(EVESkillQueue *skillQueue, NSError *error) {
+							if (skillQueue) {
+								NSDate *endTime = skillQueue.skillQueue.count > 0 ? [[skillQueue.skillQueue lastObject] endTime] : nil;
+								row.skillQueueEndDate = [skillQueue.eveapi localTimeWithServerTime:endTime];
+								
+								[accountsSet addObject:uuid];
+								if (endTime) {
+									endTime = [skillQueue.eveapi localTimeWithServerTime:endTime];
+									NSTimeInterval dif = [endTime timeIntervalSinceNow];
+									
+									if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime1Day) && dif > 3600 * 24) {
+										UILocalNotification *notification = [[UILocalNotification alloc] init];
+										notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 24 hours training left.", nil), characterInfo.characterName];
+										notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 24];
+										notification.userInfo = @{NCSettingsCurrentAccountKey: uuid};
+										notification.soundName = UILocalNotificationDefaultSoundName;
+										[notifications addObject:notification];
+									}
+									
+									if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime12Hours) && dif > 3600 * 12) {
+										UILocalNotification *notification = [[UILocalNotification alloc] init];
+										notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 12 hours training left.", nil), characterInfo.characterName];
+										notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 12];
+										notification.userInfo = @{NCSettingsCurrentAccountKey: uuid};
+										notification.soundName = UILocalNotificationDefaultSoundName;
+										[notifications addObject:notification];
+									}
+									
+									if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime4Hours) && dif > 3600 * 4) {
+										UILocalNotification *notification = [[UILocalNotification alloc] init];
+										notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 4 hours training left.", nil), characterInfo.characterName];
+										notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 4];
+										notification.userInfo = @{NCSettingsCurrentAccountKey: uuid};
+										notification.soundName = UILocalNotificationDefaultSoundName;
+										[notifications addObject:notification];
+									}
+									if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime1Hour) && dif > 3600 * 1) {
+										UILocalNotification *notification = [[UILocalNotification alloc] init];
+										notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 1 hour training left.", nil), characterInfo.characterName];
+										notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 1];
+										notification.userInfo = @{NCSettingsCurrentAccountKey: uuid};
+										notification.soundName = UILocalNotificationDefaultSoundName;
+										[notifications addObject:notification];
+									}
+								}
+							}
+							dispatch_group_leave(finishDispatchGroup);
+						}];
+					}];
+				}
+				
+				dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+					[notifications sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"fireDate" ascending:YES]]];
+					NSInteger badge = 1;
+					NSMutableSet* uuids = [NSMutableSet new];
+					for (UILocalNotification* notification in notifications) {
+						NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
+						if (![uuids containsObject:uuid]) {
+							notification.applicationIconBadgeNumber = badge++;
+							[uuids addObject:uuid];
+						}
+					}
+					
+					NSURL* url = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.com.shimanski.eveuniverse.today"];
+					if (url) {
+						url = [url URLByAppendingPathComponent:@"today.plist"];
+						NSFileCoordinator* coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+						[coordinator coordinateWritingItemAtURL:url
+														options:NSFileCoordinatorWritingForReplacing
+														  error:nil
+													 byAccessor:^(NSURL *newURL) {
+														 NSData* data = [NSKeyedArchiver archivedDataWithRootObject:todayRows];
+														 [data writeToURL:newURL atomically:YES];
+													 }];
+					}
+					
+					self.notificationsUpdating = NO;
+					if (accountsSet.count == 0)
+						return;
+					
+					UIApplication* application = [UIApplication sharedApplication];
+					for (UILocalNotification* notification in application.scheduledLocalNotifications)
+						[application cancelLocalNotification:notification];
+					
+					for (UILocalNotification* notification in notifications)
+						[application scheduleLocalNotification:notification];
+					
+					self.lastUpdate = [NSDate date];
+					[[NSUserDefaults standardUserDefaults] setValue:self.lastUpdate forKey:NCSettingsNotificationsLastUpdateTimeKey];
+					if (completionHandler)
+						completionHandler(accounts.count > 0);
 
-													 NCTodayRow* row = [NCTodayRow new];
-													 row.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina64 error:nil]]];
-													 row.name = account.characterInfo.characterName;
-													 row.uuid = account.uuid;
-													 [todayRows addObject:row];
-													 
-													 if (!account.skillQueue)
-														 continue;
-													 
-													 if  ([account.skillQueue.cacheExpireDate compare:[NSDate date]] == NSOrderedAscending) {
-														 [account reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy
-																				  error:nil
-																		progressHandler:nil];
-													 }
-													 
-													 NSDate *endTime = account.skillQueue.skillQueue.count > 0 ? [[account.skillQueue.skillQueue lastObject] endTime] : nil;
-													 row.skillQueueEndDate = [account.skillQueue localTimeWithServerTime:endTime];
-
-													 
-													 [accounts addObject:account.uuid];
-													 if (account.skillQueue.skillQueue.count == 0)
-														 continue;
-													 
-													 if (endTime) {
-														 endTime = [account.skillQueue localTimeWithServerTime:endTime];
-														 NSTimeInterval dif = [endTime timeIntervalSinceNow];
-														 
-														 if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime1Day) && dif > 3600 * 24) {
-															 UILocalNotification *notification = [[UILocalNotification alloc] init];
-															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 24 hours training left.", nil), account.characterInfo.characterName];
-															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 24];
-															 notification.userInfo = @{NCSettingsCurrentAccountKey: account.uuid};
-															 notification.soundName = UILocalNotificationDefaultSoundName;
-															 [notifications addObject:notification];
-														 }
-
-														 if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime12Hours) && dif > 3600 * 12) {
-															 UILocalNotification *notification = [[UILocalNotification alloc] init];
-															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 12 hours training left.", nil), account.characterInfo.characterName];
-															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 12];
-															 notification.userInfo = @{NCSettingsCurrentAccountKey: account.uuid};
-															 notification.soundName = UILocalNotificationDefaultSoundName;
-															 [notifications addObject:notification];
-														 }
-
-														 if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime4Hours) && dif > 3600 * 4) {
-															 UILocalNotification *notification = [[UILocalNotification alloc] init];
-															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 4 hours training left.", nil), account.characterInfo.characterName];
-															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 4];
-															 notification.userInfo = @{NCSettingsCurrentAccountKey: account.uuid};
-															 notification.soundName = UILocalNotificationDefaultSoundName;
-															 [notifications addObject:notification];
-														 }
-														 if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime1Hour) && dif > 3600 * 1) {
-															 UILocalNotification *notification = [[UILocalNotification alloc] init];
-															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 1 hour training left.", nil), account.characterInfo.characterName];
-															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 1];
-															 notification.userInfo = @{NCSettingsCurrentAccountKey: account.uuid};
-															 notification.soundName = UILocalNotificationDefaultSoundName;
-															 [notifications addObject:notification];
-														 }
-													 }
-												 }
-												 [notifications sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"fireDate" ascending:YES]]];
-												 NSInteger badge = 1;
-												 NSMutableSet* uuids = [NSMutableSet new];
-												 for (UILocalNotification* notification in notifications) {
-													 NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
-													 if (![uuids containsObject:uuid]) {
-														 notification.applicationIconBadgeNumber = badge++;
-														 [uuids addObject:uuid];
-													 }
-												 }
-												 
-												 NSURL* url = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.com.shimanski.eveuniverse.today"];
-												 if (url) {
-													 url = [url URLByAppendingPathComponent:@"today.plist"];
-													 NSFileCoordinator* coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-													 [coordinator coordinateWritingItemAtURL:url
-																					 options:NSFileCoordinatorWritingForReplacing
-																					   error:nil
-																				  byAccessor:^(NSURL *newURL) {
-																					  NSData* data = [NSKeyedArchiver archivedDataWithRootObject:todayRows];
-																					  [data writeToURL:newURL atomically:YES];
-																				  }];
-												 }
-											 }
-								 completionHandler:^(NCTask *task) {
-									 self.notificationsUpdating = NO;
-									 if (![task isCancelled]) {
-										 if (accounts.count == 0)
-											 return;
-										 
-										 UIApplication* application = [UIApplication sharedApplication];
-										 for (UILocalNotification* notification in application.scheduledLocalNotifications)
-											 [application cancelLocalNotification:notification];
-										 
-										 for (UILocalNotification* notification in notifications)
-											 [application scheduleLocalNotification:notification];
-										 
-										 self.lastUpdate = [NSDate date];
-										 [[NSUserDefaults standardUserDefaults] setValue:self.lastUpdate forKey:NCSettingsNotificationsLastUpdateTimeKey];
-									 }
-									 if (completionHandler)
-										 completionHandler(accounts.count > 0);
-								 }];
+				});
+			}];
+		}];
 	}
 	else {
 		UIApplication* application = [UIApplication sharedApplication];
@@ -264,58 +268,64 @@
 - (void) updateEventsIfNeeded {
 	if (!self.eventsUpdating && (!self.lastEventsUpdate || [self.lastEventsUpdate timeIntervalSinceNow] < -NCNotificationsManagerUpdateTime)) {
 		NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
-		BOOL shouldContinue = NO;
-		for (NCAccount* account in accountsManager.accounts)
-			if (account.accountType == NCAccountTypeCharacter) {
-				shouldContinue = YES;
-				break;
-			}
-		
-		if (!shouldContinue)
-			return;
-
-		self.eventsUpdating = YES;
-		EKAuthorizationStatus ekAuthorizationStatus = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
-		EKEventStore* eventStore;
-		
-		if (ekAuthorizationStatus == EKAuthorizationStatusNotDetermined) {
-			eventStore = [EKEventStore new];
-			if (eventStore) {
-				[eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-					if (granted)
-						[self updateEventsWithEventStore:eventStore completionHandler:^(BOOL completed) {
-							if (completed) {
-								self.lastEventsUpdate = [NSDate date];
-								[[NSUserDefaults standardUserDefaults] setValue:self.lastEventsUpdate forKey:NCSettingsNotificationsLastEventsUpdateTimeKey];
-							}
-							self.eventsUpdating = NO;
+		[accountsManager loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray *apiKeys) {
+			[accountsManager.storageManagedObjectContext performBlock:^{
+				BOOL shouldContinue = NO;
+				for (NCAccount* account in accounts)
+					if (account.accountType == NCAccountTypeCharacter) {
+						shouldContinue = YES;
+						break;
+					}
+				
+				if (!shouldContinue)
+					return;
+				
+				self.eventsUpdating = YES;
+				EKAuthorizationStatus ekAuthorizationStatus = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
+				EKEventStore* eventStore;
+				
+				if (ekAuthorizationStatus == EKAuthorizationStatusNotDetermined) {
+					eventStore = [EKEventStore new];
+					if (eventStore) {
+						[eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+							if (granted)
+								[accountsManager.storageManagedObjectContext performBlock:^{
+									[self updateEventsWithEventStore:eventStore accounts:accounts completionHandler:^(BOOL completed) {
+										if (completed) {
+											self.lastEventsUpdate = [NSDate date];
+											[[NSUserDefaults standardUserDefaults] setValue:self.lastEventsUpdate forKey:NCSettingsNotificationsLastEventsUpdateTimeKey];
+										}
+										self.eventsUpdating = NO;
+									}];
+								}];
+							else
+								self.eventsUpdating = NO;
 						}];
+					}
 					else
 						self.eventsUpdating = NO;
-				}];
-			}
-			else
-				self.eventsUpdating = NO;
-		}
-		else if (ekAuthorizationStatus == EKAuthorizationStatusAuthorized) {
-			[self updateEventsWithEventStore:[EKEventStore new] completionHandler:^(BOOL completed) {
-				if (completed) {
-					self.lastEventsUpdate = [NSDate date];
-					[[NSUserDefaults standardUserDefaults] setValue:self.lastEventsUpdate forKey:NCSettingsNotificationsLastEventsUpdateTimeKey];
 				}
-				self.eventsUpdating = NO;
+				else if (ekAuthorizationStatus == EKAuthorizationStatusAuthorized) {
+					[self updateEventsWithEventStore:[EKEventStore new] accounts:accounts completionHandler:^(BOOL completed) {
+						if (completed) {
+							self.lastEventsUpdate = [NSDate date];
+							[[NSUserDefaults standardUserDefaults] setValue:self.lastEventsUpdate forKey:NCSettingsNotificationsLastEventsUpdateTimeKey];
+						}
+						self.eventsUpdating = NO;
+					}];
+				}
+				else
+					self.eventsUpdating = NO;
 			}];
-		}
-		else
-			self.eventsUpdating = NO;
+		}];
 	}
 }
 
-- (void) updateEventsWithEventStore:(EKEventStore*) eventStore completionHandler:(void(^)(BOOL completed)) completionHandler {
+- (void) updateEventsWithEventStore:(EKEventStore*) eventStore accounts:(NSArray*) accounts completionHandler:(void(^)(BOOL completed)) completionHandler {
 	if (eventStore) {
 		NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
 		if (accountsManager) {
-			NCSetting* setting = [[NCStorage sharedStorage] settingWithKey:@"NCNotificationsManagerEvents"];
+			NCSetting* setting = [accountsManager.storageManagedObjectContext settingWithKey:@"NCNotificationsManagerEvents"];
 			NSMutableDictionary* events = [setting.value mutableCopy];
 			if (!events)
 				events = [NSMutableDictionary new];
@@ -342,90 +352,80 @@
 					[[NSUserDefaults standardUserDefaults] setValue:calendar.calendarIdentifier forKey:NCSettingsCalendarIdentifierKey];
 			}
 			
-			[[self taskManager] addTaskWithIndentifier:nil
-												 title:nil
-												 block:^(NCTask *task) {
-													 for (NCAccount* account in accountsManager.accounts) {
-														 if (account.accountType != NCAccountTypeCharacter)
-															 continue;
-														 EVEUpcomingCalendarEvents* calendarEvents = [EVEUpcomingCalendarEvents upcomingCalendarEventsWithKeyID:account.apiKey.keyID
-																																						  vCode:account.apiKey.vCode
-																																					cachePolicy:NSURLRequestUseProtocolCachePolicy
-																																					characterID:account.characterID
-																																						  error:nil
-																																				progressHandler:^(CGFloat progress, BOOL *stop) {
-																																					task.progress = progress;
-																																					if ([task isCancelled])
-																																						*stop = YES;
-																																				}];
-														 if (calendarEvents) {
-															 for (EVEUpcomingCalendarEventsItem* eventItem in calendarEvents.upcomingCalendarEvents) {
-																 NCEvent* event = events[@(eventItem.eventID)];
-																 if (!event) {
-																	 events[@(eventItem.eventID)] = event = [NCEvent new];
-																	 event.event = eventItem;
-																	 event.localDate = [calendarEvents localTimeWithServerTime:eventItem.eventDate];
-																 }
-															 }
-														 }
-													 }
-
-												 }
-									 completionHandler:^(NCTask *task) {
-										 NSMutableArray* updates = [NSMutableArray new];
-										 NSMutableArray* removes = [NSMutableArray new];
-										 [events enumerateKeysAndObjectsUsingBlock:^(id key, NCEvent* event, BOOL *stop) {
-
-											 EKEvent* ekEvent;
-											 if (event.eventIdentifier)
-												 ekEvent = [eventStore eventWithIdentifier:event.eventIdentifier];
-											 
-											 if ([event.localDate timeIntervalSinceNow] < -3600 * 24) {
-												 [removes addObject:event];
-												 if (ekEvent)
-													 [eventStore removeEvent:ekEvent span:EKSpanThisEvent commit:NO error:nil];
-												 return;
-											 }
-
-											 if (!ekEvent)
-												 ekEvent = [EKEvent eventWithEventStore:eventStore];
-											 ekEvent.title = [NSString stringWithFormat:@"%@: %@", event.event.ownerName, event.event.eventTitle];
-											 ekEvent.notes = [[event.event.eventText stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
-											 ekEvent.startDate = event.localDate;
-											 ekEvent.endDate = [event.localDate dateByAddingTimeInterval:event.event.duration > 0 ? event.event.duration * 60 : 3600];
-											 ekEvent.calendar = calendar;
-											 [eventStore saveEvent:ekEvent span:EKSpanThisEvent commit:NO error:nil];
-											 [updates addObject:@{@"ekEvent": ekEvent, @"event": event}];
-										 }];
-										 
-										 if (removes.count > 0)
-											 [events removeObjectsForKeys:removes];
-										 
-										 [eventStore commit:nil];
-										 for (NSDictionary* item in updates) {
-											 EKEvent* ekEvent = item[@"ekEvent"];
-											 NCEvent* event = item[@"event"];
-											 event.eventIdentifier = ekEvent.eventIdentifier;
-										 }
-										 NSArray* allEvents = [events allValues];
-										 [eventStore enumerateEventsMatchingPredicate:[eventStore predicateForEventsWithStartDate:[NSDate date] endDate:[NSDate distantFuture]
-																														calendars:@[calendar]]
-																		   usingBlock:^(EKEvent *event, BOOL *stop) {
-											 NSArray* filtered = [allEvents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"eventIdentifier = %@", event.eventIdentifier]];
-											 if (filtered.count == 0)
-												 [eventStore removeEvent:event span:EKSpanThisEvent commit:NO error:nil];
-										 }];
-										 
-										 [eventStore commit:nil];
-										 
-										 setting.value = events;
-										 NSManagedObjectContext* context = [[NCStorage sharedStorage] managedObjectContext];
-										 [context performBlock:^{
-											 [context save:nil];
-										 }];
-										 if (completionHandler)
-											 completionHandler(YES);
-									 }];
+			dispatch_group_t finishDispatchGroup = dispatch_group_create();
+			for (NCAccount* account in accounts) {
+				if (account.accountType != NCAccountTypeCharacter)
+					continue;
+				dispatch_group_enter(finishDispatchGroup);
+				[[[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:NSURLRequestUseProtocolCachePolicy] upcomingCalendarEventsWithCompletionBlock:^(EVEUpcomingCalendarEvents *calendarEvents, NSError *error) {
+					if (calendarEvents) {
+						for (EVEUpcomingCalendarEventsItem* eventItem in calendarEvents.upcomingEvents) {
+							NCEvent* event = events[@(eventItem.eventID)];
+							if (!event) {
+								events[@(eventItem.eventID)] = event = [NCEvent new];
+								event.event = eventItem;
+								event.localDate = [calendarEvents.eveapi localTimeWithServerTime:eventItem.eventDate];
+							}
+						}
+					}
+					dispatch_group_leave(finishDispatchGroup);
+				} progressBlock:nil];
+			}
+			
+			dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+				NSMutableArray* updates = [NSMutableArray new];
+				NSMutableArray* removes = [NSMutableArray new];
+				[events enumerateKeysAndObjectsUsingBlock:^(id key, NCEvent* event, BOOL *stop) {
+					
+					EKEvent* ekEvent;
+					if (event.eventIdentifier)
+						ekEvent = [eventStore eventWithIdentifier:event.eventIdentifier];
+					
+					if ([event.localDate timeIntervalSinceNow] < -3600 * 24) {
+						[removes addObject:event];
+						if (ekEvent)
+							[eventStore removeEvent:ekEvent span:EKSpanThisEvent commit:NO error:nil];
+						return;
+					}
+					
+					if (!ekEvent)
+						ekEvent = [EKEvent eventWithEventStore:eventStore];
+					ekEvent.title = [NSString stringWithFormat:@"%@: %@", event.event.ownerName, event.event.eventTitle];
+					ekEvent.notes = [[event.event.eventText stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
+					ekEvent.startDate = event.localDate;
+					ekEvent.endDate = [event.localDate dateByAddingTimeInterval:event.event.duration > 0 ? event.event.duration * 60 : 3600];
+					ekEvent.calendar = calendar;
+					[eventStore saveEvent:ekEvent span:EKSpanThisEvent commit:NO error:nil];
+					[updates addObject:@{@"ekEvent": ekEvent, @"event": event}];
+				}];
+				
+				if (removes.count > 0)
+					[events removeObjectsForKeys:removes];
+				
+				[eventStore commit:nil];
+				for (NSDictionary* item in updates) {
+					EKEvent* ekEvent = item[@"ekEvent"];
+					NCEvent* event = item[@"event"];
+					event.eventIdentifier = ekEvent.eventIdentifier;
+				}
+				NSArray* allEvents = [events allValues];
+				[eventStore enumerateEventsMatchingPredicate:[eventStore predicateForEventsWithStartDate:[NSDate date] endDate:[NSDate distantFuture]
+																							   calendars:@[calendar]]
+												  usingBlock:^(EKEvent *event, BOOL *stop) {
+													  NSArray* filtered = [allEvents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"eventIdentifier = %@", event.eventIdentifier]];
+													  if (filtered.count == 0)
+														  [eventStore removeEvent:event span:EKSpanThisEvent commit:NO error:nil];
+												  }];
+				
+				[eventStore commit:nil];
+				
+				[accountsManager.storageManagedObjectContext performBlock:^{
+					setting.value = events;
+					[accountsManager.storageManagedObjectContext save:nil];
+				}];
+				if (completionHandler)
+					completionHandler(YES);
+			});
 		}
 		else if (completionHandler)
 			completionHandler(NO);

@@ -10,11 +10,6 @@
 #import <CoreData/CoreData.h>
 #import "NCStorage.h"
 
-@class NCSetting;
-@interface NCStorage(NCSetting)
-- (NCSetting*) settingWithKey:(NSString*) key;
-@end
-
 @interface NCSetting : NSManagedObject
 
 @property (nonatomic, retain) NSString * key;

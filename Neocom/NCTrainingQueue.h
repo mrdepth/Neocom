@@ -10,18 +10,24 @@
 #import "NCSkillData.h"
 
 @class NCAccount;
+@class EVECharacterSheet;
+@class EVESkillQueue;
 @interface NCTrainingQueue : NSObject<NSCopying>
-@property (nonatomic, copy) NSArray* skills;
-@property (nonatomic, readonly, assign) NSTimeInterval trainingTime;
+@property (nonatomic, copy, readonly) NSArray* skills;
+@property (nonatomic, readonly) NSTimeInterval trainingTime;
+@property (nonatomic, strong) EVECharacterSheet* characterSheet;
+@property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* databaseManagedObjectContext;
 
-- (id) initWithAccount:(NCAccount*) account;
-- (id) initWithAccount:(NCAccount*) account xmlData:(NSData*) data skillPlanName:(NSString**) skillPlanName;
+- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext;
+- (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet xmlData:(NSData*) data skillPlanName:(NSString**) skillPlanName databaseManagedObjectContext:(NSManagedObjectContext*) databaseManagedObjectContext;
+
 - (void) addRequiredSkillsForType:(NCDBInvType*) type;
 - (void) addSkill:(NCDBInvType*) skill withLevel:(int32_t) level;
 - (void) addMastery:(NCDBCertMastery*) mastery;
-- (void) removeSkill:(NCSkillData*) skill;
-- (void) updateSkillPointsFromAccount:(NCAccount*) account;
+- (NSIndexSet*) removeSkill:(NCSkillData*) skill;
 - (NSString*) xmlRepresentationWithSkillPlanName:(NSString*) skillPlanName;
 - (NSTimeInterval) trainingTimeWithCharacterAttributes:(NCCharacterAttributes*) characterAttributes;
+- (void) moveSkillAdIndex:(NSInteger) from toIndex:(NSInteger) to;
 
 @end

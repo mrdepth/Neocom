@@ -11,16 +11,13 @@
 #import "NCLoadoutData.h"
 #import "NCStorage.h"
 
+#define NCCategoryIDShip 6
+
 typedef NS_ENUM(NSInteger, NCLoadoutCategory) {
+	NCLoadoutCategoryUnknown = -1,
 	NCLoadoutCategoryShip,
 	NCLoadoutCategoryPOS
 };
-
-@interface NCStorage(NCLoadout)
-- (NSArray*) loadouts;
-- (NSArray*) shipLoadouts;
-- (NSArray*) posLoadouts;
-@end
 
 @class NCDBInvType;
 
@@ -32,8 +29,8 @@ typedef NS_ENUM(NSInteger, NCLoadoutCategory) {
 @property (nonatomic, retain) NSString * tag;
 @property (nonatomic, retain) NCLoadoutData *data;
 
-@property (nonatomic, readonly, strong) NCDBInvType* type;
-@property (nonatomic, readonly) NCLoadoutCategory category;
+//@property (nonatomic, readonly, strong) NCDBInvType* type;
+//@property (nonatomic, readonly) NCLoadoutCategory category;
 
 
 @end

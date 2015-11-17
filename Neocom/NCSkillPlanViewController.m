@@ -11,7 +11,6 @@
 #import "UIImageView+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NSString+Neocom.h"
-#import "UIActionSheet+Block.h"
 #import "NCStorage.h"
 
 @interface NCSkillPlanViewController ()
@@ -38,23 +37,15 @@
 	
 	NCAccount* account = [NCAccount currentAccount];
 	if (account)
-		self.characterAttributes = [account characterAttributes];
-	else
-		self.characterAttributes = [NCCharacterAttributes defaultCharacterAttributes];
-
-	__block NSString* skillPlanName = nil;
-	__block NCTrainingQueue* trainingQueue;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 trainingQueue = [[NCTrainingQueue alloc] initWithAccount:[NCAccount currentAccount] xmlData:self.xmlData skillPlanName:&skillPlanName];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (skillPlanName)
-									 self.title = self.skillPlanName = skillPlanName;
-								 self.trainingQueue = trainingQueue;
-								 [self update];
-							 }];
+		[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				NSString* skillPlanName;
+				self.trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet xmlData:self.xmlData skillPlanName:&skillPlanName databaseManagedObjectContext:self.databaseManagedObjectContext];
+				self.characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
+				self.title = self.skillPlanName = skillPlanName;
+				[self.tableView reloadData];
+			});
+		}];
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,46 +55,62 @@
 }
 
 - (IBAction)onAction:(id)sender {
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				  destructiveButtonTitle:nil
-					   otherButtonTitles:@[NSLocalizedString(@"Replace Active Skill Plan", nil), NSLocalizedString(@"Merge with Active Skill Plan", nil), NSLocalizedString(@"Create new Skill Plan", nil)]
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex == 0) {
-								 NCAccount* account = [NCAccount currentAccount];
-								 NCStorage* storage = [NCStorage sharedStorage];
-								 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-								 [context performBlockAndWait:^{
-									 account.activeSkillPlan.trainingQueue = self.trainingQueue;
-									 [account.activeSkillPlan save];
-									 [storage saveContext];
-								 }];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Replace Active Skill Plan", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		NCAccount* account = [NCAccount currentAccount];
+		[account.managedObjectContext performBlock:^{
+			NCSkillPlan* skillPlan = account.activeSkillPlan;
+			[skillPlan clear];
+			[skillPlan mergeWithTrainingQueue:self.trainingQueue completionBlock:^(NCTrainingQueue *trainingQueue) {
+				[self performSegueWithIdentifier:@"Unwind" sender:nil];
+			}];
+		}];
+	}]];
 
-								 [self performSegueWithIdentifier:@"Unwind" sender:nil];
-							 }
-							 else if (selectedButtonIndex == 1) {
-								 NCAccount* account = [NCAccount currentAccount];
-								 [account.activeSkillPlan mergeWithTrainingQueue:self.trainingQueue];
-								 [self performSegueWithIdentifier:@"Unwind" sender:nil];
-							 }
-							 else if (selectedButtonIndex == 2) {
-								 NCAccount* account = [NCAccount currentAccount];
-								 NCStorage* storage = [NCStorage sharedStorage];
-								 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-								 [context performBlockAndWait:^{
-									 NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:context]
-																   insertIntoManagedObjectContext:context];
-									 skillPlan.trainingQueue = self.trainingQueue;
-									 skillPlan.name = self.skillPlanName;
-									 skillPlan.account = account;
-									 account.activeSkillPlan = skillPlan;
-									 [skillPlan save];
-								 }];
-								 [self performSegueWithIdentifier:@"Unwind" sender:nil];
-							 }
-						 }
-							 cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Merge with Active Skill Plan", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		NCAccount* account = [NCAccount currentAccount];
+		[account.managedObjectContext performBlock:^{
+			NCSkillPlan* skillPlan = account.activeSkillPlan;
+			[skillPlan mergeWithTrainingQueue:self.trainingQueue completionBlock:^(NCTrainingQueue *trainingQueue) {
+				[self performSegueWithIdentifier:@"Unwind" sender:nil];
+			}];
+		}];
+	}]];
+
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Create new Skill Plan", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		NCAccount* account = [NCAccount currentAccount];
+		[account.managedObjectContext performBlock:^{
+			NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:account.managedObjectContext]
+										  insertIntoManagedObjectContext:account.managedObjectContext];
+			skillPlan.name = self.skillPlanName;
+			skillPlan.account = account;
+			[skillPlan mergeWithTrainingQueue:self.trainingQueue completionBlock:^(NCTrainingQueue *trainingQueue) {
+				[account.managedObjectContext performBlock:^{
+					account.activeSkillPlan = skillPlan;
+					[account.managedObjectContext save:nil];
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[self performSegueWithIdentifier:@"Unwind" sender:nil];
+					});
+				}];
+			}];
+		}];
+	}]];
+
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		if ([sender isKindOfClass:[UIBarButtonItem class]])
+			controller.popoverPresentationController.barButtonItem = sender;
+		else {
+			controller.popoverPresentationController.sourceView = sender;
+			controller.popoverPresentationController.sourceRect = [sender bounds];
+		}
+	}
+	else
+		[self presentViewController:controller animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -134,10 +141,6 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
 - (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCSkillData* row = self.trainingQueue.skills[indexPath.row];
 	
@@ -154,7 +157,7 @@
 	
 	NCSkillCell* cell = (NCSkillCell*) tableViewCell;
 	cell.skillData = row;
-	
+	NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:row.typeID];
 	if (row.trainedLevel >= 0) {
 		float progress = 0;
 		
@@ -169,18 +172,18 @@
 		
 		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@ SP/h)", nil),
 									  [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.skillPoints)],
-									  [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.characterAttributes skillpointsPerSecondForSkill:row.type] * 3600)]];
+									  [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.characterAttributes skillpointsPerSecondForSkill:type] * 3600)]];
 		cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), MAX(row.targetLevel, row.trainedLevel)];
 		[cell.levelImageView setGIFImageWithContentsOfURL:[[NSBundle mainBundle] URLForResource:[NSString stringWithFormat:@"level_%d%d%d", row.trainedLevel, row.targetLevel, row.active] withExtension:@"gif"]];
 		cell.dateLabel.text = row.trainingTimeToLevelUp > 0 ? [NSString stringWithFormat:@"%@ (%.0f%%)", [NSString stringWithTimeLeft:row.trainingTimeToLevelUp], progress * 100] : nil;
 	}
 	else {
-		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.characterAttributes skillpointsPerSecondForSkill:row.type] * 3600)]];
+		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.characterAttributes skillpointsPerSecondForSkill:type] * 3600)]];
 		cell.levelLabel.text = nil;
 		cell.levelImageView.image = nil;
 		cell.dateLabel.text = nil;
 	}
-	cell.titleLabel.text = row.skillName;
+	cell.titleLabel.text = row.description;
 }
 
 @end

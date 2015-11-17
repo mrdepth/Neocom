@@ -9,7 +9,7 @@
 #import "NCFittingTargetsViewController.h"
 #import "NCTableViewCell.h"
 #import "NCShipFit.h"
-#import "eufe.h"
+#import <eufe/eufe.h>
 
 @interface NCFittingTargetsViewController ()
 
@@ -87,12 +87,13 @@
 	}
 	else {
 		NCShipFit* fit = self.targets[indexPath.row];
-		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s", fit.type.typeName, fit.pilot->getCharacterName()];
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:fit.typeID];
+		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s", type.typeName, fit.pilot->getCharacterName()];
 		cell.subtitleLabel.text = fit.loadoutName;
-		cell.iconView.image = fit.type.icon ? fit.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+		cell.iconView.image = type.icon ? type.icon.image.image : [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
 		
 		if (fit == self.selectedTarget)
-			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
+			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]];
 		else
 			cell.accessoryView = nil;
 	}

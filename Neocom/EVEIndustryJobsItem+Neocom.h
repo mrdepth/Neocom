@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "EVEIndustryJobs.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCLocationsManager.h"
 
 @class NCDBRamActivity;
@@ -15,9 +15,9 @@
 @property (nonatomic, strong) NCLocationsManagerItem* blueprintLocation;
 @property (nonatomic, strong) NCLocationsManagerItem* outputLocation;
 @property (nonatomic, strong) NSString* installerName;
-@property (nonatomic, strong) NCDBRamActivity* activity;
-@property (nonatomic, strong) NCDBInvType* blueprintType;
-@property (nonatomic, strong) NCDBInvType* productType;
+//@property (nonatomic, strong) NCDBRamActivity* activity;
+//@property (nonatomic, strong) NCDBInvType* blueprintType;
+//@property (nonatomic, strong) NCDBInvType* productType;
 
 - (NSString*) localizedStateWithCurrentDate:(NSDate*) date;
 @end

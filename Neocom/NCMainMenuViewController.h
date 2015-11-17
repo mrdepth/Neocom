@@ -8,6 +8,8 @@
 
 #import "NCTableViewController.h"
 
+#define NCSettingsMarketPricesMonitorKey @"NCSettingsMarketPricesMonitorKey"
+
 typedef NS_OPTIONS(NSInteger, NCMarketPricesMonitor) {
 	NCMarketPricesMonitorNone = 0,
 	NCMarketPricesMonitorExchangeRate = 0x1 << 0,

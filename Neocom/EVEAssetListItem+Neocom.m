@@ -13,13 +13,21 @@
 
 @implementation EVEAssetListItem (Neocom)
 
-- (NCDBInvType*) type {
+/*- (NCDBInvType*) type {
 	NCDBInvType* type = objc_getAssociatedObject(self, @"type");
 	return type;
 }
 
 - (void) setType:(NCDBInvType *)type {
 	objc_setAssociatedObject(self, @"type", type, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}*/
+
+- (NSString*) typeName {
+	return objc_getAssociatedObject(self, @"typeName");
+}
+
+- (void) setTypeName:(NSString *)typeName {
+	objc_setAssociatedObject(self, @"typeName", typeName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (EVELocationsItem*) location {
@@ -37,7 +45,7 @@
 		return title;
 	
 	if (!title)
-		title = self.type.typeName;
+		title = self.typeName;
 	if (!title)
 		title = NSLocalizedString(@"Unknown", nil);
 

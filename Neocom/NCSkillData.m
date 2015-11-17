@@ -8,21 +8,29 @@
 
 #import "NCSkillData.h"
 #import "NCCharacterAttributes.h"
+#import <EVEAPI/EVEAPI.h>
 #import <objc/runtime.h>
 
-@interface NCSkillData()
-@property (nonatomic, strong, readwrite) NSString* skillName;
+@interface NCSkillData() {
+	NSNumber* _hash;
+}
+//@property (nonatomic, strong, readwrite) NCDBInvType* type;
+@property (nonatomic, strong) NSString* typeName;
+@property (nonatomic, assign) int32_t rank;
+@property (nonatomic, assign) int32_t typeID;
+@property (nonatomic, assign) int32_t primaryAttributeID;
+@property (nonatomic, assign) int32_t secondaryAttributeID;
 
 @end
 
 @implementation NCSkillData
 
 - (NSTimeInterval) trainingTimeToLevelUpWithCharacterAttributes:(NCCharacterAttributes*) attributes {
-	return [self skillPointsToLevelUp] / [attributes skillpointsPerSecondForSkill:self.type];
+	return [self skillPointsToLevelUp] / [attributes skillpointsPerSecondWithPrimaryAttribute:self.primaryAttributeID secondaryAttribute:self.secondaryAttributeID];
 }
 
 - (NSTimeInterval) trainingTimeToFinishWithCharacterAttributes:(NCCharacterAttributes*) attributes {
-	return [self skillPointsToFinish] / [attributes skillpointsPerSecondForSkill:self.type];
+	return [self skillPointsToFinish] / [attributes skillpointsPerSecondWithPrimaryAttribute:self.primaryAttributeID secondaryAttribute:self.secondaryAttributeID];
 }
 
 - (id) initWithInvType:(NCDBInvType*) type {
@@ -30,25 +38,22 @@
 		return nil;
 
 	if (self = [super init]) {
-		self.type = type;
+		[type.managedObjectContext performBlockAndWait:^{
+			self.typeID = type.typeID;
+			self.rank = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSkillTimeConstantAttributeID)] value];
+			self.primaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPrimaryAttributeAttribteID)] value];
+			self.secondaryAttributeID = [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCSecondaryAttributeAttribteID)] value];
+			self.typeName = type.typeName;
+		}];
 	}
 	return self;
 }
-
-- (id) initWithTypeID:(int32_t) typeID {
-	if (self = [self initWithInvType:[NCDBInvType invTypeWithTypeID:typeID]]) {
-		
-	}
-	return self;
-}
-
 
 - (float) skillPointsAtLevel:(int32_t) level {
 	if (level == 0)
 		return 0;
-	NCDBDgmTypeAttribute* rank = self.type.attributesDictionary[@(275)];
-	if (rank) {
-		float sp = pow(2, 2.5 * level - 2.5) * 250 * rank.value;
+	if (self.rank) {
+		float sp = pow(2, 2.5 * level - 2.5) * 250 * self.rank;
 		return sp;
 	}
 	return 0;
@@ -73,62 +78,48 @@
 - (void) setTargetLevel:(int32_t)targetLevel {
 	_targetLevel = targetLevel;
 	_targetSkillPoints = [self skillPointsAtLevel:targetLevel];
-	_trainingTimeToLevelUp = -1.0;
-	_trainingTimeToFinish = -1.0;
-	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	_hash = nil;
 }
 
 - (void) setCurrentLevel:(int32_t)currentLevel {
 	_currentLevel = currentLevel;
-	_trainingTimeToLevelUp = -1.0;
-	_trainingTimeToFinish = -1.0;
-	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	_hash = nil;
 }
 
-- (void) setTrainedLevel:(int32_t)trainedLevel {
-	_trainedLevel = trainedLevel;
-	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void) setCharacterSkill:(EVECharacterSheetSkill *)characterSkill {
+	_characterSkill = characterSkill;
+	_hash = nil;
 }
 
-- (void) setSkillPoints:(int32_t)skillPoints {
-	_skillPoints = skillPoints;
-	_trainingTimeToLevelUp = -1.0;
-	_trainingTimeToFinish = -1.0;
+- (int32_t) trainedLevel {
+	return self.characterSkill.level;
 }
 
-- (NSString*) skillName {
-	if (!_skillName) {
-		NCDBDgmTypeAttribute *attribute = self.type.attributesDictionary[@(275)];
-		_skillName = [NSString stringWithFormat:@"%@ (x%d)", self.type.typeName, (int) attribute.value];
+- (int32_t) skillPoints {
+	return self.characterSkill.skillPoints;
+}
+
+- (BOOL) isActive {
+	if (self.currentLevel == self.targetLevel - 1) {
+		for (EVESkillQueueItem* item in self.characterSkill.skillQueueItems) {
+			if (item.queuePosition == 0)
+				return item.level == self.targetLevel;
+		}
 	}
-	return _skillName;
+	return NO;
 }
 
-- (void) setCharacterAttributes:(NCCharacterAttributes *)characterAttributes {
-	_characterAttributes = characterAttributes;
-	_trainingTimeToLevelUp = -1.0;
-	_trainingTimeToLevelUp = -1.0;
-	_trainingTimeToFinish = -1.0;
+- (NSString*) description {
+	NSString* description = [NSString stringWithFormat:@"%@ (x%d)", self.typeName, self.rank];
+	return description;
 }
 
 - (NSTimeInterval) trainingTimeToLevelUp {
-	if (_trainingTimeToLevelUp < 0.0) {
-		if (!_characterAttributes)
-			_trainingTimeToLevelUp = [self trainingTimeToLevelUpWithCharacterAttributes:[NCCharacterAttributes defaultCharacterAttributes]];
-		else
-			_trainingTimeToLevelUp = [self trainingTimeToLevelUpWithCharacterAttributes:self.characterAttributes];
-	}
-	return _trainingTimeToLevelUp;
+	return [self trainingTimeToLevelUpWithCharacterAttributes:self.characterAttributes ?: [NCCharacterAttributes defaultCharacterAttributes]];
 }
 
 - (NSTimeInterval) trainingTime {
-	if (_trainingTimeToFinish < 0.0) {
-		if (!_characterAttributes)
-			_trainingTimeToFinish = [self trainingTimeToFinishWithCharacterAttributes:[NCCharacterAttributes defaultCharacterAttributes]];
-		else
-			_trainingTimeToFinish = [self trainingTimeToFinishWithCharacterAttributes:self.characterAttributes];
-	}
-	return _trainingTimeToFinish;
+	return [self trainingTimeToFinishWithCharacterAttributes:self.characterAttributes ?: [NCCharacterAttributes defaultCharacterAttributes]];
 }
 
 - (BOOL) isEqual:(id)object {
@@ -136,42 +127,52 @@
 }
 
 - (NSUInteger) hash {
-	NSNumber* hash = objc_getAssociatedObject(self, @"hash");
-	if (!hash) {
-		NSInteger data[] = {self.type.typeID, self.targetLevel, self.currentLevel, self.trainedLevel, self.skillPoints};
+	if (!_hash) {
+		NSInteger data[] = {self.typeID, self.targetLevel, self.currentLevel, self.trainedLevel};
 		NSUInteger hash = [[NSData dataWithBytes:data length:sizeof(data)] hash];
-		objc_setAssociatedObject(self, @"hash", @(hash), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		_hash = @(hash);
 		return hash;
 	}
 	else
-		return [hash unsignedIntegerValue];
+		return [_hash unsignedIntegerValue];
 }
 
-#pragma mark - NSCoding
+#pragma mark - NSCopying
+
+- (id) copyWithZone:(NSZone *)zone {
+	NCSkillData* other = [NCSkillData new];
+	other.typeName = self.typeName;
+	other.rank = self.rank;
+	other.typeID = self.typeID;
+	other.primaryAttributeID = self.primaryAttributeID;
+	other.secondaryAttributeID = self.secondaryAttributeID;
+	other.characterSkill = self.characterSkill;
+	other.currentLevel = self.currentLevel;
+	other.targetLevel = self.targetLevel;
+	other.characterAttributes = self.characterAttributes;
+	return other;
+}
+
+/*#pragma mark - NSCoding
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	[aCoder encodeInt32:self.type.typeID forKey:@"typeID"];
-	[aCoder encodeInt32:self.skillPoints forKey:@"skillPoints"];
+	[aCoder encodeInt32:self.typeID forKey:@"typeID"];
 	[aCoder encodeInt32:self.currentLevel forKey:@"currentLevel"];
 	[aCoder encodeInt32:self.targetLevel forKey:@"targetLevel"];
-	[aCoder encodeInt32:self.trainedLevel forKey:@"trainedLevel"];
-	[aCoder encodeBool:self.active forKey:@"active"];
+	[aCoder encodeObject:self.characterSkill forKey:@"characterSkill"];
 	if (self.characterAttributes)
 		[aCoder encodeObject:self.characterAttributes forKey:@"characterAttributes"];
 }
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
-	int32_t typeID = [aDecoder decodeInt32ForKey:@"typeID"];
 	if (self = [super init]) {
-		self.type = [NCDBInvType invTypeWithTypeID:typeID];
-		self.skillPoints = [aDecoder decodeInt32ForKey:@"skillPoints"];
+		self.typeID = [aDecoder decodeInt32ForKey:@"typeID"];
 		self.currentLevel = [aDecoder decodeInt32ForKey:@"currentLevel"];
 		self.targetLevel = [aDecoder decodeInt32ForKey:@"targetLevel"];
-		self.trainedLevel = [aDecoder decodeInt32ForKey:@"trainedLevel"];
-		self.active = [aDecoder decodeBoolForKey:@"active"];
 		self.characterAttributes = [aDecoder decodeObjectForKey:@"characterAttributes"];
+		self.characterSkill = [aDecoder decodeObjectForKey:@"characterSkill"];
 	}
 	return self;
-}
+}*/
 
 @end

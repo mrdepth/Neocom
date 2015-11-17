@@ -7,14 +7,13 @@
 //
 
 #import "NCFittingAPISearchResultsViewController.h"
-#import "NeocomAPI.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCFittingAPISearchResultsCell.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NCFittingShipViewController.h"
 
 @interface NCFittingAPISearchResultsViewController ()
 @property (nonatomic, strong) NSString* order;
-@property (nonatomic, strong) NSMutableDictionary* types;
 @end
 
 @implementation NCFittingAPISearchResultsViewController
@@ -32,7 +31,6 @@
 {
     [super viewDidLoad];
 	self.order = @"dps";
-	self.types = [NSMutableDictionary new];
 }
 
 - (void)didReceiveMemoryWarning
@@ -55,8 +53,7 @@
 			self.order = @"falloff";
 			break;
 	}
-
-	[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+	[self reload];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -68,50 +65,36 @@
 	}
 }
 
+- (void) setOrder:(NSString *)order {
+	_order = order;
+	NSMutableArray* components = [NSMutableArray new];
+	[self.criteria enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+		[components addObject:[NSString stringWithFormat:@"%@.%@", key, obj]];
+	}];
+	self.cacheRecordID = [NSString stringWithFormat:@"%@.%@.%lu", NSStringFromClass(self.class), order, (unsigned long)[[components componentsJoinedByString:@","] hash]];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.data ? 1 : 0;
+    return self.cacheData ? 1 : 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	NSArray* rows = self.data;
+	NSArray* rows = self.cacheData;
     return rows.count;
 }
 
 
 #pragma mark - NCTableViewController
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
-	__block NAPISearch* search = nil;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 search = [NAPISearch searchWithCriteria:self.criteria order:self.order cachePolicy:cachePolicy error:&error progressHandler:^(CGFloat progress, BOOL *stop) {
-												 task.progress = progress;
-											 }];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:search.loadouts withCacheDate:[NSDate date] expireDate:search.cacheExpireDate];
-									 }
-								 }
-							 }];
-}
-
-- (NSString*) recordID {
-	NSMutableArray* components = [NSMutableArray new];
-	[self.criteria enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-		[components addObject:[NSString stringWithFormat:@"%@.%@", key, obj]];
-	}];
-	return [NSString stringWithFormat:@"%@.%@.%lu", NSStringFromClass(self.class), self.order, (unsigned long)[[components componentsJoinedByString:@","] hash]];
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
+	[[[NeocomAPI alloc] initWithCachePolicy:cachePolicy] searchWithCriteria:self.criteria order:self.order completionBlock:^(NAPISearch *result, NSError *error) {
+		[self saveCacheData:result.loadouts cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
+		completionBlock(error);
+	} progressBlock:nil];
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -120,46 +103,41 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSArray* rows = self.data;
+	NSArray* rows = self.cacheData;
 	NAPISearchItem* item = rows[indexPath.row];
 	
 	NCFittingAPISearchResultsCell *cell = (NCFittingAPISearchResultsCell*) tableViewCell;
 	
-	NCDBInvType* ship = self.types[@(item.typeID)];
-	if (!ship) {
-		ship = [NCDBInvType invTypeWithTypeID:item.typeID];
-		if (ship)
-			self.types[@(item.typeID)] = ship;
-	}
+	NCDBInvType* ship = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
 	
 	cell.titleLabel.text = ship.typeName;
-	cell.iconImageView.image = ship.icon ? ship.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	cell.iconImageView.image = ship.icon ? ship.icon.image.image : [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
 	cell.object = item;
 	
 	if (item.flags & NeocomAPIFlagHybridTurrets)
-		cell.weaponTypeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"13_06"] image] image];
+		cell.weaponTypeImageView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"13_06"] image] image];
 	else if (item.flags & NeocomAPIFlagLaserTurrets)
-		cell.weaponTypeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"13_10"] image] image];
+		cell.weaponTypeImageView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"13_10"] image] image];
 	else if (item.flags & NeocomAPIFlagProjectileTurrets)
-		cell.weaponTypeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"12_14"] image] image];
+		cell.weaponTypeImageView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"12_14"] image] image];
 	else if (item.flags & NeocomAPIFlagMissileLaunchers)
-		cell.weaponTypeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"12_12"] image] image];
+		cell.weaponTypeImageView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"12_12"] image] image];
 	else
-		cell.weaponTypeImageView.image = [UIImage imageNamed:@"turrets.png"];
+		cell.weaponTypeImageView.image = [UIImage imageNamed:@"turrets"];
 	
 	NSString* tankType;
 	if (item.flags & NeocomAPIFlagActiveTank) {
 		if (item.flags & NeocomAPIFlagArmorTank) {
-			cell.tankTypeImageView.image = [UIImage imageNamed:@"armorRepairer.png"];
+			cell.tankTypeImageView.image = [UIImage imageNamed:@"armorRepairer"];
 			tankType = NSLocalizedString(@"Active Armor", nil);
 		}
 		else {
-			cell.tankTypeImageView.image = [UIImage imageNamed:@"shieldBooster.png"];
+			cell.tankTypeImageView.image = [UIImage imageNamed:@"shieldBooster"];
 			tankType = NSLocalizedString(@"Active Shield", nil);
 		}
 	}
 	else {
-		cell.tankTypeImageView.image = [UIImage imageNamed:@"shieldRecharge.png"];
+		cell.tankTypeImageView.image = [UIImage imageNamed:@"shieldRecharge"];
 		tankType = NSLocalizedString(@"Passive", nil);
 	}
 	
@@ -178,11 +156,5 @@
 							  [NSNumberFormatter neocomLocalizedStringFromInteger:item.falloff]];
 	cell.capacitorLabel.text = item.flags & NeocomAPIFlagCapStable ? NSLocalizedString(@"Capacitor is Stable", nil) : NSLocalizedString(@"Capacitor is Unstable", nil);
 }
-
-
-- (NSTimeInterval) defaultCacheExpireTime {
-	return 60 * 60 * 24;
-}
-
 
 @end

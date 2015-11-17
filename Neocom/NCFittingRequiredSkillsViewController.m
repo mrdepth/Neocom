@@ -13,7 +13,6 @@
 #import "NSNumberFormatter+Neocom.h"
 #import "NCAccount.h"
 #import "NCDatabaseTypeInfoViewController.h"
-#import "UIAlertView+Block.h"
 
 @interface NCFittingRequiredSkillsViewController ()
 @property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
@@ -34,19 +33,6 @@
 {
     [super viewDidLoad];
 	self.refreshControl = nil;
-	NCAccount* account = [NCAccount currentAccount];
-	if (account)
-		self.characterAttributes = [account characterAttributes];
-	else
-		self.characterAttributes = [NCCharacterAttributes defaultCharacterAttributes];
-	if (!account.activeSkillPlan)
-		self.navigationItem.rightBarButtonItem = nil;
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -63,22 +49,26 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.type = [[sender skillData] type];
+		controller.typeID = [[self.databaseManagedObjectContext invTypeWithTypeID:[[sender skillData] typeID]] objectID];
 	}
 }
 
 - (IBAction)onTrain:(id)sender {
-	[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
-							 message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.trainingQueue.trainingTime]]
-				   cancelButtonTitle:NSLocalizedString(@"No", nil)
-				   otherButtonTitles:@[NSLocalizedString(@"Yes", nil)]
-					 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-						 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-							 NCSkillPlan* skillPlan = [[NCAccount currentAccount] activeSkillPlan];
-							 [skillPlan mergeWithTrainingQueue:self.trainingQueue];
-						 }
-					 }
-						 cancelBlock:nil] show];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
+																		message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.trainingQueue.trainingTime]]
+																 preferredStyle:UIAlertControllerStyleAlert];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Add", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		NCAccount* account = [NCAccount currentAccount];
+		[account.managedObjectContext performBlock:^{
+			NCSkillPlan* skillPlan = account.activeSkillPlan;
+			[skillPlan mergeWithTrainingQueue:self.trainingQueue completionBlock:^(NCTrainingQueue *trainingQueue) {
+				
+			}];
+		}];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	[self presentViewController:controller animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -135,18 +125,18 @@
 		
 		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@ SP/h)", nil),
 									  [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.skillPoints)],
-									  [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.characterAttributes skillpointsPerSecondForSkill:row.type] * 3600)]];
+									  [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.trainingQueue.characterAttributes skillpointsPerSecondForSkill:[self.databaseManagedObjectContext invTypeWithTypeID:row.typeID]] * 3600)]];
 		cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), MAX(row.targetLevel, row.trainedLevel)];
 		[cell.levelImageView setGIFImageWithContentsOfURL:[[NSBundle mainBundle] URLForResource:[NSString stringWithFormat:@"level_%d%d%d", row.trainedLevel, row.targetLevel, row.active] withExtension:@"gif"]];
 		cell.dateLabel.text = row.trainingTimeToLevelUp > 0 ? [NSString stringWithFormat:@"%@ (%.0f%%)", [NSString stringWithTimeLeft:row.trainingTimeToLevelUp], progress * 100] : nil;
 	}
 	else {
-		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.characterAttributes skillpointsPerSecondForSkill:row.type] * 3600)]];
+		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.trainingQueue.characterAttributes skillpointsPerSecondForSkill:[self.databaseManagedObjectContext invTypeWithTypeID:row.typeID]] * 3600)]];
 		cell.levelLabel.text = nil;
 		cell.levelImageView.image = nil;
 		cell.dateLabel.text = nil;
 	}
-	cell.titleLabel.text = row.skillName;
+	cell.titleLabel.text = row.description;
 }
 
 @end

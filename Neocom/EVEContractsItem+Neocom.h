@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "EVEContracts.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCLocationsManager.h"
 
 @interface EVEContractsItem (Neocom)

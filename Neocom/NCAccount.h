@@ -8,22 +8,24 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "EVEOnlineAPI.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCCharacterAttributes.h"
 #import "NCAPIKey.h"
 #import "NCMailBox.h"
 #import "NCSkillPlan.h"
 #import "NCStorage.h"
+#import "NCFitCharacter.h"
+
+#define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
+#define NCCurrentAccountDidChangeNotification @"NCCurrentAccountDidChangeNotification"
+#define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
+#define NCAccountDidChangeActiveSkillPlanNotification @"NCAccountDidChangeActiveSkillPlanNotification"
+#define NCAccountActiveSkillPlanKey @"NCAccountActiveSkillPlanKey"
 
 typedef NS_ENUM(NSInteger, NCAccountType) {
 	NCAccountTypeCharacter,
 	NCAccountTypeCorporate
 };
-
-@interface NCStorage(NCAccount)
-- (NSArray*) allAccounts;
-- (NCAccount*) accountWithUUID:(NSString*) uuid;
-@end
 
 @interface NCAccount : NSManagedObject
 
@@ -38,21 +40,15 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 
 @property (nonatomic, assign, readonly) NCAccountType accountType;
 
-@property (nonatomic, strong, readonly) EVECharacterInfo* characterInfo;
-@property (nonatomic, strong, readonly) EVECharacterSheet* characterSheet;
-@property (nonatomic, strong, readonly) EVECorporationSheet* corporationSheet;
-@property (nonatomic, strong, readonly) EVESkillQueue* skillQueue;
-
-@property (nonatomic, strong, readonly) NCCharacterAttributes* characterAttributes;
-
-@property (nonatomic, strong, readonly) NSError* characterInfoError;
-@property (nonatomic, strong, readonly) NSError* characterSheetError;
-@property (nonatomic, strong, readonly) NSError* corporationSheetError;
-@property (nonatomic, strong, readonly) NSError* skillQueueError;
+@property (nonatomic, strong, readonly) EVEAPIKey* eveAPIKey;
 
 + (instancetype) currentAccount;
 + (void) setCurrentAccount:(NCAccount*) account;
 
-- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;
-
+- (void) loadCharacterInfoWithCompletionBlock:(void(^)(EVECharacterInfo* characterInfo, NSError* error)) completionBlock;
+- (void) loadCharacterSheetWithCompletionBlock:(void(^)(EVECharacterSheet* characterSheet, NSError* error)) completionBlock;
+- (void) loadCorporationSheetWithCompletionBlock:(void(^)(EVECorporationSheet* corporationSheet, NSError* error)) completionBlock;
+- (void) loadSkillQueueWithCompletionBlock:(void(^)(EVESkillQueue* skillQueue, NSError* error)) completionBlock;
+- (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
+- (void) loadFitCharacterWithCompletioBlock:(void(^)(NCFitCharacter* fitCharacter)) completionBlock;
 @end

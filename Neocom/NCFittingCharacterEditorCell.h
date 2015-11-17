@@ -11,6 +11,5 @@
 @interface NCFittingCharacterEditorCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *skillNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *skillLevelLabel;
-@property (strong, nonatomic) id skillData;
 
 @end

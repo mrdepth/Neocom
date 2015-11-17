@@ -9,11 +9,9 @@
 #import "NCAppDelegate.h"
 #import "NCAccountsManager.h"
 #import "NCStorage.h"
-#import "UIAlertView+Error.h"
-#import "UIAlertView+Block.h"
-#import "EVEOnlineAPI.h"
+#import "UIAlertController+Neocom.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCNotificationsManager.h"
-#import "NSString+UUID.h"
 #import "NSData+Neocom.h"
 #import "NCCache.h"
 #import "NCMigrationManager.h"
@@ -28,6 +26,10 @@
 #import "NCShoppingList.h"
 #import "NCSplashScreenViewController.h"
 #import "NCSkillPlanViewController.h"
+#import "NCPriceManager.h"
+#import "NCUpdater.h"
+#import "NCKillMailDetailsViewController.h"
+
 
 static NSUncaughtExceptionHandler* handler;
 
@@ -45,10 +47,12 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 @interface NCAppDelegate()<SKPaymentTransactionObserver, UISplitViewControllerDelegate>
 @property (nonatomic, strong) NCTaskManager* taskManager;
+
 - (void) addAPIKeyWithURL:(NSURL*) url;
 - (void) openFitWithURL:(NSURL*) url;
 - (void) openSkillPlanWithURL:(NSURL*) url;
 - (void) showTypeInfoWithURL:(NSURL*) url;
+- (void) showKillReportWithURL:(NSURL*) url;
 - (void) completeTransaction: (SKPaymentTransaction *)transaction;
 - (void) restoreTransaction: (SKPaymentTransaction *)transaction;
 - (void) failedTransaction: (SKPaymentTransaction *)transaction;
@@ -66,7 +70,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //#warning Enable Flurry
-#if !TARGET_IPHONE_SIMULATOR
+#if !TARGET_OS_SIMULATOR
 	[Flurry setCrashReportingEnabled:YES];
 	[Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
 #endif
@@ -79,12 +83,14 @@ void uncaughtExceptionHandler(NSException* exception) {
 		purchase.purchased = YES;
 		[[NSUserDefaults standardUserDefaults] setValue:nil forKeyPath:@"SettingsNoAds"];
 	}*/
+//	ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
+//	purchase.purchased = NO;
 
 	[self setupAppearance];
 	[self setupDefaultSettings];
 	
 	if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUDIDKey])
-		[[NSUserDefaults standardUserDefaults] setValue:[NSString uuidString] forKey:NCSettingsUDIDKey];
+		[[NSUserDefaults standardUserDefaults] setValue:[[NSUUID UUID] UUIDString] forKey:NCSettingsUDIDKey];
 	
 	if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
 		[application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert
@@ -104,22 +110,38 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 
 		void (^loadAccount)() = ^() {
-			NCStorage* storage = [NCStorage sharedStorage];
-			NCAccount* account = nil;
+			NSString* uuidFromNotifications = nil;
 			if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
 				UILocalNotification* notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
-				NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
-				if (uuid)
-					account = [storage accountWithUUID:uuid];
+				uuidFromNotifications = notification.userInfo[NCSettingsCurrentAccountKey];
 			}
 			
-			if (!account) {
-				NSString* uuid = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCurrentAccountKey];
-				if (uuid)
-					account = [storage accountWithUUID:uuid];
+			NSString* uuidFromDefaults = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCurrentAccountKey];
+			if (uuidFromNotifications || uuidFromDefaults) {
+/*				[[NCAccountsManager sharedManager] loadAccountsWithCompletionBlock:^(NSArray *accounts, NSArray *apiKeys) {
+					NCAccount* account;
+					if (uuidFromNotifications)
+						account = [[accounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuidFromNotifications]] lastObject];
+					if (!account && uuidFromDefaults)
+						account = [[accounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuidFromDefaults]] lastObject];
+					if (account)
+						dispatch_async(dispatch_get_main_queue(), ^{
+							[NCAccount setCurrentAccount:account];
+						});
+				}];*/
+				NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+				[storageManagedObjectContext performBlock:^{
+					NCAccount* account;
+					if (uuidFromNotifications)
+						account = [storageManagedObjectContext accountWithUUID:uuidFromNotifications];
+					if (!account && uuidFromDefaults)
+						account = [storageManagedObjectContext accountWithUUID:uuidFromDefaults];
+					if (account.apiKey.apiKeyInfo)
+						dispatch_async(dispatch_get_main_queue(), ^{
+							[NCAccount setCurrentAccount:account];
+						});
+				}];
 			}
-			if (account)
-				[NCAccount setCurrentAccount:account];
 			
 			if ([application respondsToSelector:@selector(setMinimumBackgroundFetchInterval:)])
 				[application setMinimumBackgroundFetchInterval:60 * 60 * 4];
@@ -128,27 +150,26 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 		void (^initStorage)(BOOL) = ^(BOOL useCloud) {
 			if (!useCloud) {
-				NCStorage* storage = [NCStorage fallbackStorage];
+				NCStorage* storage = [[NCStorage alloc] initLocalStorage];
 				[NCStorage setSharedStorage:storage];
 				NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
 				[NCAccountsManager setSharedManager:accountsManager];
 				loadAccount();
 			}
 			else {
-				[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-													 title:NCTaskManagerDefaultTitle
-													 block:^(NCTask *task) {
-														 NCStorage* storage = [NCStorage cloudStorage];
-														 if (!storage)
-															 storage = [NCStorage fallbackStorage];
+				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+					NCStorage* storage = [[NCStorage alloc] initCloudStorage];
+					if (!storage)
+						storage = [[NCStorage alloc] initLocalStorage];
+					
+					[NCStorage setSharedStorage:storage];
+					NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
+					[NCAccountsManager setSharedManager:accountsManager];
 
-														 [NCStorage setSharedStorage:storage];
-														 NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
-														 [NCAccountsManager setSharedManager:accountsManager];
-													 }
-										 completionHandler:^(NCTask *task) {
-											 loadAccount();
-										 }];
+					dispatch_async(dispatch_get_main_queue(), ^{
+						loadAccount();
+					});
+				});
 			}
 		};
 		
@@ -170,6 +191,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 		controller.delegate = self;
 	}
 
+	[[NCUpdater sharedUpdater] checkForUpdates];
     return YES;
 }
 
@@ -177,7 +199,6 @@ void uncaughtExceptionHandler(NSException* exception) {
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-	[[NCStorage sharedStorage] saveContext];
 	[[NCCache sharedCache] clearInvalidData];
 }
 
@@ -198,11 +219,12 @@ void uncaughtExceptionHandler(NSException* exception) {
 	[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:^(BOOL newData) {
 		[application endBackgroundTask:task];
 	}];
+	
+	[[NCPriceManager sharedManager] updateIfNeeded];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-	[[NCStorage sharedStorage] saveContext];
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
@@ -221,18 +243,34 @@ void uncaughtExceptionHandler(NSException* exception) {
 		else if ([scheme isEqualToString:@"showinfo"]) {
 			[self showTypeInfoWithURL:url];
 		}
-		else if ([scheme isEqualToString:@"ncaccount"]) {
-			NSMutableString* uuid = [NSMutableString stringWithString:[url absoluteString]];
-			[uuid replaceOccurrencesOfString:@"ncaccount://" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, uuid.length)];
-			[uuid replaceOccurrencesOfString:@"ncaccount:" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, uuid.length)];
-			NCAccount* account = nil;
-			if (uuid)
-				account = [[NCStorage sharedStorage] accountWithUUID:uuid];
-			if (account)
-				[NCAccount setCurrentAccount:account];
+		else if ([scheme isEqualToString:@"neocom"]) {
+			NSString* host = [url host];
+			if ([host isEqualToString:@"account"]) {
+				NSString* uuid = [url lastPathComponent];
+				if (uuid) {
+					NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+					[storageManagedObjectContext performBlock:^{
+						NCAccount* account = [storageManagedObjectContext accountWithUUID:uuid];
+						if (account.apiKey.apiKeyInfo)
+							dispatch_async(dispatch_get_main_queue(), ^{
+								[NCAccount setCurrentAccount:account];
+							});
+					}];
+				}
+			}
+			else if ([host isEqualToString:@"sso"])
+				[CRAPI handleOpenURL:url];
 		}
+		else if ([scheme isEqualToString:@"killreport"]) {
+			[self showKillReportWithURL:url];
+		}
+
 	});
 	return YES;
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options {
+	return [self application:app openURL:url sourceApplication:options[UIApplicationLaunchOptionsSourceApplicationKey] annotation:options[UIApplicationLaunchOptionsAnnotationKey]];
 }
 
 - (void) application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
@@ -243,23 +281,79 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 - (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
 	if (application.applicationState == UIApplicationStateActive) {
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Neocom" message:notification.alertBody delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
-		[alert show];
+		[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithTitle:NSLocalizedString(@"Neocom", nil) message:notification.alertBody] animated:YES completion:nil];
 		application.applicationIconBadgeNumber = 0;
 	}
 	else if (application.applicationState == UIApplicationStateInactive) {
 		NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
-		NCAccount* account = nil;
-		if (uuid)
-			account = [[NCStorage sharedStorage] accountWithUUID:uuid];
-		if (account)
-			[NCAccount setCurrentAccount:account];
+		if (uuid) {
+			NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+			[storageManagedObjectContext performBlock:^{
+				NCAccount* account = [storageManagedObjectContext accountWithUUID:uuid];
+				if (account)
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[NCAccount setCurrentAccount:account];
+					});
+			}];
+		}
 		
 	}
 }
 
 - (void) reconnectStoreIfNeeded {
 	NCStorage* storage = [NCStorage sharedStorage];
+	if (storage) {
+		id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+		
+		id lastCloudToken = nil;
+		NSData *tokenData = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCloudTokenKey];
+		if (tokenData)
+			lastCloudToken = [NSKeyedUnarchiver unarchiveObjectWithData:tokenData];
+		
+		BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey];
+		
+		BOOL needsAsk = ![[NSUserDefaults standardUserDefaults] valueForKeyPath:NCSettingsUseCloudKey];
+		BOOL tokenChanged = currentCloudToken != lastCloudToken && ![currentCloudToken isEqual:lastCloudToken];
+		BOOL settingsChanged = (storage.storageType == NCStorageTypeCloud && !useCloud)  || (storage.storageType == NCStorageTypeLocal && (useCloud && currentCloudToken));
+		
+		void (^initStorage)(BOOL) = ^(BOOL useCloud) {
+			
+			if (!useCloud || !currentCloudToken) {
+				[NCAccount setCurrentAccount:nil];
+				[NCShoppingList setCurrentShoppingList:nil];
+				
+				NCStorage* storage = [[NCStorage alloc] initLocalStorage];
+				[NCStorage setSharedStorage:storage];
+				NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
+				[NCAccountsManager setSharedManager:accountsManager];
+				[[NSNotificationCenter defaultCenter] postNotificationName:NCStorageDidChangeNotification object:storage userInfo:nil];
+				[[NCNotificationsManager sharedManager] setNeedsUpdateNotifications];
+				[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:nil];
+			}
+			else {
+				[NCAccount setCurrentAccount:nil];
+				[NCShoppingList setCurrentShoppingList:nil];
+				
+				NCStorage* storage = [[NCStorage alloc] initCloudStorage];
+				[NCStorage setSharedStorage:storage];
+				NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
+				[NCAccountsManager setSharedManager:accountsManager];
+				[[NSNotificationCenter defaultCenter] postNotificationName:NCStorageDidChangeNotification object:storage userInfo:nil];
+				[[NCNotificationsManager sharedManager] setNeedsUpdateNotifications];
+				[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:nil];
+			}
+		};
+		
+		if (needsAsk) {
+			[self askToUseCloudWithCompletionHandler:^(BOOL useCloud) {
+				initStorage(useCloud);
+			}];
+		}
+		else if ((useCloud && tokenChanged) || settingsChanged) {
+			initStorage(useCloud);
+		}
+	}
+/*	NCStorage* storage = [NCStorage sharedStorage];
 	if (storage) {
 		id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
 		
@@ -328,7 +422,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 		else if ((useCloud && tokenChanged) || settingsChanged) {
 			initStorage(useCloud);
 		}
-	}
+	}*/
 }
 
 - (UIInterfaceOrientationMask) application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
@@ -385,15 +479,19 @@ void uncaughtExceptionHandler(NSException* exception) {
 }
 
 - (void) splitViewController:(UISplitViewController *)svc willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
-	if (displayMode == UISplitViewControllerDisplayModeAllVisible) {
-		[[svc.viewControllers[1] viewControllers][0] navigationItem].leftBarButtonItem = nil;
+	if (svc.viewControllers.count > 1) {
+		UINavigationController* navigationController = svc.viewControllers[1];
+		if ([navigationController isKindOfClass:[UINavigationController class]] && navigationController.viewControllers.count > 0) {
+			if (displayMode == UISplitViewControllerDisplayModeAllVisible)
+				[[navigationController viewControllers][0] navigationItem].leftBarButtonItem = nil;
+			else
+				[[navigationController viewControllers][0] navigationItem].leftBarButtonItem = svc.displayModeButtonItem;
+		}
 	}
-	else
-		[[svc.viewControllers[1] viewControllers][0] navigationItem].leftBarButtonItem = svc.displayModeButtonItem;
 }
 
 - (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {
-	barButtonItem.image = [UIImage imageNamed:@"menuIcon.png"];
+	barButtonItem.image = [UIImage imageNamed:@"menuIcon"];
 	UINavigationController* navigationController = svc.viewControllers[1];
 	if ([navigationController isKindOfClass:[UINavigationController class]]) {
 		[[navigationController.viewControllers[0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];
@@ -424,31 +522,19 @@ void uncaughtExceptionHandler(NSException* exception) {
 			}
 		}
 	}
-	__block NSError* error = nil;
-	__block BOOL success = NO;
-	[[self taskManager] addTaskWithIndentifier:nil
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 int32_t keyID = [properties[@"keyid"] intValue];
-											 NSString* vCode = properties[@"vcode"];
-											 NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
-											 if (accountsManager)
-												 success = [accountsManager addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
+	
+	int32_t keyID = [properties[@"keyid"] intValue];
+	NSString* vCode = properties[@"vcode"];
 
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!success) {
-									 [[UIAlertView alertViewWithError:error] show];
-								 }
-								 else {
-								 [[UIAlertView alertViewWithTitle:nil
-														  message:NSLocalizedString(@"API Key added", nil)
-												cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-												otherButtonTitles:nil
-												  completionBlock:nil
-													  cancelBlock:nil] show];
-								 }
-							 }];
+	if (keyID > 0 && vCode.length > 0)
+	[[NCAccountsManager sharedManager] addAPIKeyWithKeyID:keyID vCode:vCode completionBlock:^(NSArray *accounts, NSError *error) {
+		if (error) {
+			[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
+		}
+		else {
+			[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithTitle:nil message:NSLocalizedString(@"API Key added", nil)] animated:YES completion:nil];
+		}
+	}];
 }
 
 - (void) openFitWithURL:(NSURL*) url {
@@ -489,12 +575,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 	NCAccount* currentAccount = [NCAccount currentAccount];
 	if (!currentAccount || currentAccount.accountType != NCAccountTypeCharacter) {
-		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Skill Plan Import", nil)
-								 message:NSLocalizedString(@"You should select the Character first to import Skill Plan", nil)
-					   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-					   otherButtonTitles:nil
-						 completionBlock:nil
-							 cancelBlock:nil] show];
+		[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithTitle:NSLocalizedString(@"Skill Plan Import", nil) message:NSLocalizedString(@"You should select the Character first to import Skill Plan", nil)] animated:YES completion:nil];
 	}
 	else {
 		NSData* data = [[NSData dataWithContentsOfURL:url] uncompressedData];
@@ -519,15 +600,18 @@ void uncaughtExceptionHandler(NSException* exception) {
 		[resourceSpecifier replaceCharactersInRange:NSMakeRange(0, 2) withString:@""];
 	
 	NSArray* components = [resourceSpecifier pathComponents];
+	
+	NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+	
 	if (components.count > 0) {
-		NCDBInvType* type = [NCDBInvType invTypeWithTypeID:[components[0] intValue]];
+		NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:[components[0] intValue]];
 		if (type && type.attributesDictionary.count > 0) {
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 				UIViewController* presentedViewController = nil;
 				for (presentedViewController = self.window.rootViewController; presentedViewController.presentedViewController; presentedViewController = presentedViewController.presentedViewController);
 				if ([presentedViewController isKindOfClass:[UINavigationController class]]) {
 					NCDatabaseTypeInfoViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewController"];
-					controller.type = (id) type;
+					controller.typeID = [type objectID];
 					[(UINavigationController*) presentedViewController pushViewController:controller animated:YES];
 				}
 				else {
@@ -535,13 +619,13 @@ void uncaughtExceptionHandler(NSException* exception) {
 					navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 					NCDatabaseTypeInfoViewController* controller = navigationController.viewControllers[0];
 					controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)];
-					controller.type = (id) type;
+					controller.typeID = [type objectID];
 					[presentedViewController presentViewController:navigationController animated:YES completion:nil];
 				}
 			}
 			else {
 				NCDatabaseTypeInfoViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewController"];
-				controller.type = (id) type;
+				controller.typeID = [type objectID];
 
 				UINavigationController* navigationController = (UINavigationController*) self.window.rootViewController.childViewControllers[0];
 				if ([navigationController isKindOfClass:[UINavigationController class]])
@@ -551,17 +635,19 @@ void uncaughtExceptionHandler(NSException* exception) {
 		else {
 			NSURL* url = [NSURL URLWithString:resourceSpecifier];
 			if (url) {
-				NCStorage* storage = [NCStorage sharedStorage];
-				[storage.managedObjectContext performBlock:^{
-					NSManagedObjectID* objectID = [storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url];
+				NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
+				[storageManagedObjectContext performBlock:^{
+					NSManagedObjectID* objectID = [storageManagedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:url];
 					if (objectID) {
-						NCAccount* account = (NCAccount*) [storage.managedObjectContext existingObjectWithID:objectID error:nil];
+						NCAccount* account = (NCAccount*) [storageManagedObjectContext existingObjectWithID:objectID error:nil];
 						if ([account isKindOfClass:[NCAccount class]]) {
 							dispatch_async(dispatch_get_main_queue(), ^{
 								if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-									UINavigationController* navigationController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCAPIKeyAccessMaskViewController"];
+									NCAPIKeyAccessMaskViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCAPIKeyAccessMaskViewController"];
+									UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
 									navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-									NCAPIKeyAccessMaskViewController* controller = navigationController.viewControllers[0];
+									navigationController.navigationBar.barStyle = UIBarStyleBlack;
+									navigationController.navigationBar.tintColor = [UIColor whiteColor];
 									controller.account = account;
 									controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)];
 									[self.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
@@ -584,14 +670,65 @@ void uncaughtExceptionHandler(NSException* exception) {
 	}
 }
 
+- (void) showKillReportWithURL:(NSURL*) url {
+	NSArray* components = [[url lastPathComponent] componentsSeparatedByString:@":"];
+	if (components.count == 2) {
+		static BOOL loading = NO;
+		if (loading)
+			return;
+		loading = YES;
+		[[CRAPI publicApiWithCachePolicy:NSURLRequestUseProtocolCachePolicy] loadKillMailWithID:[components[0] longLongValue] hash:components[1] completionBlock:^(CRKillMail *killMail, NSError *error) {
+			loading = NO;
+			if (killMail) {
+				NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+				[databaseManagedObjectContext performBlock:^{
+					NCKillMail* kill = [[NCKillMail alloc] initWithKillMailsKill:killMail databaseManagedObjectContext:databaseManagedObjectContext];
+					dispatch_async(dispatch_get_main_queue(), ^{
+						if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+							UIViewController* presentedViewController = nil;
+							for (presentedViewController = self.window.rootViewController; presentedViewController.presentedViewController; presentedViewController = presentedViewController.presentedViewController);
+							if ([presentedViewController isKindOfClass:[UINavigationController class]]) {
+								NCKillMailDetailsViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCKillMailDetailsViewController"];
+								controller.killMail = kill;
+								[(UINavigationController*) presentedViewController pushViewController:controller animated:YES];
+							}
+							else {
+								UINavigationController* navigationController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCKillMailDetailsViewNavigationController"];
+								navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+								NCKillMailDetailsViewController* controller = navigationController.viewControllers[0];
+								controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)];
+								controller.killMail = kill;
+								[presentedViewController presentViewController:navigationController animated:YES completion:nil];
+							}
+						}
+						else {
+							NCKillMailDetailsViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCKillMailDetailsViewController"];
+							controller.killMail = kill;
+							
+							UINavigationController* navigationController = (UINavigationController*) self.window.rootViewController.childViewControllers[0];
+							if ([navigationController isKindOfClass:[UINavigationController class]])
+								[navigationController pushViewController:controller animated:YES];
+						}
+					});
+				}];
+
+
+			}
+			else if (error) {
+				[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
+			}
+		}];
+	}
+}
+
 
 - (void) completeTransaction: (SKPaymentTransaction *)transaction
 {
 	ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
 	purchase.purchased = YES;
 	
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Thanks for the donation", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
-	[alertView show];
+	[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithTitle:nil message:NSLocalizedString(@"Thanks for the donation", nil)] animated:YES completion:nil];
+
 	[[NSNotificationCenter defaultCenter] postNotificationName:NCApplicationDidRemoveAddsNotification object:nil];
 	[[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 	
@@ -602,8 +739,8 @@ void uncaughtExceptionHandler(NSException* exception) {
 	ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
 	purchase.purchased = YES;
 	
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Your donation status has been restored", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
-	[alertView show];
+	[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithTitle:nil message:NSLocalizedString(@"Your donation status has been restored", nil)] animated:YES completion:nil];
+
 	[[NSNotificationCenter defaultCenter] postNotificationName:NCApplicationDidRemoveAddsNotification object:nil];
 	[[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 	
@@ -611,8 +748,8 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 - (void) failedTransaction: (SKPaymentTransaction *)transaction
 {
-    if (transaction.error.code != SKErrorPaymentCancelled) {
-        [[UIAlertView alertViewWithError:transaction.error] show];
+	if (![transaction.error.domain isEqualToString:SKErrorDomain] || transaction.error.code != SKErrorPaymentCancelled)	{
+		[[UIAlertController frontMostViewController] presentViewController:[UIAlertController alertWithError:transaction.error] animated:YES completion:nil];
     }
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 }
@@ -629,26 +766,22 @@ void uncaughtExceptionHandler(NSException* exception) {
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (error) {
-									 [[UIAlertView alertViewWithTitle:NSLocalizedString(@"Error", nil)
-															  message:[error localizedDescription]
-													cancelButtonTitle:NSLocalizedString(@"Discard", nil)
-													otherButtonTitles:@[NSLocalizedString(@"Retry", nil)]
-													  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-														  if (selectedButtonIndex != alertView.cancelButtonIndex)
-															  [self migrateWithCompletionHandler:completionHandler];
-														  else {
-															  NSFileManager* fileManager = [NSFileManager defaultManager];
-															  NSString* documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-															  for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:documents error:nil]) {
-																  if ([fileName isEqualToString:@"Inbox"])
-																	  continue;
-																  [fileManager removeItemAtPath:[documents stringByAppendingPathComponent:fileName] error:nil];
-															  }
-															  completionHandler();
-														  }
-													  } cancelBlock:^{
-														  
-													  }] show];
+									 UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", nil) message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
+									 
+									 [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+										 [self migrateWithCompletionHandler:completionHandler];
+									 }]];
+									 [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Discard", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+										 NSFileManager* fileManager = [NSFileManager defaultManager];
+										 NSString* documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+										 for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:documents error:nil]) {
+											 if ([fileName isEqualToString:@"Inbox"])
+												 continue;
+											 [fileManager removeItemAtPath:[documents stringByAppendingPathComponent:fileName] error:nil];
+										 }
+										 completionHandler();
+									 }]];
+									 [[UIAlertController frontMostViewController] presentViewController:controller animated:YES completion:nil];
 								 }
 								 else {
 									 completionHandler();
@@ -665,33 +798,31 @@ void uncaughtExceptionHandler(NSException* exception) {
 }
 
 - (void) askToUseCloudWithCompletionHandler:(void(^)(BOOL useCloud)) completionHandler {
-	[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose Storage Option", nil)
-							 message:NSLocalizedString(@"Should documents be stored in iCloud and available on all your devices?", nil)
-				   cancelButtonTitle:NSLocalizedString(@"Local Only", nil)
-				   otherButtonTitles:@[NSLocalizedString(@"iCloud", nil)]
-					 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-						 BOOL useCloud = selectedButtonIndex != alertView.cancelButtonIndex;
-						 [[NSUserDefaults standardUserDefaults] setBool:useCloud
-																 forKey:NCSettingsUseCloudKey];
-						 completionHandler(useCloud);
-					 }
-						 cancelBlock:^{
-							 completionHandler(NO);
-						 }] show];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Choose Storage Option", nil) message:NSLocalizedString(@"Should documents be stored in iCloud and available on all your devices?", nil) preferredStyle:UIAlertControllerStyleAlert];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"iCloud", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsUseCloudKey];
+		completionHandler(YES);
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Local Only", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:NCSettingsUseCloudKey];
+		completionHandler(NO);
+	}]];
+	[[UIAlertController frontMostViewController] presentViewController:controller animated:YES completion:nil];
 }
 
 - (void) askToTransferDataWithCompletionHandler:(void(^)(BOOL transfer)) completionHandler {
-	[[UIAlertView alertViewWithTitle:nil
-							 message:NSLocalizedString(@"Do you want to copy Local Data to iCloud?", nil)
-				   cancelButtonTitle:NSLocalizedString(@"No", nil)
-				   otherButtonTitles:@[NSLocalizedString(@"Copy", nil)]
-					 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-						 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NCSettingsMigratedToCloudKey"];
-						 completionHandler(selectedButtonIndex != alertView.cancelButtonIndex);
-					 }
-						 cancelBlock:^{
-							 completionHandler(NO);
-						 }] show];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"Do you want to copy Local Data to iCloud?", nil) preferredStyle:UIAlertControllerStyleAlert];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NCSettingsMigratedToCloudKey"];
+		completionHandler(YES);
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NO", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NCSettingsMigratedToCloudKey"];
+		completionHandler(NO);
+	}]];
+	[[UIAlertController frontMostViewController] presentViewController:controller animated:YES completion:nil];
 }
 
 - (void) ubiquityIdentityDidChange:(NSNotification*) notification {

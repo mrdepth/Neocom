@@ -7,8 +7,7 @@
 //
 
 #import "NCKillMailsViewController.h"
-#import "EVEKillLogKill+Neocom.h"
-#import "EVEKillLogVictim+Neocom.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCKillMailsCell.h"
 #import "UIColor+Neocom.h"
 #import "NCKillMailDetailsViewController.h"
@@ -31,10 +30,6 @@
 		self.kills = [aDecoder decodeObjectForKey:@"kills"];
 		self.title = [aDecoder decodeObjectForKey:@"title"];
 		self.date = [aDecoder decodeObjectForKey:@"date"];
-		for (EVEKillLogKill* kill in self.kills) {
-			kill.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID];
-			kill.victim.shipType = [NCDBInvType invTypeWithTypeID:kill.victim.shipTypeID];
-		}
 	}
 	return self;
 }
@@ -74,6 +69,7 @@
 
 @interface NCKillMailsViewController ()
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
+@property (nonatomic, strong) NCAccount* account;
 
 @end
 
@@ -93,7 +89,8 @@
     [super viewDidLoad];
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	[self.dateFormatter setDateFormat:@"HH:mm"];
-	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+	self.account = [NCAccount currentAccount];
 }
 
 - (void)didReceiveMemoryWarning
@@ -103,32 +100,32 @@
 }
 
 - (IBAction)onChangeMode:(id)sender {
-	[self update];
+	[self.tableView reloadData];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCKillMailDetailsViewController"]) {
 		NCKillMailDetailsViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.killMail = [[NCKillMail alloc] initWithKillLogKill:[sender object]];
+		destinationViewController.killMail = [[NCKillMail alloc] initWithKillMailsKill:[sender object] databaseManagedObjectContext:self.databaseManagedObjectContext];
 	}
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NCKillMailsViewControllerData* data = self.data;
+	NCKillMailsViewControllerData* data = self.cacheData;
 	return self.segmentedControl.selectedSegmentIndex == 0 ? data.kills.count : data.losses.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
-	NCKillMailsViewControllerData* data = self.data;
+	NCKillMailsViewControllerData* data = self.cacheData;
 	NCKillMailsViewControllerDataSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? data.kills[sectionIndex] : data.losses[sectionIndex];
 	return section.kills.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
-	NCKillMailsViewControllerData* data = self.data;
+	NCKillMailsViewControllerData* data = self.cacheData;
 	NCKillMailsViewControllerDataSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? data.kills[sectionIndex] : data.losses[sectionIndex];
 	return section.title;
 }
@@ -136,81 +133,72 @@
 
 #pragma mark - NCTableViewController
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
-	NCAccount* account = [NCAccount currentAccount];
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
+	NCAccount* account = self.account;
 	if (!account) {
-		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
+		completionBlock(nil);
 		return;
 	}
 	
-	NCKillMailsViewControllerData* data = [NCKillMailsViewControllerData new];
-	__block NSDate* cacheExpireDate = [NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]];
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:3];
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 BOOL corporate = account.accountType == NCAccountTypeCorporate;
-											 EVEKillLog* killLog = [EVEKillLog killLogWithKeyID:account.apiKey.keyID
-																						  vCode:account.apiKey.vCode
-																					cachePolicy:cachePolicy
-																					characterID:account.characterID
-																				   beforeKillID:0
-																					  corporate:corporate
-																						  error:&error
-																				progressHandler:^(CGFloat progress, BOOL *stop) {
-																					task.progress = progress;
-																				}];
-											 
-											 if (killLog) {
-												 cacheExpireDate = killLog.cacheExpireDate;
-												 NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-												 [dateFormatter setDateFormat:@"yyyy.MM.dd"];
-												 [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
-												 NSMutableDictionary* kills = [NSMutableDictionary new];
-												 NSMutableDictionary* losses = [NSMutableDictionary new];
-
-												 for (EVEKillLogKill* kill in killLog.kills) {
-													 kill.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID];
-													 kill.victim.shipType = [NCDBInvType invTypeWithTypeID:kill.victim.shipTypeID];
-													 
-													 NCKillMailsViewControllerDataSection* section = nil;
-													 NSString* key = [dateFormatter stringFromDate:kill.killTime];
-													 if ((corporate && kill.victim.corporationID == account.corporationSheet.corporationID) ||
-														 (!corporate && kill.victim.characterID == account.characterID)) {
-														 section = losses[key];
-														 if (!section) {
-															 losses[key] = section = [NCKillMailsViewControllerDataSection new];
-															 section.title = key;
-															 section.kills = [NSMutableArray new];
-															 section.date = kill.killTime;
-														 }
-													 }
-													 else {
-														 section = kills[key];
-														 if (!section) {
-															 kills[key] = section = [NCKillMailsViewControllerDataSection new];
-															 section.title = key;
-															 section.kills = [NSMutableArray new];
-															 section.date = kill.killTime;
-														 }
-													 }
-													 [(NSMutableArray*) section.kills addObject:kill];
-												 }
-												 data.kills = [[kills allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
-												 data.losses = [[losses allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:cacheExpireDate];
-									 }
-								 }
-							 }];
+	[account.managedObjectContext performBlock:^{
+		__block NSError* lastError = nil;
+		NCKillMailsViewControllerData* data = [NCKillMailsViewControllerData new];
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+		BOOL corporate = api.apiKey.corporate;
+		[account loadCharacterInfoWithCompletionBlock:^(EVECharacterInfo *characterInfo, NSError *error) {
+			progress.completedUnitCount++;
+			[api killMailsFromID:0 rowCount:200 completionBlock:^(EVEKillMails *result, NSError *error) {
+				progress.completedUnitCount++;
+				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+					@autoreleasepool {
+						if (result) {
+							NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+							[dateFormatter setDateFormat:@"yyyy.MM.dd"];
+							[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+							
+							NSMutableDictionary* kills = [NSMutableDictionary new];
+							NSMutableDictionary* losses = [NSMutableDictionary new];
+							
+							for (EVEKillMailsKill* kill in result.kills) {
+								NCKillMailsViewControllerDataSection* section = nil;
+								NSString* key = [dateFormatter stringFromDate:kill.killTime];
+								if ((corporate && kill.victim.corporationID == characterInfo.corporationID) ||
+									(!corporate && kill.victim.characterID == characterInfo.characterID)) {
+									section = losses[key];
+									if (!section) {
+										losses[key] = section = [NCKillMailsViewControllerDataSection new];
+										section.title = key;
+										section.kills = [NSMutableArray new];
+										section.date = kill.killTime;
+									}
+								}
+								else {
+									section = kills[key];
+									if (!section) {
+										kills[key] = section = [NCKillMailsViewControllerDataSection new];
+										section.title = key;
+										section.kills = [NSMutableArray new];
+										section.date = kill.killTime;
+									}
+								}
+								[(NSMutableArray*) section.kills addObject:kill];
+							}
+							data.kills = [[kills allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
+							data.losses = [[losses allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
+						}
+						
+						dispatch_async(dispatch_get_main_queue(), ^{
+							[self saveCacheData:data cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
+							completionBlock(lastError);
+							progress.completedUnitCount++;
+						});
+					}
+				});
+			} progressBlock:nil];
+		}];
+	}];
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -218,20 +206,22 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCKillMailsViewControllerData* data = self.data;
+	NCKillMailsViewControllerData* data = self.cacheData;
 	NCKillMailsViewControllerDataSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? data.kills[indexPath.section] : data.losses[indexPath.section];
-	EVEKillLogKill* row = section.kills[indexPath.row];
+	EVEKillMailsKill* row = section.kills[indexPath.row];
 	
 	NCKillMailsCell* cell = (NCKillMailsCell*) tableViewCell;
 	cell.object = row;
-	cell.typeImageView.image = row.victim.shipType.icon ? row.victim.shipType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-	cell.titleLabel.text = row.victim.shipType.typeName;
+	NCDBInvType* shipType = [self.databaseManagedObjectContext invTypeWithTypeID:row.victim.shipTypeID];
+	cell.typeImageView.image = shipType.icon.image.image ?: [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
+	cell.titleLabel.text = shipType.typeName;
 	
-	if (row.solarSystem) {
-		NSString* ss = [NSString stringWithFormat:@"%.1f", row.solarSystem.security];
-		NSString* s = [NSString stringWithFormat:@"%@ %@", ss, row.solarSystem.solarSystemName];
+	NCDBMapSolarSystem* solarSystem = [self.databaseManagedObjectContext mapSolarSystemWithSolarSystemID:row.solarSystemID];
+	if (solarSystem) {
+		NSString* ss = [NSString stringWithFormat:@"%.1f", solarSystem.security];
+		NSString* s = [NSString stringWithFormat:@"%@ %@", ss, solarSystem.solarSystemName];
 		NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:s];
-		[title addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:row.solarSystem.security] range:NSMakeRange(0, ss.length)];
+		[title addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:solarSystem.security] range:NSMakeRange(0, ss.length)];
 		cell.locationLabel.attributedText = title;
 	}
 	else {
@@ -240,7 +230,7 @@
 	}
 	
 	
-	EVEKillLogAttacker* attacker = nil;
+	EVEKillMailsAttacker* attacker = nil;
 	for (attacker in row.attackers)
 		if (attacker.finalBlow == YES)
 			break;
@@ -251,11 +241,20 @@
 	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.killTime];
 }
 
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
-		[self reloadFromCache];
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
+	self.account = [NCAccount currentAccount];
 }
 
+#pragma mark - Private
 
+- (void) setAccount:(NCAccount *)account {
+	_account = account;
+	[account.managedObjectContext performBlock:^{
+		NSString* uuid = account.uuid;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.cacheRecordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), uuid];
+		});
+	}];
+}
 @end

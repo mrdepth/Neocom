@@ -8,13 +8,12 @@
 
 #import "NCDatabaseTypeMarketInfoViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
-#import "EVECentralAPI.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCDatabaseTypeMarketInfoCell.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "UIColor+Neocom.h"
-#import "UIActionSheet+Block.h"
 #import "NCSetting.h"
-#import "EVECentralQuickLookOrder+Neocom.h"
+//#import "EVECentralQuickLookOrder+Neocom.h"
 
 @interface NCDatabaseTypeMarketInfoViewControllerData : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray *sellOrdersSections;
@@ -40,8 +39,10 @@
 @property (nonatomic, strong) NSArray *filteredBuyOrdersSections;
 @property (nonatomic, strong) NSArray *filteredSellSummary;
 @property (nonatomic, strong) NSArray *filteredBuySummary;
+@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, strong) NSMutableDictionary* stations;
+@property (nonatomic, strong) NSMutableDictionary* regions;
 
-@property (nonatomic, strong) NCSetting* modeSetting;
 @end
 
 @implementation NCDatabaseTypeMarketInfoViewControllerData
@@ -105,54 +106,67 @@
 
 @end
 
+@interface NCDatabaseTypeMarketInfoViewController()
+@property (nonatomic, strong) NCSetting* modeSetting;
+
+@end
+
 @implementation NCDatabaseTypeMarketInfoViewController
 
 - (void)viewDidLoad
 {
-	self.modeSetting = [[NCStorage sharedStorage] settingWithKey:@"NCDatabaseTypeMarketInfoViewController.mode"];
-	if (self.modeSetting.value)
-		self.mode = [self.modeSetting.value integerValue];
+	[super viewDidLoad];
 
-    [super viewDidLoad];
+	self.type = [self.databaseManagedObjectContext existingObjectWithID:self.typeID error:nil];
+	
+	self.modeSetting = [self.storageManagedObjectContext settingWithKey:@"NCDatabaseTypeMarketInfoViewController.mode"];
+	self.mode = [self.modeSetting.value integerValue];
+	self.cacheRecordID = [NSString stringWithFormat:@"NCDatabaseTypeMarketInfoViewController.%d", self.type.typeID];
+	
 	if (self.navigationController.viewControllers[0] != self)
 		self.navigationItem.leftBarButtonItem = nil;
-	self.searchDisplayController.searchResultsTableView.rowHeight = self.tableView.rowHeight;
-    
-    /*if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-        if (self.parentViewController) {
-            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeMarketInfoViewController"]];
-        }
-        else
-            self.tableView.tableHeaderView = nil;
-    }*/
+	
     self.tableView.tableHeaderView = nil;
+	self.stations = [NSMutableDictionary new];
+	self.regions = [NSMutableDictionary new];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
 - (IBAction)onChangeMode:(id)sender {
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				  destructiveButtonTitle:nil
-					   otherButtonTitles:@[NSLocalizedString(@"Summary", nil), NSLocalizedString(@"Sell orders", nil), NSLocalizedString(@"Buy orders", nil)]
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 if (selectedButtonIndex == 0)
-									 self.mode = NCDatabaseTypeMarketInfoViewControllerModeSummary;
-								 else if (selectedButtonIndex == 1)
-									 self.mode = NCDatabaseTypeMarketInfoViewControllerModeSellOrders;
-								 else
-									 self.mode = NCDatabaseTypeMarketInfoViewControllerModeBuyOrders;
-								 [self update];
-								 [self.searchDisplayController.searchResultsTableView reloadData];
-								 self.modeSetting.value = @(self.mode);
-							 }
-						 }
-							 cancelBlock:nil] showFromRect:[sender bounds] inView:sender animated:YES];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Summary", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.mode = NCDatabaseTypeMarketInfoViewControllerModeSummary;
+		[self.tableView reloadData];
+		self.modeSetting.value = @(self.mode);
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Sell orders", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.mode = NCDatabaseTypeMarketInfoViewControllerModeSellOrders;
+		[self.tableView reloadData];
+		self.modeSetting.value = @(self.mode);
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Buy orders", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.mode = NCDatabaseTypeMarketInfoViewControllerModeBuyOrders;
+		[self.tableView reloadData];
+		self.modeSetting.value = @(self.mode);
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		if ([sender isKindOfClass:[UIBarButtonItem class]])
+			controller.popoverPresentationController.barButtonItem = sender;
+		else {
+			controller.popoverPresentationController.sourceView = sender;
+			controller.popoverPresentationController.sourceRect = [sender bounds];
+		}
+	}
+	else
+		[self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void) setMode:(NCDatabaseTypeMarketInfoViewControllerMode)mode {
@@ -174,7 +188,7 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.type = self.type;
+		controller.typeID = self.typeID;
 		controller.navigationItem.rightBarButtonItem = nil;
 	}
 }
@@ -182,7 +196,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
+	NCDatabaseTypeMarketInfoViewControllerData* data = self.cacheData;
 	if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSummary)
 		return 2;
 	else if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSellOrders)
@@ -193,7 +207,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
+	NCDatabaseTypeMarketInfoViewControllerData* data = self.cacheData;
 	NSInteger numberOfRows = 0;
 
 	if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSummary) {
@@ -211,7 +225,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
+	NCDatabaseTypeMarketInfoViewControllerData* data = self.cacheData;
 	if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSummary)
 		return section == 0 ? NSLocalizedString(@"Sell summary", nil) : NSLocalizedString(@"Buy summary", nil);
 	else if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSellOrders)
@@ -220,120 +234,96 @@
 		return tableView == self.tableView ? [data.buyOrdersSections[section] title] : [self.filteredBuyOrdersSections[section] title];
 }
 
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
 #pragma mark - NCTableViewController
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	int32_t typeID = self.type.typeID;
-	__block NSError* error = nil;
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
+	__block NSError* lastError = nil;
 	
-	NCDatabaseTypeMarketInfoViewControllerData* data = [NCDatabaseTypeMarketInfoViewControllerData new];
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:5];
+	EVECentralAPI* api = [[EVECentralAPI alloc] initWithCachePolicy:cachePolicy];
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 EVECentralQuickLook *quickLook = [EVECentralQuickLook quickLookWithTypeID:typeID
-																											 regionIDs:nil
-																											  systemID:0
-																												 hours:0
-																												  minQ:0
-																										   cachePolicy:cachePolicy
-																												 error:&error
-																									   progressHandler:^(CGFloat progress, BOOL *stop) {
-																										   task.progress = progress;
-																										   if ([task isCancelled])
-																											   *stop = YES;
-																									   }];
-											 if (quickLook) {
-												 if ([task isCancelled])
-													 return;
-												 
-												 NSMutableDictionary *sellOrdersSectionsDic = [NSMutableDictionary new];
-												 NSMutableDictionary *buyOrdersSectionsDic = [NSMutableDictionary new];
-												 
-												 [quickLook.sellOrders sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:YES]]];
-												 [quickLook.buyOrders sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:NO]]];
-												 
-												 for (EVECentralQuickLookOrder *order in quickLook.sellOrders) {
-													 NCDatabaseTypeMarketInfoViewControllerSection* section = sellOrdersSectionsDic[@(order.regionID)];
-													 if (!section) {
-														 NCDBMapRegion *mapRegion = [NCDBMapRegion mapRegionWithRegionID:order.regionID];
-														 section = [NCDatabaseTypeMarketInfoViewControllerSection new];
-														 section.title = mapRegion.regionName;
-														 section.rows = [NSMutableArray new];
-														 sellOrdersSectionsDic[@(order.regionID)] = section;
-													 }
-													 NCDatabaseTypeMarketInfoViewControllerRow* row = [NCDatabaseTypeMarketInfoViewControllerRow new];
-													 row.order = order;
-													 [(NSMutableArray*) section.rows addObject:row];
-												 }
-												 
-												 if ([task isCancelled])
-													 return;
+	[api quickLookWithTypeID:self.type.typeID regionIDs:nil systemID:0 hours:0 minQ:0 completionBlock:^(EVECentralQuickLook *quickLook, NSError *error) {
+		progress.completedUnitCount++;
+		
+		NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+		[databaseManagedObjectContext performBlock:^{
+			NCDatabaseTypeMarketInfoViewControllerData* data = [NCDatabaseTypeMarketInfoViewControllerData new];
 
-												 for (EVECentralQuickLookOrder *order in quickLook.buyOrders) {
-													 NCDatabaseTypeMarketInfoViewControllerSection* section = buyOrdersSectionsDic[@(order.regionID)];
-													 if (!section) {
-														 NCDBMapRegion *mapRegion = [NCDBMapRegion mapRegionWithRegionID:order.regionID];
-														 section = [NCDatabaseTypeMarketInfoViewControllerSection new];
-														 section.title = mapRegion.regionName;
-														 section.rows = [NSMutableArray new];
-														 buyOrdersSectionsDic[@(order.regionID)] = section;
-													 }
-													 NCDatabaseTypeMarketInfoViewControllerRow* row = [NCDatabaseTypeMarketInfoViewControllerRow new];
-													 row.order = order;
-													 [(NSMutableArray*) section.rows addObject:row];
-												 }
-												 
-												 if ([task isCancelled])
-													 return;
+			NSMutableDictionary *sellOrdersSectionsDic = [NSMutableDictionary new];
+			NSMutableDictionary *buyOrdersSectionsDic = [NSMutableDictionary new];
 
-												 data.sellOrdersSections = [[sellOrdersSectionsDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
-												 data.buyOrdersSections = [[buyOrdersSectionsDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
-												 
-												 NSMutableArray* sellOrders = [NSMutableArray new];
-												 for (EVECentralQuickLookOrder *order in quickLook.sellOrders) {
-													 NCDatabaseTypeMarketInfoViewControllerRow* row = [NCDatabaseTypeMarketInfoViewControllerRow new];
-													 row.order = order;
-													 [sellOrders addObject:row];
-												 }
-												 
-												 NSMutableArray* buyOrders = [NSMutableArray new];
-												 for (EVECentralQuickLookOrder *order in quickLook.buyOrders) {
-													 NCDatabaseTypeMarketInfoViewControllerRow* row = [NCDatabaseTypeMarketInfoViewControllerRow new];
-													 row.order = order;
-													 [buyOrders addObject:row];
-												 }
+			NSArray* sellOrders = [quickLook.sellOrders sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:YES]]];
+			NSArray* buyOrders = [quickLook.buyOrders sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:NO]]];
+			progress.completedUnitCount++;
 
-												 data.sellSummary = sellOrders;
-												 data.buySummary = buyOrders;
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]]];
-									 }
-								 }
-							 }];
+			for (EVECentralQuickLookOrder *order in sellOrders) {
+				NCDatabaseTypeMarketInfoViewControllerSection* section = sellOrdersSectionsDic[@(order.regionID)];
+				if (!section) {
+					NCDBMapRegion *mapRegion = [databaseManagedObjectContext mapRegionWithRegionID:order.regionID];
+					section = [NCDatabaseTypeMarketInfoViewControllerSection new];
+					section.title = mapRegion.regionName;
+					section.rows = [NSMutableArray new];
+					sellOrdersSectionsDic[@(order.regionID)] = section;
+				}
+				NCDatabaseTypeMarketInfoViewControllerRow* row = [NCDatabaseTypeMarketInfoViewControllerRow new];
+				row.order = order;
+				[(NSMutableArray*) section.rows addObject:row];
+			}
+			progress.completedUnitCount++;
+
+			for (EVECentralQuickLookOrder *order in buyOrders) {
+				NCDatabaseTypeMarketInfoViewControllerSection* section = buyOrdersSectionsDic[@(order.regionID)];
+				if (!section) {
+					NCDBMapRegion *mapRegion = [databaseManagedObjectContext mapRegionWithRegionID:order.regionID];
+					section = [NCDatabaseTypeMarketInfoViewControllerSection new];
+					section.title = mapRegion.regionName;
+					section.rows = [NSMutableArray new];
+					buyOrdersSectionsDic[@(order.regionID)] = section;
+				}
+				NCDatabaseTypeMarketInfoViewControllerRow* row = [NCDatabaseTypeMarketInfoViewControllerRow new];
+				row.order = order;
+				[(NSMutableArray*) section.rows addObject:row];
+			}
+			progress.completedUnitCount++;
+
+			
+			data.sellOrdersSections = [[sellOrdersSectionsDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+			data.buyOrdersSections = [[buyOrdersSectionsDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+			
+			NSMutableArray* sell = [NSMutableArray new];
+			for (EVECentralQuickLookOrder *order in sellOrders) {
+				NCDatabaseTypeMarketInfoViewControllerRow* row = [NCDatabaseTypeMarketInfoViewControllerRow new];
+				row.order = order;
+				[sell addObject:row];
+			}
+			
+			NSMutableArray* buy = [NSMutableArray new];
+			for (EVECentralQuickLookOrder *order in buyOrders) {
+				NCDatabaseTypeMarketInfoViewControllerRow* row = [NCDatabaseTypeMarketInfoViewControllerRow new];
+				row.order = order;
+				[buy addObject:row];
+			}
+			
+			data.sellSummary = sell;
+			data.buySummary = buy;
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self saveCacheData:data cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
+				completionBlock(lastError);
+				progress.completedUnitCount++;
+			});
+			
+		}];
+	} progressBlock:nil];
 }
 
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
-		[self reloadFromCache];
-}
-
-- (NSString*) recordID {
-	NCDBInvType* type = self.type;
-	return [NSString stringWithFormat:@"NCDatabaseTypeMarketInfoViewController.%d", type.typeID];
-	//return [NSString stringWithFormat:@"%@.%d", [super recordID], type.typeID];
-}
-
-- (void) searchWithSearchString:(NSString *)searchString {
-	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
+- (void) searchWithSearchString:(NSString *)searchString completionBlock:(void (^)())completionBlock {
+	completionBlock();
+/*	NCDatabaseTypeMarketInfoViewControllerData* data = self.cacheData;
 
 	NSMutableArray *filteredSellOrdersSections = [NSMutableArray new];
 	NSMutableArray *filteredBuyOrdersSections = [NSMutableArray new];
@@ -416,11 +406,11 @@
                                      
                                      [self.searchDisplayController.searchResultsTableView reloadData];
 								 }
-							 }];
+							 }];*/
 }
 
 - (id) identifierForSection:(NSInteger)section {
-	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
+	NCDatabaseTypeMarketInfoViewControllerData* data = self.cacheData;
 	if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSummary)
 		return @(section);
 	else if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSellOrders)
@@ -435,7 +425,7 @@
 
 // Customize the appearance of table view cells.
 - (void)tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
+	NCDatabaseTypeMarketInfoViewControllerData* data = self.cacheData;
 	NCDatabaseTypeMarketInfoViewControllerRow* row;
 	
 	if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSummary) {
@@ -456,10 +446,24 @@
 	
 	NSString* ss = [NSString stringWithFormat:@"%.1f", row.order.security];
 	NSString* s;
-	if (row.order.station)
-		s = [NSString stringWithFormat:@"%@ %@ / %@", ss, row.order.station.solarSystem.solarSystemName, row.order.region.regionName];
+	
+	NCDBStaStation* station = self.stations[@(row.order.stationID)];
+	if (!station) {
+		station = [self.databaseManagedObjectContext staStationWithStationID:row.order.stationID];
+		if (station)
+			self.stations[@(row.order.stationID)] = station;
+	}
+	NCDBMapRegion* region = self.regions[@(row.order.regionID)];
+	if (!region) {
+		region = [self.databaseManagedObjectContext mapRegionWithRegionID:row.order.regionID];
+		if (region)
+			self.regions[@(row.order.stationID)] = station;
+	}
+
+	if (station)
+		s = [NSString stringWithFormat:@"%@ %@ / %@", ss, station.solarSystem.solarSystemName, region.regionName];
 	else
-		s = [NSString stringWithFormat:@"%@ %@", ss, row.order.region.regionName];
+		s = [NSString stringWithFormat:@"%@ %@", ss, region.regionName];
 	
 	NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:s];
 	[title addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:row.order.security] range:NSMakeRange(0, ss.length)];

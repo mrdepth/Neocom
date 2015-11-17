@@ -19,7 +19,7 @@
 	return NO;
 }
 
-- (NSUInteger) supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask) supportedInterfaceOrientations {
 	if (self.view.window.screen.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact && self.view.window.screen.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact)
 		return UIInterfaceOrientationMaskPortrait;
 	else
@@ -57,7 +57,7 @@
 #pragma mark - UISplitViewControllerDelegate
 
 - (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {
-	barButtonItem.image = [UIImage imageNamed:@"menuIcon.png"];
+	barButtonItem.image = [UIImage imageNamed:@"menuIcon"];
 	UINavigationController* navigationController = [[self viewControllers] objectAtIndex:1];
 	if ([navigationController isKindOfClass:[UINavigationController class]]) {
 		[[[[navigationController viewControllers] objectAtIndex:0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];

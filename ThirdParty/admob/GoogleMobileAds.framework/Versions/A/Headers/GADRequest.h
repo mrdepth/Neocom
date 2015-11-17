@@ -8,6 +8,11 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <Foundation/Foundation.h>
 
+#import <GoogleMobileAds/GoogleMobileAdsDefines.h>
+
+/// Add this constant to the testDevices property's array to receive test ads on the simulator.
+GAD_EXTERN const id kGADSimulatorID;
+
 @protocol GADAdNetworkExtras;
 
 /// Genders to help deliver more relevant ads.
@@ -65,11 +70,6 @@ typedef NS_ENUM(NSInteger, GADGender) {
                       longitude:(CGFloat)longitude
                        accuracy:(CGFloat)accuracyInMeters;
 
-/// When Core Location isn't available but the user's location is known supplying it here may
-/// deliver more relevant ads. It can be any free-form text such as @"Champs-Elysees Paris" or
-/// @"94041 US".
-- (void)setLocationWithDescription:(NSString *)locationDescription;
-
 /// [Optional] This method allows you to specify whether you would like your app to be treated as
 /// child-directed for purposes of the Children’s Online Privacy Protection Act (COPPA),
 /// http:///business.ftc.gov/privacy-and-security/childrens-privacy.
@@ -99,7 +99,7 @@ typedef NS_ENUM(NSInteger, GADGender) {
 /// targeting purposes.
 @property(nonatomic, copy) NSString *contentURL;
 
-#pragma mark - Request Agent Information
+#pragma mark Request Agent Information
 
 /// String that identifies the ad request's origin. Third party libraries that reference the Mobile
 /// Ads SDK should set this property to denote the platform from which the ad request originated.
@@ -107,12 +107,18 @@ typedef NS_ENUM(NSInteger, GADGender) {
 /// Mobile Ads SDK should set this property as "CoolAds".
 @property(nonatomic, copy) NSString *requestAgent;
 
-#pragma mark - Deprecated Methods
+#pragma mark Deprecated Methods
 
 /// Provide the user's birthday to increase ad relevancy.
 - (void)setBirthdayWithMonth:(NSInteger)month
                          day:(NSInteger)day
                         year:(NSInteger)year
-    __attribute__((deprecated(" use the birthday property.")));
+    GAD_DEPRECATED_MSG_ATTRIBUTE(" use the birthday property.");
+
+/// When Core Location isn't available but the user's location is known supplying it here may
+/// deliver more relevant ads. It can be any free-form text such as @"Champs-Elysees Paris" or
+/// @"94041 US".
+- (void)setLocationWithDescription:(NSString *)locationDescription
+    GAD_DEPRECATED_MSG_ATTRIBUTE(" use setLocationWithLatitude:longitude:accuracy:.");
 
 @end

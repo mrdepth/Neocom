@@ -7,13 +7,31 @@
 //
 
 #import "NCRSSFeedViewController.h"
-#import "RSS.h"
 #import "NCRSSFeedCell.h"
-#import "NSString+HTML.h"
-#import "NSMutableString+HTML.h"
-#import "NSMutableString+RSSParser10.h"
 #import "NCRSSItemViewController.h"
 #import "RSSItem+Neocom.h"
+
+@interface NSMutableString(RSS)
+
+- (void) removeSpaces;
+
+@end
+
+@implementation NSMutableString(RSS)
+
+- (void) removeSpaces {
+	[self replaceOccurrencesOfString:@"\n" withString:@" " options:0 range:NSMakeRange(0, self.length)];
+	[self replaceOccurrencesOfString:@"\r" withString:@" " options:0 range:NSMakeRange(0, self.length)];
+	[self replaceOccurrencesOfString:@"\t" withString:@" " options:0 range:NSMakeRange(0, self.length)];
+	int left = 5;
+	while ([self replaceOccurrencesOfString:@"  " withString:@" " options:0 range:NSMakeRange(0, self.length)] && left)
+		left--;
+	if (self.length > 0 && [self characterAtIndex:0] == ' ')
+		[self replaceCharactersInRange:NSMakeRange(0, 1) withString:@""];
+}
+
+@end
+
 
 @interface NCRSSFeedViewControllerData : NSObject<NSCoding>
 @property (nonatomic, strong) RSSFeed* feed;
@@ -76,6 +94,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.cacheRecordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), self.url];
 	// Do any additional setup after loading the view.
 }
 
@@ -105,60 +124,51 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NCRSSFeedViewControllerData* data = self.data;
+	NCRSSFeedViewControllerData* data = self.cacheData;
 	return data.feed.items.count;
 }
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), self.url];
-}
-
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return @"Cell";
 }
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
-	__block NCRSSFeedViewControllerData* data = [NCRSSFeedViewControllerData new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NSDateFormatter* dateFormatter = [NSDateFormatter new];
-											 [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
-											 [dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:2];
+	[RSS rssWithContentsOfURL:self.url cachePolicy:cachePolicy completionBlock:^(RSS *result, NSError *error) {
+		progress.completedUnitCount++;
+		
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+			@autoreleasepool {
+				NSDateFormatter* dateFormatter = [NSDateFormatter new];
+				[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+				[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 
-											 RSS* rss = [RSS rssWithContentsOfURL:self.url error:&error progressHandler:^(CGFloat progress, BOOL *stop) {
-												 task.progress = progress;
-												 if ([task isCancelled])
-													 *stop = YES;
-											 }];
-											 for (RSSItem* item in rss.feed.items) {
-												 NSMutableString *s = [NSMutableString stringWithString:item.description ? item.description : @""];
-												 [s removeHTMLTags];
-												 [s replaceHTMLEscapes];
-												 [s removeSpaces];
-												 item.shortDescription = [s substringWithRange:NSMakeRange(0, MIN(s.length, 200))];
-												 item.plainTitle = [item.title stringByReplacingHTMLEscapes];
-												 item.updatedDateString = [dateFormatter stringFromDate:item.updated];
-											 }
-											 data.feed = rss.feed;
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]]];
-									 }
-								 }
-							 }];
+				NCRSSFeedViewControllerData* data = [NCRSSFeedViewControllerData new];
+				for (RSSItem* item in result.feed.items) {
+					NSMutableString *s = [NSMutableString stringWithString:item.description ? item.description : @""];
+					[s removeHTMLTags];
+					[s replaceHTMLEscapes];
+					[s removeSpaces];
+					item.shortDescription = [s substringWithRange:NSMakeRange(0, MIN(s.length, 200))];
+					item.plainTitle = [item.title stringByReplacingHTMLEscapes];
+					item.updatedDateString = [dateFormatter stringFromDate:item.updated];
+				}
+				data.feed = result.feed;
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self saveCacheData:data cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
+					completionBlock(error);
+					progress.completedUnitCount++;
+				});
+			}
+		});
+	} progressBlock:nil];
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCRSSFeedViewControllerData* data = self.data;
+	NCRSSFeedViewControllerData* data = self.cacheData;
 	RSSItem* item = data.feed.items[indexPath.row];
 	NCRSSFeedCell* cell = (NCRSSFeedCell*) tableViewCell;
 	cell.object = item;

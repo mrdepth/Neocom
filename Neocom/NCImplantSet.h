@@ -10,10 +10,6 @@
 #import <CoreData/CoreData.h>
 #import "NCStorage.h"
 
-@interface NCStorage(NCImplantSet)
-- (NSArray*) implantSets;
-@end
-
 @interface NCImplantSetData : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* implantIDs;
 @property (nonatomic, strong) NSArray* boosterIDs;

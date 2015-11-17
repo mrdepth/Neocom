@@ -9,15 +9,13 @@
 #import "NCFittingCharacterEditorViewController.h"
 #import "NCFitCharacter.h"
 #import "NSArray+Neocom.h"
-#import "UIActionSheet+Block.h"
 #import "NCFittingCharacterEditorCell.h"
-#import "UIAlertView+Block.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NSString+Neocom.h"
 
 @interface NCFittingCharacterEditorViewController ()
-@property (nonatomic, strong) NSArray* sections;
-@property (nonatomic, strong) NSDictionary* skills;
+@property (nonatomic, strong) NSFetchedResultsController* results;
+@property (nonatomic, strong) NSMutableDictionary* skills;
 @end
 
 @implementation NCFittingCharacterEditorViewController
@@ -37,57 +35,22 @@
 	self.refreshControl = nil;
 	self.title = self.character.name;
 
-	NSMutableDictionary* skills = [NSMutableDictionary new];
-	NSMutableArray* sections = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NCDatabase* database = [NCDatabase sharedDatabase];
-											 [database.backgroundManagedObjectContext performBlockAndWait:^{
-												 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
-												 request.predicate = [NSPredicate predicateWithFormat:@"published == TRUE AND group.category.categoryID == 16"];
-												 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"group.groupName" ascending:YES],
-																			 [NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
-												 NSFetchedResultsController* result = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-																														  managedObjectContext:database.backgroundManagedObjectContext
-																															sectionNameKeyPath:@"group.groupName"
-																																	 cacheName:nil];
-												 [result performFetch:nil];
-												 for (id<NSFetchedResultsSectionInfo> sectionInfo in result.sections) {
-													 NCDBInvGroup* group = nil;
-													 
-													 NSMutableArray* rows = [NSMutableArray new];
-													 for (NCDBInvType* type in sectionInfo.objects) {
-														 if (!group)
-															 group = type.group;
-														 NCSkillData* skillData = [[NCSkillData alloc] initWithInvType:type];
-														 [rows addObject:skillData];
-														 skills[@(type.typeID)] = skillData;
-													 }
-													 [sections addObject:@{@"title": sectionInfo.name, @"rows": rows, @"sectionID": @(group.groupID)}];
-												 }
-											 }];
-											 [self.character.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NSNumber* level, BOOL *stop) {
-												 NCSkillData* skillData = skills[typeID];
-												 skillData.currentLevel = [level intValue];
-											 }];
-
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.skills = skills;
-								 self.sections = sections;
-								 [self update];
-							 }];
-	// Do any additional setup after loading the view.
+	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+	request.predicate = [NSPredicate predicateWithFormat:@"published == TRUE AND group.category.categoryID == 16"];
+	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"group.groupName" ascending:YES],
+								[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
+	NSFetchedResultsController* results = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+																			 managedObjectContext:self.databaseManagedObjectContext
+																			   sectionNameKeyPath:@"group.groupName"
+																						cacheName:nil];
+	[results performFetch:nil];
+	self.results = results;
+	self.skills = [self.character.skills mutableCopy] ?: [NSMutableDictionary new];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-	NSMutableDictionary* skills = [NSMutableDictionary new];
-	[self.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NCSkillData* skillData, BOOL *stop) {
-		skills[typeID] = @(skillData.currentLevel);
-	}];
-	self.character.skills = skills;
+	self.character.skills = self.skills;
 }
 
 - (void)didReceiveMemoryWarning
@@ -98,79 +61,103 @@
 
 - (IBAction)onAction:(id)sender {
 	NCAccount* account = [NCAccount currentAccount];
-	NCSkillPlan* activeSkillPlan = account.activeSkillPlan;
-	NSArray* otherButtonTitles = activeSkillPlan ? @[NSLocalizedString(@"Rename", nil),
-													 NSLocalizedString(@"Add to active Skill Plan", nil),
-													 NSLocalizedString(@"Import from active Skill Plan", nil)] : @[NSLocalizedString(@"Rename", nil)];
 
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				  destructiveButtonTitle:nil
-					   otherButtonTitles:otherButtonTitles
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 if (selectedButtonIndex == 0) {
-									 UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename", nil)
-																					  message:nil
-																			cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-																			otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
-																			  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-																				  if (selectedButtonIndex != alertView.cancelButtonIndex) {
-																					  UITextField* textField = [alertView textFieldAtIndex:0];
-																					  self.character.name = textField.text;
-																					  self.title = self.character.name;
-																				  }
-																			  } cancelBlock:nil];
-									 alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-									 UITextField* textField = [alertView textFieldAtIndex:0];
-									 textField.text = self.character.name;
-									 [alertView show];
-								 }
-								 else if (selectedButtonIndex == 1){
-									 NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
-									 [self.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NCSkillData* skillData, BOOL *stop) {
-										 [trainingQueue addSkill:skillData.type withLevel:skillData.currentLevel];
-									 }];
-									 
-									 [[UIAlertView alertViewWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
-															  message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]]
-													cancelButtonTitle:NSLocalizedString(@"No", nil)
-													otherButtonTitles:@[NSLocalizedString(@"Yes", nil)]
-													  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-														  if (selectedButtonIndex != alertView.cancelButtonIndex) {
-															  [activeSkillPlan mergeWithTrainingQueue:trainingQueue];
-														  }
-													  }
-														  cancelBlock:nil] show];
-
-								 }
-								 else {
-									 [[UIAlertView alertViewWithTitle:nil
-															  message:NSLocalizedString(@"Your skill levels will be replaced with values from skill plan", nil)
-													cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-													otherButtonTitles:@[NSLocalizedString(@"Import", nil)]
-													  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-														  if (selectedButtonIndex != alertView.cancelButtonIndex) {
-															  [self.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NCSkillData* skillData, BOOL *stop) {
-																  skillData.currentLevel = 0;
-															  }];
-														  }
-														  for (EVECharacterSheetSkill* characterSkill in account.characterSheet.skills) {
-															  NCSkillData* skill = self.skills[@(characterSkill.typeID)];
-															  skill.currentLevel = MAX(skill.currentLevel, characterSkill.level);
-														  }
-														  for (NCSkillData* skillPlanSkill in activeSkillPlan.trainingQueue.skills) {
-															  NCSkillData* skill = self.skills[@(skillPlanSkill.type.typeID)];
-															  skill.currentLevel = MAX(skill.currentLevel, skillPlanSkill.targetLevel);
-														  }
-														  [self.tableView reloadData];
-													  }
-														  cancelBlock:nil] show];
-								 }
-							 }
-						 }
-							 cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
+	void (^performAction)(NCSkillPlan* skillPlan) = ^(NCSkillPlan* skillPlan) {
+		UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Rename", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Rename", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+			__block UITextField* renameTextField;
+			[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+				renameTextField = textField;
+				textField.text = self.character.name;
+				textField.clearButtonMode = UITextFieldViewModeAlways;
+			}];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Rename", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				self.character.name = renameTextField.text;
+				self.title = self.character.name;
+			}]];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+			}]];
+			[self presentViewController:controller animated:YES completion:nil];
+		}]];
+		
+		if (skillPlan) {
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Add to active Skill Plan", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+					NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:self.databaseManagedObjectContext];
+					[self.skills enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+						[trainingQueue addSkill:[self.databaseManagedObjectContext invTypeWithTypeID:[key intValue]] withLevel:[obj intValue]];
+					}];
+					
+					UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
+																						message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]]
+																				 preferredStyle:UIAlertControllerStyleAlert];
+					
+					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Add", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+						[skillPlan mergeWithTrainingQueue:trainingQueue completionBlock:^(NCTrainingQueue *trainingQueue) {
+						}];
+					}]];
+					[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+					}]];
+					[self presentViewController:controller animated:YES completion:nil];
+				}];
+			}]];
+			
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Import from active Skill Plan", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil
+																					message:NSLocalizedString(@"Your skill levels will be replaced with values from skill plan", nil)
+																			 preferredStyle:UIAlertControllerStyleAlert];
+				
+				[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Import", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+					[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+						[skillPlan loadTrainingQueueWithCompletionBlock:^(NCTrainingQueue *trainingQueue) {
+							NSMutableDictionary* skills = [NSMutableDictionary new];
+							for (EVECharacterSheetSkill* characterSkill in characterSheet.skills)
+								skills[@(characterSkill.typeID)] = @(characterSkill.level);
+							
+							for (NCSkillData* skillPlanSkill in trainingQueue.skills) {
+								int level = [skills[@(skillPlanSkill.typeID)] intValue];
+								skills[@(skillPlanSkill.typeID)] = @(MAX(level, skillPlanSkill.targetLevel));
+							}
+							self.skills = skills;
+							[self.tableView reloadData];
+						}];
+					}];
+				}]];
+				[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+				}]];
+				[self presentViewController:controller animated:YES completion:nil];
+			}]];
+			
+		}
+		
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		}]];
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			controller.modalPresentationStyle = UIModalPresentationPopover;
+			[self presentViewController:controller animated:YES completion:nil];
+			if ([sender isKindOfClass:[UIBarButtonItem class]])
+				controller.popoverPresentationController.barButtonItem = sender;
+			else {
+				controller.popoverPresentationController.sourceView = sender;
+				controller.popoverPresentationController.sourceRect = [sender bounds];
+			}
+		}
+		else
+			[self presentViewController:controller animated:YES completion:nil];
+	};
+	
+	if (account) {
+		[account.managedObjectContext performBlock:^{
+			NCSkillPlan* skillPlan = account.activeSkillPlan;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				performAction(skillPlan);
+			});
+		}];
+	}
+	else
+		performAction(nil);
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -180,47 +167,49 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		NCSkillData* skillData = [sender skillData];
-		controller.type = skillData.type;
+		controller.typeID = [[sender object] objectID];
 	}
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return self.sections.count;
+	return self.results.sections.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [self.sections[section][@"rows"] count];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
+	id<NSFetchedResultsSectionInfo> section = self.results.sections[sectionIndex];
+	return [section numberOfObjects];
 }
 
-- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return self.sections[section][@"title"];
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
+	id<NSFetchedResultsSectionInfo> section = self.results.sections[sectionIndex];
+	return section.name;
 }
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCSkillData* skill = self.sections[indexPath.section][@"rows"][indexPath.row];
-	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-	NSMutableArray* buttons = [NSMutableArray new];
-	for (int i = 0; i <=5; i++)
-		[buttons addObject:[NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), i]];
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				  destructiveButtonTitle:nil
-					   otherButtonTitles:buttons
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 skill.currentLevel = (int32_t) selectedButtonIndex;
-								 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-							 }
-						 }
-							 cancelBlock:^{
-								 
-							 }] showFromRect:cell.bounds inView:cell animated:YES];
+	NCDBInvType* type = [self.results objectAtIndexPath:indexPath];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	for (int i = 0; i <= 5; i++)
+		[controller addAction:[UIAlertAction actionWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), i] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			self.skills[@(type.typeID)] = @(i);
+			[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		}]];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		UITableViewCell* sender = [tableView cellForRowAtIndexPath:indexPath];
+		controller.popoverPresentationController.sourceView = sender;
+		controller.popoverPresentationController.sourceRect = [sender bounds];
+	}
+	else
+		[self presentViewController:controller animated:YES completion:nil];
 }
 
 
@@ -230,8 +219,9 @@
 	return nil;
 }
 
-- (id) identifierForSection:(NSInteger)section {
-	return self.sections[section][@"sectionID"];
+- (id) identifierForSection:(NSInteger)sectionIndex {
+	NCDBInvType* type = [self.results objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionIndex]];
+	return @(type.group.groupID);
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -240,11 +230,11 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCFittingCharacterEditorCell* cell = (NCFittingCharacterEditorCell*) tableViewCell;
-	NCSkillData* skill = self.sections[indexPath.section][@"rows"][indexPath.row];
+	NCDBInvType* type = [self.results objectAtIndexPath:indexPath];
 	
-	cell.skillNameLabel.text = skill.type.typeName;
-	cell.skillLevelLabel.text = [NSString stringWithFormat:@"%d", skill.currentLevel];
-	cell.skillData = skill;
+	cell.skillNameLabel.text = type.typeName;
+	cell.skillLevelLabel.text = [NSString stringWithFormat:@"%d", [self.skills[@(type.typeID)] intValue]];
+	cell.object = type;
 }
 
 @end

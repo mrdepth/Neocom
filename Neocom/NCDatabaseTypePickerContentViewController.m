@@ -20,6 +20,8 @@
 @interface NCDatabaseTypePickerContentViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* result;
 @property (nonatomic, strong) NSFetchedResultsController* searchResult;
+@property (nonatomic, strong) NCDBEveIcon* defaultGroupIcon;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 
 @end
 
@@ -38,16 +40,14 @@
 {
     [super viewDidLoad];
 	self.refreshControl = nil;
-    
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-        if (self.parentViewController) {
-            self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]];
-        }
-        else {
-            self.tableView.tableHeaderView = nil;
-            return;
-        }
-    }
+	
+	if (self.group) {
+		self.title = self.group.groupName;
+	}
+
+	self.defaultGroupIcon = [self.databaseManagedObjectContext defaultGroupIcon];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+
 }
 
 - (void) dealloc {
@@ -81,30 +81,35 @@
 		else
 			controller = segue.destinationViewController;
 		NCDBEufeItem* item = [sender object];
-		controller.type = item.type;
+		controller.typeID = [item.type objectID];
 	}
 }
+
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	return self.group.managedObjectContext ?: [super databaseManagedObjectContext];
+}
+
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return tableView == self.tableView && !self.searchContentsController ? self.result.sections.count : self.searchResult.sections.count;
+	return self.result.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[section] : self.searchResult.sections[section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[section];
 	return sectionInfo.numberOfObjects;
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[section] : self.searchResult.sections[section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[section];
 	return sectionInfo.name.length > 0 ? sectionInfo.name : nil;
 }
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 
 	if ([row isKindOfClass:[NCDBEufeItem class]]) {
@@ -116,11 +121,7 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
-- (void) searchWithSearchString:(NSString*) searchString {
+- (void) searchWithSearchString:(NSString*) searchString completionBlock:(void (^)())completionBlock {
 	if (searchString.length > 1) {
 		NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItem"];
@@ -131,27 +132,20 @@
 		
 		request.predicate = [NSPredicate predicateWithFormat:@"ANY groups.category == %@ AND type.typeName CONTAINS[C] %@", navigationController.category, searchString];
 		
-		NCDatabase* database = [NCDatabase sharedDatabase];
-		self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
+		self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
 		NSError* error = nil;
 		[self.searchResult performFetch:&error];
 	}
 	else {
 		self.searchResult = nil;
 	}
-    
-    if (self.searchController) {
-        NCDatabaseTypePickerContentViewController* searchResultsController = (NCDatabaseTypePickerContentViewController*) self.searchController.searchResultsController;
-        searchResultsController.searchResult = self.searchResult;
-        [searchResultsController.tableView reloadData];
-    }
-    else if (self.searchDisplayController)
-        [self.searchDisplayController.searchResultsTableView reloadData];
-
+	
+	[(NCDatabaseTypePickerContentViewController*) self.searchController.searchResultsController setResult:self.searchResult];
+	completionBlock();
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	
 	if ([row isKindOfClass:[NCDBEufeItem class]])
@@ -161,7 +155,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView && !self.searchContentsController ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	
 	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
@@ -171,7 +165,7 @@
 		cell.iconView.image = item.type.icon.image.image;
 		cell.object = row;
 		if (!cell.iconView.image)
-			cell.iconView.image = [[[NCDBEveIcon defaultTypeIcon] image] image];
+			cell.iconView.image = self.defaultTypeIcon.image.image;
 	}
 	else {
 		if ([row isKindOfClass:[NCDBEufeItemGroup class]]) {
@@ -181,7 +175,7 @@
 		}
 		
 		if (!cell.iconView.image)
-			cell.iconView.image = [[[NCDBEveIcon defaultGroupIcon] image] image];
+			cell.iconView.image = self.defaultGroupIcon.image.image;
 		cell.object = row;
 	}
 }
@@ -190,8 +184,6 @@
 
 - (void) reload {
 	NSFetchRequest* request;
-	NCDatabase* database = [NCDatabase sharedDatabase];
-
 	request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItem"];
 	request.sortDescriptors = @[
 								[NSSortDescriptor sortDescriptorWithKey:@"type.metaGroup.metaGroupID" ascending:YES],
@@ -200,7 +192,7 @@
 	
 	request.predicate = [NSPredicate predicateWithFormat:@"ANY groups == %@", self.group];
 	
-	self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
+	self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
 	[self.result performFetch:nil];
 
 	if (self.result.fetchedObjects.count == 0) {
@@ -209,8 +201,7 @@
 		
 		request.predicate = [NSPredicate predicateWithFormat:@"parentGroup == %@", self.group];
 		
-		NCDatabase* database = [NCDatabase sharedDatabase];
-		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
 		[self.result performFetch:nil];
 	}
 	[self.tableView reloadData];

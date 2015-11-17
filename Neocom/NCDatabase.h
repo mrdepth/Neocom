@@ -50,23 +50,20 @@
 #import "NCDBWhType.h"
 #import "NCDBVersion.h"
 
-#import "NCDBEveIcon+Neocom.h"
 #import "NCDBInvType+Neocom.h"
-#import "NCDBDgmAttributeType+Neocom.h"
-#import "NCDBInvGroup+Neocom.h"
-#import "NCDBMapSolarSystem+Neocom.h"
-#import "NCDBEufeItemCategory+Neocom.h"
-#import "NCDBStaStation+Neocom.h"
-#import "NCDBMapDenormalize+Neocom.h"
-#import "NCDBRamActivity+Neocom.h"
-#import "NCDBMapRegion+Neocom.h"
+#import "NSManagedObjectContext+NCDatabase.h"
 
 @interface NCDatabase : NSObject
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+//@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (readonly, strong, nonatomic) NSManagedObjectContext *backgroundManagedObjectContext;
-
+//@property (readonly, strong, nonatomic) NSManagedObjectContext *backgroundManagedObjectContext;
+@property (nonatomic, assign) NSString* databaseUpdateDirectory;
 + (id) sharedDatabase;
+
+
+- (NSManagedObjectContext*) createManagedObjectContext;
+- (NSManagedObjectContext*) createManagedObjectContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType) concurrencyType;
+- (void) reconnect;
 
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "NCAboutViewController.h"
-#import "UIAlertView+Block.h"
 #import "NCCache.h"
 #import "UIColor+Neocom.h"
 
@@ -33,9 +32,8 @@
 	self.refreshControl = nil;
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	self.versionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];
-	NCDatabase* database = [NCDatabase sharedDatabase];
 	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Version"];
-	NCDBVersion* version = [[database.managedObjectContext executeFetchRequest:request error:nil] lastObject];
+	NCDBVersion* version = [[self.databaseManagedObjectContext executeFetchRequest:request error:nil] lastObject];
 	self.sdeVersionLabel.text = [NSString stringWithFormat:@"%@ (%@)", version.expansion, version.version];
 }
 

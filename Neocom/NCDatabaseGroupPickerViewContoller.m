@@ -11,6 +11,7 @@
 
 @interface NCDatabaseGroupPickerViewContoller ()
 @property (nonatomic, strong) NSArray* rows;
+@property (nonatomic, strong) NCDBEveIcon* defaultGroupIcon;
 @end
 
 @implementation NCDatabaseGroupPickerViewContoller
@@ -32,8 +33,8 @@
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvGroup"];
 		request.predicate = [NSPredicate predicateWithFormat:@"category.categoryID == %d", self.categoryID];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
-		NCDatabase* database = [NCDatabase sharedDatabase];
-		self.rows = [database.managedObjectContext executeFetchRequest:request error:nil];
+		self.rows = [self.databaseManagedObjectContext executeFetchRequest:request error:nil];
+		self.defaultGroupIcon = [self.databaseManagedObjectContext defaultGroupIcon];
 	}
 }
 
@@ -82,7 +83,7 @@
 	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	cell.titleLabel.text = row.groupName;
 	
-	cell.iconView.image = row.icon ? row.icon.image.image : [[[NCDBEveIcon defaultGroupIcon] image] image];
+	cell.iconView.image = row.icon ? row.icon.image.image : self.defaultGroupIcon.image.image;
 	cell.object = row;
 }
 

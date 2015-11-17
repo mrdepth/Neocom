@@ -12,6 +12,18 @@
 #import "NSString+Neocom.h"
 #import "NCDatabaseCertificateInfoViewController.h"
 
+@interface NCDatabaseCertificatesViewControllerRow : NSObject
+@property (nonatomic, strong) NSString* title;
+@property (nonatomic, strong) NSString* subtitle;
+@property (nonatomic, strong) NSManagedObjectID* iconID;
+@property (nonatomic, strong) NCDBEveIcon* icon;
+@property (nonatomic, strong) id object;
+@end
+
+@implementation NCDatabaseCertificatesViewControllerRow
+
+@end
+
 @interface NCDatabaseCertificatesViewController ()
 @property (nonatomic, strong) NSArray* rows;
 
@@ -33,8 +45,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	if (self.group)
-		self.title = self.group.groupName;
+	if (self.groupID) {
+		NCDBInvGroup* group = (NCDBInvGroup*) [self.databaseManagedObjectContext existingObjectWithID:self.groupID error:nil];
+		self.title = group.groupName;
+	}
 	self.refreshControl = nil;
 	
 	[self reload];
@@ -50,7 +64,7 @@
 		id row = [sender object];
 		
 		NCDatabaseCertificatesViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.group = row;
+		destinationViewController.groupID = row;
 	}
 	else {
 		NCDatabaseCertificateInfoViewController* controller;
@@ -60,7 +74,7 @@
 			controller = segue.destinationViewController;
 
 		id row = [sender object];
-		controller.certificate = row;
+		controller.certificateID = row;
 	}
 }
 
@@ -79,105 +93,104 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
 	if ([self isViewLoaded])
 		[self reload];
 }
 
-- (void) didChangeStorage {
+- (void) didChangeStorage:(NSNotification *)notification {
+	[super didChangeStorage:notification];
 	[self reload];
 }
 
 - (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	id row = self.rows[indexPath.row];
-	if ([row isKindOfClass:[NCDBCertCertificate class]])
+	NCDatabaseCertificatesViewControllerRow* row = self.rows[indexPath.row];
+	if (NSClassFromString([[row.object entity] managedObjectClassName]) == [NCDBCertCertificate class])
 		return @"CertificateCell";
 	else
 		return @"GroupCell";
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id row = self.rows[indexPath.row];
+	NCDatabaseCertificatesViewControllerRow* row = self.rows[indexPath.row];
 	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
-	if ([row isKindOfClass:[NCDBCertCertificate class]]) {
-		NCDBCertCertificate* certificate = row;
-		cell.titleLabel.text = certificate.certificateName;
-		NCDBEveIcon* icon = objc_getAssociatedObject(row, @"icon");
-		cell.iconView.image = icon.image.image;
-		NSTimeInterval trainingTime = [objc_getAssociatedObject(row, @"trainingTime") doubleValue];
-		int32_t level = [objc_getAssociatedObject(row, @"level") intValue];
-		if (trainingTime > 0)
-			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to level %d", nil), [NSString stringWithTimeLeft:trainingTime], level + 2];
-		else
-			cell.subtitleLabel.text = nil;
-		cell.object = row;
-	}
-	else {
-		NCDBInvGroup* group = row;
-		cell.titleLabel.text = group.groupName;
-		cell.iconView.image = group.icon ? group.icon.image.image : [[[NCDBEveIcon defaultGroupIcon] image] image];
-		cell.object = row;
-	}
+	
+	if (!row.icon && row.iconID)
+		row.icon = (NCDBEveIcon*) [self.databaseManagedObjectContext existingObjectWithID:row.iconID error:nil];
+	
+	cell.titleLabel.text = row.title;
+	cell.subtitleLabel.text = row.subtitle;
+	cell.iconView.image = row.icon.image.image;
+	cell.object = row.object;
 }
 
 #pragma mark - Private
 
 - (void) reload {
-	NCAccount* account = [NCAccount currentAccount];
+	NCAccount *account = [NCAccount currentAccount];
+	
+	void (^load)(EVECharacterSheet*) = ^(EVECharacterSheet* characterSheet) {
+		NSManagedObjectContext* managedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+		[managedObjectContext performBlock:^{
+			NSMutableArray* rows = [NSMutableArray new];
+			
+			if (self.groupID) {
+				NCDBInvGroup* group = (NCDBInvGroup*) [managedObjectContext existingObjectWithID:self.groupID error:nil];
+				NSArray* certificates = [group.certificates sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"certificateName" ascending:YES]]];
+				NCDBEveIcon* unclaimedIcon = [managedObjectContext certificateUnclaimedIcon];
+				for (NCDBCertCertificate* certificate in certificates) {
+					
+					NCTrainingQueue* trainingQueue = nil;
+					NCDBCertMasteryLevel* level;
+					for (NCDBCertMastery* mastery in [certificate.masteries sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"level.level" ascending:YES]]]) {
+						trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:managedObjectContext];
+						[trainingQueue addMastery:mastery];
+						if (trainingQueue.trainingTime > 0.0)
+							break;
+						level = mastery.level;
+					}
+					NSTimeInterval trainingTime = trainingQueue.trainingTime;
+					
+					NCDatabaseCertificatesViewControllerRow* row = [NCDatabaseCertificatesViewControllerRow new];
+					row.title = certificate.certificateName;
+					if (trainingTime > 0)
+						row.subtitle = [NSString stringWithFormat:NSLocalizedString(@"%@ to level %d", nil), [NSString stringWithTimeLeft:trainingTime], level ? level.level + 2 : 1];
+					row.iconID = level ? [level.icon objectID] : [unclaimedIcon objectID];
+					row.object = [certificate objectID];
+					[rows addObject:row];
+				}
+			}
+			else {
+				NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvGroup"];
+				request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
+				request.predicate = [NSPredicate predicateWithFormat:@"certificates.@count > 0"];
+				NSArray* groups = [managedObjectContext executeFetchRequest:request error:nil];
+				NCDBEveIcon* defaultGroupIcon = [managedObjectContext defaultGroupIcon];
 
-	__block NSArray* rows = nil;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NCDatabase* database = [NCDatabase sharedDatabase];
-											 [database.backgroundManagedObjectContext performBlockAndWait:^{
-												 if (self.group) {
-													 NCDBInvGroup* group = (NCDBInvGroup*) [database.backgroundManagedObjectContext objectWithID:self.group.objectID];
-													 rows = [group.certificates sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"certificateName" ascending:YES]]];
-													 NCDBEveIcon* unclaimedIcon = [NCDBEveIcon certificateUnclaimedIcon];
-													 for (NCDBCertCertificate* certificate in rows) {
-
-														 NCTrainingQueue* trainingQueue = nil;
-														 NCDBCertMasteryLevel* level;
-														 for (NCDBCertMastery* mastery in [certificate.masteries sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"level.level" ascending:YES]]]) {
-															 trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
-															 [trainingQueue addMastery:mastery];
-															 if (trainingQueue.trainingTime > 0.0)
-																 break;
-															 level = mastery.level;
-														 }
-														 if (level) {
-															 objc_setAssociatedObject(certificate, @"level", @(level.level), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-															 objc_setAssociatedObject(certificate, @"icon", level.icon, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-														 }
-														 else {
-															 objc_setAssociatedObject(certificate, @"level", @(-1), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-															 objc_setAssociatedObject(certificate, @"icon", unclaimedIcon, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-														 }
-														 
-														 objc_setAssociatedObject(certificate, @"trainingTime", @(trainingQueue.trainingTime), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-													 }
-												 }
-												 else {
-													 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvGroup"];
-													 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
-													 request.predicate = [NSPredicate predicateWithFormat:@"certificates.@count > 0"];
-													 rows = [database.backgroundManagedObjectContext executeFetchRequest:request error:nil];
-												 }
-											 }];
-
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.rows = rows;
-									 [self update];
-								 }
-							 }];
+				for (NCDBInvGroup* group in groups) {
+					NCDatabaseCertificatesViewControllerRow* row = [NCDatabaseCertificatesViewControllerRow new];
+					row.title = group.groupName;
+					row.iconID = group.icon ? [group.icon objectID] : [defaultGroupIcon objectID];
+					row.object = [group objectID];
+					[rows addObject:row];
+				}
+			}
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.rows = rows;
+				[self.tableView reloadData];
+			});
+		}];
+	};
+	
+	if (account) {
+		[account loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+			load(characterSheet);
+		}];
+	}
+	else
+		load(nil);
 }
 
 @end

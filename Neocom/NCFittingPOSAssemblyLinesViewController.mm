@@ -13,7 +13,10 @@
 #import "NCTableViewHeaderView.h"
 
 @interface NCFittingPOSAssemblyLinesViewControllerRow : NSObject
-@property (nonatomic, strong) NCDBRamAssemblyLineType* assemblyLineType;
+@property (nonatomic, strong) NSString* assemblyLineTypeName;
+@property (nonatomic, strong) NSString* activityName;
+@property (nonatomic, assign) int32_t activityID;
+@property (nonatomic, strong) UIImage* image;
 @property (nonatomic, assign) NSInteger count;
 @end
 
@@ -28,58 +31,50 @@
 
 @implementation NCFittingPOSAssemblyLinesViewController
 
-- (void) reload {
-	__block NSArray* sections = nil;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-													title:NCTaskManagerDefaultTitle
-													block:^(NCTask *task) {
-														//@synchronized(self.controller) {
-														if (!self.controller.engine)
-															return;
-														eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
-														if (!controlTower)
-															return;
-														
-														NSMutableDictionary* assemblyLinesTypes = [NSMutableDictionary new];
-														
-														float n = controlTower->getStructures().size();
-														float j = 0;
-														for (auto structure: controlTower->getStructures()) {
-															task.progress = j++ / n;
-															if (structure->getState() >= eufe::Module::STATE_ACTIVE) {
-																NCDBInvType* type = [self.controller typeWithItem:structure];
-																if (type) {
-																	for (NCDBRamInstallationTypeContent* installation in type.installationTypeContents) {
-																		NCFittingPOSAssemblyLinesViewControllerRow* row = assemblyLinesTypes[@(installation.assemblyLineType.assemblyLineTypeID)];
-																		if (!row) {
-																			row = [NCFittingPOSAssemblyLinesViewControllerRow new];
-																			row.assemblyLineType = installation.assemblyLineType;
-																			row.count = 1;
-																			assemblyLinesTypes[@(installation.assemblyLineType.assemblyLineTypeID)] = row;
-																		}
-																		else
-																			row.count++;
-																	}
-																}
-															}
-														}
-														sections = [[assemblyLinesTypes allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"assemblyLineType.assemblyLineTypeName" ascending:YES]]];
-														sections = [sections arrayGroupedByKey:@"assemblyLineType.activity.activityID"];
-														sections = [sections sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-															NCFittingPOSAssemblyLinesViewControllerRow* a = [obj1 objectAtIndex:0];
-															NCFittingPOSAssemblyLinesViewControllerRow* b = [obj2 objectAtIndex:0];
-															return [a.assemblyLineType.activity.activityName compare:b.assemblyLineType.activity.activityName];
-														}];
-														//}
-													}
-										completionHandler:^(NCTask *task) {
-											if (![task isCancelled]) {
-												self.sections = sections;
-												
-												if (self.tableView.dataSource == self)
-													[self.tableView reloadData];
-											}
-										}];
+- (void) reloadWithCompletionBlock:(void (^)())completionBlock {
+	if (self.controller.engine) {
+		[self.controller.engine performBlock:^{
+			auto controlTower = self.controller.engine.engine->getControlTower();
+			
+			NSMutableDictionary* assemblyLinesTypes = [NSMutableDictionary new];
+			
+			for (auto structure: controlTower->getStructures()) {
+				if (structure->getState() >= eufe::Module::STATE_ACTIVE) {
+					NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:structure->getTypeID()];
+					if (type) {
+						for (NCDBRamInstallationTypeContent* installation in type.installationTypeContents) {
+							NCFittingPOSAssemblyLinesViewControllerRow* row = assemblyLinesTypes[@(installation.assemblyLineType.assemblyLineTypeID)];
+							if (!row) {
+								row = [NCFittingPOSAssemblyLinesViewControllerRow new];
+								row.assemblyLineTypeName = installation.assemblyLineType.assemblyLineTypeName;
+								row.activityID = installation.assemblyLineType.activity.activityID;
+								row.activityName = installation.assemblyLineType.activity.activityName;
+								row.count = 1;
+								row.image = installation.assemblyLineType.activity.icon.image.image;
+								assemblyLinesTypes[@(installation.assemblyLineType.assemblyLineTypeID)] = row;
+							}
+							else
+								row.count++;
+						}
+					}
+				}
+			}
+			NSArray* sections = [[assemblyLinesTypes allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"assemblyLineTypeName" ascending:YES]]];
+			sections = [sections arrayGroupedByKey:@"activityID"];
+			sections = [sections sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+				NCFittingPOSAssemblyLinesViewControllerRow* a = [obj1 objectAtIndex:0];
+				NCFittingPOSAssemblyLinesViewControllerRow* b = [obj2 objectAtIndex:0];
+				return [a.activityName compare:b.activityName];
+			}];
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.sections = sections;
+				completionBlock();
+			});
+		}];
+	}
+	else
+		completionBlock();
 }
 
 
@@ -108,7 +103,7 @@
 
 - (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section {
 	NCFittingPOSAssemblyLinesViewControllerRow* row = self.sections[section][0];
-	return row.assemblyLineType.activity.activityName;
+	return row.activityName;
 }
 
 #pragma mark - Table view delegate
@@ -134,6 +129,12 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (id) identifierForSection:(NSInteger)sectionIndex {
+	NCFittingPOSAssemblyLinesViewControllerRow* row = self.sections[sectionIndex][0];
+	return @(row.activityID);
+}
+
+
 #pragma mark - Private
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -142,8 +143,8 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCFittingPOSAssemblyLinesViewControllerRow* row = self.sections[indexPath.section][indexPath.row];
-	cell.titleLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.assemblyLineType.assemblyLineTypeName, (int32_t) row.count];
-	cell.iconView.image = row.assemblyLineType.activity.icon ? row.assemblyLineType.activity.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	cell.titleLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.assemblyLineTypeName, (int32_t) row.count];
+	cell.iconView.image = row.image ?: self.defaultTypeImage;
 	cell.subtitleLabel.text = nil;
 	cell.accessoryView = nil;
 }

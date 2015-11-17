@@ -8,8 +8,7 @@
 
 #import "NCTableViewController.h"
 
-@class NCDBInvType;
 @interface NCDatabaseTypeRequirementsViewController : NCTableViewController
-@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, strong) NSManagedObjectID* typeID;
 
 @end

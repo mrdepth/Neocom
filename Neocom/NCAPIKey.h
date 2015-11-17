@@ -10,11 +10,6 @@
 #import <CoreData/CoreData.h>
 #import "NCStorage.h"
 
-@class NCAPIKey;
-@interface NCStorage(NCAPIKey)
-- (NCAPIKey*) apiKeyWithKeyID:(int32_t) keyID;
-- (NSArray*) allAPIKeys;
-@end
 
 @class EVEAPIKeyInfo;
 @class EVEAccountStatus;
@@ -27,7 +22,5 @@
 @property (nonatomic, strong) EVEAPIKeyInfo* apiKeyInfo;
 
 @property (nonatomic, strong) NSError* error;
-
-- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr;
 
 @end

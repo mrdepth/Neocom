@@ -15,7 +15,7 @@ typedef NS_ENUM(NSInteger, NCDatabaseCertificateInfoViewControllerMode) {
 
 @class NCDBCertCertificate;
 @interface NCDatabaseCertificateInfoViewController : NCTableViewController
-@property (strong, nonatomic) NCDBCertCertificate* certificate;
+@property (strong, nonatomic) NSManagedObjectID* certificateID;
 @property (weak, nonatomic) IBOutlet UIImageView* imageView;
 @property (weak, nonatomic) IBOutlet UILabel* titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;

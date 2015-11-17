@@ -8,7 +8,7 @@
 
 #import "NCShoppingAssetsViewController.h"
 #import "NCLocationsManager.h"
-#import "EVEOnlineAPI.h"
+#import <EVEAPI/EVEAPI.h>
 #import "EVEAssetListItem+Neocom.h"
 
 @interface NCShoppingAssetsViewControllerRow : NSObject
@@ -41,7 +41,7 @@
 - (void) viewDidLoad {
 	[super viewDidLoad];
 	EVEAssetListItem* asset = [self.assets lastObject];
-	self.title = asset.type.typeName;
+	self.title = asset.typeName;
 	self.refreshControl = nil;
 	[self reload];
 }
@@ -93,62 +93,55 @@
 
 - (void) reload {
 	NSMutableArray* sections = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NSMutableDictionary* dic = [NSMutableDictionary new];
-											 
-											 id containerID = nil;
-											 
-											 for (EVEAssetListItem* asset in self.assets) {
-												 int32_t locationID = 0;
-												 if (asset.parent) {
-													 locationID = asset.parent.locationID;
-													 containerID = @(asset.parent.itemID);
-												 }
-												 else {
-													 locationID = asset.locationID;
-													 containerID = @(asset.flag);
-												 }
-												 
-												 NSMutableDictionary* rows = dic[@(locationID)];
-												 if (!rows)
-													 dic[@(locationID)] = rows = [NSMutableDictionary new];
-												 
-												 NCShoppingAssetsViewControllerRow* row = rows[containerID];
-												 if (!row) {
-													 rows[containerID] = row = [NCShoppingAssetsViewControllerRow new];
-													 if (asset.parent) {
-														 row.title = asset.parent.title;
-														 row.icon = asset.parent.type.icon ? asset.parent.type.icon.image.image : [NCDBEveIcon defaultTypeIcon].image.image;
-													 }
-													 else {
-														 row.title = NSLocalizedString(@"Hangar", nil);
-														 row.icon = [UIImage imageNamed:@"stationcontainer.png"];
-													 }
-												 }
-												 row.quantity += asset.quantity;
-											 }
-											 NSDictionary* locations = [[NCLocationsManager defaultManager] locationsNamesWithIDs:dic.allKeys];
-											 
-											 [dic enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-												 NCShoppingAssetsViewControllerSection* section = [NCShoppingAssetsViewControllerSection new];
-												 section.rows = [[obj allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
-												 NCLocationsManagerItem* location = locations[key];
-												 if (location)
-													 section.title = location.name;
-												 else
-													 section.title = NSLocalizedString(@"Unknown location", nil);
-												 [sections addObject:section];
-											 }];
-											 [sections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.sections = sections;
-									 [self.tableView reloadData];
-								 }
-							 }];
+	NSMutableDictionary* dic = [NSMutableDictionary new];
+	
+	id containerID = nil;
+	
+	for (EVEAssetListItem* asset in self.assets) {
+		int64_t locationID = 0;
+		if (asset.parent) {
+			locationID = asset.parent.locationID;
+			containerID = @(asset.parent.itemID);
+		}
+		else {
+			locationID = asset.locationID;
+			containerID = @(asset.flag);
+		}
+		
+		NSMutableDictionary* rows = dic[@(locationID)];
+		if (!rows)
+			dic[@(locationID)] = rows = [NSMutableDictionary new];
+		
+		NCShoppingAssetsViewControllerRow* row = rows[containerID];
+		if (!row) {
+			rows[containerID] = row = [NCShoppingAssetsViewControllerRow new];
+			if (asset.parent) {
+				row.title = asset.parent.title;
+				NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:asset.parent.typeID];
+				row.icon = type.icon.image.image ?: [self.databaseManagedObjectContext defaultTypeIcon].image.image;
+			}
+			else {
+				row.title = NSLocalizedString(@"Hangar", nil);
+				row.icon = [UIImage imageNamed:@"stationcontainer"];
+			}
+		}
+		row.quantity += asset.quantity;
+	}
+	[[NCLocationsManager defaultManager] requestLocationsNamesWithIDs:dic.allKeys completionBlock:^(NSDictionary *locationsNames) {
+		[dic enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+			NCShoppingAssetsViewControllerSection* section = [NCShoppingAssetsViewControllerSection new];
+			section.rows = [[obj allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+			NCLocationsManagerItem* location = locationsNames[key];
+			if (location)
+				section.title = location.name;
+			else
+				section.title = NSLocalizedString(@"Unknown location", nil);
+			[sections addObject:section];
+		}];
+		[sections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+		self.sections = sections;
+		[self.tableView reloadData];
+	}];
 }
 
 @end

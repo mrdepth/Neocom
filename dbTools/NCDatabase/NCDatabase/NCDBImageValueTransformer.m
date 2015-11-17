@@ -15,7 +15,7 @@
 }
 
 - (id) transformedValue:(id)value {
-	return [value representationUsingType:NSPNGFileType properties:nil];
+	return [value representationUsingType:NSPNGFileType properties:@{}];
 }
 
 - (id) reverseTransformedValue:(id)value {

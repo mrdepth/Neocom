@@ -8,6 +8,7 @@
 
 #import "NCNavigationController.h"
 
+
 @interface NCBannerView : UIView
 
 @end

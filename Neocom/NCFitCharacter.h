@@ -12,11 +12,6 @@
 
 @class NCFitCharacter;
 @class NCAccount;
-@interface NCStorage(NCFitCharacter)
-- (NSArray*) characters;
-- (NCFitCharacter*) characterWithAccount:(NCAccount*) account;
-- (NCFitCharacter*) characterWithSkillsLevel:(NSInteger) skillsLevel;
-@end
 
 @interface NCFitCharacter : NSManagedObject
 

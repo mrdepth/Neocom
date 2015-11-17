@@ -9,7 +9,6 @@
 #import "NCFittingImplantSetsViewController.h"
 #import "NCStorage.h"
 #import "NCTableViewCell.h"
-#import "UIAlertView+Block.h"
 
 @interface NCFittingImplantSetsViewControllerRow : NSObject
 @property (nonatomic, strong) NCImplantSet* implantSet;
@@ -45,46 +44,35 @@
 	self.refreshControl = nil;
 	
 	NSMutableArray* rows = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NCStorage* storage = [NCStorage sharedStorage];
-											 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-											 NSMutableDictionary* types = [NSMutableDictionary new];
-											 [context performBlockAndWait:^{
-												 NSArray* sets = [storage implantSets];
-												 for (NCImplantSet* set in sets) {
-													 NSMutableArray* components = [NSMutableArray new];
-													 NCImplantSetData* data = set.data;
-													 NSMutableArray* ids = [NSMutableArray new];
-													 if (data.implantIDs)
-														 [ids addObjectsFromArray:data.implantIDs];
-													 if (data.boosterIDs)
-														 [ids addObjectsFromArray:data.boosterIDs];
-													 
-													 for (NSNumber* typeID in ids) {
-														 NCDBInvType* type = types[typeID];
-														 if (!type) {
-															 type = [NCDBInvType invTypeWithTypeID:[typeID intValue]];
-															 if (type)
-																 types[typeID] = type;
-														 }
-														 if (type.typeName)
-															 [components addObject:type.typeName];
-													 }
-													 NCFittingImplantSetsViewControllerRow* row = [NCFittingImplantSetsViewControllerRow new];
-													 row.implantSet = set;
-													 row.description = [components componentsJoinedByString:@", "];
-													 [rows addObject:row];
-												 }
-											 }];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.rows = rows;
-								 [self update];
-								 if (self.rows.count == 0 && self.saveMode)
-									 [self saveNew];
-							 }];
+	for (NCImplantSet* set in [self.storageManagedObjectContext implantSets]) {
+		NSMutableArray* components = [NSMutableArray new];
+		NCImplantSetData* data = set.data;
+		NSMutableArray* ids = [NSMutableArray new];
+		if (data.implantIDs)
+			[ids addObjectsFromArray:data.implantIDs];
+		if (data.boosterIDs)
+			[ids addObjectsFromArray:data.boosterIDs];
+		
+		for (NSNumber* typeID in ids) {
+			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:[typeID intValue]];
+			if (type.typeName)
+				[components addObject:type.typeName];
+		}
+		NCFittingImplantSetsViewControllerRow* row = [NCFittingImplantSetsViewControllerRow new];
+		row.implantSet = set;
+		row.description = [components componentsJoinedByString:@", "];
+		[rows addObject:row];
+	}
+	self.rows = rows;
+	if (self.rows.count == 0 && self.saveMode)
+		[self saveNew];
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqual:@"Unwind"]) {
+		if ([self.storageManagedObjectContext hasChanges])
+			[self.storageManagedObjectContext save:nil];
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -112,11 +100,7 @@
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		NCFittingImplantSetsViewControllerRow* row = self.rows[indexPath.row];
-		NCStorage* storage = [NCStorage sharedStorage];
-		[storage.managedObjectContext performBlock:^{
-			[storage.managedObjectContext deleteObject:row.implantSet];
-			[storage saveContext];
-		}];
+		[self.storageManagedObjectContext deleteObject:row.implantSet];
 		[self.rows removeObjectAtIndex:indexPath.row];
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
@@ -128,22 +112,14 @@
 	if (indexPath.section == 0) {
 		NCFittingImplantSetsViewControllerRow* row = self.rows[indexPath.row];
 		if (self.saveMode) {
-			[[UIAlertView alertViewWithTitle:nil
-									 message:[NSString stringWithFormat:NSLocalizedString(@"Replace Implant Set \"%@\"", nil), row.implantSet.name]
-						   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-						   otherButtonTitles:@[NSLocalizedString(@"Replace", nil)]
-							 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-								 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-									 NCStorage* storage = [NCStorage sharedStorage];
-									 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-									 [context performBlockAndWait:^{
-										 row.implantSet.data = self.implantSetData;
-										 [storage saveContext];
-									 }];
-									 [self performSegueWithIdentifier:@"Unwind" sender:nil];
-								 }
-							 }
-								 cancelBlock:nil] show];
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:NSLocalizedString(@"Replace Implant Set \"%@\"", nil), row.implantSet.name] preferredStyle:UIAlertControllerStyleAlert];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Replace", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				row.implantSet.data = self.implantSetData;
+				[self performSegueWithIdentifier:@"Unwind" sender:nil];
+			}]];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+			}]];
+			[self presentViewController:controller animated:YES completion:nil];
 		}
 		else {
 			self.selectedImplantSet = row.implantSet;
@@ -183,31 +159,27 @@
 #pragma mark - Private
 
 - (void) saveNew {
-	UIAlertView* alertView = [UIAlertView alertViewWithTitle:nil
-													 message:NSLocalizedString(@"Enter Implant Set name", nil)
-										   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-										   otherButtonTitles:@[NSLocalizedString(@"Save", nil)]
-											 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-												 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-													 UITextField* textField = [alertView textFieldAtIndex:0];
-													 NSString* name = textField.text;
-													 if (name.length == 0)
-														 name = NSLocalizedString(@"Unnamed", nil);
-													 NCStorage* storage = [NCStorage sharedStorage];
-													 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-													 [context performBlockAndWait:^{
-														 NCImplantSet* implantSet = [[NCImplantSet alloc] initWithEntity:[NSEntityDescription entityForName:@"ImplantSet" inManagedObjectContext:storage.managedObjectContext]
-																						  insertIntoManagedObjectContext:storage.managedObjectContext];
-														 implantSet.name = name;
-														 implantSet.data = self.implantSetData;
-														 [storage saveContext];
-													 }];
-													 [self performSegueWithIdentifier:@"Unwind" sender:nil];
-												 }
-											 }
-												 cancelBlock:nil];
-	alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-	[alertView show];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"Enter Implant Set name", nil) preferredStyle:UIAlertControllerStyleAlert];
+	__block UITextField* nameTextField;
+	[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+		nameTextField = textField;
+		textField.clearButtonMode = UITextFieldViewModeAlways;
+	}];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Save", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		NSString* name = nameTextField.text;
+		if (name.length == 0)
+			name = NSLocalizedString(@"Unnamed", nil);
+		NCImplantSet* implantSet = [[NCImplantSet alloc] initWithEntity:[NSEntityDescription entityForName:@"ImplantSet" inManagedObjectContext:self.storageManagedObjectContext]
+										 insertIntoManagedObjectContext:self.storageManagedObjectContext];
+		implantSet.name = name;
+		implantSet.data = self.implantSetData;
+		[self performSegueWithIdentifier:@"Unwind" sender:nil];
+	}]];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	[self presentViewController:controller animated:YES completion:nil];
 }
 
 @end

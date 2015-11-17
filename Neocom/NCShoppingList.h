@@ -10,18 +10,15 @@
 #import <CoreData/CoreData.h>
 #import "NCStorage.h"
 
-@class NCShoppingItem;
+#define NCSettingsCurrentShoppingListKey @"NCSettingsCurrentShoppingListKey"
 
-@interface NCStorage(NCShoppingList)
-- (NSArray*) allShoppingLists;
-@end
+@class NCShoppingItem;
 
 @interface NCShoppingList : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSSet *shoppingGroups;
 
-+ (instancetype) currentShoppingList;
 + (void) setCurrentShoppingList:(NCShoppingList*) shoppingList;
 
 @end

@@ -58,11 +58,12 @@
 	if (self.killMail.victim.allianceID)
 		[self.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:self.killMail.victim.allianceID size:EVEImageSizeRetina32 error:nil]];
 
-	if (self.killMail.solarSystem) {
-		NSString* ss = [NSString stringWithFormat:@"%.1f", self.killMail.solarSystem.security];
-		NSString* s = [NSString stringWithFormat:@"%@ %@", ss, self.killMail.solarSystem.solarSystemName];
+	NCDBMapSolarSystem* solarSystem = [self.databaseManagedObjectContext mapSolarSystemWithSolarSystemID:self.killMail.solarSystemID];
+	if (solarSystem) {
+		NSString* ss = [NSString stringWithFormat:@"%.1f", solarSystem.security];
+		NSString* s = [NSString stringWithFormat:@"%@ %@", ss, solarSystem.solarSystemName];
 		NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:s];
-		[title addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:self.killMail.solarSystem.security] range:NSMakeRange(0, ss.length)];
+		[title addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:solarSystem.security] range:NSMakeRange(0, ss.length)];
 		self.locationLabel.attributedText = title;
 	}
 	else {
@@ -72,16 +73,17 @@
 	
 	NSDateFormatter* dateFormatter = [NSDateFormatter new];
 	[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
-	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 	self.dateLabel.text = [dateFormatter stringFromDate:self.killMail.killTime];
 	self.damageTakenLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Damage taken: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:self.killMail.victim.damageTaken]];
 	
-	if (self.killMail.victim.shipType) {
-		self.typeImageView.image = self.killMail.victim.shipType.icon ? self.killMail.victim.shipType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-		self.shipLabel.text = self.killMail.victim.shipType.typeName;
+	NCDBInvType* shipType = [self.databaseManagedObjectContext invTypeWithTypeID:self.killMail.victim.shipTypeID];
+	if (shipType) {
+		self.typeImageView.image = shipType.icon.image.image ?: [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
+		self.shipLabel.text = shipType.typeName;
 	}
 	else {
-		self.typeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"74_14"] image] image];
+		self.typeImageView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"74_14"] image] image];
 		self.shipLabel.text = NSLocalizedString(@"Unknown Ship Type", nil);
 	}
 	
@@ -139,7 +141,7 @@
 }
 
 - (IBAction)onChangeMode:(id)sender {
-	[self update];
+	[self.tableView reloadData];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -150,7 +152,7 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.type = [sender object];
+		controller.typeID = [[sender object] objectID];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingShipViewController"]) {
 		NCFittingShipViewController* destinationViewController = segue.destinationViewController;
@@ -194,9 +196,10 @@
 		NCKillMailDetailsViewControllerSection* section = self.items[indexPath.section];
 		NCKillMailItem* row = section.rows[indexPath.row];
 		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
-		cell.object = row.type;
-		cell.iconView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-		cell.titleLabel.text = row.type.typeName;
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:row.typeID];
+		cell.object = type;
+		cell.iconView.image = type.icon.image.image ?: [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
+		cell.titleLabel.text = type.typeName;
 		if (row.destroyed) {
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ destroyed", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.qty]];
 			cell.titleLabel.textColor = [UIColor redColor];
@@ -223,18 +226,21 @@
 		if (row.allianceID)
 			[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:row.allianceID size:EVEImageSizeRetina32 error:nil]];
 		
-		if (row.shipType) {
-			cell.shipTypeImageView.image = row.shipType.icon ? row.shipType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-			cell.shipLabel.text = row.shipType.typeName;
+		NCDBInvType* shipType = [self.databaseManagedObjectContext invTypeWithTypeID:row.shipTypeID];
+		if (shipType) {
+			cell.shipTypeImageView.image = shipType.icon.image.image ?: [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
+			cell.shipLabel.text = shipType.typeName;
 		}
 		else {
 			cell.shipTypeImageView.image = nil;
 			cell.shipLabel.text = nil;
 		}
 		
-		if (row.weaponType) {
-			cell.weaponTypeImageView.image = row.weaponType.icon ? row.weaponType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-			cell.damageDoneLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ damage done with %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.damageDone], row.weaponType.typeName];
+
+		NCDBInvType* weaponType = [self.databaseManagedObjectContext invTypeWithTypeID:row.weaponTypeID];
+		if (weaponType) {
+			cell.weaponTypeImageView.image = weaponType.icon.image.image ?: [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
+			cell.damageDoneLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ damage done with %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.damageDone], weaponType.typeName];
 		}
 		else {
 			cell.weaponTypeImageView.image = nil;

@@ -8,17 +8,15 @@
 
 #import "NCFittingAPIViewController.h"
 #import "NCTableViewCell.h"
-#import "NeocomAPI.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCDatabaseGroupPickerViewContoller.h"
 #import "NCFittingAPIFlagsViewController.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NCFittingAPISearchResultsViewController.h"
-#import "UIAlertView+Block.h"
 #import "NCShipFit.h"
 #import "NCLoadout.h"
 #import "NSString+Neocom.h"
-#import "UIActionSheet+Block.h"
 
 @interface NCFittingAPIViewController ()
 @property (nonatomic, strong) NCDBInvType* type;
@@ -29,7 +27,6 @@
 @property (nonatomic, strong) NCDatabaseTypePickerViewController* typePickerViewController;
 @property (nonatomic, strong) NAPILookup* lookup;
 @property (nonatomic, strong) NSError* error;
-@property (nonatomic, strong) UIActionSheet* actionSheet;
 
 
 - (IBAction)onClear:(id)sender;
@@ -61,20 +58,21 @@
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsAPIAlwaysUploadFitsKey])
 			[self uploadFits];
 		else {
-			[[UIAlertView alertViewWithTitle:nil
-									 message:NSLocalizedString(@"Would you like to make your contribution to the Neocom community by sharing your fit?", nil)
-						   cancelButtonTitle:NSLocalizedString(@"Don't share this time", nil)
-						   otherButtonTitles:@[NSLocalizedString(@"Share this time", nil), NSLocalizedString(@"Always share", nil)]
-							 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-								 if (selectedButtonIndex == 2)
-									 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsAPIAlwaysUploadFitsKey];
-								 if (selectedButtonIndex != alertView.cancelButtonIndex)
-									 [self uploadFits];
-								 else {
-									 [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPIAlwaysUploadFitsKey];
-								 }
-							 } cancelBlock:^{
-							 }] show];
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil
+																				message:NSLocalizedString(@"Would you like to make your contribution to the Neocom community by sharing your fit?", nil)
+																		 preferredStyle:UIAlertControllerStyleAlert];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Share this time", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self uploadFits];
+			}]];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Always share", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsAPIAlwaysUploadFitsKey];
+				[self uploadFits];
+			}]];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Don't share this time", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+				[[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPIAlwaysUploadFitsKey];
+			}]];
+			
+			[self presentViewController:controller animated:YES completion:nil];
 		}
 	}
 }
@@ -109,10 +107,10 @@
 												 NSLocalizedString(@"Missile Launcher", nil)];
 			
 			controller.values = @[@(NeocomAPIFlagHybridTurrets), @(NeocomAPIFlagLaserTurrets), @(NeocomAPIFlagProjectileTurrets), @(NeocomAPIFlagMissileLaunchers)];
-			controller.icons = @[[[[NCDBEveIcon eveIconWithIconFile:@"13_06"] image] image],
-								 [[[NCDBEveIcon eveIconWithIconFile:@"13_10"] image] image],
-								 [[[NCDBEveIcon eveIconWithIconFile:@"12_14"] image] image],
-								 [[[NCDBEveIcon eveIconWithIconFile:@"12_12"] image] image]];
+			controller.icons = @[[[[self.databaseManagedObjectContext eveIconWithIconFile:@"13_06"] image] image],
+								 [[[self.databaseManagedObjectContext eveIconWithIconFile:@"13_10"] image] image],
+								 [[[self.databaseManagedObjectContext eveIconWithIconFile:@"12_14"] image] image],
+								 [[[self.databaseManagedObjectContext eveIconWithIconFile:@"12_12"] image] image]];
 			controller.selectedValue = @(self.flags & (NeocomAPIFlagHybridTurrets | NeocomAPIFlagLaserTurrets | NeocomAPIFlagProjectileTurrets | NeocomAPIFlagMissileLaunchers));
 		}
 		else {
@@ -123,9 +121,9 @@
 												 @(NeocomAPIFlagActiveTank | NeocomAPIFlagShieldTank),
 												 @(NeocomAPIFlagPassiveTank)];
 			
-			controller.icons = @[[UIImage imageNamed:@"armorRepairer.png"],
-								 [UIImage imageNamed:@"shieldBooster.png"],
-								 [UIImage imageNamed:@"shieldRecharge.png"]];
+			controller.icons = @[[UIImage imageNamed:@"armorRepairer"],
+								 [UIImage imageNamed:@"shieldBooster"],
+								 [UIImage imageNamed:@"shieldRecharge"]];
 			controller.selectedValue = @(self.flags & (NeocomAPIFlagActiveTank | NeocomAPIFlagArmorTank | NeocomAPIFlagShieldTank | NeocomAPIFlagPassiveTank));
 		}
 	}
@@ -155,20 +153,30 @@
 		if (timeInterval > 0)
 			title = [NSString stringWithFormat:@"Next sync in %@", [NSString stringWithTimeLeft:timeInterval]];
 	}
-	[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:NO];
 	
-	self.actionSheet = [UIActionSheet actionSheetWithTitle:title
-										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-									destructiveButtonTitle:nil
-										 otherButtonTitles:@[NSLocalizedString(@"Sync now", nil), alwaysUpload ? NSLocalizedString(@"Disable auto sync", nil) : NSLocalizedString(@"Enable auto sync", nil)]
-										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-											   if (selectedButtonIndex == 0)
-												   [self uploadFits];
-											   else if (selectedButtonIndex == 1) {
-												   [[NSUserDefaults standardUserDefaults] setBool:!alwaysUpload forKey:NCSettingsAPIAlwaysUploadFitsKey];
-											   }
-										   } cancelBlock:nil];
-	[self.actionSheet showFromBarButtonItem:sender animated:YES];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Sync now", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self uploadFits];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:alwaysUpload ? NSLocalizedString(@"Disable auto sync", nil) : NSLocalizedString(@"Enable auto sync", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[[NSUserDefaults standardUserDefaults] setBool:!alwaysUpload forKey:NCSettingsAPIAlwaysUploadFitsKey];
+	}]];
+
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		if ([sender isKindOfClass:[UIBarButtonItem class]])
+			controller.popoverPresentationController.barButtonItem = sender;
+		else {
+			controller.popoverPresentationController.sourceView = sender;
+			controller.popoverPresentationController.sourceRect = [sender bounds];
+		}
+	}
+	else
+		[self presentViewController:controller animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -190,13 +198,13 @@
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			self.typePickerViewController.title = NSLocalizedString(@"Ships", nil);
-			[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
+			[self.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext shipsCategory]
 											  inViewController:self
 													  fromRect:cell.bounds
 														inView:cell
 													  animated:YES
 											 completionHandler:^(NCDBInvType *type) {
-												 self.type = type;
+												 self.type = [self.databaseManagedObjectContext invTypeWithTypeID:type.typeID];
 												 [self dismissAnimated];
 												 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 												 [self update];
@@ -213,10 +221,6 @@
 
 
 #pragma mark - NCTableViewController
-
-- (NSString*) recordID {
-	return nil;
-}
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0)
@@ -242,17 +246,17 @@
 				cell.subtitleLabel.text = NSLocalizedString(@"Ship", nil);
 				if (!self.type) {
 					cell.titleLabel.text = NSLocalizedString(@"Any Ship", nil);
-					cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"09_05"] image] image];
+					cell.iconView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"09_05"] image] image];
 					cell.accessoryView = nil;
 				}
 				else {
 					cell.titleLabel.text = self.type.typeName;
-					cell.iconView.image = self.type.icon ? self.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+					cell.iconView.image = self.type.icon ? self.type.icon.image.image : [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
 					cell.accessoryView = clearButton;
 				}
 			}
 			else if (indexPath.row == 1) {
-				cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"09_05"] image] image];
+				cell.iconView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"09_05"] image] image];
 				cell.subtitleLabel.text = NSLocalizedString(@"Ship Class", nil);
 				if (!self.group) {
 					cell.titleLabel.text = NSLocalizedString(@"Any Ship Class", nil);
@@ -267,27 +271,27 @@
 				cell.subtitleLabel.text = NSLocalizedString(@"Weapon Type", nil);
 				if (self.flags & NeocomAPIFlagHybridTurrets) {
 					cell.titleLabel.text = NSLocalizedString(@"Hybrid Weapon", nil);
-					cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"13_06"] image] image];
+					cell.iconView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"13_06"] image] image];
 					cell.accessoryView = clearButton;
 				}
 				else if (self.flags & NeocomAPIFlagLaserTurrets) {
 					cell.titleLabel.text = NSLocalizedString(@"Energy Weapon", nil);
-					cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"13_10"] image] image];
+					cell.iconView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"13_10"] image] image];
 					cell.accessoryView = clearButton;
 				}
 				else if (self.flags & NeocomAPIFlagProjectileTurrets) {
 					cell.titleLabel.text = NSLocalizedString(@"Projectile Weapon", nil);
-					cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"12_14"] image] image];
+					cell.iconView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"12_14"] image] image];
 					cell.accessoryView = clearButton;
 				}
 				else if (self.flags & NeocomAPIFlagMissileLaunchers) {
 					cell.titleLabel.text = NSLocalizedString(@"Missile Launcher", nil);
-					cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"12_12"] image] image];
+					cell.iconView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"12_12"] image] image];
 					cell.accessoryView = clearButton;
 				}
 				else {
 					cell.titleLabel.text = NSLocalizedString(@"Any Weapon Type", nil);
-					cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"13_03"] image] image];
+					cell.iconView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"13_03"] image] image];
 					cell.accessoryView = nil;
 				}
 			}
@@ -296,23 +300,23 @@
 				if (self.flags & NeocomAPIFlagActiveTank) {
 					if (self.flags & NeocomAPIFlagArmorTank) {
 						cell.titleLabel.text = NSLocalizedString(@"Active Armor", nil);
-						cell.iconView.image = [UIImage imageNamed:@"armorRepairer.png"];
+						cell.iconView.image = [UIImage imageNamed:@"armorRepairer"];
 						cell.accessoryView = clearButton;
 					}
 					else {
 						cell.titleLabel.text = NSLocalizedString(@"Active Shield", nil);
-						cell.iconView.image = [UIImage imageNamed:@"shieldBooster.png"];
+						cell.iconView.image = [UIImage imageNamed:@"shieldBooster"];
 						cell.accessoryView = clearButton;
 					}
 				}
 				else if (self.flags & NeocomAPIFlagPassiveTank) {
 					cell.titleLabel.text = NSLocalizedString(@"Passive", nil);
-					cell.iconView.image = [UIImage imageNamed:@"shieldRecharge.png"];
+					cell.iconView.image = [UIImage imageNamed:@"shieldRecharge"];
 					cell.accessoryView = clearButton;
 				}
 				else {
 					cell.titleLabel.text = NSLocalizedString(@"Any Type of Tanking", nil);
-					cell.iconView.image = [UIImage imageNamed:@"shieldRecharge.png"];
+					cell.iconView.image = [UIImage imageNamed:@"shieldRecharge"];
 					cell.accessoryView = nil;
 				}
 			}
@@ -321,7 +325,7 @@
 			if (indexPath.row == 4) {
 				cell.titleLabel.text = NSLocalizedString(@"Only Cap Stable Fits", nil);
 				cell.subtitleLabel.text = nil;
-				cell.iconView.image = [UIImage imageNamed:@"capacitor.png"];
+				cell.iconView.image = [UIImage imageNamed:@"capacitor"];
 				UISwitch* switchView = [[UISwitch alloc] init];
 				switchView.on = (self.flags & NeocomAPIFlagCapStable) == NeocomAPIFlagCapStable;
 				[switchView addTarget:self action:@selector(onSwitch:) forControlEvents:UIControlEventValueChanged];
@@ -351,7 +355,7 @@
 - (IBAction)unwindFromGroupPicker:(UIStoryboardSegue*) segue {
 	NCDatabaseGroupPickerViewContoller* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedGroup) {
-		self.group = sourceViewController.selectedGroup;
+		self.group = [self.databaseManagedObjectContext existingObjectWithID:[sourceViewController.selectedGroup objectID] error:nil];
 		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 		[self update];
 	}
@@ -409,22 +413,11 @@
 	
 	self.criteria = criteria;
 
-	__block NSError* error = nil;
-	__block NAPILookup* lookup = nil;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 lookup = [NAPILookup lookupWithCriteria:criteria cachePolicy:NSURLRequestUseProtocolCachePolicy error:&error progressHandler:^(CGFloat progress, BOOL *stop) {
-												 task.progress = progress;
-											 }];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.error = error;
-									 self.lookup = lookup;
-									 [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
-								 }
-							 }];
+	[[NeocomAPI new] lookupWithCriteria:criteria completionBlock:^(NAPILookup *result, NSError *error) {
+		self.error = error;
+		self.lookup = result;
+		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
+	} progressBlock:nil];
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {
@@ -435,31 +428,35 @@
 }
 
 - (void) uploadFits {
-	__block NSError* error = nil;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NSMutableArray* canonicalNames = [NSMutableArray new];
-											 NCStorage* storage = [NCStorage sharedStorage];
-											 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-											 [context performBlockAndWait:^{
-												 for (NCLoadout* loadout in [storage shipLoadouts]) {
-													 NCShipFit* shipFit = [[NCShipFit alloc] initWithLoadout:loadout];
-													 NSString* canonicalName = shipFit.canonicalName;
-													 [canonicalNames addObject:canonicalName];
-												 }
-											 }];
-											 if (canonicalNames.count > 0)
-												 [NAPIUpload uploadFitsWithCannonicalNames:canonicalNames
-																					userID:NCSettingsUDIDKey
-																			   cachePolicy:NSURLRequestUseProtocolCachePolicy
-																					 error:&error
-																		   progressHandler:nil];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled] && !error)
-									 [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPINextSyncDateKey];
-							 }];
+	NSString* userID = [[NSUserDefaults standardUserDefaults] objectForKey:NCSettingsUDIDKey];
+	NSManagedObjectContext* storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+	[storageManagedObjectContext performBlock:^{
+		NSMutableDictionary* loadouts = [NSMutableDictionary new];
+		
+		for (NCLoadout* loadout in [storageManagedObjectContext loadouts])
+			loadouts[@(loadout.typeID)] = loadout;
+		NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+		[databaseManagedObjectContext performBlockAndWait:^{
+			for (NSNumber* typeID in [loadouts allKeys]) {
+				NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:[typeID intValue]];
+				if (type.group.category.categoryID != NCShipCategoryID)
+					[loadouts removeObjectForKey:typeID];
+			}
+		}];
+		NSMutableArray* cannonicalNames = [NSMutableArray new];
+		[loadouts enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, NCLoadout*  _Nonnull loadout, BOOL * _Nonnull stop) {
+			NCShipFit* shipFit = [[NCShipFit alloc] initWithLoadout:loadout];
+			NSString* canonicalName = shipFit.canonicalName;
+			if (canonicalName)
+				[cannonicalNames addObject:canonicalName];
+		}];
+		
+		[[NeocomAPI new] uploadFitsWithCannonicalNames:cannonicalNames userID:userID completionBlock:^(NAPIUpload *result, NSError *error) {
+			if (!error)
+				[[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPINextSyncDateKey];
+		} progressBlock:nil];
+
+	}];
 }
 
 @end

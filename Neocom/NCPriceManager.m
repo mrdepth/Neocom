@@ -8,53 +8,14 @@
 
 #import "NCPriceManager.h"
 #import "NCCache.h"
+#import <EVEAPI/EVEAPI.h>
 
-@interface NCPriceManagerDataRecord : NSObject<NSCoding>
-@property (nonatomic, strong) EVECentralMarketStatType* marketStat;
-@property (nonatomic, strong) NSDate* date;
-@end
-
-@interface NCPriceManagerData : NSObject<NSCoding>
-@property (nonatomic, strong) NSDictionary* marketStat;
-@end
-
-@implementation NCPriceManagerDataRecord
-
-- (id) initWithCoder:(NSCoder *)aDecoder {
-	if (self = [super init]) {
-		self.marketStat = [aDecoder decodeObjectForKey:@"marketStat"];
-		self.date = [aDecoder decodeObjectForKey:@"date"];
-	}
-	return self;
-}
-
-- (void) encodeWithCoder:(NSCoder *)aCoder {
-	if (self.marketStat)
-		[aCoder encodeObject:self.marketStat forKey:@"marketStat"];
-	if (self.date)
-		[aCoder encodeObject:self.date forKey:@"date"];
-}
-
-@end
-
-@implementation NCPriceManagerData
-
-- (id) initWithCoder:(NSCoder *)aDecoder {
-	if (self = [super init]) {
-		self.marketStat = [aDecoder decodeObjectForKey:@"marketStat"];
-	}
-	return self;
-}
-
-- (void) encodeWithCoder:(NSCoder *)aCoder {
-	if (self.marketStat)
-		[aCoder encodeObject:self.marketStat forKey:@"marketStat"];
-}
-
-@end
 
 @interface NCPriceManager()
-@property (nonatomic, strong) NCCacheRecord* cacheRecord;
+@property (nonatomic, strong) NSManagedObjectContext* cacheManagedObjectContext;
+@property (nonatomic, strong) AFHTTPRequestOperationManager* manager;
+@property (atomic, assign) BOOL updating;
+@property (assign, nonatomic) NSInteger triesLeft;
 @end
 
 @implementation NCPriceManager
@@ -68,73 +29,92 @@
 	return sharedManager;
 }
 
-- (EVECentralMarketStatType*) priceWithType:(NSInteger) typeID {
-	return [self pricesWithTypes:@[@(typeID)]][@(typeID)];
+- (id) init {
+	if (self = [super init]) {
+		AFHTTPRequestSerializer* requestSerializer = [AFHTTPRequestSerializer serializer];
+		[requestSerializer setValue:@"application/vnd.ccp.eve.Api-v1+json" forHTTPHeaderField:@"Accept"];
+		self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://public-crest.eveonline.com"]];
+		self.manager.requestSerializer = requestSerializer;
+		self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
+		self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"*/*", @"application/vnd.ccp.eve.markettypepricecollection-v1+json", nil];
+		self.cacheManagedObjectContext = [[NCCache sharedCache] createManagedObjectContext];
+		self.triesLeft = 5;
+		[self updateIfNeeded];
+	}
+	return self;
 }
 
-- (NSDictionary*) pricesWithTypes:(NSArray*) types {
-	@synchronized(self) {
-		NCPriceManagerData* data = self.cacheRecord.data.data;
-		NSMutableArray* missingTypes = [types mutableCopy];
+- (void) requestPriceWithType:(NSInteger) typeID completionBlock:(void(^)(NSNumber* price)) completionBlock {
+	[self requestPricesWithTypes:@[@(typeID)] completionBlock:^(NSDictionary *prices) {
+		completionBlock(prices[@(typeID)]);
+	}];
+}
+
+- (void) requestPricesWithTypes:(NSArray*) typeIDs completionBlock:(void(^)(NSDictionary* prices)) completionBlock {
+	[self.cacheManagedObjectContext performBlock:^{
 		NSMutableDictionary* prices = [NSMutableDictionary new];
-		
-		for (NSNumber* typeID in types) {
-			NCPriceManagerDataRecord* record = data.marketStat[typeID];
-			if (record)
-				prices[typeID] = record.marketStat;
-			
-			if (record && [record.date timeIntervalSinceNow] > -3600 * 24)
-				[missingTypes removeObject:typeID];
-		}
-		if (missingTypes.count > 0 && ![NSThread isMainThread]) {
-			NSMutableDictionary* records = [NSMutableDictionary new];
-			[data.marketStat enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NCPriceManagerDataRecord* obj, BOOL *stop) {
-				if ([obj.date timeIntervalSinceNow] > -3600 * 24 * 7)
-					records[key] = obj;
-			}];
-
-			NSError* error = nil;
-//			for (NSUInteger location = 0; location < missingTypes.count; location += 200) {
-				NSUInteger location = 0;
-				NSUInteger len = missingTypes.count;//MIN(missingTypes.count - location, 200);
-				
-				EVECentralMarketStat* marketStat = [EVECentralMarketStat marketStatWithTypeIDs:[missingTypes subarrayWithRange:NSMakeRange(location, len)] regionIDs:nil hours:0 minQ:0 cachePolicy:NSURLRequestUseProtocolCachePolicy error:&error progressHandler:nil];
-				NSDate* date = [NSDate date];
-				for (EVECentralMarketStatType* stat in marketStat.types) {
-					prices[@(stat.typeID)] = stat;
-					NCPriceManagerDataRecord* record = [NCPriceManagerDataRecord new];
-					record.marketStat = stat;
-					record.date = date;
-					records[@(stat.typeID)] = record;
-				}
-//			}
-			
-			NCPriceManagerData* newData = [NCPriceManagerData new];
-			newData.marketStat = records;
-			NCCache* cache = [NCCache sharedCache];
-			[cache.managedObjectContext performBlockAndWait:^{
-				self.cacheRecord.data.data = newData;
-				[cache saveContext];
-			}];
-		}
-		
-		return prices;
-	}
-	return nil;
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Price"];
+		request.predicate = [NSPredicate predicateWithFormat:@"typeID in %@", [NSSet setWithArray:typeIDs]];
+		for (NCCachePrice* price in [self.cacheManagedObjectContext executeFetchRequest:request error:nil])
+			prices[@(price.typeID)] = @(price.price);
+		dispatch_async(dispatch_get_main_queue(), ^{
+			completionBlock(prices);
+		});
+	}];
 }
 
-#pragma mark - Private
-
-- (NCCacheRecord*) cacheRecord {
-	@synchronized(self) {
-		if (!_cacheRecord) {
-			NCCache* cache = [NCCache sharedCache];
-			[cache.managedObjectContext performBlockAndWait:^{
-				_cacheRecord = [NCCacheRecord cacheRecordWithRecordID:@"NCPriceManager"];
+- (void) updateIfNeeded {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+	
+	if (self.updating || self.triesLeft <= 0) {
+		self.triesLeft = 0;
+		return;
+	}
+	
+	self.updating = YES;
+	[self.cacheManagedObjectContext performBlock:^{
+		NCCacheRecord* cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:@"NCPriceManager"];
+		NSDate* date = cacheRecord.expireDate;
+		if (!date || [date timeIntervalSinceNow] < 0) {
+			[self.manager GET:@"https://public-crest.eveonline.com/market/prices/" parameters:nil success:^void(AFHTTPRequestOperation * operation, id dic) {
+				if ([dic isKindOfClass:[NSDictionary class]]) {
+					[self.cacheManagedObjectContext performBlock:^{
+						NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Price"];
+						for (NCCachePrice* record in [self.cacheManagedObjectContext executeFetchRequest:request error:nil])
+							[self.cacheManagedObjectContext deleteObject:record];
+						
+						for (NSDictionary* item in dic[@"items"]) {
+							int32_t typeID = [item[@"type"][@"id"] intValue];
+							NCCachePrice* record = [NSEntityDescription insertNewObjectForEntityForName:@"Price" inManagedObjectContext:self.cacheManagedObjectContext];
+							record.typeID = typeID;
+							double adjustedPrice = [item[@"adjustedPrice"] doubleValue];
+							double averagePrice = [item[@"averagePrice"] doubleValue];
+							record.price = averagePrice > 0 ? averagePrice : adjustedPrice;
+						}
+						cacheRecord.date = [NSDate date];
+						cacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:3600 * 24];
+						if ([self.cacheManagedObjectContext hasChanges])
+							[self.cacheManagedObjectContext save:nil];
+						self.updating = NO;
+						self.triesLeft = 5;
+						dispatch_async(dispatch_get_main_queue(), ^{
+							[[NSNotificationCenter defaultCenter] postNotificationName:NCPriceManagerDidUpdateNotification object:nil];
+						});
+					}];
+				}
+				else {
+					self.triesLeft--;
+					self.updating = NO;
+				}
+			} failure:^void(AFHTTPRequestOperation * operation, NSError * error) {
+				self.triesLeft--;
+				self.updating = NO;
+				[self performSelector:@selector(updateIfNeeded) withObject:0 afterDelay:10];
 			}];
 		}
-		return _cacheRecord;
-	}
+		else
+			self.updating = NO;
+	}];
 }
 
 @end

@@ -12,6 +12,8 @@
 
 @interface NCDatabaseTypeVariationsViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* result;
+@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 
 @end
 
@@ -29,6 +31,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.type = (NCDBInvType*) [self.databaseManagedObjectContext existingObjectWithID:self.typeID error:nil];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+
 	self.refreshControl = nil;
 	
 	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
@@ -43,8 +48,7 @@
 	else
 		request.predicate = [NSPredicate predicateWithFormat:@"parentType == %@ OR SELF == %@", self.type, self.type];
 
-	NCDatabase* database = [NCDatabase sharedDatabase];
-	self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"metaGroupName" cacheName:nil];
+	self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:@"metaGroupName" cacheName:nil];
 	[self.result performFetch:nil];
 }
 
@@ -61,7 +65,7 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.type = [sender object];
+		controller.typeID = [[sender object] objectID];
 	}
 }
 
@@ -85,10 +89,6 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return @"Cell";
 }
@@ -99,7 +99,7 @@
 	
 	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	cell.titleLabel.text = [row typeName];
-	cell.iconView.image = row.icon.image.image ? row.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	cell.iconView.image = row.icon.image.image ? row.icon.image.image : self.defaultTypeIcon.image.image;
 	cell.object = row;
 }
 

@@ -10,6 +10,6 @@
 
 @class NCDBInvGroup;
 @interface NCDatabaseCertificatesViewController : NCTableViewController
-@property (nonatomic, strong) NCDBInvGroup* group;
+@property (nonatomic, strong) NSManagedObjectID* groupID;
 
 @end

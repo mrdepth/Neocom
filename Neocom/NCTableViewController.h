@@ -15,26 +15,34 @@
 
 @interface NCTableViewController : UITableViewController<UISearchDisplayDelegate, CollapsableTableViewDelegate>
 @property (nonatomic, strong, readonly) NCTaskManager* taskManager;
-@property (nonatomic, strong, readonly) NCCacheRecord* cacheRecord;
-@property (nonatomic, strong, readonly) id data;
+@property (nonatomic, strong, readonly) id cacheData;
 @property (nonatomic, strong) UISearchController* searchController;
 @property (nonatomic, weak) NCTableViewController* searchContentsController;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* storageManagedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* databaseManagedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext* cacheManagedObjectContext;
+@property (nonatomic, strong) NSString* cacheRecordID;
+@property (nonatomic, strong) NSProgress* progress;
+@property (nonatomic, strong) NSString* backgrountText;
 
-- (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
-- (void) didUpdateData:(id) data;
-- (void) didFailLoadDataWithError:(NSError*) error;
-- (void) didChangeStorage;
+- (void) saveCacheData:(id) data cacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
+- (void) reload;
+- (void) invalidateCache;
+- (void) simulateProgress:(NSProgress*) progress;
 
 #pragma mark - Override
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy;
-- (BOOL) shouldReloadData;
-- (void) reloadFromCache;
-- (void) update;
-- (NSTimeInterval) defaultCacheExpireTime;
-- (NSString*) recordID;
-- (void) didChangeAccount:(NCAccount*) account;
-- (void) searchWithSearchString:(NSString*) searchString;
-- (NSDate*) cacheDate;
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock;
+- (void) loadCacheData:(id) cacheData withCompletionBlock:(void(^)()) completionBlock;
+
+//Notifications
+- (void) didChangeAccount:(NSNotification*) notification;
+- (void) didBecomeActive:(NSNotification*) notification;
+- (void) willResignActive:(NSNotification*) notification;
+- (void) didChangeStorage:(NSNotification*) notification;
+- (void) didInstallUpdate:(NSNotification*) notification;
+- (void) managedObjectContextDidFinishUpdate:(NSNotification*) notification;
+
+- (void) searchWithSearchString:(NSString*) searchString completionBlock:(void(^)()) completionBlock;
 - (id) identifierForSection:(NSInteger) section;
 - (BOOL) initiallySectionIsCollapsed:(NSInteger) section;
 

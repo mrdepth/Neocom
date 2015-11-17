@@ -155,7 +155,9 @@ static NSManagedObjectModel *managedObjectModel()
 	path = [path stringByDeletingPathExtension];
     NSURL *modelURL = [NSURL fileURLWithPath:[path stringByAppendingPathExtension:@"momd"]];
     model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    
+	//NSManagedObjectModel* storageModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"NCStorage.momd"]]];
+	//model = [NSManagedObjectModel modelByMergingModels:@[storageModel, model]];
+	//return storageModel;
     return model;
 }
 
@@ -1455,7 +1457,6 @@ void convertWhTypes(NSManagedObjectContext* context, EVEDBDatabase* database) {
 
 int main(int argc, const char * argv[])
 {
-
 	@autoreleasepool {
 		if (argc != 7)
 			return 1;

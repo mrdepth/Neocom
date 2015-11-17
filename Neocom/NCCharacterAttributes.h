@@ -7,6 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+
+#define NCCharismaBonusAttributeID 175
+#define NCIntelligenceBonusAttributeID 176
+#define NCMemoryBonusAttributeID 177
+#define NCPerceptionBonusAttributeID 178
+#define NCWillpowerBonusAttributeID 179
+#define NCPrimaryAttributeAttribteID 180
+#define NCSecondaryAttributeAttribteID 181
+
+#define NCCharismaAttributeID 164
+#define NCIntelligenceAttributeID 165
+#define NCMemoryAttributeID 166
+#define NCPerceptionAttributeID 167
+#define NCWillpowerAttributeID 168
 
 @class NCDBInvType;
 @class EVECharacterSheet;
@@ -22,5 +37,6 @@
 + (instancetype) optimalAttributesWithTrainingQueue:(NCTrainingQueue*) trainingQueue;
 - (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet;
 - (float) skillpointsPerSecondForSkill:(NCDBInvType*) skill;
+- (float) skillpointsPerSecondWithPrimaryAttribute:(int32_t) primaryAttributeID secondaryAttribute:(int32_t) secondaryAttributeID;
 
 @end

@@ -19,5 +19,7 @@ typedef NS_ENUM(NSInteger, NCCharacterIDType) {
 @property (nonatomic, assign, readonly) int32_t characterID;
 @property (nonatomic, strong, readonly) NSString* name;
 
-+ (id) characterIDWithName:(NSString*) name;
+//+ (id) characterIDWithName:(NSString*) name;
++ (void) requestCharacterIDWithName:(NSString*) name completionBlock:(void(^)(NCCharacterID* characterID, NSError* error)) completionBlock;
+
 @end

@@ -17,31 +17,45 @@
 #import "UIColor+Neocom.h"
 #import "NCTableViewCell.h"
 #import "NCAdaptivePopoverSegue.h"
+#import "UIStoryboard+Multiple.h"
+#import "NCUpdater.h"
 
 @interface NCTableViewController ()<UISearchResultsUpdating>
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
-@property (nonatomic, strong, readwrite) NCCacheRecord* cacheRecord;
-@property (nonatomic, strong, readwrite) id data;
+@property (nonatomic, strong, readwrite) id cacheData;
+@property (nonatomic, strong) NCCacheRecord* cacheRecord;
 @property (nonatomic, strong) NSMutableDictionary* sectionsCollapsState;
 @property (nonatomic, strong) NSDictionary* previousCollapsState;
 @property (nonatomic, strong) NSMutableDictionary* offscreenCells;
 @property (nonatomic, strong) NSMutableDictionary* estimatedRowHeights;
+@property (nonatomic, assign) BOOL loadingFromCache;
+@property (nonatomic, assign) BOOL reloading;
+@property (nonatomic, strong) dispatch_group_t searchingDispatchGroup;
+@property (nonatomic, strong) UIProgressView* progressView;
+@property (nonatomic, assign) BOOL internalDatabaseManagedObjectContext;
+@property (nonatomic, strong) NSManagedObjectContext* settingsManagedObjectContext;
+@property (nonatomic, strong) NCSetting* sectionsCollapsSetting;
+@property (nonatomic, strong) NSError* error;
 
 - (IBAction) onRefresh:(id) sender;
 
 - (void) progressStepWithTask:(NCTask*) task;
 - (void) updateCacheTime;
-- (void) didChangeAccountNotification:(NSNotification*) notification;
-- (void) didBecomeActive:(NSNotification*) notification;
 - (void) onLongPress:(UILongPressGestureRecognizer*) recognizer;
 - (void) collapsAll:(UIMenuController*) controller;
 - (void) expandAll:(UIMenuController*) controller;
-- (void) reloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy;
-
+- (void) downloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy;
+- (void) reloadIfNeeded;
+- (void) searchWithSearchString:(NSString*) searchString;
+- (void) progressStepWithProgress:(NSProgress*) progress;
+- (void) managedObjectContextDidSave:(NSNotification*) notification;
 
 @end
 
 @implementation NCTableViewController
+@synthesize databaseManagedObjectContext = _databaseManagedObjectContext;
+@synthesize storageManagedObjectContext = _storageManagedObjectContext;
+@synthesize cacheManagedObjectContext = _cacheManagedObjectContext;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -55,27 +69,41 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//	self.tableView.estimatedRowHeight = self.tableView.rowHeight;
-//	self.tableView.rowHeight = UITableViewAutomaticDimension;
-	
-	self.estimatedRowHeights = [NSMutableDictionary new];
-	
-	self.preferredContentSize = CGSizeMake(320, 768);
-	self.offscreenCells = [NSMutableDictionary new];
-	
+
+	//Appearance
 	if (!self.tableView.backgroundView) {
-		UIView* view = [[UIView alloc] initWithFrame:CGRectZero];
-		view.backgroundColor = [UIColor clearColor];
-		self.tableView.backgroundView = view;
+		UILabel* label = [[UILabel alloc] initWithFrame:CGRectZero];
+		label.backgroundColor = [UIColor clearColor];
+		label.textColor = [UIColor darkGrayColor];
+		label.text = nil;
+		label.textAlignment = NSTextAlignmentCenter;
+		self.tableView.backgroundView = label;
+//		UIView* view = [[UIView alloc] initWithFrame:CGRectZero];
+//		view.backgroundColor = [UIColor clearColor];
+//		self.tableView.backgroundView = view;
 	}
 	
 	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	self.tableView.separatorColor = [UIColor appearanceTableViewSeparatorColor];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccountNotification:) name:NCAccountDidChangeNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStorage) name:NCStorageDidChangeNotification object:nil];
 
+
+	//Row heights support
+	self.estimatedRowHeights = [NSMutableDictionary new];
+	self.offscreenCells = [NSMutableDictionary new];
+
+	//Popover support
+//	self.preferredContentSize = CGSizeMake(320, 768);
+
+
+	//Application lifetime
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:NCCurrentAccountDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStorage:) name:NCStorageDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didInstallUpdate:) name:NCDatabaseDidInstallUpdateNotification object:nil];
+
+	//Refresh support
 	UIRefreshControl* refreshControl = [UIRefreshControl new];
     [refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
 	refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@" "
@@ -84,81 +112,86 @@
 	self.refreshControl = refreshControl;
 
 	
-	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
+	//Table headers
+	if ([self.tableView isKindOfClass:[CollapsableTableView class]])
 		[self.tableView registerClass:[NCTableViewCollapsedHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
-	}
-	else {
+	else
 		[self.tableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
-	}
 	
-	if (self.searchDisplayController)
-		[self.searchDisplayController.searchResultsTableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
+//	if (self.searchDisplayController)
+//		[self.searchDisplayController.searchResultsTableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
 	
+	//Collapse/expand support
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
 		NSString* key = NSStringFromClass(self.class);
-		NCStorage* storage = [NCStorage sharedStorage];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-		[context performBlockAndWait:^{
-			NCSetting* setting = [[NCStorage sharedStorage] settingWithKey:key];
-			self.previousCollapsState = setting.value;
-		}];
+		self.sectionsCollapsSetting = [self.settingsManagedObjectContext settingWithKey:key];
+		self.previousCollapsState = self.sectionsCollapsSetting.value;
 	}
+	
 	self.sectionsCollapsState = [NSMutableDictionary new];
 	
-	[self performSelector:@selector(update) withObject:nil afterDelay:0];
+	if ([self.tableView.tableHeaderView isKindOfClass:[UISearchBar class]]) {
+		if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+			if (self.parentViewController) {
+				self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:self.storyboardIdentifier]];
+			}
+			else {
+				self.tableView.tableHeaderView = nil;
+				return;
+			}
+		}
+	}
 }
 
 - (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCCurrentAccountDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCStorageDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCDatabaseDidInstallUpdateNotification object:nil];
 	[_taskManager cancelAllOperations];
+	[_progress removeObserver:self forKeyPath:@"fractionCompleted"];
 //	self.searchDisplayController.searchResultsDataSource = nil;
 //	self.searchDisplayController.searchResultsDelegate = nil;
 //	self.searchDisplayController.delegate = nil;
-
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 	if ([self isViewLoaded] && self.view.window == nil) {
 		self.cacheRecord = nil;
-		self.data = nil;
-		if (self.searchDisplayController && self.searchDisplayController.active)
-			[self.searchDisplayController setActive:NO animated:NO];
+		self.cacheData = nil;
+		if (self.internalDatabaseManagedObjectContext)
+			self.databaseManagedObjectContext = nil;
 	}
 }
-
-
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.taskManager.active = YES;
-	if (!self.cacheRecord)
-		[self reloadFromCache];
-	else if ([self shouldReloadData])
-		[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
+	
+	[self reloadIfNeeded];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	self.taskManager.active = NO;
 	
-	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
-		NSString* key = NSStringFromClass(self.class);
-		NCStorage* storage = [NCStorage sharedStorage];
-		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-		[context performBlockAndWait:^{
-			NCSetting* setting = [[NCStorage sharedStorage] settingWithKey:key];
-			if (![self.sectionsCollapsState isEqualToDictionary:setting.value]) {
-				if (![setting.value isEqualToDictionary:self.sectionsCollapsState]) {
-					setting.value = self.sectionsCollapsState;
-					[[NCStorage sharedStorage] saveContext];
-				}
-			}
-		}];
+	if (self.sectionsCollapsSetting) {
+		self.sectionsCollapsSetting.value = self.sectionsCollapsState;
+		[self.settingsManagedObjectContext save:nil];
 	}
-
+	[_cacheManagedObjectContext performBlock:^{
+		if ([_cacheManagedObjectContext hasChanges])
+			[_cacheManagedObjectContext save:nil];
+	}];
+	
+	[_storageManagedObjectContext performBlock:^{
+		if ([_storageManagedObjectContext hasChanges])
+			[_storageManagedObjectContext save:nil];
+	}];
+	
 }
 
 - (void) willMoveToParentViewController:(UIViewController *)parent {
@@ -167,13 +200,6 @@
 		[self.taskManager cancelAllOperations];
 	}
 }
-
-/*- (UINavigationController*) navigationController {
-    if (self.searchContentsController)
-        return self.searchContentsController.navigationController;
-    else
-        return [super navigationController];
-}*/
 
 - (void) setSearchController:(UISearchController *)searchController {
 	_searchController = searchController;
@@ -221,121 +247,189 @@
 	return _taskManager;
 }
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
-    //[self.refreshControl beginRefreshing];
-}
-
-- (BOOL) shouldReloadData {
-	return [self isViewLoaded] && ([[self.cacheRecord expireDate] compare:[NSDate date]] == NSOrderedAscending ||
-								   (![self.cacheRecord.data isFault] && !self.cacheRecord.data.data));
-}
-
-- (void) reloadFromCache {
-	if (!self.searchContentsController && self.recordID) {
-
-		NCCache* cache = [NCCache sharedCache];
-		NSManagedObjectContext* context = cache.managedObjectContext;
-		[context performBlockAndWait:^{
-			self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
-		}];
-		
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 [context performBlockAndWait:^{
-													 [self performSelectorOnMainThread:@selector(progressStepWithTask:) withObject:task waitUntilDone:NO];
-													 [self.cacheRecord.managedObjectContext performBlockAndWait:^{
-														 [self.cacheRecord.data data];
-													 }];
-												 }];
-											 }
-								 completionHandler:^(NCTask *task) {
-									 [NSObject cancelPreviousPerformRequestsWithTarget:self];
-									 if (![task isCancelled]) {
-										 if (!self.cacheRecord.data.data) {
-											 [self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
-										 }
-										 else {
-											 self.data = self.cacheRecord.data.data;
-											 [self update];
-											 
-											 if ([self shouldReloadData])
-												 [self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
-										 }
-									 }
-								 }];
+- (NSManagedObjectContext*) storageManagedObjectContext {
+	if (self.searchContentsController)
+		return self.searchContentsController.storageManagedObjectContext;
+	else {
+		@synchronized (self) {
+			if (!_storageManagedObjectContext)
+				_storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+			return _storageManagedObjectContext;
+		}
 	}
 }
 
-- (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
-	self.data = data;
+- (NSManagedObjectContext*) databaseManagedObjectContext {
+	if (self.searchContentsController)
+		return self.searchContentsController.databaseManagedObjectContext;
+	else {
+		@synchronized (self) {
+			if (!_databaseManagedObjectContext) {
+				_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+				self.internalDatabaseManagedObjectContext = YES;
+			}
+			return _databaseManagedObjectContext;
+		}
+	}
+}
+
+- (void) setDatabaseManagedObjectContext:(NSManagedObjectContext *)databaseManagedObjectContext {
+	_databaseManagedObjectContext = databaseManagedObjectContext;
+	self.internalDatabaseManagedObjectContext = NO;
+}
+
+- (NSManagedObjectContext*) cacheManagedObjectContext {
+	if (self.searchContentsController)
+		return self.searchContentsController.cacheManagedObjectContext;
+	else {
+		@synchronized (self) {
+			if (!_cacheManagedObjectContext)
+				_cacheManagedObjectContext = [[NCCache sharedCache] createManagedObjectContext];
+			return _cacheManagedObjectContext;
+		}
+	}
+}
+
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSError* error)) completionBlock {
+	completionBlock(nil);
+}
+
+- (void) loadCacheData:(id) cacheData withCompletionBlock:(void(^)()) completionBlock {
+	completionBlock();
+}
+
+- (void) reload {
+	if (!self.searchContentsController && !self.loadingFromCache) {
+		if (self.cacheManagedObjectContext) {
+
+			self.loadingFromCache = YES;
+			[self.cacheManagedObjectContext performBlock:^{
+				NCCacheRecord* cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:self.cacheRecordID];
+				id data = cacheRecord.data.data;
+				
+				BOOL isExpired = [cacheRecord isExpired];
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.cacheRecord = cacheRecord;
+					
+					if (data) {
+						self.cacheData = data;
+						
+						[self loadCacheData:data withCompletionBlock:^{
+							[self.tableView reloadData];
+							if (isExpired && [self isViewLoaded] && self.view.window)
+								[self downloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
+						}];
+					}
+					else if ([self isViewLoaded] && self.view.window)
+						[self downloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
+					self.loadingFromCache = NO;
+				});
+			}];
+		}
+	}
+}
+
+- (void) invalidateCache {
+	[self.cacheRecord.managedObjectContext performBlock:^{
+		self.cacheRecord.expireDate = [NSDate distantPast];
+	}];
+}
+
+- (void) saveCacheData:(id) data cacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
 	if (data) {
-		NSString* recordID = self.recordID;
-		NCCache* cache = [NCCache sharedCache];
-		[cache.managedObjectContext performBlockAndWait:^{
-			if (!self.cacheRecord || ![self.cacheRecord.recordID isEqualToString:recordID])
-				self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:recordID];
-			self.cacheRecord.recordID = recordID;
+		self.cacheData = data;
+		[self.cacheRecord.managedObjectContext performBlock:^{
 			self.cacheRecord.data.data = data;
-			self.cacheRecord.date = cacheDate;
-			self.cacheRecord.expireDate = expireDate;
-			[cache saveContext];
+			if (cacheDate)
+				self.cacheRecord.date = cacheDate;
+			if (expireDate)
+				self.cacheRecord.expireDate = expireDate;
+			[self.cacheRecord.managedObjectContext save:nil];
 		}];
 	}
-	[self update];
-	return self.cacheRecord;
 }
 
-- (void) didUpdateData:(id) data {
-	if (data) {
-		self.data = data;
-		NCCache* cache = [NCCache sharedCache];
-		[cache.managedObjectContext performBlockAndWait:^{
-			self.cacheRecord.data.data = data;
-			[cache saveContext];
-		}];
 
+- (void) searchWithSearchString:(NSString*) searchString completionBlock:(void(^)()) completionBlock {
+}
+
+- (void) setCacheRecordID:(NSString *)cacheRecordID {
+	if (![_cacheRecordID isEqual:cacheRecordID]) {
+		_cacheRecordID = cacheRecordID;
+		self.cacheRecord = nil;
+		if (cacheRecordID && [self isViewLoaded] && self.view.window)
+			[self reloadIfNeeded];
 	}
 }
 
-- (void) didChangeStorage {
-	[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
-}
 
-- (void) didFailLoadDataWithError:(NSError*) error {
-    [self.refreshControl endRefreshing];
-}
-
-- (void) update {
-	[self.tableView reloadData];
-	[self.refreshControl endRefreshing];
-	[self updateCacheTime];
-}
-
-- (NSTimeInterval) defaultCacheExpireTime {
-	return 60 * 60;
-}
-
-- (NSString*) recordID {
-	NCAccount* account = [NCAccount currentAccount];
-	if (account) {
-		return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), account.uuid];
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+	if ([keyPath isEqualToString:@"fractionCompleted"]) {
+		double progress = [change[NSKeyValueChangeNewKey] doubleValue];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self.progressView setProgress:progress animated:NO];
+//			self.progressView.frame = CGRectMake(0, [self.topLayoutGuide length] + self.tableView.contentOffset.y, self.view.frame.size.width, self.view.frame.size.height);
+		});
 	}
-	else
-		return NSStringFromClass(self.class);
 }
 
-- (void) didChangeAccount:(NCAccount *)account {
+- (void) viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	_progressView.frame = CGRectMake(0, [self.topLayoutGuide length] + self.tableView.contentOffset.y, self.view.frame.size.width, self.view.frame.size.height);
+}
+
+- (void) setProgress:(NSProgress *)progress {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(progressStepWithProgress:) object:nil];
+	[_progress removeObserver:self forKeyPath:@"fractionCompleted"];
+	_progress = progress;
+	[_progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:nil];
+	self.progressView.progress = progress.fractionCompleted;
+	self.progressView.hidden = progress == nil;
+}
+
+- (void) setBackgrountText:(NSString *)backgrountText {
+	UILabel* label = (UILabel*) self.tableView.backgroundView;
+	label.text = backgrountText;
+}
+
+- (void) simulateProgress:(NSProgress*) progress {
+	[self progressStepWithProgress:progress];
+}
+
+#pragma mark - Notifications
+
+- (void) didChangeStorage:(NSNotification*) notification {
+}
+
+- (void) didChangeAccount:(NSNotification*) notification {
 	
 }
 
-- (void) searchWithSearchString:(NSString*) searchString {
+- (void) didBecomeActive:(NSNotification *)notification {
+	if ([self isViewLoaded] && self.view.window)
+		[self reloadIfNeeded];
+}
+
+- (void) willResignActive:(NSNotification*) notification {
+	[_cacheManagedObjectContext performBlock:^{
+		if ([_cacheManagedObjectContext hasChanges])
+			[_cacheManagedObjectContext save:nil];
+	}];
+	[_storageManagedObjectContext performBlock:^{
+		if ([_storageManagedObjectContext hasChanges])
+			[_storageManagedObjectContext save:nil];
+	}];
+}
+
+- (void) didInstallUpdate:(NSNotification *)notification {
+	_databaseManagedObjectContext = nil;
+}
+
+- (void) managedObjectContextDidFinishUpdate:(NSNotification*) notification {
 	
 }
 
-- (NSDate*) cacheDate {
-	return self.cacheRecord.date;
-}
+#pragma mark - CollaplableTableView
 
 - (id) identifierForSection:(NSInteger)section {
 	return nil;
@@ -344,6 +438,8 @@
 - (BOOL) initiallySectionIsCollapsed:(NSInteger) section {
 	return NO;
 }
+
+#pragma mark - UITableViewCell configuration
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
 
@@ -363,7 +459,6 @@
 - (NSAttributedString *)tableView:(UITableView *)tableView attributedTitleForHeaderInSection:(NSInteger)section {
 	return nil;
 }
-
 
 #pragma mark - UISearchDisplayDelegate
 
@@ -466,7 +561,8 @@
 	if (height)
 		return [height floatValue];
 	else
-		return self.tableView.rowHeight;
+		return UITableViewAutomaticDimension;
+//		return self.tableView.rowHeight;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -528,7 +624,7 @@
 #pragma mark - Private
 
 - (IBAction) onRefresh:(id) sender {
-    [self reloadDataWithCachePolicyInternal:NSURLRequestReloadIgnoringLocalCacheData];
+    [self downloadDataWithCachePolicyInternal:NSURLRequestReloadIgnoringLocalCacheData];
 }
 
 - (void) progressStepWithTask:(NCTask*) task {
@@ -537,28 +633,35 @@
 		[self performSelector:@selector(progressStepWithTask:) withObject:task afterDelay:0.1];
 }
 
+- (void) progressStepWithProgress:(NSProgress*) progress {
+	if (self.progress) {
+		progress.completedUnitCount++;
+		if (progress.completedUnitCount < progress.totalUnitCount)
+			[self performSelector:@selector(progressStepWithProgress:) withObject:progress afterDelay:0.1];
+	}
+}
+
 - (void) updateCacheTime {
-	NSTimeInterval time = -[[self cacheDate] timeIntervalSinceNow];
-	NSString* title;
-	if (time < 60)
-		title = NSLocalizedString(@"Updated a moment ago", nil);
+	if (self.error) {
+		self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[self.error localizedDescription]
+																			  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],
+																						   NSForegroundColorAttributeName: [UIColor whiteColor]}];
+	}
 	else
-		title = [NSString stringWithFormat:NSLocalizedString(@"Updated %@ ago", nil),  [NSString stringWithTimeLeft:time componentsLimit:1]];
-	
-	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
-																		  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],
-																					   NSForegroundColorAttributeName: [UIColor whiteColor]}];
-}
-
-- (void) didChangeAccountNotification:(NSNotification*) notification {
-	[self didChangeAccount:notification.object];
-}
-
-- (void) didBecomeActive:(NSNotification *)notification {
-	if ([self shouldReloadData])
-		[self reloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
-	else
-		[self update];
+	[self.cacheRecord.managedObjectContext performBlock:^{
+		NSTimeInterval time = -[[self.cacheRecord date] timeIntervalSinceNow];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			NSString* title;
+			if (time < 60)
+				title = NSLocalizedString(@"Updated a moment ago", nil);
+			else
+				title = [NSString stringWithFormat:NSLocalizedString(@"Updated %@ ago", nil),  [NSString stringWithTimeLeft:time componentsLimit:1]];
+			
+			self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
+																				  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],
+																							   NSForegroundColorAttributeName: [UIColor whiteColor]}];
+		});
+	}];
 }
 
 - (void) onLongPress:(UILongPressGestureRecognizer*) recognizer {
@@ -580,11 +683,104 @@
 	[(CollapsableTableView*) self.tableView expandAll];
 }
 
-- (void) reloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy {
+- (void) downloadDataWithCachePolicyInternal:(NSURLRequestCachePolicy) cachePolicy {
     if (self.searchContentsController)
-        [self update];
-    else
-        [self reloadDataWithCachePolicy:cachePolicy];
+		[self loadCacheData:self.cacheData withCompletionBlock:^{
+			[self.tableView reloadData];
+		}];
+	else if (!self.reloading) {
+		self.reloading = YES;
+		[self.refreshControl beginRefreshing];
+		self.progress = [NSProgress progressWithTotalUnitCount:2];
+		[self.progress becomeCurrentWithPendingUnitCount:1];
+		[self downloadDataWithCachePolicy:cachePolicy completionBlock:^(NSError *error) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(progressStepWithProgress:) object:nil];
+				self.progress = nil;
+				self.reloading = NO;
+				self.error = error;
+				[self loadCacheData:self.cacheData withCompletionBlock:^{
+					[self.tableView reloadData];
+					[self.refreshControl endRefreshing];
+				}];
+			});
+		}];
+		[self.progress resignCurrent];
+		[self.progress becomeCurrentWithPendingUnitCount:1];
+		NSProgress* progress = [NSProgress progressWithTotalUnitCount:30];
+		[self simulateProgress:progress];
+		[self.progress resignCurrent];
+	}
+}
+
+- (void) reloadIfNeeded {
+	if (!self.cacheRecord && self.cacheRecordID)
+		[self reload];
+	else if (self.cacheRecord) {
+		NCCacheRecord* cacheRecord = self.cacheRecord;
+		[cacheRecord.managedObjectContext performBlock:^{
+			if (!cacheRecord.data.data || [cacheRecord isExpired]) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self downloadDataWithCachePolicyInternal:NSURLRequestUseProtocolCachePolicy];
+				});
+			}
+		}];
+	}
+}
+
+- (void) searchWithSearchString:(NSString*) searchString {
+	if (self.searchingDispatchGroup) {
+		dispatch_set_context(self.searchingDispatchGroup, (__bridge_retained void*)searchString);
+	}
+	else {
+		self.searchingDispatchGroup = dispatch_group_create();
+		dispatch_set_finalizer_f(self.searchingDispatchGroup, (dispatch_function_t) &CFRelease);
+		
+		dispatch_group_enter(self.searchingDispatchGroup);
+		dispatch_group_notify(self.searchingDispatchGroup, dispatch_get_main_queue(), ^{
+			NSString* searchString = (__bridge NSString*) dispatch_get_context(self.searchingDispatchGroup);
+			self.searchingDispatchGroup = nil;
+			if (searchString) {
+				[self searchWithSearchString:searchString];
+			}
+		});
+		
+		[self searchWithSearchString:searchString completionBlock:^{
+			dispatch_async(dispatch_get_main_queue(), ^{
+				if (self.searchController) {
+					NCTableViewController* searchResultsController = (NCTableViewController*) self.searchController.searchResultsController;
+					[searchResultsController.tableView reloadData];
+				}
+//				else if (self.searchDisplayController)
+//					[self.searchDisplayController.searchResultsTableView reloadData];
+				dispatch_group_leave(self.searchingDispatchGroup);
+			});
+		}];
+	}
+}
+
+- (UIProgressView*) progressView {
+	if (!_progressView) {
+		_progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+		_progressView.translatesAutoresizingMaskIntoConstraints = NO;
+		_progressView.layer.zPosition = FLT_MAX;
+		_progressView.trackTintColor = [UIColor clearColor];
+		_progressView.progressTintColor = [UIColor whiteColor];
+		
+		[self.view addSubview:_progressView];
+		_progressView.frame = CGRectMake(0, [self.topLayoutGuide length] + self.tableView.contentOffset.y, self.view.frame.size.width, self.view.frame.size.height);
+	}
+	return _progressView;
+}
+
+- (void) managedObjectContextDidSave:(NSNotification*) notification {
+	NSManagedObjectContext* context = notification.object;
+	if (context != _storageManagedObjectContext && context.persistentStoreCoordinator == _storageManagedObjectContext.persistentStoreCoordinator) {
+		[_storageManagedObjectContext performBlock:^{
+			[_storageManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+			[self managedObjectContextDidFinishUpdate:notification];
+		}];
+	}
 }
 
 @end

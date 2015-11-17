@@ -13,7 +13,7 @@
 
 - (void) setCollapsed:(BOOL)value {
 	_collapsed = value;
-	self.imageView.image = [UIImage imageNamed:value ? @"collapsed.png" : @"expanded.png"];
+	self.imageView.image = [UIImage imageNamed:value ? @"collapsed" : @"expanded"];
 }
 
 

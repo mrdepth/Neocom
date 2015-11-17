@@ -8,7 +8,6 @@
 
 #import "NCPlanetaryViewController.h"
 #import "UIColor+Neocom.h"
-#import "EVEPlanetaryPinsItem+Neocom.h"
 #import "NSString+Neocom.h"
 #import "NCDatabaseTypeInfoViewController.h"
 
@@ -82,6 +81,11 @@
 
 @interface NCPlanetaryViewController ()
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
+@property (nonatomic, strong) NSMutableDictionary* types;
+//@property (nonatomic, strong) NSMutableDictionary* solarSystems;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
+@property (nonatomic, strong) NCDBEveIcon* unknownTypeIcon;
+@property (nonatomic, strong) NCAccount* account;
 
 @end
 
@@ -92,7 +96,12 @@
 	[super viewDidLoad];
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	[self.dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
-	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+	self.unknownTypeIcon = 	[self.databaseManagedObjectContext eveIconWithIconFile:@"74_14"];
+	self.types = [NSMutableDictionary new];
+//	self.solarSystems = [NSMutableDictionary new];
+	self.account = [NCAccount currentAccount];
 }
 
 - (void)didReceiveMemoryWarning
@@ -109,107 +118,105 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.type = [sender object];
+		controller.typeID = [[sender object] objectID];
 	}
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NCPlanetaryViewControllerData* data = self.data;
+	NCPlanetaryViewControllerData* data = self.cacheData;
 	return data.colonies.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NCPlanetaryViewControllerData* data = self.data;
+	NCPlanetaryViewControllerData* data = self.cacheData;
 	NCPlanetaryViewControllerDataColony* colony = data.colonies[section];
 	return colony.extractors.count;
 }
 
 #pragma mark - NCTableViewController
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
-	NCAccount* account = [NCAccount currentAccount];
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NCPlanetaryViewControllerData* data = cacheData;
+	self.backgrountText = data.colonies.count > 0 ? nil : NSLocalizedString(@"No Results", nil);
+	
+	completionBlock();
+}
+
+
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
+	__block NSError* lastError = nil;
+	NCAccount* account = self.account;
 	if (!account) {
-		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
+		completionBlock(nil);
 		return;
 	}
 	
-	NCPlanetaryViewControllerData* data = [NCPlanetaryViewControllerData new];
-	__block NSDate* cacheExpireDate = [NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]];
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:2];
 	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 EVEPlanetaryColonies* colonies = [EVEPlanetaryColonies planetaryColoniesWithKeyID:account.apiKey.keyID
-																														 vCode:account.apiKey.vCode
-																												   cachePolicy:cachePolicy
-																												   characterID:account.characterID
-																														 error:&error
-																											   progressHandler:^(CGFloat progress, BOOL *stop) {
-																											   }];
-											 if (colonies) {
-												 NSMutableArray* array = [NSMutableArray new];
-												 float dp = colonies.colonies.count > 0 ? 1.0 / colonies.colonies.count : 1.0;
-												 for (EVEPlanetaryColoniesItem* item in colonies.colonies) {
-													 NCPlanetaryViewControllerDataColony* colony = [NCPlanetaryViewControllerDataColony new];
-													 NCDBMapSolarSystem* solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:item.solarSystemID];
-													 colony.security = solarSystem ? solarSystem.security : 1.0;
-													 colony.colony = item;
-													 
-													 EVEPlanetaryPins* pins = [EVEPlanetaryPins planetaryPinsWithKeyID:account.apiKey.keyID
-																												 vCode:account.apiKey.vCode
-																										   cachePolicy:cachePolicy
-																										   characterID:account.characterID
-																											  planetID:item.planetID
-																												 error:&error
-																									   progressHandler:^(CGFloat progress, BOOL *stop) {
-																									   }];
-													 if (pins) {
-														 NSMutableArray* extractors = [NSMutableArray new];
-														 for (EVEPlanetaryPinsItem* pin in pins.pins) {
-															 if (pin.cycleTime) {
-																 [extractors addObject:pin];
-															 }
-														 }
-														 colony.extractors = extractors;
-														 colony.currentTime = pins.currentTime;
-														 colony.cacheDate = pins.cacheDate;
+	[account.managedObjectContext performBlock:^{
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+		NCPlanetaryViewControllerData* data = [NCPlanetaryViewControllerData new];
+		[api planetaryColoniesWithCompletionBlock:^(EVEPlanetaryColonies *result, NSError *error) {
+			progress.completedUnitCount++;
+			if (error)
+				lastError = error;
+			NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+			[databaseManagedObjectContext performBlock:^{
+				NSMutableArray* array = [NSMutableArray new];
+				dispatch_group_t finishDispatchGroup = dispatch_group_create();
+				
+				[progress becomeCurrentWithPendingUnitCount:1];
+				NSProgress* pinsProgress = [NSProgress progressWithTotalUnitCount:result.colonies.count];
+				[progress resignCurrent];
+				
+				for (EVEPlanetaryColoniesItem* item in result.colonies) {
+					NCPlanetaryViewControllerDataColony* colony = [NCPlanetaryViewControllerDataColony new];
+					NCDBMapSolarSystem* solarSystem = [databaseManagedObjectContext mapSolarSystemWithSolarSystemID:item.solarSystemID];
+					colony.security = solarSystem ? solarSystem.security : 1.0;
+					colony.colony = item;
 
-														 [array addObject:colony];
-													 }
-													 
-													 task.progress += dp;
-												 }
-												 
-												 [array sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"colony.planetName" ascending:YES]]];
-												 data.colonies = array;
-												 
-												 
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:cacheExpireDate];
-									 }
-								 }
-							 }];
+					dispatch_group_enter(finishDispatchGroup);
+					[api planetaryPinsWithPlanetID:item.planetID completionBlock:^(EVEPlanetaryPins *pins, NSError *error) {
+						if (pins) {
+							NSMutableArray* extractors = [NSMutableArray new];
+							for (EVEPlanetaryPinsItem* pin in pins.pins) {
+								if (pin.cycleTime) {
+									[extractors addObject:pin];
+								}
+							}
+							colony.extractors = extractors;
+							colony.currentTime = pins.eveapi.currentTime;
+							colony.cacheDate = pins.eveapi.cacheDate;
+							@synchronized(array) {
+								[array addObject:colony];
+							}
+						}
+						@synchronized(pinsProgress) {
+							pinsProgress.completedUnitCount++;
+						}
+						dispatch_group_leave(finishDispatchGroup);
+					} progressBlock:nil];
+				}
+				
+				dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+					[array sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"colony.planetName" ascending:YES]]];
+					data.colonies = array;
+					[self saveCacheData:data cacheDate:[NSDate date] expireDate:[result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]];
+					completionBlock(lastError);
+					progress.completedUnitCount++;
+				});
+			}];
+
+		} progressBlock:nil];
+	}];
 }
 
-- (void) update {
-	[super update];
-}
-
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
-		[self reloadFromCache];
+- (void) didChangeAccount:(NSNotification *)notification {
+	[super didChangeAccount:notification];
+	self.account = [NCAccount currentAccount];
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -217,14 +224,28 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCPlanetaryViewControllerData* data = self.data;
+	NCPlanetaryViewControllerData* data = self.cacheData;
 	NCPlanetaryViewControllerDataColony* colony = data.colonies[indexPath.section];
 	EVEPlanetaryPinsItem* row = colony.extractors[indexPath.row];
 	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	
-	cell.titleLabel.text = row.typeName;
-	cell.iconView.image = row.type.icon.image.image;
-	cell.object = row.type;
+	NCDBInvType* type = self.types[@(row.typeID)];
+	if (!type) {
+		type = [self.databaseManagedObjectContext invTypeWithTypeID:row.typeID];
+		if (type)
+			self.types[@(row.typeID)] = type;
+	}
+	
+	if (type) {
+		cell.iconView.image = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
+		cell.titleLabel.text = type.typeName;
+	}
+	else {
+		cell.iconView.image = self.unknownTypeIcon.image.image;
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.typeID];
+	}
+
+	cell.object = type;
 	
 	NSDate* currentDate = [NSDate dateWithTimeInterval:[colony.currentTime timeIntervalSinceDate:colony.cacheDate] sinceDate:[NSDate date]];
 	
@@ -249,11 +270,23 @@
 }
 
 - (NSAttributedString*) tableView:(UITableView *)tableView attributedTitleForHeaderInSection:(NSInteger)section {
-	NCPlanetaryViewControllerData* data = self.data;
+	NCPlanetaryViewControllerData* data = self.cacheData;
 	NCPlanetaryViewControllerDataColony* colony = data.colonies[section];
 	NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%.1f", colony.security] attributes:@{NSForegroundColorAttributeName:[UIColor colorWithSecurity:colony.security]}];
 	[title appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@ / %@", colony.colony.planetName, colony.colony.planetTypeName] attributes:nil]];
 	return title;
+}
+
+#pragma mark - Private
+
+- (void) setAccount:(NCAccount *)account {
+	_account = account;
+	[account.managedObjectContext performBlock:^{
+		NSString* uuid = account.uuid;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.cacheRecordID = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), uuid];
+		});
+	}];
 }
 
 @end

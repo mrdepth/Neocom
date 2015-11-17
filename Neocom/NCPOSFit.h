@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "NCLoadout.h"
-#import "eufe.h"
+#import <eufe/eufe.h>
+#import "NCFittingEngine.h"
 
 @interface NCLoadoutDataPOS: NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* structures;
@@ -23,16 +24,19 @@
 
 @class EVEAssetListItem;
 @interface NCPOSFit : NSObject
-@property (nonatomic, strong) NCLoadout* loadout;
 @property (nonatomic, strong) NSString* loadoutName;
-@property (nonatomic, assign) eufe::Engine* engine;
-@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, assign, readonly) int32_t typeID;
+
+@property (nonatomic, strong, readonly) NCFittingEngine* engine;
+
+//Import
+@property (nonatomic, strong, readonly) NSManagedObjectID* loadoutID;
+@property (nonatomic, strong, readonly) EVEAssetListItem* asset;
 
 - (id) initWithLoadout:(NCLoadout*) loadout;
 - (id) initWithType:(NCDBInvType*) type;
 - (id) initWithAsset:(EVEAssetListItem*) asset;
 
 - (void) save;
-- (void) load;
 
 @end

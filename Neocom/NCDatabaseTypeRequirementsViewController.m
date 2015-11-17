@@ -11,15 +11,26 @@
 #import "NCDatabase.h"
 #import "NCDatabaseTypeInfoViewController.h"
 
+@interface NCDatabaseTypeRequirementsViewControllerRow : NSObject
+@property (nonatomic, strong) NSString* typeName;
+@property (nonatomic, strong) NSManagedObjectID* iconID;
+@property (nonatomic, strong) NCDBEveIcon* icon;
+@property (nonatomic, strong) NSManagedObjectID* typeID;
+@end
+
 @interface NCDatabaseTypeRequirementsViewControllerSection : NSObject
 @property (nonatomic, strong) NSMutableArray* rows;
 @property (nonatomic, assign) NSInteger level;
+@end
+
+@implementation NCDatabaseTypeRequirementsViewControllerRow
 @end
 
 @implementation NCDatabaseTypeRequirementsViewControllerSection
 @end
 
 @interface NCDatabaseTypeRequirementsViewController()
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 @property (nonatomic, strong) NSArray* sections;
 
 @end
@@ -29,6 +40,7 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 	[self reload];
 	self.refreshControl = nil;
 }
@@ -41,7 +53,7 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.type = [sender object];
+		controller.typeID = [sender object];
 	}
 }
 
@@ -64,10 +76,6 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
 - (NSString *)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return @"Cell";
 }
@@ -75,55 +83,49 @@
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	NCDatabaseTypeRequirementsViewControllerSection* section = self.sections[indexPath.section];
-	NCDBInvType* row = section.rows[indexPath.row];
-	cell.titleLabel.text = [row typeName];
-	cell.iconView.image = row.icon.image.image ? row.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-	cell.object = row;
+	NCDatabaseTypeRequirementsViewControllerRow* row = section.rows[indexPath.row];
+	if (!row.icon && row.iconID)
+		row.icon = (NCDBEveIcon*) [self.databaseManagedObjectContext existingObjectWithID:row.iconID error:nil];
+	
+	cell.titleLabel.text = row.typeName;
+	cell.iconView.image = row.icon.image.image ?: self.defaultTypeIcon.image.image;
+	cell.object = row.typeID;
 }
 
 #pragma mark - Private
 
 - (void) reload {
-
-	NSMutableDictionary* sections = [NSMutableDictionary new];
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NCDatabase* database = [NCDatabase sharedDatabase];
-											 [database.backgroundManagedObjectContext performBlockAndWait:^{
-												 for (NCDBInvTypeRequiredSkill* requiredSkill in self.type.requiredForSkill) {
-													 if (requiredSkill.type) {
-														 NSInteger level = MAX(1, requiredSkill.skillLevel);
-														 NCDatabaseTypeRequirementsViewControllerSection* section = sections[@(level)];
-														 if (!section) {
-															 sections[@(level)] = section = [NCDatabaseTypeRequirementsViewControllerSection new];
-															 section.rows = [NSMutableArray new];
-															 section.level = level;
-														 }
-														 [section.rows addObject:requiredSkill.type];
-													 }
-												 }
-												 [sections enumerateKeysAndObjectsUsingBlock:^(id key, NCDatabaseTypeRequirementsViewControllerSection* obj, BOOL *stop) {
-													 [obj.rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
-												 }];
-											 }];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.sections = [[sections allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"level" ascending:YES]]];
-									 [self update];
-								 }
-							 }];
-
+	NSManagedObjectContext* managedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+	[managedObjectContext performBlock:^{
+		NSMutableDictionary* sections = [NSMutableDictionary new];
+		
+		NCDBInvType* type = (NCDBInvType*) [managedObjectContext existingObjectWithID:self.typeID error:nil];
+		for (NCDBInvTypeRequiredSkill* requiredSkill in type.requiredForSkill) {
+			if (requiredSkill.type) {
+				NSInteger level = MAX(1, requiredSkill.skillLevel);
+				NCDatabaseTypeRequirementsViewControllerSection* section = sections[@(level)];
+				if (!section) {
+					sections[@(level)] = section = [NCDatabaseTypeRequirementsViewControllerSection new];
+					section.rows = [NSMutableArray new];
+					section.level = level;
+				}
+				NCDatabaseTypeRequirementsViewControllerRow* row = [NCDatabaseTypeRequirementsViewControllerRow new];
+				row.typeName = requiredSkill.type.typeName;
+				row.iconID = [requiredSkill.type.icon objectID];
+				row.typeID = [requiredSkill.type objectID];
+				[section.rows addObject:row];
+			}
+		}
+		[sections enumerateKeysAndObjectsUsingBlock:^(id key, NCDatabaseTypeRequirementsViewControllerSection* obj, BOOL *stop) {
+			[obj.rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
+		}];
+		
+		NSArray* values = [[sections allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"level" ascending:YES]]];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.sections = values;
+			[self.tableView reloadData];
+		});
+	}];
 }
-
-- (void) loadItemAttributes {
-	NCAccount *account = [NCAccount currentAccount];
-	NCCharacterAttributes* attributes = [account characterAttributes];
-	if (!attributes)
-		attributes = [NCCharacterAttributes defaultCharacterAttributes];
-	
-	}
 
 @end

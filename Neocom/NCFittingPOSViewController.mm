@@ -7,8 +7,6 @@
 //
 
 #import "NCFittingPOSViewController.h"
-#import "UIActionSheet+Block.h"
-#import "UIAlertView+Block.h"
 #import "NCStorage.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NCFittingDamagePatternsViewController.h"
@@ -30,15 +28,14 @@
 #define ActionButtonAddToShoppingList NSLocalizedString(@"Add to Shopping List", nil)
 
 @interface NCFittingPOSViewController ()
-@property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Engine> engine;
+@property (nonatomic, strong, readwrite) NCFittingEngine* engine;
 
-@property (nonatomic, strong) NSMutableDictionary* typesCache;
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
-@property (nonatomic, strong) UIActionSheet* actionSheet;
 
 @property (nonatomic, weak) NCFittingPOSStructuresViewController* structuresViewController;
 @property (nonatomic, weak) NCFittingPOSAssemblyLinesViewController* assemblyLinesViewController;
 @property (nonatomic, weak) NCFittingPOSStatsViewController* statsViewController;
+- (void) updateSectionSegmentedControlWithTraitCollection:(UITraitCollection*) traitCollection;
 
 @end
 
@@ -57,38 +54,14 @@
 {
     [super viewDidLoad];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
+		[self updateSectionSegmentedControlWithTraitCollection:self.traitCollection];
+//		[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
 
 	self.taskManager.maxConcurrentOperationCount = 1;
 	self.title = self.fit.loadoutName;
 	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 
-	std::shared_ptr<eufe::Engine> engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
-	
-	NCPOSFit* fit = self.fit;
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 @synchronized(self) {
-												 if (!fit.engine) {
-													 fit.engine = engine.get();
-													 [fit load];
-												 }
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.engine = engine;
-								 [self reload];
-
-							 }];
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
 	for (id controller in self.childViewControllers) {
-		if (![(UIViewController*) controller view].window)
-			continue;
 		if ([controller isKindOfClass:[NCFittingPOSStructuresViewController class]])
 			self.structuresViewController = controller;
 		else if ([controller isKindOfClass:[NCFittingPOSAssemblyLinesViewController class]])
@@ -96,7 +69,22 @@
 		else if ([controller isKindOfClass:[NCFittingPOSStatsViewController class]])
 			self.statsViewController = controller;
 	}
-	[self reload];
+
+	
+	NCFittingEngine* engine = [NCFittingEngine new];
+	NCPOSFit* fit = self.fit;
+	
+	[engine performBlock:^{
+		[engine loadPOSFit:fit];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.engine = engine;
+			[self reload];
+		});
+	}];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -106,9 +94,11 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
 	if ([self isMovingFromParentViewController] || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.fit save];
+		if (self.fit.loadoutID)
+			[self.fit save];
 		self.fit = nil;
-		[[NCStorage sharedStorage] saveContext];
+		if ([self.storageManagedObjectContext hasChanges])
+			[self.storageManagedObjectContext save:nil];
 	}
 	[super viewWillDisappear:animated];
 }
@@ -143,13 +133,19 @@
 		else
 			controller = segue.destinationViewController;
 		
-		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender pointerValue]);
-		NCDBInvType* type = [self typeWithItem:item];
-		
-		[type.attributesDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* attributeID, NCDBDgmTypeAttribute* attribute, BOOL *stop) {
-			attribute.value = item->getAttribute(attribute.attributeType.attributeID)->getValue();
+		[self.engine performBlockAndWait:^{
+			auto item = [(NCFittingEngineItemPointer*) sender[@"object"] item];
+			__block NSManagedObjectID* objectID;
+			NSMutableDictionary* attributes = [NSMutableDictionary new];
+			NCDBInvType* type = [self.engine.databaseManagedObjectContext invTypeWithTypeID:item->getTypeID()];
+			
+			for (NCDBDgmTypeAttribute* attribute in type.attributes) {
+				attributes[@(attribute.attributeType.attributeID)] = @(item->getAttribute(attribute.attributeType.attributeID)->getValue());
+			}
+			objectID = [type objectID];
+			controller.typeID = objectID;
+			controller.attributes = attributes;
 		}];
-		controller.type = (id) type;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingDamagePatternsViewController"]) {
 		NCFittingDamagePatternsViewController* controller;
@@ -158,7 +154,7 @@
 		else
 			controller = segue.destinationViewController;
 
-		controller.selectedDamagePattern = self.damagePattern;
+//		controller.selectedDamagePattern = self.damagePattern;
 	}
 	else if ([segue.identifier isEqualToString:@"NCNewShoppingItemViewController"]) {
 		NCNewShoppingItemViewController* controller;
@@ -166,55 +162,36 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		controller.shoppingGroup = sender;
-	}
-}
-
-- (NCDBInvType*) typeWithItem:(eufe::Item*) item {
-	if (!item)
-		return nil;
-	@synchronized(self) {
-		if (!self.typesCache)
-			self.typesCache = [NSMutableDictionary new];
-		int typeID = item->getTypeID();
-		
-		NCDBInvType* type = self.typesCache[@(typeID)];
-		if (!type) {
-			type = [NCDBInvType invTypeWithTypeID:typeID];
-			if (type)
-				self.typesCache[@(typeID)] = type;
-		}
-		return type;
+		controller.shoppingGroup = sender[@"object"];
 	}
 }
 
 - (void) reload {
-	[self.structuresViewController reload];
-	[self.assemblyLinesViewController reload];
-	[self.statsViewController reload];
+	for (NCFittingPOSWorkspaceViewController* controller in self.childViewControllers)
+		[controller reload];
+	if (!self.fit.engine || !self.fit.engine.engine->getControlTower())
+		return;
 	
-	__block float totalPG;
-	__block float usedPG;
-	__block float totalCPU;
-	__block float usedCPU;
+	[self.engine performBlock:^{
+		float totalPG;
+		float usedPG;
+		float totalCPU;
+		float usedCPU;
+		
+		auto controlTower = self.engine.engine->getControlTower();
+		totalPG = controlTower->getTotalPowerGrid();
+		usedPG = controlTower->getPowerGridUsed();
+		
+		totalCPU = controlTower->getTotalCpu();
+		usedCPU = controlTower->getCpuUsed();
 
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 eufe::ControlTower* controlTower = self.engine->getControlTower();
-											 totalPG = controlTower->getTotalPowerGrid();
-											 usedPG = controlTower->getPowerGridUsed();
-											 
-											 totalCPU = controlTower->getTotalCpu();
-											 usedCPU = controlTower->getCpuUsed();
-
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
-								 self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
-								 self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
-								 self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
-							 }];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
+			self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
+			self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
+			self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
+		});
+	}];
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {
@@ -229,138 +206,122 @@
 }
 
 - (IBAction)onAction:(id)sender {
-	if (!self.fit.engine || !self.fit.engine->getControlTower())
+	if (!self.fit.engine || !self.fit.engine.engine->getControlTower())
 		return;
 	
-	NSMutableArray* buttons = [NSMutableArray new];
 	NSMutableArray* actions = [NSMutableArray new];
 	
-	void (^controlTowerInfo)() = ^() {
-		[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:self.fit.engine->getControlTower()]];
-	};
-	
-	void (^rename)() = ^() {
-		UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename", nil)
-														 message:nil
-											   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											   otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
-												 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-													 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-														 UITextField* textField = [alertView textFieldAtIndex:0];
-														 self.fit.loadoutName = textField.text;
-														 self.title = self.fit.loadoutName;
-													 }
-												 } cancelBlock:nil];
-		alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-		UITextField* textField = [alertView textFieldAtIndex:0];
-		textField.text = self.fit.loadoutName;
-		[alertView show];
-	};
-	
-	void (^save)() = ^() {
-		[self.fit save];
-	};
+	[self.engine performBlockAndWait:^{
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonShowControlTowerInfo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
+									  sender:@{@"sender": sender, @"object": [NCFittingEngineItemPointer pointerWithItem:self.engine.engine->getControlTower()]}];
+		}]];
 
-	void (^duplicate)() = ^() {
-		[self.fit save];
-		NCStorage* storage = [NCStorage sharedStorage];
-		self.fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-		self.fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-		self.fit.loadoutName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.loadoutName ? self.fit.loadoutName : @""];
-		self.title = self.fit.loadoutName;
-	};
-	
-	void (^setDamagePattern)() = ^() {
-		[self performSegueWithIdentifier:@"NCFittingDamagePatternsViewController" sender:sender];
-	};
-	
-	void (^addToShoppingList)() = ^() {
-		NSMutableDictionary* items = [NSMutableDictionary new];
 		
-		eufe::ControlTower* controlTower = self.fit.engine->getControlTower();
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetName style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Rename", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+			__block UITextField* renameTextField;
+			[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+				renameTextField = textField;
+				textField.text = self.fit.loadoutName;
+				textField.clearButtonMode = UITextFieldViewModeAlways;
+			}];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Rename", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				self.fit.loadoutName = renameTextField.text;
+				self.title = self.fit.loadoutName;
+			}]];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+			}]];
+			[self presentViewController:controller animated:YES completion:nil];
+		}]];
 		
-		NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
-												  insertIntoManagedObjectContext:nil];
-		shoppingGroup.name = self.fit.loadout.name.length > 0 ? self.fit.loadout.name : self.fit.type.typeName;
-		shoppingGroup.quantity = 1;
+		if (!self.fit.loadoutID)
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSave style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self.fit save];
+			}]];
+		else
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDuplicate style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			}]];
 		
-		
-		void (^addItem)(eufe::Item*, int32_t) = ^(eufe::Item* item, int32_t quanity) {
-			NCShoppingItem* shoppingItem = items[@(item->getTypeID())];
-			if (!shoppingItem) {
-				shoppingItem = [NCShoppingItem shoppingItemWithType:[self typeWithItem:item] quantity:quanity];
-				shoppingItem.shoppingGroup = shoppingGroup;
-				[shoppingGroup addShoppingItemsObject:shoppingItem];
-				if (shoppingItem)
-					items[@(item->getTypeID())] = shoppingItem;
-			}
-			else
-				shoppingItem.quantity += quanity;
-		};
-		
-		addItem(controlTower, 1);
-		
-		for (auto structure: controlTower->getStructures()) {
-			addItem(structure, 1);
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetDamagePattern style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self performSegueWithIdentifier:@"NCFittingDamagePatternsViewController" sender:sender];
+		}]];
+
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAddToShoppingList style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			NSMutableDictionary* items = [NSMutableDictionary new];
 			
-			eufe::Charge* charge = structure->getCharge();
-			if (charge) {
-				int n = structure->getCharges();
-				if (n == 0)
-					n = 1;
-				addItem(charge, n);
-			}
+			NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:self.storageManagedObjectContext]
+													  insertIntoManagedObjectContext:nil];
+			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.fit.typeID];
+			shoppingGroup.name = self.fit.loadoutName > 0 ? self.fit.loadoutName : type.typeName;
+			shoppingGroup.quantity = 1;
+			
+			
+			void (^addItem)(std::shared_ptr<eufe::Item>, int32_t) = ^(std::shared_ptr<eufe::Item> item, int32_t quanity) {
+				NCShoppingItem* shoppingItem = items[@(item->getTypeID())];
+				if (!shoppingItem) {
+					shoppingItem = [[NCShoppingItem alloc] initWithTypeID:item->getTypeID() quantity:quanity entity:[NSEntityDescription entityForName:@"ShoppingItem" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:nil];
+					shoppingItem.shoppingGroup = shoppingGroup;
+					[shoppingGroup addShoppingItemsObject:shoppingItem];
+					if (shoppingItem)
+						items[@(item->getTypeID())] = shoppingItem;
+				}
+				else
+					shoppingItem.quantity += quanity;
+			};
+			
+			[self.engine performBlockAndWait:^{
+				auto controlTower = self.engine.engine->getControlTower();
+				addItem(controlTower, 1);
+				
+				for (auto structure: controlTower->getStructures()) {
+					addItem(structure, 1);
+					
+					auto charge = structure->getCharge();
+					if (charge) {
+						int n = structure->getCharges();
+						if (n == 0)
+							n = 1;
+						addItem(charge, n);
+					}
+				}
+			}];
+			
+			
+			shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
+			shoppingGroup.immutable = YES;
+			shoppingGroup.iconFile = type.icon.iconFile;
+			
+			[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"sender": sender, @"object": shoppingGroup}];
+		}]];
+		
+	}];
+	
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	for (UIAlertAction* action in actions)
+		[controller addAction:action];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		if ([sender isKindOfClass:[UIBarButtonItem class]])
+			controller.popoverPresentationController.barButtonItem = sender;
+		else {
+			controller.popoverPresentationController.sourceView = sender;
+			controller.popoverPresentationController.sourceRect = [sender bounds];
 		}
-		
-		shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
-		shoppingGroup.immutable = YES;
-		shoppingGroup.iconFile = self.fit.loadout.type.icon.iconFile;
-		
-		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:shoppingGroup];
-	};
-
-	
-	[actions addObject:controlTowerInfo];
-	[buttons addObject:ActionButtonShowControlTowerInfo];
-	
-	[actions addObject:rename];
-	[buttons addObject:ActionButtonSetName];
-	
-	if (!self.fit.loadout.managedObjectContext) {
-		[actions addObject:save];
-		[buttons addObject:ActionButtonSave];
 	}
-	else {
-		[actions addObject:duplicate];
-		[buttons addObject:ActionButtonDuplicate];
-	}
-	
-	[actions addObject:setDamagePattern];
-	[buttons addObject:ActionButtonSetDamagePattern];
-	
-	[buttons addObject:ActionButtonAddToShoppingList];
-	[actions addObject:addToShoppingList];
-
-	if (self.actionSheet) {
-		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
-		self.actionSheet = nil;
-	}
-	
-	
-	self.actionSheet = [UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-													 title:nil
-										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-									destructiveButtonTitle:nil
-										 otherButtonTitles:buttons
-										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-												   void (^action)() = actions[selectedButtonIndex];
-												   action();
-											   }
-											   self.actionSheet = nil;
-										   } cancelBlock:nil];
-	[self.actionSheet showFromBarButtonItem:sender animated:YES];
+	else
+		[self presentViewController:controller animated:YES completion:nil];
 }
+
+- (void) willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+	[super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self updateSectionSegmentedControlWithTraitCollection:newCollection];
+}
+
 
 #pragma mark - UIScrollViewDelegate
 
@@ -370,12 +331,22 @@
 		page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
 		self.sectionSegmentedControl.selectedSegmentIndex = page;
 	}
+	else if (!scrollView.tracking && !scrollView.decelerating) {
+		for (NCFittingPOSWorkspaceViewController* controller in self.childViewControllers) {
+			if ([controller isKindOfClass:[NCFittingPOSWorkspaceViewController class]])
+				[controller updateVisibility];
+		}
+	}
 }
 
 - (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
 	NSInteger page = round(self.scrollView.contentOffset.x / self.scrollView.frame.size.width);
 	page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
 	self.sectionSegmentedControl.selectedSegmentIndex = page;
+	for (NCFittingPOSWorkspaceViewController* controller in self.childViewControllers) {
+		if ([controller isKindOfClass:[NCFittingPOSWorkspaceViewController class]])
+			[controller updateVisibility];
+	}
 }
 
 #pragma mark - Private
@@ -390,15 +361,28 @@
 		damagePattern.kineticAmount = sourceViewController.selectedDamagePattern.kinetic;
 		damagePattern.explosiveAmount = sourceViewController.selectedDamagePattern.explosive;
 		
-		self.damagePattern = sourceViewController.selectedDamagePattern;
-		eufe::ControlTower* controlTower = self.fit.engine->getControlTower();
-		controlTower->setDamagePattern(damagePattern);
-		[self reload];
+		//self.damagePattern = sourceViewController.selectedDamagePattern;
+		auto controlTower = self.fit.engine.engine->getControlTower();
+		[self.engine performBlockAndWait:^{
+			controlTower->setDamagePattern(damagePattern);
+			[self reload];
+		}];
 	}
 }
 
 - (IBAction) unwindFromNewShoppingItem:(UIStoryboardSegue*)segue {
 	
+}
+
+- (void) updateSectionSegmentedControlWithTraitCollection:(UITraitCollection*) traitCollection {
+	if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+		if (self.sectionSegmentedControl.numberOfSegments == 2)
+			[self.sectionSegmentedControl insertSegmentWithTitle:NSLocalizedString(@"Stats", nil) atIndex:2 animated:NO];
+	}
+	else if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+		if (self.sectionSegmentedControl.numberOfSegments == 3)
+			[self.sectionSegmentedControl removeSegmentAtIndex:2 animated:NO];
+	}
 }
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "NCRSSItemViewController.h"
-#import "RSS.h"
+#import <EVEAPI/EVEAPI.h>
 #import "RSSItem+Neocom.h"
 
 @interface NCRSSItemViewController ()

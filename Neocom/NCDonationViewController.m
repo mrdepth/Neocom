@@ -8,9 +8,9 @@
 
 #import "NCDonationViewController.h"
 #import "ASInAppPurchase.h"
-#import "UIActionSheet+Block.h"
 #import "NCDonationCell.h"
 #import "UIColor+Neocom.h"
+#import "UIAlertController+Neocom.h"
 
 @interface NCDonationViewController ()<SKPaymentTransactionObserver>
 @property (nonatomic, assign, getter = isAnAppActive) BOOL inAppActive;
@@ -53,36 +53,45 @@
 }
 
 - (IBAction)onDonate:(id)sender {
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				  destructiveButtonTitle:nil
-					   otherButtonTitles:@[NSLocalizedString(@"Donate $1", nil), NSLocalizedString(@"Donate $5", nil), NSLocalizedString(@"Donate $10", nil)]
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 SKPaymentQueue *paymentQueue = [SKPaymentQueue defaultQueue];
-								 if (paymentQueue.transactions.count > 0)
-									 return;
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	
+	void (^donate)(NSString*) = ^(NSString* productID) {
+		SKPaymentQueue *paymentQueue = [SKPaymentQueue defaultQueue];
+		if (paymentQueue.transactions.count == 0) {
+			[paymentQueue addTransactionObserver:self];
+			SKMutablePayment *payment = [[SKMutablePayment alloc] init];
+			payment.productIdentifier = productID;
+			payment.quantity = 1;
+			[paymentQueue addPayment:payment];
+			self.inAppActive = YES;
+		}
+	};
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Donate $1", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		donate(NCInAppDonate1ProductID);
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Donate $5", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		donate(NCInAppDonate5ProductID);
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Donate $10", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		donate(NCInAppDonate10ProductID);
+	}]];
 
-								 NSString* productId = nil;
-								 if (selectedButtonIndex == 0)
-									 productId = NCInAppDonate1ProductID;
-								 else if (selectedButtonIndex == 1)
-									 productId = NCInAppDonate5ProductID;
-								 else if (selectedButtonIndex == 2)
-									 productId = NCInAppDonate10ProductID;
-								 
-								 [paymentQueue addTransactionObserver:self];
-								 SKMutablePayment *payment = [[SKMutablePayment alloc] init];
-								 payment.productIdentifier = productId;
-								 payment.quantity = 1;
-								 [paymentQueue addPayment:payment];
-								 
-								 self.inAppActive = YES;
-
-							 }
-						 } cancelBlock:nil] showFromRect:[sender bounds] inView:sender animated:YES];
-}
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		if ([sender isKindOfClass:[UIBarButtonItem class]])
+			controller.popoverPresentationController.barButtonItem = sender;
+		else {
+			controller.popoverPresentationController.sourceView = sender;
+			controller.popoverPresentationController.sourceRect = [sender bounds];
+		}
+	}
+	else
+		[self presentViewController:controller animated:YES completion:nil];}
 
 - (IBAction)onRestore:(id)sender {
 	SKPaymentQueue *paymentQueue = [SKPaymentQueue defaultQueue];
@@ -136,24 +145,14 @@
 }
 
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
-	UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
-														message:NSLocalizedString(@"Sorry, but we haven't found your purchases.", nil)
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"Close", nil)
-											  otherButtonTitles:nil];
-	[alertView show];
+	[self presentViewController:[UIAlertController alertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Sorry, but we haven't found your purchases", nil)] animated:YES completion:nil];
 	self.inAppActive = NO;
 	[self.tableView reloadData];
 }
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
 	if (queue.transactions.count == 0) {
-		UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
-															message:NSLocalizedString(@"Sorry, but we haven't found your purchases.", nil)
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"Close", nil)
-												  otherButtonTitles:nil];
-		[alertView show];
+		[self presentViewController:[UIAlertController alertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Sorry, but we haven't found your purchases", nil)] animated:YES completion:nil];
 	}
 	self.inAppActive = NO;
 	[self.tableView reloadData];
@@ -182,6 +181,10 @@
 		cell.userInteractionEnabled = YES;
 		[cell.activityIndicatorView stopAnimating];
 	}
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Private

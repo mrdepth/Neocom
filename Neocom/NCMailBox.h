@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "EVEOnlineAPI.h"
+#import <CoreData/CoreData.h>
 #import "NCTaskManager.h"
+
+#define NCMailBoxDidUpdateNotification @"NCMailBoxDidUpdateNotification"
 
 typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 	NCMailBoxContactTypeCharacter,
@@ -23,15 +25,15 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 @end
 
 @class NCMailBox;
-@interface NCMailBoxMessage : NSObject<NSCoding>
-@property (nonatomic, weak) NCMailBox* mailBox;
+@class EVEMailMessagesItem;
+@class EVEMailBodiesItem;
+@interface NCMailBoxMessage : NSObject<NSCoding, NSCopying>
 @property (nonatomic, strong) EVEMailMessagesItem* header;
 @property (nonatomic, strong) EVEMailBodiesItem* body;
 @property (nonatomic, strong) NCMailBoxContact* sender;
 @property (nonatomic, strong) NSArray* recipients;
 @property (nonatomic, getter = isRead) BOOL read;
 
-- (void) clearCache;
 @end
 
 @class NCAccount;
@@ -40,10 +42,14 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 @property (nonatomic, strong) NCAccount* account;
 @property (nonatomic, strong) NSDate* updateDate;
 
-@property (nonatomic, strong, readonly) NSArray* messages;
-@property (nonatomic, assign, readonly) NSInteger numberOfUnreadMessages;
+//@property (nonatomic, assign, readonly) NSInteger numberOfUnreadMessages;
+@property (nonatomic, strong) NSManagedObjectContext* cacheManagedObjectContext;
 
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy inTask:(NCTask*) task;
+- (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSArray* messages, NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
 - (void) markAsRead:(NSArray*) messages;
+- (void) loadMessagesWithCompletionBlock:(void(^)(NSArray* messages, NSError* error)) completionBlock progressBlock:(void(^)(float progress)) progressBlock;
+
+- (void) loadBodyForMessage:(NCMailBoxMessage*) message withCompletionBlock:(void(^)(EVEMailBodiesItem* body, NSError* error)) completionBlock;
+- (void) loadNumberOfUnreadMessagesWithCompletionBlock:(void(^)(NSInteger numberOfUnreadMessages, NSError* error)) completionBlock;
 
 @end

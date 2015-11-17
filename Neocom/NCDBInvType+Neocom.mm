@@ -10,42 +10,9 @@
 #import "NCDBInvMetaGroup.h"
 #import "NCDatabase.h"
 #import <objc/runtime.h>
-#import "eufe.h"
+#import <eufe/eufe.h>
 
 @implementation NCDBInvType (Neocom)
-
-+ (instancetype) invTypeWithTypeID:(int32_t) typeID {
-	NCDatabase* database = [NCDatabase sharedDatabase];
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
-	request.predicate = [NSPredicate predicateWithFormat:@"typeID == %d", typeID];
-	request.fetchLimit = 1;
-	__block NSArray* result;
-	if ([NSThread isMainThread])
-		result = [database.managedObjectContext executeFetchRequest:request error:nil];
-	else
-		[database.backgroundManagedObjectContext performBlockAndWait:^{
-			result = [database.backgroundManagedObjectContext executeFetchRequest:request error:nil];
-		}];
-	return result.count > 0 ? result[0] : nil;
-}
-
-+ (instancetype) invTypeWithTypeName:(NSString*) typeName {
-	if (!typeName)
-		return nil;
-	
-	NCDatabase* database = [NCDatabase sharedDatabase];
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
-	request.predicate = [NSPredicate predicateWithFormat:@"typeName LIKE[C] %@", typeName];
-	request.fetchLimit = 1;
-	__block NSArray* result;
-	if ([NSThread isMainThread])
-		result = [database.managedObjectContext executeFetchRequest:request error:nil];
-	else
-		[database.backgroundManagedObjectContext performBlockAndWait:^{
-			result = [database.backgroundManagedObjectContext executeFetchRequest:request error:nil];
-		}];
-	return result.count > 0 ? result[0] : nil;
-}
 
 - (NSString*) metaGroupName {
 	return self.metaGroup.metaGroupName;

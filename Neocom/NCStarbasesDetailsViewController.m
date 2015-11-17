@@ -35,6 +35,7 @@
 
 @interface NCStarbasesDetailsViewController ()
 @property (nonatomic, strong) NSArray* sections;
+@property (nonatomic, strong) NCDBEveIcon* defaultTypeIcon;
 @end
 
 @implementation NCStarbasesDetailsViewController
@@ -52,22 +53,28 @@
 {
     [super viewDidLoad];
 	self.refreshControl = nil;
-	
-	float hours = [[self.starbase.details serverTimeWithLocalTime:[NSDate date]] timeIntervalSinceDate:self.starbase.details.currentTime] / 3600.0;
+	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
+
+	float hours = [[self.starbase.details.eveapi serverTimeWithLocalTime:[NSDate date]] timeIntervalSinceDate:self.starbase.details.eveapi.currentTime] / 3600.0;
 	if (hours < 0)
 		hours = 0;
 	float bonus = self.starbase.resourceConsumptionBonus;
 	
 	float security = 1.0;
-	if (self.starbase.solarSystem)
-		security = self.starbase.solarSystem.security;
-	else if (self.starbase.moon)
-		security = self.starbase.moon.security;
+	NCDBMapSolarSystem* solarSystem = [self.databaseManagedObjectContext mapSolarSystemWithSolarSystemID:self.starbase.locationID];
+	NCDBMapDenormalize* moon = [self.databaseManagedObjectContext mapDenormalizeWithItemID:self.starbase.moonID];
+	
+	if (solarSystem)
+		security = solarSystem.security;
+	else if (moon)
+		security = security;
+	
+	NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.starbase.typeID];
 	
 	NSMutableArray* rows = [NSMutableArray new];
-	for (NCDBInvControlTowerResource *resource in self.starbase.type.controlTower.resources) {
+	for (NCDBInvControlTowerResource *resource in type.controlTower.resources) {
 		if ((resource.minSecurityLevel > 0 && security < resource.minSecurityLevel) ||
-			(resource.factionID > 0 && self.starbase.solarSystem.constellation.region.factionID != resource.factionID))
+			(resource.factionID > 0 && solarSystem.constellation.region.factionID != resource.factionID))
 			continue;
 		
 		int quantity = 0;
@@ -134,7 +141,7 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.type = [sender object];
+		controller.typeID = [[sender object] objectID];
 	}
 }
 
@@ -170,7 +177,7 @@
 	
 	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	
-	cell.iconView.image = row.resource.resourceType.icon ? row.resource.resourceType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	cell.iconView.image = row.resource.resourceType.icon ? row.resource.resourceType.icon.image.image : self.defaultTypeIcon.image.image;
 	cell.titleLabel.text = row.resource.resourceType.typeName;
 	
 	cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ left (%@)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.quantity], row.remains];

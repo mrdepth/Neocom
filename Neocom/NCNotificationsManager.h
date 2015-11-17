@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#define NCSettingsNotificationsLastUpdateTimeKey @"NCSettingsNotificationsLastUpdateTimeKey"
+#define NCSettingsNotificationsLastEventsUpdateTimeKey @"NCSettingsNotificationsLastEventsUpdateTimeKey"
+#define NCSettingsSkillQueueNotificationTimeKey @"NCSettingsSkillQueueNotificationTimeKey"
+#define NCSkillQueueNotificationTimeDidChangeNotification @"NCSkillQueueNotificationTimeDidChangeNotification"
+
 typedef NS_OPTIONS(NSInteger, NCNotificationsManagerSkillQueueNotificationTime) {
 	NCNotificationsManagerSkillQueueNotificationTimeNone = 0,
 	NCNotificationsManagerSkillQueueNotificationTime1Day = 0x1 << 0,

@@ -16,6 +16,6 @@
 @end
 
 @interface NCAssetsAccountsViewController : NCTableViewController
-@property (nonatomic, strong) NSArray* selectedAccounts;
+@property (nonatomic, strong) NSArray<NSManagedObjectID*>* selectedAccounts;
 @property (nonatomic, weak) id<NCAssetsAccountsViewControllerDelegate> delegate;
 @end

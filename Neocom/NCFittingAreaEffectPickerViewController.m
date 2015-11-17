@@ -30,58 +30,51 @@
     [super viewDidLoad];
 	self.refreshControl = nil;
 	NSMutableArray* sections = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NSMutableArray* blackHole = [NSMutableArray array];
-											 NSMutableArray* cataclysmic = [NSMutableArray array];
-											 NSMutableArray* magnetar = [NSMutableArray array];
-											 NSMutableArray* pulsar = [NSMutableArray array];
-											 NSMutableArray* redGiant = [NSMutableArray array];
-											 NSMutableArray* wolfRayet = [NSMutableArray array];
-											 NSMutableArray* incursion = [NSMutableArray array];
-											 NSMutableArray* other = [NSMutableArray array];
-											 
-											 NCDatabase* database = [NCDatabase sharedDatabase];
-											 [database.backgroundManagedObjectContext performBlockAndWait:^{
-												 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
-												 request.predicate = [NSPredicate predicateWithFormat:@"group.groupID == 920"];
-												 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
-												 for (NCDBInvType* type in [database.backgroundManagedObjectContext executeFetchRequest:request error:nil]) {
-													 if ([type.typeName rangeOfString:@"Black Hole Effect Beacon Class"].location != NSNotFound)
-														 [blackHole addObject:type];
-													 else if ([type.typeName rangeOfString:@"Cataclysmic Variable Effect Beacon Class"].location != NSNotFound)
-														 [cataclysmic addObject:type];
-													 else if ([type.typeName rangeOfString:@"Incursion"].location != NSNotFound)
-														 [incursion addObject:type];
-													 else if ([type.typeName rangeOfString:@"Magnetar Effect Beacon Class"].location != NSNotFound)
-														 [magnetar addObject:type];
-													 else if ([type.typeName rangeOfString:@"Pulsar Effect Beacon Class"].location != NSNotFound)
-														 [pulsar addObject:type];
-													 else if ([type.typeName rangeOfString:@"Red Giant Beacon Class"].location != NSNotFound)
-														 [redGiant addObject:type];
-													 else if ([type.typeName rangeOfString:@"Wolf Rayet Effect Beacon Class"].location != NSNotFound)
-														 [wolfRayet addObject:type];
-													 else
-														 [other addObject:type];
-												 }
-											 }];
-											 [sections addObject:blackHole];
-											 [sections addObject:cataclysmic];
-											 [sections addObject:magnetar];
-											 [sections addObject:pulsar];
-											 [sections addObject:redGiant];
-											 [sections addObject:wolfRayet];
-											 [sections addObject:incursion];
-											 [sections addObject:other];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.sections = sections;
-									 [self update];
-								 }
-							 }];
-	// Do any additional setup after loading the view.
+	NSManagedObjectContext* context = [[NCDatabase sharedDatabase] createManagedObjectContext];
+	[context performBlock:^{
+		NSMutableArray* blackHole = [NSMutableArray array];
+		NSMutableArray* cataclysmic = [NSMutableArray array];
+		NSMutableArray* magnetar = [NSMutableArray array];
+		NSMutableArray* pulsar = [NSMutableArray array];
+		NSMutableArray* redGiant = [NSMutableArray array];
+		NSMutableArray* wolfRayet = [NSMutableArray array];
+		NSMutableArray* incursion = [NSMutableArray array];
+		NSMutableArray* other = [NSMutableArray array];
+		
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+		request.predicate = [NSPredicate predicateWithFormat:@"group.groupID == 920"];
+		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
+		for (NCDBInvType* type in [context executeFetchRequest:request error:nil]) {
+			if ([type.typeName rangeOfString:@"Black Hole Effect Beacon Class"].location != NSNotFound)
+				[blackHole addObject:type];
+			else if ([type.typeName rangeOfString:@"Cataclysmic Variable Effect Beacon Class"].location != NSNotFound)
+				[cataclysmic addObject:type];
+			else if ([type.typeName rangeOfString:@"Incursion"].location != NSNotFound)
+				[incursion addObject:type];
+			else if ([type.typeName rangeOfString:@"Magnetar Effect Beacon Class"].location != NSNotFound)
+				[magnetar addObject:type];
+			else if ([type.typeName rangeOfString:@"Pulsar Effect Beacon Class"].location != NSNotFound)
+				[pulsar addObject:type];
+			else if ([type.typeName rangeOfString:@"Red Giant Beacon Class"].location != NSNotFound)
+				[redGiant addObject:type];
+			else if ([type.typeName rangeOfString:@"Wolf Rayet Effect Beacon Class"].location != NSNotFound)
+				[wolfRayet addObject:type];
+			else
+				[other addObject:type];
+		}
+		[sections addObject:[blackHole valueForKey:@"typeID"]];
+		[sections addObject:[cataclysmic valueForKey:@"typeID"]];
+		[sections addObject:[magnetar valueForKey:@"typeID"]];
+		[sections addObject:[pulsar valueForKey:@"typeID"]];
+		[sections addObject:[redGiant valueForKey:@"typeID"]];
+		[sections addObject:[wolfRayet valueForKey:@"typeID"]];
+		[sections addObject:[incursion valueForKey:@"typeID"]];
+		[sections addObject:[other valueForKey:@"typeID"]];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.sections = sections;
+			[self.tableView reloadData];
+		});
+	}];
 }
 
 - (void)didReceiveMemoryWarning
@@ -101,7 +94,7 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.type = [sender object];
+		controller.typeID = [[sender object] objectID];
 	}
 }
 
@@ -140,10 +133,6 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
 - (id) identifierForSection:(NSInteger)section {
 	return @(section);
 }
@@ -155,9 +144,9 @@
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	
-	NCDBInvType* row = self.sections[indexPath.section][indexPath.row];
+	NCDBInvType* row = [self.databaseManagedObjectContext invTypeWithTypeID:[self.sections[indexPath.section][indexPath.row] intValue]];
 	cell.titleLabel.text = row.typeName;
-	cell.accessoryView = self.selectedAreaEffect && self.selectedAreaEffect.typeID == row.typeID ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+	cell.accessoryView = self.selectedAreaEffect && self.selectedAreaEffect.typeID == row.typeID ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]] : nil;
 	cell.object = row;
 }
 

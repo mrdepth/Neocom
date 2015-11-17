@@ -18,43 +18,33 @@
 #import "NCPriceManager.h"
 #import "NCTableViewHeaderView.h"
 
-
-@interface NCFittingPOSStatsViewControllerPOSStats : NSObject
-@property (nonatomic, assign) float totalPG;
-@property (nonatomic, assign) float usedPG;
-@property (nonatomic, assign) float totalCPU;
-@property (nonatomic, assign) float usedCPU;
-@property (nonatomic, assign) eufe::Resistances resistances;
-@property (nonatomic, assign) eufe::HitPoints hp;
-@property (nonatomic, assign) float ehp;
-@property (nonatomic, assign) eufe::Tank rtank;
-@property (nonatomic, assign) eufe::Tank ertank;
-
-@property (nonatomic, assign) float weaponDPS;
-@property (nonatomic, assign) float volleyDamage;
-@property (nonatomic, strong) NCDamagePattern* damagePattern;
+@interface NCFittingPOSStatsViewControllerRow : NSObject
+@property (nonatomic, assign) BOOL isUpToDate;
+@property (nonatomic, strong) NSDictionary* data;
+@property (nonatomic, strong) NSString* cellIdentifier;
+@property (nonatomic, copy) void (^configurationBlock)(id tableViewCell, NSDictionary* data);
+@property (nonatomic, copy) void (^loadingBlock)(NCFittingPOSStatsViewController* controller, void (^completionBlock)(NSDictionary* data));
 @end
 
-@interface NCFittingPOSStatsViewControllerPriceStats : NSObject
-@property (nonatomic, assign) int fuelConsumtion;
-@property (nonatomic, assign) float fuelDailyCost;
-@property (nonatomic, assign) float upgradesCost;
-@property (nonatomic, assign) float upgradesDailyCost;
-@property (nonatomic, assign) float posCost;
+@interface NCFittingPOSStatsViewControllerSection : NSObject
+@property (nonatomic, strong) NSString* title;
+@property (nonatomic, strong) NSArray* rows;
 @end
 
-@implementation NCFittingPOSStatsViewControllerPOSStats
+@implementation NCFittingPOSStatsViewControllerRow
 @end
 
-@implementation NCFittingPOSStatsViewControllerPriceStats
+@implementation NCFittingPOSStatsViewControllerSection
 @end
+
+
+
 
 
 @interface NCFittingPOSStatsViewController()
-@property (nonatomic, strong) NCFittingPOSStatsViewControllerPOSStats* posStats;
-@property (nonatomic, strong) NCFittingPOSStatsViewControllerPriceStats* priceStats;
-@property (nonatomic, strong) NCPriceManager* priceManager;
 @property (nonatomic, strong) NCDBInvControlTowerResource* posFuelRequirements;
+
+@property (nonatomic, strong) NSArray* sections;
 @end
 
 
@@ -62,88 +52,374 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
-	self.priceManager = [NCPriceManager sharedManager];
 }
 
-- (void) reload {
-	NCFittingPOSStatsViewControllerPOSStats* stats = [NCFittingPOSStatsViewControllerPOSStats new];
-	
-	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-													title:NCTaskManagerDefaultTitle
-													block:^(NCTask *task) {
-														//														@synchronized(self.controller) {
-														if (!self.controller.engine)
-															return;
-														eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
-														if (!controlTower)
-															return;
-														
-														stats.totalPG = controlTower->getTotalPowerGrid();
-														stats.usedPG = controlTower->getPowerGridUsed();
-														
-														stats.totalCPU = controlTower->getTotalCpu();
-														stats.usedCPU = controlTower->getCpuUsed();
-														
-														stats.resistances = controlTower->getResistances();
-														
-														stats.hp = controlTower->getHitPoints();
-														eufe::HitPoints effectiveHitPoints = controlTower->getEffectiveHitPoints();
-														stats.ehp = effectiveHitPoints.shield + effectiveHitPoints.armor + effectiveHitPoints.hull;
-														
-														stats.rtank = controlTower->getTank();
-														stats.ertank = controlTower->getEffectiveTank();
-														
-														stats.weaponDPS = controlTower->getWeaponDps();
-														stats.volleyDamage = controlTower->getWeaponVolley();
-														
-														stats.damagePattern = self.controller.damagePattern;
-														//														}
-													}
-										completionHandler:^(NCTask *task) {
-											if (![task isCancelled]) {
-												self.posStats = stats;
-												if (self.tableView.dataSource == self)
-													[self.tableView reloadData];
+- (void) reloadWithCompletionBlock:(void (^)())completionBlock {
+	if (self.controller.engine) {
+		if (self.sections) {
+			for (NCFittingPOSStatsViewControllerSection* section in self.sections)
+				for (NCFittingPOSStatsViewControllerRow* row in section.rows)
+					row.isUpToDate = NO;
+			completionBlock();
+		}
+		else {
+			[self.controller.engine performBlock:^{
+				NSMutableArray* sections = [NSMutableArray new];
+				NCFittingPOSStatsViewControllerSection* section;
+				NCFittingPOSStatsViewControllerRow* row;
+
+				section = [NCFittingPOSStatsViewControllerSection new];
+				section.title = NSLocalizedString(@"Resources", nil);
+				{
+					NSMutableArray* rows = [NSMutableArray new];
+
+					row = [NCFittingPOSStatsViewControllerRow new];
+					row.cellIdentifier = @"NCFittingPOSResourcesCell";
+					row.configurationBlock = ^(id tableViewCell, NSDictionary* data) {
+						NCFittingPOSResourcesCell* cell = (NCFittingPOSResourcesCell*) tableViewCell;
+						cell.powerGridLabel.text = data[@"powerGrid"];
+						cell.powerGridLabel.progress = [data[@"powerGridProgress"] floatValue];
+						cell.cpuLabel.text = data[@"cpu"];
+						cell.cpuLabel.progress = [data[@"cpuProgress"] floatValue];
+					};
+					row.loadingBlock = ^(NCFittingPOSStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
+						if (controller.controller.engine) {
+							[controller.controller.engine performBlock:^{
+								auto controlTower = controller.controller.engine.engine->getControlTower();
+								float totalPG = controlTower->getTotalPowerGrid();
+								float usedPG = controlTower->getPowerGridUsed();
+								float totalCPU = controlTower->getTotalCpu();
+								float usedCPU = controlTower->getCpuUsed();
+								
+								NSDictionary* data =
+								@{@"powerGrid": [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"],
+								  @"powerGridProgress": totalPG > 0 ? @(usedPG / totalPG) : @(0),
+								  @"cpu": [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"],
+								  @"cpuProgress": totalCPU > 0 ? @(usedCPU / totalCPU) : @(0)};
+								dispatch_async(dispatch_get_main_queue(), ^{
+									completionBlock(data);
+								});
+							}];
+						}
+						else
+							completionBlock(nil);
+					};
+					[rows addObject:row];
+					
+					section.rows = rows;
+				}
+				[sections addObject:section];
+
+				section = [NCFittingPOSStatsViewControllerSection new];
+				section.title = NSLocalizedString(@"Resistances", nil);
+				{
+					NSMutableArray* rows = [NSMutableArray new];
+					row = [NCFittingPOSStatsViewControllerRow new];
+					row.cellIdentifier = @"NCFittingResistancesHeaderCell";
+					row.configurationBlock = ^(id tableViewCell, NSDictionary* data) {
+					};
+					row.loadingBlock = ^(NCFittingPOSStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
+						completionBlock(nil);
+					};
+					[rows addObject:row];
+					
+					NSArray* images = @[@"shield", @"armor", @"hull", @"damagePattern"];
+					for (int i = 0; i < 4; i++) {
+						row = [NCFittingPOSStatsViewControllerRow new];
+						row.cellIdentifier = @"NCFittingResistancesCell";
+						row.configurationBlock = ^(id tableViewCell, NSDictionary* data) {
+							NCFittingResistancesCell* cell = (NCFittingResistancesCell*) tableViewCell;
+							NCProgressLabel* labels[] = {cell.emLabel, cell.thermalLabel, cell.kineticLabel, cell.explosiveLabel};
+							NSArray* values = data[@"values"];
+							NSArray* texts = data[@"texts"];
+							for (int i = 0; i < 4; i++) {
+								labels[i].progress = [values[i] floatValue];
+								labels[i].text = texts[i];
+							}
+							cell.hpLabel.text = data[@"hp"];
+							cell.categoryImageView.image = data[@"categoryImage"];
+						};
+						row.loadingBlock = ^(NCFittingPOSStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
+							if (controller.controller.engine) {
+								[controller.controller.engine performBlock:^{
+									auto controlTower = controller.controller.engine.engine->getControlTower();
+									NSMutableArray* values = [NSMutableArray new];
+									NSMutableArray* texts = [NSMutableArray new];
+									
+									if (i < 3) {
+										auto resistances = controlTower->getResistances();
+										auto hp = controlTower->getHitPoints();
+										
+										for (int j = 0; j < 4; j++) {
+											[values addObject:@(resistances.layers[i].resistances[j])];
+											[texts addObject:[NSString stringWithFormat:@"%.1f%%", resistances.layers[i].resistances[j] * 100]];
+										}
+										[values addObject:@(hp.layers[i])];
+										[texts addObject:[NSString shortStringWithFloat:hp.layers[4] unit:nil]];
+									}
+									else {
+										auto damagePattern = controlTower->getDamagePattern();
+										for (int j = 0; j < 4; j++) {
+											[values addObject:@(damagePattern.damageTypes[j])];
+											[texts addObject:[NSString stringWithFormat:@"%.1f%%", damagePattern.damageTypes[j] * 100]];
+										}
+										[values addObject:@(0)];
+										[texts addObject:@""];
+									}
+									
+									NSDictionary* data =
+									@{@"values": values,
+									  @"texts": texts,
+									  @"categoryImage": [UIImage imageNamed:images[i]]};
+									dispatch_async(dispatch_get_main_queue(), ^{
+										completionBlock(data);
+									});
+								}];
+							}
+							else
+								completionBlock(nil);
+						};
+						[rows addObject:row];
+					}
+					
+					row = [NCFittingPOSStatsViewControllerRow new];
+					row.cellIdentifier = @"NCFittingEHPCell";
+					row.configurationBlock = ^(id tableViewCell, NSDictionary* data) {
+						NCFittingEHPCell* cell = (NCFittingEHPCell*) tableViewCell;
+						cell.ehpLabel.text = data[@"ehp"];
+					};
+					row.loadingBlock = ^(NCFittingPOSStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
+						if (controller.controller.engine) {
+							[controller.controller.engine performBlock:^{
+								auto controlTower = controller.controller.engine.engine->getControlTower();
+								auto effectiveHitPoints = controlTower->getEffectiveHitPoints();
+								float ehp = effectiveHitPoints.shield + effectiveHitPoints.armor + effectiveHitPoints.hull;
+								
+								NSDictionary* data =
+								@{@"ehp": [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString shortStringWithFloat:ehp unit:nil]]};
+								dispatch_async(dispatch_get_main_queue(), ^{
+									completionBlock(data);
+								});
+							}];
+						}
+						else
+							completionBlock(nil);
+					};
+					[rows addObject:row];
+					section.rows = rows;
+				}
+				[sections addObject:section];
+				
+				section = [NCFittingPOSStatsViewControllerSection new];
+				section.title = NSLocalizedString(@"Defense/Offense", nil);
+				{
+					NSMutableArray* rows = [NSMutableArray new];
+					
+					row = [NCFittingPOSStatsViewControllerRow new];
+					row.cellIdentifier = @"NCFittingPOSDefenseOffenseCell";
+					row.configurationBlock = ^(id tableViewCell, NSDictionary* data) {
+						NCFittingPOSDefenseOffenseCell* cell = (NCFittingPOSDefenseOffenseCell*) tableViewCell;
+						cell.shieldRecharge.text = data[@"shieldRecharge"];
+						cell.effectiveShieldRecharge.text = data[@"effectiveShieldRecharge"];
+						cell.weaponDPSLabel.text = data[@"weaponDPS"];
+						cell.weaponVolleyLabel.text = data[@"weaponVolley"];
+					};
+					row.loadingBlock = ^(NCFittingPOSStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
+						if (controller.controller.engine) {
+							[controller.controller.engine performBlock:^{
+								auto controlTower = controller.controller.engine.engine->getControlTower();
+								auto rtank = controlTower->getTank();
+								auto ertank = controlTower->getEffectiveTank();
+								float weaponDPS = controlTower->getWeaponDps();
+								float volleyDamage = controlTower->getWeaponVolley();
+
+								NSDictionary* data =
+								@{@"shieldRecharge": [NSString stringWithFormat:@"%.1f", rtank.passiveShield],
+								  @"effectiveShieldRecharge": [NSString stringWithFormat:@"%.1f", ertank.passiveShield],
+								  @"weaponDPS": [NSString stringWithFormat:@"%.0f", weaponDPS],
+								  @"weaponVolley": [NSString stringWithFormat:@"%.0f", volleyDamage]};
+								dispatch_async(dispatch_get_main_queue(), ^{
+									completionBlock(data);
+								});
+							}];
+						}
+						else
+							completionBlock(nil);
+					};
+					[rows addObject:row];
+					
+					section.rows = rows;
+				}
+				[sections addObject:section];
+
+				section = [NCFittingPOSStatsViewControllerSection new];
+				section.title = NSLocalizedString(@"Cost", nil);
+				{
+					NSMutableArray* rows = [NSMutableArray new];
+					
+					row = [NCFittingPOSStatsViewControllerRow new];
+					row.cellIdentifier = @"Cell";
+					row.configurationBlock = ^(id tableViewCell, NSDictionary* data) {
+						NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+						cell.iconView.image = data[@"image"] ?: self.defaultTypeImage;
+						cell.titleLabel.text = data[@"title"];
+						cell.subtitleLabel.text = data[@"subtitle"];
+					};
+					row.loadingBlock = ^(NCFittingPOSStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
+						if (controller.controller.engine) {
+							[controller.controller.engine performBlock:^{
+								NSMutableDictionary* data = [NSMutableDictionary new];
+								int32_t typeID = self.posFuelRequirements.resourceType.typeID;
+								int32_t fuelConsumtion = self.posFuelRequirements.quantity;
+								
+								if (self.posFuelRequirements.resourceType.icon.image.image)
+									data[@"image"] = self.posFuelRequirements.resourceType.icon.image.image;
+								if (self.posFuelRequirements.resourceType.typeName)
+									data[@"title"] = self.posFuelRequirements.resourceType.typeName;
+
+								[[NCPriceManager sharedManager] requestPricesWithTypes:@[@(typeID)] completionBlock:^(NSDictionary *prices) {
+									float fuelDailyCost = fuelConsumtion * [prices[@(typeID)] floatValue];
+									data[@"subtitle"] = [NSString stringWithFormat:NSLocalizedString(@"%d/h (%@ ISK/day)", nil),
+														 fuelConsumtion,
+														 [NSNumberFormatter neocomLocalizedStringFromNumber:@(fuelDailyCost)]];
+									dispatch_async(dispatch_get_main_queue(), ^{
+										completionBlock(data);
+									});
+								}];
+							}];
+						}
+						else
+							completionBlock(nil);
+					};
+					[rows addObject:row];
+					
+					row = [NCFittingPOSStatsViewControllerRow new];
+					row.cellIdentifier = @"Cell";
+					row.configurationBlock = ^(id tableViewCell, NSDictionary* data) {
+						NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+						cell.iconView.image = data[@"image"] ?: self.defaultTypeImage;
+						cell.titleLabel.text = data[@"title"];
+						cell.subtitleLabel.text = data[@"subtitle"];
+					};
+					row.loadingBlock = ^(NCFittingPOSStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
+						if (controller.controller.engine) {
+							[controller.controller.engine performBlock:^{
+								NSMutableDictionary* data = [NSMutableDictionary new];
+								auto controlTower = controller.controller.engine.engine->getControlTower();
+								
+								data[@"image"] = [[[self.controller.engine.databaseManagedObjectContext eveIconWithIconFile:@"95_02"] image] image];
+								data[@"title"] = NSLocalizedString(@"Infrastructure Upgrades Cost", nil);
+
+								NSMutableArray* infrastructureUpgrades = [NSMutableArray new];
+								float upgradesDailyCost = 0;
+								for (auto i: controlTower->getStructures()) {
+									if (i->hasAttribute(1595)) { //anchoringRequiresSovUpgrade1
+										int32_t typeID = (int32_t) i->getAttribute(1595)->getValue();
+										if (![infrastructureUpgrades containsObject:@(typeID)]) {
+											NCDBInvType* upgrade = [controller.controller.engine.databaseManagedObjectContext invTypeWithTypeID:typeID];
+											if (upgrade) {
+												[infrastructureUpgrades addObject:@(typeID)];
+												NCDBDgmTypeAttribute* attribute = upgrade.attributesDictionary[@(1603)];
+												upgradesDailyCost += attribute.value;
 											}
-										}];
-	[self updatePrice];
+										}
+									}
+									//															}
+								}
+
+								
+								[[NCPriceManager sharedManager] requestPricesWithTypes:infrastructureUpgrades completionBlock:^(NSDictionary *prices) {
+									float upgradesCost = 0;
+									for (NSNumber* typeID in infrastructureUpgrades)
+										upgradesCost += [prices[typeID] floatValue];
+									
+									data[@"subtitle"] = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK (%@ ISK/day)", nil),
+														 [NSNumberFormatter neocomLocalizedStringFromNumber:@(upgradesCost)],
+														 [NSNumberFormatter neocomLocalizedStringFromNumber:@(upgradesDailyCost)]];
+									dispatch_async(dispatch_get_main_queue(), ^{
+										completionBlock(data);
+									});
+								}];
+							}];
+						}
+						else
+							completionBlock(nil);
+					};
+					[rows addObject:row];
+
+					row = [NCFittingPOSStatsViewControllerRow new];
+					row.cellIdentifier = @"Cell";
+					row.configurationBlock = ^(id tableViewCell, NSDictionary* data) {
+						NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+						cell.iconView.image = data[@"image"] ?: self.defaultTypeImage;
+						cell.titleLabel.text = data[@"title"];
+						cell.subtitleLabel.text = data[@"subtitle"];
+					};
+					row.loadingBlock = ^(NCFittingPOSStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
+						if (controller.controller.engine) {
+							[controller.controller.engine performBlock:^{
+								NSMutableDictionary* data = [NSMutableDictionary new];
+								auto controlTower = controller.controller.engine.engine->getControlTower();
+								
+								data[@"image"] = [[[self.controller.engine.databaseManagedObjectContext eveIconWithIconFile:@"07_12"] image] image];
+								data[@"title"] = NSLocalizedString(@"POS Cost", nil);
+								
+								NSMutableArray* types = [NSMutableArray new];
+								[types addObject:@(controlTower->getTypeID())];
+								
+								for (auto i: controlTower->getStructures())
+									[types addObject:@(i->getTypeID())];
+								
+								
+								[[NCPriceManager sharedManager] requestPricesWithTypes:types completionBlock:^(NSDictionary *prices) {
+									float posCost = 0;
+									for (NSNumber* typeID in types)
+										posCost += [prices[typeID] floatValue];
+									
+									data[@"subtitle"] = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil),
+														 [NSNumberFormatter neocomLocalizedStringFromNumber:@(posCost)]];
+									dispatch_async(dispatch_get_main_queue(), ^{
+										completionBlock(data);
+									});
+								}];
+							}];
+						}
+						else
+							completionBlock(nil);
+					};
+					[rows addObject:row];
+					
+					section.rows = rows;
+				}
+				[sections addObject:section];
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.sections = sections;
+					completionBlock();
+				});
+
+			}];
+		}
+	}
+	else
+		completionBlock();
 }
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	// Return the number of sections.
-	return 4;
-	//return self.view.window ? 4 : 0;
+	return self.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	switch(section) {
-		case 0:
-			return 1;
-		case 1:
-			return 6;
-		case 2:
-			return 1;
-		case 3:
-			return 3;
-	}
-	return 0;
+	return [[self.sections[section] rows] count];
 }
 
+
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (section == 0)
-		return NSLocalizedString(@"Resources", nil);
-	else if (section == 1)
-		return NSLocalizedString(@"Resistances", nil);
-	else if (section == 2)
-		return NSLocalizedString(@"Defense/Offense", nil);
-	else if (section == 3)
-		return NSLocalizedString(@"Cost", nil);
-	else
-		return nil;
+	return [self.sections[section] title];
 }
 
 #pragma mark - Table view delegate
@@ -172,218 +448,40 @@
 }
 
 
-#pragma mark - Private
-
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0)
-		return @"NCFittingPOSResourcesCell";
-	else if (indexPath.section == 1) {
-		if (indexPath.row == 0)
-			return @"NCFittingResistancesHeaderCell";
-		else if (indexPath.row == 5)
-			return @"NCFittingEHPCell";
-		else
-			return @"NCFittingResistancesCell";
-	}
-	else if (indexPath.section == 2)
-		return @"NCFittingPOSDefenseOffenseCell";
-	else if (indexPath.section == 3)
-		return @"Cell";
-	else
-		return nil;
+	NCFittingPOSStatsViewControllerRow* row = [self.sections[indexPath.section] rows][indexPath.row];
+	return row.cellIdentifier;
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0) {
-		
-		NCFittingPOSResourcesCell* cell = (NCFittingPOSResourcesCell*) tableViewCell;
-		
-		if (self.posStats) {
-			cell.powerGridLabel.text = [NSString stringWithTotalResources:self.posStats.totalPG usedResources:self.posStats.usedPG unit:@"MW"];
-			cell.powerGridLabel.progress = self.posStats.totalPG > 0 ? self.posStats.usedPG / self.posStats.totalPG : 0;
-			cell.cpuLabel.text = [NSString stringWithTotalResources:self.posStats.totalCPU usedResources:self.posStats.usedCPU unit:@"tf"];
-			cell.cpuLabel.progress = self.posStats.usedCPU > 0 ? self.posStats.usedCPU / self.posStats.totalCPU : 0;
-		}
+	NCFittingPOSStatsViewControllerRow* row = [self.sections[indexPath.section] rows][indexPath.row];
+	if (!row.isUpToDate) {
+		row.isUpToDate = YES;
+		row.loadingBlock(self, ^(NSDictionary* data) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				row.data = data;
+				if (data)
+					[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			});
+		});
 	}
-	else if (indexPath.section == 1) {
-		if (indexPath.row == 0) {
-		}
-		else if (indexPath.row == 5) {
-			NCFittingEHPCell* cell = (NCFittingEHPCell*) tableViewCell;
-			cell.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString shortStringWithFloat:self.posStats.ehp unit:nil]];
-		}
-		else {
-			NCFittingResistancesCell* cell = (NCFittingResistancesCell*) tableViewCell;
-			if (self.posStats) {
-				float values[5] = {0};
-				NSString* imageName = nil;
-				if (indexPath.row == 1) {
-					values[0] = self.posStats.resistances.shield.em;
-					values[1] = self.posStats.resistances.shield.thermal;
-					values[2] = self.posStats.resistances.shield.kinetic;
-					values[3] = self.posStats.resistances.shield.explosive;
-					values[4] = self.posStats.hp.shield;
-					imageName = @"shield.png";
-				}
-				else if (indexPath.row == 2) {
-					values[0] = self.posStats.resistances.armor.em;
-					values[1] = self.posStats.resistances.armor.thermal;
-					values[2] = self.posStats.resistances.armor.kinetic;
-					values[3] = self.posStats.resistances.armor.explosive;
-					values[4] = self.posStats.hp.armor;
-					imageName = @"armor.png";
-				}
-				else if (indexPath.row == 3) {
-					values[0] = self.posStats.resistances.hull.em;
-					values[1] = self.posStats.resistances.hull.thermal;
-					values[2] = self.posStats.resistances.hull.kinetic;
-					values[3] = self.posStats.resistances.hull.explosive;
-					values[4] = self.posStats.hp.hull;
-					imageName = @"hull.png";
-				}
-				else if (indexPath.row == 4) {
-					if (self.posStats.damagePattern) {
-						values[0] = self.posStats.damagePattern.em;
-						values[1] = self.posStats.damagePattern.thermal;
-						values[2] = self.posStats.damagePattern.kinetic;
-						values[3] = self.posStats.damagePattern.explosive;
-					}
-					else {
-						values[0] = 0.25;
-						values[1] = 0.25;
-						values[2] = 0.25;
-						values[3] = 0.25;
-					}
-					values[4] = 0;
-					imageName = @"damagePattern.png";
-				}
-				
-				NCProgressLabel* labels[] = {cell.emLabel, cell.thermalLabel, cell.kineticLabel, cell.explosiveLabel};
-				for (int i = 0; i < 4; i++) {
-					labels[i].progress = values[i];
-					labels[i].text = [NSString stringWithFormat:@"%.1f%%", values[i] * 100];
-				}
-				cell.hpLabel.text = values[4] > 0 ? [NSString shortStringWithFloat:values[4] unit:nil] : nil;
-				cell.categoryImageView.image = [UIImage imageNamed:imageName];
-			}
-		}
-	}
-	else if (indexPath.section == 2) {
-		NCFittingPOSDefenseOffenseCell* cell = (NCFittingPOSDefenseOffenseCell*) tableViewCell;
-		if (self.posStats) {
-			cell.shieldRecharge.text = [NSString stringWithFormat:@"%.1f", self.posStats.rtank.passiveShield];
-			cell.effectiveShieldRecharge.text = [NSString stringWithFormat:@"%.1f", self.posStats.ertank.passiveShield];
-			cell.weaponDPSLabel.text = [NSString stringWithFormat:@"%.0f", self.posStats.weaponDPS];
-			cell.weaponVolleyLabel.text = [NSString stringWithFormat:@"%.0f", self.posStats.volleyDamage];
-		}
-	}
-	else if (indexPath.section == 3) {
-		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
-		cell.accessoryView = nil;
-		
-		if (indexPath.row == 0) {
-			if (self.priceStats) {
-				cell.iconView.image = self.posFuelRequirements.resourceType.icon ? self.posFuelRequirements.resourceType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-				cell.titleLabel.text = self.posFuelRequirements.resourceType.typeName;
-				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d/h (%@ ISK/day)", nil),
-													self.priceStats.fuelConsumtion,
-													[NSNumberFormatter neocomLocalizedStringFromNumber:@(self.priceStats.fuelDailyCost)]];
-			}
-			
-		}
-		else if (indexPath.row == 1) {
-			if (self.priceStats) {
-				cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"95_02"] image] image];
-				cell.titleLabel.text = NSLocalizedString(@"Infrastructure Upgrades Cost", nil);
-				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK (%@ ISK/day)", nil),
-													[NSNumberFormatter neocomLocalizedStringFromNumber:@(self.priceStats.upgradesCost)],
-													[NSNumberFormatter neocomLocalizedStringFromNumber:@(self.priceStats.upgradesDailyCost)]];
-			}
-			
-		}
-		else if (indexPath.row == 2) {
-			if (self.priceStats) {
-				cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"07_12"] image] image];;
-				cell.titleLabel.text = NSLocalizedString(@"POS Cost", nil);
-				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil),
-													[NSNumberFormatter neocomLocalizedStringFromNumber:@(self.priceStats.posCost)]];
-			}
-		}
-	}
+	if (row.data)
+		row.configurationBlock(tableViewCell, row.data);
 }
 
-- (void) updatePrice {
-	NCFittingPOSStatsViewControllerPriceStats* stats = [NCFittingPOSStatsViewControllerPriceStats new];
-	
-	
-	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-													title:NCTaskManagerDefaultTitle
-													block:^(NCTask *task) {
-														//														@synchronized(self.controller) {
-														NSMutableSet* types = [NSMutableSet set];
-														NSMutableDictionary* infrastructureUpgrades = [NSMutableDictionary dictionary];
-														eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
-														NCDBInvControlTowerResource* resource = self.posFuelRequirements;
-														stats.fuelConsumtion = resource.quantity;
-														
-														[types addObject:@(controlTower->getTypeID())];
-														[types addObject:@(resource.resourceType.typeID)];
-														
-														float upgradesDailyCost = 0;
-														for (auto i: controlTower->getStructures()) {
-															[types addObject:@(i->getTypeID())];
-															if (i->hasAttribute(1595)) { //anchoringRequiresSovUpgrade1
-																int32_t typeID = (int32_t) i->getAttribute(1595)->getValue();
-																NCDBInvType* upgrade = infrastructureUpgrades[@(typeID)];
-																if (!upgrade) {
-																	upgrade = [NCDBInvType invTypeWithTypeID:typeID];
-																	if (upgrade) {
-																		[types addObject:@(typeID)];
-																		infrastructureUpgrades[@(typeID)] = upgrade;
-																		[types addObject:@(typeID)];
-																		NCDBDgmTypeAttribute* attribute = upgrade.attributesDictionary[@(1603)];
-																		upgradesDailyCost += attribute.value;
-																	}
-																}
-															}
-															//															}
-															
-															NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
-															
-															__block float upgradesCost = 0;
-															__block float posCost = 0;
-															[prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVECentralMarketStatType* obj, BOOL *stop) {
-																NSInteger typeID = [key integerValue];
-																if (typeID == resource.resourceType.typeID)
-																	stats.fuelDailyCost = stats.fuelConsumtion * obj.sell.percentile * 24;
-																else if (infrastructureUpgrades[key] != nil)
-																	upgradesCost += obj.sell.percentile;
-																else
-																	posCost += obj.sell.percentile;
-															}];
-															
-															stats.posCost = posCost;
-															stats.upgradesCost = upgradesCost;
-															stats.upgradesDailyCost = upgradesDailyCost;
-														}
-													}
-										completionHandler:^(NCTask *task) {
-											if (![task isCancelled]) {
-												self.priceStats = stats;
-												if (self.tableView.dataSource == self)
-													[self.tableView reloadData];
-											}
-										}];
-}
+#pragma mark - Private
 
 - (NCDBInvControlTowerResource*) posFuelRequirements {
 	if (!_posFuelRequirements) {
-		for (NCDBInvControlTowerResource* resource in self.controller.fit.type.controlTower.resources) {
-			if (resource.minSecurityLevel == 0.0 && resource.purpose.purposeID == 1) {
-				_posFuelRequirements = resource;
-				break;
+		[self.controller.engine performBlockAndWait:^{
+			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:self.controller.fit.typeID];
+			for (NCDBInvControlTowerResource* resource in type.controlTower.resources) {
+				if (resource.minSecurityLevel == 0.0 && resource.purpose.purposeID == 1) {
+					_posFuelRequirements = resource;
+					break;
+				}
 			}
-		}
+		}];
 	}
 	return _posFuelRequirements;
 }

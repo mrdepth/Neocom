@@ -61,10 +61,6 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return @"Cell";
 }
@@ -76,7 +72,7 @@
 	
 	NSNumber* value = self.values[indexPath.row];
 	if (self.selectedValue && [self.selectedValue integerValue] == [value integerValue])
-		cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
+		cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]];
 	else
 		cell.accessoryView = nil;
 	cell.object = value;

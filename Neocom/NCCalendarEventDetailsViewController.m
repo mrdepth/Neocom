@@ -7,7 +7,7 @@
 //
 
 #import "NCCalendarEventDetailsViewController.h"
-#import "EVEOnlineAPI.h"
+#import <EVEAPI/EVEAPI.h>
 
 @interface NCCalendarEventDetailsViewController ()
 
@@ -47,7 +47,7 @@
 	
 	NSDateFormatter* dateFormatter = nil;
 	dateFormatter = [NSDateFormatter new];
-	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 	[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 	[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 	

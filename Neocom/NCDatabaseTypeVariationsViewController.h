@@ -10,6 +10,6 @@
 
 @class NCDBInvType;
 @interface NCDatabaseTypeVariationsViewController : NCTableViewController
-@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, strong) NSManagedObjectID* typeID;
 
 @end

@@ -10,10 +10,9 @@
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCDatabaseGroupPickerViewContoller.h"
 #import "NCDatabaseSolarSystemPickerViewController.h"
-#import "UIAlertView+Block.h"
 #import "NCCharacterID.h"
 #import "NCZKillBoardSearchResultsViewController.h"
-#import "EVEzKillBoardAPI.h"
+#import <EVEAPI/EVEAPI.h>
 #import "NCTableViewCell.h"
 #import "NCZKillBoardSwitchCell.h"
 
@@ -61,7 +60,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 	self.refreshControl = nil;
 	self.dateFormatter = [NSDateFormatter new];
 	[self.dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 
 	
 	self.cellIdentifiers = [NSMutableArray new];
@@ -129,7 +128,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 		
 		if (self.date) {
 			NSDateFormatter* dateFormatter = [NSDateFormatter new];
-			[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+			[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
 			[dateFormatter setDateFormat:@"yyyyMMdd'T'HHmmss"];
 			filter[EVEzKillBoardSearchFilterStartTimeKey] = [dateFormatter stringFromDate:self.date];
 		}
@@ -176,13 +175,13 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 	if (indexPath.row == 0) {
 		UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 		self.typePickerViewController.title = NSLocalizedString(@"Ships", nil);
-		[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
+		[self.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext shipsCategory]
 										  inViewController:self
 												  fromRect:cell.bounds
 													inView:cell
 												  animated:YES
 										 completionHandler:^(NCDBInvType *type) {
-											 self.type = type;
+											 self.type = [self.databaseManagedObjectContext invTypeWithTypeID:type.typeID];
 											 [self.typePickerViewController dismissAnimated];
 											 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 											 if (self.group) {
@@ -252,11 +251,11 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 		if (self.type) {
 			cell.accessoryView = newClearButton();
 			cell.titleLabel.text = self.type.typeName;
-			cell.iconView.image = self.type.icon ? self.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+			cell.iconView.image = self.type.icon.image.image ?: [[[self.databaseManagedObjectContext defaultTypeIcon] image] image];
 		}
 		else {
 			cell.titleLabel.text = NSLocalizedString(@"Any Ship", nil);
-			cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"09_05"] image] image];
+			cell.iconView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"09_05"] image] image];
 			cell.accessoryView = nil;
 		}
 	}
@@ -269,7 +268,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 			cell.titleLabel.text = NSLocalizedString(@"Any Ship Class", nil);
 			cell.accessoryView = nil;
 		}
-		cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"09_05"] image] image];
+		cell.iconView.image = [[[self.databaseManagedObjectContext eveIconWithIconFile:@"09_05"] image] image];
 	}
 	else if ([cellIdentifier isEqualToString:@"CharacterCell"]) {
 		if (self.characterID) {
@@ -340,7 +339,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 - (IBAction)unwindFromGroupPicker:(UIStoryboardSegue*) segue {
 	NCDatabaseGroupPickerViewContoller* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedGroup) {
-		self.group = sourceViewController.selectedGroup;
+		self.group = [self.databaseManagedObjectContext invGroupWithGroupID:sourceViewController.selectedGroup.groupID];
 		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 
 		if (self.type) {
@@ -355,11 +354,11 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 	NCDatabaseSolarSystemPickerViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedObject) {
 		if ([sourceViewController.selectedObject isKindOfClass:[NCDBMapRegion class]]) {
-			self.region = sourceViewController.selectedObject;
+			self.region = [self.databaseManagedObjectContext existingObjectWithID:[sourceViewController.selectedObject objectID] error:nil];
 			self.solarSystem = nil;
 		}
 		else {
-			self.solarSystem = sourceViewController.selectedObject;
+			self.solarSystem = [self.databaseManagedObjectContext existingObjectWithID:[sourceViewController.selectedObject objectID] error:nil];
 			self.region = nil;
 		}
 		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -405,48 +404,47 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 }
 
 - (void) showCharacterNameDialogWithName:(NSString*) name message:(NSString*) message {
-	UIAlertView* alertView = [UIAlertView alertViewWithTitle:nil
-													 message:message
-										   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-										   otherButtonTitles:@[NSLocalizedString(@"Ok", nil)]
-											 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-												 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-													 UITextField* textField = [alertView textFieldAtIndex:0];
-													 NSString* name = textField.text;
-													 self.searchingCharacterName = YES;
-													 UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:2 inSection:0]];
-													 UIView* oldAccessory = cell.accessoryView;
-													 if (cell) {
-														 UIActivityIndicatorView* activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-														 [activityIndicatorView startAnimating];
-														 cell.accessoryView = activityIndicatorView;
-													 }
-													 __block NCCharacterID* characterID = nil;
-													 [[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-																						  title:NCTaskManagerDefaultTitle
-																						  block:^(NCTask *task) {
-																							  characterID = [NCCharacterID characterIDWithName:name];
-																						  }
-																			  completionHandler:^(NCTask *task) {
-																				  self.searchingCharacterName = NO;
-																				  if (characterID) {
-																					  self.characterID = characterID;
-																					  [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:2 inSection:0]]
-																											withRowAnimation:UITableViewRowAnimationFade];
-																				  }
-																				  else
-																					  [self showCharacterNameDialogWithName:name
-																													message:NSLocalizedString(@"Unknown Character, Corporation or Alliance name", nil)];
-																				  cell.accessoryView = oldAccessory;
-																			  }];
-												 }
-											 } cancelBlock:nil];
-	alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-	UITextField* textField = [alertView textFieldAtIndex:0];
-	textField.placeholder = NSLocalizedString(@"Character/Corporation/Alliance name", nil);
-	textField.text = name;
-	textField.clearButtonMode = UITextFieldViewModeAlways;
-	[alertView show];
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+	
+	__block UITextField* nameTextField;
+	[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+		nameTextField = textField;
+		textField.clearButtonMode = UITextFieldViewModeAlways;
+		textField.text = name;
+		textField.placeholder = NSLocalizedString(@"Character/Corporation/Alliance name", nil);
+	}];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		NSString* name = nameTextField.text;
+		self.searchingCharacterName = YES;
+		UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:2 inSection:0]];
+		UIView* oldAccessory = cell.accessoryView;
+		if (cell) {
+			UIActivityIndicatorView* activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+			[activityIndicatorView startAnimating];
+			cell.accessoryView = activityIndicatorView;
+		}
+		[NCCharacterID requestCharacterIDWithName:name completionBlock:^(NCCharacterID *characterID, NSError *error) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.searchingCharacterName = NO;
+				if (characterID) {
+					self.characterID = characterID;
+					[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:2 inSection:0]]
+										  withRowAnimation:UITableViewRowAnimationFade];
+				}
+				else
+					[self showCharacterNameDialogWithName:name
+												  message:NSLocalizedString(@"Unknown Character, Corporation or Alliance name", nil)];
+				cell.accessoryView = oldAccessory;
+			});
+		}];
+	}]];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		
+	}]];
+	
+	[self presentViewController:controller animated:YES completion:nil];
 }
 
 @end

@@ -183,7 +183,7 @@
 		NSString *tag = [tags objectAtIndex:indexPath.row];
 		cell.titleLabel.text = tag;
 		cell.imageView.image = nil;
-		cell.accessoryView = [self.selectedTags containsObject:tag] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+		cell.accessoryView = [self.selectedTags containsObject:tag] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]] : nil;
 	}
 }
 

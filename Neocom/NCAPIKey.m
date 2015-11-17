@@ -7,41 +7,8 @@
 //
 
 #import "NCAPIKey.h"
-#import "EVEOnlineAPI.h"
 #import "NCCache.h"
-
-@implementation NCStorage(NCSetting)
-
-- (NCAPIKey*) apiKeyWithKeyID:(int32_t) keyID {
-	NCStorage* storage = [NCStorage sharedStorage];
-	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-	
-	__block NSArray *result = nil;
-	[context performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"keyID == %d", keyID];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:context];
-		[fetchRequest setEntity:entity];
-		result = [context executeFetchRequest:fetchRequest error:nil];
-	}];
-	return result.count > 0 ? result[0] : nil;
-}
-
-- (NSArray*) allAPIKeys {
-	NCStorage* storage = [NCStorage sharedStorage];
-	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-	
-	__block NSArray* apiKeys = nil;
-	[context performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:context];
-		[fetchRequest setEntity:entity];
-		apiKeys = [context executeFetchRequest:fetchRequest error:nil];
-	}];
-	return apiKeys;
-}
-
-@end
+#import <EVEAPI/EVEAPI.h>
 
 @implementation NCAPIKey
 
@@ -51,23 +18,5 @@
 @dynamic apiKeyInfo;
 
 @synthesize error = _error;
-
-
-
-- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr {
-	NSError* error = nil;
-	EVEAPIKeyInfo* apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:self.keyID vCode:self.vCode cachePolicy:cachePolicy error:&error progressHandler:nil];
-	if (apiKeyInfo) {
-		self.apiKeyInfo = apiKeyInfo;
-		self.error = nil;
-		return YES;
-	}
-	else {
-		self.error = error;
-		if (errorPtr)
-			*errorPtr = error;
-		return NO;
-	}
-}
 
 @end

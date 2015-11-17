@@ -17,8 +17,6 @@
 #import "NCFittingDamagePatternsViewController.h"
 #import "NCFittingAreaEffectPickerViewController.h"
 #import "NCFittingTypeVariationsViewController.h"
-#import "UIActionSheet+Block.h"
-#import "UIAlertView+Block.h"
 #import "NCFittingRequiredSkillsViewController.h"
 #import "NCFittingImplantSetsViewController.h"
 #import "NCFittingShipAffectingSkillsViewController.h"
@@ -27,6 +25,7 @@
 #import "NCShoppingItem+Neocom.h"
 #import "NCShoppingGroup.h"
 #import "NCNewShoppingItemViewController.h"
+#import "NCFittingCRESTFitExportViewController.h"
 
 #import "NSString+Neocom.h"
 
@@ -56,22 +55,22 @@
 #define ActionButtonAddToShoppingList NSLocalizedString(@"Add to Shopping List", nil)
 
 @interface NCFittingShipViewController ()<MFMailComposeViewControllerDelegate>
-@property (nonatomic, strong, readwrite) NSMutableArray* fits;
-@property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Engine> engine;
+@property (nonatomic, strong, readwrite) NSArray* fits;
+@property (nonatomic, strong, readwrite) NCFittingEngine* engine;
 
 @property (nonatomic, weak) NCFittingShipModulesViewController* modulesViewController;
 @property (nonatomic, weak) NCFittingShipDronesViewController* dronesViewController;
 @property (nonatomic, weak) NCFittingShipImplantsViewController* implantsViewController;
 @property (nonatomic, weak) NCFittingShipFleetViewController* fleetViewController;
 @property (nonatomic, weak) NCFittingShipStatsViewController* statsViewController;
+@property (nonatomic, strong) NCFitCharacter* defaultCharacter;
 
-@property (nonatomic, strong) NSMutableDictionary* typesCache;
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
 
-@property (nonatomic, strong) UIActionSheet* actionSheet;
 @property (nonatomic, strong) UIDocumentInteractionController* documentInteractionController;
 
 - (void) performExport;
+- (void) updateSectionSegmentedControlWithTraitCollection:(UITraitCollection*) traitCollection;
 @end
 
 @implementation NCFittingShipViewController
@@ -89,50 +88,14 @@
 {
     [super viewDidLoad];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
+		[self updateSectionSegmentedControlWithTraitCollection:self.traitCollection];
+		//[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
 	
 	self.taskManager.maxConcurrentOperationCount = 1;
 	
 	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
-	
 
-	
-	std::shared_ptr<eufe::Engine> engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
-	
-	if (!self.fits)
-		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
-	NCShipFit* fit = self.fit;
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-//											 @synchronized(self) {
-												 if (!fit.pilot) {
-													 fit.pilot = engine->getGang()->addPilot();
-													 NCAccount* account = [NCAccount currentAccount];
-													 NCFitCharacter* character;
-													 
-													 if (account.characterSheet)
-														 character = [[NCStorage sharedStorage] characterWithAccount:account];
-													 else
-														 character = [[NCStorage sharedStorage] characterWithSkillsLevel:5];
-													 
-													 fit.character = character;
-													 [fit load];
-												 }
-//											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.engine = engine;
-								 [self reload];
-							 }];
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
 	for (id controller in self.childViewControllers) {
-		if (![(UIViewController*) controller view].window)
-			continue;
 		if ([controller isKindOfClass:[NCFittingShipModulesViewController class]])
 			self.modulesViewController = controller;
 		else if ([controller isKindOfClass:[NCFittingShipDronesViewController class]])
@@ -144,7 +107,58 @@
 		else if ([controller isKindOfClass:[NCFittingShipStatsViewController class]])
 			self.statsViewController = controller;
 	}
-	[self reload];
+
+	NCFittingEngine* engine = [NCFittingEngine new];
+	
+	if (!self.fits)
+		self.fits = @[self.fit];
+
+	NCAccount* account = [NCAccount currentAccount];
+	NCShipFit* fit = self.fit;
+	dispatch_group_t finishDispatchGroup = dispatch_group_create();
+	dispatch_group_enter(finishDispatchGroup);
+	[engine performBlock:^{
+		[engine loadShipFit:fit];
+		dispatch_group_leave(finishDispatchGroup);
+	}];
+	__block NCFitCharacter* fitCharacter;
+	
+	void (^loadDefaultCharacter)() = ^{
+		dispatch_group_enter(finishDispatchGroup);
+		NSManagedObjectContext* storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+		[storageManagedObjectContext performBlock:^{
+			fitCharacter = [storageManagedObjectContext fitCharacterWithSkillsLevel:5];
+			dispatch_group_leave(finishDispatchGroup);
+		}];
+	};
+	
+	if (account) {
+		dispatch_group_enter(finishDispatchGroup);
+		[account loadFitCharacterWithCompletioBlock:^(NCFitCharacter *character) {
+			if (character) {
+				fitCharacter = character;
+			}
+			else
+				loadDefaultCharacter();
+			dispatch_group_leave(finishDispatchGroup);
+		}];
+	}
+	else {
+		loadDefaultCharacter();
+	}
+	
+	dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+		[fit setCharacter:fitCharacter withCompletionBlock:^{
+			self.defaultCharacter = fitCharacter;
+			self.engine = engine;
+			[self reload];
+		}];
+	});
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+//	[self reload];
 }
 
 - (void)didReceiveMemoryWarning
@@ -160,11 +174,12 @@
 - (void) viewWillDisappear:(BOOL)animated {
 	if ([self isMovingFromParentViewController] || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		for (NCShipFit* fit in self.fits) {
-			if (fit.loadout)
+			if (fit.loadoutID)
 				[fit save];
 		}
 		self.fits = nil;
-		[[NCStorage sharedStorage] saveContext];
+		if ([self.storageManagedObjectContext hasChanges])
+			[self.storageManagedObjectContext save:nil];
 	}
 	[super viewWillDisappear:animated];
 }
@@ -224,13 +239,13 @@
 			controller = segue.destinationViewController;
 
 		NSArray* items = sender[@"object"];
-		eufe::Item* item = reinterpret_cast<eufe::Item*>([items[0] pointerValue]);
+		auto item = [(NCFittingEngineItemPointer*) items[0] item];
 		controller.items = items;
 		
-		eufe::Module* module = dynamic_cast<eufe::Module*>(item);
-		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(item);
+		auto module = std::dynamic_pointer_cast<eufe::Module>(item);
+		auto drone = std::dynamic_pointer_cast<eufe::Drone>(item);
 		
-		eufe::Ship* target = nullptr;
+		std::shared_ptr<eufe::Ship> target = nullptr;
 		if (module)
 			target = module->getTarget();
 		else if (drone)
@@ -255,16 +270,20 @@
 		else
 			controller = segue.destinationViewController;
 
-		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender[@"object"] pointerValue]);
-		NCDBInvType* type = [self typeWithItem:item];
+		[self.engine performBlockAndWait:^{
+			auto item = [(NCFittingEngineItemPointer*) sender[@"object"] item];
+			__block NSManagedObjectID* objectID;
+			NSMutableDictionary* attributes = [NSMutableDictionary new];
+			NCDBInvType* type = [self.engine.databaseManagedObjectContext invTypeWithTypeID:item->getTypeID()];
+			
+			for (NCDBDgmTypeAttribute* attribute in type.attributes) {
+				attributes[@(attribute.attributeType.attributeID)] = @(item->getAttribute(attribute.attributeType.attributeID)->getValue());
+			}
+			objectID = [type objectID];
+			controller.typeID = objectID;
+			controller.attributes = attributes;
+		}];
 		
-		NSMutableDictionary* attributes = [NSMutableDictionary new];
-		for (NCDBDgmTypeAttribute* attribute in type.attributes) {
-			attributes[@(attribute.attributeType.attributeID)] = @(item->getAttribute(attribute.attributeType.attributeID)->getValue());
-		}
-		
-		controller.type = (id) type;
-		controller.attributes = attributes;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingDamagePatternsViewController"]) {
 		NCFittingDamagePatternsViewController* controller;
@@ -272,7 +291,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		controller.selectedDamagePattern = self.damagePattern;
+//		controller.selectedDamagePattern = self.damagePattern;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingAreaEffectPickerViewController"]) {
 		NCFittingAreaEffectPickerViewController* controller;
@@ -280,9 +299,9 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		eufe::Area* area = self.engine->getArea();
+		auto area = self.engine.engine->getArea();
 		if (area)
-			controller.selectedAreaEffect = [NCDBInvType invTypeWithTypeID:area->getTypeID()];
+			controller.selectedAreaEffect = [self.databaseManagedObjectContext invTypeWithTypeID:area->getTypeID()];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingTypeVariationsViewController"]) {
 		NCFittingTypeVariationsViewController* controller;
@@ -290,11 +309,18 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		NSArray* modules = sender[@"object"];
-		controller.object = modules;
-		eufe::Item* item = reinterpret_cast<eufe::Item*>([modules[0] pointerValue]);
-		NCDBInvType* type = [self typeWithItem:item];
-		controller.type = type.parentType ? type.parentType : type;
+
+		[self.engine performBlockAndWait:^{
+			NSArray* modules = sender[@"object"];
+			controller.object = modules;
+			auto item = [(NCFittingEngineItemPointer*) modules[0] item];
+			__block NSManagedObjectID* objectID;
+			[self.engine performBlockAndWait:^{
+				NCDBInvType* type = [self.engine.databaseManagedObjectContext invTypeWithTypeID:item->getTypeID()];
+				objectID = type.parentType ? [type.parentType objectID] : [type objectID];;
+			}];
+			controller.typeID = objectID;
+		}];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingRequiredSkillsViewController"]) {
 		NCFittingRequiredSkillsViewController* controller;
@@ -313,13 +339,17 @@
 			controller = segue.destinationViewController;
 		
 		NSMutableArray* typeIDs = [NSMutableArray new];
-		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender[@"object"] pointerValue]);
-		for (auto item: item->getAffectors()) {
-			eufe::Skill* skill = dynamic_cast<eufe::Skill*>(item);
-			if (skill) {
-				[typeIDs addObject:@((NSInteger) item->getTypeID())];
+		[self.engine performBlockAndWait:^{
+			for (NCFittingEngineItemPointer* pointer in sender[@"object"]) {
+				auto item = pointer.item;
+				for (auto item: item->getAffectors()) {
+					auto skill = std::dynamic_pointer_cast<eufe::Skill>(item);
+					if (skill) {
+						[typeIDs addObject:@(item->getTypeID())];
+					}
+				}
 			}
-		}
+		}];
 		
 		controller.affectingSkillsTypeIDs = typeIDs;
 		controller.character = self.fit.character;
@@ -332,12 +362,14 @@
 			controller = segue.destinationViewController;
 
 		NSMutableArray* implants = [NSMutableArray new];
-		for (auto implant: self.fit.pilot->getImplants())
-			[implants addObject:@(implant->getTypeID())];
-
 		NSMutableArray* boosters = [NSMutableArray new];
-		for (auto booster: self.fit.pilot->getBoosters())
-			[boosters addObject:@(booster->getTypeID())];
+		[self.engine performBlockAndWait:^{
+			for (auto implant: self.fit.pilot->getImplants())
+				[implants addObject:@(implant->getTypeID())];
+			
+			for (auto booster: self.fit.pilot->getBoosters())
+				[boosters addObject:@(booster->getTypeID())];
+		}];
 
 		NCImplantSetData* data = [NCImplantSetData new];
 		data.implantIDs = implants;
@@ -354,97 +386,79 @@
 			controller = segue.destinationViewController;
 		controller.shoppingGroup = sender[@"object"];
 	}
-}
-
-- (NCDBInvType*) typeWithItem:(eufe::Item*) item {
-	if (!item)
-		return nil;
-	@synchronized(self) {
-		if (!self.typesCache)
-			self.typesCache = [NSMutableDictionary new];
+	else if ([segue.identifier isEqualToString:@"NCFittingCRESTFitExportViewController"]) {
+		NCFittingCRESTFitExportViewController* controller = segue.destinationViewController;
+		controller.fitting = self.fit.crFittingRepresentation;
 	}
-	int typeID = item->getTypeID();
-	
-	NCDBInvType* type;
-	@synchronized(self) {
-		type = self.typesCache[@(typeID)];
-	}
-	if (!type) {
-		type = [NCDBInvType invTypeWithTypeID:typeID];
-		if (type) {
-			@synchronized(self) {
-				self.typesCache[@(typeID)] = type;
-			}
-		}
-	}
-	return type;
 }
 
 - (void) reload {
-	[self.modulesViewController reload];
+/*	[self.modulesViewController reload];
 	[self.dronesViewController reload];
 	[self.implantsViewController reload];
 	[self.fleetViewController reload];
-	[self.statsViewController reload];
+	[self.statsViewController reload];*/
+	for (NCFittingShipWorkspaceViewController* controller in self.childViewControllers)
+		[controller reload];
 	
 	if (!self.fit.pilot)
 		return;
 
-	__block float totalPG;
-	__block float usedPG;
-	__block float totalCPU;
-	__block float usedCPU;
-	__block float totalCalibration;
-	__block float usedCalibration;
-	
-	__block float totalDB;
-	__block float usedDB;
-	__block float totalBandwidth;
-	__block float usedBandwidth;
-	__block int maxActiveDrones;
-	__block int activeDrones;
-	
+	[self.engine performBlock:^{
+		float totalPG;
+		float usedPG;
+		float totalCPU;
+		float usedCPU;
+		float totalCalibration;
+		float usedCalibration;
+		
+		float totalDB;
+		float usedDB;
+		float totalBandwidth;
+		float usedBandwidth;
+		int maxActiveDrones;
+		int activeDrones;
 
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 eufe::Ship* ship = self.fit.pilot->getShip();
-											 
-											 totalPG = ship->getTotalPowerGrid();
-											 usedPG = ship->getPowerGridUsed();
-											 totalCPU = ship->getTotalCpu();
-											 usedCPU = ship->getCpuUsed();
-											 totalCalibration = ship->getTotalCalibration();
-											 usedCalibration = ship->getCalibrationUsed();
-											 
-											 totalDB = ship->getTotalDroneBay();
-											 usedDB = ship->getDroneBayUsed();
-											 totalBandwidth = ship->getTotalDroneBandwidth();
-											 usedBandwidth = ship->getDroneBandwidthUsed();
-											 maxActiveDrones = ship->getMaxActiveDrones();
-											 activeDrones = ship->getActiveDrones();
+		auto ship = self.fit.pilot->getShip();
+		
+		totalPG = ship->getTotalPowerGrid();
+		usedPG = ship->getPowerGridUsed();
+		totalCPU = ship->getTotalCpu();
+		usedCPU = ship->getCpuUsed();
+		totalCalibration = ship->getTotalCalibration();
+		usedCalibration = ship->getCalibrationUsed();
+		
+		totalDB = ship->getTotalDroneBay();
+		usedDB = ship->getDroneBayUsed();
+		totalBandwidth = ship->getTotalDroneBandwidth();
+		usedBandwidth = ship->getDroneBandwidthUsed();
+		maxActiveDrones = ship->getMaxActiveDrones();
+		activeDrones = ship->getActiveDrones();
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
+			self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
+			self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
+			self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
+			self.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
+			self.calibrationLabel.progress = totalCalibration > 0 ? usedCalibration / totalCalibration : 0;
+			
+			self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
+			self.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
+			self.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
+			self.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
+			self.dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
+			if (activeDrones > maxActiveDrones)
+				self.dronesCountLabel.textColor = [UIColor redColor];
+			else
+				self.dronesCountLabel.textColor = [UIColor whiteColor];
+		});
+	}];
+}
 
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
-								 self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
-								 self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
-								 self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
-								 self.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
-								 self.calibrationLabel.progress = totalCalibration > 0 ? usedCalibration / totalCalibration : 0;
-								 
-								 
-								 
-								 self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
-								 self.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
-								 self.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
-								 self.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
-								 self.dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
-								 if (activeDrones > maxActiveDrones)
-									 self.dronesCountLabel.textColor = [UIColor redColor];
-								 else
-									 self.dronesCountLabel.textColor = [UIColor whiteColor];
-							 }];
+- (void) removeFit:(NCShipFit *)fit {
+	NSMutableArray* fits = [self.fits mutableCopy];
+	[fits removeObject:fit];
+	self.fits = [fits copy];
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {
@@ -459,241 +473,241 @@
 }
 
 - (IBAction)onAction:(id)sender {
-	if (!self.fit.character)
+	if (!self.fit.pilot)
 		return;
 	
-	NSMutableArray* buttons = [NSMutableArray new];
 	NSMutableArray* actions = [NSMutableArray new];
 	
-	void (^clearAreaEffect)() = ^() {
-		self.engine->clearArea();
-		[self reload];
-	};
-	
-	void (^shipInfo)() = ^() {
-		[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
-								  sender:@{@"sender": sender, @"object": [NSValue valueWithPointer:self.fit.pilot->getShip()]}];
-	};
-	
-	void (^rename)() = ^() {
-		UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename", nil)
-														 message:nil
-											   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											   otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
-												 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-													 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-														 UITextField* textField = [alertView textFieldAtIndex:0];
-														 self.fit.loadoutName = textField.text;
-														 self.title = self.fit.loadoutName;
-													 }
-												 } cancelBlock:nil];
-		alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-		UITextField* textField = [alertView textFieldAtIndex:0];
-		textField.text = self.fit.loadoutName;
-		[alertView show];
-	};
-	
-	void (^save)() = ^() {
-		[self.fit save];
-		[[NCStorage sharedStorage] saveContext];
-	};
-	
-	void (^duplicate)() = ^() {
-		[self.fit save];
-		NCStorage* storage = [NCStorage sharedStorage];
-		self.fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-		self.fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-		self.fit.loadoutName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.loadoutName ? self.fit.loadoutName : @""];
-		self.title = self.fit.loadoutName;
-	};
-	
-	void (^setCharacter)() = ^() {
-		[self performSegueWithIdentifier:@"NCFittingCharacterPickerViewController"
-								  sender:@{@"sender": sender, @"object": self.fit}];
-	};
-	
-	void (^viewInBrowser)() = ^() {
-		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.fit.loadout.url]];
-	};
-	
-	void (^setAreaEffect)() = ^() {
-		[self performSegueWithIdentifier:@"NCFittingAreaEffectPickerViewController" sender:sender];
-	};
-	
-	void (^setDamagePattern)() = ^() {
-		[self performSegueWithIdentifier:@"NCFittingDamagePatternsViewController" sender:sender];
-	};
-	
-	void (^requiredSkills)() = ^() {
-		NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:[NCAccount currentAccount]];
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 //@synchronized(self) {
-													 std::set<eufe::TypeID> typeIDs;
-													 eufe::Character* character = self.fit.pilot;
-													 eufe::Ship* ship = character->getShip();
-													 typeIDs.insert(ship->getTypeID());
-													 
-													 for (auto module: ship->getModules()) {
-														 typeIDs.insert(module->getTypeID());
-														 eufe::Charge* charge = module->getCharge();
-														 if (charge)
-															 typeIDs.insert(charge->getTypeID());
-													 }
-													 
-													 for (auto drone: ship->getDrones())
-														 typeIDs.insert(drone->getTypeID());
-
-													 for (auto implant: character->getImplants())
-														 typeIDs.insert(implant->getTypeID());
-
-													 for (auto booster: character->getBoosters())
-														 typeIDs.insert(booster->getTypeID());
-
-													 for (auto typeID: typeIDs)
-														 [trainingQueue addRequiredSkillsForType:[NCDBInvType invTypeWithTypeID:typeID]];
-												 //}
-											 }
-								 completionHandler:^(NCTask *task) {
-									 if (![task isCancelled]) {
-										 [self performSegueWithIdentifier:@"NCFittingRequiredSkillsViewController"
-																   sender:@{@"sender": sender, @"object": trainingQueue}];
-									 }
-								 }];
-	};
-	
-	void (^exportFit)() = ^() {
-		[self performExport];
-	};
-	
-	void (^affectingSkills)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-		[self performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
-								  sender:@{@"sender": sender, @"object": [NSValue valueWithPointer:self.fit.pilot->getShip()]}];
-	};
-	
-	void (^addToShoppingList)() = ^() {
-		NSMutableDictionary* items = [NSMutableDictionary new];
+	[self.engine performBlockAndWait:^{
+		if (self.engine.engine->getArea() != NULL)
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonClearAreaEffect style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+				[self.engine performBlockAndWait:^{
+					self.engine.engine->clearArea();
+				}];
+				[self reload];
+			}]];
 		
-		eufe::Character* character = self.fit.pilot;
-		eufe::Ship* ship = character->getShip();
-		
-		NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
-												  insertIntoManagedObjectContext:nil];
-		shoppingGroup.name = self.fit.loadout.name.length > 0 ? self.fit.loadout.name : self.fit.type.typeName;
-		shoppingGroup.quantity = 1;
-		
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonShowShipInfo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
+									  sender:@{@"sender": sender, @"object": [NCFittingEngineItemPointer pointerWithItem:self.fit.pilot->getShip()]}];
+		}]];
 
-		void (^addItem)(eufe::Item*, int32_t) = ^(eufe::Item* item, int32_t quanity) {
-			NCShoppingItem* shoppingItem = items[@(item->getTypeID())];
-			if (!shoppingItem) {
-				shoppingItem = [NCShoppingItem shoppingItemWithType:[self typeWithItem:item] quantity:quanity];
-				shoppingItem.shoppingGroup = shoppingGroup;
-				[shoppingGroup addShoppingItemsObject:shoppingItem];
-				if (shoppingItem)
-					items[@(item->getTypeID())] = shoppingItem;
-			}
-			else
-				shoppingItem.quantity += quanity;
-		};
-		
-		addItem(ship, 1);
-		
-		for (auto module: ship->getModules()) {
-			if (module->getSlot() == eufe::Module::SLOT_MODE)
-				continue;
-			
-			addItem(module, 1);
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetName style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Rename", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+			__block UITextField* renameTextField;
+			[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+				renameTextField = textField;
+				textField.text = self.fit.loadoutName;
+				textField.clearButtonMode = UITextFieldViewModeAlways;
+			}];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Rename", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				self.fit.loadoutName = renameTextField.text;
+				self.title = self.fit.loadoutName;
+			}]];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+			}]];
+			[self presentViewController:controller animated:YES completion:nil];
+		}]];
 
-			eufe::Charge* charge = module->getCharge();
-			if (charge) {
-				int n = module->getCharges();
-				if (n == 0)
-					n = 1;
-				addItem(charge, n);
-			}
+		if (!self.fit.loadoutID)
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSave style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self.fit save];
+			}]];
+		else
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDuplicate style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//				[self.fit save];
+//				self.fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+//				self.fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+//				self.fit.loadoutName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.loadoutName ? self.fit.loadoutName : @""];
+//				self.title = self.fit.loadoutName;
+			}]];
+
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonCharacter style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self performSegueWithIdentifier:@"NCFittingCharacterPickerViewController"
+									  sender:@{@"sender": sender, @"object": self.fit}];
+			[self reload];
+		}]];
+		
+		/*if (self.fit.loadout.url)
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonViewInBrowser style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.fit.loadout.url]];
+			}]];*/
+
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAreaEffect style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self performSegueWithIdentifier:@"NCFittingAreaEffectPickerViewController" sender:sender];
+		}]];
+
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetDamagePattern style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self performSegueWithIdentifier:@"NCFittingDamagePatternsViewController" sender:sender];
+		}]];
+
+		NCAccount* account = [NCAccount currentAccount];
+		if (account) {
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonRequiredSkills style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				NCAccount* account = [NCAccount currentAccount];
+				
+				void (^load)(NCTrainingQueue*) = ^(NCTrainingQueue* trainingQueue) {
+					__block std::set<eufe::TypeID> typeIDs;
+					[self.engine performBlockAndWait:^{
+						auto character = self.fit.pilot;
+						auto ship = character->getShip();
+						typeIDs.insert(ship->getTypeID());
+						
+						for (auto module: ship->getModules()) {
+							typeIDs.insert(module->getTypeID());
+							auto charge = module->getCharge();
+							if (charge)
+								typeIDs.insert(charge->getTypeID());
+						}
+						
+						for (auto drone: ship->getDrones())
+							typeIDs.insert(drone->getTypeID());
+						
+						for (auto implant: character->getImplants())
+							typeIDs.insert(implant->getTypeID());
+						
+						for (auto booster: character->getBoosters())
+							typeIDs.insert(booster->getTypeID());
+					}];
+					
+					for (auto typeID: typeIDs)
+						[trainingQueue addRequiredSkillsForType:[self.databaseManagedObjectContext invTypeWithTypeID:typeID]];
+					[self performSegueWithIdentifier:@"NCFittingRequiredSkillsViewController"
+											  sender:@{@"sender": sender, @"object": trainingQueue}];
+				};
+				
+				if (account) {
+					[[NCAccount currentAccount] loadCharacterSheetWithCompletionBlock:^(EVECharacterSheet *characterSheet, NSError *error) {
+						dispatch_async(dispatch_get_main_queue(), ^{
+							NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithCharacterSheet:characterSheet databaseManagedObjectContext:self.databaseManagedObjectContext];
+							load(trainingQueue);
+						});
+					}];
+				}
+				else
+					load([NCTrainingQueue new]);
+			}]];
 		}
 		
-		for (auto drone: ship->getDrones())
-			addItem(drone, 1);
-		
-		
-		shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
-		shoppingGroup.immutable = YES;
-		shoppingGroup.iconFile = self.fit.loadout.type.icon.iconFile;
-		
-		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"sender": sender, @"object": shoppingGroup}];
-	};
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonExport style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self performExport];
+		}]];
 
-	
-	if (self.engine->getArea() != NULL)
-		[actions addObject:clearAreaEffect];
-	
-	[actions addObject:shipInfo];
-	[buttons addObject:ActionButtonShowShipInfo];
-	
-	[actions addObject:rename];
-	[buttons addObject:ActionButtonSetName];
-	
-	if (!self.fit.loadout.managedObjectContext) {
-		[actions addObject:save];
-		[buttons addObject:ActionButtonSave];
-	}
-	else {
-		[actions addObject:duplicate];
-		[buttons addObject:ActionButtonDuplicate];
-	}
-	
-	[actions addObject:setCharacter];
-	[buttons addObject:ActionButtonCharacter];
-	
-	if (self.fit.loadout.url) {
-		[actions addObject:viewInBrowser];
-		[buttons addObject:ActionButtonViewInBrowser];
-	}
-	
-	[actions addObject:setAreaEffect];
-	[buttons addObject:ActionButtonAreaEffect];
-	
-	[actions addObject:setDamagePattern];
-	[buttons addObject:ActionButtonSetDamagePattern];
-	
-	[actions addObject:requiredSkills];
-	[buttons addObject:ActionButtonRequiredSkills];
-	
-	[actions addObject:exportFit];
-	[buttons addObject:ActionButtonExport];
-	
-	[buttons addObject:ActionButtonAffectingSkills];
-	[actions addObject:affectingSkills];
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAffectingSkills style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self.engine performBlock:^{
+				NSMutableDictionary* items = [NSMutableDictionary new];
+				void (^addItem)(std::shared_ptr<eufe::Item>) = ^(std::shared_ptr<eufe::Item> item) {
+					if (!items[@(item->getTypeID())])
+						items[@(item->getTypeID())] = [NCFittingEngineItemPointer pointerWithItem:item];
+				};
+				auto pilot = self.fit.pilot;
+				auto ship = pilot->getShip();
+				addItem(ship);
+				for (auto module: ship->getModules()) {
+					addItem(module);
+					auto charge = module->getCharge();
+					if (charge)
+						addItem(charge);
+				}
+				for (auto drone: ship->getDrones())
+					addItem(drone);
+				for (auto implant: pilot->getImplants())
+					addItem(implant);
+				for (auto booster: pilot->getBoosters())
+					addItem(booster);
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
+											  sender:@{@"sender": sender, @"object": [items allValues]}];
+				});
+ 			}];
+		}]];
 
-	[buttons addObject:ActionButtonAddToShoppingList];
-	[actions addObject:addToShoppingList];
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAddToShoppingList style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			NSMutableDictionary* items = [NSMutableDictionary new];
+			
+			auto character = self.fit.pilot;
+			
+			NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:self.storageManagedObjectContext]
+													  insertIntoManagedObjectContext:nil];
+			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.fit.typeID];
+			shoppingGroup.name = self.fit.loadoutName > 0 ? self.fit.loadoutName : type.typeName;
+			shoppingGroup.quantity = 1;
+			
+			
+			void (^addItem)(std::shared_ptr<eufe::Item>, int32_t) = ^(std::shared_ptr<eufe::Item> item, int32_t quanity) {
+				NCShoppingItem* shoppingItem = items[@(item->getTypeID())];
+				if (!shoppingItem) {
+					shoppingItem = [[NCShoppingItem alloc] initWithTypeID:item->getTypeID() quantity:quanity entity:[NSEntityDescription entityForName:@"ShoppingItem" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:nil];
+					shoppingItem.shoppingGroup = shoppingGroup;
+					[shoppingGroup addShoppingItemsObject:shoppingItem];
+					if (shoppingItem)
+						items[@(item->getTypeID())] = shoppingItem;
+				}
+				else
+					shoppingItem.quantity += quanity;
+			};
+			
+			[self.engine performBlockAndWait:^{
+				auto ship = character->getShip();
+				addItem(ship, 1);
+				
+				for (auto module: ship->getModules()) {
+					if (module->getSlot() == eufe::Module::SLOT_MODE)
+						continue;
+					
+					addItem(module, 1);
+					
+					auto charge = module->getCharge();
+					if (charge) {
+						int n = module->getCharges();
+						if (n == 0)
+							n = 1;
+						addItem(charge, n);
+					}
+				}
+				
+				for (auto drone: ship->getDrones())
+					addItem(drone, 1);
+			}];
+			
+			
+			shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
+			shoppingGroup.immutable = YES;
+			shoppingGroup.iconFile = type.icon.iconFile;
+			
+			[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"sender": sender, @"object": shoppingGroup}];
+		}]];
 
-	if (self.actionSheet) {
-		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
-		self.actionSheet = nil;
+	}];
+	
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	for (UIAlertAction* action in actions)
+		[controller addAction:action];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		if ([sender isKindOfClass:[UIBarButtonItem class]])
+			controller.popoverPresentationController.barButtonItem = sender;
+		else {
+			controller.popoverPresentationController.sourceView = sender;
+			controller.popoverPresentationController.sourceRect = [sender bounds];
+		}
 	}
-	
-	
-	self.actionSheet = [UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-													 title:nil
-										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-									destructiveButtonTitle:self.engine->getArea() != NULL ? ActionButtonClearAreaEffect : nil
-										 otherButtonTitles:buttons
-										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-											   self.actionSheet = nil;
-											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-												   void (^action)() = actions[selectedButtonIndex];
-												   action();
-											   }
-										   } cancelBlock:nil];
-	[self.actionSheet showFromBarButtonItem:sender animated:YES];
+	else
+		[self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void) setFit:(NCShipFit *)fit {
 	_fit = fit;
 	self.title = fit.loadoutName;
+}
+
+- (void) willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+	[super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self updateSectionSegmentedControlWithTraitCollection:newCollection];
 }
 
 #pragma mark - MFMailComposeViewControllerDelegate
@@ -710,24 +724,38 @@
 		page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
 		self.sectionSegmentedControl.selectedSegmentIndex = page;
 	}
+	else if (!scrollView.tracking && !scrollView.decelerating) {
+		for (NCFittingShipWorkspaceViewController* controller in self.childViewControllers) {
+			if ([controller isKindOfClass:[NCFittingShipWorkspaceViewController class]])
+				[controller updateVisibility];
+		}
+	}
 }
 
 - (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
 	NSInteger page = round(self.scrollView.contentOffset.x / self.scrollView.frame.size.width);
 	page = MAX(0, MIN(page, self.sectionSegmentedControl.numberOfSegments - 1));
 	self.sectionSegmentedControl.selectedSegmentIndex = page;
+	for (NCFittingShipWorkspaceViewController* controller in self.childViewControllers) {
+		if ([controller isKindOfClass:[NCFittingShipWorkspaceViewController class]])
+			[controller updateVisibility];
+	}
 }
 
 #pragma mark - Private
 
 - (IBAction) unwindFromCharacterPicker:(UIStoryboardSegue*) segue {
 	NCFittingCharacterPickerViewController* sourceViewController = segue.sourceViewController;
-	if (sourceViewController.selectedCharacter)
-		sourceViewController.fit.character = sourceViewController.selectedCharacter;
-	else if ([sourceViewController.fit.character isDeleted]) {
-		sourceViewController.fit.character = [[NCStorage sharedStorage] characterWithSkillsLevel:5];
+	if (sourceViewController.selectedCharacter) {
+		if (sourceViewController.selectedCharacter.managedObjectContext)
+			[sourceViewController.fit setCharacter:[self.storageManagedObjectContext existingObjectWithID:sourceViewController.selectedCharacter.objectID error:nil] withCompletionBlock:^{
+				[self reload];
+			}];
+		else
+			[sourceViewController.fit setCharacter:sourceViewController.selectedCharacter withCompletionBlock:^{
+				[self reload];
+			}];
 	}
-	[self reload];
 }
 
 - (IBAction) unwindFromFitPicker:(UIStoryboardSegue*) segue {
@@ -735,49 +763,30 @@
 	NCShipFit* fit = sourceViewController.selectedFit;
 	if (!fit)
 		return;
-	std::shared_ptr<eufe::Engine> engine = self.engine;
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 @synchronized(self) {
-												 if (!fit.pilot) {
-													 fit.pilot = engine->getGang()->addPilot();
-													 NCAccount* account = [NCAccount currentAccount];
-													 NCFitCharacter* character;
-													 
-													 if (account.characterSheet)
-														 character = [[NCStorage sharedStorage] characterWithAccount:account];
-													 else
-														 character = [[NCStorage sharedStorage] characterWithSkillsLevel:5];
-													 
-													 fit.character = character;
-													 [fit load];
-												 }
-
-												 
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 [self.fits addObject:fit];
-								 [self reload];
-							 }];
+	[self.engine performBlock:^{
+		[self.engine loadShipFit:fit];
+		NSArray* fits = [self.fits arrayByAddingObject:fit];
+		[fit setCharacter:self.defaultCharacter withCompletionBlock:^{
+			self.fits = fits;
+			[self reload];
+		}];
+	}];
 }
 
 - (IBAction) unwindFromTargets:(UIStoryboardSegue*) segue {
 	NCFittingTargetsViewController* sourceViewController = segue.sourceViewController;
-	eufe::Ship* target = sourceViewController.selectedTarget ? sourceViewController.selectedTarget.pilot->getShip() : nullptr;
-
-	for (NSValue* value in sourceViewController.items) {
-		eufe::Item* item = reinterpret_cast<eufe::Item*>([value pointerValue]);
-		eufe::Module* module = dynamic_cast<eufe::Module*>(item);
-		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(item);
-		
-		if (module)
-			module->setTarget(target);
-		else if (drone)
-			drone->setTarget(target);
-	}
+	auto target = sourceViewController.selectedTarget ? sourceViewController.selectedTarget.pilot->getShip() : nullptr;
+	[self.engine performBlockAndWait:^{
+		for (NCFittingEngineItemPointer* pointer in sourceViewController.items) {
+			std::shared_ptr<eufe::Module> module = std::dynamic_pointer_cast<eufe::Module>(pointer.item);
+			std::shared_ptr<eufe::Drone> drone = std::dynamic_pointer_cast<eufe::Drone>(pointer.item);
+			
+			if (module)
+				module->setTarget(target);
+			else if (drone)
+				drone->setTarget(target);
+		}
+	}];
 	[self reload];
 }
 
@@ -790,11 +799,13 @@
 		damagePattern.kineticAmount = sourceViewController.selectedDamagePattern.kinetic;
 		damagePattern.explosiveAmount = sourceViewController.selectedDamagePattern.explosive;
 		
-		self.damagePattern = sourceViewController.selectedDamagePattern;
-		for (NCShipFit* fit in self.fits) {
-			eufe::Ship* ship = fit.pilot->getShip();
-			ship->setDamagePattern(damagePattern);
-		}
+//		self.damagePattern = sourceViewController.selectedDamagePattern;
+		[self.engine performBlockAndWait:^{
+			for (NCShipFit* fit in self.fits) {
+				auto ship = fit.pilot->getShip();
+				ship->setDamagePattern(damagePattern);
+			}
+		}];
 		[self reload];
 	}
 }
@@ -802,7 +813,9 @@
 - (IBAction) unwindFromAreaEffectPicker:(UIStoryboardSegue*) segue {
 	NCFittingAreaEffectPickerViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedAreaEffect) {
-		self.engine->setArea(sourceViewController.selectedAreaEffect.typeID);
+		[self.engine performBlockAndWait:^{
+			self.engine.engine->setArea(sourceViewController.selectedAreaEffect.typeID);
+		}];
 		[self reload];
 	}
 }
@@ -810,13 +823,16 @@
 - (IBAction) unwindFromTypeVariations:(UIStoryboardSegue*) segue {
 	NCFittingTypeVariationsViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedType) {
-		eufe::Ship* ship = self.fit.pilot->getShip();
+		auto ship = self.fit.pilot->getShip();
 		eufe::TypeID typeID = sourceViewController.selectedType.typeID;
 
-		for (NSValue* value in sourceViewController.object) {
-			eufe::Module* module = reinterpret_cast<eufe::Module*>([value pointerValue]);
-			ship->replaceModule(module, typeID);
-		}
+		[self.engine performBlockAndWait:^{
+			for (NCFittingEngineItemPointer* pointer in sourceViewController.object) {
+				auto module = std::dynamic_pointer_cast<eufe::Module>(pointer.item);
+				if (module)
+					ship->replaceModule(module, typeID);
+			}
+		}];
 		[self reload];
 	}
 }
@@ -824,38 +840,34 @@
 - (IBAction) unwindFromImplantSets:(UIStoryboardSegue*) segue {
 	NCFittingImplantSetsViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedImplantSet) {
-		eufe::Character* character = self.fit.pilot;
-		eufe::ImplantsList implants = character->getImplants();
-		for (auto implant: implants)
-			character->removeImplant(implant);
-		for (NSNumber* typeID in [(NCImplantSetData*) sourceViewController.selectedImplantSet.data implantIDs]) {
-			character->addImplant([typeID intValue]);
-		}
-		
-		eufe::BoostersList boosters = character->getBoosters();
-		for (auto booster: boosters)
-			character->removeBooster(booster);
-		for (NSNumber* typeID in [(NCImplantSetData*) sourceViewController.selectedImplantSet.data boosterIDs]) {
-			character->addBooster([typeID intValue]);
-		}
-
-		[self reload];
+		NSArray* implantIDs = [(NCImplantSetData*) sourceViewController.selectedImplantSet.data implantIDs];
+		NSArray* boosterIDs = [(NCImplantSetData*) sourceViewController.selectedImplantSet.data boosterIDs];
+		[self.engine performBlock:^{
+			auto character = self.fit.pilot;
+			eufe::ImplantsList implants = character->getImplants();
+			for (auto implant: implants)
+				character->removeImplant(implant);
+			for (NSNumber* typeID in implantIDs)
+				character->addImplant([typeID intValue]);
+			
+			eufe::BoostersList boosters = character->getBoosters();
+			for (auto booster: boosters)
+				character->removeBooster(booster);
+			for (NSNumber* typeID in boosterIDs)
+				character->addBooster([typeID intValue]);
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self reload];
+			});
+		}];
 	}
 }
 
 - (IBAction) unwindFromAffectingSkills:(UIStoryboardSegue*) segue {
 	NCFittingShipAffectingSkillsViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.modified) {
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 @synchronized(self) {
-													 self.fit.character = sourceViewController.character;
-												 }
-											 }
-								 completionHandler:^(NCTask *task) {
-									 [self reload];
-								 }];
+		[[self fit] setCharacter:sourceViewController.character withCompletionBlock:^{
+			[self reload];
+		}];
 	}
 }
 
@@ -863,118 +875,82 @@
 	
 }
 
-- (void) performExport {
-	if (self.actionSheet) {
-		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
-		self.actionSheet = nil;
-	}
+- (IBAction) unwindFromCRESTFitExport:(UIStoryboardSegue*)segue {
 	
-	NSMutableArray* buttons = [NSMutableArray arrayWithObjects:
-							   NSLocalizedString(@"Copy Link", nil),
-							   NSLocalizedString(@"Copy DNA", nil),
-							   NSLocalizedString(@"Copy EFT", nil),
-							   NSLocalizedString(@"Copy EVE XML", nil),
-							   NSLocalizedString(@"Open EVE XML in ...", nil),
-							   NSLocalizedString(@"Open EFT in ...", nil),
-							   nil];
+}
+
+- (void) performExport {
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy Link", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		NSString* dna = self.fit.dnaRepresentation;
+		[[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"http://neocom.by/api/fitting?dna=%@", [dna stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy DNA", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"fitting:%@", self.fit.dnaRepresentation]];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy EFT", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[[UIPasteboard generalPasteboard] setString:self.fit.eftRepresentation];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy EVE XML", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[[UIPasteboard generalPasteboard] setString:self.fit.eveXMLRepresentation];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Open EVE XML in ...", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.fit.typeID];
+		NSData* data = [[self.fit eveXMLRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
+		NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.xml", type.typeName, self.fit.loadoutName]];
+		[data writeToFile:path atomically:YES];
+		self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
+		[self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+	}]];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Open EFT in ...", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.fit.typeID];
+		NSData* data = [[self.fit eftRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
+		NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.cfg", type.typeName, self.fit.loadoutName]];
+		[data writeToFile:path atomically:YES];
+		self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
+		[self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+	}]];
+	
 	if ([MFMailComposeViewController canSendMail])
-		[buttons addObject:NSLocalizedString(@"Email", nil)];
-		
-	self.actionSheet = [UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-													 title:nil
-										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-									destructiveButtonTitle:nil
-										 otherButtonTitles:buttons
-										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-											   self.actionSheet = nil;
-											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-												   
-												   if (selectedButtonIndex == 0) {
-													   NSString* dna = self.fit.dnaRepresentation;
-													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"http://neocom.by/api/fitting?dna=%@", [dna stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-													   [[UIAlertView alertViewWithTitle:nil
-																				message:NSLocalizedString(@"Link has been copied to clipboard", nil)
-																	  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-																	  otherButtonTitles:nil
-																		completionBlock:nil
-																			cancelBlock:nil] show];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Email", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.fit.typeID];
+			NSString* tag = self.fit.hyperlinkTag;
+			NSMutableString* message = [NSMutableString stringWithFormat:@"%@\n<pre>\n%@\n</pre>Generated by <a href=\"https://itunes.apple.com/us/app/neocom/id418895101?mt=8\">Neocom</a>", tag, self.fit.eftRepresentation];
+			MFMailComposeViewController* controller = [MFMailComposeViewController new];
+			[controller setSubject:[NSString stringWithFormat:@"%@ - %@", type.typeName, self.fit.loadoutName]];
+			[controller setMessageBody:message isHTML:YES];
+			[controller addAttachmentData:[self.fit.eveXMLRepresentation dataUsingEncoding:NSUTF8StringEncoding]
+								 mimeType:@"application/xml"
+								 fileName:[NSString stringWithFormat:@"%@.xml", self.fit.loadoutName]];
+			controller.mailComposeDelegate = self;
+			[self presentViewController:controller animated:YES completion:nil];
+		}]];
 
-													  /* __block NSString* shortenLink = nil;
-													   __block NSError* error = nil;
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Save Ingame", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self performSegueWithIdentifier:@"NCFittingCRESTFitExportViewController" sender:self.navigationItem.rightBarButtonItem];
+	}]];
 
-													   [[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-																							title:NCTaskManagerDefaultTitle
-																							block:^(NCTask *task) {
-																								NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://is.gd/create.php?format=json&url=fitting:%@", dna]]];
-																								NSData* data = [NSURLConnection sendSynchronousRequest:request
-																																	 returningResponse:nil
-																																				 error:&error];
-																								if (data) {
-																									NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-																									if ([result isKindOfClass:[NSDictionary class]])
-																										shortenLink = result[@"shorturl"];
-																									else
-																										error = [NSError errorWithDomain:@"is.gd"
-																																	code:0
-																																userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Unknown Error", nil)}];
-																								}
-																							}
-																				completionHandler:^(NCTask *task) {
-																					if (!error) {
-																						[[UIPasteboard generalPasteboard] setString:shortenLink];
-																						[[UIAlertView alertViewWithTitle:nil
-																												 message:NSLocalizedString(@"Link has been copied to clipboard", nil)
-																									   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-																									   otherButtonTitles:nil
-																										 completionBlock:nil
-																											 cancelBlock:nil] show];
-																					}
-																					else {
-																						[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Error", nil)
-																												 message:[error localizedDescription]
-																									   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-																									   otherButtonTitles:nil
-																										 completionBlock:nil
-																											 cancelBlock:nil] show];
-																					}
-																				}];
-													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"fitting:%@", self.fit.dnaRepresentation]];*/
-												   }
-												   else if (selectedButtonIndex == 1)
-													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"fitting:%@", self.fit.dnaRepresentation]];
-												   else if (selectedButtonIndex == 2)
-													   [[UIPasteboard generalPasteboard] setString:self.fit.eftRepresentation];
-												   else if (selectedButtonIndex == 3)
-													   [[UIPasteboard generalPasteboard] setString:self.fit.eveXMLRepresentation];
-												   else if (selectedButtonIndex == 4) {
-													   NSData* data = [[self.fit eveXMLRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
-													   NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.xml", self.fit.type.typeName, self.fit.loadoutName]];
-													   [data writeToFile:path atomically:YES];
-													   self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
-													   [self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
-												   }
-												   else if (selectedButtonIndex == 5) {
-													   NSData* data = [[self.fit eftRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
-													   NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.cfg", self.fit.type.typeName, self.fit.loadoutName]];
-													   [data writeToFile:path atomically:YES];
-													   self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
-													   [self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
-												   }
-												   else if (selectedButtonIndex == 6) {
-													   NSString* tag = self.fit.hyperlinkTag;
-													   NSMutableString* message = [NSMutableString stringWithFormat:@"%@\n<pre>\n%@\n</pre>Generated by <a href=\"https://itunes.apple.com/us/app/neocom/id418895101?mt=8\">Neocom</a>", tag, self.fit.eftRepresentation];
-													   MFMailComposeViewController* controller = [MFMailComposeViewController new];
-													   [controller setSubject:[NSString stringWithFormat:@"%@ - %@", self.fit.type.typeName, self.fit.loadoutName]];
-													   [controller setMessageBody:message isHTML:YES];
-													   [controller addAttachmentData:[self.fit.eveXMLRepresentation dataUsingEncoding:NSUTF8StringEncoding]
-																			mimeType:@"application/xml"
-																			fileName:[NSString stringWithFormat:@"%@.xml", self.fit.loadoutName]];
-													   controller.mailComposeDelegate = self;
-													   [self presentViewController:controller animated:YES completion:nil];
-												   }
-											   }
-										   } cancelBlock:nil];
-	[self.actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		controller.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItem;
+	}
+	else
+		[self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void) updateSectionSegmentedControlWithTraitCollection:(UITraitCollection*) traitCollection {
+	if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+		if (self.sectionSegmentedControl.numberOfSegments == 4)
+			[self.sectionSegmentedControl insertSegmentWithTitle:NSLocalizedString(@"Stats", nil) atIndex:4 animated:NO];
+	}
+	else if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+		if (self.sectionSegmentedControl.numberOfSegments == 5)
+			[self.sectionSegmentedControl removeSegmentAtIndex:4 animated:NO];
+	}
 }
 
 @end

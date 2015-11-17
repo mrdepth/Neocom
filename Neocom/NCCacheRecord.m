@@ -17,26 +17,8 @@
 @dynamic expireDate;
 @dynamic section;
 
-+ (instancetype) cacheRecordWithRecordID:(NSString*) recordID {
-	
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSManagedObjectContext* context = [[NCCache sharedCache] managedObjectContext];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:context];
-	[fetchRequest setEntity:entity];
-	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recordID == %@", recordID]];
-	
-	NCCacheRecord* record = nil;
-	NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:nil];
-	if (fetchedObjects.count > 0)
-		record = fetchedObjects[0];
-	if (!record) {
-		record = [[NCCacheRecord alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
-		record.recordID = recordID;
-		record.date = [NSDate date];
-		record.expireDate = [NSDate distantPast];
-		record.data = [[NCCacheRecordData alloc] initWithEntity:[NSEntityDescription entityForName:@"RecordData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-	}
-	return record;
+- (BOOL) isExpired {
+	return !self.date || !self.expireDate || [self.expireDate compare:[NSDate date]] == NSOrderedAscending;
 }
 
 @end

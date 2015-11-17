@@ -18,10 +18,10 @@
 	#import <StoreKit/StoreKit.h>
 	#import <CoreText/CoreText.h>
 	#import <EventKit/EventKit.h>
+	#import <CloudKit/CloudKit.h>
 #endif
 
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
-#define NCSettingsCurrentShoppingListKey @"NCSettingsCurrentShoppingListKey"
 #define NCSettingsNotificationsLastUpdateTimeKey @"NCSettingsNotificationsLastUpdateTimeKey"
 #define NCSettingsNotificationsLastEventsUpdateTimeKey @"NCSettingsNotificationsLastEventsUpdateTimeKey"
 #define NCSettingsAPINextSyncDateKey @"NCSettingsAPINextSyncDateKey"
@@ -30,15 +30,9 @@
 #define NCSettingsSkillQueueNotificationTimeKey @"NCSettingsSkillQueueNotificationTimeKey"
 #define NCSettingsMarketPricesMonitorKey @"NCSettingsMarketPricesMonitorKey"
 #define NCSettingsCalendarIdentifierKey @"NCSettingsCalendarIdentifierKey"
-#define NCSettingsDontNeedsCloudTransfer @"NCSettingsDontNeedsCloudTransfer"
-#define NCSettingsDontNeedsCloudReset @"NCSettingsDontNeedsCloudReset"
-#define NCSettingsStorageType @"NCSettingsStorageType"
 
 #define NCSettingsSkillsViewControllerModeKey @"NCSettingsSkillsViewControllerModeKey"
 
-#define NCSettingsUseCloudKey @"NCSettingsUseCloudKey"
-#define NCSettingsCloudTokenKey @"NCSettingsCloudTokenKey"
-#define NCSettingsMigratedToCloudKey @"NCSettingsMigratedToCloudKey"
 
 #define NCBattleClinicAPIKey @"D8368891670D2D7079B17A59B4268C0B95D663FF"
 
@@ -56,21 +50,17 @@
 #define NCHangarOrOfficeGroupID 471
 #define NCShipMaintenanceArrayGroupID 363
 
-#define NCCharismaBonusAttributeID 175
-#define NCIntelligenceBonusAttributeID 176
-#define NCMemoryBonusAttributeID 177
-#define NCPerceptionBonusAttributeID 178
-#define NCWillpowerBonusAttributeID 179
-
 #define NCInAppFullProductID @"com.shimanski.eveuniverse.full"
 #define NCInAppDonate1ProductID @"com.shimanski.eveuniverse.donation"
 #define NCInAppDonate5ProductID @"com.shimanski.eveuniverse.donation5"
 #define NCInAppDonate10ProductID @"com.shimanski.eveuniverse.donation10"
 
-#define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
+#define NCCurrentAccountDidChangeNotification @"NCCurrentAccountDidChangeNotification"
 #define NCApplicationDidRemoveAddsNotification @"NCApplicationDidRemoveAddsNotification"
 
 #define NCMarketPricesMonitorDidChangeNotification @"NCMarketPricesMonitorDidChangeNotification"
 #define NCSkillQueueNotificationTimeDidChangeNotification @"NCSkillQueueNotificationTimeDidChangeNotification"
 
-#define NCStorageDidChangeNotification @"NCStorageDidChangeNotification"
+#define CRAPIClientID @"c2cc974798d4485d966fba773a8f7ef8"
+#define CRAPISecretKey @"GNhSE9GJ6q3QiuPSTIJ8Q1J6on4ClM4v9zvc0Qzu"
+#define CRAPICallbackURLString @"neocom://sso"

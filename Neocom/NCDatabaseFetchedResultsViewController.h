@@ -9,5 +9,5 @@
 #import "NCTableViewController.h"
 
 @interface NCDatabaseFetchedResultsViewController : NCTableViewController
-@property (nonatomic, strong) NSFetchedResultsController* result;
+@property (nonatomic, strong) NSFetchRequest* request;
 @end

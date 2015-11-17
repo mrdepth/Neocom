@@ -10,11 +10,17 @@
 #import "NCDatabase.h"
 #import "NCDatabaseViewController.h"
 
+@interface NCDatabaseFetchedResultsViewController()
+@property (nonatomic, strong) NSFetchedResultsController* result;
+@end
+
 @implementation NCDatabaseFetchedResultsViewController
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	self.refreshControl = nil;
+	self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:self.request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:@"category.categoryName" cacheName:nil];
+	[self.result performFetch:nil];
 }
 
 
@@ -52,11 +58,6 @@
 
 #pragma mark - NCTableViewController
 
-- (NSString*) recordID {
-	return nil;
-}
-
-
 - (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	id row = [self.result objectAtIndexPath:indexPath];
 	
@@ -72,7 +73,7 @@
 	}
 	
 	if (!cell.iconView.image)
-		cell.iconView.image = [[[NCDBEveIcon defaultGroupIcon] image] image];
+		cell.iconView.image = [[[self.databaseManagedObjectContext defaultGroupIcon] image] image];
 	cell.object = row;
 }
 

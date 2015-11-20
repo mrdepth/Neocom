@@ -207,6 +207,8 @@
 			dispatch_group_leave(finishDispatchGroup);
 		} progressBlock:nil];
 		
+		NSMutableArray* bids = [NSMutableArray new];
+		__block NSDictionary* characterName;
 		[self loadContractBidsWithCompletionBlock:^(EVEContractBids *contractBids) {
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 				@autoreleasepool {
@@ -214,7 +216,6 @@
 						progress.completedUnitCount++;
 					}
 					
-					NSMutableArray* bids = [NSMutableArray new];
 					NSMutableSet* characterIDs = [NSMutableSet new];
 					for (EVEContractBidsItem* bid in contractBids.bidList) {
 						if (bid.contractID == self.contract.contractID) {
@@ -225,8 +226,7 @@
 						}
 					}
 					
-					dispatch_group_t finishDispatchGroup = dispatch_group_create();
-					__block NSDictionary* characterName;
+					//dispatch_group_t finishDispatchGroup = dispatch_group_create();
 					if (characterIDs.count > 0) {
 						dispatch_group_enter(finishDispatchGroup);
 						[api characterNameWithIDs:[characterIDs sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(compare:)]]]
@@ -245,74 +245,75 @@
 						@synchronized(progress) {
 							progress.completedUnitCount++;
 						}
-					
-					dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-						@autoreleasepool {
-							for (NCContractsDetailsViewControllerDataBid* dataBid in bids)
-								dataBid.bidderName = characterName[@(dataBid.bid.bidderID)];
-							
-							NSMutableArray *rows = [NSMutableArray array];
-							
-							if (self.contract.title.length > 0)
-								[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Title", nil)
-																								   description:self.contract.title]];
-							
-							[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Status", nil)
-																							   description:[self.contract localizedStatusString]]];
-							[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Type", nil)
-																							   description:[self.contract localizedTypeString]]];
-							
-							
-							if (self.contract.startStation)
-								[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Start Station", nil)
-																								   description:self.contract.startStation.name]];
-							if (self.contract.endStation)
-								[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"End Station", nil)
-																								   description:self.contract.endStation.name]];
-							
-							if (self.contract.price > 0)
-								[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Price", nil)
-																								   description:[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.price)]]]];
-							if (self.contract.buyout > 0)
-								[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Buyout", nil)
-																								   description:[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.buyout)]]]];
-							if (self.contract.reward > 0)
-								[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Reward", nil)
-																								   description:[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.reward)]]]];
-							if (self.contract.collateral > 0)
-								[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Collateral", nil)
-																								   description:[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.collateral)]]]];
-							
-							if (self.contract.dateIssued)
-								[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Issued", nil)
-																								   description:[self.dateFormatter stringFromDate:self.contract.dateIssued]]];
-							
-							if (self.contract.dateAccepted)
-								[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Accepted", nil)
-																								   description:[self.dateFormatter stringFromDate:self.contract.dateAccepted]]];
-							
-							if (self.contract.dateCompleted)
-								[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Completed", nil)
-																								   description:[self.dateFormatter stringFromDate:self.contract.dateCompleted]]];
-							
-							if (self.contract.dateExpired)
-								[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Expired", nil)
-																								   description:[self.dateFormatter stringFromDate:self.contract.dateExpired]]];
-							data.items = [contractItems.itemList sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"included" ascending:NO]]];
-							data.bids = bids;
-							data.rows = rows;
-							
-							dispatch_async(dispatch_get_main_queue(), ^{
-								[self saveCacheData:data cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
-								completionBlock(lastError);
-								progress.completedUnitCount++;
-							});
-							
-						}
-					});
 				}
 			});
 		}];
+		
+		dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+			@autoreleasepool {
+				for (NCContractsDetailsViewControllerDataBid* dataBid in bids)
+					dataBid.bidderName = characterName[@(dataBid.bid.bidderID)];
+				
+				NSMutableArray *rows = [NSMutableArray array];
+				
+				if (self.contract.title.length > 0)
+					[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Title", nil)
+																					   description:self.contract.title]];
+				
+				[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Status", nil)
+																				   description:[self.contract localizedStatusString]]];
+				[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Type", nil)
+																				   description:[self.contract localizedTypeString]]];
+				
+				
+				if (self.contract.startStation)
+					[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Start Station", nil)
+																					   description:self.contract.startStation.name]];
+				if (self.contract.endStation)
+					[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"End Station", nil)
+																					   description:self.contract.endStation.name]];
+				
+				if (self.contract.price > 0)
+					[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Price", nil)
+																					   description:[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.price)]]]];
+				if (self.contract.buyout > 0)
+					[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Buyout", nil)
+																					   description:[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.buyout)]]]];
+				if (self.contract.reward > 0)
+					[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Reward", nil)
+																					   description:[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.reward)]]]];
+				if (self.contract.collateral > 0)
+					[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Collateral", nil)
+																					   description:[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.collateral)]]]];
+				
+				if (self.contract.dateIssued)
+					[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Issued", nil)
+																					   description:[self.dateFormatter stringFromDate:self.contract.dateIssued]]];
+				
+				if (self.contract.dateAccepted)
+					[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Accepted", nil)
+																					   description:[self.dateFormatter stringFromDate:self.contract.dateAccepted]]];
+				
+				if (self.contract.dateCompleted)
+					[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Completed", nil)
+																					   description:[self.dateFormatter stringFromDate:self.contract.dateCompleted]]];
+				
+				if (self.contract.dateExpired)
+					[rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Expired", nil)
+																					   description:[self.dateFormatter stringFromDate:self.contract.dateExpired]]];
+				data.items = [contractItems.itemList sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"included" ascending:NO]]];
+				data.bids = bids;
+				data.rows = rows;
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[self saveCacheData:data cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
+					completionBlock(lastError);
+					progress.completedUnitCount++;
+				});
+				
+			}
+		});
+
 	}];
 }
 

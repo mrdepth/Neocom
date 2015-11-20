@@ -91,12 +91,29 @@
 		
 		NSInteger i = 0;
 		
+		NSMutableDictionary* lengths = [NSMutableDictionary new];
+		if (sum > 0) {
+			CGFloat minLength = M_PI * 4 / 180;
+			CGFloat left = M_PI * 2;
+			
+			for (NCPieChartSegmentLayer* layer in [self.segmentLayers sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"segment.value" ascending:YES]]]) {
+				CGFloat len = M_PI * 2 * (layer.segment.value / sum);
+				len = MAX(len, minLength);
+				len = MIN(len, left);
+				left -= len;
+				lengths[@((intptr_t) layer)] = @(len);
+			}
+		}
+		
 		for (NCPieChartSegmentLayer* layer in self.segmentLayers) {
 			CGFloat endAngle;
-			if (sum > 0)
-				endAngle = startAngle + M_PI * 2 * (layer.segment.value / sum);
+			if (sum > 0) {
+				CGFloat len = [lengths[@((intptr_t) layer)] floatValue];
+				//endAngle = startAngle + M_PI * 2 * (layer.segment.value / sum);
+				endAngle = startAngle + len;
+			}
 			else
-				endAngle = 1.0 / self.segmentLayers.count;
+				endAngle = 1.0 / self.segmentLayers.count * M_PI * 2;
 			layer.startAngle = startAngle;
 			layer.endAngle = endAngle;
 			
@@ -168,7 +185,8 @@
 		
 		float y = round(self.bounds.size.height / 2 + s * layer.radius);
 		float x = round(self.bounds.size.width / 2 + c * layer.radius);
-		
+		if (fpclassify(x) == FP_NAN)
+			NSLog(@"123");
 		layer.position = CGPointMake(x, y);
 	};
 	NSArray* layers = [self.textLayers sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"position.y" ascending:YES]]];
@@ -200,9 +218,13 @@
 				CGPoint p = second.position;
 				p.y += CGRectGetMaxY(first.frame) - CGRectGetMinY(second.frame);
 				int sign = p.x > self.bounds.size.width / 2 ? 1 : -1;
-				p.x = self.bounds.size.width / 2 + sqrtf(pow(first.radius,2) - pow(p.y - self.bounds.size.height / 2, 2)) * sign;
+				if (first.radius > p.y - self.bounds.size.height / 2)
+					p.x = self.bounds.size.width / 2 + sqrtf(pow(first.radius,2) - pow(p.y - self.bounds.size.height / 2, 2)) * sign;
 				p.x = round(p.x);
 				p.y = round(p.y);
+				if (fpclassify(p.x) == FP_NAN)
+					NSLog(@"123");
+
 				second.position = p;
 			}
 		}

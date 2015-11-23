@@ -515,11 +515,12 @@
 			}]];
 		else
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDuplicate style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//				[self.fit save];
+				[self.fit duplicateWithCompletioBloc:^{
+					self.title = self.fit.loadoutName;
+				}];
 //				self.fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
 //				self.fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
 //				self.fit.loadoutName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.loadoutName ? self.fit.loadoutName : @""];
-//				self.title = self.fit.loadoutName;
 			}]];
 
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonCharacter style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {

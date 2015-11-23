@@ -92,5 +92,6 @@
 
 - (void) flush;
 - (void) save;
+- (void) duplicateWithCompletioBloc:(void(^)()) completionBlock;
 
 @end

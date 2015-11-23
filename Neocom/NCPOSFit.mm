@@ -75,6 +75,7 @@
 @property (nonatomic, strong) NCLoadoutDataPOS* loadoutData;
 @property (nonatomic, strong) NSManagedObjectContext* storageManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
+- (void) saveWithCompletionBlock:(void(^)()) completionBlock;
 
 @end
 
@@ -137,65 +138,16 @@
 }
 
 - (void) save {
-	if (!self.engine)
-		return;
-	
-	__block int32_t typeID = self.typeID;
-	
-	[self.engine performBlockAndWait:^{
-		auto controlTower = self.engine.engine->getControlTower();
-		if (!controlTower)
-			return;
+	[self saveWithCompletionBlock:nil];
+}
 
-		typeID = controlTower->getTypeID();
-		
-		NSMutableDictionary* structuresDic = [NSMutableDictionary new];
-		for (auto i: controlTower->getStructures()) {
-			auto charge = i->getCharge();
-			eufe::TypeID chargeID = charge ? charge->getTypeID() : 0;
-			NSString* key = [NSString stringWithFormat:@"%d:%d:%d", i->getTypeID(), i->getState(), chargeID];
-			NSDictionary* record = structuresDic[key];
-			if (!record) {
-				NCLoadoutDataPOSStructure* structure = [NCLoadoutDataPOSStructure new];
-				structure.typeID = i->getTypeID();
-				structure.state = i->getState();
-				structure.chargeID = chargeID;
-				structure.count = 1;
-				record = @{@"structure": structure, @"order": @(structuresDic.count)};
-				structuresDic[key]= record;
-			}
-			else {
-				NCLoadoutDataPOSStructure* structure = record[@"structure"];
-				structure.count++;
-			}
-			
-		}
-		
-		NSArray* structures = [[[structuresDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]] valueForKey:@"structure"];
-
-		self.loadoutData = [NCLoadoutDataPOS new];
-		self.loadoutData.structures = structures;
-
-		NSManagedObjectContext* context = self.storageManagedObjectContext;
-		[context performBlock:^{
-			NCLoadout* loadout;
-			if (!self.loadoutID) {
-				loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-				loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-			}
-			else
-				loadout = [self.storageManagedObjectContext existingObjectWithID:self.loadoutID error:nil];
-			
-			if (![loadout.data.data isEqual:self.loadoutData])
-				loadout.data.data = self.loadoutData;
-			if (loadout.typeID != typeID)
-				loadout.typeID = typeID;
-			if (![self.loadoutName isEqualToString:loadout.name])
-				loadout.name = self.loadoutName;
-			if ([context hasChanges]) {
-				[context save:nil];
-				self.loadoutID = loadout.objectID;
-			}
+- (void) duplicateWithCompletioBloc:(void(^)()) completionBlock {
+	[self saveWithCompletionBlock:^{
+		self.loadoutID = nil;
+		self.loadoutName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.loadoutName ? self.loadoutName : @""];
+		[self saveWithCompletionBlock:^{
+			if (completionBlock)
+			completionBlock();
 		}];
 	}];
 }
@@ -234,4 +186,76 @@
 	}
 	return _databaseManagedObjectContext;
 }
+
+- (void) saveWithCompletionBlock:(void(^)()) completionBlock {
+	if (!self.engine) {
+		if (completionBlock)
+			completionBlock();
+		return;
+	}
+	
+	__block int32_t typeID = self.typeID;
+	
+	[self.engine performBlockAndWait:^{
+		auto controlTower = self.engine.engine->getControlTower();
+		if (!controlTower)
+			return;
+		
+		typeID = controlTower->getTypeID();
+		
+		NSMutableDictionary* structuresDic = [NSMutableDictionary new];
+		for (auto i: controlTower->getStructures()) {
+			auto charge = i->getCharge();
+			eufe::TypeID chargeID = charge ? charge->getTypeID() : 0;
+			NSString* key = [NSString stringWithFormat:@"%d:%d:%d", i->getTypeID(), i->getState(), chargeID];
+			NSDictionary* record = structuresDic[key];
+			if (!record) {
+				NCLoadoutDataPOSStructure* structure = [NCLoadoutDataPOSStructure new];
+				structure.typeID = i->getTypeID();
+				structure.state = i->getState();
+				structure.chargeID = chargeID;
+				structure.count = 1;
+				record = @{@"structure": structure, @"order": @(structuresDic.count)};
+				structuresDic[key]= record;
+			}
+			else {
+				NCLoadoutDataPOSStructure* structure = record[@"structure"];
+				structure.count++;
+			}
+			
+		}
+		
+		NSArray* structures = [[[structuresDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]] valueForKey:@"structure"];
+		
+		self.loadoutData = [NCLoadoutDataPOS new];
+		self.loadoutData.structures = structures;
+		
+		NSManagedObjectContext* context = self.storageManagedObjectContext;
+		[context performBlock:^{
+			NCLoadout* loadout;
+			if (!self.loadoutID) {
+				loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+				loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+			}
+			else
+				loadout = [self.storageManagedObjectContext existingObjectWithID:self.loadoutID error:nil];
+			
+			if (![loadout.data.data isEqual:self.loadoutData])
+				loadout.data.data = self.loadoutData;
+			if (loadout.typeID != typeID)
+				loadout.typeID = typeID;
+			if (![self.loadoutName isEqualToString:loadout.name])
+				loadout.name = self.loadoutName;
+			if ([context hasChanges]) {
+				[context save:nil];
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.loadoutID = loadout.objectID;
+					if (completionBlock)
+						completionBlock();
+				});
+			}
+		}];
+	}];
+}
+
 @end

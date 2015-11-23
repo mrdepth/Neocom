@@ -38,5 +38,6 @@
 - (id) initWithAsset:(EVEAssetListItem*) asset;
 
 - (void) save;
+- (void) duplicateWithCompletioBloc:(void(^)()) completionBlock;
 
 @end

@@ -45,6 +45,7 @@
 	self.plexSwitch.on = (marketPricesMonitor & NCMarketPricesMonitorPlex) == NCMarketPricesMonitorPlex;
 	self.mineralsSwitch.on = (marketPricesMonitor & NCMarketPricesMonitorMinerals) == NCMarketPricesMonitorMinerals;
 	self.iCloudSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey];
+	self.loadImplantsSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsLoadCharacterImplantsKey];
 
 	NCDBVersion* version = [self.databaseManagedObjectContext version];
 	self.databaseCell.textLabel.text = [NSString stringWithFormat:@"%@ %@", version.expansion, version.version];
@@ -101,6 +102,10 @@
 	[[NSUserDefaults standardUserDefaults] setBool:[sender isOn] forKey:NCSettingsUseCloudKey];
 	NCAppDelegate* delegate = (NCAppDelegate*)[[UIApplication sharedApplication] delegate];
 	[delegate reconnectStoreIfNeeded];
+}
+
+- (IBAction)onChangeLoadImplants:(id)sender {
+	[[NSUserDefaults standardUserDefaults] setBool:[sender isOn] forKey:NCSettingsLoadCharacterImplantsKey];
 }
 
 #pragma mark - Table view delegate

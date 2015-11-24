@@ -403,6 +403,7 @@
 }
 
 - (void) setCharacter:(NCFitCharacter*) character withCompletionBlock:(void(^)()) completionBlock {
+	BOOL loadCharacterImplants = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsLoadCharacterImplantsKey];
 	NSAssert(self.pilot, @"Pilot is nil");
 	_character = character;
 	
@@ -413,8 +414,10 @@
 	void (^load)() = ^{
 		[self.engine performBlock:^{
 			[self setSkillLevels:skills];
-			for (NSNumber* implantID in implants)
-				self.pilot->addImplant([implantID intValue]);
+			if (loadCharacterImplants) {
+				for (NSNumber* implantID in implants)
+					self.pilot->addImplant([implantID intValue]);
+			}
 			self.pilot->setCharacterName([characterName cStringUsingEncoding:NSUTF8StringEncoding]);
 			if (completionBlock)
 				dispatch_async(dispatch_get_main_queue(), completionBlock);

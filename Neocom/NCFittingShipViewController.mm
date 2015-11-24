@@ -117,6 +117,8 @@
 	NCShipFit* fit = self.fit;
 	dispatch_group_t finishDispatchGroup = dispatch_group_create();
 	dispatch_group_enter(finishDispatchGroup);
+	
+	//CFTimeInterval t0 = CACurrentMediaTime();
 	[engine performBlock:^{
 		[engine loadShipFit:fit];
 		dispatch_group_leave(finishDispatchGroup);
@@ -149,6 +151,8 @@
 	
 	dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
 		[fit setCharacter:fitCharacter withCompletionBlock:^{
+			//CFTimeInterval t1 = CACurrentMediaTime();
+			//NSLog(@"Fit loading time %f", t1 - t0);
 			self.defaultCharacter = fitCharacter;
 			self.engine = engine;
 			[self reload];

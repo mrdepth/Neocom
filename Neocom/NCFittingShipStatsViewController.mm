@@ -493,7 +493,9 @@
 										sensorImage = [UIImage imageNamed:@"multispectral"];
 										break;
 								}
-
+								if (!sensorImage)
+									sensorImage = [UIImage imageNamed:@"multispectral"];
+								
 								NSDictionary* data =
 								@{@"targets": [NSString stringWithFormat:@"%d", targets],
 								  @"targetRange": [NSString stringWithFormat:@"%.1f km", targetRange],

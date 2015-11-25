@@ -513,7 +513,7 @@
 		void (^setState)(eufe::ModulesList, eufe::Module::State) = ^(eufe::ModulesList modules, eufe::Module::State state) {
 			[self.controller.engine performBlockAndWait:^{
 				for (auto module: modules)
-					module->setState(state);
+					module->setPreferredState(state);
 			}];
 			[self.controller reload];
 		};

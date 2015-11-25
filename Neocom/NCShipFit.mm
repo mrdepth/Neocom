@@ -310,7 +310,7 @@
 				NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 				module.typeID = i->getTypeID();
 				module.chargeID = charge ? charge->getTypeID() : 0;
-				module.state = i->getState();
+				module.state = i->getPreferredState();
 				
 				switch(i->getSlot()) {
 					case eufe::Module::SLOT_HI:

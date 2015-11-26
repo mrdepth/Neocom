@@ -399,6 +399,7 @@
 	if (row && !row.isUpToDate) {
 		row.isUpToDate = YES;
 		[self.controller.engine performBlock:^{
+			NCFittingPOSStructuresViewControllerRow* newRow = [NCFittingPOSStructuresViewControllerRow new];
 			auto structure = row.structures.front();
 			int optimal = (int) structure->getMaxRange();
 			int falloff = (int) structure->getFalloff();
@@ -406,14 +407,14 @@
 			
 			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:structure->getTypeID()];
 			
-			row.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.structures.size()];
-			row.typeImage = type.icon.image.image;
+			newRow.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.structures.size()];
+			newRow.typeImage = type.icon.image.image;
 			
 			auto charge = structure->getCharge();
 			if (charge)
-				row.chargeText = type.typeName;
+				newRow.chargeText = type.typeName;
 			else
-				row.chargeText = nil;
+				newRow.chargeText = nil;
 
 			if (optimal > 0) {
 				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
@@ -421,27 +422,32 @@
 					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
 				if (trackingSpeed > 0)
 					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-				row.optimalText = s;
+				newRow.optimalText = s;
 			}
 			else
-				row.optimalText = nil;
+				newRow.optimalText = nil;
 
 			switch (structure->getState()) {
 				case eufe::Module::STATE_ACTIVE:
-					row.stateImage = [UIImage imageNamed:@"active"];
+					newRow.stateImage = [UIImage imageNamed:@"active"];
 					break;
 				case eufe::Module::STATE_ONLINE:
-					row.stateImage = [UIImage imageNamed:@"online"];
+					newRow.stateImage = [UIImage imageNamed:@"online"];
 					break;
 				case eufe::Module::STATE_OVERLOADED:
-					row.stateImage = [UIImage imageNamed:@"overheated"];
+					newRow.stateImage = [UIImage imageNamed:@"overheated"];
 					break;
 				default:
-					row.stateImage = [UIImage imageNamed:@"offline"];
+					newRow.stateImage = [UIImage imageNamed:@"offline"];
 					break;
 			}
 
 			dispatch_async(dispatch_get_main_queue(), ^{
+				row.typeName = newRow.typeName;
+				row.typeImage = newRow.typeImage;
+				row.chargeText = newRow.chargeText;
+				row.optimalText = newRow.optimalText;
+				row.stateImage = newRow.stateImage;
 				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 			});
 		}];

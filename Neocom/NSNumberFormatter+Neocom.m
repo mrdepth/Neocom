@@ -31,6 +31,7 @@ static NSNumberFormatter* sharedFloatNumberFormatter;
 				sharedFloatNumberFormatter = [[NSNumberFormatter alloc] init];
 				[sharedFloatNumberFormatter setPositiveFormat:@"#,##0.##"];
 				[sharedFloatNumberFormatter setGroupingSeparator:@" "];
+				[sharedFloatNumberFormatter setDecimalSeparator:@"."];
 			}
 			return [sharedFloatNumberFormatter stringFromNumber:value];
 		}

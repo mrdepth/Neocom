@@ -202,6 +202,8 @@
 		1264FD761BBC57F6002AFDF3 /* NCSkillsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */; };
 		126703061A8FD22700F816F9 /* NSAttributedString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126703051A8FD22700F816F9 /* NSAttributedString+Neocom.m */; };
 		1267030C1A911A0900F816F9 /* NSMutableAttributedString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 1267030B1A911A0800F816F9 /* NSMutableAttributedString+Neocom.m */; };
+		1268292C1C05F9E300954ECF /* NCFittingShipOffenseStatsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1268292B1C05F9E300954ECF /* NCFittingShipOffenseStatsViewController.mm */; };
+		1268292E1C06044B00954ECF /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1268292D1C06044B00954ECF /* SpriteKit.framework */; };
 		126AACEE1BBA67C00068AA99 /* NCDatabaseTypeMarketInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAA188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m */; };
 		126AACEF1BBA72110068AA99 /* NCDatabaseGroupPickerViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A4F18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m */; };
 		126AACF01BBA72940068AA99 /* NCCharacterSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */; };
@@ -842,6 +844,9 @@
 		126703051A8FD22700F816F9 /* NSAttributedString+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Neocom.m"; sourceTree = "<group>"; };
 		1267030A1A911A0800F816F9 /* NSMutableAttributedString+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+Neocom.h"; sourceTree = "<group>"; };
 		1267030B1A911A0800F816F9 /* NSMutableAttributedString+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+Neocom.m"; sourceTree = "<group>"; };
+		1268292A1C05F9E300954ECF /* NCFittingShipOffenseStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipOffenseStatsViewController.h; sourceTree = "<group>"; };
+		1268292B1C05F9E300954ECF /* NCFittingShipOffenseStatsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipOffenseStatsViewController.mm; sourceTree = "<group>"; };
+		1268292D1C06044B00954ECF /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
 		126DC6A018D1ABD3009EEA86 /* NCCharacterAttributesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterAttributesCell.h; sourceTree = "<group>"; };
 		126DC6A118D1ABD3009EEA86 /* NCCharacterAttributesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCharacterAttributesCell.m; sourceTree = "<group>"; };
 		126ED31C188129080009FA39 /* NCCharacterSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterSheetViewController.h; sourceTree = "<group>"; };
@@ -1221,6 +1226,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1268292E1C06044B00954ECF /* SpriteKit.framework in Frameworks */,
 				1210C7DE1BF4D77800B94154 /* QuartzCore.framework in Frameworks */,
 				12D963E51BA1F1A100292321 /* AFNetworking.framework in Frameworks */,
 				12D963E41BA1F17D00292321 /* EVEAPI.framework in Frameworks */,
@@ -1347,6 +1353,7 @@
 		120968511845F0CB00921A37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1268292D1C06044B00954ECF /* SpriteKit.framework */,
 				1210C7DD1BF4D77800B94154 /* QuartzCore.framework */,
 				1282578B1BD1370000BC1F56 /* CloudKit.framework */,
 				1256923C1A37799A008F6468 /* EventKit.framework */,
@@ -2104,6 +2111,15 @@
 				126648F318C07D1000ADBBE1 /* NCZKillBoardSearchResultsViewController.m */,
 			);
 			name = NCZKillBoardSearchResultsViewController;
+			sourceTree = "<group>";
+		};
+		126829241C05F98000954ECF /* NCFittingShipOffenseStatsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1268292A1C05F9E300954ECF /* NCFittingShipOffenseStatsViewController.h */,
+				1268292B1C05F9E300954ECF /* NCFittingShipOffenseStatsViewController.mm */,
+			);
+			name = NCFittingShipOffenseStatsViewController;
 			sourceTree = "<group>";
 		};
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
@@ -3467,6 +3483,7 @@
 				12B97D3018AB759C00ECCFC3 /* NCFittingBattleClinic */,
 				84FFB56818ABD2ED00A30772 /* NCFittingAPI */,
 				12B9509E1ADB8D6B009E31DB /* NCFittingExportViewController */,
+				126829241C05F98000954ECF /* NCFittingShipOffenseStatsViewController */,
 				127A1AB41BAC32ED0066A5EE /* NCFittingEngine.h */,
 				127A1AB51BAC32ED0066A5EE /* NCFittingEngine.mm */,
 			);
@@ -3982,6 +3999,7 @@
 				12B5EFF21ACBC154003CDF65 /* NCShoppingList.m in Sources */,
 				125DC67E1BD6377B005C2F79 /* NCShoppingItemCell.m in Sources */,
 				129E23AA1BC3FD3000E311BF /* NCFittingPOSStructureCell.m in Sources */,
+				1268292C1C05F9E300954ECF /* NCFittingShipOffenseStatsViewController.mm in Sources */,
 				12F9560218CDB5D4005CEAD6 /* NCBannerViewController.m in Sources */,
 				128310231BBD81ED0018C8AC /* NCCalendarEventDetailsViewController.m in Sources */,
 				1283101F1BBD7C5D0018C8AC /* NCCalendarEventCell.m in Sources */,

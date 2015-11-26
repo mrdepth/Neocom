@@ -36,6 +36,8 @@
 #import "NCFittingShipStatsViewController.h"
 #import "NCAdaptivePopoverSegue.h"
 
+#import "NCFittingShipOffenseStatsViewController.h"
+
 #include <set>
 
 #define ActionButtonBack NSLocalizedString(@"Back", nil)
@@ -53,6 +55,7 @@
 #define ActionButtonShowShipInfo NSLocalizedString(@"Ship Info", nil)
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 #define ActionButtonAddToShoppingList NSLocalizedString(@"Add to Shopping List", nil)
+#define ActionButtonDamageChart NSLocalizedString(@"Damage Chart", nil)
 
 @interface NCFittingShipViewController ()<MFMailComposeViewControllerDelegate>
 @property (nonatomic, strong, readwrite) NSArray* fits;
@@ -391,8 +394,21 @@
 		controller.shoppingGroup = sender[@"object"];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingCRESTFitExportViewController"]) {
-		NCFittingCRESTFitExportViewController* controller = segue.destinationViewController;
+		NCFittingCRESTFitExportViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
 		controller.fitting = self.fit.crFittingRepresentation;
+	}
+	else if ([segue.identifier isEqualToString:@"NCFittingShipOffenseStatsViewController"]) {
+		NCFittingShipOffenseStatsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		controller.fit = self.fit;
 	}
 }
 
@@ -494,6 +510,10 @@
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonShowShipInfo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 			[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
 									  sender:@{@"sender": sender, @"object": [NCFittingEngineItemPointer pointerWithItem:self.fit.pilot->getShip()]}];
+		}]];
+
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDamageChart style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self performSegueWithIdentifier:@"NCFittingShipOffenseStatsViewController" sender:nil];
 		}]];
 
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetName style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -682,7 +702,6 @@
 			
 			[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"sender": sender, @"object": shoppingGroup}];
 		}]];
-
 	}];
 	
 	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];

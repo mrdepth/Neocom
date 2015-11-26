@@ -202,14 +202,15 @@
 	if (row && !row.isUpToDate) {
 		row.isUpToDate = YES;
 		[self.controller.engine performBlock:^{
+			NCFittingShipDronesViewControllerRow* newRow = [NCFittingShipDronesViewControllerRow new];
 			auto drone = row.drones.front();
 			int optimal = (int) drone->getMaxRange();
 			int falloff = (int) drone->getFalloff();
 			float trackingSpeed = drone->getTrackingSpeed();
 			
 			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];
-			row.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.drones.size()];
-			row.typeImage = type.icon.image.image;
+			newRow.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.drones.size()];
+			newRow.typeImage = type.icon.image.image;
 			
 			if (optimal > 0) {
 				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
@@ -217,15 +218,20 @@
 					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
 				if (trackingSpeed > 0)
 					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-				row.optimalText = s;
+				newRow.optimalText = s;
 			}
 			else
-				row.optimalText = nil;
+				newRow.optimalText = nil;
 			
-			row.stateImage = drone->isActive() ? [UIImage imageNamed:@"active"] : [UIImage imageNamed:@"offline"];
-			row.hasTarget = drone->getTarget() != nullptr;
+			newRow.stateImage = drone->isActive() ? [UIImage imageNamed:@"active"] : [UIImage imageNamed:@"offline"];
+			newRow.hasTarget = drone->getTarget() != nullptr;
 
 			dispatch_async(dispatch_get_main_queue(), ^{
+				row.typeName = newRow.typeName;
+				row.typeImage = newRow.typeImage;
+				row.optimalText = newRow.optimalText;
+				row.hasTarget = newRow.hasTarget;
+				row.stateImage = newRow.stateImage;
 				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 			});
 		}];

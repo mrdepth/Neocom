@@ -402,12 +402,13 @@
 	if (row.module && !row.isUpToDate) {
 		row.isUpToDate = YES;
 		[self.controller.engine performBlock:^{
+			NCFittingShipModulesViewControllerRow* newRow = [NCFittingShipModulesViewControllerRow new];
 			auto ship = self.controller.fit.pilot->getShip();
 			auto module = row.module;
 			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:module->getTypeID()];
-			row.typeName = type.typeName;
-			row.typeNameColor = module->isEnabled() ? [UIColor whiteColor] : [UIColor redColor];
-			row.typeImage = type.icon.image.image;
+			newRow.typeName = type.typeName;
+			newRow.typeNameColor = module->isEnabled() ? [UIColor whiteColor] : [UIColor redColor];
+			newRow.typeImage = type.icon.image.image;
 			
 			auto charge = module->getCharge();
 			if (charge) {
@@ -415,64 +416,76 @@
 				float capacity = module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
 				NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:charge->getTypeID()];
 				if (volume > 0 && volume > 0)
-					row.chargeText = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
+					newRow.chargeText = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
 				else
-					row.chargeText = type.typeName;
+					newRow.chargeText = type.typeName;
 			}
 			else
-				row.chargeText = nil;
+				newRow.chargeText = nil;
 			
 			float optimal = module->getMaxRange();
 			float falloff = module->getFalloff();
 			float trackingSpeed = module->getTrackingSpeed();
 			float lifeTime = module->getLifeTime();
 			
-			row.trackingText = nil;
+			newRow.trackingText = nil;
 			if (trackingSpeed > 0) {
 				float v0 = ship->getMaxVelocityInOrbit(optimal);
 				float v1 = ship->getMaxVelocityInOrbit(optimal + falloff);
 				float orbitRadius = ship->getOrbitRadiusWithAngularVelocity(trackingSpeed);
-				row.trackingColor = trackingSpeed * optimal > v0 ? [UIColor greenColor] : (trackingSpeed * (optimal + falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
-				row.trackingSpeed = trackingSpeed;
-				row.orbitRadius = orbitRadius;
+				newRow.trackingColor = trackingSpeed * optimal > v0 ? [UIColor greenColor] : (trackingSpeed * (optimal + falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
+				newRow.trackingSpeed = trackingSpeed;
+				newRow.orbitRadius = orbitRadius;
 			}
 			
 			if (optimal > 0) {
 				NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
 				if (falloff > 0)
 					[s appendFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-				row.optimalText = s;
+				newRow.optimalText = s;
 			}
 			else
-				row.optimalText = nil;
+				newRow.optimalText = nil;
 			
 			if (lifeTime > 0)
-				row.lifeTimeText = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];
+				newRow.lifeTimeText = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];
 			else
-				row.lifeTimeText = nil;
+				newRow.lifeTimeText = nil;
 			
 			eufe::Module::Slot slot = module->getSlot();
 			if (slot == eufe::Module::SLOT_HI || slot == eufe::Module::SLOT_MED || slot == eufe::Module::SLOT_LOW) {
 				switch (module->getState()) {
 					case eufe::Module::STATE_ACTIVE:
-						row.stateImage = [UIImage imageNamed:@"active"];
+						newRow.stateImage = [UIImage imageNamed:@"active"];
 						break;
 					case eufe::Module::STATE_ONLINE:
-						row.stateImage = [UIImage imageNamed:@"online"];
+						newRow.stateImage = [UIImage imageNamed:@"online"];
 						break;
 					case eufe::Module::STATE_OVERLOADED:
-						row.stateImage = [UIImage imageNamed:@"overheated"];
+						newRow.stateImage = [UIImage imageNamed:@"overheated"];
 						break;
 					default:
-						row.stateImage = [UIImage imageNamed:@"offline"];
+						newRow.stateImage = [UIImage imageNamed:@"offline"];
 						break;
 				}
 			}
 			else
-				row.stateImage = nil;
+				newRow.stateImage = nil;
 			
-			row.hasTarget = module->getTarget() != nullptr;
+			newRow.hasTarget = module->getTarget() != nullptr;
 			dispatch_async(dispatch_get_main_queue(), ^{
+				row.typeName = newRow.typeName;
+				row.typeNameColor = newRow.typeNameColor;
+				row.typeImage = newRow.typeImage;
+				row.chargeText = newRow.chargeText;
+				row.optimalText = newRow.optimalText;
+				row.trackingColor = newRow.trackingColor;
+				row.trackingText = newRow.trackingText;
+				row.lifeTimeText = newRow.lifeTimeText;
+				row.stateImage = newRow.stateImage;
+				row.hasTarget = newRow.hasTarget;
+				row.trackingSpeed = newRow.trackingSpeed;
+				row.orbitRadius = newRow.orbitRadius;
 				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 			});
 		}];
@@ -734,7 +747,8 @@
 					controller.popoverPresentationController.sourceRect = [sender bounds];
 				}
 				else
-					[self presentViewController:controller animated:YES completion:nil];			}]];
+					[self presentViewController:controller animated:YES completion:nil];
+			}]];
 		}
 	}];
 	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];

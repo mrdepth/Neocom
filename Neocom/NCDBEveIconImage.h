@@ -2,8 +2,8 @@
 //  NCDBEveIconImage.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.09.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -11,9 +11,14 @@
 
 @class NCDBEveIcon;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBEveIconImage : NSManagedObject
 
-@property (nonatomic, retain) id image;
-@property (nonatomic, retain) NCDBEveIcon *icon;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBEveIconImage+CoreDataProperties.h"

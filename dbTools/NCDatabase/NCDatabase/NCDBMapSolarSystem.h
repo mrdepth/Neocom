@@ -2,7 +2,7 @@
 //  NCDBMapSolarSystem.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,27 +11,14 @@
 
 @class NCDBMapConstellation, NCDBMapDenormalize, NCDBStaStation;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBMapSolarSystem : NSManagedObject
 
-@property (nonatomic) int32_t factionID;
-@property (nonatomic) float security;
-@property (nonatomic) int32_t solarSystemID;
-@property (nonatomic, retain) NSString * solarSystemName;
-@property (nonatomic, retain) NCDBMapConstellation *constellation;
-@property (nonatomic, retain) NSSet *denormalize;
-@property (nonatomic, retain) NSSet *stations;
-@end
-
-@interface NCDBMapSolarSystem (CoreDataGeneratedAccessors)
-
-- (void)addDenormalizeObject:(NCDBMapDenormalize *)value;
-- (void)removeDenormalizeObject:(NCDBMapDenormalize *)value;
-- (void)addDenormalize:(NSSet *)values;
-- (void)removeDenormalize:(NSSet *)values;
-
-- (void)addStationsObject:(NCDBStaStation *)value;
-- (void)removeStationsObject:(NCDBStaStation *)value;
-- (void)addStations:(NSSet *)values;
-- (void)removeStations:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBMapSolarSystem+CoreDataProperties.h"

@@ -2,7 +2,7 @@
 //  NCDBIndBlueprintType.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,18 +11,14 @@
 
 @class NCDBIndActivity, NCDBInvType;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBIndBlueprintType : NSManagedObject
 
-@property (nonatomic) int32_t maxProductionLimit;
-@property (nonatomic, retain) NCDBInvType *type;
-@property (nonatomic, retain) NSSet *activities;
-@end
-
-@interface NCDBIndBlueprintType (CoreDataGeneratedAccessors)
-
-- (void)addActivitiesObject:(NCDBIndActivity *)value;
-- (void)removeActivitiesObject:(NCDBIndActivity *)value;
-- (void)addActivities:(NSSet *)values;
-- (void)removeActivities:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBIndBlueprintType+CoreDataProperties.h"

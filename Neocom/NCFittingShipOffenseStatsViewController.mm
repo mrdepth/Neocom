@@ -13,12 +13,15 @@
 #import "NCShipFit.h"
 #import "NSNumberFormatter+Neocom.h"
 #import <algorithm>
+#import "NCDatabase.h"
+#import "NSManagedObjectContext+NCDatabase.h"
 
 @interface NCFittingShipOffenseStatsViewController()
 @property (nonatomic, strong) CAShapeLayer* axisLayer;
 @property (nonatomic, strong) CAShapeLayer* dpsLayer;
 @property (nonatomic, strong) CAShapeLayer* velocityLayer;
 @property (nonatomic, strong) CAShapeLayer* markerLayer;
+@property (nonatomic, assign) float targetSignature;
 @property (nonatomic, assign) float maxRange;
 @property (nonatomic, assign) float falloff;
 @property (nonatomic, assign) float fullRange;
@@ -34,6 +37,13 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
+	NSManagedObjectID* hullTypeID = self.fit.engine.userInfo[@"hullType"];
+	if (!hullTypeID) {
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.fit.typeID];
+		self.targetSignature = type.hullType.signature;
+		self.targetLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ with signature %.0f", nil), type.hullType.hullTypeName, self.targetSignature];
+	}
+
 	self.dpsNumberFormatter = [[NSNumberFormatter alloc] init];
 	[self.dpsNumberFormatter setPositiveFormat:@"#,##0.0"];
 	[self.dpsNumberFormatter setGroupingSeparator:@" "];
@@ -276,7 +286,7 @@
 			float v = ship->getMaxVelocityInOrbit(x);
 			v = std::min(v, velocity);
 			float angularVelocity = v / x;
-			dpsPoints[i] = CGPointMake(x / self.fullRange, dps > 0 ? (ship->getWeaponDps(x, angularVelocity, 0) + droneDPS) / dps : 0);
+			dpsPoints[i] = CGPointMake(x / self.fullRange, dps > 0 ? (ship->getWeaponDps(x, angularVelocity, self.targetSignature) + droneDPS) / dps : 0);
 			
 			if (dpsPoints[i].y >= maxDPS.y)
 				maxDPS = dpsPoints[i];

@@ -2,7 +2,7 @@
 //  NCDBEufeItemCategory.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,25 +11,14 @@
 
 @class NCDBChrRace, NCDBEufeItem, NCDBEufeItemGroup;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBEufeItemCategory : NSManagedObject
 
-@property (nonatomic) int32_t category;
-@property (nonatomic) int32_t subcategory;
-@property (nonatomic, retain) NSSet *eufeItems;
-@property (nonatomic, retain) NSSet *itemGroups;
-@property (nonatomic, retain) NCDBChrRace *race;
-@end
-
-@interface NCDBEufeItemCategory (CoreDataGeneratedAccessors)
-
-- (void)addEufeItemsObject:(NCDBEufeItem *)value;
-- (void)removeEufeItemsObject:(NCDBEufeItem *)value;
-- (void)addEufeItems:(NSSet *)values;
-- (void)removeEufeItems:(NSSet *)values;
-
-- (void)addItemGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)removeItemGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)addItemGroups:(NSSet *)values;
-- (void)removeItemGroups:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBEufeItemCategory+CoreDataProperties.h"

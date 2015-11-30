@@ -17,6 +17,7 @@
 @property (nonatomic, assign, readonly) std::shared_ptr<eufe::Engine> engine;
 @property (nonatomic, strong, readonly) NSManagedObjectContext* databaseManagedObjectContext;
 @property (nonatomic, strong, readonly) NSManagedObjectContext* storageManagedObjectContext;
+@property (nonatomic, strong) NSMutableDictionary* userInfo;
 
 - (void)performBlockAndWait:(void (^)())block;
 - (void)performBlock:(void (^)())block;

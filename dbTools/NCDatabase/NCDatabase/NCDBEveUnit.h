@@ -2,7 +2,7 @@
 //  NCDBEveUnit.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,18 +11,14 @@
 
 @class NCDBDgmAttributeType;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBEveUnit : NSManagedObject
 
-@property (nonatomic, retain) NSString * displayName;
-@property (nonatomic) int32_t unitID;
-@property (nonatomic, retain) NSSet *attributeTypes;
-@end
-
-@interface NCDBEveUnit (CoreDataGeneratedAccessors)
-
-- (void)addAttributeTypesObject:(NCDBDgmAttributeType *)value;
-- (void)removeAttributeTypesObject:(NCDBDgmAttributeType *)value;
-- (void)addAttributeTypes:(NSSet *)values;
-- (void)removeAttributeTypes:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBEveUnit+CoreDataProperties.h"

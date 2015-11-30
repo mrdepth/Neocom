@@ -2,7 +2,7 @@
 //  NCDBCertMastery.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,11 +11,8 @@
 #import "NCDBCertMasteryLevel.h"
 #import "NCDBCertSkill.h"
 
-
 @implementation NCDBCertMastery
 
-@dynamic certificate;
-@dynamic level;
-@dynamic skills;
+// Insert code here to add functionality to your managed object subclass
 
 @end

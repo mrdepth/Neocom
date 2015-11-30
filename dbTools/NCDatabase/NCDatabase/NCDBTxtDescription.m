@@ -2,7 +2,7 @@
 //  NCDBTxtDescription.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -10,11 +10,8 @@
 #import "NCDBCertCertificate.h"
 #import "NCDBInvType.h"
 
-
 @implementation NCDBTxtDescription
 
-@dynamic text;
-@dynamic certificate;
-@dynamic type;
+// Insert code here to add functionality to your managed object subclass
 
 @end

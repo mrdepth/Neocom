@@ -1435,6 +1435,35 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 				 }];
 }
 
+void convertEufeHullTypes(NSManagedObjectContext* context) {
+	NCDBInvMarketGroup* marketGroup = invMarketGroups[@(4)];
+	__weak __block void (^weakAdd)(NCDBInvMarketGroup*, NSMutableArray*);
+	void (^add)(NCDBInvMarketGroup*, NSMutableArray*) = ^(NCDBInvMarketGroup* marketGroup, NSMutableArray* types) {
+		if (marketGroup.types.count > 0)
+			[types addObjectsFromArray:marketGroup.types.allObjects];
+		for (NCDBInvMarketGroup* subGroup in marketGroup.subGroups)
+			weakAdd(subGroup, types);
+	};
+	weakAdd = add;
+	
+	for (NCDBInvMarketGroup* subGroup in marketGroup.subGroups) {
+		NCDBEufeHullType* hullType = [NSEntityDescription insertNewObjectForEntityForName:@"EufeHullType" inManagedObjectContext:context];
+		hullType.hullTypeName = subGroup.marketGroupName;
+		
+		NSMutableArray* types = [NSMutableArray new];
+		add(subGroup, types);
+		double signature = 0;
+		for (NCDBInvType* type in types) {
+			NCDBDgmTypeAttribute* attribute = [[type.attributes filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"attributeType.attributeID==552"]] anyObject];
+			signature += attribute.value;
+			type.hullType = hullType;
+		}
+		signature /= types.count;
+		signature = ceil(signature / 5) * 5;
+		hullType.signature = signature;
+	}
+}
+
 void convertWhTypes(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	[database execSQLRequest:@"SELECT * FROM invTypes where groupID = 988" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
@@ -1551,6 +1580,8 @@ int main(int argc, const char * argv[])
 			convertRequiredSkills(context);
 			NSLog(@"convertEufeItems");
 			convertEufeItems(context, database);
+			NSLog(@"convertEufeHullTypes");
+			convertEufeHullTypes(context);
 			NSLog(@"convertIndustryBlueprints");
 			indBlueprintTypes = convertIndustryBlueprints(context, database);
 			NSLog(@"convertIndustryActivity");

@@ -2,7 +2,7 @@
 //  NCDBRamAssemblyLineType.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -10,16 +10,8 @@
 #import "NCDBRamActivity.h"
 #import "NCDBRamInstallationTypeContent.h"
 
-
 @implementation NCDBRamAssemblyLineType
 
-@dynamic assemblyLineTypeID;
-@dynamic assemblyLineTypeName;
-@dynamic baseMaterialMultiplier;
-@dynamic baseTimeMultiplier;
-@dynamic minCostPerHour;
-@dynamic volume;
-@dynamic activity;
-@dynamic installationTypeContents;
+// Insert code here to add functionality to your managed object subclass
 
 @end

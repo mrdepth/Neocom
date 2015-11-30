@@ -2,7 +2,7 @@
 //  NCDBInvControlTowerResource.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,15 +11,8 @@
 #import "NCDBInvControlTowerResourcePurpose.h"
 #import "NCDBInvType.h"
 
-
 @implementation NCDBInvControlTowerResource
 
-@dynamic factionID;
-@dynamic minSecurityLevel;
-@dynamic quantity;
-@dynamic wormholeClassID;
-@dynamic controlTower;
-@dynamic purpose;
-@dynamic resourceType;
+// Insert code here to add functionality to your managed object subclass
 
 @end

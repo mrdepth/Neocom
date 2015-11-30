@@ -2,7 +2,7 @@
 //  NCDBRamInstallationTypeContent.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,10 +11,14 @@
 
 @class NCDBInvType, NCDBRamAssemblyLineType;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBRamInstallationTypeContent : NSManagedObject
 
-@property (nonatomic) int32_t quantity;
-@property (nonatomic, retain) NCDBRamAssemblyLineType *assemblyLineType;
-@property (nonatomic, retain) NCDBInvType *installationType;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBRamInstallationTypeContent+CoreDataProperties.h"

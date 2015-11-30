@@ -29,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *transverseVelocityLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dpsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dpsTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *targetLabel;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *axisLabels;
 @property (strong, nonatomic) NCShipFit* fit;
 

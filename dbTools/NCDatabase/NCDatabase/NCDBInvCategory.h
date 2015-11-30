@@ -2,7 +2,7 @@
 //  NCDBInvCategory.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,20 +11,14 @@
 
 @class NCDBEveIcon, NCDBInvGroup;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBInvCategory : NSManagedObject
 
-@property (nonatomic) int32_t categoryID;
-@property (nonatomic, retain) NSString * categoryName;
-@property (nonatomic) BOOL published;
-@property (nonatomic, retain) NSSet *groups;
-@property (nonatomic, retain) NCDBEveIcon *icon;
-@end
-
-@interface NCDBInvCategory (CoreDataGeneratedAccessors)
-
-- (void)addGroupsObject:(NCDBInvGroup *)value;
-- (void)removeGroupsObject:(NCDBInvGroup *)value;
-- (void)addGroups:(NSSet *)values;
-- (void)removeGroups:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBInvCategory+CoreDataProperties.h"

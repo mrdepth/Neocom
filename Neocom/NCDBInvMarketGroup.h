@@ -2,35 +2,23 @@
 //  NCDBInvMarketGroup.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.09.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBEveIcon, NCDBInvMarketGroup, NCDBInvType;
+@class NCDBEveIcon, NCDBInvType;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface NCDBInvMarketGroup : NSManagedObject
 
-@property (nonatomic) int32_t marketGroupID;
-@property (nonatomic, retain) NSString * marketGroupName;
-@property (nonatomic, retain) NCDBEveIcon *icon;
-@property (nonatomic, retain) NCDBInvMarketGroup *parentGroup;
-@property (nonatomic, retain) NSSet *subGroups;
-@property (nonatomic, retain) NSSet *types;
-@end
-
-@interface NCDBInvMarketGroup (CoreDataGeneratedAccessors)
-
-- (void)addSubGroupsObject:(NCDBInvMarketGroup *)value;
-- (void)removeSubGroupsObject:(NCDBInvMarketGroup *)value;
-- (void)addSubGroups:(NSSet *)values;
-- (void)removeSubGroups:(NSSet *)values;
-
-- (void)addTypesObject:(NCDBInvType *)value;
-- (void)removeTypesObject:(NCDBInvType *)value;
-- (void)addTypes:(NSSet *)values;
-- (void)removeTypes:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBInvMarketGroup+CoreDataProperties.h"

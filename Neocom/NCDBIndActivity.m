@@ -2,8 +2,8 @@
 //  NCDBIndActivity.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.09.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import "NCDBIndActivity.h"
@@ -13,14 +13,8 @@
 #import "NCDBIndRequiredSkill.h"
 #import "NCDBRamActivity.h"
 
-
 @implementation NCDBIndActivity
 
-@dynamic time;
-@dynamic activity;
-@dynamic blueprintType;
-@dynamic products;
-@dynamic requiredMaterials;
-@dynamic requiredSkills;
+// Insert code here to add functionality to your managed object subclass
 
 @end

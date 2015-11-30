@@ -2,18 +2,21 @@
 //  NCDBVersion.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 22.04.15.
-//  Copyright (c) 2015 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
 @interface NCDBVersion : NSManagedObject
 
-@property (nonatomic) int32_t build;
-@property (nonatomic, retain) NSString * version;
-@property (nonatomic, retain) NSString * expansion;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBVersion+CoreDataProperties.h"

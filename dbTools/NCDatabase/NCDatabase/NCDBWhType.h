@@ -2,7 +2,7 @@
 //  NCDBWhType.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.04.15.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,14 +11,14 @@
 
 @class NCDBInvType;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBWhType : NSManagedObject
 
-@property (nonatomic) int32_t targetSystemClass;
-@property (nonatomic) float maxStableTime;
-@property (nonatomic) float maxStableMass;
-@property (nonatomic) float maxRegeneration;
-@property (nonatomic) float maxJumpMass;
-@property (nonatomic, retain) NSString * targetSystemClassDisplayName;
-@property (nonatomic, retain) NCDBInvType *type;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBWhType+CoreDataProperties.h"

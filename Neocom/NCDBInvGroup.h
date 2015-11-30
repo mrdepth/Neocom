@@ -2,8 +2,8 @@
 //  NCDBInvGroup.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.09.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -11,33 +11,14 @@
 
 @class NCDBCertCertificate, NCDBEveIcon, NCDBInvCategory, NCDBInvType, NCDBNpcGroup;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBInvGroup : NSManagedObject
 
-@property (nonatomic) int32_t groupID;
-@property (nonatomic, retain) NSString * groupName;
-@property (nonatomic) BOOL published;
-@property (nonatomic, retain) NCDBInvCategory *category;
-@property (nonatomic, retain) NSSet *certificates;
-@property (nonatomic, retain) NCDBEveIcon *icon;
-@property (nonatomic, retain) NSSet *npcGroups;
-@property (nonatomic, retain) NSSet *types;
-@end
-
-@interface NCDBInvGroup (CoreDataGeneratedAccessors)
-
-- (void)addCertificatesObject:(NCDBCertCertificate *)value;
-- (void)removeCertificatesObject:(NCDBCertCertificate *)value;
-- (void)addCertificates:(NSSet *)values;
-- (void)removeCertificates:(NSSet *)values;
-
-- (void)addNpcGroupsObject:(NCDBNpcGroup *)value;
-- (void)removeNpcGroupsObject:(NCDBNpcGroup *)value;
-- (void)addNpcGroups:(NSSet *)values;
-- (void)removeNpcGroups:(NSSet *)values;
-
-- (void)addTypesObject:(NCDBInvType *)value;
-- (void)removeTypesObject:(NCDBInvType *)value;
-- (void)addTypes:(NSSet *)values;
-- (void)removeTypes:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBInvGroup+CoreDataProperties.h"

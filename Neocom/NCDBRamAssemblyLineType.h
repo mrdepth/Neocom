@@ -2,8 +2,8 @@
 //  NCDBRamAssemblyLineType.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.09.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -11,23 +11,14 @@
 
 @class NCDBRamActivity, NCDBRamInstallationTypeContent;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBRamAssemblyLineType : NSManagedObject
 
-@property (nonatomic) int32_t assemblyLineTypeID;
-@property (nonatomic, retain) NSString * assemblyLineTypeName;
-@property (nonatomic) float baseMaterialMultiplier;
-@property (nonatomic) float baseTimeMultiplier;
-@property (nonatomic) float minCostPerHour;
-@property (nonatomic) float volume;
-@property (nonatomic, retain) NCDBRamActivity *activity;
-@property (nonatomic, retain) NSSet *installationTypeContents;
-@end
-
-@interface NCDBRamAssemblyLineType (CoreDataGeneratedAccessors)
-
-- (void)addInstallationTypeContentsObject:(NCDBRamInstallationTypeContent *)value;
-- (void)removeInstallationTypeContentsObject:(NCDBRamInstallationTypeContent *)value;
-- (void)addInstallationTypeContents:(NSSet *)values;
-- (void)removeInstallationTypeContents:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBRamAssemblyLineType+CoreDataProperties.h"

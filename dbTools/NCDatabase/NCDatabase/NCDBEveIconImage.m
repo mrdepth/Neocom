@@ -2,17 +2,15 @@
 //  NCDBEveIconImage.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
 #import "NCDBEveIconImage.h"
 #import "NCDBEveIcon.h"
 
-
 @implementation NCDBEveIconImage
 
-@dynamic image;
-@dynamic icon;
+// Insert code here to add functionality to your managed object subclass
 
 @end

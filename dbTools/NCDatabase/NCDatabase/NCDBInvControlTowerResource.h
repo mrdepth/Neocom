@@ -2,7 +2,7 @@
 //  NCDBInvControlTowerResource.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,14 +11,14 @@
 
 @class NCDBInvControlTower, NCDBInvControlTowerResourcePurpose, NCDBInvType;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBInvControlTowerResource : NSManagedObject
 
-@property (nonatomic) int32_t factionID;
-@property (nonatomic) float minSecurityLevel;
-@property (nonatomic) int32_t quantity;
-@property (nonatomic) int32_t wormholeClassID;
-@property (nonatomic, retain) NCDBInvControlTower *controlTower;
-@property (nonatomic, retain) NCDBInvControlTowerResourcePurpose *purpose;
-@property (nonatomic, retain) NCDBInvType *resourceType;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBInvControlTowerResource+CoreDataProperties.h"

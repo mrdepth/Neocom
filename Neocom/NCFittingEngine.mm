@@ -42,6 +42,7 @@
 - (id) init {
 	if (self = [super init]) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+		self.userInfo = [NSMutableDictionary new];
 //		self.privateQueue = dispatch_queue_create(0, DISPATCH_QUEUE_SERIAL);
 	}
 	return self;

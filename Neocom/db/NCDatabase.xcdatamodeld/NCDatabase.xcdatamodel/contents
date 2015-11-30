@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8195" systemVersion="15A282b" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15B42" minimumToolsVersion="Automatic">
     <entity name="CertCertificate" representedClassName="NCDBCertCertificate" syncable="YES">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String" syncable="YES"/>
@@ -54,6 +54,11 @@
         <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="attributeType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="typeAttributes" inverseEntity="DgmAttributeType" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="attributes" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="EufeHullType" representedClassName="NCDBEufeHullType" parentEntity="InvType" syncable="YES">
+        <attribute name="hullTypeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="signature" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="InvType" inverseName="hullType" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="EufeItem" representedClassName="NCDBEufeItem" syncable="YES">
         <relationship name="charge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItemCategory" inverseName="eufeItems" inverseEntity="EufeItemCategory" syncable="YES"/>
@@ -199,6 +204,7 @@
         <relationship name="effects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmEffect" inverseName="types" inverseEntity="DgmEffect" syncable="YES"/>
         <relationship name="eufeItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="type" inverseEntity="EufeItem" syncable="YES"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="types" inverseEntity="InvGroup" syncable="YES"/>
+        <relationship name="hullType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeHullType" inverseName="types" inverseEntity="EufeHullType" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="types" inverseEntity="EveIcon" syncable="YES"/>
         <relationship name="indRequiredSkills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndRequiredSkill" inverseName="skillType" inverseEntity="IndRequiredSkill" syncable="YES"/>
         <relationship name="installationTypeContents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamInstallationTypeContent" inverseName="installationType" inverseEntity="RamInstallationTypeContent" syncable="YES"/>
@@ -382,7 +388,7 @@
         <element name="InvGroup" positionX="0" positionY="45" width="128" height="163"/>
         <element name="InvMarketGroup" positionX="-18" positionY="36" width="128" height="133"/>
         <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="103"/>
-        <element name="InvType" positionX="-396" positionY="85" width="128" height="585"/>
+        <element name="InvType" positionX="-396" positionY="85" width="128" height="600"/>
         <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="88"/>
         <element name="MapConstellation" positionX="81" positionY="225" width="128" height="133"/>
         <element name="MapDenormalize" positionX="90" positionY="234" width="128" height="148"/>
@@ -396,5 +402,6 @@
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
         <element name="Version" positionX="-153" positionY="216" width="128" height="90"/>
         <element name="WhType" positionX="-189" positionY="180" width="128" height="150"/>
+        <element name="EufeHullType" positionX="-189" positionY="180" width="128" height="90"/>
     </elements>
 </model>

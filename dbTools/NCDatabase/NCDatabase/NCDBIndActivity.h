@@ -2,7 +2,7 @@
 //  NCDBIndActivity.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,31 +11,14 @@
 
 @class NCDBIndBlueprintType, NCDBIndProduct, NCDBIndRequiredMaterial, NCDBIndRequiredSkill, NCDBRamActivity;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBIndActivity : NSManagedObject
 
-@property (nonatomic) int32_t time;
-@property (nonatomic, retain) NCDBIndBlueprintType *blueprintType;
-@property (nonatomic, retain) NCDBRamActivity *activity;
-@property (nonatomic, retain) NSSet *products;
-@property (nonatomic, retain) NSSet *requiredMaterials;
-@property (nonatomic, retain) NSSet *requiredSkills;
-@end
-
-@interface NCDBIndActivity (CoreDataGeneratedAccessors)
-
-- (void)addProductsObject:(NCDBIndProduct *)value;
-- (void)removeProductsObject:(NCDBIndProduct *)value;
-- (void)addProducts:(NSSet *)values;
-- (void)removeProducts:(NSSet *)values;
-
-- (void)addRequiredMaterialsObject:(NCDBIndRequiredMaterial *)value;
-- (void)removeRequiredMaterialsObject:(NCDBIndRequiredMaterial *)value;
-- (void)addRequiredMaterials:(NSSet *)values;
-- (void)removeRequiredMaterials:(NSSet *)values;
-
-- (void)addRequiredSkillsObject:(NCDBIndRequiredSkill *)value;
-- (void)removeRequiredSkillsObject:(NCDBIndRequiredSkill *)value;
-- (void)addRequiredSkills:(NSSet *)values;
-- (void)removeRequiredSkills:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBIndActivity+CoreDataProperties.h"

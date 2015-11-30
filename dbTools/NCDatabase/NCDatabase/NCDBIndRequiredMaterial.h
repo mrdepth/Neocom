@@ -2,7 +2,7 @@
 //  NCDBIndRequiredMaterial.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,11 +11,14 @@
 
 @class NCDBIndActivity, NCDBInvType;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBIndRequiredMaterial : NSManagedObject
 
-@property (nonatomic) int32_t quantity;
-@property (nonatomic) int32_t consume;
-@property (nonatomic, retain) NCDBIndActivity *activity;
-@property (nonatomic, retain) NCDBInvType *materialType;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBIndRequiredMaterial+CoreDataProperties.h"

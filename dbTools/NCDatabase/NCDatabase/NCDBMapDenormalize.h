@@ -2,7 +2,7 @@
 //  NCDBMapDenormalize.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,14 +11,14 @@
 
 @class NCDBInvType, NCDBMapConstellation, NCDBMapRegion, NCDBMapSolarSystem;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBMapDenormalize : NSManagedObject
 
-@property (nonatomic) int32_t itemID;
-@property (nonatomic, retain) NSString * itemName;
-@property (nonatomic) float security;
-@property (nonatomic, retain) NCDBMapConstellation *constellation;
-@property (nonatomic, retain) NCDBMapRegion *region;
-@property (nonatomic, retain) NCDBMapSolarSystem *solarSystem;
-@property (nonatomic, retain) NCDBInvType *type;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBMapDenormalize+CoreDataProperties.h"

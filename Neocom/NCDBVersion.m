@@ -2,17 +2,14 @@
 //  NCDBVersion.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 22.04.15.
-//  Copyright (c) 2015 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import "NCDBVersion.h"
 
-
 @implementation NCDBVersion
 
-@dynamic build;
-@dynamic version;
-@dynamic expansion;
+// Insert code here to add functionality to your managed object subclass
 
 @end

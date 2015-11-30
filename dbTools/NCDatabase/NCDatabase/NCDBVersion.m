@@ -2,17 +2,14 @@
 //  NCDBVersion.m
 //  NCDatabase
 //
-//  Created by Artem Shimanski on 15.10.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
 #import "NCDBVersion.h"
 
-
 @implementation NCDBVersion
 
-@dynamic version;
-@dynamic build;
-@dynamic expansion;
+// Insert code here to add functionality to your managed object subclass
 
 @end

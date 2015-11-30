@@ -2,18 +2,21 @@
 //  NCDBVersion.h
 //  NCDatabase
 //
-//  Created by Artem Shimanski on 15.10.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
 @interface NCDBVersion : NSManagedObject
 
-@property (nonatomic, retain) NSString * version;
-@property (nonatomic) int32_t build;
-@property (nonatomic, retain) NSString * expansion;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBVersion+CoreDataProperties.h"

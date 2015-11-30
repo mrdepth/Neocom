@@ -2,7 +2,7 @@
 //  NCDBInvControlTower.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -10,10 +10,8 @@
 #import "NCDBInvControlTowerResource.h"
 #import "NCDBInvType.h"
 
-
 @implementation NCDBInvControlTower
 
-@dynamic resources;
-@dynamic type;
+// Insert code here to add functionality to your managed object subclass
 
 @end

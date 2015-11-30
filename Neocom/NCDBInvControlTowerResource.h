@@ -2,8 +2,8 @@
 //  NCDBInvControlTowerResource.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.09.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -11,14 +11,14 @@
 
 @class NCDBInvControlTower, NCDBInvControlTowerResourcePurpose, NCDBInvType;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBInvControlTowerResource : NSManagedObject
 
-@property (nonatomic) int32_t factionID;
-@property (nonatomic) float minSecurityLevel;
-@property (nonatomic) int32_t quantity;
-@property (nonatomic) int32_t wormholeClassID;
-@property (nonatomic, retain) NCDBInvControlTower *controlTower;
-@property (nonatomic, retain) NCDBInvControlTowerResourcePurpose *purpose;
-@property (nonatomic, retain) NCDBInvType *resourceType;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBInvControlTowerResource+CoreDataProperties.h"

@@ -2,7 +2,7 @@
 //  NCDBEveIconImage.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,9 +11,14 @@
 
 @class NCDBEveIcon;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBEveIconImage : NSManagedObject
 
-@property (nonatomic, retain) id image;
-@property (nonatomic, retain) NCDBEveIcon *icon;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBEveIconImage+CoreDataProperties.h"

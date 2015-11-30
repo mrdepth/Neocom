@@ -2,35 +2,23 @@
 //  NCDBEufeItemGroup.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.09.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBEufeItem, NCDBEufeItemCategory, NCDBEufeItemGroup, NCDBEveIcon;
+@class NCDBEufeItem, NCDBEufeItemCategory, NCDBEveIcon;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface NCDBEufeItemGroup : NSManagedObject
 
-@property (nonatomic, retain) NSString * groupName;
-@property (nonatomic, retain) NCDBEufeItemCategory *category;
-@property (nonatomic, retain) NCDBEveIcon *icon;
-@property (nonatomic, retain) NSSet *items;
-@property (nonatomic, retain) NCDBEufeItemGroup *parentGroup;
-@property (nonatomic, retain) NSSet *subGroups;
-@end
-
-@interface NCDBEufeItemGroup (CoreDataGeneratedAccessors)
-
-- (void)addItemsObject:(NCDBEufeItem *)value;
-- (void)removeItemsObject:(NCDBEufeItem *)value;
-- (void)addItems:(NSSet *)values;
-- (void)removeItems:(NSSet *)values;
-
-- (void)addSubGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)removeSubGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)addSubGroups:(NSSet *)values;
-- (void)removeSubGroups:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBEufeItemGroup+CoreDataProperties.h"

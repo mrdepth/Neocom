@@ -42,6 +42,7 @@
 #import "NCDBEufeItemCategory.h"
 #import "NCDBEufeItemGroup.h"
 #import "NCDBEufeItem.h"
+#import "NCDBEufeHullType.h"
 #import "NCDBIndActivity.h"
 #import "NCDBIndBlueprintType.h"
 #import "NCDBIndProduct.h"

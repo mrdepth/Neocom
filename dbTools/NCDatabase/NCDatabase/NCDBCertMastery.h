@@ -2,7 +2,7 @@
 //  NCDBCertMastery.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,18 +11,14 @@
 
 @class NCDBCertCertificate, NCDBCertMasteryLevel, NCDBCertSkill;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBCertMastery : NSManagedObject
 
-@property (nonatomic, retain) NCDBCertCertificate *certificate;
-@property (nonatomic, retain) NCDBCertMasteryLevel *level;
-@property (nonatomic, retain) NSSet *skills;
-@end
-
-@interface NCDBCertMastery (CoreDataGeneratedAccessors)
-
-- (void)addSkillsObject:(NCDBCertSkill *)value;
-- (void)removeSkillsObject:(NCDBCertSkill *)value;
-- (void)addSkills:(NSSet *)values;
-- (void)removeSkills:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBCertMastery+CoreDataProperties.h"

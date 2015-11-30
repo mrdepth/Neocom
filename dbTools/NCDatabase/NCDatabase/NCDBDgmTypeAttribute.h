@@ -2,7 +2,7 @@
 //  NCDBDgmTypeAttribute.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,10 +11,14 @@
 
 @class NCDBDgmAttributeType, NCDBInvType;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBDgmTypeAttribute : NSManagedObject
 
-@property (nonatomic) float value;
-@property (nonatomic, retain) NCDBDgmAttributeType *attributeType;
-@property (nonatomic, retain) NCDBInvType *type;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBDgmTypeAttribute+CoreDataProperties.h"

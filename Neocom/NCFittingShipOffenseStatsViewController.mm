@@ -15,21 +15,21 @@
 #import <algorithm>
 #import "NCDatabase.h"
 #import "NSManagedObjectContext+NCDatabase.h"
+#import "NCFittingHullTypePickerViewController.h"
 
 @interface NCFittingShipOffenseStatsViewController()
 @property (nonatomic, strong) CAShapeLayer* axisLayer;
 @property (nonatomic, strong) CAShapeLayer* dpsLayer;
 @property (nonatomic, strong) CAShapeLayer* velocityLayer;
 @property (nonatomic, strong) CAShapeLayer* markerLayer;
-@property (nonatomic, assign) float targetSignature;
 @property (nonatomic, assign) float maxRange;
 @property (nonatomic, assign) float falloff;
 @property (nonatomic, assign) float fullRange;
-@property (nonatomic, assign) float launchersDPS;
 @property (nonatomic, strong) NSData* dpsPoints;
 @property (nonatomic, strong) NSData* velocityPoints;
 @property (nonatomic, assign) float markerPosition;
 @property (nonatomic, strong) NSNumberFormatter* dpsNumberFormatter;
+@property (nonatomic, strong) NCDBEufeHullType* hullType;
 - (void) update;
 @end
 
@@ -38,11 +38,15 @@
 - (void) viewDidLoad {
 	[super viewDidLoad];
 	NSManagedObjectID* hullTypeID = self.fit.engine.userInfo[@"hullType"];
-	if (!hullTypeID) {
+	NCDBEufeHullType* hullType;
+	if (hullTypeID)
+		hullType = [self.databaseManagedObjectContext existingObjectWithID:hullTypeID error:nil];
+	
+	if (!hullType) {
 		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.fit.typeID];
-		self.targetSignature = type.hullType.signature;
-		self.targetLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ with signature %.0f", nil), type.hullType.hullTypeName, self.targetSignature];
+		hullType = type.hullType;
 	}
+	self.hullType = hullType;
 
 	self.dpsNumberFormatter = [[NSNumberFormatter alloc] init];
 	[self.dpsNumberFormatter setPositiveFormat:@"#,##0.0"];
@@ -90,7 +94,6 @@
 		float turretsDPS = 0;
 		float maxRange = 0;
 		float falloff = 0;
-		float launchersDPS = 0;
 		for (auto module: ship->getModules()) {
 			if (module->getHardpoint() == eufe::Module::HARDPOINT_TURRET) {
 				float dps = module->getDps();
@@ -100,10 +103,6 @@
 					falloff += module->getFalloff() * dps;
 				}
 			}
-			else if (module->getHardpoint() == eufe::Module::HARDPOINT_LAUNCHER) {
-				launchersDPS += module->getDps();
-			}
-			
 		}
 		if (turretsDPS > 0) {
 			maxRange /= turretsDPS;
@@ -112,7 +111,6 @@
 		self.maxRange = maxRange;
 		self.falloff = falloff;
 		self.fullRange = self.maxRange + self.falloff * 2;
-		self.launchersDPS = launchersDPS;
 		maxVelocity = ship->getVelocity();
 		if (self.fullRange == 0) {
 			self.fullRange = ceil(ship->getOrbitRadiusWithTransverseVelocity(ship->getVelocity() * 0.95) * 1.5 / 1000) * 1000;
@@ -256,12 +254,23 @@
 	[self update];
 }
 
-- (void) updateViewConstraints {
-	[super updateViewConstraints];
-//	CGRect rect = [self.velocitySlider thumbRectForBounds:self.velocitySlider.bounds trackRect:[self.velocitySlider trackRectForBounds:self.velocitySlider.bounds] value:self.velocitySlider.value];
-//	self.velocityLabelConstraint.constant = CGRectGetMidX(rect) - CGRectGetMidX(self.velocitySlider.bounds);
-//	self.markerViewConstraint.constant = self.markerPosition * self.contentView.bounds.size.width;
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCFittingHullTypePickerViewController"]) {
+		NCFittingHullTypePickerViewController* controller = segue.destinationViewController;
+		controller.selectedHullType = self.hullType;
+	}
 }
+
+- (IBAction) unwindFromHullTypePicker:(UIStoryboardSegue*) segue {
+	NCFittingHullTypePickerViewController* sourceViewController = segue.sourceViewController;
+	if (sourceViewController.selectedHullType) {
+		NCDBEufeHullType* hullType = [self.databaseManagedObjectContext objectWithID:sourceViewController.selectedHullType.objectID];
+		self.hullType = hullType;
+		self.fit.engine.userInfo[@"hullType"] = sourceViewController.selectedHullType.objectID;
+		[self update];
+	}
+}
+
 
 
 #pragma mark - Private
@@ -269,7 +278,8 @@
 - (void) update {
 	float velocity = self.velocitySlider.value;
 	__block CGPoint maxDPS = CGPointZero;
-	
+	float targetSignature = self.hullType.signature;
+
 	[self.fit.engine performBlockAndWait:^{
 		auto pilot = self.fit.pilot;
 		auto ship = pilot->getShip();
@@ -286,7 +296,9 @@
 			float v = ship->getMaxVelocityInOrbit(x);
 			v = std::min(v, velocity);
 			float angularVelocity = v / x;
-			dpsPoints[i] = CGPointMake(x / self.fullRange, dps > 0 ? (ship->getWeaponDps(x, angularVelocity, self.targetSignature) + droneDPS) / dps : 0);
+			eufe::HostileTarget target = eufe::HostileTarget(x, angularVelocity, targetSignature, 0);
+
+			dpsPoints[i] = CGPointMake(x / self.fullRange, dps > 0 ? (ship->getWeaponDps(target) + droneDPS) / dps : 0);
 			
 			if (dpsPoints[i].y >= maxDPS.y)
 				maxDPS = dpsPoints[i];
@@ -309,6 +321,7 @@
 	__block float dps = 0;
 	__block float droneDPS = 0;
 	__block float turretsDPS = 0;
+	__block float launchersDPS = 0;
 	
 	__block float optimalDPS = 0;
 	[self.fit.engine performBlockAndWait:^{
@@ -322,9 +335,16 @@
 		transverseVelocity = v;
 		float angularVelocity = v / x;
 		droneDPS = ship->getDroneDps();
-		dps = ship->getWeaponDps(x, angularVelocity, 0);
-		turretsDPS = dps - self.launchersDPS;
-		dps += droneDPS;
+		eufe::HostileTarget target = eufe::HostileTarget(x, angularVelocity, targetSignature, 0);
+
+		for (auto module: ship->getModules()) {
+			if (module->getHardpoint() == eufe::Module::HARDPOINT_TURRET)
+				turretsDPS += module->getDps(target);
+			else
+				launchersDPS += module->getDps(target);
+		}
+
+		dps = turretsDPS + launchersDPS + droneDPS;
 		optimalDPS = ship->getWeaponDps() + droneDPS;
 	}];
 	
@@ -347,7 +367,7 @@
 	icon.image = [UIImage imageNamed:@"launchers"];
 	icon.bounds = CGRectMake(0, -7 -self.dpsLabel.font.descender, 15, 15);
 	[s appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
-	[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ + ", [self.dpsNumberFormatter stringFromNumber:@(self.launchersDPS)]] attributes:nil]];
+	[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ + ", [self.dpsNumberFormatter stringFromNumber:@(launchersDPS)]] attributes:nil]];
 
 	icon = [NSTextAttachment new];
 	icon.image = [UIImage imageNamed:@"drone"];
@@ -380,6 +400,17 @@
 												  constant:0];
 	self.markerViewConstraint = constraint;
 	[self.markerAuxiliaryView.superview addConstraint:constraint];
+}
+
+- (void) setHullType:(NCDBEufeHullType*) hullType {
+	_hullType = hullType;
+	if (hullType) {
+		NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:hullType.hullTypeName attributes:@{NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)}];
+		[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" (sig %.0f m)", nil), hullType.signature] attributes:nil]];
+		self.targetLabel.attributedText = s;
+	}
+	else
+		self.targetLabel.text = NSLocalizedString(@"None", nil);
 }
 
 @end

@@ -388,6 +388,7 @@
 		12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */; };
 		12ACDCA118A0AC4A00566DFE /* NCDamagePattern.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA018A0AC4A00566DFE /* NCDamagePattern.m */; };
 		12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */; };
+		12B0A05A1C0C489600194715 /* NCFittingHullTypePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B0A0591C0C489600194715 /* NCFittingHullTypePickerViewController.m */; };
 		12B42E6E1AC7182000A0D956 /* ShoppingList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B42E6D1AC7182000A0D956 /* ShoppingList.storyboard */; };
 		12B5EFF21ACBC154003CDF65 /* NCShoppingList.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFF11ACBC154003CDF65 /* NCShoppingList.m */; };
 		12B5EFF51ACBC154003CDF65 /* NCShoppingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFF41ACBC154003CDF65 /* NCShoppingItem.m */; };
@@ -1145,6 +1146,8 @@
 		12ACDCA818A0B12D00566DFE /* NCFittingDamagePatternCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternCell.h; sourceTree = "<group>"; };
 		12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternCell.m; sourceTree = "<group>"; };
 		12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = damagePatterns.plist; sourceTree = "<group>"; };
+		12B0A0581C0C489600194715 /* NCFittingHullTypePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingHullTypePickerViewController.h; sourceTree = "<group>"; };
+		12B0A0591C0C489600194715 /* NCFittingHullTypePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingHullTypePickerViewController.m; sourceTree = "<group>"; };
 		12B42E6A1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNewShoppingItemViewController.h; sourceTree = "<group>"; };
 		12B42E6B1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNewShoppingItemViewController.m; sourceTree = "<group>"; };
 		12B42E6D1AC7182000A0D956 /* ShoppingList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShoppingList.storyboard; sourceTree = "<group>"; };
@@ -3152,6 +3155,15 @@
 			name = NCFittingDamagePatternCell;
 			sourceTree = "<group>";
 		};
+		12B0A0521C0C486D00194715 /* NCFittingHullTypePickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12B0A0581C0C489600194715 /* NCFittingHullTypePickerViewController.h */,
+				12B0A0591C0C489600194715 /* NCFittingHullTypePickerViewController.m */,
+			);
+			name = NCFittingHullTypePickerViewController;
+			sourceTree = "<group>";
+		};
 		12B6856A195EB1B30043B30A /* today */ = {
 			isa = PBXGroup;
 			children = (
@@ -3699,6 +3711,7 @@
 				84FFB56818ABD2ED00A30772 /* NCFittingAPI */,
 				12B9509E1ADB8D6B009E31DB /* NCFittingExportViewController */,
 				126829241C05F98000954ECF /* NCFittingShipOffenseStatsViewController */,
+				12B0A0521C0C486D00194715 /* NCFittingHullTypePickerViewController */,
 				127A1AB41BAC32ED0066A5EE /* NCFittingEngine.h */,
 				127A1AB51BAC32ED0066A5EE /* NCFittingEngine.mm */,
 			);
@@ -4220,6 +4233,7 @@
 				84C1182D1898443900A35516 /* NCDatabaseTypePickerContentViewController.m in Sources */,
 				12436DAE1945A06B0090D4A6 /* NCDatabase.m in Sources */,
 				125DC63D1BD50378005C2F79 /* NCKillMailsCell.m in Sources */,
+				12B0A05A1C0C489600194715 /* NCFittingHullTypePickerViewController.m in Sources */,
 				12654C121C0B24920060106C /* NCDBInvControlTowerResourcePurpose.m in Sources */,
 				12190BF91ADFE7E0009E1C5E /* NCDatabaseWHViewController.m in Sources */,
 				129D261C187E923300E2062C /* LUIToolbar.m in Sources */,

@@ -298,7 +298,7 @@
 			float angularVelocity = v / x;
 			eufe::HostileTarget target = eufe::HostileTarget(x, angularVelocity, targetSignature, 0);
 
-			dpsPoints[i] = CGPointMake(x / self.fullRange, dps > 0 ? (ship->getWeaponDps(target) + droneDPS) / dps : 0);
+			dpsPoints[i] = CGPointMake(x / self.fullRange, dps > 0 ? (static_cast<float>(ship->getWeaponDps(target)) + droneDPS) / dps : 0);
 			
 			if (dpsPoints[i].y >= maxDPS.y)
 				maxDPS = dpsPoints[i];

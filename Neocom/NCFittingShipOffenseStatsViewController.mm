@@ -279,6 +279,7 @@
 	float velocity = self.velocitySlider.value;
 	__block CGPoint maxDPS = CGPointZero;
 	float targetSignature = self.hullType.signature;
+	__block float optimalDPS = 0;
 
 	[self.fit.engine performBlockAndWait:^{
 		auto pilot = self.fit.pilot;
@@ -290,15 +291,14 @@
 		CGPoint *velocityPoints = new CGPoint[n];
 		float dx = self.fullRange / (n + 1);
 		float x = dx;
-		float droneDPS = ship->getDroneDps();
-		float dps = ship->getWeaponDps() + droneDPS;
+		optimalDPS = ship->getWeaponDps() + ship->getDroneDps();
 		for (int i = 0; i < n; i++) {
 			float v = ship->getMaxVelocityInOrbit(x);
 			v = std::min(v, velocity);
 			float angularVelocity = v / x;
 			eufe::HostileTarget target = eufe::HostileTarget(x, angularVelocity, targetSignature, 0);
 
-			dpsPoints[i] = CGPointMake(x / self.fullRange, dps > 0 ? (static_cast<float>(ship->getWeaponDps(target)) + droneDPS) / dps : 0);
+			dpsPoints[i] = CGPointMake(x / self.fullRange, optimalDPS > 0 ? (static_cast<float>(ship->getWeaponDps(target)) + ship->getDroneDps(target)) / optimalDPS : 0);
 			
 			if (dpsPoints[i].y >= maxDPS.y)
 				maxDPS = dpsPoints[i];
@@ -323,7 +323,6 @@
 	__block float turretsDPS = 0;
 	__block float launchersDPS = 0;
 	
-	__block float optimalDPS = 0;
 	[self.fit.engine performBlockAndWait:^{
 		auto pilot = self.fit.pilot;
 		auto ship = pilot->getShip();
@@ -334,8 +333,8 @@
 		v = std::min(v, velocity);
 		transverseVelocity = v;
 		float angularVelocity = v / x;
-		droneDPS = ship->getDroneDps();
 		eufe::HostileTarget target = eufe::HostileTarget(x, angularVelocity, targetSignature, 0);
+		droneDPS = ship->getDroneDps(target);
 
 		for (auto module: ship->getModules()) {
 			if (module->getHardpoint() == eufe::Module::HARDPOINT_TURRET)
@@ -345,7 +344,6 @@
 		}
 
 		dps = turretsDPS + launchersDPS + droneDPS;
-		optimalDPS = ship->getWeaponDps() + droneDPS;
 	}];
 	
 	self.orbitLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:orbit]];

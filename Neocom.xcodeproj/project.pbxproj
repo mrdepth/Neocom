@@ -3407,6 +3407,13 @@
 			name = NCPlanetaryViewController;
 			sourceTree = "<group>";
 		};
+		12F241001C0DFC11002BA0C2 /* NCFittingShipCombatSimulatorViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = NCFittingShipCombatSimulatorViewController;
+			sourceTree = "<group>";
+		};
 		12F407561A8D24E40031FB35 /* NCDefaultTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -3712,6 +3719,7 @@
 				12B9509E1ADB8D6B009E31DB /* NCFittingExportViewController */,
 				126829241C05F98000954ECF /* NCFittingShipOffenseStatsViewController */,
 				12B0A0521C0C486D00194715 /* NCFittingHullTypePickerViewController */,
+				12F241001C0DFC11002BA0C2 /* NCFittingShipCombatSimulatorViewController */,
 				127A1AB41BAC32ED0066A5EE /* NCFittingEngine.h */,
 				127A1AB51BAC32ED0066A5EE /* NCFittingEngine.mm */,
 			);

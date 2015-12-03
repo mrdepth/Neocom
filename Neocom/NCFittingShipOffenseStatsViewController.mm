@@ -189,7 +189,6 @@
 				[bezierPath addLineToPoint:CGPointMake(x, self.canvasView.bounds.size.height - 4)];
 			}
 		
-		//for (CGFloat y: std::vector<CGFloat>({0.0f, self.canvasView.bounds.size.height / 2})) {
 		for (CGFloat y: {(CGFloat) 0.0f, self.canvasView.bounds.size.height / 2}) {
 
 			[bezierPath moveToPoint:CGPointMake(0, y)];
@@ -199,7 +198,6 @@
 		self.axisLayer.path = [bezierPath CGPath];
 	}
 	else if (layer == self.dpsLayer) {
-		//SKShapeNode* node = [SKShapeNode shapeNodeWithSplinePoints:(CGPoint*) [self.dpsPoints bytes] count:self.dpsPoints.length / sizeof(CGPoint)];
 		SKShapeNode* node = [SKShapeNode shapeNodeWithPoints:(CGPoint*) [self.dpsPoints bytes] count:self.dpsPoints.length / sizeof(CGPoint)];
 		UIBezierPath* path = [UIBezierPath bezierPathWithCGPath:node.path];
 		CGAffineTransform transform = CGAffineTransformIdentity;

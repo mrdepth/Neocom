@@ -270,7 +270,7 @@
 		128257151BCBFE3000BC1F56 /* NCFittingCharacterEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C50762189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m */; };
 		1282571B1BCE6A2A00BC1F56 /* NCFittingFitPickerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5870189FC2D100E2D70A /* NCFittingFitPickerViewController.mm */; };
 		1282571C1BCE981F00BC1F56 /* NCFittingTargetsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84442A5C189FFF230021CB24 /* NCFittingTargetsViewController.mm */; };
-		1282571D1BCF817800BC1F56 /* NCFittingDamagePatternsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */; };
+		1282571D1BCF817800BC1F56 /* NCFittingDamagePatternsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.mm */; };
 		1282571E1BCF81FE00BC1F56 /* NCFittingDamagePatternCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */; };
 		1282571F1BCF822700BC1F56 /* NCFittingDamagePatternEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */; };
 		128257201BCF857200BC1F56 /* NCFittingNPCPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D011BB18A20BE600C0A228 /* NCFittingNPCPickerViewController.m */; };
@@ -389,6 +389,7 @@
 		12ACDCA118A0AC4A00566DFE /* NCDamagePattern.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA018A0AC4A00566DFE /* NCDamagePattern.m */; };
 		12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */; };
 		12B0A05A1C0C489600194715 /* NCFittingHullTypePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B0A0591C0C489600194715 /* NCFittingHullTypePickerViewController.m */; };
+		12B0A3061C0EDC6000194715 /* NCFittingShipCombatSimulatorViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B0A3051C0EDC6000194715 /* NCFittingShipCombatSimulatorViewController.mm */; };
 		12B42E6E1AC7182000A0D956 /* ShoppingList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B42E6D1AC7182000A0D956 /* ShoppingList.storyboard */; };
 		12B5EFF21ACBC154003CDF65 /* NCShoppingList.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFF11ACBC154003CDF65 /* NCShoppingList.m */; };
 		12B5EFF51ACBC154003CDF65 /* NCShoppingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFF41ACBC154003CDF65 /* NCShoppingItem.m */; };
@@ -1142,12 +1143,14 @@
 		12ACDC9F18A0AC4A00566DFE /* NCDamagePattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDamagePattern.h; sourceTree = "<group>"; };
 		12ACDCA018A0AC4A00566DFE /* NCDamagePattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDamagePattern.m; sourceTree = "<group>"; };
 		12ACDCA418A0AD2600566DFE /* NCFittingDamagePatternsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternsViewController.h; sourceTree = "<group>"; };
-		12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternsViewController.m; sourceTree = "<group>"; };
+		12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingDamagePatternsViewController.mm; sourceTree = "<group>"; };
 		12ACDCA818A0B12D00566DFE /* NCFittingDamagePatternCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternCell.h; sourceTree = "<group>"; };
 		12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternCell.m; sourceTree = "<group>"; };
 		12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = damagePatterns.plist; sourceTree = "<group>"; };
 		12B0A0581C0C489600194715 /* NCFittingHullTypePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingHullTypePickerViewController.h; sourceTree = "<group>"; };
 		12B0A0591C0C489600194715 /* NCFittingHullTypePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingHullTypePickerViewController.m; sourceTree = "<group>"; };
+		12B0A3041C0EDC6000194715 /* NCFittingShipCombatSimulatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipCombatSimulatorViewController.h; sourceTree = "<group>"; };
+		12B0A3051C0EDC6000194715 /* NCFittingShipCombatSimulatorViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipCombatSimulatorViewController.mm; sourceTree = "<group>"; };
 		12B42E6A1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNewShoppingItemViewController.h; sourceTree = "<group>"; };
 		12B42E6B1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNewShoppingItemViewController.m; sourceTree = "<group>"; };
 		12B42E6D1AC7182000A0D956 /* ShoppingList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShoppingList.storyboard; sourceTree = "<group>"; };
@@ -3141,7 +3144,7 @@
 				84A6E51818A1742500231735 /* NCFittingDamagePatternEditorViewController */,
 				12ACDCA718A0B10C00566DFE /* NCFittingDamagePatternCell */,
 				12ACDCA418A0AD2600566DFE /* NCFittingDamagePatternsViewController.h */,
-				12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */,
+				12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.mm */,
 			);
 			name = NCFittingDamagePatternsViewController;
 			sourceTree = "<group>";
@@ -3410,6 +3413,8 @@
 		12F241001C0DFC11002BA0C2 /* NCFittingShipCombatSimulatorViewController */ = {
 			isa = PBXGroup;
 			children = (
+				12B0A3041C0EDC6000194715 /* NCFittingShipCombatSimulatorViewController.h */,
+				12B0A3051C0EDC6000194715 /* NCFittingShipCombatSimulatorViewController.mm */,
 			);
 			name = NCFittingShipCombatSimulatorViewController;
 			sourceTree = "<group>";
@@ -4113,7 +4118,7 @@
 				12654C3F1C0B24920060106C /* NCDBInvControlTower+CoreDataProperties.m in Sources */,
 				12B5EFF51ACBC154003CDF65 /* NCShoppingItem.m in Sources */,
 				125A19C41BB6AE3D00C5BAD8 /* NCContractsViewController.m in Sources */,
-				1282571D1BCF817800BC1F56 /* NCFittingDamagePatternsViewController.m in Sources */,
+				1282571D1BCF817800BC1F56 /* NCFittingDamagePatternsViewController.mm in Sources */,
 				129D260F187E923300E2062C /* ASInAppPurchase.m in Sources */,
 				12654C0D1C0B24920060106C /* NCDBCertMastery+CoreDataProperties.m in Sources */,
 				84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */,
@@ -4359,6 +4364,7 @@
 				12654C361C0B24920060106C /* NCDBMapRegion.m in Sources */,
 				129E23A31BC3FD3000E311BF /* NCFittingResistancesCell.m in Sources */,
 				125A197A1BB597F800C5BAD8 /* NCWalletTransactionsViewController.m in Sources */,
+				12B0A3061C0EDC6000194715 /* NCFittingShipCombatSimulatorViewController.mm in Sources */,
 				128257201BCF857200BC1F56 /* NCFittingNPCPickerViewController.m in Sources */,
 				12654C461C0B24920060106C /* NCDBIndActivity.m in Sources */,
 				12CDB7E0188E7D1C002079C0 /* ASHTTPServer.m in Sources */,

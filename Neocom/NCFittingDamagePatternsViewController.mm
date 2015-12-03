@@ -12,10 +12,19 @@
 #import "NCStorage.h"
 #import "NCFittingNPCPickerViewController.h"
 #import "UIColor+Neocom.h"
+#import "NCShipFit.h"
+
+@interface NCFittingDamagePatternsViewControllerSection: NSObject
+@property (nonatomic, strong) NSArray* damagePatterns;
+@property (nonatomic, strong) NSString* title;
+@end
+
+@implementation NCFittingDamagePatternsViewControllerSection
+@end
 
 @interface NCFittingDamagePatternsViewController ()
 @property (nonatomic, strong) NSMutableArray* customDamagePatterns;
-@property (nonatomic, strong) NSArray* builtInDamagePatterns;
+@property (nonatomic, strong) NSArray* inMemoryDamagePatternsSections;
 @property (nonatomic, assign) BOOL unwindOnAppear;
 @property (nonatomic, strong) NSIndexPath* editingIndexPath;
 @end
@@ -46,7 +55,46 @@
 		damagePattern.explosive = [dic[@"explosive"] floatValue];
 		[builtInDamagePatterns addObject:damagePattern];
 	}
-	self.builtInDamagePatterns = builtInDamagePatterns;
+	NCFittingDamagePatternsViewControllerSection* builtInSection = [NCFittingDamagePatternsViewControllerSection new];
+	builtInSection.damagePatterns = builtInDamagePatterns;
+	builtInSection.title = NSLocalizedString(@"Predefined", nil);
+	
+	NSMutableArray* fitsDamagePatterns = [NSMutableArray new];
+	NCShipFit* fit = [self.fits lastObject];
+	if (fit) {
+		[fit.engine performBlockAndWait:^{
+			for (NCShipFit* fit in self.fits) {
+				auto pilot = fit.pilot;
+				if (!pilot)
+					continue;
+				auto ship = pilot->getShip();
+				if (!ship)
+					continue;
+				auto dps = ship->getWeaponDps() + ship->getDroneDps();
+				if (dps == 0)
+					continue;
+				
+				NCDBInvType* type = [fit.engine.databaseManagedObjectContext invTypeWithTypeID:fit.typeID];
+				NCDamagePattern* damagePattern = [[NCDamagePattern alloc] initWithEntity:[NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:self.storageManagedObjectContext]
+														  insertIntoManagedObjectContext:nil];
+				damagePattern.name = [NSString stringWithFormat:@"%@ - %@", type.typeName, fit.loadoutName.length > 0 ? fit.loadoutName : NSLocalizedString(@"Unnamed", nil)];
+				damagePattern.em = dps.emAmount;
+				damagePattern.kinetic = dps.kineticAmount;
+				damagePattern.thermal = dps.thermalAmount;
+				damagePattern.explosive = dps.explosiveAmount;
+				[fitsDamagePatterns addObject:damagePattern];
+			}
+		}];
+	}
+	if (fitsDamagePatterns.count > 0) {
+		NCFittingDamagePatternsViewControllerSection* fitsSection = [NCFittingDamagePatternsViewControllerSection new];
+		fitsSection.damagePatterns = fitsDamagePatterns;
+		fitsSection.title = NSLocalizedString(@"Damage of the ship", nil);
+		self.inMemoryDamagePatternsSections = @[fitsSection, builtInSection];
+	}
+	else
+		self.inMemoryDamagePatternsSections = @[builtInSection];
+	
 	self.customDamagePatterns = [[self.storageManagedObjectContext damagePatterns] mutableCopy];
 }
 
@@ -110,7 +158,9 @@
 			}
 		}
 		else {
-			NCDamagePattern* builtInDamagePattern = self.builtInDamagePatterns[indexPath.row];
+			NCFittingDamagePatternsViewControllerSection* section = self.inMemoryDamagePatternsSections[indexPath.section - 2];
+			NCDamagePattern* builtInDamagePattern = section.damagePatterns[indexPath.row];
+			
 			damagePattern = [[NCDamagePattern alloc] initWithEntity:builtInDamagePattern.entity insertIntoManagedObjectContext:self.storageManagedObjectContext];
 			damagePattern.name = builtInDamagePattern.name;
 			damagePattern.em = builtInDamagePattern.em;
@@ -129,17 +179,19 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return  2 + self.inMemoryDamagePatternsSections.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
-	if (section == 0)
+	if (sectionIndex == 0)
 		return 1;
-	else if (section == 1)
+	else if (sectionIndex == 1)
 		return self.customDamagePatterns.count + (self.editing ? 1 : 0);
-	else
-		return self.builtInDamagePatterns.count;
+	else {
+		NCFittingDamagePatternsViewControllerSection* section = self.inMemoryDamagePatternsSections[sectionIndex - 2];
+		return section.damagePatterns.count;
+	}
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -157,8 +209,10 @@
 			NCDamagePattern* damagePattern;
 			if (indexPath.section == 1)
 				damagePattern = self.customDamagePatterns[indexPath.row];
-			else
-				damagePattern = self.builtInDamagePatterns[indexPath.row];
+			else {
+				NCFittingDamagePatternsViewControllerSection* section = self.inMemoryDamagePatternsSections[indexPath.section - 2];
+				damagePattern = section.damagePatterns[indexPath.row];
+			}
 			
 			NCFittingDamagePatternCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingDamagePatternCell"];
 			
@@ -178,13 +232,15 @@
 	}
 }
 
-- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (section == 0)
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
+	if (sectionIndex == 0)
 		return nil;
-	else if (section == 1)
+	else if (sectionIndex == 1)
 		return NSLocalizedString(@"Custom", nil);
-	else
-		return NSLocalizedString(@"Predefined", nil);
+	else {
+		NCFittingDamagePatternsViewControllerSection* section = self.inMemoryDamagePatternsSections[sectionIndex - 2];
+		return section.title;
+	}
 }
 
 - (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -235,8 +291,10 @@
 		else {
 			if (indexPath.section == 1)
 				self.selectedDamagePattern = self.customDamagePatterns[indexPath.row];
-			else
-				self.selectedDamagePattern = self.builtInDamagePatterns[indexPath.row];
+			else {
+				NCFittingDamagePatternsViewControllerSection* section = self.inMemoryDamagePatternsSections[indexPath.section - 2];
+				self.selectedDamagePattern = section.damagePatterns[indexPath.row];
+			}
 			[self performSegueWithIdentifier:@"Unwind" sender:[tableView cellForRowAtIndexPath:indexPath]];
 		}
 	}

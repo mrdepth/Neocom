@@ -37,6 +37,7 @@
 #import "NCAdaptivePopoverSegue.h"
 
 #import "NCFittingShipOffenseStatsViewController.h"
+#import "NCFittingShipCombatSimulatorViewController.h"
 
 #include <set>
 
@@ -56,6 +57,7 @@
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 #define ActionButtonAddToShoppingList NSLocalizedString(@"Add to Shopping List", nil)
 #define ActionButtonDamageChart NSLocalizedString(@"Damage Chart", nil)
+#define ActionButtonCombatSimulator NSLocalizedString(@"Combat Simulator", nil)
 
 @interface NCFittingShipViewController ()<MFMailComposeViewControllerDelegate>
 @property (nonatomic, strong, readwrite) NSArray* fits;
@@ -410,6 +412,19 @@
 			controller = segue.destinationViewController;
 		controller.fit = self.fit;
 	}
+	else if ([segue.identifier isEqualToString:@"NCFittingShipCombatSimulatorViewController"]) {
+		NCFittingShipCombatSimulatorViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		controller.attacker = self.fit;
+		for (NCShipFit* fit in self.fits)
+			if (fit != self.fit) {
+				controller.target = fit;
+				break;
+			}
+	}
 }
 
 - (void) reload {
@@ -515,6 +530,12 @@
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDamageChart style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 			[self performSegueWithIdentifier:@"NCFittingShipOffenseStatsViewController" sender:nil];
 		}]];
+		
+		if (self.fits.count == 2) {
+			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonCombatSimulator style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self performSegueWithIdentifier:@"NCFittingShipCombatSimulatorViewController" sender:nil];
+			}]];
+		}
 
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetName style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 			UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Rename", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];

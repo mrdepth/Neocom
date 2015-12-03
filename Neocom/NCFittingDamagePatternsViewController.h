@@ -11,4 +11,5 @@
 
 @interface NCFittingDamagePatternsViewController : NCTableViewController
 @property (nonatomic, strong) NCDamagePattern* selectedDamagePattern;
+@property (nonatomic, strong) NSArray* fits;
 @end

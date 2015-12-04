@@ -148,7 +148,7 @@
 			
 			for (NSNumber* typeID in charges) {
 				eufe::TypeID chargeID = [typeID intValue];
-				for (auto module: ship->getModules()) {
+				for (const auto& module: ship->getModules()) {
 					if (!module->getCharge())
 						module->setCharge(chargeID);
 				}

@@ -277,7 +277,7 @@
 				auto controlTower = self.engine.engine->getControlTower();
 				addItem(controlTower, 1);
 				
-				for (auto structure: controlTower->getStructures()) {
+				for (const auto& structure: controlTower->getStructures()) {
 					addItem(structure, 1);
 					
 					auto charge = structure->getCharge();

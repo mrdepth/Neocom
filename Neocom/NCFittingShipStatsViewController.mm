@@ -547,10 +547,10 @@
 								
 								[types addObject:@(ship->getTypeID())];
 								
-								for (auto i: ship->getModules())
+								for (const auto& i: ship->getModules())
 									[types addObject:@(i->getTypeID())];
 								
-								for (auto i: ship->getDrones()) {
+								for (const auto& i: ship->getDrones()) {
 									[types addObject:@(i->getTypeID())];
 									[drones addObject:@(i->getTypeID())];
 								}

@@ -351,7 +351,7 @@
 		[self.engine performBlockAndWait:^{
 			for (NCFittingEngineItemPointer* pointer in sender[@"object"]) {
 				auto item = pointer.item;
-				for (auto item: item->getAffectors()) {
+				for (const auto& item: item->getAffectors()) {
 					auto skill = std::dynamic_pointer_cast<eufe::Skill>(item);
 					if (skill) {
 						[typeIDs addObject:@(item->getTypeID())];
@@ -373,10 +373,10 @@
 		NSMutableArray* implants = [NSMutableArray new];
 		NSMutableArray* boosters = [NSMutableArray new];
 		[self.engine performBlockAndWait:^{
-			for (auto implant: self.fit.pilot->getImplants())
+			for (const auto& implant: self.fit.pilot->getImplants())
 				[implants addObject:@(implant->getTypeID())];
 			
-			for (auto booster: self.fit.pilot->getBoosters())
+			for (const auto& booster: self.fit.pilot->getBoosters())
 				[boosters addObject:@(booster->getTypeID())];
 		}];
 
@@ -599,24 +599,24 @@
 						auto ship = character->getShip();
 						typeIDs.insert(ship->getTypeID());
 						
-						for (auto module: ship->getModules()) {
+						for (const auto& module: ship->getModules()) {
 							typeIDs.insert(module->getTypeID());
 							auto charge = module->getCharge();
 							if (charge)
 								typeIDs.insert(charge->getTypeID());
 						}
 						
-						for (auto drone: ship->getDrones())
+						for (const auto& drone: ship->getDrones())
 							typeIDs.insert(drone->getTypeID());
 						
-						for (auto implant: character->getImplants())
+						for (const auto& implant: character->getImplants())
 							typeIDs.insert(implant->getTypeID());
 						
-						for (auto booster: character->getBoosters())
+						for (const auto& booster: character->getBoosters())
 							typeIDs.insert(booster->getTypeID());
 					}];
 					
-					for (auto typeID: typeIDs)
+					for (const auto& typeID: typeIDs)
 						[trainingQueue addRequiredSkillsForType:[self.databaseManagedObjectContext invTypeWithTypeID:typeID]];
 					[self performSegueWithIdentifier:@"NCFittingRequiredSkillsViewController"
 											  sender:@{@"sender": sender, @"object": trainingQueue}];
@@ -649,17 +649,17 @@
 				auto pilot = self.fit.pilot;
 				auto ship = pilot->getShip();
 				addItem(ship);
-				for (auto module: ship->getModules()) {
+				for (const auto& module: ship->getModules()) {
 					addItem(module);
 					auto charge = module->getCharge();
 					if (charge)
 						addItem(charge);
 				}
-				for (auto drone: ship->getDrones())
+				for (const auto& drone: ship->getDrones())
 					addItem(drone);
-				for (auto implant: pilot->getImplants())
+				for (const auto& implant: pilot->getImplants())
 					addItem(implant);
-				for (auto booster: pilot->getBoosters())
+				for (const auto& booster: pilot->getBoosters())
 					addItem(booster);
 				dispatch_async(dispatch_get_main_queue(), ^{
 					[self performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
@@ -697,7 +697,7 @@
 				auto ship = character->getShip();
 				addItem(ship, 1);
 				
-				for (auto module: ship->getModules()) {
+				for (const auto& module: ship->getModules()) {
 					if (module->getSlot() == eufe::Module::SLOT_MODE)
 						continue;
 					
@@ -712,7 +712,7 @@
 					}
 				}
 				
-				for (auto drone: ship->getDrones())
+				for (const auto& drone: ship->getDrones())
 					addItem(drone, 1);
 			}];
 			
@@ -890,13 +890,13 @@
 		[self.engine performBlock:^{
 			auto character = self.fit.pilot;
 			eufe::ImplantsList implants = character->getImplants();
-			for (auto implant: implants)
+			for (const auto& implant: implants)
 				character->removeImplant(implant);
 			for (NSNumber* typeID in implantIDs)
 				character->addImplant([typeID intValue]);
 			
 			eufe::BoostersList boosters = character->getBoosters();
-			for (auto booster: boosters)
+			for (const auto& booster: boosters)
 				character->removeBooster(booster);
 			for (NSNumber* typeID in boosterIDs)
 				character->addBooster([typeID intValue]);

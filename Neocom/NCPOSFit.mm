@@ -204,7 +204,7 @@
 		typeID = controlTower->getTypeID();
 		
 		NSMutableDictionary* structuresDic = [NSMutableDictionary new];
-		for (auto i: controlTower->getStructures()) {
+		for (const auto& i: controlTower->getStructures()) {
 			auto charge = i->getCharge();
 			eufe::TypeID chargeID = charge ? charge->getTypeID() : 0;
 			NSString* key = [NSString stringWithFormat:@"%d:%d:%d", i->getTypeID(), i->getState(), chargeID];

@@ -14,6 +14,9 @@
 #import "NSNumberFormatter+Neocom.h"
 #import <algorithm>
 #import "NSString+Neocom.h"
+#import "NCFittingEngine.h"
+#import "NCDatabase.h"
+#import "NSManagedObjectContext+NCDatabase.h"
 
 @interface NCFittingShipCombatSimulatorViewController()
 @property (nonatomic, strong) CAShapeLayer* axisLayer;
@@ -31,6 +34,8 @@
 @property (nonatomic, assign) float markerPosition;
 @property (nonatomic, strong) NSNumberFormatter* dpsNumberFormatter;
 - (void) update;
+- (BOOL) needsUpdate;
+- (void) setNeedsUpdate;
 @end
 
 @implementation NCFittingShipCombatSimulatorViewController
@@ -78,6 +83,8 @@
 	[self.markerView.layer addSublayer:self.markerLayer];
 	
 	__block float maxVelocity = 0;
+	__block NSString* targetName;
+	
 	[self.attacker.engine performBlockAndWait:^{
 		auto pilot = self.attacker.pilot;
 		auto ship = pilot->getShip();
@@ -85,7 +92,7 @@
 		float maxRange = 0;
 		float falloff = 0;
 		float warpScrambleRange = 0;
-		for (auto module: ship->getModules()) {
+		for (const auto& module: ship->getModules()) {
 			if (module->getHardpoint() == eufe::Module::HARDPOINT_TURRET) {
 				float dps = module->getDps();
 				if (dps > 0) {
@@ -109,14 +116,16 @@
 		if (self.fullRange == 0) {
 			self.fullRange = ceil(ship->getOrbitRadiusWithTransverseVelocity(ship->getVelocity() * 0.95) * 1.5 / 1000) * 1000;
 		}
+		NCDBInvType* type = [self.attacker.engine.databaseManagedObjectContext invTypeWithTypeID:self.target.typeID];
+		targetName = [NSString stringWithFormat:@"%@ - %@", type.typeName, self.target.loadoutName];
 	}];
+	self.targetLabel.text = targetName;
 	
 	self.velocitySlider.minimumValue = 0;
 	self.velocitySlider.maximumValue = maxVelocity;
 	self.velocitySlider.value = maxVelocity;
 	self.maxVelocityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ m/s", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:maxVelocity]];
 	
-	//[self update];
 	self.markerPosition = -1;
 	[self onChangeVelocity:self.velocitySlider];
 	
@@ -171,20 +180,25 @@
 	self.dealtDpsLayer.delegate = nil;
 	self.receivedDpsLayer.delegate = nil;
 	self.axisLayer.delegate = nil;
-	//self.velocityLayer.delegate = nil;
 	self.markerLayer.delegate = nil;
 }
 
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
+	if (self.dealtDpsLayer.bounds.size.width != self.canvasView.bounds.size.width ||
+		self.receivedDpsLayer.bounds.size.width != self.canvasView.bounds.size.width)
+		[self setNeedsUpdate];
+	
 	self.dealtDpsLayer.frame = self.canvasView.bounds;
 	self.receivedDpsLayer.frame = self.canvasView.bounds;
-	//self.velocityLayer.frame = self.canvasView.bounds;
 	self.axisLayer.frame = self.canvasView.bounds;
 	self.markerLayer.frame = self.markerView.layer.bounds;
 }
 
 - (void) displayLayer:(CALayer *)layer {
+	if ([self needsUpdate])
+		[self update];
+
 	if (layer == self.axisLayer) {
 		UIBezierPath* bezierPath = [UIBezierPath bezierPath];
 		[bezierPath moveToPoint:CGPointMake(0, 0)];
@@ -233,10 +247,7 @@
 }
 
 - (IBAction)onChangeVelocity:(id) sender {
-	self.dealtDpsPoints = nil;
-	self.receivedDpsPoints = nil;
-	
-	[self update];
+	[self setNeedsUpdate];
 	CGRect rect = [self.velocitySlider thumbRectForBounds:self.velocitySlider.bounds trackRect:[self.velocitySlider trackRectForBounds:self.velocitySlider.bounds] value:self.velocitySlider.value];
 	
 	[self.velocityLabelAuxiliaryView.superview removeConstraint:self.velocityLabelConstraint];
@@ -248,9 +259,7 @@
 												multiplier:CGRectGetMidX(rect) / self.velocitySlider.bounds.size.width
 												  constant:0];
 	self.velocityLabelConstraint = constraint;
-	//self.velocityLabelConstraint.priority = UILayoutPriorityDefaultHigh;
 	[self.velocityLabelAuxiliaryView.superview addConstraint:constraint];
-	[self.view setNeedsUpdateConstraints];
 }
 
 - (IBAction)onPan:(UIPanGestureRecognizer*) recognizer {
@@ -298,7 +307,6 @@
 			float x = dx;
 			attackerOptimalDPS = attacker->getWeaponDps() + attacker->getDroneDps();
 			targetOptimalDPS = target->getWeaponDps() + target->getDroneDps();
-			//float optimalDPS = std::max(attackerOptimalDPS, targetOptimalDPS);
 			
 			eufe::CombatSimulator::State state;
 			state.targetPosition = eufe::Point(0,0);
@@ -351,18 +359,18 @@
 	NSMutableAttributedString* report = [NSMutableAttributedString new];
 	
 	if (timeToKill > 0 && timeToKill < timeToDie) {
-		[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Target will explode through %@. ", nil), [NSString stringWithTimeLeft:timeToKill]] attributes:@{NSForegroundColorAttributeName:[UIColor greenColor]}]];
+		[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Target will be destroyed in %@. ", nil), [NSString stringWithTimeLeft:timeToKill]] attributes:@{NSForegroundColorAttributeName:[UIColor greenColor]}]];
 		if (attackerCapLastsTime > 0 && attackerCapLastsTime < timeToKill)
-			[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Your capacitor will last for %@. ", nil), [NSString stringWithTimeLeft:attackerCapLastsTime]] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+			[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Your capacitor will deplete in %@. ", nil), [NSString stringWithTimeLeft:attackerCapLastsTime]] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
 	}
 	else if (timeToDie > 0 && timeToDie < timeToKill) {
-		[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"You will explode through %@. ", nil), [NSString stringWithTimeLeft:timeToKill]] attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}]];
+		[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"You will be destroyed in %@. ", nil), [NSString stringWithTimeLeft:timeToKill]] attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}]];
 	}
 	else {
-		[report appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Your dps is to low to defeat the target. ", nil) attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+		[report appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Your DPS is not sufficient to defeat the target. ", nil) attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
 	}
 	if (attackerVelocity < targetVelocity) {
-		[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Your speed is less than the targets speed to keep the range (%@ < %@ m/s). ", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:attackerVelocity], [NSNumberFormatter neocomLocalizedStringFromInteger:targetVelocity]] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+		[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Your speed is not sufficient to sustain orbit of the target (%@ < %@ m/s). ", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:attackerVelocity], [NSNumberFormatter neocomLocalizedStringFromInteger:targetVelocity]] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
 	}
 	self.reportLabel.attributedText = report;
 	
@@ -371,10 +379,6 @@
 	
 	self.dealtDpsLabel.text = [self.dpsNumberFormatter stringFromNumber:@(dealtDPS)];
 	self.receivedDpsLabel.text = [self.dpsNumberFormatter stringFromNumber:@(receivedDPS)];
-	
-	
-	[self.dealtDpsLayer setNeedsDisplay];
-	[self.receivedDpsLayer setNeedsDisplay];
 }
 
 - (void) setMarkerPosition:(float)markerPosition {
@@ -389,6 +393,17 @@
 												  constant:0];
 	self.markerViewConstraint = constraint;
 	[self.markerAuxiliaryView.superview addConstraint:constraint];
+}
+
+- (BOOL) needsUpdate {
+	return !self.dealtDpsPoints || !self.receivedDpsPoints;
+}
+
+- (void) setNeedsUpdate {
+	self.dealtDpsPoints = nil;
+	self.receivedDpsPoints = nil;
+	[self.dealtDpsLayer setNeedsDisplay];
+	[self.receivedDpsLayer setNeedsDisplay];
 }
 
 @end

@@ -94,7 +94,7 @@
 		float turretsDPS = 0;
 		float maxRange = 0;
 		float falloff = 0;
-		for (auto module: ship->getModules()) {
+		for (const auto& module: ship->getModules()) {
 			if (module->getHardpoint() == eufe::Module::HARDPOINT_TURRET) {
 				float dps = module->getDps();
 				if (dps > 0) {
@@ -334,7 +334,7 @@
 		eufe::HostileTarget target = eufe::HostileTarget(x, angularVelocity, targetSignature, 0);
 		droneDPS = ship->getDroneDps(target);
 
-		for (auto module: ship->getModules()) {
+		for (const auto& module: ship->getModules()) {
 			if (module->getHardpoint() == eufe::Module::HARDPOINT_TURRET)
 				turretsDPS += module->getDps(target);
 			else

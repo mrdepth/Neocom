@@ -82,7 +82,7 @@
 			NSMutableDictionary* structuresDic = [NSMutableDictionary new];
 			auto controlTower = self.controller.engine.engine->getControlTower();
 			
-			for (auto structure: controlTower->getStructures()) {
+			for (const auto& structure: controlTower->getStructures()) {
 				int32_t typeID = structure->getTypeID();
 				NCFittingPOSStructuresViewControllerRow* row = structuresDic[@(typeID)];
 				if (!row) {
@@ -152,7 +152,7 @@
 															auto controlTower = self.controller.engine.engine->getControlTower();
 															eufe::Module::State state = eufe::Module::STATE_ACTIVE;
 															std::shared_ptr<eufe::Charge> charge = nullptr;
-															for (auto structure: controlTower->getStructures()) {
+															for (const auto& structure: controlTower->getStructures()) {
 																if (structure->getTypeID() == typeID) {
 																	state = structure->getState();
 																	charge = structure->getCharge();
@@ -218,7 +218,7 @@
 		
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDelete style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
 			[self.controller.engine performBlockAndWait:^{
-				for (auto structure: structures)
+				for (const auto& structure: structures)
 					controlTower->removeStructure(structure);
 			}];
 			[self.controller reload];
@@ -245,7 +245,7 @@
 		if (structure->getState() >= eufe::Module::STATE_ACTIVE) {
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonOffline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
-					for (auto structure: structures)
+					for (const auto& structure: structures)
 						structure->setState(eufe::Module::STATE_OFFLINE);
 				}];
 				[self.controller reload];
@@ -254,7 +254,7 @@
 		else {
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonOnline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
-					for (auto structure: structures)
+					for (const auto& structure: structures)
 						structure->setState(eufe::Module::STATE_ACTIVE);
 				}];
 				[self.controller reload];
@@ -284,7 +284,7 @@
 					[self.controller.engine performBlock:^{
 						if (n > 0) {
 							int i = n;
-							for (auto structure: structures) {
+							for (const auto& structure: structures) {
 								if (i <= 0)
 									break;
 								controlTower->removeStructure(structure);
@@ -327,7 +327,7 @@
 																completionHandler:^(NCDBInvType *type) {
 																	int32_t typeID = type.typeID;
 																	[self.controller.engine performBlockAndWait:^{
-																		for (auto structure: structures)
+																		for (const auto& structure: structures)
 																			structure->setCharge(typeID);
 																	}];
 																	[self.controller reload];
@@ -343,7 +343,7 @@
 
 				[actions addObject:[UIAlertAction actionWithTitle:ActionButtonUnloadAmmo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 					[self.controller.engine performBlockAndWait:^{
-						for (auto structure: structures)
+						for (const auto& structure: structures)
 							structure->clearCharge();
 					}];
 					[self.controller reload];

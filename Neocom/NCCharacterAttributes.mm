@@ -67,7 +67,7 @@
 						continue;
 					
 					float trainingTime = 0;
-					for (auto i: skillPoints) {
+					for (const auto& i: skillPoints) {
 						int primaryAttribute = 0;
 						int secondaryAttribute = 0;
 						

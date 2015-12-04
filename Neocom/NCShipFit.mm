@@ -336,7 +336,7 @@
 				}
 			}
 			
-			for (auto i : ship->getDrones()) {
+			for (const auto& i : ship->getDrones()) {
 				NSString* key = [NSString stringWithFormat:@"%d:%d", i->getTypeID(), i->isActive()];
 				NSDictionary* record = dronesDic[key];
 				if (!record) {
@@ -357,13 +357,13 @@
 			for (NSDictionary* record in [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]])
 				[drones addObject:record[@"drone"]];
 			
-			for (auto i : self.pilot->getImplants()) {
+			for (const auto& i : self.pilot->getImplants()) {
 				NCLoadoutDataShipImplant* implant = [NCLoadoutDataShipImplant new];
 				implant.typeID = i->getTypeID();
 				[implants addObject:implant];
 			}
 			
-			for (auto i : self.pilot->getBoosters()) {
+			for (const auto& i : self.pilot->getBoosters()) {
 				NCLoadoutDataShipBooster* booster = [NCLoadoutDataShipBooster new];
 				booster.typeID = i->getTypeID();
 				[boosters addObject:booster];
@@ -460,7 +460,7 @@
 	}
 
 	std::sort(modulePairs.begin(), modulePairs.end());
-	for (auto pair: modulePairs) {
+	for (const auto& pair: modulePairs) {
 		NSString* s;
 		if (pair.second > 0)
 			s = [NSString stringWithFormat:@"%d:%d:%d", pair.first, pair.second, moduleCounts[pair]];
@@ -481,7 +481,7 @@
 	}
 	std::sort(dronePairs.begin(), dronePairs.end());
 	
-	for (auto pair: dronePairs) {
+	for (const auto& pair: dronePairs) {
 		NSString* s;
 		s = [NSString stringWithFormat:@"%d:%d", pair.first, pair.second];
 		[drones addObject:s];

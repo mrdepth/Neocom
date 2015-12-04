@@ -140,7 +140,7 @@
 					section.numberOfSlots = numberOfSlots;
 					NSMutableArray* rows = [NSMutableArray new];
 					
-					for (auto module: modules) {
+					for (const auto& module: modules) {
 						NCFittingShipModulesViewControllerRow* row = [oldRows[@((uintptr_t) module.get())] copy] ?: [NCFittingShipModulesViewControllerRow new];
 						row.module = module;
 						row.isUpToDate = NO;
@@ -306,7 +306,7 @@
 															if (section.slot == eufe::Module::SLOT_MODE) {
 																eufe::ModulesList modes;
 																ship->getModules(eufe::Module::SLOT_MODE, std::inserter(modes, modes.end()));
-																for (auto i:modes)
+																for (const auto& i:modes)
 																	ship->removeModule(i);
 															}
 															ship->addModule(typeID);
@@ -525,7 +525,7 @@
 		
 		void (^setState)(eufe::ModulesList, eufe::Module::State) = ^(eufe::ModulesList modules, eufe::Module::State state) {
 			[self.controller.engine performBlockAndWait:^{
-				for (auto module: modules)
+				for (const auto& module: modules)
 					module->setPreferredState(state);
 			}];
 			[self.controller reload];
@@ -556,7 +556,7 @@
 		UIAlertAction* (^removeAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
 			return [UIAlertAction actionWithTitle:ActionButtonDelete style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
-					for (auto module: modules)
+					for (const auto& module: modules)
 						ship->removeModule(module);
 				}];
 				[self.controller reload];
@@ -628,7 +628,7 @@
 															completionHandler:^(NCDBInvType *type) {
 																int32_t typeID = type.typeID;
 																[self.controller.engine performBlockAndWait:^{
-																	for (auto module: modules)
+																	for (const auto& module: modules)
 																		module->setCharge(typeID);
 																}];
 																[self.controller reload];
@@ -640,7 +640,7 @@
 		UIAlertAction* (^unloadAmmoAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
 			return [UIAlertAction actionWithTitle:ActionButtonUnloadAmmo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
-					for (auto module: modules)
+					for (const auto& module: modules)
 						module->clearCharge();
 				}];
 				[self.controller reload];
@@ -658,7 +658,7 @@
 			return [UIAlertAction actionWithTitle:ActionButtonSetTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				NSMutableArray* array = [NSMutableArray new];
 				[self.controller.engine performBlockAndWait:^{
-					for (auto module: modules)
+					for (const auto& module: modules)
 						[array addObject:[NCFittingEngineItemPointer pointerWithItem:module]];
 				}];
 				[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController"
@@ -670,7 +670,7 @@
 		UIAlertAction* (^clearTargetAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
 			return [UIAlertAction actionWithTitle:ActionButtonClearTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
-					for (auto module: modules)
+					for (const auto& module: modules)
 						module->clearTarget();
 					[self.controller reload];
 				}];
@@ -689,7 +689,7 @@
 			return [UIAlertAction actionWithTitle:ActionButtonVariations style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				NSMutableArray* array = [NSMutableArray new];
 				[self.controller.engine performBlockAndWait:^{
-					for (auto module: modules)
+					for (const auto& module: modules)
 						[array addObject:[NCFittingEngineItemPointer pointerWithItem:module]];
 				}];
 				[self.controller performSegueWithIdentifier:@"NCFittingTypeVariationsViewController"

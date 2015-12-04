@@ -312,7 +312,7 @@
 
 								NSMutableArray* infrastructureUpgrades = [NSMutableArray new];
 								float upgradesDailyCost = 0;
-								for (auto i: controlTower->getStructures()) {
+								for (const auto& i: controlTower->getStructures()) {
 									if (i->hasAttribute(1595)) { //anchoringRequiresSovUpgrade1
 										int32_t typeID = (int32_t) i->getAttribute(1595)->getValue();
 										if (![infrastructureUpgrades containsObject:@(typeID)]) {
@@ -367,7 +367,7 @@
 								NSMutableArray* types = [NSMutableArray new];
 								[types addObject:@(controlTower->getTypeID())];
 								
-								for (auto i: controlTower->getStructures())
+								for (const auto& i: controlTower->getStructures())
 									[types addObject:@(i->getTypeID())];
 								
 								

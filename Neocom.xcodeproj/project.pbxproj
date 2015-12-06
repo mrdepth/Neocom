@@ -250,6 +250,7 @@
 		126AACEE1BBA67C00068AA99 /* NCDatabaseTypeMarketInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAA188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m */; };
 		126AACEF1BBA72110068AA99 /* NCDatabaseGroupPickerViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A4F18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m */; };
 		126AACF01BBA72940068AA99 /* NCCharacterSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */; };
+		126B598B1C142F43004BA4C8 /* NCFittingDamageVectorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 126B598A1C142F43004BA4C8 /* NCFittingDamageVectorCell.m */; };
 		126ED32D188144370009FA39 /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 126ED32C188144370009FA39 /* mainMenu.plist */; };
 		127123A018979E40005F46EE /* NCFittingSectionGenericHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1271239F18979E40005F46EE /* NCFittingSectionGenericHeaderView.xib */; };
 		127123A318979F55005F46EE /* NCFittingSectionGenericHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 127123A218979F55005F46EE /* NCFittingSectionGenericHeaderView.m */; };
@@ -978,6 +979,8 @@
 		1268292A1C05F9E300954ECF /* NCFittingShipOffenseStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipOffenseStatsViewController.h; sourceTree = "<group>"; };
 		1268292B1C05F9E300954ECF /* NCFittingShipOffenseStatsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipOffenseStatsViewController.mm; sourceTree = "<group>"; };
 		1268292D1C06044B00954ECF /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
+		126B59891C142F43004BA4C8 /* NCFittingDamageVectorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamageVectorCell.h; sourceTree = "<group>"; };
+		126B598A1C142F43004BA4C8 /* NCFittingDamageVectorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamageVectorCell.m; sourceTree = "<group>"; };
 		126DC6A018D1ABD3009EEA86 /* NCCharacterAttributesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterAttributesCell.h; sourceTree = "<group>"; };
 		126DC6A118D1ABD3009EEA86 /* NCCharacterAttributesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCharacterAttributesCell.m; sourceTree = "<group>"; };
 		126ED31C188129080009FA39 /* NCCharacterSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterSheetViewController.h; sourceTree = "<group>"; };
@@ -1531,9 +1534,9 @@
 				123A97F918C71452001045F5 /* Help */,
 				120EED571AC58FEF00947614 /* ShoppingList */,
 				124DDE6C1BF38A9400596A38 /* NCWealthViewController */,
+				120968591845F0CB00921A37 /* Supporting Files */,
 				120968611845F0CB00921A37 /* NCAppDelegate.h */,
 				120968621845F0CB00921A37 /* NCAppDelegate.mm */,
-				120968591845F0CB00921A37 /* Supporting Files */,
 			);
 			path = Neocom;
 			sourceTree = "<group>";
@@ -2368,6 +2371,8 @@
 				1204155F189A44F400B15BB5 /* NCFittingShipCapacitorCell.m */,
 				12041561189A450200B15BB5 /* NCFittingShipFirepowerCell.h */,
 				12041562189A450200B15BB5 /* NCFittingShipFirepowerCell.m */,
+				126B59891C142F43004BA4C8 /* NCFittingDamageVectorCell.h */,
+				126B598A1C142F43004BA4C8 /* NCFittingDamageVectorCell.m */,
 				12041564189A451E00B15BB5 /* NCFittingShipTankCell.h */,
 				12041565189A451E00B15BB5 /* NCFittingShipTankCell.m */,
 				12041567189A453F00B15BB5 /* NCFittingShipMiscCell.h */,
@@ -4202,6 +4207,7 @@
 				1283102E1BBE810A0018C8AC /* NCNewShoppingItemViewController.m in Sources */,
 				129D262C187E923300E2062C /* UIActionSheet+Block.m in Sources */,
 				12654C2F1C0B24920060106C /* NCDBEveIcon+CoreDataProperties.m in Sources */,
+				126B598B1C142F43004BA4C8 /* NCFittingDamageVectorCell.m in Sources */,
 				12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */,
 				129D2618187E923300E2062C /* LUISearchBar.m in Sources */,
 				12A7DB9F18B34D6200343D25 /* NSURLRequest+ASHTTPServer.m in Sources */,

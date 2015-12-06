@@ -27,17 +27,19 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *markerViewConstraint;
 @property (weak, nonatomic) IBOutlet UILabel *orbitLabel;
 @property (weak, nonatomic) IBOutlet UILabel *transverseVelocityLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dealtDpsLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dealtDpsTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *receivedDpsLabel;
-@property (weak, nonatomic) IBOutlet UILabel *receivedDpsTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *outgoingDpsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *outgoingDpsTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *incomingDpsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *incomingDpsTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *targetLabel;
 @property (strong, nonatomic) NCShipFit* attacker;
 @property (strong, nonatomic) NCShipFit* target;
 @property (weak, nonatomic) IBOutlet UILabel *reportLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dpsAxisLabel;
 
 - (IBAction)onChangeVelocity:(id) sender;
 - (IBAction)onPan:(UIPanGestureRecognizer*) recognizer;
 - (IBAction)onTap:(UITapGestureRecognizer*) recognizer;
+- (IBAction)onSwap:(id) sender;
 
 @end

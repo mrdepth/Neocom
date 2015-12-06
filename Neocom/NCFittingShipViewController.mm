@@ -300,6 +300,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
+		controller.fits = self.fits;
 //		controller.selectedDamagePattern = self.damagePattern;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingAreaEffectPickerViewController"]) {

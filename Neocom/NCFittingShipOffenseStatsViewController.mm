@@ -91,6 +91,7 @@
 	[self.fit.engine performBlockAndWait:^{
 		auto pilot = self.fit.pilot;
 		auto ship = pilot->getShip();
+		
 		float turretsDPS = 0;
 		float maxRange = 0;
 		float falloff = 0;

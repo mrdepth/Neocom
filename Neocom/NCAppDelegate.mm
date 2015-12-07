@@ -637,7 +637,15 @@ void uncaughtExceptionHandler(NSException* exception) {
 			if (url) {
 				NSManagedObjectContext* storageManagedObjectContext = [[NCAccountsManager sharedManager] storageManagedObjectContext];
 				[storageManagedObjectContext performBlock:^{
-					NSManagedObjectID* objectID = [storageManagedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:url];
+					NSManagedObjectID* objectID;
+					@try {
+						objectID = [storageManagedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:url];
+					}
+					@catch (NSException *exception) {
+						objectID = nil;
+					}
+					@finally {
+					}
 					if (objectID) {
 						NCAccount* account = (NCAccount*) [storageManagedObjectContext existingObjectWithID:objectID error:nil];
 						if ([account isKindOfClass:[NCAccount class]]) {

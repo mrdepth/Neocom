@@ -69,7 +69,7 @@
 		if (item.shipResources)
 			return @"NCEufeItemShipCell";
 		else if (item.requirements)
-			return @"NCEufeItemModuleCell";
+			return item.requirements.calibration > 0 ? @"NCEufeItemRigCell" : @"NCEufeItemModuleCell";
 		else if (item.damage)
 			return @"NCEufeItemChargeCell";
 	}

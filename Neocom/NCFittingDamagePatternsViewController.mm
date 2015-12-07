@@ -89,7 +89,7 @@
 	if (fitsDamagePatterns.count > 0) {
 		NCFittingDamagePatternsViewControllerSection* fitsSection = [NCFittingDamagePatternsViewControllerSection new];
 		fitsSection.damagePatterns = fitsDamagePatterns;
-		fitsSection.title = NSLocalizedString(@"Damage of the ship", nil);
+		fitsSection.title = NSLocalizedString(@"Fleet", nil);
 		self.inMemoryDamagePatternsSections = @[fitsSection, builtInSection];
 	}
 	else

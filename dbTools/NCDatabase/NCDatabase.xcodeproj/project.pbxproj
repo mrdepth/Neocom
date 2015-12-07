@@ -189,6 +189,15 @@
 		128257191BCCF4C400BC1F56 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */; };
 		12D6DC8E1920CD0A003FC5ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D6DC8D1920CD0A003FC5ED /* libsqlite3.dylib */; };
 		12D6DCF41920D1D5003FC5ED /* NCDBImageValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */; };
+		12DDFB971C15758D005F1382 /* NCDBEufeItemDamage+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFB901C15758D005F1382 /* NCDBEufeItemDamage+CoreDataProperties.m */; };
+		12DDFB981C15758D005F1382 /* NCDBEufeItemDamage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFB921C15758D005F1382 /* NCDBEufeItemDamage.m */; };
+		12DDFB991C15758D005F1382 /* NCDBEufeItemRequirements+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFB941C15758D005F1382 /* NCDBEufeItemRequirements+CoreDataProperties.m */; };
+		12DDFB9A1C15758D005F1382 /* NCDBEufeItemRequirements.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFB961C15758D005F1382 /* NCDBEufeItemRequirements.m */; };
+		12DDFBA11C1575A8005F1382 /* CombatSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFB9B1C1575A8005F1382 /* CombatSimulator.cpp */; };
+		12DDFBA21C1575A8005F1382 /* DamageVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFB9D1C1575A8005F1382 /* DamageVector.cpp */; };
+		12DDFBA31C1575A8005F1382 /* HostileTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFB9F1C1575A8005F1382 /* HostileTarget.cpp */; };
+		12DDFBA81C15771B005F1382 /* NCDBEufeItemShipResources+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFBA51C15771B005F1382 /* NCDBEufeItemShipResources+CoreDataProperties.m */; };
+		12DDFBA91C15771B005F1382 /* NCDBEufeItemShipResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFBA71C15771B005F1382 /* NCDBEufeItemShipResources.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -298,7 +307,6 @@
 		12436DA21945967E0090D4A6 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
 		12436DA31945967E0090D4A6 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		12436EAC194701B80090D4A6 /* NCDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCDatabase.xcdatamodel; sourceTree = "<group>"; };
-		12476C1419501A4C009E07C6 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		12476C1519501A4C009E07C6 /* Area.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Area.cpp; sourceTree = "<group>"; };
 		12476C1619501A4C009E07C6 /* Area.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Area.h; sourceTree = "<group>"; };
 		12476C1719501A4C009E07C6 /* Attribute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Attribute.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -368,7 +376,7 @@
 		12476C6019501A4D009E07C6 /* Modifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Modifier.h; sourceTree = "<group>"; };
 		12476C6119501A4D009E07C6 /* Module.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Module.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		12476C6219501A4D009E07C6 /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Module.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		12476C6519501A4D009E07C6 /* Ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ship.cpp; sourceTree = "<group>"; };
+		12476C6519501A4D009E07C6 /* Ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ship.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		12476C6619501A4D009E07C6 /* Ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ship.h; sourceTree = "<group>"; };
 		12476C6719501A4D009E07C6 /* Skill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Skill.cpp; sourceTree = "<group>"; };
 		12476C6819501A4D009E07C6 /* Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skill.h; sourceTree = "<group>"; };
@@ -575,6 +583,24 @@
 		12D6DCF21920D1D5003FC5ED /* NCDBImageValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBImageValueTransformer.h; sourceTree = "<group>"; };
 		12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBImageValueTransformer.m; sourceTree = "<group>"; };
 		12D6DCF519211091003FC5ED /* NCDatabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCDatabase.h; sourceTree = "<group>"; };
+		12DDFB8F1C15758D005F1382 /* NCDBEufeItemDamage+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBEufeItemDamage+CoreDataProperties.h"; sourceTree = "<group>"; };
+		12DDFB901C15758D005F1382 /* NCDBEufeItemDamage+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBEufeItemDamage+CoreDataProperties.m"; sourceTree = "<group>"; };
+		12DDFB911C15758D005F1382 /* NCDBEufeItemDamage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEufeItemDamage.h; sourceTree = "<group>"; };
+		12DDFB921C15758D005F1382 /* NCDBEufeItemDamage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEufeItemDamage.m; sourceTree = "<group>"; };
+		12DDFB931C15758D005F1382 /* NCDBEufeItemRequirements+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBEufeItemRequirements+CoreDataProperties.h"; sourceTree = "<group>"; };
+		12DDFB941C15758D005F1382 /* NCDBEufeItemRequirements+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBEufeItemRequirements+CoreDataProperties.m"; sourceTree = "<group>"; };
+		12DDFB951C15758D005F1382 /* NCDBEufeItemRequirements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEufeItemRequirements.h; sourceTree = "<group>"; };
+		12DDFB961C15758D005F1382 /* NCDBEufeItemRequirements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEufeItemRequirements.m; sourceTree = "<group>"; };
+		12DDFB9B1C1575A8005F1382 /* CombatSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CombatSimulator.cpp; sourceTree = "<group>"; };
+		12DDFB9C1C1575A8005F1382 /* CombatSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CombatSimulator.h; sourceTree = "<group>"; };
+		12DDFB9D1C1575A8005F1382 /* DamageVector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DamageVector.cpp; sourceTree = "<group>"; };
+		12DDFB9E1C1575A8005F1382 /* DamageVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DamageVector.h; sourceTree = "<group>"; };
+		12DDFB9F1C1575A8005F1382 /* HostileTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HostileTarget.cpp; sourceTree = "<group>"; };
+		12DDFBA01C1575A8005F1382 /* HostileTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostileTarget.h; sourceTree = "<group>"; };
+		12DDFBA41C15771B005F1382 /* NCDBEufeItemShipResources+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBEufeItemShipResources+CoreDataProperties.h"; sourceTree = "<group>"; };
+		12DDFBA51C15771B005F1382 /* NCDBEufeItemShipResources+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBEufeItemShipResources+CoreDataProperties.m"; sourceTree = "<group>"; };
+		12DDFBA61C15771B005F1382 /* NCDBEufeItemShipResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEufeItemShipResources.h; sourceTree = "<group>"; };
+		12DDFBA71C15771B005F1382 /* NCDBEufeItemShipResources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEufeItemShipResources.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -732,7 +758,12 @@
 		12476C1319501A4C009E07C6 /* eufe */ = {
 			isa = PBXGroup;
 			children = (
-				12476C1419501A4C009E07C6 /* .gitignore */,
+				12DDFB9B1C1575A8005F1382 /* CombatSimulator.cpp */,
+				12DDFB9C1C1575A8005F1382 /* CombatSimulator.h */,
+				12DDFB9D1C1575A8005F1382 /* DamageVector.cpp */,
+				12DDFB9E1C1575A8005F1382 /* DamageVector.h */,
+				12DDFB9F1C1575A8005F1382 /* HostileTarget.cpp */,
+				12DDFBA01C1575A8005F1382 /* HostileTarget.h */,
 				12476C1519501A4C009E07C6 /* Area.cpp */,
 				12476C1619501A4C009E07C6 /* Area.h */,
 				12476C1719501A4C009E07C6 /* Attribute.cpp */,
@@ -878,6 +909,18 @@
 		12D6DCFD1922009C003FC5ED /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				12DDFBA41C15771B005F1382 /* NCDBEufeItemShipResources+CoreDataProperties.h */,
+				12DDFBA51C15771B005F1382 /* NCDBEufeItemShipResources+CoreDataProperties.m */,
+				12DDFBA61C15771B005F1382 /* NCDBEufeItemShipResources.h */,
+				12DDFBA71C15771B005F1382 /* NCDBEufeItemShipResources.m */,
+				12DDFB8F1C15758D005F1382 /* NCDBEufeItemDamage+CoreDataProperties.h */,
+				12DDFB901C15758D005F1382 /* NCDBEufeItemDamage+CoreDataProperties.m */,
+				12DDFB911C15758D005F1382 /* NCDBEufeItemDamage.h */,
+				12DDFB921C15758D005F1382 /* NCDBEufeItemDamage.m */,
+				12DDFB931C15758D005F1382 /* NCDBEufeItemRequirements+CoreDataProperties.h */,
+				12DDFB941C15758D005F1382 /* NCDBEufeItemRequirements+CoreDataProperties.m */,
+				12DDFB951C15758D005F1382 /* NCDBEufeItemRequirements.h */,
+				12DDFB961C15758D005F1382 /* NCDBEufeItemRequirements.m */,
 				12654A741C0B206D0060106C /* NCDBCertCertificate.h */,
 				12654A751C0B206D0060106C /* NCDBCertCertificate.m */,
 				12654A721C0B206D0060106C /* NCDBCertCertificate+CoreDataProperties.h */,
@@ -1155,6 +1198,7 @@
 				12654B0D1C0B206D0060106C /* NCDBStaStation.m in Sources */,
 				12654B031C0B206D0060106C /* NCDBWhType.m in Sources */,
 				12654B301C0B206D0060106C /* NCDBEufeItemGroup+CoreDataProperties.m in Sources */,
+				12DDFBA11C1575A8005F1382 /* CombatSimulator.cpp in Sources */,
 				12436D7C194596750090D4A6 /* EVEDBDatabase.m in Sources */,
 				12654B371C0B206D0060106C /* NCDBMapDenormalize.m in Sources */,
 				12476CA319501A4D009E07C6 /* FetchResult.cpp in Sources */,
@@ -1171,8 +1215,11 @@
 				12476C8A19501A4D009E07C6 /* Attribute.cpp in Sources */,
 				12436D8A194596750090D4A6 /* EVEDBInvMetaGroup.m in Sources */,
 				12654B551C0B206D0060106C /* NCDBTxtDescription.m in Sources */,
+				12DDFBA31C1575A8005F1382 /* HostileTarget.cpp in Sources */,
 				12654B081C0B206D0060106C /* NCDBInvMarketGroup+CoreDataProperties.m in Sources */,
 				12436D84194596750090D4A6 /* EVEDBInvBlueprintType.m in Sources */,
+				12DDFB981C15758D005F1382 /* NCDBEufeItemDamage.m in Sources */,
+				12DDFB9A1C15758D005F1382 /* NCDBEufeItemRequirements.m in Sources */,
 				12654B231C0B206D0060106C /* NCDBCertMastery.m in Sources */,
 				12654B111C0B206D0060106C /* NCDBInvControlTowerResourcePurpose.m in Sources */,
 				12654B191C0B206D0060106C /* NCDBNpcGroup.m in Sources */,
@@ -1180,6 +1227,7 @@
 				12436D9D194596750090D4A6 /* NSDictionary+EVEDBAPI.m in Sources */,
 				12654B101C0B206D0060106C /* NCDBInvControlTowerResourcePurpose+CoreDataProperties.m in Sources */,
 				12654B0E1C0B206D0060106C /* NCDBCertCertificate+CoreDataProperties.m in Sources */,
+				12DDFBA21C1575A8005F1382 /* DamageVector.cpp in Sources */,
 				12476CB119501A4D009E07C6 /* SqliteConnector.cpp in Sources */,
 				12654B451C0B206D0060106C /* NCDBEveIcon.m in Sources */,
 				12654B1A1C0B206D0060106C /* NCDBIndProduct+CoreDataProperties.m in Sources */,
@@ -1202,14 +1250,17 @@
 				12436D74194596750090D4A6 /* EVEDBCertMastery.m in Sources */,
 				12654B271C0B206D0060106C /* NCDBMapRegion.m in Sources */,
 				12654B2B1C0B206D0060106C /* NCDBDgmTypeAttribute.m in Sources */,
+				12DDFBA91C15771B005F1382 /* NCDBEufeItemShipResources.m in Sources */,
 				12436D96194596750090D4A6 /* EVEDBNpcGroup.m in Sources */,
 				12436D8B194596750090D4A6 /* EVEDBInvMetaType.m in Sources */,
 				12436DA51945967E0090D4A6 /* NSString+HTML.m in Sources */,
 				12476C8D19501A4D009E07C6 /* CapacitorSimulator.cpp in Sources */,
 				12584E0119C94FEE00847AB1 /* EVEDBIndustryActivityMaterial.m in Sources */,
 				12476CAE19501A4D009E07C6 /* Ship.cpp in Sources */,
+				12DDFB971C15758D005F1382 /* NCDBEufeItemDamage+CoreDataProperties.m in Sources */,
 				12436D95194596750090D4A6 /* EVEDBMapSolarSystem.m in Sources */,
 				12436D97194596750090D4A6 /* EVEDBRamActivity.m in Sources */,
+				12DDFBA81C15771B005F1382 /* NCDBEufeItemShipResources+CoreDataProperties.m in Sources */,
 				12654B3F1C0B206D0060106C /* NCDBRamInstallationTypeContent.m in Sources */,
 				12654B421C0B206D0060106C /* NCDBEufeItemCategory+CoreDataProperties.m in Sources */,
 				12654B3E1C0B206D0060106C /* NCDBRamInstallationTypeContent+CoreDataProperties.m in Sources */,
@@ -1235,6 +1286,7 @@
 				12436D8C194596750090D4A6 /* EVEDBInvTrait.m in Sources */,
 				12436D8D194596750090D4A6 /* EVEDBInvType+ControlTower.m in Sources */,
 				12654B121C0B206D0060106C /* NCDBInvType+CoreDataProperties.m in Sources */,
+				12DDFB991C15758D005F1382 /* NCDBEufeItemRequirements+CoreDataProperties.m in Sources */,
 				12436D9B194596750090D4A6 /* EVEDBStaStation.m in Sources */,
 				12584E0719C9508C00847AB1 /* EVEDBIndustryActivityProduct.m in Sources */,
 				12436D7B194596750090D4A6 /* EVEDBCrtRelationship.m in Sources */,

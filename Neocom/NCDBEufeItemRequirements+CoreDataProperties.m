@@ -1,5 +1,5 @@
 //
-//  NCDBEufeItemGroup+CoreDataProperties.m
+//  NCDBEufeItemRequirements+CoreDataProperties.m
 //  Neocom
 //
 //  Created by Артем Шиманский on 07.12.15.
@@ -9,15 +9,13 @@
 //  to delete and recreate this implementation file for your updated model.
 //
 
-#import "NCDBEufeItemGroup+CoreDataProperties.h"
+#import "NCDBEufeItemRequirements+CoreDataProperties.h"
 
-@implementation NCDBEufeItemGroup (CoreDataProperties)
+@implementation NCDBEufeItemRequirements (CoreDataProperties)
 
-@dynamic groupName;
-@dynamic category;
-@dynamic icon;
-@dynamic items;
-@dynamic parentGroup;
-@dynamic subGroups;
+@dynamic calibration;
+@dynamic cpu;
+@dynamic powerGrid;
+@dynamic item;
 
 @end

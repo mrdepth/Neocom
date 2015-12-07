@@ -2,7 +2,7 @@
 //  NCDBEufeItem+CoreDataProperties.h
 //  NCDatabase
 //
-//  Created by Artem Shimanski on 29.11.15.
+//  Created by Артем Шиманский on 07.12.15.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NCDBEufeItemCategory *charge;
 @property (nullable, nonatomic, retain) NSSet<NCDBEufeItemGroup *> *groups;
 @property (nullable, nonatomic, retain) NCDBInvType *type;
+@property (nullable, nonatomic, retain) NCDBEufeItemRequirements *requirements;
+@property (nullable, nonatomic, retain) NCDBEufeItemDamage *damage;
+@property (nullable, nonatomic, retain) NCDBEufeItemShipResources *shipResources;
 
 @end
 

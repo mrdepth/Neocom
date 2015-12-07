@@ -1,5 +1,5 @@
 //
-//  NCDBEufeItem+CoreDataProperties.m
+//  NCDBEufeItemRequirements+CoreDataProperties.m
 //  NCDatabase
 //
 //  Created by Артем Шиманский on 07.12.15.
@@ -9,15 +9,13 @@
 //  to delete and recreate this implementation file for your updated model.
 //
 
-#import "NCDBEufeItem+CoreDataProperties.h"
+#import "NCDBEufeItemRequirements+CoreDataProperties.h"
 
-@implementation NCDBEufeItem (CoreDataProperties)
+@implementation NCDBEufeItemRequirements (CoreDataProperties)
 
-@dynamic charge;
-@dynamic groups;
-@dynamic type;
-@dynamic requirements;
-@dynamic damage;
-@dynamic shipResources;
+@dynamic calibration;
+@dynamic cpu;
+@dynamic powerGrid;
+@dynamic item;
 
 @end

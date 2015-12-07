@@ -1197,6 +1197,50 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 		return request;
 	};
 	
+	float (^getAttributeValue)(NCDBInvType*, int32_t) = ^(NCDBInvType* type, int32_t attributeID) {
+		return [(NCDBDgmTypeAttribute*) [[type.attributes filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"attributeType.attributeID==%d", attributeID]] anyObject] value];
+	};
+	
+	void (^loadDetails)(NCDBEufeItem*) = ^(NCDBEufeItem* item) {
+		NCDBEufeItemGroup* group = [item.groups anyObject];
+		switch (group.category.category) {
+			case SLOT_HI:
+			case SLOT_MED:
+			case SLOT_LOW:
+			case SLOT_RIG:
+			case SLOT_STRUCTURE: {
+				item.requirements = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemRequirements" inManagedObjectContext:context];
+				item.requirements.powerGrid = getAttributeValue(item.type, 30);
+				item.requirements.cpu = getAttributeValue(item.type, 50);
+				item.requirements.calibration = getAttributeValue(item.type, 1153);
+				break;
+			}
+			case SLOT_CHARGE:
+			case SLOT_DRONE: {
+				item.damage = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemDamage" inManagedObjectContext:context];
+				float multiplier = MAX(getAttributeValue(item.type, 64), getAttributeValue(item.type, 212));
+				multiplier = MAX(multiplier, 1);
+				item.damage.emAmount = getAttributeValue(item.type, 114) * multiplier;
+				item.damage.kineticAmount = getAttributeValue(item.type, 117) * multiplier;
+				item.damage.thermalAmount = getAttributeValue(item.type, 118) * multiplier;
+				item.damage.explosiveAmount = getAttributeValue(item.type, 116) * multiplier;
+				break;
+			}
+			case SLOT_SHIP: {
+				item.shipResources = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemShipResources" inManagedObjectContext:context];
+				item.shipResources.hiSlots = getAttributeValue(item.type, 14);
+				item.shipResources.medSlots = getAttributeValue(item.type, 13);
+				item.shipResources.lowSlots = getAttributeValue(item.type, 12);
+				item.shipResources.rigSlots = getAttributeValue(item.type, 1137);
+				item.shipResources.turrets = getAttributeValue(item.type, 102);
+				item.shipResources.launchers = getAttributeValue(item.type, 101);
+				break;
+			}
+			default:
+				break;
+		}
+	};
+
 	__weak __block void (^weakRecursiveFind)(EVEDBInvMarketGroup*, NCDBEufeItemCategory*, NCDBEufeItemGroup*, NSArray*, NSSet*);
 	void (^recursiveFind)(EVEDBInvMarketGroup*, NCDBEufeItemCategory*, NCDBEufeItemGroup*, NSArray*, NSSet*) = ^(EVEDBInvMarketGroup* marketGroup, NCDBEufeItemCategory* category, NCDBEufeItemGroup* itemGroup, NSArray* conditions, NSSet* conditionsTables) {
 		if (marketGroup.subgroups.count == 1) {
@@ -1222,9 +1266,13 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 					EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
 					NCDBInvType* invType = invTypes[@(type.typeID)];
 					if (invType) {
-						if (!invType.eufeItem)
+						if (!invType.eufeItem) {
 							invType.eufeItem = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItem" inManagedObjectContext:context];
-						[itemGroup addItemsObject:invType.eufeItem];
+							[itemGroup addItemsObject:invType.eufeItem];
+							loadDetails(invType.eufeItem);
+						}
+						else
+							[itemGroup addItemsObject:invType.eufeItem];
 					}
 				}];
 			}
@@ -1280,9 +1328,13 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 			EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
 			NCDBInvType* invType = invTypes[@(type.typeID)];
 			if (invType) {
-				if (!invType.eufeItem)
+				if (!invType.eufeItem) {
 					invType.eufeItem = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItem" inManagedObjectContext:context];
-				[itemGroup addItemsObject:invType.eufeItem];
+					[itemGroup addItemsObject:invType.eufeItem];
+					loadDetails(invType.eufeItem);
+				}
+				else
+					[itemGroup addItemsObject:invType.eufeItem];
 			}
 		}];
 
@@ -1361,9 +1413,13 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 									  int32_t typeID = sqlite3_column_int(stmt, 0);
 									  NCDBInvType* invType = invTypes[@(typeID)];
 									  if (invType) {
-										  if (!invType.eufeItem)
+										  if (!invType.eufeItem) {
 											  invType.eufeItem = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItem" inManagedObjectContext:context];
-										  [itemGroup addItemsObject:invType.eufeItem];
+											  [itemGroup addItemsObject:invType.eufeItem];
+											  loadDetails(invType.eufeItem);
+										  }
+										  else
+											  [itemGroup addItemsObject:invType.eufeItem];
 									  }
 								  }];
 				 }];

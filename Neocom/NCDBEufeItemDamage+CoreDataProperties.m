@@ -1,5 +1,5 @@
 //
-//  NCDBEufeItemGroup+CoreDataProperties.m
+//  NCDBEufeItemDamage+CoreDataProperties.m
 //  Neocom
 //
 //  Created by Артем Шиманский on 07.12.15.
@@ -9,15 +9,14 @@
 //  to delete and recreate this implementation file for your updated model.
 //
 
-#import "NCDBEufeItemGroup+CoreDataProperties.h"
+#import "NCDBEufeItemDamage+CoreDataProperties.h"
 
-@implementation NCDBEufeItemGroup (CoreDataProperties)
+@implementation NCDBEufeItemDamage (CoreDataProperties)
 
-@dynamic groupName;
-@dynamic category;
-@dynamic icon;
-@dynamic items;
-@dynamic parentGroup;
-@dynamic subGroups;
+@dynamic emAmount;
+@dynamic explosiveAmount;
+@dynamic kineticAmount;
+@dynamic thermalAmount;
+@dynamic item;
 
 @end

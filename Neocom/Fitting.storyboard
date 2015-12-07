@@ -449,7 +449,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="100 000 000 EHP, Passive Shield Tank" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="c7A-0m-sid">
-                                                    <rect key="frame" x="368" y="23" width="217" height="15"/>
+                                                    <rect key="frame" x="83" y="24" width="502" height="15"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
@@ -592,6 +592,7 @@
                                                 <constraint firstItem="EeB-yI-nSz" firstAttribute="leading" secondItem="rEg-Xf-Nnk" secondAttribute="leading" id="sgG-2q-xqc"/>
                                                 <constraint firstItem="FgQ-4r-Yjr" firstAttribute="centerY" secondItem="rEg-Xf-Nnk" secondAttribute="centerY" id="uJJ-uy-pMF"/>
                                                 <constraint firstItem="G78-6Y-JGs" firstAttribute="top" secondItem="FQ5-JN-eum" secondAttribute="bottom" id="uM1-HY-u5e"/>
+                                                <constraint firstItem="c7A-0m-sid" firstAttribute="leading" secondItem="Ldr-bi-S47" secondAttribute="trailing" constant="4" id="vyh-pS-wFe"/>
                                                 <constraint firstItem="zEB-4G-YwR" firstAttribute="width" secondItem="G78-6Y-JGs" secondAttribute="width" id="wnz-9E-3DU"/>
                                                 <constraint firstItem="EeB-yI-nSz" firstAttribute="width" secondItem="rEg-Xf-Nnk" secondAttribute="width" id="x0F-qZ-kaj"/>
                                                 <constraint firstItem="QaY-Ue-Evq" firstAttribute="leading" secondItem="jcn-0H-ppg" secondAttribute="trailing" constant="8" id="x6k-hf-nYU"/>
@@ -1452,7 +1453,7 @@
         <image name="velocity" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="UFB-q5-l1b"/>
         <segue reference="tfi-SB-LwK"/>
+        <segue reference="LFA-WH-DrQ"/>
     </inferredMetricsTieBreakers>
 </document>

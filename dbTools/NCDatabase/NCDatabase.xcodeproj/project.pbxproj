@@ -361,7 +361,7 @@
 		12476C5019501A4D009E07C6 /* FetchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FetchResult.h; sourceTree = "<group>"; };
 		12476C5119501A4D009E07C6 /* Gang.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Gang.cpp; sourceTree = "<group>"; };
 		12476C5219501A4D009E07C6 /* Gang.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gang.h; sourceTree = "<group>"; };
-		12476C5319501A4D009E07C6 /* HeatSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeatSimulator.cpp; sourceTree = "<group>"; };
+		12476C5319501A4D009E07C6 /* HeatSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeatSimulator.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		12476C5419501A4D009E07C6 /* HeatSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeatSimulator.h; sourceTree = "<group>"; };
 		12476C5519501A4D009E07C6 /* Implant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Implant.cpp; sourceTree = "<group>"; };
 		12476C5619501A4D009E07C6 /* Implant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Implant.h; sourceTree = "<group>"; };

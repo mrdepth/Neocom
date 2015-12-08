@@ -234,7 +234,7 @@
 					falloff += module->getFalloff() * dps;
 				}
 			}
-			if (module->hasAttribute(eufe::WARP_SCRAMBLE_STRENGTH_ATTRIBUTE_ID)) {
+			if (module->hasAttribute(eufe::WARP_SCRAMBLE_STRENGTH_ATTRIBUTE_ID) || module->hasAttribute(eufe::WARP_SCRAMBLE_STRENGTH_HIDDEN_ATTRIBUTE_ID)) {
 				if (module->getMaxRange() > warpScrambleRange) {
 					warpScrambleRange = module->getMaxRange();
 					warpScramblerTypeID = module->getTypeID();
@@ -458,7 +458,7 @@
 			float targetVelocity = target->getVelocity();
 			
 			float attackerCapLastsTime = attacker->isCapStable() ? -1 : attacker->getCapLastsTime();
-			//float targetCapLastsTime = target->isCapStable() ? -1 : target->getCapLastsTime();
+			float attackerModulesLifeTime = simulator.attackerModulesLifeTime();
 
 			dispatch_async(dispatch_get_main_queue(), ^{
 				NSMutableAttributedString* report = [NSMutableAttributedString new];
@@ -467,6 +467,9 @@
 					[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Target will be destroyed in %@. ", nil), [NSString stringWithTimeLeft:timeToKill]] attributes:@{NSForegroundColorAttributeName:[UIColor greenColor]}]];
 					if (attackerCapLastsTime > 0 && attackerCapLastsTime < timeToKill)
 						[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Your capacitor will deplete in %@. ", nil), [NSString stringWithTimeLeft:attackerCapLastsTime]] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+					if (attackerModulesLifeTime > 0 && attackerModulesLifeTime < timeToKill) {
+						[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Your modules will be burned in %@. ", nil), [NSString stringWithTimeLeft:attackerModulesLifeTime]] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+					}
 				}
 				else if (std::isfinite(timeToDie) && timeToDie < timeToKill) {
 					[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"You will be destroyed in %@. ", nil), [NSString stringWithTimeLeft:timeToDie]] attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}]];

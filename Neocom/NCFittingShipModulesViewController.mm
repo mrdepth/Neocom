@@ -171,6 +171,69 @@
 		completionBlock();
 }
 
+- (IBAction)onState:(UIButton*) sender {
+	UITableViewCell* cell = (UITableViewCell*) sender.superview;
+	for(;cell && ![cell isKindOfClass:[UITableViewCell class]]; cell = (UITableViewCell*) cell.superview);
+	if (cell) {
+		NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
+		if (indexPath) {
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+			NCFittingShipModulesViewControllerSection* section = self.sections[indexPath.section];
+			NCFittingShipModulesViewControllerRow* row = section.rows[indexPath.row];
+			[self.controller.engine performBlockAndWait:^{
+				auto ship = self.controller.fit.pilot->getShip();
+				auto module = row.module;
+				
+				eufe::Module::State state = module->getState();
+				
+				if (state != eufe::Module::STATE_OFFLINE && module->canHaveState(eufe::Module::STATE_OFFLINE))
+					[controller addAction:[UIAlertAction actionWithTitle:ActionButtonOffline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+						[self.controller.engine performBlockAndWait:^{
+							module->setPreferredState(eufe::Module::STATE_OFFLINE);
+						}];
+						[self.controller reload];
+					}]];
+				if (state != eufe::Module::STATE_ONLINE && module->canHaveState(eufe::Module::STATE_ONLINE))
+					[controller addAction:[UIAlertAction actionWithTitle:state > eufe::Module::STATE_ONLINE ? ActionButtonDeactivate : ActionButtonOnline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+						[self.controller.engine performBlockAndWait:^{
+							module->setPreferredState(eufe::Module::STATE_ONLINE);
+						}];
+						[self.controller reload];
+					}]];
+				if (state != eufe::Module::STATE_ACTIVE && module->canHaveState(eufe::Module::STATE_ACTIVE))
+					[controller addAction:[UIAlertAction actionWithTitle:state < eufe::Module::STATE_ACTIVE ? ActionButtonActivate : ActionButtonOverheatOff style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+						[self.controller.engine performBlockAndWait:^{
+							module->setPreferredState(eufe::Module::STATE_ACTIVE);
+						}];
+						[self.controller reload];
+					}]];
+				if (state != eufe::Module::STATE_OVERLOADED && module->canHaveState(eufe::Module::STATE_OVERLOADED))
+					[controller addAction:[UIAlertAction actionWithTitle:ActionButtonOverheatOn style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+						[self.controller.engine performBlockAndWait:^{
+							module->setPreferredState(eufe::Module::STATE_OVERLOADED);
+						}];
+						[self.controller reload];
+					}]];
+			}];
+			
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+			
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+				controller.modalPresentationStyle = UIModalPresentationPopover;
+				[self presentViewController:controller animated:YES completion:nil];
+				UITableViewCell* sender = cell;
+				controller.popoverPresentationController.sourceView = sender;
+				controller.popoverPresentationController.sourceRect = [sender bounds];
+			}
+			else
+				[self presentViewController:controller animated:YES completion:nil];
+
+		}
+	}
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {

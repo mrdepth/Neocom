@@ -8,7 +8,7 @@
         <!--Navigation Controller-->
         <scene sceneID="qIL-of-0Bg">
             <objects>
-                <navigationController id="LJA-f2-dSg" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy1" id="LJA-f2-dSg" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="xd6-jw-GSx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -334,8 +334,8 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JiO-Ag-vF9">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="134"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FQ2-GM-674">
-                                                    <rect key="frame" x="471" y="103" width="56" height="29"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FQ2-GM-674">
+                                                    <rect key="frame" x="470" y="103" width="57" height="29"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <state key="normal" title="Upgrade">
@@ -346,8 +346,8 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                                         <action selector="onUpgrade:" destination="j7W-gB-kRW" eventType="touchUpInside" id="AxC-pj-oK6"/>
                                                     </connections>
                                                 </button>
-                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="FmH-lh-YgH">
-                                                    <rect key="frame" x="443" y="108" width="20" height="20"/>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="FmH-lh-YgH">
+                                                    <rect key="frame" x="442" y="108" width="20" height="20"/>
                                                     <animations/>
                                                 </activityIndicatorView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="uZn-Ac-Btu">
@@ -628,12 +628,47 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="TN3-Ne-HaO">
+                                        <rect key="frame" x="0.0" y="300" width="600" height="37"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TN3-Ne-HaO" id="G7W-VW-MA1">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uj4-db-Uoz">
+                                                    <rect key="frame" x="536" y="3" width="51" height="31"/>
+                                                    <animations/>
+                                                    <connections>
+                                                        <action selector="onChangeSaveChangesPrompt:" destination="k5g-0D-RW7" eventType="valueChanged" id="aFg-zq-xVK"/>
+                                                    </connections>
+                                                </switch>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Disable &quot;Save Changes&quot; prompt" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TaQ-Uk-gkl">
+                                                    <rect key="frame" x="15" y="0.0" width="506" height="36"/>
+                                                    <animations/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="uj4-db-Uoz" secondAttribute="centerY" id="43a-HG-i9a"/>
+                                                <constraint firstAttribute="trailing" secondItem="uj4-db-Uoz" secondAttribute="trailing" constant="15" id="DYe-8I-96T"/>
+                                                <constraint firstItem="TaQ-Uk-gkl" firstAttribute="top" secondItem="G7W-VW-MA1" secondAttribute="top" id="EUg-Ed-krQ"/>
+                                                <constraint firstItem="TaQ-Uk-gkl" firstAttribute="leading" secondItem="G7W-VW-MA1" secondAttribute="leading" constant="15" id="OHx-vY-YmE"/>
+                                                <constraint firstAttribute="bottom" secondItem="TaQ-Uk-gkl" secondAttribute="bottom" id="g0u-HM-t5l"/>
+                                                <constraint firstItem="uj4-db-Uoz" firstAttribute="leading" secondItem="TaQ-Uk-gkl" secondAttribute="trailing" constant="15" id="gHH-8q-Z3I"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <animations/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Skill Queue Notifications" id="6eK-tL-7nB">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="hOu-sP-bgj">
-                                        <rect key="frame" x="0.0" y="322" width="600" height="37"/>
+                                        <rect key="frame" x="0.0" y="359" width="600" height="37"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hOu-sP-bgj" id="sMs-c1-EZM">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
@@ -668,7 +703,7 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="A3z-5N-rTc">
-                                        <rect key="frame" x="0.0" y="359" width="600" height="37"/>
+                                        <rect key="frame" x="0.0" y="396" width="600" height="37"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="A3z-5N-rTc" id="H7r-gE-uOC">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
@@ -703,7 +738,7 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="2g7-Rm-qsV">
-                                        <rect key="frame" x="0.0" y="396" width="600" height="37"/>
+                                        <rect key="frame" x="0.0" y="433" width="600" height="37"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2g7-Rm-qsV" id="9PW-q9-gTF">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
@@ -738,7 +773,7 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="PW0-mx-yIE">
-                                        <rect key="frame" x="0.0" y="433" width="600" height="37"/>
+                                        <rect key="frame" x="0.0" y="470" width="600" height="37"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PW0-mx-yIE" id="9Du-eo-rMx">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
@@ -777,7 +812,7 @@ Anton Vorobyov aka Kadesh Priestess</string>
                             <tableViewSection headerTitle="Market Prices Monitor" id="CpN-mJ-kbR">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="dmY-Wc-sJ6">
-                                        <rect key="frame" x="0.0" y="492" width="600" height="37"/>
+                                        <rect key="frame" x="0.0" y="529" width="600" height="37"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dmY-Wc-sJ6" id="YND-bN-MBL">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
@@ -812,7 +847,7 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="iI8-cX-0Ft">
-                                        <rect key="frame" x="0.0" y="529" width="600" height="37"/>
+                                        <rect key="frame" x="0.0" y="566" width="600" height="37"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iI8-cX-0Ft" id="PG4-xn-4lJ">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
@@ -847,7 +882,7 @@ Anton Vorobyov aka Kadesh Priestess</string>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="3ZD-cr-yO2">
-                                        <rect key="frame" x="0.0" y="566" width="600" height="37"/>
+                                        <rect key="frame" x="0.0" y="603" width="600" height="37"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3ZD-cr-yO2" id="D0o-67-8zU">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
@@ -902,6 +937,7 @@ Anton Vorobyov aka Kadesh Priestess</string>
                         <outlet property="notification24HoursSwitch" destination="zLJ-e0-9CX" id="cKt-se-xBO"/>
                         <outlet property="notification4HoursSwitch" destination="COf-T2-gi3" id="f06-Qb-sgh"/>
                         <outlet property="plexSwitch" destination="AS8-00-Qf6" id="jW8-Mf-TxW"/>
+                        <outlet property="saveChangesPromptSwitch" destination="uj4-db-Uoz" id="511-zr-7j3"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4WR-W9-GLq" userLabel="First Responder" sceneMemberID="firstResponder"/>

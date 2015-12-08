@@ -62,10 +62,10 @@
     </entity>
     <entity name="EufeItem" representedClassName="NCDBEufeItem" syncable="YES">
         <relationship name="charge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItemCategory" inverseName="eufeItems" inverseEntity="EufeItemCategory" syncable="YES"/>
-        <relationship name="damage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItemDamage" inverseName="item" inverseEntity="EufeItemDamage" syncable="YES"/>
+        <relationship name="damage" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="EufeItemDamage" inverseName="item" inverseEntity="EufeItemDamage" syncable="YES"/>
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemGroup" inverseName="items" inverseEntity="EufeItemGroup" syncable="YES"/>
-        <relationship name="requirements" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItemRequirements" inverseName="item" inverseEntity="EufeItemRequirements" syncable="YES"/>
-        <relationship name="shipResources" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItemShipResources" inverseName="item" inverseEntity="EufeItemShipResources" syncable="YES"/>
+        <relationship name="requirements" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="EufeItemRequirements" inverseName="item" inverseEntity="EufeItemRequirements" syncable="YES"/>
+        <relationship name="shipResources" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="EufeItemShipResources" inverseName="item" inverseEntity="EufeItemShipResources" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="eufeItem" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="EufeItemCategory" representedClassName="NCDBEufeItemCategory" syncable="YES">
@@ -80,7 +80,7 @@
         <attribute name="explosiveAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="kineticAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="thermalAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="item" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="EufeItem" inverseName="damage" inverseEntity="EufeItem" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="damage" inverseEntity="EufeItem" syncable="YES"/>
     </entity>
     <entity name="EufeItemGroup" representedClassName="NCDBEufeItemGroup" syncable="YES">
         <attribute name="groupName" optional="YES" attributeType="String" syncable="YES"/>
@@ -103,7 +103,7 @@
         <attribute name="medSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="rigSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="turrets" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="item" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="EufeItem" inverseName="shipResources" inverseEntity="EufeItem" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="shipResources" inverseEntity="EufeItem" syncable="YES"/>
     </entity>
     <entity name="EveIcon" representedClassName="NCDBEveIcon" syncable="YES">
         <attribute name="iconFile" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
@@ -398,9 +398,10 @@
         <element name="EufeHullType" positionX="-189" positionY="180" width="128" height="90"/>
         <element name="EufeItem" positionX="-171" positionY="198" width="128" height="135"/>
         <element name="EufeItemCategory" positionX="-189" positionY="180" width="128" height="120"/>
-        <element name="EufeItemDamage" positionX="-180" positionY="189" width="128" height="30"/>
+        <element name="EufeItemDamage" positionX="-180" positionY="189" width="128" height="120"/>
         <element name="EufeItemGroup" positionX="-180" positionY="189" width="128" height="133"/>
         <element name="EufeItemRequirements" positionX="-189" positionY="180" width="128" height="30"/>
+        <element name="EufeItemShipResources" positionX="-189" positionY="180" width="128" height="150"/>
         <element name="EveIcon" positionX="18" positionY="63" width="128" height="238"/>
         <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="73"/>
         <element name="EveUnit" positionX="0" positionY="153" width="128" height="88"/>
@@ -430,6 +431,5 @@
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
         <element name="Version" positionX="-153" positionY="216" width="128" height="90"/>
         <element name="WhType" positionX="-189" positionY="180" width="128" height="150"/>
-        <element name="EufeItemShipResources" positionX="-189" positionY="180" width="128" height="150"/>
     </elements>
 </model>

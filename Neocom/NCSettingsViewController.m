@@ -46,6 +46,7 @@
 	self.mineralsSwitch.on = (marketPricesMonitor & NCMarketPricesMonitorMinerals) == NCMarketPricesMonitorMinerals;
 	self.iCloudSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey];
 	self.loadImplantsSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsLoadCharacterImplantsKey];
+	self.saveChangesPromptSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDisableSaveChangesPromptKey];
 
 	NCDBVersion* version = [self.databaseManagedObjectContext version];
 	self.databaseCell.textLabel.text = [NSString stringWithFormat:@"%@ %@", version.expansion, version.version];
@@ -106,6 +107,10 @@
 
 - (IBAction)onChangeLoadImplants:(id)sender {
 	[[NSUserDefaults standardUserDefaults] setBool:[sender isOn] forKey:NCSettingsLoadCharacterImplantsKey];
+}
+
+- (IBAction)onChangeSaveChangesPrompt:(id)sender {
+	[[NSUserDefaults standardUserDefaults] setBool:[sender isOn] forKey:NCSettingsDisableSaveChangesPromptKey];
 }
 
 #pragma mark - Table view delegate

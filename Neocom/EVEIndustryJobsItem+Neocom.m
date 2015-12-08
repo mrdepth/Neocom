@@ -21,9 +21,9 @@
 	return objc_getAssociatedObject(self, @"outputLocation");
 }
 
-- (NSString*) installerName {
+/*- (NSString*) installerName {
 	return objc_getAssociatedObject(self, @"installerName");
-}
+}*/
 
 /*- (NCDBRamActivity*) activity {
 	return objc_getAssociatedObject(self, @"activity");
@@ -45,9 +45,9 @@
 	return objc_setAssociatedObject(self, @"outputLocation", outputLocation, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void) setInstallerName:(NSString *)installerName {
+/*- (void) setInstallerName:(NSString *)installerName {
 	return objc_setAssociatedObject(self, @"installerName", installerName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
+}*/
 
 /*- (void) setActivity:(NCDBRamActivity *)activity {
 	return objc_setAssociatedObject(self, @"activity", activity, OBJC_ASSOCIATION_RETAIN_NONATOMIC);

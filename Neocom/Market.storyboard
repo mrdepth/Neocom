@@ -10,7 +10,7 @@
         <!--Navigation Controller-->
         <scene sceneID="4ux-0q-NSk">
             <objects>
-                <navigationController id="Bmt-QR-Hfc" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy4" id="Bmt-QR-Hfc" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="qex-D5-fFx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -86,7 +86,7 @@
                     <connections>
                         <outlet property="balanceLabel" destination="0gH-Sb-Mq9" id="15K-ox-FCE"/>
                         <outlet property="searchDisplayController" destination="u7V-24-vab" id="yuo-F3-bre"/>
-                        <segue destination="TvR-8U-ty6" kind="push" identifier="NCAssetsContainerViewController" id="Fen-pK-A2o"/>
+                        <segue destination="TvR-8U-ty6" kind="show" identifier="NCAssetsContainerViewController" id="Fen-pK-A2o"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XTb-9E-zeL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -175,15 +175,15 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" misplaced="YES" text="Price: price" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PX6-4U-YCD">
-                                                    <rect key="frame" x="15" y="64" width="64" height="15"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="Price: price" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PX6-4U-YCD">
+                                                    <rect key="frame" x="15" y="64" width="65" height="15"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" misplaced="YES" text="Qty: qty" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="DsI-kX-gps">
-                                                    <rect key="frame" x="87" y="64" width="498" height="15"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="Qty: qty" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="DsI-kX-gps">
+                                                    <rect key="frame" x="88" y="64" width="497" height="15"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
@@ -598,15 +598,15 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" misplaced="YES" text="Price: price" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cRn-9Z-bXb">
-                                                    <rect key="frame" x="15" y="64" width="64" height="15"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="Price: price" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cRn-9Z-bXb">
+                                                    <rect key="frame" x="15" y="64" width="65" height="15"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" misplaced="YES" text="Qty: qty" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ReP-hb-7LE">
-                                                    <rect key="frame" x="87" y="64" width="498" height="15"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="Qty: qty" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ReP-hb-7LE">
+                                                    <rect key="frame" x="88" y="64" width="497" height="15"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
@@ -1508,7 +1508,7 @@
         <!--Navigation Controller-->
         <scene sceneID="1DU-WC-hgp">
             <objects>
-                <navigationController id="quv-Gz-Epb" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy5" id="quv-Gz-Epb" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="sYb-Oa-BtX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1526,7 +1526,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Eyl-Bp-XQ6">
             <objects>
-                <navigationController id="p1X-N3-QJY" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy6" id="p1X-N3-QJY" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="xeV-nc-fVm">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1544,7 +1544,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Cb3-cR-c8a">
             <objects>
-                <navigationController id="Hij-io-BZk" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy7" id="Hij-io-BZk" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="FwR-qd-62R">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1562,7 +1562,7 @@
         <!--Navigation Controller-->
         <scene sceneID="wpB-zV-LfP">
             <objects>
-                <navigationController id="hM5-CD-JKx" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy8" id="hM5-CD-JKx" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="uJu-lg-V7a">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1580,7 +1580,7 @@
         <!--Navigation Controller-->
         <scene sceneID="5tY-60-byE">
             <objects>
-                <navigationController id="GSg-8A-ylt" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy1" id="GSg-8A-ylt" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="FSJ-vR-85s">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1598,7 +1598,7 @@
         <!--Navigation Controller-->
         <scene sceneID="8Ht-ig-WZ4">
             <objects>
-                <navigationController id="rxS-EI-5WN" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy2" id="rxS-EI-5WN" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bGQ-SW-ngr">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1616,7 +1616,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ROw-Zg-alq">
             <objects>
-                <navigationController id="AMV-fU-DzJ" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy3" id="AMV-fU-DzJ" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="2ei-f7-vHN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

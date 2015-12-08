@@ -9,7 +9,7 @@
         <!--Navigation Controller-->
         <scene sceneID="7Pd-2w-SHX">
             <objects>
-                <navigationController id="RhT-3k-jgV" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy1" id="RhT-3k-jgV" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Dj2-GE-2vD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -383,7 +383,7 @@
         <!--Navigation Controller-->
         <scene sceneID="KeS-sW-5d7">
             <objects>
-                <navigationController id="iIl-NO-6Qw" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy2" id="iIl-NO-6Qw" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="wQB-Ob-TEc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

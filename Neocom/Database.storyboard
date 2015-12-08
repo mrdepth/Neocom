@@ -9,7 +9,7 @@
         <!--Navigation Controller-->
         <scene sceneID="WUY-yy-S2k">
             <objects>
-                <navigationController id="Ebv-hK-Jb2" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy1" id="Ebv-hK-Jb2" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="hJF-Eo-Kx7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -434,8 +434,8 @@
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yRu-6v-3hr">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="51"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" misplaced="YES" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ipV-W6-Vem">
-                                                    <rect key="frame" x="15" y="2" width="482" height="17"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ipV-W6-Vem">
+                                                    <rect key="frame" x="15" y="2" width="480" height="17"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -455,8 +455,8 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Reported" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ekU-dw-Sqg">
-                                                    <rect key="frame" x="533" y="4" width="52" height="15"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reported" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ekU-dw-Sqg">
+                                                    <rect key="frame" x="532" y="4" width="53" height="15"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
@@ -469,8 +469,8 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Qty" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QHt-kE-cLL">
-                                                    <rect key="frame" x="505" y="4" width="20" height="15"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Qty" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QHt-kE-cLL">
+                                                    <rect key="frame" x="503" y="4" width="21" height="15"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1620,7 +1620,7 @@
         <!--Navigation Controller-->
         <scene sceneID="IqI-n2-22u">
             <objects>
-                <navigationController id="GFL-EY-bey" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy2" id="GFL-EY-bey" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="cug-xS-cpk">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1638,7 +1638,7 @@
         <!--Navigation Controller-->
         <scene sceneID="lGR-hj-v0f">
             <objects>
-                <navigationController id="vKl-xa-k2p" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy3" id="vKl-xa-k2p" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="OzR-m4-NYq">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1656,7 +1656,7 @@
         <!--Navigation Controller-->
         <scene sceneID="sZU-zx-lhv">
             <objects>
-                <navigationController id="YL0-NH-qsF" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy4" id="YL0-NH-qsF" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="y4P-R7-KX5">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1674,7 +1674,7 @@
         <!--Navigation Controller-->
         <scene sceneID="UvE-M2-c08">
             <objects>
-                <navigationController id="2sq-th-Evs" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy5" id="2sq-th-Evs" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="1NY-f7-O8C">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1703,13 +1703,13 @@
         <image name="turrets" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="IAS-t0-x0K"/>
-        <segue reference="ns8-Ad-PQ7"/>
-        <segue reference="Dmu-aR-swE"/>
-        <segue reference="qyD-gc-O13"/>
+        <segue reference="itz-y8-GPm"/>
         <segue reference="LHH-Wy-jrm"/>
-        <segue reference="edv-w8-2To"/>
+        <segue reference="2ra-Cc-zkj"/>
+        <segue reference="ns8-Ad-PQ7"/>
+        <segue reference="IAS-t0-x0K"/>
         <segue reference="PD6-VV-6gd"/>
+        <segue reference="qyD-gc-O13"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

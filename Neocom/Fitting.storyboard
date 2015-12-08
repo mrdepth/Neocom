@@ -8,7 +8,7 @@
         <!--Navigation Controller-->
         <scene sceneID="cKh-Vq-0Hd">
             <objects>
-                <navigationController id="dp8-oy-sSo" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy1" id="dp8-oy-sSo" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="fdg-Gy-grh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -758,7 +758,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ykP-Yv-llD">
             <objects>
-                <navigationController id="yow-eC-gzv" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Dummy2" id="yow-eC-gzv" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="csp-I4-ZGR">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1337,11 +1337,11 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K6o-3f-5ve">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="36"/>
+                                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K6o-3f-5ve">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Login with EVE Onlie" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Of-Ux-4pm">
-                                                    <rect key="frame" x="55" y="4" width="497" height="28"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login with EVE Onlie" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Of-Ux-4pm">
+                                                    <rect key="frame" x="55" y="4" width="530" height="28"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

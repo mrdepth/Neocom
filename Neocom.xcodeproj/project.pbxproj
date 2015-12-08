@@ -426,6 +426,7 @@
 		12DDFBC91C158A6A005F1382 /* NCEufeItemShipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFBC81C158A6A005F1382 /* NCEufeItemShipCell.m */; };
 		12DDFBCC1C158A8A005F1382 /* NCEufeItemModuleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFBCB1C158A8A005F1382 /* NCEufeItemModuleCell.m */; };
 		12DDFBCF1C158A99005F1382 /* NCEufeItemChargeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFBCE1C158A99005F1382 /* NCEufeItemChargeCell.m */; };
+		12DDFBDC1C16D3C5005F1382 /* NCFittingTargetFitPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFBDB1C16D3C5005F1382 /* NCFittingTargetFitPickerViewController.m */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		12E86940195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
 		12E86941195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
@@ -1250,6 +1251,8 @@
 		12DDFBCB1C158A8A005F1382 /* NCEufeItemModuleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCEufeItemModuleCell.m; sourceTree = "<group>"; };
 		12DDFBCD1C158A99005F1382 /* NCEufeItemChargeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCEufeItemChargeCell.h; sourceTree = "<group>"; };
 		12DDFBCE1C158A99005F1382 /* NCEufeItemChargeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCEufeItemChargeCell.m; sourceTree = "<group>"; };
+		12DDFBDA1C16D3C5005F1382 /* NCFittingTargetFitPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingTargetFitPickerViewController.h; sourceTree = "<group>"; };
+		12DDFBDB1C16D3C5005F1382 /* NCFittingTargetFitPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingTargetFitPickerViewController.m; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
 		12E7D95C1BA3151700621B6F /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
@@ -2281,6 +2284,7 @@
 		126829241C05F98000954ECF /* NCFittingShipOffenseStatsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				12B0A0521C0C486D00194715 /* NCFittingHullTypePickerViewController */,
 				1268292A1C05F9E300954ECF /* NCFittingShipOffenseStatsViewController.h */,
 				1268292B1C05F9E300954ECF /* NCFittingShipOffenseStatsViewController.mm */,
 			);
@@ -3418,6 +3422,15 @@
 			path = admob;
 			sourceTree = "<group>";
 		};
+		12DDFBD41C16D3A1005F1382 /* NCFittingTargetFitPickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12DDFBDA1C16D3C5005F1382 /* NCFittingTargetFitPickerViewController.h */,
+				12DDFBDB1C16D3C5005F1382 /* NCFittingTargetFitPickerViewController.m */,
+			);
+			name = NCFittingTargetFitPickerViewController;
+			sourceTree = "<group>";
+		};
 		12E5437B18880ABA00DDFE7F /* NCDatabaseTypeVariationsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3457,6 +3470,7 @@
 		12F241001C0DFC11002BA0C2 /* NCFittingShipCombatSimulatorViewController */ = {
 			isa = PBXGroup;
 			children = (
+				12DDFBD41C16D3A1005F1382 /* NCFittingTargetFitPickerViewController */,
 				12B0A3041C0EDC6000194715 /* NCFittingShipCombatSimulatorViewController.h */,
 				12B0A3051C0EDC6000194715 /* NCFittingShipCombatSimulatorViewController.mm */,
 			);
@@ -3767,7 +3781,6 @@
 				84FFB56818ABD2ED00A30772 /* NCFittingAPI */,
 				12B9509E1ADB8D6B009E31DB /* NCFittingExportViewController */,
 				126829241C05F98000954ECF /* NCFittingShipOffenseStatsViewController */,
-				12B0A0521C0C486D00194715 /* NCFittingHullTypePickerViewController */,
 				12F241001C0DFC11002BA0C2 /* NCFittingShipCombatSimulatorViewController */,
 				127A1AB41BAC32ED0066A5EE /* NCFittingEngine.h */,
 				127A1AB51BAC32ED0066A5EE /* NCFittingEngine.mm */,
@@ -4160,6 +4173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12DDFBDC1C16D3C5005F1382 /* NCFittingTargetFitPickerViewController.m in Sources */,
 				12654C481C0B24920060106C /* NCDBInvTypeRequiredSkill.m in Sources */,
 				129D261F187E923300E2062C /* NSURL+MD5.m in Sources */,
 				12CDB7F2188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m in Sources */,

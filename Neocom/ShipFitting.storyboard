@@ -504,6 +504,7 @@
                         <segue destination="wij-pU-1zu" kind="custom" identifier="NCFittingCRESTFitExportViewController" customClass="NCAdaptivePopoverSegue" id="ifi-q3-k9h"/>
                         <segue destination="tTn-zv-3Vd" kind="custom" identifier="NCFittingShipOffenseStatsViewController" customClass="NCAdaptiveModalSegue" id="fg6-qt-mUw"/>
                         <segue destination="fpp-Gq-4lP" kind="custom" identifier="NCFittingShipCombatSimulatorViewController" customClass="NCAdaptiveModalSegue" id="JR0-Me-7od"/>
+                        <segue destination="fe7-gX-lqO" kind="custom" identifier="NCFittingTargetFitPickerViewController" customClass="NCAdaptivePopoverSegue" id="kFz-A6-Usf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DPd-Nb-aoG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -789,7 +790,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iuh-iX-Pej" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="4Qq-Pd-S8A" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1792.5" y="-2421.1267605633802"/>
+            <point key="canvasLocation" x="-2079" y="-2526"/>
         </scene>
         <!--Area Effects-->
         <scene sceneID="mrV-NP-AyF">
@@ -4572,6 +4573,98 @@ IAogA
                 <tapGestureRecognizer id="rwy-vD-yor"/>
             </objects>
             <point key="canvasLocation" x="-5514" y="-1498"/>
+        </scene>
+        <!--Select Fit-->
+        <scene sceneID="TVV-hb-XSm">
+            <objects>
+                <tableViewController id="fe7-gX-lqO" customClass="NCFittingTargetFitPickerViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="f7g-PM-aXF" customClass="CollapsableTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="IXB-jd-yxW" customClass="NCDefaultTableViewCell">
+                                <rect key="frame" x="0.0" y="22" width="600" height="37"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IXB-jd-yxW" id="voc-XK-AtU">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem0Cell" id="y6G-ZF-mtQ" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="59" width="600" height="37"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="y6G-ZF-mtQ" id="3RD-Ok-O5C">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vzu-bT-tIH">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fitting" translatesAutoresizingMaskIntoConstraints="NO" id="Z25-68-oK1">
+                                                    <rect key="frame" x="15" y="2" width="32" height="32"/>
+                                                    <animations/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="32" id="KqY-3u-cDz"/>
+                                                        <constraint firstAttribute="height" priority="900" constant="32" id="NcN-lj-Aa6"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Ship Fit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0SN-2q-BLd">
+                                                    <rect key="frame" x="55" y="2" width="530" height="32"/>
+                                                    <animations/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <animations/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="Z25-68-oK1" firstAttribute="leading" secondItem="vzu-bT-tIH" secondAttribute="leading" constant="15" id="402-pi-XZf"/>
+                                                <constraint firstItem="0SN-2q-BLd" firstAttribute="leading" secondItem="Z25-68-oK1" secondAttribute="trailing" constant="8" id="6sZ-cu-155"/>
+                                                <constraint firstItem="0SN-2q-BLd" firstAttribute="top" secondItem="vzu-bT-tIH" secondAttribute="top" constant="2" id="8Of-Gx-LIb"/>
+                                                <constraint firstAttribute="bottom" secondItem="Z25-68-oK1" secondAttribute="bottom" constant="2" id="EGQ-9A-45d"/>
+                                                <constraint firstAttribute="bottom" secondItem="0SN-2q-BLd" secondAttribute="bottom" constant="2" id="PbT-Ao-OKJ"/>
+                                                <constraint firstAttribute="trailing" secondItem="0SN-2q-BLd" secondAttribute="trailing" constant="15" id="dEV-z9-Yam"/>
+                                                <constraint firstItem="Z25-68-oK1" firstAttribute="top" secondItem="vzu-bT-tIH" secondAttribute="top" constant="2" id="f3a-pc-MjW"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstItem="vzu-bT-tIH" firstAttribute="top" secondItem="3RD-Ok-O5C" secondAttribute="top" id="3xR-2y-8xy"/>
+                                        <constraint firstAttribute="bottom" secondItem="vzu-bT-tIH" secondAttribute="bottom" priority="250" id="Ug9-QX-tqc"/>
+                                        <constraint firstAttribute="trailing" secondItem="vzu-bT-tIH" secondAttribute="trailing" id="XZG-kJ-mT5"/>
+                                        <constraint firstItem="vzu-bT-tIH" firstAttribute="leading" secondItem="3RD-Ok-O5C" secondAttribute="leading" id="ipi-DW-gx1"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="layoutContentView" destination="vzu-bT-tIH" id="UDF-77-Z5t"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="fe7-gX-lqO" id="Gc6-F5-7Zy"/>
+                            <outlet property="delegate" destination="fe7-gX-lqO" id="8x3-2a-Q1v"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Select Fit" id="5de-uB-ccl">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Y5j-hv-vBe"/>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="a8i-eS-wge" kind="unwind" identifier="Unwind" unwindAction="unwindFromTargetFitPicker:" id="aAo-Dp-JBJ"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fCt-zt-lvM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="a8i-eS-wge" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-1446" y="-2526"/>
         </scene>
     </scenes>
     <resources>

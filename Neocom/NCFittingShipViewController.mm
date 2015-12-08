@@ -268,24 +268,26 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-
-		NSArray* items = sender[@"object"];
-		auto item = [(NCFittingEngineItemPointer*) items[0] item];
-		controller.items = items;
 		
-		auto module = std::dynamic_pointer_cast<eufe::Module>(item);
-		auto drone = std::dynamic_pointer_cast<eufe::Drone>(item);
-		
-		std::shared_ptr<eufe::Ship> target = nullptr;
-		if (module)
-			target = module->getTarget();
-		else if (drone)
-			target = drone->getTarget();
-		if (target) {
-			for (NCShipFit* fit in self.fits) {
-				if (fit.pilot->getShip() == target) {
-					controller.selectedTarget = fit;
-					break;
+		if ([sender isKindOfClass:[NSDictionary class]]) {
+			NSArray* items = sender[@"object"];
+			auto item = [(NCFittingEngineItemPointer*) items[0] item];
+			controller.items = items;
+			
+			auto module = std::dynamic_pointer_cast<eufe::Module>(item);
+			auto drone = std::dynamic_pointer_cast<eufe::Drone>(item);
+			
+			std::shared_ptr<eufe::Ship> target = nullptr;
+			if (module)
+				target = module->getTarget();
+			else if (drone)
+				target = drone->getTarget();
+			if (target) {
+				for (NCShipFit* fit in self.fits) {
+					if (fit.pilot->getShip() == target) {
+						controller.selectedTarget = fit;
+						break;
+					}
 				}
 			}
 		}
@@ -442,11 +444,15 @@
 		else
 			controller = segue.destinationViewController;
 		controller.attacker = self.fit;
-		for (NCShipFit* fit in self.fits)
-			if (fit != self.fit) {
-				controller.target = fit;
-				break;
-			}
+		if ([sender isKindOfClass:[NCShipFit class]])
+			controller.target = sender;
+		else {
+			for (NCShipFit* fit in self.fits)
+				if (fit != self.fit) {
+					controller.target = fit;
+					break;
+				}
+		}
 	}
 }
 
@@ -554,11 +560,14 @@
 			[self performSegueWithIdentifier:@"NCFittingShipOffenseStatsViewController" sender:nil];
 		}]];
 		
-		if (self.fits.count == 2) {
-			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonCombatSimulator style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonCombatSimulator style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			if (self.fits.count == 2)
 				[self performSegueWithIdentifier:@"NCFittingShipCombatSimulatorViewController" sender:nil];
-			}]];
-		}
+			else if (self.fits.count == 1)
+				[self performSegueWithIdentifier:@"NCFittingTargetFitPickerViewController" sender:nil];
+			else if (self.fits.count > 2)
+				[self performSegueWithIdentifier:@"NCFittingTargetsViewController" sender:nil];
+		}]];
 
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetName style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 			UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Rename", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -863,21 +872,44 @@
 	}];
 }
 
+- (IBAction) unwindFromTargetFitPicker:(UIStoryboardSegue*) segue {
+	NCFittingFitPickerViewController* sourceViewController = segue.sourceViewController;
+	NCShipFit* fit = sourceViewController.selectedFit;
+	if (!fit)
+		return;
+	[self.engine performBlock:^{
+		[self.engine loadShipFit:fit];
+		NSArray* fits = [self.fits arrayByAddingObject:fit];
+		[fit setCharacter:self.defaultCharacter withCompletionBlock:^{
+			self.fits = fits;
+			[self reload];
+			[self performSegueWithIdentifier:@"NCFittingShipCombatSimulatorViewController" sender:nil];
+		}];
+	}];
+}
+
 - (IBAction) unwindFromTargets:(UIStoryboardSegue*) segue {
 	NCFittingTargetsViewController* sourceViewController = segue.sourceViewController;
-	auto target = sourceViewController.selectedTarget ? sourceViewController.selectedTarget.pilot->getShip() : nullptr;
-	[self.engine performBlockAndWait:^{
-		for (NCFittingEngineItemPointer* pointer in sourceViewController.items) {
-			std::shared_ptr<eufe::Module> module = std::dynamic_pointer_cast<eufe::Module>(pointer.item);
-			std::shared_ptr<eufe::Drone> drone = std::dynamic_pointer_cast<eufe::Drone>(pointer.item);
-			
-			if (module)
-				module->setTarget(target);
-			else if (drone)
-				drone->setTarget(target);
-		}
-	}];
-	[self reload];
+	if (sourceViewController.items) {
+		auto target = sourceViewController.selectedTarget ? sourceViewController.selectedTarget.pilot->getShip() : nullptr;
+		[self.engine performBlockAndWait:^{
+			for (NCFittingEngineItemPointer* pointer in sourceViewController.items) {
+				std::shared_ptr<eufe::Module> module = std::dynamic_pointer_cast<eufe::Module>(pointer.item);
+				std::shared_ptr<eufe::Drone> drone = std::dynamic_pointer_cast<eufe::Drone>(pointer.item);
+				
+				if (module)
+					module->setTarget(target);
+				else if (drone)
+					drone->setTarget(target);
+			}
+		}];
+		[self reload];
+	}
+	else if (sourceViewController.selectedTarget) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self performSegueWithIdentifier:@"NCFittingShipCombatSimulatorViewController" sender:sourceViewController.selectedTarget];
+		});
+	}
 }
 
 - (IBAction) unwindFromDamagePatterns:(UIStoryboardSegue*) segue {

@@ -68,6 +68,7 @@
 	self.axisLayer.fillColor = [[UIColor clearColor] CGColor];
 	self.axisLayer.delegate = self;
 	self.axisLayer.needsDisplayOnBoundsChange = YES;
+	self.axisLayer.zPosition = 10;
 
 	self.dpsLayer = [CAShapeLayer layer];
 	self.dpsLayer.strokeColor = [[UIColor orangeColor] CGColor];

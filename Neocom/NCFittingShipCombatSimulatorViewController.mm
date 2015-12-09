@@ -18,6 +18,11 @@
 #import "NCDatabase.h"
 #import "NSManagedObjectContext+NCDatabase.h"
 
+typedef NS_ENUM(NSInteger, NCManeuver) {
+	NCManeuverOrbit,
+	NCManeuverKeepAtRange
+};
+
 @interface NCFittingShipCombatSimulatorViewController()
 @property (nonatomic, strong) NSLayoutConstraint* markerConstraint;
 @property (nonatomic, strong) CAShapeLayer* axisLayer;
@@ -37,6 +42,8 @@
 @property (nonatomic, assign) BOOL updatingState;
 @property (nonatomic, assign) BOOL needsUpdateReport;
 @property (nonatomic, assign) BOOL updatingReport;
+@property (nonatomic, assign) NCManeuver maneuver;
+
 - (void) reload;
 - (void) updateState;
 - (void) updateReport;
@@ -49,6 +56,11 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
+	id maneuver = self.attacker.engine.userInfo[@"maneuver"];
+	if (maneuver)
+		self.maneuver = (NCManeuver) [maneuver integerValue];
+	else
+		self.maneuver = NCManeuverOrbit;
 	
 	self.dpsNumberFormatter = [[NSNumberFormatter alloc] init];
 	[self.dpsNumberFormatter setPositiveFormat:@"#,##0.0"];
@@ -60,6 +72,7 @@
 	self.axisLayer.fillColor = [[UIColor clearColor] CGColor];
 	self.axisLayer.delegate = self;
 	self.axisLayer.needsDisplayOnBoundsChange = YES;
+	self.axisLayer.zPosition = 10;
 	
 	self.outgoingDpsLayer = [CAShapeLayer layer];
 	self.outgoingDpsLayer.strokeColor = [[UIColor orangeColor] CGColor];
@@ -194,6 +207,36 @@
 	[self reload];
 }
 
+- (IBAction)onManeuver:(UITapGestureRecognizer*) recognizer {
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Orbit", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.maneuver = NCManeuverOrbit;
+		self.attacker.engine.userInfo[@"maneuver"] = @(NCManeuverOrbit);
+		_markerPosition = -1;
+		[self setNeedsUpdateState];
+	}]];
+
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Keep at Range", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.maneuver = NCManeuverKeepAtRange;
+		self.attacker.engine.userInfo[@"maneuver"] = @(NCManeuverKeepAtRange);
+		_markerPosition = -1;
+		[self setNeedsUpdateState];
+	}]];
+
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		controller.modalPresentationStyle = UIModalPresentationPopover;
+		[self presentViewController:controller animated:YES completion:nil];
+		controller.popoverPresentationController.sourceView = recognizer.view;
+		controller.popoverPresentationController.sourceRect = [recognizer.view bounds];
+	}
+	else
+		[self presentViewController:controller animated:YES completion:nil];
+
+}
+
 #pragma mark - Private
 
 - (void) setMarkerPosition:(float)markerPosition {
@@ -290,7 +333,7 @@
 	self.velocitySlider.value = maxVelocity;
 	self.maxVelocityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ m/s", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:maxVelocity]];
 	
-	self.markerPosition = -1;
+	_markerPosition = -1;
 	[self onChangeVelocity:self.velocitySlider];
 	
 	if (self.markerConstraint)
@@ -371,7 +414,9 @@
 		
 		float velocity = self.velocitySlider.value;
 		BOOL tracking = self.velocitySlider.tracking;
-		
+		NCManeuver maneuver = self.maneuver;
+		__block BOOL unstable = YES;
+		[self.activityIndicator startAnimating];
 		[self.attacker.engine performBlock:^{
 			CGPoint maxDPS = CGPointZero;
 
@@ -391,23 +436,38 @@
 			attackerOptimalDPS = std::max(attackerOptimalDPS, targetOptimalDPS);
 			targetOptimalDPS = std::max(attackerOptimalDPS, targetOptimalDPS);
 			
-			eufe::CombatSimulator::State state(0, velocity, target->getVelocity());
+			eufe::CombatSimulator::OrbitState orbitState(attacker, target, 0, velocity);
+			eufe::CombatSimulator::KeepAtRangeState keepAtRangeState(attacker, target, 0);
 			
 			
 			for (int i = 0; i < n; i++) {
-				state.attackerPosition = eufe::Point(x, 0);
-				simulator.setState(state);
+				BOOL b;
+				if (maneuver == NCManeuverOrbit) {
+					orbitState.setOrbitRadius(x);
+					simulator.setState(orbitState);
+					b = orbitState.targetVelocity() >= orbitState.attackerVelocity();
+				}
+				else {
+					keepAtRangeState.setRange(x);
+					simulator.setState(keepAtRangeState);
+					b = keepAtRangeState.targetVelocity() >= keepAtRangeState.attackerVelocity();
+				}
 				
 				outgoingDpsPoints[i] = CGPointMake(x / axisRange, attackerOptimalDPS > 0 ? (static_cast<float>(simulator.outgoingDps())) / attackerOptimalDPS : 0);
 				incomingDpsPoints[i] = CGPointMake(x / axisRange, targetOptimalDPS > 0 ? (static_cast<float>(simulator.incomingDps())) / targetOptimalDPS : 0);
 				
-				if (outgoingDpsPoints[i].y >= maxDPS.y)
+				BOOL g = outgoingDpsPoints[i].y >= maxDPS.y;
+				if ((unstable && !b) || (!b && g) || (unstable && b && g)) {
+					if (!b)
+						unstable = NO;
 					maxDPS = outgoingDpsPoints[i];
+				}
 				
 				x += dx;
 			}
 			
 			dispatch_async(dispatch_get_main_queue(), ^{
+				[self.activityIndicator stopAnimating];
 				self.outgoingDpsPoints = [NSData dataWithBytesNoCopy:outgoingDpsPoints length:sizeof(CGPoint) * n freeWhenDone:YES];
 				self.incomingDpsPoints = [NSData dataWithBytesNoCopy:incomingDpsPoints length:sizeof(CGPoint) * n freeWhenDone:YES];
 				
@@ -435,18 +495,31 @@
 		self.updatingReport = YES;
 		
 		float velocity = self.velocitySlider.value;
-		
+		NCManeuver maneuver = self.maneuver;
+
 		[self.attacker.engine performBlock:^{
 			auto attacker = self.attacker.pilot->getShip();
 			auto target = self.target.pilot->getShip();
 			
 			eufe::CombatSimulator simulator(attacker, target);
 			float axisRange = std::max(self.warpScrambleRange, self.fullRange);
-			float orbit = std::max(axisRange * self.markerPosition, 0.0f);
+			float range = std::max(axisRange * self.markerPosition, 0.0f);
 
-			eufe::CombatSimulator::State state(orbit, velocity, target->getVelocity());
+			float attackerVelocity = 0;
+			float targetVelocity = 0;
 			
-			simulator.setState(state);
+			if (maneuver == NCManeuverOrbit) {
+				eufe::CombatSimulator::OrbitState orbitState(attacker, target, range, velocity);
+				simulator.setState(orbitState);
+				attackerVelocity = orbitState.attackerVelocity();
+				targetVelocity = orbitState.targetVelocity();
+			}
+			else {
+				eufe::CombatSimulator::KeepAtRangeState keepAtRangeState(attacker, target, range);
+				simulator.setState(keepAtRangeState);
+				attackerVelocity = keepAtRangeState.attackerVelocity();
+				targetVelocity = keepAtRangeState.targetVelocity();
+			}
 			
 			float outgoingDps = simulator.outgoingDps();
 			float incomingDps = simulator.incomingDps();
@@ -454,8 +527,6 @@
 			float timeToKill = simulator.timeToKill();
 			float timeToDie = simulator.timeToDie();
 			
-			float attackerVelocity = std::min(attacker->getMaxVelocityInOrbit(state.range()), velocity);
-			float targetVelocity = target->getVelocity();
 			
 			float attackerCapLastsTime = attacker->isCapStable() ? -1 : attacker->getCapLastsTime();
 			float attackerModulesLifeTime = simulator.attackerModulesLifeTime();
@@ -478,11 +549,14 @@
 					[report appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Your DPS is not sufficient to defeat the target. ", nil) attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
 				}
 				if (attackerVelocity < targetVelocity) {
-					[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Your speed is not sufficient to sustain orbit of the target (%@ < %@ m/s). ", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:attackerVelocity], [NSNumberFormatter neocomLocalizedStringFromInteger:targetVelocity]] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+					if (maneuver == NCManeuverOrbit)
+						[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Your speed is not sufficient to sustain orbit of the target (%@ < %@ m/s). ", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:attackerVelocity], [NSNumberFormatter neocomLocalizedStringFromInteger:targetVelocity]] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+					else
+						[report appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Your speed is not sufficient to sustain range to the target (%@ < %@ m/s). ", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:attackerVelocity], [NSNumberFormatter neocomLocalizedStringFromInteger:targetVelocity]] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
 				}
 				self.reportLabel.attributedText = report;
 				
-				self.orbitLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:orbit]];
+				self.orbitLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:range]];
 				self.velocityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ m/s", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:self.velocitySlider.value]];
 				
 				self.outgoingDpsLabel.text = [self.dpsNumberFormatter stringFromNumber:@(outgoingDps)];
@@ -511,6 +585,26 @@
 		return;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateReport) object:nil];
 	[self performSelector:@selector(updateReport) withObject:nil afterDelay:0];
+}
+
+- (void) setManeuver:(NCManeuver)maneuver {
+	_maneuver = maneuver;
+	if (maneuver == NCManeuverOrbit) {
+		self.maneuverLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Orbit", nil) attributes:@{NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)}];
+		self.maneuverRangeTitleLabel.text = NSLocalizedString(@"Orbit Radius:", nil);
+		for (id view in self.velocitySlider.superview.subviews) {
+			if ([view respondsToSelector:@selector(setEnabled:)])
+				[view setEnabled:YES];
+		}
+	}
+	else {
+		self.maneuverLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Keep at Range", nil) attributes:@{NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)}];
+		self.maneuverRangeTitleLabel.text = NSLocalizedString(@"Range:", nil);
+		for (id view in self.velocitySlider.superview.subviews) {
+			if ([view respondsToSelector:@selector(setEnabled:)])
+				[view setEnabled:NO];
+		}
+	}
 }
 
 @end

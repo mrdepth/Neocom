@@ -32,14 +32,18 @@
 @property (weak, nonatomic) IBOutlet UILabel *incomingDpsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *incomingDpsTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *targetLabel;
+@property (weak, nonatomic) IBOutlet UILabel *maneuverLabel;
+@property (weak, nonatomic) IBOutlet UILabel *maneuverRangeTitleLabel;
 @property (strong, nonatomic) NCShipFit* attacker;
 @property (strong, nonatomic) NCShipFit* target;
 @property (weak, nonatomic) IBOutlet UILabel *reportLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dpsAxisLabel;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 - (IBAction)onChangeVelocity:(id) sender;
 - (IBAction)onPan:(UIPanGestureRecognizer*) recognizer;
 - (IBAction)onTap:(UITapGestureRecognizer*) recognizer;
 - (IBAction)onSwap:(id) sender;
+- (IBAction)onManeuver:(UITapGestureRecognizer*) recognizer;
 
 @end

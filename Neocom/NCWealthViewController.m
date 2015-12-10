@@ -113,7 +113,7 @@
 				clear = NO;
 			}
 			[cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor greenColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Account", nil) value:sum]] animated:YES];
-			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 
 		} progressBlock:nil];
 		[api assetListWithCompletionBlock:^(EVEAssetList *result, NSError *error) {
@@ -153,14 +153,14 @@
 																		   }
 																		   [cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor cyanColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Assets", nil) value:sum]] animated:YES];
 																	   }
-																	   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+																	   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 																   });
 															   }];
 					}
 					else {
 						dispatch_async(dispatch_get_main_queue(), ^{
 							[self saveCacheData:data cacheDate:nil expireDate:nil];
-							[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+							[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 						});
 					}
 				}
@@ -204,14 +204,14 @@
 																		   }
 																		   [cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor redColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Industry", nil) value:sum]] animated:YES];
 																	   }
-																	   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+																	   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 																   });
 															   }];
 					}
 					else {
 						dispatch_async(dispatch_get_main_queue(), ^{
 							[self saveCacheData:data cacheDate:nil expireDate:nil];
-							[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+							[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 						});
 					}
 				}
@@ -243,7 +243,7 @@
 								}
 								[cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor yellowColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Market", nil) value:sum]] animated:YES];
 							}
-							[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:4 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+							[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:4 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 						});
 					};
 					
@@ -278,7 +278,7 @@
 				}
 				[cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor orangeColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Contracts", nil) value:sum]] animated:YES];
 			}
-			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 		} progressBlock:nil];
 		
 		
@@ -309,14 +309,14 @@
 																	   }
 																	   [cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor colorWithWhite:0.9 alpha:1] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Implants", nil) value:sum]] animated:YES];
 																   }
-																   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+																   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 															   });
 														   }];
 				}
 				else {
 					dispatch_async(dispatch_get_main_queue(), ^{
 						[self saveCacheData:data cacheDate:nil expireDate:nil];
-						[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+						[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 					});
 				}
 

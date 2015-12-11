@@ -1,3 +1,3 @@
 #!/bin/sh
 make clean
-make EXPANSION=Parallax
+make EXPANSION=Frostline

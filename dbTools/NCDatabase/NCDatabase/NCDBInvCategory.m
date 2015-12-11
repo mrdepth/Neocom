@@ -2,7 +2,7 @@
 //  NCDBInvCategory.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -10,13 +10,8 @@
 #import "NCDBEveIcon.h"
 #import "NCDBInvGroup.h"
 
-
 @implementation NCDBInvCategory
 
-@dynamic categoryID;
-@dynamic categoryName;
-@dynamic published;
-@dynamic groups;
-@dynamic icon;
+// Insert code here to add functionality to your managed object subclass
 
 @end

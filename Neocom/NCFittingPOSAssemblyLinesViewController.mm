@@ -38,7 +38,7 @@
 			
 			NSMutableDictionary* assemblyLinesTypes = [NSMutableDictionary new];
 			
-			for (auto structure: controlTower->getStructures()) {
+			for (const auto& structure: controlTower->getStructures()) {
 				if (structure->getState() >= eufe::Module::STATE_ACTIVE) {
 					NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:structure->getTypeID()];
 					if (type) {

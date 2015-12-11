@@ -172,13 +172,19 @@
 														inView:cell
 													  animated:YES
 											 completionHandler:^(NCDBInvType *type) {
-												 NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-												 loadout.typeID = type.typeID;
-												 loadout.name = type.typeName;
-												 loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-												 [self.storageManagedObjectContext save:nil];
-												 [self reload];
-												 NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
+												 BOOL disableSaveChangesPrompt = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDisableSaveChangesPromptKey];
+												 NCShipFit* fit;
+												 if (disableSaveChangesPrompt) {
+													 NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+													 loadout.typeID = type.typeID;
+													 loadout.name = type.typeName;
+													 loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+													 [self.storageManagedObjectContext save:nil];
+													 [self reload];
+													 fit = [[NCShipFit alloc] initWithLoadout:loadout];
+												 }
+												 else
+													 fit = [[NCShipFit alloc] initWithType:type];
 												 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
 												 [self.typePickerViewController dismissAnimated];
 											 }];
@@ -191,13 +197,19 @@
 														inView:cell
 													  animated:YES
 											 completionHandler:^(NCDBInvType *type) {
-												 NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-												 loadout.typeID = type.typeID;
-												 loadout.name = type.typeName;
-												 loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-												 [self.storageManagedObjectContext save:nil];
-												 [self reload];
-												 NCPOSFit* fit = [[NCPOSFit alloc] initWithLoadout:loadout];
+												 NCPOSFit* fit;
+												 BOOL disableSaveChangesPrompt = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDisableSaveChangesPromptKey];
+												 if (disableSaveChangesPrompt) {
+													 NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+													 loadout.typeID = type.typeID;
+													 loadout.name = type.typeName;
+													 loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+													 [self.storageManagedObjectContext save:nil];
+													 [self reload];
+													fit = [[NCPOSFit alloc] initWithLoadout:loadout];
+												 }
+												 else
+													 fit = [[NCPOSFit alloc] initWithType:type];
 												 [self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
 												 [self.typePickerViewController dismissAnimated];
 

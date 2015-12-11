@@ -2,7 +2,7 @@
 //  NCDBCertMasteryLevel.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -10,12 +10,8 @@
 #import "NCDBCertMastery.h"
 #import "NCDBEveIcon.h"
 
-
 @implementation NCDBCertMasteryLevel
 
-@dynamic displayName;
-@dynamic level;
-@dynamic icon;
-@dynamic masteries;
+// Insert code here to add functionality to your managed object subclass
 
 @end

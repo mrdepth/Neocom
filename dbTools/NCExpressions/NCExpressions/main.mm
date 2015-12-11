@@ -154,6 +154,8 @@ int main (int argc, const char * argv[])
 			groups = [NSMutableArray array];
 			categories = [NSMutableArray array];
 			output = [NSString stringWithUTF8String:argv[2]];
+			[[NSFileManager defaultManager] createDirectoryAtPath:output withIntermediateDirectories:YES attributes:nil error:nil];
+			
 			
 			//const char* expression = @"((CurrentShip->medSlots).(ModAdd)).AddItemModifier (medSlots)";
 			

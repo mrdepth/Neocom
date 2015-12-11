@@ -2,7 +2,7 @@
 //  NCDBEufeItemCategory.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,13 +11,8 @@
 #import "NCDBEufeItem.h"
 #import "NCDBEufeItemGroup.h"
 
-
 @implementation NCDBEufeItemCategory
 
-@dynamic category;
-@dynamic subcategory;
-@dynamic eufeItems;
-@dynamic itemGroups;
-@dynamic race;
+// Insert code here to add functionality to your managed object subclass
 
 @end

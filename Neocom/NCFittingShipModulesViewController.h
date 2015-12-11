@@ -10,5 +10,6 @@
 #import "NCProgressLabel.h"
 
 @interface NCFittingShipModulesViewController : NCFittingShipWorkspaceViewController
+- (IBAction)onState:(UIButton*) sender;
 
 @end

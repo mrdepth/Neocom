@@ -2,7 +2,7 @@
 //  NCDBDgmEffect.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,17 +11,14 @@
 
 @class NCDBInvType;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBDgmEffect : NSManagedObject
 
-@property (nonatomic) int32_t effectID;
-@property (nonatomic, retain) NSSet *types;
-@end
-
-@interface NCDBDgmEffect (CoreDataGeneratedAccessors)
-
-- (void)addTypesObject:(NCDBInvType *)value;
-- (void)removeTypesObject:(NCDBInvType *)value;
-- (void)addTypes:(NSSet *)values;
-- (void)removeTypes:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBDgmEffect+CoreDataProperties.h"

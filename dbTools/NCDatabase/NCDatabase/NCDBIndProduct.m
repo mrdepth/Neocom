@@ -2,21 +2,16 @@
 //  NCDBIndProduct.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
 #import "NCDBIndProduct.h"
-#import "NCDBChrRace.h"
 #import "NCDBIndActivity.h"
 #import "NCDBInvType.h"
 
-
 @implementation NCDBIndProduct
 
-@dynamic quantity;
-@dynamic probability;
-@dynamic activity;
-@dynamic productType;
+// Insert code here to add functionality to your managed object subclass
 
 @end

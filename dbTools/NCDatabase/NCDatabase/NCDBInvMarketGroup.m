@@ -2,23 +2,16 @@
 //  NCDBInvMarketGroup.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
 #import "NCDBInvMarketGroup.h"
 #import "NCDBEveIcon.h"
-#import "NCDBInvMarketGroup.h"
 #import "NCDBInvType.h"
-
 
 @implementation NCDBInvMarketGroup
 
-@dynamic marketGroupID;
-@dynamic marketGroupName;
-@dynamic icon;
-@dynamic parentGroup;
-@dynamic subGroups;
-@dynamic types;
+// Insert code here to add functionality to your managed object subclass
 
 @end

@@ -2,7 +2,7 @@
 //  NCDBStaStation.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,12 +11,14 @@
 
 @class NCDBInvType, NCDBMapSolarSystem;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBStaStation : NSManagedObject
 
-@property (nonatomic) float security;
-@property (nonatomic) int32_t stationID;
-@property (nonatomic, retain) NSString * stationName;
-@property (nonatomic, retain) NCDBMapSolarSystem *solarSystem;
-@property (nonatomic, retain) NCDBInvType *stationType;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBStaStation+CoreDataProperties.h"

@@ -10,6 +10,9 @@
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCTableViewCell.h"
 #import "NCDatabaseTypeInfoViewController.h"
+#import "NCEufeItemShipCell.h"
+#import "NCEufeItemModuleCell.h"
+#import "NCEufeItemChargeCell.h"
 
 @interface NCDatabaseTypePickerViewController ()
 @property (nonatomic, copy) void (^completionHandler)(NCDBInvType* type);
@@ -119,6 +122,10 @@
 	}
 }
 
+- (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+}
+
 #pragma mark - NCTableViewController
 
 - (void) searchWithSearchString:(NSString*) searchString completionBlock:(void (^)())completionBlock {
@@ -148,8 +155,17 @@
 	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	
-	if ([row isKindOfClass:[NCDBEufeItem class]])
-		return @"TypeCell";
+	if ([row isKindOfClass:[NCDBEufeItem class]]) {
+		NCDBEufeItem* item = row;
+		if (item.shipResources)
+			return @"NCEufeItemShipCell";
+		else if (item.requirements)
+			return item.requirements.calibration > 0 ? @"NCEufeItemRigCell" : @"NCEufeItemModuleCell";
+		else if (item.damage)
+			return @"NCEufeItemChargeCell";
+		else
+			return @"TypeCell";
+	}
 	else
 		return @"MarketGroupCell";
 }
@@ -158,16 +174,65 @@
 	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	
-	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	if ([row isKindOfClass:[NCDBEufeItem class]]) {
 		NCDBEufeItem* item = row;
-		cell.titleLabel.text = item.type.typeName;
-		cell.iconView.image = item.type.icon.image.image;
-		cell.object = row;
-		if (!cell.iconView.image)
-			cell.iconView.image = self.defaultTypeIcon.image.image;
+		NSMutableAttributedString* typeName = [[NSMutableAttributedString alloc] initWithString:item.type.typeName ?: NSLocalizedString(@"Unknown", nil) attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+		if (item.type.metaLevel > 0)
+			[typeName appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %d", item.type.metaLevel] attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor], NSFontAttributeName:[UIFont systemFontOfSize:8]}]];
+		UIImage* image = item.type.icon.image.image ?: self.defaultTypeIcon.image.image;
+
+		if (item.shipResources) {
+			NCEufeItemShipCell* cell = (NCEufeItemShipCell*) tableViewCell;
+			cell.typeImageView.image = image;
+			cell.typeNameLabel.attributedText = typeName;
+			cell.hiSlotsLabel.text = [NSString stringWithFormat:@"%d", item.shipResources.hiSlots];
+			cell.medSlotsLabel.text = [NSString stringWithFormat:@"%d", item.shipResources.medSlots];
+			cell.lowSlotsLabel.text = [NSString stringWithFormat:@"%d", item.shipResources.lowSlots];
+			cell.rigSlotsLabel.text = [NSString stringWithFormat:@"%d", item.shipResources.rigSlots];
+			cell.turretsLabel.text = [NSString stringWithFormat:@"%d", item.shipResources.turrets];
+			cell.launchersLabel.text = [NSString stringWithFormat:@"%d", item.shipResources.launchers];
+			cell.object = row;
+		}
+		else if (item.requirements) {
+			NCEufeItemModuleCell* cell = (NCEufeItemModuleCell*) tableViewCell;
+			cell.typeImageView.image = image;
+			cell.typeNameLabel.attributedText = typeName;
+			cell.powerGridLabel.text = [NSString stringWithFormat:@"%.1f", item.requirements.powerGrid];
+			cell.cpuLabel.text = [NSString stringWithFormat:@"%.1f", item.requirements.cpu];
+			cell.calibrationLabel.text = [NSString stringWithFormat:@"%.1f", item.requirements.calibration];
+			cell.object = row;
+		}
+		else if (item.damage) {
+			NCEufeItemChargeCell* cell = (NCEufeItemChargeCell*) tableViewCell;
+			cell.typeImageView.image = image;
+			cell.typeNameLabel.attributedText = typeName;
+			float damage = item.damage.emAmount + item.damage.thermalAmount + item.damage.kineticAmount + item.damage.explosiveAmount;
+			
+			cell.emLabel.text = [NSString stringWithFormat:@"%.1f", item.damage.emAmount];
+			cell.emLabel.progress = item.damage.emAmount / damage;
+
+			cell.kineticLabel.text = [NSString stringWithFormat:@"%.1f", item.damage.kineticAmount];
+			cell.kineticLabel.progress = item.damage.kineticAmount / damage;
+
+			cell.thermalLabel.text = [NSString stringWithFormat:@"%.1f", item.damage.thermalAmount];
+			cell.thermalLabel.progress = item.damage.thermalAmount / damage;
+
+			cell.explosiveLabel.text = [NSString stringWithFormat:@"%.1f", item.damage.explosiveAmount];
+			cell.explosiveLabel.progress = item.damage.explosiveAmount / damage;
+			
+			cell.damageLabel.text = [NSString stringWithFormat:@"%.1f", damage];
+			
+			cell.object = row;
+		}
+		else {
+			NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
+			cell.titleLabel.attributedText = typeName;
+			cell.iconView.image = image;
+			cell.object = row;
+		}
 	}
 	else {
+		NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 		if ([row isKindOfClass:[NCDBEufeItemGroup class]]) {
 			NCDBEufeItemGroup* group = row;
 			cell.titleLabel.text = group.groupName;

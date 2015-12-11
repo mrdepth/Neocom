@@ -140,7 +140,7 @@
 					section.numberOfSlots = numberOfSlots;
 					NSMutableArray* rows = [NSMutableArray new];
 					
-					for (auto module: modules) {
+					for (const auto& module: modules) {
 						NCFittingShipModulesViewControllerRow* row = [oldRows[@((uintptr_t) module.get())] copy] ?: [NCFittingShipModulesViewControllerRow new];
 						row.module = module;
 						row.isUpToDate = NO;
@@ -170,6 +170,69 @@
 	else
 		completionBlock();
 }
+
+- (IBAction)onState:(UIButton*) sender {
+	UITableViewCell* cell = (UITableViewCell*) sender.superview;
+	for(;cell && ![cell isKindOfClass:[UITableViewCell class]]; cell = (UITableViewCell*) cell.superview);
+	if (cell) {
+		NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
+		if (indexPath) {
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+			NCFittingShipModulesViewControllerSection* section = self.sections[indexPath.section];
+			NCFittingShipModulesViewControllerRow* row = section.rows[indexPath.row];
+			[self.controller.engine performBlockAndWait:^{
+				auto ship = self.controller.fit.pilot->getShip();
+				auto module = row.module;
+				
+				eufe::Module::State state = module->getState();
+				
+				if (state != eufe::Module::STATE_OFFLINE && module->canHaveState(eufe::Module::STATE_OFFLINE))
+					[controller addAction:[UIAlertAction actionWithTitle:ActionButtonOffline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+						[self.controller.engine performBlockAndWait:^{
+							module->setPreferredState(eufe::Module::STATE_OFFLINE);
+						}];
+						[self.controller reload];
+					}]];
+				if (state != eufe::Module::STATE_ONLINE && module->canHaveState(eufe::Module::STATE_ONLINE))
+					[controller addAction:[UIAlertAction actionWithTitle:state > eufe::Module::STATE_ONLINE ? ActionButtonDeactivate : ActionButtonOnline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+						[self.controller.engine performBlockAndWait:^{
+							module->setPreferredState(eufe::Module::STATE_ONLINE);
+						}];
+						[self.controller reload];
+					}]];
+				if (state != eufe::Module::STATE_ACTIVE && module->canHaveState(eufe::Module::STATE_ACTIVE))
+					[controller addAction:[UIAlertAction actionWithTitle:state < eufe::Module::STATE_ACTIVE ? ActionButtonActivate : ActionButtonOverheatOff style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+						[self.controller.engine performBlockAndWait:^{
+							module->setPreferredState(eufe::Module::STATE_ACTIVE);
+						}];
+						[self.controller reload];
+					}]];
+				if (state != eufe::Module::STATE_OVERLOADED && module->canHaveState(eufe::Module::STATE_OVERLOADED))
+					[controller addAction:[UIAlertAction actionWithTitle:ActionButtonOverheatOn style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+						[self.controller.engine performBlockAndWait:^{
+							module->setPreferredState(eufe::Module::STATE_OVERLOADED);
+						}];
+						[self.controller reload];
+					}]];
+			}];
+			
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+			
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+				controller.modalPresentationStyle = UIModalPresentationPopover;
+				[self presentViewController:controller animated:YES completion:nil];
+				UITableViewCell* sender = cell;
+				controller.popoverPresentationController.sourceView = sender;
+				controller.popoverPresentationController.sourceRect = [sender bounds];
+			}
+			else
+				[self presentViewController:controller animated:YES completion:nil];
+
+		}
+	}
+}
+
 
 #pragma mark - Table view data source
 
@@ -306,7 +369,7 @@
 															if (section.slot == eufe::Module::SLOT_MODE) {
 																eufe::ModulesList modes;
 																ship->getModules(eufe::Module::SLOT_MODE, std::inserter(modes, modes.end()));
-																for (auto i:modes)
+																for (const auto& i:modes)
 																	ship->removeModule(i);
 															}
 															ship->addModule(typeID);
@@ -402,12 +465,13 @@
 	if (row.module && !row.isUpToDate) {
 		row.isUpToDate = YES;
 		[self.controller.engine performBlock:^{
+			NCFittingShipModulesViewControllerRow* newRow = [NCFittingShipModulesViewControllerRow new];
 			auto ship = self.controller.fit.pilot->getShip();
 			auto module = row.module;
 			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:module->getTypeID()];
-			row.typeName = type.typeName;
-			row.typeNameColor = module->isEnabled() ? [UIColor whiteColor] : [UIColor redColor];
-			row.typeImage = type.icon.image.image;
+			newRow.typeName = type.typeName;
+			newRow.typeNameColor = module->isEnabled() ? [UIColor whiteColor] : [UIColor redColor];
+			newRow.typeImage = type.icon.image.image;
 			
 			auto charge = module->getCharge();
 			if (charge) {
@@ -415,64 +479,76 @@
 				float capacity = module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
 				NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:charge->getTypeID()];
 				if (volume > 0 && volume > 0)
-					row.chargeText = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
+					newRow.chargeText = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
 				else
-					row.chargeText = type.typeName;
+					newRow.chargeText = type.typeName;
 			}
 			else
-				row.chargeText = nil;
+				newRow.chargeText = nil;
 			
 			float optimal = module->getMaxRange();
 			float falloff = module->getFalloff();
 			float trackingSpeed = module->getTrackingSpeed();
 			float lifeTime = module->getLifeTime();
 			
-			row.trackingText = nil;
+			newRow.trackingText = nil;
 			if (trackingSpeed > 0) {
 				float v0 = ship->getMaxVelocityInOrbit(optimal);
 				float v1 = ship->getMaxVelocityInOrbit(optimal + falloff);
 				float orbitRadius = ship->getOrbitRadiusWithAngularVelocity(trackingSpeed);
-				row.trackingColor = trackingSpeed * optimal > v0 ? [UIColor greenColor] : (trackingSpeed * (optimal + falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
-				row.trackingSpeed = trackingSpeed;
-				row.orbitRadius = orbitRadius;
+				newRow.trackingColor = trackingSpeed * optimal > v0 ? [UIColor greenColor] : (trackingSpeed * (optimal + falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
+				newRow.trackingSpeed = trackingSpeed;
+				newRow.orbitRadius = orbitRadius;
 			}
 			
 			if (optimal > 0) {
 				NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
 				if (falloff > 0)
 					[s appendFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-				row.optimalText = s;
+				newRow.optimalText = s;
 			}
 			else
-				row.optimalText = nil;
+				newRow.optimalText = nil;
 			
 			if (lifeTime > 0)
-				row.lifeTimeText = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];
+				newRow.lifeTimeText = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];
 			else
-				row.lifeTimeText = nil;
+				newRow.lifeTimeText = nil;
 			
 			eufe::Module::Slot slot = module->getSlot();
 			if (slot == eufe::Module::SLOT_HI || slot == eufe::Module::SLOT_MED || slot == eufe::Module::SLOT_LOW) {
 				switch (module->getState()) {
 					case eufe::Module::STATE_ACTIVE:
-						row.stateImage = [UIImage imageNamed:@"active"];
+						newRow.stateImage = [UIImage imageNamed:@"active"];
 						break;
 					case eufe::Module::STATE_ONLINE:
-						row.stateImage = [UIImage imageNamed:@"online"];
+						newRow.stateImage = [UIImage imageNamed:@"online"];
 						break;
 					case eufe::Module::STATE_OVERLOADED:
-						row.stateImage = [UIImage imageNamed:@"overheated"];
+						newRow.stateImage = [UIImage imageNamed:@"overheated"];
 						break;
 					default:
-						row.stateImage = [UIImage imageNamed:@"offline"];
+						newRow.stateImage = [UIImage imageNamed:@"offline"];
 						break;
 				}
 			}
 			else
-				row.stateImage = nil;
+				newRow.stateImage = nil;
 			
-			row.hasTarget = module->getTarget() != nullptr;
+			newRow.hasTarget = module->getTarget() != nullptr;
 			dispatch_async(dispatch_get_main_queue(), ^{
+				row.typeName = newRow.typeName;
+				row.typeNameColor = newRow.typeNameColor;
+				row.typeImage = newRow.typeImage;
+				row.chargeText = newRow.chargeText;
+				row.optimalText = newRow.optimalText;
+				row.trackingColor = newRow.trackingColor;
+				row.trackingText = newRow.trackingText;
+				row.lifeTimeText = newRow.lifeTimeText;
+				row.stateImage = newRow.stateImage;
+				row.hasTarget = newRow.hasTarget;
+				row.trackingSpeed = newRow.trackingSpeed;
+				row.orbitRadius = newRow.orbitRadius;
 				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 			});
 		}];
@@ -512,8 +588,8 @@
 		
 		void (^setState)(eufe::ModulesList, eufe::Module::State) = ^(eufe::ModulesList modules, eufe::Module::State state) {
 			[self.controller.engine performBlockAndWait:^{
-				for (auto module: modules)
-					module->setState(state);
+				for (const auto& module: modules)
+					module->setPreferredState(state);
 			}];
 			[self.controller reload];
 		};
@@ -543,7 +619,7 @@
 		UIAlertAction* (^removeAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
 			return [UIAlertAction actionWithTitle:ActionButtonDelete style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
-					for (auto module: modules)
+					for (const auto& module: modules)
 						ship->removeModule(module);
 				}];
 				[self.controller reload];
@@ -615,7 +691,7 @@
 															completionHandler:^(NCDBInvType *type) {
 																int32_t typeID = type.typeID;
 																[self.controller.engine performBlockAndWait:^{
-																	for (auto module: modules)
+																	for (const auto& module: modules)
 																		module->setCharge(typeID);
 																}];
 																[self.controller reload];
@@ -627,7 +703,7 @@
 		UIAlertAction* (^unloadAmmoAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
 			return [UIAlertAction actionWithTitle:ActionButtonUnloadAmmo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
-					for (auto module: modules)
+					for (const auto& module: modules)
 						module->clearCharge();
 				}];
 				[self.controller reload];
@@ -645,7 +721,7 @@
 			return [UIAlertAction actionWithTitle:ActionButtonSetTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				NSMutableArray* array = [NSMutableArray new];
 				[self.controller.engine performBlockAndWait:^{
-					for (auto module: modules)
+					for (const auto& module: modules)
 						[array addObject:[NCFittingEngineItemPointer pointerWithItem:module]];
 				}];
 				[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController"
@@ -657,7 +733,7 @@
 		UIAlertAction* (^clearTargetAction)(eufe::ModulesList) = ^(eufe::ModulesList modules) {
 			return [UIAlertAction actionWithTitle:ActionButtonClearTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
-					for (auto module: modules)
+					for (const auto& module: modules)
 						module->clearTarget();
 					[self.controller reload];
 				}];
@@ -676,7 +752,7 @@
 			return [UIAlertAction actionWithTitle:ActionButtonVariations style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				NSMutableArray* array = [NSMutableArray new];
 				[self.controller.engine performBlockAndWait:^{
-					for (auto module: modules)
+					for (const auto& module: modules)
 						[array addObject:[NCFittingEngineItemPointer pointerWithItem:module]];
 				}];
 				[self.controller performSegueWithIdentifier:@"NCFittingTypeVariationsViewController"
@@ -734,7 +810,8 @@
 					controller.popoverPresentationController.sourceRect = [sender bounds];
 				}
 				else
-					[self presentViewController:controller animated:YES completion:nil];			}]];
+					[self presentViewController:controller animated:YES completion:nil];
+			}]];
 		}
 	}];
 	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];

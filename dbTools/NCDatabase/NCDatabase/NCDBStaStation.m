@@ -2,7 +2,7 @@
 //  NCDBStaStation.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -10,13 +10,8 @@
 #import "NCDBInvType.h"
 #import "NCDBMapSolarSystem.h"
 
-
 @implementation NCDBStaStation
 
-@dynamic security;
-@dynamic stationID;
-@dynamic stationName;
-@dynamic solarSystem;
-@dynamic stationType;
+// Insert code here to add functionality to your managed object subclass
 
 @end

@@ -2,7 +2,7 @@
 //  NCDBRamActivity.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,14 +11,8 @@
 #import "NCDBIndActivity.h"
 #import "NCDBRamAssemblyLineType.h"
 
-
 @implementation NCDBRamActivity
 
-@dynamic activityID;
-@dynamic activityName;
-@dynamic published;
-@dynamic assemblyLineTypes;
-@dynamic icon;
-@dynamic indActivities;
+// Insert code here to add functionality to your managed object subclass
 
 @end

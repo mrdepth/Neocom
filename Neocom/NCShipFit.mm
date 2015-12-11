@@ -196,6 +196,7 @@
 @property (nonatomic, strong) NSManagedObjectContext* storageManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
 - (void) setSkillLevels:(NSDictionary*) skillLevels;
+- (void) saveWithCompletionBlock:(void(^)()) completionBlock;
 @end
 
 @implementation NCShipFit
@@ -309,7 +310,7 @@
 				NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 				module.typeID = i->getTypeID();
 				module.chargeID = charge ? charge->getTypeID() : 0;
-				module.state = i->getState();
+				module.state = i->getPreferredState();
 				
 				switch(i->getSlot()) {
 					case eufe::Module::SLOT_HI:
@@ -335,7 +336,7 @@
 				}
 			}
 			
-			for (auto i : ship->getDrones()) {
+			for (const auto& i : ship->getDrones()) {
 				NSString* key = [NSString stringWithFormat:@"%d:%d", i->getTypeID(), i->isActive()];
 				NSDictionary* record = dronesDic[key];
 				if (!record) {
@@ -356,13 +357,13 @@
 			for (NSDictionary* record in [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]])
 				[drones addObject:record[@"drone"]];
 			
-			for (auto i : self.pilot->getImplants()) {
+			for (const auto& i : self.pilot->getImplants()) {
 				NCLoadoutDataShipImplant* implant = [NCLoadoutDataShipImplant new];
 				implant.typeID = i->getTypeID();
 				[implants addObject:implant];
 			}
 			
-			for (auto i : self.pilot->getBoosters()) {
+			for (const auto& i : self.pilot->getBoosters()) {
 				NCLoadoutDataShipBooster* booster = [NCLoadoutDataShipBooster new];
 				booster.typeID = i->getTypeID();
 				[boosters addObject:booster];
@@ -387,34 +388,22 @@
 }
 
 - (void) save {
-	[self flush];
+	[self saveWithCompletionBlock:nil];
+}
 
-	__block int32_t typeID = self.typeID;
-	
-	NSManagedObjectContext* context = self.storageManagedObjectContext;
-	[context performBlock:^{
-		NCLoadout* loadout;
-		if (!self.loadoutID) {
-			loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-			loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-		}
-		else
-			loadout = [self.storageManagedObjectContext existingObjectWithID:self.loadoutID error:nil];
-
-		if (![loadout.data.data isEqual:self.loadoutData])
-			loadout.data.data = self.loadoutData;
-		if (loadout.typeID != typeID)
-			loadout.typeID = typeID;
-		if (![self.loadoutName isEqualToString:loadout.name])
-			loadout.name = self.loadoutName;
-		if ([context hasChanges]) {
-			[context save:nil];
-			self.loadoutID = loadout.objectID;
-		}
+- (void) duplicateWithCompletioBloc:(void(^)()) completionBlock {
+	[self saveWithCompletionBlock:^{
+		self.loadoutID = nil;
+		self.loadoutName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.loadoutName ? self.loadoutName : @""];
+		[self saveWithCompletionBlock:^{
+			if (completionBlock)
+			completionBlock();
+		}];
 	}];
 }
 
 - (void) setCharacter:(NCFitCharacter*) character withCompletionBlock:(void(^)()) completionBlock {
+	BOOL loadCharacterImplants = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsLoadCharacterImplantsKey];
 	NSAssert(self.pilot, @"Pilot is nil");
 	_character = character;
 	
@@ -425,8 +414,10 @@
 	void (^load)() = ^{
 		[self.engine performBlock:^{
 			[self setSkillLevels:skills];
-			for (NSNumber* implantID in implants)
-				self.pilot->addImplant([implantID intValue]);
+			if (loadCharacterImplants) {
+				for (NSNumber* implantID in implants)
+					self.pilot->addImplant([implantID intValue]);
+			}
 			self.pilot->setCharacterName([characterName cStringUsingEncoding:NSUTF8StringEncoding]);
 			if (completionBlock)
 				dispatch_async(dispatch_get_main_queue(), completionBlock);
@@ -469,7 +460,7 @@
 	}
 
 	std::sort(modulePairs.begin(), modulePairs.end());
-	for (auto pair: modulePairs) {
+	for (const auto& pair: modulePairs) {
 		NSString* s;
 		if (pair.second > 0)
 			s = [NSString stringWithFormat:@"%d:%d:%d", pair.first, pair.second, moduleCounts[pair]];
@@ -490,7 +481,7 @@
 	}
 	std::sort(dronePairs.begin(), dronePairs.end());
 	
-	for (auto pair: dronePairs) {
+	for (const auto& pair: dronePairs) {
 		NSString* s;
 		s = [NSString stringWithFormat:@"%d:%d", pair.first, pair.second];
 		[drones addObject:s];
@@ -686,6 +677,40 @@
 		_databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
 	}
 	return _databaseManagedObjectContext;
+}
+
+- (void) saveWithCompletionBlock:(void(^)()) completionBlock {
+	[self flush];
+	
+	int32_t typeID = self.typeID;
+	
+	NSManagedObjectContext* context = self.storageManagedObjectContext;
+	NSManagedObjectID* loadoutID = self.loadoutID;
+	NSString* loadoutName = self.loadoutName;
+	[context performBlock:^{
+		NCLoadout* loadout;
+		if (!loadoutID) {
+			loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+			loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+		}
+		else
+		loadout = [self.storageManagedObjectContext existingObjectWithID:loadoutID error:nil];
+		
+		if (![loadout.data.data isEqual:self.loadoutData])
+		loadout.data.data = self.loadoutData;
+		if (loadout.typeID != typeID)
+		loadout.typeID = typeID;
+		if (![loadoutName isEqualToString:loadout.name])
+		loadout.name = loadoutName;
+		if ([context hasChanges]) {
+			[context save:nil];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.loadoutID = loadout.objectID;
+				if (completionBlock)
+					completionBlock();
+			});
+		}
+	}];
 }
 
 @end

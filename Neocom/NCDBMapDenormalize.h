@@ -2,8 +2,8 @@
 //  NCDBMapDenormalize.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.09.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -11,14 +11,14 @@
 
 @class NCDBInvType, NCDBMapConstellation, NCDBMapRegion, NCDBMapSolarSystem;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBMapDenormalize : NSManagedObject
 
-@property (nonatomic) int32_t itemID;
-@property (nonatomic, retain) NSString * itemName;
-@property (nonatomic) float security;
-@property (nonatomic, retain) NCDBMapConstellation *constellation;
-@property (nonatomic, retain) NCDBMapRegion *region;
-@property (nonatomic, retain) NCDBMapSolarSystem *solarSystem;
-@property (nonatomic, retain) NCDBInvType *type;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBMapDenormalize+CoreDataProperties.h"

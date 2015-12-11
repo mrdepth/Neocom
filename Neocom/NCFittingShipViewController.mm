@@ -36,6 +36,10 @@
 #import "NCFittingShipStatsViewController.h"
 #import "NCAdaptivePopoverSegue.h"
 
+#import "NCFittingShipOffenseStatsViewController.h"
+#import "NCFittingShipCombatSimulatorViewController.h"
+#import "UIAlertController+Neocom.h"
+
 #include <set>
 
 #define ActionButtonBack NSLocalizedString(@"Back", nil)
@@ -53,6 +57,8 @@
 #define ActionButtonShowShipInfo NSLocalizedString(@"Ship Info", nil)
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 #define ActionButtonAddToShoppingList NSLocalizedString(@"Add to Shopping List", nil)
+#define ActionButtonDamageChart NSLocalizedString(@"Damage Chart", nil)
+#define ActionButtonCombatSimulator NSLocalizedString(@"Combat Simulator", nil)
 
 @interface NCFittingShipViewController ()<MFMailComposeViewControllerDelegate>
 @property (nonatomic, strong, readwrite) NSArray* fits;
@@ -90,6 +96,9 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self updateSectionSegmentedControlWithTraitCollection:self.traitCollection];
 		//[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
+	BOOL disableSaveChangesPrompt = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDisableSaveChangesPromptKey];
+	if (disableSaveChangesPrompt)
+		self.navigationItem.leftBarButtonItem = nil;
 	
 	self.taskManager.maxConcurrentOperationCount = 1;
 	
@@ -117,6 +126,8 @@
 	NCShipFit* fit = self.fit;
 	dispatch_group_t finishDispatchGroup = dispatch_group_create();
 	dispatch_group_enter(finishDispatchGroup);
+	
+	//CFTimeInterval t0 = CACurrentMediaTime();
 	[engine performBlock:^{
 		[engine loadShipFit:fit];
 		dispatch_group_leave(finishDispatchGroup);
@@ -149,6 +160,8 @@
 	
 	dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
 		[fit setCharacter:fitCharacter withCompletionBlock:^{
+			//CFTimeInterval t1 = CACurrentMediaTime();
+			//NSLog(@"Fit loading time %f", t1 - t0);
 			self.defaultCharacter = fitCharacter;
 			self.engine = engine;
 			[self reload];
@@ -172,14 +185,32 @@
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
-	if ([self isMovingFromParentViewController] || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		for (NCShipFit* fit in self.fits) {
-			if (fit.loadoutID)
-				[fit save];
+	if ([self isMovingFromParentViewController] || !self.splitViewController) {
+		BOOL disableSaveChangesPrompt = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDisableSaveChangesPromptKey];
+		if (disableSaveChangesPrompt) {
+			for (NCShipFit* fit in self.fits) {
+				if (fit.loadoutID)
+					[fit save];
+			}
+			self.fits = nil;
+			if ([self.storageManagedObjectContext hasChanges])
+				[self.storageManagedObjectContext save:nil];
 		}
-		self.fits = nil;
-		if ([self.storageManagedObjectContext hasChanges])
-			[self.storageManagedObjectContext save:nil];
+		else if (self.fits.count > 0) {
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"Save Changes?", nil) preferredStyle:UIAlertControllerStyleAlert];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Save", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				for (NCShipFit* fit in self.fits) {
+					[fit save];
+				}
+				self.fits = nil;
+				if ([self.storageManagedObjectContext hasChanges])
+					[self.storageManagedObjectContext save:nil];
+			}]];
+			
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Discard", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+			}]];
+			[[UIAlertController frontMostViewController] presentViewController:controller animated:YES completion:nil];
+		}
 	}
 	[super viewWillDisappear:animated];
 }
@@ -237,24 +268,26 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-
-		NSArray* items = sender[@"object"];
-		auto item = [(NCFittingEngineItemPointer*) items[0] item];
-		controller.items = items;
 		
-		auto module = std::dynamic_pointer_cast<eufe::Module>(item);
-		auto drone = std::dynamic_pointer_cast<eufe::Drone>(item);
-		
-		std::shared_ptr<eufe::Ship> target = nullptr;
-		if (module)
-			target = module->getTarget();
-		else if (drone)
-			target = drone->getTarget();
-		if (target) {
-			for (NCShipFit* fit in self.fits) {
-				if (fit.pilot->getShip() == target) {
-					controller.selectedTarget = fit;
-					break;
+		if ([sender isKindOfClass:[NSDictionary class]]) {
+			NSArray* items = sender[@"object"];
+			auto item = [(NCFittingEngineItemPointer*) items[0] item];
+			controller.items = items;
+			
+			auto module = std::dynamic_pointer_cast<eufe::Module>(item);
+			auto drone = std::dynamic_pointer_cast<eufe::Drone>(item);
+			
+			std::shared_ptr<eufe::Ship> target = nullptr;
+			if (module)
+				target = module->getTarget();
+			else if (drone)
+				target = drone->getTarget();
+			if (target) {
+				for (NCShipFit* fit in self.fits) {
+					if (fit.pilot->getShip() == target) {
+						controller.selectedTarget = fit;
+						break;
+					}
 				}
 			}
 		}
@@ -291,6 +324,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
+		controller.fits = self.fits;
 //		controller.selectedDamagePattern = self.damagePattern;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingAreaEffectPickerViewController"]) {
@@ -342,7 +376,7 @@
 		[self.engine performBlockAndWait:^{
 			for (NCFittingEngineItemPointer* pointer in sender[@"object"]) {
 				auto item = pointer.item;
-				for (auto item: item->getAffectors()) {
+				for (const auto& item: item->getAffectors()) {
 					auto skill = std::dynamic_pointer_cast<eufe::Skill>(item);
 					if (skill) {
 						[typeIDs addObject:@(item->getTypeID())];
@@ -364,10 +398,10 @@
 		NSMutableArray* implants = [NSMutableArray new];
 		NSMutableArray* boosters = [NSMutableArray new];
 		[self.engine performBlockAndWait:^{
-			for (auto implant: self.fit.pilot->getImplants())
+			for (const auto& implant: self.fit.pilot->getImplants())
 				[implants addObject:@(implant->getTypeID())];
 			
-			for (auto booster: self.fit.pilot->getBoosters())
+			for (const auto& booster: self.fit.pilot->getBoosters())
 				[boosters addObject:@(booster->getTypeID())];
 		}];
 
@@ -387,8 +421,38 @@
 		controller.shoppingGroup = sender[@"object"];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingCRESTFitExportViewController"]) {
-		NCFittingCRESTFitExportViewController* controller = segue.destinationViewController;
+		NCFittingCRESTFitExportViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
 		controller.fitting = self.fit.crFittingRepresentation;
+	}
+	else if ([segue.identifier isEqualToString:@"NCFittingShipOffenseStatsViewController"]) {
+		NCFittingShipOffenseStatsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		controller.fit = self.fit;
+	}
+	else if ([segue.identifier isEqualToString:@"NCFittingShipCombatSimulatorViewController"]) {
+		NCFittingShipCombatSimulatorViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		controller.attacker = self.fit;
+		if ([sender isKindOfClass:[NCShipFit class]])
+			controller.target = sender;
+		else {
+			for (NCShipFit* fit in self.fits)
+				if (fit != self.fit) {
+					controller.target = fit;
+					break;
+				}
+		}
 	}
 }
 
@@ -492,6 +556,19 @@
 									  sender:@{@"sender": sender, @"object": [NCFittingEngineItemPointer pointerWithItem:self.fit.pilot->getShip()]}];
 		}]];
 
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDamageChart style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self performSegueWithIdentifier:@"NCFittingShipOffenseStatsViewController" sender:nil];
+		}]];
+		
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonCombatSimulator style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			if (self.fits.count == 2)
+				[self performSegueWithIdentifier:@"NCFittingShipCombatSimulatorViewController" sender:nil];
+			else if (self.fits.count == 1)
+				[self performSegueWithIdentifier:@"NCFittingTargetFitPickerViewController" sender:nil];
+			else if (self.fits.count > 2)
+				[self performSegueWithIdentifier:@"NCFittingTargetsViewController" sender:nil];
+		}]];
+
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetName style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 			UIAlertController* controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Rename", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
 			__block UITextField* renameTextField;
@@ -515,11 +592,12 @@
 			}]];
 		else
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDuplicate style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//				[self.fit save];
+				[self.fit duplicateWithCompletioBloc:^{
+					self.title = self.fit.loadoutName;
+				}];
 //				self.fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
 //				self.fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
 //				self.fit.loadoutName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.loadoutName ? self.fit.loadoutName : @""];
-//				self.title = self.fit.loadoutName;
 			}]];
 
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonCharacter style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -553,24 +631,24 @@
 						auto ship = character->getShip();
 						typeIDs.insert(ship->getTypeID());
 						
-						for (auto module: ship->getModules()) {
+						for (const auto& module: ship->getModules()) {
 							typeIDs.insert(module->getTypeID());
 							auto charge = module->getCharge();
 							if (charge)
 								typeIDs.insert(charge->getTypeID());
 						}
 						
-						for (auto drone: ship->getDrones())
+						for (const auto& drone: ship->getDrones())
 							typeIDs.insert(drone->getTypeID());
 						
-						for (auto implant: character->getImplants())
+						for (const auto& implant: character->getImplants())
 							typeIDs.insert(implant->getTypeID());
 						
-						for (auto booster: character->getBoosters())
+						for (const auto& booster: character->getBoosters())
 							typeIDs.insert(booster->getTypeID());
 					}];
 					
-					for (auto typeID: typeIDs)
+					for (const auto& typeID: typeIDs)
 						[trainingQueue addRequiredSkillsForType:[self.databaseManagedObjectContext invTypeWithTypeID:typeID]];
 					[self performSegueWithIdentifier:@"NCFittingRequiredSkillsViewController"
 											  sender:@{@"sender": sender, @"object": trainingQueue}];
@@ -603,17 +681,17 @@
 				auto pilot = self.fit.pilot;
 				auto ship = pilot->getShip();
 				addItem(ship);
-				for (auto module: ship->getModules()) {
+				for (const auto& module: ship->getModules()) {
 					addItem(module);
 					auto charge = module->getCharge();
 					if (charge)
 						addItem(charge);
 				}
-				for (auto drone: ship->getDrones())
+				for (const auto& drone: ship->getDrones())
 					addItem(drone);
-				for (auto implant: pilot->getImplants())
+				for (const auto& implant: pilot->getImplants())
 					addItem(implant);
-				for (auto booster: pilot->getBoosters())
+				for (const auto& booster: pilot->getBoosters())
 					addItem(booster);
 				dispatch_async(dispatch_get_main_queue(), ^{
 					[self performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
@@ -651,7 +729,7 @@
 				auto ship = character->getShip();
 				addItem(ship, 1);
 				
-				for (auto module: ship->getModules()) {
+				for (const auto& module: ship->getModules()) {
 					if (module->getSlot() == eufe::Module::SLOT_MODE)
 						continue;
 					
@@ -666,7 +744,7 @@
 					}
 				}
 				
-				for (auto drone: ship->getDrones())
+				for (const auto& drone: ship->getDrones())
 					addItem(drone, 1);
 			}];
 			
@@ -677,7 +755,6 @@
 			
 			[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:@{@"sender": sender, @"object": shoppingGroup}];
 		}]];
-
 	}];
 	
 	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -697,6 +774,28 @@
 	}
 	else
 		[self presentViewController:controller animated:YES completion:nil];
+}
+
+- (IBAction)onBack:(id)sender {
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"Save Changes?", nil) preferredStyle:UIAlertControllerStyleAlert];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Save and Exit", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		for (NCShipFit* fit in self.fits) {
+			[fit save];
+		}
+		self.fits = nil;
+		if ([self.storageManagedObjectContext hasChanges])
+			[self.storageManagedObjectContext save:nil];
+		[self.navigationController popViewControllerAnimated:YES];
+	}]];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Discard and Exit", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.fits = nil;
+		[self.navigationController popViewControllerAnimated:YES];
+	}]];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+	[self presentViewController:controller animated:YES completion:nil];
+
 }
 
 - (void) setFit:(NCShipFit *)fit {
@@ -773,21 +872,44 @@
 	}];
 }
 
+- (IBAction) unwindFromTargetFitPicker:(UIStoryboardSegue*) segue {
+	NCFittingFitPickerViewController* sourceViewController = segue.sourceViewController;
+	NCShipFit* fit = sourceViewController.selectedFit;
+	if (!fit)
+		return;
+	[self.engine performBlock:^{
+		[self.engine loadShipFit:fit];
+		NSArray* fits = [self.fits arrayByAddingObject:fit];
+		[fit setCharacter:self.defaultCharacter withCompletionBlock:^{
+			self.fits = fits;
+			[self reload];
+			[self performSegueWithIdentifier:@"NCFittingShipCombatSimulatorViewController" sender:nil];
+		}];
+	}];
+}
+
 - (IBAction) unwindFromTargets:(UIStoryboardSegue*) segue {
 	NCFittingTargetsViewController* sourceViewController = segue.sourceViewController;
-	auto target = sourceViewController.selectedTarget ? sourceViewController.selectedTarget.pilot->getShip() : nullptr;
-	[self.engine performBlockAndWait:^{
-		for (NCFittingEngineItemPointer* pointer in sourceViewController.items) {
-			std::shared_ptr<eufe::Module> module = std::dynamic_pointer_cast<eufe::Module>(pointer.item);
-			std::shared_ptr<eufe::Drone> drone = std::dynamic_pointer_cast<eufe::Drone>(pointer.item);
-			
-			if (module)
-				module->setTarget(target);
-			else if (drone)
-				drone->setTarget(target);
-		}
-	}];
-	[self reload];
+	if (sourceViewController.items) {
+		auto target = sourceViewController.selectedTarget ? sourceViewController.selectedTarget.pilot->getShip() : nullptr;
+		[self.engine performBlockAndWait:^{
+			for (NCFittingEngineItemPointer* pointer in sourceViewController.items) {
+				std::shared_ptr<eufe::Module> module = std::dynamic_pointer_cast<eufe::Module>(pointer.item);
+				std::shared_ptr<eufe::Drone> drone = std::dynamic_pointer_cast<eufe::Drone>(pointer.item);
+				
+				if (module)
+					module->setTarget(target);
+				else if (drone)
+					drone->setTarget(target);
+			}
+		}];
+		[self reload];
+	}
+	else if (sourceViewController.selectedTarget) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self performSegueWithIdentifier:@"NCFittingShipCombatSimulatorViewController" sender:sourceViewController.selectedTarget];
+		});
+	}
 }
 
 - (IBAction) unwindFromDamagePatterns:(UIStoryboardSegue*) segue {
@@ -845,13 +967,13 @@
 		[self.engine performBlock:^{
 			auto character = self.fit.pilot;
 			eufe::ImplantsList implants = character->getImplants();
-			for (auto implant: implants)
+			for (const auto& implant: implants)
 				character->removeImplant(implant);
 			for (NSNumber* typeID in implantIDs)
 				character->addImplant([typeID intValue]);
 			
 			eufe::BoostersList boosters = character->getBoosters();
-			for (auto booster: boosters)
+			for (const auto& booster: boosters)
 				character->removeBooster(booster);
 			for (NSNumber* typeID in boosterIDs)
 				character->addBooster([typeID intValue]);

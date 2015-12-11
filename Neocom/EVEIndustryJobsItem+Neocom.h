@@ -14,7 +14,7 @@
 @interface EVEIndustryJobsItem (Neocom)
 @property (nonatomic, strong) NCLocationsManagerItem* blueprintLocation;
 @property (nonatomic, strong) NCLocationsManagerItem* outputLocation;
-@property (nonatomic, strong) NSString* installerName;
+//@property (nonatomic, strong) NSString* installerName;
 //@property (nonatomic, strong) NCDBRamActivity* activity;
 //@property (nonatomic, strong) NCDBInvType* blueprintType;
 //@property (nonatomic, strong) NCDBInvType* productType;

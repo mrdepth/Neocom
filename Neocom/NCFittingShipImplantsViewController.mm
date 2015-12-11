@@ -32,13 +32,13 @@
 			std::vector<std::shared_ptr<eufe::Implant>> implants(10, nullptr);
 			std::vector<std::shared_ptr<eufe::Booster>> boosters(4, nullptr);
 			
-			for (auto implant: pilot->getImplants()) {
+			for (const auto& implant: pilot->getImplants()) {
 				int slot = implant->getSlot() - 1;
 				if (slot >= 0 && slot < 10)
 					implants[slot] = implant;
 			}
 			
-			for (auto booster: pilot->getBoosters()) {
+			for (const auto& booster: pilot->getBoosters()) {
 				int slot = booster->getSlot() - 1;
 				if (slot >= 0 && slot < 4)
 					boosters[slot] = booster;

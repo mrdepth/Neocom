@@ -2,7 +2,7 @@
 //  NCDBInvControlTowerResourcePurpose.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,18 +11,14 @@
 
 @class NCDBInvControlTowerResource;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBInvControlTowerResourcePurpose : NSManagedObject
 
-@property (nonatomic) int32_t purposeID;
-@property (nonatomic, retain) NSString * purposeText;
-@property (nonatomic, retain) NSSet *controlTowerResources;
-@end
-
-@interface NCDBInvControlTowerResourcePurpose (CoreDataGeneratedAccessors)
-
-- (void)addControlTowerResourcesObject:(NCDBInvControlTowerResource *)value;
-- (void)removeControlTowerResourcesObject:(NCDBInvControlTowerResource *)value;
-- (void)addControlTowerResources:(NSSet *)values;
-- (void)removeControlTowerResources:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBInvControlTowerResourcePurpose+CoreDataProperties.h"

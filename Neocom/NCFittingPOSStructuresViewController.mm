@@ -82,7 +82,7 @@
 			NSMutableDictionary* structuresDic = [NSMutableDictionary new];
 			auto controlTower = self.controller.engine.engine->getControlTower();
 			
-			for (auto structure: controlTower->getStructures()) {
+			for (const auto& structure: controlTower->getStructures()) {
 				int32_t typeID = structure->getTypeID();
 				NCFittingPOSStructuresViewControllerRow* row = structuresDic[@(typeID)];
 				if (!row) {
@@ -152,7 +152,7 @@
 															auto controlTower = self.controller.engine.engine->getControlTower();
 															eufe::Module::State state = eufe::Module::STATE_ACTIVE;
 															std::shared_ptr<eufe::Charge> charge = nullptr;
-															for (auto structure: controlTower->getStructures()) {
+															for (const auto& structure: controlTower->getStructures()) {
 																if (structure->getTypeID() == typeID) {
 																	state = structure->getState();
 																	charge = structure->getCharge();
@@ -218,7 +218,7 @@
 		
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDelete style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
 			[self.controller.engine performBlockAndWait:^{
-				for (auto structure: structures)
+				for (const auto& structure: structures)
 					controlTower->removeStructure(structure);
 			}];
 			[self.controller reload];
@@ -245,7 +245,7 @@
 		if (structure->getState() >= eufe::Module::STATE_ACTIVE) {
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonOffline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
-					for (auto structure: structures)
+					for (const auto& structure: structures)
 						structure->setState(eufe::Module::STATE_OFFLINE);
 				}];
 				[self.controller reload];
@@ -254,7 +254,7 @@
 		else {
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonOnline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
-					for (auto structure: structures)
+					for (const auto& structure: structures)
 						structure->setState(eufe::Module::STATE_ACTIVE);
 				}];
 				[self.controller reload];
@@ -284,7 +284,7 @@
 					[self.controller.engine performBlock:^{
 						if (n > 0) {
 							int i = n;
-							for (auto structure: structures) {
+							for (const auto& structure: structures) {
 								if (i <= 0)
 									break;
 								controlTower->removeStructure(structure);
@@ -327,7 +327,7 @@
 																completionHandler:^(NCDBInvType *type) {
 																	int32_t typeID = type.typeID;
 																	[self.controller.engine performBlockAndWait:^{
-																		for (auto structure: structures)
+																		for (const auto& structure: structures)
 																			structure->setCharge(typeID);
 																	}];
 																	[self.controller reload];
@@ -343,7 +343,7 @@
 
 				[actions addObject:[UIAlertAction actionWithTitle:ActionButtonUnloadAmmo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 					[self.controller.engine performBlockAndWait:^{
-						for (auto structure: structures)
+						for (const auto& structure: structures)
 							structure->clearCharge();
 					}];
 					[self.controller reload];
@@ -399,6 +399,7 @@
 	if (row && !row.isUpToDate) {
 		row.isUpToDate = YES;
 		[self.controller.engine performBlock:^{
+			NCFittingPOSStructuresViewControllerRow* newRow = [NCFittingPOSStructuresViewControllerRow new];
 			auto structure = row.structures.front();
 			int optimal = (int) structure->getMaxRange();
 			int falloff = (int) structure->getFalloff();
@@ -406,14 +407,14 @@
 			
 			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:structure->getTypeID()];
 			
-			row.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.structures.size()];
-			row.typeImage = type.icon.image.image;
+			newRow.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.structures.size()];
+			newRow.typeImage = type.icon.image.image;
 			
 			auto charge = structure->getCharge();
 			if (charge)
-				row.chargeText = type.typeName;
+				newRow.chargeText = type.typeName;
 			else
-				row.chargeText = nil;
+				newRow.chargeText = nil;
 
 			if (optimal > 0) {
 				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
@@ -421,27 +422,32 @@
 					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
 				if (trackingSpeed > 0)
 					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-				row.optimalText = s;
+				newRow.optimalText = s;
 			}
 			else
-				row.optimalText = nil;
+				newRow.optimalText = nil;
 
 			switch (structure->getState()) {
 				case eufe::Module::STATE_ACTIVE:
-					row.stateImage = [UIImage imageNamed:@"active"];
+					newRow.stateImage = [UIImage imageNamed:@"active"];
 					break;
 				case eufe::Module::STATE_ONLINE:
-					row.stateImage = [UIImage imageNamed:@"online"];
+					newRow.stateImage = [UIImage imageNamed:@"online"];
 					break;
 				case eufe::Module::STATE_OVERLOADED:
-					row.stateImage = [UIImage imageNamed:@"overheated"];
+					newRow.stateImage = [UIImage imageNamed:@"overheated"];
 					break;
 				default:
-					row.stateImage = [UIImage imageNamed:@"offline"];
+					newRow.stateImage = [UIImage imageNamed:@"offline"];
 					break;
 			}
 
 			dispatch_async(dispatch_get_main_queue(), ^{
+				row.typeName = newRow.typeName;
+				row.typeImage = newRow.typeImage;
+				row.chargeText = newRow.chargeText;
+				row.optimalText = newRow.optimalText;
+				row.stateImage = newRow.stateImage;
 				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 			});
 		}];

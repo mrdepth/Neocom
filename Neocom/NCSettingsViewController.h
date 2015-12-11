@@ -17,9 +17,13 @@
 @property (weak, nonatomic) IBOutlet UISwitch *plexSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *mineralsSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *iCloudSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *loadImplantsSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *saveChangesPromptSwitch;
 @property (weak, nonatomic) IBOutlet UITableViewCell *databaseCell;
 
 - (IBAction)onChangeNotification:(id)sender;
 - (IBAction)onChangeMarketPricesMonitor:(id)sender;
 - (IBAction)onChangeCloud:(id)sender;
+- (IBAction)onChangeLoadImplants:(id)sender;
+- (IBAction)onChangeSaveChangesPrompt:(id)sender;
 @end

@@ -387,8 +387,9 @@
 	
 	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.marketOrder.price)]];
 	cell.quantityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@ / %@", nil),
-							   [NSNumberFormatter neocomLocalizedStringFromInteger:row.marketOrder.volEntered],
-							   [NSNumberFormatter neocomLocalizedStringFromInteger:row.marketOrder.volRemaining]];
+							   [NSNumberFormatter neocomLocalizedStringFromInteger:row.marketOrder.volRemaining],
+							   [NSNumberFormatter neocomLocalizedStringFromInteger:row.marketOrder.volEntered]
+							   ];
 	
 	if (row.characterName)
 		cell.issuedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Issued %@ by %@", nil), [self.dateFormatter stringFromDate:row.marketOrder.issued], row.characterName];

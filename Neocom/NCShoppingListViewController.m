@@ -98,7 +98,11 @@
 		NSArray* accounts = self.accounts;
 		if (!accounts)
 			self.accounts = @[account];
+		else
+			[self reload];
 	}
+	else
+		[self reload];
 }
 
 - (void) viewWillAppear:(BOOL)animated {

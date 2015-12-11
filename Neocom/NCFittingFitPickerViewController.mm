@@ -104,11 +104,19 @@
 								 inView:cell
 							   animated:YES
 					  completionHandler:^(NCDBInvType *type) {
-						  NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-						  loadout.typeID = type.typeID;
-						  loadout.name = type.typeName;
-						  loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
-						  NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
+						  BOOL disableSaveChangesPrompt = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDisableSaveChangesPromptKey];
+
+						  NCShipFit* fit;
+						  if (disableSaveChangesPrompt) {
+							  NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+							  loadout.typeID = type.typeID;
+							  loadout.name = type.typeName;
+							  loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+							  fit = [[NCShipFit alloc] initWithLoadout:loadout];
+						  }
+						  else
+							  fit = [[NCShipFit alloc] initWithType:type];
+						  
 						  self.selectedFit = fit;
                           [controller dismissAnimated];
 						  [self performSegueWithIdentifier:@"Unwind" sender:cell];

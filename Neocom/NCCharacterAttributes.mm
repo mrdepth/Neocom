@@ -29,6 +29,8 @@
 }
 
 + (instancetype) optimalAttributesWithTrainingQueue:(NCTrainingQueue*) trainingQueue {
+	if (trainingQueue.skills.count == 0)
+		return trainingQueue.characterAttributes ?: [NCCharacterAttributes defaultCharacterAttributes];
 	NCCharacterAttributes* characterAttributes = [NCCharacterAttributes defaultCharacterAttributes];
 
 	__block std::map<int, NSInteger> skillPoints;
@@ -65,7 +67,7 @@
 						continue;
 					
 					float trainingTime = 0;
-					for (auto i: skillPoints) {
+					for (const auto& i: skillPoints) {
 						int primaryAttribute = 0;
 						int secondaryAttribute = 0;
 						

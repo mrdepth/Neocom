@@ -14,6 +14,7 @@
 #import "NCFittingEHPCell.h"
 #import "NCFittingShipCapacitorCell.h"
 #import "NCFittingShipFirepowerCell.h"
+#import "NCFittingDamageVectorCell.h"
 #import "NCFittingShipTankCell.h"
 #import "NCFittingShipMiscCell.h"
 #import "NCFittingShipPriceCell.h"
@@ -197,7 +198,7 @@
 								labels[i].progress = [values[i] floatValue];
 								labels[i].text = texts[i];
 							}
-							cell.hpLabel.text = data[@"hp"];
+							cell.hpLabel.text = texts[4];
 							cell.categoryImageView.image = data[@"categoryImage"];
 						};
 						row.loadingBlock = ^(NCFittingShipStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
@@ -217,7 +218,7 @@
 											[texts addObject:[NSString stringWithFormat:@"%.1f%%", resistances.layers[i].resistances[j] * 100]];
 										}
 										[values addObject:@(hp.layers[i])];
-										[texts addObject:[NSString shortStringWithFloat:hp.layers[4] unit:nil]];
+										[texts addObject:[NSString shortStringWithFloat:hp.layers[i] unit:nil]];
 									}
 									else {
 										auto damagePattern = ship->getDamagePattern();
@@ -434,6 +435,50 @@
 							completionBlock(nil);
 					};
 					[rows addObject:row];
+					
+					
+					row = [NCFittingShipStatsViewControllerRow new];
+					row.cellIdentifier = @"NCFittingDamageVectorCell";
+					row.configurationBlock = ^(id tableViewCell, NSDictionary* data) {
+						NCFittingDamageVectorCell* cell = (NCFittingDamageVectorCell*) tableViewCell;
+						NCProgressLabel* labels[] = {cell.emLabel, cell.thermalLabel, cell.kineticLabel, cell.explosiveLabel};
+						NSArray* values = data[@"values"];
+						NSArray* texts = data[@"texts"];
+						for (int i = 0; i < 4; i++) {
+							labels[i].progress = [values[i] floatValue];
+							labels[i].text = texts[i];
+						}
+					};
+					row.loadingBlock = ^(NCFittingShipStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
+						auto character = controller.controller.fit.pilot;
+						if (character) {
+							[controller.controller.engine performBlock:^{
+								auto ship = character->getShip();
+								NSMutableArray* values = [NSMutableArray new];
+								NSMutableArray* texts = [NSMutableArray new];
+								
+								auto damagePattern = eufe::DamagePattern(ship->getWeaponDps() + ship->getDroneDps());
+								for (int j = 0; j < 4; j++) {
+									[values addObject:@(damagePattern.damageTypes[j])];
+									[texts addObject:[NSString stringWithFormat:@"%.1f%%", damagePattern.damageTypes[j] * 100]];
+								}
+								[values addObject:@(0)];
+								[texts addObject:@""];
+								
+								NSDictionary* data =
+								@{@"values": values,
+								  @"texts": texts};
+								dispatch_async(dispatch_get_main_queue(), ^{
+									completionBlock(data);
+								});
+							}];
+						}
+						else
+							completionBlock(nil);
+					};
+					[rows addObject:row];
+					
+					
 					section.rows = rows;
 				}
 				[sections addObject:section];
@@ -493,7 +538,9 @@
 										sensorImage = [UIImage imageNamed:@"multispectral"];
 										break;
 								}
-
+								if (!sensorImage)
+									sensorImage = [UIImage imageNamed:@"multispectral"];
+								
 								NSDictionary* data =
 								@{@"targets": [NSString stringWithFormat:@"%d", targets],
 								  @"targetRange": [NSString stringWithFormat:@"%.1f km", targetRange],
@@ -545,10 +592,10 @@
 								
 								[types addObject:@(ship->getTypeID())];
 								
-								for (auto i: ship->getModules())
+								for (const auto& i: ship->getModules())
 									[types addObject:@(i->getTypeID())];
 								
-								for (auto i: ship->getDrones()) {
+								for (const auto& i: ship->getDrones()) {
 									[types addObject:@(i->getTypeID())];
 									[drones addObject:@(i->getTypeID())];
 								}
@@ -637,6 +684,8 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 1 && indexPath.row == 4)
 		[self.controller performSegueWithIdentifier:@"NCFittingDamagePatternsViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+	else if (indexPath.section == 4 && indexPath.row == 0)
+		[self.controller performSegueWithIdentifier:@"NCFittingShipOffenseStatsViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

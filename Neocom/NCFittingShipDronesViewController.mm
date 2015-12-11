@@ -82,7 +82,7 @@
 			
 			NSMutableDictionary* dronesDic = [NSMutableDictionary new];
 			auto ship = self.controller.fit.pilot->getShip();
-			for (auto drone: ship->getDrones()) {
+			for (const auto& drone: ship->getDrones()) {
 				int32_t typeID = drone->getTypeID();
 				NCFittingShipDronesViewControllerRow* row = dronesDic[@(typeID)];
 				if (!row) {
@@ -140,7 +140,7 @@
 															auto ship = self.controller.fit.pilot->getShip();
 															
 															std::shared_ptr<eufe::Drone> sameDrone = nullptr;
-															for (auto i: ship->getDrones()) {
+															for (const auto& i: ship->getDrones()) {
 																if (i->getTypeID() == typeID) {
 																	sameDrone = i;
 																	break;
@@ -202,14 +202,15 @@
 	if (row && !row.isUpToDate) {
 		row.isUpToDate = YES;
 		[self.controller.engine performBlock:^{
+			NCFittingShipDronesViewControllerRow* newRow = [NCFittingShipDronesViewControllerRow new];
 			auto drone = row.drones.front();
 			int optimal = (int) drone->getMaxRange();
 			int falloff = (int) drone->getFalloff();
 			float trackingSpeed = drone->getTrackingSpeed();
 			
 			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];
-			row.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.drones.size()];
-			row.typeImage = type.icon.image.image;
+			newRow.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.drones.size()];
+			newRow.typeImage = type.icon.image.image;
 			
 			if (optimal > 0) {
 				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
@@ -217,15 +218,20 @@
 					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
 				if (trackingSpeed > 0)
 					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-				row.optimalText = s;
+				newRow.optimalText = s;
 			}
 			else
-				row.optimalText = nil;
+				newRow.optimalText = nil;
 			
-			row.stateImage = drone->isActive() ? [UIImage imageNamed:@"active"] : [UIImage imageNamed:@"offline"];
-			row.hasTarget = drone->getTarget() != nullptr;
+			newRow.stateImage = drone->isActive() ? [UIImage imageNamed:@"active"] : [UIImage imageNamed:@"offline"];
+			newRow.hasTarget = drone->getTarget() != nullptr;
 
 			dispatch_async(dispatch_get_main_queue(), ^{
+				row.typeName = newRow.typeName;
+				row.typeImage = newRow.typeImage;
+				row.optimalText = newRow.optimalText;
+				row.hasTarget = newRow.hasTarget;
+				row.stateImage = newRow.stateImage;
 				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 			});
 		}];
@@ -248,7 +254,7 @@
 		
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDelete style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
 			[self.controller.engine performBlockAndWait:^{
-				for (auto drone: drones)
+				for (const auto& drone: drones)
 					ship->removeDrone(drone);
 			}];
 			[self.controller reload];
@@ -263,7 +269,7 @@
 		if (drone->isActive()) {
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDeactivate style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
-					for (auto drone: drones)
+					for (const auto& drone: drones)
 						drone->setActive(false);
 				}];
 				[self.controller reload];
@@ -272,7 +278,7 @@
 		else {
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonActivate style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
-					for (auto drone: drones)
+					for (const auto& drone: drones)
 						drone->setActive(true);
 				}];
 				[self.controller reload];
@@ -302,7 +308,7 @@
 					[self.controller.engine performBlock:^{
 						if (n > 0) {
 							int i = n;
-							for (auto drone: drones) {
+							for (const auto& drone: drones) {
 								if (i <= 0)
 									break;
 								ship->removeDrone(drone);
@@ -337,7 +343,7 @@
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				NSMutableArray* array = [NSMutableArray new];
 				[self.controller.engine performBlockAndWait:^{
-					for (auto drone: drones)
+					for (const auto& drone: drones)
 						[array addObject:[NCFittingEngineItemPointer pointerWithItem:drone]];
 				}];
 				[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController"
@@ -346,7 +352,7 @@
 			if (drone->getTarget() != NULL) {
 				[actions addObject:[UIAlertAction actionWithTitle:ActionButtonClearTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 					[self.controller.engine performBlockAndWait:^{
-						for (auto drone: drones)
+						for (const auto& drone: drones)
 							drone->clearTarget();
 					}];
 					[self.controller reload];

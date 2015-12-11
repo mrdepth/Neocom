@@ -2,21 +2,23 @@
 //  NCDBIndProduct.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBChrRace, NCDBIndActivity, NCDBInvType;
+@class NCDBIndActivity, NCDBInvType;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface NCDBIndProduct : NSManagedObject
 
-@property (nonatomic) int32_t quantity;
-@property (nonatomic) float probability;
-@property (nonatomic, retain) NCDBIndActivity *activity;
-@property (nonatomic, retain) NCDBInvType *productType;
-//@property (nonatomic, retain) NCDBChrRace *race;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBIndProduct+CoreDataProperties.h"

@@ -2,7 +2,7 @@
 //  NCDBTxtDescription.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,10 +11,14 @@
 
 @class NCDBCertCertificate, NCDBInvType;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBTxtDescription : NSManagedObject
 
-@property (nonatomic, retain) NSAttributedString* text;
-@property (nonatomic, retain) NCDBCertCertificate *certificate;
-@property (nonatomic, retain) NCDBInvType *type;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBTxtDescription+CoreDataProperties.h"

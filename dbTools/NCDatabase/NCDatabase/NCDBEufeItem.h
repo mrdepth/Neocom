@@ -2,27 +2,23 @@
 //  NCDBEufeItem.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBEufeItemCategory, NCDBEufeItemGroup, NCDBInvType;
+@class NCDBEufeItemCategory, NCDBEufeItemGroup, NCDBInvType, NCDBEufeItemRequirements, NCDBEufeItemDamage, NCDBEufeItemShipResources;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface NCDBEufeItem : NSManagedObject
 
-@property (nonatomic, retain) NCDBEufeItemCategory *charge;
-@property (nonatomic, retain) NSSet *groups;
-@property (nonatomic, retain) NCDBInvType *type;
-@end
-
-@interface NCDBEufeItem (CoreDataGeneratedAccessors)
-
-- (void)addGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)removeGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)addGroups:(NSSet *)values;
-- (void)removeGroups:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBEufeItem+CoreDataProperties.h"

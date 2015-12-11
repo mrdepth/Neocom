@@ -2,7 +2,7 @@
 //  NCDBEveIcon.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -20,21 +20,8 @@
 #import "NCDBNpcGroup.h"
 #import "NCDBRamActivity.h"
 
-
 @implementation NCDBEveIcon
 
-@dynamic iconFile;
-@dynamic activities;
-@dynamic attributeTypes;
-@dynamic categories;
-@dynamic groups;
-@dynamic image;
-@dynamic itemGroups;
-@dynamic marketGroups;
-@dynamic masteryLevels;
-@dynamic metaGroups;
-@dynamic npcGroups;
-@dynamic races;
-@dynamic types;
+// Insert code here to add functionality to your managed object subclass
 
 @end

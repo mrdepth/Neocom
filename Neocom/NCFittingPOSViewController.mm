@@ -241,6 +241,9 @@
 			}]];
 		else
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDuplicate style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self.fit duplicateWithCompletioBloc:^{
+					self.title = self.fit.loadoutName;
+				}];
 			}]];
 		
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetDamagePattern style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -274,7 +277,7 @@
 				auto controlTower = self.engine.engine->getControlTower();
 				addItem(controlTower, 1);
 				
-				for (auto structure: controlTower->getStructures()) {
+				for (const auto& structure: controlTower->getStructures()) {
 					addItem(structure, 1);
 					
 					auto charge = structure->getCharge();

@@ -783,4 +783,11 @@
 	}
 }
 
+- (NSManagedObjectContext*) settingsManagedObjectContext {
+	if (!_settingsManagedObjectContext) {
+		_settingsManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContextWithConcurrencyType:NSMainQueueConcurrencyType];
+	}
+	return _settingsManagedObjectContext;
+}
+
 @end

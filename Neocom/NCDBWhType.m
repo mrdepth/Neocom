@@ -2,22 +2,15 @@
 //  NCDBWhType.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 17.04.15.
-//  Copyright (c) 2015 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import "NCDBWhType.h"
 #import "NCDBInvType.h"
 
-
 @implementation NCDBWhType
 
-@dynamic targetSystemClass;
-@dynamic maxStableTime;
-@dynamic maxStableMass;
-@dynamic maxRegeneration;
-@dynamic maxJumpMass;
-@dynamic targetSystemClassDisplayName;
-@dynamic type;
+// Insert code here to add functionality to your managed object subclass
 
 @end

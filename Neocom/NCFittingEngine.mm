@@ -42,6 +42,7 @@
 - (id) init {
 	if (self = [super init]) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+		self.userInfo = [NSMutableDictionary new];
 //		self.privateQueue = dispatch_queue_create(0, DISPATCH_QUEUE_SERIAL);
 	}
 	return self;
@@ -110,16 +111,20 @@
 		}
 
 		
+//		CFTimeInterval t0 = CACurrentMediaTime();
+
 		NSAssert(fit.pilot == nullptr, @"NCShipFit already loaded");
 		auto pilot = self.engine->getGang()->addPilot();
 		fit.pilot = pilot;
 		auto ship = pilot->setShip(static_cast<eufe::TypeID>(fit.typeID));
+//		CFTimeInterval t1 = CACurrentMediaTime();
+//		NSLog(@"Fit loading time %f", t1 - t0);
 		if (ship) {
 			for (NSString* key in @[@"subsystems", @"rigSlots", @"lowSlots", @"medSlots", @"hiSlots"]) {
 				for (NCLoadoutDataShipModule* item in [loadoutData valueForKey:key]) {
 					auto module = ship->addModule(item.typeID);
 					if (module) {
-						module->setState(item.state);
+						module->setPreferredState(item.state);
 						if (item.chargeID)
 							module->setCharge(item.chargeID);
 					}
@@ -143,7 +148,7 @@
 			
 			for (NSNumber* typeID in charges) {
 				eufe::TypeID chargeID = [typeID intValue];
-				for (auto module: ship->getModules()) {
+				for (const auto& module: ship->getModules()) {
 					if (!module->getCharge())
 						module->setCharge(chargeID);
 				}

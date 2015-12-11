@@ -2,7 +2,7 @@
 //  NCDBIndActivity.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -13,14 +13,8 @@
 #import "NCDBIndRequiredSkill.h"
 #import "NCDBRamActivity.h"
 
-
 @implementation NCDBIndActivity
 
-@dynamic time;
-@dynamic blueprintType;
-@dynamic activity;
-@dynamic products;
-@dynamic requiredMaterials;
-@dynamic requiredSkills;
+// Insert code here to add functionality to your managed object subclass
 
 @end

@@ -11,7 +11,7 @@
 			<key>image</key>
 			<string>charactersheet</string>
 			<key>charAccessMask</key>
-			<integer>16777224</integer>
+			<integer>17039368</integer>
 			<key>corpAccessMask</key>
 			<integer>-1</integer>
 			<key>modal</key>
@@ -27,7 +27,7 @@
 			<key>image</key>
 			<string>skills</string>
 			<key>charAccessMask</key>
-			<integer>17</integer>
+			<integer>262152</integer>
 			<key>corpAccessMask</key>
 			<integer>-1</integer>
 			<key>detailsKeyPath</key>
@@ -54,6 +54,18 @@
 			<string>Calendar Events</string>
 			<key>image</key>
 			<string>calendar</string>
+			<key>charAccessMask</key>
+			<integer>1048580</integer>
+			<key>corpAccessMask</key>
+			<integer>-1</integer>
+		</dict>
+		<dict>
+			<key>segueIdentifier</key>
+			<string>NCWealthViewController</string>
+			<key>title</key>
+			<string>Wealth</string>
+			<key>image</key>
+			<string>folder</string>
 			<key>charAccessMask</key>
 			<integer>1</integer>
 			<key>corpAccessMask</key>
@@ -181,7 +193,7 @@
 			<key>image</key>
 			<string>marketdeliveries</string>
 			<key>charAccessMask</key>
-			<integer>4</integer>
+			<integer>4096</integer>
 			<key>corpAccessMask</key>
 			<integer>4096</integer>
 		</dict>
@@ -193,7 +205,7 @@
 			<key>image</key>
 			<string>contracts</string>
 			<key>charAccessMask</key>
-			<integer>67</integer>
+			<integer>67108864</integer>
 			<key>corpAccessMask</key>
 			<integer>8388608</integer>
 		</dict>
@@ -205,9 +217,9 @@
 			<key>image</key>
 			<string>journal</string>
 			<key>charAccessMask</key>
-			<integer>4</integer>
+			<integer>4194304</integer>
 			<key>corpAccessMask</key>
-			<integer>2097169</integer>
+			<integer>10485760</integer>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -217,7 +229,7 @@
 			<key>image</key>
 			<string>wallet</string>
 			<key>charAccessMask</key>
-			<integer>2</integer>
+			<integer>2097152</integer>
 			<key>corpAccessMask</key>
 			<integer>1048576</integer>
 		</dict>

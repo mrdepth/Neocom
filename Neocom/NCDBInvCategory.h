@@ -2,8 +2,8 @@
 //  NCDBInvCategory.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.09.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -11,20 +11,14 @@
 
 @class NCDBEveIcon, NCDBInvGroup;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBInvCategory : NSManagedObject
 
-@property (nonatomic) int32_t categoryID;
-@property (nonatomic, retain) NSString * categoryName;
-@property (nonatomic) BOOL published;
-@property (nonatomic, retain) NSSet *groups;
-@property (nonatomic, retain) NCDBEveIcon *icon;
-@end
-
-@interface NCDBInvCategory (CoreDataGeneratedAccessors)
-
-- (void)addGroupsObject:(NCDBInvGroup *)value;
-- (void)removeGroupsObject:(NCDBInvGroup *)value;
-- (void)addGroups:(NSSet *)values;
-- (void)removeGroups:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBInvCategory+CoreDataProperties.h"

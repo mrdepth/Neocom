@@ -2,18 +2,15 @@
 //  NCDBDgmAttributeCategory.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
 #import "NCDBDgmAttributeCategory.h"
 #import "NCDBDgmAttributeType.h"
 
-
 @implementation NCDBDgmAttributeCategory
 
-@dynamic categoryID;
-@dynamic categoryName;
-@dynamic attributeTypes;
+// Insert code here to add functionality to your managed object subclass
 
 @end

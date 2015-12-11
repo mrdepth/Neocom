@@ -2,20 +2,16 @@
 //  NCDBIndRequiredMaterial.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.09.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import "NCDBIndRequiredMaterial.h"
 #import "NCDBIndActivity.h"
 #import "NCDBInvType.h"
 
-
 @implementation NCDBIndRequiredMaterial
 
-@dynamic consume;
-@dynamic quantity;
-@dynamic activity;
-@dynamic materialType;
+// Insert code here to add functionality to your managed object subclass
 
 @end

@@ -2,7 +2,7 @@
 //  NCDBIndRequiredMaterial.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -10,12 +10,8 @@
 #import "NCDBIndActivity.h"
 #import "NCDBInvType.h"
 
-
 @implementation NCDBIndRequiredMaterial
 
-@dynamic quantity;
-@dynamic consume;
-@dynamic activity;
-@dynamic materialType;
+// Insert code here to add functionality to your managed object subclass
 
 @end

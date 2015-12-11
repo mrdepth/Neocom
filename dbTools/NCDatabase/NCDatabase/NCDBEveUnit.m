@@ -2,18 +2,15 @@
 //  NCDBEveUnit.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
 #import "NCDBEveUnit.h"
 #import "NCDBDgmAttributeType.h"
 
-
 @implementation NCDBEveUnit
 
-@dynamic displayName;
-@dynamic unitID;
-@dynamic attributeTypes;
+// Insert code here to add functionality to your managed object subclass
 
 @end

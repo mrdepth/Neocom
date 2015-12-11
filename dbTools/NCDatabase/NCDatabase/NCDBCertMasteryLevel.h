@@ -2,7 +2,7 @@
 //  NCDBCertMasteryLevel.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,19 +11,14 @@
 
 @class NCDBCertMastery, NCDBEveIcon;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBCertMasteryLevel : NSManagedObject
 
-@property (nonatomic, retain) NSString * displayName;
-@property (nonatomic) int16_t level;
-@property (nonatomic, retain) NCDBEveIcon *icon;
-@property (nonatomic, retain) NSSet *masteries;
-@end
-
-@interface NCDBCertMasteryLevel (CoreDataGeneratedAccessors)
-
-- (void)addMasteriesObject:(NCDBCertMastery *)value;
-- (void)removeMasteriesObject:(NCDBCertMastery *)value;
-- (void)addMasteries:(NSSet *)values;
-- (void)removeMasteries:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBCertMasteryLevel+CoreDataProperties.h"

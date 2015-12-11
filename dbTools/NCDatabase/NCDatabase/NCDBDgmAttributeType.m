@@ -2,7 +2,7 @@
 //  NCDBDgmAttributeType.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -12,16 +12,8 @@
 #import "NCDBEveIcon.h"
 #import "NCDBEveUnit.h"
 
-
 @implementation NCDBDgmAttributeType
 
-@dynamic attributeID;
-@dynamic attributeName;
-@dynamic displayName;
-@dynamic published;
-@dynamic attributeCategory;
-@dynamic icon;
-@dynamic typeAttributes;
-@dynamic unit;
+// Insert code here to add functionality to your managed object subclass
 
 @end

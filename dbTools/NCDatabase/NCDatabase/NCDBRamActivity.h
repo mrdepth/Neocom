@@ -2,7 +2,7 @@
 //  NCDBRamActivity.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -11,26 +11,14 @@
 
 @class NCDBEveIcon, NCDBIndActivity, NCDBRamAssemblyLineType;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBRamActivity : NSManagedObject
 
-@property (nonatomic) int32_t activityID;
-@property (nonatomic, retain) NSString * activityName;
-@property (nonatomic) BOOL published;
-@property (nonatomic, retain) NSSet *assemblyLineTypes;
-@property (nonatomic, retain) NCDBEveIcon *icon;
-@property (nonatomic, retain) NSSet *indActivities;
-@end
-
-@interface NCDBRamActivity (CoreDataGeneratedAccessors)
-
-- (void)addAssemblyLineTypesObject:(NCDBRamAssemblyLineType *)value;
-- (void)removeAssemblyLineTypesObject:(NCDBRamAssemblyLineType *)value;
-- (void)addAssemblyLineTypes:(NSSet *)values;
-- (void)removeAssemblyLineTypes:(NSSet *)values;
-
-- (void)addIndActivitiesObject:(NCDBIndActivity *)value;
-- (void)removeIndActivitiesObject:(NCDBIndActivity *)value;
-- (void)addIndActivities:(NSSet *)values;
-- (void)removeIndActivities:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBRamActivity+CoreDataProperties.h"

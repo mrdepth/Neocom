@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iZd-E0-R0E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iZd-E0-R0E">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -691,6 +691,7 @@
                         <segue destination="mic-we-dmt" kind="custom" identifier="NCAboutViewController" customClass="NCAdaptiveModalSegue" id="imX-Np-2uC"/>
                         <segue destination="l7n-v9-sUl" kind="custom" identifier="NCDonationViewController" customClass="NCAdaptiveModalSegue" id="iTv-5C-0w9"/>
                         <segue destination="FcJ-g8-V6g" kind="custom" identifier="NCSettingsViewController" customClass="NCAdaptiveModalSegue" id="EDu-ap-Dhu"/>
+                        <segue destination="JAe-Gm-sr9" kind="showDetail" identifier="NCWealthViewController" id="efP-vV-OhJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JSS-DF-SnS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1809,6 +1810,47 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vt4-nI-h5e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="921" y="4191"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="xhT-hU-2m1">
+            <objects>
+                <viewController storyboardIdentifier="NCWealthViewController" id="fiA-F4-8P5" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wEE-oU-qeh"/>
+                        <viewControllerLayoutGuide type="bottom" id="Op7-hc-z06"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7ue-qj-gMY">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="fND-HO-Xrh"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Character"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UZw-xi-CFt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6445" y="861"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="bDN-HA-7RQ">
+            <objects>
+                <navigationController id="JAe-Gm-sr9" customClass="NCNavigationController" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="YSa-Oa-3Zp">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="fiA-F4-8P5" kind="relationship" relationship="rootViewController" id="pLq-NV-HWx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GCv-hR-ICA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6445" y="163"/>
         </scene>
     </scenes>
     <resources>

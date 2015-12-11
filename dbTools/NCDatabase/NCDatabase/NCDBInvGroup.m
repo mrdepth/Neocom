@@ -2,7 +2,7 @@
 //  NCDBInvGroup.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -13,16 +13,8 @@
 #import "NCDBInvType.h"
 #import "NCDBNpcGroup.h"
 
-
 @implementation NCDBInvGroup
 
-@dynamic groupID;
-@dynamic groupName;
-@dynamic published;
-@dynamic category;
-@dynamic certificates;
-@dynamic icon;
-@dynamic npcGroups;
-@dynamic types;
+// Insert code here to add functionality to your managed object subclass
 
 @end

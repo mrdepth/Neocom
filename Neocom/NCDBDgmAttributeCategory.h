@@ -2,8 +2,8 @@
 //  NCDBDgmAttributeCategory.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.09.14.
-//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 29.11.15.
+//  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -11,18 +11,14 @@
 
 @class NCDBDgmAttributeType;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NCDBDgmAttributeCategory : NSManagedObject
 
-@property (nonatomic) int32_t categoryID;
-@property (nonatomic, retain) NSString * categoryName;
-@property (nonatomic, retain) NSSet *attributeTypes;
-@end
-
-@interface NCDBDgmAttributeCategory (CoreDataGeneratedAccessors)
-
-- (void)addAttributeTypesObject:(NCDBDgmAttributeType *)value;
-- (void)removeAttributeTypesObject:(NCDBDgmAttributeType *)value;
-- (void)addAttributeTypes:(NSSet *)values;
-- (void)removeAttributeTypes:(NSSet *)values;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "NCDBDgmAttributeCategory+CoreDataProperties.h"

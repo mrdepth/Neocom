@@ -2,22 +2,15 @@
 //  NCDBWhType.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.04.15.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
 #import "NCDBWhType.h"
 #import "NCDBInvType.h"
 
-
 @implementation NCDBWhType
 
-@dynamic targetSystemClass;
-@dynamic maxStableTime;
-@dynamic maxStableMass;
-@dynamic maxRegeneration;
-@dynamic maxJumpMass;
-@dynamic targetSystemClassDisplayName;
-@dynamic type;
+// Insert code here to add functionality to your managed object subclass
 
 @end

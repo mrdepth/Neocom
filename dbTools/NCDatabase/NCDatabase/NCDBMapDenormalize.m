@@ -2,7 +2,7 @@
 //  NCDBMapDenormalize.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 17.09.14.
+//  Created by Artem Shimanski on 29.11.15.
 //
 //
 
@@ -12,15 +12,8 @@
 #import "NCDBMapRegion.h"
 #import "NCDBMapSolarSystem.h"
 
-
 @implementation NCDBMapDenormalize
 
-@dynamic itemID;
-@dynamic itemName;
-@dynamic security;
-@dynamic constellation;
-@dynamic region;
-@dynamic solarSystem;
-@dynamic type;
+// Insert code here to add functionality to your managed object subclass
 
 @end

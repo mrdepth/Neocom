@@ -460,24 +460,6 @@
 	return nil;
 }
 
-#pragma mark - UISearchDisplayDelegate
-
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-	[self searchWithSearchString:searchString];
-	return NO;
-}
-
-- (BOOL) searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption {
-	[self searchWithSearchString:controller.searchBar.text];
-	return NO;
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-	tableView.backgroundView = nil;
-	tableView.backgroundColor = self.tableView.backgroundColor;
-	tableView.separatorColor = self.tableView.separatorColor;
-}
-
 #pragma mark - UISearchResultsUpdating
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {

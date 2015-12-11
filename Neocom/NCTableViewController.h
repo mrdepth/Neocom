@@ -13,7 +13,7 @@
 #import "CollapsableTableView.h"
 #import "NCDefaultTableViewCell.h"
 
-@interface NCTableViewController : UITableViewController<UISearchDisplayDelegate, CollapsableTableViewDelegate>
+@interface NCTableViewController : UITableViewController<CollapsableTableViewDelegate>
 @property (nonatomic, strong, readonly) NCTaskManager* taskManager;
 @property (nonatomic, strong, readonly) id cacheData;
 @property (nonatomic, strong) UISearchController* searchController;

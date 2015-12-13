@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12215B511C1D8937003B6DA5 /* FetchRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12215B4D1C1D8937003B6DA5 /* FetchRequest.cpp */; };
+		12215B521C1D8937003B6DA5 /* SqliteFetchRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12215B4E1C1D8937003B6DA5 /* SqliteFetchRequest.cpp */; };
 		12436D73194596750090D4A6 /* EVEDBCertCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D1C194596740090D4A6 /* EVEDBCertCertificate.m */; };
 		12436D74194596750090D4A6 /* EVEDBCertMastery.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D1E194596740090D4A6 /* EVEDBCertMastery.m */; };
 		12436D75194596750090D4A6 /* EVEDBCertSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D20194596740090D4A6 /* EVEDBCertSkill.m */; };
@@ -214,6 +216,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		12215B4D1C1D8937003B6DA5 /* FetchRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FetchRequest.cpp; sourceTree = "<group>"; };
+		12215B4E1C1D8937003B6DA5 /* SqliteFetchRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqliteFetchRequest.cpp; sourceTree = "<group>"; };
+		12215B4F1C1D8937003B6DA5 /* SqliteFetchRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqliteFetchRequest.h; sourceTree = "<group>"; };
+		12215B501C1D8937003B6DA5 /* FetchRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FetchRequest.h; sourceTree = "<group>"; };
 		12436D1A194596740090D4A6 /* EVEDBAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBAPI.h; sourceTree = "<group>"; };
 		12436D1B194596740090D4A6 /* EVEDBCertCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCertCertificate.h; sourceTree = "<group>"; };
 		12436D1C194596740090D4A6 /* EVEDBCertCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCertCertificate.m; sourceTree = "<group>"; };
@@ -758,6 +764,10 @@
 		12476C1319501A4C009E07C6 /* eufe */ = {
 			isa = PBXGroup;
 			children = (
+				12215B4D1C1D8937003B6DA5 /* FetchRequest.cpp */,
+				12215B4E1C1D8937003B6DA5 /* SqliteFetchRequest.cpp */,
+				12215B4F1C1D8937003B6DA5 /* SqliteFetchRequest.h */,
+				12215B501C1D8937003B6DA5 /* FetchRequest.h */,
 				12DDFB9B1C1575A8005F1382 /* CombatSimulator.cpp */,
 				12DDFB9C1C1575A8005F1382 /* CombatSimulator.h */,
 				12DDFB9D1C1575A8005F1382 /* DamageVector.cpp */,
@@ -1223,6 +1233,7 @@
 				12654B231C0B206D0060106C /* NCDBCertMastery.m in Sources */,
 				12654B111C0B206D0060106C /* NCDBInvControlTowerResourcePurpose.m in Sources */,
 				12654B191C0B206D0060106C /* NCDBNpcGroup.m in Sources */,
+				12215B511C1D8937003B6DA5 /* FetchRequest.cpp in Sources */,
 				12654B321C0B206D0060106C /* NCDBEveIconImage+CoreDataProperties.m in Sources */,
 				12436D9D194596750090D4A6 /* NSDictionary+EVEDBAPI.m in Sources */,
 				12654B101C0B206D0060106C /* NCDBInvControlTowerResourcePurpose+CoreDataProperties.m in Sources */,
@@ -1302,6 +1313,7 @@
 				12476C9219501A4D009E07C6 /* DamagePattern.cpp in Sources */,
 				12654B281C0B206D0060106C /* NCDBMapSolarSystem+CoreDataProperties.m in Sources */,
 				12584E0A19C950C500847AB1 /* EVEDBIndustryActivityRace.m in Sources */,
+				12215B521C1D8937003B6DA5 /* SqliteFetchRequest.cpp in Sources */,
 				12654B481C0B206D0060106C /* NCDBEveUnit+CoreDataProperties.m in Sources */,
 				12654B311C0B206D0060106C /* NCDBEufeItemGroup.m in Sources */,
 				12654B1D1C0B206D0060106C /* NCDBCertSkill.m in Sources */,

@@ -117,54 +117,56 @@
 
 		} progressBlock:nil];
 		[api assetListWithCompletionBlock:^(EVEAssetList *result, NSError *error) {
-			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-				@autoreleasepool {
-					NSMutableDictionary* typeIDs = [NSMutableDictionary new];
-					
-					__weak __block void (^weakProcess)(EVEAssetListItem*) = nil;
-					
-					void (^process)(EVEAssetListItem*) = ^(EVEAssetListItem* asset) {
+			NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+			[databaseManagedObjectContext performBlock:^{
+				
+				NSMutableDictionary* typeIDs = [NSMutableDictionary new];
+				
+				__weak __block void (^weakProcess)(EVEAssetListItem*) = nil;
+				
+				void (^process)(EVEAssetListItem*) = ^(EVEAssetListItem* asset) {
+					NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:asset.typeID];
+					if (type.marketGroup && type.group.category.categoryID != 9)
 						typeIDs[@(asset.typeID)] = @([typeIDs[@(asset.typeID)] longLongValue] + asset.quantity);
-						
-						for (EVEAssetListItem* item in asset.contents)
-							weakProcess(item);
-					};
-					weakProcess = process;
 					
-					for (EVEAssetListItem* asset in result.assets)
-						process(asset);
-					
-					if (typeIDs.count > 0) {
-						[[NCPriceManager sharedManager] requestPricesWithTypes:[typeIDs allKeys]
-															   completionBlock:^(NSDictionary *prices) {
-																   __block double sum = 0;
-																   [typeIDs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-																	   double price = [prices[key] doubleValue];
-																	   sum += price * [obj longLongValue];
-																   }];
-																   data.assets = sum;
-																   dispatch_async(dispatch_get_main_queue(), ^{
-																	   [self saveCacheData:data cacheDate:nil expireDate:nil];
-																	   if (sum > 0) {
-																		   NCWealthCell* cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-																		   if (clear) {
-																			   [cell.pieChartView clear];
-																			   clear = NO;
-																		   }
-																		   [cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor cyanColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Assets", nil) value:sum]] animated:YES];
-																	   }
-																	   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-																   });
+					for (EVEAssetListItem* item in asset.contents)
+						weakProcess(item);
+				};
+				weakProcess = process;
+				
+				for (EVEAssetListItem* asset in result.assets)
+					process(asset);
+				
+				if (typeIDs.count > 0) {
+					[[NCPriceManager sharedManager] requestPricesWithTypes:[typeIDs allKeys]
+														   completionBlock:^(NSDictionary *prices) {
+															   __block double sum = 0;
+															   [typeIDs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+																   double price = [prices[key] doubleValue];
+																   sum += price * [obj longLongValue];
 															   }];
-					}
-					else {
-						dispatch_async(dispatch_get_main_queue(), ^{
-							[self saveCacheData:data cacheDate:nil expireDate:nil];
-							[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-						});
-					}
+															   data.assets = sum;
+															   dispatch_async(dispatch_get_main_queue(), ^{
+																   [self saveCacheData:data cacheDate:nil expireDate:nil];
+																   if (sum > 0) {
+																	   NCWealthCell* cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+																	   if (clear) {
+																		   [cell.pieChartView clear];
+																		   clear = NO;
+																	   }
+																	   [cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor cyanColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Assets", nil) value:sum]] animated:YES];
+																   }
+																   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+															   });
+														   }];
 				}
-			});
+				else {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[self saveCacheData:data cacheDate:nil expireDate:nil];
+						[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+					});
+				}
+			}];
 		} progressBlock:nil];
 		[api industryJobsHistoryWithCompletionBlock:^(EVEIndustryJobsHistory *result, NSError *error) {
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{

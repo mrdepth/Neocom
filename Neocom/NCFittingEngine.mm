@@ -120,6 +120,7 @@
 //		CFTimeInterval t1 = CACurrentMediaTime();
 //		NSLog(@"Fit loading time %f", t1 - t0);
 		if (ship) {
+			self.engine->beginUpdates();
 			for (NSString* key in @[@"subsystems", @"rigSlots", @"lowSlots", @"medSlots", @"hiSlots"]) {
 				for (NCLoadoutDataShipModule* item in [loadoutData valueForKey:key]) {
 					auto module = ship->addModule(item.typeID);
@@ -153,6 +154,7 @@
 						module->setCharge(chargeID);
 				}
 			}
+			self.engine->commitUpdates();
 			if (ship->getFreeSlots(eufe::Module::SLOT_MODE) > 0) {
 				if (modeID > 0)
 					ship->addModule(modeID);
@@ -177,6 +179,7 @@
 	[self performBlockAndWait:^{
 		auto controlTower = self.engine->setControlTower(fit.typeID);
 		if (controlTower) {
+			self.engine->beginUpdates();
 			for (NCLoadoutDataPOSStructure* item in loadoutData.structures) {
 				for (int n = item.count; n > 0; n--) {
 					auto structure = controlTower->addStructure(item.typeID);
@@ -187,6 +190,7 @@
 						structure->setCharge(item.chargeID);
 				}
 			}
+			self.engine->commitUpdates();
 		}
 	}];
 }

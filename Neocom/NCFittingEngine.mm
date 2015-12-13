@@ -123,7 +123,7 @@
 			self.engine->beginUpdates();
 			for (NSString* key in @[@"subsystems", @"rigSlots", @"lowSlots", @"medSlots", @"hiSlots"]) {
 				for (NCLoadoutDataShipModule* item in [loadoutData valueForKey:key]) {
-					auto module = ship->addModule(item.typeID);
+					auto module = ship->addModule(item.typeID, true);
 					if (module) {
 						module->setPreferredState(item.state);
 						if (item.chargeID)

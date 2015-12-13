@@ -187,7 +187,6 @@
 		127667451914C9A900530550 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127667441914C9A900530550 /* CoreData.framework */; };
 		127667471914C9A900530550 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127667461914C9A900530550 /* Foundation.framework */; };
 		1276674A1914C9A900530550 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 127667491914C9A900530550 /* main.mm */; };
-		127667511914C9A900530550 /* NCDatabase.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 127667501914C9A900530550 /* NCDatabase.1 */; };
 		128257191BCCF4C400BC1F56 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */; };
 		12D6DC8E1920CD0A003FC5ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D6DC8D1920CD0A003FC5ED /* libsqlite3.dylib */; };
 		12D6DCF41920D1D5003FC5ED /* NCDBImageValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */; };
@@ -209,7 +208,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				127667511914C9A900530550 /* NCDatabase.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -582,7 +580,6 @@
 		127667461914C9A900530550 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		127667491914C9A900530550 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		1276674C1914C9A900530550 /* NCDatabase-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NCDatabase-Prefix.pch"; sourceTree = "<group>"; };
-		127667501914C9A900530550 /* NCDatabase.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = NCDatabase.1; sourceTree = "<group>"; };
 		128257171BCCF4C400BC1F56 /* NCStorage 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NCStorage 2.xcdatamodel"; sourceTree = "<group>"; };
 		128257181BCCF4C400BC1F56 /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
 		12D6DC8D1920CD0A003FC5ED /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -902,7 +899,6 @@
 				12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */,
 				128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */,
 				12436EAB194701B80090D4A6 /* NCDatabase.xcdatamodeld */,
-				127667501914C9A900530550 /* NCDatabase.1 */,
 				1276674B1914C9A900530550 /* Supporting Files */,
 			);
 			path = NCDatabase;

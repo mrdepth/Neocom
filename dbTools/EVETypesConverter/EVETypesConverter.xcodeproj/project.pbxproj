@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3788E59314C9D544009DC6AF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3788E59214C9D544009DC6AF /* Foundation.framework */; };
 		3788E59614C9D544009DC6AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3788E59514C9D544009DC6AF /* main.m */; };
-		3788E59A14C9D544009DC6AF /* EVETypesConverter.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3788E59914C9D544009DC6AF /* EVETypesConverter.1 */; };
 		3788E5A114C9DA8E009DC6AF /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3788E5A014C9DA8E009DC6AF /* AppKit.framework */; };
 		3788E5A414C9DD9D009DC6AF /* NSData+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 3788E5A314C9DD9D009DC6AF /* NSData+MD5.m */; };
 /* End PBXBuildFile section */
@@ -21,7 +20,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				3788E59A14C9D544009DC6AF /* EVETypesConverter.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -32,7 +30,6 @@
 		3788E59214C9D544009DC6AF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3788E59514C9D544009DC6AF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3788E59814C9D544009DC6AF /* EVETypesConverter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EVETypesConverter-Prefix.pch"; sourceTree = "<group>"; };
-		3788E59914C9D544009DC6AF /* EVETypesConverter.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = EVETypesConverter.1; sourceTree = "<group>"; };
 		3788E5A014C9DA8E009DC6AF /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		3788E5A214C9DD9D009DC6AF /* NSData+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MD5.h"; sourceTree = "<group>"; };
 		3788E5A314C9DD9D009DC6AF /* NSData+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MD5.m"; sourceTree = "<group>"; };
@@ -83,7 +80,6 @@
 				3788E5A214C9DD9D009DC6AF /* NSData+MD5.h */,
 				3788E5A314C9DD9D009DC6AF /* NSData+MD5.m */,
 				3788E59514C9D544009DC6AF /* main.m */,
-				3788E59914C9D544009DC6AF /* EVETypesConverter.1 */,
 				3788E59714C9D544009DC6AF /* Supporting Files */,
 			);
 			path = EVETypesConverter;

@@ -336,7 +336,7 @@
 							
 							asset.typeName = type.typeName;
 							
-							if (type.marketGroup)
+							if (type.marketGroup && type.group.category.categoryID != 9)
 								typeIDs[@(asset.typeID)] = @([typeIDs[@(asset.typeID)] longLongValue] + asset.quantity);
 							
 							if (asset.locationID > 0) {

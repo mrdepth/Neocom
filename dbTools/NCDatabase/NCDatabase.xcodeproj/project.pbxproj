@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12215B511C1D8937003B6DA5 /* FetchRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12215B4D1C1D8937003B6DA5 /* FetchRequest.cpp */; };
+		12215B521C1D8937003B6DA5 /* SqliteFetchRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12215B4E1C1D8937003B6DA5 /* SqliteFetchRequest.cpp */; };
 		12436D73194596750090D4A6 /* EVEDBCertCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D1C194596740090D4A6 /* EVEDBCertCertificate.m */; };
 		12436D74194596750090D4A6 /* EVEDBCertMastery.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D1E194596740090D4A6 /* EVEDBCertMastery.m */; };
 		12436D75194596750090D4A6 /* EVEDBCertSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D20194596740090D4A6 /* EVEDBCertSkill.m */; };
@@ -185,7 +187,6 @@
 		127667451914C9A900530550 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127667441914C9A900530550 /* CoreData.framework */; };
 		127667471914C9A900530550 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127667461914C9A900530550 /* Foundation.framework */; };
 		1276674A1914C9A900530550 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 127667491914C9A900530550 /* main.mm */; };
-		127667511914C9A900530550 /* NCDatabase.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 127667501914C9A900530550 /* NCDatabase.1 */; };
 		128257191BCCF4C400BC1F56 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */; };
 		12D6DC8E1920CD0A003FC5ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D6DC8D1920CD0A003FC5ED /* libsqlite3.dylib */; };
 		12D6DCF41920D1D5003FC5ED /* NCDBImageValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */; };
@@ -207,13 +208,16 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				127667511914C9A900530550 /* NCDatabase.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		12215B4D1C1D8937003B6DA5 /* FetchRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FetchRequest.cpp; sourceTree = "<group>"; };
+		12215B4E1C1D8937003B6DA5 /* SqliteFetchRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqliteFetchRequest.cpp; sourceTree = "<group>"; };
+		12215B4F1C1D8937003B6DA5 /* SqliteFetchRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqliteFetchRequest.h; sourceTree = "<group>"; };
+		12215B501C1D8937003B6DA5 /* FetchRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FetchRequest.h; sourceTree = "<group>"; };
 		12436D1A194596740090D4A6 /* EVEDBAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBAPI.h; sourceTree = "<group>"; };
 		12436D1B194596740090D4A6 /* EVEDBCertCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCertCertificate.h; sourceTree = "<group>"; };
 		12436D1C194596740090D4A6 /* EVEDBCertCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCertCertificate.m; sourceTree = "<group>"; };
@@ -576,7 +580,6 @@
 		127667461914C9A900530550 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		127667491914C9A900530550 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		1276674C1914C9A900530550 /* NCDatabase-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NCDatabase-Prefix.pch"; sourceTree = "<group>"; };
-		127667501914C9A900530550 /* NCDatabase.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = NCDatabase.1; sourceTree = "<group>"; };
 		128257171BCCF4C400BC1F56 /* NCStorage 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NCStorage 2.xcdatamodel"; sourceTree = "<group>"; };
 		128257181BCCF4C400BC1F56 /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
 		12D6DC8D1920CD0A003FC5ED /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -758,6 +761,10 @@
 		12476C1319501A4C009E07C6 /* eufe */ = {
 			isa = PBXGroup;
 			children = (
+				12215B4D1C1D8937003B6DA5 /* FetchRequest.cpp */,
+				12215B4E1C1D8937003B6DA5 /* SqliteFetchRequest.cpp */,
+				12215B4F1C1D8937003B6DA5 /* SqliteFetchRequest.h */,
+				12215B501C1D8937003B6DA5 /* FetchRequest.h */,
 				12DDFB9B1C1575A8005F1382 /* CombatSimulator.cpp */,
 				12DDFB9C1C1575A8005F1382 /* CombatSimulator.h */,
 				12DDFB9D1C1575A8005F1382 /* DamageVector.cpp */,
@@ -892,7 +899,6 @@
 				12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */,
 				128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */,
 				12436EAB194701B80090D4A6 /* NCDatabase.xcdatamodeld */,
-				127667501914C9A900530550 /* NCDatabase.1 */,
 				1276674B1914C9A900530550 /* Supporting Files */,
 			);
 			path = NCDatabase;
@@ -1223,6 +1229,7 @@
 				12654B231C0B206D0060106C /* NCDBCertMastery.m in Sources */,
 				12654B111C0B206D0060106C /* NCDBInvControlTowerResourcePurpose.m in Sources */,
 				12654B191C0B206D0060106C /* NCDBNpcGroup.m in Sources */,
+				12215B511C1D8937003B6DA5 /* FetchRequest.cpp in Sources */,
 				12654B321C0B206D0060106C /* NCDBEveIconImage+CoreDataProperties.m in Sources */,
 				12436D9D194596750090D4A6 /* NSDictionary+EVEDBAPI.m in Sources */,
 				12654B101C0B206D0060106C /* NCDBInvControlTowerResourcePurpose+CoreDataProperties.m in Sources */,
@@ -1302,6 +1309,7 @@
 				12476C9219501A4D009E07C6 /* DamagePattern.cpp in Sources */,
 				12654B281C0B206D0060106C /* NCDBMapSolarSystem+CoreDataProperties.m in Sources */,
 				12584E0A19C950C500847AB1 /* EVEDBIndustryActivityRace.m in Sources */,
+				12215B521C1D8937003B6DA5 /* SqliteFetchRequest.cpp in Sources */,
 				12654B481C0B206D0060106C /* NCDBEveUnit+CoreDataProperties.m in Sources */,
 				12654B311C0B206D0060106C /* NCDBEufeItemGroup.m in Sources */,
 				12654B1D1C0B206D0060106C /* NCDBCertSkill.m in Sources */,

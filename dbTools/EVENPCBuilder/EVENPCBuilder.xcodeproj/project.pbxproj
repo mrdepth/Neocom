@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1243762D1896696A0078F526 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1243762C1896696A0078F526 /* Foundation.framework */; };
 		124376301896696A0078F526 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243762F1896696A0078F526 /* main.m */; };
-		124376341896696A0078F526 /* EVENPCBuilder.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 124376331896696A0078F526 /* EVENPCBuilder.1 */; };
 		1243770A18966A1D0078F526 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1243770918966A1D0078F526 /* libsqlite3.dylib */; };
 /* End PBXBuildFile section */
 
@@ -20,7 +19,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				124376341896696A0078F526 /* EVENPCBuilder.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -31,7 +29,6 @@
 		1243762C1896696A0078F526 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1243762F1896696A0078F526 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		124376321896696A0078F526 /* EVENPCBuilder-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EVENPCBuilder-Prefix.pch"; sourceTree = "<group>"; };
-		124376331896696A0078F526 /* EVENPCBuilder.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = EVENPCBuilder.1; sourceTree = "<group>"; };
 		1243770918966A1D0078F526 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		1243770B189694B80078F526 /* npc.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = npc.json; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -79,7 +76,6 @@
 			isa = PBXGroup;
 			children = (
 				1243762F1896696A0078F526 /* main.m */,
-				124376331896696A0078F526 /* EVENPCBuilder.1 */,
 				124376311896696A0078F526 /* Supporting Files */,
 			);
 			path = EVENPCBuilder;

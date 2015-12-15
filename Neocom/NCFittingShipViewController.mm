@@ -561,12 +561,14 @@
 		}]];
 		
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonCombatSimulator style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-			if (self.fits.count == 2)
-				[self performSegueWithIdentifier:@"NCFittingShipCombatSimulatorViewController" sender:nil];
-			else if (self.fits.count == 1)
-				[self performSegueWithIdentifier:@"NCFittingTargetFitPickerViewController" sender:nil];
-			else if (self.fits.count > 2)
-				[self performSegueWithIdentifier:@"NCFittingTargetsViewController" sender:nil];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				if (self.fits.count == 2)
+					[self performSegueWithIdentifier:@"NCFittingShipCombatSimulatorViewController" sender:nil];
+				else if (self.fits.count == 1)
+					[self performSegueWithIdentifier:@"NCFittingTargetFitPickerViewController" sender:nil];
+				else if (self.fits.count > 2)
+					[self performSegueWithIdentifier:@"NCFittingTargetsViewController" sender:nil];
+			});
 		}]];
 
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetName style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -870,6 +872,8 @@
 			[self reload];
 		}];
 	}];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[segue.sourceViewController dismissAnimated];
 }
 
 - (IBAction) unwindFromTargetFitPicker:(UIStoryboardSegue*) segue {
@@ -883,9 +887,13 @@
 		[fit setCharacter:self.defaultCharacter withCompletionBlock:^{
 			self.fits = fits;
 			[self reload];
-			[self performSegueWithIdentifier:@"NCFittingShipCombatSimulatorViewController" sender:nil];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self performSegueWithIdentifier:@"NCFittingShipCombatSimulatorViewController" sender:nil];
+			});
 		}];
 	}];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[segue.sourceViewController dismissAnimated];
 }
 
 - (IBAction) unwindFromTargets:(UIStoryboardSegue*) segue {
@@ -910,6 +918,8 @@
 			[self performSegueWithIdentifier:@"NCFittingShipCombatSimulatorViewController" sender:sourceViewController.selectedTarget];
 		});
 	}
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[segue.sourceViewController dismissAnimated];
 }
 
 - (IBAction) unwindFromDamagePatterns:(UIStoryboardSegue*) segue {
@@ -940,6 +950,8 @@
 		}];
 		[self reload];
 	}
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[segue.sourceViewController dismissAnimated];
 }
 
 - (IBAction) unwindFromTypeVariations:(UIStoryboardSegue*) segue {

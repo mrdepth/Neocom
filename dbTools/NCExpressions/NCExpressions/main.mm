@@ -11,28 +11,34 @@
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
 
-static NSMutableArray *effects;
-static NSMutableArray *expressions;
-static NSMutableArray *operands;
-static NSMutableArray *attributes;
-static NSMutableArray *types;
-static NSMutableArray *groups;
-static NSMutableArray *categories;
+static NSMutableDictionary *effects;
+static NSMutableDictionary *expressions;
+static NSMutableDictionary *operands;
+static NSMutableDictionary *attributes;
+static NSMutableDictionary *types;
+static NSMutableDictionary *groups;
+static NSMutableDictionary *categories;
 
 static NSString* output;
 
 static int callback(void *pArg, int argc, char **argv, char **azColName){
-	NSMutableArray *rows = (__bridge NSMutableArray*) pArg;
+	NSDictionary *arg = (__bridge NSDictionary*) pArg;
+	NSString* pKey = arg[@"pKey"];
+	NSMutableDictionary* rows = arg[@"rows"];
+	
 	NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+	NSString* key;
 	for (int i = 0; i < argc; i++) {
 		if (argv[i] && azColName[i]) {
 			NSString *value = [[NSString alloc] initWithCString:argv[i] encoding:NSUTF8StringEncoding];
-			NSString *key = [[NSString alloc] initWithCString:azColName[i] encoding:NSUTF8StringEncoding];
+			NSString *k = [[NSString alloc] initWithCString:azColName[i] encoding:NSUTF8StringEncoding];
 			[dic setValue:value
-				   forKey:key];
+				   forKey:k];
+			if ([k isEqualToString:pKey])
+				key = value;
 		}
 	}
-	[rows addObject:dic];
+	rows[key] = dic;
 	
 	return SQLITE_OK;
 }
@@ -40,31 +46,36 @@ static int callback(void *pArg, int argc, char **argv, char **azColName){
 static NSMutableDictionary *expressionWithIndex(NSNumber *index) {
 	if (!index || [index integerValue] == 0)
 		return nil;
-	return [[[expressions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"expressionID=%@", index]] lastObject] mutableCopy];
+	return [expressions[index] mutableCopy];
+	//return [[[expressions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"expressionID=%@", index]] lastObject] mutableCopy];
 }
 
 static NSMutableDictionary *operandWithIndex(NSNumber *index) {
 	if (!index || [index integerValue] == 0)
 		return nil;
-	return [[[operands filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"operandID=%@", index]] lastObject] mutableCopy];
+	return [operands[index] mutableCopy];
+	//return [[[operands filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"operandID=%@", index]] lastObject] mutableCopy];
 }
 
 static NSMutableDictionary *attributeWithIndex(NSNumber *index) {
 	if (!index || [index integerValue] == 0)
 		return nil;
-	return [[[attributes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"attributeID=%@", index]] lastObject] mutableCopy];
+	return [attributes[index] mutableCopy];
+	//return [[[attributes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"attributeID=%@", index]] lastObject] mutableCopy];
 }
 
 static NSMutableDictionary *typeWithIndex(NSNumber *index) {
 	if (!index || [index integerValue] == 0)
 		return nil;
-	return [[[types filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"typeID=%@", index]] lastObject] mutableCopy];
+	return [types[index] mutableCopy];
+	//return [[[types filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"typeID=%@", index]] lastObject] mutableCopy];
 }
 
 static NSMutableDictionary *groupWithIndex(NSNumber *index) {
 	if (!index || [index integerValue] == 0)
 		return nil;
-	return [[[groups filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"groupID=%@", index]] lastObject] mutableCopy];
+	return [groups[index] mutableCopy];
+	//return [[[groups filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"groupID=%@", index]] lastObject] mutableCopy];
 }
 
 static NSString *getAttribute(NSNumber *attributeID) {
@@ -146,13 +157,13 @@ int main (int argc, const char * argv[])
 	
 	@autoreleasepool {
 		if (argc == 3) {
-			effects = [NSMutableArray array];
-			expressions = [NSMutableArray array];
-			operands = [NSMutableArray array];
-			attributes = [NSMutableArray array];
-			types = [NSMutableArray array];
-			groups = [NSMutableArray array];
-			categories = [NSMutableArray array];
+			effects = [NSMutableDictionary new];
+			expressions = [NSMutableDictionary new];
+			operands = [NSMutableDictionary new];
+			attributes = [NSMutableDictionary new];
+			types = [NSMutableDictionary new];
+			groups = [NSMutableDictionary new];
+			categories = [NSMutableDictionary new];
 			output = [NSString stringWithUTF8String:argv[2]];
 			[[NSFileManager defaultManager] createDirectoryAtPath:output withIntermediateDirectories:YES attributes:nil error:nil];
 			
@@ -166,20 +177,20 @@ int main (int argc, const char * argv[])
 			sqlite3_open(argv[1], &pDB);
 			
 			char *errmsg = NULL;
-			sqlite3_exec(pDB, "select * from dgmEffects", callback, (__bridge void*) effects, &errmsg);
-			sqlite3_exec(pDB, "select * from dgmOperands", callback, (__bridge void*) operands, &errmsg);
-			sqlite3_exec(pDB, "select * from dgmExpressions", callback, (__bridge void*) expressions, &errmsg);
-			sqlite3_exec(pDB, "select * from dgmAttributeTypes", callback, (__bridge void*) attributes, &errmsg);
-			sqlite3_exec(pDB, "select * from invTypes", callback, (__bridge void*) types, &errmsg);
-			sqlite3_exec(pDB, "select * from invGroups", callback, (__bridge void*) groups, &errmsg);
-			sqlite3_exec(pDB, "select * from invCategories", callback, (__bridge void*) categories, &errmsg);
+			sqlite3_exec(pDB, "select * from dgmEffects", callback, (__bridge void*) @{@"rows":effects, @"pKey":@"effectID"}, &errmsg);
+			sqlite3_exec(pDB, "select * from dgmOperands", callback, (__bridge void*) @{@"rows":operands, @"pKey":@"operandID"}, &errmsg);
+			sqlite3_exec(pDB, "select * from dgmExpressions", callback, (__bridge void*) @{@"rows":expressions, @"pKey":@"expressionID"}, &errmsg);
+			sqlite3_exec(pDB, "select * from dgmAttributeTypes", callback, (__bridge void*) @{@"rows":attributes, @"pKey":@"attributeID"}, &errmsg);
+			sqlite3_exec(pDB, "select * from invTypes", callback, (__bridge void*) @{@"rows":types, @"pKey":@"typeID"}, &errmsg);
+			sqlite3_exec(pDB, "select * from invGroups", callback, (__bridge void*) @{@"rows":groups, @"pKey":@"groupID"}, &errmsg);
+			sqlite3_exec(pDB, "select * from invCategories", callback, (__bridge void*) @{@"rows":categories, @"pKey":@"categoryID"}, &errmsg);
 			sqlite3_close(pDB);
 			
-			for (NSMutableDictionary *effect in effects) {
+			[effects enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
 				@autoreleasepool {
-					processEffect(effect);
+					processEffect(obj);
 				}
-			}
+			}];
 		}
 	}
 	return 0;

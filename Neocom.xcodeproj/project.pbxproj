@@ -255,7 +255,6 @@
 		127123A018979E40005F46EE /* NCFittingSectionGenericHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1271239F18979E40005F46EE /* NCFittingSectionGenericHeaderView.xib */; };
 		127123A318979F55005F46EE /* NCFittingSectionGenericHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 127123A218979F55005F46EE /* NCFittingSectionGenericHeaderView.m */; };
 		127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 127123A81897A94E005F46EE /* NCProgressLabel.m */; };
-		127123AA1897ABF3005F46EE /* eufe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1271239518978236005F46EE /* eufe.framework */; };
 		127A1AB61BAC32ED0066A5EE /* NCFittingEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 127A1AB51BAC32ED0066A5EE /* NCFittingEngine.mm */; };
 		127A1AB71BADECC40066A5EE /* NCShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C5074E189B6F170064AC32 /* NCShipFit.mm */; };
 		127A1AB81BADEE0E0066A5EE /* NCDatabaseMarketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841534EB188A921200B42433 /* NCDatabaseMarketViewController.m */; };
@@ -437,6 +436,8 @@
 		12EC0AC618C0BAA20010169C /* NCNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */; };
 		12F407551A8D181D0031FB35 /* NCDefaultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */; };
 		12F407591A8D25220031FB35 /* NCDefaultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */; };
+		12F49A051C2AEA950004FAF5 /* NCWealthAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F49A041C2AEA950004FAF5 /* NCWealthAssetsViewController.m */; };
+		12F49A161C2AEE7F0004FAF5 /* eufe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F49A0C1C2AEA960004FAF5 /* eufe.framework */; };
 		12F4C0721B2862C100AF3389 /* NCAdaptiveModalSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F4C0711B2862C100AF3389 /* NCAdaptiveModalSegue.m */; };
 		12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F8E1F718E9A53700CEA658 /* NCSplitViewController.m */; };
 		12F9560218CDB5D4005CEAD6 /* NCBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F9560118CDB5D4005CEAD6 /* NCBannerViewController.m */; };
@@ -501,13 +502,6 @@
 			remoteGlobalIDString = 12A3C723177C2FAF0067E00C;
 			remoteInfo = compiler;
 		};
-		1271239418978236005F46EE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 12A3C724177C2FAF0067E00C;
-			remoteInfo = eufe;
-		};
 		127123AB1897ABF8005F46EE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
@@ -535,6 +529,34 @@
 			proxyType = 2;
 			remoteGlobalIDString = 1242EC1E1A4DFF5B00FD488A;
 			remoteInfo = dbpatch;
+		};
+		12F49A0B1C2AEA960004FAF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12564B8E1B84AF15000F68D8;
+			remoteInfo = "eufe iOS";
+		};
+		12F49A0D1C2AEA960004FAF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12EFCC661C1AB060003ECA7F;
+			remoteInfo = eufeDemo;
+		};
+		12F49A0F1C2AEA960004FAF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12EFCCCF1C1AB334003ECA7F;
+			remoteInfo = "eufe OS X";
+		};
+		12F49A111C2AEA960004FAF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 129F2BD61C1FFE62007FC666;
+			remoteInfo = modifiersdump;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1270,6 +1292,8 @@
 		12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultTableViewCell.xib; sourceTree = "<group>"; };
 		12F407571A8D25220031FB35 /* NCDefaultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDefaultTableViewCell.h; sourceTree = "<group>"; };
 		12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDefaultTableViewCell.m; sourceTree = "<group>"; };
+		12F49A031C2AEA950004FAF5 /* NCWealthAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCWealthAssetsViewController.h; sourceTree = "<group>"; };
+		12F49A041C2AEA950004FAF5 /* NCWealthAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCWealthAssetsViewController.m; sourceTree = "<group>"; };
 		12F4C0701B2862C100AF3389 /* NCAdaptiveModalSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAdaptiveModalSegue.h; sourceTree = "<group>"; };
 		12F4C0711B2862C100AF3389 /* NCAdaptiveModalSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAdaptiveModalSegue.m; sourceTree = "<group>"; };
 		12F7108718B63EA100D9C08A /* NCContractsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCContractsDetailsViewController.h; sourceTree = "<group>"; };
@@ -1394,6 +1418,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12F49A161C2AEE7F0004FAF5 /* eufe.framework in Frameworks */,
 				1268292E1C06044B00954ECF /* SpriteKit.framework in Frameworks */,
 				1210C7DE1BF4D77800B94154 /* QuartzCore.framework in Frameworks */,
 				12D963E51BA1F1A100292321 /* AFNetworking.framework in Frameworks */,
@@ -1411,7 +1436,6 @@
 				12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */,
 				123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */,
 				1219C14A1AA4FF0000FF6205 /* GoogleMobileAds.framework in Frameworks */,
-				127123AA1897ABF3005F46EE /* eufe.framework in Frameworks */,
 				1209D1721BDFCB77006FEF67 /* libFlurry_7.2.1.a in Frameworks */,
 				84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */,
 				129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */,
@@ -2107,6 +2131,8 @@
 			children = (
 				124DDE721BF38AB500596A38 /* NCWealthViewController.h */,
 				124DDE731BF38AB500596A38 /* NCWealthViewController.m */,
+				12F49A031C2AEA950004FAF5 /* NCWealthAssetsViewController.h */,
+				12F49A041C2AEA950004FAF5 /* NCWealthAssetsViewController.m */,
 				12BE1EFD1BFDFABF009D6C7D /* NCWealthCell.h */,
 				12BE1EFE1BFDFABF009D6C7D /* NCWealthCell.m */,
 				124DDE751BF38B4B00596A38 /* NCPieChartView.h */,
@@ -2436,7 +2462,10 @@
 			children = (
 				1271239318978236005F46EE /* compiler */,
 				12E038511A55690700499546 /* dbpatch */,
-				1271239518978236005F46EE /* eufe.framework */,
+				12F49A0C1C2AEA960004FAF5 /* eufe.framework */,
+				12F49A0E1C2AEA960004FAF5 /* eufeDemo */,
+				12F49A101C2AEA960004FAF5 /* eufe.framework */,
+				12F49A121C2AEA960004FAF5 /* modifiersdump */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4064,18 +4093,39 @@
 			remoteRef = 1271239218978236005F46EE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		1271239518978236005F46EE /* eufe.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = eufe.framework;
-			remoteRef = 1271239418978236005F46EE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		12E038511A55690700499546 /* dbpatch */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
 			path = dbpatch;
 			remoteRef = 12E038501A55690700499546 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		12F49A0C1C2AEA960004FAF5 /* eufe.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = eufe.framework;
+			remoteRef = 12F49A0B1C2AEA960004FAF5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		12F49A0E1C2AEA960004FAF5 /* eufeDemo */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = eufeDemo;
+			remoteRef = 12F49A0D1C2AEA960004FAF5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		12F49A101C2AEA960004FAF5 /* eufe.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = eufe.framework;
+			remoteRef = 12F49A0F1C2AEA960004FAF5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		12F49A121C2AEA960004FAF5 /* modifiersdump */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = modifiersdump;
+			remoteRef = 12F49A111C2AEA960004FAF5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -4283,6 +4333,7 @@
 				129FEE391860326E00F75FA6 /* NCSetting.m in Sources */,
 				125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */,
 				12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */,
+				12F49A051C2AEA950004FAF5 /* NCWealthAssetsViewController.m in Sources */,
 				12654C041C0B24920060106C /* NCDBTxtDescription.m in Sources */,
 				84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */,
 				128257141BCBFCBF00BC1F56 /* NCFittingCharacterEditorCell.m in Sources */,

@@ -1043,7 +1043,6 @@ void convertIndustryActivityMaterials(NSManagedObjectContext* context, EVEDBData
 		NCDBIndRequiredMaterial* requiredMaterial = [NSEntityDescription insertNewObjectForEntityForName:@"IndRequiredMaterial" inManagedObjectContext:context];
 		requiredMaterial.materialType = invTypes[@(eveActivityMaterial.materialTypeID)];
 		requiredMaterial.quantity = eveActivityMaterial.quantity;
-		requiredMaterial.consume = eveActivityMaterial.consume;
 		requiredMaterial.activity = indActivities[[NSString stringWithFormat:@"%d.%d", eveActivityMaterial.typeID, eveActivityMaterial.activityID]];
 	}];
 }

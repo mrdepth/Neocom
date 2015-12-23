@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15B42" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15C50" minimumToolsVersion="Automatic">
     <entity name="CertCertificate" representedClassName="NCDBCertCertificate" syncable="YES">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String" syncable="YES"/>
@@ -149,7 +149,6 @@
         <relationship name="productType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="products" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="IndRequiredMaterial" representedClassName="NCDBIndRequiredMaterial" syncable="YES">
-        <attribute name="consume" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="requiredMaterials" inverseEntity="IndActivity" syncable="YES"/>
         <relationship name="materialType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="materials" inverseEntity="InvType" syncable="YES"/>
@@ -408,7 +407,7 @@
         <element name="IndActivity" positionX="-171" positionY="198" width="128" height="133"/>
         <element name="IndBlueprintType" positionX="-180" positionY="189" width="128" height="88"/>
         <element name="IndProduct" positionX="-162" positionY="207" width="128" height="105"/>
-        <element name="IndRequiredMaterial" positionX="-153" positionY="216" width="128" height="103"/>
+        <element name="IndRequiredMaterial" positionX="-153" positionY="216" width="128" height="90"/>
         <element name="IndRequiredSkill" positionX="-144" positionY="225" width="128" height="88"/>
         <element name="InvCategory" positionX="9" positionY="54" width="128" height="118"/>
         <element name="InvControlTower" positionX="-135" positionY="234" width="128" height="73"/>

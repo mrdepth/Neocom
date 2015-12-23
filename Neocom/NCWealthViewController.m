@@ -10,6 +10,7 @@
 #import "NCWealthCell.h"
 #import "NCPriceManager.h"
 #import "NSNumberFormatter+Neocom.h"
+#import "NCWealthAssetsViewController.h"
 
 @interface NCWealthViewControllerData : NSObject<NSCoding>
 @property (nonatomic, assign) double account;
@@ -18,6 +19,8 @@
 @property (nonatomic, assign) double market;
 @property (nonatomic, assign) double contracts;
 @property (nonatomic, assign) double implants;
+@property (nonatomic, assign) double blueprints;
+@property (nonatomic, strong) NSDictionary* categories;
 @end
 
 @implementation NCWealthViewControllerData
@@ -30,6 +33,8 @@
 		self.market = [aDecoder decodeDoubleForKey:@"market"];
 		self.contracts = [aDecoder decodeDoubleForKey:@"contracts"];
 		self.implants = [aDecoder decodeDoubleForKey:@"implants"];
+		self.blueprints = [aDecoder decodeDoubleForKey:@"blueprints"];
+		self.categories = [aDecoder decodeObjectForKey:@"categories"];
 	}
 	return self;
 }
@@ -41,6 +46,8 @@
 	[aCoder encodeDouble:self.market forKey:@"market"];
 	[aCoder encodeDouble:self.contracts forKey:@"contracts"];
 	[aCoder encodeDouble:self.implants forKey:@"implants"];
+	[aCoder encodeDouble:self.blueprints forKey:@"blueprints"];
+	[aCoder encodeObject:self.categories forKey:@"categories"];
 }
 
 @end
@@ -66,6 +73,14 @@
 	// Dispose of any resources that can be recreated.
 }
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCWealthAssetsViewController"]) {
+		NCWealthAssetsViewController* controller = segue.destinationViewController;
+		NCWealthViewControllerData* data = self.cacheData;
+		controller.categories = data.categories;
+	}
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -75,7 +90,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 8;
+	return 9;
 }
 
 #pragma mark - NCTableViewController
@@ -113,7 +128,7 @@
 				clear = NO;
 			}
 			[cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor greenColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Account", nil) value:sum]] animated:YES];
-			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 
 		} progressBlock:nil];
 		[api assetListWithCompletionBlock:^(EVEAssetList *result, NSError *error) {
@@ -121,13 +136,16 @@
 			[databaseManagedObjectContext performBlock:^{
 				
 				NSMutableDictionary* typeIDs = [NSMutableDictionary new];
+				NSMutableDictionary* categoryIDs = [NSMutableDictionary new];
 				
 				__weak __block void (^weakProcess)(EVEAssetListItem*) = nil;
 				
 				void (^process)(EVEAssetListItem*) = ^(EVEAssetListItem* asset) {
 					NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:asset.typeID];
-					if (type.marketGroup && type.group.category.categoryID != 9)
+					if (type.marketGroup && type.group.category.categoryID != 9) { //Skip blueprints
 						typeIDs[@(asset.typeID)] = @([typeIDs[@(asset.typeID)] longLongValue] + asset.quantity);
+						categoryIDs[@(asset.typeID)] = @(type.group.category.categoryID);
+					}
 					
 					for (EVEAssetListItem* item in asset.contents)
 						weakProcess(item);
@@ -141,11 +159,18 @@
 					[[NCPriceManager sharedManager] requestPricesWithTypes:[typeIDs allKeys]
 														   completionBlock:^(NSDictionary *prices) {
 															   __block double sum = 0;
+															   NSMutableDictionary* categories = [NSMutableDictionary new];
 															   [typeIDs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 																   double price = [prices[key] doubleValue];
-																   sum += price * [obj longLongValue];
+																   double cost = price * [obj longLongValue];
+																   if (cost > 0) {
+																	   sum += cost;
+																	   id categoryID = categoryIDs[key];
+																	   categories[categoryID] = @([categories[categoryID] doubleValue] + cost);
+																   }
 															   }];
 															   data.assets = sum;
+															   data.categories = categories;
 															   dispatch_async(dispatch_get_main_queue(), ^{
 																   [self saveCacheData:data cacheDate:nil expireDate:nil];
 																   if (sum > 0) {
@@ -156,14 +181,14 @@
 																	   }
 																	   [cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor cyanColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Assets", nil) value:sum]] animated:YES];
 																   }
-																   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+																   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 															   });
 														   }];
 				}
 				else {
 					dispatch_async(dispatch_get_main_queue(), ^{
 						[self saveCacheData:data cacheDate:nil expireDate:nil];
-						[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+						[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 					});
 				}
 			}];
@@ -206,14 +231,14 @@
 																		   }
 																		   [cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor redColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Industry", nil) value:sum]] animated:YES];
 																	   }
-																	   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+																	   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 																   });
 															   }];
 					}
 					else {
 						dispatch_async(dispatch_get_main_queue(), ^{
 							[self saveCacheData:data cacheDate:nil expireDate:nil];
-							[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+							[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 						});
 					}
 				}
@@ -245,7 +270,7 @@
 								}
 								[cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor yellowColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Market", nil) value:sum]] animated:YES];
 							}
-							[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:4 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+							[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:4 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 						});
 					};
 					
@@ -280,9 +305,94 @@
 				}
 				[cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor orangeColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Contracts", nil) value:sum]] animated:YES];
 			}
-			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 		} progressBlock:nil];
-		
+
+		[api blueprintsWithCompletionBlock:^(EVEBlueprints *result, NSError *error) {
+			NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
+			[databaseManagedObjectContext performBlock:^{
+				NSMutableDictionary* blueprints = [NSMutableDictionary new];
+				NSMutableSet* typeIDs = [NSMutableSet set];
+				
+				for (EVEBlueprintsItem* item in result.blueprints) {
+					if (item.runs < 0) {
+						blueprints[@(item.itemID)] = @{@"products":@{@(item.typeID) : @1}, @"runs":@1};
+						[typeIDs addObject:@(item.typeID)];
+					}
+					else if (item.runs > 0) {
+						NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:item.typeID];
+						if (!type)
+							continue;
+						NCDBIndActivity* activity = [[type.blueprintType.activities filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"activity.activityID == 1"]] anyObject];
+						
+						NSMutableDictionary* materials = [NSMutableDictionary new];
+						for (NCDBIndRequiredMaterial* material in activity.requiredMaterials) {
+							materials[@(material.materialType.typeID)] = @(ceil(material.quantity * (1.0 - item.materialEfficiency / 100.0) * 0.85));
+							[typeIDs addObject:@(material.materialType.typeID)];
+						}
+						
+						NSMutableDictionary* products = [NSMutableDictionary new];
+						for (NCDBIndProduct* product in activity.products) {
+							products[@(product.productType.typeID)] = @(product.quantity);
+							[typeIDs addObject:@(product.productType.typeID)];
+						}
+						blueprints[@(item.itemID)] = @{@"products" : products, @"materials" : materials, @"runs" : @(item.runs)};
+					}
+				}
+				
+				__block double sum = 0;
+				void (^finalize)() = ^{
+					data.blueprints = sum;
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[self saveCacheData:data cacheDate:nil expireDate:nil];
+						if (sum > 0) {
+							NCWealthCell* cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+							if (clear) {
+								[cell.pieChartView clear];
+								clear = NO;
+							}
+							[cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor colorWithRed:0 green:0.5 blue:1.0 alpha:1.0] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Blueprints", nil) value:sum]] animated:YES];
+						}
+						[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:7 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+					});
+				};
+				
+				if (typeIDs.count > 0) {
+					[[NCPriceManager sharedManager] requestPricesWithTypes:[typeIDs allObjects]
+														   completionBlock:^(NSDictionary *prices) {
+															   [blueprints enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, NSDictionary*  _Nonnull blueprint, BOOL * _Nonnull stop) {
+																   __block double profit = 0;
+																   [blueprint[@"products"] enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+																	   profit += [prices[key] doubleValue] * [obj integerValue];
+																   }];
+																   [blueprint[@"materials"] enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+																	   profit -= [prices[key] doubleValue] * [obj integerValue];
+																   }];
+																   if (profit > 0)
+																	   sum += profit * [blueprint[@"runs"] integerValue];
+															   }];
+															   finalize();
+														   }];
+				}
+				else
+					finalize();
+				
+			}];
+			double sum = 0;
+			
+			data.contracts = sum;
+			[self saveCacheData:data cacheDate:nil expireDate:nil];
+			if (sum > 0) {
+				NCWealthCell* cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+				if (clear) {
+					[cell.pieChartView clear];
+					clear = NO;
+				}
+				[cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor orangeColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Contracts", nil) value:sum]] animated:YES];
+			}
+			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+		} progressBlock:nil];
+
 		
 		if (!corporate) {
 			NSMutableDictionary* typeIDs = [NSMutableDictionary new];
@@ -311,14 +421,14 @@
 																	   }
 																	   [cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:sum color:[UIColor colorWithWhite:0.9 alpha:1] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Implants", nil) value:sum]] animated:YES];
 																   }
-																   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+																   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 															   });
 														   }];
 				}
 				else {
 					dispatch_async(dispatch_get_main_queue(), ^{
 						[self saveCacheData:data cacheDate:nil expireDate:nil];
-						[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0], [NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+						[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 					});
 				}
 
@@ -359,42 +469,57 @@
 			[cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:data.contracts color:[UIColor orangeColor] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Contracts", nil) value:data.contracts]] animated:YES];
 		if (data.implants > 0)
 			[cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:data.implants color:[UIColor colorWithWhite:0.9 alpha:1] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Implants", nil) value:data.implants]] animated:YES];
+		if (data.blueprints > 0)
+			[cell.pieChartView addSegment:[NCPieChartSegment segmentWithValue:data.blueprints color:[UIColor colorWithRed:0 green:0.5 blue:1.0 alpha:1.0] numberFormatter:[self numberFormatterWithTitle:NSLocalizedString(@"Blueprints", nil) value:data.blueprints]] animated:YES];
 	}
 	else {
 		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
-		if (indexPath.row == 1) {
-			cell.titleLabel.text = NSLocalizedString(@"Account", nil);
-			cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.account)]];
-		}
-		else if (indexPath.row == 2) {
+		if (indexPath.row == 2) {
 			cell.titleLabel.text = NSLocalizedString(@"Assets", nil);
 			cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.assets)]];
+			cell.accessoryType = data.assets > 0 && data.categories.count > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 		}
-		else if (indexPath.row == 3) {
-			cell.titleLabel.text = NSLocalizedString(@"Industry", nil);
-			cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.industry)]];
-		}
-		else if (indexPath.row == 4) {
-			cell.titleLabel.text = NSLocalizedString(@"Market", nil);
-			cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.market)]];
-		}
-		else if (indexPath.row == 5) {
-			cell.titleLabel.text = NSLocalizedString(@"Contracts", nil);
-			cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.contracts)]];
-		}
-		else if (indexPath.row == 6) {
-			cell.titleLabel.text = NSLocalizedString(@"Implants", nil);
-			cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.implants)]];
-		}
-		else if (indexPath.row == 7) {
-			cell.titleLabel.text = NSLocalizedString(@"Total", nil);
-			cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.account + data.assets + data.industry + data.market + data.contracts + data.implants)]];
+		else {
+			if (indexPath.row == 1) {
+				cell.titleLabel.text = NSLocalizedString(@"Account", nil);
+				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.account)]];
+			}
+			else if (indexPath.row == 3) {
+				cell.titleLabel.text = NSLocalizedString(@"Industry", nil);
+				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.industry)]];
+			}
+			else if (indexPath.row == 4) {
+				cell.titleLabel.text = NSLocalizedString(@"Market", nil);
+				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.market)]];
+			}
+			else if (indexPath.row == 5) {
+				cell.titleLabel.text = NSLocalizedString(@"Contracts", nil);
+				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.contracts)]];
+			}
+			else if (indexPath.row == 6) {
+				cell.titleLabel.text = NSLocalizedString(@"Implants", nil);
+				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.implants)]];
+			}
+			else if (indexPath.row == 7) {
+				cell.titleLabel.text = NSLocalizedString(@"Blueprints", nil);
+				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.blueprints)]];
+			}
+			else if (indexPath.row == 8) {
+				cell.titleLabel.text = NSLocalizedString(@"Total", nil);
+				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.account + data.assets + data.industry + data.market + data.contracts + data.implants + data.blueprints)]];
+			}
+			cell.accessoryType = UITableViewCellAccessoryNone;
 		}
 	}
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	if (indexPath.row == 2) {
+		NCWealthViewControllerData* data = self.cacheData;
+		if (data.assets > 0 && data.categories.count > 0)
+			[self performSegueWithIdentifier:@"NCWealthAssetsViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+	}
 }
 
 #pragma mark - Private

@@ -438,6 +438,8 @@
 		12F407591A8D25220031FB35 /* NCDefaultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */; };
 		12F49A051C2AEA950004FAF5 /* NCWealthAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F49A041C2AEA950004FAF5 /* NCWealthAssetsViewController.m */; };
 		12F49A161C2AEE7F0004FAF5 /* eufe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F49A0C1C2AEA960004FAF5 /* eufe.framework */; };
+		12F49A241C2BF0D60004FAF5 /* NCDatabaseTypeCRESTMarketInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F49A231C2BF0D60004FAF5 /* NCDatabaseTypeCRESTMarketInfoViewController.m */; };
+		12F49A281C2BFFCE0004FAF5 /* NCDatabaseRegionPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F49A271C2BFFCE0004FAF5 /* NCDatabaseRegionPickerViewController.m */; };
 		12F4C0721B2862C100AF3389 /* NCAdaptiveModalSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F4C0711B2862C100AF3389 /* NCAdaptiveModalSegue.m */; };
 		12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F8E1F718E9A53700CEA658 /* NCSplitViewController.m */; };
 		12F9560218CDB5D4005CEAD6 /* NCBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F9560118CDB5D4005CEAD6 /* NCBannerViewController.m */; };
@@ -1294,6 +1296,10 @@
 		12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDefaultTableViewCell.m; sourceTree = "<group>"; };
 		12F49A031C2AEA950004FAF5 /* NCWealthAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCWealthAssetsViewController.h; sourceTree = "<group>"; };
 		12F49A041C2AEA950004FAF5 /* NCWealthAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCWealthAssetsViewController.m; sourceTree = "<group>"; };
+		12F49A221C2BF0D60004FAF5 /* NCDatabaseTypeCRESTMarketInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeCRESTMarketInfoViewController.h; sourceTree = "<group>"; };
+		12F49A231C2BF0D60004FAF5 /* NCDatabaseTypeCRESTMarketInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeCRESTMarketInfoViewController.m; sourceTree = "<group>"; };
+		12F49A261C2BFFCE0004FAF5 /* NCDatabaseRegionPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseRegionPickerViewController.h; sourceTree = "<group>"; };
+		12F49A271C2BFFCE0004FAF5 /* NCDatabaseRegionPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseRegionPickerViewController.m; sourceTree = "<group>"; };
 		12F4C0701B2862C100AF3389 /* NCAdaptiveModalSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAdaptiveModalSegue.h; sourceTree = "<group>"; };
 		12F4C0711B2862C100AF3389 /* NCAdaptiveModalSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAdaptiveModalSegue.m; sourceTree = "<group>"; };
 		12F7108718B63EA100D9C08A /* NCContractsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCContractsDetailsViewController.h; sourceTree = "<group>"; };
@@ -2711,12 +2717,14 @@
 				841534E9188A91EA00B42433 /* NCDatabaseMarketViewController */,
 				12C7EE68188673E400F90763 /* NCDatabaseTypeInfoViewController */,
 				12124AA81889149F00F01C59 /* NCDatabaseTypeMarketInfoViewController */,
+				12F49A211C2BF0BC0004FAF5 /* NCDatabaseTypeCRESTMarketInfoViewController */,
 				12E5437B18880ABA00DDFE7F /* NCDatabaseTypeVariationsViewController */,
 				122C51F2188FB7E0000AEC2C /* NCDatabaseTypeMasteryViewController */,
 				1219C14E1AA78F7600FF6205 /* NCDatabaseTypeRequirementsViewController */,
 				127E1BDE188FEBF000F65EA8 /* NCDatabaseCertificatesViewController */,
 				1296C6BF1890ED4E00ADF2E7 /* NCDatabaseCertificateInfoViewController */,
 				128C9B0618BF427B0086F7B3 /* NCDatabaseSolarSystemPickerViewController */,
+				12F49A251C2BFFBA0004FAF5 /* NCDatabaseRegionPickerViewController */,
 				12F82A4C18AC92BB00A967B5 /* NCDatabaseGroupPickerViewContoller */,
 				84C1182418983ADC00A35516 /* NCDatabaseTypePickerViewController */,
 				84C1182A18983E6B00A35516 /* NCDatabaseTypePickerContentViewController */,
@@ -3516,6 +3524,24 @@
 			name = NCDefaultTableViewCell;
 			sourceTree = "<group>";
 		};
+		12F49A211C2BF0BC0004FAF5 /* NCDatabaseTypeCRESTMarketInfoViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12F49A221C2BF0D60004FAF5 /* NCDatabaseTypeCRESTMarketInfoViewController.h */,
+				12F49A231C2BF0D60004FAF5 /* NCDatabaseTypeCRESTMarketInfoViewController.m */,
+			);
+			name = NCDatabaseTypeCRESTMarketInfoViewController;
+			sourceTree = "<group>";
+		};
+		12F49A251C2BFFBA0004FAF5 /* NCDatabaseRegionPickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12F49A261C2BFFCE0004FAF5 /* NCDatabaseRegionPickerViewController.h */,
+				12F49A271C2BFFCE0004FAF5 /* NCDatabaseRegionPickerViewController.m */,
+			);
+			name = NCDatabaseRegionPickerViewController;
+			sourceTree = "<group>";
+		};
 		12F4C06F1B2862AE00AF3389 /* NCAdaptiveModalSegue */ = {
 			isa = PBXGroup;
 			children = (
@@ -4251,6 +4277,7 @@
 				125A19C11BB6A3EA00C5BAD8 /* NCIndustryJobsViewController.m in Sources */,
 				128D29BA18BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m in Sources */,
 				12654C2C1C0B24920060106C /* NCDBCertCertificate.m in Sources */,
+				12F49A281C2BFFCE0004FAF5 /* NCDatabaseRegionPickerViewController.m in Sources */,
 				1247B11D1BECBD2E00608852 /* NCFittingCRESTFitsViewController.mm in Sources */,
 				12FDA32E18E00710007B091D /* NCImplantSet.m in Sources */,
 				12654C081C0B24920060106C /* NCDBEufeItemGroup.m in Sources */,
@@ -4461,6 +4488,7 @@
 				12654C531C0B24920060106C /* NCDBEveUnit+CoreDataProperties.m in Sources */,
 				129E239D1BC3FB1B00E311BF /* NCFittingShipImplantsViewController.mm in Sources */,
 				129E23A21BC3FD3000E311BF /* NCFittingShipResourcesCell.m in Sources */,
+				12F49A241C2BF0D60004FAF5 /* NCDatabaseTypeCRESTMarketInfoViewController.m in Sources */,
 				8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */,
 				124097C01B2F200F002AC442 /* NCAdaptivePopoverSegue.m in Sources */,
 				125A197C1BB5A5EA00C5BAD8 /* NCWalletJournalCell.m in Sources */,

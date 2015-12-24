@@ -20,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet UISwitch *loadImplantsSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *saveChangesPromptSwitch;
 @property (weak, nonatomic) IBOutlet UITableViewCell *databaseCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *eveCentralCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *crestCell;
 
 - (IBAction)onChangeNotification:(id)sender;
 - (IBAction)onChangeMarketPricesMonitor:(id)sender;

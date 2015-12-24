@@ -263,19 +263,17 @@ typedef NS_ENUM(NSInteger, NCManeuver) {
 	[self.attacker.engine performBlockAndWait:^{
 		auto pilot = self.attacker.pilot;
 		auto ship = pilot->getShip();
-		float turretsDPS = 0;
+		float weaponDPS = 0;
 		float maxRange = 0;
 		float falloff = 0;
 		float warpScrambleRange = 0;
 		int32_t warpScramblerTypeID = 0;
 		for (const auto& module: ship->getModules()) {
-			if (module->getHardpoint() == eufe::Module::HARDPOINT_TURRET) {
-				float dps = module->getDps();
-				if (dps > 0) {
-					turretsDPS += dps;
-					maxRange += module->getMaxRange() * dps;
-					falloff += module->getFalloff() * dps;
-				}
+			float dps = module->getDps();
+			if (dps > 0) {
+				weaponDPS += dps;
+				maxRange += module->getMaxRange() * dps;
+				falloff += module->getFalloff() * dps;
 			}
 			if (module->hasAttribute(eufe::WARP_SCRAMBLE_STRENGTH_ATTRIBUTE_ID) || module->hasAttribute(eufe::WARP_SCRAMBLE_STRENGTH_HIDDEN_ATTRIBUTE_ID)) {
 				if (module->getMaxRange() > warpScrambleRange) {
@@ -284,9 +282,9 @@ typedef NS_ENUM(NSInteger, NCManeuver) {
 				}
 			}
 		}
-		if (turretsDPS > 0) {
-			maxRange /= turretsDPS;
-			falloff /= turretsDPS;
+		if (weaponDPS > 0) {
+			maxRange /= weaponDPS;
+			falloff /= weaponDPS;
 		}
 		self.maxRange = maxRange;
 		self.falloff = falloff;
@@ -300,6 +298,9 @@ typedef NS_ENUM(NSInteger, NCManeuver) {
 		if (self.fullRange == 0) {
 			self.fullRange = ceil(ship->getOrbitRadiusWithTransverseVelocity(ship->getVelocity() * 0.95) * 1.5 / 1000) * 1000;
 		}
+		if (self.fullRange == 0)
+			self.fullRange = 40000;
+		
 		if (self.attacker.typeID == self.target.typeID) {
 			//targetName = [NSString stringWithFormat:@"%@ vs %@", self.attacker.loadoutName, self.target.loadoutName];
 			attackerName = self.attacker.loadoutName.length > 0 ? self.attacker.loadoutName : NSLocalizedString(@"Unnamed", nil);

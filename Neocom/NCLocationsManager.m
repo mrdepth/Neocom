@@ -69,6 +69,7 @@
 }
 
 - (void) requestLocationsNamesWithIDs:(NSArray*) ids completionBlock:(void(^)(NSDictionary* locationsNames)) completionBlock {
+	ids = [[NSSet setWithArray:ids] allObjects];
 	[self requestConquerableStationsWithCompletionBlock:^(NSDictionary* conquerableStations) {
 		[self.databaseManagedObjectContext performBlock:^{
 			NSMutableArray* missingIDs = [ids mutableCopy];

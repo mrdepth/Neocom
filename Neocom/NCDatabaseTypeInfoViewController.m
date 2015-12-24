@@ -13,6 +13,7 @@
 #import "NSString+Neocom.h"
 #import "NCDatabaseTypeVariationsViewController.h"
 #import "NCDatabaseTypeMarketInfoViewController.h"
+#import "NCDatabaseTypeCRESTMarketInfoViewController.h"
 #import "NCTrainingQueue.h"
 #import "NCSkillHierarchy.h"
 #import "NCDatabaseViewController.h"
@@ -188,6 +189,10 @@
 		destinationViewController.typeID = [self.type objectID];
 		destinationViewController.navigationItem.rightBarButtonItem = nil;
 	}
+	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeCRESTMarketInfoViewController"]) {
+		NCDatabaseTypeCRESTMarketInfoViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.typeID = [self.type objectID];
+	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeMasteryViewController"]) {
 		NCDatabaseTypeMasteryViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.typeID = self.typeID;
@@ -219,6 +224,26 @@
 - (IBAction) unwindFromNewShoppingItem:(UIStoryboardSegue*)segue {
 	
 }
+
+- (IBAction)onMarket:(id)sender {
+	if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUseCRESTMarketProviderKey]) {
+		UIAlertController* controller = [UIAlertController alertControllerWithTitle:@"CREST Market API" message:NSLocalizedString(@"Do you wish to use CREST Market API? CREST Market API allows you to load realtime ingame market orders. You can change it later in the settings.", nil) preferredStyle:UIAlertControllerStyleAlert];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Use CREST API", NO) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsUseCRESTMarketProviderKey];
+			[self performSegueWithIdentifier:@"NCDatabaseTypeCRESTMarketInfoViewController" sender:sender];
+		}]];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Left as is", NO) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+			[[NSUserDefaults standardUserDefaults] setBool:NO forKey:NCSettingsUseCRESTMarketProviderKey];
+			[self performSegueWithIdentifier:@"NCDatabaseTypeMarketInfoViewController" sender:sender];
+		}]];
+		[self presentViewController:controller animated:YES completion:nil];
+	}
+	else {
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCRESTMarketProviderKey])
+			[self performSegueWithIdentifier:@"NCDatabaseTypeCRESTMarketInfoViewController" sender:sender];
+		else
+			[self performSegueWithIdentifier:@"NCDatabaseTypeMarketInfoViewController" sender:sender];
+	}}
 
 
 #pragma mark - NCTableViewController

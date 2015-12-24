@@ -79,6 +79,10 @@
 	return indexPath.row == 0 ? @"NCWealthCell" : @"Cell";
 }
 
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	if (indexPath.row == 0) {
 		NCWealthCell* cell = (NCWealthCell*) tableViewCell;

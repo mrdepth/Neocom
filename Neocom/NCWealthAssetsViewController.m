@@ -56,11 +56,11 @@
 	if ([categories[1] doubleValue] > 0)
 		[rows addObject:@{@"title":NSLocalizedString(@"Modules", nil), @"value": categories[1], @"color":[UIColor cyanColor]}];
 	if ([categories[2] doubleValue] > 0)
-		[rows addObject:@{@"title":NSLocalizedString(@"Drones/Charges", nil), @"value": categories[2], @"color":[UIColor redColor]}];
+		[rows addObject:@{@"title":NSLocalizedString(@"Drones/Charges", nil), @"value": categories[2], @"color":[UIColor orangeColor]}];
 	if ([categories[3] doubleValue] > 0)
 		[rows addObject:@{@"title":NSLocalizedString(@"Materials", nil), @"value": categories[3], @"color":[UIColor yellowColor]}];
 	if ([categories[4] doubleValue] > 0)
-		[rows addObject:@{@"title":NSLocalizedString(@"Other", nil), @"value": categories[4], @"color":[UIColor orangeColor]}];
+		[rows addObject:@{@"title":NSLocalizedString(@"Other", nil), @"value": categories[4], @"color":[UIColor colorWithWhite:0.9 alpha:1]}];
 	self.rows = rows;
 }
 

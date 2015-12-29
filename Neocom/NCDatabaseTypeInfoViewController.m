@@ -97,14 +97,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.type = (NCDBInvType*) [self.databaseManagedObjectContext existingObjectWithID:self.typeID error:nil];
+	self.type = self.typeID ? (NCDBInvType*) [self.databaseManagedObjectContext existingObjectWithID:self.typeID error:nil] : nil;
 	self.defaultAttributeIcon = [self.databaseManagedObjectContext eveIconWithIconFile:@"105_32"];
 	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 
 	self.tableView.tableHeaderView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
+	
 	if (self.navigationController.viewControllers[0] != self)
 		self.navigationItem.leftBarButtonItem = nil;
-	self.title = self.type.typeName;
+	self.title = self.type.typeName ?: NSLocalizedString(@"Unknown", nil);
 	[self reload];
 	self.refreshControl = nil;
 	if (self.type.marketGroup.marketGroupID == 0)
@@ -359,8 +360,9 @@
 - (void) reload {
 	NCDBInvType* type = self.type;
 
-	NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %d", type.typeName, type.typeID]];
-	NSRange typeIDRange = NSMakeRange(type.typeName.length + 1, title.length - type.typeName.length - 1);
+	NSString* typeName = type.typeName ?: NSLocalizedString(@"Unknown", nil);
+	NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %d", typeName, type.typeID]];
+	NSRange typeIDRange = NSMakeRange(typeName.length + 1, title.length - typeName.length - 1);
 	[title addAttributes:@{NSFontAttributeName: [self.titleLabel.font fontWithSize:self.titleLabel.font.pointSize * 0.6],
 									  (__bridge NSString*) (kCTSuperscriptAttributeName): @(-1),
 									  NSForegroundColorAttributeName: [UIColor lightTextColor]}
@@ -373,14 +375,16 @@
 	self.needsLayout = YES;
 	[self.view setNeedsLayout];
 	
-	if (type.group.category.categoryID == 9)
-		[self loadBlueprintAttributes];
-	else if (type.group.category.categoryID == 11)
-		[self loadNPCAttributes];
-	else if (type.wormhole)
-		[self loadWHAttributes];
-	else
-		[self loadItemAttributes];
+	if (type) {
+		if (type.group.category.categoryID == 9)
+			[self loadBlueprintAttributes];
+		else if (type.group.category.categoryID == 11)
+			[self loadNPCAttributes];
+		else if (type.wormhole)
+			[self loadWHAttributes];
+		else
+			[self loadItemAttributes];
+	}
 }
 
 - (void) loadItemAttributes {

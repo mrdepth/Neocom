@@ -69,10 +69,16 @@
 	if (!self.region)
 		self.region = [self.databaseManagedObjectContext mapRegionWithRegionID:10000002]; // The Forge
 	
-	if (self.navigationController.viewControllers[0] != self) {
-		id region = self.regionBarButtonItem;
-		self.navigationItem.rightBarButtonItems = nil;
-		self.navigationItem.rightBarButtonItem = region;
+	if (self.navigationController.viewControllers[0] != self)
+		self.navigationItem.leftBarButtonItem = nil;
+
+	for (UIViewController* controller in self.navigationController.viewControllers) {
+		if ([controller isKindOfClass:[NCDatabaseTypeInfoViewController class]]) {
+			id region = self.regionBarButtonItem;
+			self.navigationItem.rightBarButtonItems = nil;
+			self.navigationItem.rightBarButtonItem = region;
+			break;
+		}
 	}
 	
 	self.tableView.tableHeaderView = nil;

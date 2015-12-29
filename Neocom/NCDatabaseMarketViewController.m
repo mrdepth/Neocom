@@ -90,23 +90,26 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUseCRESTMarketProviderKey]) {
-		UIAlertController* controller = [UIAlertController alertControllerWithTitle:@"CREST Market API" message:NSLocalizedString(@"Do you wish to use CREST Market API? CREST Market API allows you to load realtime ingame market orders. You can change it later in the settings.", nil) preferredStyle:UIAlertControllerStyleAlert];
-		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Use CREST API", NO) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsUseCRESTMarketProviderKey];
-			[self performSegueWithIdentifier:@"NCDatabaseTypeCRESTMarketInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
-		}]];
-		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Left as is", NO) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-			[[NSUserDefaults standardUserDefaults] setBool:NO forKey:NCSettingsUseCRESTMarketProviderKey];
-			[self performSegueWithIdentifier:@"NCDatabaseTypeMarketInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
-		}]];
-		[self presentViewController:controller animated:YES completion:nil];
-	}
-	else {
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCRESTMarketProviderKey])
-			[self performSegueWithIdentifier:@"NCDatabaseTypeCRESTMarketInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
-		else
-			[self performSegueWithIdentifier:@"NCDatabaseTypeMarketInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+	NCTableViewCell* cell = (NCTableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+	if ([cell.object isKindOfClass:[NCDBInvType class]]) {
+		if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUseCRESTMarketProviderKey]) {
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:@"CREST Market API" message:NSLocalizedString(@"Do you wish to use CREST Market API? CREST Market API allows you to load realtime ingame market orders. You can change it later in the settings.", nil) preferredStyle:UIAlertControllerStyleAlert];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Use CREST API", NO) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsUseCRESTMarketProviderKey];
+				[self performSegueWithIdentifier:@"NCDatabaseTypeCRESTMarketInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+			}]];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Left as is", NO) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+				[[NSUserDefaults standardUserDefaults] setBool:NO forKey:NCSettingsUseCRESTMarketProviderKey];
+				[self performSegueWithIdentifier:@"NCDatabaseTypeMarketInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+			}]];
+			[self presentViewController:controller animated:YES completion:nil];
+		}
+		else {
+			if ([[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCRESTMarketProviderKey])
+				[self performSegueWithIdentifier:@"NCDatabaseTypeCRESTMarketInfoViewController" sender:cell];
+			else
+				[self performSegueWithIdentifier:@"NCDatabaseTypeMarketInfoViewController" sender:cell];
+		}
 	}
 }
 
@@ -146,8 +149,9 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
-	id row = sectionInfo.objects[indexPath.row];
+	//id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	//id row = sectionInfo.objects[indexPath.row];
+	id row = tableView == self.tableView ? [self.result objectAtIndexPath:indexPath] : [self.searchResult objectAtIndexPath:indexPath];
 
 	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	if ([row isKindOfClass:[NCDBInvType class]]) {

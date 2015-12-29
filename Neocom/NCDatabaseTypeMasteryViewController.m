@@ -210,7 +210,7 @@
 				}
 			}
 			
-			if (account && account.activeSkillPlan && trainingQueue.skills.count > 0) {
+			if (account && trainingQueue.skills.count > 0) {
 				rows = [NSMutableArray new];
 				NCDatabaseTypeMasteryViewControllerRow* row = [NCDatabaseTypeMasteryViewControllerRow new];
 				row.title = NSLocalizedString(@"Add all skills to training plan", nil);

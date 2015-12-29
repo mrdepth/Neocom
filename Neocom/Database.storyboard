@@ -1775,14 +1775,14 @@
         <image name="turrets" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="edv-w8-2To"/>
         <segue reference="qrx-AR-gAB"/>
-        <segue reference="aLJ-go-7Sk"/>
-        <segue reference="epc-gf-e1N"/>
-        <segue reference="PD6-VV-6gd"/>
-        <segue reference="qyD-gc-O13"/>
+        <segue reference="wl8-VU-hXn"/>
         <segue reference="IAS-t0-x0K"/>
+        <segue reference="UiJ-6J-zV8"/>
+        <segue reference="edv-w8-2To"/>
+        <segue reference="PD6-VV-6gd"/>
         <segue reference="ns8-Ad-PQ7"/>
+        <segue reference="qyD-gc-O13"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

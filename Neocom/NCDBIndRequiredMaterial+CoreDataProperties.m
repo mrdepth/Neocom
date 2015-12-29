@@ -2,7 +2,7 @@
 //  NCDBIndRequiredMaterial+CoreDataProperties.m
 //  Neocom
 //
-//  Created by Artem Shimanski on 29.11.15.
+//  Created by Артем Шиманский on 23.12.15.
 //  Copyright © 2015 Artem Shimanski. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -13,7 +13,6 @@
 
 @implementation NCDBIndRequiredMaterial (CoreDataProperties)
 
-@dynamic consume;
 @dynamic quantity;
 @dynamic activity;
 @dynamic materialType;

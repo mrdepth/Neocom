@@ -55,6 +55,12 @@
 	NCUpdater* updater = [NCUpdater sharedUpdater];
 	[updater addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
 	[updater.progress addObserver:self forKeyPath:@"fractionCompleted" options:NSKeyValueObservingOptionNew context:nil];
+	
+	if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCRESTMarketProviderKey])
+		self.eveCentralCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]];
+	else
+		self.crestCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]];
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -132,44 +138,18 @@
 			[updater download];
 		}
 	}
-/*	else if (indexPath.section == 0) {
-		if (indexPath.row == 1) {
-			[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Backup", nil)
-									 message:NSLocalizedString(@"Do you wish to transfer data from iCloud to Local Storage.", nil)
-						   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-						   otherButtonTitles:@[NSLocalizedString(@"Backup", nil)]
-							 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-								 if (alertView.cancelButtonIndex != selectedButtonIndex) {
-									 BOOL b = [[NCStorage sharedStorage] backupCloudData];
-									 [[UIAlertView alertViewWithTitle:NSLocalizedString(@"Backup", nil)
-															  message:b ? NSLocalizedString(@"Backup finished", nil) : NSLocalizedString(@"Unable to transfer data", nil)
-													cancelButtonTitle:NSLocalizedString(@"Close", nil)
-													otherButtonTitles:nil
-													  completionBlock:nil
-														  cancelBlock:nil] show];
-								 }
-							 }
-								 cancelBlock:nil] show];
+	else if (indexPath.section == 3) {
+		if (indexPath.row == 0) {
+			self.eveCentralCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]];
+			self.crestCell.accessoryView = nil;
+			[[NSUserDefaults standardUserDefaults] setBool:NO forKey:NCSettingsUseCRESTMarketProviderKey];
 		}
-		else if (indexPath.row == 2) {
-			[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Restore", nil)
-									 message:NSLocalizedString(@"Do you wish to transfer data from Local Storage to iCloud.", nil)
-						   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-						   otherButtonTitles:@[NSLocalizedString(@"Restore", nil)]
-							 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-								 if (alertView.cancelButtonIndex != selectedButtonIndex) {
-									 BOOL b = [[NCStorage sharedStorage] restoreCloudData];
-									 [[UIAlertView alertViewWithTitle:NSLocalizedString(@"Restore", nil)
-															  message:b ? NSLocalizedString(@"Restore finished", nil) : NSLocalizedString(@"Unable to transfer data", nil)
-													cancelButtonTitle:NSLocalizedString(@"Close", nil)
-													otherButtonTitles:nil
-													  completionBlock:nil
-														  cancelBlock:nil] show];
-								 }
-							 }
-								 cancelBlock:nil] show];
+		else {
+			self.eveCentralCell.accessoryView = nil;
+			self.crestCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]];
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsUseCRESTMarketProviderKey];
 		}
-	}*/
+	}
 }
 
 #pragma mark - Private

@@ -33,18 +33,6 @@
 @property (nonatomic, copy) NSString* title;
 @end
 
-@interface NCDatabaseTypeMarketInfoViewController ()
-
-@property (nonatomic, strong) NSArray *filteredSellOrdersSections;
-@property (nonatomic, strong) NSArray *filteredBuyOrdersSections;
-@property (nonatomic, strong) NSArray *filteredSellSummary;
-@property (nonatomic, strong) NSArray *filteredBuySummary;
-@property (nonatomic, strong) NCDBInvType* type;
-@property (nonatomic, strong) NSMutableDictionary* stations;
-@property (nonatomic, strong) NSMutableDictionary* regions;
-
-@end
-
 @implementation NCDatabaseTypeMarketInfoViewControllerData
 
 #pragma mark - NSCoding
@@ -108,6 +96,13 @@
 
 @interface NCDatabaseTypeMarketInfoViewController()
 @property (nonatomic, strong) NCSetting* modeSetting;
+@property (nonatomic, strong) NSArray *filteredSellOrdersSections;
+@property (nonatomic, strong) NSArray *filteredBuyOrdersSections;
+@property (nonatomic, strong) NSArray *filteredSellSummary;
+@property (nonatomic, strong) NSArray *filteredBuySummary;
+@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, strong) NSMutableDictionary* stations;
+@property (nonatomic, strong) NSMutableDictionary* regions;
 
 @end
 
@@ -320,6 +315,13 @@
 		}];
 	} progressBlock:nil];
 }
+
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NCDatabaseTypeMarketInfoViewControllerData* data = cacheData;
+	self.backgrountText = data.sellOrdersSections.count > 0 || data.buyOrdersSections.count > 0 ? nil : NSLocalizedString(@"No Results", nil);
+	completionBlock();
+}
+
 
 - (void) searchWithSearchString:(NSString *)searchString completionBlock:(void (^)())completionBlock {
 	completionBlock();

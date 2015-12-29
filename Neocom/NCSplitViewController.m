@@ -15,7 +15,6 @@
 @implementation NCSplitViewController
 
 - (BOOL) shouldAutorotate {
-	NSLog(@"%@", self.view.window.screen);
 	return NO;
 }
 

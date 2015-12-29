@@ -66,17 +66,6 @@
 		12476C9219501A4D009E07C6 /* DamagePattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2719501A4C009E07C6 /* DamagePattern.cpp */; };
 		12476C9419501A4D009E07C6 /* Drone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2B19501A4C009E07C6 /* Drone.cpp */; };
 		12476C9519501A4D009E07C6 /* Effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2D19501A4C009E07C6 /* Effect.cpp */; };
-		12476C9619501A4D009E07C6 /* EffectAdaptiveArmorHardener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C2F19501A4C009E07C6 /* EffectAdaptiveArmorHardener.cpp */; };
-		12476C9719501A4D009E07C6 /* EffectArmorRepairInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C3119501A4C009E07C6 /* EffectArmorRepairInterpreter.cpp */; };
-		12476C9819501A4D009E07C6 /* EffectByteCodeInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C3319501A4C009E07C6 /* EffectByteCodeInterpreter.cpp */; };
-		12476C9919501A4D009E07C6 /* EffectEnergyDestabilizationNewInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C3519501A4C009E07C6 /* EffectEnergyDestabilizationNewInterpreter.cpp */; };
-		12476C9A19501A4D009E07C6 /* EffectEnergyTransferInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C3719501A4C009E07C6 /* EffectEnergyTransferInterpreter.cpp */; };
-		12476C9B19501A4D009E07C6 /* EffectHardPointModifierEffectInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C3919501A4C009E07C6 /* EffectHardPointModifierEffectInterpreter.cpp */; };
-		12476C9C19501A4D009E07C6 /* EffectHullRepairInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C3B19501A4C009E07C6 /* EffectHullRepairInterpreter.cpp */; };
-		12476C9D19501A4D009E07C6 /* EffectLeechInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C3E19501A4D009E07C6 /* EffectLeechInterpreter.cpp */; };
-		12476C9E19501A4D009E07C6 /* EffectNaniteRepairPasteArmorDamageBonus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C4019501A4D009E07C6 /* EffectNaniteRepairPasteArmorDamageBonus.cpp */; };
-		12476C9F19501A4D009E07C6 /* EffectShieldBoostingInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C4219501A4D009E07C6 /* EffectShieldBoostingInterpreter.cpp */; };
-		12476CA019501A4D009E07C6 /* EffectSlotModifierInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C4419501A4D009E07C6 /* EffectSlotModifierInterpreter.cpp */; };
 		12476CA219501A4D009E07C6 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C4819501A4D009E07C6 /* Engine.cpp */; };
 		12476CA319501A4D009E07C6 /* FetchResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C4F19501A4D009E07C6 /* FetchResult.cpp */; };
 		12476CA419501A4D009E07C6 /* Gang.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C5119501A4D009E07C6 /* Gang.cpp */; };
@@ -188,6 +177,9 @@
 		127667471914C9A900530550 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127667461914C9A900530550 /* Foundation.framework */; };
 		1276674A1914C9A900530550 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 127667491914C9A900530550 /* main.mm */; };
 		128257191BCCF4C400BC1F56 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */; };
+		12AEEFD41C25F32F00FB7B1D /* EffectPrototype.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12AEEFD01C25F32F00FB7B1D /* EffectPrototype.cpp */; };
+		12AEEFD51C25F32F00FB7B1D /* Environment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12AEEFD21C25F32F00FB7B1D /* Environment.cpp */; };
+		12AEEFE11C26C4FA00FB7B1D /* AttributePrototype.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12AEEFDE1C26C4FA00FB7B1D /* AttributePrototype.cpp */; };
 		12D6DC8E1920CD0A003FC5ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D6DC8D1920CD0A003FC5ED /* libsqlite3.dylib */; };
 		12D6DCF41920D1D5003FC5ED /* NCDBImageValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */; };
 		12DDFB971C15758D005F1382 /* NCDBEufeItemDamage+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DDFB901C15758D005F1382 /* NCDBEufeItemDamage+CoreDataProperties.m */; };
@@ -335,29 +327,6 @@
 		12476C2C19501A4C009E07C6 /* Drone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drone.h; sourceTree = "<group>"; };
 		12476C2D19501A4C009E07C6 /* Effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Effect.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		12476C2E19501A4C009E07C6 /* Effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Effect.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		12476C2F19501A4C009E07C6 /* EffectAdaptiveArmorHardener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectAdaptiveArmorHardener.cpp; sourceTree = "<group>"; };
-		12476C3019501A4C009E07C6 /* EffectAdaptiveArmorHardener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectAdaptiveArmorHardener.h; sourceTree = "<group>"; };
-		12476C3119501A4C009E07C6 /* EffectArmorRepairInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectArmorRepairInterpreter.cpp; sourceTree = "<group>"; };
-		12476C3219501A4C009E07C6 /* EffectArmorRepairInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectArmorRepairInterpreter.h; sourceTree = "<group>"; };
-		12476C3319501A4C009E07C6 /* EffectByteCodeInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectByteCodeInterpreter.cpp; sourceTree = "<group>"; };
-		12476C3419501A4C009E07C6 /* EffectByteCodeInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectByteCodeInterpreter.h; sourceTree = "<group>"; };
-		12476C3519501A4C009E07C6 /* EffectEnergyDestabilizationNewInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectEnergyDestabilizationNewInterpreter.cpp; sourceTree = "<group>"; };
-		12476C3619501A4C009E07C6 /* EffectEnergyDestabilizationNewInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectEnergyDestabilizationNewInterpreter.h; sourceTree = "<group>"; };
-		12476C3719501A4C009E07C6 /* EffectEnergyTransferInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectEnergyTransferInterpreter.cpp; sourceTree = "<group>"; };
-		12476C3819501A4C009E07C6 /* EffectEnergyTransferInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectEnergyTransferInterpreter.h; sourceTree = "<group>"; };
-		12476C3919501A4C009E07C6 /* EffectHardPointModifierEffectInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectHardPointModifierEffectInterpreter.cpp; sourceTree = "<group>"; };
-		12476C3A19501A4C009E07C6 /* EffectHardPointModifierEffectInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectHardPointModifierEffectInterpreter.h; sourceTree = "<group>"; };
-		12476C3B19501A4C009E07C6 /* EffectHullRepairInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectHullRepairInterpreter.cpp; sourceTree = "<group>"; };
-		12476C3C19501A4C009E07C6 /* EffectHullRepairInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectHullRepairInterpreter.h; sourceTree = "<group>"; };
-		12476C3D19501A4D009E07C6 /* EffectInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectInterpreter.h; sourceTree = "<group>"; };
-		12476C3E19501A4D009E07C6 /* EffectLeechInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectLeechInterpreter.cpp; sourceTree = "<group>"; };
-		12476C3F19501A4D009E07C6 /* EffectLeechInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectLeechInterpreter.h; sourceTree = "<group>"; };
-		12476C4019501A4D009E07C6 /* EffectNaniteRepairPasteArmorDamageBonus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectNaniteRepairPasteArmorDamageBonus.cpp; sourceTree = "<group>"; };
-		12476C4119501A4D009E07C6 /* EffectNaniteRepairPasteArmorDamageBonus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectNaniteRepairPasteArmorDamageBonus.h; sourceTree = "<group>"; };
-		12476C4219501A4D009E07C6 /* EffectShieldBoostingInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectShieldBoostingInterpreter.cpp; sourceTree = "<group>"; };
-		12476C4319501A4D009E07C6 /* EffectShieldBoostingInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectShieldBoostingInterpreter.h; sourceTree = "<group>"; };
-		12476C4419501A4D009E07C6 /* EffectSlotModifierInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectSlotModifierInterpreter.cpp; sourceTree = "<group>"; };
-		12476C4519501A4D009E07C6 /* EffectSlotModifierInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectSlotModifierInterpreter.h; sourceTree = "<group>"; };
 		12476C4819501A4D009E07C6 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
 		12476C4919501A4D009E07C6 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
 		12476C4B19501A4D009E07C6 /* eufe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eufe.h; sourceTree = "<group>"; };
@@ -582,6 +551,12 @@
 		1276674C1914C9A900530550 /* NCDatabase-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NCDatabase-Prefix.pch"; sourceTree = "<group>"; };
 		128257171BCCF4C400BC1F56 /* NCStorage 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NCStorage 2.xcdatamodel"; sourceTree = "<group>"; };
 		128257181BCCF4C400BC1F56 /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
+		12AEEFD01C25F32F00FB7B1D /* EffectPrototype.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectPrototype.cpp; sourceTree = "<group>"; };
+		12AEEFD11C25F32F00FB7B1D /* EffectPrototype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectPrototype.h; sourceTree = "<group>"; };
+		12AEEFD21C25F32F00FB7B1D /* Environment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Environment.cpp; sourceTree = "<group>"; };
+		12AEEFDE1C26C4FA00FB7B1D /* AttributePrototype.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AttributePrototype.cpp; sourceTree = "<group>"; };
+		12AEEFDF1C26C4FA00FB7B1D /* AttributePrototype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributePrototype.h; sourceTree = "<group>"; };
+		12AEEFE01C26C4FA00FB7B1D /* Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Environment.h; sourceTree = "<group>"; };
 		12D6DC8D1920CD0A003FC5ED /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		12D6DCF21920D1D5003FC5ED /* NCDBImageValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBImageValueTransformer.h; sourceTree = "<group>"; };
 		12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBImageValueTransformer.m; sourceTree = "<group>"; };
@@ -761,6 +736,12 @@
 		12476C1319501A4C009E07C6 /* eufe */ = {
 			isa = PBXGroup;
 			children = (
+				12AEEFD01C25F32F00FB7B1D /* EffectPrototype.cpp */,
+				12AEEFD11C25F32F00FB7B1D /* EffectPrototype.h */,
+				12AEEFD21C25F32F00FB7B1D /* Environment.cpp */,
+				12AEEFE01C26C4FA00FB7B1D /* Environment.h */,
+				12AEEFDE1C26C4FA00FB7B1D /* AttributePrototype.cpp */,
+				12AEEFDF1C26C4FA00FB7B1D /* AttributePrototype.h */,
 				12215B4D1C1D8937003B6DA5 /* FetchRequest.cpp */,
 				12215B4E1C1D8937003B6DA5 /* SqliteFetchRequest.cpp */,
 				12215B4F1C1D8937003B6DA5 /* SqliteFetchRequest.h */,
@@ -795,29 +776,6 @@
 				12476C2C19501A4C009E07C6 /* Drone.h */,
 				12476C2D19501A4C009E07C6 /* Effect.cpp */,
 				12476C2E19501A4C009E07C6 /* Effect.h */,
-				12476C2F19501A4C009E07C6 /* EffectAdaptiveArmorHardener.cpp */,
-				12476C3019501A4C009E07C6 /* EffectAdaptiveArmorHardener.h */,
-				12476C3119501A4C009E07C6 /* EffectArmorRepairInterpreter.cpp */,
-				12476C3219501A4C009E07C6 /* EffectArmorRepairInterpreter.h */,
-				12476C3319501A4C009E07C6 /* EffectByteCodeInterpreter.cpp */,
-				12476C3419501A4C009E07C6 /* EffectByteCodeInterpreter.h */,
-				12476C3519501A4C009E07C6 /* EffectEnergyDestabilizationNewInterpreter.cpp */,
-				12476C3619501A4C009E07C6 /* EffectEnergyDestabilizationNewInterpreter.h */,
-				12476C3719501A4C009E07C6 /* EffectEnergyTransferInterpreter.cpp */,
-				12476C3819501A4C009E07C6 /* EffectEnergyTransferInterpreter.h */,
-				12476C3919501A4C009E07C6 /* EffectHardPointModifierEffectInterpreter.cpp */,
-				12476C3A19501A4C009E07C6 /* EffectHardPointModifierEffectInterpreter.h */,
-				12476C3B19501A4C009E07C6 /* EffectHullRepairInterpreter.cpp */,
-				12476C3C19501A4C009E07C6 /* EffectHullRepairInterpreter.h */,
-				12476C3D19501A4D009E07C6 /* EffectInterpreter.h */,
-				12476C3E19501A4D009E07C6 /* EffectLeechInterpreter.cpp */,
-				12476C3F19501A4D009E07C6 /* EffectLeechInterpreter.h */,
-				12476C4019501A4D009E07C6 /* EffectNaniteRepairPasteArmorDamageBonus.cpp */,
-				12476C4119501A4D009E07C6 /* EffectNaniteRepairPasteArmorDamageBonus.h */,
-				12476C4219501A4D009E07C6 /* EffectShieldBoostingInterpreter.cpp */,
-				12476C4319501A4D009E07C6 /* EffectShieldBoostingInterpreter.h */,
-				12476C4419501A4D009E07C6 /* EffectSlotModifierInterpreter.cpp */,
-				12476C4519501A4D009E07C6 /* EffectSlotModifierInterpreter.h */,
 				12476C4819501A4D009E07C6 /* Engine.cpp */,
 				12476C4919501A4D009E07C6 /* Engine.h */,
 				12476C4B19501A4D009E07C6 /* eufe.h */,
@@ -1152,11 +1110,11 @@
 				12436D92194596750090D4A6 /* EVEDBMapConstellation.m in Sources */,
 				12436D99194596750090D4A6 /* EVEDBRamInstallationTypeContent.m in Sources */,
 				12654B2F1C0B206D0060106C /* NCDBDgmAttributeCategory.m in Sources */,
+				12AEEFE11C26C4FA00FB7B1D /* AttributePrototype.cpp in Sources */,
 				12476C9119501A4D009E07C6 /* ControlTower.cpp in Sources */,
 				12436EAD194701B80090D4A6 /* NCDatabase.xcdatamodeld in Sources */,
 				1276674A1914C9A900530550 /* main.mm in Sources */,
 				12436D78194596750090D4A6 /* EVEDBCrtCertificate.m in Sources */,
-				12476C9E19501A4D009E07C6 /* EffectNaniteRepairPasteArmorDamageBonus.cpp in Sources */,
 				12654B351C0B206D0060106C /* NCDBInvControlTower.m in Sources */,
 				12584E0419C9504C00847AB1 /* EVEDBIndustryActivityProbability.m in Sources */,
 				12436D87194596750090D4A6 /* EVEDBInvControlTowerResourcePurpose.m in Sources */,
@@ -1185,7 +1143,6 @@
 				12476CA819501A4D009E07C6 /* LocationGroupModifier.cpp in Sources */,
 				12654B4A1C0B206D0060106C /* NCDBRamAssemblyLineType+CoreDataProperties.m in Sources */,
 				12436D80194596750090D4A6 /* EVEDBDgmTypeAttribute.m in Sources */,
-				12476C9619501A4D009E07C6 /* EffectAdaptiveArmorHardener.cpp in Sources */,
 				12D6DCF41920D1D5003FC5ED /* NCDBImageValueTransformer.m in Sources */,
 				12654B331C0B206D0060106C /* NCDBEveIconImage.m in Sources */,
 				12476CA219501A4D009E07C6 /* Engine.cpp in Sources */,
@@ -1208,16 +1165,15 @@
 				12436D7C194596750090D4A6 /* EVEDBDatabase.m in Sources */,
 				12654B371C0B206D0060106C /* NCDBMapDenormalize.m in Sources */,
 				12476CA319501A4D009E07C6 /* FetchResult.cpp in Sources */,
+				12AEEFD51C25F32F00FB7B1D /* Environment.cpp in Sources */,
 				12654B041C0B206D0060106C /* NCDBIndBlueprintType+CoreDataProperties.m in Sources */,
 				128257191BCCF4C400BC1F56 /* NCStorage.xcdatamodeld in Sources */,
 				12476C8F19501A4D009E07C6 /* Charge.cpp in Sources */,
-				12476C9919501A4D009E07C6 /* EffectEnergyDestabilizationNewInterpreter.cpp in Sources */,
 				12654B431C0B206D0060106C /* NCDBEufeItemCategory.m in Sources */,
 				12654B2C1C0B206D0060106C /* NCDBChrRace+CoreDataProperties.m in Sources */,
 				12476CB019501A4D009E07C6 /* SqlConnector.cpp in Sources */,
 				12654B341C0B206D0060106C /* NCDBInvControlTower+CoreDataProperties.m in Sources */,
 				12654B161C0B206D0060106C /* NCDBIndRequiredMaterial+CoreDataProperties.m in Sources */,
-				12476C9D19501A4D009E07C6 /* EffectLeechInterpreter.cpp in Sources */,
 				12476C8A19501A4D009E07C6 /* Attribute.cpp in Sources */,
 				12436D8A194596750090D4A6 /* EVEDBInvMetaGroup.m in Sources */,
 				12654B551C0B206D0060106C /* NCDBTxtDescription.m in Sources */,
@@ -1251,7 +1207,6 @@
 				12654B4D1C0B206D0060106C /* NCDBIndRequiredSkill.m in Sources */,
 				12654B401C0B206D0060106C /* NCDBInvControlTowerResource+CoreDataProperties.m in Sources */,
 				12436D89194596750090D4A6 /* EVEDBInvMarketGroup.m in Sources */,
-				12476C9A19501A4D009E07C6 /* EffectEnergyTransferInterpreter.cpp in Sources */,
 				12476CA519501A4D009E07C6 /* HeatSimulator.cpp in Sources */,
 				12436D77194596750090D4A6 /* EVEDBCrtCategory.m in Sources */,
 				12436D74194596750090D4A6 /* EVEDBCertMastery.m in Sources */,
@@ -1266,15 +1221,13 @@
 				12476CAE19501A4D009E07C6 /* Ship.cpp in Sources */,
 				12DDFB971C15758D005F1382 /* NCDBEufeItemDamage+CoreDataProperties.m in Sources */,
 				12436D95194596750090D4A6 /* EVEDBMapSolarSystem.m in Sources */,
+				12AEEFD41C25F32F00FB7B1D /* EffectPrototype.cpp in Sources */,
 				12436D97194596750090D4A6 /* EVEDBRamActivity.m in Sources */,
 				12DDFBA81C15771B005F1382 /* NCDBEufeItemShipResources+CoreDataProperties.m in Sources */,
 				12654B3F1C0B206D0060106C /* NCDBRamInstallationTypeContent.m in Sources */,
 				12654B421C0B206D0060106C /* NCDBEufeItemCategory+CoreDataProperties.m in Sources */,
 				12654B3E1C0B206D0060106C /* NCDBRamInstallationTypeContent+CoreDataProperties.m in Sources */,
-				12476CA019501A4D009E07C6 /* EffectSlotModifierInterpreter.cpp in Sources */,
 				12654B511C0B206D0060106C /* NCDBInvTypeRequiredSkill.m in Sources */,
-				12476C9719501A4D009E07C6 /* EffectArmorRepairInterpreter.cpp in Sources */,
-				12476C9819501A4D009E07C6 /* EffectByteCodeInterpreter.cpp in Sources */,
 				12436D75194596750090D4A6 /* EVEDBCertSkill.m in Sources */,
 				12436D91194596750090D4A6 /* EVEDBInvTypeMaterial.m in Sources */,
 				12436D98194596750090D4A6 /* EVEDBRamAssemblyLineType.m in Sources */,
@@ -1282,11 +1235,9 @@
 				12654B491C0B206D0060106C /* NCDBEveUnit.m in Sources */,
 				12476CA619501A4D009E07C6 /* Implant.cpp in Sources */,
 				12654B0A1C0B206D0060106C /* NCDBEufeHullType+CoreDataProperties.m in Sources */,
-				12476C9F19501A4D009E07C6 /* EffectShieldBoostingInterpreter.cpp in Sources */,
 				12654B201C0B206D0060106C /* NCDBCertMasteryLevel+CoreDataProperties.m in Sources */,
 				12654B441C0B206D0060106C /* NCDBEveIcon+CoreDataProperties.m in Sources */,
 				12436D82194596750090D4A6 /* EVEDBEveIcon.m in Sources */,
-				12476C9B19501A4D009E07C6 /* EffectHardPointModifierEffectInterpreter.cpp in Sources */,
 				12654B181C0B206D0060106C /* NCDBNpcGroup+CoreDataProperties.m in Sources */,
 				12654B221C0B206D0060106C /* NCDBCertMastery+CoreDataProperties.m in Sources */,
 				12436D88194596750090D4A6 /* EVEDBInvGroup.m in Sources */,
@@ -1314,7 +1265,6 @@
 				12654B311C0B206D0060106C /* NCDBEufeItemGroup.m in Sources */,
 				12654B1D1C0B206D0060106C /* NCDBCertSkill.m in Sources */,
 				12654B241C0B206D0060106C /* NCDBInvGroup+CoreDataProperties.m in Sources */,
-				12476C9C19501A4D009E07C6 /* EffectHullRepairInterpreter.cpp in Sources */,
 				12476CA919501A4D009E07C6 /* LocationRequiredSkillModifier.cpp in Sources */,
 				12476C9419501A4D009E07C6 /* Drone.cpp in Sources */,
 				12654B501C0B206D0060106C /* NCDBInvTypeRequiredSkill+CoreDataProperties.m in Sources */,

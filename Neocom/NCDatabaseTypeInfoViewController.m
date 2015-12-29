@@ -13,6 +13,7 @@
 #import "NSString+Neocom.h"
 #import "NCDatabaseTypeVariationsViewController.h"
 #import "NCDatabaseTypeMarketInfoViewController.h"
+#import "NCDatabaseTypeCRESTMarketInfoViewController.h"
 #import "NCTrainingQueue.h"
 #import "NCSkillHierarchy.h"
 #import "NCDatabaseViewController.h"
@@ -96,14 +97,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.type = (NCDBInvType*) [self.databaseManagedObjectContext existingObjectWithID:self.typeID error:nil];
+	self.type = self.typeID ? (NCDBInvType*) [self.databaseManagedObjectContext existingObjectWithID:self.typeID error:nil] : nil;
 	self.defaultAttributeIcon = [self.databaseManagedObjectContext eveIconWithIconFile:@"105_32"];
 	self.defaultTypeIcon = [self.databaseManagedObjectContext defaultTypeIcon];
 
 	self.tableView.tableHeaderView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
+	
 	if (self.navigationController.viewControllers[0] != self)
 		self.navigationItem.leftBarButtonItem = nil;
-	self.title = self.type.typeName;
+	self.title = self.type.typeName ?: NSLocalizedString(@"Unknown", nil);
 	[self reload];
 	self.refreshControl = nil;
 	if (self.type.marketGroup.marketGroupID == 0)
@@ -188,6 +190,10 @@
 		destinationViewController.typeID = [self.type objectID];
 		destinationViewController.navigationItem.rightBarButtonItem = nil;
 	}
+	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeCRESTMarketInfoViewController"]) {
+		NCDatabaseTypeCRESTMarketInfoViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.typeID = [self.type objectID];
+	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeMasteryViewController"]) {
 		NCDatabaseTypeMasteryViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.typeID = self.typeID;
@@ -219,6 +225,26 @@
 - (IBAction) unwindFromNewShoppingItem:(UIStoryboardSegue*)segue {
 	
 }
+
+- (IBAction)onMarket:(id)sender {
+	if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUseCRESTMarketProviderKey]) {
+		UIAlertController* controller = [UIAlertController alertControllerWithTitle:@"CREST Market API" message:NSLocalizedString(@"Do you wish to use CREST Market API? CREST Market API allows you to load realtime ingame market orders. You can change it later in the settings.", nil) preferredStyle:UIAlertControllerStyleAlert];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Use CREST API", NO) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsUseCRESTMarketProviderKey];
+			[self performSegueWithIdentifier:@"NCDatabaseTypeCRESTMarketInfoViewController" sender:sender];
+		}]];
+		[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Left as is", NO) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+			[[NSUserDefaults standardUserDefaults] setBool:NO forKey:NCSettingsUseCRESTMarketProviderKey];
+			[self performSegueWithIdentifier:@"NCDatabaseTypeMarketInfoViewController" sender:sender];
+		}]];
+		[self presentViewController:controller animated:YES completion:nil];
+	}
+	else {
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCRESTMarketProviderKey])
+			[self performSegueWithIdentifier:@"NCDatabaseTypeCRESTMarketInfoViewController" sender:sender];
+		else
+			[self performSegueWithIdentifier:@"NCDatabaseTypeMarketInfoViewController" sender:sender];
+	}}
 
 
 #pragma mark - NCTableViewController
@@ -334,8 +360,9 @@
 - (void) reload {
 	NCDBInvType* type = self.type;
 
-	NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %d", type.typeName, type.typeID]];
-	NSRange typeIDRange = NSMakeRange(type.typeName.length + 1, title.length - type.typeName.length - 1);
+	NSString* typeName = type.typeName ?: NSLocalizedString(@"Unknown", nil);
+	NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %d", typeName, type.typeID]];
+	NSRange typeIDRange = NSMakeRange(typeName.length + 1, title.length - typeName.length - 1);
 	[title addAttributes:@{NSFontAttributeName: [self.titleLabel.font fontWithSize:self.titleLabel.font.pointSize * 0.6],
 									  (__bridge NSString*) (kCTSuperscriptAttributeName): @(-1),
 									  NSForegroundColorAttributeName: [UIColor lightTextColor]}
@@ -348,14 +375,16 @@
 	self.needsLayout = YES;
 	[self.view setNeedsLayout];
 	
-	if (type.group.category.categoryID == 9)
-		[self loadBlueprintAttributes];
-	else if (type.group.category.categoryID == 11)
-		[self loadNPCAttributes];
-	else if (type.wormhole)
-		[self loadWHAttributes];
-	else
-		[self loadItemAttributes];
+	if (type) {
+		if (type.group.category.categoryID == 9)
+			[self loadBlueprintAttributes];
+		else if (type.group.category.categoryID == 11)
+			[self loadNPCAttributes];
+		else if (type.wormhole)
+			[self loadWHAttributes];
+		else
+			[self loadItemAttributes];
+	}
 }
 
 - (void) loadItemAttributes {

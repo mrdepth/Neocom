@@ -2,7 +2,7 @@
 //  NCDBIndRequiredMaterial+CoreDataProperties.h
 //  NCDatabase
 //
-//  Created by Artem Shimanski on 29.11.15.
+//  Created by Артем Шиманский on 23.12.15.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -15,8 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NCDBIndRequiredMaterial (CoreDataProperties)
 
-@property (nonatomic) int32_t consume;
-@property (nonatomic) int32_t quantity;
+@property (nonatomic, assign) int32_t quantity;
 @property (nullable, nonatomic, retain) NCDBIndActivity *activity;
 @property (nullable, nonatomic, retain) NCDBInvType *materialType;
 

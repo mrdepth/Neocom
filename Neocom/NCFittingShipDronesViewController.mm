@@ -147,6 +147,7 @@
 																}
 															}
 															int dronesLeft = std::max(ship->getMaxActiveDrones(), 1);
+															self.controller.engine.engine->beginUpdates();
 															for (;dronesLeft > 0; dronesLeft--) {
 																auto drone = ship->addDrone(typeID);
 																if (sameDrone) {
@@ -154,6 +155,7 @@
 																	drone->setActive(sameDrone->isActive());
 																}
 															}
+															self.controller.engine.engine->commitUpdates();
 														}];
 														
 														[self.controller reload];
@@ -254,8 +256,10 @@
 		
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDelete style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
 			[self.controller.engine performBlockAndWait:^{
+				self.controller.engine.engine->beginUpdates();
 				for (const auto& drone: drones)
 					ship->removeDrone(drone);
+				self.controller.engine.engine->commitUpdates();
 			}];
 			[self.controller reload];
 		}]];
@@ -269,8 +273,10 @@
 		if (drone->isActive()) {
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDeactivate style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
+					self.controller.engine.engine->beginUpdates();
 					for (const auto& drone: drones)
 						drone->setActive(false);
+					self.controller.engine.engine->commitUpdates();
 				}];
 				[self.controller reload];
 			}]];
@@ -278,8 +284,10 @@
 		else {
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonActivate style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
+					self.controller.engine.engine->beginUpdates();
 					for (const auto& drone: drones)
 						drone->setActive(true);
+					self.controller.engine.engine->commitUpdates();
 				}];
 				[self.controller reload];
 			}]];
@@ -306,6 +314,7 @@
 					
 					int n = (int) drones.size() - amount;
 					[self.controller.engine performBlock:^{
+						self.controller.engine.engine->beginUpdates();
 						if (n > 0) {
 							int i = n;
 							for (const auto& drone: drones) {
@@ -323,6 +332,7 @@
 								newDrone->setTarget(drone->getTarget());
 							}
 						}
+						self.controller.engine.engine->commitUpdates();
 						dispatch_async(dispatch_get_main_queue(), ^{
 							[self.controller reload];
 						});
@@ -343,8 +353,10 @@
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				NSMutableArray* array = [NSMutableArray new];
 				[self.controller.engine performBlockAndWait:^{
+					self.controller.engine.engine->beginUpdates();
 					for (const auto& drone: drones)
 						[array addObject:[NCFittingEngineItemPointer pointerWithItem:drone]];
+					self.controller.engine.engine->commitUpdates();
 				}];
 				[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController"
 													 sender:@{@"sender": cell, @"object": array}];
@@ -352,8 +364,10 @@
 			if (drone->getTarget() != NULL) {
 				[actions addObject:[UIAlertAction actionWithTitle:ActionButtonClearTarget style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 					[self.controller.engine performBlockAndWait:^{
+						self.controller.engine.engine->beginUpdates();
 						for (const auto& drone: drones)
 							drone->clearTarget();
+						self.controller.engine.engine->commitUpdates();
 					}];
 					[self.controller reload];
 				}]];

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
@@ -808,7 +807,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCEufeItemShipCell" rowHeight="40" id="QDW-Zu-m5f" customClass="NCEufeItemShipCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCDgmppItemShipCell" rowHeight="40" id="QDW-Zu-m5f" customClass="NCDgmppItemShipCell">
                                 <rect key="frame" x="0.0" y="204" width="600" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QDW-Zu-m5f" id="5oY-zW-8jj">
@@ -985,7 +984,7 @@
                                     <outlet property="typeNameLabel" destination="Y3y-qF-kEF" id="iQp-zp-U6Z"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCEufeItemModuleCell" rowHeight="40" id="1YB-Xi-5At" customClass="NCEufeItemModuleCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCDgmppItemModuleCell" rowHeight="40" id="1YB-Xi-5At" customClass="NCDgmppItemModuleCell">
                                 <rect key="frame" x="0.0" y="244" width="600" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1YB-Xi-5At" id="zH2-Sk-4fL">
@@ -1086,7 +1085,7 @@
                                     <outlet property="typeNameLabel" destination="fKF-3O-beM" id="LDA-TX-e42"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCEufeItemRigCell" rowHeight="40" id="x70-Vh-D1v" customClass="NCEufeItemModuleCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCDgmppItemRigCell" rowHeight="40" id="x70-Vh-D1v" customClass="NCDgmppItemModuleCell">
                                 <rect key="frame" x="0.0" y="284" width="600" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x70-Vh-D1v" id="t4w-NE-pMK">
@@ -1168,7 +1167,7 @@
                                     <outlet property="typeNameLabel" destination="YBn-7Q-2HQ" id="QZG-C3-lDP"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCEufeItemChargeCell" rowHeight="44" id="oTw-IX-A8u" customClass="NCEufeItemChargeCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCDgmppItemChargeCell" rowHeight="44" id="oTw-IX-A8u" customClass="NCDgmppItemChargeCell">
                                 <rect key="frame" x="0.0" y="324" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oTw-IX-A8u" id="2cU-nx-Dn1">

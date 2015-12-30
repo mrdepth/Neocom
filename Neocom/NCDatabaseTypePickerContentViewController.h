@@ -9,6 +9,6 @@
 #import "NCTableViewController.h"
 
 @interface NCDatabaseTypePickerContentViewController : NCTableViewController
-@property (nonatomic, strong) NCDBEufeItemGroup* group;
+@property (nonatomic, strong) NCDBDgmppItemGroup* group;
 
 @end

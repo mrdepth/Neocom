@@ -10,13 +10,13 @@
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCTableViewCell.h"
 #import "NCDatabaseTypeInfoViewController.h"
-#import "NCEufeItemShipCell.h"
-#import "NCEufeItemModuleCell.h"
-#import "NCEufeItemChargeCell.h"
+#import "NCDgmppItemShipCell.h"
+#import "NCDgmppItemModuleCell.h"
+#import "NCDgmppItemChargeCell.h"
 
 @interface NCDatabaseTypePickerViewController ()
 @property (nonatomic, copy) void (^completionHandler)(NCDBInvType* type);
-@property (nonatomic, strong) NCDBEufeItemCategory* category;
+@property (nonatomic, strong) NCDBDgmppItemCategory* category;
 
 @end
 
@@ -72,7 +72,7 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCDatabaseTypePickerContentViewController"]) {
 		NCDatabaseTypePickerContentViewController* destinationViewController = segue.destinationViewController;
-		NCDBEufeItemGroup* group = [sender object];
+		NCDBDgmppItemGroup* group = [sender object];
 		destinationViewController.group = group;
 		
 		destinationViewController.title = group.groupName;
@@ -83,7 +83,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		NCDBEufeItem* item = [sender object];
+		NCDBDgmppItem* item = [sender object];
 		controller.typeID = [item.type objectID];
 	}
 }
@@ -115,8 +115,8 @@
 	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 
-	if ([row isKindOfClass:[NCDBEufeItem class]]) {
-		NCDBEufeItem* item = row;
+	if ([row isKindOfClass:[NCDBDgmppItem class]]) {
+		NCDBDgmppItem* item = row;
 		NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
 		navigationController.completionHandler(item.type);
 	}
@@ -131,7 +131,7 @@
 - (void) searchWithSearchString:(NSString*) searchString completionBlock:(void (^)())completionBlock {
 	if (searchString.length > 1) {
 		NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
-		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItem"];
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DgmppItem"];
 		request.sortDescriptors = @[
 									[NSSortDescriptor sortDescriptorWithKey:@"type.metaGroup.metaGroupID" ascending:YES],
 									[NSSortDescriptor sortDescriptorWithKey:@"type.metaLevel" ascending:YES],
@@ -155,14 +155,14 @@
 	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	
-	if ([row isKindOfClass:[NCDBEufeItem class]]) {
-		NCDBEufeItem* item = row;
+	if ([row isKindOfClass:[NCDBDgmppItem class]]) {
+		NCDBDgmppItem* item = row;
 		if (item.shipResources)
-			return @"NCEufeItemShipCell";
+			return @"NCDgmppItemShipCell";
 		else if (item.requirements)
-			return item.requirements.calibration > 0 ? @"NCEufeItemRigCell" : @"NCEufeItemModuleCell";
+			return item.requirements.calibration > 0 ? @"NCDgmppItemRigCell" : @"NCDgmppItemModuleCell";
 		else if (item.damage)
-			return @"NCEufeItemChargeCell";
+			return @"NCDgmppItemChargeCell";
 		else
 			return @"TypeCell";
 	}
@@ -174,15 +174,15 @@
 	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	id row = sectionInfo.objects[indexPath.row];
 	
-	if ([row isKindOfClass:[NCDBEufeItem class]]) {
-		NCDBEufeItem* item = row;
+	if ([row isKindOfClass:[NCDBDgmppItem class]]) {
+		NCDBDgmppItem* item = row;
 		NSMutableAttributedString* typeName = [[NSMutableAttributedString alloc] initWithString:item.type.typeName ?: NSLocalizedString(@"Unknown", nil) attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
 		if (item.type.metaLevel > 0)
 			[typeName appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %d", item.type.metaLevel] attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor], NSFontAttributeName:[UIFont systemFontOfSize:8]}]];
 		UIImage* image = item.type.icon.image.image ?: self.defaultTypeIcon.image.image;
 
 		if (item.shipResources) {
-			NCEufeItemShipCell* cell = (NCEufeItemShipCell*) tableViewCell;
+			NCDgmppItemShipCell* cell = (NCDgmppItemShipCell*) tableViewCell;
 			cell.typeImageView.image = image;
 			cell.typeNameLabel.attributedText = typeName;
 			cell.hiSlotsLabel.text = [NSString stringWithFormat:@"%d", item.shipResources.hiSlots];
@@ -194,7 +194,7 @@
 			cell.object = row;
 		}
 		else if (item.requirements) {
-			NCEufeItemModuleCell* cell = (NCEufeItemModuleCell*) tableViewCell;
+			NCDgmppItemModuleCell* cell = (NCDgmppItemModuleCell*) tableViewCell;
 			cell.typeImageView.image = image;
 			cell.typeNameLabel.attributedText = typeName;
 			cell.powerGridLabel.text = [NSString stringWithFormat:@"%.1f", item.requirements.powerGrid];
@@ -203,7 +203,7 @@
 			cell.object = row;
 		}
 		else if (item.damage) {
-			NCEufeItemChargeCell* cell = (NCEufeItemChargeCell*) tableViewCell;
+			NCDgmppItemChargeCell* cell = (NCDgmppItemChargeCell*) tableViewCell;
 			cell.typeImageView.image = image;
 			cell.typeNameLabel.attributedText = typeName;
 			float damage = item.damage.emAmount + item.damage.thermalAmount + item.damage.kineticAmount + item.damage.explosiveAmount;
@@ -233,8 +233,8 @@
 	}
 	else {
 		NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
-		if ([row isKindOfClass:[NCDBEufeItemGroup class]]) {
-			NCDBEufeItemGroup* group = row;
+		if ([row isKindOfClass:[NCDBDgmppItemGroup class]]) {
+			NCDBDgmppItemGroup* group = row;
 			cell.titleLabel.text = group.groupName;
 			cell.iconView.image = group.icon.image.image;
 		}
@@ -249,7 +249,7 @@
 
 - (void) reload {
 	NSFetchRequest* request;
-	request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItem"];
+	request = [NSFetchRequest fetchRequestWithEntityName:@"DgmppItem"];
 	request.sortDescriptors = @[
 								[NSSortDescriptor sortDescriptorWithKey:@"type.metaGroup.metaGroupID" ascending:YES],
 								[NSSortDescriptor sortDescriptorWithKey:@"type.metaLevel" ascending:YES],
@@ -261,7 +261,7 @@
 	[self.result performFetch:nil];
 
 	if (self.result.fetchedObjects.count == 0) {
-		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItemGroup"];
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DgmppItemGroup"];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
 		
 		request.predicate = [NSPredicate predicateWithFormat:@"parentGroup == %@", self.group];

@@ -47,7 +47,7 @@
 	if (self = [super init]) {
 		self.typeID = [aDecoder decodeInt32ForKey:@"typeID"];
 		self.chargeID = [aDecoder decodeInt32ForKey:@"chargeID"];
-		self.state = static_cast<eufe::Module::State>([aDecoder decodeInt32ForKey:@"state"]);
+		self.state = static_cast<dgmpp::Module::State>([aDecoder decodeInt32ForKey:@"state"]);
 		self.count = [aDecoder decodeInt32ForKey:@"count"];
 	}
 	return self;
@@ -120,7 +120,7 @@
 		
 		for (EVEAssetListItem* item in asset.contents) {
 			NCDBInvType* type = item.type;
-			if (type.group.category.categoryID == eufe::STRUCTURE_CATEGORY_ID && type.group.groupID != eufe::CONTROL_TOWER_GROUP_ID) {
+			if (type.group.category.categoryID == dgmpp::STRUCTURE_CATEGORY_ID && type.group.groupID != dgmpp::CONTROL_TOWER_GROUP_ID) {
 				NCLoadoutDataPOSStructure* structure = structuresDic[@(item.typeID)];
 				if (!structure) {
 					structure = [NCLoadoutDataPOSStructure new];
@@ -155,11 +155,11 @@
 /*- (void) load {
 	if (!self.engine)
 		return;
-	eufe::ControlTower* controlTower = self.engine->setControlTower(self.type.typeID);
+	dgmpp::ControlTower* controlTower = self.engine->setControlTower(self.type.typeID);
 	if (controlTower) {
 		for (NCLoadoutDataPOSStructure* item in self.loadoutData.structures) {
 			for (int n = item.count; n > 0; n--) {
-				eufe::Structure* structure = controlTower->addStructure(item.typeID);
+				dgmpp::Structure* structure = controlTower->addStructure(item.typeID);
 				if (!structure)
 					break;
 				structure->setState(item.state);
@@ -206,7 +206,7 @@
 		NSMutableDictionary* structuresDic = [NSMutableDictionary new];
 		for (const auto& i: controlTower->getStructures()) {
 			auto charge = i->getCharge();
-			eufe::TypeID chargeID = charge ? charge->getTypeID() : 0;
+			dgmpp::TypeID chargeID = charge ? charge->getTypeID() : 0;
 			NSString* key = [NSString stringWithFormat:@"%d:%d:%d", i->getTypeID(), i->getState(), chargeID];
 			NSDictionary* record = structuresDic[key];
 			if (!record) {

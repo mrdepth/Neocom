@@ -2,14 +2,14 @@
 //  NCDBEveIcon.h
 //  NCDatabase
 //
-//  Created by Artem Shimanski on 29.11.15.
+//  Created by Артем Шиманский on 30.12.15.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBCertMasteryLevel, NCDBChrRace, NCDBDgmAttributeType, NCDBEufeItemGroup, NCDBEveIconImage, NCDBInvCategory, NCDBInvGroup, NCDBInvMarketGroup, NCDBInvMetaGroup, NCDBInvType, NCDBNpcGroup, NCDBRamActivity;
+@class NCDBCertMasteryLevel, NCDBChrRace, NCDBDgmAttributeType, NCDBDgmppItemGroup, NCDBEveIconImage, NCDBInvCategory, NCDBInvGroup, NCDBInvMarketGroup, NCDBInvMetaGroup, NCDBInvType, NCDBNpcGroup, NCDBRamActivity;
 
 NS_ASSUME_NONNULL_BEGIN
 

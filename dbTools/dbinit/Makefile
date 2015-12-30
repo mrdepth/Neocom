@@ -6,7 +6,7 @@ VPATH=${T}
 SQL=${PWD}/sql
 SDE+=${PWD}/input/sde/eve.sqlite
 
-all: eufe.sqlite NCDatabase.sqlite
+all: dgm.sqlite NCDatabase.sqlite
 
 dbpatch: tmp
 	$(CC) $(CFLAGS) ../dbpatch/dbpatch.cpp -o ./tmp/$@
@@ -24,7 +24,7 @@ EVENPCBuilder: tmp
 	xcodebuild -project ../EVENPCBuilder/EVENPCBuilder.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
 
 NCDatabase: tmp
-	xcodebuild -project ../NCDatabase/NCDatabase.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
+	xcodebuild -project ../NCDatabase/NCDatabase.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build FRAMEWORK_SEARCH_PATHS=${T}
 
 Icons: eveIcons.sql EVEIconsConverter
 	${T}/EVEIconsConverter ./input/Icons/items ${T}/Icons
@@ -35,8 +35,8 @@ eveIcons.sql: EVEIconsIDsParser
 Types: EVETypesConverter
 	${T}/EVETypesConverter ./input/Types ${T}/Types ${T}/typesMap.sql
 
-eufe.sqlite:
-	cd ../../ThirdParty/eufe/dbinit; make clean; make OUTPUT_DIR=${PWD} DUMP=$(DUMP) T=${T} SDE=$(SDE)
+dgm.sqlite:
+	cd ../../ThirdParty/dgmpp/dbinit; make clean; make OUTPUT_DIR=${PWD} DUMP=$(DUMP) T=${T} SDE=$(SDE)
 
 createTables.sql: tmp
 	sqlite3 ${SDE} ".read ./sql/tablesExtract.sql" > ${T}/tmp.sql
@@ -49,7 +49,7 @@ evedb.sqlite: createTables.sql Types eveIcons.sql npc.sql
 	sqlite3 ${T}/evedb.sqlite ".read ${T}/createTables.sql"
 	cd $(DUMP);	sqlite3 ${T}/evedb.sqlite ".read $(SQL)/dump.sql"
 	sqlite3 ${SDE} ".read ./sql/evedb.sql"
-	sqlite3 ${T}/evedb.sqlite ".read ../../ThirdParty/eufe/dbinit/sql/dumpPatch.sql"
+	sqlite3 ${T}/evedb.sqlite ".read ../../ThirdParty/dgmpp/dbinit/sql/dumpPatch.sql"
 	sqlite3 ${T}/evedb.sqlite ".read ${T}/eveIcons.sql"
 	sqlite3 ${T}/evedb.sqlite ".read ${T}/npc.sql"
 	sqlite3 ${T}/evedb.sqlite "CREATE INDEX \"npcGroup_parentNpcGroupID\" ON \"npcGroup\" (\"parentNpcGroupID\" ASC);"

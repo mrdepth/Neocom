@@ -2,7 +2,7 @@
 //  NCDBEveIcon+CoreDataProperties.h
 //  NCDatabase
 //
-//  Created by Artem Shimanski on 29.11.15.
+//  Created by Артем Шиманский on 30.12.15.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSSet<NCDBInvCategory *> *categories;
 @property (nullable, nonatomic, retain) NSSet<NCDBInvGroup *> *groups;
 @property (nullable, nonatomic, retain) NCDBEveIconImage *image;
-@property (nullable, nonatomic, retain) NSSet<NCDBEufeItemGroup *> *itemGroups;
+@property (nullable, nonatomic, retain) NSSet<NCDBDgmppItemGroup *> *itemGroups;
 @property (nullable, nonatomic, retain) NSSet<NCDBInvMarketGroup *> *marketGroups;
 @property (nullable, nonatomic, retain) NSSet<NCDBCertMasteryLevel *> *masteryLevels;
 @property (nullable, nonatomic, retain) NSSet<NCDBInvMetaGroup *> *metaGroups;
@@ -53,10 +53,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addGroups:(NSSet<NCDBInvGroup *> *)values;
 - (void)removeGroups:(NSSet<NCDBInvGroup *> *)values;
 
-- (void)addItemGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)removeItemGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)addItemGroups:(NSSet<NCDBEufeItemGroup *> *)values;
-- (void)removeItemGroups:(NSSet<NCDBEufeItemGroup *> *)values;
+- (void)addItemGroupsObject:(NCDBDgmppItemGroup *)value;
+- (void)removeItemGroupsObject:(NCDBDgmppItemGroup *)value;
+- (void)addItemGroups:(NSSet<NCDBDgmppItemGroup *> *)values;
+- (void)removeItemGroups:(NSSet<NCDBDgmppItemGroup *> *)values;
 
 - (void)addMarketGroupsObject:(NCDBInvMarketGroup *)value;
 - (void)removeMarketGroupsObject:(NCDBInvMarketGroup *)value;

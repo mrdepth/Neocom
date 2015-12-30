@@ -7,7 +7,7 @@
 //
 
 #import "NCDBChrRace.h"
-#import "NCDBEufeItemCategory.h"
+#import "NCDBDgmppItemCategory.h"
 #import "NCDBEveIcon.h"
 #import "NCDBInvType.h"
 

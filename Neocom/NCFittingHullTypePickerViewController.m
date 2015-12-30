@@ -20,7 +20,7 @@
 	self.refreshControl = nil;
 	
 	if (!self.rows) {
-		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeHullType"];
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DgmppHullType"];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"hullTypeName" ascending:YES]];
 		self.rows = [self.databaseManagedObjectContext executeFetchRequest:request error:nil];
 	}
@@ -67,7 +67,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCDBEufeHullType * row = self.rows[indexPath.row];
+	NCDBDgmppHullType * row = self.rows[indexPath.row];
 	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	cell.titleLabel.text = row.hullTypeName;
 	

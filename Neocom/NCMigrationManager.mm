@@ -147,10 +147,10 @@
 					NSInteger numberOfComponents = components.count;
 					
 					if (numberOfComponents >= 1) {
-						eufe::TypeID typeID = [[components objectAtIndex:0] intValue];
+						dgmpp::TypeID typeID = [[components objectAtIndex:0] intValue];
 						if (typeID) {
 							int modulesCount = numberOfComponents >= 2 ? [[components objectAtIndex:1] intValue] : 1;
-							eufe::Module::State state = numberOfComponents >= 3 ? (eufe::Module::State) [[components objectAtIndex:2] integerValue] : eufe::Module::STATE_ONLINE;
+							dgmpp::Module::State state = numberOfComponents >= 3 ? (dgmpp::Module::State) [[components objectAtIndex:2] integerValue] : dgmpp::Module::STATE_ONLINE;
 							int32_t chargeTypeID = numberOfComponents >= 4 ? [[components objectAtIndex:3] intValue] : 0;
 							NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 							module.typeID = typeID;
@@ -169,7 +169,7 @@
 				NSInteger numberOfComponents = components.count;
 				
 				if (numberOfComponents >= 1) {
-					eufe::TypeID typeID = [[components objectAtIndex:0] intValue];
+					dgmpp::TypeID typeID = [[components objectAtIndex:0] intValue];
 					if (typeID) {
 						int dronesCount = numberOfComponents >= 2 ? [[components objectAtIndex:1] intValue] : 1;
 						bool active = numberOfComponents >= 3 ? [[components objectAtIndex:2] boolValue] : true;
@@ -187,7 +187,7 @@
 				NSInteger numberOfComponents = components.count;
 				
 				if (numberOfComponents >= 1) {
-					eufe::TypeID typeID = [[components objectAtIndex:0] intValue];
+					dgmpp::TypeID typeID = [[components objectAtIndex:0] intValue];
 					if (typeID) {
 						NCLoadoutDataShipImplant* implant = [NCLoadoutDataShipImplant new];
 						implant.typeID = typeID;
@@ -201,7 +201,7 @@
 				NSInteger numberOfComponents = components.count;
 				
 				if (numberOfComponents >= 1) {
-					eufe::TypeID typeID = [[components objectAtIndex:0] intValue];
+					dgmpp::TypeID typeID = [[components objectAtIndex:0] intValue];
 					if (typeID) {
 						NCLoadoutDataShipBooster* booster = [NCLoadoutDataShipBooster new];
 						booster.typeID = typeID;
@@ -246,10 +246,10 @@
 			NSInteger numberOfComponents = components.count;
 			
 			if (numberOfComponents >= 1) {
-				eufe::TypeID typeID = [[components objectAtIndex:0] intValue];
+				dgmpp::TypeID typeID = [[components objectAtIndex:0] intValue];
 				if (typeID) {
 					int32_t count = numberOfComponents >= 2 ? [[components objectAtIndex:1] intValue] : 1;
-					eufe::Module::State state = numberOfComponents >= 3 ? (eufe::Module::State) [[components objectAtIndex:2] intValue] : eufe::Module::STATE_ONLINE;
+					dgmpp::Module::State state = numberOfComponents >= 3 ? (dgmpp::Module::State) [[components objectAtIndex:2] intValue] : dgmpp::Module::STATE_ONLINE;
 					int32_t chargeTypeID = numberOfComponents >= 4 ? [[components objectAtIndex:3] intValue] : 0;
 					
 					for (NSInteger i = 0; i < count; i++) {

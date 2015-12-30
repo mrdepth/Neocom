@@ -2,14 +2,14 @@
 //  NCDBChrRace.h
 //  NCDatabase
 //
-//  Created by Artem Shimanski on 29.11.15.
+//  Created by Артем Шиманский on 30.12.15.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBEufeItemCategory, NCDBEveIcon, NCDBInvType;
+@class NCDBDgmppItemCategory, NCDBEveIcon, NCDBInvType;
 
 NS_ASSUME_NONNULL_BEGIN
 

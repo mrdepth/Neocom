@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) int32_t raceID;
 @property (nullable, nonatomic, retain) NSString *raceName;
-@property (nullable, nonatomic, retain) NSSet<NCDBEufeItemCategory *> *eufeCategories;
+@property (nullable, nonatomic, retain) NSSet<NCDBDgmppItemCategory *> *dgmppCategories;
 @property (nullable, nonatomic, retain) NCDBEveIcon *icon;
 @property (nullable, nonatomic, retain) NSSet<NCDBInvType *> *types;
 
@@ -25,10 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NCDBChrRace (CoreDataGeneratedAccessors)
 
-- (void)addEufeCategoriesObject:(NCDBEufeItemCategory *)value;
-- (void)removeEufeCategoriesObject:(NCDBEufeItemCategory *)value;
-- (void)addEufeCategories:(NSSet<NCDBEufeItemCategory *> *)values;
-- (void)removeEufeCategories:(NSSet<NCDBEufeItemCategory *> *)values;
+- (void)addDgmppCategoriesObject:(NCDBDgmppItemCategory *)value;
+- (void)removeDgmppCategoriesObject:(NCDBDgmppItemCategory *)value;
+- (void)addDgmppCategories:(NSSet<NCDBDgmppItemCategory *> *)values;
+- (void)removeDgmppCategories:(NSSet<NCDBDgmppItemCategory *> *)values;
 
 - (void)addTypesObject:(NCDBInvType *)value;
 - (void)removeTypesObject:(NCDBInvType *)value;

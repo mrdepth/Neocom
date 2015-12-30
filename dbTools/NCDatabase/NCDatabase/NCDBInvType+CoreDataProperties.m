@@ -2,7 +2,7 @@
 //  NCDBInvType+CoreDataProperties.m
 //  NCDatabase
 //
-//  Created by Artem Shimanski on 29.11.15.
+//  Created by Артем Шиманский on 30.12.15.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -30,9 +30,10 @@
 @dynamic controlTower;
 @dynamic controlTowerResources;
 @dynamic denormalize;
+@dynamic dgmppItem;
 @dynamic effects;
-@dynamic eufeItem;
 @dynamic group;
+@dynamic hullType;
 @dynamic icon;
 @dynamic indRequiredSkills;
 @dynamic installationTypeContents;
@@ -49,6 +50,5 @@
 @dynamic typeDescription;
 @dynamic variations;
 @dynamic wormhole;
-@dynamic hullType;
 
 @end

@@ -31,7 +31,7 @@
 @dynamic controlTowerResources;
 @dynamic denormalize;
 @dynamic effects;
-@dynamic eufeItem;
+@dynamic dgmppItem;
 @dynamic group;
 @dynamic icon;
 @dynamic indRequiredSkills;

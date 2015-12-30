@@ -8,7 +8,7 @@
 
 #import "NCTableViewController.h"
 
-@class NCDBEufeHullType;
+@class NCDBDgmppHullType;
 @interface NCFittingHullTypePickerViewController : NCTableViewController
-@property (nonatomic, strong) NCDBEufeHullType* selectedHullType;
+@property (nonatomic, strong) NCDBDgmppHullType* selectedHullType;
 @end

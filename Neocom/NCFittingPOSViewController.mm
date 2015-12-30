@@ -260,7 +260,7 @@
 			shoppingGroup.quantity = 1;
 			
 			
-			void (^addItem)(std::shared_ptr<eufe::Item>, int32_t) = ^(std::shared_ptr<eufe::Item> item, int32_t quanity) {
+			void (^addItem)(std::shared_ptr<dgmpp::Item>, int32_t) = ^(std::shared_ptr<dgmpp::Item> item, int32_t quanity) {
 				NCShoppingItem* shoppingItem = items[@(item->getTypeID())];
 				if (!shoppingItem) {
 					shoppingItem = [[NCShoppingItem alloc] initWithTypeID:item->getTypeID() quantity:quanity entity:[NSEntityDescription entityForName:@"ShoppingItem" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:nil];
@@ -358,7 +358,7 @@
 - (IBAction) unwindFromDamagePatterns:(UIStoryboardSegue*) segue {
 	NCFittingDamagePatternsViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedDamagePattern) {
-		eufe::DamagePattern damagePattern;
+		dgmpp::DamagePattern damagePattern;
 		damagePattern.emAmount = sourceViewController.selectedDamagePattern.em;
 		damagePattern.thermalAmount = sourceViewController.selectedDamagePattern.thermal;
 		damagePattern.kineticAmount = sourceViewController.selectedDamagePattern.kinetic;

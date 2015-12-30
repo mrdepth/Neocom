@@ -31,11 +31,11 @@
 #define ActionButtonAmount NSLocalizedString(@"Set Amount", nil)
 
 @interface NCFittingPOSStructuresViewControllerRow : NSObject<NSCopying> {
-	eufe::StructuresList _structures;
+	dgmpp::StructuresList _structures;
 }
 @property (nonatomic, assign) BOOL isUpToDate;
 
-@property (nonatomic, readonly) eufe::StructuresList& structures;
+@property (nonatomic, readonly) dgmpp::StructuresList& structures;
 @property (nonatomic, strong) NSString* typeName;
 @property (nonatomic, strong) UIImage* typeImage;
 @property (nonatomic, strong) NSString* chargeText;
@@ -141,7 +141,7 @@
 	if (indexPath.row >= self.rows.count) {
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Structures", nil);
 		
-		[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotStructure size:0 race:nil]
+		[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotStructure size:0 race:nil]
 													 inViewController:self.controller
 															 fromRect:cell.bounds
 															   inView:cell
@@ -150,8 +150,8 @@
 														int32_t typeID = type.typeID;
 														[self.controller.engine performBlockAndWait:^{
 															auto controlTower = self.controller.engine.engine->getControlTower();
-															eufe::Module::State state = eufe::Module::STATE_ACTIVE;
-															std::shared_ptr<eufe::Charge> charge = nullptr;
+															dgmpp::Module::State state = dgmpp::Module::STATE_ACTIVE;
+															std::shared_ptr<dgmpp::Charge> charge = nullptr;
 															for (const auto& structure: controlTower->getStructures()) {
 																if (structure->getTypeID() == typeID) {
 																	state = structure->getState();
@@ -190,11 +190,11 @@
 		auto chargeGroups = structure->getChargeGroups();
 		bool multiple = false;
 		int chargeSize = structure->getChargeSize();
-		eufe::TypeID typeID = structure->getTypeID();
+		dgmpp::TypeID typeID = structure->getTypeID();
 		if (chargeGroups.size() > 0)
 		{
-			const eufe::StructuresList& structuresList = controlTower->getStructures();
-			eufe::StructuresList::const_iterator i, end = structuresList.end();
+			const dgmpp::StructuresList& structuresList = controlTower->getStructures();
+			dgmpp::StructuresList::const_iterator i, end = structuresList.end();
 			for (i = structuresList.begin(); i != end; i++)
 			{
 				if ((*i)->getTypeID() != typeID)
@@ -202,8 +202,8 @@
 					int chargeSize2 = (*i)->getChargeSize();
 					if (chargeSize == chargeSize2)
 					{
-						const std::vector<eufe::TypeID>& chargeGroups2 = (*i)->getChargeGroups();
-						std::vector<eufe::TypeID> intersection;
+						const std::vector<dgmpp::TypeID>& chargeGroups2 = (*i)->getChargeGroups();
+						std::vector<dgmpp::TypeID> intersection;
 						std::set_intersection(chargeGroups.begin(), chargeGroups.end(), chargeGroups2.begin(), chargeGroups2.end(), std::inserter(intersection, intersection.end()));
 						if (intersection.size() > 0)
 						{
@@ -242,11 +242,11 @@
 		}
 
 		
-		if (structure->getState() >= eufe::Module::STATE_ACTIVE) {
+		if (structure->getState() >= dgmpp::Module::STATE_ACTIVE) {
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonOffline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
 					for (const auto& structure: structures)
-						structure->setState(eufe::Module::STATE_OFFLINE);
+						structure->setState(dgmpp::Module::STATE_OFFLINE);
 				}];
 				[self.controller reload];
 			}]];
@@ -255,7 +255,7 @@
 			[actions addObject:[UIAlertAction actionWithTitle:ActionButtonOnline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller.engine performBlockAndWait:^{
 					for (const auto& structure: structures)
-						structure->setState(eufe::Module::STATE_ACTIVE);
+						structure->setState(dgmpp::Module::STATE_ACTIVE);
 				}];
 				[self.controller reload];
 			}]];
@@ -311,11 +311,11 @@
 		}]];
 		
 		if (chargeGroups.size() > 0) {
-			UIAlertAction* (^ammoAction)(eufe::StructuresList, NSString*) = ^(eufe::StructuresList structures, NSString* title) {
+			UIAlertAction* (^ammoAction)(dgmpp::StructuresList, NSString*) = ^(dgmpp::StructuresList structures, NSString* title) {
 				return [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 					__block NSManagedObjectID* categoryID;
 					[self.controller.engine performBlockAndWait:^{
-						categoryID = [type.eufeItem.charge objectID];
+						categoryID = [type.dgmppItem.charge objectID];
 					}];
 					
 					self.controller.typePickerViewController.title = NSLocalizedString(@"Ammo", nil);
@@ -428,13 +428,13 @@
 				newRow.optimalText = nil;
 
 			switch (structure->getState()) {
-				case eufe::Module::STATE_ACTIVE:
+				case dgmpp::Module::STATE_ACTIVE:
 					newRow.stateImage = [UIImage imageNamed:@"active"];
 					break;
-				case eufe::Module::STATE_ONLINE:
+				case dgmpp::Module::STATE_ONLINE:
 					newRow.stateImage = [UIImage imageNamed:@"online"];
 					break;
-				case eufe::Module::STATE_OVERLOADED:
+				case dgmpp::Module::STATE_OVERLOADED:
 					newRow.stateImage = [UIImage imageNamed:@"overheated"];
 					break;
 				default:

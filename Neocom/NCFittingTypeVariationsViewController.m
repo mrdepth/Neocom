@@ -7,9 +7,9 @@
 //
 
 #import "NCFittingTypeVariationsViewController.h"
-#import "NCEufeItemShipCell.h"
-#import "NCEufeItemModuleCell.h"
-#import "NCEufeItemChargeCell.h"
+#import "NCDgmppItemShipCell.h"
+#import "NCDgmppItemModuleCell.h"
+#import "NCDgmppItemChargeCell.h"
 
 @interface NCDatabaseTypeVariationsViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* result;
@@ -64,14 +64,14 @@
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	NCDBInvType* row = sectionInfo.objects[indexPath.row];
-	NCDBEufeItem* item = row.eufeItem;
+	NCDBDgmppItem* item = row.dgmppItem;
 	if (item) {
 		if (item.shipResources)
-			return @"NCEufeItemShipCell";
+			return @"NCDgmppItemShipCell";
 		else if (item.requirements)
-			return item.requirements.calibration > 0 ? @"NCEufeItemRigCell" : @"NCEufeItemModuleCell";
+			return item.requirements.calibration > 0 ? @"NCDgmppItemRigCell" : @"NCDgmppItemModuleCell";
 		else if (item.damage)
-			return @"NCEufeItemChargeCell";
+			return @"NCDgmppItemChargeCell";
 	}
 	return @"Cell";
 }
@@ -79,7 +79,7 @@
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
 	NCDBInvType* row = sectionInfo.objects[indexPath.row];
-	NCDBEufeItem* item = row.eufeItem;
+	NCDBDgmppItem* item = row.dgmppItem;
 	
 	NSMutableAttributedString* typeName = [[NSMutableAttributedString alloc] initWithString:item.type.typeName ?: NSLocalizedString(@"Unknown", nil) attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
 	if (item.type.metaLevel > 0)
@@ -89,7 +89,7 @@
 	
 	
 	if (item.shipResources) {
-		NCEufeItemShipCell* cell = (NCEufeItemShipCell*) tableViewCell;
+		NCDgmppItemShipCell* cell = (NCDgmppItemShipCell*) tableViewCell;
 		cell.typeImageView.image = image;
 		cell.typeNameLabel.attributedText = typeName;
 		cell.hiSlotsLabel.text = [NSString stringWithFormat:@"%d", item.shipResources.hiSlots];
@@ -101,7 +101,7 @@
 		cell.object = row;
 	}
 	else if (item.requirements) {
-		NCEufeItemModuleCell* cell = (NCEufeItemModuleCell*) tableViewCell;
+		NCDgmppItemModuleCell* cell = (NCDgmppItemModuleCell*) tableViewCell;
 		cell.typeImageView.image = image;
 		cell.typeNameLabel.attributedText = typeName;
 		cell.powerGridLabel.text = [NSString stringWithFormat:@"%.1f", item.requirements.powerGrid];
@@ -110,7 +110,7 @@
 		cell.object = row;
 	}
 	else if (item.damage) {
-		NCEufeItemChargeCell* cell = (NCEufeItemChargeCell*) tableViewCell;
+		NCDgmppItemChargeCell* cell = (NCDgmppItemChargeCell*) tableViewCell;
 		cell.typeImageView.image = image;
 		cell.typeNameLabel.attributedText = typeName;
 		float damage = item.damage.emAmount + item.damage.thermalAmount + item.damage.kineticAmount + item.damage.explosiveAmount;

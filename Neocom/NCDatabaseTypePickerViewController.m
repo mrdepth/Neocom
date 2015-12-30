@@ -21,7 +21,7 @@
 
 @interface NCDatabaseTypePickerViewController ()
 @property (nonatomic, copy) void (^completionHandler)(NCDBInvType* type);
-@property (nonatomic, strong) NCDBEufeItemCategory* category;
+@property (nonatomic, strong) NCDBDgmppItemCategory* category;
 //@property (nonatomic, strong) NSManagedObjectContext* databaseManagedObjectContext;
 
 @end
@@ -52,7 +52,7 @@
 	self.completionHandler = nil;
 }
 
-- (void) presentWithCategory:(NCDBEufeItemCategory*) category inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(NCDBInvType* type)) completion {
+- (void) presentWithCategory:(NCDBDgmppItemCategory*) category inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(NCDBInvType* type)) completion {
 	if (![self.category isEqual:category]) {
 		self.category = category;
 		
@@ -64,7 +64,7 @@
 		if (self.viewControllers.count > 1)
 			[self setViewControllers:@[[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]] animated:NO];
 		
-		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItemGroup"];
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DgmppItemGroup"];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
 		request.predicate = [NSPredicate predicateWithFormat:@"category == %@ AND parentGroup == NULL", self.category];
 		request.fetchLimit = 1;

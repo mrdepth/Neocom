@@ -29,7 +29,7 @@
 @property (nonatomic, strong) NSData* velocityPoints;
 @property (nonatomic, assign) float markerPosition;
 @property (nonatomic, strong) NSNumberFormatter* dpsNumberFormatter;
-@property (nonatomic, strong) NCDBEufeHullType* hullType;
+@property (nonatomic, strong) NCDBDgmppHullType* hullType;
 
 @property (nonatomic, assign) BOOL needsUpdateState;
 @property (nonatomic, assign) BOOL updatingState;
@@ -48,7 +48,7 @@
 - (void) viewDidLoad {
 	[super viewDidLoad];
 	NSManagedObjectID* hullTypeID = self.fit.engine.userInfo[@"hullType"];
-	NCDBEufeHullType* hullType;
+	NCDBDgmppHullType* hullType;
 	if (hullTypeID)
 		hullType = [self.databaseManagedObjectContext existingObjectWithID:hullTypeID error:nil];
 	
@@ -211,7 +211,7 @@
 - (IBAction) unwindFromHullTypePicker:(UIStoryboardSegue*) segue {
 	NCFittingHullTypePickerViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedHullType) {
-		NCDBEufeHullType* hullType = [self.databaseManagedObjectContext objectWithID:sourceViewController.selectedHullType.objectID];
+		NCDBDgmppHullType* hullType = [self.databaseManagedObjectContext objectWithID:sourceViewController.selectedHullType.objectID];
 		self.hullType = hullType;
 		self.fit.engine.userInfo[@"hullType"] = sourceViewController.selectedHullType.objectID;
 		[self setNeedsUpdateState];
@@ -232,7 +232,7 @@
 		float maxRange = 0;
 		float falloff = 0;
 		for (const auto& module: ship->getModules()) {
-			if (module->getHardpoint() == eufe::Module::HARDPOINT_TURRET) {
+			if (module->getHardpoint() == dgmpp::Module::HARDPOINT_TURRET) {
 				float dps = module->getDps();
 				if (dps > 0) {
 					turretsDPS += dps;
@@ -309,7 +309,7 @@
 	[self setNeedsUpdateReport];
 }
 
-- (void) setHullType:(NCDBEufeHullType*) hullType {
+- (void) setHullType:(NCDBDgmppHullType*) hullType {
 	_hullType = hullType;
 	if (hullType) {
 		NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:hullType.hullTypeName attributes:@{NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)}];
@@ -348,7 +348,7 @@
 				float v = ship->getMaxVelocityInOrbit(x);
 				v = std::min(v, velocity);
 				float angularVelocity = v / x;
-				eufe::HostileTarget target = eufe::HostileTarget(x, angularVelocity, targetSignature, 0);
+				dgmpp::HostileTarget target = dgmpp::HostileTarget(x, angularVelocity, targetSignature, 0);
 				
 				dpsPoints[i] = CGPointMake(x / self.fullRange, optimalDPS > 0 ? (static_cast<float>(ship->getWeaponDps(target)) + ship->getDroneDps(target)) / optimalDPS : 0);
 				
@@ -409,11 +409,11 @@
 			v = std::min(v, velocity);
 			transverseVelocity = v;
 			float angularVelocity = v / x;
-			eufe::HostileTarget target = eufe::HostileTarget(x, angularVelocity, targetSignature, 0);
+			dgmpp::HostileTarget target = dgmpp::HostileTarget(x, angularVelocity, targetSignature, 0);
 			droneDPS = ship->getDroneDps(target);
 			
 			for (const auto& module: ship->getModules()) {
-				if (module->getHardpoint() == eufe::Module::HARDPOINT_TURRET)
+				if (module->getHardpoint() == dgmpp::Module::HARDPOINT_TURRET)
 					turretsDPS += module->getDps(target);
 				else
 					launchersDPS += module->getDps(target);

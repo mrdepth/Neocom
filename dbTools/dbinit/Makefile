@@ -1,7 +1,6 @@
 CC=clang++
 CFLAGS=-arch x86_64 -std=gnu++11 -stdlib=libc++ -lsqlite3
 T+=${PWD}/tmp
-DUMP=${PWD}/input/dump
 VPATH=${T}
 SQL=${PWD}/sql
 SDE+=${PWD}/input/sde/eve.sqlite
@@ -36,7 +35,7 @@ Types: EVETypesConverter
 	${T}/EVETypesConverter ./input/Types ${T}/Types ${T}/typesMap.sql
 
 dgm.sqlite:
-	cd ../../ThirdParty/dgmpp/dbinit; make clean; make OUTPUT_DIR=${PWD} DUMP=$(DUMP) T=${T} SDE=$(SDE)
+	cd ../../ThirdParty/dgmpp/dbinit; make clean; make OUTPUT_DIR=${PWD} T=${T}
 
 createTables.sql: tmp
 	sqlite3 ${SDE} ".read ./sql/tablesExtract.sql" > ${T}/tmp.sql
@@ -47,9 +46,8 @@ npc.sql: EVENPCBuilder
 
 evedb.sqlite: createTables.sql Types eveIcons.sql npc.sql
 	sqlite3 ${T}/evedb.sqlite ".read ${T}/createTables.sql"
-	cd $(DUMP);	sqlite3 ${T}/evedb.sqlite ".read $(SQL)/dump.sql"
+	cd $(T); sqlite3 ${T}/evedb.sqlite ".read $(SQL)/dump.sql"
 	sqlite3 ${SDE} ".read ./sql/evedb.sql"
-	sqlite3 ${T}/evedb.sqlite ".read ../../ThirdParty/dgmpp/dbinit/sql/dumpPatch.sql"
 	sqlite3 ${T}/evedb.sqlite ".read ${T}/eveIcons.sql"
 	sqlite3 ${T}/evedb.sqlite ".read ${T}/npc.sql"
 	sqlite3 ${T}/evedb.sqlite "CREATE INDEX \"npcGroup_parentNpcGroupID\" ON \"npcGroup\" (\"parentNpcGroupID\" ASC);"

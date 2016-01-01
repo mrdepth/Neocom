@@ -616,20 +616,22 @@ NSMutableArray* convertDgmTypeAttributes(NSManagedObjectContext* context, EVEDBD
 	
 	[database execSQLRequest:@"select * from dgmTypeAttributes" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBDgmTypeAttribute* eveTypeAttribute = [[EVEDBDgmTypeAttribute alloc] initWithStatement:stmt];
-		NCDBDgmTypeAttribute* typeAttribute = [NSEntityDescription insertNewObjectForEntityForName:@"DgmTypeAttribute" inManagedObjectContext:context];
-		typeAttribute.value = eveTypeAttribute.value;
-		typeAttribute.attributeType = dgmAttributeTypes[@(eveTypeAttribute.attributeID)];
-		typeAttribute.type = invTypes[@(eveTypeAttribute.typeID)];
-		if (eveTypeAttribute.attributeID == NCDBMetaGroupAttributeID) {
-			NCDBInvMetaGroup* metaGroup = invMetaGroups[@((int32_t) eveTypeAttribute.value)];
-			//assert(!typeAttribute.type.metaGroup || typeAttribute.type.metaGroup.metaGroupID == metaGroup.metaGroupID);
-			if (metaGroup)
+		if (invTypes[@(eveTypeAttribute.typeID)]) {
+			NCDBDgmTypeAttribute* typeAttribute = [NSEntityDescription insertNewObjectForEntityForName:@"DgmTypeAttribute" inManagedObjectContext:context];
+			typeAttribute.value = eveTypeAttribute.value;
+			typeAttribute.attributeType = dgmAttributeTypes[@(eveTypeAttribute.attributeID)];
+			typeAttribute.type = invTypes[@(eveTypeAttribute.typeID)];
+			if (eveTypeAttribute.attributeID == NCDBMetaGroupAttributeID) {
+				NCDBInvMetaGroup* metaGroup = invMetaGroups[@((int32_t) eveTypeAttribute.value)];
+				//assert(!typeAttribute.type.metaGroup || typeAttribute.type.metaGroup.metaGroupID == metaGroup.metaGroupID);
+				if (metaGroup)
 				typeAttribute.type.metaGroup = metaGroup;
+			}
+			else if (eveTypeAttribute.attributeID == NCDBMetaLevelAttributeID) {
+				typeAttribute.type.metaLevel = typeAttribute.value;
+			}
+			[array addObject:typeAttribute];
 		}
-		else if (eveTypeAttribute.attributeID == NCDBMetaLevelAttributeID) {
-			typeAttribute.type.metaLevel = typeAttribute.value;
-		}
-		[array addObject:typeAttribute];
 	}];
 	
 	return array;

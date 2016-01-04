@@ -10,6 +10,7 @@
 #import <EVEAPI/EVEAPI.h>
 #import "NCFittingShipViewController.h"
 #import "UIAlertController+Neocom.h"
+#import "NCSetting.h"
 
 @interface NCFittingCRESTFitsViewControllerSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSMutableArray* rows;
@@ -174,6 +175,11 @@
 	if (self.token) {
 		CRAPI* api = [CRAPI apiWithCachePolicy:cachePolicy clientID:CRAPIClientID secretKey:CRAPISecretKey token:self.token callbackURL:[NSURL URLWithString:CRAPICallbackURLString]];
 		[api loadFittingsWithCompletionBlock:^(NSArray<CRFitting *> *result, NSError *error) {
+			if (!error && api.token != self.token && api.token) {
+				self.token = api.token;
+				[self.storageManagedObjectContext settingWithKey:[NSString stringWithFormat:@"sso.%d", self.token.characterID]].value = self.token;
+				[self.storageManagedObjectContext save:nil];
+			}
 			NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
 			[databaseManagedObjectContext performBlock:^{
 				NSMutableDictionary* dic = [NSMutableDictionary new];

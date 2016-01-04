@@ -110,6 +110,11 @@
 	}
 }
 
+- (void) didChangeStorage:(NSNotification*) notification {
+	[self reload];
+}
+
+
 #pragma mark - Private
 
 - (void) reload {

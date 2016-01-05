@@ -133,6 +133,18 @@
 			<key>corpAccessMask</key>
 			<integer>0</integer>
 		</dict>
+		<dict>
+			<key>segueIdentifier</key>
+			<string>NCIncursionsViewController</string>
+			<key>title</key>
+			<string>Incursions</string>
+			<key>image</key>
+			<string>incursions</string>
+			<key>charAccessMask</key>
+			<integer>0</integer>
+			<key>corpAccessMask</key>
+			<integer>0</integer>
+		</dict>
 	</array>
 	<array>
 		<dict>

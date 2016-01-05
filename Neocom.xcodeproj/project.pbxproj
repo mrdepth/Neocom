@@ -93,6 +93,8 @@
 		123F0ADB18C5C8AC00D53602 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 123F0ADA18C5C8AC00D53602 /* evemon.html */; };
 		124097C01B2F200F002AC442 /* NCAdaptivePopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 124097BF1B2F200F002AC442 /* NCAdaptivePopoverSegue.m */; };
 		124097C31B2F2021002AC442 /* NCPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 124097C21B2F2021002AC442 /* NCPopoverController.m */; };
+		1241B3D91C3BF44F009505BE /* NCIncursionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1241B3D81C3BF44F009505BE /* NCIncursionsViewController.m */; };
+		1241B3DC1C3BF466009505BE /* NCIncursionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1241B3DB1C3BF466009505BE /* NCIncursionCell.m */; };
 		12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12430BB818C87F760025D971 /* StoreKit.framework */; };
 		12430BBB18C881EA0025D971 /* Help.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12430BBA18C881EA0025D971 /* Help.storyboard */; };
 		12436DAB1945A0310090D4A6 /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12436DA91945A0310090D4A6 /* NCDatabase.xcdatamodeld */; };
@@ -768,6 +770,10 @@
 		124097BF1B2F200F002AC442 /* NCAdaptivePopoverSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAdaptivePopoverSegue.m; sourceTree = "<group>"; };
 		124097C11B2F2021002AC442 /* NCPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPopoverController.h; sourceTree = "<group>"; };
 		124097C21B2F2021002AC442 /* NCPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPopoverController.m; sourceTree = "<group>"; };
+		1241B3D71C3BF44F009505BE /* NCIncursionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIncursionsViewController.h; sourceTree = "<group>"; };
+		1241B3D81C3BF44F009505BE /* NCIncursionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIncursionsViewController.m; sourceTree = "<group>"; };
+		1241B3DA1C3BF466009505BE /* NCIncursionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIncursionCell.h; sourceTree = "<group>"; };
+		1241B3DB1C3BF466009505BE /* NCIncursionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIncursionCell.m; sourceTree = "<group>"; };
 		12422FBF18E409F70051FD24 /* NCSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSettingsViewController.h; sourceTree = "<group>"; };
 		12422FC018E409F70051FD24 /* NCSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSettingsViewController.m; sourceTree = "<group>"; };
 		12430BAD18C852550025D971 /* NCAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAboutViewController.h; sourceTree = "<group>"; };
@@ -1594,6 +1600,7 @@
 				123A97F918C71452001045F5 /* Help */,
 				120EED571AC58FEF00947614 /* ShoppingList */,
 				124DDE6C1BF38A9400596A38 /* NCWealthViewController */,
+				1241B3BF1C3BEB0A009505BE /* NCIncursionsViewController */,
 				120968591845F0CB00921A37 /* Supporting Files */,
 				120968611845F0CB00921A37 /* NCAppDelegate.h */,
 				120968621845F0CB00921A37 /* NCAppDelegate.mm */,
@@ -2028,6 +2035,17 @@
 				124097C21B2F2021002AC442 /* NCPopoverController.m */,
 			);
 			name = NCAdaptivePopoverSegue;
+			sourceTree = "<group>";
+		};
+		1241B3BF1C3BEB0A009505BE /* NCIncursionsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1241B3D71C3BF44F009505BE /* NCIncursionsViewController.h */,
+				1241B3D81C3BF44F009505BE /* NCIncursionsViewController.m */,
+				1241B3DA1C3BF466009505BE /* NCIncursionCell.h */,
+				1241B3DB1C3BF466009505BE /* NCIncursionCell.m */,
+			);
+			name = NCIncursionsViewController;
 			sourceTree = "<group>";
 		};
 		12422FBD18E409DF0051FD24 /* NCSettingsViewController */ = {
@@ -4323,6 +4341,7 @@
 				12654C351C0B24920060106C /* NCDBMapRegion+CoreDataProperties.m in Sources */,
 				125DC6401BD516CB005C2F79 /* NCKillMailDetailsViewController.mm in Sources */,
 				125DC64E1BD52374005C2F79 /* NCRSSViewController.m in Sources */,
+				1241B3DC1C3BF466009505BE /* NCIncursionCell.m in Sources */,
 				12DDFBBF1C157F0A005F1382 /* NCDBDgmppItemRequirements.m in Sources */,
 				12654C1C1C0B24920060106C /* NCDBRamAssemblyLineType.m in Sources */,
 				127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */,
@@ -4565,6 +4584,7 @@
 				129D2615187E923300E2062C /* LUIBarButtonItem.m in Sources */,
 				128257261BCFAA7600BC1F56 /* NCFittingExportViewController.mm in Sources */,
 				12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */,
+				1241B3D91C3BF44F009505BE /* NCIncursionsViewController.m in Sources */,
 				12DDFBC01C157F0A005F1382 /* NCDBDgmppItemShipResources+CoreDataProperties.m in Sources */,
 				84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */,
 				1264FD751BBC5776002AFDF3 /* NCCharacterAttributesCell.m in Sources */,

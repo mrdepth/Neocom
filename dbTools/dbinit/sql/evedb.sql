@@ -37,9 +37,9 @@ INSERT INTO eveDB.industryBlueprints SELECT * FROM industryBlueprints;
 
 INSERT INTO eveDB.chrRaces SELECT * FROM chrRaces;
 
-INSERT INTO eveDB.invTypes SELECT * FROM invTypes;
-INSERT INTO eveDB.invGroups SELECT * FROM invGroups;
-INSERT INTO eveDB.invCategories SELECT * FROM invCategories;
+--INSERT INTO eveDB.invTypes SELECT * FROM invTypes;
+--INSERT INTO eveDB.invGroups SELECT * FROM invGroups;
+--INSERT INTO eveDB.invCategories SELECT * FROM invCategories;
 INSERT INTO eveDB.dgmEffects SELECT * FROM dgmEffects;
 --INSERT INTO eveDB.dgmAttributeTypes SELECT * FROM dgmAttributeTypes;
 

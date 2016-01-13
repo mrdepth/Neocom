@@ -559,12 +559,14 @@
 			}
 			searchResults.sections = sections;
 			
-			self.searchResults = searchResults;
-			if (self.searchController) {
-				NCAssetsViewController* searchResultsController = (NCAssetsViewController*) self.searchController.searchResultsController;
-			 searchResultsController.searchResults = self.searchResults;
-			}
-			completionBlock();
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.searchResults = searchResults;
+				if (self.searchController) {
+					NCAssetsViewController* searchResultsController = (NCAssetsViewController*) self.searchController.searchResultsController;
+					searchResultsController.searchResults = self.searchResults;
+				}
+				completionBlock();
+			});
 		}];
 	}
 	else {

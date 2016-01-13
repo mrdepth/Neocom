@@ -681,22 +681,23 @@
 				[self.controller.engine performBlockAndWait:^{
 					categoryID = [type.dgmppItem.charge objectID];
 				}];
-				
-				self.controller.typePickerViewController.title = NSLocalizedString(@"Ammo", nil);
-				[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext existingObjectWithID:categoryID error:nil]
-															 inViewController:self.controller
-																	 fromRect:cell.bounds
-																	   inView:cell
-																	 animated:YES
-															completionHandler:^(NCDBInvType *type) {
-																int32_t typeID = type.typeID;
-																[self.controller.engine performBlockAndWait:^{
-																	for (const auto& module: modules)
-																		module->setCharge(typeID);
+				if (categoryID) {
+					self.controller.typePickerViewController.title = NSLocalizedString(@"Ammo", nil);
+					[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext existingObjectWithID:categoryID error:nil]
+																 inViewController:self.controller
+																		 fromRect:cell.bounds
+																		   inView:cell
+																		 animated:YES
+																completionHandler:^(NCDBInvType *type) {
+																	int32_t typeID = type.typeID;
+																	[self.controller.engine performBlockAndWait:^{
+																		for (const auto& module: modules)
+																			module->setCharge(typeID);
+																	}];
+																	[self.controller reload];
+																	[self.controller dismissAnimated];
 																}];
-																[self.controller reload];
-																[self.controller dismissAnimated];
-															}];
+				}
 			}];
 		};
 

@@ -51,6 +51,10 @@ evedb.sqlite: createTables.sql Types eveIcons.sql npc.sql
 	sqlite3 ${T}/evedb.sqlite ".read ${T}/eveIcons.sql"
 	sqlite3 ${T}/evedb.sqlite ".read ${T}/npc.sql"
 	sqlite3 ${T}/evedb.sqlite "CREATE INDEX \"npcGroup_parentNpcGroupID\" ON \"npcGroup\" (\"parentNpcGroupID\" ASC);"
+	sqlite3 ${T}/evedb.sqlite ".read ${T}/dgmOperands.sql"
+	sqlite3 ${T}/evedb.sqlite ".read ${T}/dgmExpressions.sql"
+	$(T)/dbpatch $(T)/evedb.sqlite
+
 
 NCDatabase.sqlite: NCDatabase evedb.sqlite Icons Types
 	${T}/NCDatabase ./NCDatabase.sqlite ${T}/evedb.sqlite ${T}/Icons ${T}/Types ./input/Factions $(EXPANSION)

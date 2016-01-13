@@ -728,15 +728,11 @@
 		});
 		
 		[self searchWithSearchString:searchString completionBlock:^{
-			dispatch_async(dispatch_get_main_queue(), ^{
-				if (self.searchController) {
-					NCTableViewController* searchResultsController = (NCTableViewController*) self.searchController.searchResultsController;
-					[searchResultsController.tableView reloadData];
-				}
-//				else if (self.searchDisplayController)
-//					[self.searchDisplayController.searchResultsTableView reloadData];
-				dispatch_group_leave(self.searchingDispatchGroup);
-			});
+			if (self.searchController) {
+				NCTableViewController* searchResultsController = (NCTableViewController*) self.searchController.searchResultsController;
+				[searchResultsController.tableView reloadData];
+			}
+			dispatch_group_leave(self.searchingDispatchGroup);
 		}];
 	}
 }

@@ -333,12 +333,14 @@
 				}
 			}
 			
-			self.searchResults = searchResults;
-			if (self.searchController) {
-				NCAssetsContainerViewController* searchResultsController = (NCAssetsContainerViewController*) self.searchController.searchResultsController;
-				searchResultsController.searchResults = self.searchResults;
-			}
-			completionBlock();
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.searchResults = searchResults;
+				if (self.searchController) {
+					NCAssetsContainerViewController* searchResultsController = (NCAssetsContainerViewController*) self.searchController.searchResultsController;
+					searchResultsController.searchResults = self.searchResults;
+				}
+				completionBlock();
+			});
 			
 		}];
 	}

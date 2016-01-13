@@ -2,7 +2,7 @@
 //  NCDBInvType+CoreDataProperties.h
 //  NCDatabase
 //
-//  Created by Artem Shimanski on 29.11.15.
+//  Created by Артем Шиманский on 30.12.15.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -32,9 +32,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NCDBInvControlTower *controlTower;
 @property (nullable, nonatomic, retain) NSSet<NCDBInvControlTowerResource *> *controlTowerResources;
 @property (nullable, nonatomic, retain) NSSet<NCDBMapDenormalize *> *denormalize;
+@property (nullable, nonatomic, retain) NCDBDgmppItem *dgmppItem;
 @property (nullable, nonatomic, retain) NSSet<NCDBDgmEffect *> *effects;
-@property (nullable, nonatomic, retain) NCDBEufeItem *eufeItem;
 @property (nullable, nonatomic, retain) NCDBInvGroup *group;
+@property (nullable, nonatomic, retain) NCDBDgmppHullType *hullType;
 @property (nullable, nonatomic, retain) NCDBEveIcon *icon;
 @property (nullable, nonatomic, retain) NSSet<NCDBIndRequiredSkill *> *indRequiredSkills;
 @property (nullable, nonatomic, retain) NSSet<NCDBRamInstallationTypeContent *> *installationTypeContents;
@@ -51,7 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NCDBTxtDescription *typeDescription;
 @property (nullable, nonatomic, retain) NSSet<NCDBInvType *> *variations;
 @property (nullable, nonatomic, retain) NCDBWhType *wormhole;
-@property (nullable, nonatomic, retain) NCDBEufeHullType *hullType;
 
 @end
 

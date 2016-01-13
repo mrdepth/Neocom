@@ -86,7 +86,7 @@ didStartElement:(NSString *)elementName
 			else {
 				NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 				module.typeID = type.typeID;
-				module.state = eufe::Module::STATE_ACTIVE;
+				module.state = dgmpp::Module::STATE_ACTIVE;
 				if ([slot hasPrefix:@"hi slot"])
 					[self.hiSlots addObject:module];
 				else if ([slot hasPrefix:@"med slot"])

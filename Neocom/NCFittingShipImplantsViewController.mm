@@ -18,8 +18,8 @@
 
 
 @interface NCFittingShipImplantsViewController()
-@property (nonatomic, assign) std::vector<std::shared_ptr<eufe::Implant>> implants;
-@property (nonatomic, assign) std::vector<std::shared_ptr<eufe::Booster>> boosters;
+@property (nonatomic, assign) std::vector<std::shared_ptr<dgmpp::Implant>> implants;
+@property (nonatomic, assign) std::vector<std::shared_ptr<dgmpp::Booster>> boosters;
 
 @end
 
@@ -29,8 +29,8 @@
 	auto pilot = self.controller.fit.pilot;
 	if (pilot) {
 		[self.controller.engine performBlock:^{
-			std::vector<std::shared_ptr<eufe::Implant>> implants(10, nullptr);
-			std::vector<std::shared_ptr<eufe::Booster>> boosters(4, nullptr);
+			std::vector<std::shared_ptr<dgmpp::Implant>> implants(10, nullptr);
+			std::vector<std::shared_ptr<dgmpp::Booster>> boosters(4, nullptr);
 			
 			for (const auto& implant: pilot->getImplants()) {
 				int slot = implant->getSlot() - 1;
@@ -116,7 +116,7 @@
 			[self.controller performSegueWithIdentifier:@"NCFittingImplantSetsViewControllerSave" sender:cell];
 	}
 	else {
-		std::shared_ptr<eufe::Item> item = nullptr;
+		std::shared_ptr<dgmpp::Item> item = nullptr;
 		
 		if (indexPath.section == 1)
 			item = self.implants[indexPath.row];
@@ -127,7 +127,7 @@
 		if (!type) {
 			if (indexPath.section == 1) {
 				self.controller.typePickerViewController.title = NSLocalizedString(@"Implants", nil);
-				[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotImplant size:(int32_t) indexPath.row + 1 race:nil]
+				[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotImplant size:(int32_t) indexPath.row + 1 race:nil]
 															 inViewController:self.controller
 																	 fromRect:cell.bounds
 																	   inView:cell
@@ -143,7 +143,7 @@
 			}
 			else {
 				self.controller.typePickerViewController.title = NSLocalizedString(@"Boosters", nil);
-				[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotBooster size:(int32_t) indexPath.row + 1 race:nil]
+				[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotBooster size:(int32_t) indexPath.row + 1 race:nil]
 															 inViewController:self.controller
 																	 fromRect:cell.bounds
 																	   inView:cell
@@ -217,7 +217,7 @@
 		}
 	}
 	else {
-		std::shared_ptr<eufe::Item> item = nullptr;
+		std::shared_ptr<dgmpp::Item> item = nullptr;
 		
 		if (indexPath.section == 1)
 			item = self.implants[indexPath.row];

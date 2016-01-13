@@ -30,7 +30,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	self.refreshControl = nil;
+	//self.refreshControl = nil;
 	
 	if (!self.result) {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"StaStation"];
@@ -42,15 +42,8 @@
 		request.resultType = NSDictionaryResultType;
 		request.propertiesToGroupBy = request.propertiesToFetch;
 		self.regionIDs = [[self.databaseManagedObjectContext executeFetchRequest:request error:nil] valueForKey:@"regionID"];
-
-		
-		request = [NSFetchRequest fetchRequestWithEntityName:@"MapRegion"];
-		request.predicate = [NSPredicate predicateWithFormat:@"regionID IN %@", self.regionIDs];
-		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"regionName" ascending:YES]];
-		request.fetchBatchSize = 50;
-		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
-		[self.result performFetch:nil];
 	}
+	self.cacheRecordID = @"EVEConquerableStationList";
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -98,6 +91,48 @@
 
 
 #pragma mark - NCTableViewController
+
+- (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:1];
+	EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];
+	[api conquerableStationListWithCompletionBlock:^(EVEConquerableStationList *result, NSError *error) {
+		progress.completedUnitCount++;
+		NSMutableDictionary* conquerableStations = [NSMutableDictionary new];
+		for (EVEConquerableStationListItem* item in result.outposts)
+			conquerableStations[@(item.stationID)] = item;
+
+		[self saveCacheData:conquerableStations cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:60*60*24*7]];
+		completionBlock(nil);
+	} progressBlock:nil];
+}
+
+- (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
+	NSDictionary* result = self.cacheData;
+	
+	NSSet* set = [NSSet setWithArray:[[result allValues] valueForKey:@"solarSystemID"]];
+	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
+	request.predicate = [NSPredicate predicateWithFormat:@"solarSystemID IN %@", set];
+	NSExpressionDescription* e = [NSExpressionDescription new];
+	e.expression = [NSExpression expressionForKeyPath:@"constellation.region.regionID"];
+	e.expressionResultType = NSInteger32AttributeType;
+	e.name = @"regionID";
+	request.propertiesToFetch = @[e];
+	request.resultType = NSDictionaryResultType;
+	request.propertiesToGroupBy = request.propertiesToFetch;
+	NSArray* regionIDs = [[self.databaseManagedObjectContext executeFetchRequest:request error:nil] valueForKey:@"regionID"];
+	NSMutableSet* mset = [[NSMutableSet alloc] initWithArray:self.regionIDs];
+	[mset unionSet:[NSSet setWithArray:regionIDs]];
+	self.regionIDs = [mset allObjects];
+	
+	request = [NSFetchRequest fetchRequestWithEntityName:@"MapRegion"];
+	request.predicate = [NSPredicate predicateWithFormat:@"regionID IN %@", self.regionIDs];
+	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"regionName" ascending:YES]];
+	request.fetchBatchSize = 50;
+	self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.databaseManagedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	[self.result performFetch:nil];
+
+	completionBlock();
+}
 
 - (void) searchWithSearchString:(NSString*) searchString completionBlock:(void (^)())completionBlock {
 	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapRegion"];

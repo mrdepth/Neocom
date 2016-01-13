@@ -9,7 +9,7 @@
 #import "NCFittingTargetsViewController.h"
 #import "NCTableViewCell.h"
 #import "NCShipFit.h"
-#import <eufe/eufe.h>
+#import <dgmpp/dgmpp.h>
 
 @interface NCFittingTargetsViewController ()
 

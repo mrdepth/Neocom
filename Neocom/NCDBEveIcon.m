@@ -10,7 +10,7 @@
 #import "NCDBCertMasteryLevel.h"
 #import "NCDBChrRace.h"
 #import "NCDBDgmAttributeType.h"
-#import "NCDBEufeItemGroup.h"
+#import "NCDBDgmppItemGroup.h"
 #import "NCDBEveIconImage.h"
 #import "NCDBInvCategory.h"
 #import "NCDBInvGroup.h"

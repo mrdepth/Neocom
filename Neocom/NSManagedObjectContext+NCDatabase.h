@@ -8,21 +8,21 @@
 
 #import <CoreData/CoreData.h>
 
-typedef NS_ENUM(NSInteger, NCDBEufeItemSlot) {
-	NCDBEufeItemSlotNone,
-	NCDBEufeItemSlotHi,
-	NCDBEufeItemSlotMed,
-	NCDBEufeItemSlotLow,
-	NCDBEufeItemSlotRig,
-	NCDBEufeItemSlotSubsystem,
-	NCDBEufeItemSlotStructure,
-	NCDBEufeItemSlotMode,
-	NCDBEufeItemSlotCharge,
-	NCDBEufeItemSlotDrone,
-	NCDBEufeItemSlotImplant,
-	NCDBEufeItemSlotBooster,
-	NCDBEufeItemSlotShip,
-	NCDBEufeItemSlotControlTower
+typedef NS_ENUM(NSInteger, NCDBDgmppItemSlot) {
+	NCDBDgmppItemSlotNone,
+	NCDBDgmppItemSlotHi,
+	NCDBDgmppItemSlotMed,
+	NCDBDgmppItemSlotLow,
+	NCDBDgmppItemSlotRig,
+	NCDBDgmppItemSlotSubsystem,
+	NCDBDgmppItemSlotStructure,
+	NCDBDgmppItemSlotMode,
+	NCDBDgmppItemSlotCharge,
+	NCDBDgmppItemSlotDrone,
+	NCDBDgmppItemSlotImplant,
+	NCDBDgmppItemSlotBooster,
+	NCDBDgmppItemSlotShip,
+	NCDBDgmppItemSlotControlTower
 };
 
 
@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, NCDBEufeItemSlot) {
 @class NCDBDgmAttributeType;
 @class NCDBInvGroup;
 @class NCDBMapSolarSystem;
-@class NCDBEufeItemCategory;
+@class NCDBDgmppItemCategory;
 @class NCDBChrRace;
 @class NCDBStaStation;
 @class NCDBMapDenormalize;
@@ -64,10 +64,10 @@ typedef NS_ENUM(NSInteger, NCDBEufeItemSlot) {
 - (NCDBMapSolarSystem*) mapSolarSystemWithName:(NSString*) name;
 - (NCDBMapSolarSystem*) mapSolarSystemWithSolarSystemID:(int32_t) systemID;
 
-//NCDBEufeItemCategory
-- (NCDBEufeItemCategory*) shipsCategory;
-- (NCDBEufeItemCategory*) controlTowersCategory;
-- (NCDBEufeItemCategory*) categoryWithSlot:(NCDBEufeItemSlot) slot size:(int32_t) size race:(NCDBChrRace*) race;
+//NCDBDgmppItemCategory
+- (NCDBDgmppItemCategory*) shipsCategory;
+- (NCDBDgmppItemCategory*) controlTowersCategory;
+- (NCDBDgmppItemCategory*) categoryWithSlot:(NCDBDgmppItemSlot) slot size:(int32_t) size race:(NCDBChrRace*) race;
 
 //NCDBStaStation
 - (NCDBStaStation*) staStationWithStationID:(int32_t) stationID;

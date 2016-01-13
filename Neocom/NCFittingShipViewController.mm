@@ -274,10 +274,10 @@
 			auto item = [(NCFittingEngineItemPointer*) items[0] item];
 			controller.items = items;
 			
-			auto module = std::dynamic_pointer_cast<eufe::Module>(item);
-			auto drone = std::dynamic_pointer_cast<eufe::Drone>(item);
+			auto module = std::dynamic_pointer_cast<dgmpp::Module>(item);
+			auto drone = std::dynamic_pointer_cast<dgmpp::Drone>(item);
 			
-			std::shared_ptr<eufe::Ship> target = nullptr;
+			std::shared_ptr<dgmpp::Ship> target = nullptr;
 			if (module)
 				target = module->getTarget();
 			else if (drone)
@@ -377,7 +377,7 @@
 			for (NCFittingEngineItemPointer* pointer in sender[@"object"]) {
 				auto item = pointer.item;
 				for (const auto& item: item->getAffectors()) {
-					auto skill = std::dynamic_pointer_cast<eufe::Skill>(item);
+					auto skill = std::dynamic_pointer_cast<dgmpp::Skill>(item);
 					if (skill) {
 						[typeIDs addObject:@(item->getTypeID())];
 					}
@@ -627,7 +627,7 @@
 				NCAccount* account = [NCAccount currentAccount];
 				
 				void (^load)(NCTrainingQueue*) = ^(NCTrainingQueue* trainingQueue) {
-					__block std::set<eufe::TypeID> typeIDs;
+					__block std::set<dgmpp::TypeID> typeIDs;
 					[self.engine performBlockAndWait:^{
 						auto character = self.fit.pilot;
 						auto ship = character->getShip();
@@ -676,7 +676,7 @@
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAffectingSkills style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 			[self.engine performBlock:^{
 				NSMutableDictionary* items = [NSMutableDictionary new];
-				void (^addItem)(std::shared_ptr<eufe::Item>) = ^(std::shared_ptr<eufe::Item> item) {
+				void (^addItem)(std::shared_ptr<dgmpp::Item>) = ^(std::shared_ptr<dgmpp::Item> item) {
 					if (!items[@(item->getTypeID())])
 						items[@(item->getTypeID())] = [NCFittingEngineItemPointer pointerWithItem:item];
 				};
@@ -714,7 +714,7 @@
 			shoppingGroup.quantity = 1;
 			
 			
-			void (^addItem)(std::shared_ptr<eufe::Item>, int32_t) = ^(std::shared_ptr<eufe::Item> item, int32_t quanity) {
+			void (^addItem)(std::shared_ptr<dgmpp::Item>, int32_t) = ^(std::shared_ptr<dgmpp::Item> item, int32_t quanity) {
 				NCShoppingItem* shoppingItem = items[@(item->getTypeID())];
 				if (!shoppingItem) {
 					shoppingItem = [[NCShoppingItem alloc] initWithTypeID:item->getTypeID() quantity:quanity entity:[NSEntityDescription entityForName:@"ShoppingItem" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:nil];
@@ -732,7 +732,7 @@
 				addItem(ship, 1);
 				
 				for (const auto& module: ship->getModules()) {
-					if (module->getSlot() == eufe::Module::SLOT_MODE)
+					if (module->getSlot() == dgmpp::Module::SLOT_MODE)
 						continue;
 					
 					addItem(module, 1);
@@ -902,8 +902,8 @@
 		auto target = sourceViewController.selectedTarget ? sourceViewController.selectedTarget.pilot->getShip() : nullptr;
 		[self.engine performBlockAndWait:^{
 			for (NCFittingEngineItemPointer* pointer in sourceViewController.items) {
-				std::shared_ptr<eufe::Module> module = std::dynamic_pointer_cast<eufe::Module>(pointer.item);
-				std::shared_ptr<eufe::Drone> drone = std::dynamic_pointer_cast<eufe::Drone>(pointer.item);
+				std::shared_ptr<dgmpp::Module> module = std::dynamic_pointer_cast<dgmpp::Module>(pointer.item);
+				std::shared_ptr<dgmpp::Drone> drone = std::dynamic_pointer_cast<dgmpp::Drone>(pointer.item);
 				
 				if (module)
 					module->setTarget(target);
@@ -925,7 +925,7 @@
 - (IBAction) unwindFromDamagePatterns:(UIStoryboardSegue*) segue {
 	NCFittingDamagePatternsViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedDamagePattern) {
-		eufe::DamagePattern damagePattern;
+		dgmpp::DamagePattern damagePattern;
 		damagePattern.emAmount = sourceViewController.selectedDamagePattern.em;
 		damagePattern.thermalAmount = sourceViewController.selectedDamagePattern.thermal;
 		damagePattern.kineticAmount = sourceViewController.selectedDamagePattern.kinetic;
@@ -958,11 +958,11 @@
 	NCFittingTypeVariationsViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedType) {
 		auto ship = self.fit.pilot->getShip();
-		eufe::TypeID typeID = sourceViewController.selectedType.typeID;
+		dgmpp::TypeID typeID = sourceViewController.selectedType.typeID;
 
 		[self.engine performBlockAndWait:^{
 			for (NCFittingEngineItemPointer* pointer in sourceViewController.object) {
-				auto module = std::dynamic_pointer_cast<eufe::Module>(pointer.item);
+				auto module = std::dynamic_pointer_cast<dgmpp::Module>(pointer.item);
 				if (module)
 					ship->replaceModule(module, typeID);
 			}
@@ -978,13 +978,13 @@
 		NSArray* boosterIDs = [(NCImplantSetData*) sourceViewController.selectedImplantSet.data boosterIDs];
 		[self.engine performBlock:^{
 			auto character = self.fit.pilot;
-			eufe::ImplantsList implants = character->getImplants();
+			dgmpp::ImplantsList implants = character->getImplants();
 			for (const auto& implant: implants)
 				character->removeImplant(implant);
 			for (NSNumber* typeID in implantIDs)
 				character->addImplant([typeID intValue]);
 			
-			eufe::BoostersList boosters = character->getBoosters();
+			dgmpp::BoostersList boosters = character->getBoosters();
 			for (const auto& booster: boosters)
 				character->removeBooster(booster);
 			for (NSNumber* typeID in boosterIDs)

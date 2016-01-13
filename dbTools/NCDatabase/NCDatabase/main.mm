@@ -10,7 +10,7 @@
 #import "NCDatabase.h"
 #import "NSString+HTML.h"
 #import "NSMutableString+HTML.h"
-#include "eufe.h"
+#import <dgmpp/dgmpp.h>
 #import <objc/runtime.h>
 
 #define NCDBExpansion @"Mosaic"
@@ -616,20 +616,22 @@ NSMutableArray* convertDgmTypeAttributes(NSManagedObjectContext* context, EVEDBD
 	
 	[database execSQLRequest:@"select * from dgmTypeAttributes" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBDgmTypeAttribute* eveTypeAttribute = [[EVEDBDgmTypeAttribute alloc] initWithStatement:stmt];
-		NCDBDgmTypeAttribute* typeAttribute = [NSEntityDescription insertNewObjectForEntityForName:@"DgmTypeAttribute" inManagedObjectContext:context];
-		typeAttribute.value = eveTypeAttribute.value;
-		typeAttribute.attributeType = dgmAttributeTypes[@(eveTypeAttribute.attributeID)];
-		typeAttribute.type = invTypes[@(eveTypeAttribute.typeID)];
-		if (eveTypeAttribute.attributeID == NCDBMetaGroupAttributeID) {
-			NCDBInvMetaGroup* metaGroup = invMetaGroups[@((int32_t) eveTypeAttribute.value)];
-			//assert(!typeAttribute.type.metaGroup || typeAttribute.type.metaGroup.metaGroupID == metaGroup.metaGroupID);
-			if (metaGroup)
+		if (invTypes[@(eveTypeAttribute.typeID)]) {
+			NCDBDgmTypeAttribute* typeAttribute = [NSEntityDescription insertNewObjectForEntityForName:@"DgmTypeAttribute" inManagedObjectContext:context];
+			typeAttribute.value = eveTypeAttribute.value;
+			typeAttribute.attributeType = dgmAttributeTypes[@(eveTypeAttribute.attributeID)];
+			typeAttribute.type = invTypes[@(eveTypeAttribute.typeID)];
+			if (eveTypeAttribute.attributeID == NCDBMetaGroupAttributeID) {
+				NCDBInvMetaGroup* metaGroup = invMetaGroups[@((int32_t) eveTypeAttribute.value)];
+				//assert(!typeAttribute.type.metaGroup || typeAttribute.type.metaGroup.metaGroupID == metaGroup.metaGroupID);
+				if (metaGroup)
 				typeAttribute.type.metaGroup = metaGroup;
+			}
+			else if (eveTypeAttribute.attributeID == NCDBMetaLevelAttributeID) {
+				typeAttribute.type.metaLevel = typeAttribute.value;
+			}
+			[array addObject:typeAttribute];
 		}
-		else if (eveTypeAttribute.attributeID == NCDBMetaLevelAttributeID) {
-			typeAttribute.type.metaLevel = typeAttribute.value;
-		}
-		[array addObject:typeAttribute];
 	}];
 	
 	return array;
@@ -1089,7 +1091,7 @@ void convertIndustryActivitySkills(NSManagedObjectContext* context, EVEDBDatabas
 }
 
 typedef enum {
-	SLOT_NONE = eufe::Module::SLOT_NONE,
+	SLOT_NONE = dgmpp::Module::SLOT_NONE,
 	SLOT_HI,
 	SLOT_MED,
 	SLOT_LOW,
@@ -1105,7 +1107,7 @@ typedef enum {
 	SLOT_CONTROL_TOWER,
 } Slot;
 
-void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) {
+void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	NSSet* (^getConditionsTables)(NSArray*) = ^(NSArray* conditions) {
 		NSMutableSet* conditionsTables = [NSMutableSet new];
 		for (NSString* condition in conditions) {
@@ -1200,15 +1202,15 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 		return [(NCDBDgmTypeAttribute*) [[type.attributes filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"attributeType.attributeID==%d", attributeID]] anyObject] value];
 	};
 	
-	void (^loadDetails)(NCDBEufeItem*) = ^(NCDBEufeItem* item) {
-		NCDBEufeItemGroup* group = [item.groups anyObject];
+	void (^loadDetails)(NCDBDgmppItem*) = ^(NCDBDgmppItem* item) {
+		NCDBDgmppItemGroup* group = [item.groups anyObject];
 		switch (group.category.category) {
 			case SLOT_HI:
 			case SLOT_MED:
 			case SLOT_LOW:
 			case SLOT_RIG:
 			case SLOT_STRUCTURE: {
-				item.requirements = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemRequirements" inManagedObjectContext:context];
+				item.requirements = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemRequirements" inManagedObjectContext:context];
 				item.requirements.powerGrid = getAttributeValue(item.type, 30);
 				item.requirements.cpu = getAttributeValue(item.type, 50);
 				item.requirements.calibration = getAttributeValue(item.type, 1153);
@@ -1216,7 +1218,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 			}
 			case SLOT_CHARGE:
 			case SLOT_DRONE: {
-				item.damage = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemDamage" inManagedObjectContext:context];
+				item.damage = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemDamage" inManagedObjectContext:context];
 				float multiplier = MAX(getAttributeValue(item.type, 64), getAttributeValue(item.type, 212));
 				multiplier = MAX(multiplier, 1);
 				item.damage.emAmount = getAttributeValue(item.type, 114) * multiplier;
@@ -1226,7 +1228,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 				break;
 			}
 			case SLOT_SHIP: {
-				item.shipResources = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemShipResources" inManagedObjectContext:context];
+				item.shipResources = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemShipResources" inManagedObjectContext:context];
 				item.shipResources.hiSlots = getAttributeValue(item.type, 14);
 				item.shipResources.medSlots = getAttributeValue(item.type, 13);
 				item.shipResources.lowSlots = getAttributeValue(item.type, 12);
@@ -1240,8 +1242,8 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 		}
 	};
 
-	__weak __block void (^weakRecursiveFind)(EVEDBInvMarketGroup*, NCDBEufeItemCategory*, NCDBEufeItemGroup*, NSArray*, NSSet*);
-	void (^recursiveFind)(EVEDBInvMarketGroup*, NCDBEufeItemCategory*, NCDBEufeItemGroup*, NSArray*, NSSet*) = ^(EVEDBInvMarketGroup* marketGroup, NCDBEufeItemCategory* category, NCDBEufeItemGroup* itemGroup, NSArray* conditions, NSSet* conditionsTables) {
+	__weak __block void (^weakRecursiveFind)(EVEDBInvMarketGroup*, NCDBDgmppItemCategory*, NCDBDgmppItemGroup*, NSArray*, NSSet*);
+	void (^recursiveFind)(EVEDBInvMarketGroup*, NCDBDgmppItemCategory*, NCDBDgmppItemGroup*, NSArray*, NSSet*) = ^(EVEDBInvMarketGroup* marketGroup, NCDBDgmppItemCategory* category, NCDBDgmppItemGroup* itemGroup, NSArray* conditions, NSSet* conditionsTables) {
 		if (marketGroup.subgroups.count == 1) {
 			weakRecursiveFind(marketGroup.subgroups[0], category, itemGroup, conditions, conditionsTables);
 		}
@@ -1250,7 +1252,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 			if (marketGroup.subgroups.count > 1) {
 				for (EVEDBInvMarketGroup* group in marketGroup.subgroups) {
 					NCDBInvMarketGroup* invMarketGroup = invMarketGroups[@(group.marketGroupID)];
-					NCDBEufeItemGroup* subGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
+					NCDBDgmppItemGroup* subGroup = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemGroup" inManagedObjectContext:context];
 					subGroup.category = category;
 					subGroup.parentGroup = itemGroup;
 					subGroup.groupName = group.marketGroupName;
@@ -1265,13 +1267,13 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 					EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
 					NCDBInvType* invType = invTypes[@(type.typeID)];
 					if (invType) {
-						if (!invType.eufeItem) {
-							invType.eufeItem = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItem" inManagedObjectContext:context];
-							[itemGroup addItemsObject:invType.eufeItem];
-							loadDetails(invType.eufeItem);
+						if (!invType.dgmppItem) {
+							invType.dgmppItem = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItem" inManagedObjectContext:context];
+							[itemGroup addItemsObject:invType.dgmppItem];
+							loadDetails(invType.dgmppItem);
 						}
 						else
-							[itemGroup addItemsObject:invType.eufeItem];
+							[itemGroup addItemsObject:invType.dgmppItem];
 					}
 				}];
 			}
@@ -1280,8 +1282,8 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 	
 	weakRecursiveFind = recursiveFind;
 	
-	void (^process)(NSArray*, NCDBEufeItemCategory*, NSString*) = ^(NSArray* conditions, NCDBEufeItemCategory* category, NSString* title) {
-		NCDBEufeItemGroup* parentGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
+	void (^process)(NSArray*, NCDBDgmppItemCategory*, NSString*) = ^(NSArray* conditions, NCDBDgmppItemCategory* category, NSString* title) {
+		NCDBDgmppItemGroup* parentGroup = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemGroup" inManagedObjectContext:context];
 		parentGroup.category = category;
 		parentGroup.parentGroup = nil;
 		parentGroup.groupName = title;
@@ -1290,10 +1292,10 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 		NSSet* conditionsTables = getConditionsTables(conditions);
 		NSArray* groups = getGroups(conditions, conditionsTables);
 		for (EVEDBInvMarketGroup* group in groups) {
-			NCDBEufeItemGroup* itemGroup;
+			NCDBDgmppItemGroup* itemGroup;
 			if (groups.count > 1) {
 				NCDBInvMarketGroup* invMarketGroup = invMarketGroups[@(group.marketGroupID)];
-				itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
+				itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemGroup" inManagedObjectContext:context];
 				itemGroup.category = category;
 				itemGroup.parentGroup = parentGroup;
 				itemGroup.groupName = group.marketGroupName;
@@ -1306,7 +1308,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 		}
 	};
 	
-	void (^chargeProcess)(NSArray*, NCDBEufeItemCategory*) = ^(NSArray* conditions, NCDBEufeItemCategory* category) {
+	void (^chargeProcess)(NSArray*, NCDBDgmppItemCategory*) = ^(NSArray* conditions, NCDBDgmppItemCategory* category) {
 		NSSet* conditionsTables = getConditionsTables(conditions);
 		NSMutableSet* allTables = [[NSMutableSet alloc] initWithObjects: @"invTypes", nil];
 		NSMutableArray* allConditions = [[NSMutableArray alloc] initWithObjects:@"invTypes.published=1", nil];
@@ -1317,7 +1319,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 		NSString* request = [NSString stringWithFormat:@"SELECT invTypes.* FROM %@ WHERE %@",
 							 [[allTables allObjects] componentsJoinedByString:@","], [allConditions componentsJoinedByString:@" AND "]];
 		
-		NCDBEufeItemGroup* itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
+		NCDBDgmppItemGroup* itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemGroup" inManagedObjectContext:context];
 		itemGroup.category = category;
 		itemGroup.parentGroup = nil;
 		itemGroup.groupName = @"Ammo";
@@ -1327,34 +1329,34 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 			EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
 			NCDBInvType* invType = invTypes[@(type.typeID)];
 			if (invType) {
-				if (!invType.eufeItem) {
-					invType.eufeItem = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItem" inManagedObjectContext:context];
-					[itemGroup addItemsObject:invType.eufeItem];
-					loadDetails(invType.eufeItem);
+				if (!invType.dgmppItem) {
+					invType.dgmppItem = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItem" inManagedObjectContext:context];
+					[itemGroup addItemsObject:invType.dgmppItem];
+					loadDetails(invType.dgmppItem);
 				}
 				else
-					[itemGroup addItemsObject:invType.eufeItem];
+					[itemGroup addItemsObject:invType.dgmppItem];
 			}
 		}];
 
 	};
 	
-	NCDBEufeItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+	NCDBDgmppItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_HI;
 	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 12"], category, @"Hi Slot");
 
-	category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_MED;
 	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 13"], category, @"Med Slot");
 
-	category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_LOW;
 	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 11"], category, @"Low Slot");
 	
 	[database execSQLRequest:@"select value from dgmTypeAttributes as a, dgmTypeEffects as b where b.effectID = 2663 AND attributeID=1547 AND a.typeID=b.typeID group by value;"
 				 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 					 int32_t value = sqlite3_column_int(stmt, 0);
-					 NCDBEufeItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+					 NCDBDgmppItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 					 category.category = SLOT_RIG;
 					 category.subcategory = value;
 					 process(@[@"dgmTypeEffects.typeID = invTypes.typeID",
@@ -1367,7 +1369,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 	[database execSQLRequest:@"select raceID from invTypes as a, dgmTypeEffects as b where b.effectID = 3772 AND a.typeID=b.typeID group by raceID;"
 				 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 					 int32_t raceID = sqlite3_column_int(stmt, 0);
-					 NCDBEufeItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+					 NCDBDgmppItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 					 category.category = SLOT_SUBSYSTEM;
 					 category.race = chrRaces[@(raceID)];
 					 process(@[@"dgmTypeEffects.typeID = invTypes.typeID",
@@ -1375,19 +1377,19 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 							   [NSString stringWithFormat:@"invTypes.raceID=%d", raceID]], category, @"Subsystems");
 				 }];
 
-	category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_SHIP;
 	process(@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"], category, @"Ships");
 
-	category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_DRONE;
 	process(@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 18"], category, @"Drones");
 
-	category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_CONTROL_TOWER;
 	process(@[@"invTypes.marketGroupID = 478"], category, @"Control Towers");
 
-	category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_STRUCTURE;
 	process(@[@"invTypes.groupID <> 365",
 			  @"invTypes.groupID = invGroups.groupID",
@@ -1396,29 +1398,29 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 	[database execSQLRequest:@"SELECT typeID FROM dgmTypeAttributes WHERE attributeID=10000"
 				 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 					 int32_t typeID = sqlite3_column_int(stmt, 0);
-					 NCDBEufeItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+					 NCDBDgmppItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 					 category.category = SLOT_MODE;
 					 category.subcategory = typeID;
 					 
-					 NCDBEufeItemGroup* itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
+					 NCDBDgmppItemGroup* itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemGroup" inManagedObjectContext:context];
 					 itemGroup.category = category;
 					 itemGroup.parentGroup = nil;
 					 itemGroup.groupName = @"Tactical Mode";
 					 itemGroup.icon = nil;
 
 					 
-					 [database execSQLRequest:[NSString stringWithFormat:@"SELECT a.typeID FROM dgmTypeEffects AS a, dgmTypeAttributes AS b WHERE effectID=%d AND attributeID=1302 AND a.typeID=b.typeID AND value=%d;", eufe::TACTICAL_MODE_EFFECT_ID, typeID]
+					 [database execSQLRequest:[NSString stringWithFormat:@"SELECT a.typeID FROM dgmTypeEffects AS a, dgmTypeAttributes AS b WHERE effectID=%d AND attributeID=1302 AND a.typeID=b.typeID AND value=%d;", dgmpp::TACTICAL_MODE_EFFECT_ID, typeID]
 								  resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 									  int32_t typeID = sqlite3_column_int(stmt, 0);
 									  NCDBInvType* invType = invTypes[@(typeID)];
 									  if (invType) {
-										  if (!invType.eufeItem) {
-											  invType.eufeItem = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItem" inManagedObjectContext:context];
-											  [itemGroup addItemsObject:invType.eufeItem];
-											  loadDetails(invType.eufeItem);
+										  if (!invType.dgmppItem) {
+											  invType.dgmppItem = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItem" inManagedObjectContext:context];
+											  [itemGroup addItemsObject:invType.dgmppItem];
+											  loadDetails(invType.dgmppItem);
 										  }
 										  else
-											  [itemGroup addItemsObject:invType.eufeItem];
+											  [itemGroup addItemsObject:invType.dgmppItem];
 									  }
 								  }];
 				 }];
@@ -1446,9 +1448,9 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 						 else
 							 key = [NSString stringWithFormat:@"%@.%.2f", [[groups sortedArrayUsingSelector:@selector(compare:)] componentsJoinedByString:@","], type.capacity];
 						 
-						 NCDBEufeItemCategory* category = chargeCategories[key];
+						 NCDBDgmppItemCategory* category = chargeCategories[key];
 						 if (!category) {
-							 chargeCategories[key] = category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+							 chargeCategories[key] = category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 							 category.category = SLOT_CHARGE;
 							 category.subcategory = chargeSize;
 							 
@@ -1464,14 +1466,14 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 							 }
 						 }
 						 NCDBInvType* invType = invTypes[@(type.typeID)];
-						 invType.eufeItem.charge = category;
+						 invType.dgmppItem.charge = category;
 					 }
 				 }];
 	
 	[database execSQLRequest:@"select value from dgmTypeAttributes as a, invTypes as b where attributeID=331 and a.typeID=b.typeID and b.published = 1 group by value;"
 				 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 					 int32_t slot = sqlite3_column_int(stmt, 0);
-					 NCDBEufeItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+					 NCDBDgmppItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 					 category.category = SLOT_IMPLANT;
 					 category.subcategory = slot;
 					 process(@[@"dgmTypeAttributes.typeID = invTypes.typeID",
@@ -1481,7 +1483,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 	[database execSQLRequest:@"select value from dgmTypeAttributes as a, invTypes as b where attributeID=1087 and a.typeID=b.typeID and b.published = 1 group by value;"
 				 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 					 int32_t slot = sqlite3_column_int(stmt, 0);
-					 NCDBEufeItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+					 NCDBDgmppItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 					 category.category = SLOT_BOOSTER;
 					 category.subcategory = slot;
 					 process(@[@"dgmTypeAttributes.typeID = invTypes.typeID",
@@ -1490,7 +1492,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 				 }];
 }
 
-void convertEufeHullTypes(NSManagedObjectContext* context) {
+void convertDgmppHullTypes(NSManagedObjectContext* context) {
 	NCDBInvMarketGroup* marketGroup = invMarketGroups[@(4)];
 	__weak __block void (^weakAdd)(NCDBInvMarketGroup*, NSMutableArray*);
 	void (^add)(NCDBInvMarketGroup*, NSMutableArray*) = ^(NCDBInvMarketGroup* marketGroup, NSMutableArray* types) {
@@ -1502,7 +1504,7 @@ void convertEufeHullTypes(NSManagedObjectContext* context) {
 	weakAdd = add;
 	
 	for (NCDBInvMarketGroup* subGroup in marketGroup.subGroups) {
-		NCDBEufeHullType* hullType = [NSEntityDescription insertNewObjectForEntityForName:@"EufeHullType" inManagedObjectContext:context];
+		NCDBDgmppHullType* hullType = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppHullType" inManagedObjectContext:context];
 		hullType.hullTypeName = subGroup.marketGroupName;
 		
 		NSMutableArray* types = [NSMutableArray new];
@@ -1633,10 +1635,10 @@ int main(int argc, const char * argv[])
 			staStations = convertStaStations(context, database);
 			NSLog(@"convertRequiredSkills");
 			convertRequiredSkills(context);
-			NSLog(@"convertEufeItems");
-			convertEufeItems(context, database);
-			NSLog(@"convertEufeHullTypes");
-			convertEufeHullTypes(context);
+			NSLog(@"convertDgmppItems");
+			convertDgmppItems(context, database);
+			NSLog(@"convertDgmppHullTypes");
+			convertDgmppHullTypes(context);
 			NSLog(@"convertIndustryBlueprints");
 			indBlueprintTypes = convertIndustryBlueprints(context, database);
 			NSLog(@"convertIndustryActivity");

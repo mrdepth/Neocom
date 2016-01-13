@@ -111,7 +111,7 @@
 		UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 		
 		self.typePickerViewController.title = NSLocalizedString(@"Ships", nil);
-		[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
+		[self.typePickerViewController presentWithCategory:[NCDBDgmppItemCategory shipsCategory]
 										  inViewController:self
 												  fromRect:cell.bounds
 													inView:cell

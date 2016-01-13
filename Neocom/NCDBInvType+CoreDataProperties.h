@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSSet<NCDBInvControlTowerResource *> *controlTowerResources;
 @property (nullable, nonatomic, retain) NSSet<NCDBMapDenormalize *> *denormalize;
 @property (nullable, nonatomic, retain) NSSet<NCDBDgmEffect *> *effects;
-@property (nullable, nonatomic, retain) NCDBEufeItem *eufeItem;
+@property (nullable, nonatomic, retain) NCDBDgmppItem *dgmppItem;
 @property (nullable, nonatomic, retain) NCDBInvGroup *group;
 @property (nullable, nonatomic, retain) NCDBEveIcon *icon;
 @property (nullable, nonatomic, retain) NSSet<NCDBIndRequiredSkill *> *indRequiredSkills;
@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NCDBTxtDescription *typeDescription;
 @property (nullable, nonatomic, retain) NSSet<NCDBInvType *> *variations;
 @property (nullable, nonatomic, retain) NCDBWhType *wormhole;
-@property (nullable, nonatomic, retain) NCDBEufeHullType *hullType;
+@property (nullable, nonatomic, retain) NCDBDgmppHullType *hullType;
 
 @end
 

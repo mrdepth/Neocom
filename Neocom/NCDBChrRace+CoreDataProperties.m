@@ -15,7 +15,7 @@
 
 @dynamic raceID;
 @dynamic raceName;
-@dynamic eufeCategories;
+@dynamic dgmppCategories;
 @dynamic icon;
 @dynamic types;
 

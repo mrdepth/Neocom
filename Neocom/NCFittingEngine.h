@@ -7,14 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <eufe/eufe.h>
+#import <dgmpp/dgmpp.h>
 
 @class NCDBInvType;
 @class NCShipFit;
 @class NCPOSFit;
 @class NCLoadoutDataShip;
 @interface NCFittingEngine : NSObject
-@property (nonatomic, assign, readonly) std::shared_ptr<eufe::Engine> engine;
+@property (nonatomic, assign, readonly) std::shared_ptr<dgmpp::Engine> engine;
 @property (nonatomic, strong, readonly) NSManagedObjectContext* databaseManagedObjectContext;
 @property (nonatomic, strong, readonly) NSManagedObjectContext* storageManagedObjectContext;
 @property (nonatomic, strong) NSMutableDictionary* userInfo;
@@ -28,8 +28,8 @@
 @end
 
 @interface NCFittingEngineItemPointer : NSObject
-@property (nonatomic, assign, readonly) std::shared_ptr<eufe::Item> item;
+@property (nonatomic, assign, readonly) std::shared_ptr<dgmpp::Item> item;
 
-+ (instancetype) pointerWithItem:(std::shared_ptr<eufe::Item>) item;
-- (id) initWithItem:(std::shared_ptr<eufe::Item>) item;
++ (instancetype) pointerWithItem:(std::shared_ptr<dgmpp::Item>) item;
+- (id) initWithItem:(std::shared_ptr<dgmpp::Item>) item;
 @end

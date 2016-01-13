@@ -2,7 +2,7 @@
 //  NCDBIndRequiredMaterial+CoreDataProperties.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 23.12.15.
+//  Created by Артем Шиманский on 30.12.15.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu

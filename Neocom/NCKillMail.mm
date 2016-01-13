@@ -9,7 +9,7 @@
 #import "NCKillMail.h"
 #import <EVEAPI/EVEAPI.h>
 #import "NCDatabase.h"
-#import <eufe/eufe.h>
+#import <dgmpp/dgmpp.h>
 
 @implementation NCKillMailPilot
 
@@ -177,20 +177,20 @@
 
 			if (item.flag == EVEInventoryFlagNone) {
 				if ([type category] == NCTypeCategoryModule) {
-					switch ((eufe::Module::Slot) type.slot) {
-						case eufe::Module::SLOT_HI:
+					switch ((dgmpp::Module::Slot) type.slot) {
+						case dgmpp::Module::SLOT_HI:
 							hiSlot = YES;
 							break;
-						case eufe::Module::SLOT_MED:
+						case dgmpp::Module::SLOT_MED:
 							medSlot = YES;
 							break;
-						case eufe::Module::SLOT_LOW:
+						case dgmpp::Module::SLOT_LOW:
 							lowSlot = YES;
 							break;
-						case eufe::Module::SLOT_RIG:
+						case dgmpp::Module::SLOT_RIG:
 							rigSlot = YES;
 							break;
-						case eufe::Module::SLOT_SUBSYSTEM:
+						case dgmpp::Module::SLOT_SUBSYSTEM:
 							subsystemSlot = YES;
 							break;
 						default:

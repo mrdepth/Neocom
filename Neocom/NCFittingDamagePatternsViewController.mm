@@ -70,7 +70,7 @@
 				auto ship = pilot->getShip();
 				if (!ship)
 					continue;
-				auto dps = eufe::DamagePattern(ship->getWeaponDps() + ship->getDroneDps());
+				auto dps = dgmpp::DamagePattern(ship->getWeaponDps() + ship->getDroneDps());
 				if (dps == 0)
 					continue;
 				

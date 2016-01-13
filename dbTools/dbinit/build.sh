@@ -1,3 +1,3 @@
 #!/bin/sh
 make clean
-make EXPANSION=Frostline
+make EXPANSION="YC-118"

@@ -15,7 +15,7 @@
 
 @interface NCShipFit()
 @property (nonatomic, strong, readwrite) NCFittingEngine* engine;
-@property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Character> pilot;
+@property (nonatomic, assign, readwrite) std::shared_ptr<dgmpp::Character> pilot;
 @end
 
 @interface NCPOSFit()
@@ -48,18 +48,18 @@
 	return self;
 }
 
-- (std::shared_ptr<eufe::Engine>) engine {
+- (std::shared_ptr<dgmpp::Engine>) engine {
 	@synchronized(self) {
 		if (!_engine) {
-			NSString* path = [[[NCDatabase sharedDatabase] databaseUpdateDirectory] stringByAppendingPathComponent:@"eufe.sqlite"];
+			NSString* path = [[[NCDatabase sharedDatabase] databaseUpdateDirectory] stringByAppendingPathComponent:@"dgm.sqlite"];
 			if (path) {
 				try {
-					_engine = std::make_shared<eufe::Engine>(std::make_shared<eufe::SqliteConnector>([path cStringUsingEncoding:NSUTF8StringEncoding]));
+					_engine = std::make_shared<dgmpp::Engine>(std::make_shared<dgmpp::SqliteConnector>([path cStringUsingEncoding:NSUTF8StringEncoding]));
 					return _engine;
 				} catch (...) {
 				}
 			}
-			_engine = std::make_shared<eufe::Engine>(std::make_shared<eufe::SqliteConnector>([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]));
+			_engine = std::make_shared<dgmpp::Engine>(std::make_shared<dgmpp::SqliteConnector>([[[NSBundle mainBundle] pathForResource:@"dgm" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]));
 		}
 		return _engine;
 	}
@@ -71,7 +71,7 @@
 
 - (void)performBlockAndWait:(void (^)())block {
 	[self.databaseManagedObjectContext performBlockAndWait:^{
-		eufe::Engine::ScopedLock lock(self.engine);
+		dgmpp::Engine::ScopedLock lock(self.engine);
 		block();
 	}];
 }
@@ -79,7 +79,7 @@
 - (void) performBlock:(void (^)())block {
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 		[self.databaseManagedObjectContext performBlock:^{
-			eufe::Engine::ScopedLock lock(self.engine);
+			dgmpp::Engine::ScopedLock lock(self.engine);
 			block();
 		}];
 	});
@@ -92,7 +92,7 @@
 	
 	[self performBlockAndWait:^{
 		NSMutableSet* charges = [NSMutableSet new];
-		eufe::TypeID modeID = loadoutData.mode;
+		dgmpp::TypeID modeID = loadoutData.mode;
 
 		for (NCLoadoutDataShipCargoItem* item in loadoutData.cargo) {
 			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
@@ -102,10 +102,10 @@
 		}
 		
 		if (!modeID) {
-			NCDBEufeItemCategory* category = [self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotMode size:fit.typeID race:nil];
+			NCDBDgmppItemCategory* category = [self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotMode size:fit.typeID race:nil];
 			if (category) {
-				NCDBEufeItemGroup* group = [category.itemGroups anyObject];
-				NCDBEufeItem* item = [group.items anyObject];
+				NCDBDgmppItemGroup* group = [category.itemGroups anyObject];
+				NCDBDgmppItem* item = [group.items anyObject];
 				modeID = item.type.typeID;
 			}
 		}
@@ -116,7 +116,7 @@
 		NSAssert(fit.pilot == nullptr, @"NCShipFit already loaded");
 		auto pilot = self.engine->getGang()->addPilot();
 		fit.pilot = pilot;
-		auto ship = pilot->setShip(static_cast<eufe::TypeID>(fit.typeID));
+		auto ship = pilot->setShip(static_cast<dgmpp::TypeID>(fit.typeID));
 //		CFTimeInterval t1 = CACurrentMediaTime();
 //		NSLog(@"Fit loading time %f", t1 - t0);
 		if (ship) {
@@ -148,14 +148,14 @@
 				pilot->addBooster(item.typeID);
 			
 			for (NSNumber* typeID in charges) {
-				eufe::TypeID chargeID = [typeID intValue];
+				dgmpp::TypeID chargeID = [typeID intValue];
 				for (const auto& module: ship->getModules()) {
 					if (!module->getCharge())
 						module->setCharge(chargeID);
 				}
 			}
 			self.engine->commitUpdates();
-			if (ship->getFreeSlots(eufe::Module::SLOT_MODE) > 0) {
+			if (ship->getFreeSlots(dgmpp::Module::SLOT_MODE) > 0) {
 				if (modeID > 0)
 					ship->addModule(modeID);
 			}
@@ -239,7 +239,7 @@
 				for (int i = 0; i < item.quantity; i++) {
 					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 					module.typeID = item.typeID;
-					module.state = eufe::Module::STATE_ACTIVE;
+					module.state = dgmpp::Module::STATE_ACTIVE;
 					[hiSlots addObject:module];
 				}
 			}
@@ -247,7 +247,7 @@
 				for (int i = 0; i < item.quantity; i++) {
 					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 					module.typeID = item.typeID;
-					module.state = eufe::Module::STATE_ACTIVE;
+					module.state = dgmpp::Module::STATE_ACTIVE;
 					[medSlots addObject:module];
 				}
 			}
@@ -255,7 +255,7 @@
 				for (int i = 0; i < item.quantity; i++) {
 					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 					module.typeID = item.typeID;
-					module.state = eufe::Module::STATE_ACTIVE;
+					module.state = dgmpp::Module::STATE_ACTIVE;
 					[lowSlots addObject:module];
 				}
 			}
@@ -263,7 +263,7 @@
 				for (int i = 0; i < item.quantity; i++) {
 					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 					module.typeID = item.typeID;
-					module.state = eufe::Module::STATE_ACTIVE;
+					module.state = dgmpp::Module::STATE_ACTIVE;
 					[rigSlots addObject:module];
 				}
 			}
@@ -271,7 +271,7 @@
 				for (int i = 0; i < item.quantity; i++) {
 					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 					module.typeID = item.typeID;
-					module.state = eufe::Module::STATE_ACTIVE;
+					module.state = dgmpp::Module::STATE_ACTIVE;
 					[subsystems addObject:module];
 				}
 			}
@@ -332,8 +332,8 @@
 			if (components.count > 1) {
 				for (NSString* component in [components[1] componentsSeparatedByString:@";"]) {
 					NSArray* array = [component componentsSeparatedByString:@":"];
-					eufe::TypeID typeID = array.count > 0 ? [array[0] intValue] : 0;
-					eufe::TypeID chargeID = array.count > 1 ? [array[1] intValue] : 0;
+					dgmpp::TypeID typeID = array.count > 0 ? [array[0] intValue] : 0;
+					dgmpp::TypeID chargeID = array.count > 1 ? [array[1] intValue] : 0;
 					int32_t count = array.count > 2 ? [array[2] intValue] : 1;
 					if (!typeID)
 						continue;
@@ -344,19 +344,19 @@
 					
 					NSMutableArray* modules = nil;
 					switch (type.slot) {
-						case eufe::Module::SLOT_LOW:
+						case dgmpp::Module::SLOT_LOW:
 							modules = lowSlots;
 							break;
-						case eufe::Module::SLOT_MED:
+						case dgmpp::Module::SLOT_MED:
 							modules = medSlots;
 							break;
-						case eufe::Module::SLOT_HI:
+						case dgmpp::Module::SLOT_HI:
 							modules = hiSlots;
 							break;
-						case eufe::Module::SLOT_RIG:
+						case dgmpp::Module::SLOT_RIG:
 							modules = rigSlots;
 							break;
-						case eufe::Module::SLOT_SUBSYSTEM:
+						case dgmpp::Module::SLOT_SUBSYSTEM:
 							modules = subsystems;
 							break;
 						default:
@@ -365,7 +365,7 @@
 					for (int i = 0; i < count; i++) {
 						NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 						module.typeID = typeID;
-						module.state = eufe::Module::STATE_ACTIVE;
+						module.state = dgmpp::Module::STATE_ACTIVE;
 						module.chargeID = chargeID;
 						[modules addObject:module];
 					}
@@ -375,7 +375,7 @@
 			if (components.count > 2) {
 				for (NSString* component in [components[2] componentsSeparatedByString:@";"]) {
 					NSArray* array = [component componentsSeparatedByString:@":"];
-					eufe::TypeID typeID = array.count > 0 ? [array[0] intValue] : 0;
+					dgmpp::TypeID typeID = array.count > 0 ? [array[0] intValue] : 0;
 					int32_t count = array.count > 1 ? [array[1] intValue] : 0;
 					if (!typeID)
 						continue;
@@ -393,7 +393,7 @@
 			
 			if (components.count > 3) {
 				for (NSString* component in [components[3] componentsSeparatedByString:@";"]) {
-					eufe::TypeID typeID = [component intValue];
+					dgmpp::TypeID typeID = [component intValue];
 					if (typeID) {
 						NCLoadoutDataShipImplant* implant = [NCLoadoutDataShipImplant new];
 						implant.typeID = typeID;
@@ -404,7 +404,7 @@
 			
 			if (components.count > 4) {
 				for (NSString* component in [components[4] componentsSeparatedByString:@";"]) {
-					eufe::TypeID typeID = [component intValue];
+					dgmpp::TypeID typeID = [component intValue];
 					if (typeID) {
 						NCLoadoutDataShipBooster* booster = [NCLoadoutDataShipBooster new];
 						booster.typeID = typeID;
@@ -454,7 +454,7 @@
 					for (int j = 0; j < item.qty; j++) {
 						NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 						module.typeID = item.typeID;
-						module.state = eufe::Module::STATE_ACTIVE;
+						module.state = dgmpp::Module::STATE_ACTIVE;
 						[slots[i] addObject:module];
 						modules[@(item.flag)] = module;
 					}
@@ -544,19 +544,19 @@
 						case NCTypeCategoryModule: {
 							NSMutableArray* modules = nil;
 							switch (type.slot) {
-								case eufe::Module::SLOT_LOW:
+								case dgmpp::Module::SLOT_LOW:
 									modules = lowSlots;
 									break;
-								case eufe::Module::SLOT_MED:
+								case dgmpp::Module::SLOT_MED:
 									modules = medSlots;
 									break;
-								case eufe::Module::SLOT_HI:
+								case dgmpp::Module::SLOT_HI:
 									modules = hiSlots;
 									break;
-								case eufe::Module::SLOT_RIG:
+								case dgmpp::Module::SLOT_RIG:
 									modules = rigSlots;
 									break;
-								case eufe::Module::SLOT_SUBSYSTEM:
+								case dgmpp::Module::SLOT_SUBSYSTEM:
 									modules = subsystems;
 									break;
 								default:
@@ -565,7 +565,7 @@
 							for (int i = 0; i < amount; i++) {
 								NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 								module.typeID = typeID;
-								module.state = eufe::Module::STATE_ACTIVE;
+								module.state = dgmpp::Module::STATE_ACTIVE;
 								[modules addObject:module];
 							}
 							break;
@@ -634,7 +634,7 @@
 				for (int i = 0; i < item.quantity; i++) {
 					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 					module.typeID = item.type.typeID;
-					module.state = eufe::Module::STATE_ACTIVE;
+					module.state = dgmpp::Module::STATE_ACTIVE;
 					[hiSlots addObject:module];
 				}
 			}
@@ -642,7 +642,7 @@
 				for (int i = 0; i < item.quantity; i++) {
 					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 					module.typeID = item.type.typeID;
-					module.state = eufe::Module::STATE_ACTIVE;
+					module.state = dgmpp::Module::STATE_ACTIVE;
 					[medSlots addObject:module];
 				}
 			}
@@ -650,7 +650,7 @@
 				for (int i = 0; i < item.quantity; i++) {
 					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 					module.typeID = item.type.typeID;
-					module.state = eufe::Module::STATE_ACTIVE;
+					module.state = dgmpp::Module::STATE_ACTIVE;
 					[lowSlots addObject:module];
 				}
 			}
@@ -658,7 +658,7 @@
 				for (int i = 0; i < item.quantity; i++) {
 					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 					module.typeID = item.type.typeID;
-					module.state = eufe::Module::STATE_ACTIVE;
+					module.state = dgmpp::Module::STATE_ACTIVE;
 					[rigSlots addObject:module];
 				}
 			}
@@ -666,7 +666,7 @@
 				for (int i = 0; i < item.quantity; i++) {
 					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 					module.typeID = item.type.typeID;
-					module.state = eufe::Module::STATE_ACTIVE;
+					module.state = dgmpp::Module::STATE_ACTIVE;
 					[subsystems addObject:module];
 				}
 			}
@@ -714,7 +714,7 @@
 		NSMutableDictionary* structuresDic = [NSMutableDictionary new];
 		for (EVEAssetListItem* item in asset.contents) {
 			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
-			if (type.group.category.categoryID == eufe::STRUCTURE_CATEGORY_ID && type.group.groupID != eufe::CONTROL_TOWER_GROUP_ID) {
+			if (type.group.category.categoryID == dgmpp::STRUCTURE_CATEGORY_ID && type.group.groupID != dgmpp::CONTROL_TOWER_GROUP_ID) {
 				NCLoadoutDataPOSStructure* structure = structuresDic[@(item.typeID)];
 				if (!structure) {
 					structure = [NCLoadoutDataPOSStructure new];
@@ -758,11 +758,11 @@
 @implementation NCFittingEngineItemPointer
 @synthesize item = _item;
 
-+ (instancetype) pointerWithItem:(std::shared_ptr<eufe::Item>) item {
++ (instancetype) pointerWithItem:(std::shared_ptr<dgmpp::Item>) item {
 	return [[self alloc] initWithItem:item];
 }
 
-- (id) initWithItem:(std::shared_ptr<eufe::Item>) item {
+- (id) initWithItem:(std::shared_ptr<dgmpp::Item>) item {
 	if (self = [super init]) {
 		_item = item;
 	}

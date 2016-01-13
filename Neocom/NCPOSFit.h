@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NCLoadout.h"
-#import <eufe/eufe.h>
+#import <dgmpp/dgmpp.h>
 #import "NCFittingEngine.h"
 
 @interface NCLoadoutDataPOS: NSObject<NSCoding>
@@ -16,9 +16,9 @@
 @end
 
 @interface NCLoadoutDataPOSStructure : NSObject<NSCoding>
-@property (nonatomic, assign) eufe::TypeID typeID;
-@property (nonatomic, assign) eufe::TypeID chargeID;
-@property (nonatomic, assign) eufe::Module::State state;
+@property (nonatomic, assign) dgmpp::TypeID typeID;
+@property (nonatomic, assign) dgmpp::TypeID chargeID;
+@property (nonatomic, assign) dgmpp::Module::State state;
 @property (nonatomic, assign) int count;
 @end
 

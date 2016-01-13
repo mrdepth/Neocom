@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBEufeItemCategory, NCDBEveIcon, NCDBInvType;
+@class NCDBDgmppItemCategory, NCDBEveIcon, NCDBInvType;
 
 NS_ASSUME_NONNULL_BEGIN
 

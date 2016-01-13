@@ -79,7 +79,7 @@
 	if (self = [super init]) {
 		self.typeID = [aDecoder decodeInt32ForKey:@"typeID"];
 		self.chargeID = [aDecoder decodeInt32ForKey:@"chargeID"];
-		self.state = static_cast<eufe::Module::State>([aDecoder decodeInt32ForKey:@"state"]);
+		self.state = static_cast<dgmpp::Module::State>([aDecoder decodeInt32ForKey:@"state"]);
 	}
 	return self;
 }
@@ -190,7 +190,7 @@
 @property (nonatomic, strong, readwrite) NSString* dna;
 @property (nonatomic, strong, readwrite) CRFitting* crFitting;
 
-@property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Character> pilot;
+@property (nonatomic, assign, readwrite) std::shared_ptr<dgmpp::Character> pilot;
 
 @property (nonatomic, strong) NCLoadoutDataShip* loadoutData;
 @property (nonatomic, strong) NSManagedObjectContext* storageManagedObjectContext;
@@ -303,7 +303,7 @@
 			NSMutableArray* cargo = [NSMutableArray new];
 			NSMutableArray* implants = [NSMutableArray new];
 			NSMutableArray* boosters = [NSMutableArray new];
-			eufe::TypeID modeID = 0;
+			dgmpp::TypeID modeID = 0;
 			
 			for(auto i : ship->getModules()) {
 				auto charge = i->getCharge();
@@ -313,22 +313,22 @@
 				module.state = i->getPreferredState();
 				
 				switch(i->getSlot()) {
-					case eufe::Module::SLOT_HI:
+					case dgmpp::Module::SLOT_HI:
 						[hiSlots addObject:module];
 						break;
-					case eufe::Module::SLOT_MED:
+					case dgmpp::Module::SLOT_MED:
 						[medSlots addObject:module];
 						break;
-					case eufe::Module::SLOT_LOW:
+					case dgmpp::Module::SLOT_LOW:
 						[lowSlots addObject:module];
 						break;
-					case eufe::Module::SLOT_RIG:
+					case dgmpp::Module::SLOT_RIG:
 						[rigSlots addObject:module];
 						break;
-					case eufe::Module::SLOT_SUBSYSTEM:
+					case dgmpp::Module::SLOT_SUBSYSTEM:
 						[subsystems addObject:module];
 						break;
-					case eufe::Module::SLOT_MODE:
+					case dgmpp::Module::SLOT_MODE:
 						modeID = module.typeID;
 						break;
 					default:
@@ -443,12 +443,12 @@
 	[self flush];
 	NSMutableArray* modules = [[NSMutableArray alloc] init];
 	
-	std::vector<std::pair<eufe::TypeID, eufe::TypeID> > modulePairs;
-	std::map<std::pair<eufe::TypeID, eufe::TypeID>, int> moduleCounts;
+	std::vector<std::pair<dgmpp::TypeID, dgmpp::TypeID> > modulePairs;
+	std::map<std::pair<dgmpp::TypeID, dgmpp::TypeID>, int> moduleCounts;
 	
 	for (NSString* key in @[@"hiSlots", @"medSlots", @"lowSlots", @"rigSlots", @"subsystems"]) {
 		for (NCLoadoutDataShipModule* item in [self.loadoutData valueForKey:key]) {
-			std::pair<eufe::TypeID, eufe::TypeID> pair(item.typeID, item.chargeID);
+			std::pair<dgmpp::TypeID, dgmpp::TypeID> pair(item.typeID, item.chargeID);
 			int count = 1;
 			if (moduleCounts.find(pair) == moduleCounts.end()) {
 				moduleCounts[pair] = count;
@@ -470,14 +470,14 @@
 	}
 	
 	NSMutableArray* drones = [[NSMutableArray alloc] init];
-	std::vector<std::pair<eufe::TypeID, int> > dronePairs;
+	std::vector<std::pair<dgmpp::TypeID, int> > dronePairs;
 	
 	for (NCLoadoutDataShipDrone* drone in self.loadoutData.drones) {
 		if (!drone.active)
 			continue;
-		eufe::TypeID typeID = drone.typeID;
+		dgmpp::TypeID typeID = drone.typeID;
 		int count = drone.count;
-		dronePairs.push_back(std::pair<eufe::TypeID, int>(typeID, count));
+		dronePairs.push_back(std::pair<dgmpp::TypeID, int>(typeID, count));
 	}
 	std::sort(dronePairs.begin(), dronePairs.end());
 	
@@ -658,7 +658,7 @@
 #pragma mark - Private
 
 - (void) setSkillLevels:(NSDictionary*) skillLevels {
-	__block std::map<eufe::TypeID, int32_t> levels;
+	__block std::map<dgmpp::TypeID, int32_t> levels;
 	[skillLevels enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NSNumber* level, BOOL *stop) {
 		levels[[typeID intValue]] = [level intValue];
 	}];

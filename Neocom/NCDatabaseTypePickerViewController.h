@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "UIViewController+Neocom.h"
 
-@class NCDBEufeItemCategory;
+@class NCDBDgmppItemCategory;
 @class NCDBInvType;
 @interface NCDatabaseTypePickerViewController : UINavigationController
 
-- (void) presentWithCategory:(NCDBEufeItemCategory*) category inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(NCDBInvType* type)) completion;
+- (void) presentWithCategory:(NCDBDgmppItemCategory*) category inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(NCDBInvType* type)) completion;
 
 @end

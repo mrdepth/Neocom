@@ -2,7 +2,7 @@
 //  NCDBInvType.m
 //  NCDatabase
 //
-//  Created by Artem Shimanski on 29.11.15.
+//  Created by Артем Шиманский on 30.12.15.
 //
 //
 
@@ -12,8 +12,8 @@
 #import "NCDBChrRace.h"
 #import "NCDBDgmEffect.h"
 #import "NCDBDgmTypeAttribute.h"
-#import "NCDBEufeHullType.h"
-#import "NCDBEufeItem.h"
+#import "NCDBDgmppHullType.h"
+#import "NCDBDgmppItem.h"
 #import "NCDBEveIcon.h"
 #import "NCDBIndBlueprintType.h"
 #import "NCDBIndProduct.h"

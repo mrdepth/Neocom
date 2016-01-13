@@ -206,8 +206,8 @@
 		if (databaseUpdateDirectory) {
 			NSFileManager* fileManager = [NSFileManager defaultManager];
 			NSString* databasePath = [databaseUpdateDirectory stringByAppendingPathComponent:@"NCDatabase.sqlite"];
-			NSString* eufePath = [databaseUpdateDirectory stringByAppendingPathComponent:@"eufe.sqlite"];
-			if ([fileManager fileExistsAtPath:databasePath isDirectory:NULL] && [fileManager fileExistsAtPath:eufePath isDirectory:NULL]) {
+			NSString* dgmppPath = [databaseUpdateDirectory stringByAppendingPathComponent:@"dgm.sqlite"];
+			if ([fileManager fileExistsAtPath:databasePath isDirectory:NULL] && [fileManager fileExistsAtPath:dgmppPath isDirectory:NULL]) {
 				persistentStore = [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 																			configuration:nil
 																					  URL:[NSURL fileURLWithPath:databasePath]

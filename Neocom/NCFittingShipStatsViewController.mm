@@ -93,10 +93,10 @@
 						if (character) {
 							[controller.controller.engine performBlock:^{
 								auto ship = character->getShip();
-								int usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
-								int totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
-								int usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-								int totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+								int usedTurretHardpoints = ship->getUsedHardpoints(dgmpp::Module::HARDPOINT_TURRET);
+								int totalTurretHardpoints = ship->getNumberOfHardpoints(dgmpp::Module::HARDPOINT_TURRET);
+								int usedMissileHardpoints = ship->getUsedHardpoints(dgmpp::Module::HARDPOINT_LAUNCHER);
+								int totalMissileHardpoints = ship->getNumberOfHardpoints(dgmpp::Module::HARDPOINT_LAUNCHER);
 
 								int calibrationUsed = ship->getCalibrationUsed();
 								int totalCalibration = ship->getTotalCalibration();
@@ -295,7 +295,7 @@
 								float capCapacity = ship->getCapCapacity();
 								bool capStable = ship->isCapStable();
 								float capState = capStable ? ship->getCapStableLevel() * 100.0 : ship->getCapLastsTime();
-								float capacitorRechargeTime = ship->getAttribute(eufe::RECHARGE_RATE_ATTRIBUTE_ID)->getValue() / 1000.0;
+								float capacitorRechargeTime = ship->getAttribute(dgmpp::RECHARGE_RATE_ATTRIBUTE_ID)->getValue() / 1000.0;
 								float delta = ship->getCapRecharge() - ship->getCapUsed();
 
 								NSDictionary* data =
@@ -457,7 +457,7 @@
 								NSMutableArray* values = [NSMutableArray new];
 								NSMutableArray* texts = [NSMutableArray new];
 								
-								auto damagePattern = eufe::DamagePattern(ship->getWeaponDps() + ship->getDroneDps());
+								auto damagePattern = dgmpp::DamagePattern(ship->getWeaponDps() + ship->getDroneDps());
 								for (int j = 0; j < 4; j++) {
 									[values addObject:@(damagePattern.damageTypes[j])];
 									[texts addObject:[NSString stringWithFormat:@"%.1f%%", damagePattern.damageTypes[j] * 100]];
@@ -516,22 +516,22 @@
 								float speed = ship->getVelocity();
 								float alignTime = ship->getAlignTime();
 								float signature =ship->getSignatureRadius();
-								float cargo =ship->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
+								float cargo =ship->getAttribute(dgmpp::CAPACITY_ATTRIBUTE_ID)->getValue();
 								float mass = ship->getMass();
-								float droneRange = character->getAttribute(eufe::DRONE_CONTROL_DISTANCE_ATTRIBUTE_ID)->getValue() / 1000;
+								float droneRange = character->getAttribute(dgmpp::DRONE_CONTROL_DISTANCE_ATTRIBUTE_ID)->getValue() / 1000;
 								float warpSpeed = ship->getWarpSpeed();
 								UIImage* sensorImage;
 								switch(ship->getScanType()) {
-									case eufe::Ship::SCAN_TYPE_GRAVIMETRIC:
+									case dgmpp::Ship::SCAN_TYPE_GRAVIMETRIC:
 										sensorImage = [UIImage imageNamed:@"gravimetric"];
 										break;
-									case eufe::Ship::SCAN_TYPE_LADAR:
+									case dgmpp::Ship::SCAN_TYPE_LADAR:
 										sensorImage = [UIImage imageNamed:@"ladar"];
 										break;
-									case eufe::Ship::SCAN_TYPE_MAGNETOMETRIC:
+									case dgmpp::Ship::SCAN_TYPE_MAGNETOMETRIC:
 										sensorImage = [UIImage imageNamed:@"magnetometric"];
 										break;
-									case eufe::Ship::SCAN_TYPE_RADAR:
+									case dgmpp::Ship::SCAN_TYPE_RADAR:
 										sensorImage = [UIImage imageNamed:@"radar"];
 										break;
 									default:

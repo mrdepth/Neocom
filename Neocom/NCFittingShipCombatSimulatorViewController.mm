@@ -275,7 +275,7 @@ typedef NS_ENUM(NSInteger, NCManeuver) {
 				maxRange += module->getMaxRange() * dps;
 				falloff += module->getFalloff() * dps;
 			}
-			if (module->hasAttribute(eufe::WARP_SCRAMBLE_STRENGTH_ATTRIBUTE_ID) || module->hasAttribute(eufe::WARP_SCRAMBLE_STRENGTH_HIDDEN_ATTRIBUTE_ID)) {
+			if (module->hasAttribute(dgmpp::WARP_SCRAMBLE_STRENGTH_ATTRIBUTE_ID) || module->hasAttribute(dgmpp::WARP_SCRAMBLE_STRENGTH_HIDDEN_ATTRIBUTE_ID)) {
 				if (module->getMaxRange() > warpScrambleRange) {
 					warpScrambleRange = module->getMaxRange();
 					warpScramblerTypeID = module->getTypeID();
@@ -423,7 +423,7 @@ typedef NS_ENUM(NSInteger, NCManeuver) {
 
 			auto attacker = self.attacker.pilot->getShip();
 			auto target = self.target.pilot->getShip();
-			eufe::CombatSimulator simulator(attacker, target);
+			dgmpp::CombatSimulator simulator(attacker, target);
 			
 			float axisRange = std::max(self.warpScrambleRange, self.fullRange);
 			
@@ -437,8 +437,8 @@ typedef NS_ENUM(NSInteger, NCManeuver) {
 			attackerOptimalDPS = std::max(attackerOptimalDPS, targetOptimalDPS);
 			targetOptimalDPS = std::max(attackerOptimalDPS, targetOptimalDPS);
 			
-			eufe::CombatSimulator::OrbitState orbitState(attacker, target, 0, velocity);
-			eufe::CombatSimulator::KeepAtRangeState keepAtRangeState(attacker, target, 0);
+			dgmpp::CombatSimulator::OrbitState orbitState(attacker, target, 0, velocity);
+			dgmpp::CombatSimulator::KeepAtRangeState keepAtRangeState(attacker, target, 0);
 			
 			
 			for (int i = 0; i < n; i++) {
@@ -502,7 +502,7 @@ typedef NS_ENUM(NSInteger, NCManeuver) {
 			auto attacker = self.attacker.pilot->getShip();
 			auto target = self.target.pilot->getShip();
 			
-			eufe::CombatSimulator simulator(attacker, target);
+			dgmpp::CombatSimulator simulator(attacker, target);
 			float axisRange = std::max(self.warpScrambleRange, self.fullRange);
 			float range = std::max(axisRange * self.markerPosition, 0.0f);
 
@@ -510,13 +510,13 @@ typedef NS_ENUM(NSInteger, NCManeuver) {
 			float targetVelocity = 0;
 			
 			if (maneuver == NCManeuverOrbit) {
-				eufe::CombatSimulator::OrbitState orbitState(attacker, target, range, velocity);
+				dgmpp::CombatSimulator::OrbitState orbitState(attacker, target, range, velocity);
 				simulator.setState(orbitState);
 				attackerVelocity = orbitState.attackerVelocity();
 				targetVelocity = orbitState.targetVelocity();
 			}
 			else {
-				eufe::CombatSimulator::KeepAtRangeState keepAtRangeState(attacker, target, range);
+				dgmpp::CombatSimulator::KeepAtRangeState keepAtRangeState(attacker, target, range);
 				simulator.setState(keepAtRangeState);
 				attackerVelocity = keepAtRangeState.attackerVelocity();
 				targetVelocity = keepAtRangeState.targetVelocity();

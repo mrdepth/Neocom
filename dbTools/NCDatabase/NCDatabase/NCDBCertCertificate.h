@@ -2,7 +2,7 @@
 //  NCDBCertCertificate.h
 //  NCDatabase
 //
-//  Created by Artem Shimanski on 29.11.15.
+//  Created by Артем Шиманский on 30.12.15.
 //
 //
 
@@ -14,6 +14,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NCDBCertCertificate : NSManagedObject
+
 // Insert code here to declare functionality of your managed object subclass
 
 @end

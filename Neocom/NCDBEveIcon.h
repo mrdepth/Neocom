@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBCertMasteryLevel, NCDBChrRace, NCDBDgmAttributeType, NCDBEufeItemGroup, NCDBEveIconImage, NCDBInvCategory, NCDBInvGroup, NCDBInvMarketGroup, NCDBInvMetaGroup, NCDBInvType, NCDBNpcGroup, NCDBRamActivity;
+@class NCDBCertMasteryLevel, NCDBChrRace, NCDBDgmAttributeType, NCDBDgmppItemGroup, NCDBEveIconImage, NCDBInvCategory, NCDBInvGroup, NCDBInvMarketGroup, NCDBInvMetaGroup, NCDBInvType, NCDBNpcGroup, NCDBRamActivity;
 
 NS_ASSUME_NONNULL_BEGIN
 

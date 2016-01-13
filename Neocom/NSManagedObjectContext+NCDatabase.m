@@ -14,7 +14,7 @@
 @property (nonatomic, strong, readonly) NSMutableDictionary* invTypes;
 @property (nonatomic, strong, readonly) NSMutableDictionary* invGroups;
 @property (nonatomic, strong, readonly) NSMutableDictionary* eveIcons;
-@property (nonatomic, strong, readonly) NSMutableDictionary* eufeItemCategories;
+@property (nonatomic, strong, readonly) NSMutableDictionary* dgmppItemCategories;
 @property (nonatomic, strong, readonly) NSMutableDictionary* staStations;
 @property (nonatomic, strong, readonly) NSMutableDictionary* ramActivities;
 @property (nonatomic, strong, readonly) NSMutableDictionary* mapRegions;
@@ -150,21 +150,21 @@
 	return solarSystem;
 }
 
-//NCDBEufeItemCategory
-- (NCDBEufeItemCategory*) shipsCategory {
-	return [self categoryWithSlot:NCDBEufeItemSlotShip size:0 race:nil];
+//NCDBDgmppItemCategory
+- (NCDBDgmppItemCategory*) shipsCategory {
+	return [self categoryWithSlot:NCDBDgmppItemSlotShip size:0 race:nil];
 }
 
-- (NCDBEufeItemCategory*) controlTowersCategory {
-	return [self categoryWithSlot:NCDBEufeItemSlotControlTower size:0 race:nil];
+- (NCDBDgmppItemCategory*) controlTowersCategory {
+	return [self categoryWithSlot:NCDBDgmppItemSlotControlTower size:0 race:nil];
 }
 
-- (NCDBEufeItemCategory*) categoryWithSlot:(NCDBEufeItemSlot) slot size:(int32_t) size race:(NCDBChrRace*) race {
+- (NCDBDgmppItemCategory*) categoryWithSlot:(NCDBDgmppItemSlot) slot size:(int32_t) size race:(NCDBChrRace*) race {
 	int64_t key = ((((int64_t) size << 8) + slot) << 8) + race.raceID;
 
-	NCDBEufeItemCategory* itemCategory = self.eufeItemCategories[@(key)];
+	NCDBDgmppItemCategory* itemCategory = self.dgmppItemCategories[@(key)];
 	if (!itemCategory) {
-		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItemCategory"];
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DgmppItemCategory"];
 		NSPredicate* predicate = [NSPredicate predicateWithFormat:@"category == %d", (int32_t) slot, size];
 		if (size)
 			predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"subcategory == %d", size]]];
@@ -174,7 +174,7 @@
 		request.fetchLimit = 1;
 		itemCategory = [[self executeFetchRequest:request error:nil] lastObject];
 		if (itemCategory)
-			self.eufeItemCategories[@(key)] = itemCategory;
+			self.dgmppItemCategories[@(key)] = itemCategory;
 	}
 
 	return itemCategory;
@@ -265,13 +265,13 @@
 	return eveIcons;
 }
 
-- (NSMutableDictionary*) eufeItemCategories {
-	NSMutableDictionary* eufeItemCategories = objc_getAssociatedObject(self, @"eufeItemCategories");
-	if (!eufeItemCategories) {
-		eufeItemCategories = [NSMutableDictionary new];
-		objc_setAssociatedObject(self, @"eufeItemCategories", eufeItemCategories, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (NSMutableDictionary*) dgmppItemCategories {
+	NSMutableDictionary* dgmppItemCategories = objc_getAssociatedObject(self, @"dgmppItemCategories");
+	if (!dgmppItemCategories) {
+		dgmppItemCategories = [NSMutableDictionary new];
+		objc_setAssociatedObject(self, @"dgmppItemCategories", dgmppItemCategories, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
-	return eufeItemCategories;
+	return dgmppItemCategories;
 }
 
 - (NSMutableDictionary*) staStations {

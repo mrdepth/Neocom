@@ -27,7 +27,7 @@
     <entity name="ChrRace" representedClassName="NCDBChrRace" syncable="YES">
         <attribute name="raceID" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="raceName" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="eufeCategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemCategory" inverseName="race" inverseEntity="EufeItemCategory" syncable="YES"/>
+        <relationship name="dgmppCategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemCategory" inverseName="race" inverseEntity="DgmppItemCategory" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="races" inverseEntity="EveIcon" syncable="YES"/>
         <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="race" inverseEntity="InvType" syncable="YES"/>
     </entity>
@@ -50,60 +50,60 @@
         <attribute name="effectID" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="effects" inverseEntity="InvType" syncable="YES"/>
     </entity>
-    <entity name="DgmTypeAttribute" representedClassName="NCDBDgmTypeAttribute" syncable="YES">
-        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="attributeType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="typeAttributes" inverseEntity="DgmAttributeType" syncable="YES"/>
-        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="attributes" inverseEntity="InvType" syncable="YES"/>
-    </entity>
-    <entity name="EufeHullType" representedClassName="NCDBEufeHullType" parentEntity="InvType" syncable="YES">
+    <entity name="DgmppHullType" representedClassName="NCDBDgmppHullType" parentEntity="InvType" syncable="YES">
         <attribute name="hullTypeName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="signature" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="types" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="InvType" inverseName="hullType" inverseEntity="InvType" syncable="YES"/>
     </entity>
-    <entity name="EufeItem" representedClassName="NCDBEufeItem" syncable="YES">
-        <relationship name="charge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItemCategory" inverseName="eufeItems" inverseEntity="EufeItemCategory" syncable="YES"/>
-        <relationship name="damage" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="EufeItemDamage" inverseName="item" inverseEntity="EufeItemDamage" syncable="YES"/>
-        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemGroup" inverseName="items" inverseEntity="EufeItemGroup" syncable="YES"/>
-        <relationship name="requirements" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="EufeItemRequirements" inverseName="item" inverseEntity="EufeItemRequirements" syncable="YES"/>
-        <relationship name="shipResources" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="EufeItemShipResources" inverseName="item" inverseEntity="EufeItemShipResources" syncable="YES"/>
-        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="eufeItem" inverseEntity="InvType" syncable="YES"/>
+    <entity name="DgmppItem" representedClassName="NCDBDgmppItem" syncable="YES">
+        <relationship name="charge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItemCategory" inverseName="dgmppItems" inverseEntity="DgmppItemCategory" syncable="YES"/>
+        <relationship name="damage" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemDamage" inverseName="item" inverseEntity="DgmppItemDamage" syncable="YES"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="items" inverseEntity="DgmppItemGroup" syncable="YES"/>
+        <relationship name="requirements" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemRequirements" inverseName="item" inverseEntity="DgmppItemRequirements" syncable="YES"/>
+        <relationship name="shipResources" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemShipResources" inverseName="item" inverseEntity="DgmppItemShipResources" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="dgmppItem" inverseEntity="InvType" syncable="YES"/>
     </entity>
-    <entity name="EufeItemCategory" representedClassName="NCDBEufeItemCategory" syncable="YES">
+    <entity name="DgmppItemCategory" representedClassName="NCDBDgmppItemCategory" syncable="YES">
         <attribute name="category" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="subcategory" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
-        <relationship name="eufeItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="charge" inverseEntity="EufeItem" syncable="YES"/>
-        <relationship name="itemGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemGroup" inverseName="category" inverseEntity="EufeItemGroup" syncable="YES"/>
-        <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="eufeCategories" inverseEntity="ChrRace" syncable="YES"/>
+        <relationship name="dgmppItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="charge" inverseEntity="DgmppItem" syncable="YES"/>
+        <relationship name="itemGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="category" inverseEntity="DgmppItemGroup" syncable="YES"/>
+        <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="dgmppCategories" inverseEntity="ChrRace" syncable="YES"/>
     </entity>
-    <entity name="EufeItemDamage" representedClassName="NCDBEufeItemDamage" syncable="YES">
+    <entity name="DgmppItemDamage" representedClassName="NCDBDgmppItemDamage" syncable="YES">
         <attribute name="emAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="explosiveAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="kineticAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="thermalAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="damage" inverseEntity="EufeItem" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="damage" inverseEntity="DgmppItem" syncable="YES"/>
     </entity>
-    <entity name="EufeItemGroup" representedClassName="NCDBEufeItemGroup" syncable="YES">
+    <entity name="DgmppItemGroup" representedClassName="NCDBDgmppItemGroup" syncable="YES">
         <attribute name="groupName" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItemCategory" inverseName="itemGroups" inverseEntity="EufeItemCategory" syncable="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItemCategory" inverseName="itemGroups" inverseEntity="DgmppItemCategory" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="itemGroups" inverseEntity="EveIcon" syncable="YES"/>
-        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="groups" inverseEntity="EufeItem" syncable="YES"/>
-        <relationship name="parentGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItemGroup" inverseName="subGroups" inverseEntity="EufeItemGroup" syncable="YES"/>
-        <relationship name="subGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemGroup" inverseName="parentGroup" inverseEntity="EufeItemGroup" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="groups" inverseEntity="DgmppItem" syncable="YES"/>
+        <relationship name="parentGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="subGroups" inverseEntity="DgmppItemGroup" syncable="YES"/>
+        <relationship name="subGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="parentGroup" inverseEntity="DgmppItemGroup" syncable="YES"/>
     </entity>
-    <entity name="EufeItemRequirements" representedClassName="NCDBEufeItemRequirements" syncable="YES">
+    <entity name="DgmppItemRequirements" representedClassName="NCDBDgmppItemRequirements" syncable="YES">
         <attribute name="calibration" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="cpu" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="powerGrid" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="requirements" inverseEntity="EufeItem" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="requirements" inverseEntity="DgmppItem" syncable="YES"/>
     </entity>
-    <entity name="EufeItemShipResources" representedClassName="NCDBEufeItemShipResources" syncable="YES">
+    <entity name="DgmppItemShipResources" representedClassName="NCDBDgmppItemShipResources" syncable="YES">
         <attribute name="hiSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="launchers" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="lowSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="medSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="rigSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="turrets" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="shipResources" inverseEntity="EufeItem" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="shipResources" inverseEntity="DgmppItem" syncable="YES"/>
+    </entity>
+    <entity name="DgmTypeAttribute" representedClassName="NCDBDgmTypeAttribute" syncable="YES">
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="attributeType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="typeAttributes" inverseEntity="DgmAttributeType" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="attributes" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="EveIcon" representedClassName="NCDBEveIcon" syncable="YES">
         <attribute name="iconFile" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
@@ -112,7 +112,7 @@
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvCategory" inverseName="icon" inverseEntity="InvCategory" syncable="YES"/>
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="icon" inverseEntity="InvGroup" syncable="YES"/>
         <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIconImage" inverseName="icon" inverseEntity="EveIconImage" syncable="YES"/>
-        <relationship name="itemGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemGroup" inverseName="icon" inverseEntity="EufeItemGroup" syncable="YES"/>
+        <relationship name="itemGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="icon" inverseEntity="DgmppItemGroup" syncable="YES"/>
         <relationship name="marketGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="icon" inverseEntity="InvMarketGroup" syncable="YES"/>
         <relationship name="masteryLevels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMasteryLevel" inverseName="icon" inverseEntity="CertMasteryLevel" syncable="YES"/>
         <relationship name="metaGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMetaGroup" inverseName="icon" inverseEntity="InvMetaGroup" syncable="YES"/>
@@ -225,10 +225,10 @@
         <relationship name="controlTower" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvControlTower" inverseName="type" inverseEntity="InvControlTower" syncable="YES"/>
         <relationship name="controlTowerResources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvControlTowerResource" inverseName="resourceType" inverseEntity="InvControlTowerResource" syncable="YES"/>
         <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="type" inverseEntity="MapDenormalize" syncable="YES"/>
+        <relationship name="dgmppItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="type" inverseEntity="DgmppItem" syncable="YES"/>
         <relationship name="effects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmEffect" inverseName="types" inverseEntity="DgmEffect" syncable="YES"/>
-        <relationship name="eufeItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="type" inverseEntity="EufeItem" syncable="YES"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="types" inverseEntity="InvGroup" syncable="YES"/>
-        <relationship name="hullType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeHullType" inverseName="types" inverseEntity="EufeHullType" syncable="YES"/>
+        <relationship name="hullType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppHullType" inverseName="types" inverseEntity="DgmppHullType" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="types" inverseEntity="EveIcon" syncable="YES"/>
         <relationship name="indRequiredSkills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndRequiredSkill" inverseName="skillType" inverseEntity="IndRequiredSkill" syncable="YES"/>
         <relationship name="installationTypeContents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamInstallationTypeContent" inverseName="installationType" inverseEntity="RamInstallationTypeContent" syncable="YES"/>
@@ -351,9 +351,9 @@
         <memberEntity name="DgmAttributeType"/>
         <memberEntity name="DgmEffect"/>
         <memberEntity name="DgmTypeAttribute"/>
-        <memberEntity name="EufeItem"/>
-        <memberEntity name="EufeItemCategory"/>
-        <memberEntity name="EufeItemGroup"/>
+        <memberEntity name="DgmppItem"/>
+        <memberEntity name="DgmppItemCategory"/>
+        <memberEntity name="DgmppItemGroup"/>
         <memberEntity name="EveIcon"/>
         <memberEntity name="EveIconImage"/>
         <memberEntity name="EveUnit"/>
@@ -393,14 +393,14 @@
         <element name="DgmAttributeCategory" positionX="18" positionY="63" width="128" height="88"/>
         <element name="DgmAttributeType" positionX="0" positionY="54" width="128" height="163"/>
         <element name="DgmEffect" positionX="36" positionY="81" width="128" height="73"/>
+        <element name="DgmppHullType" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="DgmppItem" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="DgmppItemCategory" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="DgmppItemDamage" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="DgmppItemGroup" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="DgmppItemRequirements" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="DgmppItemShipResources" positionX="160" positionY="192" width="128" height="150"/>
         <element name="DgmTypeAttribute" positionX="-36" positionY="27" width="128" height="88"/>
-        <element name="EufeHullType" positionX="-189" positionY="180" width="128" height="90"/>
-        <element name="EufeItem" positionX="-171" positionY="198" width="128" height="135"/>
-        <element name="EufeItemCategory" positionX="-189" positionY="180" width="128" height="120"/>
-        <element name="EufeItemDamage" positionX="-180" positionY="189" width="128" height="120"/>
-        <element name="EufeItemGroup" positionX="-180" positionY="189" width="128" height="133"/>
-        <element name="EufeItemRequirements" positionX="-189" positionY="180" width="128" height="30"/>
-        <element name="EufeItemShipResources" positionX="-189" positionY="180" width="128" height="150"/>
         <element name="EveIcon" positionX="18" positionY="63" width="128" height="238"/>
         <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="73"/>
         <element name="EveUnit" positionX="0" positionY="153" width="128" height="88"/>

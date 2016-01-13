@@ -10,7 +10,7 @@
 #import "NCDBInvMetaGroup.h"
 #import "NCDatabase.h"
 #import <objc/runtime.h>
-#import <eufe/eufe.h>
+#import <dgmpp/dgmpp.h>
 
 @implementation NCDBInvType (Neocom)
 
@@ -45,18 +45,18 @@
 - (int32_t) slot {
 	NSDictionary* effects = self.effectsDictionary;
 	
-	if (effects[@(eufe::LO_POWER_EFFECT_ID)])
-		return eufe::Module::SLOT_LOW;
-	else if (effects[@(eufe::MED_POWER_EFFECT_ID)])
-		return eufe::Module::SLOT_MED;
-	else if (effects[@(eufe::HI_POWER_EFFECT_ID)])
-		return eufe::Module::SLOT_HI;
-	else if (effects[@(eufe::RIG_SLOT_EFFECT_ID)])
-		return eufe::Module::SLOT_RIG;
-	else if (effects[@(eufe::SUBSYSTEM_EFFECT_ID)])
-		return eufe::Module::SLOT_SUBSYSTEM;
+	if (effects[@(dgmpp::LO_POWER_EFFECT_ID)])
+		return dgmpp::Module::SLOT_LOW;
+	else if (effects[@(dgmpp::MED_POWER_EFFECT_ID)])
+		return dgmpp::Module::SLOT_MED;
+	else if (effects[@(dgmpp::HI_POWER_EFFECT_ID)])
+		return dgmpp::Module::SLOT_HI;
+	else if (effects[@(dgmpp::RIG_SLOT_EFFECT_ID)])
+		return dgmpp::Module::SLOT_RIG;
+	else if (effects[@(dgmpp::SUBSYSTEM_EFFECT_ID)])
+		return dgmpp::Module::SLOT_SUBSYSTEM;
 	else
-		return eufe::Module::SLOT_NONE;
+		return dgmpp::Module::SLOT_NONE;
 }
 
 - (NCTypeCategory) category {

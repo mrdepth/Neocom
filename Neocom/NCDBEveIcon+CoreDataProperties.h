@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSSet<NCDBInvCategory *> *categories;
 @property (nullable, nonatomic, retain) NSSet<NCDBInvGroup *> *groups;
 @property (nullable, nonatomic, retain) NCDBEveIconImage *image;
-@property (nullable, nonatomic, retain) NSSet<NCDBEufeItemGroup *> *itemGroups;
+@property (nullable, nonatomic, retain) NSSet<NCDBDgmppItemGroup *> *itemGroups;
 @property (nullable, nonatomic, retain) NSSet<NCDBInvMarketGroup *> *marketGroups;
 @property (nullable, nonatomic, retain) NSSet<NCDBCertMasteryLevel *> *masteryLevels;
 @property (nullable, nonatomic, retain) NSSet<NCDBInvMetaGroup *> *metaGroups;
@@ -53,10 +53,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addGroups:(NSSet<NCDBInvGroup *> *)values;
 - (void)removeGroups:(NSSet<NCDBInvGroup *> *)values;
 
-- (void)addItemGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)removeItemGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)addItemGroups:(NSSet<NCDBEufeItemGroup *> *)values;
-- (void)removeItemGroups:(NSSet<NCDBEufeItemGroup *> *)values;
+- (void)addItemGroupsObject:(NCDBDgmppItemGroup *)value;
+- (void)removeItemGroupsObject:(NCDBDgmppItemGroup *)value;
+- (void)addItemGroups:(NSSet<NCDBDgmppItemGroup *> *)values;
+- (void)removeItemGroups:(NSSet<NCDBDgmppItemGroup *> *)values;
 
 - (void)addMarketGroupsObject:(NCDBInvMarketGroup *)value;
 - (void)removeMarketGroupsObject:(NCDBInvMarketGroup *)value;

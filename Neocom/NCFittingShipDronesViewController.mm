@@ -26,11 +26,11 @@
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 
 @interface NCFittingShipDronesViewControllerRow : NSObject<NSCopying> {
-	eufe::DronesList _drones;
+	dgmpp::DronesList _drones;
 }
 @property (nonatomic, assign) BOOL isUpToDate;
 
-@property (nonatomic, readonly) eufe::DronesList& drones;
+@property (nonatomic, readonly) dgmpp::DronesList& drones;
 @property (nonatomic, strong) NSString* typeName;
 @property (nonatomic, strong) UIImage* typeImage;
 @property (nonatomic, strong) NSString* optimalText;
@@ -129,17 +129,17 @@
 	if (indexPath.row >= self.rows.count) {
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Drones", nil);
 		
-		[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBEufeItemSlotDrone size:0 race:nil]
+		[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotDrone size:0 race:nil]
 													 inViewController:self.controller
 															 fromRect:cell.bounds
 															   inView:cell
 															 animated:YES
 													completionHandler:^(NCDBInvType *type) {
-														eufe::TypeID typeID = type.typeID;
+														dgmpp::TypeID typeID = type.typeID;
 														[self.controller.engine performBlockAndWait:^{
 															auto ship = self.controller.fit.pilot->getShip();
 															
-															std::shared_ptr<eufe::Drone> sameDrone = nullptr;
+															std::shared_ptr<dgmpp::Drone> sameDrone = nullptr;
 															for (const auto& i: ship->getDrones()) {
 																if (i->getTypeID() == typeID) {
 																	sameDrone = i;

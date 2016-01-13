@@ -76,12 +76,12 @@
 		CKRecord* downloadRecord = [NSKeyedUnarchiver unarchiveObjectWithFile:downloadRecordPath];
 		if (downloadRecord) {
 			int build = [downloadRecord[@"build"] intValue];
-			CKAsset* eufe = downloadRecord[@"eufe"];
+			CKAsset* dgm = downloadRecord[@"dgm"];
 			CKAsset* database = downloadRecord[@"database"];
 			
 			if (build > currentBuild) {
 				self.record = downloadRecord;
-				if (eufe && database && [fileManager fileExistsAtPath:eufe.fileURL.path] && [fileManager fileExistsAtPath:database.fileURL.path]) {
+				if (dgm && database && [fileManager fileExistsAtPath:dgm.fileURL.path] && [fileManager fileExistsAtPath:database.fileURL.path]) {
 					self.progress.completedUnitCount = 1;
 					[self installUpdateWithRecord:downloadRecord];
 					return;
@@ -93,8 +93,8 @@
 			}
 			else {
 				[fileManager removeItemAtPath:downloadRecordPath error:nil];
-				if (eufe && [fileManager fileExistsAtPath:eufe.fileURL.path])
-					[fileManager removeItemAtURL:eufe.fileURL error:nil];
+				if (dgm && [fileManager fileExistsAtPath:dgm.fileURL.path])
+					[fileManager removeItemAtURL:dgm.fileURL error:nil];
 				if (database && [fileManager fileExistsAtPath:database.fileURL.path])
 					[fileManager removeItemAtURL:database.fileURL error:nil];
 			}
@@ -247,9 +247,9 @@
 		}
 		else {
 			[NSKeyedArchiver archiveRootObject:record toFile:downloadRecordPath];
-			CKAsset* eufe = record[@"eufe"];
+			CKAsset* dgm = record[@"dgm"];
 			CKAsset* database = record[@"database"];
-			if (eufe && database)
+			if (dgm && database)
 				[self installUpdateWithRecord:record];
 		}
 	}];
@@ -274,7 +274,7 @@
 		[fileManager removeItemAtPath:tmp error:nil];
 	[fileManager createDirectoryAtPath:tmp withIntermediateDirectories:YES attributes:nil error:nil];
 	
-	CKAsset* eufe = record[@"eufe"];
+	CKAsset* dgm = record[@"dgm"];
 	CKAsset* database = record[@"database"];
 	[self.progress becomeCurrentWithPendingUnitCount:1];
 	NSProgress* progress = [NSProgress progressWithTotalUnitCount:2];
@@ -282,15 +282,15 @@
 	
 	dispatch_queue_t queue = dispatch_queue_create(nil, 0);
 	dispatch_async(queue, ^{
-		NSString* eufeDst = [tmp stringByAppendingPathComponent:@"eufe.sqlite"];
+		NSString* dgmDst = [tmp stringByAppendingPathComponent:@"dgm.sqlite"];
 		NSString* databaseDst = [tmp stringByAppendingPathComponent:@"NCDatabase.sqlite"];
-		//NSString* eufeSrc = @"/Users/shimanski/Documents/git/EVEUniverse/dbTools/dbinit/eufe.sqlite.gz";
+		//NSString* dgmppSrc = @"/Users/shimanski/Documents/git/EVEUniverse/dbTools/dbinit/dgm.sqlite.gz";
 		//NSString* databaseSrc = @"/Users/shimanski/Documents/git/EVEUniverse/dbTools/dbinit/NCDatabase2.sqlite.gz";
-		NSString* eufeSrc = eufe.fileURL.path;
+		NSString* dgmSrc = dgm.fileURL.path;
 		NSString* databaseSrc = database.fileURL.path;
 		[progress becomeCurrentWithPendingUnitCount:1];
 		NSError* error;
-		[self decompressFileAtPath:eufeSrc toPath:eufeDst error:&error];
+		[self decompressFileAtPath:dgmSrc toPath:dgmDst error:&error];
 		[progress resignCurrent];
 		if (!error) {
 			[progress becomeCurrentWithPendingUnitCount:1];
@@ -315,7 +315,7 @@
 		}
 		else
 			self.state = NCUpdaterStateWaitingForDownload;
-		[fileManager removeItemAtPath:eufeSrc error:nil];
+		[fileManager removeItemAtPath:dgmSrc error:nil];
 		[fileManager removeItemAtPath:databaseSrc error:nil];
 		self.error = error;
 	});

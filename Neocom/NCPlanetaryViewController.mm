@@ -10,11 +10,14 @@
 #import "UIColor+Neocom.h"
 #import "NSString+Neocom.h"
 #import "NCDatabaseTypeInfoViewController.h"
+#import "NCFittingEngine.h"
 
 @interface NCPlanetaryViewControllerDataColony : NSObject<NSCoding>
 @property (nonatomic, strong) EVEPlanetaryColoniesItem* colony;
+@property (nonatomic, strong) EVEPlanetaryPins* pins;
+@property (nonatomic, strong) EVEPlanetaryRoutes* routes;
 @property (nonatomic, assign) float security;
-@property (nonatomic, strong) NSArray* extractors;
+@property (nonatomic, strong) NSArray* facilities;
 @property (nonatomic, strong) NSDate* currentTime;
 @property (nonatomic, strong) NSDate* cacheDate;
 @end
@@ -32,12 +35,15 @@
 		self.colony = [aDecoder decodeObjectForKey:@"colony"];
 		self.security = [aDecoder decodeFloatForKey:@"security"];
 		
-		self.extractors = [aDecoder decodeObjectForKey:@"extractors"];
+		self.facilities = [aDecoder decodeObjectForKey:@"facilities"];
 		self.currentTime = [aDecoder decodeObjectForKey:@"currentTime"];
 		self.cacheDate = [aDecoder decodeObjectForKey:@"cacheDate"];
-		
-		if (!self.extractors)
-			self.extractors = @[];
+
+		self.pins = [aDecoder decodeObjectForKey:@"pins"];
+		self.routes = [aDecoder decodeObjectForKey:@"routes"];
+
+		if (!self.facilities)
+			self.facilities = @[];
 	}
 	return self;
 }
@@ -47,13 +53,12 @@
 		[aCoder encodeObject:self.colony forKey:@"colony"];
 	[aCoder encodeFloat:self.security forKey:@"security"];
 	
-	if (self.extractors)
-		[aCoder encodeObject:self.extractors forKey:@"extractors"];
-	
-	if (self.currentTime)
-		[aCoder encodeObject:self.currentTime forKey:@"currentTime"];
-	if (self.cacheDate)
-		[aCoder encodeObject:self.cacheDate forKey:@"cacheDate"];
+	[aCoder encodeObject:self.facilities forKey:@"facilities"];
+	[aCoder encodeObject:self.currentTime forKey:@"currentTime"];
+	[aCoder encodeObject:self.cacheDate forKey:@"cacheDate"];
+
+	[aCoder encodeObject:self.pins forKey:@"pins"];
+	[aCoder encodeObject:self.routes forKey:@"routes"];
 }
 
 
@@ -133,7 +138,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	NCPlanetaryViewControllerData* data = self.cacheData;
 	NCPlanetaryViewControllerDataColony* colony = data.colonies[section];
-	return colony.extractors.count;
+	return colony.facilities.count;
 }
 
 #pragma mark - NCTableViewController
@@ -169,7 +174,7 @@
 				dispatch_group_t finishDispatchGroup = dispatch_group_create();
 				
 				[progress becomeCurrentWithPendingUnitCount:1];
-				NSProgress* pinsProgress = [NSProgress progressWithTotalUnitCount:result.colonies.count];
+				NSProgress* colonyProgress = [NSProgress progressWithTotalUnitCount:result.colonies.count * 2];
 				[progress resignCurrent];
 				
 				for (EVEPlanetaryColoniesItem* item in result.colonies) {
@@ -181,32 +186,45 @@
 					dispatch_group_enter(finishDispatchGroup);
 					[api planetaryPinsWithPlanetID:item.planetID completionBlock:^(EVEPlanetaryPins *pins, NSError *error) {
 						if (pins) {
-							NSMutableArray* extractors = [NSMutableArray new];
+							NSMutableDictionary* facilities = [NSMutableDictionary new];
 							for (EVEPlanetaryPinsItem* pin in pins.pins) {
-								if (pin.cycleTime) {
-									[extractors addObject:pin];
-								}
+								facilities[@(pin.pinID)] = pin;
 							}
-							colony.extractors = extractors;
+							colony.facilities = [facilities allValues];
 							colony.currentTime = pins.eveapi.currentTime;
 							colony.cacheDate = pins.eveapi.cacheDate;
+							colony.pins = pins;
 							@synchronized(array) {
 								[array addObject:colony];
 							}
+							@synchronized(colonyProgress) {
+								colonyProgress.completedUnitCount++;
+							}
+							dispatch_group_leave(finishDispatchGroup);
 						}
-						@synchronized(pinsProgress) {
-							pinsProgress.completedUnitCount++;
-						}
-						dispatch_group_leave(finishDispatchGroup);
 					} progressBlock:nil];
+					
+					dispatch_group_enter(finishDispatchGroup);
+					[api planetaryRoutesWithPlanetID:item.planetID
+									 completionBlock:^(EVEPlanetaryRoutes *routes, NSError *error) {
+										 colony.routes = routes;
+										 @synchronized(colonyProgress) {
+											 colonyProgress.completedUnitCount++;
+										 }
+										 dispatch_group_leave(finishDispatchGroup);
+									 } progressBlock:nil];
+
 				}
 				
-				dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
+				dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 					[array sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"colony.planetName" ascending:YES]]];
 					data.colonies = array;
-					[self saveCacheData:data cacheDate:[NSDate date] expireDate:[result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]];
-					completionBlock(lastError);
-					progress.completedUnitCount++;
+					
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[self saveCacheData:data cacheDate:[NSDate date] expireDate:[result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]];
+						completionBlock(lastError);
+						progress.completedUnitCount++;
+					});
 				});
 			}];
 
@@ -226,7 +244,7 @@
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCPlanetaryViewControllerData* data = self.cacheData;
 	NCPlanetaryViewControllerDataColony* colony = data.colonies[indexPath.section];
-	EVEPlanetaryPinsItem* row = colony.extractors[indexPath.row];
+	EVEPlanetaryPinsItem* row = colony.facilities[indexPath.row];
 	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	
 	NCDBInvType* type = self.types[@(row.typeID)];

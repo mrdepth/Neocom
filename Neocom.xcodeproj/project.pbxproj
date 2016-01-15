@@ -77,7 +77,7 @@
 		1219C1541AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1219C1531AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m */; };
 		1225A0B71A400954005DD73B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1225A0B61A400954005DD73B /* Launch Screen.xib */; };
 		1226D2D31B58F04F000C69EC /* NCCachePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1226D2D21B58F04F000C69EC /* NCCachePrice.m */; };
-		122753741BBDADDB008148BE /* NCPlanetaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */; };
+		122753741BBDADDB008148BE /* NCPlanetaryViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.mm */; };
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
 		122DB6621BA6AAE400649A55 /* NCFittingMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */; };
@@ -1293,7 +1293,7 @@
 		12EC0AC418C0BAA20010169C /* NCNotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNotificationsManager.h; sourceTree = "<group>"; };
 		12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNotificationsManager.m; sourceTree = "<group>"; };
 		12ED82D81AC13CD500C593C4 /* NCPlanetaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPlanetaryViewController.h; sourceTree = "<group>"; };
-		12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPlanetaryViewController.m; sourceTree = "<group>"; };
+		12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCPlanetaryViewController.mm; sourceTree = "<group>"; };
 		12ED82F21AC3D36400C593C4 /* NCStorage 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NCStorage 2.xcdatamodel"; sourceTree = "<group>"; };
 		12F330091C33EFDC00F19C45 /* dgmpp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = dgmpp.xcodeproj; path = dgmpp/dgmpp.xcodeproj; sourceTree = "<group>"; };
 		12F330401C340DC700F19C45 /* dgm.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = dgm.sqlite; path = dbTools/dbinit/dgm.sqlite; sourceTree = SOURCE_ROOT; };
@@ -3504,7 +3504,7 @@
 			isa = PBXGroup;
 			children = (
 				12ED82D81AC13CD500C593C4 /* NCPlanetaryViewController.h */,
-				12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */,
+				12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.mm */,
 			);
 			name = NCPlanetaryViewController;
 			sourceTree = "<group>";
@@ -4536,7 +4536,7 @@
 				12654C461C0B24920060106C /* NCDBIndActivity.m in Sources */,
 				12CDB7E0188E7D1C002079C0 /* ASHTTPServer.m in Sources */,
 				127A1ABB1BB16FDE0066A5EE /* EVEAssetListItem+Neocom.m in Sources */,
-				122753741BBDADDB008148BE /* NCPlanetaryViewController.m in Sources */,
+				122753741BBDADDB008148BE /* NCPlanetaryViewController.mm in Sources */,
 				12654C401C0B24920060106C /* NCDBInvControlTower.m in Sources */,
 				12654C421C0B24920060106C /* NCDBCertSkill.m in Sources */,
 				1282573E1BCFF1ED00BC1F56 /* NCFittingAPISearchResultsViewController.mm in Sources */,

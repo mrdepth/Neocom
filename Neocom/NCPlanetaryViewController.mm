@@ -13,6 +13,8 @@
 #import "NCFittingEngine.h"
 #import "NCBarChartView.h"
 #import "NCPlanetaryCell.h"
+#import "NSString+Neocom.h"
+#import "NSNumberFormatter+Neocom.h"
 
 @interface NCPlanetaryViewControllerDataColony : NSObject<NSCoding>
 @property (nonatomic, strong) EVEPlanetaryColoniesItem* colony;
@@ -266,7 +268,7 @@
 						row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:startTime];
 						row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:endTime];
 						
-						row.quantityPerCycle = max;
+						row.quantityPerCycle = ecu->getQuantityPerCycle();
 						row.contentTypeID = ecu->getOutput().getTypeID();
 						[rows addObject:row];
 						break;
@@ -426,36 +428,48 @@
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return @"NCPlanetaryCell";
+	NCPlanetaryViewControllerSection* section = self.sections[indexPath.section];
+	NCPlanetaryViewControllerRow* row = section.rows[indexPath.row];
+	return row.bars.count > 1 ?  @"NCPlanetaryCell" : @"Cell";
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCPlanetaryViewControllerSection* section = self.sections[indexPath.section];
 	NCPlanetaryViewControllerRow* row = section.rows[indexPath.row];
-	NCPlanetaryCell* cell = (NCPlanetaryCell*) tableViewCell;
-	
-	cell.titleLabel.text = row.pin.typeName;
-	NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:row.pin.typeID];
-	NCDBInvType* contentType = row.contentTypeID ? [self.databaseManagedObjectContext invTypeWithTypeID:row.contentTypeID] : nil;
-	cell.productLabel.text = contentType.typeName;
-	
-	[cell.barChartView clear];
-	[cell.barChartView addSegments:row.bars];
-	[cell.markerAuxiliaryView.superview removeConstraint:cell.markerAuxiliaryViewConstraint];
-	NSTimeInterval currentTime = [[NSDate date] timeIntervalSinceReferenceDate];
-	NSTimeInterval start = [row.startDate timeIntervalSinceReferenceDate];
-	NSTimeInterval end = [row.endDate timeIntervalSinceReferenceDate];
-	NSTimeInterval duration = end - start;
-	
-	NSLayoutConstraint* constraint = [NSLayoutConstraint constraintWithItem:cell.markerAuxiliaryView
-																  attribute:NSLayoutAttributeWidth
-																  relatedBy:NSLayoutRelationEqual
-																	 toItem:cell.barChartView
-																  attribute:NSLayoutAttributeWidth
-																 multiplier:(currentTime - start) / duration
-																   constant:0];
-	cell.markerAuxiliaryViewConstraint = constraint;
-	[cell.markerAuxiliaryView.superview addConstraint:constraint];
+	if (row.bars.count > 1) {
+		NCPlanetaryCell* cell = (NCPlanetaryCell*) tableViewCell;
+		
+		cell.titleLabel.text = row.pin.typeName;
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:row.pin.typeID];
+		NCDBInvType* contentType = row.contentTypeID ? [self.databaseManagedObjectContext invTypeWithTypeID:row.contentTypeID] : nil;
+		cell.productLabel.text = contentType.typeName;
+		
+		[cell.barChartView clear];
+		[cell.barChartView addSegments:row.bars];
+		[cell.markerAuxiliaryView.superview removeConstraint:cell.markerAuxiliaryViewConstraint];
+		
+		if (type.group.groupID == dgmpp::StorageFacility::GROUP_ID || type.group.groupID == dgmpp::Spaceport::GROUP_ID)
+			cell.axisYLabel.text = NSLocalizedString(@"100%", nil);
+		else if (row.quantityPerCycle > 0)
+			cell.axisYLabel.text = [NSNumberFormatter neocomLocalizedStringFromInteger:row.quantityPerCycle];
+		else
+			cell.axisYLabel.text = @"";
+		NSTimeInterval currentTime = [[NSDate date] timeIntervalSinceReferenceDate];
+		NSTimeInterval start = [row.startDate timeIntervalSinceReferenceDate];
+		NSTimeInterval end = [row.endDate timeIntervalSinceReferenceDate];
+		NSTimeInterval duration = end - start;
+		
+		NSLayoutConstraint* constraint = [NSLayoutConstraint constraintWithItem:cell.markerAuxiliaryView
+																	  attribute:NSLayoutAttributeWidth
+																	  relatedBy:NSLayoutRelationEqual
+																		 toItem:cell.barChartView
+																	  attribute:NSLayoutAttributeWidth
+																	 multiplier:(currentTime - start) / duration
+																	   constant:0];
+		cell.markerAuxiliaryViewConstraint = constraint;
+		[cell.markerAuxiliaryView.superview addConstraint:constraint];
+	}
+
 /*
 	NCDBInvType* type = self.types[@(row.typeID)];
 	if (!type) {

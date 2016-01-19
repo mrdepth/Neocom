@@ -19,5 +19,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *axisXLabel;
 @property (weak, nonatomic) IBOutlet UIView *markerAuxiliaryView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *markerAuxiliaryViewConstraint;
+@property (weak, nonatomic) IBOutlet UILabel *warningLabel;
 
 @end

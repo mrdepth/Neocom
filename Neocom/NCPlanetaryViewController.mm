@@ -44,6 +44,10 @@
 @property (nonatomic, assign) int32_t contentTypeID;
 @property (nonatomic, strong) NSDate* startDate;
 @property (nonatomic, strong) NSDate* endDate;
+@property (nonatomic, assign) double capacity;
+@property (nonatomic, assign) double volume;
+@property (nonatomic, assign) int32_t order;
+@property (nonatomic, assign) NSDate* wasteTime;
 @end
 
 @implementation NCPlanetaryViewControllerSection
@@ -157,6 +161,11 @@
 	return section.rows.count;
 }
 
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+}
+
 #pragma mark - NCTableViewController
 
 - (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {
@@ -190,6 +199,7 @@
 							case dgmpp::IndustryFacility::GROUP_ID: {
 								auto factory = std::dynamic_pointer_cast<dgmpp::IndustryFacility>(facility);
 								factory->setLaunchTime([pin.lastLaunchTime timeIntervalSinceReferenceDate]);
+								factory->setSchematic(pin.schematicID);
 								break;
 							}
 							default:
@@ -215,8 +225,8 @@
 			
 			NCPlanetaryViewControllerSection* section = [NCPlanetaryViewControllerSection new];
 			section.colony = colony;
-			UIColor* green = [UIColor greenColor];
-			UIColor* red = [UIColor redColor];
+			UIColor* green = [UIColor colorWithRed:0 green:0.6 blue:0 alpha:1];
+			UIColor* red = [UIColor colorWithRed:0.8 green:0 blue:0 alpha:1];
 			NSMutableArray* rows = [NSMutableArray new];
 			for (const auto& facility: planet->getFacilities()) {
 				size_t numberOfCycles = facility->numberOfCycles();
@@ -228,16 +238,17 @@
 						double max = 0;
 						if (numberOfCycles > 0) {
 							double startTime = ecu->getInstallTime();
-							double endTime = ecu->getExpiryTime();
-							double duration = endTime - startTime;
 							double cycleTime = ecu->getCycleTime();
+							double wasteTime = 0;
 							auto firstCycle = ecu->getCycle(size_t(0));
 							for(double time = startTime; time < firstCycle->getLaunchTime(); time += cycleTime) {
 								double yield = ecu->getYieldAtTime(time);
 								NCBarChartSegment* segment = [NCBarChartSegment new];
-								segment.x = (time - startTime) / duration;
+								//segment.x = (time - startTime) / duration;
+								//segment.w = cycleTime / duration;
+								segment.x = time;
+								segment.w = cycleTime;
 								
-								segment.w = cycleTime / duration;
 								segment.h0 = yield;
 								segment.h1 = 0;
 								segment.color0 = green;
@@ -249,14 +260,18 @@
 							for (size_t i = 0; i < numberOfCycles; i++) {
 								auto cycle = ecu->getCycle(i);
 								NCBarChartSegment* segment = [NCBarChartSegment new];
-								segment.x = (cycle->getLaunchTime() - startTime) / duration;
-								segment.w = cycle->getCycleTime() / duration;
+								//segment.x = (cycle->getLaunchTime() - startTime) / duration;
+								//segment.w = cycle->getCycleTime() / duration;
+								segment.x = cycle->getLaunchTime();
+								segment.w = cycle->getCycleTime();
 								segment.h0 = cycle->getYield().getQuantity();
 								segment.h1 = cycle->getWaste().getQuantity();
 								segment.color0 = green;
 								segment.color1 = red;
 								[segments addObject:segment];
 								max = std::max(segment.h0 + segment.h1, max);
+								if (wasteTime == 0 && segment.h1 > 0)
+									wasteTime = cycle->getLaunchTime();
 							}
 							if (max > 0) {
 								for (NCBarChartSegment* segment in segments) {
@@ -264,39 +279,46 @@
 									segment.h1 /= max;
 								}
 							}
+							row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:startTime];
+							row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:endTime];
+							if (wasteTime > 0)
+								row.wasteTime = [NSDate dateWithTimeIntervalSinceReferenceDate:wasteTime];
 						}
-						row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:startTime];
-						row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:endTime];
 						
 						row.quantityPerCycle = ecu->getQuantityPerCycle();
 						row.contentTypeID = ecu->getOutput().getTypeID();
+						row.order = 0;
 						[rows addObject:row];
 						break;
 					}
 					case dgmpp::IndustryFacility::GROUP_ID: {
 						auto factory = std::dynamic_pointer_cast<dgmpp::IndustryFacility>(facility);
-						double sum = 0;
+						double sum = factory->getOutput().getQuantity();
+						double wasteTime = 0;
 						for (size_t i = 0; i < numberOfCycles; i++) {
 							auto cycle = factory->getCycle(i);
 							NCBarChartSegment* segment = [NCBarChartSegment new];
-							segment.x = (cycle->getLaunchTime() - startTime) / duration;
-							segment.w = cycle->getCycleTime() / duration;
-							if (sum == 0) {
-								sum = cycle->getYield().getQuantity() + cycle->getWaste().getQuantity();
-								if (sum == 0)
-									sum = 1;
-							}
+							segment.x = cycle->getLaunchTime();
+							segment.w = cycle->getCycleTime();
 							segment.h0 = cycle->getYield().getQuantity() / sum;
 							segment.h1 = cycle->getWaste().getQuantity() / sum;
+							if (segment.h1 > 0)
+								segment.h1 = segment.h1;
 							
 							segment.color0 = green;
 							segment.color1 = red;
+							
 							[segments addObject:segment];
+							if (wasteTime == 0 && segment.h1 > 0)
+								wasteTime = cycle->getLaunchTime();
 						}
 						row.quantityPerCycle = sum;
 						row.contentTypeID = factory->getOutput().getTypeID();
 						row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:startTime];
 						row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:endTime];
+						row.order = numberOfCycles > 0 ? 1 : 3;
+						if (wasteTime > 0)
+							row.wasteTime = [NSDate dateWithTimeIntervalSinceReferenceDate:wasteTime];
 						[rows addObject:row];
 						break;
 					}
@@ -310,8 +332,10 @@
 						for (size_t i = 0; i < numberOfCycles; i++) {
 							auto cycle = storage->getCycle(i);
 							NCBarChartSegment* segment = [NCBarChartSegment new];
-							segment.x = (cycle->getLaunchTime() - startTime) / duration;
-							segment.w = cycle->getCycleTime() / duration;
+							//segment.x = (cycle->getLaunchTime() - startTime) / duration;
+							//segment.w = cycle->getCycleTime() / duration;
+							segment.x = cycle->getLaunchTime();
+							segment.w = cycle->getCycleTime();
 							segment.h0 = cycle->getVolume() / capacity;
 							
 							segment.color0 = green;
@@ -319,16 +343,38 @@
 						}
 						row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:startTime];
 						row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:endTime];
+						row.capacity = capacity;
+						auto cycle = storage->getCycle(serverTime);
+						row.volume = cycle ? cycle->getVolume() : 0;
+						row.order = 2;
 						[rows addObject:row];
 						break;
 					}
 					default:
 						break;
 				}
+				endTime = startTime;
+				for (NSInteger i = segments.count - 1; i >= 0; i--) {
+					NCBarChartSegment* segment = segments[i];
+					if (segment.h0 == 0 && segment.h1 == 0) {
+						[segments removeObjectAtIndex:i];
+					}
+					else {
+						endTime = segment.x + segment.w;
+						break;
+					}
+				}
+				duration = endTime - startTime;
+				for (NCBarChartSegment* segment in segments) {
+					segment.x = (segment.x - startTime) / duration;
+					segment.w /= duration;
+				}
+				row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:endTime];
 				row.currentCycle = facility->getCycle(serverTime);
 				row.bars = segments;
 				row.pin = [[colony.pins.pins filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"pinID == %qi", facility->getIdentifier()]] lastObject];
 			}
+			[rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"endDate" ascending:YES]]];
 			section.rows = rows;
 			[sections addObject:section];
 		}
@@ -440,6 +486,7 @@
 		NCPlanetaryCell* cell = (NCPlanetaryCell*) tableViewCell;
 		
 		cell.titleLabel.text = row.pin.typeName;
+		//cell.titleLabel.text = [NSString stringWithFormat:@"%qi", row.pin.pinID];
 		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:row.pin.typeID];
 		NCDBInvType* contentType = row.contentTypeID ? [self.databaseManagedObjectContext invTypeWithTypeID:row.contentTypeID] : nil;
 		cell.productLabel.text = contentType.typeName;
@@ -455,8 +502,10 @@
 		else
 			cell.axisYLabel.text = @"";
 		NSTimeInterval currentTime = [[NSDate date] timeIntervalSinceReferenceDate];
-		NSTimeInterval start = [row.startDate timeIntervalSinceReferenceDate];
-		NSTimeInterval end = [row.endDate timeIntervalSinceReferenceDate];
+		NSDate* currentServerTime = [section.colony.pins.eveapi serverTimeWithLocalTime:[NSDate date]];
+		
+		NSTimeInterval start = [[section.colony.pins.eveapi localTimeWithServerTime:row.startDate] timeIntervalSinceReferenceDate];
+		NSTimeInterval end = [[section.colony.pins.eveapi localTimeWithServerTime:row.endDate] timeIntervalSinceReferenceDate];
 		NSTimeInterval duration = end - start;
 		
 		NSLayoutConstraint* constraint = [NSLayoutConstraint constraintWithItem:cell.markerAuxiliaryView
@@ -468,47 +517,114 @@
 																	   constant:0];
 		cell.markerAuxiliaryViewConstraint = constraint;
 		[cell.markerAuxiliaryView.superview addConstraint:constraint];
-	}
+		
+		NSTimeInterval remainsTime = end - currentTime;
+		cell.axisXLabel.text = remainsTime > 0 ? [NSString stringWithTimeLeft:remainsTime] : NSLocalizedString(@"Expired", nil);
+		
+		
+		if (row.currentCycle) {
+			int32_t cycleTime = row.currentCycle->getCycleTime();
+			int32_t start = row.currentCycle->getLaunchTime();
+			int32_t c = std::max(std::min(static_cast<int32_t>(currentTime), start + cycleTime), start) - start;
+			
+			NSString* timeString = [NSString stringWithFormat:NSLocalizedString(@"%.2d:%.2d:%.2d / %.2d:%.2d:%.2d", nil), c / 3600, (c % 3600) / 60, c % 60, cycleTime / 3600, (cycleTime % 3600) / 60, cycleTime % 60];
 
-/*
-	NCDBInvType* type = self.types[@(row.typeID)];
-	if (!type) {
-		type = [self.databaseManagedObjectContext invTypeWithTypeID:row.typeID];
-		if (type)
-			self.types[@(row.typeID)] = type;
-	}
-	
-	if (type) {
-		cell.iconView.image = type.icon ? type.icon.image.image : self.defaultTypeIcon.image.image;
-		cell.titleLabel.text = type.typeName;
+			if (type.group.groupID == dgmpp::IndustryFacility::GROUP_ID && cycleTime > 0) {
+				auto productionCycle = std::dynamic_pointer_cast<const dgmpp::ProductionCycle>(row.currentCycle);
+				if (productionCycle && productionCycle->isIdle())
+					cell.progressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Idle: %@", nil), timeString];
+				else
+					cell.progressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Production: %@", nil), timeString];
+				cell.progressLabel.progress = static_cast<double>(c) / cycleTime;
+				cell.progressLabel.hidden = NO;
+			}
+			else if (type.group.groupID == dgmpp::ExtractorControlUnit::GROUP_ID && cycleTime > 0) {
+				cell.progressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Production: %@", nil), timeString];
+				cell.progressLabel.progress = static_cast<double>(c) / cycleTime;
+				cell.progressLabel.hidden = NO;
+			}
+			else if (row.capacity > 0) {
+				cell.progressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f / %.0f m3", nil), row.volume, row.capacity];
+				cell.progressLabel.progress = row.volume / row.capacity;
+				cell.progressLabel.hidden = NO;
+			}
+			else
+				cell.progressLabel.hidden = YES;
+		}
+		else
+			cell.progressLabel.hidden = YES;
+		cell.object = type;
+		if (row.wasteTime) {
+			NSTextAttachment* icon = [NSTextAttachment new];
+			icon.image = [self.databaseManagedObjectContext eveIconWithIconFile:@"09_11"].image.image;
+			icon.bounds = CGRectMake(0, -11 -cell.warningLabel.font.descender, 22, 22);
+			NSMutableAttributedString* s = [[NSAttributedString attributedStringWithAttachment:icon] mutableCopy];
+			[s appendAttributedString:[[NSAttributedString alloc] initWithString:@" " attributes:nil]];
+			NSTimeInterval after = [row.wasteTime timeIntervalSinceDate:currentServerTime];
+			if (after > 0)
+				[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Waste in %@", nil), [NSString stringWithTimeLeft:after]]
+																	  attributes:nil]];
+			else
+				[s appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Waste", nil)
+																		  attributes:nil]];
+			cell.warningLabel.attributedText = s;
+		}
+		else
+			cell.warningLabel.text = nil;
 	}
 	else {
-		cell.iconView.image = self.unknownTypeIcon.image.image;
-		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.typeID];
+		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+		
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:row.pin.typeID];
+
+		if (type) {
+			cell.iconView.image = type.icon ? type.icon.image.image : [self.databaseManagedObjectContext defaultTypeIcon].image.image;
+			cell.titleLabel.text = type.typeName;
+		}
+		else {
+			cell.iconView.image = [self.databaseManagedObjectContext unknownTypeIcon].image.image;
+			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.pin.typeID];
+		}
+		
+		cell.object = type;
+		if (type.group.groupID == dgmpp::StorageFacility::GROUP_ID || type.group.groupID == dgmpp::Spaceport::GROUP_ID) {
+			if (row.capacity > 0) {
+				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f / %.0f m3", nil), row.volume, row.capacity];
+			}
+			else
+				cell.subtitleLabel.text = nil;
+		}
+		else {
+			NCDBInvType* contentType;
+			if (row.contentTypeID)
+				contentType = [self.databaseManagedObjectContext invTypeWithTypeID:row.contentTypeID];
+			if (contentType.typeName)
+				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@: Idle", nil), contentType.typeName];
+			else
+				cell.subtitleLabel.text = NSLocalizedString(@"Idle", nil);
+		}
+		
+		
+		/*NSDate* currentDate = [NSDate dateWithTimeInterval:[colony.currentTime timeIntervalSinceDate:colony.cacheDate] sinceDate:[NSDate date]];
+		
+		
+		NSTimeInterval remainsTime = [row.expiryTime timeIntervalSinceDate:currentDate];
+		if (remainsTime <= 0 || !row.expiryTime) {
+			cell.subtitleLabel.text = NSLocalizedString(@"Expired", nil);
+			cell.subtitleLabel.textColor = [UIColor redColor];
+		}
+		else {
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+				cell.subtitleLabel.text = [NSString stringWithFormat:@"Expires: %@ (%@)", [self.dateFormatter stringFromDate:row.expiryTime], [NSString stringWithTimeLeft:remainsTime]];
+			else
+				cell.subtitleLabel.text = [NSString stringWithFormat:@"Expires: %@\n%@", [self.dateFormatter stringFromDate:row.expiryTime], [NSString stringWithTimeLeft:remainsTime]];
+			
+			if (remainsTime < 3600 * 24)
+				cell.subtitleLabel.textColor = [UIColor yellowColor];
+			else
+				cell.subtitleLabel.textColor = [UIColor greenColor];
+		}*/
 	}
-
-	cell.object = type;
-	
-	NSDate* currentDate = [NSDate dateWithTimeInterval:[colony.currentTime timeIntervalSinceDate:colony.cacheDate] sinceDate:[NSDate date]];
-	
-
-	NSTimeInterval remainsTime = [row.expiryTime timeIntervalSinceDate:currentDate];
-	if (remainsTime <= 0 || !row.expiryTime) {
-		cell.subtitleLabel.text = NSLocalizedString(@"Expired", nil);
-		cell.subtitleLabel.textColor = [UIColor redColor];
-	}
-	else {
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			cell.subtitleLabel.text = [NSString stringWithFormat:@"Expires: %@ (%@)", [self.dateFormatter stringFromDate:row.expiryTime], [NSString stringWithTimeLeft:remainsTime]];
-		else
-			cell.subtitleLabel.text = [NSString stringWithFormat:@"Expires: %@\n%@", [self.dateFormatter stringFromDate:row.expiryTime], [NSString stringWithTimeLeft:remainsTime]];
-
-		if (remainsTime < 3600 * 24)
-			cell.subtitleLabel.textColor = [UIColor yellowColor];
-		else
-			cell.subtitleLabel.textColor = [UIColor greenColor];
-	}*/
-
 }
 
 - (NSAttributedString*) tableView:(UITableView *)tableView attributedTitleForHeaderInSection:(NSInteger)section {

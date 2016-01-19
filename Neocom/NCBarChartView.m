@@ -49,20 +49,39 @@
 
 - (void) drawRect:(CGRect)rect {
 	CGContextRef context = UIGraphicsGetCurrentContext();
-	for (NCBarChartSegment* segment in self.segments) {
-		CGContextMoveToPoint(context, segment.x * rect.size.width, rect.size.height);
+	NSUInteger n = self.segments.count;
+	for (NSUInteger i = 0; i < n; i++) {
+		NCBarChartSegment* segment = _segments[i];
+		CGFloat x = segment.x * rect.size.width;
 		CGFloat w = segment.w * rect.size.width;
-		if (w > 2)
+		
+		CGFloat h0 = segment.h0 * w;
+		CGFloat h1 = segment.h1 * w;
+		
+		while (i < n - 1 && w < 5) {
+			NCBarChartSegment* segment = _segments[++i];
+			CGFloat ww = segment.w *rect.size.width;
+			w += ww;
+			h0 += segment.h0 * ww;
+			h1 += segment.h1 * ww;
+		}
+		
+		h0 = (h0 / w) * rect.size.height;
+		h1 = (h1 / w) * rect.size.height;
+
+		CGFloat dx = 0;
+		if (w >= 5) {
 			w -= 2;
-		CGFloat h0 = segment.h0 * rect.size.height;
-		CGFloat h1 = segment.h1 * rect.size.height;
+			dx = 1;
+		}
+
 		if (h0 > 0) {
 			CGContextSetFillColorWithColor(context, segment.color0.CGColor);
-			CGContextFillRect(context, CGRectMake(segment.x * rect.size.width, rect.size.height - h0, w, h0));
+			CGContextFillRect(context, CGRectMake(x + dx, rect.size.height - h0 , w, h0));
 		}
 		if (h1 > 0) {
 			CGContextSetFillColorWithColor(context, segment.color1.CGColor);
-			CGContextFillRect(context, CGRectMake(segment.x * rect.size.width, rect.size.height - h0 - h1, w, h1));
+			CGContextFillRect(context, CGRectMake(x + dx, rect.size.height - h0 - h1, w, h1));
 		}
 	}
 }

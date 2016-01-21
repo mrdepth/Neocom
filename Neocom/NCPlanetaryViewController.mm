@@ -61,13 +61,14 @@
 
 @interface NCPlanetaryViewControllerIndustryRow : NCPlanetaryViewControllerRow
 @property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> currentCycle;
+@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> firstProductionCycle;
 @property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> lastProductionCycle;
 @property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> lastCycle;
 @property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> nextWasteCycle;
 @property (nonatomic, assign) uint32_t allTimeYield;
 @property (nonatomic, assign) uint32_t allTimeWaste;
-@property (nonatomic, assign) NSTimeInterval allTimeProduction;
-@property (nonatomic, assign) NSTimeInterval allTimeIdle;
+@property (nonatomic, assign) double efficiency;
+@property (nonatomic, assign) double extrapolatedEfficiency;
 @end
 
 
@@ -367,12 +368,16 @@
 							uint32_t allTimeWaste = 0;
 							NSTimeInterval allTimeProduction = 0;
 							NSTimeInterval allTimeIdle = 0;
-							
+							NSTimeInterval productionTime = 0;
+							NSTimeInterval idleTime = 0;
+
 							std::shared_ptr<const dgmpp::ProductionCycle> firstCycle;
 							std::shared_ptr<const dgmpp::ProductionCycle> lastCycle;
+							std::shared_ptr<const dgmpp::ProductionCycle> firstProductionCycle;
 							std::shared_ptr<const dgmpp::ProductionCycle> lastProductionCycle;
 							std::shared_ptr<const dgmpp::ProductionCycle> firstWasteCycle;
 							std::shared_ptr<const dgmpp::ProductionCycle> nextProductionCycle;
+							
 							for (const auto& cycle: factory->getCycles()) {
 								auto factoryCycle = std::dynamic_pointer_cast<const dgmpp::ProductionCycle>(cycle);
 								auto yield = factoryCycle->getYield().getQuantity();
@@ -384,6 +389,8 @@
 								
 								if (!firstCycle)
 									firstCycle = factoryCycle;
+								if (!firstProductionCycle && !factoryCycle->isIdle())
+									firstProductionCycle = factoryCycle;
 								
 								if (waste > 0 && !firstWasteCycle && endTime > serverTime)
 									firstWasteCycle = factoryCycle;
@@ -395,22 +402,30 @@
 								
 								allTimeYield += yield;
 								allTimeWaste += waste;
-								
-								if (isIdle)
-									allTimeIdle += cycleTime;
-								else {
-									allTimeProduction += cycleTime;
-									lastProductionCycle = factoryCycle;
+								if (firstProductionCycle) {
+									if (isIdle)
+										allTimeIdle += cycleTime;
+									else {
+										allTimeProduction += cycleTime;
+										lastProductionCycle = factoryCycle;
+									}
+									if (serverTime > launchTime) {
+										if (isIdle)
+											idleTime += cycleTime;
+										else
+											productionTime += cycleTime;
+									}
 								}
 								
 								lastCycle = factoryCycle;
 							}
 							if (firstCycle && lastProductionCycle)
-								allTimeIdle = ((lastProductionCycle->getLaunchTime() + lastProductionCycle->getCycleTime()) - firstCycle->getLaunchTime()) - allTimeProduction;
+								allTimeIdle = ((lastProductionCycle->getLaunchTime() + lastProductionCycle->getCycleTime()) - firstProductionCycle->getLaunchTime()) - allTimeProduction;
 							row.allTimeYield = allTimeYield;
 							row.allTimeWaste = allTimeWaste;
-							row.allTimeProduction = allTimeProduction;
-							row.allTimeIdle = allTimeIdle;
+							row.efficiency = productionTime > 0 ? productionTime / (productionTime + idleTime) : 0;
+							row.extrapolatedEfficiency = allTimeProduction > 0 ? allTimeProduction / (allTimeProduction + allTimeIdle) : 0;
+							row.firstProductionCycle = firstProductionCycle;
 							row.lastProductionCycle = lastProductionCycle;
 							row.nextWasteCycle = firstWasteCycle;
 							row.lastCycle = lastCycle;
@@ -671,14 +686,14 @@
 		
 		NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
 		NSTimeInterval time = [serverTime timeIntervalSinceDate:row.startDate];
-		CGFloat multiplier = time <= 0 || duration <= 0 ? 0 : time / duration;
+		float multiplier = time <= 0 || duration <= 0 ? 0 : time / duration;
 		[cell.markerAuxiliaryView.superview removeConstraint:cell.markerAuxiliaryViewConstraint];
 		NSLayoutConstraint* constraint = [NSLayoutConstraint constraintWithItem:cell.markerAuxiliaryView
 																	  attribute:NSLayoutAttributeWidth
 																	  relatedBy:NSLayoutRelationEqual
 																		 toItem:cell.barChartView
 																	  attribute:NSLayoutAttributeWidth
-																	 multiplier:std::max(std::min(multiplier, 1.0), 0.0)
+																	 multiplier:std::max(std::min(multiplier, 1.0f), 0.0f)
 																	   constant:0];
 		cell.markerAuxiliaryViewConstraint = constraint;
 		[cell.markerAuxiliaryView.superview addConstraint:constraint];
@@ -739,11 +754,9 @@
 																		  attributes:nil]];
 				[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithTimeLeft:time]
 																		  attributes:@{NSForegroundColorAttributeName:time < 24*60*60 ? [UIColor yellowColor] : [UIColor greenColor]}]];
-				float payload = industryRow.allTimeProduction / (industryRow.allTimeProduction + industryRow.allTimeIdle);
-				if (payload <= 1.0 && payload > 0.0) {
-					[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"\nEfficiency: %.0f%%", nil), payload * 100]
+				if (industryRow.efficiency > 0 || industryRow.extrapolatedEfficiency > 0)
+					[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"\nEfficiency %.0f%%, extrapolated %.0f%%", nil), industryRow.efficiency * 100, industryRow.extrapolatedEfficiency * 100]
 																			  attributes:nil]];
-				}
 			}
 			else
 				[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@ are exhausted", nil), requiredResourcesString]

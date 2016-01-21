@@ -1348,7 +1348,7 @@
             </objects>
             <point key="canvasLocation" x="-2871" y="3045"/>
         </scene>
-        <!--Planetary-->
+        <!--Planetaries-->
         <scene sceneID="fv1-Vs-BO9">
             <objects>
                 <tableViewController storyboardIdentifier="NCPlanetaryViewController" id="rsa-FY-GIf" customClass="NCPlanetaryViewController" sceneMemberID="viewController">
@@ -1506,7 +1506,7 @@
                             <outlet property="delegate" destination="rsa-FY-GIf" id="vli-28-8Gg"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Planetary" id="vbz-Ot-TDX">
+                    <navigationItem key="navigationItem" title="Planetaries" id="vbz-Ot-TDX">
                         <barButtonItem key="backBarButtonItem" title="Back" id="Xep-oS-L7E"/>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>

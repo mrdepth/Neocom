@@ -58,7 +58,7 @@
 		CGFloat h0 = segment.h0 * w;
 		CGFloat h1 = segment.h1 * w;
 		
-		while (i < n - 1 && w < 5) {
+		while (i < n - 1 && w < 4) {
 			NCBarChartSegment* segment = _segments[++i];
 			CGFloat ww = segment.w *rect.size.width;
 			w += ww;
@@ -70,7 +70,7 @@
 		h1 = (h1 / w) * rect.size.height;
 
 		CGFloat dx = 0;
-		if (w >= 5) {
+		if (w >= 4) {
 			w -= 2;
 			dx = 1;
 		}

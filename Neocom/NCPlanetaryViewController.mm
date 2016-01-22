@@ -43,6 +43,9 @@
 @property (nonatomic, strong) NSDate* startDate;
 @property (nonatomic, strong) NSDate* endDate;
 @property (nonatomic, assign) int32_t order;
+@property (nonatomic, assign) BOOL active;
+@property (nonatomic, assign) int32_t tier;
+@property (nonatomic, assign) int32_t typeID;
 @end
 
 @interface NCPlanetaryViewControllerExtractorRow : NCPlanetaryViewControllerRow
@@ -51,6 +54,7 @@
 @property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> nextWasteCycle;
 @property (nonatomic, assign) uint32_t allTimeYield;
 @property (nonatomic, assign) uint32_t allTimeWaste;
+@property (nonatomic, assign) uint32_t maxProduct;
 
 @end
 
@@ -228,7 +232,7 @@
 								ecu->setInstallTime([pin.installTime timeIntervalSinceReferenceDate]);
 								ecu->setExpiryTime([pin.expiryTime timeIntervalSinceReferenceDate]);
 								ecu->setCycleTime(pin.cycleTime * 60);
-								ecu->setQuantityPerCycle(pin.quantityPerCycle);
+								ecu->setQuantityPerCycle(pin.quantityPerCycle * 2.0);
 								break;
 							}
 							case dgmpp::IndustryFacility::GROUP_ID: {
@@ -352,9 +356,12 @@
 								}
 							}
 							row.bars = segments;
+							row.maxProduct = maxH;
 						}
 						row.pin = pin;
 						row.order = 0;
+						row.active = YES;
+						row.typeID = ecu->getOutput().getTypeID();
 						[rows addObject:row];
 						break;
 					}
@@ -439,6 +446,9 @@
 						}
 
 						row.order = 2;
+						row.active = factory->routed() && [row.endDate timeIntervalSinceReferenceDate] > serverTime;
+						row.tier = factory->getOutput().getTier();
+						row.typeID = factory->getOutput().getTypeID();
 						row.pin = pin;
 						[rows addObject:row];
 						break;
@@ -492,6 +502,7 @@
 							}
 						}
 						row.order = 1;
+						row.active = YES;
 						row.pin = pin;
 						row.bars = segments;
 						[rows addObject:row];
@@ -502,7 +513,10 @@
 						break;
 				}
 			}
-			[rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"endDate" ascending:YES]]];
+			[rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES],
+										 [NSSortDescriptor sortDescriptorWithKey:@"active" ascending:NO],
+										 [NSSortDescriptor sortDescriptorWithKey:@"tier" ascending:NO],
+										 [NSSortDescriptor sortDescriptorWithKey:@"typeID" ascending:YES]]];
 			section.rows = rows;
 			[sections addObject:section];
 		}
@@ -604,8 +618,12 @@
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCPlanetaryViewControllerSection* section = self.sections[indexPath.section];
 	NCPlanetaryViewControllerRow* row = section.rows[indexPath.row];
-	if ([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]] || [row isKindOfClass:[NCPlanetaryViewControllerStorageRow class]])
-		return @"NCPlanetaryCell";
+	if ([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]] || [row isKindOfClass:[NCPlanetaryViewControllerStorageRow class]]) {
+		if ([[row valueForKey:@"bars"] count] > 0)
+			return @"NCPlanetaryCell";
+		else
+			return @"Cell";
+	}
 	else
 		return @"Cell";
 }
@@ -615,9 +633,12 @@
 	NCPlanetaryViewControllerRow* row = section.rows[indexPath.row];
 	NSDate* serverTime = [section.colony.pins.eveapi serverTimeWithLocalTime:[NSDate date]];
 
-	if ([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]] || [row isKindOfClass:[NCPlanetaryViewControllerStorageRow class]]) {
+	if (([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]] || [row isKindOfClass:[NCPlanetaryViewControllerStorageRow class]]) && [[row valueForKey:@"bars"] count] > 0) {
 		NCPlanetaryCell* cell = (NCPlanetaryCell*) tableViewCell;
 		cell.titleLabel.text = row.pin.typeName;
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:row.pin.typeID];
+		cell.object = type;
+
 		[cell.barChartView clear];
 
 		if ([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]]) {
@@ -626,7 +647,7 @@
 			auto contentTypeID = ecu->getOutput().getTypeID();
 			NCDBInvType* contentType = contentTypeID ? [self.databaseManagedObjectContext invTypeWithTypeID:contentTypeID] : nil;
 			cell.productLabel.text = contentType.typeName;
-			cell.axisYLabel.text = [NSNumberFormatter neocomLocalizedStringFromInteger:ecu->getQuantityPerCycle()];
+			cell.axisYLabel.text = [NSNumberFormatter neocomLocalizedStringFromInteger:extractorRow.maxProduct];
 			[cell.barChartView addSegments:extractorRow.bars];
 			if (extractorRow.currentCycle) {
 				int32_t cycleTime = extractorRow.currentCycle->getCycleTime();
@@ -642,11 +663,30 @@
 			else
 				cell.progressLabel.hidden = YES;
 			
+			double sum = extractorRow.allTimeYield + extractorRow.allTimeWaste;
+			NSTimeInterval duration = [extractorRow.endDate timeIntervalSinceDate:extractorRow.startDate];
+			
+			NSMutableAttributedString* statistics = [NSMutableAttributedString new];
+			[statistics appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Sum ", nil)
+																			   attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor]}]];
+			
+			[statistics appendAttributedString:[[NSAttributedString alloc] initWithString:[NSNumberFormatter neocomLocalizedStringFromInteger:sum]
+																			   attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+			
+			[statistics appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@", per hour ", nil)
+																			   attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor]}]];
+
+			[statistics appendAttributedString:[[NSAttributedString alloc] initWithString:[NSNumberFormatter neocomLocalizedStringFromInteger:duration > 0 ? sum / (duration / 3600) : 0]
+																			   attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+			
 			if (extractorRow.nextWasteCycle || extractorRow.allTimeWaste > 0) {
 				NSTextAttachment* icon = [NSTextAttachment new];
 				icon.image = [self.databaseManagedObjectContext eveIconWithIconFile:@"09_11"].image.image;
 				icon.bounds = CGRectMake(0, -9 -cell.warningLabel.font.descender, 18, 18);
-				NSMutableAttributedString* s = [[NSAttributedString attributedStringWithAttachment:icon] mutableCopy];
+				NSMutableAttributedString* s = [statistics mutableCopy];
+				[s appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
+
+				[s appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
 				[s appendAttributedString:[[NSAttributedString alloc] initWithString:@" " attributes:nil]];
 				NSTimeInterval after = extractorRow.nextWasteCycle ? extractorRow.nextWasteCycle->getLaunchTime() - [serverTime timeIntervalSinceReferenceDate] : 0;
 				if (after > 0)
@@ -660,7 +700,9 @@
 				cell.warningLabel.attributedText = s;
 			}
 			else
-				cell.warningLabel.text = nil;
+				cell.warningLabel.attributedText = statistics;
+			
+			cell.materialsLabel.text = nil;
 		}
 		else {
 			NCPlanetaryViewControllerStorageRow* storageRow = (NCPlanetaryViewControllerStorageRow*) row;
@@ -675,9 +717,21 @@
 				cell.progressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f / %.0f m3", nil), volume, capacity];
 				cell.progressLabel.progress = volume / capacity;
 				cell.progressLabel.hidden = NO;
+				
+				NSMutableArray* components = [NSMutableArray new];
+				for (const auto& commodity: storageRow.currentCycle->getCommodities()) {
+					NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:commodity->getTypeID()];
+					if (type) {
+						[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%@: %@ (%@ m3)", nil), type.typeName, [NSNumberFormatter neocomLocalizedStringFromInteger:commodity->getQuantity()], [NSNumberFormatter neocomLocalizedStringFromNumber:@(commodity->getVolume())]]];
+					}
+				}
+				cell.materialsLabel.text = [components componentsJoinedByString:@"\n"];
 			}
-			else
+			else {
 				cell.progressLabel.hidden = YES;
+				cell.materialsLabel.text = nil;
+			}
+			
 		}
 		
 		NSTimeInterval remainsTime = [row.endDate timeIntervalSinceDate:serverTime];;
@@ -754,18 +808,42 @@
 																		  attributes:nil]];
 				[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithTimeLeft:time]
 																		  attributes:@{NSForegroundColorAttributeName:time < 24*60*60 ? [UIColor yellowColor] : [UIColor greenColor]}]];
-				if (industryRow.efficiency > 0 || industryRow.extrapolatedEfficiency > 0)
-					[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"\nEfficiency %.0f%%, extrapolated %.0f%%", nil), industryRow.efficiency * 100, industryRow.extrapolatedEfficiency * 100]
-																			  attributes:nil]];
+				if (industryRow.efficiency > 0 || industryRow.extrapolatedEfficiency > 0) {
+					[s appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"\nEfficiency ", nil) attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor]}]];
+					[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%.0f%%", nil), industryRow.efficiency * 100] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+					[s appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@", extrapolated  ", nil) attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor]}]];
+					[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%.0f%%", nil), industryRow.extrapolatedEfficiency * 100] attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+				}
 			}
-			else
-				[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@ are exhausted", nil), requiredResourcesString]
+			else {
+				if (industryRow.facility->routed())
+					[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@ are exhausted", nil), requiredResourcesString]
 																		  attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}]];
+				else {
+					[s appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Not routed", nil) attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}]];
+				}
+			}
 		}
 		else {
 			[s appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Facility not properly configured", nil) attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}]];
 		}
 		cell.subtitleLabel.attributedText = s;
+	}
+	else {
+		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+		
+		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:row.pin.typeID];
+		cell.object = type;
+		
+		if (type) {
+			cell.iconView.image = type.icon ? type.icon.image.image : [self.databaseManagedObjectContext defaultTypeIcon].image.image;
+			cell.titleLabel.text = type.typeName;
+		}
+		else {
+			cell.iconView.image = [self.databaseManagedObjectContext unknownTypeIcon].image.image;
+			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.pin.typeID];
+		}
+		cell.subtitleLabel.text = nil;
 	}
 }
 

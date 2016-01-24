@@ -232,12 +232,12 @@
 								ecu->setInstallTime([pin.installTime timeIntervalSinceReferenceDate]);
 								ecu->setExpiryTime([pin.expiryTime timeIntervalSinceReferenceDate]);
 								ecu->setCycleTime(pin.cycleTime * 60);
-								ecu->setQuantityPerCycle(pin.quantityPerCycle * 2.0);
+								ecu->setQuantityPerCycle(pin.quantityPerCycle);
 								break;
 							}
 							case dgmpp::IndustryFacility::GROUP_ID: {
 								auto factory = std::dynamic_pointer_cast<dgmpp::IndustryFacility>(facility);
-								factory->setLaunchTime([pin.lastLaunchTime timeIntervalSinceReferenceDate]);
+								//factory->setLaunchTime([pin.lastLaunchTime timeIntervalSinceReferenceDate]);
 								factory->setSchematic(pin.schematicID);
 								break;
 							}
@@ -711,21 +711,38 @@
 			cell.axisYLabel.text = NSLocalizedString(@"100%", nil);
 			[cell.barChartView addSegments:storageRow.bars];
 			cell.warningLabel.text = nil;
-			if (storageRow.currentCycle) {
-				double volume = storageRow.currentCycle->getVolume();
-				double capacity = storage->getCapacity();
+			
+			double capacity = storage->getCapacity();
+			
+			if (capacity > 0) {
+				double volume = 0;
+				
+				std::list<std::shared_ptr<const dgmpp::Commodity>> commodities;
+				
+				if (storageRow.currentCycle) {
+					volume = storageRow.currentCycle->getVolume();
+					commodities = storageRow.currentCycle->getCommodities();
+					
+				}
+				else {
+					volume = storage->getVolume();
+					commodities = storage->getCommodities();
+				}
+
+				
 				cell.progressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f / %.0f m3", nil), volume, capacity];
 				cell.progressLabel.progress = volume / capacity;
 				cell.progressLabel.hidden = NO;
 				
 				NSMutableArray* components = [NSMutableArray new];
-				for (const auto& commodity: storageRow.currentCycle->getCommodities()) {
+				for (const auto& commodity: commodities) {
 					NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:commodity->getTypeID()];
 					if (type) {
 						[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%@: %@ (%@ m3)", nil), type.typeName, [NSNumberFormatter neocomLocalizedStringFromInteger:commodity->getQuantity()], [NSNumberFormatter neocomLocalizedStringFromNumber:@(commodity->getVolume())]]];
 					}
 				}
 				cell.materialsLabel.text = [components componentsJoinedByString:@"\n"];
+
 			}
 			else {
 				cell.progressLabel.hidden = YES;

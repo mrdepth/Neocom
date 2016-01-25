@@ -255,8 +255,9 @@
 				auto source = planet->findFacility(route.sourcePinID);
 				auto destination = planet->findFacility(route.destinationPinID);
 				if (source && destination)
-					planet->addRoute(source, destination, route.contentTypeID, route.routeID);
+					planet->addRoute(source, destination, dgmpp::Commodity(self.engine.engine, route.contentTypeID, route.quantity), route.routeID);
 			}
+			//lastUpdateDate = colony.colony.lastUpdate;
 			planet->setLastUpdate(lastUpdateDate ? [lastUpdateDate timeIntervalSinceReferenceDate] : [colony.colony.lastUpdate timeIntervalSinceReferenceDate]);
 			planet->simulate();
 			
@@ -299,6 +300,7 @@
 								segment.h1 = 0;
 								maxH = std::max(yield, maxH);
 								[segments addObject:segment];
+								allTimeYield += yield;
 							}
 
 							std::shared_ptr<const dgmpp::ProductionCycle> lastCycle;
@@ -646,22 +648,28 @@
 			auto ecu = std::dynamic_pointer_cast<const dgmpp::ExtractorControlUnit>(extractorRow.facility);
 			auto contentTypeID = ecu->getOutput().getTypeID();
 			NCDBInvType* contentType = contentTypeID ? [self.databaseManagedObjectContext invTypeWithTypeID:contentTypeID] : nil;
-			cell.productLabel.text = contentType.typeName;
+			
+			cell.productLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Extracting %@", nil), contentType.typeName];
+
 			cell.axisYLabel.text = [NSNumberFormatter neocomLocalizedStringFromInteger:extractorRow.maxProduct];
 			[cell.barChartView addSegments:extractorRow.bars];
 			if (extractorRow.currentCycle) {
+				cell.currentCycleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Current Cycle (%@ units)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:extractorRow.currentCycle->getYield().getQuantity() + extractorRow.currentCycle->getWaste().getQuantity()]];
 				int32_t cycleTime = extractorRow.currentCycle->getCycleTime();
 				int32_t start = extractorRow.currentCycle->getLaunchTime();
 				int32_t currentTime = [serverTime timeIntervalSinceReferenceDate];
 				int32_t c = std::max(std::min(static_cast<int32_t>(currentTime), start + cycleTime), start) - start;
 				
 				NSString* timeString = [NSString stringWithFormat:NSLocalizedString(@"%.2d:%.2d:%.2d / %.2d:%.2d:%.2d", nil), c / 3600, (c % 3600) / 60, c % 60, cycleTime / 3600, (cycleTime % 3600) / 60, cycleTime % 60];
-				cell.progressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Production: %@", nil), timeString];
+				cell.progressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), timeString];
 				cell.progressLabel.progress = static_cast<double>(c) / cycleTime;
 				cell.progressLabel.hidden = NO;
 			}
-			else
-				cell.progressLabel.hidden = YES;
+			else {
+				cell.currentCycleLabel.text = NSLocalizedString(@"Expired", nil);
+				cell.progressLabel.text = nil;
+				cell.progressLabel.progress = 0;
+			}
 			
 			double sum = extractorRow.allTimeYield + extractorRow.allTimeWaste;
 			NSTimeInterval duration = [extractorRow.endDate timeIntervalSinceDate:extractorRow.startDate];

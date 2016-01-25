@@ -13,6 +13,7 @@
 @interface NCPlanetaryCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productLabel;
+@property (weak, nonatomic) IBOutlet UILabel *currentCycleLabel;
 @property (weak, nonatomic) IBOutlet NCProgressLabel *progressLabel;
 @property (weak, nonatomic) IBOutlet NCBarChartView *barChartView;
 @property (weak, nonatomic) IBOutlet UILabel *axisYLabel;

@@ -54,8 +54,8 @@
 
 @interface NCPlanetaryViewControllerExtractorRow : NCPlanetaryViewControllerRow
 @property (nonatomic, strong) NSArray* bars;
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> currentCycle;
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> nextWasteCycle;
+@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> currentState;
+@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> nextWasteState;
 @property (nonatomic, assign) uint32_t allTimeYield;
 @property (nonatomic, assign) uint32_t allTimeWaste;
 @property (nonatomic, assign) uint32_t maxProduct;
@@ -63,16 +63,16 @@
 @end
 
 @interface NCPlanetaryViewControllerStorageRow : NCPlanetaryViewControllerRow
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::StorageCycle> currentCycle;
+@property (nonatomic, assign) std::shared_ptr<const dgmpp::State> currentState;
 @property (nonatomic, strong) NSArray* bars;
 @end
 
 @interface NCPlanetaryViewControllerFactoryRow : NCPlanetaryViewControllerRow
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> currentCycle;
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> firstProductionCycle;
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> lastProductionCycle;
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> lastCycle;
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionCycle> nextWasteCycle;
+@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> currentState;
+@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> firstProductionState;
+@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> lastProductionState;
+@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> lastState;
+@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> nextWasteState;
 @property (nonatomic, assign) uint32_t allTimeYield;
 @property (nonatomic, assign) uint32_t allTimeWaste;
 @property (nonatomic, assign) double efficiency;
@@ -242,7 +242,7 @@
 							}
 							case dgmpp::IndustryFacility::GROUP_ID: {
 								auto factory = std::dynamic_pointer_cast<dgmpp::IndustryFacility>(facility);
-								//factory->setLaunchTime([pin.lastLaunchTime timeIntervalSinceReferenceDate]);
+								factory->setLaunchTime([pin.lastLaunchTime timeIntervalSinceReferenceDate]);
 								factory->setSchematic(pin.schematicID);
 								break;
 							}
@@ -272,7 +272,7 @@
 			
 			NSMutableArray* rows = [NSMutableArray new];
 			for (const auto& facility: planet->getFacilities()) {
-				size_t numberOfCycles = facility->numberOfCycles();
+				size_t numberOfStates = facility->numberOfStates();
 				
 				EVEPlanetaryPinsItem* pin =  [[colony.pins.pins filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"pinID == %qi", facility->getIdentifier()]] lastObject];
 
@@ -286,13 +286,13 @@
 						double startTime = ecu->getInstallTime();
 						double cycleTime = ecu->getCycleTime();
 
-						if (numberOfCycles > 0) {
+						if (numberOfStates > 0) {
 							uint32_t allTimeYield = 0;
 							uint32_t allTimeWaste = 0;
 
-							auto firstCycle = ecu->getCycles().front();
+							auto firstState = ecu->getStates().front();
 							double maxH = 0;
-							for(double time = startTime; time < firstCycle->getLaunchTime(); time += cycleTime) {
+							for(double time = startTime; time < firstState->getTimestamp(); time += cycleTime) {
 								double yield = ecu->getYieldAtTime(time);
 								NCBarChartSegment* segment = [NCBarChartSegment new];
 								segment.color0 = green;
@@ -308,36 +308,34 @@
 								allTimeYield += yield;
 							}
 
-							std::shared_ptr<const dgmpp::ProductionCycle> lastCycle;
-							std::shared_ptr<const dgmpp::ProductionCycle> firstWasteCycle;
-							for (const auto& cycle: ecu->getCycles()) {
-								auto ecuCycle = std::dynamic_pointer_cast<const dgmpp::ProductionCycle>(cycle);
-								auto yield = ecuCycle->getYield().getQuantity();
-								auto waste = ecuCycle->getWaste().getQuantity();
-								auto launchTime = ecuCycle->getLaunchTime();
-								auto cycleTime = ecuCycle->getCycleTime();
-								auto endTime = launchTime + cycleTime;
-								
-								NCBarChartSegment* segment = [NCBarChartSegment new];
-								segment.color0 = green;
-								segment.color1 = red;
-								segment.x = launchTime;
-								segment.w = cycleTime;
-								segment.h0 = yield;
-								segment.h1 = waste;
-								maxH = std::max(segment.h0 + segment.h1, maxH);
-								[segments addObject:segment];
-								
-								if (waste > 0 && !firstWasteCycle && endTime > serverTime)
-									firstWasteCycle = ecuCycle;
-								
-								if (serverTime >= launchTime && serverTime < endTime)
-									row.currentCycle = ecuCycle;
-								
-								allTimeYield += yield;
-								allTimeWaste += waste;
-								
-								lastCycle = ecuCycle;
+							std::shared_ptr<const dgmpp::ProductionState> lastState;
+							std::shared_ptr<const dgmpp::ProductionState> firstWasteState;
+							for (const auto& state: ecu->getStates()) {
+								auto ecuState = std::dynamic_pointer_cast<const dgmpp::ProductionState>(state);
+								auto ecuCycle = ecuState->getCurrentCycle();
+
+								if (!row.currentState && serverTime < ecuState->getTimestamp())
+									row.currentState = lastState;
+
+								if (ecuCycle) {
+									auto yield = ecuCycle->getYield().getQuantity();
+									auto waste = ecuCycle->getWaste().getQuantity();
+									auto launchTime = ecuState->getTimestamp();
+									
+									NCBarChartSegment* segment = [NCBarChartSegment new];
+									segment.color0 = green;
+									segment.color1 = red;
+									segment.x = launchTime;
+									segment.w = cycleTime;
+									segment.h0 = yield;
+									segment.h1 = waste;
+									maxH = std::max(segment.h0 + segment.h1, maxH);
+									[segments addObject:segment];
+									
+									allTimeYield += yield;
+									allTimeWaste += waste;
+								}
+								lastState = ecuState;
 							}
 
 							if (maxH > 0) {
@@ -347,14 +345,15 @@
 								}
 							}
 							
-							row.nextWasteCycle = firstWasteCycle;
+							row.nextWasteState = firstWasteState;
 							row.allTimeYield = allTimeYield;
 							row.allTimeWaste = allTimeWaste;
 							row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:startTime];
-							if (lastCycle)
-								row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:lastCycle->getLaunchTime() + lastCycle->getCycleTime()];
+							if (lastState)
+								row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:lastState->getTimestamp()];
 							else
 								row.endDate = row.startDate;
+							
 							NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
 							if (duration > 0) {
 								for (NCBarChartSegment* segment in segments) {
@@ -378,7 +377,7 @@
 						auto factory = std::dynamic_pointer_cast<dgmpp::IndustryFacility>(facility);
 						
 						auto schematic = factory->getSchematic();
-						if (numberOfCycles > 0 && schematic) {
+						if (numberOfStates > 0 && schematic) {
 							uint32_t allTimeYield = 0;
 							uint32_t allTimeWaste = 0;
 							NSTimeInterval allTimeProduction = 0;
@@ -386,68 +385,72 @@
 							NSTimeInterval productionTime = 0;
 							NSTimeInterval idleTime = 0;
 
-							std::shared_ptr<const dgmpp::ProductionCycle> firstCycle;
-							std::shared_ptr<const dgmpp::ProductionCycle> lastCycle;
-							std::shared_ptr<const dgmpp::ProductionCycle> firstProductionCycle;
-							std::shared_ptr<const dgmpp::ProductionCycle> lastProductionCycle;
-							std::shared_ptr<const dgmpp::ProductionCycle> firstWasteCycle;
-							std::shared_ptr<const dgmpp::ProductionCycle> nextProductionCycle;
+							std::shared_ptr<const dgmpp::ProductionState> firstState;
+							std::shared_ptr<const dgmpp::ProductionState> lastState;
+							std::shared_ptr<const dgmpp::ProductionState> firstProductionState;
+							std::shared_ptr<const dgmpp::ProductionState> lastProductionState;
+							std::shared_ptr<const dgmpp::ProductionState> firstWasteState;
+							std::shared_ptr<const dgmpp::ProductionState> nextProductionState;
 							
-							for (const auto& cycle: factory->getCycles()) {
-								auto factoryCycle = std::dynamic_pointer_cast<const dgmpp::ProductionCycle>(cycle);
-								auto yield = factoryCycle->getYield().getQuantity();
-								auto waste = factoryCycle->getWaste().getQuantity();
-								auto launchTime = factoryCycle->getLaunchTime();
-								auto cycleTime = factoryCycle->getCycleTime();
-								auto endTime = launchTime + cycleTime;
-								bool isIdle = factoryCycle->isIdle();
+							for (const auto& state: factory->getStates()) {
+								auto factoryState = std::dynamic_pointer_cast<const dgmpp::ProductionState>(state);
+								auto factoryCycle = factoryState->getCurrentCycle();
 								
-								if (!firstCycle)
-									firstCycle = factoryCycle;
-								if (!firstProductionCycle && !factoryCycle->isIdle())
-									firstProductionCycle = factoryCycle;
-								
-								if (waste > 0 && !firstWasteCycle && endTime > serverTime)
-									firstWasteCycle = factoryCycle;
-								
-								if (serverTime >= launchTime && serverTime < endTime)
-									row.currentCycle = factoryCycle;
-								if (!nextProductionCycle && serverTime >= launchTime && !isIdle)
-									nextProductionCycle = factoryCycle;
-								
-								allTimeYield += yield;
-								allTimeWaste += waste;
-								if (!std::isinf(cycleTime)) {
-									if (firstProductionCycle) {
-										if (isIdle)
-											allTimeIdle += cycleTime;
-										else {
-											allTimeProduction += cycleTime;
-											lastProductionCycle = factoryCycle;
-										}
-										if (serverTime >= endTime) {
-											if (isIdle)
-												idleTime += cycleTime;
-											else
-												productionTime += cycleTime;
-										}
+								if (!firstState)
+									firstState = factoryState;
+								if (!row.currentState && serverTime < factoryState->getTimestamp())
+									row.currentState = lastState;
+
+								if (factoryCycle && factoryCycle->getLaunchTime() == factoryState->getTimestamp()) {
+									auto yield = factoryCycle->getYield().getQuantity();
+									auto waste = factoryCycle->getWaste().getQuantity();
+									auto launchTime = factoryCycle->getLaunchTime();
+									auto cycleTime = factoryCycle->getCycleTime();
+									auto endTime = launchTime + cycleTime;
+									
+									if (!firstProductionState)
+										firstProductionState = factoryState;
+									
+									if (waste > 0 && !firstWasteState && endTime > serverTime)
+										firstWasteState = factoryState;
+									
+									
+									if (!nextProductionState && serverTime >= launchTime)
+										nextProductionState = factoryState;
+									
+									allTimeYield += yield;
+									allTimeWaste += waste;
+									
+									allTimeProduction += cycleTime;
+									if (serverTime < launchTime)
+										productionTime += cycleTime;
+									
+									lastProductionState = factoryState;
+								}
+								if (lastState) {
+									if (!lastState->getCurrentCycle()) {
+										double cycleTime = factoryState->getTimestamp() - lastState->getTimestamp();
+										allTimeIdle += cycleTime;
+										if (serverTime >= factoryState->getTimestamp())
+											idleTime += cycleTime;
 									}
 								}
-								lastCycle = factoryCycle;
+								
+								lastState = factoryState;
 							}
-							if (firstProductionCycle && lastProductionCycle)
-								allTimeIdle = ((lastProductionCycle->getLaunchTime() + lastProductionCycle->getCycleTime()) - firstProductionCycle->getLaunchTime()) - allTimeProduction;
-							if (row.currentCycle && lastProductionCycle && row.currentCycle->getLaunchTime() > lastProductionCycle->getLaunchTime())
+							if (firstProductionState && lastProductionState)
+								allTimeIdle = ((lastProductionState->getTimestamp() + lastProductionState->getCurrentCycle()->getCycleTime()) - firstProductionState->getTimestamp()) - allTimeProduction;
+							if (row.currentState && lastProductionState && row.currentState->getTimestamp() > lastProductionState->getTimestamp())
 								idleTime = allTimeIdle;
 							
 							row.allTimeYield = allTimeYield;
 							row.allTimeWaste = allTimeWaste;
 							row.efficiency = productionTime > 0 ? productionTime / (productionTime + idleTime) : 0;
 							row.extrapolatedEfficiency = allTimeProduction > 0 ? allTimeProduction / (allTimeProduction + allTimeIdle) : 0;
-							row.firstProductionCycle = firstProductionCycle;
-							row.lastProductionCycle = lastProductionCycle;
-							row.nextWasteCycle = firstWasteCycle;
-							row.lastCycle = lastCycle;
+							row.firstProductionState = firstProductionState;
+							row.lastProductionState = lastProductionState;
+							row.nextWasteState = firstWasteState;
+							row.lastState = lastState;
 							
 							NSMutableDictionary* ratio = [NSMutableDictionary new];
 							uint32_t max = 0;
@@ -462,10 +465,10 @@
 							}
 							row.ratio = ratio;
 
-							if (firstCycle)
-								row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:firstCycle->getLaunchTime()];
-							if (lastProductionCycle)
-								row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:lastProductionCycle->getLaunchTime() + lastProductionCycle->getCycleTime()];
+							if (firstState)
+								row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:firstState->getTimestamp()];
+							if (lastState)
+								row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:lastState->getTimestamp()];
 							else
 								row.endDate = row.startDate;
 						}
@@ -479,43 +482,45 @@
 						break;
 					}
 					case dgmpp::StorageFacility::GROUP_ID:
+					case dgmpp::CommandCenter::GROUP_ID:
 					case dgmpp::Spaceport::GROUP_ID: {
 						NSMutableArray* segments = [NSMutableArray new];
 						NCPlanetaryViewControllerStorageRow* row = [NCPlanetaryViewControllerStorageRow new];
 						row.facility = facility;
 						auto storage = std::dynamic_pointer_cast<dgmpp::StorageFacility>(facility);
 						
-						std::shared_ptr<const dgmpp::StorageCycle> firstCycle;
-						std::shared_ptr<const dgmpp::StorageCycle> lastCycle;
+						std::shared_ptr<const dgmpp::State> firstState;
+						std::shared_ptr<const dgmpp::State> lastState;
 						double capacity = storage->getCapacity();
 						if (capacity > 0) {
-							for (const auto& cycle: storage->getCycles()) {
-								auto storageCycle = std::dynamic_pointer_cast<const dgmpp::StorageCycle>(cycle);
-								auto launchTime = storageCycle->getLaunchTime();
-								auto cycleTime = storageCycle->getCycleTime();
-								auto endTime = launchTime + cycleTime;
+							NCBarChartSegment* prevSegment;
+							double timestamp = 0;
+							for (const auto& state: storage->getStates()) {
+								timestamp = state->getTimestamp();
 								
-								if (serverTime >= launchTime && serverTime < endTime)
-									row.currentCycle = storageCycle;
+								if (!row.currentState && serverTime < timestamp)
+									row.currentState = lastState;
 
 								NCBarChartSegment* segment = [NCBarChartSegment new];
 								segment.color0 = green;
 								segment.color1 = red;
-								segment.x = launchTime;
-								segment.w = cycleTime;
-								segment.h0 = storageCycle->getVolume() / capacity;
+								segment.x = timestamp;
+								segment.h0 = state->getVolume() / capacity;
 								[segments addObject:segment];
 								
-								if (!firstCycle)
-									firstCycle = storageCycle;
-								lastCycle = storageCycle;
+								prevSegment.w = timestamp - prevSegment.x;
+								if (!firstState)
+									firstState = state;
+								lastState = state;
+								prevSegment = segment;
 							}
+							prevSegment.w = timestamp - prevSegment.x;
 						}
 
-						if (firstCycle)
-							row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:firstCycle->getLaunchTime()];
-						if (lastCycle)
-							row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:lastCycle->getLaunchTime() + lastCycle->getCycleTime()];
+						if (firstState)
+							row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:firstState->getTimestamp()];
+						if (lastState)
+							row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:lastState->getTimestamp()];
 						else
 							row.endDate = row.startDate;
 						NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
@@ -692,11 +697,12 @@
 			cell.productLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Extracting <color=white>%@</color>", nil), contentType.typeName]];
 			cell.axisYLabel.text = [NSNumberFormatter neocomLocalizedStringFromInteger:extractorRow.maxProduct];
 
-			if (extractorRow.currentCycle) {
-				cell.currentCycleLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Current Cycle <color=white>%@ units</color>", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:extractorRow.currentCycle->getYield().getQuantity() + extractorRow.currentCycle->getWaste().getQuantity()]]];
+			if (extractorRow.currentState && extractorRow.currentState->getCurrentCycle()) {
+				auto cycle = extractorRow.currentState->getCurrentCycle();
+				cell.currentCycleLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Current Cycle <color=white>%@ units</color>", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:cycle->getYield().getQuantity() + cycle->getWaste().getQuantity()]]];
 				cell.currentCycleLabel.textColor = [UIColor greenColor];
-				int32_t cycleTime = extractorRow.currentCycle->getCycleTime();
-				int32_t start = extractorRow.currentCycle->getLaunchTime();
+				int32_t cycleTime = cycle->getCycleTime();
+				int32_t start = cycle->getLaunchTime();
 				int32_t currentTime = [serverTime timeIntervalSinceReferenceDate];
 				int32_t c = std::max(std::min(static_cast<int32_t>(currentTime), start + cycleTime), start) - start;
 				
@@ -739,7 +745,7 @@
 																								[NSNumberFormatter neocomLocalizedStringFromInteger:sum],
 																								[NSNumberFormatter neocomLocalizedStringFromInteger:duration > 0 ? sum / (duration / 3600) : 0]]]];
 
-			if (extractorRow.nextWasteCycle || extractorRow.allTimeWaste > 0) {
+			if (extractorRow.nextWasteState || extractorRow.allTimeWaste > 0) {
 				NSTextAttachment* icon = [NSTextAttachment new];
 				icon.image = [self.databaseManagedObjectContext eveIconWithIconFile:@"09_11"].image.image;
 				icon.bounds = CGRectMake(0, -9 -cell.summaryLabel.font.descender, 18, 18);
@@ -747,7 +753,9 @@
 				
 				[summary appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
 				[summary appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
-				NSTimeInterval after = extractorRow.nextWasteCycle ? extractorRow.nextWasteCycle->getLaunchTime() - [serverTime timeIntervalSinceReferenceDate] : 0;
+				auto wasteCycle = extractorRow.nextWasteState ? extractorRow.nextWasteState->getCurrentCycle() : nullptr;
+				
+				NSTimeInterval after = wasteCycle ? wasteCycle->getLaunchTime() - [serverTime timeIntervalSinceReferenceDate] : 0;
 				if (after > 0)
 					[summary appendAttributedString:[NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Waste in %@ (%.0f%%)", nil),
 																										[NSString stringWithTimeLeft:after],
@@ -786,11 +794,11 @@
 			if (capacity > 0) {
 				double volume = 0;
 				
-				std::list<std::shared_ptr<const dgmpp::Commodity>> commodities;
+				std::list<const dgmpp::Commodity> commodities;
 				
-				if (storageRow.currentCycle) {
-					volume = storageRow.currentCycle->getVolume();
-					commodities = storageRow.currentCycle->getCommodities();
+				if (storageRow.currentState) {
+					volume = storageRow.currentState->getVolume();
+					std::copy(storageRow.currentState->getCommodities().begin(), storageRow.currentState->getCommodities().end(), std::inserter(commodities, commodities.begin()));
 					cell.markerLabel.text = NSLocalizedString(@"Now", nil);
 				}
 				else {
@@ -805,9 +813,9 @@
 				
 				NSMutableArray* components = [NSMutableArray new];
 				for (const auto& commodity: commodities) {
-					NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:commodity->getTypeID()];
+					NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:commodity.getTypeID()];
 					if (type) {
-						[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%@: %@ (%@ m3)", nil), type.typeName, [NSNumberFormatter neocomLocalizedStringFromInteger:commodity->getQuantity()], [NSNumberFormatter neocomLocalizedStringFromNumber:@(commodity->getVolume())]]];
+						[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%@: %@ (%@ m3)", nil), type.typeName, [NSNumberFormatter neocomLocalizedStringFromInteger:commodity.getQuantity()], [NSNumberFormatter neocomLocalizedStringFromNumber:@(commodity.getVolume())]]];
 					}
 				}
 				cell.materialsLabel.text = [components componentsJoinedByString:@"\n"];
@@ -865,10 +873,10 @@
 			for (const auto& input: factory->getSchematic()->getInputs()) {
 				int32_t required = input.getQuantity();
 				int32_t allows = 0;
-				if (factoryRow.currentCycle) {
-					for (const auto& material: factoryRow.currentCycle->getMaterials()) {
-						if (material->getTypeID() == input.getTypeID()) {
-							allows += material->getQuantity();
+				if (factoryRow.currentState) {
+					for (const auto& material: factoryRow.currentState->getCommodities()) {
+						if (material.getTypeID() == input.getTypeID()) {
+							allows += material.getQuantity();
 							break;
 						}
 					}
@@ -915,26 +923,27 @@
 			
 			int32_t cycleTime = factory->getCycleTime();
 
-			if (factoryRow.currentCycle && !std::isinf(factoryRow.currentCycle->getCycleTime())) {
+			if (factoryRow.currentState) {
+				auto cycle = factoryRow.currentState->getCurrentCycle();
 				NSString* timeString;
 				int32_t currentTime = [serverTime timeIntervalSinceReferenceDate];
-				int32_t start = factoryRow.currentCycle->getLaunchTime();
 				double progress = 0.0;
 
-				if (factoryRow.currentCycle->isIdle()) {
-					NSTimeInterval left = start + factoryRow.currentCycle->getCycleTime() - currentTime;
-					if (trunc(left) > 0)
-						cell.currentCycleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Waiting for Resources (%@ left)", nil), [NSString stringWithTimeLeft:left]];
-					else
+				if (!cycle) {
+					//NSTimeInterval left = cycle->getLaunchTime() + cycle->getCycleTime() - currentTime;
+					//if (trunc(left) > 0)
+					//	cell.currentCycleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Waiting for Resources (%@ left)", nil), [NSString stringWithTimeLeft:left]];
+					//else
 						cell.currentCycleLabel.text = NSLocalizedString(@"Waiting for Resources", nil);
-					cell.currentCycleLabel.textColor = [UIColor yellowColor];
+					//cell.currentCycleLabel.textColor = [UIColor yellowColor];
 					
 					timeString = [NSString stringWithFormat:NSLocalizedString(@"00:00:00 / %.2d:%.2d:%.2d", nil), cycleTime / 3600, (cycleTime % 3600) / 60, cycleTime % 60];
 					progress = 0.0;
 				}
 				else {
-					cell.currentCycleLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Current Cycle <color=white>%@ units</color>", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:factoryRow.currentCycle->getYield().getQuantity() + factoryRow.currentCycle->getWaste().getQuantity()]]];
+					cell.currentCycleLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Current Cycle <color=white>%@ units</color>", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:cycle->getYield().getQuantity() + cycle->getWaste().getQuantity()]]];
 					cell.currentCycleLabel.textColor = [UIColor greenColor];
+					int32_t start = cycle->getLaunchTime();
 					
 					int32_t c = std::max(std::min(static_cast<int32_t>(currentTime), start + cycleTime), start) - start;
 					timeString = [NSString stringWithFormat:NSLocalizedString(@"%.2d:%.2d:%.2d / %.2d:%.2d:%.2d", nil), c / 3600, (c % 3600) / 60, c % 60, cycleTime / 3600, (cycleTime % 3600) / 60, cycleTime % 60];

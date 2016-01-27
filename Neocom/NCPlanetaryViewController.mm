@@ -262,7 +262,7 @@
 				if (source && destination)
 					planet->addRoute(source, destination, dgmpp::Commodity(self.engine.engine, route.contentTypeID, route.quantity), route.routeID);
 			}
-			//lastUpdateDate = colony.colony.lastUpdate;
+			lastUpdateDate = colony.colony.lastUpdate;
 			planet->setLastUpdate(lastUpdateDate ? [lastUpdateDate timeIntervalSinceReferenceDate] : [colony.colony.lastUpdate timeIntervalSinceReferenceDate]);
 			planet->simulate();
 			
@@ -511,6 +511,7 @@
 								prevSegment.w = timestamp - prevSegment.x;
 								if (!firstState)
 									firstState = state;
+								
 								lastState = state;
 								prevSegment = segment;
 							}
@@ -694,7 +695,9 @@
 			[cell.barChartView clear];
 			[cell.barChartView addSegments:extractorRow.bars];
 
-			cell.productLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Extracting <color=white>%@</color>", nil), contentType.typeName]];
+			cell.productLabel.attributedText = contentType.typeName ? [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Extracting <color=white>%@</color>", nil), contentType.typeName]] :
+			[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Not Routed", nil) attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}];
+			
 			cell.axisYLabel.text = [NSNumberFormatter neocomLocalizedStringFromInteger:extractorRow.maxProduct];
 
 			if (extractorRow.currentState && extractorRow.currentState->getCurrentCycle()) {

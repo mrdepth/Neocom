@@ -12,15 +12,15 @@
 @interface NCFactoryCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productLabel;
-@property (weak, nonatomic) IBOutlet UILabel *currentCycleLabel;
-@property (weak, nonatomic) IBOutlet NCProgressLabel *progressLabel;
-@property (weak, nonatomic) IBOutlet UILabel *input1Label;
-@property (weak, nonatomic) IBOutlet UILabel *input2Label;
-@property (weak, nonatomic) IBOutlet UILabel *input3Label;
-@property (weak, nonatomic) IBOutlet NCProgressLabel *inputProgress1Label;
-@property (weak, nonatomic) IBOutlet NCProgressLabel *inputProgress2Label;
-@property (weak, nonatomic) IBOutlet NCProgressLabel *inputProgress3Label;
+@property (weak, nonatomic) IBOutlet UIImageView* factoryIconView;
+@property (weak, nonatomic) IBOutlet UILabel *effectivityLabel;
+@property (weak, nonatomic) IBOutlet UILabel *extrapolatedEffectivityLabel;
+@property (weak, nonatomic) IBOutlet UILabel *input1TitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *input2TitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *input3TitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *input1ShortageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *input2ShortageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *input3ShortageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *ratioLabel;
-@property (weak, nonatomic) IBOutlet UILabel *summaryLabel;
 
 @end

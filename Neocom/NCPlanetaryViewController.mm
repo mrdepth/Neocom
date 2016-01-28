@@ -38,10 +38,12 @@
 @interface NCPlanetaryViewControllerSection : NSObject
 @property (nonatomic, strong) NCPlanetaryViewControllerDataColony* colony;
 @property (nonatomic, strong) NSArray* rows;
+@property (nonatomic, assign) BOOL warning;
 @end
 
 @interface NCPlanetaryViewControllerRow : NSObject
 @property (nonatomic, strong) EVEPlanetaryPinsItem* pin;
+@property (nonatomic, strong) NSString* pinName;
 
 @property (nonatomic, assign) std::shared_ptr<const dgmpp::Facility> facility;
 @property (nonatomic, strong) NSDate* startDate;
@@ -67,17 +69,19 @@
 @property (nonatomic, strong) NSArray* bars;
 @end
 
-@interface NCPlanetaryViewControllerFactoryRow : NCPlanetaryViewControllerRow
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> currentState;
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> firstProductionState;
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> lastProductionState;
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> lastState;
-@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> nextWasteState;
-@property (nonatomic, assign) uint32_t allTimeYield;
-@property (nonatomic, assign) uint32_t allTimeWaste;
-@property (nonatomic, assign) double efficiency;
-@property (nonatomic, assign) double extrapolatedEfficiency;
-@property (nonatomic, strong) NSDictionary* ratio;
+@interface NCPlanetaryViewControllerFactoryRow : NCPlanetaryViewControllerRow {
+	std::map<dgmpp::TypeID, uint32_t> _ratio;
+	std::map<dgmpp::TypeID, double> _shortageTime;
+	std::list<std::shared_ptr<dgmpp::IndustryFacility>> _factories;
+}
+
+@property (nonatomic, assign) double productionTime;
+@property (nonatomic, assign) double idleTime;
+@property (nonatomic, assign) double extrapolatedProductionTime;
+@property (nonatomic, assign) double extrapolatedIdleTime;
+@property (nonatomic, assign) std::map<dgmpp::TypeID, uint32_t>& ratio;
+@property (nonatomic, assign) std::map<dgmpp::TypeID, double>& shortageTime;
+@property (nonatomic, assign) std::list<std::shared_ptr<dgmpp::IndustryFacility>>& factories;
 @end
 
 
@@ -271,6 +275,8 @@
 			section.colony = colony;
 			
 			NSMutableArray* rows = [NSMutableArray new];
+			NSMutableDictionary* factories = [NSMutableDictionary new];
+			
 			for (const auto& facility: planet->getFacilities()) {
 				size_t numberOfStates = facility->numberOfStates();
 				
@@ -280,6 +286,7 @@
 					case dgmpp::ExtractorControlUnit::GROUP_ID: {
 						NSMutableArray* segments = [NSMutableArray new];
 						NCPlanetaryViewControllerExtractorRow* row = [NCPlanetaryViewControllerExtractorRow new];
+						row.pinName = [NSString stringWithCString:facility->getFacilityName().c_str() encoding:NSUTF8StringEncoding];
 						row.facility = facility;
 						auto ecu = std::dynamic_pointer_cast<dgmpp::ExtractorControlUnit>(facility);
 
@@ -334,6 +341,10 @@
 									
 									allTimeYield += yield;
 									allTimeWaste += waste;
+									
+									if (waste > 0 && !firstWasteState && launchTime > serverTime)
+										firstWasteState = ecuState;
+
 								}
 								lastState = ecuState;
 							}
@@ -354,6 +365,9 @@
 							else
 								row.endDate = row.startDate;
 							
+							if (firstWasteState)
+								section.warning = YES;
+							
 							NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
 							if (duration > 0) {
 								for (NCBarChartSegment* segment in segments) {
@@ -372,113 +386,79 @@
 						break;
 					}
 					case dgmpp::IndustryFacility::GROUP_ID: {
-						NCPlanetaryViewControllerFactoryRow* row = [NCPlanetaryViewControllerFactoryRow new];
-						row.facility = facility;
 						auto factory = std::dynamic_pointer_cast<dgmpp::IndustryFacility>(facility);
-						
-						auto schematic = factory->getSchematic();
-						if (numberOfStates > 0 && schematic) {
-							uint32_t allTimeYield = 0;
-							uint32_t allTimeWaste = 0;
-							NSTimeInterval allTimeProduction = 0;
-							NSTimeInterval allTimeIdle = 0;
-							NSTimeInterval productionTime = 0;
-							NSTimeInterval idleTime = 0;
+						if (factory->routed()) {
+							auto schematic = factory->getSchematic();
+							NCPlanetaryViewControllerFactoryRow* row = factories[@(schematic->getSchematicID())];
+							if (!row) {
+								row = [NCPlanetaryViewControllerFactoryRow new];
+								row.order = 2;
+								row.active = YES;
+								row.tier = factory->getOutput().getTier();
+								row.typeID = factory->getOutput().getTypeID();
+								row.pin = pin;
+								factories[@(schematic->getSchematicID())] = row;
+								[rows addObject:row];
+								for (const auto& input: schematic->getInputs())
+									row.shortageTime[input.getTypeID()] = std::numeric_limits<double>::infinity();
+							}
+							row.factories.push_back(factory);
 
-							std::shared_ptr<const dgmpp::ProductionState> firstState;
-							std::shared_ptr<const dgmpp::ProductionState> lastState;
-							std::shared_ptr<const dgmpp::ProductionState> firstProductionState;
 							std::shared_ptr<const dgmpp::ProductionState> lastProductionState;
-							std::shared_ptr<const dgmpp::ProductionState> firstWasteState;
-							std::shared_ptr<const dgmpp::ProductionState> nextProductionState;
+							std::shared_ptr<const dgmpp::ProductionState> firstProductionState;
+							std::shared_ptr<const dgmpp::ProductionState> lastState;
+							std::shared_ptr<const dgmpp::ProductionState> currentState;
+							double extrapolatedEfficiency = -1;
 							
 							for (const auto& state: factory->getStates()) {
 								auto factoryState = std::dynamic_pointer_cast<const dgmpp::ProductionState>(state);
 								auto factoryCycle = factoryState->getCurrentCycle();
 								
-								if (!firstState)
-									firstState = factoryState;
-								if (!row.currentState && serverTime < factoryState->getTimestamp())
-									row.currentState = lastState;
+								if (!currentState && serverTime < factoryState->getTimestamp())
+									currentState = lastState;
 
 								if (factoryCycle && factoryCycle->getLaunchTime() == factoryState->getTimestamp()) {
-									auto yield = factoryCycle->getYield().getQuantity();
-									auto waste = factoryCycle->getWaste().getQuantity();
-									auto launchTime = factoryCycle->getLaunchTime();
-									auto cycleTime = factoryCycle->getCycleTime();
-									auto endTime = launchTime + cycleTime;
-									
 									if (!firstProductionState)
 										firstProductionState = factoryState;
-									
-									if (waste > 0 && !firstWasteState && endTime > serverTime)
-										firstWasteState = factoryState;
-									
-									
-									if (!nextProductionState && serverTime >= launchTime)
-										nextProductionState = factoryState;
-									
-									allTimeYield += yield;
-									allTimeWaste += waste;
-									
-									allTimeProduction += cycleTime;
-									if (serverTime < launchTime)
-										productionTime += cycleTime;
-									
-									lastProductionState = factoryState;
+									lastState = nullptr;
+									extrapolatedEfficiency = -1;
 								}
-								if (lastState) {
-									if (!lastState->getCurrentCycle()) {
-										double cycleTime = factoryState->getTimestamp() - lastState->getTimestamp();
-										allTimeIdle += cycleTime;
-										if (serverTime >= factoryState->getTimestamp())
-											idleTime += cycleTime;
-									}
+								else if (!factoryCycle) {
+									if (!lastState)
+										lastState = factoryState;
+									extrapolatedEfficiency = factoryState->getEfficiency();
 								}
-								
-								lastState = factoryState;
 							}
-							if (firstProductionState && lastProductionState)
-								allTimeIdle = ((lastProductionState->getTimestamp() + lastProductionState->getCurrentCycle()->getCycleTime()) - firstProductionState->getTimestamp()) - allTimeProduction;
-							if (row.currentState && lastProductionState && row.currentState->getTimestamp() > lastProductionState->getTimestamp())
-								idleTime = allTimeIdle;
+							double duration = firstProductionState && currentState ? currentState->getTimestamp() - firstProductionState->getTimestamp() : 0;
+							double extrapolatedDuration = firstProductionState && lastState ? lastState->getTimestamp() - firstProductionState->getTimestamp() : 0;
 							
-							row.allTimeYield = allTimeYield;
-							row.allTimeWaste = allTimeWaste;
-							row.efficiency = productionTime > 0 ? productionTime / (productionTime + idleTime) : 0;
-							row.extrapolatedEfficiency = allTimeProduction > 0 ? allTimeProduction / (allTimeProduction + allTimeIdle) : 0;
-							row.firstProductionState = firstProductionState;
-							row.lastProductionState = lastProductionState;
-							row.nextWasteState = firstWasteState;
-							row.lastState = lastState;
+							double productionTime = currentState ? currentState->getEfficiency() * duration : 0;
+							row.productionTime += productionTime;
+							row.idleTime += duration - productionTime;
 							
-							NSMutableDictionary* ratio = [NSMutableDictionary new];
-							uint32_t max = 0;
+							double extrapolatedProductionTime = lastState ? lastState->getEfficiency() * extrapolatedDuration : 0;
+							row.extrapolatedProductionTime += extrapolatedProductionTime;
+							row.extrapolatedIdleTime += extrapolatedDuration - extrapolatedProductionTime;
+							
 							for (const auto& input: factory->getInputs()) {
 								auto incomming = input->getSource()->getIncomming(input->getCommodity());
-								ratio[@(incomming.getTypeID())] = @(incomming.getQuantity());
-								max = std::max(max, incomming.getQuantity());
+								row.ratio[incomming.getTypeID()] += incomming.getQuantity();
 							}
-							if (max > 0) {
-								for (NSString* key in [ratio allKeys])
-									ratio[key] = @([ratio[key] doubleValue] / max);
+							if (lastState) {
+								for (const auto& input: schematic->getInputs()) {
+									bool depleted = true;
+									for (const auto& commodity: lastState->getCommodities()) {
+										if (commodity.getTypeID() == input.getTypeID()) {
+											if (commodity.getQuantity() == input.getQuantity())
+												depleted = false;
+											break;
+										}
+									}
+									if (depleted)
+										row.shortageTime[input.getTypeID()] = !std::isinf(row.shortageTime[input.getTypeID()]) ? std::max(row.shortageTime[input.getTypeID()], lastState->getTimestamp()) : lastState->getTimestamp();
+								}
 							}
-							row.ratio = ratio;
-
-							if (firstState)
-								row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:firstState->getTimestamp()];
-							if (lastState)
-								row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:lastState->getTimestamp()];
-							else
-								row.endDate = row.startDate;
 						}
-
-						row.order = 2;
-						row.active = factory->routed() && [row.endDate timeIntervalSinceReferenceDate] > serverTime;
-						row.tier = factory->getOutput().getTier();
-						row.typeID = factory->getOutput().getTypeID();
-						row.pin = pin;
-						[rows addObject:row];
 						break;
 					}
 					case dgmpp::StorageFacility::GROUP_ID:
@@ -486,6 +466,7 @@
 					case dgmpp::Spaceport::GROUP_ID: {
 						NSMutableArray* segments = [NSMutableArray new];
 						NCPlanetaryViewControllerStorageRow* row = [NCPlanetaryViewControllerStorageRow new];
+						row.pinName = [NSString stringWithCString:facility->getFacilityName().c_str() encoding:NSUTF8StringEncoding];
 						row.facility = facility;
 						auto storage = std::dynamic_pointer_cast<dgmpp::StorageFacility>(facility);
 						
@@ -656,18 +637,14 @@
 			return @"Cell";
 	}
 	else if ([row isKindOfClass:[NCPlanetaryViewControllerStorageRow class]]) {
-		if ([[row valueForKey:@"bars"] count] > 0)
+		NCPlanetaryViewControllerStorageRow* storageRow = (NCPlanetaryViewControllerStorageRow*) row;
+		if (storageRow.currentState)
 			return @"NCStorageCell";
 		else
 			return @"Cell";
 	}
 	else if ([row isKindOfClass:[NCPlanetaryViewControllerFactoryRow class]]) {
-		NCPlanetaryViewControllerFactoryRow* factoryRow = (NCPlanetaryViewControllerFactoryRow*) row;
-		auto factory = std::dynamic_pointer_cast<const dgmpp::IndustryFacility>(factoryRow.facility);
-		if (factory->routed())
-			return @"NCFactoryCell";
-		else
-			return @"Cell";
+		return @"NCFactoryCell";
 	}
 	else
 		return @"Cell";
@@ -677,7 +654,15 @@
 	NCPlanetaryViewControllerSection* section = self.sections[indexPath.section];
 	NCPlanetaryViewControllerRow* row = section.rows[indexPath.row];
 	NSDate* serverTime = [section.colony.pins.eveapi serverTimeWithLocalTime:[NSDate date]];
+	NSTimeInterval serverTimestamp = [serverTime timeIntervalSinceReferenceDate];
 	
+
+	NSString* (^toString)(NSTimeInterval) = ^(NSTimeInterval time) {
+		int32_t c = time;
+		return [NSString stringWithFormat:@"%.2d:%.2d:%.2d", c / 3600, (c % 3600) / 60, c % 60];
+	};
+	
+	NSAttributedString* title = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:@"%@ <color=white>%@</color>", row.pin.typeName, row.pinName]];
 	
 	if ([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]]) {
 		NCPlanetaryViewControllerExtractorRow* extractorRow = (NCPlanetaryViewControllerExtractorRow*) row;
@@ -689,44 +674,40 @@
 
 		if (extractorRow.bars.count > 0) {
 			NCExtractorCell* cell = (NCExtractorCell*) tableViewCell;
-			cell.titleLabel.text = row.pin.typeName;
+			cell.titleLabel.attributedText = title;
 			cell.object = type;
 			
 			[cell.barChartView clear];
 			[cell.barChartView addSegments:extractorRow.bars];
 
-			cell.productLabel.attributedText = contentType.typeName ? [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Extracting <color=white>%@</color>", nil), contentType.typeName]] :
-			[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Not Routed", nil) attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}];
+			cell.productLabel.text = contentType.typeName ?: NSLocalizedString(@"Not Routed", nil);
 			
 			cell.axisYLabel.text = [NSNumberFormatter neocomLocalizedStringFromInteger:extractorRow.maxProduct];
+			
+			cell.cycleTimeLabel.text = toString(ecu->getCycleTime());
+			
+			uint32_t sum = extractorRow.allTimeYield + extractorRow.allTimeWaste;
+			NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
+			cell.sumLabel.text = [NSNumberFormatter neocomLocalizedStringFromInteger:sum];
+			cell.yieldLabel.text = duration > 0 ? [NSNumberFormatter neocomLocalizedStringFromNumber:@(sum / (duration / 3600))] : @"0";
 
 			if (extractorRow.currentState && extractorRow.currentState->getCurrentCycle()) {
 				auto cycle = extractorRow.currentState->getCurrentCycle();
-				cell.currentCycleLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Current Cycle <color=white>%@ units</color>", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:cycle->getYield().getQuantity() + cycle->getWaste().getQuantity()]]];
-				cell.currentCycleLabel.textColor = [UIColor greenColor];
 				int32_t cycleTime = cycle->getCycleTime();
 				int32_t start = cycle->getLaunchTime();
 				int32_t currentTime = [serverTime timeIntervalSinceReferenceDate];
 				int32_t c = std::max(std::min(static_cast<int32_t>(currentTime), start + cycleTime), start) - start;
-				
-				NSString* timeString = [NSString stringWithFormat:NSLocalizedString(@"%.2d:%.2d:%.2d / %.2d:%.2d:%.2d", nil), c / 3600, (c % 3600) / 60, c % 60, cycleTime / 3600, (cycleTime % 3600) / 60, cycleTime % 60];
-				cell.progressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), timeString];
-				cell.progressLabel.progress = static_cast<double>(c) / cycleTime;
-				cell.progressLabel.hidden = NO;
+				cell.currentCycleLabel.text = toString(c);
 				cell.markerLabel.text = NSLocalizedString(@"Now", nil);
 			}
 			else {
 				cell.currentCycleLabel.text = NSLocalizedString(@"Finished", nil);
-				cell.currentCycleLabel.textColor = [UIColor redColor];
-				cell.progressLabel.text = nil;
-				cell.progressLabel.progress = 0;
 				cell.markerLabel.text = nil;
 			}
 			
 			NSTimeInterval remainsTime = [row.endDate timeIntervalSinceDate:serverTime];;
 			cell.axisXLabel.text = remainsTime > 0 ? [NSString stringWithTimeLeft:remainsTime componentsLimit:3] : NSLocalizedString(@"Finished", nil);
 			
-			NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
 			NSTimeInterval time = [serverTime timeIntervalSinceDate:row.startDate];
 			float multiplier = time <= 0 || duration <= 0 ? 0 : time / duration;
 			[cell.markerAuxiliaryView.superview removeConstraint:cell.markerAuxiliaryViewConstraint];
@@ -741,40 +722,31 @@
 			[cell.markerAuxiliaryView.superview addConstraint:constraint];
 			
 			
-			double sum = extractorRow.allTimeYield + extractorRow.allTimeWaste;
-
-			NSMutableAttributedString* summary = [NSMutableAttributedString new];
-			[summary appendAttributedString:[NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Sum <color=white>%@</color>, per hour <color=white>%@</color>", nil),
-																								[NSNumberFormatter neocomLocalizedStringFromInteger:sum],
-																								[NSNumberFormatter neocomLocalizedStringFromInteger:duration > 0 ? sum / (duration / 3600) : 0]]]];
-
 			if (extractorRow.nextWasteState || extractorRow.allTimeWaste > 0) {
-				NSTextAttachment* icon = [NSTextAttachment new];
-				icon.image = [self.databaseManagedObjectContext eveIconWithIconFile:@"09_11"].image.image;
-				icon.bounds = CGRectMake(0, -9 -cell.summaryLabel.font.descender, 18, 18);
-				
-				
-				[summary appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
-				[summary appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
-				auto wasteCycle = extractorRow.nextWasteState ? extractorRow.nextWasteState->getCurrentCycle() : nullptr;
-				
-				NSTimeInterval after = wasteCycle ? wasteCycle->getLaunchTime() - [serverTime timeIntervalSinceReferenceDate] : 0;
-				if (after > 0)
-					[summary appendAttributedString:[NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Waste in %@ (%.0f%%)", nil),
-																										[NSString stringWithTimeLeft:after],
-																										static_cast<double>(extractorRow.allTimeWaste) / (extractorRow.allTimeWaste + extractorRow.allTimeYield) * 100
-																										]]];
-				else
-					[summary appendAttributedString:[NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Waste (%.0f%%)", nil),
-																										static_cast<double>(extractorRow.allTimeWaste) / (extractorRow.allTimeWaste + extractorRow.allTimeYield) * 100
-																										]]];
+				NSTimeInterval after = extractorRow.nextWasteState ? extractorRow.nextWasteState->getTimestamp() - [serverTime timeIntervalSinceReferenceDate] : 0;
+				if (after > 0) {
+					cell.wasteTimeLabel.text = [NSString stringWithTimeLeft:after];
+					cell.wasteTitleLabel.text = NSLocalizedString(@"Waste in", nil);
+					cell.wasteLabel.text = [NSString stringWithFormat:NSLocalizedString(@"(%.0f%%)", nil),
+											static_cast<double>(extractorRow.allTimeWaste) / (extractorRow.allTimeWaste + extractorRow.allTimeYield) * 100];
+				}
+				else {
+					cell.wasteTitleLabel.text = NSLocalizedString(@"Waste", nil);
+					cell.wasteLabel.text = nil;
+					cell.wasteTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f%%", nil),
+											static_cast<double>(extractorRow.allTimeWaste) / (extractorRow.allTimeWaste + extractorRow.allTimeYield) * 100];
+				}
 			}
-			cell.summaryLabel.attributedText = summary;
+			else {
+				cell.wasteLabel.text = nil;
+				cell.wasteTimeLabel.text = nil;
+				cell.wasteTitleLabel.text = nil;
+			}
 		}
 		else {
 			NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 			cell.object = type;
-			cell.titleLabel.text = row.pin.typeName;
+			cell.titleLabel.attributedText = title;
 			cell.iconView.image = type.icon ? type.icon.image.image : [self.databaseManagedObjectContext defaultTypeIcon].image.image;
 			cell.subtitleLabel.text = nil;
 		}
@@ -785,14 +757,17 @@
 		auto storage = std::dynamic_pointer_cast<const dgmpp::StorageFacility>(storageRow.facility);
 		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:row.pin.typeID];
 		
-		if (storageRow.bars.count > 0) {
+		if (storageRow.currentState) {
 			NCStorageCell* cell = (NCStorageCell*) tableViewCell;
-			cell.titleLabel.text = row.pin.typeName;
+			cell.titleLabel.attributedText = title;
 			cell.object = type;
 			
 			[cell.barChartView clear];
 			[cell.barChartView addSegments:storageRow.bars];
 			
+			for (UIView* view in [[cell.materialsView subviews] copy])
+				[view removeFromSuperview];
+
 			double capacity = storage->getCapacity();
 			if (capacity > 0) {
 				double volume = 0;
@@ -810,23 +785,83 @@
 					cell.markerLabel.text = nil;
 				}
 				
-				cell.progressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f / %.0f m3", nil), volume, capacity];
-				cell.progressLabel.progress = volume / capacity;
-				cell.progressLabel.hidden = NO;
-				
 				NSMutableArray* components = [NSMutableArray new];
 				for (const auto& commodity: commodities) {
 					NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:commodity.getTypeID()];
-					if (type) {
-						[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%@: %@ (%@ m3)", nil), type.typeName, [NSNumberFormatter neocomLocalizedStringFromInteger:commodity.getQuantity()], [NSNumberFormatter neocomLocalizedStringFromNumber:@(commodity.getVolume())]]];
-					}
+					if (type.typeName)
+						[components addObject:@{@"typeName":type.typeName, @"quantity":@(commodity.getQuantity())}];
 				}
-				cell.materialsLabel.text = [components componentsJoinedByString:@"\n"];
-				cell.progressLabel.hidden = NO;
+				[components sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
+				NSMutableArray* titles = [NSMutableArray new];
+				NSMutableArray* values = [NSMutableArray new];
+				NSMutableArray* units = [NSMutableArray new];
+				UIFont* font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+
+				UILabel* prevTitle;
+				UILabel* prevValue;
+				UILabel* prevUnit;
+				for (NSDictionary* component in components) {
+					UILabel* title = [[UILabel alloc] initWithFrame:CGRectZero];
+					title.font = font;
+					title.textColor = [UIColor lightTextColor];
+					title.textAlignment = NSTextAlignmentLeft;
+					title.translatesAutoresizingMaskIntoConstraints = NO;
+					[title setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+					[title setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+					title.text = component[@"typeName"];
+					[titles addObject:title];
+					[cell.materialsView addSubview:title];
+					
+					UILabel* value = [[UILabel alloc] initWithFrame:CGRectZero];
+					value.font = font;
+					value.textColor = [UIColor whiteColor];
+					value.textAlignment = NSTextAlignmentRight;
+					value.translatesAutoresizingMaskIntoConstraints = NO;
+					[value setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+					[value setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+					value.text = [NSNumberFormatter neocomLocalizedStringFromInteger:[component[@"quantity"] integerValue]];
+					[values addObject:value];
+					[cell.materialsView addSubview:value];
+
+					UILabel* unit = [[UILabel alloc] initWithFrame:CGRectZero];
+					unit.font = font;
+					unit.textColor = [UIColor lightTextColor];
+					unit.textAlignment = NSTextAlignmentLeft;
+					unit.translatesAutoresizingMaskIntoConstraints = NO;
+					[unit setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+					[unit setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+					unit.text = NSLocalizedString(@"units", nil);
+					[units addObject:unit];
+					[cell.materialsView addSubview:unit];
+					
+					NSDictionary* bindings = NSDictionaryOfVariableBindings(title, value, unit);
+					[cell.materialsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-15-[title]->=10-[value]-[unit]-15-|" options:0 metrics:nil views:bindings]];
+
+					if (prevTitle) {
+						[cell.materialsView addConstraint:[NSLayoutConstraint constraintWithItem:title attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:prevTitle attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+						[cell.materialsView addConstraint:[NSLayoutConstraint constraintWithItem:value attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:prevValue attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+						[cell.materialsView addConstraint:[NSLayoutConstraint constraintWithItem:unit attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:prevUnit attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+						
+						[cell.materialsView addConstraint:[NSLayoutConstraint constraintWithItem:title attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:prevTitle attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
+						[cell.materialsView addConstraint:[NSLayoutConstraint constraintWithItem:value attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:prevValue attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
+						[cell.materialsView addConstraint:[NSLayoutConstraint constraintWithItem:unit attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:prevUnit attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
+					}
+					else {
+						[cell.materialsView addConstraint:[NSLayoutConstraint constraintWithItem:title attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:cell.materialsView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+						[cell.materialsView addConstraint:[NSLayoutConstraint constraintWithItem:value attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:cell.materialsView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+						[cell.materialsView addConstraint:[NSLayoutConstraint constraintWithItem:unit attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:cell.materialsView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+					}
+					prevTitle = title;
+					prevValue = value;
+					prevUnit = unit;
+				}
+				if (prevTitle) {
+					[cell.materialsView addConstraint:[NSLayoutConstraint constraintWithItem:prevTitle attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:cell.materialsView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+					[cell.materialsView addConstraint:[NSLayoutConstraint constraintWithItem:prevValue attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:cell.materialsView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+					[cell.materialsView addConstraint:[NSLayoutConstraint constraintWithItem:prevUnit attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:cell.materialsView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+				}
 			}
 			else {
-				cell.materialsLabel.text = nil;
-				cell.progressLabel.hidden = YES;
 			}
 			
 			NSTimeInterval remainsTime = [row.endDate timeIntervalSinceDate:serverTime];;
@@ -851,129 +886,95 @@
 		else {
 			NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 			cell.object = type;
-			cell.titleLabel.text = row.pin.typeName;
+			cell.titleLabel.attributedText = title;
 			cell.iconView.image = type.icon ? type.icon.image.image : [self.databaseManagedObjectContext defaultTypeIcon].image.image;
 			cell.subtitleLabel.text = nil;
 		}
 	}
 	else if ([row isKindOfClass:[NCPlanetaryViewControllerFactoryRow class]]) {
 		NCPlanetaryViewControllerFactoryRow* factoryRow = (NCPlanetaryViewControllerFactoryRow*) row;
-		auto factory = std::dynamic_pointer_cast<const dgmpp::IndustryFacility>(factoryRow.facility);
 		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:row.pin.typeID];
+		NCDBInvType* productType = [self.databaseManagedObjectContext invTypeWithTypeID:factoryRow.factories.front()->getOutput().getTypeID()];
 
-		if (factory->routed()) {
-			NCFactoryCell* cell = (NCFactoryCell*) tableViewCell;
+		NCFactoryCell* cell = (NCFactoryCell*) tableViewCell;
+		
+		cell.object = type;
+		cell.titleLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:@"<color=white>%ldx</color> %@", factoryRow.factories.size(), row.pin.typeName]];
+		cell.factoryIconView.image = type.icon.image.image ?: [self.databaseManagedObjectContext defaultTypeIcon].image.image;
+		cell.productLabel.text = productType.typeName ?: NSLocalizedString(@"Unknown Type", nil);
+		
+		cell.effectivityLabel.text = [NSString stringWithFormat:@"%.0f%%", factoryRow.productionTime + factoryRow.idleTime > 0 ? factoryRow.productionTime / (factoryRow.productionTime + factoryRow.idleTime) * 100 : 0.0];
+		cell.extrapolatedEffectivityLabel.text = [NSString stringWithFormat:@"%.0f%%", factoryRow.extrapolatedProductionTime + factoryRow.extrapolatedIdleTime > 0 ? factoryRow.extrapolatedProductionTime / (factoryRow.extrapolatedProductionTime + factoryRow.extrapolatedIdleTime) * 100 : 0.0];
+		
+		NSMutableArray* requiredResources = [NSMutableArray new];
+
+		NSTimeInterval minShortage = std::numeric_limits<NSTimeInterval>::infinity();
+		dgmpp::TypeID minTypeID = -1;
+		for (const auto& i: factoryRow.shortageTime) {
 			
-			cell.object = type;
-			cell.titleLabel.text = factoryRow.pin.typeName;
-			auto contentTypeID = factory->getOutput().getTypeID();
-			NCDBInvType* contentType = contentTypeID ? [self.databaseManagedObjectContext invTypeWithTypeID:contentTypeID] : nil;
-			
-			cell.productLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Producing <color=white>%@</color>", nil), contentType.typeName]];
-			
-			
-			NSMutableArray* requiredResources = [NSMutableArray new];
-			for (const auto& input: factory->getSchematic()->getInputs()) {
-				int32_t required = input.getQuantity();
-				int32_t allows = 0;
-				if (factoryRow.currentState) {
-					for (const auto& material: factoryRow.currentState->getCommodities()) {
-						if (material.getTypeID() == input.getTypeID()) {
-							allows += material.getQuantity();
-							break;
-						}
-					}
+			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:i.first];
+			if (!std::isinf(i.second)) {
+				double shortage = i.second - serverTimestamp;
+				if (shortage < minShortage) {
+					minShortage = shortage;
+					minTypeID = i.first;
 				}
-				
-				NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:input.getTypeID()];
-				[requiredResources addObject:@{@"name":type.typeName ?: NSLocalizedString(@"Unknown", nil),
-											   @"typeID":@(input.getTypeID()),
-											   @"progress":@(static_cast<float>(allows) / static_cast<float>(required)),
-											   @"progressText": [NSString stringWithFormat:NSLocalizedString(@"%d/%d", nil), allows, required]}];
 			}
-			[requiredResources sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
-			NSArray* labels = @[cell.input1Label, cell.input2Label, cell.input3Label];
-			NSArray* progress = @[cell.inputProgress1Label, cell.inputProgress2Label, cell.inputProgress3Label];
+			
+			[requiredResources addObject:@{@"name":type.typeName ?: NSLocalizedString(@"Unknown", nil),
+										   @"typeID":@(i.first)}];
 
-			int i = 0;
-			NSMutableArray* ratio = [NSMutableArray new];
-			for (NSDictionary* dic in requiredResources) {
-				double value = std::round([factoryRow.ratio[dic[@"typeID"]] floatValue] * 10) / 10;
-				if (value == 1)
-					[ratio addObject:@"1"];
-				else if (value == 0)
-					[ratio addObject:@"0"];
+		}
+		[requiredResources sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+		NSArray* labels = @[cell.input1TitleLabel, cell.input2TitleLabel, cell.input3TitleLabel];
+		NSArray* shortageLabels = @[cell.input1ShortageLabel, cell.input2ShortageLabel, cell.input3ShortageLabel];
+		
+		int i = 0;
+		
+		uint32_t max = 0;
+		for (const auto& i: factoryRow.ratio)
+			max = std::max(max, i.second);
+		
+		NSMutableArray* ratioComponents = [NSMutableArray new];
+		
+		for (NSDictionary* dic in requiredResources) {
+			UILabel* label = labels[i];
+			UILabel* shortageLabel = shortageLabels[i];
+			label.text = dic[@"name"];
+			if ([dic[@"typeID"] intValue] == minTypeID) {
+				NSString* text;
+				if (minShortage <= 0)
+					text = NSLocalizedString(@"<color=red>depleted</color>", nil);
 				else
-					[ratio addObject:[NSString stringWithFormat:@"%.1f", value]];
-				
-				[labels[i] setText:dic[@"name"]];
-				NCProgressLabel* p = progress[i];
-				p.progress = [dic[@"progress"] doubleValue];
-				p.text = dic[@"progressText"];
-				i++;
+					text = [NSString stringWithFormat:NSLocalizedString(@"shortage in <color=%@>%@</color>", nil), minShortage > 3600 * 24 ? @"green" : @"yellow", [NSString stringWithTimeLeft:minShortage]];
+				shortageLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:text];
 			}
-			for (; i < 3; i++) {
-				[labels[i] setText:nil];
-				NCProgressLabel* p = progress[i];
-				p.text = nil;
-				p.progress = 0;
-			}
-			
-			if (requiredResources.count > 1)
-				cell.ratioLabel.text = [ratio componentsJoinedByString:@":"];
 			else
-				cell.ratioLabel.text = nil;
+				shortageLabel.text = nil;
 			
-			int32_t cycleTime = factory->getCycleTime();
-
-			if (factoryRow.currentState) {
-				auto cycle = factoryRow.currentState->getCurrentCycle();
-				NSString* timeString;
-				int32_t currentTime = [serverTime timeIntervalSinceReferenceDate];
-				double progress = 0.0;
-
-				if (!cycle) {
-					//NSTimeInterval left = cycle->getLaunchTime() + cycle->getCycleTime() - currentTime;
-					//if (trunc(left) > 0)
-					//	cell.currentCycleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Waiting for Resources (%@ left)", nil), [NSString stringWithTimeLeft:left]];
-					//else
-						cell.currentCycleLabel.text = NSLocalizedString(@"Waiting for Resources", nil);
-					//cell.currentCycleLabel.textColor = [UIColor yellowColor];
-					
-					timeString = [NSString stringWithFormat:NSLocalizedString(@"00:00:00 / %.2d:%.2d:%.2d", nil), cycleTime / 3600, (cycleTime % 3600) / 60, cycleTime % 60];
-					progress = 0.0;
-				}
-				else {
-					cell.currentCycleLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Current Cycle <color=white>%@ units</color>", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:cycle->getYield().getQuantity() + cycle->getWaste().getQuantity()]]];
-					cell.currentCycleLabel.textColor = [UIColor greenColor];
-					int32_t start = cycle->getLaunchTime();
-					
-					int32_t c = std::max(std::min(static_cast<int32_t>(currentTime), start + cycleTime), start) - start;
-					timeString = [NSString stringWithFormat:NSLocalizedString(@"%.2d:%.2d:%.2d / %.2d:%.2d:%.2d", nil), c / 3600, (c % 3600) / 60, c % 60, cycleTime / 3600, (cycleTime % 3600) / 60, cycleTime % 60];
-					progress = static_cast<double>(c) / cycleTime;
-				}
-				
-				cell.progressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), timeString];
-				cell.progressLabel.progress = progress;
+			if (max > 0) {
+				double c = std::trunc(factoryRow.ratio[[dic[@"typeID"] intValue]] / static_cast<double>(max) * 10) / 10;
+				if (c == 0)
+					[ratioComponents addObject:@"0"];
+				else if (c == 1)
+					[ratioComponents addObject:@"1"];
+				else
+					[ratioComponents addObject:[NSString stringWithFormat:@"%.1f", c]];
 			}
-			else {
-				cell.progressLabel.progress = 0;
-				cell.currentCycleLabel.text = NSLocalizedString(@"Idle", nil);
-				cell.currentCycleLabel.textColor = [UIColor redColor];
-				cell.progressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"00:00:00 / %.2d:%.2d:%.2d", nil), cycleTime / 3600, (cycleTime % 3600) / 60, cycleTime % 60];
-			}
-			
-			cell.summaryLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:NSLocalizedString(@"Efficiency <color=white>%.0f%%</color>, extrapolated <color=white>%.0f%%</color>", nil),
-																								   factoryRow.efficiency * 100,
-																								   factoryRow.extrapolatedEfficiency * 100]];
+
+			i++;
 		}
-		else {
-			NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
-			cell.object = type;
-			cell.titleLabel.text = row.pin.typeName;
-			cell.iconView.image = type.icon ? type.icon.image.image : [self.databaseManagedObjectContext defaultTypeIcon].image.image;
-			cell.subtitleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Not routed", nil) attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}];
+		for (; i < 3; i++) {
+			UILabel* label = labels[i];
+			UILabel* shortageLabel = shortageLabels[i];
+			label.text = @"";
+			shortageLabel.text = @"";
 		}
+		
+		if (ratioComponents.count > 1)
+			cell.ratioLabel.text = [ratioComponents componentsJoinedByString:@":"];
+		else
+			cell.ratioLabel.text = nil;
 	}
 /*
 	if (([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]] || [row isKindOfClass:[NCPlanetaryViewControllerStorageRow class]]) && [[row valueForKey:@"bars"] count] > 0) {
@@ -1206,12 +1207,29 @@
 	}*/
 }
 
-- (NSAttributedString*) tableView:(UITableView *)tableView attributedTitleForHeaderInSection:(NSInteger)section {
-	NCPlanetaryViewControllerData* data = self.cacheData;
-	NCPlanetaryViewControllerDataColony* colony = data.colonies[section];
-	NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%.1f", colony.security] attributes:@{NSForegroundColorAttributeName:[UIColor colorWithSecurity:colony.security]}];
-	[title appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@ / %@", colony.colony.planetName, colony.colony.planetTypeName] attributes:nil]];
+- (NSAttributedString*) tableView:(UITableView *)tableView attributedTitleForHeaderInSection:(NSInteger)sectionIndex {
+	//NCPlanetaryViewControllerData* data = self.cacheData;
+	//NCPlanetaryViewControllerDataColony* colony = data.colonies[sectionIndex];
+	NCPlanetaryViewControllerSection* section = self.sections[sectionIndex];
+	
+	NSMutableAttributedString* title = [NSMutableAttributedString new];
+	if (section.warning) {
+		NSTextAttachment* icon = [NSTextAttachment new];
+		icon.image = [self.databaseManagedObjectContext eveIconWithIconFile:@"09_11"].image.image;
+		UIFont* font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+		icon.bounds = CGRectMake(0, -9 -font.descender, 18, 18);
+		
+		[title appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
+		[title appendAttributedString:[[NSAttributedString alloc] initWithString:@" " attributes:nil]];
+	}
+	[title appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%.1f", section.colony.security] attributes:@{NSForegroundColorAttributeName:[UIColor colorWithSecurity:section.colony.security]}]];
+	[title appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@ / %@", section.colony.colony.planetName, section.colony.colony.planetTypeName] attributes:nil]];
 	return title;
+}
+
+- (id) identifierForSection:(NSInteger)sectionIndex {
+	NCPlanetaryViewControllerSection* section = self.sections[sectionIndex];
+	return @(section.colony.colony.planetID);
 }
 
 #pragma mark - Private

@@ -7,17 +7,16 @@
 //
 
 #import "NCTableViewCell.h"
-#import "NCProgressLabel.h"
 #import "NCBarChartView.h"
 
 @interface NCStorageCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet NCProgressLabel *progressLabel;
 @property (weak, nonatomic) IBOutlet NCBarChartView *barChartView;
 @property (weak, nonatomic) IBOutlet UILabel *axisXLabel;
 @property (weak, nonatomic) IBOutlet UILabel *markerLabel;
 @property (weak, nonatomic) IBOutlet UIView *markerAuxiliaryView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *markerAuxiliaryViewConstraint;
-@property (weak, nonatomic) IBOutlet UILabel *materialsLabel;
+
+@property (weak, nonatomic) IBOutlet UIView* materialsView;
 
 @end

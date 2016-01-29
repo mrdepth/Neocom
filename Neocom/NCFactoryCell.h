@@ -21,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *input1ShortageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *input2ShortageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *input3ShortageLabel;
-@property (weak, nonatomic) IBOutlet UILabel *ratioLabel;
+@property (weak, nonatomic) IBOutlet UILabel *input1RatioLabel;
+@property (weak, nonatomic) IBOutlet UILabel *input2RatioLabel;
+@property (weak, nonatomic) IBOutlet UILabel *input3RatioLabel;
 
 @end

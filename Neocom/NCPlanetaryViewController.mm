@@ -217,11 +217,22 @@
 	self.backgrountText = data.colonies.count > 0 ? nil : NSLocalizedString(@"No Results", nil);
 	
 	self.engine = [NCFittingEngine new];
+	
+	NSProgress* totalProgress = [NSProgress progressWithTotalUnitCount:2];
+	self.progress = totalProgress;
+	[totalProgress becomeCurrentWithPendingUnitCount:1];
+	[self simulateProgress:[NSProgress progressWithTotalUnitCount:30]];
+	[totalProgress resignCurrent];
+	
 	[self.engine performBlock:^{
 		NSMutableArray* sections = [NSMutableArray new];
 		UIColor* green = [UIColor colorWithRed:0 green:0.6 blue:0 alpha:1];
 		UIColor* red = [UIColor colorWithRed:0.8 green:0 blue:0 alpha:1];
 
+		[totalProgress becomeCurrentWithPendingUnitCount:1];
+		NSProgress* progress = [NSProgress progressWithTotalUnitCount:data.colonies.count];
+		[totalProgress resignCurrent];
+		
 		for (NCPlanetaryViewControllerDataColony* colony in data.colonies) {
 
 			//Initialize Colony
@@ -276,6 +287,7 @@
 			
 			NSMutableArray* rows = [NSMutableArray new];
 			NSMutableDictionary* factories = [NSMutableDictionary new];
+			NSMutableArray* chartRows = [NSMutableArray new];
 			
 			for (const auto& facility: planet->getFacilities()) {
 				size_t numberOfStates = facility->numberOfStates();
@@ -298,10 +310,11 @@
 							uint32_t allTimeWaste = 0;
 
 							auto firstState = ecu->getStates().front();
+							startTime = firstState->getTimestamp();
 							double maxH = 0;
-							for(double time = startTime; time < firstState->getTimestamp(); time += cycleTime) {
+							for(double time = ecu->getInstallTime(); time < firstState->getTimestamp(); time += cycleTime) {
 								double yield = ecu->getYieldAtTime(time);
-								NCBarChartSegment* segment = [NCBarChartSegment new];
+								/*NCBarChartSegment* segment = [NCBarChartSegment new];
 								segment.color0 = green;
 								segment.color1 = red;
 								
@@ -309,9 +322,9 @@
 								segment.w = cycleTime;
 								
 								segment.h0 = yield;
-								segment.h1 = 0;
+								segment.h1 = 0;*/
 								maxH = std::max(yield, maxH);
-								[segments addObject:segment];
+								//[segments addObject:segment];
 								allTimeYield += yield;
 							}
 
@@ -368,19 +381,20 @@
 							if (firstWasteState)
 								section.warning = YES;
 							
-							NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
+							/*NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
 							if (duration > 0) {
 								for (NCBarChartSegment* segment in segments) {
 									segment.x = (segment.x - startTime) / duration;
 									segment.w /= duration;
 								}
-							}
+							}*/
 							row.bars = segments;
 							row.maxProduct = maxH;
+							[chartRows addObject:row];
 						}
 						row.pin = pin;
 						row.order = 0;
-						row.active = YES;
+						row.active = segments.count > 0;
 						row.typeID = ecu->getOutput().getTypeID();
 						[rows addObject:row];
 						break;
@@ -392,8 +406,9 @@
 							NCPlanetaryViewControllerFactoryRow* row = factories[@(schematic->getSchematicID())];
 							if (!row) {
 								row = [NCPlanetaryViewControllerFactoryRow new];
+								row.pinName = [NSString stringWithCString:facility->getFacilityName().c_str() encoding:NSUTF8StringEncoding];
 								row.order = 2;
-								row.active = YES;
+								row.active = NO;
 								row.tier = factory->getOutput().getTier();
 								row.typeID = factory->getOutput().getTypeID();
 								row.pin = pin;
@@ -439,7 +454,12 @@
 							double extrapolatedProductionTime = lastState ? lastState->getEfficiency() * extrapolatedDuration : 0;
 							row.extrapolatedProductionTime += extrapolatedProductionTime;
 							row.extrapolatedIdleTime += extrapolatedDuration - extrapolatedProductionTime;
+							if (extrapolatedProductionTime > 0)
+								row.active = YES;
 							
+							if (schematic->getSchematicID() == 85)
+								row = row;
+
 							for (const auto& input: factory->getInputs()) {
 								auto incomming = input->getSource()->getIncomming(input->getCommodity());
 								row.ratio[incomming.getTypeID()] += incomming.getQuantity();
@@ -505,19 +525,20 @@
 							row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:lastState->getTimestamp()];
 						else
 							row.endDate = row.startDate;
-						NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
+						/*NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
 						NSTimeInterval startTime = [row.startDate timeIntervalSinceReferenceDate];
 						if (duration > 0) {
 							for (NCBarChartSegment* segment in segments) {
 								segment.x = (segment.x - startTime) / duration;
 								segment.w /= duration;
 							}
-						}
+						}*/
 						row.order = 1;
-						row.active = YES;
+						row.active = segments.count > 1;
 						row.pin = pin;
 						row.bars = segments;
 						[rows addObject:row];
+						[chartRows addObject:row];
 
 						break;
 					}
@@ -529,11 +550,31 @@
 										 [NSSortDescriptor sortDescriptorWithKey:@"active" ascending:NO],
 										 [NSSortDescriptor sortDescriptorWithKey:@"tier" ascending:NO],
 										 [NSSortDescriptor sortDescriptorWithKey:@"typeID" ascending:YES]]];
-			section.rows = rows;
+			
+			NSDate* globalStart = [chartRows valueForKeyPath:@"@min.startDate"];
+			NSDate* globalEnd = [chartRows valueForKeyPath:@"@max.endDate"];
+			NSTimeInterval duration = [globalEnd timeIntervalSinceDate:globalStart];
+			NSTimeInterval startTime = [globalStart timeIntervalSinceReferenceDate];
+			if (duration > 0) {
+				for (id row in [chartRows filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"active==YES"]]) {
+					[row setStartDate:globalStart];
+					[row setEndDate:globalEnd];
+					NSArray* segments = [row bars];
+					for (NCBarChartSegment* segment in segments) {
+						segment.x = (segment.x - startTime) / duration;
+						segment.w /= duration;
+					}
+				}
+			}
+			
+			section.rows = [rows filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"active==YES"]];
 			[sections addObject:section];
+			progress.completedUnitCount++;
 		}
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
+			if (self.progress == totalProgress)
+				self.progress = nil;
 			self.sections = sections;
 			completionBlock();
 		});
@@ -662,7 +703,7 @@
 		return [NSString stringWithFormat:@"%.2d:%.2d:%.2d", c / 3600, (c % 3600) / 60, c % 60];
 	};
 	
-	NSAttributedString* title = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:@"%@ <color=white>%@</color>", row.pin.typeName, row.pinName]];
+	NSAttributedString* title = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:@"<color=lightText>%@</color> <color=white>%@</color>", row.pin.typeName, row.pinName]];
 	
 	if ([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]]) {
 		NCPlanetaryViewControllerExtractorRow* extractorRow = (NCPlanetaryViewControllerExtractorRow*) row;
@@ -687,27 +728,38 @@
 			cell.cycleTimeLabel.text = toString(ecu->getCycleTime());
 			
 			uint32_t sum = extractorRow.allTimeYield + extractorRow.allTimeWaste;
-			NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
+			NSTimeInterval duration = ecu->getExpiryTime() - ecu->getInstallTime();
 			cell.sumLabel.text = [NSNumberFormatter neocomLocalizedStringFromInteger:sum];
 			cell.yieldLabel.text = duration > 0 ? [NSNumberFormatter neocomLocalizedStringFromNumber:@(sum / (duration / 3600))] : @"0";
 
 			if (extractorRow.currentState && extractorRow.currentState->getCurrentCycle()) {
-				auto cycle = extractorRow.currentState->getCurrentCycle();
-				int32_t cycleTime = cycle->getCycleTime();
-				int32_t start = cycle->getLaunchTime();
-				int32_t currentTime = [serverTime timeIntervalSinceReferenceDate];
-				int32_t c = std::max(std::min(static_cast<int32_t>(currentTime), start + cycleTime), start) - start;
-				cell.currentCycleLabel.text = toString(c);
+				NSTimeInterval remainsTime = ecu->getExpiryTime() - serverTimestamp;
+				
 				cell.markerLabel.text = NSLocalizedString(@"Now", nil);
+				if (remainsTime > 0) {
+					cell.axisXLabel.text = remainsTime > 0 ? [NSString stringWithTimeLeft:remainsTime componentsLimit:3] : NSLocalizedString(@"Finished", nil);
+					
+					auto cycle = extractorRow.currentState->getCurrentCycle();
+					int32_t cycleTime = cycle->getCycleTime();
+					int32_t start = cycle->getLaunchTime();
+					int32_t currentTime = [serverTime timeIntervalSinceReferenceDate];
+					int32_t c = std::max(std::min(static_cast<int32_t>(currentTime), start + cycleTime), start) - start;
+					cell.currentCycleLabel.text = toString(c);
+
+				}
+				else {
+					cell.axisXLabel.text = nil;
+					cell.currentCycleLabel.text = NSLocalizedString(@"Finished", nil);
+				}
+
 			}
 			else {
+				cell.axisXLabel.text = nil;
 				cell.currentCycleLabel.text = NSLocalizedString(@"Finished", nil);
-				cell.markerLabel.text = nil;
 			}
 			
-			NSTimeInterval remainsTime = [row.endDate timeIntervalSinceDate:serverTime];;
-			cell.axisXLabel.text = remainsTime > 0 ? [NSString stringWithTimeLeft:remainsTime componentsLimit:3] : NSLocalizedString(@"Finished", nil);
 			
+			duration = [row.endDate timeIntervalSinceDate:row.startDate];
 			NSTimeInterval time = [serverTime timeIntervalSinceDate:row.startDate];
 			float multiplier = time <= 0 || duration <= 0 ? 0 : time / duration;
 			[cell.markerAuxiliaryView.superview removeConstraint:cell.markerAuxiliaryViewConstraint];
@@ -899,7 +951,11 @@
 		NCFactoryCell* cell = (NCFactoryCell*) tableViewCell;
 		
 		cell.object = type;
-		cell.titleLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:@"<color=white>%ldx</color> %@", factoryRow.factories.size(), row.pin.typeName]];
+		if (factoryRow.factories.size() > 1)
+			cell.titleLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:@"<color=white>%ldx</color> %@", factoryRow.factories.size(), row.pin.typeName]];
+		else
+			cell.titleLabel.attributedText = title;
+		
 		cell.factoryIconView.image = type.icon.image.image ?: [self.databaseManagedObjectContext defaultTypeIcon].image.image;
 		cell.productLabel.text = productType.typeName ?: NSLocalizedString(@"Unknown Type", nil);
 		
@@ -909,39 +965,45 @@
 		NSMutableArray* requiredResources = [NSMutableArray new];
 
 		NSTimeInterval minShortage = std::numeric_limits<NSTimeInterval>::infinity();
-		dgmpp::TypeID minTypeID = -1;
+//		dgmpp::TypeID minTypeID = -1;
 		for (const auto& i: factoryRow.shortageTime) {
 			
 			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:i.first];
+			double shortage;
 			if (!std::isinf(i.second)) {
-				double shortage = i.second - serverTimestamp;
+				shortage = i.second - serverTimestamp;
 				if (shortage < minShortage) {
 					minShortage = shortage;
-					minTypeID = i.first;
+//					minTypeID = i.first;
 				}
 			}
+			else
+				shortage = std::numeric_limits<double>::infinity();
 			
 			[requiredResources addObject:@{@"name":type.typeName ?: NSLocalizedString(@"Unknown", nil),
+										   @"shortage":@(shortage),
 										   @"typeID":@(i.first)}];
 
 		}
 		[requiredResources sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
 		NSArray* labels = @[cell.input1TitleLabel, cell.input2TitleLabel, cell.input3TitleLabel];
 		NSArray* shortageLabels = @[cell.input1ShortageLabel, cell.input2ShortageLabel, cell.input3ShortageLabel];
+		NSArray* ratioLabels = @[cell.input1RatioLabel, cell.input2RatioLabel, cell.input3RatioLabel];
 		
 		int i = 0;
 		
-		uint32_t max = 0;
-		for (const auto& i: factoryRow.ratio)
-			max = std::max(max, i.second);
-		
-		NSMutableArray* ratioComponents = [NSMutableArray new];
+		double p = 0;
+		for (const auto& i: factoryRow.ratio) {
+			if (i.second > 0)
+				p = std::max(p, 1.0 / i.second);
+		}
 		
 		for (NSDictionary* dic in requiredResources) {
 			UILabel* label = labels[i];
 			UILabel* shortageLabel = shortageLabels[i];
+			UILabel* ratioLabel = ratioLabels[i];
 			label.text = dic[@"name"];
-			if ([dic[@"typeID"] intValue] == minTypeID) {
+			if ([dic[@"shortage"] doubleValue] == minShortage) {
 				NSString* text;
 				if (minShortage <= 0)
 					text = NSLocalizedString(@"<color=red>depleted</color>", nil);
@@ -952,29 +1014,29 @@
 			else
 				shortageLabel.text = nil;
 			
-			if (max > 0) {
-				double c = std::trunc(factoryRow.ratio[[dic[@"typeID"] intValue]] / static_cast<double>(max) * 10) / 10;
+			if (factoryRow.ratio.size() > 1) {
+				double c = std::round(factoryRow.ratio[[dic[@"typeID"] intValue]] * p * 10) / 10;
 				if (c == 0)
-					[ratioComponents addObject:@"0"];
+					ratioLabel.text = @"0";
 				else if (c == 1)
-					[ratioComponents addObject:@"1"];
+					ratioLabel.text = @"1";
 				else
-					[ratioComponents addObject:[NSString stringWithFormat:@"%.1f", c]];
+					ratioLabel.text = [NSString stringWithFormat:@"%.1f", c];
 			}
-
+			else
+				ratioLabel.text = nil;
 			i++;
 		}
+		
 		for (; i < 3; i++) {
 			UILabel* label = labels[i];
 			UILabel* shortageLabel = shortageLabels[i];
-			label.text = @"";
-			shortageLabel.text = @"";
+			UILabel* ratioLabel = ratioLabels[i];
+			label.text = nil;
+			shortageLabel.text = nil;
+			ratioLabel.text = nil;
 		}
-		
-		if (ratioComponents.count > 1)
-			cell.ratioLabel.text = [ratioComponents componentsJoinedByString:@":"];
-		else
-			cell.ratioLabel.text = nil;
+
 	}
 /*
 	if (([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]] || [row isKindOfClass:[NCPlanetaryViewControllerStorageRow class]]) && [[row valueForKey:@"bars"] count] > 0) {

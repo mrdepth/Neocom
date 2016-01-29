@@ -94,11 +94,13 @@
 				dic[@"orange"] = [UIColor orangeColor];
 				dic[@"purple"] = [UIColor purpleColor];
 				dic[@"brown"] = [UIColor brownColor];
+				dic[@"lighttext"] = [UIColor lightTextColor];
+				dic[@"darktext"] = [UIColor darkTextColor];
 				map = dic;
 			});
 		}
 		NSString* key = [string lowercaseString];
-		return map[key] ?: [UIColor clearColor];
+		return map[key] ?: [UIColor whiteColor];
 	}
 }
 

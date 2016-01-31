@@ -207,7 +207,9 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+	NCTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+	if (cell.object)
+		[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:cell];
 }
 
 #pragma mark - NCTableViewController
@@ -444,8 +446,13 @@
 									extrapolatedEfficiency = factoryState->getEfficiency();
 								}
 							}
+							if (!currentState)
+								currentState = lastState;
+							
 							double duration = firstProductionState && currentState ? currentState->getTimestamp() - firstProductionState->getTimestamp() : 0;
 							double extrapolatedDuration = firstProductionState && lastState ? lastState->getTimestamp() - firstProductionState->getTimestamp() : 0;
+							if (duration < 0)
+								duration = 0;
 							
 							double productionTime = currentState ? currentState->getEfficiency() * duration : 0;
 							row.productionTime += productionTime;
@@ -457,9 +464,6 @@
 							if (extrapolatedProductionTime > 0)
 								row.active = YES;
 							
-							if (schematic->getSchematicID() == 85)
-								row = row;
-
 							for (const auto& input: factory->getInputs()) {
 								auto incomming = input->getSource()->getIncomming(input->getCommodity());
 								row.ratio[incomming.getTypeID()] += incomming.getQuantity();
@@ -568,6 +572,11 @@
 			}
 			
 			section.rows = [rows filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"active==YES"]];
+			if (section.rows.count == 0) {
+				NCPlanetaryViewControllerRow* row = [NCPlanetaryViewControllerRow new];
+				row.pinName = NSLocalizedString(@"Colony production has halted", nil);
+				section.rows = @[row];
+			}
 			[sections addObject:section];
 			progress.completedUnitCount++;
 		}
@@ -1017,11 +1026,11 @@
 			if (factoryRow.ratio.size() > 1) {
 				double c = std::round(factoryRow.ratio[[dic[@"typeID"] intValue]] * p * 10) / 10;
 				if (c == 0)
-					ratioLabel.text = @"0";
+					ratioLabel.text = @"0  ";
 				else if (c == 1)
-					ratioLabel.text = @"1";
+					ratioLabel.text = @"1  ";
 				else
-					ratioLabel.text = [NSString stringWithFormat:@"%.1f", c];
+					ratioLabel.text = [NSString stringWithFormat:@"%.1f  ", c];
 			}
 			else
 				ratioLabel.text = nil;
@@ -1037,6 +1046,12 @@
 			ratioLabel.text = nil;
 		}
 
+	}
+	else {
+		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+		cell.titleLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:[NSString stringWithFormat:@"<color=lightText>%@</color>", row.pinName]];
+		cell.subtitleLabel.text = nil;
+		cell.imageView.image = nil;
 	}
 /*
 	if (([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]] || [row isKindOfClass:[NCPlanetaryViewControllerStorageRow class]]) && [[row valueForKey:@"bars"] count] > 0) {
@@ -1288,6 +1303,11 @@
 	[title appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@ / %@", section.colony.colony.planetName, section.colony.colony.planetTypeName] attributes:nil]];
 	return title;
 }
+
+/*- (NSString*) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)sectionIndex {
+	NCPlanetaryViewControllerSection* section = self.sections[sectionIndex];
+	return section.rows.count == 0 ? NSLocalizedString(@"Colony production has halted", nil) : nil;
+}*/
 
 - (id) identifierForSection:(NSInteger)sectionIndex {
 	NCPlanetaryViewControllerSection* section = self.sections[sectionIndex];

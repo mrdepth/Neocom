@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12056E5D18C45F2E008D8755 /* NCPriceManager.m */; };
 		1206C5EA18922FB20010BEE8 /* NCMailBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5E918922FB20010BEE8 /* NCMailBox.m */; };
+		1207C53A1C5C94BE00754D43 /* NCTableViewFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1207C5391C5C94BE00754D43 /* NCTableViewFooterView.m */; };
+		1207C53C1C5C94D000754D43 /* NCTableViewFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1207C53B1C5C94D000754D43 /* NCTableViewFooterView.xib */; };
 		120968531845F0CB00921A37 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968521845F0CB00921A37 /* Foundation.framework */; };
 		120968551845F0CB00921A37 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968541845F0CB00921A37 /* CoreGraphics.framework */; };
 		120968571845F0CB00921A37 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968561845F0CB00921A37 /* UIKit.framework */; };
@@ -620,6 +622,9 @@
 		1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMailBoxViewController.m; sourceTree = "<group>"; };
 		1206C5F018929B960010BEE8 /* NCMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMessageCell.h; sourceTree = "<group>"; };
 		1206C5F118929B960010BEE8 /* NCMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMessageCell.m; sourceTree = "<group>"; };
+		1207C5381C5C94BE00754D43 /* NCTableViewFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewFooterView.h; sourceTree = "<group>"; };
+		1207C5391C5C94BE00754D43 /* NCTableViewFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewFooterView.m; sourceTree = "<group>"; };
+		1207C53B1C5C94D000754D43 /* NCTableViewFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCTableViewFooterView.xib; sourceTree = "<group>"; };
 		1209684F1845F0CB00921A37 /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		120968521845F0CB00921A37 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		120968541845F0CB00921A37 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1550,6 +1555,16 @@
 			name = NCMessageCell;
 			sourceTree = "<group>";
 		};
+		1207C52F1C5C948400754D43 /* NCTableViewFooterView */ = {
+			isa = PBXGroup;
+			children = (
+				1207C5381C5C94BE00754D43 /* NCTableViewFooterView.h */,
+				1207C5391C5C94BE00754D43 /* NCTableViewFooterView.m */,
+				1207C53B1C5C94D000754D43 /* NCTableViewFooterView.xib */,
+			);
+			name = NCTableViewFooterView;
+			sourceTree = "<group>";
+		};
 		120968461845F0CB00921A37 = {
 			isa = PBXGroup;
 			children = (
@@ -2375,6 +2390,7 @@
 				129FEE12186030E000F75FA6 /* NCStorage */,
 				12111235185992DD009E5106 /* NCCache */,
 				1200C32218603093008F3C5E /* NCAccountsManager */,
+				1207C52F1C5C948400754D43 /* NCTableViewFooterView */,
 				128D29B218BDBD26003B8E03 /* NCTableViewHeaderView */,
 				126A0CC3185F399F00A8E8A3 /* NCTableViewController */,
 				84E4331F18951C1600DF2061 /* NCViewController */,
@@ -4253,6 +4269,7 @@
 				120B508118FCFFCB0033AF78 /* level_200.gif in Resources */,
 				129D263F187E98D500E2062C /* NCNavigationCharacterButton.xib in Resources */,
 				120B507118FCFFCB0033AF78 /* level_021.gif in Resources */,
+				1207C53C1C5C94D000754D43 /* NCTableViewFooterView.xib in Resources */,
 				126ED32D188144370009FA39 /* mainMenu.plist in Resources */,
 				1209D16A1BDFB14D006FEF67 /* Attributes.xcassets in Resources */,
 				120B508B18FCFFCB0033AF78 /* level_350.gif in Resources */,
@@ -4654,6 +4671,7 @@
 				128257241BCF964500BC1F56 /* NCFittingShipAffectingSkillsViewController.m in Sources */,
 				1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */,
 				12CC8D6C188178570058C5DF /* NCTableViewEmptyHeaderView.m in Sources */,
+				1207C53A1C5C94BE00754D43 /* NCTableViewFooterView.m in Sources */,
 				126AACEF1BBA72110068AA99 /* NCDatabaseGroupPickerViewContoller.m in Sources */,
 				124097C31B2F2021002AC442 /* NCPopoverController.m in Sources */,
 				1267030C1A911A0900F816F9 /* NSMutableAttributedString+Neocom.m in Sources */,

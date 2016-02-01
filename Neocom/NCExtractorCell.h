@@ -26,5 +26,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *wasteTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *wasteLabel;
 @property (weak, nonatomic) IBOutlet UILabel *wasteTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *expiredLabel;
 
 @end

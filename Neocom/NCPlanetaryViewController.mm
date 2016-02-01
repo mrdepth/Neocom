@@ -380,16 +380,6 @@
 							else
 								row.endDate = row.startDate;
 							
-							if (firstWasteState)
-								section.warning = YES;
-							
-							/*NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
-							if (duration > 0) {
-								for (NCBarChartSegment* segment in segments) {
-									segment.x = (segment.x - startTime) / duration;
-									segment.w /= duration;
-								}
-							}*/
 							row.bars = segments;
 							row.maxProduct = maxH;
 							[chartRows addObject:row];
@@ -576,6 +566,28 @@
 				NCPlanetaryViewControllerRow* row = [NCPlanetaryViewControllerRow new];
 				row.pinName = NSLocalizedString(@"Colony production has halted", nil);
 				section.rows = @[row];
+				section.warning = YES;
+			}
+			else {
+				for (NCPlanetaryViewControllerRow* row in rows) {
+					if ([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]]) {
+						NCPlanetaryViewControllerExtractorRow* extractorRow = (NCPlanetaryViewControllerExtractorRow*) row;
+						auto ecu = std::dynamic_pointer_cast<const dgmpp::ExtractorControlUnit>(extractorRow.facility);
+						if (extractorRow.nextWasteState || ecu->getExpiryTime() - serverTime < 3600 * 24) {
+							section.warning = YES;
+							break;
+						}
+					}
+					else if ([row isKindOfClass:[NCPlanetaryViewControllerFactoryRow class]]) {
+						NCPlanetaryViewControllerFactoryRow* factoryRow = (NCPlanetaryViewControllerFactoryRow*) row;
+						for (const auto& i: factoryRow.shortageTime) {
+							if (i.second - serverTime < 3600 * 24) {
+								section.warning = YES;
+								break;
+							}
+						}
+					}
+				}
 			}
 			[sections addObject:section];
 			progress.completedUnitCount++;
@@ -746,8 +758,9 @@
 				
 				cell.markerLabel.text = NSLocalizedString(@"Now", nil);
 				if (remainsTime > 0) {
-					cell.axisXLabel.text = remainsTime > 0 ? [NSString stringWithTimeLeft:remainsTime componentsLimit:3] : NSLocalizedString(@"Finished", nil);
-					
+//					cell.axisXLabel.text = remainsTime > 0 ? [NSString stringWithTimeLeft:remainsTime componentsLimit:3] : NSLocalizedString(@"Finished", nil);
+					cell.expiredLabel.text = [NSString stringWithTimeLeft:remainsTime componentsLimit:3];
+					cell.expiredLabel.textColor = remainsTime > 3600 * 24 ? [UIColor greenColor] : [UIColor yellowColor];
 					auto cycle = extractorRow.currentState->getCurrentCycle();
 					int32_t cycleTime = cycle->getCycleTime();
 					int32_t start = cycle->getLaunchTime();
@@ -757,14 +770,18 @@
 
 				}
 				else {
-					cell.axisXLabel.text = nil;
-					cell.currentCycleLabel.text = NSLocalizedString(@"Finished", nil);
+//					cell.axisXLabel.text = nil;
+					cell.currentCycleLabel.text = toString(0);
+					cell.expiredLabel.text = toString(0);
+					cell.expiredLabel.textColor = [UIColor redColor];
 				}
 
 			}
 			else {
-				cell.axisXLabel.text = nil;
-				cell.currentCycleLabel.text = NSLocalizedString(@"Finished", nil);
+//				cell.axisXLabel.text = nil;
+				cell.currentCycleLabel.text = toString(0);
+				cell.expiredLabel.text = toString(0);
+				cell.expiredLabel.textColor = [UIColor redColor];
 			}
 			
 			
@@ -781,6 +798,16 @@
 																		   constant:0];
 			cell.markerAuxiliaryViewConstraint = constraint;
 			[cell.markerAuxiliaryView.superview addConstraint:constraint];
+			
+			if (time < duration) {
+				cell.axisXLabel.text = [NSString stringWithTimeLeft:duration - time componentsLimit:3];
+				cell.markerLabel.text = NSLocalizedString(@"Now", nil);
+			}
+			else {
+				cell.axisXLabel.text = NSLocalizedString(@"Finished", nil);
+				cell.markerLabel.text = nil;
+			}
+
 			
 			
 			if (extractorRow.nextWasteState || extractorRow.allTimeWaste > 0) {
@@ -1294,7 +1321,7 @@
 		NSTextAttachment* icon = [NSTextAttachment new];
 		icon.image = [self.databaseManagedObjectContext eveIconWithIconFile:@"09_11"].image.image;
 		UIFont* font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-		icon.bounds = CGRectMake(0, -9 -font.descender, 18, 18);
+		icon.bounds = CGRectMake(0, -8 -font.descender, 18, 18);
 		
 		[title appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
 		[title appendAttributedString:[[NSAttributedString alloc] initWithString:@" " attributes:nil]];

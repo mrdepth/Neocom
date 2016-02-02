@@ -80,8 +80,10 @@
 @property (nonatomic, assign) double extrapolatedProductionTime;
 @property (nonatomic, assign) double extrapolatedIdleTime;
 @property (nonatomic, assign) std::map<dgmpp::TypeID, uint32_t>& ratio;
-@property (nonatomic, assign) std::map<dgmpp::TypeID, double>& shortageTime;
+//@property (nonatomic, assign) std::map<dgmpp::TypeID, double>& shortageTime;
 @property (nonatomic, assign) std::list<std::shared_ptr<dgmpp::IndustryFacility>>& factories;
+@property (nonatomic, assign) std::shared_ptr<const dgmpp::ProductionState> lastState;
+
 @end
 
 
@@ -406,8 +408,8 @@
 								row.pin = pin;
 								factories[@(schematic->getSchematicID())] = row;
 								[rows addObject:row];
-								for (const auto& input: schematic->getInputs())
-									row.shortageTime[input.getTypeID()] = std::numeric_limits<double>::infinity();
+//								for (const auto& input: schematic->getInputs())
+//									row.shortageTime[input.getTypeID()] = 0;
 							}
 							row.factories.push_back(factory);
 
@@ -454,23 +456,18 @@
 							if (extrapolatedProductionTime > 0)
 								row.active = YES;
 							
+							if (schematic->getSchematicID() == 83)
+								row = row;
+							
 							for (const auto& input: factory->getInputs()) {
 								auto incomming = input->getSource()->getIncomming(input->getCommodity());
 								row.ratio[incomming.getTypeID()] += incomming.getQuantity();
 							}
 							if (lastState) {
-								for (const auto& input: schematic->getInputs()) {
-									bool depleted = true;
-									for (const auto& commodity: lastState->getCommodities()) {
-										if (commodity.getTypeID() == input.getTypeID()) {
-											if (commodity.getQuantity() == input.getQuantity())
-												depleted = false;
-											break;
-										}
-									}
-									if (depleted)
-										row.shortageTime[input.getTypeID()] = !std::isinf(row.shortageTime[input.getTypeID()]) ? std::max(row.shortageTime[input.getTypeID()], lastState->getTimestamp()) : lastState->getTimestamp();
-								}
+								if (!row.lastState)
+									row.lastState = lastState;
+								else if (row.lastState->getTimestamp() < lastState->getTimestamp())
+									row.lastState = lastState;
 							}
 						}
 						break;
@@ -580,12 +577,14 @@
 					}
 					else if ([row isKindOfClass:[NCPlanetaryViewControllerFactoryRow class]]) {
 						NCPlanetaryViewControllerFactoryRow* factoryRow = (NCPlanetaryViewControllerFactoryRow*) row;
-						for (const auto& i: factoryRow.shortageTime) {
+						if (factoryRow.lastState && factoryRow.lastState->getTimestamp() < 3600 * 24)
+							section.warning = YES;
+/*						for (const auto& i: factoryRow.shortageTime) {
 							if (i.second - serverTime < 3600 * 24) {
 								section.warning = YES;
 								break;
 							}
-						}
+						}*/
 					}
 				}
 			}
@@ -1000,26 +999,24 @@
 		
 		NSMutableArray* requiredResources = [NSMutableArray new];
 
-		NSTimeInterval minShortage = std::numeric_limits<NSTimeInterval>::infinity();
-//		dgmpp::TypeID minTypeID = -1;
-		for (const auto& i: factoryRow.shortageTime) {
-			
-			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:i.first];
-			double shortage;
-			if (!std::isinf(i.second)) {
-				shortage = i.second - serverTimestamp;
-				if (shortage < minShortage) {
-					minShortage = shortage;
-//					minTypeID = i.first;
+		if (factoryRow.lastState) {
+			auto factory = factoryRow.factories.front();
+			for (const auto& i: factory->getSchematic()->getInputs()) {
+				bool depleted = true;
+				for (const auto& j: factoryRow.lastState->getCommodities()) {
+					if (i.getTypeID() == j.getTypeID()) {
+						if (i.getQuantity() == j.getQuantity())
+							depleted = false;
+						break;
+					}
 				}
+				
+				NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:i.getTypeID()];
+				
+				[requiredResources addObject:@{@"name":type.typeName ?: NSLocalizedString(@"Unknown", nil),
+											   @"depleted":@(depleted),
+											   @"typeID":@(i.getTypeID())}];
 			}
-			else
-				shortage = std::numeric_limits<double>::infinity();
-			
-			[requiredResources addObject:@{@"name":type.typeName ?: NSLocalizedString(@"Unknown", nil),
-										   @"shortage":@(shortage),
-										   @"typeID":@(i.first)}];
-
 		}
 		[requiredResources sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
 		NSArray* labels = @[cell.input1TitleLabel, cell.input2TitleLabel, cell.input3TitleLabel];
@@ -1039,12 +1036,13 @@
 			UILabel* shortageLabel = shortageLabels[i];
 			UILabel* ratioLabel = ratioLabels[i];
 			label.text = dic[@"name"];
-			if ([dic[@"shortage"] doubleValue] == minShortage) {
+			if ([dic[@"depleted"] boolValue]) {
 				NSString* text;
-				if (minShortage <= 0)
+				double shortage = factoryRow.lastState->getTimestamp() - serverTimestamp;
+				if (shortage <= 0)
 					text = NSLocalizedString(@"<color=red>depleted</color>", nil);
 				else
-					text = [NSString stringWithFormat:NSLocalizedString(@"shortage in <color=%@>%@</color>", nil), minShortage > 3600 * 24 ? @"green" : @"yellow", [NSString stringWithTimeLeft:minShortage]];
+					text = [NSString stringWithFormat:NSLocalizedString(@"shortage in <color=%@>%@</color>", nil), shortage > 3600 * 24 ? @"green" : @"yellow", [NSString stringWithTimeLeft:shortage]];
 				shortageLabel.attributedText = [NSAttributedString attributedStringWithHTMLString:text];
 			}
 			else

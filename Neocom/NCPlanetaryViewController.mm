@@ -456,9 +456,6 @@
 							if (extrapolatedProductionTime > 0)
 								row.active = YES;
 							
-							if (schematic->getSchematicID() == 83)
-								row = row;
-							
 							for (const auto& input: factory->getInputs()) {
 								auto incomming = input->getSource()->getIncomming(input->getCommodity());
 								row.ratio[incomming.getTypeID()] += incomming.getQuantity();
@@ -507,15 +504,19 @@
 								lastState = state;
 								prevSegment = segment;
 							}
-							prevSegment.w = timestamp - prevSegment.x;
+							prevSegment.w = std::max(timestamp, serverTime) - prevSegment.x;
+							
+							if (!row.currentState)
+								row.currentState = lastState;
 						}
+						
 
-						if (firstState)
-							row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:firstState->getTimestamp()];
+						row.startDate = [NSDate dateWithTimeIntervalSinceReferenceDate:firstState ? firstState->getTimestamp() : serverTime];
 						if (lastState)
-							row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:lastState->getTimestamp()];
+							row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:lastState->getTimestamp() > serverTime ? lastState->getTimestamp() : serverTime];
 						else
-							row.endDate = row.startDate;
+							row.endDate = [NSDate dateWithTimeIntervalSinceReferenceDate:serverTime];
+						
 						/*NSTimeInterval duration = [row.endDate timeIntervalSinceDate:row.startDate];
 						NSTimeInterval startTime = [row.startDate timeIntervalSinceReferenceDate];
 						if (duration > 0) {
@@ -525,7 +526,7 @@
 							}
 						}*/
 						row.order = 1;
-						row.active = segments.count > 1;
+						row.active = segments.count > 1 || (segments.count > 0 && storage->getVolume() > 0);
 						row.pin = pin;
 						row.bars = segments;
 						[rows addObject:row];
@@ -558,36 +559,36 @@
 				}
 			}
 			
-			section.rows = [rows filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"active==YES"]];
-			if (section.rows.count == 0) {
-				NCPlanetaryViewControllerRow* row = [NCPlanetaryViewControllerRow new];
-				row.pinName = NSLocalizedString(@"Colony production has halted", nil);
-				section.rows = @[row];
-				section.warning = YES;
-			}
-			else {
-				for (NCPlanetaryViewControllerRow* row in rows) {
-					if ([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]]) {
-						NCPlanetaryViewControllerExtractorRow* extractorRow = (NCPlanetaryViewControllerExtractorRow*) row;
-						auto ecu = std::dynamic_pointer_cast<const dgmpp::ExtractorControlUnit>(extractorRow.facility);
-						if (extractorRow.nextWasteState || ecu->getExpiryTime() - serverTime < 3600 * 24) {
+			BOOL halted = YES;
+			for (NCPlanetaryViewControllerRow* row in rows) {
+				if ([row isKindOfClass:[NCPlanetaryViewControllerExtractorRow class]]) {
+					NCPlanetaryViewControllerExtractorRow* extractorRow = (NCPlanetaryViewControllerExtractorRow*) row;
+					auto ecu = std::dynamic_pointer_cast<const dgmpp::ExtractorControlUnit>(extractorRow.facility);
+					if (ecu) {
+						if (extractorRow.nextWasteState || ecu->getExpiryTime() - serverTime < 3600 * 24)
 							section.warning = YES;
-							break;
-						}
+						if (ecu->getExpiryTime() > serverTime)
+							halted = NO;
 					}
-					else if ([row isKindOfClass:[NCPlanetaryViewControllerFactoryRow class]]) {
-						NCPlanetaryViewControllerFactoryRow* factoryRow = (NCPlanetaryViewControllerFactoryRow*) row;
-						if (factoryRow.lastState && factoryRow.lastState->getTimestamp() < 3600 * 24)
+				}
+				else if ([row isKindOfClass:[NCPlanetaryViewControllerFactoryRow class]]) {
+					NCPlanetaryViewControllerFactoryRow* factoryRow = (NCPlanetaryViewControllerFactoryRow*) row;
+					if (factoryRow.lastState) {
+						if (factoryRow.lastState->getTimestamp() - serverTime < 3600 * 24)
 							section.warning = YES;
-/*						for (const auto& i: factoryRow.shortageTime) {
-							if (i.second - serverTime < 3600 * 24) {
-								section.warning = YES;
-								break;
-							}
-						}*/
+						if (factoryRow.lastState->getTimestamp() > serverTime)
+							halted = NO;
 					}
 				}
 			}
+			[rows filterUsingPredicate:[NSPredicate predicateWithFormat:@"active==YES"]];
+			if (halted) {
+				NCPlanetaryViewControllerRow* row = [NCPlanetaryViewControllerRow new];
+				row.pinName = NSLocalizedString(@"Colony production has halted", nil);
+				[rows insertObject:row atIndex:0];
+				section.warning = YES;
+			}
+			section.rows = rows;
 			[sections addObject:section];
 			progress.completedUnitCount++;
 		}

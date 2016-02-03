@@ -499,6 +499,7 @@
 						cell.alignTimeLabel.text = data[@"alignTime"];
 						cell.signatureLabel.text = data[@"signature"];
 						cell.cargoLabel.text = data[@"cargo"];
+						cell.oreHoldLabel.text = data[@"oreHold"];
 						cell.sensorImageView.image = data[@"sensorImage"];
 						cell.droneRangeLabel.text = data[@"droneRange"];
 						cell.warpSpeedLabel.text = data[@"warpSpeed"];
@@ -516,7 +517,8 @@
 								float speed = ship->getVelocity();
 								float alignTime = ship->getAlignTime();
 								float signature =ship->getSignatureRadius();
-								float cargo =ship->getAttribute(dgmpp::CAPACITY_ATTRIBUTE_ID)->getValue();
+								float cargo =ship->getCapacity();
+								float oreHold =ship->getOreHoldCapacity();
 								float mass = ship->getMass();
 								float droneRange = character->getAttribute(dgmpp::DRONE_CONTROL_DISTANCE_ATTRIBUTE_ID)->getValue() / 1000;
 								float warpSpeed = ship->getWarpSpeed();
@@ -540,7 +542,7 @@
 								}
 								if (!sensorImage)
 									sensorImage = [UIImage imageNamed:@"multispectral"];
-								
+
 								NSDictionary* data =
 								@{@"targets": [NSString stringWithFormat:@"%d", targets],
 								  @"targetRange": [NSString stringWithFormat:@"%.1f km", targetRange],
@@ -550,10 +552,11 @@
 								  @"alignTime": [NSString stringWithFormat:@"%.1f s", alignTime],
 								  @"signature": [NSString stringWithFormat:@"%.0f", signature],
 								  @"cargo": [NSString shortStringWithFloat:cargo unit:@"m3"],
+								  @"oreHold": [NSString shortStringWithFloat:oreHold unit:@"m3"],
 								  @"sensorImage": sensorImage,
 								  @"droneRange": [NSString stringWithFormat:@"%.1f km", droneRange],
 								  @"warpSpeed": [NSString stringWithFormat:@"%.2f AU/s", warpSpeed],
-								  @"mass": [NSString stringWithFormat:@"%@ kg", [NSNumberFormatter neocomLocalizedStringFromNumber:@(mass)]]};
+								  @"mass": [NSString stringWithFormat:@"%@ kg", [NSString shortStringWithFloat:mass unit:nil]]};
 								dispatch_async(dispatch_get_main_queue(), ^{
 									completionBlock(data);
 								});

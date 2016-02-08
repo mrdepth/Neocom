@@ -431,6 +431,7 @@
 										firstProductionState = factoryState;
 									lastState = nullptr;
 									extrapolatedEfficiency = -1;
+									lastProductionState = factoryState;
 								}
 								else if (!factoryCycle) {
 									if (!lastState)
@@ -504,7 +505,7 @@
 								lastState = state;
 								prevSegment = segment;
 							}
-							prevSegment.w = std::max(timestamp, serverTime) - prevSegment.x;
+							prevSegment.w = std::numeric_limits<double>::infinity();
 							
 							if (!row.currentState)
 								row.currentState = lastState;
@@ -554,7 +555,10 @@
 					NSArray* segments = [row bars];
 					for (NCBarChartSegment* segment in segments) {
 						segment.x = (segment.x - startTime) / duration;
-						segment.w /= duration;
+						if (std::isinf(segment.w))
+							segment.w = 1.0 - segment.x;
+						else
+							segment.w /= duration;
 					}
 				}
 			}

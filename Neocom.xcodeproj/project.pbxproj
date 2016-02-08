@@ -83,6 +83,7 @@
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
 		122DB6621BA6AAE400649A55 /* NCFittingMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */; };
+		122DBDB61C68C8DF002FDDD0 /* libAdapterIAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DBDB51C68C8DF002FDDD0 /* libAdapterIAd.a */; };
 		122F01C819483D2100D04D60 /* NCDBInvType+Neocom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122F01C719483D2100D04D60 /* NCDBInvType+Neocom.mm */; };
 		1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1235E3F318E562E300BC2607 /* NCNavigationController.m */; };
 		123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 123A97F218C7017E001045F5 /* MessageUI.framework */; };
@@ -740,6 +741,7 @@
 		122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEIndustryJobsItem+Neocom.m"; sourceTree = "<group>"; };
 		122C98B118B6026100386EDE /* NCIndustryJobsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIndustryJobsDetailsViewController.h; sourceTree = "<group>"; };
 		122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIndustryJobsDetailsViewController.m; sourceTree = "<group>"; };
+		122DBDB51C68C8DF002FDDD0 /* libAdapterIAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdapterIAd.a; sourceTree = "<group>"; };
 		122F01C619483D2100D04D60 /* NCDBInvType+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvType+Neocom.h"; sourceTree = "<group>"; };
 		122F01C719483D2100D04D60 /* NCDBInvType+Neocom.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NCDBInvType+Neocom.mm"; sourceTree = "<group>"; };
 		12331DBF18F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCZKillBoardSwitchCell.h; sourceTree = "<group>"; };
@@ -1451,6 +1453,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12F332931C34213500F19C45 /* dgmpp.framework in Frameworks */,
+				122DBDB61C68C8DF002FDDD0 /* libAdapterIAd.a in Frameworks */,
 				1268292E1C06044B00954ECF /* SpriteKit.framework in Frameworks */,
 				1210C7DE1BF4D77800B94154 /* QuartzCore.framework in Frameworks */,
 				12D963E51BA1F1A100292321 /* AFNetworking.framework in Frameworks */,
@@ -3490,6 +3493,7 @@
 		12D6DBF51920A296003FC5ED /* admob */ = {
 			isa = PBXGroup;
 			children = (
+				122DBDB51C68C8DF002FDDD0 /* libAdapterIAd.a */,
 				1219C1491AA4FF0000FF6205 /* GoogleMobileAds.framework */,
 			);
 			path = admob;

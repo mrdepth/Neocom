@@ -584,8 +584,8 @@
 			if (sq) {
 				NSString *text;
 				UIColor *color = nil;
-				if (sq.skillQueue.count > 0) {
-					NSTimeInterval timeLeft = [sq timeLeft];
+				NSTimeInterval timeLeft = [sq timeLeft];
+				if (timeLeft > 0) {
 					if (timeLeft > 3600 * 24)
 						color = [UIColor greenColor];
 					else

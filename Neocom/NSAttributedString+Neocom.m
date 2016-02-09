@@ -106,6 +106,26 @@
 										   attributes:@{@"NSURL":url}];
 }
 
++ (NSAttributedString*) attributedStringWithHTMLString:(NSString*) html {
+	NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:html attributes:nil];
+	
+	NSRegularExpression* expression = [NSRegularExpression regularExpressionWithPattern:@"<(color|font)[^>]*=[\"']?(.*?)[\"']?\\s*?>(.*?)</(color|font)>"
+																				options:NSRegularExpressionCaseInsensitive
+																				  error:nil];
+	NSTextCheckingResult* result;
+	
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
+		NSString* colorString = [s.string substringWithRange:[result rangeAtIndex:2]];
+		UIColor* color = [UIColor colorWithString:colorString];
+		
+		NSMutableAttributedString* replace = [[s attributedSubstringFromRange:[result rangeAtIndex:3]] mutableCopy];
+		if (color)
+			[replace addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, replace.length)];
+		[s replaceCharactersInRange:[result rangeAtIndex:0] withAttributedString:replace];
+	}
+	return s;
+}
+
 #pragma mark - Private
 
 + (NSInteger) dimensionForValue:(float) value {

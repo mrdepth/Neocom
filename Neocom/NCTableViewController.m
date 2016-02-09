@@ -11,6 +11,7 @@
 #import "NCAccount.h"
 #import "NSString+Neocom.h"
 #import "NCTableViewHeaderView.h"
+#import "NCTableViewFooterView.h"
 #import "NCTableViewCollapsedHeaderView.h"
 #import "NCSetting.h"
 #import "NCStorage.h"
@@ -117,6 +118,7 @@
 		[self.tableView registerClass:[NCTableViewCollapsedHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
 	else
 		[self.tableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
+	[self.tableView registerClass:[NCTableViewFooterView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewFooterView"];
 	
 //	if (self.searchDisplayController)
 //		[self.searchDisplayController.searchResultsTableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
@@ -523,6 +525,19 @@
 		return nil;
 }
 
+- (UIView*) tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+	if ([self respondsToSelector:@selector(tableView:titleForFooterInSection:)]) {
+		NSString* title = [self tableView:tableView titleForFooterInSection:section];
+		if (title) {
+			NCTableViewFooterView* view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewFooterView"];
+			view.textLabel.text = title;
+			return view;
+		}
+	}
+	return nil;
+}
+
+
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	UIView* view = [self tableView:tableView viewForHeaderInSection:section];
 	return view ? 44 : 0;
@@ -530,7 +545,8 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	return 0;
+	UIView* view = [self tableView:tableView viewForFooterInSection:section];
+	return view ? 44 : 0;
 }
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

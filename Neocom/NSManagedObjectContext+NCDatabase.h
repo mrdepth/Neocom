@@ -45,6 +45,7 @@ typedef NS_ENUM(NSInteger, NCDBDgmppItemSlot) {
 
 //NCDBEveIcon
 - (NCDBEveIcon*) defaultTypeIcon;
+- (NCDBEveIcon*) unknownTypeIcon;
 - (NCDBEveIcon*) defaultGroupIcon;
 - (NCDBEveIcon*) certificateUnclaimedIcon;
 - (NCDBEveIcon*) eveIconWithIconFile:(NSString*) iconFile;

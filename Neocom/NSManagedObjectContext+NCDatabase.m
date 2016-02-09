@@ -37,6 +37,10 @@
 	return [self eveIconWithIconFile:@"07_15"];
 }
 
+- (NCDBEveIcon*) unknownTypeIcon {
+	return [self eveIconWithIconFile:@"07_14"];
+}
+
 - (NCDBEveIcon*) defaultGroupIcon {
 	return [self eveIconWithIconFile:@"38_174"];
 }

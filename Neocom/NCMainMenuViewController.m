@@ -301,8 +301,8 @@
 - (NSString*) skillQueueDetails {
 	if (self.skillQueue) {
 		EVESkillQueue* skillQueue = self.skillQueue;
-		if (skillQueue.skillQueue.count > 0) {
-			NSTimeInterval timeLeft = [skillQueue timeLeft];
+		NSTimeInterval timeLeft = [skillQueue timeLeft];
+		if (timeLeft > 0) {
 			return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], (int32_t) skillQueue.skillQueue.count];
 		}
 		else

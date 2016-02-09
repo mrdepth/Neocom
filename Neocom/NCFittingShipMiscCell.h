@@ -17,6 +17,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *alignTimeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *signatureLabel;
 @property (nonatomic, weak) IBOutlet UILabel *cargoLabel;
+@property (weak, nonatomic) IBOutlet UILabel *oreHoldLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *sensorImageView;
 @property (nonatomic, weak) IBOutlet UILabel *droneRangeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *warpSpeedLabel;

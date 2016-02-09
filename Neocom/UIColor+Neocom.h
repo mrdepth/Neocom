@@ -20,5 +20,6 @@
 + (instancetype) appearancePopoverBackgroundColor;
 
 + (instancetype) urlColor;
++ (instancetype) colorWithString:(NSString*) string;
 
 @end

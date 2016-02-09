@@ -14,5 +14,6 @@
 + (NSAttributedString*) attributedStringWithTimeLeft:(NSTimeInterval) timeLeft;
 + (NSAttributedString*) attributedStringWithTimeLeft:(NSTimeInterval) timeLeft componentsLimit:(NSInteger) componentsLimit;
 + (NSAttributedString*) attributedStringWithString:(NSString*) string url:(NSURL*) url;
++ (NSAttributedString*) attributedStringWithHTMLString:(NSString*) html;
 
 @end

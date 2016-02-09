@@ -401,6 +401,7 @@
 	[(NCPieChartLayer*) self.layer addSegment:segment animated:animated];
 }
 
+
 - (void) clear {
 	[(NCPieChartLayer*) self.layer clear];
 }

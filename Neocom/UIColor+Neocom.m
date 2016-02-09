@@ -69,4 +69,39 @@
 	return [UIColor colorWithUInteger:0xffa500ff];
 }
 
++ (instancetype) colorWithString:(NSString*) string {
+	unsigned int rgba;
+	if ([[NSScanner scannerWithString:string] scanHexInt:&rgba]) {
+		return [self colorWithUInteger:rgba];
+	}
+	else {
+		static NSDictionary* map = nil;
+		if (!map) {
+			static dispatch_once_t onceToken;
+			dispatch_once(&onceToken, ^{
+				NSMutableDictionary* dic = [NSMutableDictionary new];
+				dic[@"black"] = [UIColor blackColor];
+				dic[@"darkgray"] = [UIColor darkGrayColor];
+				dic[@"lightgray"] = [UIColor lightGrayColor];
+				dic[@"white"] = [UIColor whiteColor];
+				dic[@"gray"] = [UIColor grayColor];
+				dic[@"red"] = [UIColor redColor];
+				dic[@"green"] = [UIColor greenColor];
+				dic[@"blue"] = [UIColor blueColor];
+				dic[@"cyan"] = [UIColor cyanColor];
+				dic[@"yellow"] = [UIColor yellowColor];
+				dic[@"magenta"] = [UIColor magentaColor];
+				dic[@"orange"] = [UIColor orangeColor];
+				dic[@"purple"] = [UIColor purpleColor];
+				dic[@"brown"] = [UIColor brownColor];
+				dic[@"lighttext"] = [UIColor lightTextColor];
+				dic[@"darktext"] = [UIColor darkTextColor];
+				map = dic;
+			});
+		}
+		NSString* key = [string lowercaseString];
+		return map[key] ?: [UIColor whiteColor];
+	}
+}
+
 @end

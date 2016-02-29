@@ -165,7 +165,7 @@
 	for (NCPieChartSegmentLayer* layer in self.segmentLayers)
 		layer.frame = frame;
 	
-	for (NCPieChartTextLayer* layer in self.textLayers) {
+	for (NCPieChartTextLayer* layer in [self.textLayers copy]) {
 		layer.radius = radius;
 		layer.bounds = (CGRect){.size = [layer preferredFrameSize]};
 		float angle = [layer.presentationLayer angle];
@@ -355,7 +355,7 @@
 - (NSAttributedString*) attributedString {
 	NSString* text = [self.segment.numberFormatter stringFromNumber:@([(NCPieChartTextLayer*) self value] * self.segment.multiplier)];
 	UIFont* font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-	NSAttributedString* s = [[NSAttributedString alloc] initWithString:text attributes:@{NSForegroundColorAttributeName:self.segment.color, NSFontAttributeName:font}];
+	NSAttributedString* s = [[NSAttributedString alloc] initWithString:text ?: @"" attributes:@{NSForegroundColorAttributeName:self.segment.color, NSFontAttributeName:font}];
 	return s;
 }
 

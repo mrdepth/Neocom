@@ -123,11 +123,11 @@
 			
 			if (missingIDs.count > 0) {
 				[self.cacheManagedObjectContext performBlock:^{
-					NCCacheRecord* cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:@"EVEConquerableStationList"];
+					NCCacheRecord* cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:@"NCLocationsManager"];
 					
 					NSMutableDictionary* locationsNames = [cacheRecord.data.data mutableCopy] ?: [NSMutableDictionary new];
 					
-					for (NSNumber* locationID in missingIDs) {
+					for (NSNumber* locationID in [missingIDs copy]) {
 						NCLocationsManagerItem* name = locationsNames[locationID];
 						if (name) {
 							results[locationID] = name;

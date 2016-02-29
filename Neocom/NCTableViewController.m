@@ -641,7 +641,7 @@
 
 - (void) updateCacheTime {
 	if (self.error) {
-		self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[self.error localizedDescription]
+		self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[self.error localizedDescription] ?: @""
 																			  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],
 																						   NSForegroundColorAttributeName: [UIColor whiteColor]}];
 	}

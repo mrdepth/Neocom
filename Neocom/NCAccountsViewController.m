@@ -546,7 +546,7 @@
 			NSAttributedString* apiKeyMask;
 			
 			if (detailed && characterInfo.lastKnownLocation && characterInfo.shipTypeName) {
-				NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:[characterInfo.lastKnownLocation stringByAppendingString:@", "] attributes:nil];
+				NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:[characterInfo.lastKnownLocation ?: @"" stringByAppendingString:@", "] attributes:nil];
 				[s appendAttributedString:[NSAttributedString attributedStringWithString:characterInfo.shipTypeName
 																					 url:[NSURL URLWithString:[NSString stringWithFormat:@"showinfo:%d", characterInfo.shipTypeID]]]];
 				lastKnownLocation = s;
@@ -666,7 +666,7 @@
 			}
 			if (apiKeyMask)
 				[s appendAttributedString:apiKeyMask];
-			if ([s.string characterAtIndex:s.string.length - 1] == '\n')
+			if (s.string.length > 1 && [s.string characterAtIndex:s.string.length - 1] == '\n')
 				[s deleteCharactersInRange:NSMakeRange(s.string.length - 1, 1)];
 			cell.detailsLabel.attributedText = s;
 		}

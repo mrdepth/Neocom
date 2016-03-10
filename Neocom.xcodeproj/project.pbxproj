@@ -22,7 +22,6 @@
 		1209D16A1BDFB14D006FEF67 /* Attributes.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1209D1691BDFB14D006FEF67 /* Attributes.xcassets */; };
 		1209D16F1BDFB9DE006FEF67 /* MainMenu.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1209D16D1BDFB9DE006FEF67 /* MainMenu.xcassets */; };
 		1209D1701BDFB9DE006FEF67 /* UI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1209D16E1BDFB9DE006FEF67 /* UI.xcassets */; };
-		1209D1721BDFCB77006FEF67 /* libFlurry_7.2.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1209D1711BDFCB77006FEF67 /* libFlurry_7.2.1.a */; };
 		120B506D18FCFFCB0033AF78 /* level_000.gif in Resources */ = {isa = PBXBuildFile; fileRef = 120B504918FCFFCB0033AF78 /* level_000.gif */; };
 		120B506E18FCFFCB0033AF78 /* level_010.gif in Resources */ = {isa = PBXBuildFile; fileRef = 120B504A18FCFFCB0033AF78 /* level_010.gif */; };
 		120B506F18FCFFCB0033AF78 /* level_011.gif in Resources */ = {isa = PBXBuildFile; fileRef = 120B504B18FCFFCB0033AF78 /* level_011.gif */; };
@@ -61,6 +60,7 @@
 		120B509018FCFFCB0033AF78 /* level_500.gif in Resources */ = {isa = PBXBuildFile; fileRef = 120B506C18FCFFCB0033AF78 /* level_500.gif */; };
 		120E77B81B25D91300816E1C /* NCSplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120E77B71B25D91300816E1C /* NCSplashScreenViewController.m */; };
 		120F98A71B539E220047A019 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 120F98A51B539E220047A019 /* NCDatabase.sqlite */; };
+		1210647A1C91AFF00032B3DB /* libFlurry_7.5.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 121064771C91AFF00032B3DB /* libFlurry_7.5.2.a */; };
 		1210C7DE1BF4D77800B94154 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1210C7DD1BF4D77800B94154 /* QuartzCore.framework */; };
 		1211122E185989E1009E5106 /* NCTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211122D185989E1009E5106 /* NCTaskManager.m */; };
 		1211123118598B09009E5106 /* NCTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211123018598B09009E5106 /* NCTask.m */; };
@@ -83,7 +83,6 @@
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
 		122DB6621BA6AAE400649A55 /* NCFittingMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */; };
-		122DBDB61C68C8DF002FDDD0 /* libAdapterIAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DBDB51C68C8DF002FDDD0 /* libAdapterIAd.a */; };
 		122F01C819483D2100D04D60 /* NCDBInvType+Neocom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122F01C719483D2100D04D60 /* NCDBInvType+Neocom.mm */; };
 		1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1235E3F318E562E300BC2607 /* NCNavigationController.m */; };
 		123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 123A97F218C7017E001045F5 /* MessageUI.framework */; };
@@ -486,6 +485,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1210646F1C91AAA20032B3DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12350FDF1C73A33D0015D140;
+			remoteInfo = "EVEAPI OS X";
+		};
+		121064711C91AAA20032B3DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12440CEA1C73CBC300F04393;
+			remoteInfo = "AFNetworking OS X";
+		};
 		1248CE791B7DDCE1000266BE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */;
@@ -642,7 +655,6 @@
 		1209D1691BDFB14D006FEF67 /* Attributes.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Attributes.xcassets; sourceTree = "<group>"; };
 		1209D16D1BDFB9DE006FEF67 /* MainMenu.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MainMenu.xcassets; sourceTree = "<group>"; };
 		1209D16E1BDFB9DE006FEF67 /* UI.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = UI.xcassets; sourceTree = "<group>"; };
-		1209D1711BDFCB77006FEF67 /* libFlurry_7.2.1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_7.2.1.a; sourceTree = "<group>"; };
 		120B504918FCFFCB0033AF78 /* level_000.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_000.gif; sourceTree = "<group>"; };
 		120B504A18FCFFCB0033AF78 /* level_010.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_010.gif; sourceTree = "<group>"; };
 		120B504B18FCFFCB0033AF78 /* level_011.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_011.gif; sourceTree = "<group>"; };
@@ -688,6 +700,9 @@
 		120E77B61B25D91300816E1C /* NCSplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSplashScreenViewController.h; sourceTree = "<group>"; };
 		120E77B71B25D91300816E1C /* NCSplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSplashScreenViewController.m; sourceTree = "<group>"; };
 		120F98A51B539E220047A019 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = dbTools/dbinit/NCDatabase.sqlite; sourceTree = SOURCE_ROOT; };
+		121064741C91AFF00032B3DB /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		121064761C91AFF00032B3DB /* FlurryWatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryWatch.h; sourceTree = "<group>"; };
+		121064771C91AFF00032B3DB /* libFlurry_7.5.2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_7.5.2.a; sourceTree = "<group>"; };
 		1210C7DD1BF4D77800B94154 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1211122C185989E1009E5106 /* NCTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTaskManager.h; sourceTree = "<group>"; };
 		1211122D185989E1009E5106 /* NCTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTaskManager.m; sourceTree = "<group>"; };
@@ -741,7 +756,6 @@
 		122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEIndustryJobsItem+Neocom.m"; sourceTree = "<group>"; };
 		122C98B118B6026100386EDE /* NCIndustryJobsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIndustryJobsDetailsViewController.h; sourceTree = "<group>"; };
 		122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIndustryJobsDetailsViewController.m; sourceTree = "<group>"; };
-		122DBDB51C68C8DF002FDDD0 /* libAdapterIAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdapterIAd.a; sourceTree = "<group>"; };
 		122F01C619483D2100D04D60 /* NCDBInvType+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvType+Neocom.h"; sourceTree = "<group>"; };
 		122F01C719483D2100D04D60 /* NCDBInvType+Neocom.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NCDBInvType+Neocom.mm"; sourceTree = "<group>"; };
 		12331DBF18F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCZKillBoardSwitchCell.h; sourceTree = "<group>"; };
@@ -1299,8 +1313,6 @@
 		12DDFBDB1C16D3C5005F1382 /* NCFittingTargetFitPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingTargetFitPickerViewController.m; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
-		12E7D95C1BA3151700621B6F /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
-		12E7D95D1BA3151700621B6F /* FlurryWatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryWatch.h; sourceTree = "<group>"; };
 		12E8693E195EC14D004B66D0 /* NCTodayRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTodayRow.h; sourceTree = "<group>"; };
 		12E8693F195EC14D004B66D0 /* NCTodayRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTodayRow.m; sourceTree = "<group>"; };
 		12E86942195EC700004B66D0 /* NCTodayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTodayCell.h; sourceTree = "<group>"; };
@@ -1453,7 +1465,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				12F332931C34213500F19C45 /* dgmpp.framework in Frameworks */,
-				122DBDB61C68C8DF002FDDD0 /* libAdapterIAd.a in Frameworks */,
 				1268292E1C06044B00954ECF /* SpriteKit.framework in Frameworks */,
 				1210C7DE1BF4D77800B94154 /* QuartzCore.framework in Frameworks */,
 				12D963E51BA1F1A100292321 /* AFNetworking.framework in Frameworks */,
@@ -1462,6 +1473,7 @@
 				12A38E5B190BED24000102D4 /* iAd.framework in Frameworks */,
 				1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */,
 				12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */,
+				1210647A1C91AFF00032B3DB /* libFlurry_7.5.2.a in Frameworks */,
 				123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */,
 				12F9562218CDB835005CEAD6 /* AdSupport.framework in Frameworks */,
 				12F9562018CDB822005CEAD6 /* AVFoundation.framework in Frameworks */,
@@ -1471,7 +1483,6 @@
 				12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */,
 				123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */,
 				1219C14A1AA4FF0000FF6205 /* GoogleMobileAds.framework in Frameworks */,
-				1209D1721BDFCB77006FEF67 /* libFlurry_7.2.1.a in Frameworks */,
 				84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */,
 				129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */,
 				121112401859A54D009E5106 /* CoreData.framework in Frameworks */,
@@ -1770,6 +1781,17 @@
 				12045E4C1AD161CF00AD32F8 /* NCShoppingItemCell.m */,
 			);
 			name = ShoppingList;
+			sourceTree = "<group>";
+		};
+		121064731C91AFF00032B3DB /* Flurry */ = {
+			isa = PBXGroup;
+			children = (
+				121064741C91AFF00032B3DB /* Flurry.h */,
+				121064761C91AFF00032B3DB /* FlurryWatch.h */,
+				121064771C91AFF00032B3DB /* libFlurry_7.5.2.a */,
+			);
+			name = Flurry;
+			path = "flurry-ios-sdk/Flurry";
 			sourceTree = "<group>";
 		};
 		1211122B185989CC009E5106 /* NCTaskManager */ = {
@@ -2179,6 +2201,8 @@
 				1248CE7A1B7DDCE1000266BE /* EVEOnlineAPI.app */,
 				1248CE7C1B7DDCE1000266BE /* AFNetworking.framework */,
 				1248CE7E1B7DDCE1000266BE /* EVEAPI.framework */,
+				121064701C91AAA20032B3DB /* EVEAPI.framework */,
+				121064721C91AAA20032B3DB /* AFNetworking.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2254,16 +2278,6 @@
 				120F98A51B539E220047A019 /* NCDatabase.sqlite */,
 			);
 			path = db;
-			sourceTree = "<group>";
-		};
-		1261594618EE7F9C0049B9CE /* flurry */ = {
-			isa = PBXGroup;
-			children = (
-				12E7D95C1BA3151700621B6F /* Flurry.h */,
-				12E7D95D1BA3151700621B6F /* FlurryWatch.h */,
-				1209D1711BDFCB77006FEF67 /* libFlurry_7.2.1.a */,
-			);
-			path = flurry;
 			sourceTree = "<group>";
 		};
 		1263EA111AEA859F0052DC27 /* NCLoadoutsParser */ = {
@@ -2423,8 +2437,8 @@
 				12F330091C33EFDC00F19C45 /* dgmpp.xcodeproj */,
 				1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */,
 				129D257F187E923200E2062C /* tools */,
-				1261594618EE7F9C0049B9CE /* flurry */,
 				12D6DBF51920A296003FC5ED /* admob */,
+				121064731C91AFF00032B3DB /* Flurry */,
 			);
 			path = ThirdParty;
 			sourceTree = SOURCE_ROOT;
@@ -3493,7 +3507,6 @@
 		12D6DBF51920A296003FC5ED /* admob */ = {
 			isa = PBXGroup;
 			children = (
-				122DBDB51C68C8DF002FDDD0 /* libAdapterIAd.a */,
 				1219C1491AA4FF0000FF6205 /* GoogleMobileAds.framework */,
 			);
 			path = admob;
@@ -4154,6 +4167,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		121064701C91AAA20032B3DB /* EVEAPI.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = EVEAPI.framework;
+			remoteRef = 1210646F1C91AAA20032B3DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		121064721C91AAA20032B3DB /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 121064711C91AAA20032B3DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		1248CE7A1B7DDCE1000266BE /* EVEOnlineAPI.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
@@ -4818,7 +4845,7 @@
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ThirdParty/admob",
@@ -4833,6 +4860,7 @@
 					/Users/shimanski/Documents/git/EVEUniverse/ThirdParty/admob,
 					"$(PROJECT_DIR)/ThirdParty/flurry",
 					"$(PROJECT_DIR)/ThirdParty/admob",
+					"$(PROJECT_DIR)/ThirdParty/flurry-ios-sdk/Flurry",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.eveuniverse;
@@ -4853,7 +4881,7 @@
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ThirdParty/admob",
@@ -4868,6 +4896,7 @@
 					/Users/shimanski/Documents/git/EVEUniverse/ThirdParty/admob,
 					"$(PROJECT_DIR)/ThirdParty/flurry",
 					"$(PROJECT_DIR)/ThirdParty/admob",
+					"$(PROJECT_DIR)/ThirdParty/flurry-ios-sdk/Flurry",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.eveuniverse;

@@ -3,7 +3,7 @@ CFLAGS=-arch x86_64 -std=gnu++11 -stdlib=libc++ -lsqlite3
 T+=${PWD}/tmp
 VPATH=${T}
 SQL=${PWD}/sql
-SDE+=${PWD}/input/sde/eve.sqlite
+SDE+=${PWD}/input/sde/sqlite-latest.sqlite
 
 all: dgm.sqlite NCDatabase.sqlite
 

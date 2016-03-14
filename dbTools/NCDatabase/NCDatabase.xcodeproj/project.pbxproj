@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		122A828B1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 122A82881C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m */; };
+		122A828C1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 122A828A1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.m */; };
 		12436D73194596750090D4A6 /* EVEDBCertCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D1C194596740090D4A6 /* EVEDBCertCertificate.m */; };
 		12436D74194596750090D4A6 /* EVEDBCertMastery.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D1E194596740090D4A6 /* EVEDBCertMastery.m */; };
 		12436D75194596750090D4A6 /* EVEDBCertSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D20194596740090D4A6 /* EVEDBCertSkill.m */; };
@@ -224,6 +226,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		122A82871C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemSpaceStructureResources+CoreDataProperties.h"; sourceTree = "<group>"; };
+		122A82881C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m"; sourceTree = "<group>"; };
+		122A82891C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBDgmppItemSpaceStructureResources.h; sourceTree = "<group>"; };
+		122A828A1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBDgmppItemSpaceStructureResources.m; sourceTree = "<group>"; };
 		12436D1A194596740090D4A6 /* EVEDBAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBAPI.h; sourceTree = "<group>"; };
 		12436D1B194596740090D4A6 /* EVEDBCertCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCertCertificate.h; sourceTree = "<group>"; };
 		12436D1C194596740090D4A6 /* EVEDBCertCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCertCertificate.m; sourceTree = "<group>"; };
@@ -737,6 +743,10 @@
 		12D6DCFD1922009C003FC5ED /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				122A82871C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.h */,
+				122A82881C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m */,
+				122A82891C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.h */,
+				122A828A1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.m */,
 				12F3321D1C340F4A00F19C45 /* NCDBCertCertificate.h */,
 				12F3321E1C340F4A00F19C45 /* NCDBCertCertificate.m */,
 				12F3321B1C340F4A00F19C45 /* NCDBCertCertificate+CoreDataProperties.h */,
@@ -1036,6 +1046,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				122A828B1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m in Sources */,
 				12F332341C340F4A00F19C45 /* NCDBRamActivity.m in Sources */,
 				12436D92194596750090D4A6 /* EVEDBMapConstellation.m in Sources */,
 				12F332611C340F4A00F19C45 /* NCDBMapRegion+CoreDataProperties.m in Sources */,
@@ -1114,6 +1125,7 @@
 				12436D77194596750090D4A6 /* EVEDBCrtCategory.m in Sources */,
 				12436D74194596750090D4A6 /* EVEDBCertMastery.m in Sources */,
 				12436D96194596750090D4A6 /* EVEDBNpcGroup.m in Sources */,
+				122A828C1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.m in Sources */,
 				12436D8B194596750090D4A6 /* EVEDBInvMetaType.m in Sources */,
 				12F332551C340F4A00F19C45 /* NCDBMapConstellation+CoreDataProperties.m in Sources */,
 				12F332571C340F4A00F19C45 /* NCDBDgmAttributeCategory+CoreDataProperties.m in Sources */,

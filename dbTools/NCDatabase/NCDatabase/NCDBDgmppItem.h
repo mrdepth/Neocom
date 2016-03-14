@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBDgmppItemCategory, NCDBDgmppItemDamage, NCDBDgmppItemGroup, NCDBDgmppItemRequirements, NCDBDgmppItemShipResources, NCDBInvType;
+@class NCDBDgmppItemCategory, NCDBDgmppItemDamage, NCDBDgmppItemGroup, NCDBDgmppItemRequirements, NCDBDgmppItemShipResources, NCDBInvType, NCDBDgmppItemSpaceStructureResources;
 
 NS_ASSUME_NONNULL_BEGIN
 

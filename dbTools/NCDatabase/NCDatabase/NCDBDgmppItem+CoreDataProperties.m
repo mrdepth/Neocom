@@ -2,7 +2,7 @@
 //  NCDBDgmppItem+CoreDataProperties.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 30.12.15.
+//  Created by Артем Шиманский on 14.03.16.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -19,5 +19,6 @@
 @dynamic requirements;
 @dynamic shipResources;
 @dynamic type;
+@dynamic spaceStructureResources;
 
 @end

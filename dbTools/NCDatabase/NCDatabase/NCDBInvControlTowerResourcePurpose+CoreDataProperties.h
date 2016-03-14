@@ -2,7 +2,7 @@
 //  NCDBInvControlTowerResourcePurpose+CoreDataProperties.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 30.12.15.
+//  Created by Артем Шиманский on 14.03.16.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu

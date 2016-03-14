@@ -80,6 +80,14 @@
 		1225A0B71A400954005DD73B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1225A0B61A400954005DD73B /* Launch Screen.xib */; };
 		1226D2D31B58F04F000C69EC /* NCCachePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1226D2D21B58F04F000C69EC /* NCCachePrice.m */; };
 		122753741BBDADDB008148BE /* NCPlanetaryViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.mm */; };
+		122A82A31C96C41D00FD1CF6 /* NCSpaceStructureFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122A82A21C96C41D00FD1CF6 /* NCSpaceStructureFit.mm */; };
+		122A82A81C96E5BF00FD1CF6 /* NCFittingSpaceStructureViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122A82A71C96E5BF00FD1CF6 /* NCFittingSpaceStructureViewController.mm */; };
+		122A82AB1C96E8C100FD1CF6 /* NCFittingSpaceStructureWorkspaceViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122A82AA1C96E8C100FD1CF6 /* NCFittingSpaceStructureWorkspaceViewController.mm */; };
+		122A82AF1C96E94400FD1CF6 /* NCFittingSpaceStructureModulesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122A82AE1C96E94400FD1CF6 /* NCFittingSpaceStructureModulesViewController.mm */; };
+		122A82B31C96EED000FD1CF6 /* NCFittingSpaceStructureDronesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122A82B21C96EED000FD1CF6 /* NCFittingSpaceStructureDronesViewController.mm */; };
+		122A82BA1C96F01000FD1CF6 /* NCFittingSpaceStructureImplantsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122A82B91C96F01000FD1CF6 /* NCFittingSpaceStructureImplantsViewController.mm */; };
+		122A82BD1C96F05700FD1CF6 /* NCFittingSpaceStructureStatsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 122A82BC1C96F05700FD1CF6 /* NCFittingSpaceStructureStatsViewController.mm */; };
+		122A82BF1C96F1CB00FD1CF6 /* SpaceStructureFitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A82BE1C96F1CB00FD1CF6 /* SpaceStructureFitting.storyboard */; };
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
 		122DB6621BA6AAE400649A55 /* NCFittingMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */; };
@@ -742,6 +750,21 @@
 		122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillsContainerViewController.m; sourceTree = "<group>"; };
 		122947F118EACAAF0093FAB8 /* NCFittingShipStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipStatsViewController.h; sourceTree = "<group>"; };
 		122947F218EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = NCFittingShipStatsViewController.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		122A82A11C96C41D00FD1CF6 /* NCSpaceStructureFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSpaceStructureFit.h; sourceTree = "<group>"; };
+		122A82A21C96C41D00FD1CF6 /* NCSpaceStructureFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCSpaceStructureFit.mm; sourceTree = "<group>"; };
+		122A82A61C96E5BF00FD1CF6 /* NCFittingSpaceStructureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSpaceStructureViewController.h; sourceTree = "<group>"; };
+		122A82A71C96E5BF00FD1CF6 /* NCFittingSpaceStructureViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSpaceStructureViewController.mm; sourceTree = "<group>"; };
+		122A82A91C96E8C100FD1CF6 /* NCFittingSpaceStructureWorkspaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSpaceStructureWorkspaceViewController.h; sourceTree = "<group>"; };
+		122A82AA1C96E8C100FD1CF6 /* NCFittingSpaceStructureWorkspaceViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSpaceStructureWorkspaceViewController.mm; sourceTree = "<group>"; };
+		122A82AD1C96E94400FD1CF6 /* NCFittingSpaceStructureModulesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSpaceStructureModulesViewController.h; sourceTree = "<group>"; };
+		122A82AE1C96E94400FD1CF6 /* NCFittingSpaceStructureModulesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSpaceStructureModulesViewController.mm; sourceTree = "<group>"; };
+		122A82B11C96EED000FD1CF6 /* NCFittingSpaceStructureDronesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSpaceStructureDronesViewController.h; sourceTree = "<group>"; };
+		122A82B21C96EED000FD1CF6 /* NCFittingSpaceStructureDronesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSpaceStructureDronesViewController.mm; sourceTree = "<group>"; };
+		122A82B81C96F01000FD1CF6 /* NCFittingSpaceStructureImplantsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSpaceStructureImplantsViewController.h; sourceTree = "<group>"; };
+		122A82B91C96F01000FD1CF6 /* NCFittingSpaceStructureImplantsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSpaceStructureImplantsViewController.mm; sourceTree = "<group>"; };
+		122A82BB1C96F05700FD1CF6 /* NCFittingSpaceStructureStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSpaceStructureStatsViewController.h; sourceTree = "<group>"; };
+		122A82BC1C96F05700FD1CF6 /* NCFittingSpaceStructureStatsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSpaceStructureStatsViewController.mm; sourceTree = "<group>"; };
+		122A82BE1C96F1CB00FD1CF6 /* SpaceStructureFitting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SpaceStructureFitting.storyboard; sourceTree = "<group>"; };
 		122C51EF188FA746000AEC2C /* NCCacheRecordData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCacheRecordData.h; sourceTree = "<group>"; };
 		122C51F0188FA746000AEC2C /* NCCacheRecordData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCacheRecordData.m; sourceTree = "<group>"; };
 		122C51F3188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeMasteryViewController.h; sourceTree = "<group>"; };
@@ -1667,6 +1690,7 @@
 				12A7DBA718B36B2F00343D25 /* Market.storyboard */,
 				849FEE3118A419A200A4F85E /* Fitting.storyboard */,
 				84AC540C18A94034000C308C /* ShipFitting.storyboard */,
+				122A82BE1C96F1CB00FD1CF6 /* SpaceStructureFitting.storyboard */,
 				129C585618AA02B200CA8787 /* POSFitting.storyboard */,
 				12EC0AC018C0B18D0010169C /* KillBoard.storyboard */,
 				12430BBA18C881EA0025D971 /* Help.storyboard */,
@@ -1903,6 +1927,73 @@
 				122947F218EACAAF0093FAB8 /* NCFittingShipStatsViewController.mm */,
 			);
 			name = NCFittingShipStatsViewController;
+			sourceTree = "<group>";
+		};
+		122A82961C96C3FD00FD1CF6 /* NCSpaceStructureFit */ = {
+			isa = PBXGroup;
+			children = (
+				122A82A11C96C41D00FD1CF6 /* NCSpaceStructureFit.h */,
+				122A82A21C96C41D00FD1CF6 /* NCSpaceStructureFit.mm */,
+			);
+			name = NCSpaceStructureFit;
+			sourceTree = "<group>";
+		};
+		122A82A41C96E59700FD1CF6 /* NCFittingSpaceStructureViewController */ = {
+			isa = PBXGroup;
+			children = (
+				122A82A61C96E5BF00FD1CF6 /* NCFittingSpaceStructureViewController.h */,
+				122A82A71C96E5BF00FD1CF6 /* NCFittingSpaceStructureViewController.mm */,
+			);
+			name = NCFittingSpaceStructureViewController;
+			sourceTree = "<group>";
+		};
+		122A82A51C96E5A300FD1CF6 /* NCFittingSpaceStructureWorkspaceViewController */ = {
+			isa = PBXGroup;
+			children = (
+				122A82AC1C96E92500FD1CF6 /* NCFittingSpaceStructureModulesViewController */,
+				122A82B01C96EEB500FD1CF6 /* NCFittingSpaceStructureDronesViewController */,
+				122A82B51C96EFCE00FD1CF6 /* NCFittingSpaceStructureImplantsViewController */,
+				122A82B41C96EFB800FD1CF6 /* NCFittingSpaceStructureStatsViewController */,
+				122A82A91C96E8C100FD1CF6 /* NCFittingSpaceStructureWorkspaceViewController.h */,
+				122A82AA1C96E8C100FD1CF6 /* NCFittingSpaceStructureWorkspaceViewController.mm */,
+			);
+			name = NCFittingSpaceStructureWorkspaceViewController;
+			sourceTree = "<group>";
+		};
+		122A82AC1C96E92500FD1CF6 /* NCFittingSpaceStructureModulesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				122A82AD1C96E94400FD1CF6 /* NCFittingSpaceStructureModulesViewController.h */,
+				122A82AE1C96E94400FD1CF6 /* NCFittingSpaceStructureModulesViewController.mm */,
+			);
+			name = NCFittingSpaceStructureModulesViewController;
+			sourceTree = "<group>";
+		};
+		122A82B01C96EEB500FD1CF6 /* NCFittingSpaceStructureDronesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				122A82B11C96EED000FD1CF6 /* NCFittingSpaceStructureDronesViewController.h */,
+				122A82B21C96EED000FD1CF6 /* NCFittingSpaceStructureDronesViewController.mm */,
+			);
+			name = NCFittingSpaceStructureDronesViewController;
+			sourceTree = "<group>";
+		};
+		122A82B41C96EFB800FD1CF6 /* NCFittingSpaceStructureStatsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				122A82BB1C96F05700FD1CF6 /* NCFittingSpaceStructureStatsViewController.h */,
+				122A82BC1C96F05700FD1CF6 /* NCFittingSpaceStructureStatsViewController.mm */,
+			);
+			name = NCFittingSpaceStructureStatsViewController;
+			sourceTree = "<group>";
+		};
+		122A82B51C96EFCE00FD1CF6 /* NCFittingSpaceStructureImplantsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				122A82B81C96F01000FD1CF6 /* NCFittingSpaceStructureImplantsViewController.h */,
+				122A82B91C96F01000FD1CF6 /* NCFittingSpaceStructureImplantsViewController.mm */,
+			);
+			name = NCFittingSpaceStructureImplantsViewController;
 			sourceTree = "<group>";
 		};
 		122C51F2188FB7E0000AEC2C /* NCDatabaseTypeMasteryViewController */ = {
@@ -3891,6 +3982,7 @@
 				1247B11E1BECE08700608852 /* NCFittingCRESTFitExportViewController */,
 				12C5074C189B6ED70064AC32 /* NCShipFit */,
 				129C585A18AA068F00CA8787 /* NCPOSFit */,
+				122A82961C96C3FD00FD1CF6 /* NCSpaceStructureFit */,
 				127123991897968E005F46EE /* Headers */,
 				1271237E18977E6F005F46EE /* Cells */,
 				849B9FE21896D32200D4DD2B /* NCFittingMenuViewController */,
@@ -3899,6 +3991,8 @@
 				129C585E18AA2CD400CA8787 /* NCFittingPOSViewController */,
 				129C585F18AA2CDF00CA8787 /* NCFittingPOSWorkspaceViewController */,
 				12C50754189BAAB30064AC32 /* NCFittingCharacterPickerViewController */,
+				122A82A41C96E59700FD1CF6 /* NCFittingSpaceStructureViewController */,
+				122A82A51C96E5A300FD1CF6 /* NCFittingSpaceStructureWorkspaceViewController */,
 				12FF586E189FC23600E2D70A /* NCFittingFitPickerViewController */,
 				84442A59189FFF040021CB24 /* NCFittingTargetsViewController */,
 				12ACDCA318A0ACFA00566DFE /* NCFittingDamagePatternsViewController */,
@@ -4253,6 +4347,7 @@
 			files = (
 				12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */,
 				1209D1701BDFB9DE006FEF67 /* UI.xcassets in Resources */,
+				122A82BF1C96F1CB00FD1CF6 /* SpaceStructureFitting.storyboard in Resources */,
 				120B507418FCFFCB0033AF78 /* level_040.gif in Resources */,
 				128D29B718BDC73A003B8E03 /* NCTableViewHeaderView.xib in Resources */,
 				841534F0188A9A7500B42433 /* Database.storyboard in Resources */,
@@ -4404,6 +4499,7 @@
 				127A1AB81BADEE0E0066A5EE /* NCDatabaseMarketViewController.m in Sources */,
 				84FC4F6018785CCC0004073C /* NCAccount.m in Sources */,
 				84C118301898457E00A35516 /* UIViewController+Neocom.m in Sources */,
+				122A82A81C96E5BF00FD1CF6 /* NCFittingSpaceStructureViewController.mm in Sources */,
 				12654C4F1C0B24920060106C /* NCDBDgmAttributeType+CoreDataProperties.m in Sources */,
 				12654C411C0B24920060106C /* NCDBCertSkill+CoreDataProperties.m in Sources */,
 				12A7DB9618B33AC500343D25 /* NCAddAPIKeyViewController.m in Sources */,
@@ -4421,6 +4517,7 @@
 				127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */,
 				8416386D1893BEA000968ADF /* NSDate+Neocom.m in Sources */,
 				125DC6811BD64C08005C2F79 /* NCAPIKeyAccessMaskViewController.m in Sources */,
+				122A82AF1C96E94400FD1CF6 /* NCFittingSpaceStructureModulesViewController.mm in Sources */,
 				120E77B81B25D91300816E1C /* NCSplashScreenViewController.m in Sources */,
 				125F682218853230005732FA /* NCSkillData.m in Sources */,
 				125DC69A1BD7BB6F005C2F79 /* UIAlertController+Neocom.m in Sources */,
@@ -4576,6 +4673,7 @@
 				12654C311C0B24920060106C /* NCDBInvGroup+CoreDataProperties.m in Sources */,
 				12654C031C0B24920060106C /* NCDBTxtDescription+CoreDataProperties.m in Sources */,
 				129E23A01BC3FD3000E311BF /* NCFittingShipDroneCell.m in Sources */,
+				122A82BD1C96F05700FD1CF6 /* NCFittingSpaceStructureStatsViewController.mm in Sources */,
 				127A1ABD1BB2FD9A0066A5EE /* NCAssetsAccountsViewController.m in Sources */,
 				128257251BCF9E3300BC1F56 /* NCFittingImplantSetsViewController.m in Sources */,
 				1282578A1BD1246000BC1F56 /* NCFittingPOSStatsViewController.mm in Sources */,
@@ -4585,6 +4683,7 @@
 				12F49A241C2BF0D60004FAF5 /* NCDatabaseTypeCRESTMarketInfoViewController.m in Sources */,
 				8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */,
 				124097C01B2F200F002AC442 /* NCAdaptivePopoverSegue.m in Sources */,
+				122A82BA1C96F01000FD1CF6 /* NCFittingSpaceStructureImplantsViewController.mm in Sources */,
 				125A197C1BB5A5EA00C5BAD8 /* NCWalletJournalCell.m in Sources */,
 				129D261A187E923300E2062C /* LUITextField.m in Sources */,
 				129E23A61BC3FD3000E311BF /* NCFittingShipFirepowerCell.m in Sources */,
@@ -4637,11 +4736,13 @@
 				12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */,
 				129E239F1BC3FD3000E311BF /* NCFittingShipModuleCell.m in Sources */,
 				128257231BCF8BD900BC1F56 /* NCFittingRequiredSkillsViewController.m in Sources */,
+				122A82A31C96C41D00FD1CF6 /* NCSpaceStructureFit.mm in Sources */,
 				125A19C61BB7111500C5BAD8 /* NCContractsDetailsViewController.m in Sources */,
 				1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */,
 				122DB6621BA6AAE400649A55 /* NCFittingMenuViewController.mm in Sources */,
 				122F01C819483D2100D04D60 /* NCDBInvType+Neocom.mm in Sources */,
 				120968631845F0CB00921A37 /* NCAppDelegate.mm in Sources */,
+				122A82AB1C96E8C100FD1CF6 /* NCFittingSpaceStructureWorkspaceViewController.mm in Sources */,
 				1282571F1BCF822700BC1F56 /* NCFittingDamagePatternEditorViewController.m in Sources */,
 				1282571C1BCE981F00BC1F56 /* NCFittingTargetsViewController.mm in Sources */,
 				12BE1EFF1BFDFABF009D6C7D /* NCWealthCell.m in Sources */,
@@ -4709,6 +4810,7 @@
 				125DC64D1BD5236F005C2F79 /* RSSItem+Neocom.m in Sources */,
 				12E86944195EC700004B66D0 /* NCTodayCell.m in Sources */,
 				1211123818599339009E5106 /* NCCache.m in Sources */,
+				122A82B31C96EED000FD1CF6 /* NCFittingSpaceStructureDronesViewController.mm in Sources */,
 				129D262E187E923300E2062C /* UIAlertView+Error.m in Sources */,
 				128310281BBE7F7D0018C8AC /* NCShoppingItem+Neocom.m in Sources */,
 			);

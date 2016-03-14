@@ -303,15 +303,15 @@
 		switch (section.slot) {
 			case dgmpp::Module::SLOT_HI:
 				title = NSLocalizedString(@"Hi slot", nil);
-				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotHi size:0 race:nil];
+				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotHi size:dgmpp::MODULE_CATEGORY_ID race:nil];
 				break;
 			case dgmpp::Module::SLOT_MED:
 				title = NSLocalizedString(@"Med slot", nil);
-				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotMed size:0 race:nil];
+				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotMed size:dgmpp::MODULE_CATEGORY_ID race:nil];
 				break;
 			case dgmpp::Module::SLOT_LOW:
 				title = NSLocalizedString(@"Low slot", nil);
-				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotLow size:0 race:nil];
+				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotLow size:dgmpp::MODULE_CATEGORY_ID race:nil];
 				break;
 			case dgmpp::Module::SLOT_RIG: {
 				title = NSLocalizedString(@"Rigs", nil);
@@ -346,7 +346,7 @@
 					}
 					raceObjectID = type.race.objectID;
 				}];
-				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotSubsystem size:0 race:[self.databaseManagedObjectContext existingObjectWithID:raceObjectID error:nil]];
+				category = [self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotSubsystem size:dgmpp::MODULE_CATEGORY_ID race:[self.databaseManagedObjectContext existingObjectWithID:raceObjectID error:nil]];
 				break;
 			}
 			case dgmpp::Module::SLOT_MODE:

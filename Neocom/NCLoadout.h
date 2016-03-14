@@ -12,11 +12,14 @@
 #import "NCStorage.h"
 
 #define NCCategoryIDShip 6
+#define NCCategoryIDModule 6
+#define NCCategoryIDStructure 65
 
 typedef NS_ENUM(NSInteger, NCLoadoutCategory) {
 	NCLoadoutCategoryUnknown = -1,
 	NCLoadoutCategoryShip,
-	NCLoadoutCategoryPOS
+	NCLoadoutCategoryPOS,
+	NCLoadoutCategorySpaceStructure
 };
 
 @class NCDBInvType;

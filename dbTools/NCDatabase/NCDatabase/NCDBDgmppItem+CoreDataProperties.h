@@ -2,7 +2,7 @@
 //  NCDBDgmppItem+CoreDataProperties.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 30.12.15.
+//  Created by Артем Шиманский on 14.03.16.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NCDBDgmppItemRequirements *requirements;
 @property (nullable, nonatomic, retain) NCDBDgmppItemShipResources *shipResources;
 @property (nullable, nonatomic, retain) NCDBInvType *type;
+@property (nullable, nonatomic, retain) NCDBDgmppItemSpaceStructureResources *spaceStructureResources;
 
 @end
 

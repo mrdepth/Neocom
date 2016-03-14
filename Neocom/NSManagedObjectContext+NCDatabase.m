@@ -163,6 +163,11 @@
 	return [self categoryWithSlot:NCDBDgmppItemSlotControlTower size:0 race:nil];
 }
 
+- (NCDBDgmppItemCategory*) spaceStructuresCategory {
+	return [self categoryWithSlot:NCDBDgmppItemSlotSpaceStructure size:0 race:nil];
+}
+
+
 - (NCDBDgmppItemCategory*) categoryWithSlot:(NCDBDgmppItemSlot) slot size:(int32_t) size race:(NCDBChrRace*) race {
 	int64_t key = ((((int64_t) size << 8) + slot) << 8) + race.raceID;
 

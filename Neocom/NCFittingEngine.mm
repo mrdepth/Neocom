@@ -266,7 +266,7 @@
 	if (fit.loadoutID) {
 		[self.storageManagedObjectContext performBlockAndWait:^{
 			NCLoadout* loadout = [self.storageManagedObjectContext existingObjectWithID:fit.loadoutID error:nil];
-			if ([loadout.data.data isKindOfClass:[NCLoadoutDataShip class]])
+			if ([loadout.data.data isKindOfClass:[NCLoadoutDataSpaceStructure class]])
 				loadoutData = (NCLoadoutDataSpaceStructure*) loadout.data.data;
 		}];
 	}

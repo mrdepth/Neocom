@@ -49,17 +49,14 @@
 #define ActionButtonExport NSLocalizedString(@"Export", nil)
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 #define ActionButtonDuplicate NSLocalizedString(@"Duplicate Fit", nil)
-#define ActionButtonShowShipInfo NSLocalizedString(@"Ship Info", nil)
-#define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
+#define ActionButtonShowStructureInfo NSLocalizedString(@"Structure Info", nil)
 #define ActionButtonAddToShoppingList NSLocalizedString(@"Add to Shopping List", nil)
-#define ActionButtonDamageChart NSLocalizedString(@"Damage Chart", nil)
-#define ActionButtonCombatSimulator NSLocalizedString(@"Combat Simulator", nil)
 
 @interface NCFittingSpaceStructureViewController ()
 @property (nonatomic, strong, readwrite) NCFittingEngine* engine;
 
 @property (nonatomic, weak) NCFittingSpaceStructureModulesViewController* modulesViewController;
-@property (nonatomic, weak) NCFittingSpaceStructureImplantsViewController* implantsViewController;
+//@property (nonatomic, weak) NCFittingSpaceStructureImplantsViewController* implantsViewController;
 @property (nonatomic, weak) NCFittingSpaceStructureDronesViewController* dronesViewController;
 @property (nonatomic, weak) NCFittingSpaceStructureStatsViewController* statsViewController;
 @property (nonatomic, strong) NCFitCharacter* defaultCharacter;
@@ -101,8 +98,8 @@
 			self.modulesViewController = controller;
 		else if ([controller isKindOfClass:[NCFittingSpaceStructureDronesViewController class]])
 			self.dronesViewController = controller;
-		else if ([controller isKindOfClass:[NCFittingSpaceStructureImplantsViewController class]])
-			self.implantsViewController = controller;
+		//else if ([controller isKindOfClass:[NCFittingSpaceStructureImplantsViewController class]])
+		//	self.implantsViewController = controller;
 		else if ([controller isKindOfClass:[NCFittingSpaceStructureStatsViewController class]])
 			self.statsViewController = controller;
 	}
@@ -440,7 +437,7 @@
 				[self reload];
 			}]];
 		
-		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonShowShipInfo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonShowStructureInfo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 			[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
 									  sender:@{@"sender": sender, @"object": [NCFittingEngineItemPointer pointerWithItem:self.fit.pilot->getSpaceStructure()]}];
 		}]];
@@ -534,35 +531,6 @@
 					load([NCTrainingQueue new]);
 			}]];
 		}
-		
-		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAffectingSkills style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-			[self.engine performBlock:^{
-				NSMutableDictionary* items = [NSMutableDictionary new];
-				void (^addItem)(std::shared_ptr<dgmpp::Item>) = ^(std::shared_ptr<dgmpp::Item> item) {
-					if (!items[@(item->getTypeID())])
-						items[@(item->getTypeID())] = [NCFittingEngineItemPointer pointerWithItem:item];
-				};
-				auto pilot = self.fit.pilot;
-				auto spaceStructure = pilot->getSpaceStructure();
-				addItem(spaceStructure);
-				for (const auto& module: spaceStructure->getModules()) {
-					addItem(module);
-					auto charge = module->getCharge();
-					if (charge)
-						addItem(charge);
-				}
-				for (const auto& drone: spaceStructure->getDrones())
-					addItem(drone);
-				for (const auto& implant: pilot->getImplants())
-					addItem(implant);
-				for (const auto& booster: pilot->getBoosters())
-					addItem(booster);
-				dispatch_async(dispatch_get_main_queue(), ^{
-					[self performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
-											  sender:@{@"sender": sender, @"object": [items allValues]}];
-				});
-			}];
-		}]];
 		
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonAddToShoppingList style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 			NSMutableDictionary* items = [NSMutableDictionary new];
@@ -811,12 +779,12 @@
 
 - (void) updateSectionSegmentedControlWithTraitCollection:(UITraitCollection*) traitCollection {
 	if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
-		if (self.sectionSegmentedControl.numberOfSegments == 3)
-			[self.sectionSegmentedControl insertSegmentWithTitle:NSLocalizedString(@"Stats", nil) atIndex:3 animated:NO];
+		if (self.sectionSegmentedControl.numberOfSegments == 2)
+			[self.sectionSegmentedControl insertSegmentWithTitle:NSLocalizedString(@"Stats", nil) atIndex:2 animated:NO];
 	}
 	else if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
-		if (self.sectionSegmentedControl.numberOfSegments == 4)
-			[self.sectionSegmentedControl removeSegmentAtIndex:3 animated:NO];
+		if (self.sectionSegmentedControl.numberOfSegments == 3)
+			[self.sectionSegmentedControl removeSegmentAtIndex:2 animated:NO];
 	}
 }
 

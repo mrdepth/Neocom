@@ -1387,6 +1387,50 @@ void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database)
 		}];
 	};
 	
+	void (^structureDroneProcess)(NSArray*, NCDBDgmppItemCategory*, NSString*) = ^(NSArray* conditions, NCDBDgmppItemCategory* category, NSString* title) {
+		NSSet* conditionsTables = getConditionsTables(conditions);
+		NSMutableSet* allTables = [[NSMutableSet alloc] initWithObjects: @"invTypes", nil];
+		NSMutableArray* allConditions = [conditions mutableCopy];
+		
+		[allTables unionSet:conditionsTables];
+		[allConditions addObjectsFromArray:conditions];
+		
+		NSString* request = [NSString stringWithFormat:@"SELECT invTypes.* FROM %@ WHERE %@",
+							 [[allTables allObjects] componentsJoinedByString:@","], [allConditions componentsJoinedByString:@" AND "]];
+		
+		NCDBDgmppItemGroup* rootGroup = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemGroup" inManagedObjectContext:context];
+		rootGroup.category = category;
+		rootGroup.parentGroup = nil;
+		rootGroup.groupName = title;
+		rootGroup.icon = nil;
+		
+		NSMutableDictionary* groups = [NSMutableDictionary new];
+		
+		[database execSQLRequest:request resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+			EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
+			NCDBInvType* invType = invTypes[@(type.typeID)];
+			if (invType) {
+				NCDBInvGroup* invGroup = invType.group;
+				NCDBDgmppItemGroup* itemGroup = groups[@(invGroup.groupID)];
+				if (!itemGroup) {
+					groups[@(invGroup.groupID)] = itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemGroup" inManagedObjectContext:context];
+					itemGroup.category = category;
+					itemGroup.parentGroup = rootGroup;
+					itemGroup.groupName = invGroup.groupName;
+					itemGroup.icon = invGroup.icon;
+				}
+				
+				if (!invType.dgmppItem) {
+					invType.dgmppItem = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItem" inManagedObjectContext:context];
+					[itemGroup addItemsObject:invType.dgmppItem];
+					loadDetails(invType.dgmppItem);
+				}
+				else
+					[itemGroup addItemsObject:invType.dgmppItem];
+			}
+		}];
+	};
+	
 	NCDBDgmppItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_HI;
 	category.subcategory = dgmpp::MODULE_CATEGORY_ID;
@@ -1473,7 +1517,13 @@ void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database)
 
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_DRONE;
+	category.subcategory = dgmpp::DRONE_CATEGORY_ID;
 	process(@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 18"], category, @"Drones");
+	
+	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
+	category.category = SLOT_DRONE;
+	category.subcategory = dgmpp::FIGHTER_CATEGORY_ID;
+	structureDroneProcess(@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 87"], category, @"Drones");
 
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_CONTROL_TOWER;

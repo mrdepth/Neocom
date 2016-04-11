@@ -43,9 +43,9 @@ INSERT INTO eveDB.chrRaces SELECT * FROM chrRaces;
 INSERT INTO eveDB.dgmEffects SELECT * FROM dgmEffects;
 --INSERT INTO eveDB.dgmAttributeTypes SELECT * FROM dgmAttributeTypes;
 
-delete from eveDB.invTypes where groupID not in (select groupID from eveDB.invGroups);
+delete from eveDB.invCategories where categoryID not in (2,3,4,5,6,7,8,9,11,16,17,18,20,22,23,24,25,30,32,34,35,39,40,41,42,43,46,63,65,66,87,350001);
 delete from eveDB.invGroups where categoryID not in (select categoryID from eveDB.invCategories);
-delete from eveDB.invCategories where categoryID not in (2,3,4,5,6,7,8,9,11,16,17,18,20,22,23,24,25,30,32,34,35,39,40,41,42,43,46,63,65,66,350001);
+delete from eveDB.invTypes where groupID not in (select groupID from eveDB.invGroups);
 
 UPDATE eveDB.dgmAttributeTypes SET categoryID=9 WHERE categoryID is NULL or categoryID=0;
 

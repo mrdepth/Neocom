@@ -129,7 +129,7 @@
 	if (indexPath.row >= self.rows.count) {
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Drones", nil);
 		
-		[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotDrone size:0 race:nil]
+		[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotDrone size:dgmpp::DRONE_CATEGORY_ID race:nil]
 													 inViewController:self.controller
 															 fromRect:cell.bounds
 															   inView:cell

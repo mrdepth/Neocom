@@ -254,6 +254,10 @@
 			NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
 			[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
 		}
+		else if (row.category == NCLoadoutCategorySpaceStructure) {
+			NCSpaceStructureFit* fit = [[NCSpaceStructureFit alloc] initWithLoadout:loadout];
+			[self performSegueWithIdentifier:@"NCFittingSpaceStructureViewController" sender:fit];
+		}
 		else {
 			NCPOSFit* fit = [[NCPOSFit alloc] initWithLoadout:loadout];
 			[self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
@@ -348,7 +352,7 @@
 						spaceStructuresLoadouts.groupID = type.group.category.categoryID;
 						spaceStructuresLoadouts.rows = [NSMutableArray new];
 					}
-					[posLoadouts.rows addObject:row];
+					[spaceStructuresLoadouts.rows addObject:row];
 				}
 				else if (type) {
 					row.category = NCLoadoutCategoryPOS;

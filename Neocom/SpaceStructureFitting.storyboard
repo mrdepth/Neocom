@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -40,7 +40,6 @@
                                 <segments>
                                     <segment title="Modules"/>
                                     <segment title="Drones"/>
-                                    <segment title="Implants"/>
                                     <segment title="Stats"/>
                                 </segments>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -253,27 +252,8 @@
                                             <constraint firstItem="zEo-7K-O6F" firstAttribute="top" secondItem="hzo-ZY-y44" secondAttribute="bottom" id="pjh-Fo-rkr"/>
                                         </constraints>
                                     </view>
-                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lHg-ws-ges">
-                                        <rect key="frame" x="1200" y="0.0" width="600" height="504"/>
-                                        <subviews>
-                                            <containerView clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dmh-zX-Ibi">
-                                                <rect key="frame" x="0.0" y="0.0" width="600" height="504"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                                <connections>
-                                                    <segue destination="l55-1X-72S" kind="embed" id="0az-9E-IiJ"/>
-                                                </connections>
-                                            </containerView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="dmh-zX-Ibi" secondAttribute="trailing" id="1pJ-Nq-rAa"/>
-                                            <constraint firstItem="dmh-zX-Ibi" firstAttribute="leading" secondItem="lHg-ws-ges" secondAttribute="leading" id="aev-of-WrU"/>
-                                            <constraint firstAttribute="bottom" secondItem="dmh-zX-Ibi" secondAttribute="bottom" id="id5-iV-B6C"/>
-                                            <constraint firstItem="dmh-zX-Ibi" firstAttribute="top" secondItem="lHg-ws-ges" secondAttribute="top" id="xc0-Pz-qfd"/>
-                                        </constraints>
-                                    </view>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="erN-UB-pq3">
-                                        <rect key="frame" x="1800" y="0.0" width="600" height="504"/>
+                                        <rect key="frame" x="1200" y="0.0" width="600" height="504"/>
                                         <subviews>
                                             <containerView clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QZZ-U6-SW0">
                                                 <rect key="frame" x="0.0" y="0.0" width="600" height="504"/>
@@ -302,30 +282,23 @@
                                     <constraint firstAttribute="bottom" secondItem="V9L-FL-zmC" secondAttribute="bottom" id="DdQ-Sj-u3N"/>
                                     <constraint firstAttribute="width" secondItem="erN-UB-pq3" secondAttribute="width" id="Djb-tx-bYI"/>
                                     <constraint firstItem="V9L-FL-zmC" firstAttribute="leading" secondItem="2Wt-V5-HxI" secondAttribute="leading" id="F4d-aC-FcU"/>
-                                    <constraint firstItem="lHg-ws-ges" firstAttribute="leading" secondItem="E4W-Pk-nbi" secondAttribute="trailing" id="HKa-LZ-ujX"/>
                                     <constraint firstAttribute="height" secondItem="erN-UB-pq3" secondAttribute="height" id="LM8-LY-HeG"/>
                                     <constraint firstItem="E4W-Pk-nbi" firstAttribute="top" secondItem="2Wt-V5-HxI" secondAttribute="top" id="Mnq-Rh-Qzi"/>
-                                    <constraint firstAttribute="height" secondItem="lHg-ws-ges" secondAttribute="height" id="OgO-Fk-3Ua"/>
                                     <constraint firstAttribute="trailing" secondItem="erN-UB-pq3" secondAttribute="trailing" id="Phe-VX-k9W"/>
-                                    <constraint firstItem="lHg-ws-ges" firstAttribute="top" secondItem="2Wt-V5-HxI" secondAttribute="top" id="QiO-pT-Arv"/>
-                                    <constraint firstAttribute="trailing" secondItem="lHg-ws-ges" secondAttribute="trailing" id="UJb-Jk-RcF"/>
                                     <constraint firstAttribute="bottom" secondItem="erN-UB-pq3" secondAttribute="bottom" id="Vdf-L7-LEa"/>
+                                    <constraint firstItem="erN-UB-pq3" firstAttribute="leading" secondItem="E4W-Pk-nbi" secondAttribute="trailing" id="bEJ-um-Ds2"/>
                                     <constraint firstAttribute="height" secondItem="V9L-FL-zmC" secondAttribute="height" id="bjI-R5-pr4"/>
-                                    <constraint firstAttribute="height" secondItem="lHg-ws-ges" secondAttribute="height" id="gtc-n3-Ydb"/>
-                                    <constraint firstAttribute="width" secondItem="lHg-ws-ges" secondAttribute="width" id="gvY-eU-3in"/>
+                                    <constraint firstAttribute="trailing" secondItem="E4W-Pk-nbi" secondAttribute="trailing" id="e2g-r7-Os3"/>
                                     <constraint firstAttribute="width" secondItem="E4W-Pk-nbi" secondAttribute="width" id="h8X-Wr-2d1"/>
-                                    <constraint firstAttribute="width" secondItem="lHg-ws-ges" secondAttribute="width" id="k4l-Xc-jID"/>
                                     <constraint firstItem="V9L-FL-zmC" firstAttribute="top" secondItem="2Wt-V5-HxI" secondAttribute="top" id="lwS-B0-9Zy"/>
                                     <constraint firstAttribute="width" secondItem="V9L-FL-zmC" secondAttribute="width" id="oEJ-rE-F3q"/>
                                     <constraint firstAttribute="height" secondItem="E4W-Pk-nbi" secondAttribute="height" id="oxR-jg-Rc4"/>
-                                    <constraint firstAttribute="bottom" secondItem="lHg-ws-ges" secondAttribute="bottom" id="pS5-Rq-1Gb"/>
                                     <constraint firstItem="erN-UB-pq3" firstAttribute="top" secondItem="2Wt-V5-HxI" secondAttribute="top" id="qHa-Kv-E1T"/>
-                                    <constraint firstItem="erN-UB-pq3" firstAttribute="leading" secondItem="lHg-ws-ges" secondAttribute="trailing" id="qxm-Mj-tdI"/>
                                     <constraint firstItem="E4W-Pk-nbi" firstAttribute="leading" secondItem="V9L-FL-zmC" secondAttribute="trailing" id="ugd-eQ-OBh"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="UJb-Jk-RcF"/>
+                                        <exclude reference="e2g-r7-Os3"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
@@ -333,13 +306,13 @@
                                         <exclude reference="erN-UB-pq3"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <include reference="UJb-Jk-RcF"/>
+                                        <include reference="e2g-r7-Os3"/>
                                         <exclude reference="Djb-tx-bYI"/>
                                         <exclude reference="LM8-LY-HeG"/>
                                         <exclude reference="Phe-VX-k9W"/>
                                         <exclude reference="Vdf-L7-LEa"/>
+                                        <exclude reference="bEJ-um-Ds2"/>
                                         <exclude reference="qHa-Kv-E1T"/>
-                                        <exclude reference="qxm-Mj-tdI"/>
                                     </mask>
                                 </variation>
                                 <connections>

@@ -21,7 +21,7 @@
 #import "NCSideMenuViewController.h"
 #import "NCMainMenuViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
-#import "Flurry.h"
+//#import "Flurry.h"
 #import "NCAPIKeyAccessMaskViewController.h"
 #import "NCShoppingList.h"
 #import "NCSplashScreenViewController.h"
@@ -30,6 +30,11 @@
 #import "NCUpdater.h"
 #import "NCKillMailDetailsViewController.h"
 
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
+#import "GAILogger.h"
+#import <Appodeal/Appodeal.h>
 
 static NSUncaughtExceptionHandler* handler;
 
@@ -69,11 +74,24 @@ void uncaughtExceptionHandler(NSException* exception) {
 @implementation NCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//#warning Enable Flurry
-#if !TARGET_OS_SIMULATOR
+/*#if !TARGET_OS_SIMULATOR
 	[Flurry setCrashReportingEnabled:YES];
 	[Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
+#endif*/
+	
+	GAI *gai = [GAI sharedInstance];
+	[gai trackerWithTrackingId:@"UA-72025819-3"];
+	gai.trackUncaughtExceptions = YES;  // report uncaught exceptions
+#if DEBUG
+	gai.logger.logLevel = kGAILogLevelError;  // remove before app release
+#else
+	gai.logger.logLevel = kGAILogLevelNone;  // remove before app release
 #endif
+	
+	[Appodeal disableLocationPermissionCheck];
+	[Appodeal initializeWithApiKey:@"57860daf6ce06befbe69f379152ed16e392a6ebb4160fe4d" types: (AppodealAdType)(AppodealAdTypeBanner)];
+
+
 
 //	handler = NSGetUncaughtExceptionHandler();
 //	NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);

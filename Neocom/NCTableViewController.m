@@ -21,6 +21,8 @@
 #import "UIStoryboard+Multiple.h"
 #import "NCUpdater.h"
 
+#import "GAI+Neocom.h"
+
 @interface NCTableViewController ()<UISearchResultsUpdating>
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
 @property (nonatomic, strong, readwrite) id cacheData;
@@ -70,6 +72,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	[GAI createScreenWithName:NSStringFromClass(self.class)];
 
 	//Appearance
 	if (!self.tableView.backgroundView) {

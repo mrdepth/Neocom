@@ -221,6 +221,10 @@
 											 }];
 		}
 		else if (indexPath.row == 3) {
+			NCSpaceStructureFit* fit = [[NCSpaceStructureFit alloc] initWithType:[self.databaseManagedObjectContext  invTypeWithTypeID:35834]];
+			[self performSegueWithIdentifier:@"NCFittingSpaceStructureViewController" sender:fit];
+
+			return;
 			self.typePickerViewController.title = NSLocalizedString(@"Space Structures", nil);
 			[self.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext spaceStructuresCategory]
 											  inViewController:self

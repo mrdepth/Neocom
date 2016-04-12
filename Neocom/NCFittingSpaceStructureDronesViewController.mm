@@ -144,7 +144,7 @@
 																	break;
 																}
 															}
-															int dronesLeft = std::max(spaceStructure->getMaxActiveDrones(), 1);
+															int dronesLeft = 5;
 															self.controller.engine.engine->beginUpdates();
 															for (;dronesLeft > 0; dronesLeft--) {
 																auto drone = spaceStructure->addDrone(typeID);

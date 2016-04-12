@@ -7,7 +7,7 @@ INSERT INTO eveDB.invTypeMaterials SELECT * FROM invTypeMaterials;
 INSERT INTO eveDB.dgmAttributeCategories SELECT * FROM dgmAttributeCategories;
 --INSERT INTO eveDB.dgmTypeAttributes SELECT dgmTypeAttributes.* FROM dgmTypeAttributes,eveDB.invTypes WHERE dgmTypeAttributes.typeID=eveDB.invTypes.typeID;
 --INSERT INTO eveDB.dgmTypeEffects SELECT dgmTypeEffects.* FROM dgmTypeEffects,eveDB.invTypes WHERE dgmTypeEffects.typeID=eveDB.invTypes.typeID;
-INSERT INTO eveDB.invMarketGroups SELECT * FROM invMarketGroups;
+--INSERT INTO eveDB.invMarketGroups SELECT * FROM invMarketGroups;
 INSERT INTO eveDB.mapRegions SELECT * FROM mapRegions;
 INSERT INTO eveDB.mapSolarSystems SELECT * FROM mapSolarSystems;
 INSERT INTO eveDB.staStations SELECT * FROM staStations;

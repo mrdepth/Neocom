@@ -1450,22 +1450,26 @@ void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database)
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_HI;
 	category.subcategory = dgmpp::STRUCTURE_MODULE_CATEGORY_ID;
-	structureProcess(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 12", @"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 66"], category, @"Hi Slot");
+	//structureProcess(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 12", @"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 66"], category, @"Hi Slot");
+	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 12", @"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 66"], category, @"Hi Slot");
 
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_MED;
 	category.subcategory = dgmpp::STRUCTURE_MODULE_CATEGORY_ID;
-	structureProcess(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 13", @"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 66"], category, @"Med Slot");
+	//structureProcess(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 13", @"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 66"], category, @"Med Slot");
+	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 13", @"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 66"], category, @"Med Slot");
 	
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_LOW;
 	category.subcategory = dgmpp::STRUCTURE_MODULE_CATEGORY_ID;
-	structureProcess(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 11", @"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 66"], category, @"Low Slot");
+	//structureProcess(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 11", @"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 66"], category, @"Low Slot");
+	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 11", @"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 66"], category, @"Low Slot");
 
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_STRUCTURE_SERVICE;
 	category.subcategory = dgmpp::STRUCTURE_MODULE_CATEGORY_ID;
-	structureProcess(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 6306", @"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 66"], category, @"Service Slot");
+	//structureProcess(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 6306", @"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 66"], category, @"Service Slot");
+	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 6306", @"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 66"], category, @"Service Slot");
 
 	
 	
@@ -1523,7 +1527,8 @@ void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database)
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_DRONE;
 	category.subcategory = dgmpp::FIGHTER_CATEGORY_ID;
-	structureDroneProcess(@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 87"], category, @"Drones");
+	//structureDroneProcess(@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 87"], category, @"Drones");
+	process(@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 87"], category, @"Drones");
 
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_CONTROL_TOWER;
@@ -1538,7 +1543,8 @@ void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database)
 	
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_SPACE_STRUCTURE;
-	NCDBDgmppItemGroup* parentGroup = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemGroup" inManagedObjectContext:context];
+	process(@[@"invTypes.marketGroupID = 477"], category, @"Structures");
+	/*NCDBDgmppItemGroup* parentGroup = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemGroup" inManagedObjectContext:context];
 	parentGroup.category = category;
 	parentGroup.parentGroup = nil;
 	parentGroup.groupName = @"Space Structures";
@@ -1554,7 +1560,7 @@ void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database)
 			invType.dgmppItem = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItem" inManagedObjectContext:context];
 			[itemGroup addItemsObject:invType.dgmppItem];
 		}
-	}
+	}*/
 	
 /*	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_SPACE_STRUCTURE;

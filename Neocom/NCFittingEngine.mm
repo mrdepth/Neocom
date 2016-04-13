@@ -771,7 +771,7 @@
 		NSMutableDictionary* structuresDic = [NSMutableDictionary new];
 		for (EVEAssetListItem* item in asset.contents) {
 			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
-			if (type.group.category.categoryID == dgmpp::STRUCTURE_CATEGORY_ID && type.group.groupID != dgmpp::CONTROL_TOWER_GROUP_ID) {
+			if (type.group.category.categoryID == dgmpp::STARBASE_CATEGORY_ID && type.group.groupID != dgmpp::CONTROL_TOWER_GROUP_ID) {
 				NCLoadoutDataPOSStructure* structure = structuresDic[@(item.typeID)];
 				if (!structure) {
 					structure = [NCLoadoutDataPOSStructure new];

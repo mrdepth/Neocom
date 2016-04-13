@@ -457,11 +457,6 @@
 }
 
 - (void) reload {
-/*	[self.modulesViewController reload];
-	[self.dronesViewController reload];
-	[self.implantsViewController reload];
-	[self.fleetViewController reload];
-	[self.statsViewController reload];*/
 	for (NCFittingShipWorkspaceViewController* controller in self.childViewControllers)
 		[controller reload];
 	
@@ -492,12 +487,21 @@
 		totalCalibration = ship->getTotalCalibration();
 		usedCalibration = ship->getCalibrationUsed();
 		
-		totalDB = ship->getTotalDroneBay();
-		usedDB = ship->getDroneBayUsed();
+		if (ship->getTotalFighterHangar() > 0) {
+			totalDB = ship->getTotalFighterHangar();
+			usedDB = ship->getFighterHangarUsed();
+			maxActiveDrones = ship->getTotalFighterLaunchTubes();
+			activeDrones = ship->getFighterLaunchTubesUsed();
+		}
+		else {
+			totalDB = ship->getTotalDroneBay();
+			usedDB = ship->getDroneBayUsed();
+			maxActiveDrones = ship->getDroneSquadronLimit(dgmpp::Drone::FIGHTER_SQUADRON_NONE);
+			activeDrones = ship->getDroneSquadronUsed(dgmpp::Drone::FIGHTER_SQUADRON_NONE);
+		}
 		totalBandwidth = ship->getTotalDroneBandwidth();
 		usedBandwidth = ship->getDroneBandwidthUsed();
-		maxActiveDrones = ship->getMaxActiveDrones();
-		activeDrones = ship->getActiveDrones();
+		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
 			self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;

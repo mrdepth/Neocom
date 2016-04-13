@@ -384,12 +384,21 @@
 		totalCalibration = spaceStructure->getTotalCalibration();
 		usedCalibration = spaceStructure->getCalibrationUsed();
 		
-		totalDB = spaceStructure->getTotalDroneBay();
-		usedDB = spaceStructure->getDroneBayUsed();
+		if (spaceStructure->getTotalFighterHangar() > 0) {
+			totalDB = spaceStructure->getTotalFighterHangar();
+			usedDB = spaceStructure->getFighterHangarUsed();
+			maxActiveDrones = spaceStructure->getTotalFighterLaunchTubes();
+			activeDrones = spaceStructure->getFighterLaunchTubesUsed();
+		}
+		else {
+			totalDB = spaceStructure->getTotalDroneBay();
+			usedDB = spaceStructure->getDroneBayUsed();
+			maxActiveDrones = spaceStructure->getDroneSquadronLimit(dgmpp::Drone::FIGHTER_SQUADRON_NONE);
+			activeDrones = spaceStructure->getDroneSquadronUsed(dgmpp::Drone::FIGHTER_SQUADRON_NONE);
+		}
 		totalBandwidth = spaceStructure->getTotalDroneBandwidth();
 		usedBandwidth = spaceStructure->getDroneBandwidthUsed();
-		maxActiveDrones = spaceStructure->getMaxActiveDrones();
-		activeDrones = spaceStructure->getActiveDrones();
+
 		dispatch_async(dispatch_get_main_queue(), ^{
 			self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
 			self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;

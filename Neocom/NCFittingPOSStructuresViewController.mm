@@ -31,11 +31,11 @@
 #define ActionButtonAmount NSLocalizedString(@"Set Amount", nil)
 
 @interface NCFittingPOSStructuresViewControllerRow : NSObject<NSCopying> {
-	dgmpp::StructuresList _structures;
+	dgmpp::StarbaseStructuresList _structures;
 }
 @property (nonatomic, assign) BOOL isUpToDate;
 
-@property (nonatomic, readonly) dgmpp::StructuresList& structures;
+@property (nonatomic, readonly) dgmpp::StarbaseStructuresList& structures;
 @property (nonatomic, strong) NSString* typeName;
 @property (nonatomic, strong) UIImage* typeImage;
 @property (nonatomic, strong) NSString* chargeText;
@@ -193,8 +193,8 @@
 		dgmpp::TypeID typeID = structure->getTypeID();
 		if (chargeGroups.size() > 0)
 		{
-			const dgmpp::StructuresList& structuresList = controlTower->getStructures();
-			dgmpp::StructuresList::const_iterator i, end = structuresList.end();
+			const dgmpp::StarbaseStructuresList& structuresList = controlTower->getStructures();
+			dgmpp::StarbaseStructuresList::const_iterator i, end = structuresList.end();
 			for (i = structuresList.begin(); i != end; i++)
 			{
 				if ((*i)->getTypeID() != typeID)
@@ -311,7 +311,7 @@
 		}]];
 		
 		if (chargeGroups.size() > 0) {
-			UIAlertAction* (^ammoAction)(dgmpp::StructuresList, NSString*) = ^(dgmpp::StructuresList structures, NSString* title) {
+			UIAlertAction* (^ammoAction)(dgmpp::StarbaseStructuresList, NSString*) = ^(dgmpp::StarbaseStructuresList structures, NSString* title) {
 				return [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 					__block NSManagedObjectID* categoryID;
 					[self.controller.engine performBlockAndWait:^{

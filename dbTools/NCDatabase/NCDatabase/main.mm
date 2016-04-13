@@ -1097,7 +1097,7 @@ typedef enum {
 	SLOT_LOW,
 	SLOT_RIG,
 	SLOT_SUBSYSTEM,
-	SLOT_STRUCTURE,
+	SLOT_STARBASE_STRUCTURE,
 	SLOT_MODE,
 	SLOT_CHARGE,
 	SLOT_DRONE,
@@ -1213,7 +1213,7 @@ void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database)
 			case SLOT_MED:
 			case SLOT_LOW:
 			case SLOT_RIG:
-			case SLOT_STRUCTURE: {
+			case SLOT_STARBASE_STRUCTURE: {
 				item.requirements = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemRequirements" inManagedObjectContext:context];
 				item.requirements.powerGrid = getAttributeValue(item.type, 30);
 				item.requirements.cpu = getAttributeValue(item.type, 50);
@@ -1535,7 +1535,7 @@ void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database)
 	process(@[@"invTypes.marketGroupID = 478"], category, @"Control Towers");
 
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
-	category.category = SLOT_STRUCTURE;
+	category.category = SLOT_STARBASE_STRUCTURE;
 	process(@[@"invTypes.groupID <> 365",
 			  @"invTypes.groupID = invGroups.groupID",
 			  @"invGroups.categoryID = 23"], category, @"Structures");
@@ -1543,31 +1543,9 @@ void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database)
 	
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_SPACE_STRUCTURE;
-	process(@[@"invTypes.marketGroupID = 477"], category, @"Structures");
-	/*NCDBDgmppItemGroup* parentGroup = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemGroup" inManagedObjectContext:context];
-	parentGroup.category = category;
-	parentGroup.parentGroup = nil;
-	parentGroup.groupName = @"Space Structures";
-	parentGroup.icon = nil;
+	process(@[@"invTypes.marketGroupID = invMarketGroups.marketGroupID",
+			  @"invMarketGroups.parentGroupID = 2199"], category, @"Structures");
 
-	for (NCDBInvGroup* group in [invCategories[@(65)] groups]) {
-		NCDBDgmppItemGroup* itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemGroup" inManagedObjectContext:context];
-		itemGroup.category = category;
-		itemGroup.parentGroup = parentGroup;
-		itemGroup.groupName = group.groupName;
-		itemGroup.icon = group.icon;
-		for (NCDBInvType* invType in group.types) {
-			invType.dgmppItem = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItem" inManagedObjectContext:context];
-			[itemGroup addItemsObject:invType.dgmppItem];
-		}
-	}*/
-	
-/*	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
-	category.category = SLOT_SPACE_STRUCTURE;
-	structureProcess(@[@"invTypes.groupID = invGroups.groupID",
-			  @"invGroups.categoryID = 65"], category, @"Space Structures");*/
-
-	
 	[database execSQLRequest:@"SELECT typeID FROM dgmTypeAttributes WHERE attributeID=10000"
 				 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 					 int32_t typeID = sqlite3_column_int(stmt, 0);

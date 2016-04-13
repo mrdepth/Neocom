@@ -14,6 +14,7 @@
 #import "UIView+Nib.h"
 #import "NSString+Neocom.h"
 #import "NCFittingAmountCell.h"
+#import "NCFittingSectionGenericHeaderView.h"
 
 #define ActionButtonActivate NSLocalizedString(@"Activate", nil)
 #define ActionButtonDeactivate NSLocalizedString(@"Deactivate", nil)
@@ -21,7 +22,19 @@
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 #define ActionButtonDelete NSLocalizedString(@"Delete", nil)
 #define ActionButtonShowInfo NSLocalizedString(@"Show Info", nil)
+#define ActionButtonSetTarget NSLocalizedString(@"Set Target", nil)
+#define ActionButtonClearTarget NSLocalizedString(@"Clear Target", nil)
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
+
+@interface NCFittingSpaceStructureDronesViewControllerSection : NSObject
+@property (nonatomic, strong) NSArray* rows;
+@property (nonatomic, assign) dgmpp::Drone::FighterSquadron squadron;
+@property (nonatomic, assign) int numberOfSlots;
+@property (nonatomic, assign) int activeDrones;
+@end
+
+@implementation NCFittingSpaceStructureDronesViewControllerSection
+@end
 
 @interface NCFittingSpaceStructureDronesViewControllerRow : NSObject<NSCopying> {
 	dgmpp::DronesList _drones;
@@ -55,7 +68,7 @@
 @end
 
 @interface NCFittingSpaceStructureDronesViewController()
-@property (nonatomic, strong) NSArray* rows;
+@property (nonatomic, strong) NSArray* sections;
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath;
 
@@ -70,17 +83,24 @@
 - (void) reloadWithCompletionBlock:(void (^)())completionBlock {
 	auto pilot = self.controller.fit.pilot;
 	if (pilot) {
-		NSArray* oldRows = self.rows;
+		NSMutableArray* sections = [NSMutableArray new];
+		NSArray* oldSections = self.sections;
 		
 		[self.controller.engine performBlock:^{
 			NSMutableDictionary* oldDronesDic = [NSMutableDictionary new];
-			for (NCFittingSpaceStructureDronesViewControllerRow* row in oldRows)
-				oldDronesDic[@(row.drones.front()->getTypeID())] = row;
+			for (NCFittingSpaceStructureDronesViewControllerSection* section in oldSections)
+				for (NCFittingSpaceStructureDronesViewControllerRow* row in section.rows)
+					oldDronesDic[@(row.drones.front()->getTypeID())] = row;
 			
 			
-			NSMutableDictionary* dronesDic = [NSMutableDictionary new];
-			auto spaceStructure = self.controller.fit.pilot->getSpaceStructure();
-			for (const auto& drone: spaceStructure->getDrones()) {
+			auto structure = self.controller.fit.pilot->getSpaceStructure();
+			
+			NSMutableDictionary* squadrons = [NSMutableDictionary new];
+			for (const auto& drone: structure->getDrones()) {
+				NSMutableDictionary* dronesDic = squadrons[@(drone->getSquadron())];
+				if (!dronesDic)
+					squadrons[@(drone->getSquadron())] = dronesDic = [NSMutableDictionary new];
+				
 				int32_t typeID = drone->getTypeID();
 				NCFittingSpaceStructureDronesViewControllerRow* row = dronesDic[@(typeID)];
 				if (!row) {
@@ -93,9 +113,34 @@
 				row.drones.push_back(drone);
 			}
 			
-			NSArray* rows = [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"sortKey" ascending:YES]]];
+			if (structure->getTotalDroneBay() > 0 || structure->getDroneBayUsed() > 0 || squadrons[@(dgmpp::Drone::FIGHTER_SQUADRON_NONE)]) {
+				NSDictionary* dronesDic = squadrons[@(dgmpp::Drone::FIGHTER_SQUADRON_NONE)];
+				NCFittingSpaceStructureDronesViewControllerSection* section = [NCFittingSpaceStructureDronesViewControllerSection new];
+				section.rows = [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"sortKey" ascending:YES]]];
+				section.squadron = dgmpp::Drone::FIGHTER_SQUADRON_NONE;
+				section.numberOfSlots = -1;
+				[sections addObject:section];
+			}
+			
+			for (auto squadron: {dgmpp::Drone::FIGHTER_SQUADRON_HEAVY, dgmpp::Drone::FIGHTER_SQUADRON_LIGHT, dgmpp::Drone::FIGHTER_SQUADRON_SUPPORT}) {
+				NSDictionary* dronesDic = squadrons[@(squadron)];
+				if (structure->getDroneSquadronLimit(squadron) > 0 || dronesDic) {
+					NCFittingSpaceStructureDronesViewControllerSection* section = [NCFittingSpaceStructureDronesViewControllerSection new];
+					section.rows = [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"sortKey" ascending:YES]]];
+					section.squadron = squadron;
+					section.numberOfSlots = structure->getDroneSquadronLimit(squadron);
+					int n = 0;
+					for (NCFittingSpaceStructureDronesViewControllerRow* row in section.rows)
+						for (const auto& drone: row.drones)
+							if (drone->isActive())
+								n++;
+					section.activeDrones = n;
+					[sections addObject:section];
+				}
+			}
+			
 			dispatch_async(dispatch_get_main_queue(), ^{
-				self.rows = rows;
+				self.sections = sections;
 				completionBlock();
 			});
 		}];
@@ -109,12 +154,17 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return self.rows ? 1 : 0;
+	return self.sections ? self.sections.count + 1 : 0;
 }
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return self.rows.count + 1;
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
+	if (sectionIndex == self.sections.count)
+		return 1;
+	else {
+		NCFittingSpaceStructureDronesViewControllerSection* section = self.sections[sectionIndex];
+		return section.rows.count;
+	}
 }
 
 
@@ -122,12 +172,66 @@
 #pragma mark -
 #pragma mark Table view delegate
 
+- (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionIndex {
+	if (sectionIndex == self.sections.count) {
+		UIView* view = [[UIView alloc] initWithFrame:CGRectZero];
+		view.backgroundColor = [UIColor clearColor];
+		return view;
+	}
+	else {
+		NCFittingSpaceStructureDronesViewControllerSection* section = self.sections[sectionIndex];
+		if (section.squadron == dgmpp::Drone::FIGHTER_SQUADRON_NONE) {
+			UIView* view = [[UIView alloc] initWithFrame:CGRectZero];
+			view.backgroundColor = [UIColor clearColor];
+			return view;
+		}
+		else {
+			NCFittingSectionGenericHeaderView* header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCFittingSectionGenericHeaderView"];
+			if (section.squadron == dgmpp::Drone::FIGHTER_SQUADRON_HEAVY) {
+				header.imageView.image = [UIImage imageNamed:@"drone"];
+				header.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Heavy Fighter Squadrons %d/%d", nil), section.activeDrones, section.numberOfSlots];
+			}
+			else if (section.squadron == dgmpp::Drone::FIGHTER_SQUADRON_LIGHT) {
+				header.imageView.image = [UIImage imageNamed:@"drone"];
+				header.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Light Fighter Squadrons %d/%d", nil), section.activeDrones, section.numberOfSlots];
+			}
+			else if (section.squadron == dgmpp::Drone::FIGHTER_SQUADRON_SUPPORT) {
+				header.imageView.image = [UIImage imageNamed:@"drone"];
+				header.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Support Fighter Squadrons %d/%d", nil), section.activeDrones, section.numberOfSlots];
+			}
+			return header;
+		}
+	}
+	return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionIndex {
+	if (sectionIndex == self.sections.count)
+		return 0;
+	else {
+		NCFittingSpaceStructureDronesViewControllerSection* section = self.sections[sectionIndex];
+		if (section.squadron == dgmpp::Drone::FIGHTER_SQUADRON_NONE)
+			return 0;
+		else
+			return 44;
+	}
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-	if (indexPath.row >= self.rows.count) {
+	if (indexPath.section == self.sections.count) {
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Drones", nil);
 		
-		[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotDrone size:dgmpp::FIGHTER_CATEGORY_ID race:nil]
+		__block dgmpp::TypeID categoryID = 0;
+		[self.controller.engine performBlockAndWait:^{
+			auto structure = self.controller.fit.pilot->getSpaceStructure();
+			if (structure->getTotalFighterHangar() > 0)
+				categoryID = dgmpp::FIGHTER_CATEGORY_ID;
+			else
+				categoryID = dgmpp::DRONE_CATEGORY_ID;
+		}];
+		
+		[self.controller.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext categoryWithSlot:NCDBDgmppItemSlotDrone size:categoryID race:nil]
 													 inViewController:self.controller
 															 fromRect:cell.bounds
 															   inView:cell
@@ -135,24 +239,28 @@
 													completionHandler:^(NCDBInvType *type) {
 														dgmpp::TypeID typeID = type.typeID;
 														[self.controller.engine performBlockAndWait:^{
-															auto spaceStructure = self.controller.fit.pilot->getSpaceStructure();
+															auto structure = self.controller.fit.pilot->getSpaceStructure();
 															
 															std::shared_ptr<dgmpp::Drone> sameDrone = nullptr;
-															for (const auto& i: spaceStructure->getDrones()) {
+															for (const auto& i: structure->getDrones()) {
 																if (i->getTypeID() == typeID) {
 																	sameDrone = i;
 																	break;
 																}
 															}
-															int dronesLeft = 5;
 															self.controller.engine.engine->beginUpdates();
-															for (;dronesLeft > 0; dronesLeft--) {
-																auto drone = spaceStructure->addDrone(typeID);
+															int dronesLeft = -1;
+															do {
+																auto drone = structure->addDrone(typeID);
 																if (sameDrone) {
 																	drone->setTarget(sameDrone->getTarget());
 																	drone->setActive(sameDrone->isActive());
 																}
+																if (dronesLeft < 0)
+																	dronesLeft = std::max(structure->getDroneSquadronLimit(drone->getSquadron()), 1);
+																dronesLeft--;
 															}
+															while (dronesLeft > 0);
 															self.controller.engine.engine->commitUpdates();
 														}];
 														
@@ -167,30 +275,28 @@
 }
 
 - (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCFittingSpaceStructureDronesViewControllerRow* row = indexPath.row < self.rows.count ? self.rows[indexPath.row] : nil;
-	if (!row.typeName)
+	if (indexPath.section == self.sections.count)
 		return @"Cell";
 	else
 		return @"NCFittingShipDroneCell";
+	/*NCFittingSpaceStructureDronesViewControllerRow* row = indexPath.row < self.rows.count ? self.rows[indexPath.row] : nil;
+	 if (!row.typeName)
+		return @"Cell";
+	 else
+		return @"NCFittingShipDroneCell";*/
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCFittingSpaceStructureDronesViewControllerRow* row = indexPath.row < self.rows.count ? self.rows[indexPath.row] : nil;
-	
-	if (!row.typeName) {
+	if (indexPath.section == self.sections.count) {
 		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
-		if (indexPath.row >= self.rows.count) {
-			cell.iconView.image = [UIImage imageNamed:@"drone"];
-			cell.titleLabel.text = NSLocalizedString(@"Add Drone", nil);
-		}
-		else {
-			cell.iconView.image = nil;
-			cell.titleLabel.text = nil;
-		}
+		cell.iconView.image = [UIImage imageNamed:@"drone"];
+		cell.titleLabel.text = NSLocalizedString(@"Add Drone", nil);
 		cell.subtitleLabel.text = nil;
 		cell.accessoryView = nil;
 	}
 	else {
+		NCFittingSpaceStructureDronesViewControllerSection* section = self.sections[indexPath.section];
+		NCFittingSpaceStructureDronesViewControllerRow* row = section.rows[indexPath.row];
 		NCFittingShipDroneCell* cell = (NCFittingShipDroneCell*) tableViewCell;
 		
 		cell.typeNameLabel.text = row.typeName;
@@ -198,43 +304,47 @@
 		cell.optimalLabel.text = row.optimalText;
 		cell.stateImageView.image = row.stateImage;
 		cell.targetImageView.image = row.hasTarget ? self.targetImage : nil;
-	}
-	if (row && !row.isUpToDate) {
-		row.isUpToDate = YES;
-		[self.controller.engine performBlock:^{
-			NCFittingSpaceStructureDronesViewControllerRow* newRow = [NCFittingSpaceStructureDronesViewControllerRow new];
-			auto drone = row.drones.front();
-			int optimal = (int) drone->getMaxRange();
-			int falloff = (int) drone->getFalloff();
-			float trackingSpeed = drone->getTrackingSpeed();
-			
-			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];
-			newRow.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.drones.size()];
-			newRow.typeImage = type.icon.image.image;
-			
-			if (optimal > 0) {
-				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-				if (falloff > 0)
-					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-				if (trackingSpeed > 0)
-					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-				newRow.optimalText = s;
-			}
-			else
-				newRow.optimalText = nil;
-			
-			newRow.stateImage = drone->isActive() ? [UIImage imageNamed:@"active"] : [UIImage imageNamed:@"offline"];
-			newRow.hasTarget = drone->getTarget() != nullptr;
-			
-			dispatch_async(dispatch_get_main_queue(), ^{
-				row.typeName = newRow.typeName;
-				row.typeImage = newRow.typeImage;
-				row.optimalText = newRow.optimalText;
-				row.hasTarget = newRow.hasTarget;
-				row.stateImage = newRow.stateImage;
-				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-			});
-		}];
+		
+		if (row && !row.isUpToDate) {
+			row.isUpToDate = YES;
+			[self.controller.engine performBlock:^{
+				NCFittingSpaceStructureDronesViewControllerRow* newRow = [NCFittingSpaceStructureDronesViewControllerRow new];
+				auto drone = row.drones.front();
+				int optimal = (int) drone->getMaxRange();
+				int falloff = (int) drone->getFalloff();
+				float trackingSpeed = drone->getTrackingSpeed();
+				
+				NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];
+				if (section.squadron == dgmpp::Drone::FIGHTER_SQUADRON_NONE)
+					newRow.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.drones.size()];
+				else
+					newRow.typeName = [NSString stringWithFormat:NSLocalizedString(@"%@ (%dx%d)", nil), type.typeName, (int) row.drones.size(), (int) drone->getSquadronSize()];
+				newRow.typeImage = type.icon.image.image;
+				
+				if (optimal > 0) {
+					NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+					if (falloff > 0)
+						s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+					if (trackingSpeed > 0)
+						s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+					newRow.optimalText = s;
+				}
+				else
+					newRow.optimalText = nil;
+				
+				newRow.stateImage = drone->isActive() ? [UIImage imageNamed:@"active"] : [UIImage imageNamed:@"offline"];
+				newRow.hasTarget = drone->getTarget() != nullptr;
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					row.typeName = newRow.typeName;
+					row.typeImage = newRow.typeImage;
+					row.optimalText = newRow.optimalText;
+					row.hasTarget = newRow.hasTarget;
+					row.stateImage = newRow.stateImage;
+					[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+				});
+			}];
+		}
 	}
 }
 
@@ -243,11 +353,12 @@
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
 	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-	NCFittingSpaceStructureDronesViewControllerRow* row = self.rows[indexPath.row];
+	NCFittingSpaceStructureDronesViewControllerSection* section = self.sections[indexPath.section];
+	NCFittingSpaceStructureDronesViewControllerRow* row = section.rows[indexPath.row];
 	NSMutableArray* actions = [NSMutableArray new];
 	
 	[self.controller.engine performBlockAndWait:^{
-		auto spaceStructure = self.controller.fit.pilot->getSpaceStructure();
+		auto structure = self.controller.fit.pilot->getSpaceStructure();
 		auto drone = row.drones.front();
 		auto drones = row.drones;
 		NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];
@@ -256,7 +367,7 @@
 			[self.controller.engine performBlockAndWait:^{
 				self.controller.engine.engine->beginUpdates();
 				for (const auto& drone: drones)
-					spaceStructure->removeDrone(drone);
+					structure->removeDrone(drone);
 				self.controller.engine.engine->commitUpdates();
 			}];
 			[self.controller reload];
@@ -318,14 +429,14 @@
 							for (const auto& drone: drones) {
 								if (i <= 0)
 									break;
-								spaceStructure->removeDrone(drone);
+								structure->removeDrone(drone);
 								i--;
 							}
 						}
 						else {
 							auto drone = drones.front();
 							for (int i = n; i < 0; i++) {
-								auto newDrone = spaceStructure->addDrone(drone->getTypeID());
+								auto newDrone = structure->addDrone(drone->getTypeID());
 								newDrone->setActive(drone->isActive());
 								newDrone->setTarget(drone->getTarget());
 							}

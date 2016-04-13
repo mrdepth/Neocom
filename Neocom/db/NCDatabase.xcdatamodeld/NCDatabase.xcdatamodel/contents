@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Automatic">
     <entity name="CertCertificate" representedClassName="NCDBCertCertificate" syncable="YES">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String" syncable="YES"/>
@@ -61,7 +61,7 @@
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="items" inverseEntity="DgmppItemGroup" syncable="YES"/>
         <relationship name="requirements" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemRequirements" inverseName="item" inverseEntity="DgmppItemRequirements" syncable="YES"/>
         <relationship name="shipResources" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemShipResources" inverseName="item" inverseEntity="DgmppItemShipResources" syncable="YES"/>
-        <relationship name="spaceStructureResources" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItemSpaceStructureResources" inverseName="item" inverseEntity="DgmppItemSpaceStructureResources" syncable="YES"/>
+        <relationship name="spaceStructureResources" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemSpaceStructureResources" inverseName="item" inverseEntity="DgmppItemSpaceStructureResources" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="dgmppItem" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="DgmppItemCategory" representedClassName="NCDBDgmppItemCategory" syncable="YES">
@@ -109,7 +109,7 @@
         <attribute name="rigSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="serviceSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="turrets" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="item" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="DgmppItem" inverseName="spaceStructureResources" inverseEntity="DgmppItem" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="spaceStructureResources" inverseEntity="DgmppItem" syncable="YES"/>
     </entity>
     <entity name="DgmTypeAttribute" representedClassName="NCDBDgmTypeAttribute" syncable="YES">
         <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -411,6 +411,7 @@
         <element name="DgmppItemGroup" positionX="160" positionY="192" width="128" height="135"/>
         <element name="DgmppItemRequirements" positionX="160" positionY="192" width="128" height="105"/>
         <element name="DgmppItemShipResources" positionX="160" positionY="192" width="128" height="150"/>
+        <element name="DgmppItemSpaceStructureResources" positionX="-189" positionY="180" width="128" height="165"/>
         <element name="DgmTypeAttribute" positionX="-36" positionY="27" width="128" height="88"/>
         <element name="EveIcon" positionX="18" positionY="63" width="128" height="238"/>
         <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="73"/>
@@ -441,6 +442,5 @@
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
         <element name="Version" positionX="-153" positionY="216" width="128" height="90"/>
         <element name="WhType" positionX="-189" positionY="180" width="128" height="150"/>
-        <element name="DgmppItemSpaceStructureResources" positionX="-189" positionY="180" width="128" height="165"/>
     </elements>
 </model>

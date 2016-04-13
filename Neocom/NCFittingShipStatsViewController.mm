@@ -101,8 +101,17 @@
 								int calibrationUsed = ship->getCalibrationUsed();
 								int totalCalibration = ship->getTotalCalibration();
 
-								int activeDrones = ship->getActiveDrones();
-								int maxActiveDrones = ship->getMaxActiveDrones();
+								int maxActiveDrones;
+								int activeDrones;
+
+								if (ship->getTotalFighterHangar() > 0) {
+									maxActiveDrones = ship->getTotalFighterLaunchTubes();
+									activeDrones = ship->getFighterLaunchTubesUsed();
+								}
+								else {
+									maxActiveDrones = ship->getDroneSquadronLimit(dgmpp::Drone::FIGHTER_SQUADRON_NONE);
+									activeDrones = ship->getDroneSquadronUsed(dgmpp::Drone::FIGHTER_SQUADRON_NONE);
+								}
 
 								NSDictionary* data =
 								@{@"turrets": [NSString stringWithFormat:@"%d/%d", usedTurretHardpoints, totalTurretHardpoints],
@@ -145,10 +154,19 @@
 								float usedPG = ship->getPowerGridUsed();
 								float totalCPU = ship->getTotalCpu();
 								float usedCPU = ship->getCpuUsed();
+								float totalDB;
+								float usedDB;
 								float totalBandwidth = ship->getTotalDroneBandwidth();
 								float usedBandwidth = ship->getDroneBandwidthUsed();
-								float totalDB = ship->getTotalDroneBay();
-								float usedDB = ship->getDroneBayUsed();
+								
+								if (ship->getTotalFighterHangar() > 0) {
+									totalDB = ship->getTotalFighterHangar();
+									usedDB = ship->getFighterHangarUsed();
+								}
+								else {
+									totalDB = ship->getTotalDroneBay();
+									usedDB = ship->getDroneBayUsed();
+								}
 								
 								NSDictionary* data =
 								@{@"powerGrid": [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"],
@@ -588,21 +606,21 @@
 						if (character) {
 							[controller.controller.engine performBlock:^{
 								auto ship = character->getShip();
-								NSCountedSet* types = [NSCountedSet set];
+								NSMutableDictionary* types = [NSMutableDictionary new];
 								NSMutableSet* drones = [NSMutableSet set];
 								__block int32_t shipTypeID;
 								shipTypeID = ship->getTypeID();
 								
-								[types addObject:@(ship->getTypeID())];
+								types[@(ship->getTypeID())] = @(1);
 								
 								for (const auto& i: ship->getModules())
-									[types addObject:@(i->getTypeID())];
+									types[@(i->getTypeID())] = @([types[@(i->getTypeID())] intValue] + 1);
 								
 								for (const auto& i: ship->getDrones()) {
-									[types addObject:@(i->getTypeID())];
+									types[@(i->getTypeID())] = @([types[@(i->getTypeID())] intValue] + std::max(i->getSquadronSize(), 1));
 									[drones addObject:@(i->getTypeID())];
 								}
-								[[NCPriceManager sharedManager] requestPricesWithTypes:[types allObjects] completionBlock:^(NSDictionary *prices) {
+								[[NCPriceManager sharedManager] requestPricesWithTypes:[types allKeys] completionBlock:^(NSDictionary *prices) {
 									__block float shipPrice = 0;
 									__block float fittingsPrice = 0;
 									__block float dronesPrice = 0;
@@ -612,9 +630,9 @@
 										if (typeID == shipTypeID)
 											shipPrice = [obj doubleValue];
 										else if ([drones containsObject:@(typeID)])
-											dronesPrice += [obj doubleValue] * [types countForObject:key];
+											dronesPrice += [obj doubleValue] * [types[key] intValue];
 										else
-											fittingsPrice += [obj doubleValue] * [types countForObject:key];
+											fittingsPrice += [obj doubleValue] * [types[key] intValue];
 									}];
 									float totalPrice = shipPrice + fittingsPrice + dronesPrice;
 									NSDictionary* data =

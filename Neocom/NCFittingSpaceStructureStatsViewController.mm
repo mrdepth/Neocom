@@ -101,8 +101,17 @@
 								int calibrationUsed = spaceStructure->getCalibrationUsed();
 								int totalCalibration = spaceStructure->getTotalCalibration();
 								
-								int activeDrones = spaceStructure->getActiveDrones();
-								int maxActiveDrones = spaceStructure->getMaxActiveDrones();
+								int maxActiveDrones;
+								int activeDrones;
+								
+								if (spaceStructure->getTotalFighterHangar() > 0) {
+									maxActiveDrones = spaceStructure->getTotalFighterLaunchTubes();
+									activeDrones = spaceStructure->getFighterLaunchTubesUsed();
+								}
+								else {
+									maxActiveDrones = spaceStructure->getDroneSquadronLimit(dgmpp::Drone::FIGHTER_SQUADRON_NONE);
+									activeDrones = spaceStructure->getDroneSquadronUsed(dgmpp::Drone::FIGHTER_SQUADRON_NONE);
+								}
 								
 								NSDictionary* data =
 								@{@"turrets": [NSString stringWithFormat:@"%d/%d", usedTurretHardpoints, totalTurretHardpoints],
@@ -145,10 +154,19 @@
 								float usedPG = spaceStructure->getPowerGridUsed();
 								float totalCPU = spaceStructure->getTotalCpu();
 								float usedCPU = spaceStructure->getCpuUsed();
+								float totalDB;
+								float usedDB;
 								float totalBandwidth = spaceStructure->getTotalDroneBandwidth();
 								float usedBandwidth = spaceStructure->getDroneBandwidthUsed();
-								float totalDB = spaceStructure->getTotalDroneBay();
-								float usedDB = spaceStructure->getDroneBayUsed();
+								
+								if (spaceStructure->getTotalFighterHangar() > 0) {
+									totalDB = spaceStructure->getTotalFighterHangar();
+									usedDB = spaceStructure->getFighterHangarUsed();
+								}
+								else {
+									totalDB = spaceStructure->getTotalDroneBay();
+									usedDB = spaceStructure->getDroneBayUsed();
+								}
 								
 								NSDictionary* data =
 								@{@"powerGrid": [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"],
@@ -571,6 +589,45 @@
 				[sections addObject:section];
 				
 				section = [NCFittingSpaceStructureStatsViewControllerSection new];
+				section.title = NSLocalizedString(@"Fuel", nil);
+				{
+					NSMutableArray* rows = [NSMutableArray new];
+					
+					row = [NCFittingSpaceStructureStatsViewControllerRow new];
+					row.cellIdentifier = @"Cell";
+					row.configurationBlock = ^(id tableViewCell, NSDictionary* data) {
+						NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+						cell.iconView.image = data[@"image"] ?: self.defaultTypeImage;
+						cell.titleLabel.text = data[@"title"];
+						cell.subtitleLabel.text = data[@"subtitle"];
+					};
+					row.loadingBlock = ^(NCFittingSpaceStructureStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
+						auto character = controller.controller.fit.pilot;
+						if (character) {
+							[controller.controller.engine performBlock:^{
+								auto structure = character->getSpaceStructure();
+								dgmpp::TypeID fuelBlockTyppeID = structure->getFuelBlockTypeID();
+								[[NCPriceManager sharedManager] requestPricesWithTypes:@[@(fuelBlockTyppeID)] completionBlock:^(NSDictionary *prices) {
+									/*float fuelDailyCost = fuelConsumtion * [prices[@(typeID)] floatValue];
+									data[@"subtitle"] = [NSString stringWithFormat:NSLocalizedString(@"%d/h (%@ ISK/day)", nil),
+														 fuelConsumtion,
+														 [NSNumberFormatter neocomLocalizedStringFromNumber:@(fuelDailyCost)]];
+									dispatch_async(dispatch_get_main_queue(), ^{
+										completionBlock(data);
+									});*/
+								}];
+							}];
+						}
+						else
+							completionBlock(nil);
+					};
+					[rows addObject:row];
+					section.rows = rows;
+				}
+				[sections addObject:section];
+				
+				
+				section = [NCFittingSpaceStructureStatsViewControllerSection new];
 				section.title = NSLocalizedString(@"Price", nil);
 				{
 					NSMutableArray* rows = [NSMutableArray new];
@@ -587,34 +644,34 @@
 						auto character = controller.controller.fit.pilot;
 						if (character) {
 							[controller.controller.engine performBlock:^{
-								auto spaceStructure = character->getSpaceStructure();
-								NSCountedSet* types = [NSCountedSet set];
+								auto structure = character->getSpaceStructure();
+								NSMutableDictionary* types = [NSMutableDictionary new];
 								NSMutableSet* drones = [NSMutableSet set];
-								__block int32_t shipTypeID;
-								shipTypeID = spaceStructure->getTypeID();
+								__block int32_t structureTypeID;
+								structureTypeID = structure->getTypeID();
 								
-								[types addObject:@(spaceStructure->getTypeID())];
+								types[@(structure->getTypeID())] = @(1);
 								
-								for (const auto& i: spaceStructure->getModules())
-									[types addObject:@(i->getTypeID())];
+								for (const auto& i: structure->getModules())
+									types[@(i->getTypeID())] = @([types[@(i->getTypeID())] intValue] + 1);
 								
-								for (const auto& i: spaceStructure->getDrones()) {
-									[types addObject:@(i->getTypeID())];
+								for (const auto& i: structure->getDrones()) {
+									types[@(i->getTypeID())] = @([types[@(i->getTypeID())] intValue] + std::max(i->getSquadronSize(), 1));
 									[drones addObject:@(i->getTypeID())];
 								}
-								[[NCPriceManager sharedManager] requestPricesWithTypes:[types allObjects] completionBlock:^(NSDictionary *prices) {
+								[[NCPriceManager sharedManager] requestPricesWithTypes:[types allKeys] completionBlock:^(NSDictionary *prices) {
 									__block float shipPrice = 0;
 									__block float fittingsPrice = 0;
 									__block float dronesPrice = 0;
 									
 									[prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NSNumber* obj, BOOL *stop) {
 										int32_t typeID = [key intValue];
-										if (typeID == shipTypeID)
+										if (typeID == structureTypeID)
 											shipPrice = [obj doubleValue];
 										else if ([drones containsObject:@(typeID)])
-											dronesPrice += [obj doubleValue] * [types countForObject:key];
+											dronesPrice += [obj doubleValue] * [types[key] intValue];
 										else
-											fittingsPrice += [obj doubleValue] * [types countForObject:key];
+											fittingsPrice += [obj doubleValue] * [types[key] intValue];
 									}];
 									float totalPrice = shipPrice + fittingsPrice + dronesPrice;
 									NSDictionary* data =

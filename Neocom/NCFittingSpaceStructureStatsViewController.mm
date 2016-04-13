@@ -607,14 +607,21 @@
 							[controller.controller.engine performBlock:^{
 								auto structure = character->getSpaceStructure();
 								dgmpp::TypeID fuelBlockTyppeID = structure->getFuelBlockTypeID();
+								float cycleFuelNeed = structure->getCycleFuelNeed();
+								float cycleTime = structure->getCycleTime();
+								NCDBInvType* type = [controller.controller.engine.databaseManagedObjectContext invTypeWithTypeID:fuelBlockTyppeID];
+								NSMutableDictionary* data = [NSMutableDictionary new];
+								data[@"image"] = type.icon.image.image ?: self.defaultTypeImage;
+								data[@"title"] = type.typeName ?: NSLocalizedString(@"Unknown Type", nil);
+								
 								[[NCPriceManager sharedManager] requestPricesWithTypes:@[@(fuelBlockTyppeID)] completionBlock:^(NSDictionary *prices) {
-									/*float fuelDailyCost = fuelConsumtion * [prices[@(typeID)] floatValue];
+									float fuelDailyCost = [prices[@(fuelBlockTyppeID)] floatValue] / cycleTime * 3600 * 24 * cycleFuelNeed;
 									data[@"subtitle"] = [NSString stringWithFormat:NSLocalizedString(@"%d/h (%@ ISK/day)", nil),
-														 fuelConsumtion,
+														 (int) (cycleFuelNeed / cycleTime * 3600),
 														 [NSNumberFormatter neocomLocalizedStringFromNumber:@(fuelDailyCost)]];
 									dispatch_async(dispatch_get_main_queue(), ^{
 										completionBlock(data);
-									});*/
+									});
 								}];
 							}];
 						}

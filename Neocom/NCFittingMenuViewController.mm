@@ -225,7 +225,7 @@
 			[self performSegueWithIdentifier:@"NCFittingSpaceStructureViewController" sender:fit];
 
 			return;*/
-			self.typePickerViewController.title = NSLocalizedString(@"Space Structures", nil);
+			self.typePickerViewController.title = NSLocalizedString(@"Structures", nil);
 			[self.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext spaceStructuresCategory]
 											  inViewController:self
 													  fromRect:cell.bounds
@@ -352,7 +352,7 @@
 					row.category = NCLoadoutCategorySpaceStructure;
 					if (!spaceStructuresLoadouts) {
 						spaceStructuresLoadouts = [NCFittingMenuViewControllerSection new];
-						spaceStructuresLoadouts.title = NSLocalizedString(@"Space Structures", nil);
+						spaceStructuresLoadouts.title = NSLocalizedString(@"Structures", nil);
 						spaceStructuresLoadouts.groupID = type.group.category.categoryID;
 						spaceStructuresLoadouts.rows = [NSMutableArray new];
 					}

@@ -623,13 +623,6 @@
 			remoteGlobalIDString = 12EFCC661C1AB060003ECA7F;
 			remoteInfo = dgmppDemo;
 		};
-		12F330311C340C1B00F19C45 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 12F330091C33EFDC00F19C45 /* dgmpp.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 12EFCCCF1C1AB334003ECA7F;
-			remoteInfo = "dgmpp OS X";
-		};
 		12F330331C340C1B00F19C45 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 12F330091C33EFDC00F19C45 /* dgmpp.xcodeproj */;
@@ -3902,7 +3895,6 @@
 				12F3302C1C340C1B00F19C45 /* dbpatch */,
 				12F3302E1C340C1B00F19C45 /* dgmpp.framework */,
 				12F330301C340C1B00F19C45 /* dgmpp */,
-				12F330321C340C1B00F19C45 /* dgmpp.framework */,
 				12F330341C340C1B00F19C45 /* modifiersdump */,
 			);
 			name = Products;
@@ -4549,13 +4541,6 @@
 			fileType = "compiled.mach-o.executable";
 			path = dgmpp;
 			remoteRef = 12F3302F1C340C1B00F19C45 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		12F330321C340C1B00F19C45 /* dgmpp.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = dgmpp.framework;
-			remoteRef = 12F330311C340C1B00F19C45 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		12F330341C340C1B00F19C45 /* modifiersdump */ = {

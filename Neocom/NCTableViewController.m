@@ -72,7 +72,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[GAI createScreenWithName:NSStringFromClass(self.class)];
 
 	//Appearance
 	if (!self.tableView.backgroundView) {
@@ -177,6 +176,7 @@
 	self.taskManager.active = YES;
 	
 	[self reloadIfNeeded];
+	[GAI createScreenWithName:NSStringFromClass(self.class)];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {

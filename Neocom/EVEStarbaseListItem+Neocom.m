@@ -20,7 +20,8 @@
 }
 
 - (float) resourceConsumptionBonus {
-	return [objc_getAssociatedObject(self, @"resourceConsumptionBonus") floatValue];
+	float bonus = [objc_getAssociatedObject(self, @"resourceConsumptionBonus") floatValue];
+	return bonus > 0 ? bonus : 1;
 }
 
 - (void) setResourceConsumptionBonus:(float)resourceConsumptionBonus {

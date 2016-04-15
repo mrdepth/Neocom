@@ -79,12 +79,10 @@ void uncaughtExceptionHandler(NSException* exception) {
 	[Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
 #endif*/
 	
+#if !DEBUG
 	GAI *gai = [GAI sharedInstance];
 	[gai trackerWithTrackingId:@"UA-72025819-3"];
 	gai.trackUncaughtExceptions = YES;  // report uncaught exceptions
-#if DEBUG
-	gai.logger.logLevel = kGAILogLevelError;  // remove before app release
-#else
 	gai.logger.logLevel = kGAILogLevelNone;  // remove before app release
 #endif
 	

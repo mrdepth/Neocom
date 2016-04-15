@@ -21,6 +21,7 @@
 @property (nonatomic, assign) double implants;
 @property (nonatomic, assign) double blueprints;
 @property (nonatomic, strong) NSDictionary* categories;
+@property (nonatomic, assign) BOOL corporate;
 @end
 
 @implementation NCWealthViewControllerData
@@ -35,6 +36,7 @@
 		self.implants = [aDecoder decodeDoubleForKey:@"implants"];
 		self.blueprints = [aDecoder decodeDoubleForKey:@"blueprints"];
 		self.categories = [aDecoder decodeObjectForKey:@"categories"];
+		self.corporate = [aDecoder decodeBoolForKey:@"corporate"];
 	}
 	return self;
 }
@@ -48,6 +50,7 @@
 	[aCoder encodeDouble:self.implants forKey:@"implants"];
 	[aCoder encodeDouble:self.blueprints forKey:@"blueprints"];
 	[aCoder encodeObject:self.categories forKey:@"categories"];
+	[aCoder encodeBool:self.corporate forKey:@"corporate"];
 }
 
 @end
@@ -115,6 +118,7 @@
 		NCWealthViewControllerData* data = [NCWealthViewControllerData new];
 		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
 		BOOL corporate = api.apiKey.corporate;
+		data.corporate = corporate;
 		
 		[api accountBalanceWithCompletionBlock:^(EVEAccountBalance *result, NSError *error) {
 			double sum = 0;
@@ -196,14 +200,14 @@
 				}
 			}];
 		} progressBlock:nil];
-		[api industryJobsHistoryWithCompletionBlock:^(EVEIndustryJobsHistory *result, NSError *error) {
+		[api industryJobsWithCompletionBlock:^(EVEIndustryJobs *result, NSError *error) {
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 				@autoreleasepool {
 					NSMutableDictionary* typeIDs = [NSMutableDictionary new];
 					
 					for (EVEIndustryJobsItem* job in result.jobs) {
 						if (job.activityID == 1) {//manufacturing
-							if (job.status == EVEIndustryJobStatusActive || job.status == EVEIndustryJobStatusPaused || job.status == EVEIndustryJobStatusPaused)
+							if (job.status == EVEIndustryJobStatusActive || job.status == EVEIndustryJobStatusPaused)
 								typeIDs[@(job.productTypeID)] = @([typeIDs[@(job.productTypeID)] longLongValue] + job.runs);
 						}
 /*						else {

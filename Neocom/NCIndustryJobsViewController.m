@@ -162,109 +162,152 @@
 		return;
 	}
 	
-	NSProgress* progress = [NSProgress progressWithTotalUnitCount:4];
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:5];
 	
 	[account.managedObjectContext performBlock:^{
 		__block NSError* lastError = nil;
 		NCIndustryJobsViewControllerData* data = [NCIndustryJobsViewControllerData new];
+		NSMutableDictionary* jobs = [NSMutableDictionary new];
+		dispatch_group_t finishDispatchGroup = dispatch_group_create();
+		
 		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+		__block EVEAPIObject* eveapi;
+
+		dispatch_group_enter(finishDispatchGroup);
 		[api industryJobsHistoryWithCompletionBlock:^(EVEIndustryJobsHistory *result, NSError *error) {
-			progress.completedUnitCount++;
-			if (error)
-				lastError = error;
-			
-			NSMutableArray* activeJobs = [NSMutableArray new];
-			NSMutableArray* finishedJobs = [NSMutableArray new];
-			
-			NSMutableSet* locationsIDs = [NSMutableSet new];
-			NSMutableSet* characterIDs = [NSMutableSet new];
-			
-			for (EVEIndustryJobsItem* job in result.jobs) {
-				if (job.blueprintLocationID)
-					[locationsIDs addObject:@(job.blueprintLocationID)];
-				if (job.outputLocationID)
-					[locationsIDs addObject:@(job.outputLocationID)];
-				if (job.installerID)
-					[characterIDs addObject:@(job.installerID)];
-				
-				switch (job.status) {
-					case EVEIndustryJobStatusActive:
-						[activeJobs addObject:job];
-						break;
-					case EVEIndustryJobStatusPaused:
-					case EVEIndustryJobStatusReady:
-					case EVEIndustryJobStatusDelivered:
-					case EVEIndustryJobStatusCancelled:
-					case EVEIndustryJobStatusReverted:
-					default:
-						[finishedJobs addObject:job];
-						break;
-				}
+			@synchronized (jobs) {
+				if (error)
+					lastError = error;
+				else if (!eveapi)
+					eveapi = result.eveapi;
+				progress.completedUnitCount++;
+				for (EVEIndustryJobsItem* item in result.jobs)
+					jobs[@(item.jobID)] = item;
 			}
-			
-			dispatch_group_t finishDispatchGroup = dispatch_group_create();
-			__block NSDictionary* locationsNames;
-			if (locationsIDs.count > 0) {
-				dispatch_group_enter(finishDispatchGroup);
-				[[NCLocationsManager defaultManager] requestLocationsNamesWithIDs:[locationsIDs allObjects] completionBlock:^(NSDictionary *result) {
-					locationsNames = result;
-					dispatch_group_leave(finishDispatchGroup);
+			dispatch_group_leave(finishDispatchGroup);
+		} progressBlock:nil];
+		
+		dispatch_group_enter(finishDispatchGroup);
+		[api industryJobsWithCompletionBlock:^(EVEIndustryJobs *result, NSError *error) {
+			@synchronized (jobs) {
+				if (error)
+					lastError = error;
+				else
+					eveapi = result.eveapi;
+				progress.completedUnitCount++;
+				for (EVEIndustryJobsItem* item in result.jobs)
+					jobs[@(item.jobID)] = item;
+			}
+			dispatch_group_leave(finishDispatchGroup);
+		} progressBlock:nil];
+		
+		dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+			@autoreleasepool {
+				NSMutableArray* activeJobs = [NSMutableArray new];
+				NSMutableArray* finishedJobs = [NSMutableArray new];
+				
+				NSMutableSet* locationsIDs = [NSMutableSet new];
+				NSMutableSet* characterIDs = [NSMutableSet new];
+				
+				for (EVEIndustryJobsItem* job in [jobs allValues]) {
+					if (job.blueprintLocationID)
+						[locationsIDs addObject:@(job.blueprintLocationID)];
+					if (job.outputLocationID)
+						[locationsIDs addObject:@(job.outputLocationID)];
+					if (job.installerID)
+						[characterIDs addObject:@(job.installerID)];
+					if (job.stationID)
+						[locationsIDs addObject:@(job.stationID)];
+					
+					switch (job.status) {
+						case EVEIndustryJobStatusActive:
+							[activeJobs addObject:job];
+							break;
+						case EVEIndustryJobStatusPaused:
+						case EVEIndustryJobStatusReady:
+						case EVEIndustryJobStatusDelivered:
+						case EVEIndustryJobStatusCancelled:
+						case EVEIndustryJobStatusReverted:
+						default:
+							[finishedJobs addObject:job];
+							break;
+					}
+				}
+				
+				dispatch_group_t finishDispatchGroup = dispatch_group_create();
+				__block NSDictionary* locationsNames;
+				if (locationsIDs.count > 0) {
+					dispatch_group_enter(finishDispatchGroup);
+					[[NCLocationsManager defaultManager] requestLocationsNamesWithIDs:[locationsIDs allObjects] completionBlock:^(NSDictionary *result) {
+						locationsNames = result;
+						dispatch_group_leave(finishDispatchGroup);
+						@synchronized(progress) {
+							progress.completedUnitCount++;
+						}
+					}];
+				}
+				else
 					@synchronized(progress) {
 						progress.completedUnitCount++;
 					}
-				}];
-			}
-			else
-				@synchronized(progress) {
-					progress.completedUnitCount++;
+				
+				__block NSDictionary* characterName;
+				if (characterIDs.count > 0) {
+					dispatch_group_enter(finishDispatchGroup);
+					[api characterNameWithIDs:[characterIDs sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(compare:)]]]
+							  completionBlock:^(EVECharacterName *result, NSError *error) {
+								  NSMutableDictionary* dic = [NSMutableDictionary new];
+								  for (EVECharacterIDItem* item in result.characters)
+									  dic[@(item.characterID)] = item.name;
+								  characterName = dic;
+								  dispatch_group_leave(finishDispatchGroup);
+								  @synchronized(progress) {
+									  progress.completedUnitCount++;
+								  }
+							  } progressBlock:nil];
 				}
-			
-			__block NSDictionary* characterName;
-			if (characterIDs.count > 0) {
-				dispatch_group_enter(finishDispatchGroup);
-				[api characterNameWithIDs:[characterIDs sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(compare:)]]]
-						  completionBlock:^(EVECharacterName *result, NSError *error) {
-							  NSMutableDictionary* dic = [NSMutableDictionary new];
-							  for (EVECharacterIDItem* item in result.characters)
-								  dic[@(item.characterID)] = item.name;
-							  characterName = dic;
-							  dispatch_group_leave(finishDispatchGroup);
-							  @synchronized(progress) {
-								  progress.completedUnitCount++;
-							  }
-						  } progressBlock:nil];
-			}
-			else
-				@synchronized(progress) {
-					progress.completedUnitCount++;
-				}
-			
-			dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-				@autoreleasepool {
-					for (EVEIndustryJobsItem* job in result.jobs) {
-						job.blueprintLocation = locationsNames[@(job.blueprintLocationID)];
-						job.outputLocation = locationsNames[@(job.outputLocationID)];
-						job.installerName = characterName[@(job.installerID)];
-					}
-					
-					[activeJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"endDate" ascending:YES]]];
-					[finishedJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"completedDate" ascending:NO]]];
-					
-					data.activeJobs = activeJobs;
-					data.finishedJobs = finishedJobs;
-					
-					data.currentTime = result.eveapi.currentTime;
-					data.cacheDate = result.eveapi.cacheDate;
-					
-					dispatch_async(dispatch_get_main_queue(), ^{
-						[self saveCacheData:data cacheDate:[NSDate date] expireDate:[result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]];
-						completionBlock(lastError);
+				else
+					@synchronized(progress) {
 						progress.completedUnitCount++;
-					});
-					
-				}
-			});
-		} progressBlock:nil];
+					}
+				
+				dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+					@autoreleasepool {
+						for (EVEIndustryJobsItem* job in [jobs allValues]) {
+							NCLocationsManagerItem* station = locationsNames[@(job.stationID)];
+							NCLocationsManagerItem* blueprintLocation = locationsNames[@(job.blueprintLocationID)];
+							if (!blueprintLocation) {
+								if (station)
+									blueprintLocation = station;
+								else {
+									blueprintLocation = [[NCLocationsManagerItem alloc] initWithName:job.solarSystemName solarSystemID:job.solarSystemID];
+								}
+							}
+							
+							job.blueprintLocation = blueprintLocation;
+							job.outputLocation = locationsNames[@(job.outputLocationID)] ?: blueprintLocation;
+							job.installerName = characterName[@(job.installerID)];
+						}
+						
+						[activeJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"endDate" ascending:YES]]];
+						[finishedJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"completedDate" ascending:NO]]];
+						
+						data.activeJobs = activeJobs;
+						data.finishedJobs = finishedJobs;
+						
+						data.currentTime = eveapi.currentTime;
+						data.cacheDate = eveapi.cacheDate;
+						
+						dispatch_async(dispatch_get_main_queue(), ^{
+							[self saveCacheData:data cacheDate:[NSDate date] expireDate:[eveapi localTimeWithServerTime:eveapi.cachedUntil]];
+							completionBlock(lastError);
+							progress.completedUnitCount++;
+						});
+						
+					}
+				});
+			}
+		});
 	}];
 }
 

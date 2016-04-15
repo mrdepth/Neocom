@@ -13,9 +13,11 @@
 @implementation GAI (Neocom)
 
 +(void)createScreenWithName:(NSString*) screenName {
+#if !DEBUG
 	id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
 	[tracker set:kGAIScreenName  value:screenName];
 	[tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+#endif
 }
 
 

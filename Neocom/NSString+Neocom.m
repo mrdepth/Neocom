@@ -111,5 +111,18 @@
 	return text;
 }
 
+- (NSString*) stringByDeletingExtraSpaces {
+	NSInteger len = self.length;
+	NSInteger from = len;
+	NSInteger to = 0;
+	for (NSInteger i = 0; i < len; i++)
+		if ([self characterAtIndex:i] != ' ') {
+			if (i < from)
+				from = i;
+			to = i;
+		}
+	
+	return from < to ? [self substringWithRange:NSMakeRange(from, to - from + 1)] : @"";
+}
 
 @end

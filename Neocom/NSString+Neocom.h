@@ -16,4 +16,5 @@
 + (NSString*) stringWithTimeLeft:(NSTimeInterval) timeLeft;
 + (NSString*) stringWithTimeLeft:(NSTimeInterval) timeLeft componentsLimit:(NSInteger) componentsLimit;
 
+- (NSString*) stringByDeletingExtraSpaces;
 @end

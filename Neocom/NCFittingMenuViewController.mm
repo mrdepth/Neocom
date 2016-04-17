@@ -19,6 +19,7 @@
 #import "NCFittingPOSViewController.h"
 #import "NCFittingSpaceStructureViewController.h"
 #import "NCFittingCharacterPickerViewController.h"
+#import "NSString+Neocom.h"
 
 
 @interface NCFittingMenuViewControllerRow : NSObject
@@ -302,7 +303,7 @@
 - (id) identifierForSection:(NSInteger)sectionIndex {
 	if (sectionIndex > 0) {
 		NCFittingMenuViewControllerSection* section = self.sections[sectionIndex - 1];
-		return @(section.groupID);
+		return section.groupID > 0 ? @(section.groupID) : section.title;
 	}
 	return nil;
 }
@@ -336,7 +337,30 @@
 				NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:row.typeID];
 				row.typeName = type.typeName;
 				row.iconID = [type.icon objectID];
-				if (type && type.group.category.categoryID == NCCategoryIDShip) {
+				NSRange range = [row.loadoutName rangeOfString:@"/"];
+				if (type && range.location != NSNotFound) {
+					NSString* folder = [[row.loadoutName substringToIndex:range.location] stringByDeletingExtraSpaces];
+					NSString* name = [[row.loadoutName substringFromIndex:range.location + 1] stringByDeletingExtraSpaces];
+					row.loadoutName = name;
+					if (type.group.category.categoryID == NCCategoryIDShip)
+						row.category = NCLoadoutCategoryShip;
+					else if (type.group.category.categoryID == NCCategoryIDStructure)
+						row.category = NCLoadoutCategorySpaceStructure;
+					else
+						row.category = NCLoadoutCategoryPOS;
+					
+					NCFittingMenuViewControllerSection* section = shipLoadouts[folder];
+					if (!section) {
+						section = [NCFittingMenuViewControllerSection new];
+						shipLoadouts[folder] = section;
+						section.title = folder;
+						section.groupID = 0;
+						section.rows = [NSMutableArray new];
+					}
+					[section.rows addObject:row];
+
+				}
+				else if (type && type.group.category.categoryID == NCCategoryIDShip) {
 					row.category = NCLoadoutCategoryShip;
 					NCFittingMenuViewControllerSection* section = shipLoadouts[@(type.group.groupID)];
 					if (!section) {

@@ -23,7 +23,7 @@ EVENPCBuilder: tmp
 	xcodebuild -project ../EVENPCBuilder/EVENPCBuilder.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
 
 NCDatabase: tmp
-	xcodebuild -project ../NCDatabase/NCDatabase.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build FRAMEWORK_SEARCH_PATHS=${T}
+	xcodebuild -project ../NCDatabase/NCDatabase.xcodeproj -configuration Release BUILT_PRODUCTS_DIR=${T} TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
 
 Icons: eveIcons.sql EVEIconsConverter
 	${T}/EVEIconsConverter ./input/Icons/items ${T}/Icons

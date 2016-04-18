@@ -41,6 +41,7 @@
 @property (nonatomic, strong) NSMutableArray* rows;
 @property (nonatomic, assign) int32_t groupID;
 @property (nonatomic, strong) NSString* title;
+@property (nonatomic, assign) NSInteger order;
 @end
 
 @implementation NCFittingMenuViewControllerSection
@@ -356,6 +357,7 @@
 						section.title = folder;
 						section.groupID = 0;
 						section.rows = [NSMutableArray new];
+						section.order = 0;
 					}
 					[section.rows addObject:row];
 
@@ -369,6 +371,7 @@
 						section.title = type.group.groupName;
 						section.groupID = type.group.groupID;
 						section.rows = [NSMutableArray new];
+						section.order = 1;
 					}
 					[section.rows addObject:row];
 				}
@@ -379,6 +382,7 @@
 						spaceStructuresLoadouts.title = NSLocalizedString(@"Structures", nil);
 						spaceStructuresLoadouts.groupID = type.group.category.categoryID;
 						spaceStructuresLoadouts.rows = [NSMutableArray new];
+						spaceStructuresLoadouts.order = 2;
 					}
 					[spaceStructuresLoadouts.rows addObject:row];
 				}
@@ -389,12 +393,12 @@
 						posLoadouts.title = type.group.groupName;
 						posLoadouts.groupID = type.group.groupID;
 						posLoadouts.rows = [NSMutableArray new];
+						posLoadouts.order = 3;
 					}
 					[posLoadouts.rows addObject:row];
 				}
 			}
-			NSMutableArray* sections = [[[shipLoadouts allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]] mutableCopy];
-
+			NSMutableArray* sections = [[[shipLoadouts allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]] mutableCopy];
 			
 			for (NCFittingMenuViewControllerSection* section in sections)
 				[section.rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];

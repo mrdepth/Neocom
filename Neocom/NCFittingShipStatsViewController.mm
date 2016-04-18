@@ -617,7 +617,7 @@
 									types[@(i->getTypeID())] = @([types[@(i->getTypeID())] intValue] + 1);
 								
 								for (const auto& i: ship->getDrones()) {
-									types[@(i->getTypeID())] = @([types[@(i->getTypeID())] intValue] + std::max(i->getSquadronSize(), 1));
+									types[@(i->getTypeID())] = @([types[@(i->getTypeID())] intValue] + 1);
 									[drones addObject:@(i->getTypeID())];
 								}
 								[[NCPriceManager sharedManager] requestPricesWithTypes:[types allKeys] completionBlock:^(NSDictionary *prices) {

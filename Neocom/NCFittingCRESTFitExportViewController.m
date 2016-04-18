@@ -67,6 +67,8 @@
 				[UIAlertController alertWithTitle:NSLocalizedString(@"Invalid Token", nil) message:nil];
 		}
 	}
+	else
+		[super tableView:tableView didSelectRowAtIndexPath:indexPath];
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

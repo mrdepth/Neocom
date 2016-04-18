@@ -602,7 +602,7 @@
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		NSString* dna = self.dnaRepresentation;
 		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.typeID];
-		hyperlinkTag = [NSString stringWithFormat:@"<a href=\"javascript:if (typeof CCPEVE != 'undefined') CCPEVE.showFitting('%@'); else window.open('fitting:%@');\">%@ - %@</a>", dna, dna, type.typeName, self.loadoutName];;
+		hyperlinkTag = [NSString stringWithFormat:@"<a href=\"javascript:if (typeof CCPEVE != 'undefined') CCPEVE.showFitting('%@'); else window.open('fitting:%@');\">%@ - %@</a>", dna, dna, type.typeName, self.loadoutName];
 	}];
 	return hyperlinkTag;
 }

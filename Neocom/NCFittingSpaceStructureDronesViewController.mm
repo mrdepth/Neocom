@@ -129,11 +129,15 @@
 					section.rows = [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"sortKey" ascending:YES]]];
 					section.squadron = squadron;
 					section.numberOfSlots = structure->getDroneSquadronLimit(squadron);
-					int n = 0;
+
+					std::map<int,std::pair<int, int>> squadrons;
 					for (NCFittingSpaceStructureDronesViewControllerRow* row in section.rows)
 						for (const auto& drone: row.drones)
 							if (drone->isActive())
-								n++;
+								squadrons[drone->getTypeID()] = std::make_pair(squadrons[drone->getTypeID()].first + 1, drone->getSquadronSize());
+					int n = 0;
+					for (const auto i: squadrons)
+						n += ceil((double) i.second.first / (double) i.second.second);
 					section.activeDrones = n;
 					[sections addObject:section];
 				}
@@ -252,10 +256,20 @@
 															int dronesLeft = -1;
 															do {
 																auto drone = structure->addDrone(typeID);
+																int squadronSize = drone->getSquadronSize();
 																if (sameDrone) {
 																	drone->setTarget(sameDrone->getTarget());
 																	drone->setActive(sameDrone->isActive());
 																}
+																
+																for (int i = 1; i < squadronSize; i++) {
+																	auto drone = structure->addDrone(typeID);
+																	if (sameDrone) {
+																		drone->setTarget(sameDrone->getTarget());
+																		drone->setActive(sameDrone->isActive());
+																	}
+																}
+																
 																if (dronesLeft < 0)
 																	dronesLeft = std::max(structure->getDroneSquadronLimit(drone->getSquadron()), 1);
 																dronesLeft--;
@@ -318,7 +332,7 @@
 				if (section.squadron == dgmpp::Drone::FIGHTER_SQUADRON_NONE)
 					newRow.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.drones.size()];
 				else
-					newRow.typeName = [NSString stringWithFormat:NSLocalizedString(@"%@ (%dx%d)", nil), type.typeName, (int) row.drones.size(), (int) drone->getSquadronSize()];
+					newRow.typeName = [NSString stringWithFormat:NSLocalizedString(@"%@ (%dx%d)", nil), type.typeName, (int) (row.drones.size() / drone->getSquadronSize()) , (int) drone->getSquadronSize()];
 				newRow.typeImage = type.icon.image.image;
 				
 				if (optimal > 0) {
@@ -362,7 +376,10 @@
 		auto drone = row.drones.front();
 		auto drones = row.drones;
 		NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];
-		
+		int squadronSize = drone->getSquadronSize();
+		if (squadronSize == 0)
+			squadronSize = 1;
+
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonDelete style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
 			[self.controller.engine performBlockAndWait:^{
 				self.controller.engine.engine->beginUpdates();
@@ -412,7 +429,7 @@
 			[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
 				amountTextField = textField;
 				textField.keyboardType = UIKeyboardTypeNumberPad;
-				textField.text = [NSString stringWithFormat:@"%d", (int) drones.size()];
+				textField.text = [NSString stringWithFormat:@"%d", (int) (drones.size() / squadronSize)];
 				textField.clearButtonMode = UITextFieldViewModeAlways;
 			}];
 			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -421,7 +438,7 @@
 					if (amount > 50)
 						amount = 50;
 					
-					int n = (int) drones.size() - amount;
+					int n = (int) drones.size() - amount * squadronSize;
 					[self.controller.engine performBlock:^{
 						self.controller.engine.engine->beginUpdates();
 						if (n > 0) {

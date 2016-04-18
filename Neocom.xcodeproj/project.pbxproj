@@ -560,6 +560,13 @@
 			remoteGlobalIDString = 12440CEA1C73CBC300F04393;
 			remoteInfo = "AFNetworking OS X";
 		};
+		123BB27B1CC508A300B30B5E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 12F330091C33EFDC00F19C45 /* dgmpp.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12D9F9F21CC3A98B00313F8D;
+			remoteInfo = "dgmpp OSX";
+		};
 		1248CE791B7DDCE1000266BE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1248CE731B7DDCE1000266BE /* EVEOnlineAPI.xcodeproj */;
@@ -3896,6 +3903,7 @@
 				12F3302E1C340C1B00F19C45 /* dgmpp.framework */,
 				12F330301C340C1B00F19C45 /* dgmpp */,
 				12F330341C340C1B00F19C45 /* modifiersdump */,
+				123BB27C1CC508A300B30B5E /* dgmpp.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4492,6 +4500,13 @@
 			fileType = wrapper.framework;
 			path = AFNetworking.framework;
 			remoteRef = 121064711C91AAA20032B3DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		123BB27C1CC508A300B30B5E /* dgmpp.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = dgmpp.framework;
+			remoteRef = 123BB27B1CC508A300B30B5E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		1248CE7A1B7DDCE1000266BE /* EVEOnlineAPI.app */ = {

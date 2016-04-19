@@ -52,8 +52,7 @@
 @property (nonatomic, strong) UIImage* stateImage;
 @property (nonatomic, assign) BOOL hasTarget;
 
-@property (nonatomic, assign) float trackingSpeed;
-@property (nonatomic, assign) float orbitRadius;
+@property (nonatomic, assign) float accuracyScore;
 @end
 
 @implementation NCFittingSpaceStructureModulesViewControllerRow
@@ -72,8 +71,7 @@
 	other.lifeTimeText = self.lifeTimeText;
 	other.stateImage = self.stateImage;
 	other.hasTarget = self.hasTarget;
-	other.trackingSpeed = self.trackingSpeed;
-	other.orbitRadius = self.orbitRadius;
+	other.accuracyScore = self.accuracyScore;
 	return other;
 }
 
@@ -406,19 +404,17 @@
 		cell.typeImageView.image = row.typeImage ?: self.defaultTypeImage;
 		cell.chargeLabel.text = row.chargeText;
 		cell.optimalLabel.text = row.optimalText;
-		if (!row.trackingText && row.trackingSpeed > 0) {
+		if (!row.trackingText && row.accuracyScore > 0) {
 			NSMutableAttributedString* s = [NSMutableAttributedString new];
 			
-			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@ rad/sec (", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.trackingSpeed)]]
+			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"accuracy %@ (", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.accuracyScore)]]
 																	  attributes:nil]];
 			NSTextAttachment* icon;
 			icon = [NSTextAttachment new];
 			icon.image = [UIImage imageNamed:@"targetingRange"];
 			icon.bounds = CGRectMake(0, -7 -cell.trackingLabel.font.descender, 15, 15);
 			[s appendAttributedString:[NSAttributedString attributedStringWithAttachment:icon]];
-			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@+ m)", nil),
-																				  [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.orbitRadius)]]
-																	  attributes:nil]];
+			[s appendAttributedString:[[NSAttributedString alloc] initWithString:@")" attributes:nil]];
 			row.trackingText = s;
 		}
 		cell.trackingLabel.attributedText = row.trackingText;
@@ -453,11 +449,11 @@
 			
 			float optimal = module->getMaxRange();
 			float falloff = module->getFalloff();
-			float trackingSpeed = module->getTrackingSpeed();
+			float accuracyScore = module->getAccuracyScore();
 			float lifeTime = module->getLifeTime();
 			
 			newRow.trackingText = nil;
-			newRow.trackingSpeed = trackingSpeed;
+			newRow.accuracyScore = accuracyScore;
 			
 			if (optimal > 0) {
 				NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
@@ -505,8 +501,7 @@
 				row.lifeTimeText = newRow.lifeTimeText;
 				row.stateImage = newRow.stateImage;
 				row.hasTarget = newRow.hasTarget;
-				row.trackingSpeed = newRow.trackingSpeed;
-				row.orbitRadius = newRow.orbitRadius;
+				row.accuracyScore = newRow.accuracyScore;
 				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 			});
 		}];

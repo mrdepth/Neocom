@@ -403,7 +403,7 @@
 			auto structure = row.structures.front();
 			int optimal = (int) structure->getMaxRange();
 			int falloff = (int) structure->getFalloff();
-			float trackingSpeed = structure->getTrackingSpeed();
+			float accuracyScore = structure->getAccuracyScore();
 			
 			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:structure->getTypeID()];
 			
@@ -420,8 +420,8 @@
 				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
 				if (falloff > 0)
 					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-				if (trackingSpeed > 0)
-					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+				if (accuracyScore > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" (accuracy %@)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(accuracyScore)]];
 				newRow.optimalText = s;
 			}
 			else

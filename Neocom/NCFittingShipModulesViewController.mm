@@ -52,7 +52,7 @@
 @property (nonatomic, strong) UIImage* stateImage;
 @property (nonatomic, assign) BOOL hasTarget;
 
-@property (nonatomic, assign) float trackingSpeed;
+@property (nonatomic, assign) float accuracyScore;
 @property (nonatomic, assign) float orbitRadius;
 @end
 
@@ -72,7 +72,7 @@
 	other.lifeTimeText = self.lifeTimeText;
 	other.stateImage = self.stateImage;
 	other.hasTarget = self.hasTarget;
-	other.trackingSpeed = self.trackingSpeed;
+	other.accuracyScore = self.accuracyScore;
 	other.orbitRadius = self.orbitRadius;
 	return other;
 }
@@ -441,10 +441,10 @@
 		cell.typeImageView.image = row.typeImage ?: self.defaultTypeImage;
 		cell.chargeLabel.text = row.chargeText;
 		cell.optimalLabel.text = row.optimalText;
-		if (!row.trackingText && row.trackingSpeed > 0) {
+		if (!row.trackingText && row.accuracyScore > 0) {
 			NSMutableAttributedString* s = [NSMutableAttributedString new];
 			
-			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"%@ rad/sec (", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.trackingSpeed)]]
+			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"accuracy %@  (", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.accuracyScore)]]
 																	  attributes:nil]];
 			NSTextAttachment* icon;
 			icon = [NSTextAttachment new];
@@ -488,16 +488,17 @@
 			
 			float optimal = module->getMaxRange();
 			float falloff = module->getFalloff();
-			float trackingSpeed = module->getTrackingSpeed();
+			float angularVelocity = module->getAngularVelocity(ship->getSignatureRadius());
+			float accuracyScore = module->getAccuracyScore();
 			float lifeTime = module->getLifeTime();
 			
 			newRow.trackingText = nil;
-			if (trackingSpeed > 0) {
+			if (accuracyScore > 0) {
 				float v0 = ship->getMaxVelocityInOrbit(optimal);
 				float v1 = ship->getMaxVelocityInOrbit(optimal + falloff);
-				float orbitRadius = ship->getOrbitRadiusWithAngularVelocity(trackingSpeed);
-				newRow.trackingColor = trackingSpeed * optimal > v0 ? [UIColor greenColor] : (trackingSpeed * (optimal + falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
-				newRow.trackingSpeed = trackingSpeed;
+				float orbitRadius = ship->getOrbitRadiusWithAngularVelocity(angularVelocity);
+				newRow.trackingColor = angularVelocity * optimal > v0 ? [UIColor greenColor] : (angularVelocity * (optimal + falloff) > v1 ? [UIColor yellowColor] : [UIColor redColor]);
+				newRow.accuracyScore = accuracyScore;
 				newRow.orbitRadius = orbitRadius;
 			}
 			
@@ -547,7 +548,7 @@
 				row.lifeTimeText = newRow.lifeTimeText;
 				row.stateImage = newRow.stateImage;
 				row.hasTarget = newRow.hasTarget;
-				row.trackingSpeed = newRow.trackingSpeed;
+				row.accuracyScore = newRow.accuracyScore;
 				row.orbitRadius = newRow.orbitRadius;
 				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 			});

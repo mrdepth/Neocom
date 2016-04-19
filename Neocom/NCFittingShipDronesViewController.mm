@@ -46,6 +46,9 @@
 @property (nonatomic, strong) UIImage* typeImage;
 @property (nonatomic, strong) NSString* optimalText;
 @property (nonatomic, assign) BOOL hasTarget;
+@property (nonatomic, assign) BOOL active;
+@property (nonatomic, assign) dgmpp::TypeID typeID;
+@property (nonatomic, assign) std::shared_ptr<dgmpp::Ship> target;
 @property (nonatomic, strong) UIImage* stateImage;
 @property (nonatomic, strong) id sortKey;
 @end
@@ -62,6 +65,9 @@
 	other.hasTarget = self.hasTarget;
 	other.stateImage = self.stateImage;
 	other.sortKey = self.sortKey;
+	other.active = self.active;
+	other.typeID = self.typeID;
+	other.target = self.target;
 	return other;
 }
 
@@ -87,46 +93,66 @@
 		NSArray* oldSections = self.sections;
 
 		[self.controller.engine performBlock:^{
-			NSMutableDictionary* oldDronesDic = [NSMutableDictionary new];
+			NSMutableArray* oldDrones = [NSMutableArray new];
 			for (NCFittingShipDronesViewControllerSection* section in oldSections)
 				for (NCFittingShipDronesViewControllerRow* row in section.rows)
-					oldDronesDic[@(row.drones.front()->getTypeID())] = row;
+					[oldDrones addObject:row];
 			
 			
 			auto ship = self.controller.fit.pilot->getShip();
 			
+			NCFittingShipDronesViewControllerRow* (^findRow)(std::shared_ptr<dgmpp::Drone>&, NSArray*, BOOL) = ^(std::shared_ptr<dgmpp::Drone>& drone, NSArray* rows, BOOL requireFreeSpace) {
+				BOOL active = drone->isActive();
+				dgmpp::TypeID typeID = drone->getTypeID();
+				auto target = drone->getTarget();
+				int squadronSize = drone->getSquadronSize() ?: 5;
+				for (NCFittingShipDronesViewControllerRow* row in rows) {
+					if (row.active == active && row.typeID == typeID && row.target == target && (!requireFreeSpace || (requireFreeSpace && row.drones.size() < squadronSize)))
+						return row;
+				}
+				return (NCFittingShipDronesViewControllerRow*) nil;
+			};
+			
+			
 			NSMutableDictionary* squadrons = [NSMutableDictionary new];
-			for (const auto& drone: ship->getDrones()) {
-				NSMutableDictionary* dronesDic = squadrons[@(drone->getSquadron())];
-				if (!dronesDic)
-					squadrons[@(drone->getSquadron())] = dronesDic = [NSMutableDictionary new];
+			for (auto drone: ship->getDrones()) {
+				NSMutableArray* drones = squadrons[@(drone->getSquadron())];
+				if (!drones)
+					squadrons[@(drone->getSquadron())] = drones = [NSMutableArray new];
 
-				int32_t typeID = drone->getTypeID();
-				NCFittingShipDronesViewControllerRow* row = dronesDic[@(typeID)];
+				NCFittingShipDronesViewControllerRow* row = findRow(drone, drones, YES);
 				if (!row) {
-					row = [oldDronesDic[@(typeID)] copy] ?: [NCFittingShipDronesViewControllerRow new];
-					row.sortKey = [NSString stringWithCString:drone->getTypeName() encoding:NSUTF8StringEncoding];
+					row = findRow(drone, oldDrones, NO);
+					if (row)
+						[oldDrones removeObject:row];
+					else {
+						row = [NCFittingShipDronesViewControllerRow new];
+						row.active = drone->isActive();
+						row.typeID = drone->getTypeID();
+						row.target = drone->getTarget();
+						row.sortKey = [NSString stringWithCString:drone->getTypeName() encoding:NSUTF8StringEncoding];
+					}
 					row.isUpToDate = NO;
 					row.drones.clear();
-					dronesDic[@(typeID)] = row;
+					[drones addObject:row];
 				}
 				row.drones.push_back(drone);
 			}
 			
 			if (ship->getTotalDroneBay() > 0 || ship->getDroneBayUsed() > 0 || squadrons[@(dgmpp::Drone::FIGHTER_SQUADRON_NONE)]) {
-				NSDictionary* dronesDic = squadrons[@(dgmpp::Drone::FIGHTER_SQUADRON_NONE)];
+				NSArray* drones = squadrons[@(dgmpp::Drone::FIGHTER_SQUADRON_NONE)];
 				NCFittingShipDronesViewControllerSection* section = [NCFittingShipDronesViewControllerSection new];
-				section.rows = [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"sortKey" ascending:YES]]];
+				section.rows = [drones sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"sortKey" ascending:YES]]];
 				section.squadron = dgmpp::Drone::FIGHTER_SQUADRON_NONE;
 				section.numberOfSlots = -1;
 				[sections addObject:section];
 			}
 	
 			for (auto squadron: {dgmpp::Drone::FIGHTER_SQUADRON_HEAVY, dgmpp::Drone::FIGHTER_SQUADRON_LIGHT, dgmpp::Drone::FIGHTER_SQUADRON_SUPPORT}) {
-				NSDictionary* dronesDic = squadrons[@(squadron)];
-				if (ship->getDroneSquadronLimit(squadron) > 0 || dronesDic) {
+				NSArray* drones = squadrons[@(squadron)];
+				if (ship->getDroneSquadronLimit(squadron) > 0 || drones) {
 					NCFittingShipDronesViewControllerSection* section = [NCFittingShipDronesViewControllerSection new];
-					section.rows = [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"sortKey" ascending:YES]]];
+					section.rows = [drones sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"sortKey" ascending:YES]]];
 					section.squadron = squadron;
 					section.numberOfSlots = ship->getDroneSquadronLimit(squadron);
 					
@@ -245,36 +271,12 @@
 														[self.controller.engine performBlockAndWait:^{
 															auto ship = self.controller.fit.pilot->getShip();
 															
-															std::shared_ptr<dgmpp::Drone> sameDrone = nullptr;
-															for (const auto& i: ship->getDrones()) {
-																if (i->getTypeID() == typeID) {
-																	sameDrone = i;
-																	break;
-																}
-															}
 															self.controller.engine.engine->beginUpdates();
-															int dronesLeft = -1;
-															do {
+															auto drone = ship->addDrone(typeID);
+															int squadronSize = drone->getSquadronSize() ?: 5;
+															for (int i = 1; i < squadronSize; i++) {
 																auto drone = ship->addDrone(typeID);
-																int squadronSize = drone->getSquadronSize();
-																if (sameDrone) {
-																	drone->setTarget(sameDrone->getTarget());
-																	drone->setActive(sameDrone->isActive());
-																}
-																
-																for (int i = 1; i < squadronSize; i++) {
-																	auto drone = ship->addDrone(typeID);
-																	if (sameDrone) {
-																		drone->setTarget(sameDrone->getTarget());
-																		drone->setActive(sameDrone->isActive());
-																	}
-																}
-
-																if (dronesLeft < 0)
-																	dronesLeft = std::max(ship->getDroneSquadronLimit(drone->getSquadron()), 1);
-																dronesLeft--;
 															}
-															while (dronesLeft > 0);
 															self.controller.engine.engine->commitUpdates();
 														}];
 														
@@ -332,7 +334,7 @@
 				if (section.squadron == dgmpp::Drone::FIGHTER_SQUADRON_NONE)
 					newRow.typeName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) row.drones.size()];
 				else
-					newRow.typeName = [NSString stringWithFormat:NSLocalizedString(@"%@ (%dx%d)", nil), type.typeName, (int) (row.drones.size() / drone->getSquadronSize()) , (int) drone->getSquadronSize()];
+					newRow.typeName = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d/%d)", nil), type.typeName, (int) row.drones.size() , (int) drone->getSquadronSize()];
 				newRow.typeImage = type.icon.image.image;
 				
 				if (optimal > 0) {
@@ -429,7 +431,7 @@
 			[controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
 				amountTextField = textField;
 				textField.keyboardType = UIKeyboardTypeNumberPad;
-				textField.text = [NSString stringWithFormat:@"%d", (int) (drones.size() / squadronSize)];
+				textField.text = [NSString stringWithFormat:@"%d", (int) drones.size()];
 				textField.clearButtonMode = UITextFieldViewModeAlways;
 			}];
 			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -438,7 +440,7 @@
 					if (amount > 50)
 						amount = 50;
 					
-					int n = (int) drones.size() - amount * squadronSize;
+					int n = (int) drones.size() - amount;
 					[self.controller.engine performBlock:^{
 						self.controller.engine.engine->beginUpdates();
 						if (n > 0) {

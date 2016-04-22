@@ -84,6 +84,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 	[gai trackerWithTrackingId:@"UA-72025819-3"];
 	gai.trackUncaughtExceptions = YES;  // report uncaught exceptions
 	gai.logger.logLevel = kGAILogLevelNone;  // remove before app release
+	gai.defaultTracker.allowIDFACollection = YES;
 #endif
 	
 	[Appodeal disableLocationPermissionCheck];

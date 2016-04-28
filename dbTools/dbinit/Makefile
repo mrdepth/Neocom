@@ -57,7 +57,7 @@ evedb.sqlite: createTables.sql Types eveIcons.sql npc.sql
 
 
 NCDatabase.sqlite: NCDatabase evedb.sqlite Icons Types
-	${T}/NCDatabase ./NCDatabase.sqlite ${T}/evedb.sqlite ${T}/Icons ${T}/Types ./input/Factions $(EXPANSION)
+	${T}/NCDatabase ./NCDatabase.sqlite ${T}/evedb.sqlite ${T}/Icons ${T}/Types ./input/Factions "${EXPANSION}"
 
 tmp:
 	mkdir -p ${T}

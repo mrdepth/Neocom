@@ -106,7 +106,7 @@
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 //	self.transitionView.frame = self.view.bounds;
 //	self.bannerView.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 0);
-	[self.adBannerView removeFromSuperview];
+	//[self.adBannerView removeFromSuperview];
 	[self updateFrame];
 }
 
@@ -248,7 +248,7 @@
 	}
 	else {
 		retry++;
-		[self performSelector:@selector(updateBanner) withObject:nil afterDelay:10];
+		[self performSelector:@selector(updateBanner) withObject:nil afterDelay:2];
 	}
 	
 }

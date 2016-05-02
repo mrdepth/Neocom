@@ -94,6 +94,12 @@
 				<key>url</key>
 				<string>http://eve-ru.com/rss/indexfeed</string>
 			</dict>
+			<dict>
+				<key>title</key>
+				<string>EVE-PLAY</string>
+				<key>url</key>
+				<string>http://eve-play.ru/index.php?format=feed</string>
+			</dict>
 		</array>
 	</dict>
 	<dict>

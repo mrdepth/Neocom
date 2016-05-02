@@ -13,10 +13,13 @@
 #import "NCStorage.h"
 #import "NCShipFit.h"
 #import "NCPOSFit.h"
+#import "NCSpaceStructureFit.h"
 #import "NSArray+Neocom.h"
 #import "NCFittingShipViewController.h"
 #import "NCFittingPOSViewController.h"
+#import "NCFittingSpaceStructureViewController.h"
 #import "NCFittingCharacterPickerViewController.h"
+#import "NSString+Neocom.h"
 
 
 @interface NCFittingMenuViewControllerRow : NSObject
@@ -38,6 +41,7 @@
 @property (nonatomic, strong) NSMutableArray* rows;
 @property (nonatomic, assign) int32_t groupID;
 @property (nonatomic, strong) NSString* title;
+@property (nonatomic, assign) NSInteger order;
 @end
 
 @implementation NCFittingMenuViewControllerSection
@@ -91,6 +95,10 @@
 		NCFittingPOSViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.fit = sender;
 	}
+	else if ([segue.identifier isEqualToString:@"NCFittingSpaceStructureViewController"]) {
+		NCFittingSpaceStructureViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.fit = sender;
+	}
 }
 
 - (void) didChangeStorage {
@@ -114,7 +122,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? 5 : [[(NCFittingMenuViewControllerSection*) self.sections[section - 1] rows] count];
+    return section == 0 ? 6 : [[(NCFittingMenuViewControllerSection*) self.sections[section - 1] rows] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
@@ -212,15 +220,35 @@
 													 fit = [[NCPOSFit alloc] initWithType:type];
 												 [self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
 												 [self.typePickerViewController dismissAnimated];
+											 }];
+		}
+		else if (indexPath.row == 3) {
+			/*NCSpaceStructureFit* fit = [[NCSpaceStructureFit alloc] initWithType:[self.databaseManagedObjectContext  invTypeWithTypeID:35834]];
+			[self performSegueWithIdentifier:@"NCFittingSpaceStructureViewController" sender:fit];
 
-												 
-												 /*NCPOSFit* fit = [[NCPOSFit alloc] initWithType:type];
-												 NCStorage* storage = [NCStorage sharedStorage];
-												 fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-												 fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-												 
-												 [self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
-												 [self.typePickerViewController dismissAnimated];*/
+			return;*/
+			self.typePickerViewController.title = NSLocalizedString(@"Structures", nil);
+			[self.typePickerViewController presentWithCategory:[self.databaseManagedObjectContext spaceStructuresCategory]
+											  inViewController:self
+													  fromRect:cell.bounds
+														inView:cell
+													  animated:YES
+											 completionHandler:^(NCDBInvType *type) {
+												 NCSpaceStructureFit* fit;
+												 BOOL disableSaveChangesPrompt = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDisableSaveChangesPromptKey];
+												 if (disableSaveChangesPrompt) {
+													 NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+													 loadout.typeID = type.typeID;
+													 loadout.name = type.typeName;
+													 loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storageManagedObjectContext] insertIntoManagedObjectContext:self.storageManagedObjectContext];
+													 [self.storageManagedObjectContext save:nil];
+													 [self reload];
+													 fit = [[NCSpaceStructureFit alloc] initWithLoadout:loadout];
+												 }
+												 else
+													 fit = [[NCSpaceStructureFit alloc] initWithType:type];
+												 [self performSegueWithIdentifier:@"NCFittingSpaceStructureViewController" sender:fit];
+												 [self.typePickerViewController dismissAnimated];
 											 }];
 		}
 	}
@@ -231,6 +259,10 @@
 		if (row.category == NCLoadoutCategoryShip) {
 			NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
 			[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+		}
+		else if (row.category == NCLoadoutCategorySpaceStructure) {
+			NCSpaceStructureFit* fit = [[NCSpaceStructureFit alloc] initWithLoadout:loadout];
+			[self performSegueWithIdentifier:@"NCFittingSpaceStructureViewController" sender:fit];
 		}
 		else {
 			NCPOSFit* fit = [[NCPOSFit alloc] initWithLoadout:loadout];
@@ -272,7 +304,7 @@
 - (id) identifierForSection:(NSInteger)sectionIndex {
 	if (sectionIndex > 0) {
 		NCFittingMenuViewControllerSection* section = self.sections[sectionIndex - 1];
-		return @(section.groupID);
+		return section.groupID > 0 ? @(section.groupID) : section.title;
 	}
 	return nil;
 }
@@ -300,12 +332,37 @@
 		[databaseManagedObjectContext performBlock:^{
 			NSMutableDictionary* shipLoadouts = [NSMutableDictionary new];
 			NCFittingMenuViewControllerSection* posLoadouts;
+			NCFittingMenuViewControllerSection* spaceStructuresLoadouts;
 			
 			for (NCFittingMenuViewControllerRow* row in loadouts) {
 				NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:row.typeID];
 				row.typeName = type.typeName;
 				row.iconID = [type.icon objectID];
-				if (type && type.group.category.categoryID == NCCategoryIDShip) {
+				NSRange range = [row.loadoutName rangeOfString:@"/"];
+				if (type && range.location != NSNotFound) {
+					NSString* folder = [[row.loadoutName substringToIndex:range.location] stringByDeletingExtraSpaces];
+					NSString* name = [[row.loadoutName substringFromIndex:range.location + 1] stringByDeletingExtraSpaces];
+					row.loadoutName = name;
+					if (type.group.category.categoryID == NCCategoryIDShip)
+						row.category = NCLoadoutCategoryShip;
+					else if (type.group.category.categoryID == NCCategoryIDStructure)
+						row.category = NCLoadoutCategorySpaceStructure;
+					else
+						row.category = NCLoadoutCategoryPOS;
+					
+					NCFittingMenuViewControllerSection* section = shipLoadouts[folder];
+					if (!section) {
+						section = [NCFittingMenuViewControllerSection new];
+						shipLoadouts[folder] = section;
+						section.title = folder;
+						section.groupID = 0;
+						section.rows = [NSMutableArray new];
+						section.order = 0;
+					}
+					[section.rows addObject:row];
+
+				}
+				else if (type && type.group.category.categoryID == NCCategoryIDShip) {
 					row.category = NCLoadoutCategoryShip;
 					NCFittingMenuViewControllerSection* section = shipLoadouts[@(type.group.groupID)];
 					if (!section) {
@@ -314,8 +371,20 @@
 						section.title = type.group.groupName;
 						section.groupID = type.group.groupID;
 						section.rows = [NSMutableArray new];
+						section.order = 1;
 					}
 					[section.rows addObject:row];
+				}
+				else if (type && type.group.category.categoryID == NCCategoryIDStructure) {
+					row.category = NCLoadoutCategorySpaceStructure;
+					if (!spaceStructuresLoadouts) {
+						spaceStructuresLoadouts = [NCFittingMenuViewControllerSection new];
+						spaceStructuresLoadouts.title = NSLocalizedString(@"Structures", nil);
+						spaceStructuresLoadouts.groupID = type.group.category.categoryID;
+						spaceStructuresLoadouts.rows = [NSMutableArray new];
+						spaceStructuresLoadouts.order = 2;
+					}
+					[spaceStructuresLoadouts.rows addObject:row];
 				}
 				else if (type) {
 					row.category = NCLoadoutCategoryPOS;
@@ -324,12 +393,12 @@
 						posLoadouts.title = type.group.groupName;
 						posLoadouts.groupID = type.group.groupID;
 						posLoadouts.rows = [NSMutableArray new];
+						posLoadouts.order = 3;
 					}
 					[posLoadouts.rows addObject:row];
 				}
 			}
-			NSMutableArray* sections = [[[shipLoadouts allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]] mutableCopy];
-
+			NSMutableArray* sections = [[[shipLoadouts allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]] mutableCopy];
 			
 			for (NCFittingMenuViewControllerSection* section in sections)
 				[section.rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
@@ -337,6 +406,10 @@
 			if (posLoadouts.rows.count > 0) {
 				[posLoadouts.rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
 				[sections addObject:posLoadouts];
+			}
+			if (spaceStructuresLoadouts.rows.count > 0) {
+				[spaceStructuresLoadouts.rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
+				[sections addObject:spaceStructuresLoadouts];
 			}
 			
 			dispatch_async(dispatch_get_main_queue(), ^{

@@ -22,7 +22,11 @@ typedef NS_ENUM(NSInteger, NCDBDgmppItemSlot) {
 	NCDBDgmppItemSlotImplant,
 	NCDBDgmppItemSlotBooster,
 	NCDBDgmppItemSlotShip,
-	NCDBDgmppItemSlotControlTower
+	NCDBDgmppItemSlotControlTower,
+	NCDBDgmppItemSlotSpaceStructure,
+	NCDBDgmppItemSlotStructureRig,
+	NCDBDgmppItemSlotStructureService,
+	NCDBDgmppItemSlotStructureDrone
 };
 
 
@@ -68,6 +72,7 @@ typedef NS_ENUM(NSInteger, NCDBDgmppItemSlot) {
 //NCDBDgmppItemCategory
 - (NCDBDgmppItemCategory*) shipsCategory;
 - (NCDBDgmppItemCategory*) controlTowersCategory;
+- (NCDBDgmppItemCategory*) spaceStructuresCategory;
 - (NCDBDgmppItemCategory*) categoryWithSlot:(NCDBDgmppItemSlot) slot size:(int32_t) size race:(NCDBChrRace*) race;
 
 //NCDBStaStation

@@ -8,7 +8,8 @@
 
 #import "NCBannerViewController.h"
 #import "ASInAppPurchase.h"
-#import <GoogleMobileAds/GoogleMobileAds.h>
+//#import <GoogleMobileAds/GoogleMobileAds.h>
+#import <Appodeal/Appodeal.h>
 #import "NCSkillPlanViewController.h"
 
 @interface NCBannerView()
@@ -28,8 +29,9 @@
 @end
 
 
-@interface NCBannerViewController ()<GADBannerViewDelegate>
-@property (nonatomic, strong) IBOutlet GADBannerView* gadBannerView;
+@interface NCBannerViewController ()<AppodealBannerViewDelegate>
+//@property (nonatomic, strong) IBOutlet GADBannerView* gadBannerView;
+@property (nonatomic, strong) AppodealBannerView* adBannerView;
 @property (nonatomic, weak) UIView* transitionView;
 - (void) updateBanner;
 - (void) updateFrame;
@@ -104,18 +106,17 @@
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 //	self.transitionView.frame = self.view.bounds;
 //	self.bannerView.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 0);
-	[self.gadBannerView removeFromSuperview];
+	//[self.adBannerView removeFromSuperview];
 	[self updateFrame];
 }
 
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
-
-	CGSize size = CGSizeFromGADAdSize(self.gadBannerView.adSize);
+	/*CGSize size = CGSizeFromGADAdSize(self.gadBannerView.adSize);
 	CGSize bannerSize = CGSizeMake(self.view.frame.size.width, 50);
 	if (!CGSizeEqualToSize(bannerSize, size)) {
 		self.gadBannerView.adSize = GADAdSizeFromCGSize(bannerSize);
-	}
+	}*/
 	
 	[self updateFrame];
 }
@@ -134,7 +135,24 @@
 	}
 }
 
-#pragma mark - GADBannerViewDelegate
+#pragma mark - AppodealBannerViewDelegate
+
+- (void)bannerViewDidLoadAd:(AppodealBannerView *)bannerView {
+	if (!self.adBannerView.superview) {
+		[self.bannerView addSubview:self.adBannerView];
+		[self.bannerView setNeedsLayout];
+		[self updateFrame];
+	}
+}
+
+- (void)bannerView:(AppodealBannerView *)bannerView didFailToLoadAdWithError:(NSError *)error {
+	if (self.adBannerView.superview) {
+		[self.adBannerView removeFromSuperview];
+		[self updateFrame];
+	}
+}
+
+/*#pragma mark - GADBannerViewDelegate
 
 - (void)adViewDidReceiveAd:(GADBannerView *)view {
 	if (!self.gadBannerView.superview) {
@@ -165,7 +183,7 @@
 
 - (void)adViewWillLeaveApplication:(GADBannerView *)adView {
 	
-}
+}*/
 
 #pragma mark - Unwind
 
@@ -180,13 +198,14 @@
 #pragma mark - Private
 
 - (void) applicationDidRemoveAdds:(NSNotification*) notification {
-	if (self.gadBannerView.superview) {
-		[self.gadBannerView removeFromSuperview];
+	if (self.adBannerView.superview) {
+		[self.adBannerView removeFromSuperview];
 		self.bannerView.intrinsicContentSize = CGSizeZero;
 		[self.bannerView invalidateIntrinsicContentSize];
 		[self updateFrame];
+		[Appodeal hideBanner];
 	}
-	self.gadBannerView = nil;
+	self.adBannerView = nil;
 }
 
 - (void) applicationDidBecomeActive:(NSNotification*) notification {
@@ -204,47 +223,52 @@
 	if (purchase || retry >= 3) {
 		retry = 0;
 		if (purchase.purchased) {
-			if (self.gadBannerView.superview) {
-				[self.gadBannerView removeFromSuperview];
+			if (self.adBannerView.superview) {
+				[self.adBannerView removeFromSuperview];
 				self.bannerView.intrinsicContentSize = CGSizeZero;
 				[self.bannerView invalidateIntrinsicContentSize];
-				self.gadBannerView = nil;
+				self.adBannerView = nil;
 				[self updateFrame];
+				[Appodeal hideBanner];
 			}
 		}
 		else {
-			if (!self.gadBannerView) {
-				self.gadBannerView = [[GADBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(self.view.frame.size.width, 50)) origin:CGPointMake(0, 0)];
-				self.gadBannerView.rootViewController = self;
-				self.gadBannerView.adUnitID = @"ca-app-pub-0434787749004673/2607342948";
-				self.gadBannerView.delegate = self;
+			if (!self.adBannerView) {
+				//self.adBannerView = [[GADBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(self.view.frame.size.width, 50)) origin:CGPointMake(0, 0)];
+				self.adBannerView = [[AppodealBannerView alloc] initWithSize:kAppodealUnitSize_320x50 rootViewController:self];
+				//self.gadBannerView.rootViewController = self;
+				//self.gadBannerView.adUnitID = @"ca-app-pub-0434787749004673/2607342948";
+				self.adBannerView.delegate = self;
 				
-				GADRequest *request = [GADRequest request];
-				[self.gadBannerView loadRequest:request];
+				//GADRequest *request = [GADRequest request];
+				//[self.gadBannerView loadRequest:request];
+				[self.adBannerView loadAd];
 			}
 		}
 	}
 	else {
 		retry++;
-		[self performSelector:@selector(updateBanner) withObject:nil afterDelay:10];
+		[self performSelector:@selector(updateBanner) withObject:nil afterDelay:2];
 	}
 	
 }
 
 - (void) updateFrame {
 	CGSize size = CGSizeZero;
-	if (self.gadBannerView.superview)
-		size = CGSizeFromGADAdSize(self.gadBannerView.adSize);
+	if (self.adBannerView.superview)
+		size = kAppodealUnitSize_320x50;
+		//size = CGSizeFromGADAdSize(self.gadBannerView.adSize);
 	
 	CGRect frame = self.bannerView.frame;
 	CGFloat y = CGRectGetMaxY(self.view.bounds);
 	frame.size.height = size.height;
 	frame.origin.y = y - frame.size.height;
 	self.bannerView.frame = frame;
+	self.adBannerView.frame = self.bannerView.bounds;
 	
 	frame = self.transitionView.frame;
 	frame.size.height = self.bannerView.frame.origin.y - frame.origin.y;
-	if (!CGRectEqualToRect(self.view.frame, frame))
+	if (!CGRectEqualToRect(self.transitionView.frame, frame))
 		self.transitionView.frame = frame;
 	
 	frame = self.toolbar.frame;

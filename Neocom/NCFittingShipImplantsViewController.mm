@@ -179,7 +179,7 @@
 			}]];
 			[controller addAction:[UIAlertAction actionWithTitle:ActionButtonAffectingSkills style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				[self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
-													 sender:@{@"sender": cell, @"object": [NCFittingEngineItemPointer pointerWithItem:item]}];
+													 sender:@{@"sender": cell, @"object": @[[NCFittingEngineItemPointer pointerWithItem:item]]}];
 			}]];
 			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
 			

@@ -15,7 +15,7 @@ select sql || ";" from sqlite_master where tbl_name IN (
 "invControlTowerResourcePurposes",
 "invControlTowerResources",
 --"invGroups",
-"invMarketGroups",
+--"invMarketGroups",
 "invMetaGroups",
 "invMetaTypes",
 --"invTypes",

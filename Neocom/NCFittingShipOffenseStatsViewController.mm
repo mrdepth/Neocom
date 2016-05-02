@@ -273,7 +273,7 @@
 																 relatedBy:NSLayoutRelationEqual
 																	toItem:self.contentView
 																 attribute:NSLayoutAttributeWidth
-																multiplier:self.maxRange / self.fullRange
+																multiplier:self.maxRange / (self.fullRange > 0 ? self.fullRange : 1)
 																  constant:0]];
 	
 	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.falloffAuxiliaryView
@@ -281,7 +281,7 @@
 																 relatedBy:NSLayoutRelationEqual
 																	toItem:self.contentView
 																 attribute:NSLayoutAttributeWidth
-																multiplier:self.falloff / self.fullRange
+																multiplier:self.falloff / (self.fullRange > 0 ? self.fullRange : 1)
 																  constant:0]];
 	
 	if (self.maxRange == 0 || self.falloff == 0) {
@@ -312,7 +312,7 @@
 - (void) setHullType:(NCDBDgmppHullType*) hullType {
 	_hullType = hullType;
 	if (hullType) {
-		NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:hullType.hullTypeName attributes:@{NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)}];
+		NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:hullType.hullTypeName ?: NSLocalizedString(@"Unknown", nil) attributes:@{NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)}];
 		[s appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" (sig %.0f m)", nil), hullType.signature] attributes:nil]];
 		self.targetLabel.attributedText = s;
 	}

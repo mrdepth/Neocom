@@ -9,6 +9,7 @@
 #import "NCFittingEngine.h"
 #import "NCShipFit.h"
 #import "NCPOSFit.h"
+#import "NCSpaceStructureFit.h"
 #import "NCDatabase.h"
 #import <EVEAPI/EVEAPI.h>
 #import "NCKillMail.h"
@@ -20,6 +21,11 @@
 
 @interface NCPOSFit()
 @property (nonatomic, strong, readwrite) NCFittingEngine* engine;
+@end
+
+@interface NCSpaceStructureFit()
+@property (nonatomic, strong, readwrite) NCFittingEngine* engine;
+@property (nonatomic, assign, readwrite) std::shared_ptr<dgmpp::Character> pilot;
 @end
 
 @interface NCFittingEngine()
@@ -195,6 +201,44 @@
 	}];
 }
 
+- (void) loadSpaceStructureFit:(NCSpaceStructureFit*) fit {
+	fit.engine = self;
+	NCLoadoutDataSpaceStructure* loadoutData = [self loadoutDataSpaceStructureWithFit:fit];
+	
+	
+	[self performBlockAndWait:^{
+		NSAssert(fit.pilot == nullptr, @"NCSpaceStructureFit already loaded");
+		auto pilot = self.engine->getGang()->addPilot();
+		fit.pilot = pilot;
+		auto spaceStructure = pilot->setSpaceStructure(static_cast<dgmpp::TypeID>(fit.typeID));
+		
+		if (spaceStructure) {
+			self.engine->beginUpdates();
+			for (NSString* key in @[@"services", @"rigSlots", @"lowSlots", @"medSlots", @"hiSlots"]) {
+				for (NCLoadoutDataSpaceStructureModule* item in [loadoutData valueForKey:key]) {
+					auto module = spaceStructure->addModule(item.typeID, true);
+					if (module) {
+						module->setPreferredState(item.state);
+						if (item.chargeID)
+							module->setCharge(item.chargeID);
+					}
+				}
+			}
+			
+			for (NCLoadoutDataSpaceStructureDrone* item in loadoutData.drones) {
+				for (int n = item.count; n > 0; n--) {
+					auto drone = spaceStructure->addDrone(item.typeID);
+					if (!drone)
+						break;
+					drone->setActive(item.active);
+				}
+			}
+			
+			self.engine->commitUpdates();
+		}
+	}];
+}
+
 - (NCLoadoutDataShip*) loadoutDataShipWithFit:(NCShipFit *)fit {
 	__block NCLoadoutDataShip* loadoutData;
 	if (fit.loadoutID) {
@@ -216,6 +260,19 @@
 		loadoutData = [self loadoutDataShipWithCRFitting:fit.crFitting];
 	return loadoutData;
 }
+
+- (NCLoadoutDataSpaceStructure*) loadoutDataSpaceStructureWithFit:(NCSpaceStructureFit*) fit {
+	__block NCLoadoutDataSpaceStructure* loadoutData;
+	if (fit.loadoutID) {
+		[self.storageManagedObjectContext performBlockAndWait:^{
+			NCLoadout* loadout = [self.storageManagedObjectContext existingObjectWithID:fit.loadoutID error:nil];
+			if ([loadout.data.data isKindOfClass:[NCLoadoutDataSpaceStructure class]])
+				loadoutData = (NCLoadoutDataSpaceStructure*) loadout.data.data;
+		}];
+	}
+	return loadoutData;
+}
+
 
 #pragma mark - Private
 
@@ -714,7 +771,7 @@
 		NSMutableDictionary* structuresDic = [NSMutableDictionary new];
 		for (EVEAssetListItem* item in asset.contents) {
 			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:item.typeID];
-			if (type.group.category.categoryID == dgmpp::STRUCTURE_CATEGORY_ID && type.group.groupID != dgmpp::CONTROL_TOWER_GROUP_ID) {
+			if (type.group.category.categoryID == dgmpp::STARBASE_CATEGORY_ID && type.group.groupID != dgmpp::CONTROL_TOWER_GROUP_ID) {
 				NCLoadoutDataPOSStructure* structure = structuresDic[@(item.typeID)];
 				if (!structure) {
 					structure = [NCLoadoutDataPOSStructure new];

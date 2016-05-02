@@ -305,7 +305,7 @@
 	[dateFormatter setDateFormat:@"yyyy.MM.dd"];
 	
 
-	NSMutableAttributedString* characterName = [[NSMutableAttributedString alloc] initWithString:characterSheet.name attributes:nil];
+	NSMutableAttributedString* characterName = [[NSMutableAttributedString alloc] initWithString:characterSheet.name ?: @"" attributes:nil];
 	[characterName appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", [dateFormatter stringFromDate:characterSheet.DoB]] attributes:@{NSFontAttributeName: [self.characterNameLabel.font fontWithSize:self.characterNameLabel.font.pointSize * 0.5],
 																																														//(__bridge NSString*) (kCTSuperscriptAttributeName): @(-1),
 																																														NSForegroundColorAttributeName: [UIColor lightTextColor]}]];

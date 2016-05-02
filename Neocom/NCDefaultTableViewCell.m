@@ -30,7 +30,8 @@
 - (void) layoutSubviews {
 	[super layoutSubviews];
 	if ([self respondsToSelector:@selector(setSeparatorInset:)]) {
-		self.separatorInset = UIEdgeInsetsMake(0, self.titleLabel.frame.origin.x, 0, 0);
+		CGPoint p = [self.titleLabel convertPoint:CGPointZero toView:self];
+		self.separatorInset = UIEdgeInsetsMake(0, p.x, 0, 0);
 	}
 }
 

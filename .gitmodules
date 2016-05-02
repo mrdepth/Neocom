@@ -7,3 +7,6 @@
 [submodule "ThirdParty/dgmpp"]
 	path = ThirdParty/dgmpp
 	url = https://github.com/mrdepth/libdgmpp.git
+[submodule "ThirdParty/flurry-ios-sdk"]
+	path = ThirdParty/flurry-ios-sdk
+	url = https://github.com/flurry/flurry-ios-sdk.git

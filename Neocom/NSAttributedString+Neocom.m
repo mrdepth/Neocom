@@ -102,11 +102,16 @@
 }
 
 + (NSAttributedString*) attributedStringWithString:(NSString*) string url:(NSURL*) url {
+	if (!string)
+		return nil;
 	return [[NSAttributedString alloc] initWithString:string
 										   attributes:@{@"NSURL":url}];
 }
 
 + (NSAttributedString*) attributedStringWithHTMLString:(NSString*) html {
+	if (!html)
+		return nil;
+	
 	NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:html attributes:nil];
 	
 	NSRegularExpression* expression = [NSRegularExpression regularExpressionWithPattern:@"<(color|font)[^>]*=[\"']?(.*?)[\"']?\\s*?>(.*?)</(color|font)>"

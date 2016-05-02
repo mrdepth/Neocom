@@ -21,6 +21,8 @@
 #import "UIStoryboard+Multiple.h"
 #import "NCUpdater.h"
 
+#import "GAI+Neocom.h"
+
 @interface NCTableViewController ()<UISearchResultsUpdating>
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
 @property (nonatomic, strong, readwrite) id cacheData;
@@ -174,6 +176,7 @@
 	self.taskManager.active = YES;
 	
 	[self reloadIfNeeded];
+	[GAI createScreenWithName:NSStringFromClass(self.class)];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -641,7 +644,7 @@
 
 - (void) updateCacheTime {
 	if (self.error) {
-		self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[self.error localizedDescription]
+		self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[self.error localizedDescription] ?: @""
 																			  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],
 																						   NSForegroundColorAttributeName: [UIColor whiteColor]}];
 	}

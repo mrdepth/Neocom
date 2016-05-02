@@ -11,7 +11,7 @@
 
 @class NCShipFit;
 @interface NCFittingCharacterPickerViewController : NCTableViewController
-@property (nonatomic, strong) NCShipFit* fit;
+@property (nonatomic, strong) id fit;
 @property (nonatomic, strong) NCFitCharacter* selectedCharacter;
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		122A828B1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 122A82881C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m */; };
+		122A828C1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 122A828A1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.m */; };
 		12436D73194596750090D4A6 /* EVEDBCertCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D1C194596740090D4A6 /* EVEDBCertCertificate.m */; };
 		12436D74194596750090D4A6 /* EVEDBCertMastery.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D1E194596740090D4A6 /* EVEDBCertMastery.m */; };
 		12436D75194596750090D4A6 /* EVEDBCertSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D20194596740090D4A6 /* EVEDBCertSkill.m */; };
@@ -66,6 +68,7 @@
 		128257191BCCF4C400BC1F56 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */; };
 		12D6DC8E1920CD0A003FC5ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D6DC8D1920CD0A003FC5ED /* libsqlite3.dylib */; };
 		12D6DCF41920D1D5003FC5ED /* NCDBImageValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */; };
+		12D9F9FC1CC3AAA000313F8D /* dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D9F9F61CC3AA6000313F8D /* dgmpp.framework */; };
 		12F332231C340F4A00F19C45 /* NCDBEveIconImage+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F331701C340F4A00F19C45 /* NCDBEveIconImage+CoreDataProperties.m */; };
 		12F332241C340F4A00F19C45 /* NCDBEveIconImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F331721C340F4A00F19C45 /* NCDBEveIconImage.m */; };
 		12F332251C340F4A00F19C45 /* NCDBIndRequiredMaterial+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F331741C340F4A00F19C45 /* NCDBIndRequiredMaterial+CoreDataProperties.m */; };
@@ -156,10 +159,23 @@
 		12F3327A1C340F4A00F19C45 /* NCDBCertCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F3321E1C340F4A00F19C45 /* NCDBCertCertificate.m */; };
 		12F3327B1C340F4A00F19C45 /* NCDBChrRace+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F332201C340F4A00F19C45 /* NCDBChrRace+CoreDataProperties.m */; };
 		12F3327C1C340F4A00F19C45 /* NCDBChrRace.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F332221C340F4A00F19C45 /* NCDBChrRace.m */; };
-		12F332851C34153600F19C45 /* dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F332841C34153600F19C45 /* dgmpp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		12D9F9F51CC3AA6000313F8D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 12F330421C340DE000F19C45 /* dgmpp.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12D9F9F21CC3A98B00313F8D;
+			remoteInfo = "dgmpp OSX";
+		};
+		12D9F9FA1CC3AA9900313F8D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 12F330421C340DE000F19C45 /* dgmpp.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 12D9F9821CC3A98B00313F8D;
+			remoteInfo = "dgmpp OSX";
+		};
 		12F3304B1C340DE000F19C45 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 12F330421C340DE000F19C45 /* dgmpp.xcodeproj */;
@@ -188,26 +204,12 @@
 			remoteGlobalIDString = 12EFCC661C1AB060003ECA7F;
 			remoteInfo = dgmppDemo;
 		};
-		12F330531C340DE000F19C45 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 12F330421C340DE000F19C45 /* dgmpp.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 12EFCCCF1C1AB334003ECA7F;
-			remoteInfo = "dgmpp OS X";
-		};
 		12F330551C340DE000F19C45 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 12F330421C340DE000F19C45 /* dgmpp.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 129F2BD61C1FFE62007FC666;
 			remoteInfo = modifiersdump;
-		};
-		12F330581C340E0100F19C45 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 12F330421C340DE000F19C45 /* dgmpp.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 12EFCC721C1AB334003ECA7F;
-			remoteInfo = "dgmpp OS X";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -224,6 +226,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		122A82871C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemSpaceStructureResources+CoreDataProperties.h"; sourceTree = "<group>"; };
+		122A82881C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m"; sourceTree = "<group>"; };
+		122A82891C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBDgmppItemSpaceStructureResources.h; sourceTree = "<group>"; };
+		122A828A1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBDgmppItemSpaceStructureResources.m; sourceTree = "<group>"; };
 		12436D1A194596740090D4A6 /* EVEDBAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBAPI.h; sourceTree = "<group>"; };
 		12436D1B194596740090D4A6 /* EVEDBCertCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCertCertificate.h; sourceTree = "<group>"; };
 		12436D1C194596740090D4A6 /* EVEDBCertCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCertCertificate.m; sourceTree = "<group>"; };
@@ -531,7 +537,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				12F332851C34153600F19C45 /* dgmpp.framework in Frameworks */,
+				12D9F9FC1CC3AAA000313F8D /* dgmpp.framework in Frameworks */,
 				12D6DC8E1920CD0A003FC5ED /* libsqlite3.dylib in Frameworks */,
 				127667451914C9A900530550 /* CoreData.framework in Frameworks */,
 				127667471914C9A900530550 /* Foundation.framework in Frameworks */,
@@ -737,6 +743,10 @@
 		12D6DCFD1922009C003FC5ED /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				122A82871C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.h */,
+				122A82881C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m */,
+				122A82891C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.h */,
+				122A828A1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.m */,
 				12F3321D1C340F4A00F19C45 /* NCDBCertCertificate.h */,
 				12F3321E1C340F4A00F19C45 /* NCDBCertCertificate.m */,
 				12F3321B1C340F4A00F19C45 /* NCDBCertCertificate+CoreDataProperties.h */,
@@ -928,8 +938,8 @@
 				12F3304E1C340DE000F19C45 /* dbpatch */,
 				12F330501C340DE000F19C45 /* dgmpp.framework */,
 				12F330521C340DE000F19C45 /* dgmpp */,
-				12F330541C340DE000F19C45 /* dgmpp.framework */,
 				12F330561C340DE000F19C45 /* modifiersdump */,
+				12D9F9F61CC3AA6000313F8D /* dgmpp.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -948,7 +958,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				12F330591C340E0100F19C45 /* PBXTargetDependency */,
+				12D9F9FB1CC3AA9900313F8D /* PBXTargetDependency */,
 			);
 			name = NCDatabase;
 			productName = NCDatabase;
@@ -987,6 +997,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		12D9F9F61CC3AA6000313F8D /* dgmpp.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = dgmpp.framework;
+			remoteRef = 12D9F9F51CC3AA6000313F8D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		12F3304C1C340DE000F19C45 /* compiler */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
@@ -1015,13 +1032,6 @@
 			remoteRef = 12F330511C340DE000F19C45 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		12F330541C340DE000F19C45 /* dgmpp.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = dgmpp.framework;
-			remoteRef = 12F330531C340DE000F19C45 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		12F330561C340DE000F19C45 /* modifiersdump */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
@@ -1036,6 +1046,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				122A828B1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m in Sources */,
 				12F332341C340F4A00F19C45 /* NCDBRamActivity.m in Sources */,
 				12436D92194596750090D4A6 /* EVEDBMapConstellation.m in Sources */,
 				12F332611C340F4A00F19C45 /* NCDBMapRegion+CoreDataProperties.m in Sources */,
@@ -1114,6 +1125,7 @@
 				12436D77194596750090D4A6 /* EVEDBCrtCategory.m in Sources */,
 				12436D74194596750090D4A6 /* EVEDBCertMastery.m in Sources */,
 				12436D96194596750090D4A6 /* EVEDBNpcGroup.m in Sources */,
+				122A828C1C96AE7700FD1CF6 /* NCDBDgmppItemSpaceStructureResources.m in Sources */,
 				12436D8B194596750090D4A6 /* EVEDBInvMetaType.m in Sources */,
 				12F332551C340F4A00F19C45 /* NCDBMapConstellation+CoreDataProperties.m in Sources */,
 				12F332571C340F4A00F19C45 /* NCDBDgmAttributeCategory+CoreDataProperties.m in Sources */,
@@ -1188,10 +1200,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		12F330591C340E0100F19C45 /* PBXTargetDependency */ = {
+		12D9F9FB1CC3AA9900313F8D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "dgmpp OS X";
-			targetProxy = 12F330581C340E0100F19C45 /* PBXContainerItemProxy */;
+			name = "dgmpp OSX";
+			targetProxy = 12D9F9FA1CC3AA9900313F8D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1270,6 +1282,7 @@
 		127667551914C9A900530550 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				DEFINES_MODULE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NCDatabase/NCDatabase-Prefix.pch";
@@ -1288,6 +1301,7 @@
 		127667561914C9A900530550 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				DEFINES_MODULE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NCDatabase/NCDatabase-Prefix.pch";

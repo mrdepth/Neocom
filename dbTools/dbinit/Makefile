@@ -3,7 +3,7 @@ CFLAGS=-arch x86_64 -std=gnu++11 -stdlib=libc++ -lsqlite3
 T+=${PWD}/tmp
 VPATH=${T}
 SQL=${PWD}/sql
-SDE+=${PWD}/input/sde/eve.sqlite
+SDE+=${PWD}/input/sde/sqlite-latest.sqlite
 
 all: dgm.sqlite NCDatabase.sqlite
 
@@ -23,7 +23,7 @@ EVENPCBuilder: tmp
 	xcodebuild -project ../EVENPCBuilder/EVENPCBuilder.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
 
 NCDatabase: tmp
-	xcodebuild -project ../NCDatabase/NCDatabase.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build FRAMEWORK_SEARCH_PATHS=${T}
+	xcodebuild -project ../NCDatabase/NCDatabase.xcodeproj -configuration Release BUILT_PRODUCTS_DIR=${T} TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
 
 Icons: eveIcons.sql EVEIconsConverter
 	${T}/EVEIconsConverter ./input/Icons/items ${T}/Icons
@@ -57,7 +57,7 @@ evedb.sqlite: createTables.sql Types eveIcons.sql npc.sql
 
 
 NCDatabase.sqlite: NCDatabase evedb.sqlite Icons Types
-	${T}/NCDatabase ./NCDatabase.sqlite ${T}/evedb.sqlite ${T}/Icons ${T}/Types ./input/Factions $(EXPANSION)
+	${T}/NCDatabase ./NCDatabase.sqlite ${T}/evedb.sqlite ${T}/Icons ${T}/Types ./input/Factions "${EXPANSION}"
 
 tmp:
 	mkdir -p ${T}

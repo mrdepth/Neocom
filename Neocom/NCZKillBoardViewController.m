@@ -371,29 +371,30 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 	id cell = [sender superview];
 	for (;![cell isKindOfClass:[UITableViewCell class]]; cell = [cell superview]);
 	NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
-	if (indexPath.row == 0) {
-		self.type = nil;
-	}
-	else if (indexPath.row == 1) {
-		self.group = nil;
-	}
-	else if (indexPath.row == 2) {
-		self.characterID = nil;
-	}
-	else if (indexPath.row == 3) {
-		self.region = nil;
-		self.solarSystem = nil;
-	}
-	else if (indexPath.row == 7) {
-		self.date = nil;
-		NSInteger index = [self.cellIdentifiers indexOfObject:@"DatePickerCell"];
-		if (index != NSNotFound) {
-			[self.cellIdentifiers removeObjectAtIndex:index];
-			[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+	if (indexPath) {
+		if (indexPath.row == 0) {
+			self.type = nil;
 		}
+		else if (indexPath.row == 1) {
+			self.group = nil;
+		}
+		else if (indexPath.row == 2) {
+			self.characterID = nil;
+		}
+		else if (indexPath.row == 3) {
+			self.region = nil;
+			self.solarSystem = nil;
+		}
+		else if (indexPath.row == 7) {
+			self.date = nil;
+			NSInteger index = [self.cellIdentifiers indexOfObject:@"DatePickerCell"];
+			if (index != NSNotFound) {
+				[self.cellIdentifiers removeObjectAtIndex:index];
+				[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+			}
+		}
+		[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
-
-	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {

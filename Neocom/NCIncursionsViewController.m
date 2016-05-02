@@ -13,7 +13,6 @@
 
 @interface NCIncursionsViewControllerData : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* incursions;
-@property (nonatomic, strong) NSDictionary* solarSystems;
 @end
 
 @implementation NCIncursionsViewControllerData
@@ -21,14 +20,12 @@
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
 		self.incursions = [aDecoder decodeObjectForKey:@"incursions"];
-		self.solarSystems = [aDecoder decodeObjectForKey:@"solarSystems"];
 	}
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeObject:self.incursions forKey:@"incursions"];
-	[aCoder encodeObject:self.solarSystems forKey:@"solarSystems"];
 }
 
 @end
@@ -64,10 +61,8 @@
 
 - (void) downloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy completionBlock:(void (^)(NSError *))completionBlock {
 	__block NSError* lastError = nil;
-	NSProgress* progress = [NSProgress progressWithTotalUnitCount:2];
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:1];
 	
-	dispatch_group_t finishGroup = dispatch_group_create();
-	dispatch_group_enter(finishGroup);
 	NCIncursionsViewControllerData* data = [NCIncursionsViewControllerData new];
 
 	CRAPI* api = [CRAPI publicApiWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
@@ -78,29 +73,11 @@
 		
 		if (error)
 			lastError = error;
-		NSMutableDictionary* solarSystems = [NSMutableDictionary new];
-		data.solarSystems = solarSystems;
-		[progress becomeCurrentWithPendingUnitCount:1];
-		NSProgress* subprogress = [NSProgress progressWithTotalUnitCount:incursions.items.count];
-		[progress resignCurrent];
-		for (CRIncursion* incursion in incursions.items) {
-			dispatch_group_enter(finishGroup);
-			[api loadSolarSystemWithSolarSystemID:incursion.solarSystemID completionBlock:^(CRSolarSystem *solarSystem, NSError *error) {
-				@synchronized(solarSystems) {
-					solarSystems[@(incursion.solarSystemID)] = solarSystem;
-					subprogress.completedUnitCount++;
-				}
-				dispatch_group_leave(finishGroup);
-			}];
-		}
-		dispatch_group_leave(finishGroup);
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self saveCacheData:data cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
+			completionBlock(lastError);
+		});
 	}];
-	
-	dispatch_group_notify(finishGroup, dispatch_get_main_queue(), ^{
-		[self saveCacheData:data cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
-		completionBlock(lastError);
-	});
-	
 }
 
 
@@ -112,7 +89,6 @@
 	NCIncursionsViewControllerData* data = self.cacheData;
 	NCIncursionCell* cell = (NCIncursionCell*) tableViewCell;
 	CRIncursion* incursion = data.incursions[indexPath.row];
-	CRSolarSystem* solarSystem = data.solarSystems[@(incursion.solarSystemID)];
 	
 	cell.constellationLabel.text = incursion.constellationName;
 	switch (incursion.state) {
@@ -130,18 +106,20 @@
 			break;
 	}
 	
-	NSString* ss = [NSString stringWithFormat:@"%.1f", solarSystem.securityStatus];
-	NSString* s = [NSString stringWithFormat:@"%@ %@", ss, solarSystem.name];
+	NCDBMapSolarSystem* solarSystem = [self.databaseManagedObjectContext mapSolarSystemWithSolarSystemID:incursion.solarSystemID];
+	
+	NSString* ss = [NSString stringWithFormat:@"%.1f", solarSystem.security];
+	NSString* s = [NSString stringWithFormat:@"%@ %@", ss, solarSystem.solarSystemName];
 	NSMutableAttributedString* ms = [[NSMutableAttributedString alloc] initWithString:s];
-	[ms addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:solarSystem.securityStatus] range:NSMakeRange(0, ss.length)];
+	[ms addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:solarSystem.security] range:NSMakeRange(0, ss.length)];
 	cell.solarSystemLabel.attributedText = ms;
 	
 	cell.hasBossImageView.alpha = incursion.hasBoss ? 1.0f : 0.3f;
-	cell.ownerNameLabel.text = solarSystem.ownerName;
+	cell.ownerNameLabel.text = incursion.aggressorFactionName;
 	cell.ownerImageView.image = nil;
 	cell.influenceLabel.text = [NSString stringWithFormat:@"%.0f%%", incursion.influence * 100];
 	cell.influenceLabel.progress = incursion.influence;
-	[cell.ownerImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:solarSystem.ownerID size:EVEImageSizeRetina64 error:nil]];
+	[cell.ownerImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:incursion.aggressorFactionID size:EVEImageSizeRetina64 error:nil]];
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

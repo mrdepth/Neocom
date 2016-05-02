@@ -46,6 +46,7 @@
 #import "NCDBDgmppItemRequirements.h"
 #import "NCDBDgmppItemDamage.h"
 #import "NCDBDgmppItemShipResources.h"
+#import "NCDBDgmppItemSpaceStructureResources.h"
 #import "NCDBDgmppHullType.h"
 #import "NCDBIndActivity.h"
 #import "NCDBIndBlueprintType.h"

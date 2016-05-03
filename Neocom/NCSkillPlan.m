@@ -113,6 +113,8 @@
 				dispatch_group_enter(loadDispatchGroup);
 				load = YES;
 			}
+			else
+				loadDispatchGroup = _loadDispatchGroup;
 		}
 		if (load) {
 			[self.managedObjectContext performBlock:^{

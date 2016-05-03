@@ -602,6 +602,13 @@
 			remoteGlobalIDString = 12B68566195EB1B20043B30A;
 			remoteInfo = today;
 		};
+		12DFCF431CD79D36006A19BD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 12F330091C33EFDC00F19C45 /* dgmpp.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12DFCECE1CD74242006A19BD;
+			remoteInfo = dgmppTests;
+		};
 		12F330291C340C1B00F19C45 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 12F330091C33EFDC00F19C45 /* dgmpp.xcodeproj */;
@@ -762,7 +769,6 @@
 		120F98A51B539E220047A019 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = dbTools/dbinit/NCDatabase.sqlite; sourceTree = SOURCE_ROOT; };
 		121064741C91AFF00032B3DB /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		121064761C91AFF00032B3DB /* FlurryWatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryWatch.h; sourceTree = "<group>"; };
-		121064771C91AFF00032B3DB /* libFlurry_7.5.2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_7.5.2.a; sourceTree = "<group>"; };
 		1210C7DD1BF4D77800B94154 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1211122C185989E1009E5106 /* NCTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTaskManager.h; sourceTree = "<group>"; };
 		1211122D185989E1009E5106 /* NCTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTaskManager.m; sourceTree = "<group>"; };
@@ -1956,7 +1962,6 @@
 			children = (
 				121064741C91AFF00032B3DB /* Flurry.h */,
 				121064761C91AFF00032B3DB /* FlurryWatch.h */,
-				121064771C91AFF00032B3DB /* libFlurry_7.5.2.a */,
 			);
 			name = Flurry;
 			path = "flurry-ios-sdk/Flurry";
@@ -3904,6 +3909,7 @@
 				12F330301C340C1B00F19C45 /* dgmpp */,
 				12F330341C340C1B00F19C45 /* modifiersdump */,
 				123BB27C1CC508A300B30B5E /* dgmpp.framework */,
+				12DFCF441CD79D36006A19BD /* dgmppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4528,6 +4534,13 @@
 			fileType = wrapper.framework;
 			path = EVEAPI.framework;
 			remoteRef = 1248CE7D1B7DDCE1000266BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		12DFCF441CD79D36006A19BD /* dgmppTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = dgmppTests.xctest;
+			remoteRef = 12DFCF431CD79D36006A19BD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		12F3302A1C340C1B00F19C45 /* compiler */ = {

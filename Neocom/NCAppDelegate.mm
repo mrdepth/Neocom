@@ -21,7 +21,7 @@
 #import "NCSideMenuViewController.h"
 #import "NCMainMenuViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
-//#import "Flurry.h"
+#import "Flurry.h"
 #import "NCAPIKeyAccessMaskViewController.h"
 #import "NCShoppingList.h"
 #import "NCSplashScreenViewController.h"
@@ -75,14 +75,15 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 /*#if !TARGET_OS_SIMULATOR
-	[Flurry setCrashReportingEnabled:YES];
-	[Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
 #endif*/
 	
 #if !DEBUG
+	[Flurry setCrashReportingEnabled:YES];
+	[Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
+
 	GAI *gai = [GAI sharedInstance];
-	[gai trackerWithTrackingId:@"UA-72025819-3"];
-	gai.trackUncaughtExceptions = YES;  // report uncaught exceptions
+	[gai trackerWithTrackingId:@"UA-72025819-3"].allowIDFACollection = YES;
+	//gai.trackUncaughtExceptions = YES;  // report uncaught exceptions
 	gai.logger.logLevel = kGAILogLevelNone;  // remove before app release
 	gai.defaultTracker.allowIDFACollection = YES;
 #endif

@@ -108,36 +108,43 @@
 		[self.tableView reloadData];
 	}
 	else {
-		[self.tableView beginUpdates];
-		NSMutableIndexSet* deleteSections = [NSMutableIndexSet new];
-		NSMutableIndexSet* insertSections = [NSMutableIndexSet new];
-		NSMutableIndexSet* reloadSections = [NSMutableIndexSet new];
-		
-		NSInteger sectionIndex = 0;
-		for (id identifier in self.sectionIdentifiers) {
-			if (![sectionIdentifiers containsObject:identifier])
-				[deleteSections addIndex:sectionIndex];
-			else
-				[reloadSections addIndex:sectionIndex];
-			sectionIndex++;
+		@try {
+			[self.tableView beginUpdates];
+			NSMutableIndexSet* deleteSections = [NSMutableIndexSet new];
+			NSMutableIndexSet* insertSections = [NSMutableIndexSet new];
+			NSMutableIndexSet* reloadSections = [NSMutableIndexSet new];
+			
+			NSInteger sectionIndex = 0;
+			for (id identifier in self.sectionIdentifiers) {
+				if (![sectionIdentifiers containsObject:identifier])
+					[deleteSections addIndex:sectionIndex];
+				else
+					[reloadSections addIndex:sectionIndex];
+				sectionIndex++;
+			}
+			
+			sectionIndex = 0;
+			for (id identifier in sectionIdentifiers) {
+				if (![self.sectionIdentifiers containsObject:identifier])
+					[insertSections addIndex:sectionIndex];
+				sectionIndex++;
+			}
+			
+			self.sectionIdentifiers = sectionIdentifiers;
+			if (deleteSections.count > 0)
+				[self.tableView deleteSections:deleteSections withRowAnimation:UITableViewRowAnimationFade];
+			if (insertSections.count > 0)
+				[self.tableView insertSections:insertSections withRowAnimation:UITableViewRowAnimationFade];
+			if (reloadSections.count > 0)
+				[self.tableView reloadSections:reloadSections withRowAnimation:UITableViewRowAnimationFade];
+			
+			[self.tableView endUpdates];
 		}
-		
-		sectionIndex = 0;
-		for (id identifier in sectionIdentifiers) {
-			if (![self.sectionIdentifiers containsObject:identifier])
-				[insertSections addIndex:sectionIndex];
-			sectionIndex++;
+		@catch (NSException *exception) {
+			[self.tableView reloadData];
 		}
-		
-		self.sectionIdentifiers = sectionIdentifiers;
-		if (deleteSections.count > 0)
-			[self.tableView deleteSections:deleteSections withRowAnimation:UITableViewRowAnimationFade];
-		if (insertSections.count > 0)
-			[self.tableView insertSections:insertSections withRowAnimation:UITableViewRowAnimationFade];
-		if (reloadSections.count > 0)
-			[self.tableView reloadSections:reloadSections withRowAnimation:UITableViewRowAnimationFade];
-		
-		[self.tableView endUpdates];
+		@finally {
+		}
 	}
 }
 

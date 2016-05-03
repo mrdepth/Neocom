@@ -102,7 +102,7 @@
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
     if (self.accounts)
-        [aCoder encodeObject:self.accounts forKey:@"accounts"];
+        [aCoder encodeObject:[self.accounts copy] forKey:@"accounts"];
 }
 
 @end

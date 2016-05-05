@@ -339,7 +339,7 @@
 				row.typeName = type.typeName;
 				row.iconID = [type.icon objectID];
 				NSRange range = [row.loadoutName rangeOfString:@"/"];
-				if (type && range.location != NSNotFound) {
+				if (type && row.loadoutName && range.location != NSNotFound) {
 					NSString* folder = [[row.loadoutName substringToIndex:range.location] stringByDeletingExtraSpaces];
 					NSString* name = [[row.loadoutName substringFromIndex:range.location + 1] stringByDeletingExtraSpaces];
 					row.loadoutName = name;

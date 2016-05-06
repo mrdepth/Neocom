@@ -469,6 +469,7 @@
 			auto ship = self.controller.fit.pilot->getShip();
 			auto module = row.module;
 			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:module->getTypeID()];
+			
 			newRow.typeName = type.typeName;
 			newRow.typeNameColor = module->isEnabled() ? [UIColor whiteColor] : [UIColor redColor];
 			newRow.typeImage = type.icon.image.image;
@@ -488,7 +489,7 @@
 			
 			float optimal = module->getMaxRange();
 			float falloff = module->getFalloff();
-			float angularVelocity = module->getAngularVelocity(ship->getSignatureRadius());
+			float angularVelocity = module->getAngularVelocity(ship->getAttribute(dgmpp::SIGNATURE_RADIUS_ATTRIBUTE_ID)->getInitialValue());
 			float accuracyScore = module->getAccuracyScore();
 			float lifeTime = module->getLifeTime();
 			

@@ -250,7 +250,6 @@
 		retry++;
 		[self performSelector:@selector(updateBanner) withObject:nil afterDelay:2];
 	}
-	
 }
 
 - (void) updateFrame {

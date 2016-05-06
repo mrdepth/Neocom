@@ -570,7 +570,7 @@
 	NSMutableString* eft = [NSMutableString new];
 	[self.databaseManagedObjectContext performBlockAndWait:^{
 		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.typeID];
-		[NSMutableString stringWithFormat:@"[%@, %@]\n", type.typeName, self.loadoutName];
+		[eft appendFormat:@"[%@, %@]\n", type.typeName, self.loadoutName];
 		
 		for (NSString* key in @[@"lowSlots", @"medSlots", @"hiSlots", @"rigSlots", @"subsystems"]) {
 			NSArray* array = [self.loadoutData valueForKey:key];

@@ -217,11 +217,9 @@
 }
 
 - (void) updateBanner {
-	static int retry= 0;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
-	if (purchase || retry >= 3) {
-		retry = 0;
+	if (purchase) {
 		if (purchase.purchased) {
 			if (self.adBannerView.superview) {
 				[self.adBannerView removeFromSuperview];
@@ -230,24 +228,22 @@
 				self.adBannerView = nil;
 				[self updateFrame];
 				[Appodeal hideBanner];
+				[Appodeal deinitialize];
 			}
 		}
 		else {
 			if (!self.adBannerView) {
-				//self.adBannerView = [[GADBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(self.view.frame.size.width, 50)) origin:CGPointMake(0, 0)];
+				if (![Appodeal isInitalized]) {
+					[Appodeal disableLocationPermissionCheck];
+					[Appodeal initializeWithApiKey:@"57860daf6ce06befbe69f379152ed16e392a6ebb4160fe4d" types: (AppodealAdType)(AppodealAdTypeBanner)];
+				}
 				self.adBannerView = [[AppodealBannerView alloc] initWithSize:kAppodealUnitSize_320x50 rootViewController:self];
-				//self.gadBannerView.rootViewController = self;
-				//self.gadBannerView.adUnitID = @"ca-app-pub-0434787749004673/2607342948";
 				self.adBannerView.delegate = self;
-				
-				//GADRequest *request = [GADRequest request];
-				//[self.gadBannerView loadRequest:request];
 				[self.adBannerView loadAd];
 			}
 		}
 	}
 	else {
-		retry++;
 		[self performSelector:@selector(updateBanner) withObject:nil afterDelay:2];
 	}
 }

@@ -316,20 +316,12 @@
 							auto firstState = ecu->getStates().front();
 							startTime = firstState->getTimestamp();
 							double maxH = 0;
-							for(double time = ecu->getInstallTime(); time < firstState->getTimestamp(); time += cycleTime) {
-								double yield = ecu->getYieldAtTime(time);
-								/*NCBarChartSegment* segment = [NCBarChartSegment new];
-								segment.color0 = green;
-								segment.color1 = red;
-								
-								segment.x = time;
-								segment.w = cycleTime;
-								
-								segment.h0 = yield;
-								segment.h1 = 0;*/
-								maxH = std::max(yield, maxH);
-								//[segments addObject:segment];
-								allTimeYield += yield;
+							if (cycleTime > 0) {
+								for(double time = ecu->getInstallTime(); time < firstState->getTimestamp(); time += cycleTime) {
+									double yield = ecu->getYieldAtTime(time);
+									maxH = std::max(yield, maxH);
+									allTimeYield += yield;
+								}
 							}
 
 							std::shared_ptr<const dgmpp::ProductionState> lastState;

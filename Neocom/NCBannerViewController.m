@@ -72,6 +72,7 @@
 	
 	self.bannerView = [[NCBannerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 0)];
 	self.bannerView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+	self.bannerView.clipsToBounds = YES;
 	[self.view addSubview:self.bannerView];
 }
 

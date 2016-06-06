@@ -14,15 +14,16 @@
 @implementation NCAdaptivePopoverSegue
 
 - (void) perform {
+	id sender = [self.sender isKindOfClass:[NSDictionary class]] ? self.sender[@"sender"] : self.sender;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		NCNavigationController* controller = [[NCNavigationController alloc] initWithRootViewController:self.destinationViewController];
 		controller.navigationBar.barStyle = UIBarStyleBlack;
 		controller.navigationBar.tintColor = [UIColor whiteColor];
 		//controller.preferredContentSize = CGSizeMake(320, 768);
-        [self.sourceViewController presentViewControllerInPopover:controller withSender:self.sender animated:YES];
+        [self.sourceViewController presentViewControllerInPopover:controller withSender:sender animated:YES];
 	}
 	else {
-		[self.sourceViewController showViewController:self.destinationViewController sender:self.sender];
+		[self.sourceViewController showViewController:self.destinationViewController sender:sender];
 		//[[self.sourceViewController navigationController] pushViewController:self.destinationViewController animated:YES];
 	}
 }

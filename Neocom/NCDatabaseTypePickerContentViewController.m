@@ -118,7 +118,8 @@
 	if ([row isKindOfClass:[NCDBDgmppItem class]]) {
 		NCDBDgmppItem* item = row;
 		NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
-		navigationController.completionHandler(item.type);
+		if (navigationController.completionHandler)
+			navigationController.completionHandler(item.type);
 	}
 }
 

@@ -88,11 +88,6 @@ void uncaughtExceptionHandler(NSException* exception) {
 	gai.defaultTracker.allowIDFACollection = YES;
 #endif
 	
-	[Appodeal disableLocationPermissionCheck];
-	[Appodeal initializeWithApiKey:@"57860daf6ce06befbe69f379152ed16e392a6ebb4160fe4d" types: (AppodealAdType)(AppodealAdTypeBanner)];
-
-
-
 //	handler = NSGetUncaughtExceptionHandler();
 //	NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
 

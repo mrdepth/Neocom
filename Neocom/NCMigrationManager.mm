@@ -48,7 +48,7 @@
 
 	if ([fileManager fileExistsAtPath:path isDirectory:NULL]) {
 //		migrationManager.storage = [NCStorage fallbackStorage];
-		migrationManager.accountsManager = [[NCAccountsManager alloc] initWithStorage:migrationManager.storage];
+		//migrationManager.accountsManager = [[NCAccountsManager alloc] initWithStorage:migrationManager.storage];
 		@try {
 //			[migrationManager transferAPIKeysWithError:&error];
 //			[migrationManager transferShipLoadouts];

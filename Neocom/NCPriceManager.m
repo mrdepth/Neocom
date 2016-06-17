@@ -33,7 +33,7 @@
 	if (self = [super init]) {
 		AFHTTPRequestSerializer* requestSerializer = [AFHTTPRequestSerializer serializer];
 		[requestSerializer setValue:@"application/vnd.ccp.eve.Api-v1+json" forHTTPHeaderField:@"Accept"];
-		self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://public-crest.eveonline.com"]];
+		self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://crest-tq.eveonline.com"]];
 		self.manager.requestSerializer = requestSerializer;
 		self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
 		self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"*/*", @"application/vnd.ccp.eve.markettypepricecollection-v1+json", nil];
@@ -76,7 +76,7 @@
 		NCCacheRecord* cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:@"NCPriceManager"];
 		NSDate* date = cacheRecord.expireDate;
 		if (!date || [date timeIntervalSinceNow] < 0) {
-			[self.manager GET:@"https://public-crest.eveonline.com/market/prices/" parameters:nil success:^void(AFHTTPRequestOperation * operation, id dic) {
+			[self.manager GET:@"https://crest-tq.eveonline.com/market/prices/" parameters:nil success:^void(AFHTTPRequestOperation * operation, id dic) {
 				if ([dic isKindOfClass:[NSDictionary class]]) {
 					[self.cacheManagedObjectContext performBlock:^{
 						NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Price"];

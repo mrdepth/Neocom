@@ -17,6 +17,7 @@
 #import "NCFittingEngine.h"
 #import "NCDatabase.h"
 #import "NSManagedObjectContext+NCDatabase.h"
+#import "GAI+Neocom.h"
 
 typedef NS_ENUM(NSInteger, NCManeuver) {
 	NCManeuverOrbit,
@@ -110,6 +111,11 @@ typedef NS_ENUM(NSInteger, NCManeuver) {
 	self.incomingDpsLayer.delegate = nil;
 	self.axisLayer.delegate = nil;
 	self.markerLayer.delegate = nil;
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[GAI createScreenWithName:NSStringFromClass(self.class)];
 }
 
 - (void) viewDidLayoutSubviews {

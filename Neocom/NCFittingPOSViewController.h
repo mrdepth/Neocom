@@ -28,5 +28,6 @@
 
 - (IBAction)onChangeSection:(UISegmentedControl*)sender;
 - (IBAction)onAction:(id)sender;
+- (IBAction)onBack:(id)sender;
 - (void) reload;
 @end

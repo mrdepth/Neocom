@@ -16,6 +16,7 @@
 #import "NCDatabase.h"
 #import "NSManagedObjectContext+NCDatabase.h"
 #import "NCFittingHullTypePickerViewController.h"
+#import "GAI+Neocom.h"
 
 @interface NCFittingShipOffenseStatsViewController()
 @property (nonatomic, strong) CAShapeLayer* axisLayer;
@@ -99,6 +100,11 @@
 	[self.markerView.layer addSublayer:self.markerLayer];
 
 	[self reload];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[GAI createScreenWithName:NSStringFromClass(self.class)];
 }
 
 - (void) dealloc {

@@ -13,5 +13,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *fittingsPriceLabel;
 @property (nonatomic, weak) IBOutlet UILabel *totalPriceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dronesPriceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *implantsPriceLabel;
 
 @end

@@ -1,3 +1,3 @@
 #!/bin/sh
 make clean
-make EXPANSION="YC-118-6"
+make EXPANSION="YC-118-7"

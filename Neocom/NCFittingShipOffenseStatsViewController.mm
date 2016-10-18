@@ -18,7 +18,7 @@
 #import "NCFittingHullTypePickerViewController.h"
 #import "GAI+Neocom.h"
 
-@interface NCFittingShipOffenseStatsViewController()
+@interface NCFittingShipOffenseStatsViewController()<CALayerDelegate>
 @property (nonatomic, strong) CAShapeLayer* axisLayer;
 @property (nonatomic, strong) CAShapeLayer* dpsLayer;
 @property (nonatomic, strong) CAShapeLayer* velocityLayer;
@@ -67,20 +67,20 @@
 	self.axisLayer = [CAShapeLayer layer];
 	self.axisLayer.strokeColor = [[UIColor whiteColor] CGColor];
 	self.axisLayer.fillColor = [[UIColor clearColor] CGColor];
-	self.axisLayer.delegate = self;
+	self.axisLayer.delegate = (id <CALayerDelegate>) self;
 	self.axisLayer.needsDisplayOnBoundsChange = YES;
 	self.axisLayer.zPosition = 10;
 
 	self.dpsLayer = [CAShapeLayer layer];
 	self.dpsLayer.strokeColor = [[UIColor orangeColor] CGColor];
 	self.dpsLayer.fillColor = [[UIColor clearColor] CGColor];
-	self.dpsLayer.delegate = self;
+	self.dpsLayer.delegate = (id <CALayerDelegate>) self;
 	self.dpsLayer.needsDisplayOnBoundsChange = YES;
 
 	self.velocityLayer = [CAShapeLayer layer];
 	self.velocityLayer.strokeColor = [[UIColor greenColor] CGColor];
 	self.velocityLayer.fillColor = [[UIColor clearColor] CGColor];
-	self.velocityLayer.delegate = self;
+	self.velocityLayer.delegate = (id <CALayerDelegate>) self;
 	self.velocityLayer.needsDisplayOnBoundsChange = YES;
 
 	[self.canvasView.layer addSublayer:self.axisLayer];
@@ -95,7 +95,7 @@
 	self.markerLayer.strokeColor = [[UIColor yellowColor] CGColor];
 	self.markerLayer.fillColor = [[UIColor clearColor] CGColor];
 	self.markerLayer.lineDashPattern = @[@4, @4];
-	self.markerLayer.delegate = self;
+	self.markerLayer.delegate = (id <CALayerDelegate>) self;
 	self.markerLayer.needsDisplayOnBoundsChange = YES;
 	[self.markerView.layer addSublayer:self.markerLayer];
 

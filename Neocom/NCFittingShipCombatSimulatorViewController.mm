@@ -71,20 +71,20 @@ typedef NS_ENUM(NSInteger, NCManeuver) {
 	self.axisLayer = [CAShapeLayer layer];
 	self.axisLayer.strokeColor = [[UIColor whiteColor] CGColor];
 	self.axisLayer.fillColor = [[UIColor clearColor] CGColor];
-	self.axisLayer.delegate = self;
+	self.axisLayer.delegate = (id)self;
 	self.axisLayer.needsDisplayOnBoundsChange = YES;
 	self.axisLayer.zPosition = 10;
 	
 	self.outgoingDpsLayer = [CAShapeLayer layer];
 	self.outgoingDpsLayer.strokeColor = [[UIColor orangeColor] CGColor];
 	self.outgoingDpsLayer.fillColor = [[UIColor clearColor] CGColor];
-	self.outgoingDpsLayer.delegate = self;
+	self.outgoingDpsLayer.delegate = (id)self;
 	self.outgoingDpsLayer.needsDisplayOnBoundsChange = YES;
 
 	self.incomingDpsLayer = [CAShapeLayer layer];
 	self.incomingDpsLayer.strokeColor = [[UIColor redColor] CGColor];
 	self.incomingDpsLayer.fillColor = [[UIColor clearColor] CGColor];
-	self.incomingDpsLayer.delegate = self;
+	self.incomingDpsLayer.delegate = (id)self;
 	self.incomingDpsLayer.needsDisplayOnBoundsChange = YES;
 
 	[self.canvasView.layer addSublayer:self.axisLayer];
@@ -99,7 +99,7 @@ typedef NS_ENUM(NSInteger, NCManeuver) {
 	self.markerLayer.strokeColor = [[UIColor yellowColor] CGColor];
 	self.markerLayer.fillColor = [[UIColor clearColor] CGColor];
 	self.markerLayer.lineDashPattern = @[@4, @4];
-	self.markerLayer.delegate = self;
+	self.markerLayer.delegate = (id)self;
 	self.markerLayer.needsDisplayOnBoundsChange = YES;
 	[self.markerView.layer addSublayer:self.markerLayer];
 	

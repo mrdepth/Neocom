@@ -627,6 +627,7 @@
 				121D04511DB6AA1500FABD77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

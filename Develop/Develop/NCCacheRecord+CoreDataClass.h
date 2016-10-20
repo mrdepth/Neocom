@@ -13,7 +13,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NCCacheRecord : NSManagedObject
+@interface NCCacheRecord<__covariant ObjectType> : NSManagedObject
+@property (readonly, getter=isExpired) BOOL expired;
++ (NSFetchRequest<NCCacheRecord *> *)fetchRequestForKey:(NSString*) key account:(NSString*) account;
+- (ObjectType) object;
 
 @end
 

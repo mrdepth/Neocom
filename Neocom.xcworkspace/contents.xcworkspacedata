@@ -5,6 +5,9 @@
       location = "group:Develop/Develop.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Develop/Develop/../../ThirdParty/EVEOnlineAPI/EVEOnlineAPI.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Neocom.xcodeproj">
    </FileRef>
 </Workspace>

@@ -49,39 +49,151 @@
 		121D04BE1DB6ADE200FABD77 /* NCLoadout+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D04A01DB6ADE200FABD77 /* NCLoadout+CoreDataProperties.m */; };
 		121D04BF1DB6ADE200FABD77 /* NCMailBox+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D04A21DB6ADE200FABD77 /* NCMailBox+CoreDataClass.m */; };
 		121D04C01DB6ADE200FABD77 /* NCMailBox+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D04A41DB6ADE200FABD77 /* NCMailBox+CoreDataProperties.m */; };
-		121D04CF1DB6AE7400FABD77 /* EVEAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 121D04CA1DB6AE5200FABD77 /* EVEAPI.framework */; };
+		121D04DD1DB7FBB600FABD77 /* NCCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D04DC1DB7FBB600FABD77 /* NCCache.m */; };
+		121D04F31DB7FDD600FABD77 /* EVEAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 121D04F01DB7FDC600FABD77 /* EVEAPI.framework */; };
+		121D04F41DB7FDD600FABD77 /* EVEAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 121D04F01DB7FDC600FABD77 /* EVEAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		121D04FA1DB8A78200FABD77 /* NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D04F91DB8A78200FABD77 /* NCStorage.m */; };
+		121D05031DB8FE0A00FABD77 /* NCDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05021DB8FE0A00FABD77 /* NCDataManager.m */; };
+		121D05071DB9194F00FABD77 /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 121D05051DB9194F00FABD77 /* NCDatabase.xcdatamodeld */; };
+		121D05C01DB9197600FABD77 /* NCDBNpcGroup+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05091DB9197600FABD77 /* NCDBNpcGroup+CoreDataClass.m */; };
+		121D05C11DB9197600FABD77 /* NCDBNpcGroup+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D050B1DB9197600FABD77 /* NCDBNpcGroup+CoreDataProperties.m */; };
+		121D05C21DB9197600FABD77 /* NCDBInvGroup+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D050D1DB9197600FABD77 /* NCDBInvGroup+CoreDataClass.m */; };
+		121D05C31DB9197600FABD77 /* NCDBInvGroup+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D050F1DB9197600FABD77 /* NCDBInvGroup+CoreDataProperties.m */; };
+		121D05C41DB9197600FABD77 /* NCDBDgmppHullType+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05111DB9197600FABD77 /* NCDBDgmppHullType+CoreDataClass.m */; };
+		121D05C51DB9197600FABD77 /* NCDBDgmppHullType+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05131DB9197600FABD77 /* NCDBDgmppHullType+CoreDataProperties.m */; };
+		121D05C61DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05151DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataClass.m */; };
+		121D05C71DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05171DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataProperties.m */; };
+		121D05C81DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05191DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataClass.m */; };
+		121D05C91DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D051B1DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataProperties.m */; };
+		121D05CA1DB9197600FABD77 /* NCDBDgmEffect+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D051D1DB9197600FABD77 /* NCDBDgmEffect+CoreDataClass.m */; };
+		121D05CB1DB9197600FABD77 /* NCDBDgmEffect+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D051F1DB9197600FABD77 /* NCDBDgmEffect+CoreDataProperties.m */; };
+		121D05CC1DB9197600FABD77 /* NCDBIndProduct+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05211DB9197600FABD77 /* NCDBIndProduct+CoreDataClass.m */; };
+		121D05CD1DB9197600FABD77 /* NCDBIndProduct+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05231DB9197600FABD77 /* NCDBIndProduct+CoreDataProperties.m */; };
+		121D05CE1DB9197600FABD77 /* NCDBCertSkill+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05251DB9197600FABD77 /* NCDBCertSkill+CoreDataClass.m */; };
+		121D05CF1DB9197600FABD77 /* NCDBCertSkill+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05271DB9197600FABD77 /* NCDBCertSkill+CoreDataProperties.m */; };
+		121D05D01DB9197600FABD77 /* NCDBMapConstellation+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05291DB9197600FABD77 /* NCDBMapConstellation+CoreDataClass.m */; };
+		121D05D11DB9197600FABD77 /* NCDBMapConstellation+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D052B1DB9197600FABD77 /* NCDBMapConstellation+CoreDataProperties.m */; };
+		121D05D21DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D052D1DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataClass.m */; };
+		121D05D31DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D052F1DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataProperties.m */; };
+		121D05D41DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05311DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataClass.m */; };
+		121D05D51DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05331DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataProperties.m */; };
+		121D05D61DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05351DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataClass.m */; };
+		121D05D71DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05371DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m */; };
+		121D05D81DB9197600FABD77 /* NCDBCertCertificate+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05391DB9197600FABD77 /* NCDBCertCertificate+CoreDataClass.m */; };
+		121D05D91DB9197600FABD77 /* NCDBCertCertificate+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D053B1DB9197600FABD77 /* NCDBCertCertificate+CoreDataProperties.m */; };
+		121D05DA1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D053D1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataClass.m */; };
+		121D05DB1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D053F1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataProperties.m */; };
+		121D05DC1DB9197600FABD77 /* NCDBCertMastery+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05411DB9197600FABD77 /* NCDBCertMastery+CoreDataClass.m */; };
+		121D05DD1DB9197600FABD77 /* NCDBCertMastery+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05431DB9197600FABD77 /* NCDBCertMastery+CoreDataProperties.m */; };
+		121D05DE1DB9197600FABD77 /* NCDBTxtDescription+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05451DB9197600FABD77 /* NCDBTxtDescription+CoreDataClass.m */; };
+		121D05DF1DB9197600FABD77 /* NCDBTxtDescription+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05471DB9197600FABD77 /* NCDBTxtDescription+CoreDataProperties.m */; };
+		121D05E01DB9197600FABD77 /* NCDBVersion+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05491DB9197600FABD77 /* NCDBVersion+CoreDataClass.m */; };
+		121D05E11DB9197600FABD77 /* NCDBVersion+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D054B1DB9197600FABD77 /* NCDBVersion+CoreDataProperties.m */; };
+		121D05E21DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D054D1DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataClass.m */; };
+		121D05E31DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D054F1DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataProperties.m */; };
+		121D05E41DB9197600FABD77 /* NCDBEveIcon+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05511DB9197600FABD77 /* NCDBEveIcon+CoreDataClass.m */; };
+		121D05E51DB9197600FABD77 /* NCDBEveIcon+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05531DB9197600FABD77 /* NCDBEveIcon+CoreDataProperties.m */; };
+		121D05E61DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05551DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataClass.m */; };
+		121D05E71DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05571DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataProperties.m */; };
+		121D05E81DB9197600FABD77 /* NCDBRamActivity+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05591DB9197600FABD77 /* NCDBRamActivity+CoreDataClass.m */; };
+		121D05E91DB9197600FABD77 /* NCDBRamActivity+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D055B1DB9197600FABD77 /* NCDBRamActivity+CoreDataProperties.m */; };
+		121D05EA1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D055D1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataClass.m */; };
+		121D05EB1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D055F1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataProperties.m */; };
+		121D05EC1DB9197600FABD77 /* NCDBInvType+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05611DB9197600FABD77 /* NCDBInvType+CoreDataClass.m */; };
+		121D05ED1DB9197600FABD77 /* NCDBInvType+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05631DB9197600FABD77 /* NCDBInvType+CoreDataProperties.m */; };
+		121D05EE1DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05651DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataClass.m */; };
+		121D05EF1DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05671DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataProperties.m */; };
+		121D05F01DB9197600FABD77 /* NCDBChrRace+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05691DB9197600FABD77 /* NCDBChrRace+CoreDataClass.m */; };
+		121D05F11DB9197600FABD77 /* NCDBChrRace+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D056B1DB9197600FABD77 /* NCDBChrRace+CoreDataProperties.m */; };
+		121D05F21DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D056D1DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataClass.m */; };
+		121D05F31DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D056F1DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataProperties.m */; };
+		121D05F41DB9197600FABD77 /* NCDBIndActivity+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05711DB9197600FABD77 /* NCDBIndActivity+CoreDataClass.m */; };
+		121D05F51DB9197600FABD77 /* NCDBIndActivity+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05731DB9197600FABD77 /* NCDBIndActivity+CoreDataProperties.m */; };
+		121D05F61DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05751DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataClass.m */; };
+		121D05F71DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05771DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataProperties.m */; };
+		121D05F81DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05791DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataClass.m */; };
+		121D05F91DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D057B1DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataProperties.m */; };
+		121D05FA1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D057D1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataClass.m */; };
+		121D05FB1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D057F1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataProperties.m */; };
+		121D05FC1DB9197600FABD77 /* NCDBDgmppItem+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05811DB9197600FABD77 /* NCDBDgmppItem+CoreDataClass.m */; };
+		121D05FD1DB9197600FABD77 /* NCDBDgmppItem+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05831DB9197600FABD77 /* NCDBDgmppItem+CoreDataProperties.m */; };
+		121D05FE1DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05851DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataClass.m */; };
+		121D05FF1DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05871DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataProperties.m */; };
+		121D06001DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05891DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataClass.m */; };
+		121D06011DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D058B1DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataProperties.m */; };
+		121D06021DB9197600FABD77 /* NCDBWhType+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D058D1DB9197600FABD77 /* NCDBWhType+CoreDataClass.m */; };
+		121D06031DB9197600FABD77 /* NCDBWhType+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D058F1DB9197600FABD77 /* NCDBWhType+CoreDataProperties.m */; };
+		121D06041DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05911DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataClass.m */; };
+		121D06051DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05931DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataProperties.m */; };
+		121D06061DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05951DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataClass.m */; };
+		121D06071DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05971DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataProperties.m */; };
+		121D06081DB9197600FABD77 /* NCDBEveIconImage+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05991DB9197600FABD77 /* NCDBEveIconImage+CoreDataClass.m */; };
+		121D06091DB9197600FABD77 /* NCDBEveIconImage+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D059B1DB9197600FABD77 /* NCDBEveIconImage+CoreDataProperties.m */; };
+		121D060A1DB9197600FABD77 /* NCDBEveUnit+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D059D1DB9197600FABD77 /* NCDBEveUnit+CoreDataClass.m */; };
+		121D060B1DB9197600FABD77 /* NCDBEveUnit+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D059F1DB9197600FABD77 /* NCDBEveUnit+CoreDataProperties.m */; };
+		121D060C1DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05A11DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataClass.m */; };
+		121D060D1DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05A31DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataProperties.m */; };
+		121D060E1DB9197600FABD77 /* NCDBStaStation+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05A51DB9197600FABD77 /* NCDBStaStation+CoreDataClass.m */; };
+		121D060F1DB9197600FABD77 /* NCDBStaStation+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05A71DB9197600FABD77 /* NCDBStaStation+CoreDataProperties.m */; };
+		121D06101DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05A91DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataClass.m */; };
+		121D06111DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05AB1DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataProperties.m */; };
+		121D06121DB9197600FABD77 /* NCDBInvControlTower+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05AD1DB9197600FABD77 /* NCDBInvControlTower+CoreDataClass.m */; };
+		121D06131DB9197600FABD77 /* NCDBInvControlTower+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05AF1DB9197600FABD77 /* NCDBInvControlTower+CoreDataProperties.m */; };
+		121D06141DB9197600FABD77 /* NCDBMapDenormalize+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05B11DB9197600FABD77 /* NCDBMapDenormalize+CoreDataClass.m */; };
+		121D06151DB9197600FABD77 /* NCDBMapDenormalize+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05B31DB9197600FABD77 /* NCDBMapDenormalize+CoreDataProperties.m */; };
+		121D06161DB9197600FABD77 /* NCDBMapRegion+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05B51DB9197600FABD77 /* NCDBMapRegion+CoreDataClass.m */; };
+		121D06171DB9197600FABD77 /* NCDBMapRegion+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05B71DB9197600FABD77 /* NCDBMapRegion+CoreDataProperties.m */; };
+		121D06181DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05B91DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataClass.m */; };
+		121D06191DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05BB1DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataProperties.m */; };
+		121D061A1DB9197600FABD77 /* NCDBInvCategory+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05BD1DB9197600FABD77 /* NCDBInvCategory+CoreDataClass.m */; };
+		121D061B1DB9197600FABD77 /* NCDBInvCategory+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05BF1DB9197600FABD77 /* NCDBInvCategory+CoreDataProperties.m */; };
+		121D061E1DB91B7200FABD77 /* NCDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D061D1DB91B7200FABD77 /* NCDatabase.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		121D04C71DB6AE5200FABD77 /* PBXContainerItemProxy */ = {
+		121D04ED1DB7FDC600FABD77 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 121D04C11DB6AE5200FABD77 /* EVEOnlineAPI.xcodeproj */;
+			containerPortal = 121D04E71DB7FDC600FABD77 /* EVEOnlineAPI.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 1D6058910D05DD3D006BFB54;
 			remoteInfo = EVEOnlineAPI;
 		};
-		121D04C91DB6AE5200FABD77 /* PBXContainerItemProxy */ = {
+		121D04EF1DB7FDC600FABD77 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 121D04C11DB6AE5200FABD77 /* EVEOnlineAPI.xcodeproj */;
+			containerPortal = 121D04E71DB7FDC600FABD77 /* EVEOnlineAPI.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 1248CD7F1B7DDA23000266BE;
 			remoteInfo = "EVEAPI iOS";
 		};
-		121D04CB1DB6AE5200FABD77 /* PBXContainerItemProxy */ = {
+		121D04F11DB7FDC600FABD77 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 121D04C11DB6AE5200FABD77 /* EVEOnlineAPI.xcodeproj */;
+			containerPortal = 121D04E71DB7FDC600FABD77 /* EVEOnlineAPI.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 12350FDF1C73A33D0015D140;
 			remoteInfo = "EVEAPI OS X";
 		};
-		121D04CD1DB6AE6400FABD77 /* PBXContainerItemProxy */ = {
+		121D04F51DB7FDD600FABD77 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 121D04C11DB6AE5200FABD77 /* EVEOnlineAPI.xcodeproj */;
+			containerPortal = 121D04E71DB7FDC600FABD77 /* EVEOnlineAPI.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 1248CD7E1B7DDA23000266BE;
 			remoteInfo = "EVEAPI iOS";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		121D04E61DB7FD1000FABD77 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				121D04F41DB7FDD600FABD77 /* EVEAPI.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		121D04381DB6AA1500FABD77 /* Develop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Develop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,7 +277,200 @@
 		121D04A21DB6ADE200FABD77 /* NCMailBox+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCMailBox+CoreDataClass.m"; sourceTree = "<group>"; };
 		121D04A31DB6ADE200FABD77 /* NCMailBox+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCMailBox+CoreDataProperties.h"; sourceTree = "<group>"; };
 		121D04A41DB6ADE200FABD77 /* NCMailBox+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCMailBox+CoreDataProperties.m"; sourceTree = "<group>"; };
-		121D04C11DB6AE5200FABD77 /* EVEOnlineAPI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EVEOnlineAPI.xcodeproj; path = ../../ThirdParty/EVEOnlineAPI/EVEOnlineAPI.xcodeproj; sourceTree = "<group>"; };
+		121D04DB1DB7FBB600FABD77 /* NCCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCache.h; sourceTree = "<group>"; };
+		121D04DC1DB7FBB600FABD77 /* NCCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCache.m; sourceTree = "<group>"; };
+		121D04E71DB7FDC600FABD77 /* EVEOnlineAPI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = EVEOnlineAPI.xcodeproj; path = Develop/../../ThirdParty/EVEOnlineAPI/EVEOnlineAPI.xcodeproj; sourceTree = "<group>"; };
+		121D04F81DB8A78200FABD77 /* NCStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStorage.h; sourceTree = "<group>"; };
+		121D04F91DB8A78200FABD77 /* NCStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStorage.m; sourceTree = "<group>"; };
+		121D05011DB8FE0A00FABD77 /* NCDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDataManager.h; sourceTree = "<group>"; };
+		121D05021DB8FE0A00FABD77 /* NCDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDataManager.m; sourceTree = "<group>"; };
+		121D05061DB9194F00FABD77 /* NCDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCDatabase.xcdatamodel; sourceTree = "<group>"; };
+		121D05081DB9197600FABD77 /* NCDBNpcGroup+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBNpcGroup+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05091DB9197600FABD77 /* NCDBNpcGroup+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBNpcGroup+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D050A1DB9197600FABD77 /* NCDBNpcGroup+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBNpcGroup+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D050B1DB9197600FABD77 /* NCDBNpcGroup+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBNpcGroup+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D050C1DB9197600FABD77 /* NCDBInvGroup+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvGroup+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D050D1DB9197600FABD77 /* NCDBInvGroup+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvGroup+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D050E1DB9197600FABD77 /* NCDBInvGroup+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvGroup+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D050F1DB9197600FABD77 /* NCDBInvGroup+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvGroup+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05101DB9197600FABD77 /* NCDBDgmppHullType+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppHullType+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05111DB9197600FABD77 /* NCDBDgmppHullType+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppHullType+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05121DB9197600FABD77 /* NCDBDgmppHullType+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppHullType+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05131DB9197600FABD77 /* NCDBDgmppHullType+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppHullType+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05141DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmAttributeType+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05151DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmAttributeType+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05161DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmAttributeType+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05171DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmAttributeType+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05181DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemDamage+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05191DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemDamage+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D051A1DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemDamage+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D051B1DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemDamage+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D051C1DB9197600FABD77 /* NCDBDgmEffect+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmEffect+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D051D1DB9197600FABD77 /* NCDBDgmEffect+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmEffect+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D051E1DB9197600FABD77 /* NCDBDgmEffect+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmEffect+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D051F1DB9197600FABD77 /* NCDBDgmEffect+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmEffect+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05201DB9197600FABD77 /* NCDBIndProduct+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBIndProduct+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05211DB9197600FABD77 /* NCDBIndProduct+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBIndProduct+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05221DB9197600FABD77 /* NCDBIndProduct+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBIndProduct+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05231DB9197600FABD77 /* NCDBIndProduct+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBIndProduct+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05241DB9197600FABD77 /* NCDBCertSkill+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBCertSkill+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05251DB9197600FABD77 /* NCDBCertSkill+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBCertSkill+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05261DB9197600FABD77 /* NCDBCertSkill+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBCertSkill+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05271DB9197600FABD77 /* NCDBCertSkill+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBCertSkill+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05281DB9197600FABD77 /* NCDBMapConstellation+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBMapConstellation+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05291DB9197600FABD77 /* NCDBMapConstellation+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBMapConstellation+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D052A1DB9197600FABD77 /* NCDBMapConstellation+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBMapConstellation+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D052B1DB9197600FABD77 /* NCDBMapConstellation+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBMapConstellation+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D052C1DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBMapSolarSystem+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D052D1DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBMapSolarSystem+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D052E1DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBMapSolarSystem+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D052F1DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBMapSolarSystem+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05301DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvMarketGroup+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05311DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvMarketGroup+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05321DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvMarketGroup+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05331DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvMarketGroup+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05341DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemSpaceStructureResources+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05351DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemSpaceStructureResources+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05361DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemSpaceStructureResources+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05371DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05381DB9197600FABD77 /* NCDBCertCertificate+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBCertCertificate+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05391DB9197600FABD77 /* NCDBCertCertificate+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBCertCertificate+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D053A1DB9197600FABD77 /* NCDBCertCertificate+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBCertCertificate+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D053B1DB9197600FABD77 /* NCDBCertCertificate+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBCertCertificate+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D053C1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBIndRequiredSkill+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D053D1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBIndRequiredSkill+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D053E1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBIndRequiredSkill+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D053F1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBIndRequiredSkill+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05401DB9197600FABD77 /* NCDBCertMastery+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBCertMastery+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05411DB9197600FABD77 /* NCDBCertMastery+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBCertMastery+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05421DB9197600FABD77 /* NCDBCertMastery+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBCertMastery+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05431DB9197600FABD77 /* NCDBCertMastery+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBCertMastery+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05441DB9197600FABD77 /* NCDBTxtDescription+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBTxtDescription+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05451DB9197600FABD77 /* NCDBTxtDescription+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBTxtDescription+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05461DB9197600FABD77 /* NCDBTxtDescription+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBTxtDescription+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05471DB9197600FABD77 /* NCDBTxtDescription+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBTxtDescription+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05481DB9197600FABD77 /* NCDBVersion+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBVersion+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05491DB9197600FABD77 /* NCDBVersion+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBVersion+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D054A1DB9197600FABD77 /* NCDBVersion+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBVersion+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D054B1DB9197600FABD77 /* NCDBVersion+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBVersion+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D054C1DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemShipResources+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D054D1DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemShipResources+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D054E1DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemShipResources+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D054F1DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemShipResources+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05501DB9197600FABD77 /* NCDBEveIcon+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBEveIcon+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05511DB9197600FABD77 /* NCDBEveIcon+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBEveIcon+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05521DB9197600FABD77 /* NCDBEveIcon+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBEveIcon+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05531DB9197600FABD77 /* NCDBEveIcon+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBEveIcon+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05541DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvControlTowerResource+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05551DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvControlTowerResource+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05561DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvControlTowerResource+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05571DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvControlTowerResource+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05581DB9197600FABD77 /* NCDBRamActivity+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBRamActivity+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05591DB9197600FABD77 /* NCDBRamActivity+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBRamActivity+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D055A1DB9197600FABD77 /* NCDBRamActivity+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBRamActivity+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D055B1DB9197600FABD77 /* NCDBRamActivity+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBRamActivity+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D055C1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvMetaGroup+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D055D1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvMetaGroup+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D055E1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvMetaGroup+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D055F1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvMetaGroup+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05601DB9197600FABD77 /* NCDBInvType+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvType+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05611DB9197600FABD77 /* NCDBInvType+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvType+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05621DB9197600FABD77 /* NCDBInvType+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvType+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05631DB9197600FABD77 /* NCDBInvType+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvType+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05641DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBCertMasteryLevel+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05651DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBCertMasteryLevel+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05661DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBCertMasteryLevel+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05671DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBCertMasteryLevel+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05681DB9197600FABD77 /* NCDBChrRace+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBChrRace+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05691DB9197600FABD77 /* NCDBChrRace+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBChrRace+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D056A1DB9197600FABD77 /* NCDBChrRace+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBChrRace+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D056B1DB9197600FABD77 /* NCDBChrRace+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBChrRace+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D056C1DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmTypeAttribute+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D056D1DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmTypeAttribute+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D056E1DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmTypeAttribute+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D056F1DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmTypeAttribute+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05701DB9197600FABD77 /* NCDBIndActivity+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBIndActivity+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05711DB9197600FABD77 /* NCDBIndActivity+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBIndActivity+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05721DB9197600FABD77 /* NCDBIndActivity+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBIndActivity+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05731DB9197600FABD77 /* NCDBIndActivity+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBIndActivity+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05741DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBIndRequiredMaterial+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05751DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBIndRequiredMaterial+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05761DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBIndRequiredMaterial+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05771DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBIndRequiredMaterial+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05781DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvControlTowerResourcePurpose+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05791DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvControlTowerResourcePurpose+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D057A1DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvControlTowerResourcePurpose+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D057B1DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvControlTowerResourcePurpose+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D057C1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBIndBlueprintType+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D057D1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBIndBlueprintType+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D057E1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBIndBlueprintType+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D057F1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBIndBlueprintType+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05801DB9197600FABD77 /* NCDBDgmppItem+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItem+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05811DB9197600FABD77 /* NCDBDgmppItem+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItem+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05821DB9197600FABD77 /* NCDBDgmppItem+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItem+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05831DB9197600FABD77 /* NCDBDgmppItem+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItem+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05841DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvTypeRequiredSkill+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05851DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvTypeRequiredSkill+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05861DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvTypeRequiredSkill+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05871DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvTypeRequiredSkill+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05881DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBRamAssemblyLineType+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05891DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBRamAssemblyLineType+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D058A1DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBRamAssemblyLineType+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D058B1DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBRamAssemblyLineType+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D058C1DB9197600FABD77 /* NCDBWhType+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBWhType+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D058D1DB9197600FABD77 /* NCDBWhType+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBWhType+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D058E1DB9197600FABD77 /* NCDBWhType+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBWhType+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D058F1DB9197600FABD77 /* NCDBWhType+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBWhType+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05901DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemRequirements+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05911DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemRequirements+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05921DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemRequirements+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05931DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemRequirements+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05941DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBRamInstallationTypeContent+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05951DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBRamInstallationTypeContent+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05961DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBRamInstallationTypeContent+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05971DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBRamInstallationTypeContent+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05981DB9197600FABD77 /* NCDBEveIconImage+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBEveIconImage+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05991DB9197600FABD77 /* NCDBEveIconImage+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBEveIconImage+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D059A1DB9197600FABD77 /* NCDBEveIconImage+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBEveIconImage+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D059B1DB9197600FABD77 /* NCDBEveIconImage+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBEveIconImage+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D059C1DB9197600FABD77 /* NCDBEveUnit+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBEveUnit+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D059D1DB9197600FABD77 /* NCDBEveUnit+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBEveUnit+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D059E1DB9197600FABD77 /* NCDBEveUnit+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBEveUnit+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D059F1DB9197600FABD77 /* NCDBEveUnit+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBEveUnit+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05A01DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemCategory+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05A11DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemCategory+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05A21DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemCategory+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05A31DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemCategory+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05A41DB9197600FABD77 /* NCDBStaStation+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBStaStation+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05A51DB9197600FABD77 /* NCDBStaStation+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBStaStation+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05A61DB9197600FABD77 /* NCDBStaStation+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBStaStation+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05A71DB9197600FABD77 /* NCDBStaStation+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBStaStation+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05A81DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmAttributeCategory+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05A91DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmAttributeCategory+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05AA1DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmAttributeCategory+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05AB1DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmAttributeCategory+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05AC1DB9197600FABD77 /* NCDBInvControlTower+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvControlTower+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05AD1DB9197600FABD77 /* NCDBInvControlTower+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvControlTower+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05AE1DB9197600FABD77 /* NCDBInvControlTower+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvControlTower+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05AF1DB9197600FABD77 /* NCDBInvControlTower+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvControlTower+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05B01DB9197600FABD77 /* NCDBMapDenormalize+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBMapDenormalize+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05B11DB9197600FABD77 /* NCDBMapDenormalize+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBMapDenormalize+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05B21DB9197600FABD77 /* NCDBMapDenormalize+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBMapDenormalize+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05B31DB9197600FABD77 /* NCDBMapDenormalize+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBMapDenormalize+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05B41DB9197600FABD77 /* NCDBMapRegion+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBMapRegion+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05B51DB9197600FABD77 /* NCDBMapRegion+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBMapRegion+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05B61DB9197600FABD77 /* NCDBMapRegion+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBMapRegion+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05B71DB9197600FABD77 /* NCDBMapRegion+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBMapRegion+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05B81DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemGroup+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05B91DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemGroup+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05BA1DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBDgmppItemGroup+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05BB1DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBDgmppItemGroup+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D05BC1DB9197600FABD77 /* NCDBInvCategory+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvCategory+CoreDataClass.h"; sourceTree = "<group>"; };
+		121D05BD1DB9197600FABD77 /* NCDBInvCategory+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvCategory+CoreDataClass.m"; sourceTree = "<group>"; };
+		121D05BE1DB9197600FABD77 /* NCDBInvCategory+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBInvCategory+CoreDataProperties.h"; sourceTree = "<group>"; };
+		121D05BF1DB9197600FABD77 /* NCDBInvCategory+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvCategory+CoreDataProperties.m"; sourceTree = "<group>"; };
+		121D061C1DB91B7200FABD77 /* NCDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabase.h; sourceTree = "<group>"; };
+		121D061D1DB91B7200FABD77 /* NCDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabase.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,7 +478,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				121D04CF1DB6AE7400FABD77 /* EVEAPI.framework in Frameworks */,
+				121D04F31DB7FDD600FABD77 /* EVEAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +490,7 @@
 			children = (
 				121D043A1DB6AA1500FABD77 /* Develop */,
 				121D04391DB6AA1500FABD77 /* Products */,
+				121D04E71DB7FDC600FABD77 /* EVEOnlineAPI.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -199,9 +505,17 @@
 		121D043A1DB6AA1500FABD77 /* Develop */ = {
 			isa = PBXGroup;
 			children = (
-				121D04C11DB6AE5200FABD77 /* EVEOnlineAPI.xcodeproj */,
+				121D05041DB9194200FABD77 /* NCDatabase */,
 				121D04681DB6AD9800FABD77 /* NCStorage */,
 				121D04521DB6AA5F00FABD77 /* NCCache */,
+				121D04DB1DB7FBB600FABD77 /* NCCache.h */,
+				121D04DC1DB7FBB600FABD77 /* NCCache.m */,
+				121D04F81DB8A78200FABD77 /* NCStorage.h */,
+				121D04F91DB8A78200FABD77 /* NCStorage.m */,
+				121D061C1DB91B7200FABD77 /* NCDatabase.h */,
+				121D061D1DB91B7200FABD77 /* NCDatabase.m */,
+				121D05011DB8FE0A00FABD77 /* NCDataManager.h */,
+				121D05021DB8FE0A00FABD77 /* NCDataManager.m */,
 				121D043E1DB6AA1500FABD77 /* AppDelegate.h */,
 				121D043F1DB6AA1500FABD77 /* AppDelegate.m */,
 				121D04411DB6AA1500FABD77 /* ViewController.h */,
@@ -307,14 +621,206 @@
 			name = NCStorage;
 			sourceTree = "<group>";
 		};
-		121D04C21DB6AE5200FABD77 /* Products */ = {
+		121D04E81DB7FDC600FABD77 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				121D04C81DB6AE5200FABD77 /* EVEOnlineAPI.app */,
-				121D04CA1DB6AE5200FABD77 /* EVEAPI.framework */,
-				121D04CC1DB6AE5200FABD77 /* EVEAPI.framework */,
+				121D04EE1DB7FDC600FABD77 /* EVEOnlineAPI.app */,
+				121D04F01DB7FDC600FABD77 /* EVEAPI.framework */,
+				121D04F21DB7FDC600FABD77 /* EVEAPI.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		121D05041DB9194200FABD77 /* NCDatabase */ = {
+			isa = PBXGroup;
+			children = (
+				121D05081DB9197600FABD77 /* NCDBNpcGroup+CoreDataClass.h */,
+				121D05091DB9197600FABD77 /* NCDBNpcGroup+CoreDataClass.m */,
+				121D050A1DB9197600FABD77 /* NCDBNpcGroup+CoreDataProperties.h */,
+				121D050B1DB9197600FABD77 /* NCDBNpcGroup+CoreDataProperties.m */,
+				121D050C1DB9197600FABD77 /* NCDBInvGroup+CoreDataClass.h */,
+				121D050D1DB9197600FABD77 /* NCDBInvGroup+CoreDataClass.m */,
+				121D050E1DB9197600FABD77 /* NCDBInvGroup+CoreDataProperties.h */,
+				121D050F1DB9197600FABD77 /* NCDBInvGroup+CoreDataProperties.m */,
+				121D05101DB9197600FABD77 /* NCDBDgmppHullType+CoreDataClass.h */,
+				121D05111DB9197600FABD77 /* NCDBDgmppHullType+CoreDataClass.m */,
+				121D05121DB9197600FABD77 /* NCDBDgmppHullType+CoreDataProperties.h */,
+				121D05131DB9197600FABD77 /* NCDBDgmppHullType+CoreDataProperties.m */,
+				121D05141DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataClass.h */,
+				121D05151DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataClass.m */,
+				121D05161DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataProperties.h */,
+				121D05171DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataProperties.m */,
+				121D05181DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataClass.h */,
+				121D05191DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataClass.m */,
+				121D051A1DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataProperties.h */,
+				121D051B1DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataProperties.m */,
+				121D051C1DB9197600FABD77 /* NCDBDgmEffect+CoreDataClass.h */,
+				121D051D1DB9197600FABD77 /* NCDBDgmEffect+CoreDataClass.m */,
+				121D051E1DB9197600FABD77 /* NCDBDgmEffect+CoreDataProperties.h */,
+				121D051F1DB9197600FABD77 /* NCDBDgmEffect+CoreDataProperties.m */,
+				121D05201DB9197600FABD77 /* NCDBIndProduct+CoreDataClass.h */,
+				121D05211DB9197600FABD77 /* NCDBIndProduct+CoreDataClass.m */,
+				121D05221DB9197600FABD77 /* NCDBIndProduct+CoreDataProperties.h */,
+				121D05231DB9197600FABD77 /* NCDBIndProduct+CoreDataProperties.m */,
+				121D05241DB9197600FABD77 /* NCDBCertSkill+CoreDataClass.h */,
+				121D05251DB9197600FABD77 /* NCDBCertSkill+CoreDataClass.m */,
+				121D05261DB9197600FABD77 /* NCDBCertSkill+CoreDataProperties.h */,
+				121D05271DB9197600FABD77 /* NCDBCertSkill+CoreDataProperties.m */,
+				121D05281DB9197600FABD77 /* NCDBMapConstellation+CoreDataClass.h */,
+				121D05291DB9197600FABD77 /* NCDBMapConstellation+CoreDataClass.m */,
+				121D052A1DB9197600FABD77 /* NCDBMapConstellation+CoreDataProperties.h */,
+				121D052B1DB9197600FABD77 /* NCDBMapConstellation+CoreDataProperties.m */,
+				121D052C1DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataClass.h */,
+				121D052D1DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataClass.m */,
+				121D052E1DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataProperties.h */,
+				121D052F1DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataProperties.m */,
+				121D05301DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataClass.h */,
+				121D05311DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataClass.m */,
+				121D05321DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataProperties.h */,
+				121D05331DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataProperties.m */,
+				121D05341DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataClass.h */,
+				121D05351DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataClass.m */,
+				121D05361DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.h */,
+				121D05371DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m */,
+				121D05381DB9197600FABD77 /* NCDBCertCertificate+CoreDataClass.h */,
+				121D05391DB9197600FABD77 /* NCDBCertCertificate+CoreDataClass.m */,
+				121D053A1DB9197600FABD77 /* NCDBCertCertificate+CoreDataProperties.h */,
+				121D053B1DB9197600FABD77 /* NCDBCertCertificate+CoreDataProperties.m */,
+				121D053C1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataClass.h */,
+				121D053D1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataClass.m */,
+				121D053E1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataProperties.h */,
+				121D053F1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataProperties.m */,
+				121D05401DB9197600FABD77 /* NCDBCertMastery+CoreDataClass.h */,
+				121D05411DB9197600FABD77 /* NCDBCertMastery+CoreDataClass.m */,
+				121D05421DB9197600FABD77 /* NCDBCertMastery+CoreDataProperties.h */,
+				121D05431DB9197600FABD77 /* NCDBCertMastery+CoreDataProperties.m */,
+				121D05441DB9197600FABD77 /* NCDBTxtDescription+CoreDataClass.h */,
+				121D05451DB9197600FABD77 /* NCDBTxtDescription+CoreDataClass.m */,
+				121D05461DB9197600FABD77 /* NCDBTxtDescription+CoreDataProperties.h */,
+				121D05471DB9197600FABD77 /* NCDBTxtDescription+CoreDataProperties.m */,
+				121D05481DB9197600FABD77 /* NCDBVersion+CoreDataClass.h */,
+				121D05491DB9197600FABD77 /* NCDBVersion+CoreDataClass.m */,
+				121D054A1DB9197600FABD77 /* NCDBVersion+CoreDataProperties.h */,
+				121D054B1DB9197600FABD77 /* NCDBVersion+CoreDataProperties.m */,
+				121D054C1DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataClass.h */,
+				121D054D1DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataClass.m */,
+				121D054E1DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataProperties.h */,
+				121D054F1DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataProperties.m */,
+				121D05501DB9197600FABD77 /* NCDBEveIcon+CoreDataClass.h */,
+				121D05511DB9197600FABD77 /* NCDBEveIcon+CoreDataClass.m */,
+				121D05521DB9197600FABD77 /* NCDBEveIcon+CoreDataProperties.h */,
+				121D05531DB9197600FABD77 /* NCDBEveIcon+CoreDataProperties.m */,
+				121D05541DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataClass.h */,
+				121D05551DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataClass.m */,
+				121D05561DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataProperties.h */,
+				121D05571DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataProperties.m */,
+				121D05581DB9197600FABD77 /* NCDBRamActivity+CoreDataClass.h */,
+				121D05591DB9197600FABD77 /* NCDBRamActivity+CoreDataClass.m */,
+				121D055A1DB9197600FABD77 /* NCDBRamActivity+CoreDataProperties.h */,
+				121D055B1DB9197600FABD77 /* NCDBRamActivity+CoreDataProperties.m */,
+				121D055C1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataClass.h */,
+				121D055D1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataClass.m */,
+				121D055E1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataProperties.h */,
+				121D055F1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataProperties.m */,
+				121D05601DB9197600FABD77 /* NCDBInvType+CoreDataClass.h */,
+				121D05611DB9197600FABD77 /* NCDBInvType+CoreDataClass.m */,
+				121D05621DB9197600FABD77 /* NCDBInvType+CoreDataProperties.h */,
+				121D05631DB9197600FABD77 /* NCDBInvType+CoreDataProperties.m */,
+				121D05641DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataClass.h */,
+				121D05651DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataClass.m */,
+				121D05661DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataProperties.h */,
+				121D05671DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataProperties.m */,
+				121D05681DB9197600FABD77 /* NCDBChrRace+CoreDataClass.h */,
+				121D05691DB9197600FABD77 /* NCDBChrRace+CoreDataClass.m */,
+				121D056A1DB9197600FABD77 /* NCDBChrRace+CoreDataProperties.h */,
+				121D056B1DB9197600FABD77 /* NCDBChrRace+CoreDataProperties.m */,
+				121D056C1DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataClass.h */,
+				121D056D1DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataClass.m */,
+				121D056E1DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataProperties.h */,
+				121D056F1DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataProperties.m */,
+				121D05701DB9197600FABD77 /* NCDBIndActivity+CoreDataClass.h */,
+				121D05711DB9197600FABD77 /* NCDBIndActivity+CoreDataClass.m */,
+				121D05721DB9197600FABD77 /* NCDBIndActivity+CoreDataProperties.h */,
+				121D05731DB9197600FABD77 /* NCDBIndActivity+CoreDataProperties.m */,
+				121D05741DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataClass.h */,
+				121D05751DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataClass.m */,
+				121D05761DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataProperties.h */,
+				121D05771DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataProperties.m */,
+				121D05781DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataClass.h */,
+				121D05791DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataClass.m */,
+				121D057A1DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataProperties.h */,
+				121D057B1DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataProperties.m */,
+				121D057C1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataClass.h */,
+				121D057D1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataClass.m */,
+				121D057E1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataProperties.h */,
+				121D057F1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataProperties.m */,
+				121D05801DB9197600FABD77 /* NCDBDgmppItem+CoreDataClass.h */,
+				121D05811DB9197600FABD77 /* NCDBDgmppItem+CoreDataClass.m */,
+				121D05821DB9197600FABD77 /* NCDBDgmppItem+CoreDataProperties.h */,
+				121D05831DB9197600FABD77 /* NCDBDgmppItem+CoreDataProperties.m */,
+				121D05841DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataClass.h */,
+				121D05851DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataClass.m */,
+				121D05861DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataProperties.h */,
+				121D05871DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataProperties.m */,
+				121D05881DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataClass.h */,
+				121D05891DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataClass.m */,
+				121D058A1DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataProperties.h */,
+				121D058B1DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataProperties.m */,
+				121D058C1DB9197600FABD77 /* NCDBWhType+CoreDataClass.h */,
+				121D058D1DB9197600FABD77 /* NCDBWhType+CoreDataClass.m */,
+				121D058E1DB9197600FABD77 /* NCDBWhType+CoreDataProperties.h */,
+				121D058F1DB9197600FABD77 /* NCDBWhType+CoreDataProperties.m */,
+				121D05901DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataClass.h */,
+				121D05911DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataClass.m */,
+				121D05921DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataProperties.h */,
+				121D05931DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataProperties.m */,
+				121D05941DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataClass.h */,
+				121D05951DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataClass.m */,
+				121D05961DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataProperties.h */,
+				121D05971DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataProperties.m */,
+				121D05981DB9197600FABD77 /* NCDBEveIconImage+CoreDataClass.h */,
+				121D05991DB9197600FABD77 /* NCDBEveIconImage+CoreDataClass.m */,
+				121D059A1DB9197600FABD77 /* NCDBEveIconImage+CoreDataProperties.h */,
+				121D059B1DB9197600FABD77 /* NCDBEveIconImage+CoreDataProperties.m */,
+				121D059C1DB9197600FABD77 /* NCDBEveUnit+CoreDataClass.h */,
+				121D059D1DB9197600FABD77 /* NCDBEveUnit+CoreDataClass.m */,
+				121D059E1DB9197600FABD77 /* NCDBEveUnit+CoreDataProperties.h */,
+				121D059F1DB9197600FABD77 /* NCDBEveUnit+CoreDataProperties.m */,
+				121D05A01DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataClass.h */,
+				121D05A11DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataClass.m */,
+				121D05A21DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataProperties.h */,
+				121D05A31DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataProperties.m */,
+				121D05A41DB9197600FABD77 /* NCDBStaStation+CoreDataClass.h */,
+				121D05A51DB9197600FABD77 /* NCDBStaStation+CoreDataClass.m */,
+				121D05A61DB9197600FABD77 /* NCDBStaStation+CoreDataProperties.h */,
+				121D05A71DB9197600FABD77 /* NCDBStaStation+CoreDataProperties.m */,
+				121D05A81DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataClass.h */,
+				121D05A91DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataClass.m */,
+				121D05AA1DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataProperties.h */,
+				121D05AB1DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataProperties.m */,
+				121D05AC1DB9197600FABD77 /* NCDBInvControlTower+CoreDataClass.h */,
+				121D05AD1DB9197600FABD77 /* NCDBInvControlTower+CoreDataClass.m */,
+				121D05AE1DB9197600FABD77 /* NCDBInvControlTower+CoreDataProperties.h */,
+				121D05AF1DB9197600FABD77 /* NCDBInvControlTower+CoreDataProperties.m */,
+				121D05B01DB9197600FABD77 /* NCDBMapDenormalize+CoreDataClass.h */,
+				121D05B11DB9197600FABD77 /* NCDBMapDenormalize+CoreDataClass.m */,
+				121D05B21DB9197600FABD77 /* NCDBMapDenormalize+CoreDataProperties.h */,
+				121D05B31DB9197600FABD77 /* NCDBMapDenormalize+CoreDataProperties.m */,
+				121D05B41DB9197600FABD77 /* NCDBMapRegion+CoreDataClass.h */,
+				121D05B51DB9197600FABD77 /* NCDBMapRegion+CoreDataClass.m */,
+				121D05B61DB9197600FABD77 /* NCDBMapRegion+CoreDataProperties.h */,
+				121D05B71DB9197600FABD77 /* NCDBMapRegion+CoreDataProperties.m */,
+				121D05B81DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataClass.h */,
+				121D05B91DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataClass.m */,
+				121D05BA1DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataProperties.h */,
+				121D05BB1DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataProperties.m */,
+				121D05BC1DB9197600FABD77 /* NCDBInvCategory+CoreDataClass.h */,
+				121D05BD1DB9197600FABD77 /* NCDBInvCategory+CoreDataClass.m */,
+				121D05BE1DB9197600FABD77 /* NCDBInvCategory+CoreDataProperties.h */,
+				121D05BF1DB9197600FABD77 /* NCDBInvCategory+CoreDataProperties.m */,
+				121D05051DB9194F00FABD77 /* NCDatabase.xcdatamodeld */,
+			);
+			name = NCDatabase;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -327,11 +833,12 @@
 				121D04341DB6AA1500FABD77 /* Sources */,
 				121D04351DB6AA1500FABD77 /* Frameworks */,
 				121D04361DB6AA1500FABD77 /* Resources */,
+				121D04E61DB7FD1000FABD77 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				121D04CE1DB6AE6400FABD77 /* PBXTargetDependency */,
+				121D04F61DB7FDD600FABD77 /* PBXTargetDependency */,
 			);
 			name = Develop;
 			productName = Develop;
@@ -367,8 +874,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 121D04C21DB6AE5200FABD77 /* Products */;
-					ProjectRef = 121D04C11DB6AE5200FABD77 /* EVEOnlineAPI.xcodeproj */;
+					ProductGroup = 121D04E81DB7FDC600FABD77 /* Products */;
+					ProjectRef = 121D04E71DB7FDC600FABD77 /* EVEOnlineAPI.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -379,25 +886,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		121D04C81DB6AE5200FABD77 /* EVEOnlineAPI.app */ = {
+		121D04EE1DB7FDC600FABD77 /* EVEOnlineAPI.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = EVEOnlineAPI.app;
-			remoteRef = 121D04C71DB6AE5200FABD77 /* PBXContainerItemProxy */;
+			remoteRef = 121D04ED1DB7FDC600FABD77 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		121D04CA1DB6AE5200FABD77 /* EVEAPI.framework */ = {
+		121D04F01DB7FDC600FABD77 /* EVEAPI.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = EVEAPI.framework;
-			remoteRef = 121D04C91DB6AE5200FABD77 /* PBXContainerItemProxy */;
+			remoteRef = 121D04EF1DB7FDC600FABD77 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		121D04CC1DB6AE5200FABD77 /* EVEAPI.framework */ = {
+		121D04F21DB7FDC600FABD77 /* EVEAPI.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = EVEAPI.framework;
-			remoteRef = 121D04CB1DB6AE5200FABD77 /* PBXContainerItemProxy */;
+			remoteRef = 121D04F11DB7FDC600FABD77 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -422,42 +929,139 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				121D06081DB9197600FABD77 /* NCDBEveIconImage+CoreDataClass.m in Sources */,
+				121D05EC1DB9197600FABD77 /* NCDBInvType+CoreDataClass.m in Sources */,
+				121D05CE1DB9197600FABD77 /* NCDBCertSkill+CoreDataClass.m in Sources */,
+				121D05CA1DB9197600FABD77 /* NCDBDgmEffect+CoreDataClass.m in Sources */,
 				121D04B41DB6ADE200FABD77 /* NCShoppingItem+CoreDataProperties.m in Sources */,
 				121D04A51DB6ADE200FABD77 /* NCShoppingGroup+CoreDataClass.m in Sources */,
+				121D060E1DB9197600FABD77 /* NCDBStaStation+CoreDataClass.m in Sources */,
+				121D05FE1DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataClass.m in Sources */,
+				121D05ED1DB9197600FABD77 /* NCDBInvType+CoreDataProperties.m in Sources */,
 				121D04AF1DB6ADE200FABD77 /* NCImplantSet+CoreDataClass.m in Sources */,
 				121D04A71DB6ADE200FABD77 /* NCSkillPlan+CoreDataClass.m in Sources */,
+				121D05DC1DB9197600FABD77 /* NCDBCertMastery+CoreDataClass.m in Sources */,
 				121D04661DB6AD4A00FABD77 /* NCCacheRecord+CoreDataClass.m in Sources */,
+				121D05C71DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataProperties.m in Sources */,
+				121D05F01DB9197600FABD77 /* NCDBChrRace+CoreDataClass.m in Sources */,
 				121D04AE1DB6ADE200FABD77 /* NCFitCharacter+CoreDataProperties.m in Sources */,
+				121D05D61DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataClass.m in Sources */,
+				121D05C51DB9197600FABD77 /* NCDBDgmppHullType+CoreDataProperties.m in Sources */,
 				121D04B21DB6ADE200FABD77 /* NCSetting+CoreDataProperties.m in Sources */,
 				121D04431DB6AA1500FABD77 /* ViewController.m in Sources */,
+				121D05DA1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataClass.m in Sources */,
 				121D04A91DB6ADE200FABD77 /* NCDamagePattern+CoreDataClass.m in Sources */,
+				121D05F41DB9197600FABD77 /* NCDBIndActivity+CoreDataClass.m in Sources */,
 				121D04BD1DB6ADE200FABD77 /* NCLoadout+CoreDataClass.m in Sources */,
 				121D04AA1DB6ADE200FABD77 /* NCDamagePattern+CoreDataProperties.m in Sources */,
 				121D04AB1DB6ADE200FABD77 /* NCAccount+CoreDataClass.m in Sources */,
+				121D05EE1DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataClass.m in Sources */,
+				121D05D71DB9197600FABD77 /* NCDBDgmppItemSpaceStructureResources+CoreDataProperties.m in Sources */,
+				121D05E51DB9197600FABD77 /* NCDBEveIcon+CoreDataProperties.m in Sources */,
+				121D06071DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataProperties.m in Sources */,
+				121D05E71DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataProperties.m in Sources */,
+				121D05C41DB9197600FABD77 /* NCDBDgmppHullType+CoreDataClass.m in Sources */,
+				121D05C81DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataClass.m in Sources */,
+				121D05D91DB9197600FABD77 /* NCDBCertCertificate+CoreDataProperties.m in Sources */,
+				121D060A1DB9197600FABD77 /* NCDBEveUnit+CoreDataClass.m in Sources */,
+				121D05E61DB9197600FABD77 /* NCDBInvControlTowerResource+CoreDataClass.m in Sources */,
+				121D06131DB9197600FABD77 /* NCDBInvControlTower+CoreDataProperties.m in Sources */,
+				121D05F81DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataClass.m in Sources */,
+				121D05F51DB9197600FABD77 /* NCDBIndActivity+CoreDataProperties.m in Sources */,
 				121D04BB1DB6ADE200FABD77 /* NCAPIKey+CoreDataClass.m in Sources */,
+				121D06061DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataClass.m in Sources */,
+				121D05FD1DB9197600FABD77 /* NCDBDgmppItem+CoreDataProperties.m in Sources */,
+				121D06031DB9197600FABD77 /* NCDBWhType+CoreDataProperties.m in Sources */,
+				121D061E1DB91B7200FABD77 /* NCDatabase.m in Sources */,
 				121D04401DB6AA1500FABD77 /* AppDelegate.m in Sources */,
 				121D04AD1DB6ADE200FABD77 /* NCFitCharacter+CoreDataClass.m in Sources */,
+				121D06101DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataClass.m in Sources */,
+				121D05FC1DB9197600FABD77 /* NCDBDgmppItem+CoreDataClass.m in Sources */,
 				121D04B81DB6ADE200FABD77 /* NCLoadoutData+CoreDataProperties.m in Sources */,
+				121D05DF1DB9197600FABD77 /* NCDBTxtDescription+CoreDataProperties.m in Sources */,
+				121D06191DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataProperties.m in Sources */,
+				121D06001DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataClass.m in Sources */,
+				121D06151DB9197600FABD77 /* NCDBMapDenormalize+CoreDataProperties.m in Sources */,
+				121D05031DB8FE0A00FABD77 /* NCDataManager.m in Sources */,
 				121D04B11DB6ADE200FABD77 /* NCSetting+CoreDataClass.m in Sources */,
+				121D05E21DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataClass.m in Sources */,
 				121D04A81DB6ADE200FABD77 /* NCSkillPlan+CoreDataProperties.m in Sources */,
+				121D05EB1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataProperties.m in Sources */,
 				121D04BE1DB6ADE200FABD77 /* NCLoadout+CoreDataProperties.m in Sources */,
+				121D061B1DB9197600FABD77 /* NCDBInvCategory+CoreDataProperties.m in Sources */,
+				121D05D81DB9197600FABD77 /* NCDBCertCertificate+CoreDataClass.m in Sources */,
+				121D06121DB9197600FABD77 /* NCDBInvControlTower+CoreDataClass.m in Sources */,
+				121D05F91DB9197600FABD77 /* NCDBInvControlTowerResourcePurpose+CoreDataProperties.m in Sources */,
+				121D05C31DB9197600FABD77 /* NCDBInvGroup+CoreDataProperties.m in Sources */,
 				121D04A61DB6ADE200FABD77 /* NCShoppingGroup+CoreDataProperties.m in Sources */,
+				121D05C61DB9197600FABD77 /* NCDBDgmAttributeType+CoreDataClass.m in Sources */,
+				121D05FB1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataProperties.m in Sources */,
 				121D04B01DB6ADE200FABD77 /* NCImplantSet+CoreDataProperties.m in Sources */,
+				121D05E31DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataProperties.m in Sources */,
+				121D05E11DB9197600FABD77 /* NCDBVersion+CoreDataProperties.m in Sources */,
+				121D05EF1DB9197600FABD77 /* NCDBCertMasteryLevel+CoreDataProperties.m in Sources */,
+				121D05F11DB9197600FABD77 /* NCDBChrRace+CoreDataProperties.m in Sources */,
+				121D05E41DB9197600FABD77 /* NCDBEveIcon+CoreDataClass.m in Sources */,
+				121D05DE1DB9197600FABD77 /* NCDBTxtDescription+CoreDataClass.m in Sources */,
 				121D04C01DB6ADE200FABD77 /* NCMailBox+CoreDataProperties.m in Sources */,
+				121D05EA1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataClass.m in Sources */,
+				121D05C11DB9197600FABD77 /* NCDBNpcGroup+CoreDataProperties.m in Sources */,
+				121D05CF1DB9197600FABD77 /* NCDBCertSkill+CoreDataProperties.m in Sources */,
+				121D05FA1DB9197600FABD77 /* NCDBIndBlueprintType+CoreDataClass.m in Sources */,
+				121D04FA1DB8A78200FABD77 /* NCStorage.m in Sources */,
 				121D04B61DB6ADE200FABD77 /* NCShoppingList+CoreDataProperties.m in Sources */,
+				121D06181DB9197600FABD77 /* NCDBDgmppItemGroup+CoreDataClass.m in Sources */,
 				121D04641DB6AD4A00FABD77 /* NCCacheRecordData+CoreDataClass.m in Sources */,
+				121D060C1DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataClass.m in Sources */,
+				121D05D21DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataClass.m in Sources */,
+				121D05CC1DB9197600FABD77 /* NCDBIndProduct+CoreDataClass.m in Sources */,
+				121D061A1DB9197600FABD77 /* NCDBInvCategory+CoreDataClass.m in Sources */,
+				121D060B1DB9197600FABD77 /* NCDBEveUnit+CoreDataProperties.m in Sources */,
+				121D05F71DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataProperties.m in Sources */,
 				121D04BC1DB6ADE200FABD77 /* NCAPIKey+CoreDataProperties.m in Sources */,
+				121D06021DB9197600FABD77 /* NCDBWhType+CoreDataClass.m in Sources */,
+				121D06051DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataProperties.m in Sources */,
+				121D05E81DB9197600FABD77 /* NCDBRamActivity+CoreDataClass.m in Sources */,
+				121D06041DB9197600FABD77 /* NCDBDgmppItemRequirements+CoreDataClass.m in Sources */,
+				121D04DD1DB7FBB600FABD77 /* NCCache.m in Sources */,
+				121D060F1DB9197600FABD77 /* NCDBStaStation+CoreDataProperties.m in Sources */,
+				121D05C91DB9197600FABD77 /* NCDBDgmppItemDamage+CoreDataProperties.m in Sources */,
+				121D05DD1DB9197600FABD77 /* NCDBCertMastery+CoreDataProperties.m in Sources */,
 				121D04671DB6AD4A00FABD77 /* NCCacheRecord+CoreDataProperties.m in Sources */,
+				121D05D41DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataClass.m in Sources */,
+				121D05071DB9194F00FABD77 /* NCDatabase.xcdatamodeld in Sources */,
 				121D04AC1DB6ADE200FABD77 /* NCAccount+CoreDataProperties.m in Sources */,
+				121D06011DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataProperties.m in Sources */,
+				121D05F61DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataClass.m in Sources */,
+				121D05D11DB9197600FABD77 /* NCDBMapConstellation+CoreDataProperties.m in Sources */,
+				121D05D01DB9197600FABD77 /* NCDBMapConstellation+CoreDataClass.m in Sources */,
+				121D05CD1DB9197600FABD77 /* NCDBIndProduct+CoreDataProperties.m in Sources */,
+				121D06171DB9197600FABD77 /* NCDBMapRegion+CoreDataProperties.m in Sources */,
+				121D06091DB9197600FABD77 /* NCDBEveIconImage+CoreDataProperties.m in Sources */,
 				121D04B91DB6ADE200FABD77 /* NCDronesSet+CoreDataClass.m in Sources */,
 				121D04BA1DB6ADE200FABD77 /* NCDronesSet+CoreDataProperties.m in Sources */,
+				121D06111DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataProperties.m in Sources */,
 				121D04B51DB6ADE200FABD77 /* NCShoppingList+CoreDataClass.m in Sources */,
 				121D04651DB6AD4A00FABD77 /* NCCacheRecordData+CoreDataProperties.m in Sources */,
+				121D05E91DB9197600FABD77 /* NCDBRamActivity+CoreDataProperties.m in Sources */,
+				121D05C21DB9197600FABD77 /* NCDBInvGroup+CoreDataClass.m in Sources */,
+				121D05FF1DB9197600FABD77 /* NCDBInvTypeRequiredSkill+CoreDataProperties.m in Sources */,
 				121D04631DB6AD4A00FABD77 /* NCCachePrice+CoreDataProperties.m in Sources */,
+				121D05F31DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataProperties.m in Sources */,
 				121D04B31DB6ADE200FABD77 /* NCShoppingItem+CoreDataClass.m in Sources */,
 				121D043D1DB6AA1500FABD77 /* main.m in Sources */,
+				121D05CB1DB9197600FABD77 /* NCDBDgmEffect+CoreDataProperties.m in Sources */,
+				121D05C01DB9197600FABD77 /* NCDBNpcGroup+CoreDataClass.m in Sources */,
+				121D06161DB9197600FABD77 /* NCDBMapRegion+CoreDataClass.m in Sources */,
+				121D05F21DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataClass.m in Sources */,
+				121D05D51DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataProperties.m in Sources */,
 				121D04BF1DB6ADE200FABD77 /* NCMailBox+CoreDataClass.m in Sources */,
+				121D05E01DB9197600FABD77 /* NCDBVersion+CoreDataClass.m in Sources */,
+				121D060D1DB9197600FABD77 /* NCDBDgmppItemCategory+CoreDataProperties.m in Sources */,
 				121D04621DB6AD4A00FABD77 /* NCCachePrice+CoreDataClass.m in Sources */,
+				121D06141DB9197600FABD77 /* NCDBMapDenormalize+CoreDataClass.m in Sources */,
+				121D05DB1DB9197600FABD77 /* NCDBIndRequiredSkill+CoreDataProperties.m in Sources */,
+				121D05D31DB9197600FABD77 /* NCDBMapSolarSystem+CoreDataProperties.m in Sources */,
 				121D04B71DB6ADE200FABD77 /* NCLoadoutData+CoreDataClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,10 +1069,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		121D04CE1DB6AE6400FABD77 /* PBXTargetDependency */ = {
+		121D04F61DB7FDD600FABD77 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "EVEAPI iOS";
-			targetProxy = 121D04CD1DB6AE6400FABD77 /* PBXContainerItemProxy */;
+			targetProxy = 121D04F51DB7FDD600FABD77 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -590,6 +1194,7 @@
 				INFOPLIST_FILE = Develop/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.Develop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -603,6 +1208,7 @@
 				INFOPLIST_FILE = Develop/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.Develop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -652,6 +1258,17 @@
 			name = NCStorage.xcdatamodeld;
 			path = ../../Neocom/NCStorage.xcdatamodeld;
 			sourceTree = "<group>";
+		};
+		121D05051DB9194F00FABD77 /* NCDatabase.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				121D05061DB9194F00FABD77 /* NCDatabase.xcdatamodel */,
+			);
+			currentVersion = 121D05061DB9194F00FABD77 /* NCDatabase.xcdatamodel */;
+			name = NCDatabase.xcdatamodeld;
+			path = ../../Neocom/db/NCDatabase.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
 		};
 /* End XCVersionGroup section */
 	};

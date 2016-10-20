@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "NCCache.h"
 
 @interface AppDelegate ()
 

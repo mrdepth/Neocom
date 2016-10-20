@@ -5,18 +5,19 @@
         <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="Record" representedClassName="NCCacheRecord" syncable="YES">
+        <attribute name="account" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="expireDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="recordID" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="key" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RecordData" inverseName="record" inverseEntity="RecordData" syncable="YES"/>
     </entity>
     <entity name="RecordData" representedClassName="NCCacheRecordData" syncable="YES">
-        <attribute name="data" optional="YES" attributeType="Binary" valueTransformerName="NCValueTransformer" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
         <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Record" inverseName="data" inverseEntity="Record" syncable="YES"/>
     </entity>
     <elements>
         <element name="Price" positionX="9" positionY="36" width="128" height="75"/>
-        <element name="Record" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="Record" positionX="0" positionY="0" width="128" height="120"/>
         <element name="RecordData" positionX="0" positionY="0" width="128" height="75"/>
     </elements>
 </model>

@@ -2,7 +2,7 @@
 //  NCAPIKey+CoreDataProperties.h
 //  Develop
 //
-//  Created by Artem Shimanski on 18.10.16.
+//  Created by Artem Shimanski on 20.10.16.
 //  Copyright © 2016 Artem Shimanski. All rights reserved.
 //
 
@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSFetchRequest<NCAPIKey *> *)fetchRequest;
 
-@property (nullable, nonatomic, retain) NSObject *apiKeyInfo;
+@property (nullable, nonatomic, retain) EVEAPIKeyInfo *apiKeyInfo;
 @property (nonatomic) int32_t keyID;
 @property (nullable, nonatomic, copy) NSString *vCode;
 @property (nullable, nonatomic, retain) NSSet<NCAccount *> *accounts;

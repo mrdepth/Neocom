@@ -2,7 +2,7 @@
 //  NCCacheRecord+CoreDataProperties.m
 //  Develop
 //
-//  Created by Artem Shimanski on 18.10.16.
+//  Created by Artem Shimanski on 20.10.16.
 //  Copyright © 2016 Artem Shimanski. All rights reserved.
 //
 
@@ -16,7 +16,8 @@
 
 @dynamic date;
 @dynamic expireDate;
-@dynamic recordID;
+@dynamic key;
+@dynamic account;
 @dynamic data;
 
 @end

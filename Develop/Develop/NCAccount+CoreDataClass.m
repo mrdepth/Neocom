@@ -10,6 +10,12 @@
 #import "NCAPIKey+CoreDataClass.h"
 #import "NCMailBox+CoreDataClass.h"
 #import "NCSkillPlan+CoreDataClass.h"
+@import EVEAPI;
+
 @implementation NCAccount
+
+- (EVEAPIKey*) eveAPIKey {
+	return [EVEAPIKey apiKeyWithKeyID:self.apiKey.keyID vCode:self.apiKey.vCode characterID:self.characterID corporate:self.apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation];
+}
 
 @end

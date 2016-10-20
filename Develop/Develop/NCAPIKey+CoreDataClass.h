@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCAccount, NSObject;
+@class NCAccount, NSObject, EVEAPIKeyInfo;
 
 NS_ASSUME_NONNULL_BEGIN
 

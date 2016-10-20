@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCAPIKey, NCMailBox, NCSkillPlan;
+@class NCAPIKey, NCMailBox, NCSkillPlan, EVEAPIKey;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NCAccount : NSManagedObject
-
+@property (readonly) EVEAPIKey* eveAPIKey;
 @end
 
 NS_ASSUME_NONNULL_END

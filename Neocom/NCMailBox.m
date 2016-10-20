@@ -198,7 +198,7 @@
 							_loadDispatchGroup = nil;
 						}
 					}
-				} progressBlock:nil];
+				}];
 			}];
 		}];
 	}
@@ -288,7 +288,7 @@
 																																	  dispatch_async(dispatch_get_main_queue(), ^{
 																																		  completionBlock(message.body, error);
 																																	  });
-																																  } progressBlock:nil];
+																																  }];
 				}];
 			}
 			else
@@ -431,7 +431,7 @@
 			}
 			if (progressBlock)
 				progressBlock(totalProgress.fractionCompleted);
-		} progressBlock:nil];
+		}];
 		
 		range.location += range.length;
 		range.length = allIDs.count - range.location;
@@ -450,7 +450,7 @@
 			if (progressBlock)
 				progressBlock(totalProgress.fractionCompleted);
 			dispatch_group_leave(finishDispatchGroup);
-		} progressBlock:nil];
+		}];
 	}
 	else {
 		totalProgress.completedUnitCount++;

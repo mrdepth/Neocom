@@ -155,7 +155,7 @@
 							dispatch_async(dispatch_get_main_queue(), ^{
 								completionBlock(results);
 							});
-						} progressBlock:nil];
+						}];
 					}
 					else {
 						dispatch_async(dispatch_get_main_queue(), ^{
@@ -217,7 +217,7 @@
 						completionBlock(conquerableStations);
 					});
 				}
-			} progressBlock:nil];
+			}];
 		}
 		else
 			dispatch_async(dispatch_get_main_queue(), ^{

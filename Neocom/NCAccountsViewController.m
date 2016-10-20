@@ -305,7 +305,7 @@
 					@synchronized(accountProgress) {
 						accountProgress.completedUnitCount++;
 					}
-				} progressBlock:nil];
+				}];
 				
 				if (corporate) {
 					dispatch_group_enter(partialFinishDispatchGroup);
@@ -315,7 +315,7 @@
 						@synchronized(accountProgress) {
 							accountProgress.completedUnitCount++;
 						}
-					} progressBlock:nil];
+					}];
 				}
 				else
 					@synchronized(accountProgress) {

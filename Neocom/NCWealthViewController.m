@@ -164,7 +164,7 @@
 			if (self.tableView.numberOfSections > 0)
 				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 
-		} progressBlock:nil];
+		}];
 		[api assetListWithCompletionBlock:^(EVEAssetList *result, NSError *error) {
 			data.assetsError = error;
 			NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
@@ -229,7 +229,7 @@
 					});
 				}
 			}];
-		} progressBlock:nil];
+		}];
 		[api industryJobsWithCompletionBlock:^(EVEIndustryJobs *result, NSError *error) {
 			data.industryError = error;
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -277,7 +277,7 @@
 					}
 				}
 			});
-		} progressBlock:nil];
+		}];
 		[api marketOrdersWithOrderID:0 completionBlock:^(EVEMarketOrders *result, NSError *error) {
 			data.marketError = error;
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -324,7 +324,7 @@
 						finalize();
 				}
 			});
-		} progressBlock:nil];
+		}];
 		[api contractsWithContractID:0 completionBlock:^(EVEContracts *result, NSError *error) {
 			data.contractsError = error;
 			double sum = 0;
@@ -344,7 +344,7 @@
 			}
 			if (self.tableView.numberOfSections > 0)
 				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-		} progressBlock:nil];
+		}];
 
 		[api blueprintsWithCompletionBlock:^(EVEBlueprints *result, NSError *error) {
 			data.blueprintsError = error;
@@ -432,7 +432,7 @@
 			}
 			if (self.tableView.numberOfSections > 0)
 				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-		} progressBlock:nil];
+		}];
 
 		
 		if (!corporate) {
@@ -477,7 +477,7 @@
 				}
 
 				
-			} progressBlock:nil];
+			}];
 		}
 		
 		dispatch_async(dispatch_get_main_queue(), ^{

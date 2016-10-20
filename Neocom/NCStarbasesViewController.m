@@ -231,7 +231,7 @@
 							}
 							dispatch_group_leave(finishDispatchGroup);
 
-						} progressBlock:nil];
+						}];
 						
 						[itemIDs addObject:@(starbase.itemID)];
 					}
@@ -270,7 +270,7 @@
 							dispatch_group_leave(finishDispatchGroup);
 						}];
 																				
-					} progressBlock:nil];
+					}];
 
 					dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{
 						data.sections = sections;
@@ -279,7 +279,7 @@
 						[self saveCacheData:data cacheDate:[NSDate date] expireDate:[result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]];
 						completionBlock(lastError);
 					});
-				} progressBlock:nil];
+				}];
 			}];
 		}];
 	}];
@@ -480,7 +480,7 @@
 						}];
 					}
 					completionBlock(sovereignty);
-				} progressBlock:nil];
+				}];
 				
 			}
 			else {

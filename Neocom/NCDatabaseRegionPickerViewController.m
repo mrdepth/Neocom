@@ -103,7 +103,7 @@
 
 		[self saveCacheData:conquerableStations cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:60*60*24*7]];
 		completionBlock(nil);
-	} progressBlock:nil];
+	}];
 }
 
 - (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {

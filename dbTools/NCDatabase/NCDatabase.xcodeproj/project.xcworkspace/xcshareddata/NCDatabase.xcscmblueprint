@@ -10,9 +10,9 @@
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "863436D1-F8A0-4AA1-9700-DB889B84C607",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "CBD3C72D1EC244FEC895CDE83582355773BC1B4F" : "EVEUniverse",
-    "CE59D664C95604646A8898B717A20F0AFC1A609F" : "EVEUniverseThirdParty\/eufe",
-    "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0" : "EVEUniverseThirdParty\/EVEOnlineAPI"
+    "CBD3C72D1EC244FEC895CDE83582355773BC1B4F" : "EVEUniverse\/",
+    "CE59D664C95604646A8898B717A20F0AFC1A609F" : "EVEUniverse\/ThirdParty\/dgmpp\/",
+    "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0" : "EVEUniverse\/ThirdParty\/EVEOnlineAPI\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "NCDatabase",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,

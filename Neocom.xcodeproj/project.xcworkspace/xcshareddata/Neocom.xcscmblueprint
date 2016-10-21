@@ -13,8 +13,8 @@
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D7A196DE-2887-4F10-BC7C-FD4A479DFF15",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195" : "EVEUniverse\/ThirdParty\/EVEOnlineAPI\/ThirdParty\/tools\/",
-    "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0" : "OSXNeocom\/ThirdParty\/EVEOnlineAPI\/",
+    "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195" : "EVEUniverse\/ThirdParty\/tools\/",
+    "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0" : "EVEUniverse\/ThirdParty\/EVEOnlineAPI\/",
     "DD20A1A48C66B5213E0FEBB87A95EF51D6C6F3E8" : "EVEUniverse\/ThirdParty\/EVEOnlineAPI\/ThirdParty\/AFNetworking\/",
     "BDDB80E32D86B8E2E7D04724D0619FC68FCBB3C1" : "EVEUniverse\/ThirdParty\/flurry-ios-sdk\/",
     "CE59D664C95604646A8898B717A20F0AFC1A609F" : "EVEUniverse\/ThirdParty\/dgmpp\/",

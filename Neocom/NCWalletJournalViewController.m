@@ -184,7 +184,7 @@
 				progress.completedUnitCount++;
 			}
 			dispatch_group_leave(finishDispatchGroup);
-		} progressBlock:nil];
+		}];
 
 		dispatch_group_enter(finishDispatchGroup);
 		[api refTypesWithCompletionBlock:^(EVERefTypes *result, NSError *error) {
@@ -198,7 +198,7 @@
 				progress.completedUnitCount++;
 			}
 			dispatch_group_leave(finishDispatchGroup);
-		} progressBlock:nil];
+		}];
 		
 		dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 			@autoreleasepool {
@@ -261,7 +261,7 @@
 									 walletProgress.completedUnitCount++;
 								 }
 								 dispatch_group_leave(finishDispatchGroup);
-							 } progressBlock:nil];
+							 }];
 						}
 						dispatch_group_leave(finishDispatchGroup);
 					}];
@@ -293,7 +293,7 @@
 						}
 						dispatch_group_leave(finishDispatchGroup);
 
-					} progressBlock:nil];
+					}];
 				}
 				
 				dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{

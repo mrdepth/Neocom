@@ -235,7 +235,7 @@
 							  @synchronized(progress) {
 								  progress.completedUnitCount++;
 							  }
-						  } progressBlock:nil];
+						  }];
 			}
 			else
 				@synchronized(progress) {
@@ -272,7 +272,7 @@
 					});
 				}
 			});
-		} progressBlock:nil];
+		}];
 	}];
 }
 

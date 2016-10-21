@@ -164,7 +164,7 @@
 				});
 			}
 		});
-	} progressBlock:nil];
+	}];
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {

@@ -185,7 +185,7 @@
 					jobs[@(item.jobID)] = item;
 			}
 			dispatch_group_leave(finishDispatchGroup);
-		} progressBlock:nil];
+		}];
 		
 		dispatch_group_enter(finishDispatchGroup);
 		[api industryJobsWithCompletionBlock:^(EVEIndustryJobs *result, NSError *error) {
@@ -199,7 +199,7 @@
 					jobs[@(item.jobID)] = item;
 			}
 			dispatch_group_leave(finishDispatchGroup);
-		} progressBlock:nil];
+		}];
 		
 		dispatch_group_notify(finishDispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 			@autoreleasepool {
@@ -264,7 +264,7 @@
 								  @synchronized(progress) {
 									  progress.completedUnitCount++;
 								  }
-							  } progressBlock:nil];
+							  }];
 				}
 				else
 					@synchronized(progress) {

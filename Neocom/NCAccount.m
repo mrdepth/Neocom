@@ -211,7 +211,7 @@ static NCAccount* currentAccount = nil;
 																																 }];
 																																 finalize(result, error);
 																															 }
-																															   progressBlock:nil];
+																															   ];
 				}];
 			}
 			else
@@ -255,8 +255,7 @@ static NCAccount* currentAccount = nil;
 								[cacheRecord cacheResult:result];
 							}];
 							finalize(result, error);
-						}
-																																		progressBlock:nil];
+						}];
 					}];
 				}
 				else
@@ -290,8 +289,7 @@ static NCAccount* currentAccount = nil;
 																																				  [[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:self userInfo:@{@"corporationSheet":result}];
 																																			  
 																																		  });
-																																	  }
-																																		progressBlock:nil];
+																																	  }];
 					}];
 				}
 				else {
@@ -328,8 +326,7 @@ static NCAccount* currentAccount = nil;
 									[[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:self userInfo:@{@"skillQueue":result}];
 								completionBlock(result, error);
 							});
-						}
-																																	progressBlock:nil];
+						}];
 					}];
 				}
 				else {
@@ -430,7 +427,7 @@ static NCAccount* currentAccount = nil;
 						lastError = error;
 					characterInfo = result;
 					dispatch_group_leave(finishDispatchGroup);
-				} progressBlock:nil];
+				}];
 			}
 			
 			if (accountType == NCAccountTypeCharacter) {
@@ -441,7 +438,7 @@ static NCAccount* currentAccount = nil;
 					[api characterSheetWithCompletionBlock:^(EVECharacterSheet *result, NSError *error) {
 						characterSheet = result;
 						dispatch_group_leave(finishDispatchGroup);
-					} progressBlock:nil];
+					}];
 				}
 				
 				NCCacheRecord* skillQueueCacheRecord = loadCacheRecord([NSString stringWithFormat:@"%@.skillQueue", uuid]);
@@ -451,7 +448,7 @@ static NCAccount* currentAccount = nil;
 					[api skillQueueWithCompletionBlock:^(EVESkillQueue *result, NSError *error) {
 						skillQueue = result;
 						dispatch_group_leave(finishDispatchGroup);
-					} progressBlock:nil];
+					}];
 				}
 			}
 			else {
@@ -462,7 +459,7 @@ static NCAccount* currentAccount = nil;
 					[api corporationSheetWithCorporationID:0 completionBlock:^(EVECorporationSheet *result, NSError *error) {
 						corporationSheet = result;
 						dispatch_group_leave(finishDispatchGroup);
-					} progressBlock:nil];
+					}];
 				}
 			}
 			

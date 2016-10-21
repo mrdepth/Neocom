@@ -12,6 +12,7 @@
 @implementation NCFittingSectionHiSlotHeaderView
 
 - (void) awakeFromNib {
+	[super awakeFromNib];
 	self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
 	self.backgroundView.backgroundColor = [UIColor appearanceTableViewHeaderViewBackgroundColor];
 	self.backgroundView.opaque = NO;

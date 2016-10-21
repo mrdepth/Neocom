@@ -16,6 +16,7 @@
 @implementation NCProgressLabel
 
 - (void) awakeFromNib {
+	[super awakeFromNib];
 	[super setBackgroundColor:[UIColor clearColor]];
 	self.progress = 0;
 }

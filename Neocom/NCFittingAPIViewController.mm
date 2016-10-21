@@ -417,7 +417,7 @@
 		self.error = error;
 		self.lookup = result;
 		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
-	} progressBlock:nil];
+	}];
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {
@@ -454,7 +454,7 @@
 		[[NeocomAPI new] uploadFitsWithCannonicalNames:cannonicalNames userID:userID completionBlock:^(NAPIUpload *result, NSError *error) {
 			if (!error)
 				[[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPINextSyncDateKey];
-		} progressBlock:nil];
+		}];
 
 	}];
 }

@@ -26,6 +26,7 @@
 }
 
 - (void) awakeFromNib {
+	[super awakeFromNib];
 	self.segments = [NSMutableArray new];
 	self.layer.borderColor = [[UIColor lightGrayColor] CGColor];
 	self.layer.borderWidth = 1.0;

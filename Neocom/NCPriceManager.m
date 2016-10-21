@@ -13,7 +13,7 @@
 
 @interface NCPriceManager()
 @property (nonatomic, strong) NSManagedObjectContext* cacheManagedObjectContext;
-@property (nonatomic, strong) AFHTTPRequestOperationManager* manager;
+@property (nonatomic, strong) AFHTTPSessionManager* sessionManager;
 @property (atomic, assign) BOOL updating;
 @property (assign, nonatomic) NSInteger triesLeft;
 @end
@@ -33,10 +33,10 @@
 	if (self = [super init]) {
 		AFHTTPRequestSerializer* requestSerializer = [AFHTTPRequestSerializer serializer];
 		[requestSerializer setValue:@"application/vnd.ccp.eve.Api-v1+json" forHTTPHeaderField:@"Accept"];
-		self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://crest-tq.eveonline.com"]];
-		self.manager.requestSerializer = requestSerializer;
-		self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
-		self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"*/*", @"application/vnd.ccp.eve.markettypepricecollection-v1+json", nil];
+		self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://crest-tq.eveonline.com"]];
+		self.sessionManager.requestSerializer = requestSerializer;
+		self.sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
+		self.sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"*/*", @"application/vnd.ccp.eve.markettypepricecollection-v1+json", nil];
 		self.cacheManagedObjectContext = [[NCCache sharedCache] createManagedObjectContext];
 		self.triesLeft = 5;
 		[self updateIfNeeded];
@@ -76,7 +76,7 @@
 		NCCacheRecord* cacheRecord = [self.cacheManagedObjectContext cacheRecordWithRecordID:@"NCPriceManager"];
 		NSDate* date = cacheRecord.expireDate;
 		if (!date || [date timeIntervalSinceNow] < 0) {
-			[self.manager GET:@"https://crest-tq.eveonline.com/market/prices/" parameters:nil success:^void(AFHTTPRequestOperation * operation, id dic) {
+			[self.sessionManager GET:@"https://crest-tq.eveonline.com/market/prices/" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable dic) {
 				if ([dic isKindOfClass:[NSDictionary class]]) {
 					[self.cacheManagedObjectContext performBlock:^{
 						NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Price"];
@@ -106,7 +106,7 @@
 					self.triesLeft--;
 					self.updating = NO;
 				}
-			} failure:^void(AFHTTPRequestOperation * operation, NSError * error) {
+			} failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
 				self.triesLeft--;
 				self.updating = NO;
 				[self performSelector:@selector(updateIfNeeded) withObject:0 afterDelay:10];

@@ -205,7 +205,7 @@
 				progress.completedUnitCount++;
 			}
 			dispatch_group_leave(finishDispatchGroup);
-		} progressBlock:nil];
+		}];
 		
 		NSMutableArray* bids = [NSMutableArray new];
 		__block NSDictionary* characterName;
@@ -239,7 +239,7 @@
 									  @synchronized(progress) {
 										  progress.completedUnitCount++;
 									  }
-								  } progressBlock:nil];
+								  }];
 					}
 					else
 						@synchronized(progress) {
@@ -394,7 +394,7 @@
 						}];
 					}
 					completionBlock(contractBids);
-				} progressBlock:nil];
+				}];
 			}
 			else {
 				completionBlock(contractBids);

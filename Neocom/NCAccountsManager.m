@@ -106,7 +106,7 @@ static NCAccountsManager* sharedManager = nil;
 		}
 		else
 			completionBlock(nil, error ?: result.eveapi.error);
-	} progressBlock:nil];
+	}];
 }
 
 - (void) removeAccount:(NCAccount*) account {
@@ -149,7 +149,7 @@ static NCAccountsManager* sharedManager = nil;
 					}
 					else
 						dispatch_group_leave(finishDispatchGroup);
-				} progressBlock:nil];
+				}];
 			}
 		}
 		

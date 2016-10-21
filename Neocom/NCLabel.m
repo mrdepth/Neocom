@@ -24,6 +24,7 @@
 @implementation NCLabel
 
 - (void) awakeFromNib {
+	[super awakeFromNib];
 	self.recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
 	self.recognizer.delegate = self;
 	[self addGestureRecognizer:self.recognizer];

@@ -14,6 +14,7 @@
 @implementation NCShoppingItemCell
 
 - (void) awakeFromNib {
+	[super awakeFromNib];
 	self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
 	self.backgroundView.backgroundColor = [UIColor clearColor];
 //	self.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:0 green:1 blue:0 alpha:0.1];

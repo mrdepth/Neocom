@@ -22,6 +22,7 @@
 @implementation NCNavigationCharacterButton
 
 - (void) awakeFromNib {
+	[super awakeFromNib];
 	self.taskManager = [NCTaskManager new];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:NCCurrentAccountDidChangeNotification object:nil];
 	self.account = [NCAccount currentAccount];

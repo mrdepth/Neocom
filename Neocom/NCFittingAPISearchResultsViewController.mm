@@ -94,7 +94,7 @@
 	[[[NeocomAPI alloc] initWithCachePolicy:cachePolicy] searchWithCriteria:self.criteria order:self.order completionBlock:^(NAPISearch *result, NSError *error) {
 		[self saveCacheData:result.loadouts cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:NCCacheDefaultExpireTime]];
 		completionBlock(error);
-	} progressBlock:nil];
+	}];
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {

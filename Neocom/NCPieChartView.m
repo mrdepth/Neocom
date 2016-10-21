@@ -152,6 +152,8 @@
 
 
 - (void) layoutSublayers {
+	if (![NSThread isMainThread])
+		return;
 	[super layoutSublayers];
 	[CATransaction begin];
 	[CATransaction setDisableActions:YES];
@@ -391,10 +393,6 @@
 
 + (Class) layerClass {
 	return [NCPieChartLayer class];
-}
-
-- (void) awakeFromNib {
-	
 }
 
 - (void) addSegment:(NCPieChartSegment*) segment animated:(BOOL) animated {

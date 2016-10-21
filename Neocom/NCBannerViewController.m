@@ -229,13 +229,12 @@
 				self.adBannerView = nil;
 				[self updateFrame];
 				[Appodeal hideBanner];
-				[Appodeal deinitialize];
 			}
 		}
 		else {
 			if (!self.adBannerView) {
 				if (![Appodeal isInitalized]) {
-					[Appodeal disableLocationPermissionCheck];
+					[Appodeal setLocationTracking:NO];
 					[Appodeal initializeWithApiKey:@"57860daf6ce06befbe69f379152ed16e392a6ebb4160fe4d" types: (AppodealAdType)(AppodealAdTypeBanner)];
 				}
 				self.adBannerView = [[AppodealBannerView alloc] initWithSize:kAppodealUnitSize_320x50 rootViewController:self];

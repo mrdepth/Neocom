@@ -15,15 +15,16 @@
 
 @end
 
+static NCDatabase* sharedDatabase;
+
 @implementation NCDatabase
 
 + (instancetype) sharedDatabase {
-	static NCDatabase* database;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		database = [NCDatabase new];
-	});
-	return database;
+	return sharedDatabase;
+}
+
++ (void) setSharedDatabase:(NCDatabase *)database {
+	sharedDatabase = database;
 }
 
 - (void)loadWithCompletionHandler:(void (^)(NSError* error))block {
@@ -59,8 +60,15 @@
 	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	[context performBlock:^{
 		block(context);
-		if ([context hasChanges])
-			[context save:nil];
+	}];
+}
+
+- (void)performTaskAndWait:(void (^)(NSManagedObjectContext* managedObjectContext))block {
+	NSManagedObjectContext* context = [[NSManagedObjectContext alloc] initWithConcurrencyType:[NSThread isMainThread] ? NSMainQueueConcurrencyType : NSPrivateQueueConcurrencyType];
+	context.persistentStoreCoordinator = self.persistentStoreCoordinator;
+	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+	[context performBlockAndWait:^{
+		block(context);
 	}];
 }
 

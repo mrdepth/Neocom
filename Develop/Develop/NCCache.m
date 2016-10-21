@@ -16,15 +16,16 @@
 
 @end
 
+static NCCache* sharedCache;
+
 @implementation NCCache
 
 + (instancetype) sharedCache {
-	static NCCache* cache;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		cache = [self new];
-	});
-	return cache;
+	return sharedCache;
+}
+
++ (void) setSharedCache:(NCCache*) cache {
+	sharedCache = cache;
 }
 
 - (id) init {

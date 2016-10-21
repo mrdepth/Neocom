@@ -13,14 +13,12 @@
 		121D04461DB6AA1500FABD77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 121D04441DB6AA1500FABD77 /* Main.storyboard */; };
 		121D04481DB6AA1500FABD77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 121D04471DB6AA1500FABD77 /* Assets.xcassets */; };
 		121D044B1DB6AA1500FABD77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 121D04491DB6AA1500FABD77 /* LaunchScreen.storyboard */; };
-		121D04551DB6AA6700FABD77 /* NCCache.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 121D04541DB6AA6700FABD77 /* NCCache.xcdatamodeld */; };
 		121D04621DB6AD4A00FABD77 /* NCCachePrice+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D04571DB6AD4A00FABD77 /* NCCachePrice+CoreDataClass.m */; };
 		121D04631DB6AD4A00FABD77 /* NCCachePrice+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D04591DB6AD4A00FABD77 /* NCCachePrice+CoreDataProperties.m */; };
 		121D04641DB6AD4A00FABD77 /* NCCacheRecordData+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D045B1DB6AD4A00FABD77 /* NCCacheRecordData+CoreDataClass.m */; };
 		121D04651DB6AD4A00FABD77 /* NCCacheRecordData+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D045D1DB6AD4A00FABD77 /* NCCacheRecordData+CoreDataProperties.m */; };
 		121D04661DB6AD4A00FABD77 /* NCCacheRecord+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D045F1DB6AD4A00FABD77 /* NCCacheRecord+CoreDataClass.m */; };
 		121D04671DB6AD4A00FABD77 /* NCCacheRecord+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D04611DB6AD4A00FABD77 /* NCCacheRecord+CoreDataProperties.m */; };
-		121D046C1DB6ADA600FABD77 /* NCStorage.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 121D046B1DB6ADA600FABD77 /* NCStorage.xcdatamodeld */; };
 		121D04A51DB6ADE200FABD77 /* NCShoppingGroup+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D046E1DB6ADE100FABD77 /* NCShoppingGroup+CoreDataClass.m */; };
 		121D04A61DB6ADE200FABD77 /* NCShoppingGroup+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D04701DB6ADE100FABD77 /* NCShoppingGroup+CoreDataProperties.m */; };
 		121D04A71DB6ADE200FABD77 /* NCSkillPlan+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D04721DB6ADE100FABD77 /* NCSkillPlan+CoreDataClass.m */; };
@@ -54,7 +52,6 @@
 		121D04F41DB7FDD600FABD77 /* EVEAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 121D04F01DB7FDC600FABD77 /* EVEAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		121D04FA1DB8A78200FABD77 /* NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D04F91DB8A78200FABD77 /* NCStorage.m */; };
 		121D05031DB8FE0A00FABD77 /* NCDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05021DB8FE0A00FABD77 /* NCDataManager.m */; };
-		121D05071DB9194F00FABD77 /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 121D05051DB9194F00FABD77 /* NCDatabase.xcdatamodeld */; };
 		121D05C01DB9197600FABD77 /* NCDBNpcGroup+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05091DB9197600FABD77 /* NCDBNpcGroup+CoreDataClass.m */; };
 		121D05C11DB9197600FABD77 /* NCDBNpcGroup+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D050B1DB9197600FABD77 /* NCDBNpcGroup+CoreDataProperties.m */; };
 		121D05C21DB9197600FABD77 /* NCDBInvGroup+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D050D1DB9197600FABD77 /* NCDBInvGroup+CoreDataClass.m */; };
@@ -148,6 +145,11 @@
 		121D061A1DB9197600FABD77 /* NCDBInvCategory+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05BD1DB9197600FABD77 /* NCDBInvCategory+CoreDataClass.m */; };
 		121D061B1DB9197600FABD77 /* NCDBInvCategory+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D05BF1DB9197600FABD77 /* NCDBInvCategory+CoreDataProperties.m */; };
 		121D061E1DB91B7200FABD77 /* NCDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 121D061D1DB91B7200FABD77 /* NCDatabase.m */; };
+		12BAE8201DBA4CB000A08C8D /* NCCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12BAE8191DBA4CB000A08C8D /* NCCache.xcdatamodeld */; };
+		12BAE8211DBA4CB000A08C8D /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12BAE81B1DBA4CB000A08C8D /* NCDatabase.xcdatamodeld */; };
+		12BAE8221DBA4CB000A08C8D /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12BAE81D1DBA4CB000A08C8D /* NCStorage.xcdatamodeld */; };
+		12BAE8271DBA5CD200A08C8D /* NCCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BAE8261DBA5CD200A08C8D /* NCCharacter.m */; };
+		12BAE82A1DBA659200A08C8D /* NCCharacterAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12BAE8291DBA659200A08C8D /* NCCharacterAttributes.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -206,7 +208,6 @@
 		121D04471DB6AA1500FABD77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		121D044A1DB6AA1500FABD77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		121D044C1DB6AA1500FABD77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		121D04531DB6AA6700FABD77 /* NCCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCCache.xcdatamodel; sourceTree = "<group>"; };
 		121D04561DB6AD4A00FABD77 /* NCCachePrice+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCCachePrice+CoreDataClass.h"; sourceTree = "<group>"; };
 		121D04571DB6AD4A00FABD77 /* NCCachePrice+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCCachePrice+CoreDataClass.m"; sourceTree = "<group>"; };
 		121D04581DB6AD4A00FABD77 /* NCCachePrice+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCCachePrice+CoreDataProperties.h"; sourceTree = "<group>"; };
@@ -219,8 +220,6 @@
 		121D045F1DB6AD4A00FABD77 /* NCCacheRecord+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCCacheRecord+CoreDataClass.m"; sourceTree = "<group>"; };
 		121D04601DB6AD4A00FABD77 /* NCCacheRecord+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCCacheRecord+CoreDataProperties.h"; sourceTree = "<group>"; };
 		121D04611DB6AD4A00FABD77 /* NCCacheRecord+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCCacheRecord+CoreDataProperties.m"; sourceTree = "<group>"; };
-		121D04691DB6ADA600FABD77 /* NCStorage 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NCStorage 2.xcdatamodel"; sourceTree = "<group>"; };
-		121D046A1DB6ADA600FABD77 /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
 		121D046D1DB6ADE100FABD77 /* NCShoppingGroup+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCShoppingGroup+CoreDataClass.h"; sourceTree = "<group>"; };
 		121D046E1DB6ADE100FABD77 /* NCShoppingGroup+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCShoppingGroup+CoreDataClass.m"; sourceTree = "<group>"; };
 		121D046F1DB6ADE100FABD77 /* NCShoppingGroup+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCShoppingGroup+CoreDataProperties.h"; sourceTree = "<group>"; };
@@ -284,7 +283,6 @@
 		121D04F91DB8A78200FABD77 /* NCStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStorage.m; sourceTree = "<group>"; };
 		121D05011DB8FE0A00FABD77 /* NCDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDataManager.h; sourceTree = "<group>"; };
 		121D05021DB8FE0A00FABD77 /* NCDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDataManager.m; sourceTree = "<group>"; };
-		121D05061DB9194F00FABD77 /* NCDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCDatabase.xcdatamodel; sourceTree = "<group>"; };
 		121D05081DB9197600FABD77 /* NCDBNpcGroup+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBNpcGroup+CoreDataClass.h"; sourceTree = "<group>"; };
 		121D05091DB9197600FABD77 /* NCDBNpcGroup+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBNpcGroup+CoreDataClass.m"; sourceTree = "<group>"; };
 		121D050A1DB9197600FABD77 /* NCDBNpcGroup+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBNpcGroup+CoreDataProperties.h"; sourceTree = "<group>"; };
@@ -471,6 +469,14 @@
 		121D05BF1DB9197600FABD77 /* NCDBInvCategory+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBInvCategory+CoreDataProperties.m"; sourceTree = "<group>"; };
 		121D061C1DB91B7200FABD77 /* NCDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabase.h; sourceTree = "<group>"; };
 		121D061D1DB91B7200FABD77 /* NCDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabase.m; sourceTree = "<group>"; };
+		12BAE81A1DBA4CB000A08C8D /* NCCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCCache.xcdatamodel; sourceTree = "<group>"; };
+		12BAE81C1DBA4CB000A08C8D /* NCDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCDatabase.xcdatamodel; sourceTree = "<group>"; };
+		12BAE81E1DBA4CB000A08C8D /* NCStorage 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NCStorage 2.xcdatamodel"; sourceTree = "<group>"; };
+		12BAE81F1DBA4CB000A08C8D /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
+		12BAE8251DBA5CD200A08C8D /* NCCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacter.h; sourceTree = "<group>"; };
+		12BAE8261DBA5CD200A08C8D /* NCCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCharacter.m; sourceTree = "<group>"; };
+		12BAE8281DBA659200A08C8D /* NCCharacterAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterAttributes.h; sourceTree = "<group>"; };
+		12BAE8291DBA659200A08C8D /* NCCharacterAttributes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCCharacterAttributes.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -505,17 +511,13 @@
 		121D043A1DB6AA1500FABD77 /* Develop */ = {
 			isa = PBXGroup;
 			children = (
+				12BAE8241DBA5CB700A08C8D /* Utility */,
 				121D05041DB9194200FABD77 /* NCDatabase */,
 				121D04681DB6AD9800FABD77 /* NCStorage */,
 				121D04521DB6AA5F00FABD77 /* NCCache */,
-				121D04DB1DB7FBB600FABD77 /* NCCache.h */,
-				121D04DC1DB7FBB600FABD77 /* NCCache.m */,
-				121D04F81DB8A78200FABD77 /* NCStorage.h */,
-				121D04F91DB8A78200FABD77 /* NCStorage.m */,
-				121D061C1DB91B7200FABD77 /* NCDatabase.h */,
-				121D061D1DB91B7200FABD77 /* NCDatabase.m */,
-				121D05011DB8FE0A00FABD77 /* NCDataManager.h */,
-				121D05021DB8FE0A00FABD77 /* NCDataManager.m */,
+				12BAE8191DBA4CB000A08C8D /* NCCache.xcdatamodeld */,
+				12BAE81B1DBA4CB000A08C8D /* NCDatabase.xcdatamodeld */,
+				12BAE81D1DBA4CB000A08C8D /* NCStorage.xcdatamodeld */,
 				121D043E1DB6AA1500FABD77 /* AppDelegate.h */,
 				121D043F1DB6AA1500FABD77 /* AppDelegate.m */,
 				121D04411DB6AA1500FABD77 /* ViewController.h */,
@@ -552,7 +554,6 @@
 				121D045F1DB6AD4A00FABD77 /* NCCacheRecord+CoreDataClass.m */,
 				121D04601DB6AD4A00FABD77 /* NCCacheRecord+CoreDataProperties.h */,
 				121D04611DB6AD4A00FABD77 /* NCCacheRecord+CoreDataProperties.m */,
-				121D04541DB6AA6700FABD77 /* NCCache.xcdatamodeld */,
 			);
 			name = NCCache;
 			sourceTree = "<group>";
@@ -616,7 +617,6 @@
 				121D04A21DB6ADE200FABD77 /* NCMailBox+CoreDataClass.m */,
 				121D04A31DB6ADE200FABD77 /* NCMailBox+CoreDataProperties.h */,
 				121D04A41DB6ADE200FABD77 /* NCMailBox+CoreDataProperties.m */,
-				121D046B1DB6ADA600FABD77 /* NCStorage.xcdatamodeld */,
 			);
 			name = NCStorage;
 			sourceTree = "<group>";
@@ -818,9 +818,27 @@
 				121D05BD1DB9197600FABD77 /* NCDBInvCategory+CoreDataClass.m */,
 				121D05BE1DB9197600FABD77 /* NCDBInvCategory+CoreDataProperties.h */,
 				121D05BF1DB9197600FABD77 /* NCDBInvCategory+CoreDataProperties.m */,
-				121D05051DB9194F00FABD77 /* NCDatabase.xcdatamodeld */,
 			);
 			name = NCDatabase;
+			sourceTree = "<group>";
+		};
+		12BAE8241DBA5CB700A08C8D /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				121D04DB1DB7FBB600FABD77 /* NCCache.h */,
+				121D04DC1DB7FBB600FABD77 /* NCCache.m */,
+				121D04F81DB8A78200FABD77 /* NCStorage.h */,
+				121D04F91DB8A78200FABD77 /* NCStorage.m */,
+				121D061C1DB91B7200FABD77 /* NCDatabase.h */,
+				121D061D1DB91B7200FABD77 /* NCDatabase.m */,
+				121D05011DB8FE0A00FABD77 /* NCDataManager.h */,
+				121D05021DB8FE0A00FABD77 /* NCDataManager.m */,
+				12BAE8251DBA5CD200A08C8D /* NCCharacter.h */,
+				12BAE8261DBA5CD200A08C8D /* NCCharacter.m */,
+				12BAE8281DBA659200A08C8D /* NCCharacterAttributes.h */,
+				12BAE8291DBA659200A08C8D /* NCCharacterAttributes.mm */,
+			);
+			name = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -915,8 +933,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				121D044B1DB6AA1500FABD77 /* LaunchScreen.storyboard in Resources */,
-				121D04551DB6AA6700FABD77 /* NCCache.xcdatamodeld in Resources */,
-				121D046C1DB6ADA600FABD77 /* NCStorage.xcdatamodeld in Resources */,
 				121D04481DB6AA1500FABD77 /* Assets.xcassets in Resources */,
 				121D04461DB6AA1500FABD77 /* Main.storyboard in Resources */,
 			);
@@ -932,6 +948,7 @@
 				121D06081DB9197600FABD77 /* NCDBEveIconImage+CoreDataClass.m in Sources */,
 				121D05EC1DB9197600FABD77 /* NCDBInvType+CoreDataClass.m in Sources */,
 				121D05CE1DB9197600FABD77 /* NCDBCertSkill+CoreDataClass.m in Sources */,
+				12BAE8201DBA4CB000A08C8D /* NCCache.xcdatamodeld in Sources */,
 				121D05CA1DB9197600FABD77 /* NCDBDgmEffect+CoreDataClass.m in Sources */,
 				121D04B41DB6ADE200FABD77 /* NCShoppingItem+CoreDataProperties.m in Sources */,
 				121D04A51DB6ADE200FABD77 /* NCShoppingGroup+CoreDataClass.m in Sources */,
@@ -972,6 +989,7 @@
 				121D06061DB9197600FABD77 /* NCDBRamInstallationTypeContent+CoreDataClass.m in Sources */,
 				121D05FD1DB9197600FABD77 /* NCDBDgmppItem+CoreDataProperties.m in Sources */,
 				121D06031DB9197600FABD77 /* NCDBWhType+CoreDataProperties.m in Sources */,
+				12BAE8221DBA4CB000A08C8D /* NCStorage.xcdatamodeld in Sources */,
 				121D061E1DB91B7200FABD77 /* NCDatabase.m in Sources */,
 				121D04401DB6AA1500FABD77 /* AppDelegate.m in Sources */,
 				121D04AD1DB6ADE200FABD77 /* NCFitCharacter+CoreDataClass.m in Sources */,
@@ -985,6 +1003,7 @@
 				121D05031DB8FE0A00FABD77 /* NCDataManager.m in Sources */,
 				121D04B11DB6ADE200FABD77 /* NCSetting+CoreDataClass.m in Sources */,
 				121D05E21DB9197600FABD77 /* NCDBDgmppItemShipResources+CoreDataClass.m in Sources */,
+				12BAE8211DBA4CB000A08C8D /* NCDatabase.xcdatamodeld in Sources */,
 				121D04A81DB6ADE200FABD77 /* NCSkillPlan+CoreDataProperties.m in Sources */,
 				121D05EB1DB9197600FABD77 /* NCDBInvMetaGroup+CoreDataProperties.m in Sources */,
 				121D04BE1DB6ADE200FABD77 /* NCLoadout+CoreDataProperties.m in Sources */,
@@ -1029,7 +1048,6 @@
 				121D05DD1DB9197600FABD77 /* NCDBCertMastery+CoreDataProperties.m in Sources */,
 				121D04671DB6AD4A00FABD77 /* NCCacheRecord+CoreDataProperties.m in Sources */,
 				121D05D41DB9197600FABD77 /* NCDBInvMarketGroup+CoreDataClass.m in Sources */,
-				121D05071DB9194F00FABD77 /* NCDatabase.xcdatamodeld in Sources */,
 				121D04AC1DB6ADE200FABD77 /* NCAccount+CoreDataProperties.m in Sources */,
 				121D06011DB9197600FABD77 /* NCDBRamAssemblyLineType+CoreDataProperties.m in Sources */,
 				121D05F61DB9197600FABD77 /* NCDBIndRequiredMaterial+CoreDataClass.m in Sources */,
@@ -1042,6 +1060,7 @@
 				121D04BA1DB6ADE200FABD77 /* NCDronesSet+CoreDataProperties.m in Sources */,
 				121D06111DB9197600FABD77 /* NCDBDgmAttributeCategory+CoreDataProperties.m in Sources */,
 				121D04B51DB6ADE200FABD77 /* NCShoppingList+CoreDataClass.m in Sources */,
+				12BAE82A1DBA659200A08C8D /* NCCharacterAttributes.mm in Sources */,
 				121D04651DB6AD4A00FABD77 /* NCCacheRecordData+CoreDataProperties.m in Sources */,
 				121D05E91DB9197600FABD77 /* NCDBRamActivity+CoreDataProperties.m in Sources */,
 				121D05C21DB9197600FABD77 /* NCDBInvGroup+CoreDataClass.m in Sources */,
@@ -1049,6 +1068,7 @@
 				121D04631DB6AD4A00FABD77 /* NCCachePrice+CoreDataProperties.m in Sources */,
 				121D05F31DB9197600FABD77 /* NCDBDgmTypeAttribute+CoreDataProperties.m in Sources */,
 				121D04B31DB6ADE200FABD77 /* NCShoppingItem+CoreDataClass.m in Sources */,
+				12BAE8271DBA5CD200A08C8D /* NCCharacter.m in Sources */,
 				121D043D1DB6AA1500FABD77 /* main.m in Sources */,
 				121D05CB1DB9197600FABD77 /* NCDBDgmEffect+CoreDataProperties.m in Sources */,
 				121D05C01DB9197600FABD77 /* NCDBNpcGroup+CoreDataClass.m in Sources */,
@@ -1238,35 +1258,37 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		121D04541DB6AA6700FABD77 /* NCCache.xcdatamodeld */ = {
+		12BAE8191DBA4CB000A08C8D /* NCCache.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				121D04531DB6AA6700FABD77 /* NCCache.xcdatamodel */,
+				12BAE81A1DBA4CB000A08C8D /* NCCache.xcdatamodel */,
 			);
-			currentVersion = 121D04531DB6AA6700FABD77 /* NCCache.xcdatamodel */;
+			currentVersion = 12BAE81A1DBA4CB000A08C8D /* NCCache.xcdatamodel */;
 			name = NCCache.xcdatamodeld;
 			path = ../../Neocom/NCCache.xcdatamodeld;
 			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
 		};
-		121D046B1DB6ADA600FABD77 /* NCStorage.xcdatamodeld */ = {
+		12BAE81B1DBA4CB000A08C8D /* NCDatabase.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				121D04691DB6ADA600FABD77 /* NCStorage 2.xcdatamodel */,
-				121D046A1DB6ADA600FABD77 /* NCStorage.xcdatamodel */,
+				12BAE81C1DBA4CB000A08C8D /* NCDatabase.xcdatamodel */,
 			);
-			currentVersion = 121D04691DB6ADA600FABD77 /* NCStorage 2.xcdatamodel */;
-			name = NCStorage.xcdatamodeld;
-			path = ../../Neocom/NCStorage.xcdatamodeld;
-			sourceTree = "<group>";
-		};
-		121D05051DB9194F00FABD77 /* NCDatabase.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				121D05061DB9194F00FABD77 /* NCDatabase.xcdatamodel */,
-			);
-			currentVersion = 121D05061DB9194F00FABD77 /* NCDatabase.xcdatamodel */;
+			currentVersion = 12BAE81C1DBA4CB000A08C8D /* NCDatabase.xcdatamodel */;
 			name = NCDatabase.xcdatamodeld;
 			path = ../../Neocom/db/NCDatabase.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		12BAE81D1DBA4CB000A08C8D /* NCStorage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				12BAE81E1DBA4CB000A08C8D /* NCStorage 2.xcdatamodel */,
+				12BAE81F1DBA4CB000A08C8D /* NCStorage.xcdatamodel */,
+			);
+			currentVersion = 12BAE81E1DBA4CB000A08C8D /* NCStorage 2.xcdatamodel */;
+			name = NCStorage.xcdatamodeld;
+			path = ../../Neocom/NCStorage.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

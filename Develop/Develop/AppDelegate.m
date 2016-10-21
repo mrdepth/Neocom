@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "NCCache.h"
+#import "NCDataManager.h"
+#import "NCDatabase.h"
 
 @interface AppDelegate ()
 
@@ -17,8 +19,51 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	// Override point for customization after application launch.
+	dispatch_group_t dispatchGroup = dispatch_group_create();
+	
+	dispatch_group_enter(dispatchGroup);
+	NCCache* cache = [NCCache new];
+	[cache loadWithCompletionHandler:^(NSError *error) {
+		NCCache.sharedCache = cache;
+		dispatch_group_leave(dispatchGroup);
+	}];
+
+//	dispatch_group_enter(dispatchGroup);
+//	NCDatabase* database = [NCDatabase new];
+//	[database loadWithCompletionHandler:^(NSError *error) {
+//		NCDatabase.sharedDatabase = database;
+//		dispatch_group_leave(dispatchGroup);
+//	}];
+
+	dispatch_group_enter(dispatchGroup);
+	NCStorage* storage = [NCStorage localStorage];
+	[storage loadWithCompletionHandler:^(NSError *error) {
+		NCStorage.sharedStorage = storage;
+		dispatch_group_leave(dispatchGroup);
+	}];
+
+	dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^ {
+		
+		/*[[NCDataManager new] addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" completionBlock:^(NSArray<NSManagedObjectID *> *accounts, NSError *error) {
+			id result = [NCStorage.sharedStorage.viewContext objectWithID:accounts[0]];
+			NSLog(@"%@", result);
+		}];*/
+		NCAccount* account = [[NCStorage.sharedStorage.viewContext executeFetchRequest:[NSFetchRequest fetchRequestWithEntityName:@"Account"] error:nil] lastObject];
+		NSProgress* progress = [NSProgress progressWithTotalUnitCount:1];
+		[progress addObserver:self forKeyPath:@"fractionCompleted" options:0 context:nil];
+		[progress becomeCurrentWithPendingUnitCount:1];
+		[[NCDataManager new] characterSheetForAccount:account cachePolicy:NSURLRequestReloadIgnoringCacheData completionHandler:^(EVECharacterSheet *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			NSLog(@"%@", [NCCache.sharedCache.viewContext objectWithID:cacheRecordID]);
+			NSLog(@"%@", progress);
+		}];
+		[progress resignCurrent];
+	});
+	
 	return YES;
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+	NSLog(@"%@", object);
 }
 
 

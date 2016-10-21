@@ -18,15 +18,11 @@ static NCStorage* sharedStorage;
 @implementation NCStorage
 
 + (instancetype) sharedStorage {
-	@synchronized (self) {
-		return sharedStorage;
-	}
+	return sharedStorage;
 }
 
 + (void) setSharedStorage:(NCStorage*) storage {
-	@synchronized (self) {
-		sharedStorage = storage;
-	}
+	sharedStorage = storage;
 }
 
 + (instancetype) cloudStorage {

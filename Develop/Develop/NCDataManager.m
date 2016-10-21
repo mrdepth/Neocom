@@ -70,7 +70,7 @@
 	}];
 }
 
-- (void) characterSheetForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(NCCacheRecord<EVECharacterSheet*>* record, NSError* error)) block {
+- (void) characterSheetForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVECharacterSheet* result, NSError* error, NSManagedObjectID* cacheRecordID)) block {
 	[self loadFromCacheForKey:@"EVECharacterSheet" account:account.uuid cachePolicy:cachePolicy completionHandler:block elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
 		EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
 		[api characterSheetWithCompletionBlock:^(EVECharacterSheet *result, NSError *error) {
@@ -79,7 +79,7 @@
 	}];
 }
 
-- (void) skillQueueForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(NCCacheRecord<EVESkillQueue*>* record, NSError* error)) block {
+- (void) skillQueueForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVESkillQueue* result, NSError* error, NSManagedObjectID* cacheRecordID)) block {
 	[self loadFromCacheForKey:@"EVESkillQueue" account:account.uuid cachePolicy:cachePolicy completionHandler:block elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
 		EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
 		[api skillQueueWithCompletionBlock:^(EVESkillQueue *result, NSError *error) {
@@ -90,59 +90,91 @@
 
 #pragma mark - Private
 
-- (void) loadFromCacheForKey:(NSString*) key account:(NSString*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(NCCacheRecord* record, NSError* error)) block elseLoad:(void(^)(void(^finish)(id object, NSError* error, NSDate* date, NSDate* expireDate))) loader {
+- (void) loadFromCacheForKey:(NSString*) key account:(NSString*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(id result, NSError* error, NSManagedObjectID* cacheRecordID)) block elseLoad:(void(^)(void(^finish)(id object, NSError* error, NSDate* date, NSDate* expireDate))) loader {
 	NCCache* cache = [NCCache sharedCache];
+
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:1];
+	
 	switch (cachePolicy) {
 		case NSURLRequestReloadIgnoringLocalCacheData: {
+			[progress becomeCurrentWithPendingUnitCount:1];
 			loader(^(id object, NSError* error, NSDate* date, NSDate* expireDate) {
 				if (object)
 					[cache storeObject:object forKey:key account:account date:date expireDate:expireDate completionHandler:^(NSManagedObjectID *objectID) {
-						block([cache.viewContext objectWithID:objectID], error);
+						block(object, error, objectID);
 					}];
 				else
-					block(nil, error);
+					block(nil, error, nil);
 			});
+			[progress resignCurrent];
 			break;
 		}
 		case NSURLRequestReturnCacheDataElseLoad: {
-			NCCacheRecord* record = [[cache.viewContext executeFetchRequest:[NCCacheRecord fetchRequestForKey:key account:account] error:nil] lastObject];
-			if (record)
-				block(record, nil);
-			else
-				loader(^(id object, NSError* error, NSDate* date, NSDate* expireDate) {
-					if (object)
-						[cache storeObject:object forKey:key account:account date:date expireDate:expireDate completionHandler:^(NSManagedObjectID *objectID) {
-							block([cache.viewContext objectWithID:objectID], error);
-						}];
-					else
-						block(nil, error);
+			[cache performBackgroundTask:^(NSManagedObjectContext *managedObjectContext) {
+				NCCacheRecord* record = [[managedObjectContext executeFetchRequest:[NCCacheRecord fetchRequestForKey:key account:account] error:nil] lastObject];
+				id object = record.object;
+				dispatch_async(dispatch_get_main_queue(), ^{
+					if (object) {
+						progress.completedUnitCount++;
+
+						block(object, nil, record.objectID);
+					}
+					else {
+						[progress becomeCurrentWithPendingUnitCount:1];
+						loader(^(id object, NSError* error, NSDate* date, NSDate* expireDate) {
+							if (object)
+								[cache storeObject:object forKey:key account:account date:date expireDate:expireDate completionHandler:^(NSManagedObjectID *objectID) {
+									block(object, error, objectID);
+								}];
+							else
+								block(nil, error, nil);
+						});
+						[progress resignCurrent];
+					}
 				});
+			}];
 			break;
 		}
 		case NSURLRequestReturnCacheDataDontLoad: {
-			NCCacheRecord* record = [[cache.viewContext executeFetchRequest:[NCCacheRecord fetchRequestForKey:key account:account] error:nil] lastObject];
-			block(record, record ? nil : [NSError errorWithDomain:@"NCDataManager" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"No cached data found", nil)}]);
+			[cache performBackgroundTask:^(NSManagedObjectContext *managedObjectContext) {
+				NCCacheRecord* record = [[managedObjectContext executeFetchRequest:[NCCacheRecord fetchRequestForKey:key account:account] error:nil] lastObject];
+				id object = record.object;
+				dispatch_async(dispatch_get_main_queue(), ^{
+					progress.completedUnitCount++;
+					block(object, object ? nil : [NSError errorWithDomain:@"NCDataManager" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"No cached data found", nil)}], record.objectID);
+				});
+			}];
 			break;
 		}
 		default: {
-			NCCacheRecord* record = [[cache.viewContext executeFetchRequest:[NCCacheRecord fetchRequestForKey:key account:account] error:nil] lastObject];
-			if (record) {
-				block(record, nil);
-				if (record.isExpired)
-					loader(^(id object, NSError* error, NSDate* date, NSDate* expireDate) {
-						if (object)
-							[cache storeObject:object forKey:key account:account date:date expireDate:expireDate completionHandler:nil];
-					});
-			}
-			else
-				loader(^(id object, NSError* error, NSDate* date, NSDate* expireDate) {
-					if (object)
-						[cache storeObject:object forKey:key account:account date:date expireDate:expireDate completionHandler:^(NSManagedObjectID *objectID) {
-							block([cache.viewContext objectWithID:objectID], error);
-						}];
-					else
-						block(nil, error);
+			[cache performBackgroundTask:^(NSManagedObjectContext *managedObjectContext) {
+				NCCacheRecord* record = [[managedObjectContext executeFetchRequest:[NCCacheRecord fetchRequestForKey:key account:account] error:nil] lastObject];
+				id object = record.object;
+				BOOL isExpired = record.isExpired;
+				dispatch_async(dispatch_get_main_queue(), ^{
+					if (object) {
+						progress.completedUnitCount++;
+						block(object, nil, record.objectID);
+						if (isExpired)
+							loader(^(id object, NSError* error, NSDate* date, NSDate* expireDate) {
+								if (object)
+									[cache storeObject:object forKey:key account:account date:date expireDate:expireDate completionHandler:nil];
+							});
+					}
+					else {
+						[progress becomeCurrentWithPendingUnitCount:1];
+						loader(^(id object, NSError* error, NSDate* date, NSDate* expireDate) {
+							if (object)
+								[cache storeObject:object forKey:key account:account date:date expireDate:expireDate completionHandler:^(NSManagedObjectID *objectID) {
+									block(object, error, objectID);
+								}];
+							else
+								block(nil, error, nil);
+						});
+						[progress resignCurrent];
+					}
 				});
+			}];;
 			break;
 		}
 	}

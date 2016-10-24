@@ -30,6 +30,18 @@
 #import "NCDBStaStation+CoreDataClass.h"
 #import "NCDBTxtDescription+CoreDataClass.h"
 #import "NCDBWhType+CoreDataClass.h"
+
 @implementation NCDBInvType
+
++ (NSFetchRequest<NCDBInvType *> *)fetchRequestWithTypeID:(int32_t) typeID {
+	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+	request.predicate = [NSPredicate predicateWithFormat:@"typeID == %d", typeID];
+	request.fetchLimit = 1;
+	return request;
+}
+
+- (NCFetchedCollection<NCDBDgmTypeAttribute*>*) attributes {
+	return [[NCFetchedCollection alloc] initWithEntity:@"DgmTypeAttribute" predicateFormat:@"type == %@ AND attributeType.attributeID==%@" argumentArray:@[self] managedObjectContext:self.managedObjectContext];
+}
 
 @end

@@ -11,6 +11,7 @@
 #import "NCDataManager.h"
 #import "NCDatabase.h"
 
+
 @interface AppDelegate ()
 
 @end
@@ -28,12 +29,12 @@
 		dispatch_group_leave(dispatchGroup);
 	}];
 
-//	dispatch_group_enter(dispatchGroup);
-//	NCDatabase* database = [NCDatabase new];
-//	[database loadWithCompletionHandler:^(NSError *error) {
-//		NCDatabase.sharedDatabase = database;
-//		dispatch_group_leave(dispatchGroup);
-//	}];
+	dispatch_group_enter(dispatchGroup);
+	NCDatabase* database = [NCDatabase new];
+	[database loadWithCompletionHandler:^(NSError *error) {
+		NCDatabase.sharedDatabase = database;
+		dispatch_group_leave(dispatchGroup);
+	}];
 
 	dispatch_group_enter(dispatchGroup);
 	NCStorage* storage = [NCStorage localStorage];

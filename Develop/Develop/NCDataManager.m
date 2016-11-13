@@ -8,9 +8,14 @@
 
 #import "NCDataManager.h"
 #import "NCStorage.h"
+#import "NCCacheRecord.h"
 @import EVEAPI;
 
 @implementation NCDataManager
+
++ (instancetype) defaultManager {
+	return [self new];
+}
 
 - (void) addAPIKeyWithKeyID:(int32_t) keyID vCode:(NSString*) vCode completionBlock:(void(^)(NSArray<NSManagedObjectID*>* accounts, NSError* error)) completionBlock {
 	EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:[EVEAPIKey apiKeyWithKeyID:keyID vCode:vCode] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData];

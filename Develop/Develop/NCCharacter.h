@@ -7,9 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NCAccount+CoreDataClass.h"
+#import "NCSkill.h"
+#import "NCCharacterAttributes.h"
+#import "NCTrainingQueue.h"
 
+@class NCAccount;
 @interface NCCharacter : NSObject
+@property (nonatomic, strong, readonly) NCCharacterAttributes* characterAttributes;
+@property (nonatomic, strong, readonly) NSArray<NCSkill*>* skills;
+@property (nonatomic, strong, readonly) NCTrainingQueue* skillQueue;
 
 + (void) createCharacterForAccount:(NCAccount*) account completinHandler:(void (^)(NCCharacter* character, NSError* error)) block;
 

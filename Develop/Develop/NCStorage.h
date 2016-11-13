@@ -7,15 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NCAPIKey+CoreDataClass.h"
-#import "NCAccount+CoreDataClass.h"
+#import "NCStorage+CoreDataModel.h"
+#import "NCCache+CoreDataModel.h"
 @import CoreData;
 
 typedef NS_ENUM(NSInteger, NCStorageType) {
 	NCStorageTypeLocal,
 	NCStorageTypeCloud
 };
-
 
 @interface NCStorage : NSObject
 @property (strong, nonatomic, readonly) NSManagedObjectContext *viewContext;

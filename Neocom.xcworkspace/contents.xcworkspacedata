@@ -2,12 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Develop/Develop.xcodeproj">
+      location = "group:Neocom/Neocom.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Develop/Develop/../../ThirdParty/EVEOnlineAPI/EVEOnlineAPI.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Neocom.xcodeproj">
    </FileRef>
 </Workspace>

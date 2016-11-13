@@ -156,8 +156,11 @@ static NCStorage* sharedStorage;
 	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	[context performBlock:^{
 		block(context);
+		NSError* error = nil;
 		if ([context hasChanges])
-			[context save:nil];
+			[context save:&error];
+		if (error)
+			NSLog(@"%@", error);
 	}];
 }
 

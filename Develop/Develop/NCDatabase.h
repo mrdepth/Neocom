@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "NCDatabase+CoreDataModel.h"
+#import "NCDBInvType+NC.h"
 
 @interface NCDatabase : NSObject
 @property (strong, nonatomic, readonly) NSManagedObjectContext *viewContext;

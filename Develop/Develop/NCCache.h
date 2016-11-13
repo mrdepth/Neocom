@@ -7,9 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NCCacheRecord+CoreDataClass.h"
-#import "NCCacheRecordData+CoreDataClass.h"
+#import "NCCache+CoreDataModel.h"
 @import CoreData;
+
+//@interface NCCacheRecord<__covariant ObjectType>(NC)
+//@property (readonly, getter=isExpired) BOOL expired;
+//+ (NSFetchRequest<NCCacheRecord *> *)fetchRequestForKey:(NSString*) key account:(NSString*) account;
+//- (ObjectType) object;
+//
+//@end
+
 
 @interface NCCache : NSObject
 @property (strong, nonatomic, readonly) NSManagedObjectContext *viewContext;

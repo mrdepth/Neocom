@@ -15,7 +15,7 @@
 	if (self = [super init]) {
 		self.entityName = entityName;
 		self.predicateFormat = predicateFormat;
-		self.argumentArray = argumentArray;
+		self.argumentArray = argumentArray ?: @[];
 		self.managedObjectContext = managedObjectContext;
 	}
 	return self;

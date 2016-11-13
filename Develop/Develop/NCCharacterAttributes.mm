@@ -30,27 +30,26 @@
 
 + (instancetype) characterAttributesWithCharacterSheet:(EVECharacterSheet*) characterSheet {
 	if (characterSheet) {
-		NCCharacterAttributes* attributes = [self new];
-		attributes.charisma = characterSheet.attributes.charisma;
-		attributes.intelligence = characterSheet.attributes.intelligence;
-		attributes.memory = characterSheet.attributes.memory;
-		attributes.perception = characterSheet.attributes.perception;
-		attributes.willpower = characterSheet.attributes.willpower;
+		NCCharacterAttributes* characterAttributes = [self new];
+		characterAttributes.charisma = characterSheet.attributes.charisma;
+		characterAttributes.intelligence = characterSheet.attributes.intelligence;
+		characterAttributes.memory = characterSheet.attributes.memory;
+		characterAttributes.perception = characterSheet.attributes.perception;
+		characterAttributes.willpower = characterSheet.attributes.willpower;
 
 		[NCDatabase.sharedDatabase performTaskAndWait:^(NSManagedObjectContext *managedObjectContext) {
-		}];
-		/*NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
-		[databaseManagedObjectContext performBlockAndWait:^{
+			NCFetchedCollection<NCDBInvType*>* invTypes = [NCDBInvType invTypesWithManagedObjectContext:managedObjectContext];
 			for (EVECharacterSheetImplant* implant in characterSheet.implants) {
-				NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:implant.typeID];
-				self.charisma += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value];
-				self.intelligence += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value];
-				self.memory += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value];
-				self.perception += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value];
-				self.willpower += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value];
+				NCDBInvType* type = invTypes[implant.typeID];
+				NCFetchedCollection<NCDBDgmTypeAttribute*>* attributes = type.attributesMap;
+				characterAttributes.charisma += attributes[NCCharismaBonusAttributeID].value;
+				characterAttributes.intelligence += attributes[NCIntelligenceBonusAttributeID].value;
+				characterAttributes.memory += attributes[NCMemoryBonusAttributeID].value;
+				characterAttributes.perception += attributes[NCPerceptionBonusAttributeID].value;
+				characterAttributes.willpower += attributes[NCWillpowerBonusAttributeID].value;
 			}
-		}];*/
-		return attributes;
+		}];
+		return characterAttributes;
 	}
 	else
 		return [NCCharacterAttributes defaultCharacterAttributes];
@@ -58,11 +57,12 @@
 
 - (float) skillpointsPerSecondForSkill:(NCDBInvType*) skill {
 	__block float skillpointsPerSecond = 0;
-/*	[skill.managedObjectContext performBlockAndWait:^{
-		NCDBDgmTypeAttribute *primaryAttribute = skill.attributesDictionary[@(NCPrimaryAttributeAttribteID)];
-		NCDBDgmTypeAttribute *secondaryAttribute = skill.attributesDictionary[@(NCSecondaryAttributeAttribteID)];
+	[skill.managedObjectContext performBlockAndWait:^{
+		NCFetchedCollection<NCDBDgmTypeAttribute*>* attributes = skill.attributesMap;
+		NCDBDgmTypeAttribute *primaryAttribute = attributes[NCPrimaryAttributeAttribteID];
+		NCDBDgmTypeAttribute *secondaryAttribute = attributes[NCSecondaryAttributeAttribteID];
 		skillpointsPerSecond = [self skillpointsPerSecondWithPrimaryAttribute:primaryAttribute.value secondaryAttribute:secondaryAttribute.value];
-	}];*/
+	}];
 	return skillpointsPerSecond;
 }
 
@@ -71,7 +71,6 @@
 	int32_t effectiveSecondaryAttribute = [self effectiveAttributeValueWithAttributeID:secondaryAttributeID];
 	return (effectivePrimaryAttribute + effectiveSecondaryAttribute / 2.0) / 60.0;
 }
-
 
 #pragma mark - NSCoding
 

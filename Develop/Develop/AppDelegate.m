@@ -10,7 +10,7 @@
 #import "NCCache.h"
 #import "NCDataManager.h"
 #import "NCDatabase.h"
-
+#import "NCCharacterAttributes.h"
 
 @interface AppDelegate ()
 
@@ -45,15 +45,16 @@
 
 	dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^ {
 		
-		/*[[NCDataManager new] addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" completionBlock:^(NSArray<NSManagedObjectID *> *accounts, NSError *error) {
-			id result = [NCStorage.sharedStorage.viewContext objectWithID:accounts[0]];
-			NSLog(@"%@", result);
-		}];*/
+//		[[NCDataManager new] addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" completionBlock:^(NSArray<NSManagedObjectID *> *accounts, NSError *error) {
+//			id result = [NCStorage.sharedStorage.viewContext objectWithID:accounts[0]];
+//			NSLog(@"%@", result);
+//		}];
 		NCAccount* account = [[NCStorage.sharedStorage.viewContext executeFetchRequest:[NSFetchRequest fetchRequestWithEntityName:@"Account"] error:nil] lastObject];
 		NSProgress* progress = [NSProgress progressWithTotalUnitCount:1];
 		[progress addObserver:self forKeyPath:@"fractionCompleted" options:0 context:nil];
 		[progress becomeCurrentWithPendingUnitCount:1];
-		[[NCDataManager new] characterSheetForAccount:account cachePolicy:NSURLRequestReloadIgnoringCacheData completionHandler:^(EVECharacterSheet *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+		[[NCDataManager new] characterSheetForAccount:account cachePolicy:NSURLRequestUseProtocolCachePolicy completionHandler:^(EVECharacterSheet *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			NCCharacterAttributes* attributes = [NCCharacterAttributes characterAttributesWithCharacterSheet:result];
 			NSLog(@"%@", [NCCache.sharedCache.viewContext objectWithID:cacheRecordID]);
 			NSLog(@"%@", progress);
 		}];

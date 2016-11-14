@@ -23,7 +23,7 @@
     [super viewDidLoad];
 	self.mainMenu = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]];
 	
-	self.headerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NCMainMenuHeaderViewController"];
+	self.headerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NCMainMenuCharacterHeaderViewController"];
 	[self.tableView addSubview:self.headerViewController.view];
 	[self addChildViewController:self.headerViewController];
 	
@@ -33,7 +33,7 @@
 //	}
 	//self.tableView.tableHeaderView.frame = CGRectZero;
 	//self.tableView.contentInset = UIEdgeInsetsMake(190, 0, 0, 0);
-	self.tableView.estimatedRowHeight = 35;
+	self.tableView.estimatedRowHeight = 43;
     // Do any additional setup after loading the view.
 	self.headerMinHeight = [self.headerViewController.view systemLayoutSizeFittingSize:CGSizeMake(self.view.bounds.size.width, 0) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityDefaultHigh].height;
 	self.headerMaxHeight = [self.headerViewController.view systemLayoutSizeFittingSize:CGSizeMake(self.view.bounds.size.width, 0) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;
@@ -64,6 +64,17 @@
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
 	[super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		self.headerMinHeight = [self.headerViewController.view systemLayoutSizeFittingSize:CGSizeMake(self.view.bounds.size.width, 0) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityDefaultHigh].height;
+		self.headerMaxHeight = [self.headerViewController.view systemLayoutSizeFittingSize:CGSizeMake(self.view.bounds.size.width, 0) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;
+		CGRect rect = CGRectMake(0, 0, self.view.bounds.size.width, self.headerMaxHeight);
+		self.tableView.tableHeaderView.frame = rect;
+		
+		rect = CGRectMake(0, [self.topLayoutGuide length], self.view.bounds.size.width, MAX(self.headerMaxHeight - self.tableView.contentOffset.y, self.headerMinHeight));
+		self.headerViewController.view.frame = [self.view convertRect:rect toView:self.tableView];
+		self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(rect.size.height, 0, 0, 0);
+
+	});
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,7 +96,7 @@
 	NCImageSubtitleCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	NSDictionary* row = self.mainMenu[indexPath.section][indexPath.row];
 	cell.titleLabel.text = row[@"title"];
-	cell.subtitleLabel.text = nil;
+	cell.subtitleLabel.text = row[@"detailsKeyPath"];
 	cell.iconView.image = [UIImage imageNamed:row[@"image"]];
 	return cell;
 }

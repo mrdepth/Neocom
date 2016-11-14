@@ -28,6 +28,45 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	UISplitViewController* splitController = (UISplitViewController*) self.window.rootViewController;
 	splitController.delegate = self;
+	
+	NSArray* sizes = @[
+					   UIContentSizeCategoryUnspecified,
+					   UIContentSizeCategoryExtraSmall,
+					   UIContentSizeCategorySmall,
+					   UIContentSizeCategoryMedium,
+					   UIContentSizeCategoryLarge,
+					   UIContentSizeCategoryExtraLarge,
+					   UIContentSizeCategoryExtraExtraLarge,
+					   UIContentSizeCategoryExtraExtraExtraLarge,
+					   
+					   // Accessibility sizes
+					   UIContentSizeCategoryAccessibilityMedium,
+					   UIContentSizeCategoryAccessibilityLarge,
+					   UIContentSizeCategoryAccessibilityExtraLarge,
+					   UIContentSizeCategoryAccessibilityExtraExtraLarge,
+					   UIContentSizeCategoryAccessibilityExtraExtraExtraLarge];
+	
+	NSArray* styles = @[
+						UIFontTextStyleTitle1,
+						UIFontTextStyleTitle2,
+						UIFontTextStyleTitle3,
+						UIFontTextStyleHeadline,
+						UIFontTextStyleSubheadline,
+						UIFontTextStyleBody,
+						UIFontTextStyleCallout,
+						UIFontTextStyleFootnote,
+						UIFontTextStyleCaption1,
+						UIFontTextStyleCaption2];
+	
+	for (NSString* style in styles) {
+		UIFont* normal = [UIFont preferredFontForTextStyle:style compatibleWithTraitCollection:[UITraitCollection traitCollectionWithPreferredContentSizeCategory:UIContentSizeCategoryMedium]];
+		NSLog(@"--- %@ %f", style, normal.pointSize);
+		for (NSString* size in sizes) {
+			UIFont* font = [UIFont preferredFontForTextStyle:style compatibleWithTraitCollection:[UITraitCollection traitCollectionWithPreferredContentSizeCategory:size]];
+			NSLog(@"%@ %f %f", size, font.pointSize, font.pointSize - normal.pointSize);
+		}
+	}
+	
 	return YES;
 }
 

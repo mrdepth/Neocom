@@ -145,6 +145,8 @@
 		129A86331DD8F1990001F732 /* NCRoundImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 129A86321DD8F1990001F732 /* NCRoundImageView.m */; };
 		129A86351DD8F41F0001F732 /* EVEAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129A86341DD8F41F0001F732 /* EVEAPI.framework */; };
 		129A86361DD8F41F0001F732 /* EVEAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 129A86341DD8F41F0001F732 /* EVEAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		12AC4D001DDA2B680052430E /* NCAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AC4CFF1DDA2B680052430E /* NCAccountsViewController.m */; };
+		12CCAD7E1DDA4C7A0053CA8A /* NCLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CCAD7D1DDA4C7A0053CA8A /* NCLabel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -325,6 +327,10 @@
 		129A86311DD8F1990001F732 /* NCRoundImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCRoundImageView.h; sourceTree = "<group>"; };
 		129A86321DD8F1990001F732 /* NCRoundImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCRoundImageView.m; sourceTree = "<group>"; };
 		129A86341DD8F41F0001F732 /* EVEAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EVEAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		12AC4CFE1DDA2B680052430E /* NCAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountsViewController.h; sourceTree = "<group>"; };
+		12AC4CFF1DDA2B680052430E /* NCAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsViewController.m; sourceTree = "<group>"; };
+		12CCAD7C1DDA4C7A0053CA8A /* NCLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLabel.h; sourceTree = "<group>"; };
+		12CCAD7D1DDA4C7A0053CA8A /* NCLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLabel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -393,6 +399,7 @@
 			children = (
 				129A85521DD8D3440001F732 /* Utils */,
 				129A862B1DD8DA1D0001F732 /* NCMainMenuViewController */,
+				12AC4CFD1DDA2B400052430E /* NCAccountsViewController */,
 				129A851C1DD8D2700001F732 /* Neocom.entitlements */,
 				129A85081DD8D2170001F732 /* NCAppDelegate.h */,
 				129A85091DD8D2170001F732 /* NCAppDelegate.m */,
@@ -438,6 +445,7 @@
 				129A86381DD90BFC0001F732 /* NCImageSubtitleCell */,
 				1229E4F21DD9C7B600500A7D /* NCBannerNavigationViewController */,
 				1229E4F61DD9CC0E00500A7D /* NCSplitViewController */,
+				12CCAD7B1DDA4C690053CA8A /* NCLabel */,
 				129A852E1DD8D2E30001F732 /* NCDataManager.h */,
 				129A852F1DD8D2E30001F732 /* NCDataManager.m */,
 				129A86311DD8F1990001F732 /* NCRoundImageView.h */,
@@ -654,6 +662,24 @@
 			name = NCImageSubtitleCell;
 			sourceTree = "<group>";
 		};
+		12AC4CFD1DDA2B400052430E /* NCAccountsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12AC4CFE1DDA2B680052430E /* NCAccountsViewController.h */,
+				12AC4CFF1DDA2B680052430E /* NCAccountsViewController.m */,
+			);
+			name = NCAccountsViewController;
+			sourceTree = "<group>";
+		};
+		12CCAD7B1DDA4C690053CA8A /* NCLabel */ = {
+			isa = PBXGroup;
+			children = (
+				12CCAD7C1DDA4C7A0053CA8A /* NCLabel.h */,
+				12CCAD7D1DDA4C7A0053CA8A /* NCLabel.m */,
+			);
+			name = NCLabel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -851,10 +877,12 @@
 				1229E4F51DD9C7D100500A7D /* NCBannerNavigationViewController.m in Sources */,
 				129A85411DD8D2E30001F732 /* NCCharacter.m in Sources */,
 				1229E4EE1DD9965400500A7D /* NCMainMenuHeaderViewController.m in Sources */,
+				12CCAD7E1DDA4C7A0053CA8A /* NCLabel.m in Sources */,
 				129A85401DD8D2E30001F732 /* NCCacheRecord.m in Sources */,
 				129A862E1DD8DA380001F732 /* NCMainMenuViewController.m in Sources */,
 				129A85511DD8D3390001F732 /* NCDatabase.xcdatamodeld in Sources */,
 				129A850A1DD8D2170001F732 /* NCAppDelegate.m in Sources */,
+				12AC4D001DDA2B680052430E /* NCAccountsViewController.m in Sources */,
 				1229E4F91DD9CC2000500A7D /* NCSplitViewController.m in Sources */,
 				129A85461DD8D2E30001F732 /* NCFetchedCollection.m in Sources */,
 				1229E5081DDA016900500A7D /* NCTintImageView.m in Sources */,

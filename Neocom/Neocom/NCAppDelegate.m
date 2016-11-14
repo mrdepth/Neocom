@@ -8,20 +8,26 @@
 
 #import "NCAppDelegate.h"
 
-@interface NCAppDelegate ()
+@interface NCAppDelegate()<UISplitViewControllerDelegate>
 
 @end
 
 @implementation NCAppDelegate
 
+- (BOOL)splitViewController:(UISplitViewController *)splitViewController showViewController:(UIViewController *)vc sender:(nullable id)sender {
+	return NO;
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)splitViewController showDetailViewController:(UIViewController *)vc sender:(nullable id)sender {
+	//UINavigationController* nav = [splitViewController.viewControllers[0] childViewControllers][0];
+	//[nav pushViewController:vc animated:YES];
+	return NO;
+}
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	// Override point for customization after application launch.
-	UISplitViewController* splitController = self.window.rootViewController;
-	UINavigationController* controller = splitController.viewControllers[0];
-	controller.navigationBar.backgroundColor = [UIColor clearColor];
-	controller.navigationBar.shadowImage = [UIImage imageNamed:@"clear"];
-	[controller.navigationBar setBackgroundImage:[UIImage imageNamed:@"clear"] forBarMetrics:UIBarMetricsDefault];
+	UISplitViewController* splitController = (UISplitViewController*) self.window.rootViewController;
+	splitController.delegate = self;
 	return YES;
 }
 

@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1229E4E81DD98B7300500A7D /* portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1229E4E71DD98B7300500A7D /* portrait.jpg */; };
+		1229E4EA1DD98C6F00500A7D /* necrorise.png in Resources */ = {isa = PBXBuildFile; fileRef = 1229E4E91DD98C6F00500A7D /* necrorise.png */; };
+		1229E4EE1DD9965400500A7D /* NCMainMenuHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229E4ED1DD9965400500A7D /* NCMainMenuHeaderViewController.m */; };
+		1229E4F01DD9A5FD00500A7D /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1229E4EF1DD9A5FD00500A7D /* AFNetworking.framework */; };
+		1229E4F11DD9A5FD00500A7D /* AFNetworking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1229E4EF1DD9A5FD00500A7D /* AFNetworking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1229E4F51DD9C7D100500A7D /* NCBannerNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229E4F41DD9C7D100500A7D /* NCBannerNavigationViewController.m */; };
+		1229E4F91DD9CC2000500A7D /* NCSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229E4F81DD9CC2000500A7D /* NCSplitViewController.m */; };
+		1229E4FB1DD9E6AB00500A7D /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1229E4FA1DD9E6AB00500A7D /* mainMenu.plist */; };
+		1229E4FF1DD9E79A00500A7D /* NCImageSubtitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229E4FE1DD9E79A00500A7D /* NCImageSubtitleCell.m */; };
+		1229E5081DDA016900500A7D /* NCTintImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229E5071DDA016900500A7D /* NCTintImageView.m */; };
 		129A85071DD8D2170001F732 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 129A85061DD8D2170001F732 /* main.m */; };
 		129A850A1DD8D2170001F732 /* NCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 129A85091DD8D2170001F732 /* NCAppDelegate.m */; };
 		129A85101DD8D2170001F732 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 129A850E1DD8D2170001F732 /* Main.storyboard */; };
@@ -132,7 +142,6 @@
 		129A86271DD8D5580001F732 /* MainMenu.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 129A85C11DD8D5580001F732 /* MainMenu.xcassets */; };
 		129A86281DD8D5580001F732 /* UI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 129A85C21DD8D5580001F732 /* UI.xcassets */; };
 		129A862E1DD8DA380001F732 /* NCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129A862D1DD8DA380001F732 /* NCMainMenuViewController.m */; };
-		129A86301DD8F16F0001F732 /* portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 129A862F1DD8F16F0001F732 /* portrait.jpg */; };
 		129A86331DD8F1990001F732 /* NCRoundImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 129A86321DD8F1990001F732 /* NCRoundImageView.m */; };
 		129A86351DD8F41F0001F732 /* EVEAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129A86341DD8F41F0001F732 /* EVEAPI.framework */; };
 		129A86361DD8F41F0001F732 /* EVEAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 129A86341DD8F41F0001F732 /* EVEAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -146,6 +155,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				129A86361DD8F41F0001F732 /* EVEAPI.framework in Embed Frameworks */,
+				1229E4F11DD9A5FD00500A7D /* AFNetworking.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -153,6 +163,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1229E4E71DD98B7300500A7D /* portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = portrait.jpg; sourceTree = "<group>"; };
+		1229E4E91DD98C6F00500A7D /* necrorise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = necrorise.png; sourceTree = "<group>"; };
+		1229E4EC1DD9965400500A7D /* NCMainMenuHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMainMenuHeaderViewController.h; sourceTree = "<group>"; };
+		1229E4ED1DD9965400500A7D /* NCMainMenuHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMainMenuHeaderViewController.m; sourceTree = "<group>"; };
+		1229E4EF1DD9A5FD00500A7D /* AFNetworking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AFNetworking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1229E4F31DD9C7D100500A7D /* NCBannerNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCBannerNavigationViewController.h; sourceTree = "<group>"; };
+		1229E4F41DD9C7D100500A7D /* NCBannerNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCBannerNavigationViewController.m; sourceTree = "<group>"; };
+		1229E4F71DD9CC2000500A7D /* NCSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSplitViewController.h; sourceTree = "<group>"; };
+		1229E4F81DD9CC2000500A7D /* NCSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSplitViewController.m; sourceTree = "<group>"; };
+		1229E4FA1DD9E6AB00500A7D /* mainMenu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mainMenu.plist; sourceTree = "<group>"; };
+		1229E4FD1DD9E79A00500A7D /* NCImageSubtitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCImageSubtitleCell.h; sourceTree = "<group>"; };
+		1229E4FE1DD9E79A00500A7D /* NCImageSubtitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCImageSubtitleCell.m; sourceTree = "<group>"; };
+		1229E5061DDA016900500A7D /* NCTintImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTintImageView.h; sourceTree = "<group>"; };
+		1229E5071DDA016900500A7D /* NCTintImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTintImageView.m; sourceTree = "<group>"; };
 		129A85021DD8D2170001F732 /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		129A85061DD8D2170001F732 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		129A85081DD8D2170001F732 /* NCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCAppDelegate.h; sourceTree = "<group>"; };
@@ -298,7 +322,6 @@
 		129A862A1DD8D58B0001F732 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = ../../dbTools/dbinit/NCDatabase.sqlite; sourceTree = "<group>"; };
 		129A862C1DD8DA380001F732 /* NCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMainMenuViewController.h; sourceTree = "<group>"; };
 		129A862D1DD8DA380001F732 /* NCMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMainMenuViewController.m; sourceTree = "<group>"; };
-		129A862F1DD8F16F0001F732 /* portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = portrait.jpg; path = ../../../../../Desktop/portrait.jpg; sourceTree = "<group>"; };
 		129A86311DD8F1990001F732 /* NCRoundImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCRoundImageView.h; sourceTree = "<group>"; };
 		129A86321DD8F1990001F732 /* NCRoundImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCRoundImageView.m; sourceTree = "<group>"; };
 		129A86341DD8F41F0001F732 /* EVEAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EVEAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -310,6 +333,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				129A851F1DD8D2740001F732 /* CloudKit.framework in Frameworks */,
+				1229E4F01DD9A5FD00500A7D /* AFNetworking.framework in Frameworks */,
 				129A85211DD8D27D0001F732 /* StoreKit.framework in Frameworks */,
 				129A86351DD8F41F0001F732 /* EVEAPI.framework in Frameworks */,
 			);
@@ -318,9 +342,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1229E4EB1DD9962B00500A7D /* NCMainMenuHeaderViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1229E4EC1DD9965400500A7D /* NCMainMenuHeaderViewController.h */,
+				1229E4ED1DD9965400500A7D /* NCMainMenuHeaderViewController.m */,
+			);
+			name = NCMainMenuHeaderViewController;
+			sourceTree = "<group>";
+		};
+		1229E4F21DD9C7B600500A7D /* NCBannerNavigationViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1229E4F31DD9C7D100500A7D /* NCBannerNavigationViewController.h */,
+				1229E4F41DD9C7D100500A7D /* NCBannerNavigationViewController.m */,
+			);
+			name = NCBannerNavigationViewController;
+			sourceTree = "<group>";
+		};
+		1229E4F61DD9CC0E00500A7D /* NCSplitViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1229E4F71DD9CC2000500A7D /* NCSplitViewController.h */,
+				1229E4F81DD9CC2000500A7D /* NCSplitViewController.m */,
+			);
+			name = NCSplitViewController;
+			sourceTree = "<group>";
+		};
 		129A84F91DD8D2170001F732 = {
 			isa = PBXGroup;
 			children = (
+				1229E4EF1DD9A5FD00500A7D /* AFNetworking.framework */,
 				129A86341DD8F41F0001F732 /* EVEAPI.framework */,
 				129A85041DD8D2170001F732 /* Neocom */,
 				129A85031DD8D2170001F732 /* Products */,
@@ -357,7 +409,9 @@
 			isa = PBXGroup;
 			children = (
 				129A85591DD8D5580001F732 /* Graphics */,
-				129A862F1DD8F16F0001F732 /* portrait.jpg */,
+				1229E4E71DD98B7300500A7D /* portrait.jpg */,
+				1229E4E91DD98C6F00500A7D /* necrorise.png */,
+				1229E4FA1DD9E6AB00500A7D /* mainMenu.plist */,
 				129A86291DD8D58B0001F732 /* dgm.sqlite */,
 				129A862A1DD8D58B0001F732 /* NCDatabase.sqlite */,
 				129A85061DD8D2170001F732 /* main.m */,
@@ -381,11 +435,15 @@
 				129A85561DD8D3890001F732 /* NCCharacter */,
 				129A85541DD8D3590001F732 /* NCDatabase */,
 				129A85531DD8D34C0001F732 /* NCStorage */,
-				129A86381DD90BFC0001F732 /* NCImageSubtitleCellView */,
+				129A86381DD90BFC0001F732 /* NCImageSubtitleCell */,
+				1229E4F21DD9C7B600500A7D /* NCBannerNavigationViewController */,
+				1229E4F61DD9CC0E00500A7D /* NCSplitViewController */,
 				129A852E1DD8D2E30001F732 /* NCDataManager.h */,
 				129A852F1DD8D2E30001F732 /* NCDataManager.m */,
 				129A86311DD8F1990001F732 /* NCRoundImageView.h */,
 				129A86321DD8F1990001F732 /* NCRoundImageView.m */,
+				1229E5061DDA016900500A7D /* NCTintImageView.h */,
+				1229E5071DDA016900500A7D /* NCTintImageView.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -580,17 +638,20 @@
 		129A862B1DD8DA1D0001F732 /* NCMainMenuViewController */ = {
 			isa = PBXGroup;
 			children = (
+				1229E4EB1DD9962B00500A7D /* NCMainMenuHeaderViewController */,
 				129A862C1DD8DA380001F732 /* NCMainMenuViewController.h */,
 				129A862D1DD8DA380001F732 /* NCMainMenuViewController.m */,
 			);
 			name = NCMainMenuViewController;
 			sourceTree = "<group>";
 		};
-		129A86381DD90BFC0001F732 /* NCImageSubtitleCellView */ = {
+		129A86381DD90BFC0001F732 /* NCImageSubtitleCell */ = {
 			isa = PBXGroup;
 			children = (
+				1229E4FD1DD9E79A00500A7D /* NCImageSubtitleCell.h */,
+				1229E4FE1DD9E79A00500A7D /* NCImageSubtitleCell.m */,
 			);
-			name = NCImageSubtitleCellView;
+			name = NCImageSubtitleCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -620,6 +681,7 @@
 		129A84FA1DD8D2170001F732 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = NC;
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Artem Shimanski";
 				TargetAttributes = {
@@ -701,6 +763,7 @@
 				129A85D41DD8D5580001F732 /* cpu.png in Resources */,
 				129A85D91DD8D5580001F732 /* droneCapacity.png in Resources */,
 				129A85FB1DD8D5580001F732 /* targets.png in Resources */,
+				1229E4FB1DD9E6AB00500A7D /* mainMenu.plist in Resources */,
 				129A85F81DD8D5580001F732 /* slotRig.png in Resources */,
 				129A86161DD8D5580001F732 /* level_151.gif in Resources */,
 				129A86101DD8D5580001F732 /* level_121.gif in Resources */,
@@ -711,6 +774,7 @@
 				129A85D51DD8D5580001F732 /* damagePattern.png in Resources */,
 				129A85DB1DD8D5580001F732 /* em.png in Resources */,
 				129A86261DD8D5580001F732 /* level_500.gif in Resources */,
+				1229E4E81DD98B7300500A7D /* portrait.jpg in Resources */,
 				129A85EB1DD8D5580001F732 /* powerGrid.png in Resources */,
 				129A85F71DD8D5580001F732 /* slotMed.png in Resources */,
 				129A85E21DD8D5580001F732 /* kinetic.png in Resources */,
@@ -744,6 +808,7 @@
 				129A86181DD8D5580001F732 /* level_230.gif in Resources */,
 				129A85101DD8D2170001F732 /* Main.storyboard in Resources */,
 				129A85C61DD8D5580001F732 /* perception.png in Resources */,
+				1229E4EA1DD98C6F00500A7D /* necrorise.png in Resources */,
 				129A85C71DD8D5580001F732 /* willpower.png in Resources */,
 				129A85C31DD8D5580001F732 /* charisma.png in Resources */,
 				129A85C81DD8D5580001F732 /* Attributes.xcassets in Resources */,
@@ -759,7 +824,6 @@
 				129A85E81DD8D5580001F732 /* offline.png in Resources */,
 				129A86021DD8D5580001F732 /* warpSpeed.png in Resources */,
 				129A861D1DD8D5580001F732 /* level_251.gif in Resources */,
-				129A86301DD8F16F0001F732 /* portrait.jpg in Resources */,
 				129A85CC1DD8D5580001F732 /* add.png in Resources */,
 				129A85CE1DD8D5580001F732 /* armor.png in Resources */,
 				129A861B1DD8D5580001F732 /* level_241.gif in Resources */,
@@ -782,13 +846,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1229E4FF1DD9E79A00500A7D /* NCImageSubtitleCell.m in Sources */,
 				129A85421DD8D2E30001F732 /* NCCharacterAttributes.mm in Sources */,
+				1229E4F51DD9C7D100500A7D /* NCBannerNavigationViewController.m in Sources */,
 				129A85411DD8D2E30001F732 /* NCCharacter.m in Sources */,
+				1229E4EE1DD9965400500A7D /* NCMainMenuHeaderViewController.m in Sources */,
 				129A85401DD8D2E30001F732 /* NCCacheRecord.m in Sources */,
 				129A862E1DD8DA380001F732 /* NCMainMenuViewController.m in Sources */,
 				129A85511DD8D3390001F732 /* NCDatabase.xcdatamodeld in Sources */,
 				129A850A1DD8D2170001F732 /* NCAppDelegate.m in Sources */,
+				1229E4F91DD9CC2000500A7D /* NCSplitViewController.m in Sources */,
 				129A85461DD8D2E30001F732 /* NCFetchedCollection.m in Sources */,
+				1229E5081DDA016900500A7D /* NCTintImageView.m in Sources */,
 				129A85481DD8D2E30001F732 /* NCSkillQueueItem.m in Sources */,
 				129A853F1DD8D2E30001F732 /* NCCache.m in Sources */,
 				129A85441DD8D2E30001F732 /* NCDataManager.m in Sources */,
@@ -964,6 +1033,7 @@
 				129A851B1DD8D2170001F732 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

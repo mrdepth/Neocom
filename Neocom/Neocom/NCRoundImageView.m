@@ -10,9 +10,11 @@
 
 @implementation NCRoundImageView
 
+
+
+
 - (void) layoutSubviews {
 	[super layoutSubviews];
-	self.layer.masksToBounds = YES;
 	self.layer.cornerRadius = self.bounds.size.width / 2;
 }
 

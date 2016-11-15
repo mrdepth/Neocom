@@ -17,11 +17,13 @@
 @interface NCDataManager : NSObject
 
 + (instancetype) defaultManager;
-- (void) addAPIKeyWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode completionBlock:(void(^)(NSArray<NSManagedObjectID*>* accounts, NSError* error)) completionBlock;
+- (void) addAPIKeyWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode excludeCharacterIDs:(NSIndexSet*) characterIDs completionBlock:(void(^)(NSArray<NSManagedObjectID*>* accounts, NSError* error)) completionBlock;
+- (void) apiKeyInfoWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode completionBlock:(void(^)(EVEAPIKeyInfo* apiKeyInfo, NSError* error)) block;
 
 - (void) characterSheetForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVECharacterSheet* result, NSError* error, NSManagedObjectID* cacheRecordID)) block;
 - (void) skillQueueForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVESkillQueue* result, NSError* error, NSManagedObjectID* cacheRecordID)) block;
-- (void) apiKeyInfoWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode completionBlock:(void(^)(EVEAPIKeyInfo* apiKeyInfo, NSError* error)) block;
+- (void) characterInfoForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVECharacterInfo* result, NSError* error, NSManagedObjectID* cacheRecordID)) block;
+- (void) accountStatusForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVEAccountStatus* result, NSError* error, NSManagedObjectID* cacheRecordID)) block;
 - (void) imageWithCharacterID:(NSInteger) characterID preferredSize:(CGSize) size scale:(CGFloat) scale completionBlock:(void(^)(UIImage* image, NSError* error)) block;
 
 

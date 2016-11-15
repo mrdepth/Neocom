@@ -56,6 +56,10 @@
 	return trunc(level);
 }
 
+- (int32_t) skillPoints {
+	return self.startSkillPoints;
+}
+
 - (NSTimeInterval) trainingTimeToLevel:(int32_t) level withCharacterAttributes:(NCCharacterAttributes*) attributes {
 	if (level > self.level)
 		return ([self skillPointsAtLevel:level] - self.skillPoints) / [attributes skillpointsPerSecondWithPrimaryAttribute:self.primaryAttributeID secondaryAttribute:self.secondaryAttributeID];

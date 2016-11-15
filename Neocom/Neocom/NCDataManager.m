@@ -17,7 +17,7 @@
 	return [self new];
 }
 
-- (void) addAPIKeyWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode completionBlock:(void(^)(NSArray<NSManagedObjectID*>* accounts, NSError* error)) completionBlock {
+- (void) addAPIKeyWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode excludeCharacterIDs:(NSIndexSet*) characterIDs completionBlock:(void(^)(NSArray<NSManagedObjectID*>* accounts, NSError* error)) completionBlock {
 	EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:[EVEAPIKey apiKeyWithKeyID:keyID vCode:vCode] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
 	[api apiKeyInfoWithCompletionBlock:^(EVEAPIKeyInfo *result, NSError *error) {
 		if (result && !result.eveapi.error) {
@@ -51,6 +51,9 @@
 				int32_t order = [[[managedObjectContext executeFetchRequest:fetchRequest error:nil] lastObject][@"order"] intValue] + 1;
 				
 				for (EVEAPIKeyInfoCharactersItem* character in result.key.characters) {
+					if ([characterIDs containsIndex:character.characterID])
+						continue;
+					
 					NCAccount* account = nil;
 					for (account in apiKey.accounts)
 						if (account.characterID == character.characterID)
@@ -75,6 +78,13 @@
 	}];
 }
 
+- (void) apiKeyInfoWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode completionBlock:(void(^)(EVEAPIKeyInfo* apiKeyInfo, NSError* error)) block {
+	EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:[EVEAPIKey apiKeyWithKeyID:keyID vCode:vCode] cachePolicy:NSURLRequestUseProtocolCachePolicy];
+	[api apiKeyInfoWithCompletionBlock:^(EVEAPIKeyInfo *result, NSError *error) {
+		block(result, error);
+	}];
+}
+
 - (void) characterSheetForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVECharacterSheet* result, NSError* error, NSManagedObjectID* cacheRecordID)) block {
 	[self loadFromCacheForKey:@"EVECharacterSheet" account:account.uuid cachePolicy:cachePolicy completionHandler:block elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
 		EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
@@ -93,12 +103,24 @@
 	}];
 }
 
-- (void) apiKeyInfoWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode completionBlock:(void(^)(EVEAPIKeyInfo* apiKeyInfo, NSError* error)) block {
-	EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:[EVEAPIKey apiKeyWithKeyID:keyID vCode:vCode] cachePolicy:NSURLRequestUseProtocolCachePolicy];
-	[api apiKeyInfoWithCompletionBlock:^(EVEAPIKeyInfo *result, NSError *error) {
-		block(result, error);
+- (void) characterInfoForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVECharacterInfo* result, NSError* error, NSManagedObjectID* cacheRecordID)) block {
+	[self loadFromCacheForKey:@"EVECharacterInfo" account:account.uuid cachePolicy:cachePolicy completionHandler:block elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
+		EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+		[api characterInfoWithCharacterID:account.characterID completionBlock:^(EVECharacterInfo *result, NSError *error) {
+			finish(result, error, [result.eveapi localTimeWithServerTime:result.eveapi.cacheDate], [result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]);
+		}];
 	}];
 }
+
+- (void) accountStatusForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVEAccountStatus* result, NSError* error, NSManagedObjectID* cacheRecordID)) block {
+	[self loadFromCacheForKey:@"EVEAccountStatus" account:account.uuid cachePolicy:cachePolicy completionHandler:block elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
+		EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+		[api accountStatusWithCompletionBlock:^(EVEAccountStatus *result, NSError *error) {
+			finish(result, error, [result.eveapi localTimeWithServerTime:result.eveapi.cacheDate], [result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]);
+		}];
+	}];
+}
+
 
 - (void) imageWithCharacterID:(NSInteger) characterID preferredSize:(CGSize) size scale:(CGFloat) scale completionBlock:(void(^)(UIImage* image, NSError* error)) block {
 	size.width *= scale;

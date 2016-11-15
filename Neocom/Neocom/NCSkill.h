@@ -17,11 +17,13 @@
 @property (nonatomic, assign, readonly) int32_t primaryAttributeID;
 @property (nonatomic, assign, readonly) int32_t secondaryAttributeID;
 @property (nonatomic, assign, readonly) int32_t rank;
-@property (nonatomic, assign) int32_t skillPoints;
+@property (nonatomic, readonly) int32_t skillPoints;
+@property (nonatomic, assign) int32_t startSkillPoints;
 @property (nonatomic, assign) int32_t level;
 @property (nonatomic, strong) NSDate* trainingStartDate;
 
 - (id) initWithInvType:(NCDBInvType*) type;
 - (NSTimeInterval) trainingTimeToLevelUpWithCharacterAttributes:(NCCharacterAttributes*) attributes;
+- (int32_t) skillPointsAtLevel:(int32_t) level;
 
 @end

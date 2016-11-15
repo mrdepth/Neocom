@@ -7,6 +7,9 @@
 //
 
 #import "NCAppDelegate.h"
+#import "NCCache.h"
+#import "NCStorage.h"
+#import "NCDatabase.h"
 
 @interface NCAppDelegate()<UISplitViewControllerDelegate>
 
@@ -26,6 +29,39 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	NSDateIntervalFormatter* formatter = [NSDateIntervalFormatter new];
+	formatter.dateStyle = NSDateIntervalFormatterNoStyle;
+	formatter.timeStyle = NSDateIntervalFormatterFullStyle;
+	NSString* s = [formatter stringFromDate:[NSDate date] toDate:[NSDate dateWithTimeIntervalSinceNow:120]];
+	NSLog(@"%@", s);
+	
+	dispatch_group_t dispatchGroup = dispatch_group_create();
+	
+	dispatch_group_enter(dispatchGroup);
+	NCCache* cache = [NCCache new];
+	[cache loadWithCompletionHandler:^(NSError *error) {
+		NCCache.sharedCache = cache;
+		dispatch_group_leave(dispatchGroup);
+	}];
+	
+	dispatch_group_enter(dispatchGroup);
+	NCStorage* storage = [NCStorage localStorage];
+	[storage loadWithCompletionHandler:^(NSError *error) {
+		NCStorage.sharedStorage = storage;
+		dispatch_group_leave(dispatchGroup);
+	}];
+	
+	dispatch_group_enter(dispatchGroup);
+	NCDatabase* database = [NCDatabase new];
+	[database loadWithCompletionHandler:^(NSError *error) {
+		NCDatabase.sharedDatabase = database;
+		dispatch_group_leave(dispatchGroup);
+	}];
+	
+	dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+		
+	});
+	
 	UISplitViewController* splitController = (UISplitViewController*) self.window.rootViewController;
 	splitController.delegate = self;
 	

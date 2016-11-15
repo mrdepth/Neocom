@@ -11,6 +11,7 @@
 #import "UIColor+NC.h"
 #import "NCDataManager.h"
 #import "NCAddAPIKeyCell.h"
+#import "UIAlertController+NC.h"
 
 @interface NCAddAPIKeyViewController ()
 @property (nonatomic, strong) EVEAPIKeyInfo* apiKeyInfo;
@@ -34,6 +35,15 @@
 
 - (IBAction)onSave:(id)sender {
 	[self dismissViewControllerAnimated:YES completion:nil];
+	[[NCDataManager defaultManager] addAPIKeyWithKeyID:self.currentAPIKey.keyID vCode:self.currentAPIKey.vCode excludeCharacterIDs:self.disabledCharacters completionBlock:^(NSArray<NSManagedObjectID *> *accounts, NSError *error) {
+		if (error) {
+			UIAlertController* controller = [UIAlertController alertControllerWithError:error handler:nil];
+			[self presentViewController:controller animated:YES completion:nil];
+		}
+		else {
+			[self dismissViewControllerAnimated:YES completion:nil];
+		}
+	}];
 }
 
 - (IBAction)onCancel:(id)sender {
@@ -41,6 +51,7 @@
 }
 
 - (IBAction)onSafari:(id)sender {
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://community.eveonline.com/support/api-key/ActivateInstallLinks?activate=true"]];
 }
 
 - (IBAction)onSwitch:(id)sender {
@@ -70,7 +81,7 @@
 	NCAddAPIKeyCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 	EVEAPIKeyInfoCharactersItem* item = self.apiKeyInfo.key.characters[indexPath.row];
 	cell.object = item;
-	cell.imageView.image = nil;
+	cell.iconView.image = nil;
 	cell.switchControl.on = ![self.disabledCharacters containsIndex:item.characterID];
 	if (self.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation) {
 		cell.titleLabel.text = item.corporationName;
@@ -83,7 +94,7 @@
 		cell.subtitleLabel.text = item.corporationName;
 		[[NCDataManager new] imageWithCharacterID:item.characterID preferredSize:cell.iconView.bounds.size scale:[[UIScreen mainScreen] scale] completionBlock:^(UIImage *image, NSError *error) {
 			if (cell.object == item)
-				cell.imageView.image = image;
+				cell.iconView.image = image;
 		}];
 	}
 	return cell;
@@ -113,7 +124,7 @@
 
 - (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(loadCharacters) object:nil];
-	[self performSelector:@selector(loadCharacters) withObject:nil afterDelay:2];
+	[self performSelector:@selector(loadCharacters) withObject:nil afterDelay:1];
 	return YES;
 }
 

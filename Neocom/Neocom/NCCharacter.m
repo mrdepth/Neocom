@@ -61,7 +61,7 @@
 						NCSkill* skill = [[NCSkill alloc] initWithInvType:invTypes[characterSkill.typeID]];
 						if (skill) {
 							if (item && item.queuePosition == 0) {
-								skill.skillPoints = item.startSP;
+								skill.startSkillPoints = item.startSP;
 								skill.trainingStartDate = [skillQueue.eveapi localTimeWithServerTime:item.startTime];
 							}
 						}

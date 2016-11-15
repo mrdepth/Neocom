@@ -151,6 +151,12 @@
 		129A86331DD8F1990001F732 /* NCRoundImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 129A86321DD8F1990001F732 /* NCRoundImageView.m */; };
 		129A86351DD8F41F0001F732 /* EVEAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129A86341DD8F41F0001F732 /* EVEAPI.framework */; };
 		129A86361DD8F41F0001F732 /* EVEAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 129A86341DD8F41F0001F732 /* EVEAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		129BBE051DDB743F009F97F5 /* UIAlertController+NC.m in Sources */ = {isa = PBXBuildFile; fileRef = 129BBE041DDB743F009F97F5 /* UIAlertController+NC.m */; };
+		129BBE081DDB7E28009F97F5 /* NCAccountsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 129BBE071DDB7E28009F97F5 /* NCAccountsCell.m */; };
+		129BBE0B1DDB87A6009F97F5 /* NCTimeIntervalFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129BBE0A1DDB87A6009F97F5 /* NCTimeIntervalFormatter.m */; };
+		129BBE0E1DDB8FD8009F97F5 /* NCUnitFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129BBE0D1DDB8FD8009F97F5 /* NCUnitFormatter.m */; };
+		129BBE0F1DDB97A2009F97F5 /* dgm.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 129A86291DD8D58B0001F732 /* dgm.sqlite */; };
+		129BBE101DDB97A2009F97F5 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 129A862A1DD8D58B0001F732 /* NCDatabase.sqlite */; };
 		12AC4D001DDA2B680052430E /* NCAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AC4CFF1DDA2B680052430E /* NCAccountsViewController.m */; };
 		12CCAD7E1DDA4C7A0053CA8A /* NCLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CCAD7D1DDA4C7A0053CA8A /* NCLabel.m */; };
 /* End PBXBuildFile section */
@@ -345,6 +351,14 @@
 		129A86311DD8F1990001F732 /* NCRoundImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCRoundImageView.h; sourceTree = "<group>"; };
 		129A86321DD8F1990001F732 /* NCRoundImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCRoundImageView.m; sourceTree = "<group>"; };
 		129A86341DD8F41F0001F732 /* EVEAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EVEAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		129BBE031DDB743F009F97F5 /* UIAlertController+NC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+NC.h"; sourceTree = "<group>"; };
+		129BBE041DDB743F009F97F5 /* UIAlertController+NC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+NC.m"; sourceTree = "<group>"; };
+		129BBE061DDB7E28009F97F5 /* NCAccountsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountsCell.h; sourceTree = "<group>"; };
+		129BBE071DDB7E28009F97F5 /* NCAccountsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsCell.m; sourceTree = "<group>"; };
+		129BBE091DDB87A6009F97F5 /* NCTimeIntervalFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTimeIntervalFormatter.h; sourceTree = "<group>"; };
+		129BBE0A1DDB87A6009F97F5 /* NCTimeIntervalFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTimeIntervalFormatter.m; sourceTree = "<group>"; };
+		129BBE0C1DDB8FD8009F97F5 /* NCUnitFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCUnitFormatter.h; sourceTree = "<group>"; };
+		129BBE0D1DDB8FD8009F97F5 /* NCUnitFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCUnitFormatter.m; sourceTree = "<group>"; };
 		12AC4CFE1DDA2B680052430E /* NCAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountsViewController.h; sourceTree = "<group>"; };
 		12AC4CFF1DDA2B680052430E /* NCAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsViewController.m; sourceTree = "<group>"; };
 		12CCAD7C1DDA4C7A0053CA8A /* NCLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLabel.h; sourceTree = "<group>"; };
@@ -497,14 +511,21 @@
 				1229E4F21DD9C7B600500A7D /* NCBannerNavigationViewController */,
 				1229E4F61DD9CC0E00500A7D /* NCSplitViewController */,
 				12CCAD7B1DDA4C690053CA8A /* NCLabel */,
+				129BBE111DDBA196009F97F5 /* NCProgressView */,
 				1251D4281DDB33F500C90DC4 /* UIColor+NC.h */,
 				1251D4291DDB33F500C90DC4 /* UIColor+NC.m */,
+				129BBE031DDB743F009F97F5 /* UIAlertController+NC.h */,
+				129BBE041DDB743F009F97F5 /* UIAlertController+NC.m */,
 				129A852E1DD8D2E30001F732 /* NCDataManager.h */,
 				129A852F1DD8D2E30001F732 /* NCDataManager.m */,
 				129A86311DD8F1990001F732 /* NCRoundImageView.h */,
 				129A86321DD8F1990001F732 /* NCRoundImageView.m */,
 				1229E5061DDA016900500A7D /* NCTintImageView.h */,
 				1229E5071DDA016900500A7D /* NCTintImageView.m */,
+				129BBE091DDB87A6009F97F5 /* NCTimeIntervalFormatter.h */,
+				129BBE0A1DDB87A6009F97F5 /* NCTimeIntervalFormatter.m */,
+				129BBE0C1DDB8FD8009F97F5 /* NCUnitFormatter.h */,
+				129BBE0D1DDB8FD8009F97F5 /* NCUnitFormatter.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -715,12 +736,21 @@
 			name = NCImageSubtitleCell;
 			sourceTree = "<group>";
 		};
+		129BBE111DDBA196009F97F5 /* NCProgressView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = NCProgressView;
+			sourceTree = "<group>";
+		};
 		12AC4CFD1DDA2B400052430E /* NCAccountsViewController */ = {
 			isa = PBXGroup;
 			children = (
 				1251D3841DDAFFE200C90DC4 /* NCAddAPIKeyViewController */,
 				12AC4CFE1DDA2B680052430E /* NCAccountsViewController.h */,
 				12AC4CFF1DDA2B680052430E /* NCAccountsViewController.m */,
+				129BBE061DDB7E28009F97F5 /* NCAccountsCell.h */,
+				129BBE071DDB7E28009F97F5 /* NCAccountsCell.m */,
 			);
 			name = NCAccountsViewController;
 			sourceTree = "<group>";
@@ -809,6 +839,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				129BBE0F1DDB97A2009F97F5 /* dgm.sqlite in Resources */,
+				129BBE101DDB97A2009F97F5 /* NCDatabase.sqlite in Resources */,
 				129A85E31DD8D5580001F732 /* Ladar.png in Resources */,
 				129A85151DD8D2170001F732 /* LaunchScreen.storyboard in Resources */,
 				129A85121DD8D2170001F732 /* Assets.xcassets in Resources */,
@@ -926,6 +958,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				129BBE081DDB7E28009F97F5 /* NCAccountsCell.m in Sources */,
 				1251D42A1DDB33F500C90DC4 /* UIColor+NC.m in Sources */,
 				1251D3871DDAFFF400C90DC4 /* NCAddAPIKeyViewController.m in Sources */,
 				1229E4FF1DD9E79A00500A7D /* NCImageSubtitleCell.m in Sources */,
@@ -942,10 +975,12 @@
 				12AC4D001DDA2B680052430E /* NCAccountsViewController.m in Sources */,
 				1229E4F91DD9CC2000500A7D /* NCSplitViewController.m in Sources */,
 				129A85461DD8D2E30001F732 /* NCFetchedCollection.m in Sources */,
+				129BBE0E1DDB8FD8009F97F5 /* NCUnitFormatter.m in Sources */,
 				1229E5081DDA016900500A7D /* NCTintImageView.m in Sources */,
 				129A85481DD8D2E30001F732 /* NCSkillQueueItem.m in Sources */,
 				129A853F1DD8D2E30001F732 /* NCCache.m in Sources */,
 				129A85441DD8D2E30001F732 /* NCDataManager.m in Sources */,
+				129BBE0B1DDB87A6009F97F5 /* NCTimeIntervalFormatter.m in Sources */,
 				129A85431DD8D2E30001F732 /* NCDatabase.m in Sources */,
 				127BB8B31DDB4C0500F07E6C /* NCAddAPIKeyCell.m in Sources */,
 				129A85471DD8D2E30001F732 /* NCSkill.m in Sources */,
@@ -955,6 +990,7 @@
 				129A85501DD8D3390001F732 /* NCCache.xcdatamodeld in Sources */,
 				1251D38B1DDB007B00C90DC4 /* NCSheetPresentationController.m in Sources */,
 				129A86331DD8F1990001F732 /* NCRoundImageView.m in Sources */,
+				129BBE051DDB743F009F97F5 /* UIAlertController+NC.m in Sources */,
 				129A85071DD8D2170001F732 /* main.m in Sources */,
 				129A854B1DD8D2E30001F732 /* NCTrainingQueue.m in Sources */,
 				1215FA461DDAE78000F14CBE /* NCSlideDownAnimationController.m in Sources */,

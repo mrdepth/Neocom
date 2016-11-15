@@ -69,7 +69,6 @@
 			else {
 				[self updateInteractiveTransition:0];
 			}
-			NSLog(@"%f", p);
 		}
 	}
 	else if (recognizer.state == UIGestureRecognizerStateEnded) {

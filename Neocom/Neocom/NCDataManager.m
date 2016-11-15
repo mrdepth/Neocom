@@ -17,7 +17,7 @@
 	return [self new];
 }
 
-- (void) addAPIKeyWithKeyID:(int32_t) keyID vCode:(NSString*) vCode completionBlock:(void(^)(NSArray<NSManagedObjectID*>* accounts, NSError* error)) completionBlock {
+- (void) addAPIKeyWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode completionBlock:(void(^)(NSArray<NSManagedObjectID*>* accounts, NSError* error)) completionBlock {
 	EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:[EVEAPIKey apiKeyWithKeyID:keyID vCode:vCode] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
 	[api apiKeyInfoWithCompletionBlock:^(EVEAPIKeyInfo *result, NSError *error) {
 		if (result && !result.eveapi.error) {
@@ -34,7 +34,7 @@
 				
 				if (!apiKey) {
 					apiKey = [NSEntityDescription insertNewObjectForEntityForName:@"APIKey" inManagedObjectContext:managedObjectContext];
-					apiKey.keyID = keyID;
+					apiKey.keyID = (int32_t) keyID;
 					apiKey.vCode = vCode;
 					apiKey.apiKeyInfo = result;
 				}
@@ -89,6 +89,42 @@
 		EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
 		[api skillQueueWithCompletionBlock:^(EVESkillQueue *result, NSError *error) {
 			finish(result, error, [result.eveapi localTimeWithServerTime:result.eveapi.cacheDate], [result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]);
+		}];
+	}];
+}
+
+- (void) apiKeyInfoWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode completionBlock:(void(^)(EVEAPIKeyInfo* apiKeyInfo, NSError* error)) block {
+	EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:[EVEAPIKey apiKeyWithKeyID:keyID vCode:vCode] cachePolicy:NSURLRequestUseProtocolCachePolicy];
+	[api apiKeyInfoWithCompletionBlock:^(EVEAPIKeyInfo *result, NSError *error) {
+		block(result, error);
+	}];
+}
+
+- (void) imageWithCharacterID:(NSInteger) characterID preferredSize:(CGSize) size scale:(CGFloat) scale completionBlock:(void(^)(UIImage* image, NSError* error)) block {
+	size.width *= scale;
+	size.height *= scale;
+
+	EVEImageSize sizes[] = {EVEImageSize32, EVEImageSize64, EVEImageSize128, EVEImageSize256, EVEImageSize512, EVEImageSize1024};
+	int n = sizeof(sizes) / sizeof(EVEImageSize);
+	CGFloat dimension = MAX(size.width, size.height);
+	EVEImageSize s = EVEImageSize32;
+	for (int i = 0; i < n; i++) {
+		s = sizes[i];
+		if (sizes[i] > dimension)
+			break;
+	}
+	
+	NSString* key = [NSString stringWithFormat:@"EVEImage:character:%d:%d", (int) characterID, (int) s];
+	[self loadFromCacheForKey:key account:nil cachePolicy:NSURLRequestUseProtocolCachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
+		
+	} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
+		NSURL* url = [EVEImage characterPortraitURLWithCharacterID:(int32_t) characterID size:s error:nil];
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];
+		[api.sessionManager GET:url.absoluteString parameters:nil responseSerializer:[AFHTTPResponseSerializer serializer] completionBlock:^(id responseObject, NSError *error) {
+			UIImage* image;
+			if ([responseObject isKindOfClass:[NSData class]])
+				image = [[UIImage alloc] initWithData:responseObject];
+			block(image, error);
 		}];
 	}];
 }

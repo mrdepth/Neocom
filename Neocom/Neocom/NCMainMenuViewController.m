@@ -9,8 +9,10 @@
 #import "NCMainMenuViewController.h"
 #import "NCMainMenuHeaderViewController.h"
 #import "NCImageSubtitleCell.h"
+#import "NCSlideDownInteractiveTransition.h"
+#import "NCSlideDownAnimationController.h"
 
-@interface NCMainMenuViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface NCMainMenuViewController ()<UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate>
 @property (nonatomic, weak) NCMainMenuHeaderViewController* headerViewController;
 @property (nonatomic, assign) CGFloat headerMinHeight;
 @property (nonatomic, assign) CGFloat headerMaxHeight;
@@ -23,7 +25,7 @@
     [super viewDidLoad];
 	self.mainMenu = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]];
 	
-	self.headerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NCMainMenuCharacterHeaderViewController"];
+	self.headerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NCMainMenuHeaderViewController"];
 	[self.tableView addSubview:self.headerViewController.view];
 	[self addChildViewController:self.headerViewController];
 	
@@ -45,7 +47,7 @@
 	self.headerViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
 //	self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(self.headerViewController.view.frame.size.height, 0, 0, 0);
 	
-	self.edgesForExtendedLayout = UIRectEdgeNone;
+	//[self.panGestureRecognizer requireGestureRecognizerToFail:self.tableView.panGestureRecognizer];
 }
 
 - (void) viewDidLayoutSubviews {
@@ -82,6 +84,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
@@ -111,6 +114,41 @@
 	CGRect rect = CGRectMake(0, [self.topLayoutGuide length], self.tableView.bounds.size.width, MAX(self.headerMaxHeight - scrollView.contentOffset.y, self.headerMinHeight));
 	self.headerViewController.view.frame = [self.view convertRect:rect toView:self.tableView];
 	self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(rect.size.height, 0, 0, 0);
+	if (scrollView.contentOffset.y < -50 && !self.transitionCoordinator && scrollView.tracking) {
+		UIViewController* controller = [self.storyboard instantiateViewControllerWithIdentifier:@"NCAccountsViewController"];
+		controller.transitioningDelegate = self;
+		[self presentViewController:controller animated:YES completion:nil];
+	}
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+	
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+	
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
+	return NO;
+}
+
+#pragma mark - UIViewControllerTransitioningDelegate
+
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+	return [NCSlideDownAnimationController new];
+}
+
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+	return nil;
+}
+
+- (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {
+	return self.tableView.tracking ? [[NCSlideDownInteractiveTransition alloc] initWithScrollView:self.tableView] : nil;
+}
+
+- (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
+	return nil;
 }
 
 /*

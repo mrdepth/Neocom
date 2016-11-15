@@ -10,5 +10,6 @@
 
 @interface NCMainMenuViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
 
 @end

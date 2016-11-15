@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1215FA461DDAE78000F14CBE /* NCSlideDownAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1215FA451DDAE78000F14CBE /* NCSlideDownAnimationController.m */; };
+		1215FA4C1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 1215FA4B1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.m */; };
 		1229E4E81DD98B7300500A7D /* portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1229E4E71DD98B7300500A7D /* portrait.jpg */; };
 		1229E4EA1DD98C6F00500A7D /* necrorise.png in Resources */ = {isa = PBXBuildFile; fileRef = 1229E4E91DD98C6F00500A7D /* necrorise.png */; };
 		1229E4EE1DD9965400500A7D /* NCMainMenuHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229E4ED1DD9965400500A7D /* NCMainMenuHeaderViewController.m */; };
@@ -17,6 +19,10 @@
 		1229E4FB1DD9E6AB00500A7D /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1229E4FA1DD9E6AB00500A7D /* mainMenu.plist */; };
 		1229E4FF1DD9E79A00500A7D /* NCImageSubtitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229E4FE1DD9E79A00500A7D /* NCImageSubtitleCell.m */; };
 		1229E5081DDA016900500A7D /* NCTintImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229E5071DDA016900500A7D /* NCTintImageView.m */; };
+		1251D3871DDAFFF400C90DC4 /* NCAddAPIKeyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1251D3861DDAFFF400C90DC4 /* NCAddAPIKeyViewController.m */; };
+		1251D38B1DDB007B00C90DC4 /* NCSheetPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1251D38A1DDB007B00C90DC4 /* NCSheetPresentationController.m */; };
+		1251D42A1DDB33F500C90DC4 /* UIColor+NC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1251D4291DDB33F500C90DC4 /* UIColor+NC.m */; };
+		127BB8B31DDB4C0500F07E6C /* NCAddAPIKeyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 127BB8B21DDB4C0500F07E6C /* NCAddAPIKeyCell.m */; };
 		129A85071DD8D2170001F732 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 129A85061DD8D2170001F732 /* main.m */; };
 		129A850A1DD8D2170001F732 /* NCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 129A85091DD8D2170001F732 /* NCAppDelegate.m */; };
 		129A85101DD8D2170001F732 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 129A850E1DD8D2170001F732 /* Main.storyboard */; };
@@ -165,6 +171,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1215FA441DDAE78000F14CBE /* NCSlideDownAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSlideDownAnimationController.h; sourceTree = "<group>"; };
+		1215FA451DDAE78000F14CBE /* NCSlideDownAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSlideDownAnimationController.m; sourceTree = "<group>"; };
+		1215FA4A1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSlideDownInteractiveTransition.h; sourceTree = "<group>"; };
+		1215FA4B1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSlideDownInteractiveTransition.m; sourceTree = "<group>"; };
 		1229E4E71DD98B7300500A7D /* portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = portrait.jpg; sourceTree = "<group>"; };
 		1229E4E91DD98C6F00500A7D /* necrorise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = necrorise.png; sourceTree = "<group>"; };
 		1229E4EC1DD9965400500A7D /* NCMainMenuHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMainMenuHeaderViewController.h; sourceTree = "<group>"; };
@@ -179,6 +189,14 @@
 		1229E4FE1DD9E79A00500A7D /* NCImageSubtitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCImageSubtitleCell.m; sourceTree = "<group>"; };
 		1229E5061DDA016900500A7D /* NCTintImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTintImageView.h; sourceTree = "<group>"; };
 		1229E5071DDA016900500A7D /* NCTintImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTintImageView.m; sourceTree = "<group>"; };
+		1251D3851DDAFFF400C90DC4 /* NCAddAPIKeyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAddAPIKeyViewController.h; sourceTree = "<group>"; };
+		1251D3861DDAFFF400C90DC4 /* NCAddAPIKeyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAddAPIKeyViewController.m; sourceTree = "<group>"; };
+		1251D3891DDB007B00C90DC4 /* NCSheetPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSheetPresentationController.h; sourceTree = "<group>"; };
+		1251D38A1DDB007B00C90DC4 /* NCSheetPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSheetPresentationController.m; sourceTree = "<group>"; };
+		1251D4281DDB33F500C90DC4 /* UIColor+NC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+NC.h"; sourceTree = "<group>"; };
+		1251D4291DDB33F500C90DC4 /* UIColor+NC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+NC.m"; sourceTree = "<group>"; };
+		127BB8B11DDB4C0500F07E6C /* NCAddAPIKeyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAddAPIKeyCell.h; sourceTree = "<group>"; };
+		127BB8B21DDB4C0500F07E6C /* NCAddAPIKeyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAddAPIKeyCell.m; sourceTree = "<group>"; };
 		129A85021DD8D2170001F732 /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		129A85061DD8D2170001F732 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		129A85081DD8D2170001F732 /* NCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCAppDelegate.h; sourceTree = "<group>"; };
@@ -348,6 +366,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1215FA401DDAE70C00F14CBE /* NCSlideDownAnimationController */ = {
+			isa = PBXGroup;
+			children = (
+				1215FA441DDAE78000F14CBE /* NCSlideDownAnimationController.h */,
+				1215FA451DDAE78000F14CBE /* NCSlideDownAnimationController.m */,
+				1215FA4A1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.h */,
+				1215FA4B1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.m */,
+			);
+			name = NCSlideDownAnimationController;
+			sourceTree = "<group>";
+		};
 		1229E4EB1DD9962B00500A7D /* NCMainMenuHeaderViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -375,6 +404,26 @@
 			name = NCSplitViewController;
 			sourceTree = "<group>";
 		};
+		1251D3841DDAFFE200C90DC4 /* NCAddAPIKeyViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1251D3851DDAFFF400C90DC4 /* NCAddAPIKeyViewController.h */,
+				1251D3861DDAFFF400C90DC4 /* NCAddAPIKeyViewController.m */,
+				127BB8B11DDB4C0500F07E6C /* NCAddAPIKeyCell.h */,
+				127BB8B21DDB4C0500F07E6C /* NCAddAPIKeyCell.m */,
+			);
+			name = NCAddAPIKeyViewController;
+			sourceTree = "<group>";
+		};
+		1251D3881DDB003100C90DC4 /* NCModalPresentationController */ = {
+			isa = PBXGroup;
+			children = (
+				1251D3891DDB007B00C90DC4 /* NCSheetPresentationController.h */,
+				1251D38A1DDB007B00C90DC4 /* NCSheetPresentationController.m */,
+			);
+			name = NCModalPresentationController;
+			sourceTree = "<group>";
+		};
 		129A84F91DD8D2170001F732 = {
 			isa = PBXGroup;
 			children = (
@@ -400,6 +449,8 @@
 				129A85521DD8D3440001F732 /* Utils */,
 				129A862B1DD8DA1D0001F732 /* NCMainMenuViewController */,
 				12AC4CFD1DDA2B400052430E /* NCAccountsViewController */,
+				1215FA401DDAE70C00F14CBE /* NCSlideDownAnimationController */,
+				1251D3881DDB003100C90DC4 /* NCModalPresentationController */,
 				129A851C1DD8D2700001F732 /* Neocom.entitlements */,
 				129A85081DD8D2170001F732 /* NCAppDelegate.h */,
 				129A85091DD8D2170001F732 /* NCAppDelegate.m */,
@@ -446,6 +497,8 @@
 				1229E4F21DD9C7B600500A7D /* NCBannerNavigationViewController */,
 				1229E4F61DD9CC0E00500A7D /* NCSplitViewController */,
 				12CCAD7B1DDA4C690053CA8A /* NCLabel */,
+				1251D4281DDB33F500C90DC4 /* UIColor+NC.h */,
+				1251D4291DDB33F500C90DC4 /* UIColor+NC.m */,
 				129A852E1DD8D2E30001F732 /* NCDataManager.h */,
 				129A852F1DD8D2E30001F732 /* NCDataManager.m */,
 				129A86311DD8F1990001F732 /* NCRoundImageView.h */,
@@ -665,6 +718,7 @@
 		12AC4CFD1DDA2B400052430E /* NCAccountsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				1251D3841DDAFFE200C90DC4 /* NCAddAPIKeyViewController */,
 				12AC4CFE1DDA2B680052430E /* NCAccountsViewController.h */,
 				12AC4CFF1DDA2B680052430E /* NCAccountsViewController.m */,
 			);
@@ -872,6 +926,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1251D42A1DDB33F500C90DC4 /* UIColor+NC.m in Sources */,
+				1251D3871DDAFFF400C90DC4 /* NCAddAPIKeyViewController.m in Sources */,
 				1229E4FF1DD9E79A00500A7D /* NCImageSubtitleCell.m in Sources */,
 				129A85421DD8D2E30001F732 /* NCCharacterAttributes.mm in Sources */,
 				1229E4F51DD9C7D100500A7D /* NCBannerNavigationViewController.m in Sources */,
@@ -881,6 +937,7 @@
 				129A85401DD8D2E30001F732 /* NCCacheRecord.m in Sources */,
 				129A862E1DD8DA380001F732 /* NCMainMenuViewController.m in Sources */,
 				129A85511DD8D3390001F732 /* NCDatabase.xcdatamodeld in Sources */,
+				1215FA4C1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.m in Sources */,
 				129A850A1DD8D2170001F732 /* NCAppDelegate.m in Sources */,
 				12AC4D001DDA2B680052430E /* NCAccountsViewController.m in Sources */,
 				1229E4F91DD9CC2000500A7D /* NCSplitViewController.m in Sources */,
@@ -890,14 +947,17 @@
 				129A853F1DD8D2E30001F732 /* NCCache.m in Sources */,
 				129A85441DD8D2E30001F732 /* NCDataManager.m in Sources */,
 				129A85431DD8D2E30001F732 /* NCDatabase.m in Sources */,
+				127BB8B31DDB4C0500F07E6C /* NCAddAPIKeyCell.m in Sources */,
 				129A85471DD8D2E30001F732 /* NCSkill.m in Sources */,
 				129A85491DD8D2E30001F732 /* NCStorage.m in Sources */,
 				129A853E1DD8D2E30001F732 /* NCAccount.m in Sources */,
 				129A854A1DD8D2E30001F732 /* NCStorage.xcdatamodeld in Sources */,
 				129A85501DD8D3390001F732 /* NCCache.xcdatamodeld in Sources */,
+				1251D38B1DDB007B00C90DC4 /* NCSheetPresentationController.m in Sources */,
 				129A86331DD8F1990001F732 /* NCRoundImageView.m in Sources */,
 				129A85071DD8D2170001F732 /* main.m in Sources */,
 				129A854B1DD8D2E30001F732 /* NCTrainingQueue.m in Sources */,
+				1215FA461DDAE78000F14CBE /* NCSlideDownAnimationController.m in Sources */,
 				129A85451DD8D2E30001F732 /* NCDBInvType+NC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

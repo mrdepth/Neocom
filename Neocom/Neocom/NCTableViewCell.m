@@ -1,25 +1,26 @@
 //
-//  NCAccountsCell.m
+//  NCTableViewCell.m
 //  Neocom
 //
-//  Created by Artem Shimanski on 15.11.16.
+//  Created by Artem Shimanski on 16.11.16.
 //  Copyright © 2016 Artem Shimanski. All rights reserved.
 //
 
-#import "NCAccountsCell.h"
+#import "NCTableViewCell.h"
 #import "UIColor+Neocom.h"
 
-@implementation NCAccountsCell
+@implementation NCTableViewCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-	CALayer* layer = self.trainingProgressView.superview.layer;
-	layer.borderColor = [UIColor colorWithUInteger:0x3d5866ff].CGColor;
-	layer.borderWidth = 1.0 / [UIScreen mainScreen].scale;
+	self.selectedBackgroundView = [[UIView alloc] initWithFrame:self.bounds];
+	self.selectedBackgroundView.backgroundColor = [UIColor separatorColor];
     // Initialization code
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+	if (selected && !self.selectedBackgroundView) {
+	}
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state

@@ -6,9 +6,9 @@
 //  Copyright © 2016 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCAccountsCell : UITableViewCell
+@interface NCAccountsCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *characterNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *characterImageView;
 @property (weak, nonatomic) IBOutlet UILabel *corporationLabel;

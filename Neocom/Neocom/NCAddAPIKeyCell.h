@@ -6,9 +6,9 @@
 //  Copyright © 2016 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCAddAPIKeyCell : UITableViewCell
+@interface NCAddAPIKeyCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *iconView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *subtitleLabel;

@@ -15,7 +15,7 @@
 @property (strong, nonatomic, readonly) NSManagedObjectContext *viewContext;
 @property (strong, nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
 @property (strong, nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (class, nonatomic, retain) NCDatabase* sharedDatabase;
+@property (class, nonatomic, strong) NCDatabase* sharedDatabase;
 
 //+ (instancetype) sharedDatabase;
 - (void)loadWithCompletionHandler:(void (^)(NSError* error))block;

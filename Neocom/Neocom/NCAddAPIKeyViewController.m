@@ -8,7 +8,7 @@
 
 #import "NCAddAPIKeyViewController.h"
 #import "NCSheetPresentationController.h"
-#import "UIColor+NC.h"
+#import "UIColor+Neocom.h"
 #import "NCDataManager.h"
 #import "NCAddAPIKeyCell.h"
 #import "UIAlertController+NC.h"
@@ -24,7 +24,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.navigationItem.rightBarButtonItem.enabled = NO;
-	self.tableView.backgroundColor = [UIColor backgroundColor];
 	self.navigationController.preferredContentSize = CGSizeMake(320, 320);
 }
 
@@ -92,7 +91,7 @@
 		cell.imageView.clipsToBounds = YES;
 		cell.titleLabel.text = item.characterName;
 		cell.subtitleLabel.text = item.corporationName;
-		[[NCDataManager new] imageWithCharacterID:item.characterID preferredSize:cell.iconView.bounds.size scale:[[UIScreen mainScreen] scale] completionBlock:^(UIImage *image, NSError *error) {
+		[[NCDataManager new] imageWithCharacterID:item.characterID preferredSize:cell.iconView.bounds.size scale:[[UIScreen mainScreen] scale] cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
 			if (cell.object == item)
 				cell.iconView.image = image;
 		}];

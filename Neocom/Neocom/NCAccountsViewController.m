@@ -15,6 +15,7 @@
 #import "NCTimeIntervalFormatter.h"
 #import "NCUnitFormatter.h"
 #import "NCSkill.h"
+#import "NCProgressHandler.h"
 @import EVEAPI;
 
 @interface NCAccountsViewController ()<UIViewControllerTransitioningDelegate>
@@ -34,15 +35,16 @@
     [super viewDidLoad];
 	self.dateFormatter = [NSDateFormatter new];
 	self.dateFormatter.timeStyle = NSDateFormatterNoStyle;
-	self.dateFormatter.dateStyle = NSDateFormatterShortStyle;
+	self.dateFormatter.dateStyle = NSDateFormatterMediumStyle;
 	
 	self.tableView.estimatedRowHeight = self.tableView.rowHeight;
+	self.tableView.rowHeight = UITableViewAutomaticDimension;
 	self.tableView.refreshControl = [UIRefreshControl new];
 	[self.tableView.refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
 	
 	NSFetchRequest* request = [NCAccount fetchRequest];
 	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]];
-	self.results = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:NCStorage.sharedStorage.viewContext sectionNameKeyPath:nil cacheName:nil];
+	self.results = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:NCStorage.sharedStorage.viewContext sectionNameKeyPath:@"order" cacheName:nil];
 	[self.results performFetch:nil];
 	self.extraInfo = [NSMutableDictionary new];
 	[self.refreshControl beginRefreshing];
@@ -126,7 +128,7 @@
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
 	CGFloat bottom = MAX(scrollView.contentSize.height - scrollView.bounds.size.height, 0);
 	CGFloat y = scrollView.contentOffset.y - bottom;
-	if (y > 50 && !self.transitionCoordinator && scrollView.tracking)
+	if (y > 40 && !self.transitionCoordinator && scrollView.tracking)
 		[self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -154,6 +156,8 @@
 	NCDataManager* dataManager = [NCDataManager new];
 	
 	dispatch_group_t dispatchGroup = dispatch_group_create();
+	NCProgressHandler* progressHandler;
+	progressHandler = [NCProgressHandler progressHandlerForViewController:self withTotalUnitCount:self.results.fetchedObjects.count];
 	
 	for (NCAccount* account in self.results.fetchedObjects) {
 		NSMutableDictionary* info = self.extraInfo[[self.results indexPathForObject:account]];
@@ -161,8 +165,14 @@
 		if (!info)
 			self.extraInfo[indexPath] = info = [NSMutableDictionary new];
 		
+		[progressHandler.progress becomeCurrentWithPendingUnitCount:1];
+		NSProgress* progress = [NSProgress progressWithTotalUnitCount:5];
+		[progressHandler.progress resignCurrent];
+
+		
 		dispatch_group_enter(dispatchGroup);
 		[dataManager characterInfoForAccount:account cachePolicy:cachePolicy completionHandler:^(EVECharacterInfo *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			progress.completedUnitCount++;
 			if (result)
 				info[@"EVECharacterInfo"] = result;
 			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
@@ -171,6 +181,7 @@
 		
 		dispatch_group_enter(dispatchGroup);
 		[dataManager accountStatusForAccount:account cachePolicy:cachePolicy completionHandler:^(EVEAccountStatus *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			progress.completedUnitCount++;
 			if (result)
 				info[@"EVEAccountStatus"] = result;
 			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
@@ -179,6 +190,7 @@
 		
 		dispatch_group_enter(dispatchGroup);
 		[dataManager skillQueueForAccount:account cachePolicy:cachePolicy completionHandler:^(EVESkillQueue *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			progress.completedUnitCount++;
 			if (result)
 				info[@"EVESkillQueue"] = result;
 			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
@@ -186,7 +198,8 @@
 		}];
 		
 		dispatch_group_enter(dispatchGroup);
-		[dataManager imageWithCharacterID:account.characterID preferredSize:CGSizeMake(80, 80) scale:UIScreen.mainScreen.scale completionBlock:^(UIImage *image, NSError *error) {
+		[dataManager imageWithCharacterID:account.characterID preferredSize:CGSizeMake(80, 80) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
+			progress.completedUnitCount++;
 			if (image)
 				info[@"image"] = image;
 			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
@@ -196,6 +209,7 @@
 	
 	dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
 		[self.refreshControl endRefreshing];
+		[progressHandler finish];
 	});
 }
 
@@ -221,6 +235,7 @@
 		cell.spLabel.text = characterInfo ? [NCUnitFormatter localizedStringFromNumber:@(characterInfo.skillPoints) unit:NCUnitSP style:NCUnitFormatterStyleShort] : @" ";
 		cell.wealthLabel.text = characterInfo ? [NCUnitFormatter localizedStringFromNumber:@(characterInfo.accountBalance) unit:NCUnitISK style:NCUnitFormatterStyleShort] : @" ";
 		cell.skillLabel.text = NSLocalizedString(@"No skills in training", nil);
+		cell.skillLabel.textColor = [UIColor lightTextColor];
 		cell.trainingTimeLabel.text = @" ";
 		cell.trainingProgressView.progress = 0;
 		
@@ -241,21 +256,23 @@
 		}
 		
 		if (skillQueue) {
-			EVESkillQueueItem* skillQueueItem = [[skillQueue.skillQueue filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"queuePosition == 0"]] lastObject];
-			if (skillQueueItem) {
-				NSDate* endTime = [skillQueue.eveapi localTimeWithServerTime:skillQueueItem.endTime];
-				NCDBInvType* type = [NCDBInvType invTypesWithManagedObjectContext:NCDatabase.sharedDatabase.viewContext][skillQueueItem.typeID];
-				cell.skillLabel.text = [NSString stringWithFormat:@"%@ %d", type.typeName, skillQueueItem.level];
-				cell.trainingTimeLabel.text = [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] style:NCTimeIntervalFormatterStyleMinuts];
-				NCSkill* skill = [[NCSkill alloc] initWithInvType:type];
-				
-				float spps = (skillQueueItem.endSP - skillQueueItem.startSP) / [skillQueueItem.endTime timeIntervalSinceDate:skillQueueItem.startTime];
-				float sp = spps > 0 ? skillQueueItem.endSP - [endTime timeIntervalSinceNow] * spps : 0;
+			NSArray* skills = [skillQueue.skillQueue filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"queuePosition == 0"]];
+			
+			if (skills.count > 0) {
+				EVESkillQueueItem* firstSkill = skills[0];
 
-				float start = [skill skillPointsAtLevel:skillQueueItem.level - 1];
-				float end = skillQueueItem.endSP;
-				float progress = (sp - start) / (end - start);
-				cell.trainingProgressView.progress = progress;
+				NCDBInvType* type = [NCDBInvType invTypesWithManagedObjectContext:NCDatabase.sharedDatabase.viewContext][firstSkill.typeID];
+				NCSkill* skill = [[NCSkill alloc] initWithInvType:type skill:firstSkill inQueue:skillQueue];
+				if (skill) {
+					NSDate* endTime = skill.trainingEndDate;
+					cell.skillLabel.text = [NSString stringWithFormat:@"%@ %d", type.typeName, firstSkill.level];
+					cell.skillLabel.textColor = [UIColor whiteColor];
+					cell.trainingTimeLabel.text = [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] style:NCTimeIntervalFormatterStyleMinuts];
+					cell.trainingProgressView.progress = skill.trainingProgress;
+				}
+				else {
+					cell.skillLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown typeID %d", nil), firstSkill.typeID];
+				}
 			}
 		}
 	}

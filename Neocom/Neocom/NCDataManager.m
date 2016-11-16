@@ -122,7 +122,7 @@
 }
 
 
-- (void) imageWithCharacterID:(NSInteger) characterID preferredSize:(CGSize) size scale:(CGFloat) scale completionBlock:(void(^)(UIImage* image, NSError* error)) block {
+- (void) imageWithCharacterID:(NSInteger) characterID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error)) block {
 	size.width *= scale;
 	size.height *= scale;
 
@@ -137,7 +137,7 @@
 	}
 	
 	NSString* key = [NSString stringWithFormat:@"EVEImage:character:%d:%d", (int) characterID, (int) s];
-	[self loadFromCacheForKey:key account:nil cachePolicy:NSURLRequestUseProtocolCachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
+	[self loadFromCacheForKey:key account:nil cachePolicy:cachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
 		
 	} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
 		NSURL* url = [EVEImage characterPortraitURLWithCharacterID:(int32_t) characterID size:s error:nil];

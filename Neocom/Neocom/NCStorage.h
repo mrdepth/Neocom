@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, NCStorageType) {
 @property (strong, nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, assign, readonly) NCStorageType storageType;
 @property (readonly, getter=isLoaded) BOOL loaded;
-@property (class, nonatomic, retain) NCStorage* sharedStorage;
+@property (class, nonatomic, strong) NCStorage* sharedStorage;
 
 + (instancetype) cloudStorage;
 + (instancetype) localStorage;

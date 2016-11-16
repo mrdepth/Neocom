@@ -9,6 +9,7 @@
 #import "NCSkill.h"
 #import "NCCharacterAttributes.h"
 #import "NCDatabase.h"
+@import EVEAPI;
 
 @interface NCSkill()
 @property (nonatomic, assign, readwrite) int32_t typeID;
@@ -35,8 +36,19 @@
 			self.secondaryAttributeID = attributes[NCSecondaryAttributeAttribteID].value;
 			self.typeName = type.typeName;
 		}];
-		if (!self.rank || self.primaryAttributeID || !self.secondaryAttributeID)
+		if (!self.rank || !self.primaryAttributeID || !self.secondaryAttributeID)
 			self = nil;
+	}
+	return self;
+}
+
+- (id) initWithInvType:(NCDBInvType*) type skill:(EVESkillQueueItem*) skill inQueue:(EVESkillQueue*) skillQueue {
+	if (self = [self initWithInvType:type]) {
+		self.level = skill.level - 1;
+		self.startSkillPoints = skill.startSP;
+		self.trainingStartDate = [skillQueue.eveapi localTimeWithServerTime:skill.startTime];
+		self.trainingEndDate = [skillQueue.eveapi localTimeWithServerTime:skill.endTime];
+
 	}
 	return self;
 }
@@ -57,14 +69,34 @@
 }
 
 - (int32_t) skillPoints {
-	return self.startSkillPoints;
+	if (self.trainingStartDate && self.trainingEndDate) {
+		int32_t endSP = [self skillPointsAtLevel:self.level + 1];
+		NSTimeInterval t = [self.trainingEndDate timeIntervalSinceDate:self.trainingStartDate];
+		if (t > 0) {
+			float spps = (endSP - self.startSkillPoints) / t;
+			t = [self.trainingEndDate timeIntervalSinceNow];
+			float sp = t > 0 ? endSP - t * spps : endSP;
+			return MAX(sp, self.startSkillPoints);
+		}
+		else
+			return 0;
+	}
+	else
+		return self.startSkillPoints;
+}
+
+- (float) trainingProgress {
+	float start = [self skillPointsAtLevel:self.level];
+	float end = [self skillPointsAtLevel:self.level + 1];
+	float sp = self.skillPoints;
+	float progress = (sp - start) / (end - start);
+	return progress;
 }
 
 - (NSTimeInterval) trainingTimeToLevel:(int32_t) level withCharacterAttributes:(NCCharacterAttributes*) attributes {
-	if (level > self.level)
-		return ([self skillPointsAtLevel:level] - self.skillPoints) / [attributes skillpointsPerSecondWithPrimaryAttribute:self.primaryAttributeID secondaryAttribute:self.secondaryAttributeID];
-	else
-		return 0;
+	if (!attributes)
+		attributes = [NCCharacterAttributes defaultCharacterAttributes];
+	return ([self skillPointsAtLevel:level] - self.skillPoints) / [attributes skillpointsPerSecondWithPrimaryAttribute:self.primaryAttributeID secondaryAttribute:self.secondaryAttributeID];
 }
 
 - (NSTimeInterval) trainingTimeToLevelUpWithCharacterAttributes:(NCCharacterAttributes*) attributes {

@@ -1,18 +1,18 @@
 //
-//  NCBannerNavigationViewController.m
+//  NCNavigationController.m
 //  Neocom
 //
-//  Created by Artem Shimanski on 14.11.16.
+//  Created by Artem Shimanski on 16.11.16.
 //  Copyright © 2016 Artem Shimanski. All rights reserved.
 //
 
-#import "NCBannerNavigationViewController.h"
+#import "NCNavigationController.h"
 
-@interface NCBannerNavigationViewController ()
+@interface NCNavigationController ()
 
 @end
 
-@implementation NCBannerNavigationViewController
+@implementation NCNavigationController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

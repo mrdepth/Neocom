@@ -14,7 +14,7 @@
 @property (strong, nonatomic, readonly) NSManagedObjectContext *viewContext;
 @property (strong, nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
 @property (strong, nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (class, nonatomic, retain) NCCache* sharedCache;
+@property (class, nonatomic, strong) NCCache* sharedCache;
 
 - (void)loadWithCompletionHandler:(void (^)(NSError* error))block;
 - (void)performBackgroundTask:(void (^)(NSManagedObjectContext* managedObjectContext))block;

@@ -7,7 +7,7 @@
 //
 
 #import "NCSheetPresentationController.h"
-#import "UIColor+NC.h"
+#import "UIColor+Neocom.h"
 
 @implementation NCSheetSegue
 
@@ -33,6 +33,7 @@
 @interface NCSheetPresentationController()
 @property (nonatomic, strong) UIView *dimmingView;
 @property (nonatomic, strong) UIView *presentationWrappingView;
+@property (nonatomic, assign) CGRect keyboardFrame;
 @end
 
 @implementation NCSheetPresentationController
@@ -47,6 +48,7 @@
 		// of UIModalPresentationCustom for a custom presentation controller
 		// to be used.
 		presentedViewController.modalPresentationStyle = UIModalPresentationCustom;
+		self.keyboardFrame = CGRectZero;
 	}
 	
 	return self;
@@ -251,6 +253,14 @@
 	CGRect presentedViewControllerFrame = containerViewBounds;
 	presentedViewControllerFrame.size.height = presentedViewContentSize.height;
 	presentedViewControllerFrame.origin.y = CGRectGetMaxY(containerViewBounds) - presentedViewContentSize.height;
+	
+	presentedViewControllerFrame.origin.y -= self.keyboardFrame.size.height;
+	if (presentedViewControllerFrame.origin.y <= 40) {
+		presentedViewControllerFrame.size.height -= 40 - presentedViewControllerFrame.origin.y;
+		presentedViewControllerFrame.origin.y = 40;
+	}
+
+	
 	return presentedViewControllerFrame;
 }
 
@@ -421,13 +431,8 @@
 - (void) keyboardWillShow:(NSNotification*) notification {
 	NSDictionary* info = notification.userInfo;
 	CGRect rect = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-	
+	self.keyboardFrame = [self.containerView convertRect:rect fromView:nil];
 	CGRect frame = [self frameOfPresentedViewInContainerView];
-	frame.origin.y -= rect.size.height;
-	if (frame.origin.y <= 40) {
-		frame.size.height -= 40 - frame.origin.y;
-		frame.origin.y = 40;
-	}
 	
 	NSTimeInterval duration = [info[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 	UIViewAnimationCurve animationCurve = [info[UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
@@ -440,6 +445,7 @@
 
 - (void) keyboardWillHide:(NSNotification*) notification {
 	NSDictionary* info = notification.userInfo;
+	self.keyboardFrame = CGRectZero;
 	CGRect frame = [self frameOfPresentedViewInContainerView];
 	
 	NSTimeInterval duration = [info[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
@@ -454,13 +460,8 @@
 - (void) keyboardWillChangeFrame:(NSNotification*) notification {
 	NSDictionary* info = notification.userInfo;
 	CGRect rect = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-	
+	self.keyboardFrame = [self.containerView convertRect:rect fromView:nil];
 	CGRect frame = [self frameOfPresentedViewInContainerView];
-	frame.origin.y -= rect.size.height;
-	if (frame.origin.y <= 40) {
-		frame.size.height -= 40 - frame.origin.y;
-		frame.origin.y = 40;
-	}
 	
 	NSTimeInterval duration = [info[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 	UIViewAnimationCurve animationCurve = [info[UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];

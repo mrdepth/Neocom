@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NCAccount : NSManagedObject
 @property (readonly) EVEAPIKey* eveAPIKey;
+@property (nonatomic, strong, class) NCAccount* currentAccount;
+
 @end
 
 NS_ASSUME_NONNULL_END

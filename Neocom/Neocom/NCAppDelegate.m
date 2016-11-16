@@ -10,6 +10,12 @@
 #import "NCCache.h"
 #import "NCStorage.h"
 #import "NCDatabase.h"
+#import "NCNavigationController.h"
+#import "NCBannerNavigationController.h"
+#import "NCBackgroundView.h"
+#import "UIColor+Neocom.h"
+#import "NCTableView.h"
+#import "NCTableViewCell.h"
 
 @interface NCAppDelegate()<UISplitViewControllerDelegate>
 
@@ -27,40 +33,9 @@
 	return NO;
 }
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	NSDateIntervalFormatter* formatter = [NSDateIntervalFormatter new];
-	formatter.dateStyle = NSDateIntervalFormatterNoStyle;
-	formatter.timeStyle = NSDateIntervalFormatterFullStyle;
-	NSString* s = [formatter stringFromDate:[NSDate date] toDate:[NSDate dateWithTimeIntervalSinceNow:120]];
-	NSLog(@"%@", s);
-	
-	dispatch_group_t dispatchGroup = dispatch_group_create();
-	
-	dispatch_group_enter(dispatchGroup);
-	NCCache* cache = [NCCache new];
-	[cache loadWithCompletionHandler:^(NSError *error) {
-		NCCache.sharedCache = cache;
-		dispatch_group_leave(dispatchGroup);
-	}];
-	
-	dispatch_group_enter(dispatchGroup);
-	NCStorage* storage = [NCStorage localStorage];
-	[storage loadWithCompletionHandler:^(NSError *error) {
-		NCStorage.sharedStorage = storage;
-		dispatch_group_leave(dispatchGroup);
-	}];
-	
-	dispatch_group_enter(dispatchGroup);
-	NCDatabase* database = [NCDatabase new];
-	[database loadWithCompletionHandler:^(NSError *error) {
-		NCDatabase.sharedDatabase = database;
-		dispatch_group_leave(dispatchGroup);
-	}];
-	
-	dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
-		
-	});
+	[self loadDatabases];
+	[self setupAppearance];
 	
 	UISplitViewController* splitController = (UISplitViewController*) self.window.rootViewController;
 	splitController.delegate = self;
@@ -133,5 +108,57 @@
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - Private
+
+- (void) loadDatabases {
+	dispatch_group_t dispatchGroup = dispatch_group_create();
+	
+	dispatch_group_enter(dispatchGroup);
+	NCCache* cache = [NCCache new];
+	[cache loadWithCompletionHandler:^(NSError *error) {
+		NCCache.sharedCache = cache;
+		dispatch_group_leave(dispatchGroup);
+	}];
+	
+	dispatch_group_enter(dispatchGroup);
+	NCStorage* storage = [NCStorage localStorage];
+	[storage loadWithCompletionHandler:^(NSError *error) {
+		NCStorage.sharedStorage = storage;
+		dispatch_group_leave(dispatchGroup);
+	}];
+	
+	dispatch_group_enter(dispatchGroup);
+	NCDatabase* database = [NCDatabase new];
+	[database loadWithCompletionHandler:^(NSError *error) {
+		NCDatabase.sharedDatabase = database;
+		dispatch_group_leave(dispatchGroup);
+	}];
+	
+	dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+		
+	});
+}
+
+- (void) setupAppearance {
+	UINavigationBar* navigationBar = [UINavigationBar appearanceWhenContainedIn:[NCNavigationController class], nil];
+	[navigationBar setBackgroundImage:[UIImage imageNamed:@"clear"] forBarMetrics:UIBarMetricsDefault];
+	[navigationBar setShadowImage:[UIImage imageNamed:@"clear"]];
+	[navigationBar setBarTintColor:[UIColor backgroundColor]];
+	
+	NCTableView*  tableView = [NCTableView appearance];
+	[tableView setBackgroundColor:[UIColor backgroundColor]];
+	[tableView setSeparatorColor:[UIColor separatorColor]];
+	
+	
+	[[NCTableViewCell appearance] setBackgroundColor:[UIColor cellBackgroundColor]];
+	[[NCBackgroundView appearance] setBackgroundColor:[UIColor backgroundColor]];
+}
+
+
+@end
+
+@interface UITableView(NC)
+
+@property(nullable, nonatomic,copy)            UIColor          *backgroundColor UI_APPEARANCE_SELECTOR;
 
 @end

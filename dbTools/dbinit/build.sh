@@ -1,3 +1,3 @@
 #!/bin/sh
 make clean
-make EXPANSION="YC-118-9"
+make EXPANSION="Ascension 1.2"

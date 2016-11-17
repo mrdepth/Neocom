@@ -13,6 +13,9 @@
 #import "NCAddAPIKeyCell.h"
 #import "UIAlertController+NC.h"
 
+#define NCMinCharacterAPIKeyMask 17039368
+#define NCMinCorporationAPIKeyMask 9
+
 @interface NCAddAPIKeyViewController ()
 @property (nonatomic, strong) EVEAPIKeyInfo* apiKeyInfo;
 @property (nonatomic, strong) EVEAPIKey* currentAPIKey;
@@ -133,7 +136,7 @@
 - (EVEAPIKey*) apiKey {
 	int32_t keyID = [self.keyIDTextField.text intValue];
 	NSString* vCode = [self.vCodeTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	if (keyID > 0 && vCode.length > 1)
+	if (keyID > 0 && vCode.length > 0)
 		return [[EVEAPIKey alloc] initWithKeyID:keyID vCode:vCode];
 	else
 		return nil;
@@ -157,6 +160,13 @@
 				self.disabledCharacters = [NSMutableIndexSet new];
 				if (error)
 					self.errorLabel.text = [error localizedDescription];
+				else {
+					BOOL corporate = apiKeyInfo.key.type == EVEAPIKeyTypeCorporation;
+					int32_t accessMask = corporate ? NCMinCorporationAPIKeyMask : NCMinCharacterAPIKeyMask;
+					if ((apiKeyInfo.key.accessMask & accessMask) != accessMask) {
+						self.errorLabel.text = NSLocalizedString(@"Warning! You do not have sufficient permissions to access your in-game information. Please check the API Key access mask.", nil);
+					}
+				}
 			}
 			else {
 				self.apiKeyInfo = nil;

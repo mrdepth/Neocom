@@ -138,15 +138,19 @@
 	
 	NSString* key = [NSString stringWithFormat:@"EVEImage:character:%d:%d", (int) characterID, (int) s];
 	[self loadFromCacheForKey:key account:nil cachePolicy:cachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
+		UIImage* image;
+		if ([result isKindOfClass:[NSData class]])
+			image = [[UIImage alloc] initWithData:result];
+		block(image, error);
 		
 	} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
 		NSURL* url = [EVEImage characterPortraitURLWithCharacterID:(int32_t) characterID size:s error:nil];
 		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];
 		[api.sessionManager GET:url.absoluteString parameters:nil responseSerializer:[AFHTTPResponseSerializer serializer] completionBlock:^(id responseObject, NSError *error) {
-			UIImage* image;
-			if ([responseObject isKindOfClass:[NSData class]])
-				image = [[UIImage alloc] initWithData:responseObject];
-			block(image, error);
+			if (![responseObject isKindOfClass:[NSData class]])
+				responseObject = nil;
+			finish(responseObject, error, [NSDate date], [NSDate dateWithTimeIntervalSinceNow:3600]);
+
 		}];
 	}];
 }

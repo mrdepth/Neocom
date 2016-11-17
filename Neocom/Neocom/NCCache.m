@@ -40,40 +40,36 @@ static NCCache* sharedCache;
 }
 
 - (void)loadWithCompletionHandler:(void (^)(NSError* error))block {
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCCache" withExtension:@"momd"];
-		_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-
-		NSString* cacheDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.eveuniverse.NCCache"];
-		[[NSFileManager defaultManager] createDirectoryAtPath:cacheDirectory withIntermediateDirectories:YES attributes:nil error:nil];
-		NSString* storePath = [cacheDirectory stringByAppendingPathComponent:@"store.sqlite"];
-		
-		NSError *error;
-		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-		for (int i = 0; i < 2; i++) {
-			error = nil;
-			if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-														  configuration:nil
-																	URL:[NSURL fileURLWithPath:storePath]
-																options:nil
-																  error:&error]) {
-				break;
-			}
-			else
-				[[NSFileManager defaultManager] removeItemAtPath:storePath error:nil];
+	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCCache" withExtension:@"momd"];
+	_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+	
+	NSString* cacheDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.eveuniverse.NCCache"];
+	[[NSFileManager defaultManager] createDirectoryAtPath:cacheDirectory withIntermediateDirectories:YES attributes:nil error:nil];
+	NSString* storePath = [cacheDirectory stringByAppendingPathComponent:@"store.sqlite"];
+	
+	NSError *error;
+	_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+	for (int i = 0; i < 2; i++) {
+		error = nil;
+		if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+													  configuration:nil
+																URL:[NSURL fileURLWithPath:storePath]
+															options:nil
+															  error:&error]) {
+			break;
 		}
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (self.persistentStoreCoordinator) {
-				_viewContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-				_viewContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
-				_viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-				block(nil);
-			}
-			else if (block)
-				block(error ?: [NSError errorWithDomain:@"NCCache" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Unable to create cache store", nil)}]);
-		});
-	});
+		else
+			[[NSFileManager defaultManager] removeItemAtPath:storePath error:nil];
+	}
+	
+	if (self.persistentStoreCoordinator) {
+		_viewContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+		_viewContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+		_viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		block(nil);
+	}
+	else if (block)
+		block(error ?: [NSError errorWithDomain:@"NCCache" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Unable to create cache store", nil)}]);
 }
 
 - (void)performBackgroundTask:(void (^)(NSManagedObjectContext* managedObjectContext))block {

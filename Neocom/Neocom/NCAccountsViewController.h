@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface NCAccountsViewController : UITableViewController
+- (IBAction)onClose:(id)sender;
 
 @end

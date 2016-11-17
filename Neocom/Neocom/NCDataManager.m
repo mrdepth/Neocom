@@ -151,6 +151,65 @@
 	}];
 }
 
+- (void) imageWithCorporationID:(NSInteger) corporationID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error)) block {
+	size.width *= scale;
+	size.height *= scale;
+	
+	EVEImageSize sizes[] = {EVEImageSize32, EVEImageSize64, EVEImageSize128, EVEImageSize256};
+	int n = sizeof(sizes) / sizeof(EVEImageSize);
+	CGFloat dimension = MAX(size.width, size.height);
+	EVEImageSize s = EVEImageSize32;
+	for (int i = 0; i < n; i++) {
+		s = sizes[i];
+		if (sizes[i] > dimension)
+		break;
+	}
+	
+	NSString* key = [NSString stringWithFormat:@"EVEImage:corporation:%d:%d", (int) corporationID, (int) s];
+	[self loadFromCacheForKey:key account:nil cachePolicy:cachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
+		
+	} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
+		NSURL* url = [EVEImage corporationLogoURLWithCorporationID:(int32_t) corporationID size:s error:nil];
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];
+		[api.sessionManager GET:url.absoluteString parameters:nil responseSerializer:[AFHTTPResponseSerializer serializer] completionBlock:^(id responseObject, NSError *error) {
+			UIImage* image;
+			if ([responseObject isKindOfClass:[NSData class]])
+			image = [[UIImage alloc] initWithData:responseObject];
+			block(image, error);
+		}];
+	}];
+}
+
+- (void) imageWithAllianceID:(NSInteger) allianceID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error)) block {
+	size.width *= scale;
+	size.height *= scale;
+	
+	EVEImageSize sizes[] = {EVEImageSize32, EVEImageSize64, EVEImageSize128};
+	int n = sizeof(sizes) / sizeof(EVEImageSize);
+	CGFloat dimension = MAX(size.width, size.height);
+	EVEImageSize s = EVEImageSize32;
+	for (int i = 0; i < n; i++) {
+		s = sizes[i];
+		if (sizes[i] > dimension)
+		break;
+	}
+	
+	NSString* key = [NSString stringWithFormat:@"EVEImage:alliance:%d:%d", (int) allianceID, (int) s];
+	[self loadFromCacheForKey:key account:nil cachePolicy:cachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
+		
+	} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
+		NSURL* url = [EVEImage allianceLogoURLWithAllianceID:(int32_t) allianceID size:s error:nil];
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];
+		[api.sessionManager GET:url.absoluteString parameters:nil responseSerializer:[AFHTTPResponseSerializer serializer] completionBlock:^(id responseObject, NSError *error) {
+			UIImage* image;
+			if ([responseObject isKindOfClass:[NSData class]])
+			image = [[UIImage alloc] initWithData:responseObject];
+			block(image, error);
+		}];
+	}];
+}
+
+
 #pragma mark - Private
 
 - (void) loadFromCacheForKey:(NSString*) key account:(NSString*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(id result, NSError* error, NSManagedObjectID* cacheRecordID)) block elseLoad:(void(^)(void(^finish)(id object, NSError* error, NSDate* date, NSDate* expireDate))) loader {

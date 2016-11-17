@@ -8,51 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
+#import "templates.h"
 
-NSString* sourceMethodTemplate = @"\
-+ (instancetype) %@ {\n\
-	return [UIColor colorWithUInteger:0x%@];\n\
-}\n\n";
-
-NSString* headerMethodTemplate = @"+ (instancetype) %@;\n";
-
-NSString* headerTemplate = @"\
-//\n\
-//  UIColor+%1$@.h\n\
-//  Neocom\n\
-//\n\
-//  Created by Artem Shimanski\n\
-//  Copyright © 2016 Artem Shimanski. All rights reserved.\n\
-//\n\
-\n\
-#import <UIKit/UIKit.h>\n\
-\n\
-@interface UIColor (%1$@)\n\
-\n\
-+ (instancetype) colorWithUInteger:(NSUInteger) value;\n\
-%2$@\n\
-@end\n";
-
-NSString* sourceTemplate = @"\
-//\n\
-//  UIColor+%1$@.m\n\
-//  Neocom\n\
-//\n\
-//  Created by Artem Shimanski\n\
-//  Copyright © 2016 Artem Shimanski. All rights reserved.\n\
-//\n\
-\n\
-#import \"UIColor+%1$@.h\"\n\
-\n\
-@implementation UIColor (%1$@)\n\
-\n\
-+ (instancetype) colorWithUInteger:(NSUInteger) value {\n\
-const Byte* abgr = (const Byte*) &value;\n\
-return [UIColor colorWithRed:abgr[3] / 255.0 green:abgr[2] / 255.0 blue:abgr[1] / 255.0 alpha:abgr[0] / 255.0];\n\
-}\n\
-\n\
-%2$@\
-@end\n";
 
 @implementation NSColor(NC)
 

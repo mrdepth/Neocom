@@ -46,108 +46,104 @@ static NCStorage* sharedStorage;
 }
 
 - (void)loadWithCompletionHandler:(void (^)(NSError* error))block {
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage" withExtension:@"momd"];
-		_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-		
-		NSMutableDictionary* options = [NSMutableDictionary new];
-		NSURL* storeURL;
-		NSString* directory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store"];
-		[[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
-		if (self.storageType == NCStorageTypeLocal) {
-			storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"fallbackStore.sqlite"]];
-		}
-		else {
-			id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
-			NSURL* url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
-			if (url) {
-				storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"cloudStore.sqlite"]];
-				
-				id lastCloudToken = nil;
-				NSData *tokenData = [[NSUserDefaults standardUserDefaults] valueForKey:@"CloudToken"];
-				if (tokenData)
-					lastCloudToken = [NSKeyedUnarchiver unarchiveObjectWithData:tokenData];
-				
-				if (lastCloudToken && ![lastCloudToken isEqual:currentCloudToken]) {
-					[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
-				}
-				
-				tokenData = [NSKeyedArchiver archivedDataWithRootObject: currentCloudToken];
-				[[NSUserDefaults standardUserDefaults] setObject: tokenData forKey:@"CloudToken"];
-				[[NSUserDefaults standardUserDefaults] synchronize];
-				
-				options = [@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
-							 NSPersistentStoreUbiquitousContentURLKey : url,
-							 NSInferMappingModelAutomaticallyOption : @(YES),
-							 NSMigratePersistentStoresAutomaticallyOption : @(YES)} mutableCopy];
-			}
-		}
-
-		NSError *error;
-		NSPersistentStoreCoordinator* persistentStoreCoordinator;
-		if (storeURL) {
-			persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-			for (int i = 0; i < 2; i++) {
-				error = nil;
-				NSPersistentStore* persistentStore = nil;
-				@try {
-					persistentStore = [persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-																				configuration:@"Cloud"
-																						  URL:storeURL
-																					  options:options
-																						error:&error];
-				}
-				@catch (NSException *exception) {
-				}
-				@finally {
-				}
-				if (persistentStore)
-					break;
-				else {
-					if (self.storageType == NCStorageTypeLocal)
-						[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
-					else
-						options[NSPersistentStoreRebuildFromUbiquitousContentOption] = @(YES);
-				}
-			}
-		}
-		else {
-			error = [NSError errorWithDomain:@"NCStorage" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Unable to create cloud store", nil)}];
-		}
-		
-		if (error)
-			persistentStoreCoordinator = nil;
-		else {
-			storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"localStore.sqlite"]];
+	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage" withExtension:@"momd"];
+	_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+	
+	NSMutableDictionary* options = [NSMutableDictionary new];
+	NSURL* storeURL;
+	NSString* directory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store"];
+	[[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
+	if (self.storageType == NCStorageTypeLocal) {
+		storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"fallbackStore.sqlite"]];
+	}
+	else {
+		id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+		NSURL* url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+		if (url) {
+			storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"cloudStore.sqlite"]];
 			
-			for (int n = 0; n < 2; n++) {
-				error = nil;
-				if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-															  configuration:@"Local"
-																		URL:storeURL
-																	options:@{NSInferMappingModelAutomaticallyOption : @(YES),
-																			  NSMigratePersistentStoresAutomaticallyOption : @(YES)}
-																	  error:&error])
-					break;
-				else
+			id lastCloudToken = nil;
+			NSData *tokenData = [[NSUserDefaults standardUserDefaults] valueForKey:@"CloudToken"];
+			if (tokenData)
+				lastCloudToken = [NSKeyedUnarchiver unarchiveObjectWithData:tokenData];
+			
+			if (lastCloudToken && ![lastCloudToken isEqual:currentCloudToken]) {
+				[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+			}
+			
+			tokenData = [NSKeyedArchiver archivedDataWithRootObject: currentCloudToken];
+			[[NSUserDefaults standardUserDefaults] setObject: tokenData forKey:@"CloudToken"];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+			
+			options = [@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
+						 NSPersistentStoreUbiquitousContentURLKey : url,
+						 NSInferMappingModelAutomaticallyOption : @(YES),
+						 NSMigratePersistentStoresAutomaticallyOption : @(YES)} mutableCopy];
+		}
+	}
+	
+	NSError *error;
+	NSPersistentStoreCoordinator* persistentStoreCoordinator;
+	if (storeURL) {
+		persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+		for (int i = 0; i < 2; i++) {
+			error = nil;
+			NSPersistentStore* persistentStore = nil;
+			@try {
+				persistentStore = [persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+																		   configuration:@"Cloud"
+																					 URL:storeURL
+																				 options:options
+																				   error:&error];
+			}
+			@catch (NSException *exception) {
+			}
+			@finally {
+			}
+			if (persistentStore)
+				break;
+			else {
+				if (self.storageType == NCStorageTypeLocal)
 					[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+				else
+					options[NSPersistentStoreRebuildFromUbiquitousContentOption] = @(YES);
 			}
 		}
-		if (error)
-			persistentStoreCoordinator = nil;
+	}
+	else {
+		error = [NSError errorWithDomain:@"NCStorage" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Unable to create cloud store", nil)}];
+	}
+	
+	if (error)
+		persistentStoreCoordinator = nil;
+	else {
+		storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"localStore.sqlite"]];
 		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (persistentStoreCoordinator) {
-				_persistentStoreCoordinator = persistentStoreCoordinator;
-				_viewContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-				_viewContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
-				_viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-				block(nil);
-			}
-			else if (block)
-				block(error ?: [NSError errorWithDomain:@"NCCache" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Unable to create cache store", nil)}]);
-		});
-	});
+		for (int n = 0; n < 2; n++) {
+			error = nil;
+			if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+														 configuration:@"Local"
+																   URL:storeURL
+															   options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+																		 NSMigratePersistentStoresAutomaticallyOption : @(YES)}
+																 error:&error])
+				break;
+			else
+				[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+		}
+	}
+	if (error)
+		persistentStoreCoordinator = nil;
+	
+	if (persistentStoreCoordinator) {
+		_persistentStoreCoordinator = persistentStoreCoordinator;
+		_viewContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+		_viewContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+		_viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		block(nil);
+	}
+	else if (block)
+		block(error ?: [NSError errorWithDomain:@"NCCache" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Unable to create cache store", nil)}]);
 }
 
 - (void)performBackgroundTask:(void (^)(NSManagedObjectContext* managedObjectContext))block {

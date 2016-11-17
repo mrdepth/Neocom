@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		127BB8DD1DDC3EC500F07E6C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 127BB8DC1DDC3EC500F07E6C /* main.m */; };
+		127BB8DD1DDC3EC500F07E6C /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 127BB8DC1DDC3EC500F07E6C /* main.mm */; };
 		127BB8E51DDC3ED700F07E6C /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127BB8E41DDC3ED700F07E6C /* AppKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -24,8 +24,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		124A9BB11DDDA1A6004A6EAA /* templates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = templates.h; sourceTree = "<group>"; };
 		127BB8D91DDC3EC500F07E6C /* clrconvert */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = clrconvert; sourceTree = BUILT_PRODUCTS_DIR; };
-		127BB8DC1DDC3EC500F07E6C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		127BB8DC1DDC3EC500F07E6C /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		127BB8E41DDC3ED700F07E6C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -61,7 +62,8 @@
 		127BB8DB1DDC3EC500F07E6C /* clrconvert */ = {
 			isa = PBXGroup;
 			children = (
-				127BB8DC1DDC3EC500F07E6C /* main.m */,
+				127BB8DC1DDC3EC500F07E6C /* main.mm */,
+				124A9BB11DDDA1A6004A6EAA /* templates.h */,
 			);
 			path = clrconvert;
 			sourceTree = "<group>";
@@ -132,7 +134,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				127BB8DD1DDC3EC500F07E6C /* main.m in Sources */,
+				127BB8DD1DDC3EC500F07E6C /* main.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +263,7 @@
 				127BB8E21DDC3EC500F07E6C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

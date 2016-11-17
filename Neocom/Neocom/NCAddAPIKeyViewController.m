@@ -124,6 +124,7 @@
 - (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(loadCharacters) object:nil];
 	[self performSelector:@selector(loadCharacters) withObject:nil afterDelay:1];
+	self.errorLabel.text = nil;
 	return YES;
 }
 
@@ -154,6 +155,8 @@
 				self.apiKeyInfo = apiKeyInfo;
 				self.currentAPIKey = apiKey;
 				self.disabledCharacters = [NSMutableIndexSet new];
+				if (error)
+					self.errorLabel.text = [error localizedDescription];
 			}
 			else {
 				self.apiKeyInfo = nil;

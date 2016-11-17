@@ -16,9 +16,11 @@
 #import "NCUnitFormatter.h"
 #import "NCSkill.h"
 #import "NCProgressHandler.h"
+#import "NSAttributedString+NC.h"
+#import "NCDispatchGroup.h"
 @import EVEAPI;
 
-@interface NCAccountsViewController ()<UIViewControllerTransitioningDelegate>
+@interface NCAccountsViewController ()<UIViewControllerTransitioningDelegate, NSFetchedResultsControllerDelegate>
 @property (nonatomic, strong) NSFetchedResultsController* results;
 @property (nonatomic, strong) NSMutableDictionary* extraInfo;
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
@@ -33,6 +35,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.clearsSelectionOnViewWillAppear = NO;
 	self.dateFormatter = [NSDateFormatter new];
 	self.dateFormatter.timeStyle = NSDateFormatterNoStyle;
 	self.dateFormatter.dateStyle = NSDateFormatterMediumStyle;
@@ -45,10 +48,15 @@
 	NSFetchRequest* request = [NCAccount fetchRequest];
 	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]];
 	self.results = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:NCStorage.sharedStorage.viewContext sectionNameKeyPath:@"order" cacheName:nil];
+	self.results.delegate = self;
 	[self.results performFetch:nil];
 	self.extraInfo = [NSMutableDictionary new];
-	[self.refreshControl beginRefreshing];
-	[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+	//[self.refreshControl beginRefreshing];
+	//[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+	
+	NSIndexPath* indexPath = NCAccount.currentAccount ? [self.results indexPathForObject:NCAccount.currentAccount] : nil;
+	if (indexPath)
+		[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -59,6 +67,10 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)onClose:(id)sender {
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -74,44 +86,101 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NCAccountsCell* cell = [tableView dequeueReusableCellWithIdentifier:@"CharacterCell" forIndexPath:indexPath];
+	
+	NSDictionary* info = self.extraInfo[indexPath];
+	if (!info)
+		[self loadDataForCellAtIndexPath:indexPath withCachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(NSDictionary *info, NSError *error) {
+		}];
 	[self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+#pragma mark - Table view delegate
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCAccount.currentAccount = [self.results objectAtIndexPath:indexPath];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewRowAction* deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:NSLocalizedString(@"Delete", nil) handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+		NCAccount* account = [self.results objectAtIndexPath:indexPath];
+		NSManagedObjectContext* context = account.managedObjectContext;
+		[context deleteObject:account];
+		if ([context hasChanges])
+			[context save:nil];
+	}];
+	
+	UITableViewRowAction* keyInfoAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"API Key Info", nil) handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+		
+	}];
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+	return @[deleteAction, keyInfoAction];
 }
-*/
+
+#pragma mark - NSFetchedResultsControllerDelegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+	[self.tableView beginUpdates];
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+		   atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+ 
+	switch(type) {
+		case NSFetchedResultsChangeInsert:
+			[self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+						  withRowAnimation:UITableViewRowAnimationFade];
+			break;
+			
+		case NSFetchedResultsChangeDelete:
+			[self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+						  withRowAnimation:UITableViewRowAnimationFade];
+		default:
+			break;
+	}
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+    atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+	  newIndexPath:(NSIndexPath *)newIndexPath {
+ 
+	UITableView *tableView = self.tableView;
+ 
+	switch(type) {
+			
+		case NSFetchedResultsChangeInsert:
+			[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+							 withRowAnimation:UITableViewRowAnimationFade];
+			break;
+			
+		case NSFetchedResultsChangeDelete:
+			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+							 withRowAnimation:UITableViewRowAnimationFade];
+			break;
+			
+		case NSFetchedResultsChangeUpdate:
+			[self configureCell:[tableView cellForRowAtIndexPath:indexPath]
+					atIndexPath:indexPath];
+			break;
+			
+		case NSFetchedResultsChangeMove:
+			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+							 withRowAnimation:UITableViewRowAnimationFade];
+			[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+							 withRowAnimation:UITableViewRowAnimationFade];
+			break;
+	}
+}
+
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+	[self.tableView endUpdates];
+}
+
 
 /*
 #pragma mark - Navigation
@@ -149,133 +218,169 @@
 #pragma mark - Private
 
 - (IBAction) onRefresh:(UIRefreshControl*) sender {
-	[self reloadWithCachePolicy:NSURLRequestReloadIgnoringCacheData];
-}
-
-- (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	NCDataManager* dataManager = [NCDataManager new];
+	NCProgressHandler* progressHandler = [NCProgressHandler progressHandlerForViewController:self withTotalUnitCount:self.results.fetchedObjects.count];
 	
-	dispatch_group_t dispatchGroup = dispatch_group_create();
-	NCProgressHandler* progressHandler;
-	progressHandler = [NCProgressHandler progressHandlerForViewController:self withTotalUnitCount:self.results.fetchedObjects.count];
-	
+	NCDispatchGroup* dispatchGroup = [NCDispatchGroup new];
 	for (NCAccount* account in self.results.fetchedObjects) {
-		NSMutableDictionary* info = self.extraInfo[[self.results indexPathForObject:account]];
-		NSIndexPath* indexPath = [self.results indexPathForObject:account];
-		if (!info)
-			self.extraInfo[indexPath] = info = [NSMutableDictionary new];
-		
 		[progressHandler.progress becomeCurrentWithPendingUnitCount:1];
-		NSProgress* progress = [NSProgress progressWithTotalUnitCount:5];
+		id token = [dispatchGroup enter];
+		[self loadDataForCellAtIndexPath:[self.results indexPathForObject:account] withCachePolicy:NSURLRequestReloadIgnoringCacheData completionBlock:^(NSDictionary *info, NSError *error) {
+			[dispatchGroup leave:token];
+		}];
 		[progressHandler.progress resignCurrent];
-
-		
-		dispatch_group_enter(dispatchGroup);
-		[dataManager characterInfoForAccount:account cachePolicy:cachePolicy completionHandler:^(EVECharacterInfo *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-			progress.completedUnitCount++;
-			if (result)
-				info[@"EVECharacterInfo"] = result;
-			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-			dispatch_group_leave(dispatchGroup);
-		}];
-		
-		dispatch_group_enter(dispatchGroup);
-		[dataManager accountStatusForAccount:account cachePolicy:cachePolicy completionHandler:^(EVEAccountStatus *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-			progress.completedUnitCount++;
-			if (result)
-				info[@"EVEAccountStatus"] = result;
-			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-			dispatch_group_leave(dispatchGroup);
-		}];
-		
-		dispatch_group_enter(dispatchGroup);
-		[dataManager skillQueueForAccount:account cachePolicy:cachePolicy completionHandler:^(EVESkillQueue *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-			progress.completedUnitCount++;
-			if (result)
-				info[@"EVESkillQueue"] = result;
-			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-			dispatch_group_leave(dispatchGroup);
-		}];
-		
-		dispatch_group_enter(dispatchGroup);
-		[dataManager imageWithCharacterID:account.characterID preferredSize:CGSizeMake(80, 80) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
-			progress.completedUnitCount++;
-			if (image)
-				info[@"image"] = image;
-			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-			dispatch_group_leave(dispatchGroup);
-		}];
 	}
 	
-	dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+	[dispatchGroup notify:^{
 		[self.refreshControl endRefreshing];
 		[progressHandler finish];
-	});
+	}];
+}
+
+- (void) loadDataForCellAtIndexPath:(NSIndexPath*) indexPath withCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSDictionary* info, NSError* error)) block {
+	NCAccount* account = [self.results objectAtIndexPath:indexPath];
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:5];
+	
+	NSMutableDictionary* info = self.extraInfo[indexPath];
+	if (!info)
+		self.extraInfo[indexPath] = info = [NSMutableDictionary new];
+	
+	
+	NCDataManager* dataManager = [NCDataManager defaultManager];
+	NCDispatchGroup* dispatchGroup = [NCDispatchGroup new];
+
+	id token = nil;
+	
+	token = [dispatchGroup enter];
+	__block NSError* lastError = nil;
+	[dataManager characterInfoForAccount:account cachePolicy:cachePolicy completionHandler:^(EVECharacterInfo *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+		lastError = error;
+		progress.completedUnitCount++;
+		if (result)
+			info[@"EVECharacterInfo"] = result;
+		else if (error)
+			info[@"EVECharacterInfo"] = error;
+		[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+		[dispatchGroup leave:token];
+	}];
+	
+	token = [dispatchGroup enter];
+	[dataManager accountStatusForAccount:account cachePolicy:cachePolicy completionHandler:^(EVEAccountStatus *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+		progress.completedUnitCount++;
+		if (result)
+			info[@"EVEAccountStatus"] = result;
+		[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+		[dispatchGroup leave:token];
+	}];
+	
+	token = [dispatchGroup enter];
+	[dataManager skillQueueForAccount:account cachePolicy:cachePolicy completionHandler:^(EVESkillQueue *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+		progress.completedUnitCount++;
+		if (result)
+			info[@"EVESkillQueue"] = result;
+		[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+		[dispatchGroup leave:token];
+	}];
+	
+	token = [dispatchGroup enter];
+	[dataManager imageWithCharacterID:account.characterID preferredSize:CGSizeMake(80, 80) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
+		progress.completedUnitCount++;
+		if (image)
+			info[@"image"] = image;
+		[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+		[dispatchGroup leave:token];
+	}];
+	
+	[dispatchGroup notify:^{
+		block(info, lastError);
+	}];
 }
 
 - (void) configureCell:(NCAccountsCell*) cell atIndexPath:(NSIndexPath*) indexPath {
 	if (!cell)
 		return;
+	cell.characterNameLabel.text = @" ";
+	cell.characterImageView.image = nil;
+	cell.corporationLabel.text = @" ";
+	cell.allianceLabel.text = @" ";
+	cell.corporationImageView.image = nil;
+	cell.allianceImageView.image = nil;
+	cell.spLabel.text = @" ";
+	cell.wealthLabel.text = @" ";
+	cell.locationLabel.text = @" ";
+	cell.subscriptionLabel.text = @" ";
+	cell.skillLabel.text = @" ";
+	cell.trainingTimeLabel.text = @" ";
+	cell.trainingProgressView.progress = 0.0;
 	
 	NCAccount* account = [self.results objectAtIndexPath:indexPath];
-	EVEAPIKeyInfoCharactersItem* apiKeyCharacterItem = [[account.apiKey.apiKeyInfo.key.characters filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"characterID == %ld", (long) account.characterID]] lastObject];
+	cell.object = account;
+	
+	EVEAPIKeyInfoCharactersItem* apiKeyCharacterItem = account.character;
 	
 	NSDictionary* info = self.extraInfo[indexPath];
+	if (!info)
+		return;
+
 	EVEAccountStatus* accountStatus = info[@"EVEAccountStatus"];
 	if (account.eveAPIKey.corporate) {
 		
 	}
 	else {
 		EVECharacterInfo* characterInfo = info[@"EVECharacterInfo"];
-		EVESkillQueue* skillQueue = info[@"EVESkillQueue"];
-		UIImage* image = info[@"image"];
-		cell.characterNameLabel.text = characterInfo.characterName ?: apiKeyCharacterItem.characterName;
-		cell.corporationLabel.text = characterInfo.corporation ?: @" ";
-		cell.characterImageView.image = image;
-		cell.spLabel.text = characterInfo ? [NCUnitFormatter localizedStringFromNumber:@(characterInfo.skillPoints) unit:NCUnitSP style:NCUnitFormatterStyleShort] : @" ";
-		cell.wealthLabel.text = characterInfo ? [NCUnitFormatter localizedStringFromNumber:@(characterInfo.accountBalance) unit:NCUnitISK style:NCUnitFormatterStyleShort] : @" ";
-		cell.skillLabel.text = NSLocalizedString(@"No skills in training", nil);
-		cell.skillLabel.textColor = [UIColor lightTextColor];
-		cell.trainingTimeLabel.text = @" ";
-		cell.trainingProgressView.progress = 0;
-		
-		if (characterInfo.lastKnownLocation && characterInfo.shipTypeName) {
-			NSMutableAttributedString* s = [NSMutableAttributedString new];
-			[s appendAttributedString:[[NSAttributedString alloc] initWithString:characterInfo.shipTypeName attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
-			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[@", " stringByAppendingString:characterInfo.lastKnownLocation] attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor]}]];
-			cell.locationLabel.attributedText = s;
-		}
-		else if (characterInfo.lastKnownLocation) {
-			cell.locationLabel.attributedText = [[NSAttributedString alloc] initWithString:characterInfo.lastKnownLocation attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor]}];
-		}
-		else if (characterInfo.shipName ) {
-			cell.locationLabel.attributedText = [[NSAttributedString alloc] initWithString:characterInfo.shipTypeName attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+		if ([characterInfo isKindOfClass:[NSError class]]) {
+			cell.characterNameLabel.text = [(NSError*) characterInfo localizedDescription];
 		}
 		else {
-			cell.locationLabel.text = @" ";
-		}
-		
-		if (skillQueue) {
-			NSArray* skills = [skillQueue.skillQueue filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"queuePosition == 0"]];
+			EVESkillQueue* skillQueue = info[@"EVESkillQueue"];
+			UIImage* image = info[@"image"];
+			cell.characterNameLabel.text = characterInfo.characterName ?: apiKeyCharacterItem.characterName;
+			cell.corporationLabel.text = characterInfo.corporation ?: @" ";
+			cell.characterImageView.image = image;
+			cell.spLabel.text = characterInfo ? [NCUnitFormatter localizedStringFromNumber:@(characterInfo.skillPoints) unit:NCUnitSP style:NCUnitFormatterStyleShort] : @" ";
+			cell.wealthLabel.text = characterInfo ? [NCUnitFormatter localizedStringFromNumber:@(characterInfo.accountBalance) unit:NCUnitISK style:NCUnitFormatterStyleShort] : @" ";
+			cell.skillLabel.text = skillQueue ? NSLocalizedString(@"No skills in training", nil) : @" ";
+			cell.skillLabel.textColor = [UIColor lightTextColor];
 			
-			if (skills.count > 0) {
-				EVESkillQueueItem* firstSkill = skills[0];
-
-				NCDBInvType* type = [NCDBInvType invTypesWithManagedObjectContext:NCDatabase.sharedDatabase.viewContext][firstSkill.typeID];
-				NCSkill* skill = [[NCSkill alloc] initWithInvType:type skill:firstSkill inQueue:skillQueue];
-				if (skill) {
-					NSDate* endTime = skill.trainingEndDate;
-					cell.skillLabel.text = [NSString stringWithFormat:@"%@ %d", type.typeName, firstSkill.level];
-					cell.skillLabel.textColor = [UIColor whiteColor];
-					cell.trainingTimeLabel.text = [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] style:NCTimeIntervalFormatterStyleMinuts];
-					cell.trainingProgressView.progress = skill.trainingProgress;
-				}
-				else {
-					cell.skillLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown typeID %d", nil), firstSkill.typeID];
+			if (characterInfo.lastKnownLocation && characterInfo.shipTypeName) {
+				NSMutableAttributedString* s = [NSMutableAttributedString new];
+				[s appendAttributedString:[[NSAttributedString alloc] initWithString:characterInfo.shipTypeName attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+				[s appendAttributedString:[[NSAttributedString alloc] initWithString:[@", " stringByAppendingString:characterInfo.lastKnownLocation] attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor]}]];
+				cell.locationLabel.attributedText = s;
+			}
+			else if (characterInfo.lastKnownLocation) {
+				cell.locationLabel.attributedText = [[NSAttributedString alloc] initWithString:characterInfo.lastKnownLocation attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor]}];
+			}
+			else if (characterInfo.shipName ) {
+				cell.locationLabel.attributedText = [[NSAttributedString alloc] initWithString:characterInfo.shipTypeName attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+			}
+			else {
+				cell.locationLabel.text = @" ";
+			}
+			
+			if (skillQueue) {
+				NSArray* skills = [skillQueue.skillQueue filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"queuePosition == 0"]];
+				
+				if (skills.count > 0) {
+					EVESkillQueueItem* firstSkill = skills[0];
+					
+					NCDBInvType* type = [NCDBInvType invTypesWithManagedObjectContext:NCDatabase.sharedDatabase.viewContext][firstSkill.typeID];
+					NCSkill* skill = [[NCSkill alloc] initWithInvType:type skill:firstSkill inQueue:skillQueue];
+					if (skill) {
+						NSDate* endTime = skill.trainingEndDate;
+						cell.skillLabel.textColor = [UIColor whiteColor];
+						cell.skillLabel.attributedText = [NSAttributedString attributedStringWithSkillName:type.typeName level:firstSkill.level];
+						cell.trainingTimeLabel.text = [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] style:NCTimeIntervalFormatterStyleMinuts];
+						cell.trainingProgressView.progress = skill.trainingProgress;
+					}
+					else {
+						cell.skillLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown typeID %d", nil), firstSkill.typeID];
+					}
 				}
 			}
 		}
 	}
+	
+	
 	NSDate* paidUntil = [accountStatus.eveapi localTimeWithServerTime:accountStatus.paidUntil];
 	if (paidUntil) {
 		NSTimeInterval t = [paidUntil timeIntervalSinceNow];
@@ -286,8 +391,6 @@
 	}
 	else
 		cell.subscriptionLabel.text = @" ";
-	
 }
-
 
 @end

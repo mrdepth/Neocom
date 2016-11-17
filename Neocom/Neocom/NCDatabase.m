@@ -28,30 +28,26 @@ static NCDatabase* sharedDatabase;
 }
 
 - (void)loadWithCompletionHandler:(void (^)(NSError* error))block {
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"momd"];
-		_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-		
-		NSString* storePath = [[NSBundle mainBundle] pathForResource:@"NCDatabase" ofType:@"sqlite"];
-		
-		NSError *error;
-		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-		[_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-												  configuration:nil
-															URL:[NSURL fileURLWithPath:storePath]
-														options:nil
-														  error:&error];
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (self.persistentStoreCoordinator) {
-				_viewContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-				_viewContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
-				_viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-				block(nil);
-			}
-			else if (block)
-				block(error ?: [NSError errorWithDomain:@"NCDatabase" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Unable to create cache store", nil)}]);
-		});
-	});
+	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCDatabase" withExtension:@"momd"];
+	_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+	
+	NSString* storePath = [[NSBundle mainBundle] pathForResource:@"NCDatabase" ofType:@"sqlite"];
+	
+	NSError *error;
+	_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+	[_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+											  configuration:nil
+														URL:[NSURL fileURLWithPath:storePath]
+													options:nil
+													  error:&error];
+	if (self.persistentStoreCoordinator) {
+		_viewContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+		_viewContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+		_viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		block(nil);
+	}
+	else if (block)
+		block(error ?: [NSError errorWithDomain:@"NCDatabase" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Unable to create cache store", nil)}]);
 }
 
 - (void)performBackgroundTask:(void (^)(NSManagedObjectContext* managedObjectContext))block {

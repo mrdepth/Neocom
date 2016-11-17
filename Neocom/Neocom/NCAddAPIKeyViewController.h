@@ -11,6 +11,7 @@
 @interface NCAddAPIKeyViewController : UITableViewController<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *keyIDTextField;
 @property (weak, nonatomic) IBOutlet UITextField *vCodeTextField;
+@property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 - (IBAction)onSave:(id)sender;
 - (IBAction)onCancel:(id)sender;

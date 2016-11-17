@@ -10,13 +10,14 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCAPIKey, NCMailBox, NCSkillPlan, EVEAPIKey;
+@class NCAPIKey, NCMailBox, NCSkillPlan, EVEAPIKey, EVEAPIKeyInfoCharactersItem;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NCAccount : NSManagedObject
 @property (readonly) EVEAPIKey* eveAPIKey;
 @property (nonatomic, strong, class) NCAccount* currentAccount;
+@property (nonatomic, readonly) EVEAPIKeyInfoCharactersItem* character;
 
 @end
 

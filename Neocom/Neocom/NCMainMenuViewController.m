@@ -11,6 +11,9 @@
 #import "NCImageSubtitleCell.h"
 #import "NCSlideDownInteractiveTransition.h"
 #import "NCSlideDownAnimationController.h"
+#import "NCStorage.h"
+#import "unitily.h"
+@import EVEAPI;
 
 @interface NCMainMenuViewController ()<UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate>
 @property (nonatomic, weak) NCMainMenuHeaderViewController* headerViewController;
@@ -23,31 +26,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.estimatedRowHeight = self.tableView.rowHeight;
+	self.tableView.rowHeight = UITableViewAutomaticDimension;
+
 	self.mainMenu = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]];
-	
-	self.headerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NCMainMenuHeaderViewController"];
-	[self.tableView addSubview:self.headerViewController.view];
-	[self addChildViewController:self.headerViewController];
-	
-//	for (UIViewController* controller in self.childViewControllers) {
-//		if ([controller isKindOfClass:[NCMainMenuHeaderViewController class]])
-//			self.headerViewController = (NCMainMenuHeaderViewController*) controller;
-//	}
-	//self.tableView.tableHeaderView.frame = CGRectZero;
-	//self.tableView.contentInset = UIEdgeInsetsMake(190, 0, 0, 0);
-	self.tableView.estimatedRowHeight = 43;
-    // Do any additional setup after loading the view.
-	self.headerMinHeight = [self.headerViewController.view systemLayoutSizeFittingSize:CGSizeMake(self.view.bounds.size.width, 0) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityDefaultHigh].height;
-	self.headerMaxHeight = [self.headerViewController.view systemLayoutSizeFittingSize:CGSizeMake(self.view.bounds.size.width, 0) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;
-	
-	CGRect rect = CGRectMake(0, 0, self.view.bounds.size.width, self.headerMaxHeight);
-	//self.tableView.contentInset = UIEdgeInsetsMake(self.headerMaxHeight, 0, 0, 0);
-	self.tableView.tableHeaderView.frame = rect;
-	self.headerViewController.view.frame = rect;
-	self.headerViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
-//	self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(self.headerViewController.view.frame.size.height, 0, 0, 0);
-	
-	//[self.panGestureRecognizer requireGestureRecognizerToFail:self.tableView.panGestureRecognizer];
+
+	[self updateHeader];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currentAccountChanged:) name:NCCurrentAccountChangedNotification object:nil];
 }
 
 - (void) viewDidLayoutSubviews {
@@ -160,5 +146,40 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - Private
+
+- (void) currentAccountChanged:(NSNotification*) notification {
+	[self updateHeader];
+}
+
+- (void) updateHeader {
+	NCAccount* account = NCAccount.currentAccount;
+	NSString* identifier;
+	if (account)
+		identifier = account.eveAPIKey.corporate ? @"NCMainMenuCorporationHeaderViewController" : @"NCMainMenuCharacterHeaderViewController";
+	else
+		identifier = [[NCStorage.sharedStorage.viewContext executeFetchRequest:[NCAccount fetchRequest] error:nil] count] > 0 ? @"NCMainMenuLoginHeaderViewController" : @"NCMainMenuHeaderViewController";
+	
+	if (self.headerViewController) {
+		[self.headerViewController.view removeFromSuperview];
+		[self.headerViewController removeFromParentViewController];
+	}
+	
+	self.headerViewController = [self.storyboard instantiateViewControllerWithIdentifier:identifier];
+	[self.tableView addSubview:self.headerViewController.view];
+	[self addChildViewController:self.headerViewController];
+	
+	self.headerMinHeight = [self.headerViewController.view systemLayoutSizeFittingSize:CGSizeMake(self.view.bounds.size.width, 0) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityDefaultHigh].height;
+	self.headerMaxHeight = [self.headerViewController.view systemLayoutSizeFittingSize:CGSizeMake(self.view.bounds.size.width, 0) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;
+	
+	CGRect rect = CGRectMake(0, 0, self.view.bounds.size.width, self.headerMaxHeight);
+	self.tableView.tableHeaderView.frame = rect;
+	self.headerViewController.view.frame = rect;
+	self.tableView.tableHeaderView = self.tableView.tableHeaderView;
+	self.headerViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+	[self.tableView setNeedsLayout];
+	[self.tableView layoutIfNeeded];
+}
 
 @end

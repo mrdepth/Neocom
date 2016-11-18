@@ -122,7 +122,6 @@
 	}];
 }
 
-
 - (void) imageWithCharacterID:(NSInteger) characterID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error)) block {
 	size.width *= scale;
 	size.height *= scale;
@@ -209,6 +208,15 @@
 			if (!image && !error)
 				error = [NSError errorWithDomain:NCDefaultErrorDomain code:NCDefaultErrorCode userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"File not found", nil)}];
 			finish(image ? responseObject : nil, error, [NSDate date], [NSDate dateWithTimeIntervalSinceNow:3600]);
+		}];
+	}];
+}
+
+- (void) callListWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVECallList* result, NSError* error, NSManagedObjectID* cacheRecordID)) block {
+	[self loadFromCacheForKey:@"EVECallList" account:nil cachePolicy:cachePolicy completionHandler:block elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
+		EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:nil cachePolicy:cachePolicy];
+		[api callListWithCompletionBlock:^(EVECallList *result, NSError *error) {
+			finish(result, error, [result.eveapi localTimeWithServerTime:result.eveapi.cacheDate], [result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]);
 		}];
 	}];
 }

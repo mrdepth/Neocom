@@ -69,6 +69,12 @@
 }
 
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCAccountsViewController"]) {
+		segue.destinationViewController.transitioningDelegate = (id) self.parentViewController;
+	}
+	[super prepareForSegue:segue sender:sender];
+}
 
 /*
 #pragma mark - Navigation
@@ -79,5 +85,9 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (IBAction)onLogout:(id)sender {
+	NCAccount.currentAccount = nil;
+}
 
 @end

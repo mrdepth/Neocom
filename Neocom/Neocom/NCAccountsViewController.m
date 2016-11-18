@@ -18,12 +18,15 @@
 #import "NCProgressHandler.h"
 #import "NSAttributedString+NC.h"
 #import "NCDispatchGroup.h"
+#import "NCAPIKeyInfoViewController.h"
+#import "NCTableViewBackgroundLabel.h"
 @import EVEAPI;
 
 @interface NCAccountsViewController ()<UIViewControllerTransitioningDelegate, NSFetchedResultsControllerDelegate>
 @property (nonatomic, strong) NSFetchedResultsController* results;
 @property (nonatomic, strong) NSMutableDictionary* extraInfo;
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
+@property (nonatomic, assign, getter=isInteractive) BOOL interactive;
 @end
 
 @implementation NCAccountsViewController
@@ -57,6 +60,8 @@
 	NSIndexPath* indexPath = NCAccount.currentAccount ? [self.results indexPathForObject:NCAccount.currentAccount] : nil;
 	if (indexPath)
 		[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+	
+	self.tableView.backgroundView = self.results.fetchedObjects.count == 0 ? [NCTableViewBackgroundLabel labelWithText:NSLocalizedString(@"No Accounts", nil)] : nil;
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -71,6 +76,13 @@
 
 - (IBAction)onClose:(id)sender {
 	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCAPIKeyInfoViewController"]) {
+		NCAPIKeyInfoViewController* controller = segue.destinationViewController;
+		controller.account = [sender object];
+	}
 }
 
 #pragma mark - Table view data source
@@ -113,10 +125,22 @@
 	}];
 	
 	UITableViewRowAction* keyInfoAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"API Key Info", nil) handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-		
+		[self performSegueWithIdentifier:@"NCAPIKeyInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
 	}];
 
 	return @[deleteAction, keyInfoAction];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+	CGFloat bottom = MAX(scrollView.contentSize.height - scrollView.bounds.size.height, 0);
+	CGFloat y = scrollView.contentOffset.y - bottom;
+	if (y > 40 && !self.transitionCoordinator && scrollView.tracking) {
+		self.interactive = YES;
+		[self dismissViewControllerAnimated:YES completion:nil];
+		self.interactive = NO;
+	}
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
@@ -179,6 +203,8 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	[self.tableView endUpdates];
+	self.tableView.backgroundView = self.results.fetchedObjects.count == 0 ? [NCTableViewBackgroundLabel labelWithText:NSLocalizedString(@"No Accounts", nil)] : nil;
+
 }
 
 
@@ -192,15 +218,6 @@
 }
 */
 
-#pragma mark - UIScrollViewDelegate
-
-- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
-	CGFloat bottom = MAX(scrollView.contentSize.height - scrollView.bounds.size.height, 0);
-	CGFloat y = scrollView.contentOffset.y - bottom;
-	if (y > 40 && !self.transitionCoordinator && scrollView.tracking)
-		[self dismissViewControllerAnimated:YES completion:nil];
-}
-
 #pragma mark - UIViewControllerTransitioningDelegate
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
@@ -212,7 +229,7 @@
 }
 
 - (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
-	return self.tableView.tracking ? [[NCSlideDownInteractiveTransition alloc] initWithScrollView:self.tableView] : nil;
+	return self.interactive ? [[NCSlideDownInteractiveTransition alloc] initWithScrollView:self.tableView] : nil;
 }
 
 #pragma mark - Private

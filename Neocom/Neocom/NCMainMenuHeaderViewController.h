@@ -15,5 +15,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *allianceLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *corporationImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *allianceImageView;
+- (IBAction)onLogout:(id)sender;
 
 @end

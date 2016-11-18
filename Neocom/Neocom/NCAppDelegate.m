@@ -19,7 +19,6 @@
 #import "NCTableViewCell.h"
 @import ImageIO;
 
-
 @interface NCAppDelegate()<UISplitViewControllerDelegate>
 
 @end

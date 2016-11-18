@@ -11,39 +11,42 @@
 @implementation NCSlideDownAnimationController
 
 - (NSTimeInterval) transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
-	return 0.35;
+	return [transitionContext isAnimated] ? 0.35 : 0;
 }
 
 - (void) animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
-	UIViewController* toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-	UIViewController* fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+	UIViewController* toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+	UIViewController* fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
 	UIView* containerView = [transitionContext containerView];
-	BOOL isPresenting = toViewController.presentingViewController == fromViewController;
+	UIView* toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+	UIView* fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
 	
-	[containerView insertSubview:toViewController.view aboveSubview:fromViewController.view];
+	BOOL isPresenting = toVC.presentingViewController == fromVC;
 	
-	CGRect initialFrame = [transitionContext initialFrameForViewController:fromViewController];
-	CGRect finalFrame = [transitionContext finalFrameForViewController:toViewController];
-	toViewController.view.frame = isPresenting
+	[containerView insertSubview:toView aboveSubview:fromView];
+	
+	CGRect initialFrame = [transitionContext initialFrameForViewController:fromVC];
+	CGRect finalFrame = [transitionContext finalFrameForViewController:toVC];
+	toView.frame = isPresenting
 	? CGRectMake(finalFrame.origin.x, initialFrame.origin.y - finalFrame.size.height, finalFrame.size.width, finalFrame.size.height)
 	: CGRectMake(finalFrame.origin.x, CGRectGetMaxY(initialFrame), finalFrame.size.width, finalFrame.size.height);
 	
 	
 	[UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-		toViewController.view.frame = finalFrame;
-		fromViewController.view.frame = isPresenting
+		toView.frame = finalFrame;
+		fromView.frame = isPresenting
 		? CGRectMake(initialFrame.origin.x, CGRectGetMaxY(finalFrame), initialFrame.size.width, initialFrame.size.height)
 		: CGRectMake(initialFrame.origin.x, finalFrame.origin.y - initialFrame.size.height, initialFrame.size.width, initialFrame.size.height);
 		
 	} completion:^(BOOL finished) {
 		BOOL wasCancelled = [transitionContext transitionWasCancelled];
-		if (wasCancelled) {
-			fromViewController.view.frame = initialFrame;
-			[toViewController.view removeFromSuperview];
-		}
-		else {
-			[fromViewController.view removeFromSuperview];
-		}
+//		if (wasCancelled) {
+//			fromViewController.view.frame = initialFrame;
+//			[toViewController.view removeFromSuperview];
+//		}
+//		else {
+//			[fromViewController.view removeFromSuperview];
+//		}
 		[transitionContext completeTransition:!wasCancelled];
 	}];
 }

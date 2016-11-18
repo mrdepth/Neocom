@@ -167,6 +167,9 @@
 		12AC4D001DDA2B680052430E /* NCAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AC4CFF1DDA2B680052430E /* NCAccountsViewController.m */; };
 		12CCAD7E1DDA4C7A0053CA8A /* NCLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CCAD7D1DDA4C7A0053CA8A /* NCLabel.m */; };
 		12FB4F561DDDE15B00C7E34A /* NCDispatchGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FB4F551DDDE15B00C7E34A /* NCDispatchGroup.m */; };
+		12FB4F751DDF3A9C00C7E34A /* NCSwitchTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FB4F741DDF3A9C00C7E34A /* NCSwitchTitleCell.m */; };
+		12FB4F791DDF3B3400C7E34A /* NCAPIKeyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FB4F781DDF3B3400C7E34A /* NCAPIKeyInfoViewController.m */; };
+		12FB4F7E1DDF475800C7E34A /* NCTableViewBackgroundLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FB4F7D1DDF475800C7E34A /* NCTableViewBackgroundLabel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -421,6 +424,12 @@
 		12CCAD7D1DDA4C7A0053CA8A /* NCLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLabel.m; sourceTree = "<group>"; };
 		12FB4F541DDDE15B00C7E34A /* NCDispatchGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDispatchGroup.h; sourceTree = "<group>"; };
 		12FB4F551DDDE15B00C7E34A /* NCDispatchGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDispatchGroup.m; sourceTree = "<group>"; };
+		12FB4F731DDF3A9C00C7E34A /* NCSwitchTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSwitchTitleCell.h; sourceTree = "<group>"; };
+		12FB4F741DDF3A9C00C7E34A /* NCSwitchTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSwitchTitleCell.m; sourceTree = "<group>"; };
+		12FB4F771DDF3B3400C7E34A /* NCAPIKeyInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAPIKeyInfoViewController.h; sourceTree = "<group>"; };
+		12FB4F781DDF3B3400C7E34A /* NCAPIKeyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAPIKeyInfoViewController.m; sourceTree = "<group>"; };
+		12FB4F7C1DDF475800C7E34A /* NCTableViewBackgroundLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewBackgroundLabel.h; sourceTree = "<group>"; };
+		12FB4F7D1DDF475800C7E34A /* NCTableViewBackgroundLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewBackgroundLabel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -490,6 +499,7 @@
 		124A9BB91DDDA7E3004A6EAA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				12FB4F721DDF3A7900C7E34A /* NCSwitchTitleCell */,
 				124A9BBA1DDDA7FF004A6EAA /* NCRoundImageView */,
 				124A9BBB1DDDA803004A6EAA /* NCTintImageView */,
 				129A86381DD90BFC0001F732 /* NCImageSubtitleCell */,
@@ -671,6 +681,7 @@
 				1229E4F61DD9CC0E00500A7D /* NCSplitViewController */,
 				127BB8C91DDC3B0800F07E6C /* NCNavigationController */,
 				12FB4F531DDDE14700C7E34A /* NCDispatchGroup */,
+				12FB4F7B1DDF471D00C7E34A /* NCTableViewBackgroundLabel */,
 				129BBE031DDB743F009F97F5 /* UIAlertController+NC.h */,
 				129BBE041DDB743F009F97F5 /* UIAlertController+NC.m */,
 				124A9BB21DDDA4D2004A6EAA /* NSAttributedString+NC.h */,
@@ -900,6 +911,7 @@
 			isa = PBXGroup;
 			children = (
 				1251D3841DDAFFE200C90DC4 /* NCAddAPIKeyViewController */,
+				12FB4F761DDF3B0400C7E34A /* NCAPIKeyInfoViewController */,
 				12AC4CFE1DDA2B680052430E /* NCAccountsViewController.h */,
 				12AC4CFF1DDA2B680052430E /* NCAccountsViewController.m */,
 				129BBE061DDB7E28009F97F5 /* NCAccountsCell.h */,
@@ -924,6 +936,33 @@
 				12FB4F551DDDE15B00C7E34A /* NCDispatchGroup.m */,
 			);
 			name = NCDispatchGroup;
+			sourceTree = "<group>";
+		};
+		12FB4F721DDF3A7900C7E34A /* NCSwitchTitleCell */ = {
+			isa = PBXGroup;
+			children = (
+				12FB4F731DDF3A9C00C7E34A /* NCSwitchTitleCell.h */,
+				12FB4F741DDF3A9C00C7E34A /* NCSwitchTitleCell.m */,
+			);
+			name = NCSwitchTitleCell;
+			sourceTree = "<group>";
+		};
+		12FB4F761DDF3B0400C7E34A /* NCAPIKeyInfoViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12FB4F771DDF3B3400C7E34A /* NCAPIKeyInfoViewController.h */,
+				12FB4F781DDF3B3400C7E34A /* NCAPIKeyInfoViewController.m */,
+			);
+			name = NCAPIKeyInfoViewController;
+			sourceTree = "<group>";
+		};
+		12FB4F7B1DDF471D00C7E34A /* NCTableViewBackgroundLabel */ = {
+			isa = PBXGroup;
+			children = (
+				12FB4F7C1DDF475800C7E34A /* NCTableViewBackgroundLabel.h */,
+				12FB4F7D1DDF475800C7E34A /* NCTableViewBackgroundLabel.m */,
+			);
+			name = NCTableViewBackgroundLabel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1138,6 +1177,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12FB4F791DDF3B3400C7E34A /* NCAPIKeyInfoViewController.m in Sources */,
 				127BB8F31DDC476700F07E6C /* Dark.clr in Sources */,
 				129BBE081DDB7E28009F97F5 /* NCAccountsCell.m in Sources */,
 				1251D3871DDAFFF400C90DC4 /* NCAddAPIKeyViewController.m in Sources */,
@@ -1157,6 +1197,7 @@
 				12AC4D001DDA2B680052430E /* NCAccountsViewController.m in Sources */,
 				1229E4F91DD9CC2000500A7D /* NCSplitViewController.m in Sources */,
 				129A85461DD8D2E30001F732 /* NCFetchedCollection.m in Sources */,
+				12FB4F7E1DDF475800C7E34A /* NCTableViewBackgroundLabel.m in Sources */,
 				129BBE0E1DDB8FD8009F97F5 /* NCUnitFormatter.m in Sources */,
 				1229E5081DDA016900500A7D /* NCTintImageView.m in Sources */,
 				127A94B01DDC9FEF002E6B5D /* NCTableViewCell.m in Sources */,
@@ -1175,6 +1216,7 @@
 				129A85501DD8D3390001F732 /* NCCache.xcdatamodeld in Sources */,
 				1251D38B1DDB007B00C90DC4 /* NCSheetPresentationController.m in Sources */,
 				124A9BB71DDDA560004A6EAA /* unitily.m in Sources */,
+				12FB4F751DDF3A9C00C7E34A /* NCSwitchTitleCell.m in Sources */,
 				129A86331DD8F1990001F732 /* NCRoundImageView.m in Sources */,
 				129BBE051DDB743F009F97F5 /* UIAlertController+NC.m in Sources */,
 				129A85071DD8D2170001F732 /* main.m in Sources */,

@@ -9,9 +9,9 @@
 #import "NCAddAPIKeyViewController.h"
 #import "NCSheetPresentationController.h"
 #import "UIColor+CS.h"
-#import "NCDataManager.h"
 #import "NCAddAPIKeyCell.h"
 #import "UIAlertController+NC.h"
+#import "NCDataManager.h"
 
 #define NCMinCharacterAPIKeyMask 17039368
 #define NCMinCorporationAPIKeyMask 9
@@ -185,5 +185,7 @@
 	_apiKeyInfo = apiKeyInfo;
 	self.navigationItem.rightBarButtonItem.enabled = apiKeyInfo != nil;
 }
+
+
 
 @end

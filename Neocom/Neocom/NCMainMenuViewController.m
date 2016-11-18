@@ -20,6 +20,7 @@
 @property (nonatomic, assign) CGFloat headerMinHeight;
 @property (nonatomic, assign) CGFloat headerMaxHeight;
 @property (nonatomic, strong) NSArray<NSArray<NSDictionary<NSString*, id>*>*>* mainMenu;
+@property (nonatomic, assign, getter=isInteractive) BOOL interactive;
 @end
 
 @implementation NCMainMenuViewController
@@ -70,6 +71,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCAccountsViewController"]) {
+		segue.destinationViewController.transitioningDelegate = self;
+	}
+	[super prepareForSegue:segue sender:sender];
+}
 
 #pragma mark - UITableViewDataSource
 
@@ -101,9 +108,12 @@
 	self.headerViewController.view.frame = [self.view convertRect:rect toView:self.tableView];
 	self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(rect.size.height, 0, 0, 0);
 	if (scrollView.contentOffset.y < -50 && !self.transitionCoordinator && scrollView.tracking) {
-		UIViewController* controller = [self.storyboard instantiateViewControllerWithIdentifier:@"NCAccountsViewController"];
-		controller.transitioningDelegate = self;
-		[self presentViewController:controller animated:YES completion:nil];
+//		UIViewController* controller = [self.storyboard instantiateViewControllerWithIdentifier:@"NCAccountsViewController"];
+//		controller.transitioningDelegate = self;
+//		[self presentViewController:controller animated:YES completion:nil];
+		self.interactive = YES;
+		[self performSegueWithIdentifier:@"NCAccountsViewController" sender:self];
+		self.interactive = NO;
 	}
 }
 
@@ -130,7 +140,7 @@
 }
 
 - (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {
-	return self.tableView.tracking ? [[NCSlideDownInteractiveTransition alloc] initWithScrollView:self.tableView] : nil;
+	return self.interactive ? [[NCSlideDownInteractiveTransition alloc] initWithScrollView:self.tableView] : nil;
 }
 
 - (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
@@ -161,25 +171,43 @@
 	else
 		identifier = [[NCStorage.sharedStorage.viewContext executeFetchRequest:[NCAccount fetchRequest] error:nil] count] > 0 ? @"NCMainMenuLoginHeaderViewController" : @"NCMainMenuHeaderViewController";
 	
-	if (self.headerViewController) {
-		[self.headerViewController.view removeFromSuperview];
-		[self.headerViewController removeFromParentViewController];
+	
+	NCMainMenuHeaderViewController* from = self.headerViewController;
+	NCMainMenuHeaderViewController* to = [self.storyboard instantiateViewControllerWithIdentifier:identifier];
+	
+	self.headerMinHeight = [to.view systemLayoutSizeFittingSize:CGSizeMake(self.view.bounds.size.width, 0) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityDefaultHigh].height;
+	self.headerMaxHeight = [to.view systemLayoutSizeFittingSize:CGSizeMake(self.view.bounds.size.width, 0) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;
+
+	CGRect rect = CGRectMake(0, 0, self.view.bounds.size.width, self.headerMaxHeight);
+	to.view.frame = rect;
+	to.view.translatesAutoresizingMaskIntoConstraints = YES;
+	[to.view layoutIfNeeded];
+
+	
+	if (from) {
+		[from willMoveToParentViewController:nil];
+		[self addChildViewController:to];
+		to.view.alpha = 0.0;
+		[self transitionFromViewController:from toViewController:to duration:0.25 options:0 animations:^{
+			from.view.alpha = 0.0;
+			to.view.alpha = 1.0;
+			self.tableView.tableHeaderView.frame = rect;
+			self.tableView.tableHeaderView = self.tableView.tableHeaderView;
+		} completion:^(BOOL finished) {
+			[from removeFromParentViewController];
+			[to didMoveToParentViewController:self];
+		}];
+	}
+	else {
+		self.tableView.tableHeaderView.frame = rect;
+		self.tableView.tableHeaderView = self.tableView.tableHeaderView;
+		[self addChildViewController:to];
+		[self.tableView addSubview:to.view];
+		[self didMoveToParentViewController:self];
 	}
 	
-	self.headerViewController = [self.storyboard instantiateViewControllerWithIdentifier:identifier];
-	[self.tableView addSubview:self.headerViewController.view];
-	[self addChildViewController:self.headerViewController];
+	self.headerViewController = to;
 	
-	self.headerMinHeight = [self.headerViewController.view systemLayoutSizeFittingSize:CGSizeMake(self.view.bounds.size.width, 0) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityDefaultHigh].height;
-	self.headerMaxHeight = [self.headerViewController.view systemLayoutSizeFittingSize:CGSizeMake(self.view.bounds.size.width, 0) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:UILayoutPriorityFittingSizeLevel].height;
-	
-	CGRect rect = CGRectMake(0, 0, self.view.bounds.size.width, self.headerMaxHeight);
-	self.tableView.tableHeaderView.frame = rect;
-	self.headerViewController.view.frame = rect;
-	self.tableView.tableHeaderView = self.tableView.tableHeaderView;
-	self.headerViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
-	[self.tableView setNeedsLayout];
-	[self.tableView layoutIfNeeded];
 }
 
 @end

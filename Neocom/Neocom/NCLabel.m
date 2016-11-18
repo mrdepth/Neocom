@@ -9,15 +9,15 @@
 #import "NCLabel.h"
 
 @interface NCLabel()
-@property (nonatomic, assign) CGFloat originalPointSize;
-
+@property (nonatomic, assign) CGFloat pointSize;
+- (CGFloat) fontSizeWithContentSizeCategory:(UIContentSizeCategory) contentSizeCategory;
 @end
 
 @implementation NCLabel
 
 - (void) awakeFromNib {
 	[super awakeFromNib];
-	self.originalPointSize = self.font.pointSize;
+	self.pointSize = self.font.pointSize;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeContentSizeCategory:) name:UIContentSizeCategoryDidChangeNotification object:nil];
 	self.font = [self.font fontWithSize:[self fontSizeWithContentSizeCategory:[[UIApplication sharedApplication] preferredContentSizeCategory]]];
 }
@@ -43,7 +43,7 @@
 }
 
 - (CGFloat) fontSizeWithContentSizeCategory:(UIContentSizeCategory) contentSizeCategory {
-	CGFloat p = self.originalPointSize;
+	CGFloat p = self.pointSize;
 	if ([contentSizeCategory isEqualToString:UIContentSizeCategoryExtraSmall])
 		p -= 2;
 	else if ([contentSizeCategory isEqualToString:UIContentSizeCategorySmall])

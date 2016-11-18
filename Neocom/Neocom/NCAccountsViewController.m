@@ -42,8 +42,8 @@
 	
 	self.tableView.estimatedRowHeight = self.tableView.rowHeight;
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
-	self.tableView.refreshControl = [UIRefreshControl new];
-	[self.tableView.refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
+	self.refreshControl = [UIRefreshControl new];
+	[self.refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
 	
 	NSFetchRequest* request = [NCAccount fetchRequest];
 	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]];

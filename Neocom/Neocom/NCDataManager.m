@@ -9,6 +9,7 @@
 #import "NCDataManager.h"
 #import "NCStorage.h"
 #import "NCCacheRecord.h"
+#import "unitily.h"
 @import EVEAPI;
 
 @implementation NCDataManager
@@ -138,19 +139,16 @@
 	
 	NSString* key = [NSString stringWithFormat:@"EVEImage:character:%d:%d", (int) characterID, (int) s];
 	[self loadFromCacheForKey:key account:nil cachePolicy:cachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
-		UIImage* image;
-		if ([result isKindOfClass:[NSData class]])
-			image = [[UIImage alloc] initWithData:result];
+		UIImage* image = [UIImage imageWithData:result scale:scale];
 		block(image, error);
-		
 	} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
 		NSURL* url = [EVEImage characterPortraitURLWithCharacterID:(int32_t) characterID size:s error:nil];
 		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];
 		[api.sessionManager GET:url.absoluteString parameters:nil responseSerializer:[AFHTTPResponseSerializer serializer] completionBlock:^(id responseObject, NSError *error) {
-			if (![responseObject isKindOfClass:[NSData class]])
-				responseObject = nil;
-			finish(responseObject, error, [NSDate date], [NSDate dateWithTimeIntervalSinceNow:3600]);
-
+			UIImage* image = [responseObject isKindOfClass:[NSData class]] ? [UIImage imageWithData:responseObject scale:scale] : nil;
+			if (!image && !error)
+				error = [NSError errorWithDomain:NCDefaultErrorDomain code:NCDefaultErrorCode userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"File not found", nil)}];
+			finish(image ? responseObject : nil, error, [NSDate date], [NSDate dateWithTimeIntervalSinceNow:3600]);
 		}];
 	}];
 }
@@ -171,15 +169,16 @@
 	
 	NSString* key = [NSString stringWithFormat:@"EVEImage:corporation:%d:%d", (int) corporationID, (int) s];
 	[self loadFromCacheForKey:key account:nil cachePolicy:cachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
-		
+		UIImage* image = [UIImage imageWithData:result scale:scale];
+		block(image, error);
 	} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
 		NSURL* url = [EVEImage corporationLogoURLWithCorporationID:(int32_t) corporationID size:s error:nil];
 		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];
 		[api.sessionManager GET:url.absoluteString parameters:nil responseSerializer:[AFHTTPResponseSerializer serializer] completionBlock:^(id responseObject, NSError *error) {
-			UIImage* image;
-			if ([responseObject isKindOfClass:[NSData class]])
-			image = [[UIImage alloc] initWithData:responseObject];
-			block(image, error);
+			UIImage* image = [responseObject isKindOfClass:[NSData class]] ? [UIImage imageWithData:responseObject scale:scale] : nil;
+			if (!image && !error)
+				error = [NSError errorWithDomain:NCDefaultErrorDomain code:NCDefaultErrorCode userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"File not found", nil)}];
+			finish(image ? responseObject : nil, error, [NSDate date], [NSDate dateWithTimeIntervalSinceNow:3600]);
 		}];
 	}];
 }
@@ -200,15 +199,16 @@
 	
 	NSString* key = [NSString stringWithFormat:@"EVEImage:alliance:%d:%d", (int) allianceID, (int) s];
 	[self loadFromCacheForKey:key account:nil cachePolicy:cachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
-		
+		UIImage* image = [UIImage imageWithData:result scale:scale];
+		block(image, error);
 	} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
 		NSURL* url = [EVEImage allianceLogoURLWithAllianceID:(int32_t) allianceID size:s error:nil];
 		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];
 		[api.sessionManager GET:url.absoluteString parameters:nil responseSerializer:[AFHTTPResponseSerializer serializer] completionBlock:^(id responseObject, NSError *error) {
-			UIImage* image;
-			if ([responseObject isKindOfClass:[NSData class]])
-			image = [[UIImage alloc] initWithData:responseObject];
-			block(image, error);
+			UIImage* image = [responseObject isKindOfClass:[NSData class]] ? [UIImage imageWithData:responseObject scale:scale] : nil;
+			if (!image && !error)
+				error = [NSError errorWithDomain:NCDefaultErrorDomain code:NCDefaultErrorCode userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"File not found", nil)}];
+			finish(image ? responseObject : nil, error, [NSDate date], [NSDate dateWithTimeIntervalSinceNow:3600]);
 		}];
 	}];
 }
@@ -267,7 +267,7 @@
 				id object = record.object;
 				dispatch_async(dispatch_get_main_queue(), ^{
 					progress.completedUnitCount++;
-					block(object, object ? nil : [NSError errorWithDomain:@"NCDataManager" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"No cached data found", nil)}], record.objectID);
+					block(object, object ? nil : [NSError errorWithDomain:NCDefaultErrorDomain code:NCDefaultErrorCode userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"No cached data found", nil)}], record.objectID);
 				});
 			}];
 			break;

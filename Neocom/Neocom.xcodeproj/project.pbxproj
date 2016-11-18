@@ -28,7 +28,7 @@
 		127A94B01DDC9FEF002E6B5D /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 127A94AF1DDC9FEF002E6B5D /* NCTableViewCell.m */; };
 		127BB8B31DDB4C0500F07E6C /* NCAddAPIKeyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 127BB8B21DDB4C0500F07E6C /* NCAddAPIKeyCell.m */; };
 		127BB8CC1DDC3B1F00F07E6C /* NCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127BB8CB1DDC3B1F00F07E6C /* NCNavigationController.m */; };
-		127BB8F31DDC476700F07E6C /* Neocom.clr in Sources */ = {isa = PBXBuildFile; fileRef = 127BB8F21DDC476700F07E6C /* Neocom.clr */; };
+		127BB8F31DDC476700F07E6C /* Dark.clr in Sources */ = {isa = PBXBuildFile; fileRef = 127BB8F21DDC476700F07E6C /* Dark.clr */; };
 		127BB8F71DDC4C5000F07E6C /* NCBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 127BB8F61DDC4C5000F07E6C /* NCBackgroundView.m */; };
 		129A85071DD8D2170001F732 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 129A85061DD8D2170001F732 /* main.m */; };
 		129A850A1DD8D2170001F732 /* NCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 129A85091DD8D2170001F732 /* NCAppDelegate.m */; };
@@ -177,10 +177,12 @@
 			fileType = pattern.proxy;
 			isEditable = 1;
 			outputFiles = (
+				"$(DERIVED_SOURCES_DIR)/UIColor+CS.h",
+				"$(DERIVED_SOURCES_DIR)/UIColor+CS.m",
 				"$(DERIVED_SOURCES_DIR)/UIColor+$(INPUT_FILE_BASE).h",
 				"$(DERIVED_SOURCES_DIR)/UIColor+$(INPUT_FILE_BASE).m",
 			);
-			script = "set > /Users/shimanski/1.txt\n\"$BUILD_DIR\"/\"$CONFIGURATION\"/clrconvert \"$INPUT_FILE_PATH\" \"$DERIVED_SOURCES_DIR\"";
+			script = "\"$BUILD_DIR\"/\"$CONFIGURATION\"/clrconvert \"$INPUT_FILE_PATH\" \"$DERIVED_SOURCES_DIR\"";
 		};
 /* End PBXBuildRule section */
 
@@ -254,7 +256,7 @@
 		127BB8CA1DDC3B1F00F07E6C /* NCNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNavigationController.h; sourceTree = "<group>"; };
 		127BB8CB1DDC3B1F00F07E6C /* NCNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNavigationController.m; sourceTree = "<group>"; };
 		127BB8EA1DDC474C00F07E6C /* clrconvert.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = clrconvert.xcodeproj; path = ../clrconvert/clrconvert.xcodeproj; sourceTree = "<group>"; };
-		127BB8F21DDC476700F07E6C /* Neocom.clr */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Neocom.clr; sourceTree = "<group>"; };
+		127BB8F21DDC476700F07E6C /* Dark.clr */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Dark.clr; sourceTree = "<group>"; };
 		127BB8F51DDC4C5000F07E6C /* NCBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCBackgroundView.h; sourceTree = "<group>"; };
 		127BB8F61DDC4C5000F07E6C /* NCBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCBackgroundView.m; sourceTree = "<group>"; };
 		129A85021DD8D2170001F732 /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -641,7 +643,7 @@
 				129A86291DD8D58B0001F732 /* dgm.sqlite */,
 				129A862A1DD8D58B0001F732 /* NCDatabase.sqlite */,
 				129A85061DD8D2170001F732 /* main.m */,
-				127BB8F21DDC476700F07E6C /* Neocom.clr */,
+				127BB8F21DDC476700F07E6C /* Dark.clr */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1136,7 +1138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				127BB8F31DDC476700F07E6C /* Neocom.clr in Sources */,
+				127BB8F31DDC476700F07E6C /* Dark.clr in Sources */,
 				129BBE081DDB7E28009F97F5 /* NCAccountsCell.m in Sources */,
 				1251D3871DDAFFF400C90DC4 /* NCAddAPIKeyViewController.m in Sources */,
 				1229E4FF1DD9E79A00500A7D /* NCImageSubtitleCell.m in Sources */,

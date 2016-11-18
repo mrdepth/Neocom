@@ -8,7 +8,7 @@
 
 #import "NSAttributedString+NC.h"
 #import "unitily.h"
-#import "UIColor+Neocom.h"
+#import "UIColor+CS.h"
 
 
 @implementation NSAttributedString (NC)

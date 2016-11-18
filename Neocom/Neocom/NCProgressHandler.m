@@ -7,7 +7,7 @@
 //
 
 #import "NCProgressHandler.h"
-#import "UIColor+Neocom.h"
+#import "UIColor+CS.h"
 
 @interface NCProgressHandler()
 @property (nonatomic, strong, readwrite) NSProgress* progress;

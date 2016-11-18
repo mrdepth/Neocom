@@ -38,7 +38,7 @@ static NCDatabase* sharedDatabase;
 	[_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 											  configuration:nil
 														URL:[NSURL fileURLWithPath:storePath]
-													options:nil
+													options:@{NSReadOnlyPersistentStoreOption:@(YES)}
 													  error:&error];
 	if (self.persistentStoreCoordinator) {
 		_viewContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
@@ -47,7 +47,7 @@ static NCDatabase* sharedDatabase;
 		block(nil);
 	}
 	else if (block)
-		block(error ?: [NSError errorWithDomain:@"NCDatabase" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Unable to create cache store", nil)}]);
+		block(error ?: [NSError errorWithDomain:@"NCDatabase" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Unable to open database", nil)}]);
 }
 
 - (void)performBackgroundTask:(void (^)(NSManagedObjectContext* managedObjectContext))block {

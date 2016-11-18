@@ -11,30 +11,37 @@
 #ifndef templates_h
 #define templates_h
 
-NSString* sourceMethodTemplate = @R"(
+NSString* CSSchemeNameTemplate = @R"(
+typedef NS_ENUM(NSInteger, CSSchemeName) {
+%@
+};)";
+
+NSString* CSColorNameTemplate = @R"(
+typedef NS_ENUM(NSInteger, CSColorName) {
+%@
+};)";
+
+NSString* g_colorsTemplate = @R"(
+static const NSUInteger colors[] = {%2$@};
+const void* const %1$@ = colors;
+)";
+
+NSString* methodImplementationTemplate = @R"(
 + (instancetype) %@ {
-	static UIColor* color = nil;
-	if (!color)
-		color = [UIColor colorWithUInteger:0x%@];
-	return color;
+	return [self colorWithUInteger:g_currentScheme[%@]];
 }
 )";
 
-
-/////////////////////
-
-
-NSString* headerMethodTemplate = @R"(
+NSString* methodDeclarationTemplate = @R"(
 + (instancetype) %@;
 )";
-
 
 /////////////////////
 
 
 NSString* headerTemplate = @R"(
 //
-//  UIColor+%1$@.h
+//  UIColor+CS.h
 //
 //  Created by Artem Shimanski
 //  Copyright © 2016 Artem Shimanski. All rights reserved.
@@ -42,10 +49,11 @@ NSString* headerTemplate = @R"(
 
 #import <UIKit/UIKit.h>
 
-@interface UIColor (%1$@)
+@interface UIColor (CS)
+@property (nonatomic, class) const void* currentScheme;
 
 + (instancetype) colorWithUInteger:(NSUInteger) value;
-%2$@
+%@
 @end
 )";
 
@@ -53,7 +61,55 @@ NSString* headerTemplate = @R"(
 /////////////////////
 
 
-NSString* sourceTemplate = @R"(
+NSString* implementationTemplate = @R"(
+//
+//  UIColor+CS.m
+//
+//  Created by Artem Shimanski
+//  Copyright © 2016 Artem Shimanski. All rights reserved.
+//
+
+#import "UIColor+CS.h"
+
+
+
+%@
+
+static const NSUInteger* g_currentScheme = NULL;
+
+@implementation UIColor (CS)
+
++ (instancetype) colorWithUInteger:(NSUInteger) value {
+	const Byte* abgr = (const Byte*) &value;
+	return [UIColor colorWithRed:abgr[3] / 255.0 green:abgr[2] / 255.0 blue:abgr[1] / 255.0 alpha:abgr[0] / 255.0];
+}
+
++ (const void*) currentScheme {
+	return g_currentScheme;
+}
+
++ (void) setCurrentScheme:(const void*) scheme {
+	g_currentScheme = scheme;
+}
+
+%@
+@end
+)";
+
+
+NSString* headerTemplate2 = @R"(
+//
+//  UIColor+%1$@.h
+//
+//  Created by Artem Shimanski
+//  Copyright © 2016 Artem Shimanski. All rights reserved.
+//
+
+extern const void* const %2$@;
+)";
+
+
+NSString* implementationTemplate2 = @R"(
 //
 //  UIColor+%1$@.m
 //
@@ -61,18 +117,11 @@ NSString* sourceTemplate = @R"(
 //  Copyright © 2016 Artem Shimanski. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "UIColor+%1$@.h"
 
-@implementation UIColor (%1$@)
-
-+ (instancetype) colorWithUInteger:(NSUInteger) value {
-	const Byte* abgr = (const Byte*) &value;
-	return [UIColor colorWithRed:abgr[3] / 255.0 green:abgr[2] / 255.0 blue:abgr[1] / 255.0 alpha:abgr[0] / 255.0];
-}
-
 %2$@
-@end
-)";
 
+)";
 
 #endif /* templates_h */

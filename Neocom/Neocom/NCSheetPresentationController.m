@@ -7,7 +7,7 @@
 //
 
 #import "NCSheetPresentationController.h"
-#import "UIColor+Neocom.h"
+#import "UIColor+CS.h"
 
 @implementation NCSheetSegue
 

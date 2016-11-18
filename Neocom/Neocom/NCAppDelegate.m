@@ -13,9 +13,12 @@
 #import "NCNavigationController.h"
 #import "NCBannerNavigationController.h"
 #import "NCBackgroundView.h"
-#import "UIColor+Neocom.h"
+#import "UIColor+CS.h"
+#import "UIColor+Dark.h"
 #import "NCTableView.h"
 #import "NCTableViewCell.h"
+@import ImageIO;
+
 
 @interface NCAppDelegate()<UISplitViewControllerDelegate>
 
@@ -34,13 +37,14 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	[UIColor setCurrentScheme:CSSchemeDark];
 	[self loadDatabases];
 	[self setupAppearance];
 	
 	UISplitViewController* splitController = (UISplitViewController*) self.window.rootViewController;
 	splitController.delegate = self;
 	
-	NSArray* sizes = @[
+	/*NSArray* sizes = @[
 					   UIContentSizeCategoryUnspecified,
 					   UIContentSizeCategoryExtraSmall,
 					   UIContentSizeCategorySmall,
@@ -76,7 +80,7 @@
 			UIFont* font = [UIFont preferredFontForTextStyle:style compatibleWithTraitCollection:[UITraitCollection traitCollectionWithPreferredContentSizeCategory:size]];
 			NSLog(@"%@ %f %f", size, font.pointSize, font.pointSize - normal.pointSize);
 		}
-	}
+	}*/
 	
 	return YES;
 }

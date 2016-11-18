@@ -8,5 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #define CLAMP(x, from, to)(MIN(MAX(x, from), to))
+#define NCDefaultErrorDomain ([NSStringFromClass([self class]) stringByAppendingString:@"Domain"])
+#define NCDefaultErrorCode -1
 
 extern NSString* const NCCurrentAccountChangedNotification;

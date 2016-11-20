@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *allianceLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *corporationImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *allianceImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightConstraint;
 - (IBAction)onLogout:(id)sender;
 
 @end

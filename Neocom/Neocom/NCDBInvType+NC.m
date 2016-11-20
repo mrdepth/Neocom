@@ -7,15 +7,9 @@
 //
 
 #import "NCDBInvType+NC.h"
+#import "NCDBInvMetaGroup+CoreDataClass.h"
 
 @implementation NCDBInvType (NC)
-
-+ (NSFetchRequest<NCDBInvType *> *)fetchRequestWithTypeID:(int32_t) typeID {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
-	request.predicate = [NSPredicate predicateWithFormat:@"typeID == %d", typeID];
-	request.fetchLimit = 1;
-	return request;
-}
 
 + (NCFetchedCollection<NCDBInvType*>*) invTypesWithManagedObjectContext:(NSManagedObjectContext*) managedObjectContext {
 	return [[NCFetchedCollection alloc] initWithEntity:@"InvType" predicateFormat:@"typeID == %@" argumentArray:nil managedObjectContext:managedObjectContext];
@@ -23,6 +17,10 @@
 
 - (NCFetchedCollection<NCDBDgmTypeAttribute*>*) attributesMap {
 	return [[NCFetchedCollection alloc] initWithEntity:@"DgmTypeAttribute" predicateFormat:@"type == %@ AND attributeType.attributeID==%@" argumentArray:@[self] managedObjectContext:self.managedObjectContext];
+}
+
+- (NSString*) metaGroupName {
+	return self.metaGroup.metaGroupName ?: NSLocalizedString(@"Other", @"Metagroup");
 }
 
 @end

@@ -9,6 +9,10 @@
 #import "NCFetchedCollection.h"
 @import CoreData;
 
+@interface NCFetchedCollection()
+@property (strong, nonatomic) NSFetchRequest* fetchRequest;
+@end
+
 @implementation NCFetchedCollection
 
 - (id) initWithEntity:(NSString*) entityName predicateFormat:(NSString*) predicateFormat argumentArray:(NSArray*) argumentArray managedObjectContext:(NSManagedObjectContext*) managedObjectContext {
@@ -17,15 +21,20 @@
 		self.predicateFormat = predicateFormat;
 		self.argumentArray = argumentArray ?: @[];
 		self.managedObjectContext = managedObjectContext;
+		self.fetchRequest = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
+		self.fetchRequest.fetchLimit = 1;
 	}
 	return self;
 }
 
 - (id) objectAtIndexedSubscript:(NSInteger) index {
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
-	request.predicate = [NSPredicate predicateWithFormat:self.predicateFormat argumentArray:[self.argumentArray arrayByAddingObject:@(index)]];
-	request.fetchLimit = 1;
-	return [[self.managedObjectContext executeFetchRequest:request error:nil] lastObject];
+	self.fetchRequest.predicate = [NSPredicate predicateWithFormat:self.predicateFormat argumentArray:[self.argumentArray arrayByAddingObject:@(index)]];
+	return [[self.managedObjectContext executeFetchRequest:self.fetchRequest error:nil] lastObject];
+}
+
+- (id) objectForKeyedSubscript:(NSString*) key {
+	self.fetchRequest.predicate = [NSPredicate predicateWithFormat:self.predicateFormat argumentArray:[self.argumentArray arrayByAddingObject:key ?: [NSNull null]]];
+	return [[self.managedObjectContext executeFetchRequest:self.fetchRequest error:nil] lastObject];
 }
 
 @end

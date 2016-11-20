@@ -17,6 +17,12 @@
 #import "UIColor+Dark.h"
 #import "NCTableView.h"
 #import "NCTableViewCell.h"
+#import "NSURL+NC.h"
+#import "NCAddAPIKeyViewController.h"
+#import "UIViewController+NC.h"
+#import "NCSheetPresentationController.h"
+#import "unitily.h"
+#import "UIImage+NC.h"
 @import ImageIO;
 
 @interface NCAppDelegate()<UISplitViewControllerDelegate>
@@ -111,6 +117,17 @@
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+	if ([url.scheme isEqualToString:@"eve"])
+		return [self handleOpenURLSchemeEVE:url];
+	else
+		return NO;
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+	return [self application:app openURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+}
+
 #pragma mark - Private
 
 - (void) loadDatabases {
@@ -138,30 +155,69 @@
 	}];
 	
 	dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
-		
+		NSString* uri = [[NSUserDefaults standardUserDefaults] valueForKey:NCCurrentAccountKey];
+		if (uri) {
+			NSManagedObjectID* objectID = [storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:uri]];
+			if (objectID) {
+				NCAccount* account = [storage.viewContext existingObjectWithID:objectID error:nil];
+				if (account)
+					NCAccount.currentAccount = account;
+			}
+		}
 	});
 }
 
 - (void) setupAppearance {
 	UINavigationBar* navigationBar = [UINavigationBar appearanceWhenContainedIn:[NCNavigationController class], nil];
-	[navigationBar setBackgroundImage:[UIImage imageNamed:@"clear"] forBarMetrics:UIBarMetricsDefault];
-	[navigationBar setShadowImage:[UIImage imageNamed:@"clear"]];
+	//[navigationBar setBackgroundImage:[UIImage imageNamed:@"clear"] forBarMetrics:UIBarMetricsDefault];
+	[navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor backgroundColor]] forBarMetrics:UIBarMetricsDefault];
+	//[navigationBar setShadowImage:[UIImage imageNamed:@"clear"]];
+	[navigationBar setShadowImage:[UIImage imageWithColor:[UIColor backgroundColor]]];
 	[navigationBar setBarTintColor:[UIColor backgroundColor]];
 	
 	NCTableView*  tableView = [NCTableView appearance];
 	[tableView setBackgroundColor:[UIColor backgroundColor]];
 	[tableView setSeparatorColor:[UIColor separatorColor]];
 	
-	
 	[[NCTableViewCell appearance] setBackgroundColor:[UIColor cellBackgroundColor]];
 	[[NCBackgroundView appearance] setBackgroundColor:[UIColor backgroundColor]];
+	
+	UISearchBar* searchBar = [UISearchBar appearanceWhenContainedIn:[NCTableView class], nil];
+	searchBar.barTintColor = [UIColor backgroundColor];
+	searchBar.tintColor = [UIColor whiteColor];
+	[searchBar setSearchFieldBackgroundImage:[UIImage searchFieldBackgroundImageWithColor:[UIColor separatorColor]] forState:UIControlStateNormal];
+	searchBar.backgroundImage = [UIImage imageWithColor:[UIColor backgroundColor]];
 }
 
+- (BOOL) handleOpenURLSchemeEVE:(NSURL*) url {
+	NSDictionary* parameters = url.parameters;
+	NSInteger keyID = [parameters[@"keyID"] integerValue];
+	NSString* vCode = parameters[@"vCode"];
+	if (keyID && vCode.length > 0) {
+		UIViewController* topmostController = [self.window.rootViewController topmostViewController];
+		if ([topmostController isKindOfClass:[UINavigationController class]]) {
+			UIViewController* topViewController = [(UINavigationController*) topmostController topViewController];
+			if ([topViewController isKindOfClass:[NCAddAPIKeyViewController class]]) {
+				NCAddAPIKeyViewController* addAPIKeyViewController = (NCAddAPIKeyViewController*)topViewController;
+				[addAPIKeyViewController setKeyID:keyID vCode:vCode];
+				return YES;
+			}
+		}
+		UINavigationController* navigationController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCAddAPIKeyNavigationViewController"];
+		NCAddAPIKeyViewController* addAPIKeyViewController = (NCAddAPIKeyViewController*) navigationController.topViewController;
+		NCSheetPresentationController *presentationController NS_VALID_UNTIL_END_OF_SCOPE;
+		presentationController = [[NCSheetPresentationController alloc] initWithPresentedViewController:navigationController presentingViewController:topmostController];
+		navigationController.transitioningDelegate = presentationController;
 
-@end
+		[topmostController presentViewController:navigationController animated:YES completion:^{
+			[addAPIKeyViewController setKeyID:keyID vCode:vCode];
+		}];
 
-@interface UITableView(NC)
+		return YES;
+	}
+	else
+		return NO;
+}
 
-@property(nullable, nonatomic,copy)            UIColor          *backgroundColor UI_APPEARANCE_SELECTOR;
 
 @end

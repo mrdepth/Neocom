@@ -1,0 +1,85 @@
+//
+//  NCDatabaseGroupsViewController.m
+//  Neocom
+//
+//  Created by Artem Shimanski on 20.11.16.
+//  Copyright © 2016 Artem Shimanski. All rights reserved.
+//
+
+#import "NCDatabaseGroupsViewController.h"
+#import "NCDatabase.h"
+#import "NCImageTitleCell.h"
+#import "NCDatabaseItemsViewController.h"
+
+@interface NCDatabaseGroupsViewController ()<UISearchResultsUpdating>
+@property (nonatomic, strong) NSFetchedResultsController* results;
+@property (nonatomic, strong) UISearchController *searchController;
+@end
+
+@implementation NCDatabaseGroupsViewController
+
+- (void) viewDidLoad {
+	[super viewDidLoad];
+	[self setupSearchController];
+
+	NSFetchRequest* request = [NCDBInvGroup fetchRequest];
+	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
+	request.predicate = [NSPredicate predicateWithFormat:@"category == %@", self.category];
+	self.results = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:NCDatabase.sharedDatabase.viewContext sectionNameKeyPath:nil cacheName:nil];
+	[self.results performFetch:nil];
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCDatabaseItemsViewController"]) {
+		NCDatabaseItemsViewController* controller = segue.destinationViewController;
+		controller.predicate = [NSPredicate predicateWithFormat:@"group == %@", [sender object]];
+	}
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
+	return self.results.sections.count;
+}
+
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return [self.results.sections[section] numberOfObjects];
+}
+
+- (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCImageTitleCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	NCDBInvGroup* group = [self.results objectAtIndexPath:indexPath];
+	cell.titleLabel.text = group.groupName;
+	cell.iconView.image = (id) group.icon.image.image ?: NCDBEveIcon.defaultGroupIcon.image.image;
+	cell.object = group;
+	return cell;
+}
+
+#pragma mark - UISearchResultsUpdating
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+	NSPredicate* predicate;
+	if (searchController.searchBar.text.length > 2) {
+		predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND typeName CONTAINS[C] %@", self.category, searchController.searchBar.text];
+	}
+	else
+		predicate = [NSPredicate predicateWithValue:NO];
+	NCDatabaseItemsViewController* controller = (NCDatabaseItemsViewController*) self.searchController.searchResultsController;
+	controller.predicate = predicate;
+	[controller reloadData];
+}
+
+#pragma mark - Private
+
+- (void) setupSearchController {
+	self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseItemsViewController"]];
+	self.searchController.searchBar.searchBarStyle = UISearchBarStyleDefault;
+	self.searchController.searchResultsUpdater = self;
+	self.searchController.searchBar.barStyle = UIBarStyleBlack;
+	self.tableView.backgroundView = [UIView new];
+	self.tableView.tableHeaderView = self.searchController.searchBar;
+	self.definesPresentationContext = YES;
+}
+
+
+@end

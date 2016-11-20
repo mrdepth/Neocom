@@ -16,42 +16,34 @@
 	switch (unit) {
 		case NCUnitISK:
 			unitAbbreviation = NSLocalizedString(@"ISK", nil);
+			break;
 		case NCUnitSP:
-			unitAbbreviation = nil;
+			unitAbbreviation = NSLocalizedString(@"SP", nil);
 			break;
 		default:
 			unitAbbreviation = nil;
 			break;
 	}
 	NSString* suffix = nil;
-	
+	BOOL siPrefixed = (unit & NCUnitSIPrefixed) == 0;
 	if (style == NCUnitFormatterStyleShort) {
 		if (value >= 10000000000000) {
-			if (unit == NCUnitISK)
-				suffix = NSLocalizedString(@"T", @"trillion");
-			else
-				suffix = NSLocalizedString(@"T", @"trillion");
+			suffix = NSLocalizedString(@"T", @"trillion");
 			value /= 1000000000.0;
 		}
 		else if (value >= 10000000000) {
-			if (unit == NCUnitISK)
-				suffix = NSLocalizedString(@"B", @"billion");
-			else
+			if (siPrefixed)
 				suffix = NSLocalizedString(@"G", @"billion");
+			else
+				suffix = NSLocalizedString(@"B", @"billion");
 			value /= 1000000000.0;
 		}
 		else if (value >= 10000000) {
-			if (unit == NCUnitISK)
-				suffix = NSLocalizedString(@"M", @"million");
-			else
-				suffix = NSLocalizedString(@"M", @"million");
+			suffix = NSLocalizedString(@"M", @"million");
 			value /= 1000000.0;
 		}
 		else if (value >= 10000) {
-			if (unit == NCUnitISK)
-				suffix = NSLocalizedString(@"k", @"thousand");
-			else
-				suffix = NSLocalizedString(@"k", @"thousand");
+			suffix = NSLocalizedString(@"k", @"thousand");
 			value /= 1000.0;
 		}
 		else {

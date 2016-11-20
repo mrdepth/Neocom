@@ -221,6 +221,14 @@
 	}];
 }
 
+- (void) accountBalanceForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVEAccountBalance* result, NSError* error, NSManagedObjectID* cacheRecordID)) block {
+	[self loadFromCacheForKey:@"EVEAccountBalance" account:account.uuid cachePolicy:cachePolicy completionHandler:block elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
+		EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:account.eveAPIKey cachePolicy:cachePolicy];
+		[api accountBalanceWithCompletionBlock:^(EVEAccountBalance *result, NSError *error) {
+			finish(result, error, [result.eveapi localTimeWithServerTime:result.eveapi.cacheDate], [result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]);
+		}];
+	}];
+}
 
 #pragma mark - Private
 

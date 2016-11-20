@@ -17,11 +17,8 @@
 	UIViewController *destinationViewController = self.destinationViewController;
 	
 	NCSheetPresentationController *presentationController NS_VALID_UNTIL_END_OF_SCOPE;
-	
 	presentationController = [[NCSheetPresentationController alloc] initWithPresentedViewController:destinationViewController presentingViewController:sourceViewController];
-	
 	destinationViewController.transitioningDelegate = presentationController;
-	
 	[self.sourceViewController presentViewController:destinationViewController animated:YES completion:NULL];
 }
 

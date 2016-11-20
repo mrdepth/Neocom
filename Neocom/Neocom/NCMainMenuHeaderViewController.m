@@ -9,6 +9,32 @@
 #import "NCMainMenuHeaderViewController.h"
 #import "NCAccount.h"
 #import "NCDataManager.h"
+#import "NCLabel.h"
+
+@interface NCMainMenuHeaderLabel : NCLabel
+@end
+
+@implementation NCMainMenuHeaderLabel
+
+- (void) drawRect:(CGRect)rect {
+	NSStringDrawingContext* context = [NSStringDrawingContext new];
+	context.minimumScaleFactor = self.minimumScaleFactor;
+	NSMutableAttributedString* s = [self.attributedText mutableCopy];
+	NSMutableParagraphStyle* paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+	paragraph.maximumLineHeight = self.bounds.size.height;
+	
+	[s addAttribute:NSParagraphStyleAttributeName value:paragraph range:NSMakeRange(0, s.length)];
+	//[s drawWithRect:rect options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:context];
+	
+	NSTextStorage* storage = [[NSTextStorage alloc] initWithAttributedString:s];
+	NSLayoutManager* manager = [[NSLayoutManager alloc] init];
+	NSTextContainer* container = [[NSTextContainer alloc] initWithSize:rect.size];
+	[manager addTextContainer:container];
+	[manager setTextStorage:storage];
+	[manager drawGlyphsForGlyphRange:[manager glyphRangeForTextContainer:container] atPoint:rect.origin];
+}
+
+@end
 
 @interface NCMainMenuHeaderViewController ()
 
@@ -26,38 +52,45 @@
 	self.corporationImageView.image = nil;
 	self.allianceImageView.image = nil;
 	
-	self.corporationLabel.superview.hidden = YES;
-	self.allianceLabel.superview.hidden = YES;
-	
+	EVEAPIKeyInfoCharactersItem* character = account.character;
+
+	self.characterNameLabel.text = character.characterName ?: @" ";
+	self.corporationLabel.text = character.corporationName ?: @"";
+	self.allianceLabel.text = character.allianceName ?: @"";
+	self.corporationLabel.superview.hidden = character.corporationID == 0;
+	self.allianceLabel.superview.hidden = character.allianceID == 0;
+
 	NCDataManager* dataManager = [NCDataManager defaultManager];
 	if (account.eveAPIKey.corporate) {
+		if (self.corporationImageView && character.corporationID)
+			[dataManager imageWithCorporationID:character.corporationID preferredSize:CGSizeMake(128, 128) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+				self.corporationImageView.image = image;
+			}];
+
+		
+		if (self.allianceImageView && character.allianceID)
+			[dataManager imageWithAllianceID:character.allianceID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+				self.allianceImageView.image = image;
+			}];
+		else
+			self.heightConstraint.priority = 999;
 
 	}
 	else {
-		[dataManager characterInfoForAccount:account cachePolicy:NSURLRequestUseProtocolCachePolicy completionHandler:^(EVECharacterInfo *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-			if (error) {
-			}
-			else {
-				self.characterNameLabel.text = result.characterName;
-				self.corporationLabel.text = result.corporation;
-				self.allianceLabel.text = result.alliance;
-				self.corporationLabel.superview.hidden = result.corporationID == 0;
-				self.allianceLabel.superview.hidden = result.allianceID == 0;
-
-				if (self.characterImageView)
-					[dataManager imageWithCharacterID:result.characterID preferredSize:CGSizeMake(128, 128) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
-						self.characterImageView.image = image;
-					}];
-				if (self.corporationImageView && result.corporationID)
-					[dataManager imageWithCorporationID:result.corporationID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
-						self.corporationImageView.image = image;
-					}];
-				if (self.allianceImageView && result.allianceID)
-					[dataManager imageWithAllianceID:result.allianceID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
-						self.allianceImageView.image = image;
-					}];
-			}
-		}];
+		EVEAPIKeyInfoCharactersItem* character = account.character;
+		
+		if (self.characterImageView)
+			[dataManager imageWithCharacterID:character.characterID preferredSize:CGSizeMake(128, 128) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+				self.characterImageView.image = image;
+			}];
+		if (self.corporationImageView && character.corporationID)
+			[dataManager imageWithCorporationID:character.corporationID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+				self.corporationImageView.image = image;
+			}];
+		if (self.allianceImageView && character.allianceID)
+			[dataManager imageWithAllianceID:character.allianceID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+				self.allianceImageView.image = image;
+			}];
 	}
 	
     // Do any additional setup after loading the view.

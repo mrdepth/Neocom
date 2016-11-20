@@ -17,5 +17,6 @@
 - (IBAction)onCancel:(id)sender;
 - (IBAction)onSafari:(id)sender;
 - (IBAction)onSwitch:(id)sender;
+- (void) setKeyID:(NSInteger) keyID vCode:(NSString*) vCode;
 
 @end

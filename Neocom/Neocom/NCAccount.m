@@ -33,6 +33,10 @@ static NCAccount* g_currentAccount;
 + (void) setCurrentAccount:(NCAccount *)currentAccount {
 	g_currentAccount = currentAccount;
 	[[NSNotificationCenter defaultCenter] postNotificationName:NCCurrentAccountChangedNotification object:currentAccount];
+	if (currentAccount)
+		[[NSUserDefaults standardUserDefaults] setObject:currentAccount.objectID.URIRepresentation.absoluteString forKey:NCCurrentAccountKey];
+	else
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:NCCurrentAccountKey];
 }
 
 @end

@@ -12,3 +12,5 @@
 #define NCDefaultErrorCode -1
 
 extern NSString* const NCCurrentAccountChangedNotification;
+
+extern NSString* const NCCurrentAccountKey;

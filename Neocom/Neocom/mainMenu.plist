@@ -17,7 +17,7 @@
 			<key>modal</key>
 			<true/>
 			<key>detailsKeyPath</key>
-			<string>skillsDetails</string>
+			<string>skillPoints</string>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -31,7 +31,7 @@
 			<key>corpAccessMask</key>
 			<integer>-1</integer>
 			<key>detailsKeyPath</key>
-			<string>skillQueueDetails</string>
+			<string>skillQueue</string>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -45,7 +45,7 @@
 			<key>corpAccessMask</key>
 			<integer>-1</integer>
 			<key>detailsKeyPath</key>
-			<string>mailsDetails</string>
+			<string>unreadMails</string>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -70,6 +70,8 @@
 			<integer>1</integer>
 			<key>corpAccessMask</key>
 			<integer>1</integer>
+			<key>detailsKeyPath</key>
+			<string>balance</string>
 		</dict>
 	</array>
 	<array>
@@ -342,8 +344,6 @@
 			<integer>0</integer>
 			<key>corpAccessMask</key>
 			<integer>0</integer>
-			<key>detailsKeyPath</key>
-			<string>settingsDetails</string>
 		</dict>
 		<dict>
 			<key>url</key>

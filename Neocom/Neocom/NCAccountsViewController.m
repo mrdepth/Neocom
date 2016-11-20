@@ -97,7 +97,8 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NCAccountsCell* cell = [tableView dequeueReusableCellWithIdentifier:@"CharacterCell" forIndexPath:indexPath];
+	NCAccount* account = [self.results objectAtIndexPath:indexPath];
+	NCAccountsCell* cell = [tableView dequeueReusableCellWithIdentifier:account.eveAPIKey.corporate ? @"CorporationCell" : @"CharacterCell" forIndexPath:indexPath];
 	
 	NSDictionary* info = self.extraInfo[indexPath];
 	if (!info)
@@ -148,7 +149,6 @@
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
 	[self.tableView beginUpdates];
 }
-
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
 		   atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
@@ -255,7 +255,9 @@
 
 - (void) loadDataForCellAtIndexPath:(NSIndexPath*) indexPath withCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSDictionary* info, NSError* error)) block {
 	NCAccount* account = [self.results objectAtIndexPath:indexPath];
-	NSProgress* progress = [NSProgress progressWithTotalUnitCount:5];
+	EVEAPIKey* apiKey = account.eveAPIKey;
+	
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:apiKey.corporate ? 4 : 6];
 	
 	NSMutableDictionary* info = self.extraInfo[indexPath];
 	if (!info)
@@ -266,17 +268,16 @@
 	NCDispatchGroup* dispatchGroup = [NCDispatchGroup new];
 
 	id token = nil;
+	__block NSError* lastError = nil;
 	
 	token = [dispatchGroup enter];
-	__block NSError* lastError = nil;
-	[dataManager characterInfoForAccount:account cachePolicy:cachePolicy completionHandler:^(EVECharacterInfo *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-		lastError = error;
+	[dataManager apiKeyInfoWithKeyID:apiKey.keyID vCode:apiKey.vCode completionBlock:^(EVEAPIKeyInfo *apiKeyInfo, NSError *error) {
 		progress.completedUnitCount++;
-		if (result)
-			info[@"EVECharacterInfo"] = result;
-		else if (error)
-			info[@"EVECharacterInfo"] = error;
-		[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+		if (apiKeyInfo) {
+			account.apiKey.apiKeyInfo = apiKeyInfo;
+			if ([account.managedObjectContext hasChanges])
+				[account.managedObjectContext save:nil];
+		}
 		[dispatchGroup leave:token];
 	}];
 	
@@ -285,27 +286,65 @@
 		progress.completedUnitCount++;
 		if (result)
 			info[@"EVEAccountStatus"] = result;
+		else if (error)
+			info[@"EVEAccountStatus"] = error;
 		[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
 		[dispatchGroup leave:token];
 	}];
+
 	
-	token = [dispatchGroup enter];
-	[dataManager skillQueueForAccount:account cachePolicy:cachePolicy completionHandler:^(EVESkillQueue *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-		progress.completedUnitCount++;
-		if (result)
-			info[@"EVESkillQueue"] = result;
-		[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-		[dispatchGroup leave:token];
-	}];
-	
-	token = [dispatchGroup enter];
-	[dataManager imageWithCharacterID:account.characterID preferredSize:CGSizeMake(80, 80) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
-		progress.completedUnitCount++;
-		if (image)
-			info[@"image"] = image;
-		[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-		[dispatchGroup leave:token];
-	}];
+	if (apiKey.corporate) {
+		EVEAPIKeyInfoCharactersItem* character = account.character;
+		token = [dispatchGroup enter];
+		[dataManager accountBalanceForAccount:account cachePolicy:cachePolicy completionHandler:^(EVEAccountBalance *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			progress.completedUnitCount++;
+			if (result)
+				info[@"EVEAccountBalance"] = result;
+			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+			[dispatchGroup leave:token];
+		}];
+		
+		token = [dispatchGroup enter];
+		[dataManager imageWithCorporationID:character.corporationID preferredSize:CGSizeMake(80, 80) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
+			progress.completedUnitCount++;
+			if (image)
+				info[@"image"] = image;
+			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+			[dispatchGroup leave:token];
+		}];
+	}
+	else {
+		token = [dispatchGroup enter];
+		[dataManager characterInfoForAccount:account cachePolicy:cachePolicy completionHandler:^(EVECharacterInfo *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			lastError = error;
+			progress.completedUnitCount++;
+			if (result)
+				info[@"EVECharacterInfo"] = result;
+			else if (error)
+				info[@"EVECharacterInfo"] = error;
+			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+			[dispatchGroup leave:token];
+		}];
+		
+		token = [dispatchGroup enter];
+		[dataManager skillQueueForAccount:account cachePolicy:cachePolicy completionHandler:^(EVESkillQueue *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			progress.completedUnitCount++;
+			if (result)
+				info[@"EVESkillQueue"] = result;
+			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+			[dispatchGroup leave:token];
+		}];
+		
+		token = [dispatchGroup enter];
+		[dataManager imageWithCharacterID:account.characterID preferredSize:CGSizeMake(80, 80) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
+			progress.completedUnitCount++;
+			if (image)
+				info[@"image"] = image;
+			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+			[dispatchGroup leave:token];
+		}];
+
+	}
 	
 	[dispatchGroup notify:^{
 		block(info, lastError);
@@ -328,6 +367,7 @@
 	cell.skillLabel.text = @" ";
 	cell.trainingTimeLabel.text = @" ";
 	cell.trainingProgressView.progress = 0.0;
+	cell.skillQueueLabel.text = nil;
 	
 	NCAccount* account = [self.results objectAtIndexPath:indexPath];
 	cell.object = account;
@@ -340,7 +380,18 @@
 
 	EVEAccountStatus* accountStatus = info[@"EVEAccountStatus"];
 	if (account.eveAPIKey.corporate) {
+		cell.corporationLabel.text = apiKeyCharacterItem.corporationName;
+		cell.allianceLabel.text = apiKeyCharacterItem.allianceName;
+		cell.corporationImageView.image = info[@"image"];
 		
+		EVEAccountBalance* balance = info[@"EVEAccountBalance"];
+		if (balance) {
+			double isk = 0;
+			for (EVEAccountBalanceItem* account in balance.accounts)
+				isk += account.balance;
+			
+			cell.wealthLabel.text = [NCUnitFormatter localizedStringFromNumber:@(isk) unit:NCUnitNone style:NCUnitFormatterStyleShort];
+		}
 	}
 	else {
 		EVECharacterInfo* characterInfo = info[@"EVECharacterInfo"];
@@ -353,8 +404,8 @@
 			cell.characterNameLabel.text = characterInfo.characterName ?: apiKeyCharacterItem.characterName;
 			cell.corporationLabel.text = characterInfo.corporation ?: @" ";
 			cell.characterImageView.image = image;
-			cell.spLabel.text = characterInfo ? [NCUnitFormatter localizedStringFromNumber:@(characterInfo.skillPoints) unit:NCUnitSP style:NCUnitFormatterStyleShort] : @" ";
-			cell.wealthLabel.text = characterInfo ? [NCUnitFormatter localizedStringFromNumber:@(characterInfo.accountBalance) unit:NCUnitISK style:NCUnitFormatterStyleShort] : @" ";
+			cell.spLabel.text = characterInfo ? [NCUnitFormatter localizedStringFromNumber:@(characterInfo.skillPoints) unit:NCUnitNone style:NCUnitFormatterStyleShort] : @" ";
+			cell.wealthLabel.text = characterInfo ? [NCUnitFormatter localizedStringFromNumber:@(characterInfo.accountBalance) unit:NCUnitNone style:NCUnitFormatterStyleShort] : @" ";
 			cell.skillLabel.text = skillQueue ? NSLocalizedString(@"No skills in training", nil) : @" ";
 			cell.skillLabel.textColor = [UIColor lightTextColor];
 			
@@ -375,10 +426,11 @@
 			}
 			
 			if (skillQueue) {
-				NSArray* skills = [skillQueue.skillQueue filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"queuePosition == 0"]];
+				NSArray* skills = [skillQueue.skillQueue sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"queuePosition" ascending:YES]]];
 				
 				if (skills.count > 0) {
 					EVESkillQueueItem* firstSkill = skills[0];
+					EVESkillQueueItem* lastSkill = [skills lastObject];
 					
 					NCDBInvType* type = [NCDBInvType invTypesWithManagedObjectContext:NCDatabase.sharedDatabase.viewContext][firstSkill.typeID];
 					NCSkill* skill = [[NCSkill alloc] initWithInvType:type skill:firstSkill inQueue:skillQueue];
@@ -392,22 +444,28 @@
 					else {
 						cell.skillLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown typeID %d", nil), firstSkill.typeID];
 					}
+					
+					NSDate* endTime = [skillQueue.eveapi localTimeWithServerTime:lastSkill.endTime];
+					cell.skillQueueLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d skills in queue (%@)" , nil), (int) skills.count, [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] style:NCTimeIntervalFormatterStyleMinuts]];
+					;
 				}
 			}
 		}
 	}
 	
 	
-	NSDate* paidUntil = [accountStatus.eveapi localTimeWithServerTime:accountStatus.paidUntil];
-	if (paidUntil) {
-		NSTimeInterval t = [paidUntil timeIntervalSinceNow];
-		if (t > 0)
-			cell.subscriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@)", nil), [self.dateFormatter stringFromDate:paidUntil], [NCTimeIntervalFormatter localizedStringFromTimeInterval:t style:NCTimeIntervalFormatterStyleDays]];
-		else
-			cell.subscriptionLabel.text = NSLocalizedString(@"expired", nil);
+	if ([accountStatus isKindOfClass:[EVEAccountStatus class]]) {
+		NSDate* paidUntil = [accountStatus.eveapi localTimeWithServerTime:accountStatus.paidUntil];
+		if (paidUntil) {
+			NSTimeInterval t = [paidUntil timeIntervalSinceNow];
+			if (t > 0)
+				cell.subscriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@)", nil), [self.dateFormatter stringFromDate:paidUntil], [NCTimeIntervalFormatter localizedStringFromTimeInterval:t style:NCTimeIntervalFormatterStyleDays]];
+			else
+				cell.subscriptionLabel.text = NSLocalizedString(@"expired", nil);
+		}
 	}
-	else
-		cell.subscriptionLabel.text = @" ";
+	else if ([accountStatus isKindOfClass:[NSError class]])
+		cell.subscriptionLabel.text = [(NSError*) accountStatus localizedDescription];
 }
 
 @end

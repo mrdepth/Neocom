@@ -13,6 +13,9 @@
 	NSPersistentStoreCoordinator* _persistentStoreCoordinator;
 }
 
+@property (nonatomic, strong, readwrite) NCFetchedCollection<NCDBInvType*>* invTypes;
+@property (nonatomic, strong, readwrite) NCFetchedCollection<NCDBEveIcon*>* eveIcons;
+
 @end
 
 static NCDatabase* sharedDatabase;
@@ -69,5 +72,18 @@ static NCDatabase* sharedDatabase;
 }
 
 #pragma mark - Private
+
+- (NCFetchedCollection<NCDBInvType*>*) invTypes {
+	if (!_invTypes)
+		_invTypes = [NCDBInvType invTypesWithManagedObjectContext:self.viewContext];
+	return _invTypes;
+}
+
+- (NCFetchedCollection<NCDBEveIcon*>*) eveIcons {
+	if (!_eveIcons)
+		_eveIcons = [NCDBEveIcon eveIconsWithManagedObjectContext:self.viewContext];
+	return _eveIcons;
+}
+
 
 @end

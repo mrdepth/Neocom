@@ -9,3 +9,5 @@
 #include "unitily.h"
 
 NSString* const NCCurrentAccountChangedNotification = @"NCCurrentAccountChangedNotification";
+
+NSString* const NCCurrentAccountKey = @"NCCurrentAccountKey";

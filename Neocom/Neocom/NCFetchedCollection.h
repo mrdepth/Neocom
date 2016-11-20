@@ -19,5 +19,6 @@
 - (id) initWithEntity:(NSString*) entityName predicateFormat:(NSString*) predicateFormat argumentArray:(NSArray*) argumentArray managedObjectContext:(NSManagedObjectContext*) managedObjectContext;
 
 - (ObjectType) objectAtIndexedSubscript:(NSInteger) index;
+- (ObjectType) objectForKeyedSubscript:(NSString*) key;
 
 @end

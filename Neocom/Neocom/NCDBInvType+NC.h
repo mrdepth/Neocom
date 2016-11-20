@@ -11,7 +11,6 @@
 
 @interface NCDBInvType (NC)
 
-+ (NSFetchRequest<NCDBInvType *> *)fetchRequestWithTypeID:(int32_t) typeID;
 + (NCFetchedCollection<NCDBInvType*>*) invTypesWithManagedObjectContext:(NSManagedObjectContext*) managedObjectContext;
 - (NCFetchedCollection<NCDBDgmTypeAttribute*>*) attributesMap;
 	

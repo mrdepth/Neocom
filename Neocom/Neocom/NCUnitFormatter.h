@@ -14,8 +14,10 @@ typedef NS_ENUM(NSInteger, NCUnitFormatterStyle) {
 };
 
 typedef NS_ENUM(NSInteger, NCUnit) {
-	NCUnitISK,
-	NCUnitSP
+	NCUnitSIPrefixed = 0x1000,
+	NCUnitNone = 0x0,
+	NCUnitISK = 0x1,
+	NCUnitSP = 0x2,
 };
 
 

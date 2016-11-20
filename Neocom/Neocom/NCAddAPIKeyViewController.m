@@ -69,6 +69,12 @@
 		[self.disabledCharacters addIndex:item.characterID];
 }
 
+- (void) setKeyID:(NSInteger) keyID vCode:(NSString*) vCode {
+	self.keyIDTextField.text = [NSString stringWithFormat:@"%d", (int) keyID];
+	self.vCodeTextField.text = vCode;
+	[self loadCharacters];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
@@ -86,9 +92,13 @@
 	cell.iconView.image = nil;
 	cell.switchControl.on = ![self.disabledCharacters containsIndex:item.characterID];
 	if (self.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation) {
+		cell.imageView.clipsToBounds = NO;
 		cell.titleLabel.text = item.corporationName;
 		cell.subtitleLabel.text = item.allianceName;
-		cell.imageView.clipsToBounds = NO;
+		[[NCDataManager new] imageWithCorporationID:item.corporationID preferredSize:cell.iconView.bounds.size scale:[[UIScreen mainScreen] scale] cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+			if (cell.object == item)
+				cell.iconView.image = image;
+		}];
 	}
 	else {
 		cell.imageView.clipsToBounds = YES;

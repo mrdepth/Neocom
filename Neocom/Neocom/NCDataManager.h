@@ -28,5 +28,6 @@
 - (void) imageWithCorporationID:(NSInteger) corporationID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error)) block;
 - (void) imageWithAllianceID:(NSInteger) allianceID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error)) block;
 - (void) callListWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVECallList* result, NSError* error, NSManagedObjectID* cacheRecordID)) block;
+- (void) accountBalanceForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVEAccountBalance* result, NSError* error, NSManagedObjectID* cacheRecordID)) block;
 
 @end

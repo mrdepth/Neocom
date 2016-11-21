@@ -52,7 +52,6 @@
 		12436D9D194596750090D4A6 /* NSDictionary+EVEDBAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436D72194596750090D4A6 /* NSDictionary+EVEDBAPI.m */; };
 		12436DA41945967E0090D4A6 /* NSMutableString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436DA01945967E0090D4A6 /* NSMutableString+HTML.m */; };
 		12436DA51945967E0090D4A6 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 12436DA31945967E0090D4A6 /* NSString+HTML.m */; };
-		12436EAD194701B80090D4A6 /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12436EAB194701B80090D4A6 /* NCDatabase.xcdatamodeld */; };
 		12584D0C19C81DFD00847AB1 /* EVEDBIndustryActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 12584D0B19C81DFD00847AB1 /* EVEDBIndustryActivity.m */; };
 		12584E0119C94FEE00847AB1 /* EVEDBIndustryActivityMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 12584E0019C94FEE00847AB1 /* EVEDBIndustryActivityMaterial.m */; };
 		12584E0419C9504C00847AB1 /* EVEDBIndustryActivityProbability.m in Sources */ = {isa = PBXBuildFile; fileRef = 12584E0319C9504C00847AB1 /* EVEDBIndustryActivityProbability.m */; };
@@ -63,7 +62,7 @@
 		127667451914C9A900530550 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127667441914C9A900530550 /* CoreData.framework */; };
 		127667471914C9A900530550 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127667461914C9A900530550 /* Foundation.framework */; };
 		1276674A1914C9A900530550 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 127667491914C9A900530550 /* main.mm */; };
-		128257191BCCF4C400BC1F56 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */; };
+		12A256F81DE2CEEB0036D03F /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12A256F41DE2CEEB0036D03F /* NCDatabase.xcdatamodeld */; };
 		12D6DC8E1920CD0A003FC5ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D6DC8D1920CD0A003FC5ED /* libsqlite3.dylib */; };
 		12D6DCF41920D1D5003FC5ED /* NCDBImageValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */; };
 		12D9F9FC1CC3AAA000313F8D /* dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D9F9F61CC3AA6000313F8D /* dgmpp.framework */; };
@@ -233,7 +232,6 @@
 		12436DA01945967E0090D4A6 /* NSMutableString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+HTML.m"; sourceTree = "<group>"; };
 		12436DA21945967E0090D4A6 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
 		12436DA31945967E0090D4A6 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
-		12436EAC194701B80090D4A6 /* NCDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCDatabase.xcdatamodel; sourceTree = "<group>"; };
 		12584D0A19C81DFD00847AB1 /* EVEDBIndustryActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBIndustryActivity.h; sourceTree = "<group>"; };
 		12584D0B19C81DFD00847AB1 /* EVEDBIndustryActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBIndustryActivity.m; sourceTree = "<group>"; };
 		12584DFF19C94FEE00847AB1 /* EVEDBIndustryActivityMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBIndustryActivityMaterial.h; sourceTree = "<group>"; };
@@ -253,8 +251,7 @@
 		127667461914C9A900530550 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		127667491914C9A900530550 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		1276674C1914C9A900530550 /* NCDatabase-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NCDatabase-Prefix.pch"; sourceTree = "<group>"; };
-		128257171BCCF4C400BC1F56 /* NCStorage 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NCStorage 2.xcdatamodel"; sourceTree = "<group>"; };
-		128257181BCCF4C400BC1F56 /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
+		12A256F51DE2CEEB0036D03F /* NCDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCDatabase.xcdatamodel; sourceTree = "<group>"; };
 		12D6DC8D1920CD0A003FC5ED /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		12D6DCF21920D1D5003FC5ED /* NCDBImageValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBImageValueTransformer.h; sourceTree = "<group>"; };
 		12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBImageValueTransformer.m; sourceTree = "<group>"; };
@@ -455,8 +452,7 @@
 				12D6DCF519211091003FC5ED /* NCDatabase.h */,
 				12D6DCF21920D1D5003FC5ED /* NCDBImageValueTransformer.h */,
 				12D6DCF31920D1D5003FC5ED /* NCDBImageValueTransformer.m */,
-				128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */,
-				12436EAB194701B80090D4A6 /* NCDatabase.xcdatamodeld */,
+				12A256F41DE2CEEB0036D03F /* NCDatabase.xcdatamodeld */,
 				1276674B1914C9A900530550 /* Supporting Files */,
 			);
 			path = NCDatabase;
@@ -511,7 +507,7 @@
 		127667391914C9A900530550 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0810;
 			};
 			buildConfigurationList = 1276673C1914C9A900530550 /* Build configuration list for PBXProject "NCDatabase" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -595,7 +591,7 @@
 			files = (
 				12436D92194596750090D4A6 /* EVEDBMapConstellation.m in Sources */,
 				12436D99194596750090D4A6 /* EVEDBRamInstallationTypeContent.m in Sources */,
-				12436EAD194701B80090D4A6 /* NCDatabase.xcdatamodeld in Sources */,
+				12A256F81DE2CEEB0036D03F /* NCDatabase.xcdatamodeld in Sources */,
 				1276674A1914C9A900530550 /* main.mm in Sources */,
 				12436D78194596750090D4A6 /* EVEDBCrtCertificate.m in Sources */,
 				12584E0419C9504C00847AB1 /* EVEDBIndustryActivityProbability.m in Sources */,
@@ -615,7 +611,6 @@
 				12436D9C194596750090D4A6 /* EVEDBObject.m in Sources */,
 				12436D83194596750090D4A6 /* EVEDBEveUnit.m in Sources */,
 				12436D7C194596750090D4A6 /* EVEDBDatabase.m in Sources */,
-				128257191BCCF4C400BC1F56 /* NCStorage.xcdatamodeld in Sources */,
 				12436D8A194596750090D4A6 /* EVEDBInvMetaGroup.m in Sources */,
 				12436D84194596750090D4A6 /* EVEDBInvBlueprintType.m in Sources */,
 				12436D9D194596750090D4A6 /* NSDictionary+EVEDBAPI.m in Sources */,
@@ -676,14 +671,19 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -715,14 +715,19 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -737,7 +742,6 @@
 		127667551914C9A900530550 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				DEFINES_MODULE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NCDatabase/NCDatabase-Prefix.pch";
@@ -756,7 +760,6 @@
 		127667561914C9A900530550 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				DEFINES_MODULE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NCDatabase/NCDatabase-Prefix.pch";
@@ -796,26 +799,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		12436EAB194701B80090D4A6 /* NCDatabase.xcdatamodeld */ = {
+		12A256F41DE2CEEB0036D03F /* NCDatabase.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				12436EAC194701B80090D4A6 /* NCDatabase.xcdatamodel */,
+				12A256F51DE2CEEB0036D03F /* NCDatabase.xcdatamodel */,
 			);
-			currentVersion = 12436EAC194701B80090D4A6 /* NCDatabase.xcdatamodel */;
+			currentVersion = 12A256F51DE2CEEB0036D03F /* NCDatabase.xcdatamodel */;
 			name = NCDatabase.xcdatamodeld;
-			path = ../../../Neocom/db/NCDatabase.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		128257161BCCF4C400BC1F56 /* NCStorage.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				128257171BCCF4C400BC1F56 /* NCStorage 2.xcdatamodel */,
-				128257181BCCF4C400BC1F56 /* NCStorage.xcdatamodel */,
-			);
-			currentVersion = 128257171BCCF4C400BC1F56 /* NCStorage 2.xcdatamodel */;
-			name = NCStorage.xcdatamodeld;
-			path = ../../../Neocom/NCStorage.xcdatamodeld;
+			path = ../../../Neocom/Neocom/NCDatabase.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

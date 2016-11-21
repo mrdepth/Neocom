@@ -8,7 +8,7 @@
 
 #import "NCDatabaseCategoriesViewController.h"
 #import "NCDatabase.h"
-#import "NCImageTitleCell.h"
+#import "NCDefaultTableViewCell.h"
 #import "NCDatabaseGroupsViewController.h"
 #import "NCDatabaseItemsViewController.h"
 
@@ -24,8 +24,8 @@
 	[self setupSearchController];
 	
 	NSFetchRequest* request = [NCDBInvCategory fetchRequest];
-	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"categoryName" ascending:YES]];
-	self.results = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:NCDatabase.sharedDatabase.viewContext sectionNameKeyPath:nil cacheName:nil];
+	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"published" ascending:NO], [NSSortDescriptor sortDescriptorWithKey:@"categoryName" ascending:YES]];
+	self.results = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:NCDatabase.sharedDatabase.viewContext sectionNameKeyPath:@"published" cacheName:nil];
 	[self.results performFetch:nil];
 }
 
@@ -33,6 +33,7 @@
 	if ([segue.identifier isEqualToString:@"NCDatabaseGroupsViewController"]) {
 		NCDatabaseGroupsViewController* controller = segue.destinationViewController;
 		controller.category = [sender object];
+		controller.title = controller.category.categoryName;
 	}
 }
 
@@ -47,12 +48,20 @@
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCImageTitleCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	NCDefaultTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	NCDBInvCategory* category = [self.results objectAtIndexPath:indexPath];
 	cell.titleLabel.text = category.categoryName;
 	cell.iconView.image = (id) category.icon.image.image ?: NCDBEveIcon.defaultCategoryIcon.image.image;
 	cell.object = category;
 	return cell;
+}
+
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	NSString* name = [self.results.sections[section] name];
+	if ([name integerValue] == 0)
+		return NSLocalizedString(@"Unpublished", nil);
+	else
+		return nil;
 }
 
 #pragma mark - UISearchResultsUpdating

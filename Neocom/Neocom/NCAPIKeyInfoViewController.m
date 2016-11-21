@@ -62,7 +62,6 @@
 	NCDataManager* dataManager = [NCDataManager defaultManager];
 	[dataManager callListWithCachePolicy:cachePolicy completionHandler:^(EVECallList *result, NSError *error, NSManagedObjectID *cacheRecordID) {
 		[progressHandler finish];
-		progressHandler = nil;
 		self.callList = result;
 		
 		NSMutableDictionary* groups = [NSMutableDictionary new];

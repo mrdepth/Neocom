@@ -8,7 +8,7 @@
 
 #import "NCMainMenuViewController.h"
 #import "NCMainMenuHeaderViewController.h"
-#import "NCImageSubtitleCell.h"
+#import "NCDefaultTableViewCell.h"
 #import "NCSlideDownInteractiveTransition.h"
 #import "NCSlideDownAnimationController.h"
 #import "NCStorage.h"
@@ -114,7 +114,7 @@
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCImageSubtitleCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	NCDefaultTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	NSDictionary* row = self.mainMenu[indexPath.section][indexPath.row];
 	cell.titleLabel.text = row[@"title"];
 	NSString* detailsKeyPath = row[@"detailsKeyPath"];

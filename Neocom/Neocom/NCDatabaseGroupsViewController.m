@@ -8,7 +8,7 @@
 
 #import "NCDatabaseGroupsViewController.h"
 #import "NCDatabase.h"
-#import "NCImageTitleCell.h"
+#import "NCDefaultTableViewCell.h"
 #import "NCDatabaseItemsViewController.h"
 
 @interface NCDatabaseGroupsViewController ()<UISearchResultsUpdating>
@@ -23,9 +23,9 @@
 	[self setupSearchController];
 
 	NSFetchRequest* request = [NCDBInvGroup fetchRequest];
-	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
-	request.predicate = [NSPredicate predicateWithFormat:@"category == %@", self.category];
-	self.results = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:NCDatabase.sharedDatabase.viewContext sectionNameKeyPath:nil cacheName:nil];
+	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"published" ascending:NO], [NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
+	request.predicate = [NSPredicate predicateWithFormat:@"category == %@ AND types.@count > 0", self.category];
+	self.results = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:NCDatabase.sharedDatabase.viewContext sectionNameKeyPath:@"published" cacheName:nil];
 	[self.results performFetch:nil];
 }
 
@@ -33,6 +33,7 @@
 	if ([segue.identifier isEqualToString:@"NCDatabaseItemsViewController"]) {
 		NCDatabaseItemsViewController* controller = segue.destinationViewController;
 		controller.predicate = [NSPredicate predicateWithFormat:@"group == %@", [sender object]];
+		controller.title = [[sender object] groupName];
 	}
 }
 
@@ -47,12 +48,20 @@
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCImageTitleCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	NCDefaultTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	NCDBInvGroup* group = [self.results objectAtIndexPath:indexPath];
 	cell.titleLabel.text = group.groupName;
 	cell.iconView.image = (id) group.icon.image.image ?: NCDBEveIcon.defaultGroupIcon.image.image;
 	cell.object = group;
 	return cell;
+}
+
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	NSString* name = [self.results.sections[section] name];
+	if ([name integerValue] == 0)
+		return NSLocalizedString(@"Unpublished", nil);
+	else
+		return nil;
 }
 
 #pragma mark - UISearchResultsUpdating

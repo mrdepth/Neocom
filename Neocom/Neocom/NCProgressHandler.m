@@ -49,7 +49,17 @@
 - (void) dealloc {
 	self.timer = nil;
 	self.totalProgress = nil;
-	[self.progressView removeFromSuperview];
+	if (_progressView) {
+		if ([NSThread isMainThread]) {
+			[_progressView removeFromSuperview];
+		}
+		else {
+			UIProgressView* progressView = _progressView;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[progressView removeFromSuperview];
+			});
+		}
+	}
 }
 
 - (void) finish {

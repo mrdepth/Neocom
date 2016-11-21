@@ -8,7 +8,7 @@
 
 #import "NCDatabaseMarketGroupsViewController.h"
 #import "NCDatabase.h"
-#import "NCImageTitleCell.h"
+#import "NCDefaultTableViewCell.h"
 #import "NCDatabaseItemsViewController.h"
 
 @interface NCDatabaseMarketGroupsViewController ()<UISearchResultsUpdating>
@@ -31,8 +31,8 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCDatabaseGroupsViewController"]) {
-		NCDatabaseGroupsViewController* controller = segue.destinationViewController;
-		controller.category = [sender object];
+		//NCDatabaseGroupsViewController* controller = segue.destinationViewController;
+		//controller.category = [sender object];
 	}
 }
 
@@ -47,7 +47,7 @@
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCImageTitleCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	NCDefaultTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	NCDBInvCategory* category = [self.results objectAtIndexPath:indexPath];
 	cell.titleLabel.text = category.categoryName;
 	cell.iconView.image = (id) category.icon.image.image ?: NCDBEveIcon.defaultCategoryIcon.image.image;

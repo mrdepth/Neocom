@@ -25,6 +25,9 @@
 #define NCDBMetaGroupAttributeID 1692
 #define NCDBMetaLevelAttributeID 633
 
+#define NCDBDefaultMetaGroup 1000
+#define NCDBUnpublishedMetaGroup 1001
+
 typedef enum : uint32_t {
 	/* Typeface info (lower 16 bits of UIFontDescriptorSymbolicTraits ) */
 	UIFontDescriptorTraitItalic = 1u << 0,
@@ -437,9 +440,11 @@ NSDictionary* convertInvTypes(NSManagedObjectContext* context, EVEDBDatabase* da
 		type.radius = eveType.radius;
 		type.volume = eveType.volume;
 		type.group = invGroups[@(eveType.groupID)];
+		if (!type.group.published)
+			type.published = NO;
 		type.marketGroup = eveType.marketGroupID ? invMarketGroups[@(eveType.marketGroupID)] : nil;
 		type.race = eveType.raceID ? chrRaces[@(eveType.raceID)] : nil;
-		type.metaGroup = invMetaGroups[@(-1)];
+		type.metaGroup = type.published ? invMetaGroups[@(NCDBDefaultMetaGroup)] : invMetaGroups[@(NCDBUnpublishedMetaGroup)];
 		
 		NSMutableString* typeName = [NSMutableString stringWithString:eveType.typeName];
 		NSMutableDictionary* ranges = [NSMutableDictionary new];
@@ -538,10 +543,17 @@ NSDictionary* convertInvMetaGroups(NSManagedObjectContext* context, EVEDBDatabas
 	}];
 
 	NCDBInvMetaGroup* metaGroup = [NSEntityDescription insertNewObjectForEntityForName:@"InvMetaGroup" inManagedObjectContext:context];
-	metaGroup.metaGroupID = -1;
+	metaGroup.metaGroupID = NCDBDefaultMetaGroup;
 	metaGroup.icon = nil;
 	metaGroup.metaGroupName = @"";
 	dictionary[@(metaGroup.metaGroupID)] = metaGroup;
+	
+	metaGroup = [NSEntityDescription insertNewObjectForEntityForName:@"InvMetaGroup" inManagedObjectContext:context];
+	metaGroup.metaGroupID = NCDBUnpublishedMetaGroup;
+	metaGroup.icon = nil;
+	metaGroup.metaGroupName = @"Unpublished";
+	dictionary[@(metaGroup.metaGroupID)] = metaGroup;
+	
 
 	return dictionary;
 }
@@ -553,7 +565,8 @@ void convertInvMetaTypes(NSManagedObjectContext* context, EVEDBDatabase* databas
 		NCDBInvType* parentType = eveMetaType.parentTypeID ? invTypes[@(eveMetaType.parentTypeID)] : nil;
 		if (parentType)
 			type.parentType = parentType;
-		type.metaGroup = invMetaGroups[@(eveMetaType.metaGroupID)];
+		if (type.metaGroup.metaGroupID != NCDBUnpublishedMetaGroup)
+			type.metaGroup = invMetaGroups[@(eveMetaType.metaGroupID)];
 	}];
 }
 

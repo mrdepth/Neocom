@@ -20,13 +20,11 @@
 		1229E4F51DD9C7D100500A7D /* NCBannerNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229E4F41DD9C7D100500A7D /* NCBannerNavigationController.m */; };
 		1229E4F91DD9CC2000500A7D /* NCSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229E4F81DD9CC2000500A7D /* NCSplitViewController.m */; };
 		1229E4FB1DD9E6AB00500A7D /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1229E4FA1DD9E6AB00500A7D /* mainMenu.plist */; };
-		1229E4FF1DD9E79A00500A7D /* NCImageSubtitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229E4FE1DD9E79A00500A7D /* NCImageSubtitleCell.m */; };
 		1229E5081DDA016900500A7D /* NCTintImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229E5071DDA016900500A7D /* NCTintImageView.m */; };
 		123FE1D31DDF80A100722089 /* NSURL+NC.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE1D21DDF80A100722089 /* NSURL+NC.m */; };
 		123FE1D61DDF853000722089 /* UIViewController+NC.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE1D51DDF853000722089 /* UIViewController+NC.m */; };
 		123FE1DD1DDFB6A300722089 /* NCAutoHeightLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE1DC1DDFB6A300722089 /* NCAutoHeightLabel.m */; };
 		123FE1E11DE1A6C900722089 /* NCDatabaseCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE1E01DE1A6C900722089 /* NCDatabaseCategoriesViewController.m */; };
-		123FE1E51DE1A89000722089 /* NCImageTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE1E41DE1A89000722089 /* NCImageTitleCell.m */; };
 		123FE2131DE1CD8800722089 /* NCDBEveIcon+NC.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE2121DE1CD8800722089 /* NCDBEveIcon+NC.m */; };
 		123FE2161DE1D1B000722089 /* NCDBImageValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE2151DE1D1B000722089 /* NCDBImageValueTransformer.m */; };
 		123FE2191DE1D25900722089 /* NCDatabaseGroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE2181DE1D25900722089 /* NCDatabaseGroupsViewController.m */; };
@@ -177,6 +175,11 @@
 		129BBE0E1DDB8FD8009F97F5 /* NCUnitFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129BBE0D1DDB8FD8009F97F5 /* NCUnitFormatter.m */; };
 		129BBE0F1DDB97A2009F97F5 /* dgm.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 129A86291DD8D58B0001F732 /* dgm.sqlite */; };
 		129BBE101DDB97A2009F97F5 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 129A862A1DD8D58B0001F732 /* NCDatabase.sqlite */; };
+		12A256EC1DE2C7D40036D03F /* ASTreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A256EB1DE2C7D40036D03F /* ASTreeController.m */; };
+		12A256FE1DE2DDBB0036D03F /* NCCharacterSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A256FD1DE2DDBB0036D03F /* NCCharacterSheetViewController.m */; };
+		12A257021DE2DF360036D03F /* NCDefaultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A257011DE2DF360036D03F /* NCDefaultTableViewCell.m */; };
+		12A257061DE2E9DA0036D03F /* NCTableViewHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A257051DE2E9DA0036D03F /* NCTableViewHeaderCell.m */; };
+		12A2570C1DE2EEE40036D03F /* NCManagedObjectObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A2570B1DE2EEE40036D03F /* NCManagedObjectObserver.m */; };
 		12AC4D001DDA2B680052430E /* NCAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AC4CFF1DDA2B680052430E /* NCAccountsViewController.m */; };
 		12CCAD7E1DDA4C7A0053CA8A /* NCLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CCAD7D1DDA4C7A0053CA8A /* NCLabel.m */; };
 		12FB4F561DDDE15B00C7E34A /* NCDispatchGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FB4F551DDDE15B00C7E34A /* NCDispatchGroup.m */; };
@@ -255,8 +258,6 @@
 		1229E4F71DD9CC2000500A7D /* NCSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSplitViewController.h; sourceTree = "<group>"; };
 		1229E4F81DD9CC2000500A7D /* NCSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSplitViewController.m; sourceTree = "<group>"; };
 		1229E4FA1DD9E6AB00500A7D /* mainMenu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mainMenu.plist; sourceTree = "<group>"; };
-		1229E4FD1DD9E79A00500A7D /* NCImageSubtitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCImageSubtitleCell.h; sourceTree = "<group>"; };
-		1229E4FE1DD9E79A00500A7D /* NCImageSubtitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCImageSubtitleCell.m; sourceTree = "<group>"; };
 		1229E5061DDA016900500A7D /* NCTintImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTintImageView.h; sourceTree = "<group>"; };
 		1229E5071DDA016900500A7D /* NCTintImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTintImageView.m; sourceTree = "<group>"; };
 		123FE1D11DDF80A100722089 /* NSURL+NC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+NC.h"; sourceTree = "<group>"; };
@@ -267,8 +268,6 @@
 		123FE1DC1DDFB6A300722089 /* NCAutoHeightLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAutoHeightLabel.m; sourceTree = "<group>"; };
 		123FE1DF1DE1A6C900722089 /* NCDatabaseCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCategoriesViewController.h; sourceTree = "<group>"; };
 		123FE1E01DE1A6C900722089 /* NCDatabaseCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseCategoriesViewController.m; sourceTree = "<group>"; };
-		123FE1E31DE1A89000722089 /* NCImageTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCImageTitleCell.h; sourceTree = "<group>"; };
-		123FE1E41DE1A89000722089 /* NCImageTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCImageTitleCell.m; sourceTree = "<group>"; };
 		123FE2111DE1CD8800722089 /* NCDBEveIcon+NC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBEveIcon+NC.h"; sourceTree = "<group>"; };
 		123FE2121DE1CD8800722089 /* NCDBEveIcon+NC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBEveIcon+NC.m"; sourceTree = "<group>"; };
 		123FE2141DE1D1B000722089 /* NCDBImageValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBImageValueTransformer.h; sourceTree = "<group>"; };
@@ -457,6 +456,16 @@
 		129BBE0A1DDB87A6009F97F5 /* NCTimeIntervalFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTimeIntervalFormatter.m; sourceTree = "<group>"; };
 		129BBE0C1DDB8FD8009F97F5 /* NCUnitFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCUnitFormatter.h; sourceTree = "<group>"; };
 		129BBE0D1DDB8FD8009F97F5 /* NCUnitFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCUnitFormatter.m; sourceTree = "<group>"; };
+		12A256EA1DE2C7D40036D03F /* ASTreeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASTreeController.h; sourceTree = "<group>"; };
+		12A256EB1DE2C7D40036D03F /* ASTreeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASTreeController.m; sourceTree = "<group>"; };
+		12A256FC1DE2DDBB0036D03F /* NCCharacterSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterSheetViewController.h; sourceTree = "<group>"; };
+		12A256FD1DE2DDBB0036D03F /* NCCharacterSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCharacterSheetViewController.m; sourceTree = "<group>"; };
+		12A257001DE2DF360036D03F /* NCDefaultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDefaultTableViewCell.h; sourceTree = "<group>"; };
+		12A257011DE2DF360036D03F /* NCDefaultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDefaultTableViewCell.m; sourceTree = "<group>"; };
+		12A257041DE2E9DA0036D03F /* NCTableViewHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewHeaderCell.h; sourceTree = "<group>"; };
+		12A257051DE2E9DA0036D03F /* NCTableViewHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewHeaderCell.m; sourceTree = "<group>"; };
+		12A2570A1DE2EEE40036D03F /* NCManagedObjectObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCManagedObjectObserver.h; sourceTree = "<group>"; };
+		12A2570B1DE2EEE40036D03F /* NCManagedObjectObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCManagedObjectObserver.m; sourceTree = "<group>"; };
 		12AC4CFE1DDA2B680052430E /* NCAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountsViewController.h; sourceTree = "<group>"; };
 		12AC4CFF1DDA2B680052430E /* NCAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsViewController.m; sourceTree = "<group>"; };
 		12CCAD7C1DDA4C7A0053CA8A /* NCLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLabel.h; sourceTree = "<group>"; };
@@ -548,15 +557,6 @@
 			name = Database;
 			sourceTree = "<group>";
 		};
-		123FE1E21DE1A87B00722089 /* NCImageTitleCell */ = {
-			isa = PBXGroup;
-			children = (
-				123FE1E31DE1A89000722089 /* NCImageTitleCell.h */,
-				123FE1E41DE1A89000722089 /* NCImageTitleCell.m */,
-			);
-			name = NCImageTitleCell;
-			sourceTree = "<group>";
-		};
 		124A9BB81DDDA7D6004A6EAA /* Formatters */ = {
 			isa = PBXGroup;
 			children = (
@@ -571,12 +571,12 @@
 		124A9BB91DDDA7E3004A6EAA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				123FE1E21DE1A87B00722089 /* NCImageTitleCell */,
+				12A257031DE2E9C50036D03F /* NCTableViewHeaderCell */,
+				12A256FF1DE2DF210036D03F /* NCDefaultTableViewCell */,
 				123FE1DA1DDFB68900722089 /* NCAutoHeightLabel */,
 				12FB4F721DDF3A7900C7E34A /* NCSwitchTitleCell */,
 				124A9BBA1DDDA7FF004A6EAA /* NCRoundImageView */,
 				124A9BBB1DDDA803004A6EAA /* NCTintImageView */,
-				129A86381DD90BFC0001F732 /* NCImageSubtitleCell */,
 				12CCAD7B1DDA4C690053CA8A /* NCLabel */,
 				129BBE111DDBA196009F97F5 /* NCProgressView */,
 				127BB8F41DDC4C3B00F07E6C /* NCBackgroundView */,
@@ -703,8 +703,7 @@
 				129A85521DD8D3440001F732 /* Utils */,
 				129A862B1DD8DA1D0001F732 /* NCMainMenuViewController */,
 				12AC4CFD1DDA2B400052430E /* NCAccountsViewController */,
-				1215FA401DDAE70C00F14CBE /* NCSlideDownAnimationController */,
-				1251D3881DDB003100C90DC4 /* NCSheetPresentationController */,
+				12A256FB1DE2DD9E0036D03F /* NCCharacterSheetViewController */,
 				123FE1DE1DE1A69A00722089 /* Database */,
 				129A85081DD8D2170001F732 /* NCAppDelegate.h */,
 				129A85091DD8D2170001F732 /* NCAppDelegate.m */,
@@ -745,6 +744,7 @@
 		129A85521DD8D3440001F732 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				12A256E91DE2C7D40036D03F /* ASTreeController */,
 				129A85551DD8D3640001F732 /* NCCache */,
 				129A85541DD8D3590001F732 /* NCDatabase */,
 				129A85531DD8D34C0001F732 /* NCStorage */,
@@ -757,6 +757,8 @@
 				127BB8C91DDC3B0800F07E6C /* NCNavigationController */,
 				12FB4F531DDDE14700C7E34A /* NCDispatchGroup */,
 				12FB4F7B1DDF471D00C7E34A /* NCTableViewBackgroundLabel */,
+				1215FA401DDAE70C00F14CBE /* NCSlideDownAnimationController */,
+				1251D3881DDB003100C90DC4 /* NCSheetPresentationController */,
 				129BBE031DDB743F009F97F5 /* UIAlertController+NC.h */,
 				129BBE041DDB743F009F97F5 /* UIAlertController+NC.m */,
 				123FE2221DE1E1D600722089 /* UIImage+NC.h */,
@@ -769,6 +771,8 @@
 				124A9BB31DDDA4D2004A6EAA /* NSAttributedString+NC.m */,
 				12179A061DE22257001C7FCF /* NSExpressionDescription+NC.h */,
 				12179A071DE22257001C7FCF /* NSExpressionDescription+NC.m */,
+				12A2570A1DE2EEE40036D03F /* NCManagedObjectObserver.h */,
+				12A2570B1DE2EEE40036D03F /* NCManagedObjectObserver.m */,
 				129A852E1DD8D2E30001F732 /* NCDataManager.h */,
 				129A852F1DD8D2E30001F732 /* NCDataManager.m */,
 				12179A011DE21932001C7FCF /* NCGate.h */,
@@ -980,20 +984,48 @@
 			name = NCMainMenuViewController;
 			sourceTree = "<group>";
 		};
-		129A86381DD90BFC0001F732 /* NCImageSubtitleCell */ = {
-			isa = PBXGroup;
-			children = (
-				1229E4FD1DD9E79A00500A7D /* NCImageSubtitleCell.h */,
-				1229E4FE1DD9E79A00500A7D /* NCImageSubtitleCell.m */,
-			);
-			name = NCImageSubtitleCell;
-			sourceTree = "<group>";
-		};
 		129BBE111DDBA196009F97F5 /* NCProgressView */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = NCProgressView;
+			sourceTree = "<group>";
+		};
+		12A256E91DE2C7D40036D03F /* ASTreeController */ = {
+			isa = PBXGroup;
+			children = (
+				12A256EA1DE2C7D40036D03F /* ASTreeController.h */,
+				12A256EB1DE2C7D40036D03F /* ASTreeController.m */,
+			);
+			name = ASTreeController;
+			path = ../../ThirdParty/tools/ASTreeController;
+			sourceTree = "<group>";
+		};
+		12A256FB1DE2DD9E0036D03F /* NCCharacterSheetViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12A256FC1DE2DDBB0036D03F /* NCCharacterSheetViewController.h */,
+				12A256FD1DE2DDBB0036D03F /* NCCharacterSheetViewController.m */,
+			);
+			name = NCCharacterSheetViewController;
+			sourceTree = "<group>";
+		};
+		12A256FF1DE2DF210036D03F /* NCDefaultTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				12A257001DE2DF360036D03F /* NCDefaultTableViewCell.h */,
+				12A257011DE2DF360036D03F /* NCDefaultTableViewCell.m */,
+			);
+			name = NCDefaultTableViewCell;
+			sourceTree = "<group>";
+		};
+		12A257031DE2E9C50036D03F /* NCTableViewHeaderCell */ = {
+			isa = PBXGroup;
+			children = (
+				12A257041DE2E9DA0036D03F /* NCTableViewHeaderCell.h */,
+				12A257051DE2E9DA0036D03F /* NCTableViewHeaderCell.m */,
+			);
+			name = NCTableViewHeaderCell;
 			sourceTree = "<group>";
 		};
 		12AC4CFD1DDA2B400052430E /* NCAccountsViewController */ = {
@@ -1272,21 +1304,22 @@
 				127BB8F31DDC476700F07E6C /* Dark.clr in Sources */,
 				129BBE081DDB7E28009F97F5 /* NCAccountsCell.m in Sources */,
 				1251D3871DDAFFF400C90DC4 /* NCAddAPIKeyViewController.m in Sources */,
-				1229E4FF1DD9E79A00500A7D /* NCImageSubtitleCell.m in Sources */,
 				124A9BB41DDDA4D2004A6EAA /* NSAttributedString+NC.m in Sources */,
 				129A85421DD8D2E30001F732 /* NCCharacterAttributes.mm in Sources */,
 				1229E4F51DD9C7D100500A7D /* NCBannerNavigationController.m in Sources */,
 				123FE2161DE1D1B000722089 /* NCDBImageValueTransformer.m in Sources */,
 				129A85411DD8D2E30001F732 /* NCCharacter.m in Sources */,
 				1229E4EE1DD9965400500A7D /* NCMainMenuHeaderViewController.m in Sources */,
-				123FE1E51DE1A89000722089 /* NCImageTitleCell.m in Sources */,
 				127BB8F71DDC4C5000F07E6C /* NCBackgroundView.m in Sources */,
 				12CCAD7E1DDA4C7A0053CA8A /* NCLabel.m in Sources */,
 				129A85401DD8D2E30001F732 /* NCCacheRecord.m in Sources */,
 				129A862E1DD8DA380001F732 /* NCMainMenuViewController.m in Sources */,
+				12A256FE1DE2DDBB0036D03F /* NCCharacterSheetViewController.m in Sources */,
+				12A2570C1DE2EEE40036D03F /* NCManagedObjectObserver.m in Sources */,
 				129A85511DD8D3390001F732 /* NCDatabase.xcdatamodeld in Sources */,
 				1215FA4C1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.m in Sources */,
 				129A850A1DD8D2170001F732 /* NCAppDelegate.m in Sources */,
+				12A256EC1DE2C7D40036D03F /* ASTreeController.m in Sources */,
 				12AC4D001DDA2B680052430E /* NCAccountsViewController.m in Sources */,
 				1229E4F91DD9CC2000500A7D /* NCSplitViewController.m in Sources */,
 				123FE1D61DDF853000722089 /* UIViewController+NC.m in Sources */,
@@ -1294,6 +1327,7 @@
 				12FB4F7E1DDF475800C7E34A /* NCTableViewBackgroundLabel.m in Sources */,
 				129BBE0E1DDB8FD8009F97F5 /* NCUnitFormatter.m in Sources */,
 				1229E5081DDA016900500A7D /* NCTintImageView.m in Sources */,
+				12A257021DE2DF360036D03F /* NCDefaultTableViewCell.m in Sources */,
 				127A94B01DDC9FEF002E6B5D /* NCTableViewCell.m in Sources */,
 				127A94A21DDC7295002E6B5D /* NCProgressHandler.m in Sources */,
 				129A85481DD8D2E30001F732 /* NCSkillQueueItem.m in Sources */,
@@ -1312,6 +1346,7 @@
 				1251D38B1DDB007B00C90DC4 /* NCSheetPresentationController.m in Sources */,
 				123FE1DD1DDFB6A300722089 /* NCAutoHeightLabel.m in Sources */,
 				12179A081DE22257001C7FCF /* NSExpressionDescription+NC.m in Sources */,
+				12A257061DE2E9DA0036D03F /* NCTableViewHeaderCell.m in Sources */,
 				123FE21F1DE1D55C00722089 /* NCDatabaseItemsViewController.m in Sources */,
 				124A9BB71DDDA560004A6EAA /* unitily.m in Sources */,
 				123FE1D31DDF80A100722089 /* NSURL+NC.m in Sources */,

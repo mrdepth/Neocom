@@ -17,6 +17,7 @@
 #import "UIColor+Dark.h"
 #import "NCTableView.h"
 #import "NCTableViewCell.h"
+#import "NCTableViewHeaderCell.h"
 #import "NSURL+NC.h"
 #import "NCAddAPIKeyViewController.h"
 #import "UIViewController+NC.h"
@@ -180,6 +181,7 @@
 	[tableView setSeparatorColor:[UIColor separatorColor]];
 	
 	[[NCTableViewCell appearance] setBackgroundColor:[UIColor cellBackgroundColor]];
+	[[NCTableViewHeaderCell appearance] setBackgroundColor:[UIColor backgroundColor]];
 	[[NCBackgroundView appearance] setBackgroundColor:[UIColor backgroundColor]];
 	
 	UISearchBar* searchBar = [UISearchBar appearanceWhenContainedIn:[NCTableView class], nil];

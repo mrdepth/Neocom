@@ -41,7 +41,7 @@
 			NCFetchedCollection<NCDBInvType*>* invTypes = [NCDBInvType invTypesWithManagedObjectContext:managedObjectContext];
 			for (EVECharacterSheetImplant* implant in characterSheet.implants) {
 				NCDBInvType* type = invTypes[implant.typeID];
-				NCFetchedCollection<NCDBDgmTypeAttribute*>* attributes = type.attributesMap;
+				NCFetchedCollection<NCDBDgmTypeAttribute*>* attributes = type.allAttributes;
 				characterAttributes.charisma += attributes[NCCharismaBonusAttributeID].value;
 				characterAttributes.intelligence += attributes[NCIntelligenceBonusAttributeID].value;
 				characterAttributes.memory += attributes[NCMemoryBonusAttributeID].value;
@@ -58,7 +58,7 @@
 - (float) skillpointsPerSecondForSkill:(NCDBInvType*) skill {
 	__block float skillpointsPerSecond = 0;
 	[skill.managedObjectContext performBlockAndWait:^{
-		NCFetchedCollection<NCDBDgmTypeAttribute*>* attributes = skill.attributesMap;
+		NCFetchedCollection<NCDBDgmTypeAttribute*>* attributes = skill.allAttributes;
 		NCDBDgmTypeAttribute *primaryAttribute = attributes[NCPrimaryAttributeAttribteID];
 		NCDBDgmTypeAttribute *secondaryAttribute = attributes[NCSecondaryAttributeAttribteID];
 		skillpointsPerSecond = [self skillpointsPerSecondWithPrimaryAttribute:primaryAttribute.value secondaryAttribute:secondaryAttribute.value];

@@ -15,7 +15,7 @@
 	return [[NCFetchedCollection alloc] initWithEntity:@"InvType" predicateFormat:@"typeID == %@" argumentArray:nil managedObjectContext:managedObjectContext];
 }
 
-- (NCFetchedCollection<NCDBDgmTypeAttribute*>*) attributesMap {
+- (NCFetchedCollection<NCDBDgmTypeAttribute*>*) allAttributes {
 	return [[NCFetchedCollection alloc] initWithEntity:@"DgmTypeAttribute" predicateFormat:@"type == %@ AND attributeType.attributeID==%@" argumentArray:@[self] managedObjectContext:self.managedObjectContext];
 }
 

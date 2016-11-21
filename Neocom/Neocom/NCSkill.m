@@ -29,7 +29,7 @@
 	
 	if (self = [super init]) {
 		[type.managedObjectContext performBlockAndWait:^{
-			NCFetchedCollection<NCDBDgmTypeAttribute*>* attributes = type.attributesMap;
+			NCFetchedCollection<NCDBDgmTypeAttribute*>* attributes = type.allAttributes;
 			self.typeID = type.typeID;
 			self.rank = attributes[NCSkillTimeConstantAttributeID].value;
 			self.primaryAttributeID = attributes[NCPrimaryAttributeAttribteID].value;

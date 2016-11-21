@@ -12,6 +12,6 @@
 @interface NCDBInvType (NC)
 
 + (NCFetchedCollection<NCDBInvType*>*) invTypesWithManagedObjectContext:(NSManagedObjectContext*) managedObjectContext;
-- (NCFetchedCollection<NCDBDgmTypeAttribute*>*) attributesMap;
+- (NCFetchedCollection<NCDBDgmTypeAttribute*>*) allAttributes;
 	
 @end

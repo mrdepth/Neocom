@@ -20,11 +20,12 @@
 #import "NCDispatchGroup.h"
 #import "NCAPIKeyInfoViewController.h"
 #import "NCTableViewBackgroundLabel.h"
+#import "NCManagedObjectObserver.h"
 @import EVEAPI;
 
 @interface NCAccountsViewController ()<UIViewControllerTransitioningDelegate, NSFetchedResultsControllerDelegate>
 @property (nonatomic, strong) NSFetchedResultsController* results;
-@property (nonatomic, strong) NSMutableDictionary* extraInfo;
+@property (nonatomic, strong) NSMutableDictionary<NSManagedObjectID*, NSMutableDictionary*>* extraInfo;
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
 @property (nonatomic, assign, getter=isInteractive) BOOL interactive;
 @end
@@ -100,7 +101,7 @@
 	NCAccount* account = [self.results objectAtIndexPath:indexPath];
 	NCAccountsCell* cell = [tableView dequeueReusableCellWithIdentifier:account.eveAPIKey.corporate ? @"CorporationCell" : @"CharacterCell" forIndexPath:indexPath];
 	
-	NSDictionary* info = self.extraInfo[indexPath];
+	NSDictionary* info = self.extraInfo[account.objectID];
 	if (!info)
 		[self loadDataForCellAtIndexPath:indexPath withCachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(NSDictionary *info, NSError *error) {
 		}];
@@ -259,9 +260,18 @@
 	
 	NSProgress* progress = [NSProgress progressWithTotalUnitCount:apiKey.corporate ? 4 : 6];
 	
-	NSMutableDictionary* info = self.extraInfo[indexPath];
-	if (!info)
-		self.extraInfo[indexPath] = info = [NSMutableDictionary new];
+	NSMutableDictionary* info = self.extraInfo[account.objectID];
+	NCManagedObjectObserver* observer = info[@"observer"];
+	if (!info) {
+		self.extraInfo[account.objectID] = info = [NSMutableDictionary new];
+		info[@"observer"] = observer = [NCManagedObjectObserver observerWithHandler:^(NSSet<NSManagedObjectID *> *updated, NSSet<NSManagedObjectID *> *deleted) {
+			NSIndexPath* indexPath = [self.results indexPathForObject:account];
+			if (indexPath)
+				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		}];
+	}
+	else
+		observer = info[@"observer"];
 	
 	
 	NCDataManager* dataManager = [NCDataManager defaultManager];
@@ -283,6 +293,9 @@
 	
 	token = [dispatchGroup enter];
 	[dataManager accountStatusForAccount:account cachePolicy:cachePolicy completionHandler:^(EVEAccountStatus *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+		if (cacheRecordID)
+			[observer addObjectID:cacheRecordID];
+		
 		progress.completedUnitCount++;
 		if (result)
 			info[@"EVEAccountStatus"] = result;
@@ -297,6 +310,8 @@
 		EVEAPIKeyInfoCharactersItem* character = account.character;
 		token = [dispatchGroup enter];
 		[dataManager accountBalanceForAccount:account cachePolicy:cachePolicy completionHandler:^(EVEAccountBalance *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			if (cacheRecordID)
+				[observer addObjectID:cacheRecordID];
 			progress.completedUnitCount++;
 			if (result)
 				info[@"EVEAccountBalance"] = result;
@@ -316,6 +331,8 @@
 	else {
 		token = [dispatchGroup enter];
 		[dataManager characterInfoForAccount:account cachePolicy:cachePolicy completionHandler:^(EVECharacterInfo *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			if (cacheRecordID)
+				[observer addObjectID:cacheRecordID];
 			lastError = error;
 			progress.completedUnitCount++;
 			if (result)
@@ -328,6 +345,8 @@
 		
 		token = [dispatchGroup enter];
 		[dataManager skillQueueForAccount:account cachePolicy:cachePolicy completionHandler:^(EVESkillQueue *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			if (cacheRecordID)
+				[observer addObjectID:cacheRecordID];
 			progress.completedUnitCount++;
 			if (result)
 				info[@"EVESkillQueue"] = result;
@@ -367,14 +386,14 @@
 	cell.skillLabel.text = @" ";
 	cell.trainingTimeLabel.text = @" ";
 	cell.trainingProgressView.progress = 0.0;
-	cell.skillQueueLabel.text = nil;
+	cell.skillQueueLabel.text = @" ";
 	
 	NCAccount* account = [self.results objectAtIndexPath:indexPath];
 	cell.object = account;
 	
 	EVEAPIKeyInfoCharactersItem* apiKeyCharacterItem = account.character;
 	
-	NSDictionary* info = self.extraInfo[indexPath];
+	NSDictionary* info = self.extraInfo[account.objectID];
 	if (!info)
 		return;
 

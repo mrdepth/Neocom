@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 @import CoreData;
 
-typedef NS_ENUM(NSInteger, NCManagedObjectObserverAction) {
-	NCManagedObjectObserverActionUpdate,
-	NCManagedObjectObserverActionDelete
-};
-
 @interface NCManagedObjectObserver : NSObject
-+ (instancetype) observerWithObjectID:(NSManagedObjectID*) objectID block:(void(^)(NCManagedObjectObserverAction action)) block;
-- (instancetype) initWithObjectID:(NSManagedObjectID*) objectID block:(void(^)(NCManagedObjectObserverAction action)) block;
++ (instancetype) observerWithHandler:(void(^)(NSSet<NSManagedObjectID*>* updated, NSSet<NSManagedObjectID*>* deleted)) block;
++ (instancetype) observerWithObjectID:(NSManagedObjectID*) objectID handler:(void(^)(NSSet<NSManagedObjectID*>* updated, NSSet<NSManagedObjectID*>* deleted)) block;
+- (instancetype) initWithHandler:(void(^)(NSSet<NSManagedObjectID*>* updated, NSSet<NSManagedObjectID*>* deleted)) block;
+- (instancetype) initWithObjectID:(NSManagedObjectID*) objectID handler:(void(^)(NSSet<NSManagedObjectID*>* updated, NSSet<NSManagedObjectID*>* deleted)) block;
+- (void) addObjectID:(NSManagedObjectID*) objectID;
+- (void) removeObjectID:(NSManagedObjectID*) objectID;
+
 @end

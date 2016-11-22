@@ -25,7 +25,7 @@
 - (void) viewDidLoad {
 	[super viewDidLoad];
 	self.accessMask = self.account.apiKey.apiKeyInfo.key.accessMask;
-	self.navigationItem.title = [NSString stringWithFormat:@"%d", (int) self.account.apiKey.keyID];
+	self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"KeyID %d", nil), (int) self.account.apiKey.keyID];
 	self.refreshControl = [UIRefreshControl new];
 	[self.refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
 	self.tableView.backgroundView = [NCTableViewBackgroundLabel labelWithText:NSLocalizedString(@"LOADING", nil)];
@@ -67,10 +67,13 @@
 		NSMutableDictionary* groups = [NSMutableDictionary new];
 		for (EVECallListCallGroupsItem* group in result.callGroups)
 			groups[@(group.groupID)] = @{@"title":group.name ?: @"", @"rows":[NSMutableArray new]};
-		for (EVECallListCallGroupsItem* item in result.calls) {
+		
+		NSArray* calls = [result.calls filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %d", self.account.eveAPIKey.corporate ? EVECallTypeCorporation : EVECallTypeCharacter]];
+		
+		for (EVECallListCallGroupsItem* item in [calls sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]])
 			[groups[@(item.groupID)][@"rows"] addObject:item];
-		}
-		self.sections = [[groups allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+		self.sections = [[[groups allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"rows.@count > 0"]]sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+		
 		[self.refreshControl endRefreshing];
 		
 		if (error &&!self.sections)

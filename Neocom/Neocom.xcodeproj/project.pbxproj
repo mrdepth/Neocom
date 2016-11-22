@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		120864B51DE4BD68001A4B66 /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120864B41DE4BD68001A4B66 /* NCSkillQueueViewController.m */; };
 		1215FA461DDAE78000F14CBE /* NCSlideDownAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1215FA451DDAE78000F14CBE /* NCSlideDownAnimationController.m */; };
 		1215FA4C1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 1215FA4B1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.m */; };
 		12179A031DE21932001C7FCF /* NCGate.m in Sources */ = {isa = PBXBuildFile; fileRef = 12179A021DE21932001C7FCF /* NCGate.m */; };
@@ -250,6 +251,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		120864B31DE4BD68001A4B66 /* NCSkillQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillQueueViewController.h; sourceTree = "<group>"; };
+		120864B41DE4BD68001A4B66 /* NCSkillQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillQueueViewController.m; sourceTree = "<group>"; };
 		1215FA441DDAE78000F14CBE /* NCSlideDownAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSlideDownAnimationController.h; sourceTree = "<group>"; };
 		1215FA451DDAE78000F14CBE /* NCSlideDownAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSlideDownAnimationController.m; sourceTree = "<group>"; };
 		1215FA4A1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSlideDownInteractiveTransition.h; sourceTree = "<group>"; };
@@ -531,6 +534,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		120864B21DE4BD52001A4B66 /* NCSkillQueueViewController */ = {
+			isa = PBXGroup;
+			children = (
+				120864B31DE4BD68001A4B66 /* NCSkillQueueViewController.h */,
+				120864B41DE4BD68001A4B66 /* NCSkillQueueViewController.m */,
+			);
+			name = NCSkillQueueViewController;
+			sourceTree = "<group>";
+		};
 		1215FA401DDAE70C00F14CBE /* NCSlideDownAnimationController */ = {
 			isa = PBXGroup;
 			children = (
@@ -773,6 +785,7 @@
 				12AC4CFD1DDA2B400052430E /* NCAccountsViewController */,
 				12A256FB1DE2DD9E0036D03F /* NCCharacterSheetViewController */,
 				129296771DE44C00006EAA19 /* NCJumpClonesViewController */,
+				120864B21DE4BD52001A4B66 /* NCSkillQueueViewController */,
 				123FE1DE1DE1A69A00722089 /* Database */,
 				129A85081DD8D2170001F732 /* NCAppDelegate.h */,
 				129A85091DD8D2170001F732 /* NCAppDelegate.m */,
@@ -1417,6 +1430,7 @@
 				129BBE0E1DDB8FD8009F97F5 /* NCUnitFormatter.m in Sources */,
 				121F5D7C1DE436E600C330E4 /* NCTreeSection.m in Sources */,
 				1229E5081DDA016900500A7D /* NCTintImageView.m in Sources */,
+				120864B51DE4BD68001A4B66 /* NCSkillQueueViewController.m in Sources */,
 				12A257021DE2DF360036D03F /* NCTableViewDefaultCell.m in Sources */,
 				127A94B01DDC9FEF002E6B5D /* NCTableViewCell.m in Sources */,
 				127A94A21DDC7295002E6B5D /* NCProgressHandler.m in Sources */,

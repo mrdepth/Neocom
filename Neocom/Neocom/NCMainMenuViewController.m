@@ -65,7 +65,7 @@
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	UIViewController* toVC = [self.transitionCoordinator viewControllerForKey:UITransitionContextToViewControllerKey];
-	if (!toVC)
+	if (!toVC || toVC == self)
 		return;
 	if ([toVC isKindOfClass:[UINavigationController class]]) {
 		UIViewController* topVC = [(UINavigationController*) toVC topViewController];
@@ -73,7 +73,6 @@
 			return;
 	}
 	[self.navigationController setNavigationBarHidden:NO animated:animated];
-	
 }
 
 - (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {

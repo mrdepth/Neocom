@@ -20,45 +20,10 @@
 #import "NCTreeRow.h"
 #import "EVECharacterSheet+NC.h"
 
-/*@interface NCCharacterSheetViewControllerRow : NSObject
-@property (nonatomic, strong) NSString* cellIdentifier;
-@property (nonatomic, strong) void (^configurationBlock) (__kindof UITableViewCell* cell);
-@end
-
-@implementation NCCharacterSheetViewControllerRow
-
-- (instancetype) initWithCellIdentifier:(NSString*) cellIdentifier configurationBlock:(void(^)(__kindof UITableViewCell* cell)) block {
-	if (self = [super init]) {
-		self.cellIdentifier = cellIdentifier;
-		self.configurationBlock = block;
-	}
-	return self;
-}
-
-@end
-
-@interface NCCharacterSheetViewControllerSection : NSObject
-@property (nonatomic, strong) NSString* title;
-@property (nonatomic, strong) NSArray* rows;
-@end
-
-@implementation NCCharacterSheetViewControllerSection
-
-- (instancetype) initWithTitle:(NSString*) title rows:(NSArray*) rows {
-	if (self = [super init]) {
-		self.title = title;
-		self.rows = rows;
-	}
-	return self;
-}
-
-@end*/
-
 @interface NCCharacterSheetViewController ()
-@property (nonatomic, strong) NCManagedObjectObserver* characterSheetObserver;
-@property (nonatomic, strong) NCManagedObjectObserver* characterInfoObserver;
-@property (nonatomic, strong) EVECharacterSheet* characterSheet;
-@property (nonatomic, strong) EVECharacterInfo* characterInfo;
+@property (nonatomic, strong) NCManagedObjectObserver* observer;
+@property (nonatomic, strong) NCCacheRecord<EVECharacterSheet*>* characterSheet;
+@property (nonatomic, strong) NCCacheRecord<EVECharacterInfo*>* characterInfo;
 @property (nonatomic, strong) UIImage* characterImage;
 @property (nonatomic, strong) UIImage* corporationImage;	
 @property (nonatomic, strong) UIImage* allianceImage;
@@ -97,8 +62,7 @@
 		self.characterImage = nil;
 		self.corporationImage = nil;
 		self.allianceImage = nil;
-		self.characterSheetObserver = nil;
-		self.characterInfoObserver = nil;
+		self.observer = nil;
 	}
 }
 
@@ -170,20 +134,20 @@
 	NCDataManager* dataManager = [NCDataManager defaultManager];
 	NCDispatchGroup* dispatchGroup = [NCDispatchGroup new];
 	
+	__weak typeof(self) weakSelf = self;
+	self.observer = [NCManagedObjectObserver observerWithHandler:^(NSSet<NSManagedObjectID *> *updated, NSSet<NSManagedObjectID *> *deleted) {
+		if ([updated containsObject:weakSelf.characterSheet.objectID])
+			[weakSelf reloadImagesWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+		[weakSelf reloadData];
+	}];
 	id token = [dispatchGroup enter];
 	[progressHandler.progress becomeCurrentWithPendingUnitCount:1];
 	[dataManager characterSheetForAccount:account cachePolicy:cachePolicy completionHandler:^(EVECharacterSheet *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-		self.characterSheet = result;
-		[self reloadImagesWithCachePolicy:cachePolicy];
-		__weak typeof(self) weakSelf = self;
-		self.characterSheetObserver = [NCManagedObjectObserver observerWithObjectID:cacheRecordID block:^(NCManagedObjectObserverAction action) {
-			NCCacheRecord* record = [NCCache.sharedCache.viewContext existingObjectWithID:cacheRecordID error:nil];
-			if (record.object) {
-				weakSelf.characterSheet = record.object;
-				[self reloadImagesWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
-				[self reloadData];
-			}
-		}];
+		if (cacheRecordID) {
+			self.characterSheet = cacheRecordID ? [NCCache.sharedCache.viewContext objectWithID:cacheRecordID] : nil;
+			[self.observer addObjectID:cacheRecordID];
+			[self reloadImagesWithCachePolicy:cachePolicy];
+		}
 		[dispatchGroup leave:token];
 	}];
 	[progressHandler.progress resignCurrent];
@@ -191,15 +155,10 @@
 	token = [dispatchGroup enter];
 	[progressHandler.progress becomeCurrentWithPendingUnitCount:1];
 	[dataManager characterInfoForAccount:account cachePolicy:cachePolicy completionHandler:^(EVECharacterInfo *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-		self.characterInfo = result;
-		__weak typeof(self) weakSelf = self;
-		self.characterInfoObserver = [NCManagedObjectObserver observerWithObjectID:cacheRecordID block:^(NCManagedObjectObserverAction action) {
-			NCCacheRecord* record = [NCCache.sharedCache.viewContext existingObjectWithID:cacheRecordID error:nil];
-			if (record.object) {
-				weakSelf.characterInfo = record.object;
-				[self reloadData];
-			}
-		}];
+		if (cacheRecordID) {
+			self.characterInfo = cacheRecordID ? [NCCache.sharedCache.viewContext objectWithID:cacheRecordID] : nil;
+			[self.observer addObjectID:cacheRecordID];
+		}
 		[dispatchGroup leave:token];
 	}];
 	[progressHandler.progress resignCurrent];
@@ -219,21 +178,22 @@
 	if (!self.characterSheet)
 		return;
 	
-	NSProgress* progress = [NSProgress progressWithTotalUnitCount:self.characterSheet.allianceID ? 3 : 2];
+	EVECharacterSheet* characterSheet = self.characterSheet.object;
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:characterSheet.allianceID ? 3 : 2];
 	NCDataManager* dataManager = [NCDataManager defaultManager];
 	[progress becomeCurrentWithPendingUnitCount:progress.totalUnitCount];
-	[dataManager imageWithCharacterID:self.characterSheet.characterID preferredSize:CGSizeMake(512, 512) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
+	[dataManager imageWithCharacterID:characterSheet.characterID preferredSize:CGSizeMake(512, 512) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
 		self.characterImage = image;
 		[self.tableView reloadData];
 	}];
 	
-	[dataManager imageWithCorporationID:self.characterSheet.corporationID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
+	[dataManager imageWithCorporationID:characterSheet.corporationID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
 		self.corporationImage = image;
 		[self.tableView reloadData];
 	}];
 	
-	if (self.characterSheet.allianceID)
-		[dataManager imageWithAllianceID:self.characterSheet.allianceID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
+	if (characterSheet.allianceID)
+		[dataManager imageWithAllianceID:characterSheet.allianceID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
 			self.allianceImage = image;
 			[self.tableView reloadData];
 		}];
@@ -251,7 +211,7 @@
 		[sections addObject:[self skillsSection]];
 		[sections addObject:[self neuralRemapSection]];
 		[sections addObject:[self attributesSection]];
-		[sections addObject:[self implantsSectionWithTypeIDs:[self.characterSheet.implants valueForKey:@"typeID"]]];
+		[sections addObject:[self implantsSectionWithTypeIDs:[self.characterSheet.object.implants valueForKey:@"typeID"]]];
 		self.sections = sections;
 	}
 	[self.treeController reloadData];
@@ -266,25 +226,25 @@
 	}]];
 	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 		cell.titleLabel.text = NSLocalizedString(@"CORPORATION", nil);
-		cell.subtitleLabel.text = weakSelf.characterSheet.corporationName;
+		cell.subtitleLabel.text = weakSelf.characterSheet.object.corporationName;
 		cell.iconView.image = weakSelf.corporationImage;
 	}]];
-	if (self.characterSheet.allianceID)
+	if (self.characterSheet.object.allianceID)
 		[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 			cell.titleLabel.text = NSLocalizedString(@"ALLIANCE", nil);
-			cell.subtitleLabel.text = weakSelf.characterSheet.allianceName;
+			cell.subtitleLabel.text = weakSelf.characterSheet.object.allianceName;
 			cell.iconView.image = weakSelf.allianceImage;
 		}]];
 
 	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 		cell.titleLabel.text = NSLocalizedString(@"DATE OF BIRTH", nil);
-		cell.subtitleLabel.text = [NSDateFormatter localizedStringFromDate:weakSelf.characterSheet.DoB dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterShortStyle];
+		cell.subtitleLabel.text = [NSDateFormatter localizedStringFromDate:weakSelf.characterSheet.object.DoB dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterShortStyle];
 		cell.iconView.image = nil;
 	}]];
 
 	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 		cell.titleLabel.text = NSLocalizedString(@"BLOODLINE", nil);
-		cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ / %@ / %@", weakSelf.characterSheet.race, weakSelf.characterSheet.bloodLine, weakSelf.characterSheet.ancestry];
+		cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ / %@ / %@", weakSelf.characterSheet.object.race, weakSelf.characterSheet.object.bloodLine, weakSelf.characterSheet.object.ancestry];
 		cell.iconView.image = nil;
 	}]];
 
@@ -298,7 +258,7 @@
 	
 	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 		cell.titleLabel.text = NSLocalizedString(@"BALANCE", nil);
-		cell.subtitleLabel.text = [NCUnitFormatter localizedStringFromNumber:@(weakSelf.characterSheet.balance) unit:NCUnitISK style:NCUnitFormatterStyleFull];
+		cell.subtitleLabel.text = [NCUnitFormatter localizedStringFromNumber:@(weakSelf.characterSheet.object.balance) unit:NCUnitISK style:NCUnitFormatterStyleFull];
 		cell.iconView.image = nil;
 	}]];
 
@@ -310,17 +270,17 @@
 	NSMutableArray* rows = [NSMutableArray new];
 	__weak typeof(self) weakSelf = self;
 	
-	if (self.characterInfo && self.characterSheet)
+	if (self.characterInfo.object && self.characterSheet.objectID)
 		[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 			cell.titleLabel.text = NSLocalizedString(@"SKILL POINTS", nil);
-			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NCUnitFormatter localizedStringFromNumber:@(weakSelf.characterInfo.skillPoints) unit:NCUnitNone style:NCUnitFormatterStyleFull], (int) weakSelf.characterSheet.skills.count];
+			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NCUnitFormatter localizedStringFromNumber:@(weakSelf.characterInfo.object.skillPoints) unit:NCUnitNone style:NCUnitFormatterStyleFull], (int) weakSelf.characterSheet.object.skills.count];
 			cell.iconView.image = nil;
 		}]];
 	
-	if (self.characterSheet.freeSkillPoints > 0)
+	if (self.characterSheet.object.freeSkillPoints > 0)
 		[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 			cell.titleLabel.text = NSLocalizedString(@"UNALLOCATED SKILL POINTS", nil);
-			cell.subtitleLabel.text = [NCUnitFormatter localizedStringFromNumber:@(weakSelf.characterSheet.freeSkillPoints) unit:NCUnitNone style:NCUnitFormatterStyleFull];
+			cell.subtitleLabel.text = [NCUnitFormatter localizedStringFromNumber:@(weakSelf.characterSheet.object.freeSkillPoints) unit:NCUnitNone style:NCUnitFormatterStyleFull];
 			cell.iconView.image = nil;
 		}]];
 	
@@ -329,9 +289,8 @@
 
 - (NCTreeSection*) attributesSection {
 	NSMutableArray* rows = [NSMutableArray new];
-	__weak typeof(self) weakSelf = self;
 	
-	NCCharacterAttributes* attributes = [NCCharacterAttributes characterAttributesWithCharacterSheet:self.characterSheet];
+	NCCharacterAttributes* attributes = [NCCharacterAttributes characterAttributesWithCharacterSheet:self.characterSheet.object];
 	
 	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 		cell.titleLabel.text = NSLocalizedString(@"INTELLIGENCE", nil);
@@ -371,9 +330,9 @@
 	__weak typeof(self) weakSelf = self;
 	
 	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
-		NSDate* date = [weakSelf.characterSheet.eveapi localTimeWithServerTime:weakSelf.characterSheet.nextRespecDate];
+		NSDate* date = [weakSelf.characterSheet.object.eveapi localTimeWithServerTime:weakSelf.characterSheet.object.nextRespecDate];
 		
-		NSTimeInterval t = [[weakSelf.characterSheet.eveapi localTimeWithServerTime:date] timeIntervalSinceNow];
+		NSTimeInterval t = [[weakSelf.characterSheet.object.eveapi localTimeWithServerTime:date] timeIntervalSinceNow];
 		cell.titleLabel.text = NSLocalizedString(@"NEURAL REMAP AVAILABLE", nil);
 		if (t <= 0)
 			cell.subtitleLabel.text = NSLocalizedString(@"Now", nil);
@@ -387,7 +346,7 @@
 	
 	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 		cell.titleLabel.text = NSLocalizedString(@"BONUS REMAPS AVAILABLE", nil);
-		cell.subtitleLabel.text = [NSString stringWithFormat:@"%d", weakSelf.characterSheet.freeRespecs];
+		cell.subtitleLabel.text = [NSString stringWithFormat:@"%d", weakSelf.characterSheet.object.freeRespecs];
 		cell.iconView.image = nil;
 	}]];
 	

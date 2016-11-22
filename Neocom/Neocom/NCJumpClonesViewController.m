@@ -18,7 +18,7 @@
 #import "NSAttributedString+NC.h"
 
 @interface NCJumpClonesViewController ()
-@property (nonatomic, strong) NCManagedObjectObserver* characterSheetObserver;
+@property (nonatomic, strong) NCManagedObjectObserver* observer;
 @property (nonatomic, strong) NSArray<NCTreeSection*>* sections;
 @property (nonatomic, strong) EVECharacterSheet* characterSheet;
 @property (nonatomic, strong) NSDictionary* locationNames;
@@ -95,18 +95,22 @@
 	NCAccount* account = NCAccount.currentAccount;
 	NCDataManager* dataManager = [NCDataManager defaultManager];
 	
+	__weak typeof(self) weakSelf = self;
+	self.observer = [NCManagedObjectObserver observerWithHandler:^(NSSet<NSManagedObjectID *> *updated, NSSet<NSManagedObjectID *> *deleted) {
+		NSManagedObjectID* objectID = [updated anyObject];
+		NCCacheRecord* record = objectID ? [NCCache.sharedCache.viewContext existingObjectWithID:objectID error:nil] : nil;
+		if (record.object) {
+			weakSelf.characterSheet = record.object;
+			[weakSelf reloadData];
+		}
+	}];
+	
 	[progressHandler.progress becomeCurrentWithPendingUnitCount:1];
 	[dataManager characterSheetForAccount:account cachePolicy:cachePolicy completionHandler:^(EVECharacterSheet *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-		self.characterSheet = result;
-		__weak typeof(self) weakSelf = self;
-		self.characterSheetObserver = [NCManagedObjectObserver observerWithObjectID:cacheRecordID block:^(NCManagedObjectObserverAction action) {
-			NCCacheRecord* record = [NCCache.sharedCache.viewContext existingObjectWithID:cacheRecordID error:nil];
-			if (record.object) {
-				weakSelf.characterSheet = record.object;
-				[self reloadData];
-			}
-		}];
-		
+		if (cacheRecordID) {
+			self.characterSheet = result;
+			[self.observer addObjectID:cacheRecordID];
+		}
 		
 		[progressHandler.progress becomeCurrentWithPendingUnitCount:1];
 		[dataManager locationWithLocationIDs:[result.jumpClones valueForKey:@"locationID"] cachePolicy:NSURLRequestUseProtocolCachePolicy completionHandler:^(NSDictionary<NSNumber *,NCLocation *> *result, NSError *error) {

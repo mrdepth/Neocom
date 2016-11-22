@@ -8,7 +8,7 @@
 
 #import "NCDatabaseItemsViewController.h"
 #import "NCDatabase.h"
-#import "NCDefaultTableViewCell.h"
+#import "NCTableViewDefaultCell.h"
 #import "NCTableViewBackgroundLabel.h"
 #import "NCGate.h"
 #import "NSExpressionDescription+NC.h"
@@ -85,7 +85,7 @@
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCDefaultTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	NCTableViewDefaultCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	//NCDBInvType* type = [self.results objectAtIndexPath:indexPath];
 	NSDictionary* type = [self.results objectAtIndexPath:indexPath];
 	cell.titleLabel.text = type[@"typeName"];

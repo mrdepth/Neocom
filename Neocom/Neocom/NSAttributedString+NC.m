@@ -13,6 +13,14 @@
 
 @implementation NSAttributedString (NC)
 
+- (NSAttributedString*) uppercaseString {
+	NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:[self.string uppercaseString] attributes:nil];
+	[self enumerateAttributesInRange:NSMakeRange(0, self.length) options:0 usingBlock:^(NSDictionary<NSString *,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
+		[s addAttributes:attrs range:range];
+	}];
+	return s;
+}
+
 + (instancetype) attributedStringWithSkillName:(NSString*) skillName level:(NSInteger) level {
 	return [self attributedStringWithSkillName:skillName level:level rank:0];
 }

@@ -15,6 +15,9 @@
 
 @property (nonatomic, strong, readwrite) NCFetchedCollection<NCDBInvType*>* invTypes;
 @property (nonatomic, strong, readwrite) NCFetchedCollection<NCDBEveIcon*>* eveIcons;
+@property (nonatomic, strong, readwrite) NCFetchedCollection<NCDBMapSolarSystem*>* mapSolarSystems;
+@property (nonatomic, strong, readwrite) NCFetchedCollection<NCDBMapDenormalize*>* mapDenormalize;
+@property (nonatomic, strong, readwrite) NCFetchedCollection<NCDBStaStation*>* staStations;
 
 @end
 
@@ -83,6 +86,24 @@ static NCDatabase* sharedDatabase;
 	if (!_eveIcons)
 		_eveIcons = [NCDBEveIcon eveIconsWithManagedObjectContext:self.viewContext];
 	return _eveIcons;
+}
+
+- (NCFetchedCollection<NCDBMapSolarSystem*>*) mapSolarSystems {
+	if (!_mapSolarSystems)
+		_mapSolarSystems = [NCDBMapSolarSystem mapSolarSystemWithManagedObjectContext:self.viewContext];
+	return _mapSolarSystems;
+}
+
+- (NCFetchedCollection<NCDBMapDenormalize*>*) mapDenormalize {
+	if (!_mapDenormalize)
+		_mapDenormalize = [NCDBMapDenormalize mapDenormalizeWithManagedObjectContext:self.viewContext];
+	return _mapDenormalize;
+}
+
+- (NCFetchedCollection<NCDBStaStation*>*) staStations {
+	if (!_staStations)
+		_staStations = [NCDBStaStation staStationsWithManagedObjectContext:self.viewContext];
+	return _staStations;
 }
 
 

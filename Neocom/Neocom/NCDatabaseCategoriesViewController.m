@@ -8,7 +8,7 @@
 
 #import "NCDatabaseCategoriesViewController.h"
 #import "NCDatabase.h"
-#import "NCDefaultTableViewCell.h"
+#import "NCTableViewDefaultCell.h"
 #import "NCDatabaseGroupsViewController.h"
 #import "NCDatabaseItemsViewController.h"
 
@@ -48,7 +48,7 @@
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCDefaultTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	NCTableViewDefaultCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	NCDBInvCategory* category = [self.results objectAtIndexPath:indexPath];
 	cell.titleLabel.text = category.categoryName;
 	cell.iconView.image = (id) category.icon.image.image ?: NCDBEveIcon.defaultCategoryIcon.image.image;

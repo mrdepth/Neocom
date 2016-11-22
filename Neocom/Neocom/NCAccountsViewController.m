@@ -438,7 +438,7 @@
 						NSDate* endTime = skill.trainingEndDate;
 						cell.skillLabel.textColor = [UIColor whiteColor];
 						cell.skillLabel.attributedText = [NSAttributedString attributedStringWithSkillName:type.typeName level:firstSkill.level];
-						cell.trainingTimeLabel.text = [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] style:NCTimeIntervalFormatterStyleMinuts];
+						cell.trainingTimeLabel.text = [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] precision:NCTimeIntervalFormatterPrecisionMinuts];
 						cell.trainingProgressView.progress = skill.trainingProgress;
 					}
 					else {
@@ -446,7 +446,7 @@
 					}
 					
 					NSDate* endTime = [skillQueue.eveapi localTimeWithServerTime:lastSkill.endTime];
-					cell.skillQueueLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d skills in queue (%@)" , nil), (int) skills.count, [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] style:NCTimeIntervalFormatterStyleMinuts]];
+					cell.skillQueueLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d skills in queue (%@)" , nil), (int) skills.count, [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] precision:NCTimeIntervalFormatterPrecisionMinuts]];
 					;
 				}
 			}
@@ -459,7 +459,7 @@
 		if (paidUntil) {
 			NSTimeInterval t = [paidUntil timeIntervalSinceNow];
 			if (t > 0)
-				cell.subscriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@)", nil), [self.dateFormatter stringFromDate:paidUntil], [NCTimeIntervalFormatter localizedStringFromTimeInterval:t style:NCTimeIntervalFormatterStyleDays]];
+				cell.subscriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@)", nil), [self.dateFormatter stringFromDate:paidUntil], [NCTimeIntervalFormatter localizedStringFromTimeInterval:t precision:NCTimeIntervalFormatterPrecisionDays]];
 			else
 				cell.subscriptionLabel.text = NSLocalizedString(@"expired", nil);
 		}

@@ -23,6 +23,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *trainingTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *skillQueueLabel;
 @property (weak, nonatomic) IBOutlet UIProgressView *trainingProgressView;
-@property (strong, nonatomic) id object;
 
 @end

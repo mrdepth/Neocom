@@ -11,13 +11,29 @@
 			<key>image</key>
 			<string>charactersheet</string>
 			<key>charAccessMask</key>
-			<integer>17039368</integer>
+			<integer>16777224</integer>
 			<key>corpAccessMask</key>
 			<integer>-1</integer>
 			<key>modal</key>
-			<true/>
+			<false/>
 			<key>detailsKeyPath</key>
 			<string>skillPoints</string>
+		</dict>
+		<dict>
+			<key>segueIdentifier</key>
+			<string>NCJumpClonesViewController</string>
+			<key>title</key>
+			<string>Jump Clones</string>
+			<key>image</key>
+			<string>jumpclones</string>
+			<key>charAccessMask</key>
+			<integer>8</integer>
+			<key>corpAccessMask</key>
+			<integer>-1</integer>
+			<key>modal</key>
+			<false/>
+			<key>detailsKeyPath</key>
+			<string>jumpClones</string>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>

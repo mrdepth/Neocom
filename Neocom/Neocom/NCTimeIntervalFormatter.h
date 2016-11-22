@@ -8,15 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, NCTimeIntervalFormatterStyle) {
-	NCTimeIntervalFormatterStyleSeconds,
-	NCTimeIntervalFormatterStyleMinuts,
-	NCTimeIntervalFormatterStyleHours,
-	NCTimeIntervalFormatterStyleDays
+typedef NS_ENUM(NSInteger, NCTimeIntervalFormatterPrecision) {
+	NCTimeIntervalFormatterPrecisionSeconds,
+	NCTimeIntervalFormatterPrecisionMinuts,
+	NCTimeIntervalFormatterPrecisionHours,
+	NCTimeIntervalFormatterPrecisionDays
 };
 
 @interface NCTimeIntervalFormatter : NSFormatter
-@property (nonatomic, assign) NCTimeIntervalFormatterStyle style;
+@property (nonatomic, assign) NCTimeIntervalFormatterPrecision precision;
 
-+ (NSString*) localizedStringFromTimeInterval:(NSTimeInterval) time style:(NCTimeIntervalFormatterStyle) style;
++ (NSString*) localizedStringFromTimeInterval:(NSTimeInterval) time precision:(NCTimeIntervalFormatterPrecision) precision;
 @end

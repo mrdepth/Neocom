@@ -1,14 +1,14 @@
 //
-//  NCDefaultTableViewCell.m
+//  NCTableViewProgressCell.m
 //  Neocom
 //
-//  Created by Artem Shimanski on 21.11.16.
+//  Created by Artem Shimanski on 22.11.16.
 //  Copyright © 2016 Artem Shimanski. All rights reserved.
 //
 
-#import "NCDefaultTableViewCell.h"
+#import "NCTableViewProgressCell.h"
 
-@implementation NCDefaultTableViewCell
+@implementation NCTableViewProgressCell
 
 /*
 // Only override drawRect: if you perform custom drawing.

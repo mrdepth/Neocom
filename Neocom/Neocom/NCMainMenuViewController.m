@@ -8,7 +8,7 @@
 
 #import "NCMainMenuViewController.h"
 #import "NCMainMenuHeaderViewController.h"
-#import "NCDefaultTableViewCell.h"
+#import "NCTableViewDefaultCell.h"
 #import "NCSlideDownInteractiveTransition.h"
 #import "NCSlideDownAnimationController.h"
 #import "NCStorage.h"
@@ -17,6 +17,7 @@
 #import "unitily.h"
 #import "NCTimeIntervalFormatter.h"
 #import "NCAccountsViewController.h"
+#import "EVECharacterSheet+NC.h"
 @import EVEAPI;
 
 @interface NCMainMenuViewController ()<UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate>
@@ -30,6 +31,7 @@
 @property (nonatomic, strong) NSString* skillQueue;
 @property (nonatomic, strong) NSString* unreadMails;
 @property (nonatomic, strong) NSString* balance;
+@property (nonatomic, strong) NSString* jumpClones;
 @end
 
 @implementation NCMainMenuViewController
@@ -63,6 +65,8 @@
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	UIViewController* toVC = [self.transitionCoordinator viewControllerForKey:UITransitionContextToViewControllerKey];
+	if (!toVC)
+		return;
 	if ([toVC isKindOfClass:[UINavigationController class]]) {
 		UIViewController* topVC = [(UINavigationController*) toVC topViewController];
 		if ([topVC isKindOfClass:[NCAccountsViewController class]])
@@ -114,7 +118,7 @@
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCDefaultTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	NCTableViewDefaultCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	NSDictionary* row = self.mainMenu[indexPath.section][indexPath.row];
 	cell.titleLabel.text = row[@"title"];
 	NSString* detailsKeyPath = row[@"detailsKeyPath"];
@@ -299,6 +303,17 @@
 			[self reloadCellWithDetails:@"balance"];
 		}];
 		
+		[dataManager characterSheetForAccount:account cachePolicy:NSURLRequestUseProtocolCachePolicy completionHandler:^(EVECharacterSheet *result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			if (result) {
+				NSDate* date = [[result.eveapi localTimeWithServerTime:result.cloneJumpDate] dateByAddingTimeInterval:3600 * 24];
+				NSTimeInterval t = [date timeIntervalSinceNow];
+				self.jumpClones = [NSString stringWithFormat:NSLocalizedString(@"Clone jump availability: %@", nil), t > 0 ? [NCTimeIntervalFormatter localizedStringFromTimeInterval:t precision:NCTimeIntervalFormatterPrecisionMinuts] : NSLocalizedString(@"Now", nil)];
+			}
+			else
+				self.jumpClones = [error localizedDescription];
+			[self reloadCellWithDetails:@"jumpClones"];
+		}];
+		
 		[dataManager skillQueueForAccount:account cachePolicy:NSURLRequestUseProtocolCachePolicy completionHandler:^(EVESkillQueue *result, NSError *error, NSManagedObjectID *cacheRecordID) {
 			if (result) {
 				if (result.skillQueue.count == 0)
@@ -307,7 +322,7 @@
 					NSArray* skills = [result.skillQueue sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"queuePosition" ascending:YES]]];
 					EVESkillQueueItem* lastSkill = [skills lastObject];
 					NSDate* endTime = [result.eveapi localTimeWithServerTime:lastSkill.endTime];
-					self.skillQueue = [NSString stringWithFormat:NSLocalizedString(@"%d skills in queue (%@)" , nil), (int) skills.count, [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] style:NCTimeIntervalFormatterStyleMinuts]];
+					self.skillQueue = [NSString stringWithFormat:NSLocalizedString(@"%d skills in queue (%@)" , nil), (int) skills.count, [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] precision:NCTimeIntervalFormatterPrecisionMinuts]];
 					;
 				}
 			}

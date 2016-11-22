@@ -8,7 +8,7 @@
 
 #import "NCDatabaseGroupsViewController.h"
 #import "NCDatabase.h"
-#import "NCDefaultTableViewCell.h"
+#import "NCTableViewDefaultCell.h"
 #import "NCDatabaseItemsViewController.h"
 
 @interface NCDatabaseGroupsViewController ()<UISearchResultsUpdating>
@@ -48,7 +48,7 @@
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCDefaultTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	NCTableViewDefaultCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	NCDBInvGroup* group = [self.results objectAtIndexPath:indexPath];
 	cell.titleLabel.text = group.groupName;
 	cell.iconView.image = (id) group.icon.image.image ?: NCDBEveIcon.defaultGroupIcon.image.image;

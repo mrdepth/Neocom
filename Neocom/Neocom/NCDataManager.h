@@ -10,6 +10,7 @@
 #import "NCCache.h"
 #import "NCStorage.h"
 #import "NCDatabase.h"
+#import "NCLocation.h"
 
 @import CoreData;
 @import EVEAPI;
@@ -29,5 +30,6 @@
 - (void) imageWithAllianceID:(NSInteger) allianceID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error)) block;
 - (void) callListWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVECallList* result, NSError* error, NSManagedObjectID* cacheRecordID)) block;
 - (void) accountBalanceForAccount:(NCAccount*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVEAccountBalance* result, NSError* error, NSManagedObjectID* cacheRecordID)) block;
+- (void) locationWithLocationIDs:(NSArray<NSNumber*>*) locationIDs cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(NSDictionary<NSNumber*, NCLocation*>* result, NSError* error)) block;
 
 @end

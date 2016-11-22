@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface NSAttributedString (NC)
-
+@property(readonly, copy) NSAttributedString *uppercaseString;
 + (instancetype) attributedStringWithSkillName:(NSString*) skillName level:(NSInteger) level;
 + (instancetype) attributedStringWithSkillName:(NSString*) skillName level:(NSInteger) level rank:(NSInteger) rank;
 @end

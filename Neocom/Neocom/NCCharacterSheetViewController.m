@@ -11,12 +11,16 @@
 #import "NCDataManager.h"
 #import "NCManagedObjectObserver.h"
 #import "NCTableViewHeaderCell.h"
-#import "NCDefaultTableViewCell.h"
+#import "NCTableViewDefaultCell.h"
 #import "NCUnitFormatter.h"
+#import "NCTimeIntervalFormatter.h"
 #import "NCCharacterAttributes.h"
 #import "NCDispatchGroup.h"
+#import "NCTreeSection.h"
+#import "NCTreeRow.h"
+#import "EVECharacterSheet+NC.h"
 
-@interface NCCharacterSheetViewControllerRow : NSObject
+/*@interface NCCharacterSheetViewControllerRow : NSObject
 @property (nonatomic, strong) NSString* cellIdentifier;
 @property (nonatomic, strong) void (^configurationBlock) (__kindof UITableViewCell* cell);
 @end
@@ -48,7 +52,7 @@
 	return self;
 }
 
-@end
+@end*/
 
 @interface NCCharacterSheetViewController ()
 @property (nonatomic, strong) NCManagedObjectObserver* characterSheetObserver;
@@ -58,7 +62,7 @@
 @property (nonatomic, strong) UIImage* characterImage;
 @property (nonatomic, strong) UIImage* corporationImage;	
 @property (nonatomic, strong) UIImage* allianceImage;
-@property (nonatomic, strong) NSArray<NCCharacterSheetViewControllerSection*>* sections;
+@property (nonatomic, strong) NSArray<NCTreeSection*>* sections;
 @end
 
 @implementation NCCharacterSheetViewController
@@ -70,64 +74,69 @@
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
 	self.refreshControl = [UIRefreshControl new];
 	[self.refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
-	
-	[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+}
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	if (!self.sections)
+		[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	if ([NCStorage.sharedStorage.viewContext hasChanges])
+		[NCStorage.sharedStorage.viewContext save:nil];
 }
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+	[super didReceiveMemoryWarning];
+	if (!self.isViewLoaded || !self.view.window) {
+		self.sections = nil;
+		self.characterSheet = nil;
+		self.characterInfo = nil;
+		self.characterImage = nil;
+		self.corporationImage = nil;
+		self.allianceImage = nil;
+		self.characterSheetObserver = nil;
+		self.characterInfoObserver = nil;
+	}
 }
 
 #pragma mark - ASTreeControllerDelegate
 
-- (nonnull id)treeController:(nonnull ASTreeController *)treeController child:(NSInteger)index ofItem:(nullable id)item {
-	if ([item isKindOfClass:[NCCharacterSheetViewControllerSection class]]) {
-		return [(NCCharacterSheetViewControllerSection*) item rows][index];
-	}
-	else
-		return self.sections[index];
+- (nonnull id)treeController:(nonnull ASTreeController *)treeController child:(NSInteger)index ofItem:(nullable NCTreeNode*)item {
+	return item ? item.children[index] : self.sections[index];
 }
 
-- (NSInteger) treeController:(nonnull ASTreeController *)treeController numberOfChildrenOfItem:(nullable id)item {
-	if ([item isKindOfClass:[NCCharacterSheetViewControllerSection class]])
-		return [(NCCharacterSheetViewControllerSection*) item rows].count;
-	else if (!item)
-		return self.sections.count;
-	else
-		return 0;
+- (NSInteger) treeController:(nonnull ASTreeController *)treeController numberOfChildrenOfItem:(nullable NCTreeNode*)item {
+	return item ? item.children.count : self.sections.count;
 }
 
-- (nonnull NSString*) treeController:(nonnull ASTreeController *)treeController cellIdentifierForItem:(nonnull id) item {
-	if ([item isKindOfClass:[NCCharacterSheetViewControllerSection class]])
-		return @"NCTableViewHeaderCell";
-	else if ([item isKindOfClass:[NCCharacterSheetViewControllerRow class]])
-		return [(NCCharacterSheetViewControllerRow*) item cellIdentifier];
-	else
-		return nil;
+- (nonnull NSString*) treeController:(nonnull ASTreeController *)treeController cellIdentifierForItem:(nonnull NCTreeNode*) item {
+	return item.cellIdentifier;
 }
 
-- (void) treeController:(nonnull ASTreeController *)treeController configureCell:(nonnull __kindof UITableViewCell*) cell withItem:(nonnull id) item {
-	if ([item isKindOfClass:[NCCharacterSheetViewControllerSection class]]) {
+- (void) treeController:(nonnull ASTreeController *)treeController configureCell:(nonnull __kindof UITableViewCell*) cell withItem:(nonnull NCTreeNode*) item {
+	[item configure:cell];
+/*	if ([item isKindOfClass:[NCCharacterSheetViewControllerSection class]]) {
 		NCTableViewHeaderCell* tableHeaderCell = (NCTableViewHeaderCell*) cell;
 		tableHeaderCell.titleLabel.text = [(NCCharacterSheetViewControllerSection*) item title];
 	}
 	else {
 		[(NCCharacterSheetViewControllerRow*) item configurationBlock](cell);
+	}*/
+}
+
+- (BOOL) treeController:(nonnull ASTreeController *)treeController isItemExpandable:(nonnull NCTreeNode*)item {
+	return item.canExpand;
+}
+
+- (BOOL) treeController:(nonnull ASTreeController *)treeController isItemExpanded:(nonnull NCTreeNode*)item {
+	if (item.nodeIdentifier) {
+		NSString* key = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), item.nodeIdentifier];
+		NCSetting* setting = [NCSetting settingForKey:key];
+		return ![(id) setting.value boolValue];
 	}
-}
-
-- (BOOL) treeController:(nonnull ASTreeController *)treeController isItemExpandable:(nonnull id)item {
-	return [item isKindOfClass:[NCCharacterSheetViewControllerSection class]];
-}
-
-- (BOOL) treeController:(nonnull ASTreeController *)treeController isItemExpanded:(nonnull id)item {
 	return YES;
 }
 
@@ -135,9 +144,22 @@
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForCell:cell] animated:YES];
 }
 
-- (CGFloat) treeController:(nonnull ASTreeController *)treeController estimatedHeightForRowWithItem:(nonnull id) item {
-	return -1;
+- (void) treeController:(nonnull ASTreeController *)treeController didExpandCell:(nonnull __kindof UITableViewCell*) cell withItem:(nonnull NCTreeNode*)item {
+	if (item.nodeIdentifier) {
+		NSString* key = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), item.nodeIdentifier];
+		NCSetting* setting = [NCSetting settingForKey:key];
+		setting.value = @(NO);
+	}
 }
+
+- (void) treeController:(nonnull ASTreeController *)treeController didCollapseCell:(nonnull __kindof UITableViewCell*) cell withItem:(nonnull NCTreeNode*)item {
+	if (item.nodeIdentifier) {
+		NSString* key = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), item.nodeIdentifier];
+		NCSetting* setting = [NCSetting settingForKey:key];
+		setting.value = @(YES);
+	}
+}
+
 
 #pragma mark - Private
 
@@ -227,84 +249,153 @@
 		[sections addObject:[self bioSection]];
 		[sections addObject:[self accountSection]];
 		[sections addObject:[self skillsSection]];
+		[sections addObject:[self neuralRemapSection]];
+		[sections addObject:[self attributesSection]];
 		[sections addObject:[self implantsSectionWithTypeIDs:[self.characterSheet.implants valueForKey:@"typeID"]]];
 		self.sections = sections;
 	}
 	[self.treeController reloadData];
 }
 
-- (NCCharacterSheetViewControllerSection*) bioSection {
+- (NCTreeSection*) bioSection {
 	NSMutableArray* rows = [NSMutableArray new];
 	__weak typeof(self) weakSelf = self;
 	
-	[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"PortraitCell" configurationBlock:^(NCDefaultTableViewCell* cell) {
+	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"PortraitCell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 		cell.iconView.image = weakSelf.characterImage;
 	}]];
-	
-	[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"Cell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
+	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 		cell.titleLabel.text = NSLocalizedString(@"CORPORATION", nil);
 		cell.subtitleLabel.text = weakSelf.characterSheet.corporationName;
 		cell.iconView.image = weakSelf.corporationImage;
 	}]];
-	
 	if (self.characterSheet.allianceID)
-		[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"Cell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
+		[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 			cell.titleLabel.text = NSLocalizedString(@"ALLIANCE", nil);
 			cell.subtitleLabel.text = weakSelf.characterSheet.allianceName;
 			cell.iconView.image = weakSelf.allianceImage;
 		}]];
-	
-	[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"Cell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
+
+	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 		cell.titleLabel.text = NSLocalizedString(@"DATE OF BIRTH", nil);
 		cell.subtitleLabel.text = [NSDateFormatter localizedStringFromDate:weakSelf.characterSheet.DoB dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterShortStyle];
 		cell.iconView.image = nil;
 	}]];
 
-	[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"Cell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
+	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 		cell.titleLabel.text = NSLocalizedString(@"BLOODLINE", nil);
 		cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ / %@ / %@", weakSelf.characterSheet.race, weakSelf.characterSheet.bloodLine, weakSelf.characterSheet.ancestry];
 		cell.iconView.image = nil;
 	}]];
 
-	return [[NCCharacterSheetViewControllerSection alloc] initWithTitle:NSLocalizedString(@"BIO", nil) rows:rows];
+	
+	return [NCTreeSection sectionWithNodeIdentifier:@"BIO" cellIdentifier:@"NCTableViewHeaderCell" title:NSLocalizedString(@"BIO", nil) children:rows];
 }
 
-- (NCCharacterSheetViewControllerSection*) accountSection {
+- (NCTreeSection*) accountSection {
 	NSMutableArray* rows = [NSMutableArray new];
 	__weak typeof(self) weakSelf = self;
 	
-	[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"Cell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
+	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 		cell.titleLabel.text = NSLocalizedString(@"BALANCE", nil);
 		cell.subtitleLabel.text = [NCUnitFormatter localizedStringFromNumber:@(weakSelf.characterSheet.balance) unit:NCUnitISK style:NCUnitFormatterStyleFull];
 		cell.iconView.image = nil;
 	}]];
 
-	return [[NCCharacterSheetViewControllerSection alloc] initWithTitle:NSLocalizedString(@"ACCOUNT", nil) rows:rows];
+
+	return [NCTreeSection sectionWithNodeIdentifier:@"ACCOUNT" cellIdentifier:@"NCTableViewHeaderCell" title:NSLocalizedString(@"ACCOUNT", nil) children:rows];
 }
 
-- (NCCharacterSheetViewControllerSection*) skillsSection {
+- (NCTreeSection*) skillsSection {
 	NSMutableArray* rows = [NSMutableArray new];
 	__weak typeof(self) weakSelf = self;
 	
 	if (self.characterInfo && self.characterSheet)
-		[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"Cell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
+		[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 			cell.titleLabel.text = NSLocalizedString(@"SKILL POINTS", nil);
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NCUnitFormatter localizedStringFromNumber:@(weakSelf.characterInfo.skillPoints) unit:NCUnitNone style:NCUnitFormatterStyleFull], (int) weakSelf.characterSheet.skills.count];
 			cell.iconView.image = nil;
 		}]];
 	
 	if (self.characterSheet.freeSkillPoints > 0)
-		[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"Cell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
+		[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 			cell.titleLabel.text = NSLocalizedString(@"UNALLOCATED SKILL POINTS", nil);
 			cell.subtitleLabel.text = [NCUnitFormatter localizedStringFromNumber:@(weakSelf.characterSheet.freeSkillPoints) unit:NCUnitNone style:NCUnitFormatterStyleFull];
 			cell.iconView.image = nil;
 		}]];
 	
-	return [[NCCharacterSheetViewControllerSection alloc] initWithTitle:NSLocalizedString(@"SKILLS", nil) rows:rows];
+	return [NCTreeSection sectionWithNodeIdentifier:@"SKILLS" cellIdentifier:@"NCTableViewHeaderCell" title:NSLocalizedString(@"SKILLS", nil) children:rows];
 }
 
+- (NCTreeSection*) attributesSection {
+	NSMutableArray* rows = [NSMutableArray new];
+	__weak typeof(self) weakSelf = self;
+	
+	NCCharacterAttributes* attributes = [NCCharacterAttributes characterAttributesWithCharacterSheet:self.characterSheet];
+	
+	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
+		cell.titleLabel.text = NSLocalizedString(@"INTELLIGENCE", nil);
+		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d points", nil), (int) attributes.intelligence];
+		cell.iconView.image = [UIImage imageNamed:@"intelligence"];
+	}]];
+	
+	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
+		cell.titleLabel.text = NSLocalizedString(@"MEMORY", nil);
+		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d points", nil), (int) attributes.memory];
+		cell.iconView.image = [UIImage imageNamed:@"memory"];
+	}]];
+	
+	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
+		cell.titleLabel.text = NSLocalizedString(@"PERCEPTION", nil);
+		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d points", nil), (int) attributes.perception];
+		cell.iconView.image = [UIImage imageNamed:@"perception"];
+	}]];
 
-- (NCCharacterSheetViewControllerSection*) implantsSectionWithTypeIDs:(NSArray*) typeIDs {
+	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
+		cell.titleLabel.text = NSLocalizedString(@"WILLPOWER", nil);
+		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d points", nil), (int) attributes.willpower];
+		cell.iconView.image = [UIImage imageNamed:@"willpower"];
+	}]];
+
+	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
+		cell.titleLabel.text = NSLocalizedString(@"CHARISMA", nil);
+		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d points", nil), (int) attributes.charisma];
+		cell.iconView.image = [UIImage imageNamed:@"charisma"];
+	}]];
+	
+	return [NCTreeSection sectionWithNodeIdentifier:@"ATTRIBUTES" cellIdentifier:@"NCTableViewHeaderCell" title:NSLocalizedString(@"ATTRIBUTES", nil) children:rows];
+}
+
+- (NCTreeSection*) neuralRemapSection {
+	NSMutableArray* rows = [NSMutableArray new];
+	__weak typeof(self) weakSelf = self;
+	
+	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
+		NSDate* date = [weakSelf.characterSheet.eveapi localTimeWithServerTime:weakSelf.characterSheet.nextRespecDate];
+		
+		NSTimeInterval t = [[weakSelf.characterSheet.eveapi localTimeWithServerTime:date] timeIntervalSinceNow];
+		cell.titleLabel.text = NSLocalizedString(@"NEURAL REMAP AVAILABLE", nil);
+		if (t <= 0)
+			cell.subtitleLabel.text = NSLocalizedString(@"Now", nil);
+		else if (t < 3600 * 24 * 7)
+			cell.subtitleLabel.text = [NCTimeIntervalFormatter localizedStringFromTimeInterval:t precision:NCTimeIntervalFormatterPrecisionMinuts];
+		else
+			cell.subtitleLabel.text = [NSDateFormatter localizedStringFromDate:date dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterShortStyle];
+		
+		cell.iconView.image = nil;
+	}]];
+	
+	[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
+		cell.titleLabel.text = NSLocalizedString(@"BONUS REMAPS AVAILABLE", nil);
+		cell.subtitleLabel.text = [NSString stringWithFormat:@"%d", weakSelf.characterSheet.freeRespecs];
+		cell.iconView.image = nil;
+	}]];
+	
+	
+	return [NCTreeSection sectionWithNodeIdentifier:@"NEURAL REMAP" cellIdentifier:@"NCTableViewHeaderCell" title:NSLocalizedString(@"NEURAL REMAP", nil) children:rows];
+}
+
+- (NCTreeSection*) implantsSectionWithTypeIDs:(NSArray*) typeIDs {
 	NCFetchedCollection<NCDBInvType*>* invTypes = NCDatabase.sharedDatabase.invTypes;
 	NCDBInvType* charismaEnhancer = nil;
 	NCDBInvType* intelligenceEnhancer = nil;
@@ -348,45 +439,45 @@
 	NSMutableArray* rows = [NSMutableArray new];
 	
 	if (intelligenceEnhancer)
-		[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"Cell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
+		[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 			cell.titleLabel.text = intelligenceEnhancer.typeName;
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Intelligence +%d", nil), intelligenceBonus];
 			cell.iconView.image = (id) intelligenceEnhancer.icon.image.image ?: NCDBEveIcon.defaultTypeIcon.image.image;
 		}]];
 	
 	if (memoryEnhancer)
-		[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"Cell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
+		[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 			cell.titleLabel.text = memoryEnhancer.typeName;
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Memory +%d", nil), memoryBonus];
 			cell.iconView.image = (id) memoryEnhancer.icon.image.image ?: NCDBEveIcon.defaultTypeIcon.image.image;
 		}]];
 
 	if (perceptionEnhancer)
-		[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"Cell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
+		[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 			cell.titleLabel.text = perceptionEnhancer.typeName;
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Perception +%d", nil), perceptionBonus];
 			cell.iconView.image = (id) perceptionEnhancer.icon.image.image ?: NCDBEveIcon.defaultTypeIcon.image.image;
 		}]];
 
 	if (willpowerEnhancer)
-		[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"Cell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
+		[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 			cell.titleLabel.text = willpowerEnhancer.typeName;
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Willpower +%d", nil), willpowerBonus];
 			cell.iconView.image = (id) willpowerEnhancer.icon.image.image ?: NCDBEveIcon.defaultTypeIcon.image.image;
 		}]];
 
 	if (charismaEnhancer)
-		[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"Cell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
+		[rows addObject:[NCTreeRow rowWithCellIdentifier:@"Cell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
 			cell.titleLabel.text = charismaEnhancer.typeName;
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Charisma +%d", nil), charismaBonus];
 			cell.iconView.image = (id) charismaEnhancer.icon.image.image ?: NCDBEveIcon.defaultTypeIcon.image.image;
 		}]];
 	if (rows.count == 0)
-		[rows addObject:[[NCCharacterSheetViewControllerRow alloc] initWithCellIdentifier:@"PlaceholderCell" configurationBlock:^(__kindof NCDefaultTableViewCell *cell) {
-			cell.titleLabel.text = NSLocalizedString(@"NO IMPLANTS", nil);
+		[rows addObject:[NCTreeRow rowWithCellIdentifier:@"PlaceholderCell" configurationHandler:^(__kindof NCTableViewDefaultCell *cell) {
+			cell.titleLabel.text = NSLocalizedString(@"NO IMPLANTS INSTALLED", nil);
 		}]];
 
-	return [[NCCharacterSheetViewControllerSection alloc] initWithTitle:NSLocalizedString(@"IMPLANTS", nil) rows:rows];
+	return [NCTreeSection sectionWithNodeIdentifier:@"IMPLANTS" cellIdentifier:@"NCTableViewHeaderCell" title:NSLocalizedString(@"IMPLANTS", nil) children:rows];
 }
 
 @end

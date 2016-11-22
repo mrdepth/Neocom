@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "NCStorage+CoreDataModel.h"
 #import "NCCache+CoreDataModel.h"
+#import "NCSetting+NC.h"
 @import CoreData;
 
 typedef NS_ENUM(NSInteger, NCStorageType) {
@@ -28,7 +29,6 @@ typedef NS_ENUM(NSInteger, NCStorageType) {
 + (instancetype) localStorage;
 - (void)loadWithCompletionHandler:(void (^)(NSError* error))block;
 - (void)performBackgroundTask:(void (^)(NSManagedObjectContext* managedObjectContext))block;
-
 
 
 @end

@@ -230,6 +230,81 @@
 	}];
 }
 
+- (void) locationWithLocationIDs:(NSArray<NSNumber*>*) locationIDs cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(NSDictionary<NSNumber*, NCLocation*>* result, NSError* error)) block {
+	
+	NSMutableDictionary* names = [NSMutableDictionary new];
+	NSMutableArray* conquerableStationIDs = [NSMutableArray new];
+	
+	for (NSNumber* item in locationIDs) {
+		NCLocation* location = nil;
+		int32_t locationID = [item intValue];
+		if (66000000 < locationID && locationID < 66014933) { //staStations
+			locationID -= 6000001;
+			NCDBStaStation *station = NCDatabase.sharedDatabase.staStations[locationID];
+			if (station)
+				location = [[NCLocation alloc] initWithStation:station];
+		}
+		else if (66014934 < locationID && locationID < 67999999) { //staStations
+			locationID -= 6000000;
+			[conquerableStationIDs addObject:@(locationID)];
+		}
+		else if (60014861 < locationID && locationID < 60014928) { //ConqStations
+			[conquerableStationIDs addObject:@(locationID)];
+		}
+		else if (60000000 < locationID && locationID < 61000000) { //staStations
+			NCDBStaStation *station = NCDatabase.sharedDatabase.staStations[locationID];
+			if (station)
+				location = [[NCLocation alloc] initWithStation:station];
+		}
+		else if (61000000 <= locationID) { //ConqStations
+			[conquerableStationIDs addObject:@(locationID)];
+		}
+		else { //mapDenormalize
+			NCDBMapDenormalize* denormalize = NCDatabase.sharedDatabase.mapDenormalize[locationID];
+			if (denormalize)
+				location = [[NCLocation alloc] initWithMapDenormalize:denormalize];
+		}
+		if (location)
+			names[@(locationID)] = location;
+	}
+	
+
+	
+	if (conquerableStationIDs.count > 0) {
+		[self loadFromCacheForKey:@"EVEConquerableStationList" account:nil cachePolicy:NSURLRequestUseProtocolCachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
+			NSDictionary* outposts = result;
+			if (outposts) {
+				for (NSNumber* item in conquerableStationIDs) {
+					int32_t locationID = [item intValue];
+					EVEConquerableStationListItem* station = outposts[@(locationID)];
+					NCLocation* location = station ? [[NCLocation alloc] initWithConquerableStation:station] : nil;
+					if (location)
+						names[@(locationID)] = location;
+				}
+			}
+			block(names, error);
+			
+		} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
+			EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:nil cachePolicy:cachePolicy];
+			[api conquerableStationListWithCompletionBlock:^(EVEConquerableStationList *result, NSError *error) {
+				NSMutableDictionary* outposts;
+				if (result) {
+					outposts = [NSMutableDictionary new];
+					for (EVEConquerableStationListItem* station in result.outposts)
+						outposts[@(station.stationID)] = station;
+				}
+				finish(outposts, error, [result.eveapi localTimeWithServerTime:result.eveapi.cacheDate], [result.eveapi localTimeWithServerTime:result.eveapi.cachedUntil]);
+			}];
+		}];
+	}
+	else {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			block(names, nil);
+		});
+	}
+
+}
+
 #pragma mark - Private
 
 - (void) loadFromCacheForKey:(NSString*) key account:(NSString*) account cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(id result, NSError* error, NSManagedObjectID* cacheRecordID)) block elseLoad:(void(^)(void(^finish)(id object, NSError* error, NSDate* date, NSDate* expireDate))) loader {

@@ -93,6 +93,9 @@
         <memberEntity name="ShoppingList"/>
         <memberEntity name="SkillPlan"/>
     </configuration>
+    <configuration name="Local">
+        <memberEntity name="Setting"/>
+    </configuration>
     <elements>
         <element name="Account" positionX="18" positionY="63" width="128" height="135"/>
         <element name="APIKey" positionX="9" positionY="81" width="128" height="105"/>

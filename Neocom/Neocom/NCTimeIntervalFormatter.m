@@ -10,7 +10,7 @@
 
 @implementation NCTimeIntervalFormatter
 
-+ (NSString*) localizedStringFromTimeInterval:(NSTimeInterval) time style:(NCTimeIntervalFormatterStyle) style {
++ (NSString*) localizedStringFromTimeInterval:(NSTimeInterval) time precision:(NCTimeIntervalFormatterPrecision) precision {
 	unsigned int t = (unsigned int) time;
 	unsigned int d = t / (60 * 60 * 24);
 	unsigned int h = (t / (60 * 60)) % 24;
@@ -18,20 +18,20 @@
 	unsigned int s = t % 60;
 	
 	NSMutableString* string = [NSMutableString new];
-	if (style <= NCTimeIntervalFormatterStyleDays && d > 0)
+	if (precision <= NCTimeIntervalFormatterPrecisionDays && d > 0)
 		[string appendFormat:NSLocalizedString(@"%ud", nil), d];
-	if (style <= NCTimeIntervalFormatterStyleHours && (h > 0 || string.length > 0))
+	if (precision <= NCTimeIntervalFormatterPrecisionHours && h > 0)
 		[string appendFormat:NSLocalizedString(@"%s%uh", nil), string.length > 0 ? " " : "", h];
-	if (style <= NCTimeIntervalFormatterStyleMinuts && (m > 0 || string.length > 0))
+	if (precision <= NCTimeIntervalFormatterPrecisionMinuts && m > 0)
 		[string appendFormat:NSLocalizedString(@"%s%um", nil), string.length > 0 ? " " : "", m];
-	if (style <= NCTimeIntervalFormatterStyleSeconds)
+	if (precision <= NCTimeIntervalFormatterPrecisionSeconds && s > 0)
 		[string appendFormat:NSLocalizedString(@"%s%us", nil), string.length > 0 ? " " : "", s];
 	return string;
 
 }
 
 - (NSString*) stringForObjectValue:(id)obj {
-	return [self.class localizedStringFromTimeInterval:[obj doubleValue] style:self.style];
+	return [self.class localizedStringFromTimeInterval:[obj doubleValue] precision:self.precision];
 }
 
 @end

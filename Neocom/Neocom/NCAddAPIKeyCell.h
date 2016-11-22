@@ -6,10 +6,9 @@
 //  Copyright © 2016 Artem Shimanski. All rights reserved.
 //
 
-#import "NCDefaultTableViewCell.h"
+#import "NCTableViewDefaultCell.h"
 
-@interface NCAddAPIKeyCell : NCDefaultTableViewCell
+@interface NCAddAPIKeyCell : NCTableViewDefaultCell
 @property (weak, nonatomic) IBOutlet UISwitch *switchControl;
-@property (strong, nonatomic) id object;
 
 @end

@@ -183,7 +183,6 @@
 		129BBE0E1DDB8FD8009F97F5 /* NCUnitFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129BBE0D1DDB8FD8009F97F5 /* NCUnitFormatter.m */; };
 		129BBE0F1DDB97A2009F97F5 /* dgm.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 129A86291DD8D58B0001F732 /* dgm.sqlite */; };
 		129BBE101DDB97A2009F97F5 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 129A862A1DD8D58B0001F732 /* NCDatabase.sqlite */; };
-		12A256EC1DE2C7D40036D03F /* ASTreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A256EB1DE2C7D40036D03F /* ASTreeController.m */; };
 		12A256FE1DE2DDBB0036D03F /* NCCharacterSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A256FD1DE2DDBB0036D03F /* NCCharacterSheetViewController.m */; };
 		12A257021DE2DF360036D03F /* NCTableViewDefaultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A257011DE2DF360036D03F /* NCTableViewDefaultCell.m */; };
 		12A257061DE2E9DA0036D03F /* NCTableViewHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A257051DE2E9DA0036D03F /* NCTableViewHeaderCell.m */; };
@@ -194,6 +193,12 @@
 		12AFC4AF1DE47A6C00531660 /* NCDBMapDenormalize+NC.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC4AE1DE47A6C00531660 /* NCDBMapDenormalize+NC.m */; };
 		12AFC4B21DE47B5000531660 /* NCDBStaStation+NC.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC4B11DE47B5000531660 /* NCDBStaStation+NC.m */; };
 		12AFC4B51DE480CB00531660 /* UIColor+NC.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC4B41DE480CB00531660 /* UIColor+NC.m */; };
+		12AFC5071DE5CFA400531660 /* ASBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC5001DE5CFA400531660 /* ASBinder.m */; };
+		12AFC5081DE5CFA400531660 /* ASObjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC5021DE5CFA400531660 /* ASObjectController.m */; };
+		12AFC5091DE5CFA400531660 /* ASTreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC5041DE5CFA400531660 /* ASTreeController.m */; };
+		12AFC50A1DE5CFA400531660 /* ASValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC5061DE5CFA400531660 /* ASValueTransformer.m */; };
+		12AFC50D1DE5D36600531660 /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC50C1DE5D36600531660 /* NCCacheRecordData.m */; };
+		12AFC5111DE5D52200531660 /* NCImageFromDataValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC5101DE5D52200531660 /* NCImageFromDataValueTransformer.m */; };
 		12CCAD7E1DDA4C7A0053CA8A /* NCLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CCAD7D1DDA4C7A0053CA8A /* NCLabel.m */; };
 		12FB4F561DDDE15B00C7E34A /* NCDispatchGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FB4F551DDDE15B00C7E34A /* NCDispatchGroup.m */; };
 		12FB4F751DDF3A9C00C7E34A /* NCSwitchTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FB4F741DDF3A9C00C7E34A /* NCSwitchTitleCell.m */; };
@@ -485,8 +490,6 @@
 		129BBE0A1DDB87A6009F97F5 /* NCTimeIntervalFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTimeIntervalFormatter.m; sourceTree = "<group>"; };
 		129BBE0C1DDB8FD8009F97F5 /* NCUnitFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCUnitFormatter.h; sourceTree = "<group>"; };
 		129BBE0D1DDB8FD8009F97F5 /* NCUnitFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCUnitFormatter.m; sourceTree = "<group>"; };
-		12A256EA1DE2C7D40036D03F /* ASTreeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASTreeController.h; sourceTree = "<group>"; };
-		12A256EB1DE2C7D40036D03F /* ASTreeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASTreeController.m; sourceTree = "<group>"; };
 		12A256FC1DE2DDBB0036D03F /* NCCharacterSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterSheetViewController.h; sourceTree = "<group>"; };
 		12A256FD1DE2DDBB0036D03F /* NCCharacterSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCharacterSheetViewController.m; sourceTree = "<group>"; };
 		12A257001DE2DF360036D03F /* NCTableViewDefaultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewDefaultCell.h; sourceTree = "<group>"; };
@@ -507,6 +510,18 @@
 		12AFC4B11DE47B5000531660 /* NCDBStaStation+NC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBStaStation+NC.m"; sourceTree = "<group>"; };
 		12AFC4B31DE480CB00531660 /* UIColor+NC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+NC.h"; sourceTree = "<group>"; };
 		12AFC4B41DE480CB00531660 /* UIColor+NC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+NC.m"; sourceTree = "<group>"; };
+		12AFC4FF1DE5CFA400531660 /* ASBinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASBinder.h; sourceTree = "<group>"; };
+		12AFC5001DE5CFA400531660 /* ASBinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASBinder.m; sourceTree = "<group>"; };
+		12AFC5011DE5CFA400531660 /* ASObjectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASObjectController.h; sourceTree = "<group>"; };
+		12AFC5021DE5CFA400531660 /* ASObjectController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASObjectController.m; sourceTree = "<group>"; };
+		12AFC5031DE5CFA400531660 /* ASTreeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASTreeController.h; sourceTree = "<group>"; };
+		12AFC5041DE5CFA400531660 /* ASTreeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASTreeController.m; sourceTree = "<group>"; };
+		12AFC5051DE5CFA400531660 /* ASValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASValueTransformer.h; sourceTree = "<group>"; };
+		12AFC5061DE5CFA400531660 /* ASValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASValueTransformer.m; sourceTree = "<group>"; };
+		12AFC50B1DE5D36600531660 /* NCCacheRecordData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCacheRecordData.h; sourceTree = "<group>"; };
+		12AFC50C1DE5D36600531660 /* NCCacheRecordData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCacheRecordData.m; sourceTree = "<group>"; };
+		12AFC50F1DE5D52200531660 /* NCImageFromDataValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCImageFromDataValueTransformer.h; sourceTree = "<group>"; };
+		12AFC5101DE5D52200531660 /* NCImageFromDataValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCImageFromDataValueTransformer.m; sourceTree = "<group>"; };
 		12CCAD7C1DDA4C7A0053CA8A /* NCLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLabel.h; sourceTree = "<group>"; };
 		12CCAD7D1DDA4C7A0053CA8A /* NCLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLabel.m; sourceTree = "<group>"; };
 		12FB4F541DDDE15B00C7E34A /* NCDispatchGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDispatchGroup.h; sourceTree = "<group>"; };
@@ -826,8 +841,8 @@
 		129A85521DD8D3440001F732 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				12AFC4FE1DE5CFA400531660 /* ASTreeController */,
 				121F5D761DE4353E00C330E4 /* NCTree */,
-				12A256E91DE2C7D40036D03F /* ASTreeController */,
 				129A85551DD8D3640001F732 /* NCCache */,
 				129A85541DD8D3590001F732 /* NCDatabase */,
 				129A85531DD8D34C0001F732 /* NCStorage */,
@@ -842,6 +857,7 @@
 				12FB4F7B1DDF471D00C7E34A /* NCTableViewBackgroundLabel */,
 				1215FA401DDAE70C00F14CBE /* NCSlideDownAnimationController */,
 				1251D3881DDB003100C90DC4 /* NCSheetPresentationController */,
+				12AFC50E1DE5D50900531660 /* NCImageFromDataValueTransformer */,
 				129BBE031DDB743F009F97F5 /* UIAlertController+NC.h */,
 				129BBE041DDB743F009F97F5 /* UIAlertController+NC.m */,
 				12AFC4B31DE480CB00531660 /* UIColor+NC.h */,
@@ -917,6 +933,8 @@
 				129A85251DD8D2E30001F732 /* NCCache.m */,
 				129A85261DD8D2E30001F732 /* NCCacheRecord.h */,
 				129A85271DD8D2E30001F732 /* NCCacheRecord.m */,
+				12AFC50B1DE5D36600531660 /* NCCacheRecordData.h */,
+				12AFC50C1DE5D36600531660 /* NCCacheRecordData.m */,
 				129A854C1DD8D3390001F732 /* NCCache.xcdatamodeld */,
 			);
 			name = NCCache;
@@ -1088,16 +1106,6 @@
 			name = NCProgressView;
 			sourceTree = "<group>";
 		};
-		12A256E91DE2C7D40036D03F /* ASTreeController */ = {
-			isa = PBXGroup;
-			children = (
-				12A256EA1DE2C7D40036D03F /* ASTreeController.h */,
-				12A256EB1DE2C7D40036D03F /* ASTreeController.m */,
-			);
-			name = ASTreeController;
-			path = ../../ThirdParty/tools/ASTreeController;
-			sourceTree = "<group>";
-		};
 		12A256FB1DE2DD9E0036D03F /* NCCharacterSheetViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1136,6 +1144,31 @@
 				129BBE071DDB7E28009F97F5 /* NCAccountsCell.m */,
 			);
 			name = NCAccountsViewController;
+			sourceTree = "<group>";
+		};
+		12AFC4FE1DE5CFA400531660 /* ASTreeController */ = {
+			isa = PBXGroup;
+			children = (
+				12AFC4FF1DE5CFA400531660 /* ASBinder.h */,
+				12AFC5001DE5CFA400531660 /* ASBinder.m */,
+				12AFC5011DE5CFA400531660 /* ASObjectController.h */,
+				12AFC5021DE5CFA400531660 /* ASObjectController.m */,
+				12AFC5031DE5CFA400531660 /* ASTreeController.h */,
+				12AFC5041DE5CFA400531660 /* ASTreeController.m */,
+				12AFC5051DE5CFA400531660 /* ASValueTransformer.h */,
+				12AFC5061DE5CFA400531660 /* ASValueTransformer.m */,
+			);
+			name = ASTreeController;
+			path = ../../ThirdParty/tools/ASTreeController;
+			sourceTree = "<group>";
+		};
+		12AFC50E1DE5D50900531660 /* NCImageFromDataValueTransformer */ = {
+			isa = PBXGroup;
+			children = (
+				12AFC50F1DE5D52200531660 /* NCImageFromDataValueTransformer.h */,
+				12AFC5101DE5D52200531660 /* NCImageFromDataValueTransformer.m */,
+			);
+			name = NCImageFromDataValueTransformer;
 			sourceTree = "<group>";
 		};
 		12CCAD7B1DDA4C690053CA8A /* NCLabel */ = {
@@ -1398,6 +1431,7 @@
 				123FE2241DE1E1D600722089 /* UIImage+NC.m in Sources */,
 				12AFC4AC1DE479FE00531660 /* NCDBMapSolarSystem+NC.m in Sources */,
 				123FE2191DE1D25900722089 /* NCDatabaseGroupsViewController.m in Sources */,
+				12AFC50A1DE5CFA400531660 /* ASValueTransformer.m in Sources */,
 				12FB4F791DDF3B3400C7E34A /* NCAPIKeyInfoViewController.m in Sources */,
 				129296881DE452B0006EAA19 /* NCSetting+NC.m in Sources */,
 				127BB8F31DDC476700F07E6C /* Dark.clr in Sources */,
@@ -1407,6 +1441,7 @@
 				129A85421DD8D2E30001F732 /* NCCharacterAttributes.mm in Sources */,
 				1229E4F51DD9C7D100500A7D /* NCBannerNavigationController.m in Sources */,
 				123FE2161DE1D1B000722089 /* NCDBImageValueTransformer.m in Sources */,
+				12AFC5081DE5CFA400531660 /* ASObjectController.m in Sources */,
 				129A85411DD8D2E30001F732 /* NCCharacter.m in Sources */,
 				1229E4EE1DD9965400500A7D /* NCMainMenuHeaderViewController.m in Sources */,
 				127BB8F71DDC4C5000F07E6C /* NCBackgroundView.m in Sources */,
@@ -1419,14 +1454,15 @@
 				129A85511DD8D3390001F732 /* NCDatabase.xcdatamodeld in Sources */,
 				1215FA4C1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.m in Sources */,
 				129A850A1DD8D2170001F732 /* NCAppDelegate.m in Sources */,
-				12A256EC1DE2C7D40036D03F /* ASTreeController.m in Sources */,
 				12AC4D001DDA2B680052430E /* NCAccountsViewController.m in Sources */,
 				1229E4F91DD9CC2000500A7D /* NCSplitViewController.m in Sources */,
 				123FE1D61DDF853000722089 /* UIViewController+NC.m in Sources */,
 				12AFC4B51DE480CB00531660 /* UIColor+NC.m in Sources */,
+				12AFC5091DE5CFA400531660 /* ASTreeController.m in Sources */,
 				121F5D791DE4354F00C330E4 /* NCTreeNode.m in Sources */,
 				129A85461DD8D2E30001F732 /* NCFetchedCollection.m in Sources */,
 				12FB4F7E1DDF475800C7E34A /* NCTableViewBackgroundLabel.m in Sources */,
+				12AFC5111DE5D52200531660 /* NCImageFromDataValueTransformer.m in Sources */,
 				129BBE0E1DDB8FD8009F97F5 /* NCUnitFormatter.m in Sources */,
 				121F5D7C1DE436E600C330E4 /* NCTreeSection.m in Sources */,
 				1229E5081DDA016900500A7D /* NCTintImageView.m in Sources */,
@@ -1463,8 +1499,10 @@
 				12179A031DE21932001C7FCF /* NCGate.m in Sources */,
 				12FB4F751DDF3A9C00C7E34A /* NCSwitchTitleCell.m in Sources */,
 				129A86331DD8F1990001F732 /* NCRoundImageView.m in Sources */,
+				12AFC50D1DE5D36600531660 /* NCCacheRecordData.m in Sources */,
 				129BBE051DDB743F009F97F5 /* UIAlertController+NC.m in Sources */,
 				129A85071DD8D2170001F732 /* main.m in Sources */,
+				12AFC5071DE5CFA400531660 /* ASBinder.m in Sources */,
 				123FE1E11DE1A6C900722089 /* NCDatabaseCategoriesViewController.m in Sources */,
 				127BB8CC1DDC3B1F00F07E6C /* NCNavigationController.m in Sources */,
 				123FE2131DE1CD8800722089 /* NCDBEveIcon+NC.m in Sources */,

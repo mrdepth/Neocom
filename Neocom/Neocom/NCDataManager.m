@@ -122,7 +122,7 @@
 	}];
 }
 
-- (void) imageWithCharacterID:(NSInteger) characterID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error)) block {
+- (void) imageWithCharacterID:(NSInteger) characterID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error, NSManagedObjectID *cacheRecordID)) block {
 	size.width *= scale;
 	size.height *= scale;
 
@@ -139,7 +139,7 @@
 	NSString* key = [NSString stringWithFormat:@"EVEImage:character:%d:%d", (int) characterID, (int) s];
 	[self loadFromCacheForKey:key account:nil cachePolicy:cachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
 		UIImage* image = [UIImage imageWithData:result scale:scale];
-		block(image, error);
+		block(image, error, cacheRecordID);
 	} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
 		NSURL* url = [EVEImage characterPortraitURLWithCharacterID:(int32_t) characterID size:s error:nil];
 		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];
@@ -152,7 +152,7 @@
 	}];
 }
 
-- (void) imageWithCorporationID:(NSInteger) corporationID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error)) block {
+- (void) imageWithCorporationID:(NSInteger) corporationID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error, NSManagedObjectID *cacheRecordID)) block {
 	size.width *= scale;
 	size.height *= scale;
 	
@@ -169,7 +169,7 @@
 	NSString* key = [NSString stringWithFormat:@"EVEImage:corporation:%d:%d", (int) corporationID, (int) s];
 	[self loadFromCacheForKey:key account:nil cachePolicy:cachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
 		UIImage* image = [UIImage imageWithData:result scale:scale];
-		block(image, error);
+		block(image, error, cacheRecordID);
 	} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
 		NSURL* url = [EVEImage corporationLogoURLWithCorporationID:(int32_t) corporationID size:s error:nil];
 		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];
@@ -182,7 +182,7 @@
 	}];
 }
 
-- (void) imageWithAllianceID:(NSInteger) allianceID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error)) block {
+- (void) imageWithAllianceID:(NSInteger) allianceID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error, NSManagedObjectID *cacheRecordID)) block {
 	size.width *= scale;
 	size.height *= scale;
 	
@@ -199,7 +199,7 @@
 	NSString* key = [NSString stringWithFormat:@"EVEImage:alliance:%d:%d", (int) allianceID, (int) s];
 	[self loadFromCacheForKey:key account:nil cachePolicy:cachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
 		UIImage* image = [UIImage imageWithData:result scale:scale];
-		block(image, error);
+		block(image, error, cacheRecordID);
 	} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
 		NSURL* url = [EVEImage allianceLogoURLWithAllianceID:(int32_t) allianceID size:s error:nil];
 		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];

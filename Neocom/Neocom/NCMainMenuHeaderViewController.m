@@ -63,13 +63,13 @@
 	NCDataManager* dataManager = [NCDataManager defaultManager];
 	if (account.eveAPIKey.corporate) {
 		if (self.corporationImageView && character.corporationID)
-			[dataManager imageWithCorporationID:character.corporationID preferredSize:CGSizeMake(128, 128) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+			[dataManager imageWithCorporationID:character.corporationID preferredSize:CGSizeMake(128, 128) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error, NSManagedObjectID *cacheRecordID) {
 				self.corporationImageView.image = image;
 			}];
 
 		
 		if (self.allianceImageView && character.allianceID)
-			[dataManager imageWithAllianceID:character.allianceID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+			[dataManager imageWithAllianceID:character.allianceID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error, NSManagedObjectID *cacheRecordID) {
 				self.allianceImageView.image = image;
 			}];
 		else
@@ -80,15 +80,15 @@
 		EVEAPIKeyInfoCharactersItem* character = account.character;
 		
 		if (self.characterImageView)
-			[dataManager imageWithCharacterID:character.characterID preferredSize:CGSizeMake(128, 128) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+			[dataManager imageWithCharacterID:character.characterID preferredSize:CGSizeMake(128, 128) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error, NSManagedObjectID *cacheRecordID) {
 				self.characterImageView.image = image;
 			}];
 		if (self.corporationImageView && character.corporationID)
-			[dataManager imageWithCorporationID:character.corporationID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+			[dataManager imageWithCorporationID:character.corporationID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error, NSManagedObjectID *cacheRecordID) {
 				self.corporationImageView.image = image;
 			}];
 		if (self.allianceImageView && character.allianceID)
-			[dataManager imageWithAllianceID:character.allianceID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+			[dataManager imageWithAllianceID:character.allianceID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error, NSManagedObjectID *cacheRecordID) {
 				self.allianceImageView.image = image;
 			}];
 	}

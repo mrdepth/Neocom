@@ -10,6 +10,7 @@
 #import "UIColor+CS.h"
 
 @implementation NCTableViewCell
+@synthesize binder = _binder;
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -24,6 +25,13 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (ASBinder*) binder {
+	if (!_binder) {
+		_binder = [[ASBinder alloc] initWithTarget:self];
+	}
+	return _binder;
 }
 
 @end

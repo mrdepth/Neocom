@@ -124,7 +124,6 @@
 	}
 }
 
-
 #pragma mark - Private
 
 - (void) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
@@ -140,6 +139,7 @@
 			[weakSelf reloadImagesWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 		[weakSelf reloadData];
 	}];
+	
 	id token = [dispatchGroup enter];
 	[progressHandler.progress becomeCurrentWithPendingUnitCount:1];
 	[dataManager characterSheetForAccount:account cachePolicy:cachePolicy completionHandler:^(EVECharacterSheet *result, NSError *error, NSManagedObjectID *cacheRecordID) {
@@ -182,18 +182,18 @@
 	NSProgress* progress = [NSProgress progressWithTotalUnitCount:characterSheet.allianceID ? 3 : 2];
 	NCDataManager* dataManager = [NCDataManager defaultManager];
 	[progress becomeCurrentWithPendingUnitCount:progress.totalUnitCount];
-	[dataManager imageWithCharacterID:characterSheet.characterID preferredSize:CGSizeMake(512, 512) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
+	[dataManager imageWithCharacterID:characterSheet.characterID preferredSize:CGSizeMake(512, 512) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error, NSManagedObjectID *cacheRecordID) {
 		self.characterImage = image;
 		[self.tableView reloadData];
 	}];
 	
-	[dataManager imageWithCorporationID:characterSheet.corporationID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
+	[dataManager imageWithCorporationID:characterSheet.corporationID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error, NSManagedObjectID *cacheRecordID) {
 		self.corporationImage = image;
 		[self.tableView reloadData];
 	}];
 	
 	if (characterSheet.allianceID)
-		[dataManager imageWithAllianceID:characterSheet.allianceID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error) {
+		[dataManager imageWithAllianceID:characterSheet.allianceID preferredSize:CGSizeMake(32, 32) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error, NSManagedObjectID *cacheRecordID) {
 			self.allianceImage = image;
 			[self.tableView reloadData];
 		}];

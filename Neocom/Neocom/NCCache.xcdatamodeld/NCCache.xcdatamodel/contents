@@ -11,7 +11,7 @@
         <attribute name="key" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RecordData" inverseName="record" inverseEntity="RecordData" syncable="YES"/>
     </entity>
-    <entity name="RecordData" representedClassName="NCCacheRecordData" syncable="YES" codeGenerationType="class">
+    <entity name="RecordData" representedClassName="NCCacheRecordData" syncable="YES" codeGenerationType="category">
         <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
         <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Record" inverseName="data" inverseEntity="Record" syncable="YES"/>
     </entity>

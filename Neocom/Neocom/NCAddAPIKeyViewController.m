@@ -95,7 +95,7 @@
 		cell.imageView.clipsToBounds = NO;
 		cell.titleLabel.text = item.corporationName;
 		cell.subtitleLabel.text = item.allianceName;
-		[[NCDataManager new] imageWithCorporationID:item.corporationID preferredSize:cell.iconView.bounds.size scale:[[UIScreen mainScreen] scale] cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+		[[NCDataManager new] imageWithCorporationID:item.corporationID preferredSize:cell.iconView.bounds.size scale:[[UIScreen mainScreen] scale] cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error, NSManagedObjectID *cacheRecordID) {
 			if (cell.object == item)
 				cell.iconView.image = image;
 		}];
@@ -104,7 +104,7 @@
 		cell.imageView.clipsToBounds = YES;
 		cell.titleLabel.text = item.characterName;
 		cell.subtitleLabel.text = item.corporationName;
-		[[NCDataManager new] imageWithCharacterID:item.characterID preferredSize:cell.iconView.bounds.size scale:[[UIScreen mainScreen] scale] cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error) {
+		[[NCDataManager new] imageWithCharacterID:item.characterID preferredSize:cell.iconView.bounds.size scale:[[UIScreen mainScreen] scale] cachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(UIImage *image, NSError *error, NSManagedObjectID *cacheRecordID) {
 			if (cell.object == item)
 				cell.iconView.image = image;
 		}];

@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ASBinder.h"
 
 @interface NCTableViewCell : UITableViewCell
 @property (nonatomic, strong) id object;
+@property (nonatomic, strong, readonly) ASBinder* binder;
 @end

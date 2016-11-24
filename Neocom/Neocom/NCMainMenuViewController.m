@@ -18,7 +18,91 @@
 #import "NCTimeIntervalFormatter.h"
 #import "NCAccountsViewController.h"
 #import "EVECharacterSheet+NC.h"
+#import "ASValueTransformer.h"
 @import EVEAPI;
+
+@interface NCMainMenuDetails : NSObject
+@property (nonatomic, strong) NCAccount* account;
+@property (nonatomic, strong) ASBinder* binder;
+@property (nonatomic, strong) NSString* skillPoints;
+@property (nonatomic, strong) NSString* skillQueueInfo;
+@property (nonatomic, strong) NSString* unreadMails;
+@property (nonatomic, strong) NSString* balance;
+@property (nonatomic, strong) NSString* jumpClones;
+
+@property (nonatomic, strong) NCCacheRecord<EVECharacterSheet*>* characterSheet;
+@property (nonatomic, strong) NCCacheRecord<EVECharacterInfo*>* characterInfo;
+@property (nonatomic, strong) NCCacheRecord<EVESkillQueue*>* skillQueue;
+@property (nonatomic, strong) NCCacheRecord<EVEAccountBalance*>* accountBalance;
+
+@end
+
+@implementation NCMainMenuDetails
+
+- (id) init {
+	if (self = [super init]) {
+		self.binder = [[ASBinder alloc] initWithTarget:self];
+	}
+	return self;
+}
+
+- (void) setCharacterSheet:(NCCacheRecord<EVECharacterSheet *> *)characterSheet {
+	_characterSheet = characterSheet;
+	
+	[self.binder bind:@"jumpClones" toObject:characterSheet.data withKeyPath:@"data" transformer:[ASValueTransformer valueTransformerWithHandler:^id(EVECharacterSheet* value) {
+		if (value) {
+			NSDate* date = [[value.eveapi localTimeWithServerTime:value.cloneJumpDate] dateByAddingTimeInterval:3600 * 24];
+			NSTimeInterval t = [date timeIntervalSinceNow];
+			return [NSString stringWithFormat:NSLocalizedString(@"Clone jump availability: %@", nil), t > 0 ? [NCTimeIntervalFormatter localizedStringFromTimeInterval:t precision:NCTimeIntervalFormatterPrecisionMinuts] : NSLocalizedString(@"Now", nil)];
+		}
+		else
+			return [characterSheet.error localizedDescription];
+	}]];
+
+}
+
+- (void) setCharacterInfo:(NCCacheRecord<EVECharacterInfo *> *)characterInfo {
+	_characterInfo = characterInfo;
+	[self.binder bind:@"skillPoints" toObject:characterInfo.data withKeyPath:@"data.skillPoints" transformer:[ASValueTransformer valueTransformerWithHandler:^id(id value) {
+		return value ? [NCUnitFormatter localizedStringFromNumber:value unit:NCUnitSP style:NCUnitFormatterStyleFull] : [characterInfo.error localizedDescription];
+	}]];
+
+	[self.binder bind:@"balance" toObject:characterInfo.data withKeyPath:@"data.accountBalance" transformer:[ASValueTransformer valueTransformerWithHandler:^id(id value) {
+		return value ? [NCUnitFormatter localizedStringFromNumber:value unit:NCUnitISK style:NCUnitFormatterStyleFull] : [characterInfo.error localizedDescription];
+	}]];
+}
+
+- (void) setSkillQueue:(NCCacheRecord<EVESkillQueue *> *)skillQueue {
+	_skillQueue = skillQueue;
+
+	[self.binder bind:@"skillQueueInfo" toObject:skillQueue.data withKeyPath:@"data" transformer:[ASValueTransformer valueTransformerWithHandler:^id(EVESkillQueue* value) {
+		if (value) {
+			if (value.skillQueue.count == 0)
+				return NSLocalizedString(@"No skills in training", nil);
+			else {
+				EVESkillQueueItem* lastSkill = [value.skillQueue lastObject];
+				NSDate* endTime = [value.eveapi localTimeWithServerTime:lastSkill.endTime];
+				return [NSString stringWithFormat:NSLocalizedString(@"%d skills in queue (%@)" , nil), (int) value.skillQueue.count, [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] precision:NCTimeIntervalFormatterPrecisionMinuts]];
+				;
+			}
+		}
+		else
+			return [skillQueue.error localizedDescription];
+	}]];
+}
+
+- (void) setAccountBalance:(NCCacheRecord<EVEAccountBalance *> *)accountBalance {
+	_accountBalance = accountBalance;
+	
+	[self.binder bind:@"balance" toObject:accountBalance.data withKeyPath:@"data" transformer:[ASValueTransformer valueTransformerWithHandler:^id(EVEAccountBalance* value) {
+		double isk = 0;
+		for (EVEAccountBalanceItem* account in value.accounts)
+			isk += account.balance;
+		return [NCUnitFormatter localizedStringFromNumber:@(isk) unit:NCUnitNone style:NCUnitFormatterStyleShort];
+	}]];
+}
+
+@end
 
 @interface NCMainMenuViewController ()<UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate>
 @property (nonatomic, weak) NCMainMenuHeaderViewController* headerViewController;
@@ -27,11 +111,7 @@
 @property (nonatomic, strong) NSArray<NSArray<NSDictionary<NSString*, id>*>*>* mainMenu;
 @property (nonatomic, assign, getter=isInteractive) BOOL interactive;
 
-@property (nonatomic, strong) NSString* skillPoints;
-@property (nonatomic, strong) NSString* skillQueue;
-@property (nonatomic, strong) NSString* unreadMails;
-@property (nonatomic, strong) NSString* balance;
-@property (nonatomic, strong) NSString* jumpClones;
+@property (nonatomic, strong) NCMainMenuDetails* mainMenuDetails;
 @end
 
 @implementation NCMainMenuViewController
@@ -122,7 +202,7 @@
 	cell.titleLabel.text = row[@"title"];
 	NSString* detailsKeyPath = row[@"detailsKeyPath"];
 	if (detailsKeyPath)
-		cell.subtitleLabel.text = [self valueForKey:detailsKeyPath];
+		[cell.binder bind:@"subtitleLabel.text" toObject:self.mainMenuDetails withKeyPath:detailsKeyPath transformer:nil];
 	else
 		cell.subtitleLabel.text = nil;
 	cell.iconView.image = [UIImage imageNamed:row[@"image"]];
@@ -279,70 +359,30 @@
 }
 
 - (void) updateAccountInfo {
-	self.skillPoints = nil;
-	self.skillQueue = nil;
-	self.balance = nil;
-	
 	NCAccount* account = NCAccount.currentAccount;
+	if (!account)
+		return;
+	
+	NCMainMenuDetails* mainMenuDetails = [NCMainMenuDetails new];
+	mainMenuDetails.account = account;
+	self.mainMenuDetails = mainMenuDetails;
+	
 	NCDataManager* dataManager = [NCDataManager defaultManager];
 	
 	if (account.eveAPIKey.corporate) {
 	}
 	else {
 		[dataManager characterInfoForAccount:account cachePolicy:NSURLRequestUseProtocolCachePolicy completionHandler:^(EVECharacterInfo *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-			if (result) {
-				self.skillPoints = [NCUnitFormatter localizedStringFromNumber:@(result.skillPoints) unit:NCUnitSP style:NCUnitFormatterStyleFull];
-				self.balance = [NCUnitFormatter localizedStringFromNumber:@(result.accountBalance) unit:NCUnitISK style:NCUnitFormatterStyleFull];
-			}
-			else {
-				self.skillPoints = [error localizedDescription];
-				self.balance = [error localizedDescription];
-			}
-			[self reloadCellWithDetails:@"skillPoints"];
-			[self reloadCellWithDetails:@"balance"];
+			mainMenuDetails.characterInfo = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
 		}];
 		
 		[dataManager characterSheetForAccount:account cachePolicy:NSURLRequestUseProtocolCachePolicy completionHandler:^(EVECharacterSheet *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-			if (result) {
-				NSDate* date = [[result.eveapi localTimeWithServerTime:result.cloneJumpDate] dateByAddingTimeInterval:3600 * 24];
-				NSTimeInterval t = [date timeIntervalSinceNow];
-				self.jumpClones = [NSString stringWithFormat:NSLocalizedString(@"Clone jump availability: %@", nil), t > 0 ? [NCTimeIntervalFormatter localizedStringFromTimeInterval:t precision:NCTimeIntervalFormatterPrecisionMinuts] : NSLocalizedString(@"Now", nil)];
-			}
-			else
-				self.jumpClones = [error localizedDescription];
-			[self reloadCellWithDetails:@"jumpClones"];
+			mainMenuDetails.characterSheet = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
 		}];
 		
 		[dataManager skillQueueForAccount:account cachePolicy:NSURLRequestUseProtocolCachePolicy completionHandler:^(EVESkillQueue *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-			if (result) {
-				if (result.skillQueue.count == 0)
-					self.skillQueue = NSLocalizedString(@"No skills in training", nil);
-				else {
-					NSArray* skills = [result.skillQueue sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"queuePosition" ascending:YES]]];
-					EVESkillQueueItem* lastSkill = [skills lastObject];
-					NSDate* endTime = [result.eveapi localTimeWithServerTime:lastSkill.endTime];
-					self.skillQueue = [NSString stringWithFormat:NSLocalizedString(@"%d skills in queue (%@)" , nil), (int) skills.count, [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] precision:NCTimeIntervalFormatterPrecisionMinuts]];
-					;
-				}
-			}
-			else
-				self.skillQueue = [error localizedDescription];
-			[self reloadCellWithDetails:@"skillQueue"];
+			mainMenuDetails.skillQueue = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
 		}];
-	}
-}
-
-- (void) reloadCellWithDetails:(NSString*) details {
-	NSInteger section = 0;
-	for (NSArray* rows in self.mainMenu) {
-		NSInteger row = 0;
-		for (NSDictionary* dic in rows) {
-			if ([dic[@"detailsKeyPath"] isEqualToString:details]) {
-				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:section]] withRowAnimation:UITableViewRowAnimationFade];
-			}
-			row++;
-		}
-		section++;
 	}
 }
 

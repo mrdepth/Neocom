@@ -10,10 +10,7 @@
 #import "NCTableViewHeaderCell.h"
 
 @interface NCTreeSection()
-@property (nonatomic, strong, readwrite) NSArray<NCTreeNode*>* children;
 @property (nonatomic, copy) void(^configurationHandler)(__kindof UITableViewCell* tableViewCell);
-@property (nonatomic, copy) NSString* title;
-@property (nonatomic, copy) NSAttributedString* attributedTitle;
 @end
 
 @implementation NCTreeSection

@@ -20,6 +20,8 @@
 #import "NCTreeRow.h"
 #import "EVECharacterSheet+NC.h"
 
+
+
 @interface NCCharacterSheetViewController ()
 @property (nonatomic, strong) NCManagedObjectObserver* observer;
 @property (nonatomic, strong) NCCacheRecord<EVECharacterSheet*>* characterSheet;
@@ -82,13 +84,6 @@
 
 - (void) treeController:(nonnull ASTreeController *)treeController configureCell:(nonnull __kindof UITableViewCell*) cell withItem:(nonnull NCTreeNode*) item {
 	[item configure:cell];
-/*	if ([item isKindOfClass:[NCCharacterSheetViewControllerSection class]]) {
-		NCTableViewHeaderCell* tableHeaderCell = (NCTableViewHeaderCell*) cell;
-		tableHeaderCell.titleLabel.text = [(NCCharacterSheetViewControllerSection*) item title];
-	}
-	else {
-		[(NCCharacterSheetViewControllerRow*) item configurationBlock](cell);
-	}*/
 }
 
 - (BOOL) treeController:(nonnull ASTreeController *)treeController isItemExpandable:(nonnull NCTreeNode*)item {

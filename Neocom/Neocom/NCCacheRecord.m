@@ -7,7 +7,7 @@
 //
 
 #import "NCCacheRecord+CoreDataProperties.h"
-#import "NCCacheRecordData+CoreDataProperties.h"
+#import "NCCacheRecordData+CoreDataClass.h"
 
 @implementation NCCacheRecord
 

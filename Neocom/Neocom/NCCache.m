@@ -83,7 +83,7 @@ static NCCache* sharedCache;
 	}];
 }
 
-- (void)storeObject:(id<NSSecureCoding>) object forKey:(NSString*) key account:(NSString*) account date:(NSDate*) date expireDate:(NSDate*) expireDate  completionHandler:(void(^)(NSManagedObjectID* objectID)) block {
+- (void)storeObject:(id<NSSecureCoding>) object forKey:(NSString*) key account:(NSString*) account date:(NSDate*) date expireDate:(NSDate*) expireDate error:(NSError*) error completionHandler:(void(^)(NSManagedObjectID* objectID)) block {
 	[self performBackgroundTask:^(NSManagedObjectContext *managedObjectContext) {
 		NCCacheRecord* record = [[managedObjectContext executeFetchRequest:[NCCacheRecord fetchRequestForKey:key account:account] error:nil] lastObject];
 		if (!record) {
@@ -92,9 +92,15 @@ static NCCache* sharedCache;
 			record.key = key;
 			record.data = [NSEntityDescription insertNewObjectForEntityForName:@"RecordData" inManagedObjectContext:managedObjectContext];
 		}
-		record.data.data = (NSObject*) object;
-		record.date = date ?: [NSDate date];
-		record.expireDate = expireDate ?: record.expireDate ?: [record.date dateByAddingTimeInterval:1];
+		if (object || !record.data.data) {
+			record.data.data = (NSObject*) object;
+			record.date = date ?: [NSDate date];
+			record.expireDate = expireDate ?: record.expireDate ?: [record.date dateByAddingTimeInterval:3];
+			record.error = error;
+		}
+		if ([managedObjectContext hasChanges])
+			[managedObjectContext save:nil];
+
 		if (block)
 			dispatch_async(dispatch_get_main_queue(), ^{
 				block(record.objectID);

@@ -26,6 +26,7 @@
 
 - (id) initWithInvType:(NCDBInvType*) type;
 - (id) initWithInvType:(NCDBInvType*) type skill:(EVESkillQueueItem*) skill inQueue:(EVESkillQueue*) skillQueue;
+- (id) initWithSkill:(EVESkillQueueItem*) skill inQueue:(EVESkillQueue*) skillQueue;
 - (NSTimeInterval) trainingTimeToLevelUpWithCharacterAttributes:(NCCharacterAttributes*) attributes;
 - (int32_t) skillPointsAtLevel:(int32_t) level;
 

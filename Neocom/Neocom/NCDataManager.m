@@ -317,11 +317,13 @@
 			[progress becomeCurrentWithPendingUnitCount:1];
 			loader(^(id object, NSError* error, NSDate* date, NSDate* expireDate) {
 				if (object)
-					[cache storeObject:object forKey:key account:account date:date expireDate:expireDate completionHandler:^(NSManagedObjectID *objectID) {
+					[cache storeObject:object forKey:key account:account date:date expireDate:expireDate error:nil completionHandler:^(NSManagedObjectID *objectID) {
 						block(object, error, objectID);
 					}];
 				else
-					block(nil, error, nil);
+					[cache storeObject:nil forKey:key account:account date:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:3] error:error completionHandler:^(NSManagedObjectID *objectID) {
+						block(nil, error, objectID);
+					}];
 			});
 			[progress resignCurrent];
 			break;
@@ -340,11 +342,13 @@
 						[progress becomeCurrentWithPendingUnitCount:1];
 						loader(^(id object, NSError* error, NSDate* date, NSDate* expireDate) {
 							if (object)
-								[cache storeObject:object forKey:key account:account date:date expireDate:expireDate completionHandler:^(NSManagedObjectID *objectID) {
+								[cache storeObject:object forKey:key account:account date:date expireDate:expireDate error:nil completionHandler:^(NSManagedObjectID *objectID) {
 									block(object, error, objectID);
 								}];
 							else
-								block(nil, error, nil);
+								[cache storeObject:nil forKey:key account:account date:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:3] error:error completionHandler:^(NSManagedObjectID *objectID) {
+									block(nil, error, objectID);
+								}];
 						});
 						[progress resignCurrent];
 					}
@@ -375,18 +379,22 @@
 						if (isExpired)
 							loader(^(id object, NSError* error, NSDate* date, NSDate* expireDate) {
 								if (object)
-									[cache storeObject:object forKey:key account:account date:date expireDate:expireDate completionHandler:nil];
+									[cache storeObject:object forKey:key account:account date:date expireDate:expireDate error:nil completionHandler:nil];
+								else
+									[cache storeObject:nil forKey:key account:account date:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:3] error:error completionHandler:nil];
 							});
 					}
 					else {
 						[progress becomeCurrentWithPendingUnitCount:1];
 						loader(^(id object, NSError* error, NSDate* date, NSDate* expireDate) {
 							if (object)
-								[cache storeObject:object forKey:key account:account date:date expireDate:expireDate completionHandler:^(NSManagedObjectID *objectID) {
+								[cache storeObject:object forKey:key account:account date:date expireDate:expireDate error:nil completionHandler:^(NSManagedObjectID *objectID) {
 									block(object, error, objectID);
 								}];
 							else
-								block(nil, error, nil);
+								[cache storeObject:nil forKey:key account:account date:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:3] error:error completionHandler:^(NSManagedObjectID *objectID) {
+									block(nil, error, objectID);
+								}];
 						});
 						[progress resignCurrent];
 					}

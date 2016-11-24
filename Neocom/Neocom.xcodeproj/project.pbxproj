@@ -197,7 +197,6 @@
 		12AFC5081DE5CFA400531660 /* ASObjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC5021DE5CFA400531660 /* ASObjectController.m */; };
 		12AFC5091DE5CFA400531660 /* ASTreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC5041DE5CFA400531660 /* ASTreeController.m */; };
 		12AFC50A1DE5CFA400531660 /* ASValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC5061DE5CFA400531660 /* ASValueTransformer.m */; };
-		12AFC50D1DE5D36600531660 /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC50C1DE5D36600531660 /* NCCacheRecordData.m */; };
 		12AFC5111DE5D52200531660 /* NCImageFromDataValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AFC5101DE5D52200531660 /* NCImageFromDataValueTransformer.m */; };
 		12CCAD7E1DDA4C7A0053CA8A /* NCLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CCAD7D1DDA4C7A0053CA8A /* NCLabel.m */; };
 		12FB4F561DDDE15B00C7E34A /* NCDispatchGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FB4F551DDDE15B00C7E34A /* NCDispatchGroup.m */; };
@@ -518,8 +517,6 @@
 		12AFC5041DE5CFA400531660 /* ASTreeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASTreeController.m; sourceTree = "<group>"; };
 		12AFC5051DE5CFA400531660 /* ASValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASValueTransformer.h; sourceTree = "<group>"; };
 		12AFC5061DE5CFA400531660 /* ASValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASValueTransformer.m; sourceTree = "<group>"; };
-		12AFC50B1DE5D36600531660 /* NCCacheRecordData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCacheRecordData.h; sourceTree = "<group>"; };
-		12AFC50C1DE5D36600531660 /* NCCacheRecordData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCacheRecordData.m; sourceTree = "<group>"; };
 		12AFC50F1DE5D52200531660 /* NCImageFromDataValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCImageFromDataValueTransformer.h; sourceTree = "<group>"; };
 		12AFC5101DE5D52200531660 /* NCImageFromDataValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCImageFromDataValueTransformer.m; sourceTree = "<group>"; };
 		12CCAD7C1DDA4C7A0053CA8A /* NCLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLabel.h; sourceTree = "<group>"; };
@@ -933,8 +930,6 @@
 				129A85251DD8D2E30001F732 /* NCCache.m */,
 				129A85261DD8D2E30001F732 /* NCCacheRecord.h */,
 				129A85271DD8D2E30001F732 /* NCCacheRecord.m */,
-				12AFC50B1DE5D36600531660 /* NCCacheRecordData.h */,
-				12AFC50C1DE5D36600531660 /* NCCacheRecordData.m */,
 				129A854C1DD8D3390001F732 /* NCCache.xcdatamodeld */,
 			);
 			name = NCCache;
@@ -1499,7 +1494,6 @@
 				12179A031DE21932001C7FCF /* NCGate.m in Sources */,
 				12FB4F751DDF3A9C00C7E34A /* NCSwitchTitleCell.m in Sources */,
 				129A86331DD8F1990001F732 /* NCRoundImageView.m in Sources */,
-				12AFC50D1DE5D36600531660 /* NCCacheRecordData.m in Sources */,
 				129BBE051DDB743F009F97F5 /* UIAlertController+NC.m in Sources */,
 				129A85071DD8D2170001F732 /* main.m in Sources */,
 				12AFC5071DE5CFA400531660 /* ASBinder.m in Sources */,

@@ -19,6 +19,10 @@
     // Initialization code
 }
 
+- (void) prepareForReuse {
+	[self.binder unbindAll];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
 	if (selected && !self.selectedBackgroundView) {
 	}

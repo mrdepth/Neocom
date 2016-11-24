@@ -7,6 +7,74 @@
 //
 
 #import "NCSkillQueueViewController.h"
+#import "NCTreeSection.h"
+#import "NCTreeRow.h"
+#import "NCCache.h"
+#import "NCDatabase.h"
+#import "NCStorage.h"
+#import "NCTableViewHeaderCell.h"
+#import "ASBinder.h"
+#import "NCManagedObjectObserver.h"
+#import "NCSkill.h"
+
+@import EVEAPI;
+
+@interface NCSkillQueueRow : NCTreeRow
+@property (nonatomic, strong) NCSkill* skill;
+@end
+
+@implementation NCSkillQueueRow
+- (id) initWithSkill:(NCSkill*) skill {
+	if (self = [super initWithNodeIdentifier:nil cellIdentifier:@"SkillCell"]) {
+		
+	}
+	return self;
+}
+@end
+
+@interface NCSkillQueueSection : NCTreeSection
+@end
+
+@implementation NCSkillQueueSection
+
+- (instancetype) initWithSkillQueue:(NCCacheRecord<EVESkillQueue*>*) skillQueue {
+	if (self = [super initWithNodeIdentifier:@"SkillQueue" cellIdentifier:@"NCTableViewHeaderCell"]) {
+		[NCManagedObjectObserver observerWithObjectID:skillQueue.data.objectID handler:^(NSSet<NSManagedObjectID *> *updated, NSSet<NSManagedObjectID *> *deleted) {
+			EVESkillQueue* queue = skillQueue.object;
+			NSMutableArray<NCSkillQueueRow*>* rows = [self mutableArrayValueForKey:@"children"];
+			
+			NSIndexSet* set = [rows indexesOfObjectsPassingTest:^BOOL(NCSkillQueueRow * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+				for (EVESkillQueueItem* item in queue.skillQueue)
+					if (item.typeID == obj.skill.typeID && item.level == obj.skill.level - 1)
+						return NO;
+				return YES;
+			}];
+			if (set.count > 0)
+				[rows removeObjectsAtIndexes:set];
+			
+			for (EVESkillQueueItem* item in queue.skillQueue) {
+				
+			}
+		}];
+		EVESkillQueue* queue = skillQueue.object;
+		
+		NCFetchedCollection<NCDBInvType*>* invTypes = NCDatabase.sharedDatabase.invTypes;
+		NSMutableArray* rows = [NSMutableArray new];
+		for (EVESkillQueueItem* item in queue.skillQueue) {
+			NCDBInvType* type = invTypes[item.typeID];
+			NCSkill* skill = [[NCSkill alloc] initWithInvType:type skill:item inQueue:queue];
+			if (type)
+				[rows addObject:[[NCSkillQueueRow alloc] initWithSkill:skill]];
+		}
+		self.children = rows;
+	}
+	return self;
+}
+
+@end
+
+
+
 
 @interface NCSkillQueueViewController ()
 

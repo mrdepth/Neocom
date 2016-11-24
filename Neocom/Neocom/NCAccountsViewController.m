@@ -25,9 +25,194 @@
 #import "ASValueTransformer.h"
 @import EVEAPI;
 
+@interface NCAccountInfo : NSObject
+@property (nonatomic, assign) BOOL corporate;
+@property (nonatomic, strong) NSString* characterName;
+@property (nonatomic, strong) NSString* corporation;
+@property (nonatomic, strong) NSString* alliance;
+@property (nonatomic, strong) UIImage* characterImage;
+@property (nonatomic, strong) UIImage* corporationImage;
+@property (nonatomic, strong) NSString* sp;
+@property (nonatomic, strong) NSString* wealth;
+@property (nonatomic, strong) NSAttributedString* location;
+@property (nonatomic, strong) NSString* subscription;
+@property (nonatomic, strong) NSAttributedString* skill;
+@property (nonatomic, strong) UIColor* skillColor;
+@property (nonatomic, strong) NSString* skillQueue;
+@property (nonatomic, strong) NCSkill* firstTrainingSkill;
+@property (nonatomic, assign) float trainingProgress;
+@property (nonatomic, strong) NSString* trainingTime;
+@property (nonatomic, strong) NCAccount* account;
+@property (nonatomic, strong) NCCacheRecord<EVEAccountStatus*>* accountStatusRecord;
+@property (nonatomic, strong) NCCacheRecord<EVECharacterInfo*>* characterInfoRecord;
+@property (nonatomic, strong) NCCacheRecord<EVESkillQueue*>* skillQueueRecord;
+@property (nonatomic, strong) NCCacheRecord<EVEAccountBalance*>* accountBalanceRecord;
+@property (nonatomic, strong) NCCacheRecord<NSData*>* characterImageRecord;
+@property (nonatomic, strong) NCCacheRecord<NSData*>* corporationImageRecord;
+@property (nonatomic, strong) ASBinder* binder;
+@end
+
+@implementation NCAccountInfo
+
++ (instancetype) characterAccountInfo {
+	NCAccountInfo* info = [NCAccountInfo new];
+	info.corporate = NO;
+	return info;
+}
+
++ (instancetype) corporationAccountInfo {
+	NCAccountInfo* info = [NCAccountInfo new];
+	info.corporate = YES;
+	return info;
+}
+
+- (id) init {
+	if (self = [super init]) {
+		self.binder = [[ASBinder alloc] initWithTarget:self];
+	}
+	return self;
+}
+
+- (void) setAccount:(NCAccount *)account {
+	_account = account;
+	if (self.corporate) {
+		self.corporation = account.character.corporationName;
+		self.alliance = account.character.allianceName;
+	}
+}
+
+- (void) setFirstTrainingSkill:(NCSkill *)firstTrainingSkill {
+	_firstTrainingSkill = firstTrainingSkill;
+	if (firstTrainingSkill) {
+		if (firstTrainingSkill.typeName)
+			self.skill = [NSAttributedString attributedStringWithSkillName:firstTrainingSkill.typeName level:firstTrainingSkill.level + 1];
+		else
+			self.skill = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Unknown skill %d", nil), firstTrainingSkill.typeID] attributes:nil];
+			
+		self.skillColor = [UIColor whiteColor];
+		self.trainingProgress = firstTrainingSkill.trainingProgress;
+		NSDate* endTime = firstTrainingSkill.trainingEndDate;
+		self.trainingTime = [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] precision:NCTimeIntervalFormatterPrecisionMinuts];
+	}
+	else {
+		self.skill = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"No skills in training", nil) attributes:nil];
+		self.skillColor = [UIColor lightTextColor];
+		self.trainingProgress = 0;
+		self.trainingTime = @" ";
+	}
+}
+
+- (void) setAccountStatusRecord:(NCCacheRecord<EVEAccountStatus *> *)accountStatusRecord {
+	_accountStatusRecord = accountStatusRecord;
+	[self.binder bind:@"subscription" toObject:accountStatusRecord.data withKeyPath:@"data" transformer:[ASValueTransformer valueTransformerWithHandler:^id(EVEAccountStatus* value) {
+		if (value.paidUntil) {
+			NSDate* paidUntil = [value.eveapi localTimeWithServerTime:value.paidUntil];
+			NSTimeInterval t = [paidUntil timeIntervalSinceNow];
+			if (t > 0)
+				return [NSString stringWithFormat:NSLocalizedString(@"%@ (%@)", nil),
+						[NSDateFormatter localizedStringFromDate:paidUntil dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle],
+						[NCTimeIntervalFormatter localizedStringFromTimeInterval:t precision:NCTimeIntervalFormatterPrecisionDays]];
+			else
+				return NSLocalizedString(@"expired", nil);
+		}
+		else
+			return [accountStatusRecord.error localizedDescription];
+	}]];
+}
+
+- (void) setCharacterInfoRecord:(NCCacheRecord<EVECharacterInfo *> *)characterInfoRecord {
+	_characterInfoRecord = characterInfoRecord;
+	ASValueTransformer* appendSpace = [ASValueTransformer valueTransformerWithHandler:^id(id value) {
+		return value ?: @" ";
+	}];
+	
+	[self.binder bind:@"characterName" toObject:characterInfoRecord.data withKeyPath:@"data.characterName" transformer:[ASValueTransformer valueTransformerWithHandler:^id(id value) {
+		if (value)
+			return value;
+		else if (characterInfoRecord.error)
+			return [characterInfoRecord.error localizedDescription];
+		else
+			return @" ";
+	}]];
+	
+	[self.binder bind:@"corporation" toObject:characterInfoRecord.data withKeyPath:@"data.corporation" transformer:appendSpace];
+	[self.binder bind:@"sp" toObject:characterInfoRecord.data withKeyPath:@"data.skillPoints" transformer:[ASValueTransformer valueTransformerWithHandler:^id(id value) {
+		return [NCUnitFormatter localizedStringFromNumber:value unit:NCUnitNone style:NCUnitFormatterStyleShort] ?: @" ";
+	}]];
+	
+	[self.binder bind:@"wealth" toObject:characterInfoRecord.data withKeyPath:@"data.accountBalance" transformer:[ASValueTransformer valueTransformerWithHandler:^id(id value) {
+		return [NCUnitFormatter localizedStringFromNumber:value unit:NCUnitNone style:NCUnitFormatterStyleShort] ?: @" ";
+	}]];
+
+	[self.binder bind:@"location" toObject:characterInfoRecord.data withKeyPath:@"data" transformer:[ASValueTransformer valueTransformerWithHandler:^id(EVECharacterInfo* value) {
+		
+		if (value.lastKnownLocation && value.shipTypeName) {
+			NSMutableAttributedString* s = [NSMutableAttributedString new];
+			[s appendAttributedString:[[NSAttributedString alloc] initWithString:value.shipTypeName attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}]];
+			[s appendAttributedString:[[NSAttributedString alloc] initWithString:[@", " stringByAppendingString:value.lastKnownLocation] attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor]}]];
+			return s;
+		}
+		else if (value.lastKnownLocation)
+			return [[NSAttributedString alloc] initWithString:value.lastKnownLocation attributes:@{NSForegroundColorAttributeName:[UIColor lightTextColor]}];
+		else if (value.shipName )
+			return [[NSAttributedString alloc] initWithString:value.shipTypeName attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+		else
+			return [[NSAttributedString alloc] initWithString:@" " attributes:nil];
+	}]];
+}
+
+- (void) setSkillQueueRecord:(NCCacheRecord<EVESkillQueue *> *)skillQueueRecord {
+	_skillQueueRecord = skillQueueRecord;
+	
+	[self.binder bind:@"firstTrainingSkill" toObject:skillQueueRecord.data withKeyPath:@"data" transformer:[ASValueTransformer valueTransformerWithHandler:^id(EVESkillQueue* value) {
+		if (value.skillQueue.count > 0) {
+			EVESkillQueueItem* firstSkill = value.skillQueue[0];
+			NCDBInvType* type = [NCDBInvType invTypesWithManagedObjectContext:NCDatabase.sharedDatabase.viewContext][firstSkill.typeID];
+			return type ? [[NCSkill alloc] initWithInvType:type skill:firstSkill inQueue:value] : [[NCSkill alloc] initWithSkill:firstSkill inQueue:value];
+		}
+		else
+			return nil;
+	}]];
+
+	[self.binder bind:@"skillQueue" toObject:skillQueueRecord.data withKeyPath:@"data" transformer:[ASValueTransformer valueTransformerWithHandler:^id(EVESkillQueue* value) {
+		if (value.skillQueue.count > 0) {
+			EVESkillQueueItem* lastSkill = [value.skillQueue lastObject];
+			NSDate* endTime = [value.eveapi localTimeWithServerTime:lastSkill.endTime];
+			
+			return [NSString stringWithFormat:NSLocalizedString(@"%d skills in queue (%@)" , nil), (int) value.skillQueue.count, [NCTimeIntervalFormatter localizedStringFromTimeInterval:[endTime timeIntervalSinceNow] precision:NCTimeIntervalFormatterPrecisionMinuts]];
+		}
+		else
+			return @" ";
+	}]];
+}
+
+- (void) setAccountBalanceRecord:(NCCacheRecord<EVEAccountBalance *> *)accountBalanceRecord {
+	_accountBalanceRecord = accountBalanceRecord;
+	
+	[self.binder bind:@"wealth" toObject:accountBalanceRecord.data withKeyPath:@"data" transformer:[ASValueTransformer valueTransformerWithHandler:^id(EVEAccountBalance* value) {
+		double isk = 0;
+		for (EVEAccountBalanceItem* account in value.accounts)
+			isk += account.balance;
+		return [NCUnitFormatter localizedStringFromNumber:@(isk) unit:NCUnitNone style:NCUnitFormatterStyleShort];
+	}]];
+}
+
+- (void) setCharacterImageRecord:(NCCacheRecord<NSData *> *)characterImageRecord {
+	_characterImageRecord = characterImageRecord;
+	[self.binder bind:@"characterImage" toObject:characterImageRecord.data withKeyPath:@"data" transformer:[NCImageFromDataValueTransformer new]];
+}
+
+- (void) setCorporationImageRecord:(NCCacheRecord<NSData *> *)corporationImageRecord {
+	_corporationImageRecord = corporationImageRecord;
+	[self.binder bind:@"corporationImage" toObject:corporationImageRecord.data withKeyPath:@"data" transformer:[NCImageFromDataValueTransformer new]];
+}
+
+@end
+
 @interface NCAccountsViewController ()<UIViewControllerTransitioningDelegate, NSFetchedResultsControllerDelegate>
 @property (nonatomic, strong) NSFetchedResultsController* results;
-@property (nonatomic, strong) NSMutableDictionary<NSManagedObjectID*, NSMutableDictionary<NSString*, NCCacheRecord*>*>* extraInfo;
+//@property (nonatomic, strong) NSMutableDictionary<NSManagedObjectID*, NSMutableDictionary<NSString*, NCCacheRecord*>*>* extraInfo;
+@property (nonatomic, strong) NSMutableDictionary<NSManagedObjectID*, NCAccountInfo*>* accountsInfo;
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
 @property (nonatomic, assign, getter=isInteractive) BOOL interactive;
 @end
@@ -56,7 +241,7 @@
 	self.results = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:NCStorage.sharedStorage.viewContext sectionNameKeyPath:@"order" cacheName:nil];
 	self.results.delegate = self;
 	[self.results performFetch:nil];
-	self.extraInfo = [NSMutableDictionary new];
+	self.accountsInfo = [NSMutableDictionary new];
 	//[self.refreshControl beginRefreshing];
 	//[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 	
@@ -103,9 +288,9 @@
 	NCAccount* account = [self.results objectAtIndexPath:indexPath];
 	NCAccountsCell* cell = [tableView dequeueReusableCellWithIdentifier:account.eveAPIKey.corporate ? @"CorporationCell" : @"CharacterCell" forIndexPath:indexPath];
 	
-	NSDictionary* info = self.extraInfo[account.objectID];
+	NCAccountInfo* info = self.accountsInfo[account.objectID];
 	if (!info)
-		[self loadDataForCellAtIndexPath:indexPath withCachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(NSDictionary *info, NSError *error) {
+		[self loadDataForCellAtIndexPath:indexPath withCachePolicy:NSURLRequestUseProtocolCachePolicy completionBlock:^(NCAccountInfo *info, NSError *error) {
 		}];
 	[self configureCell:cell atIndexPath:indexPath];
     return cell;
@@ -244,7 +429,7 @@
 	for (NCAccount* account in self.results.fetchedObjects) {
 		[progressHandler.progress becomeCurrentWithPendingUnitCount:1];
 		id token = [dispatchGroup enter];
-		[self loadDataForCellAtIndexPath:[self.results indexPathForObject:account] withCachePolicy:NSURLRequestReloadIgnoringCacheData completionBlock:^(NSDictionary *info, NSError *error) {
+		[self loadDataForCellAtIndexPath:[self.results indexPathForObject:account] withCachePolicy:NSURLRequestReloadIgnoringCacheData completionBlock:^(NCAccountInfo *info, NSError *error) {
 			[dispatchGroup leave:token];
 		}];
 		[progressHandler.progress resignCurrent];
@@ -256,25 +441,17 @@
 	}];
 }
 
-- (void) loadDataForCellAtIndexPath:(NSIndexPath*) indexPath withCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NSDictionary* info, NSError* error)) block {
+- (void) loadDataForCellAtIndexPath:(NSIndexPath*) indexPath withCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(NCAccountInfo* info, NSError* error)) block {
 	NCAccount* account = [self.results objectAtIndexPath:indexPath];
 	EVEAPIKey* apiKey = account.eveAPIKey;
 	
 	NSProgress* progress = [NSProgress progressWithTotalUnitCount:apiKey.corporate ? 4 : 6];
 	
-	NSMutableDictionary<NSString*, NCCacheRecord*>* info = self.extraInfo[account.objectID];
-	/*NCManagedObjectObserver* observer = info[@"observer"];
+	NCAccountInfo* info = self.accountsInfo[account.objectID];
 	if (!info) {
-		self.extraInfo[account.objectID] = info = [NSMutableDictionary new];
-		info[@"observer"] = observer = [NCManagedObjectObserver observerWithHandler:^(NSSet<NSManagedObjectID *> *updated, NSSet<NSManagedObjectID *> *deleted) {
-			NSIndexPath* indexPath = [self.results indexPathForObject:account];
-			if (indexPath)
-				[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-		}];
+		self.accountsInfo[account.objectID] = info = account.eveAPIKey.corporate ? [NCAccountInfo corporationAccountInfo] : [NCAccountInfo characterAccountInfo];
+		info.account = account;
 	}
-	else
-		observer = info[@"observer"];*/
-	
 	
 	NCDataManager* dataManager = [NCDataManager defaultManager];
 	NCDispatchGroup* dispatchGroup = [NCDispatchGroup new];
@@ -295,12 +472,8 @@
 	
 	token = [dispatchGroup enter];
 	[dataManager accountStatusForAccount:account cachePolicy:cachePolicy completionHandler:^(EVEAccountStatus *result, NSError *error, NSManagedObjectID *cacheRecordID) {
-//		if (cacheRecordID)
-//			[observer addObjectID:cacheRecordID];
-		
 		progress.completedUnitCount++;
-		if (cacheRecordID)
-			info[@"EVEAccountStatus"] = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
+		info.accountStatusRecord = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
 		[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
 		[dispatchGroup leave:token];
 	}];
@@ -311,8 +484,7 @@
 		token = [dispatchGroup enter];
 		[dataManager accountBalanceForAccount:account cachePolicy:cachePolicy completionHandler:^(EVEAccountBalance *result, NSError *error, NSManagedObjectID *cacheRecordID) {
 			progress.completedUnitCount++;
-			if (cacheRecordID)
-				info[@"EVEAccountBalance"] = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
+			info.accountBalanceRecord = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
 			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
 			[dispatchGroup leave:token];
 		}];
@@ -320,8 +492,7 @@
 		token = [dispatchGroup enter];
 		[dataManager imageWithCorporationID:character.corporationID preferredSize:CGSizeMake(80, 80) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error, NSManagedObjectID *cacheRecordID) {
 			progress.completedUnitCount++;
-			if (cacheRecordID)
-				info[@"image"] = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
+			info.corporationImageRecord = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
 			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
 			[dispatchGroup leave:token];
 		}];
@@ -331,8 +502,7 @@
 		[dataManager characterInfoForAccount:account cachePolicy:cachePolicy completionHandler:^(EVECharacterInfo *result, NSError *error, NSManagedObjectID *cacheRecordID) {
 			lastError = error;
 			progress.completedUnitCount++;
-			if (cacheRecordID)
-				info[@"EVECharacterInfo"] = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
+			info.characterInfoRecord = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
 			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
 			[dispatchGroup leave:token];
 		}];
@@ -340,8 +510,7 @@
 		token = [dispatchGroup enter];
 		[dataManager skillQueueForAccount:account cachePolicy:cachePolicy completionHandler:^(EVESkillQueue *result, NSError *error, NSManagedObjectID *cacheRecordID) {
 			progress.completedUnitCount++;
-			if (cacheRecordID)
-				info[@"EVESkillQueue"] = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
+			info.skillQueueRecord = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
 			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
 			[dispatchGroup leave:token];
 		}];
@@ -349,8 +518,7 @@
 		token = [dispatchGroup enter];
 		[dataManager imageWithCharacterID:account.characterID preferredSize:CGSizeMake(80, 80) scale:UIScreen.mainScreen.scale cachePolicy:cachePolicy completionBlock:^(UIImage *image, NSError *error, NSManagedObjectID *cacheRecordID) {
 			progress.completedUnitCount++;
-			if (cacheRecordID)
-				info[@"image"] = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
+			info.characterImageRecord = [NCCache.sharedCache.viewContext objectWithID:cacheRecordID];
 			[self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
 			[dispatchGroup leave:token];
 		}];
@@ -365,24 +533,27 @@
 - (void) configureCell:(NCAccountsCell*) cell atIndexPath:(NSIndexPath*) indexPath {
 	if (!cell)
 		return;
-	cell.characterNameLabel.text = @" ";
-	cell.characterImageView.image = nil;
-	cell.corporationLabel.text = @" ";
-	cell.allianceLabel.text = @" ";
-	cell.corporationImageView.image = nil;
-	cell.allianceImageView.image = nil;
-	cell.spLabel.text = @" ";
-	cell.wealthLabel.text = @" ";
-	cell.locationLabel.text = @" ";
-	cell.subscriptionLabel.text = @" ";
-	cell.skillLabel.text = @" ";
-	cell.trainingTimeLabel.text = @" ";
-	cell.trainingProgressView.progress = 0.0;
-	cell.skillQueueLabel.text = @" ";
 	
 	NCAccount* account = [self.results objectAtIndexPath:indexPath];
 	cell.object = account;
+
+	NCAccountInfo* info = self.accountsInfo[account.objectID];
 	
+	[cell.binder bind:@"characterNameLabel.text" toObject:info withKeyPath:@"characterName" transformer:nil];
+	[cell.binder bind:@"characterImageView.image" toObject:info withKeyPath:@"characterImage" transformer:nil];
+	[cell.binder bind:@"corporationLabel.text" toObject:info withKeyPath:@"corporation" transformer:nil];
+	[cell.binder bind:@"allianceLabel.text" toObject:info withKeyPath:@"alliance" transformer:nil];
+	[cell.binder bind:@"corporationImageView.image" toObject:info withKeyPath:@"corporationImage" transformer:nil];
+	[cell.binder bind:@"spLabel.text" toObject:info withKeyPath:@"sp" transformer:nil];
+	[cell.binder bind:@"wealthLabel.text" toObject:info withKeyPath:@"wealth" transformer:nil];
+	[cell.binder bind:@"locationLabel.attributedText" toObject:info withKeyPath:@"location" transformer:nil];
+	[cell.binder bind:@"subscriptionLabel.text" toObject:info withKeyPath:@"subscription" transformer:nil];
+	[cell.binder bind:@"skillLabel.attributedText" toObject:info withKeyPath:@"skill" transformer:nil];
+	[cell.binder bind:@"trainingTimeLabel.text" toObject:info withKeyPath:@"trainingTime" transformer:nil];
+	[cell.binder bind:@"trainingProgressView.progress" toObject:info withKeyPath:@"trainingProgress" transformer:nil];
+	[cell.binder bind:@"skillQueueLabel.text" toObject:info withKeyPath:@"skillQueue" transformer:nil];
+	/*
+	{
 	EVEAPIKeyInfoCharactersItem* apiKeyCharacterItem = account.character;
 	
 	NSDictionary<NSString*, NCCacheRecord*>* info = self.extraInfo[account.objectID];
@@ -447,8 +618,8 @@
 			if (value.skillQueue.count > 0) {
 				EVESkillQueueItem* firstSkill = value.skillQueue[0];
 				NCDBInvType* type = [NCDBInvType invTypesWithManagedObjectContext:NCDatabase.sharedDatabase.viewContext][firstSkill.typeID];
-				NCSkill* skill = [[NCSkill alloc] initWithInvType:type skill:firstSkill inQueue:value];
-				if (skill)
+				//NCSkill* skill = [[NCSkill alloc] initWithInvType:type skill:firstSkill inQueue:value];
+				if (type)
 					return [NSAttributedString attributedStringWithSkillName:type.typeName level:firstSkill.level];
 				else
 					return [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"Unknown typeID %d", nil), firstSkill.typeID] attributes:nil];
@@ -540,6 +711,8 @@
 	}
 	else if ([accountStatus isKindOfClass:[NSError class]])
 		cell.subscriptionLabel.text = [(NSError*) accountStatus localizedDescription];
+	}
+	 */
 }
 
 @end

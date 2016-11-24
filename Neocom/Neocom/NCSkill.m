@@ -53,6 +53,18 @@
 	return self;
 }
 
+- (id) initWithSkill:(EVESkillQueueItem*) skill inQueue:(EVESkillQueue*) skillQueue {
+	if (self = [super init]) {
+		self.typeID = skill.typeID;
+		self.rank = [self rankWithSkillPoints:skill.endSP atLevel:skill.level];
+		self.level = skill.level - 1;
+		self.startSkillPoints = skill.startSP;
+		self.trainingStartDate = [skillQueue.eveapi localTimeWithServerTime:skill.startTime];
+		self.trainingEndDate = [skillQueue.eveapi localTimeWithServerTime:skill.endTime];
+	}
+	return self;
+}
+
 - (int32_t) skillPointsAtLevel:(int32_t) level {
 	if (level == 0 || self.rank == 0)
 		return 0;
@@ -66,6 +78,10 @@
 	skillpoints += 1; //avoid rounding error
 	float level = (log(skillpoints/(250.0 * self.rank)) / log(2.0) + 2.5) / 2.5;
 	return trunc(level);
+}
+
+- (int32_t) rankWithSkillPoints:(int32_t) skillPoint atLevel:(int32_t) level {
+	return round(skillPoint / (pow(2, 2.5 * level - 2.5) * 250.0));
 }
 
 - (int32_t) skillPoints {

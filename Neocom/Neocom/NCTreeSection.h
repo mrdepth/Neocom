@@ -9,6 +9,9 @@
 #import "NCTreeNode.h"
 
 @interface NCTreeSection : NCTreeNode
+@property (nonatomic, strong, readwrite) NSArray<NCTreeNode*>* children;
+@property (nonatomic, copy) NSString* title;
+@property (nonatomic, copy) NSAttributedString* attributedTitle;
 
 + (instancetype) sectionWithNodeIdentifier:(NSString*) nodeIdentifier cellIdentifier:(NSString*) cellIdentifier children:(NSArray<NCTreeNode*>*) children configurationHandler:(void(^)(__kindof UITableViewCell* cell)) block;
 + (instancetype) sectionWithNodeIdentifier:(NSString*) nodeIdentifier cellIdentifier:(NSString*) cellIdentifier title:(NSString*) title children:(NSArray<NCTreeNode*>*) children;

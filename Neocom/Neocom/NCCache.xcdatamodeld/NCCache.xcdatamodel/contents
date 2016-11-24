@@ -7,17 +7,18 @@
     <entity name="Record" representedClassName="NCCacheRecord" syncable="YES" codeGenerationType="category">
         <attribute name="account" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="error" optional="YES" attributeType="Transformable" customClassName="NSError" syncable="YES"/>
         <attribute name="expireDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="key" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RecordData" inverseName="record" inverseEntity="RecordData" syncable="YES"/>
     </entity>
-    <entity name="RecordData" representedClassName="NCCacheRecordData" syncable="YES" codeGenerationType="category">
+    <entity name="RecordData" representedClassName="NCCacheRecordData" syncable="YES" codeGenerationType="class">
         <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
         <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Record" inverseName="data" inverseEntity="Record" syncable="YES"/>
     </entity>
     <elements>
         <element name="Price" positionX="9" positionY="36" width="128" height="75"/>
-        <element name="Record" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="Record" positionX="0" positionY="0" width="128" height="135"/>
         <element name="RecordData" positionX="0" positionY="0" width="128" height="75"/>
     </elements>
 </model>

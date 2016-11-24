@@ -47,7 +47,7 @@
 			<key>corpAccessMask</key>
 			<integer>-1</integer>
 			<key>detailsKeyPath</key>
-			<string>skillQueue</string>
+			<string>skillQueueInfo</string>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>

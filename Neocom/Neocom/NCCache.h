@@ -18,6 +18,6 @@
 
 - (void)loadWithCompletionHandler:(void (^)(NSError* error))block;
 - (void)performBackgroundTask:(void (^)(NSManagedObjectContext* managedObjectContext))block;
-- (void)storeObject:(id<NSSecureCoding>) object forKey:(NSString*) key account:(NSString*) account date:(NSDate*) date expireDate:(NSDate*) expireDate completionHandler:(void(^)(NSManagedObjectID* objectID)) block;
+- (void)storeObject:(id<NSSecureCoding>) object forKey:(NSString*) key account:(NSString*) account date:(NSDate*) date expireDate:(NSDate*) expireDate error:(NSError*) error completionHandler:(void(^)(NSManagedObjectID* objectID)) block;
 
 @end

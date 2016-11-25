@@ -212,6 +212,36 @@
 	}];
 }
 
+- (void) imageWithTypeID:(NSInteger) typeID preferredSize:(CGSize) size scale:(CGFloat) scale cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionBlock:(void(^)(UIImage* image, NSError* error, NSManagedObjectID *cacheRecordID)) block {
+	size.width *= scale;
+	size.height *= scale;
+	
+	EVEImageSize sizes[] = {EVEImageSize32, EVEImageSize64, EVEImageSize128, EVEImageSize256, EVEImageSize512};
+	int n = sizeof(sizes) / sizeof(EVEImageSize);
+	CGFloat dimension = MAX(size.width, size.height);
+	EVEImageSize s = EVEImageSize32;
+	for (int i = 0; i < n; i++) {
+		s = sizes[i];
+		if (sizes[i] > dimension)
+			break;
+	}
+	
+	NSString* key = [NSString stringWithFormat:@"EVEImage:type:%d:%d", (int) typeID, (int) s];
+	[self loadFromCacheForKey:key account:nil cachePolicy:cachePolicy completionHandler:^(id result, NSError *error, NSManagedObjectID *cacheRecordID) {
+		UIImage* image = [UIImage imageWithData:result scale:scale];
+		block(image, error, cacheRecordID);
+	} elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
+		NSURL* url = [EVEImage renderImageURLWithTypeID:(int32_t) typeID size:s error:nil];
+		EVEOnlineAPI* api = [[EVEOnlineAPI alloc] initWithAPIKey:nil cachePolicy:NSURLRequestUseProtocolCachePolicy];
+		[api.sessionManager GET:url.absoluteString parameters:nil responseSerializer:[AFHTTPResponseSerializer serializer] completionBlock:^(id responseObject, NSError *error) {
+			UIImage* image = [responseObject isKindOfClass:[NSData class]] ? [UIImage imageWithData:responseObject scale:scale] : nil;
+			if (!image && !error)
+				error = [NSError errorWithDomain:NCDefaultErrorDomain code:NCDefaultErrorCode userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"File not found", nil)}];
+			finish(image ? responseObject : nil, error, [NSDate date], [NSDate dateWithTimeIntervalSinceNow:3600]);
+		}];
+	}];
+}
+
 - (void) callListWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(EVECallList* result, NSError* error, NSManagedObjectID* cacheRecordID)) block {
 	[self loadFromCacheForKey:@"EVECallList" account:nil cachePolicy:cachePolicy completionHandler:block elseLoad:^(void (^finish)(id object, NSError *error, NSDate *date, NSDate *expireDate)) {
 		EVEOnlineAPI* api = [EVEOnlineAPI apiWithAPIKey:nil cachePolicy:cachePolicy];

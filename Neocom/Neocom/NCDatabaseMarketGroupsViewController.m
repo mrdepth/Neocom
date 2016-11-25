@@ -9,7 +9,7 @@
 #import "NCDatabaseMarketGroupsViewController.h"
 #import "NCDatabase.h"
 #import "NCTableViewDefaultCell.h"
-#import "NCDatabaseItemsViewController.h"
+#import "NCDatabaseTypesViewController.h"
 
 @interface NCDatabaseMarketGroupsViewController ()<UISearchResultsUpdating>
 @property (nonatomic, strong) NSFetchedResultsController* results;
@@ -64,7 +64,7 @@
 	}
 	else
 		predicate = [NSPredicate predicateWithValue:NO];
-	NCDatabaseItemsViewController* controller = (NCDatabaseItemsViewController*) self.searchController.searchResultsController;
+	NCDatabaseTypesViewController* controller = (NCDatabaseTypesViewController*) self.searchController.searchResultsController;
 	controller.predicate = predicate;
 	[controller reloadData];
 }
@@ -72,7 +72,7 @@
 #pragma mark - Private
 
 - (void) setupSearchController {
-	self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseItemsViewController"]];
+	self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypesViewController"]];
 	self.searchController.searchBar.searchBarStyle = UISearchBarStyleDefault;
 	self.searchController.searchResultsUpdater = self;
 	self.searchController.searchBar.barStyle = UIBarStyleBlack;

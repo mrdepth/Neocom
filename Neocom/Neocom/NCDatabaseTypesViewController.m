@@ -12,6 +12,7 @@
 #import "NCTableViewBackgroundLabel.h"
 #import "NCGate.h"
 #import "NSExpressionDescription+NC.h"
+#import "NCDatabaseTypeInfoViewController.h"
 
 @interface NCDatabaseTypesViewController ()<UISearchResultsUpdating>
 @property (strong, nonatomic) NSFetchedResultsController* results;
@@ -74,6 +75,15 @@
 	self.tableView.backgroundView = self.results.fetchedObjects.count == 0 ? [NCTableViewBackgroundLabel labelWithText:NSLocalizedString(@"No Results", nil)] : nil;*/
 }
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+		NCDatabaseTypeInfoViewController* controller = segue.destinationViewController;
+		NSDictionary* type = [sender object];
+		controller.type = NCDatabase.sharedDatabase.invTypes[[type[@"typeID"] integerValue]];
+
+	}
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
@@ -99,6 +109,16 @@
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	return [self.results.sections[section] name];
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCDatabaseTypeInfoViewController* controller = [self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewController"];
+	NSDictionary* type = [self.results objectAtIndexPath:indexPath];
+	controller.type = NCDatabase.sharedDatabase.invTypes[[type[@"typeID"] integerValue]];
+	[self.presentingViewController showViewController:controller sender:self];
+	//[self.presentingViewController.navigationController.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - UISearchResultsUpdating

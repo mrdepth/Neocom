@@ -26,6 +26,8 @@
 #import "UIImage+NC.h"
 @import ImageIO;
 
+#import "NCSkill.h"
+
 @interface NCAppDelegate()<UISplitViewControllerDelegate>
 
 @end
@@ -46,6 +48,7 @@
 	[UIColor setCurrentScheme:CSSchemeDark];
 	[self loadDatabases];
 	[self setupAppearance];
+	
 	
 	UISplitViewController* splitController = (UISplitViewController*) self.window.rootViewController;
 	splitController.delegate = self;
@@ -165,6 +168,10 @@
 					NCAccount.currentAccount = account;
 			}
 		}
+		
+		
+		NSFetchRequest* request = [NCDBInvType fetchRequest];
+		request.predicate = [NSPredicate predicateWithFormat:@"group.category.categoryID == 16"];
 	});
 }
 

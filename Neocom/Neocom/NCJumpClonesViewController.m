@@ -142,7 +142,7 @@
 			NSTimeInterval t = [date timeIntervalSinceNow];
 			cell.titleLabel.text = NSLocalizedString(@"NEXT CLONE JUMP AVAILABILITY", nil);
 			cell.subtitleLabel.text = t > 0 ? [NCTimeIntervalFormatter localizedStringFromTimeInterval:t precision:NCTimeIntervalFormatterPrecisionMinuts] : NSLocalizedString(@"Now", nil);
-			cell.iconView.image = nil;
+			cell.iconView.image = [UIImage imageNamed:@"jumpclones"];
 		}]];
 		
 		[sections addObjectsFromArray:[self jumpClones]];

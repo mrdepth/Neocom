@@ -9,7 +9,7 @@
 #import "NCDatabaseGroupsViewController.h"
 #import "NCDatabase.h"
 #import "NCTableViewDefaultCell.h"
-#import "NCDatabaseItemsViewController.h"
+#import "NCDatabaseTypesViewController.h"
 
 @interface NCDatabaseGroupsViewController ()<UISearchResultsUpdating>
 @property (nonatomic, strong) NSFetchedResultsController* results;
@@ -30,8 +30,8 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ([segue.identifier isEqualToString:@"NCDatabaseItemsViewController"]) {
-		NCDatabaseItemsViewController* controller = segue.destinationViewController;
+	if ([segue.identifier isEqualToString:@"NCDatabaseTypesViewController"]) {
+		NCDatabaseTypesViewController* controller = segue.destinationViewController;
 		controller.predicate = [NSPredicate predicateWithFormat:@"group == %@", [sender object]];
 		controller.title = [[sender object] groupName];
 	}
@@ -73,7 +73,7 @@
 	}
 	else
 		predicate = [NSPredicate predicateWithValue:NO];
-	NCDatabaseItemsViewController* controller = (NCDatabaseItemsViewController*) self.searchController.searchResultsController;
+	NCDatabaseTypesViewController* controller = (NCDatabaseTypesViewController*) self.searchController.searchResultsController;
 	controller.predicate = predicate;
 	[controller reloadData];
 }
@@ -81,7 +81,7 @@
 #pragma mark - Private
 
 - (void) setupSearchController {
-	self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseItemsViewController"]];
+	self.searchController = [[UISearchController alloc] initWithSearchResultsController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypesViewController"]];
 	self.searchController.searchBar.searchBarStyle = UISearchBarStyleDefault;
 	self.searchController.searchResultsUpdater = self;
 	self.searchController.searchBar.barStyle = UIBarStyleBlack;

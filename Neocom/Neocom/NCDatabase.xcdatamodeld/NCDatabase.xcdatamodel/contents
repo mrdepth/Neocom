@@ -333,7 +333,7 @@
         <relationship name="stationType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="stations" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="TxtDescription" representedClassName="NCDBTxtDescription" syncable="YES" codeGenerationType="class">
-        <attribute name="text" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="Transformable" customClassName="NSAttributedString" syncable="YES"/>
         <relationship name="certificate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="certificateDescription" inverseEntity="CertCertificate" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="typeDescription" inverseEntity="InvType" syncable="YES"/>
     </entity>

@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ASTreeController.h"
 
 @interface NCSkillQueueViewController : UITableViewController
+@property (strong, nonatomic) IBOutlet ASTreeController *treeController;
 
 @end

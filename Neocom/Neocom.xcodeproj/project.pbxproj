@@ -33,8 +33,14 @@
 		123FE2131DE1CD8800722089 /* NCDBEveIcon+NC.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE2121DE1CD8800722089 /* NCDBEveIcon+NC.m */; };
 		123FE2161DE1D1B000722089 /* NCDBImageValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE2151DE1D1B000722089 /* NCDBImageValueTransformer.m */; };
 		123FE2191DE1D25900722089 /* NCDatabaseGroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE2181DE1D25900722089 /* NCDatabaseGroupsViewController.m */; };
-		123FE21F1DE1D55C00722089 /* NCDatabaseItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE21E1DE1D55C00722089 /* NCDatabaseItemsViewController.m */; };
+		123FE21F1DE1D55C00722089 /* NCDatabaseTypesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE21E1DE1D55C00722089 /* NCDatabaseTypesViewController.m */; };
 		123FE2241DE1E1D600722089 /* UIImage+NC.m in Sources */ = {isa = PBXBuildFile; fileRef = 123FE2231DE1E1D600722089 /* UIImage+NC.m */; };
+		124661001DE8136A00B2B9EF /* NSArray+Hash.mm in Sources */ = {isa = PBXBuildFile; fileRef = 124660FD1DE8136A00B2B9EF /* NSArray+Hash.mm */; };
+		124661011DE8136A00B2B9EF /* NSDictionary+Hash.mm in Sources */ = {isa = PBXBuildFile; fileRef = 124660FF1DE8136A00B2B9EF /* NSDictionary+Hash.mm */; };
+		1246610E1DE82E4500B2B9EF /* NCTableViewSkillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1246610D1DE82E4500B2B9EF /* NCTableViewSkillCell.m */; };
+		124661111DE835E500B2B9EF /* NSString+NC.m in Sources */ = {isa = PBXBuildFile; fileRef = 124661101DE835E500B2B9EF /* NSString+NC.m */; };
+		1246611B1DE841B500B2B9EF /* NCDatabaseTypeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1246611A1DE841B500B2B9EF /* NCDatabaseTypeInfoViewController.m */; };
+		1246611E1DE846C600B2B9EF /* NCDatabaseTypeInfoHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1246611D1DE846C600B2B9EF /* NCDatabaseTypeInfoHeaderViewController.m */; };
 		124A9BB41DDDA4D2004A6EAA /* NSAttributedString+NC.m in Sources */ = {isa = PBXBuildFile; fileRef = 124A9BB31DDDA4D2004A6EAA /* NSAttributedString+NC.m */; };
 		124A9BB71DDDA560004A6EAA /* unitily.m in Sources */ = {isa = PBXBuildFile; fileRef = 124A9BB51DDDA560004A6EAA /* unitily.m */; };
 		1251D3871DDAFFF400C90DC4 /* NCAddAPIKeyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1251D3861DDAFFF400C90DC4 /* NCAddAPIKeyViewController.m */; };
@@ -301,10 +307,22 @@
 		123FE2151DE1D1B000722089 /* NCDBImageValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBImageValueTransformer.m; sourceTree = "<group>"; };
 		123FE2171DE1D25900722089 /* NCDatabaseGroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseGroupsViewController.h; sourceTree = "<group>"; };
 		123FE2181DE1D25900722089 /* NCDatabaseGroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseGroupsViewController.m; sourceTree = "<group>"; };
-		123FE21D1DE1D55C00722089 /* NCDatabaseItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseItemsViewController.h; sourceTree = "<group>"; };
-		123FE21E1DE1D55C00722089 /* NCDatabaseItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseItemsViewController.m; sourceTree = "<group>"; };
+		123FE21D1DE1D55C00722089 /* NCDatabaseTypesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypesViewController.h; sourceTree = "<group>"; };
+		123FE21E1DE1D55C00722089 /* NCDatabaseTypesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypesViewController.m; sourceTree = "<group>"; };
 		123FE2221DE1E1D600722089 /* UIImage+NC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+NC.h"; sourceTree = "<group>"; };
 		123FE2231DE1E1D600722089 /* UIImage+NC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+NC.m"; sourceTree = "<group>"; };
+		124660FC1DE8136A00B2B9EF /* NSArray+Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Hash.h"; sourceTree = "<group>"; };
+		124660FD1DE8136A00B2B9EF /* NSArray+Hash.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+Hash.mm"; sourceTree = "<group>"; };
+		124660FE1DE8136A00B2B9EF /* NSDictionary+Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Hash.h"; sourceTree = "<group>"; };
+		124660FF1DE8136A00B2B9EF /* NSDictionary+Hash.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+Hash.mm"; sourceTree = "<group>"; };
+		1246610C1DE82E4500B2B9EF /* NCTableViewSkillCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewSkillCell.h; sourceTree = "<group>"; };
+		1246610D1DE82E4500B2B9EF /* NCTableViewSkillCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewSkillCell.m; sourceTree = "<group>"; };
+		1246610F1DE835E500B2B9EF /* NSString+NC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NC.h"; sourceTree = "<group>"; };
+		124661101DE835E500B2B9EF /* NSString+NC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NC.m"; sourceTree = "<group>"; };
+		124661191DE841B500B2B9EF /* NCDatabaseTypeInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeInfoViewController.h; sourceTree = "<group>"; };
+		1246611A1DE841B500B2B9EF /* NCDatabaseTypeInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeInfoViewController.m; sourceTree = "<group>"; };
+		1246611C1DE846C600B2B9EF /* NCDatabaseTypeInfoHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeInfoHeaderViewController.h; sourceTree = "<group>"; };
+		1246611D1DE846C600B2B9EF /* NCDatabaseTypeInfoHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeInfoHeaderViewController.m; sourceTree = "<group>"; };
 		124A9BB21DDDA4D2004A6EAA /* NSAttributedString+NC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+NC.h"; sourceTree = "<group>"; };
 		124A9BB31DDDA4D2004A6EAA /* NSAttributedString+NC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+NC.m"; sourceTree = "<group>"; };
 		124A9BB51DDDA560004A6EAA /* unitily.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = unitily.m; sourceTree = "<group>"; };
@@ -631,12 +649,44 @@
 				123FE1E01DE1A6C900722089 /* NCDatabaseCategoriesViewController.m */,
 				123FE2171DE1D25900722089 /* NCDatabaseGroupsViewController.h */,
 				123FE2181DE1D25900722089 /* NCDatabaseGroupsViewController.m */,
-				123FE21D1DE1D55C00722089 /* NCDatabaseItemsViewController.h */,
-				123FE21E1DE1D55C00722089 /* NCDatabaseItemsViewController.m */,
+				123FE21D1DE1D55C00722089 /* NCDatabaseTypesViewController.h */,
+				123FE21E1DE1D55C00722089 /* NCDatabaseTypesViewController.m */,
 				12179A091DE23464001C7FCF /* NCDatabaseMarketGroupsViewController.h */,
 				12179A0A1DE23464001C7FCF /* NCDatabaseMarketGroupsViewController.m */,
+				124661191DE841B500B2B9EF /* NCDatabaseTypeInfoViewController.h */,
+				1246611A1DE841B500B2B9EF /* NCDatabaseTypeInfoViewController.m */,
+				1246611C1DE846C600B2B9EF /* NCDatabaseTypeInfoHeaderViewController.h */,
+				1246611D1DE846C600B2B9EF /* NCDatabaseTypeInfoHeaderViewController.m */,
 			);
 			name = Database;
+			sourceTree = "<group>";
+		};
+		124660FB1DE8136A00B2B9EF /* Hash */ = {
+			isa = PBXGroup;
+			children = (
+				124660FC1DE8136A00B2B9EF /* NSArray+Hash.h */,
+				124660FD1DE8136A00B2B9EF /* NSArray+Hash.mm */,
+				124660FE1DE8136A00B2B9EF /* NSDictionary+Hash.h */,
+				124660FF1DE8136A00B2B9EF /* NSDictionary+Hash.mm */,
+			);
+			name = Hash;
+			path = ../../ThirdParty/EVEOnlineAPI/ThirdParty/tools/Hash;
+			sourceTree = "<group>";
+		};
+		1246610B1DE82DBB00B2B9EF /* NCTableViewSkillCell */ = {
+			isa = PBXGroup;
+			children = (
+				1246610C1DE82E4500B2B9EF /* NCTableViewSkillCell.h */,
+				1246610D1DE82E4500B2B9EF /* NCTableViewSkillCell.m */,
+			);
+			name = NCTableViewSkillCell;
+			sourceTree = "<group>";
+		};
+		124661121DE83CC500B2B9EF /* NCSkillsViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = NCSkillsViewController;
 			sourceTree = "<group>";
 		};
 		124A9BB81DDDA7D6004A6EAA /* Formatters */ = {
@@ -653,6 +703,7 @@
 		124A9BB91DDDA7E3004A6EAA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1246610B1DE82DBB00B2B9EF /* NCTableViewSkillCell */,
 				121F5D721DE4327C00C330E4 /* NCTableViewProgressCell */,
 				12A257031DE2E9C50036D03F /* NCTableViewHeaderCell */,
 				12A256FF1DE2DF210036D03F /* NCTableViewDefaultCell */,
@@ -798,6 +849,7 @@
 				12A256FB1DE2DD9E0036D03F /* NCCharacterSheetViewController */,
 				129296771DE44C00006EAA19 /* NCJumpClonesViewController */,
 				120864B21DE4BD52001A4B66 /* NCSkillQueueViewController */,
+				124661121DE83CC500B2B9EF /* NCSkillsViewController */,
 				123FE1DE1DE1A69A00722089 /* Database */,
 				129A85081DD8D2170001F732 /* NCAppDelegate.h */,
 				129A85091DD8D2170001F732 /* NCAppDelegate.m */,
@@ -838,6 +890,7 @@
 		129A85521DD8D3440001F732 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				124660FB1DE8136A00B2B9EF /* Hash */,
 				12AFC4FE1DE5CFA400531660 /* ASTreeController */,
 				121F5D761DE4353E00C330E4 /* NCTree */,
 				129A85551DD8D3640001F732 /* NCCache */,
@@ -869,6 +922,8 @@
 				123FE1D21DDF80A100722089 /* NSURL+NC.m */,
 				124A9BB21DDDA4D2004A6EAA /* NSAttributedString+NC.h */,
 				124A9BB31DDDA4D2004A6EAA /* NSAttributedString+NC.m */,
+				1246610F1DE835E500B2B9EF /* NSString+NC.h */,
+				124661101DE835E500B2B9EF /* NSString+NC.m */,
 				12179A061DE22257001C7FCF /* NSExpressionDescription+NC.h */,
 				12179A071DE22257001C7FCF /* NSExpressionDescription+NC.m */,
 				12A2570A1DE2EEE40036D03F /* NCManagedObjectObserver.h */,
@@ -1427,6 +1482,7 @@
 				12AFC4AC1DE479FE00531660 /* NCDBMapSolarSystem+NC.m in Sources */,
 				123FE2191DE1D25900722089 /* NCDatabaseGroupsViewController.m in Sources */,
 				12AFC50A1DE5CFA400531660 /* ASValueTransformer.m in Sources */,
+				1246610E1DE82E4500B2B9EF /* NCTableViewSkillCell.m in Sources */,
 				12FB4F791DDF3B3400C7E34A /* NCAPIKeyInfoViewController.m in Sources */,
 				129296881DE452B0006EAA19 /* NCSetting+NC.m in Sources */,
 				127BB8F31DDC476700F07E6C /* Dark.clr in Sources */,
@@ -1446,8 +1502,10 @@
 				129A862E1DD8DA380001F732 /* NCMainMenuViewController.m in Sources */,
 				12A256FE1DE2DDBB0036D03F /* NCCharacterSheetViewController.m in Sources */,
 				12A2570C1DE2EEE40036D03F /* NCManagedObjectObserver.m in Sources */,
+				1246611E1DE846C600B2B9EF /* NCDatabaseTypeInfoHeaderViewController.m in Sources */,
 				129A85511DD8D3390001F732 /* NCDatabase.xcdatamodeld in Sources */,
 				1215FA4C1DDAF25000F14CBE /* NCSlideDownInteractiveTransition.m in Sources */,
+				124661111DE835E500B2B9EF /* NSString+NC.m in Sources */,
 				129A850A1DD8D2170001F732 /* NCAppDelegate.m in Sources */,
 				12AC4D001DDA2B680052430E /* NCAccountsViewController.m in Sources */,
 				1229E4F91DD9CC2000500A7D /* NCSplitViewController.m in Sources */,
@@ -1459,6 +1517,7 @@
 				12FB4F7E1DDF475800C7E34A /* NCTableViewBackgroundLabel.m in Sources */,
 				12AFC5111DE5D52200531660 /* NCImageFromDataValueTransformer.m in Sources */,
 				129BBE0E1DDB8FD8009F97F5 /* NCUnitFormatter.m in Sources */,
+				124661001DE8136A00B2B9EF /* NSArray+Hash.mm in Sources */,
 				121F5D7C1DE436E600C330E4 /* NCTreeSection.m in Sources */,
 				1229E5081DDA016900500A7D /* NCTintImageView.m in Sources */,
 				120864B51DE4BD68001A4B66 /* NCSkillQueueViewController.m in Sources */,
@@ -1484,10 +1543,11 @@
 				129A85501DD8D3390001F732 /* NCCache.xcdatamodeld in Sources */,
 				1251D38B1DDB007B00C90DC4 /* NCSheetPresentationController.m in Sources */,
 				123FE1DD1DDFB6A300722089 /* NCAutoHeightLabel.m in Sources */,
+				124661011DE8136A00B2B9EF /* NSDictionary+Hash.mm in Sources */,
 				12179A081DE22257001C7FCF /* NSExpressionDescription+NC.m in Sources */,
 				12AFC4B21DE47B5000531660 /* NCDBStaStation+NC.m in Sources */,
 				12A257061DE2E9DA0036D03F /* NCTableViewHeaderCell.m in Sources */,
-				123FE21F1DE1D55C00722089 /* NCDatabaseItemsViewController.m in Sources */,
+				123FE21F1DE1D55C00722089 /* NCDatabaseTypesViewController.m in Sources */,
 				129296851DE44E2E006EAA19 /* EVECharacterSheet+NC.m in Sources */,
 				124A9BB71DDDA560004A6EAA /* unitily.m in Sources */,
 				123FE1D31DDF80A100722089 /* NSURL+NC.m in Sources */,
@@ -1503,6 +1563,7 @@
 				129A854B1DD8D2E30001F732 /* NCTrainingQueue.m in Sources */,
 				1215FA461DDAE78000F14CBE /* NCSlideDownAnimationController.m in Sources */,
 				129A85451DD8D2E30001F732 /* NCDBInvType+NC.m in Sources */,
+				1246611B1DE841B500B2B9EF /* NCDatabaseTypeInfoViewController.m in Sources */,
 				12FB4F561DDDE15B00C7E34A /* NCDispatchGroup.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

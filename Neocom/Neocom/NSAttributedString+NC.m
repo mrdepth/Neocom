@@ -34,5 +34,41 @@
 	return s;
 }
 
+- (instancetype) attributedStringWithDefaultFont:(UIFont*) font textColor:(UIColor*) textColor {
+	NSMutableAttributedString* s = [self mutableCopy];
+	[self enumerateAttributesInRange:NSMakeRange(0, self.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+		__block BOOL hasFont = NO;
+		__block BOOL hasColor = NO;
+		[attrs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+			if ([key isEqualToString:@"UIFontDescriptorSymbolicTraits"]) {
+				UIFontDescriptor* fontDescriptor = [font.fontDescriptor fontDescriptorWithSymbolicTraits:[obj unsignedIntValue]];
+				if (fontDescriptor) {
+					UIFont* theFont = [UIFont fontWithDescriptor:fontDescriptor size:font.pointSize];
+					if (theFont) {
+						[s addAttribute:NSFontAttributeName value:theFont range:range];
+						hasFont = YES;
+					}
+				}
+			}
+			else if ([key isEqualToString:@"NSURL"]) {
+				UIFontDescriptor* fontDescriptor = [font.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+				UIFont* theFont = fontDescriptor ? [UIFont fontWithDescriptor:fontDescriptor size:font.pointSize] : font;
+				[s addAttributes:@{NSForegroundColorAttributeName:[UIColor captionColor], NSFontAttributeName:theFont} range:range];
+				hasFont = YES;
+				hasColor = YES;
+			}
+			else if ([key isEqualToString:NSForegroundColorAttributeName])
+				hasColor = YES;
+		}];
+		if (!hasFont) {
+			UIFont* theFont = attrs[NSFontAttributeName];
+			if (!theFont)
+				[s addAttribute:NSFontAttributeName value:font range:range];
+		}
+		if (!hasColor)
+			[s addAttribute:NSForegroundColorAttributeName value:textColor range:range];
+	}];
+	return s;
+}
 
 @end

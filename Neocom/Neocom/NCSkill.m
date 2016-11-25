@@ -9,9 +9,12 @@
 #import "NCSkill.h"
 #import "NCCharacterAttributes.h"
 #import "NCDatabase.h"
+#import "NSArray+Hash.h"
 @import EVEAPI;
 
-@interface NCSkill()
+@interface NCSkill() {
+	NSNumber* _hash;
+}
 @property (nonatomic, assign, readwrite) int32_t typeID;
 @property (nonatomic, copy, readwrite) NSString* typeName;
 @property (nonatomic, assign, readwrite) int32_t primaryAttributeID;
@@ -65,18 +68,29 @@
 	return self;
 }
 
+- (BOOL) isEqual:(id)object {
+	NCSkill* other = object;
+	return [object isKindOfClass:self.class] && other.hash == self.hash;
+}
+
+- (NSUInteger) hash {
+	if (!_hash)
+		_hash = @([@[@(self.typeID), @(self.level), @(self.startSkillPoints), @(self.trainingStartDate.hash)] fullHash]);
+	return [_hash unsignedIntegerValue];
+}
+
 - (int32_t) skillPointsAtLevel:(int32_t) level {
 	if (level == 0 || self.rank == 0)
 		return 0;
-	float sp = pow(2, 2.5 * level - 2.5) * 250.0 * self.rank;
-	return round(sp);
+	double sp = pow(2, 2.5 * level - 2.5) * 250.0 * self.rank;
+	return ceil(sp);
 }
 
 - (int32_t) levelAtSkillPoints:(int32_t) skillpoints {
 	if (skillpoints == 0 || self.rank == 0)
 		return 0;
 	skillpoints += 1; //avoid rounding error
-	float level = (log(skillpoints/(250.0 * self.rank)) / log(2.0) + 2.5) / 2.5;
+	double level = (log(skillpoints/(250.0 * self.rank)) / log(2.0) + 2.5) / 2.5;
 	return trunc(level);
 }
 
@@ -85,13 +99,13 @@
 }
 
 - (int32_t) skillPoints {
-	if (self.trainingStartDate && self.trainingEndDate) {
+	if (self.trainingStartDate && self.trainingEndDate && [self.trainingStartDate timeIntervalSinceNow] <= 0) {
 		int32_t endSP = [self skillPointsAtLevel:self.level + 1];
 		NSTimeInterval t = [self.trainingEndDate timeIntervalSinceDate:self.trainingStartDate];
 		if (t > 0) {
-			float spps = (endSP - self.startSkillPoints) / t;
+			double spps = (endSP - self.startSkillPoints) / t;
 			t = [self.trainingEndDate timeIntervalSinceNow];
-			float sp = t > 0 ? endSP - t * spps : endSP;
+			double sp = t > 0 ? endSP - t * spps : endSP;
 			return MAX(sp, self.startSkillPoints);
 		}
 		else
@@ -102,10 +116,10 @@
 }
 
 - (float) trainingProgress {
-	float start = [self skillPointsAtLevel:self.level];
-	float end = [self skillPointsAtLevel:self.level + 1];
-	float sp = self.skillPoints;
-	float progress = (sp - start) / (end - start);
+	double start = [self skillPointsAtLevel:self.level];
+	double end = [self skillPointsAtLevel:self.level + 1];
+	double sp = self.skillPoints;
+	double progress = (sp - start) / (end - start);
 	return progress;
 }
 
@@ -120,6 +134,21 @@
 		return [self trainingTimeToLevel:self.level + 1 withCharacterAttributes:attributes];
 	else
 		return 0;
+}
+
+- (void) setStartSkillPoints:(int32_t)startSkillPoints {
+	_startSkillPoints = startSkillPoints;
+	_hash = nil;
+}
+
+- (void) setLevel:(int32_t)level {
+	_level = level;
+	_hash = nil;
+}
+
+- (void) setTrainingStartDate:(NSDate *)trainingStartDate {
+	_trainingStartDate = trainingStartDate;
+	_hash = nil;
 }
 
 @end

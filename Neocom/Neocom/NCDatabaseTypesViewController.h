@@ -1,5 +1,5 @@
 //
-//  NCDatabaseItemsViewController.h
+//  NCDatabaseTypesViewController.h
 //  Neocom
 //
 //  Created by Artem Shimanski on 20.11.16.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NCDatabaseItemsViewController : UITableViewController
+@interface NCDatabaseTypesViewController : UITableViewController
 @property (nonatomic, strong) NSPredicate* predicate;
 - (void) reloadData;
 @end

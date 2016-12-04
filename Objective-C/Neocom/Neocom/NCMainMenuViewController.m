@@ -197,7 +197,7 @@
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCTableViewDefaultCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	ta* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	NSDictionary* row = self.mainMenu[indexPath.section][indexPath.row];
 	cell.titleLabel.text = row[@"title"];
 	NSString* detailsKeyPath = row[@"detailsKeyPath"];

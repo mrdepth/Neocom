@@ -101,7 +101,7 @@
 - (int32_t) skillPoints {
 	if (self.trainingStartDate && self.trainingEndDate && [self.trainingStartDate timeIntervalSinceNow] <= 0) {
 		int32_t endSP = [self skillPointsAtLevel:self.level + 1];
-		NSTimeInterval t = [self.trainingEndDate timeIntervalSinceDate:self.trainingStartDate];
+		NSTimeInterval t = [self.trainingEndDate timeIntervalSinceDate:self.trainingStartDate];
 		if (t > 0) {
 			double spps = (endSP - self.startSkillPoints) / t;
 			t = [self.trainingEndDate timeIntervalSinceNow];

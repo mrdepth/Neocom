@@ -60,12 +60,7 @@
 						if (account.characterID == character.characterID)
 							break;
 					if (!account) {
-						account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:managedObjectContext];
-						account.apiKey = apiKey;
-						account.characterID = character.characterID;
-						account.order = order++;
-						account.uuid = [[NSUUID UUID] UUIDString];
-						[accounts addObject:account.objectID];
+						c
 					}
 				}
 				
@@ -365,7 +360,7 @@
 				dispatch_async(dispatch_get_main_queue(), ^{
 					if (object) {
 						progress.completedUnitCount++;
-
+b
 						block(object, nil, record.objectID);
 					}
 					else {

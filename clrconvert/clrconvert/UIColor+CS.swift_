@@ -1,0 +1,44 @@
+//
+//  UIColor+CS.swift
+//
+//  Created by Artem Shimanski on 02.12.16.
+//  Copyright © 2016 Artem Shimanski. All rights reserved.
+//
+
+import UIKit
+
+private enum CSColorName: Int {
+%@
+}
+
+var g_currentScheme: [UInt]?
+
+public struct CSScheme {
+	static var currentScheme: [UInt]? {
+		get {
+			return g_currentScheme
+		}
+		set {
+			g_currentScheme = newValue
+		}
+	}
+	
+}
+
+extension UIColor {
+
+	public convenience init(number: UInt) {
+		var n = number
+		var abgr = [CGFloat]()
+		
+		for _ in 0...3 {
+			let byte = n & 0xFF
+			abgr.append(CGFloat(byte) / 255.0)
+			n >>= 8
+		}
+		
+		self.init(red: abgr[3], green: abgr[2], blue: abgr[1], alpha: abgr[0])
+	}
+
+%@
+}

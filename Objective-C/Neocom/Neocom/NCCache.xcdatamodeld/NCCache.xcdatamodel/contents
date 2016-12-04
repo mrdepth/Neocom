@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Price" representedClassName="NCCachePrice" syncable="YES" codeGenerationType="class">
         <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <entity name="Record" representedClassName="NCCacheRecord" syncable="YES" codeGenerationType="class">
+    <entity name="Record" representedClassName="NCCacheRecord" syncable="YES" codeGenerationType="category">
         <attribute name="account" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="error" optional="YES" attributeType="Transformable" customClassName="NSError" syncable="YES"/>
@@ -13,7 +13,7 @@
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RecordData" inverseName="record" inverseEntity="RecordData" syncable="YES"/>
     </entity>
     <entity name="RecordData" representedClassName="NCCacheRecordData" syncable="YES" codeGenerationType="class">
-        <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="NSSecureCoding" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
         <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Record" inverseName="data" inverseEntity="Record" syncable="YES"/>
     </entity>
     <elements>

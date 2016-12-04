@@ -38,7 +38,7 @@
 		characterAttributes.willpower = characterSheet.attributes.willpower;
 
 		[NCDatabase.sharedDatabase performTaskAndWait:^(NSManagedObjectContext *managedObjectContext) {
-			NCFetchedCollection<NCDBInvType*>* invTypes = [NCDBInvType invTypesWithManagedObjectContext:managedObjectContext];
+			NCFetchedCollection<NCDBInvType*>* invTypes = [NCDBInvType invTypesWithManagedObjectContext:managedObjectContext];
 			for (EVECharacterSheetImplant* implant in characterSheet.implants) {
 				NCDBInvType* type = invTypes[implant.typeID];
 				NCFetchedCollection<NCDBDgmTypeAttribute*>* attributes = type.allAttributes;

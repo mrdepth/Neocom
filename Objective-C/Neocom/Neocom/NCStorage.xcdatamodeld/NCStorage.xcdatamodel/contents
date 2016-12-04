@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Account" representedClassName="NCAccount" syncable="YES" codeGenerationType="class">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="Account" representedClassName="NCAccount" syncable="YES" codeGenerationType="category">
         <attribute name="characterID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
@@ -9,7 +9,7 @@
         <relationship name="skillPlans" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SkillPlan" inverseName="account" inverseEntity="SkillPlan" syncable="YES"/>
     </entity>
     <entity name="APIKey" representedClassName="NCAPIKey" syncable="YES" codeGenerationType="class">
-        <attribute name="apiKeyInfo" optional="YES" attributeType="Transformable" customClassName="EVEAPI.EVEAPIKeyInfo" syncable="YES"/>
+        <attribute name="apiKeyInfo" optional="YES" attributeType="Transformable" customClassName="EVEAPIKeyInfo" syncable="YES"/>
         <attribute name="keyID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="vCode" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Account" inverseName="apiKey" inverseEntity="Account" syncable="YES"/>

@@ -7,27 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		127BB8DD1DDC3EC500F07E6C /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 127BB8DC1DDC3EC500F07E6C /* main.mm */; };
+		122161831DF1942900399B41 /* UIColor+CS.swift_ in CopyFiles */ = {isa = PBXBuildFile; fileRef = 12AC8DE41DF1914000561A7A /* UIColor+CS.swift_ */; };
+		122161841DF1942900399B41 /* UIColor+Scheme.swift_ in CopyFiles */ = {isa = PBXBuildFile; fileRef = 12AC8DE71DF1925B00561A7A /* UIColor+Scheme.swift_ */; };
 		127BB8E51DDC3ED700F07E6C /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127BB8E41DDC3ED700F07E6C /* AppKit.framework */; };
+		12AC8DE31DF186AC00561A7A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD81DF0AFD800561A7A /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		127BB8D71DDC3EC500F07E6C /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
 			files = (
+				122161831DF1942900399B41 /* UIColor+CS.swift_ in CopyFiles */,
+				122161841DF1942900399B41 /* UIColor+Scheme.swift_ in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		124A9BB11DDDA1A6004A6EAA /* templates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = templates.h; sourceTree = "<group>"; };
 		127BB8D91DDC3EC500F07E6C /* clrconvert */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = clrconvert; sourceTree = BUILT_PRODUCTS_DIR; };
-		127BB8DC1DDC3EC500F07E6C /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		127BB8E41DDC3ED700F07E6C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		12AC8DD81DF0AFD800561A7A /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		12AC8DE41DF1914000561A7A /* UIColor+CS.swift_ */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "UIColor+CS.swift_"; sourceTree = "<group>"; };
+		12AC8DE71DF1925B00561A7A /* UIColor+Scheme.swift_ */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "UIColor+Scheme.swift_"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,8 +67,9 @@
 		127BB8DB1DDC3EC500F07E6C /* clrconvert */ = {
 			isa = PBXGroup;
 			children = (
-				127BB8DC1DDC3EC500F07E6C /* main.mm */,
-				124A9BB11DDDA1A6004A6EAA /* templates.h */,
+				12AC8DD81DF0AFD800561A7A /* main.swift */,
+				12AC8DE41DF1914000561A7A /* UIColor+CS.swift_ */,
+				12AC8DE71DF1925B00561A7A /* UIColor+Scheme.swift_ */,
 			);
 			path = clrconvert;
 			sourceTree = "<group>";
@@ -108,6 +114,7 @@
 					127BB8D81DDC3EC500F07E6C = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = YB4RLQ4M9A;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -134,7 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				127BB8DD1DDC3EC500F07E6C /* main.mm in Sources */,
+				12AC8DE31DF186AC00561A7A /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,16 +240,23 @@
 		127BB8E11DDC3EC500F07E6C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		127BB8E21DDC3EC500F07E6C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 class NCMainMenuDetails: NSObject {
 	let account: NCAccount?
@@ -112,9 +113,9 @@ class NCMainMenuDetails: NSObject {
 	}
 }
 
-class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIViewControllerTransitioningDelegate {
 	@IBOutlet weak var tableView: NCTableView!
-	private weak var mainMenuHeaderViewController: NCMainMenuHeaderViewController? = nil
+	private weak var headerViewController: NCMainMenuHeaderViewController? = nil
 	private var headerMinHeight: CGFloat = 0
 	private var headerMaxHeight: CGFloat = 0
 	private var mainMenu: [[[String: Any]]] = []
@@ -126,9 +127,63 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 		self.tableView.estimatedRowHeight = self.tableView.rowHeight
 		self.tableView.rowHeight = UITableViewAutomaticDimension
 		updateHeader()
-		NSNotification.Name.NSManagedObjectContextDidSave
-		//NotificationCenter.default.addObserver(self, selector: #selector(updateHeader), name: NSNotification.Name., object: <#T##Any?#>)
 		loadMenu()
+		NotificationCenter.default.addObserver(self, selector: #selector(currentAccountChanged(_:)), name: NSNotification.Name.NCCurrentAccountChanged, object: nil)
+	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		let rect = CGRect(x: 0, y: self.topLayoutGuide.length, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y, self.headerMinHeight))
+		self.headerViewController?.view.frame = self.view.convert(rect, to:self.tableView)
+		self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(rect.size.height, 0, 0, 0)
+
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.navigationController?.setNavigationBarHidden(true, animated: animated)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		if let toVC = self.transitionCoordinator?.viewController(forKey: UITransitionContextViewControllerKey.to) {
+			if toVC === self {
+				return
+			}
+			else if let navigationController = toVC as? UINavigationController {
+//				if let topVC = navigationController.topViewController as? NCAccountsViewController {
+//					return
+//				}
+			}
+			self.navigationController?.setNavigationBarHidden(false, animated: animated)
+		}
+		else {
+			return
+		}
+
+	}
+	
+	override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.willTransition(to: newCollection, with: coordinator)
+		DispatchQueue.main.async {
+			if let headerViewController = self.headerViewController {
+				self.headerMinHeight = headerViewController.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityDefaultHigh).height
+				self.headerMaxHeight = headerViewController.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel).height
+				var rect = CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.size.width, height: self.headerMaxHeight))
+				self.tableView?.tableHeaderView?.frame = rect
+				
+				rect = CGRect(x: 0, y: self.topLayoutGuide.length, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y, self.headerMinHeight))
+				headerViewController.view.frame = self.view.convert(rect, to:self.tableView)
+				self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(rect.size.height, 0, 0, 0)
+			}
+
+		}
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == "NCAccountsViewController" {
+			segue.destination.transitioningDelegate = self
+		}
 	}
 	
 	//MARK: UITableViewDataSource
@@ -157,10 +212,84 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 		return cell
 	}
 	
+	func currentAccountChanged(_ note: Notification) {
+		loadMenu()
+		tableView.reloadData()
+		tableView.layoutIfNeeded()
+		updateHeader()
+	}
+	
+	//MARK: UIScrollViewDelegate
+	
+	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		let rect = CGRect(x: 0, y: self.topLayoutGuide.length, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y, self.headerMinHeight))
+		self.headerViewController?.view.frame = self.view.convert(rect, to:self.tableView)
+		self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(rect.size.height, 0, 0, 0)
+		if (scrollView.contentOffset.y < -50 && self.transitionCoordinator == nil && scrollView.isTracking) {
+			self.interactive = true
+			self.performSegue(withIdentifier: "NCAccountsViewController", sender: self)
+			self.interactive = false;
+		}
+
+	}
+	
+	//MARK: UIViewControllerTransitioningDelegate
+	
+	func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+		return NCSlideDownAnimationController()
+	}
+	
+	func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+		return interactive ? NCSlideDownInteractiveTransition(scrollView: self.tableView) : nil
+	}
+	
 	//MARK: Private
 	
 	private func updateHeader() {
+		let identifier: String
+		if let account = NCAccount.currentAccount {
+			identifier = account.eveAPIKey.corporate ? "NCMainMenuCorporationHeaderViewController" : "NCMainMenuCharacterHeaderViewController"
+		}
+		else {
+			identifier = (try? NCStorage.sharedStorage!.viewContext.count(for: NSFetchRequest<NCAccount>(entityName: "Account"))) ?? 0 > 0 ? "NCMainMenuLoginHeaderViewController" : "NCMainMenuHeaderViewController"
+		}
 		
+		let from = self.headerViewController
+		let to = self.storyboard!.instantiateViewController(withIdentifier: identifier) as! NCMainMenuHeaderViewController
+		
+		headerMinHeight = to.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityDefaultHigh).height
+		headerMaxHeight = to.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel).height
+		
+		let rect = CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.size.width, height: self.headerMaxHeight))
+
+		to.view.frame = rect
+		to.view.translatesAutoresizingMaskIntoConstraints = true
+		to.view.layoutIfNeeded()
+		
+		
+		if let from = from {
+			from.willMove(toParentViewController: nil)
+			addChildViewController(to)
+			to.view.alpha = 0.0;
+			transition(from: from, to: to, duration: 0.25, options: [], animations: { 
+				from.view.alpha = 0.0;
+				to.view.alpha = 1.0;
+				self.tableView?.tableHeaderView?.frame = rect;
+				self.tableView?.tableHeaderView = self.tableView?.tableHeaderView;
+			}, completion: { (fihisned) in
+				from.removeFromParentViewController()
+				to.didMove(toParentViewController: self)
+			})
+		}
+		else {
+			self.tableView?.tableHeaderView?.frame = rect;
+			self.tableView?.tableHeaderView = self.tableView?.tableHeaderView;
+			addChildViewController(to)
+			self.tableView.addSubview(to.view)
+			to.didMove(toParentViewController: self)
+		}
+		
+		self.headerViewController = to;
 	}
 	
 	private func loadMenu() {

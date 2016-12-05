@@ -27,5 +27,5 @@ enum NCDBAttributeID: Int {
 }
 
 extension NSNotification.Name {
-	public static let NCCurrentAccountChanged = "NCCurrentAccountChanged" 
+	public static let NCCurrentAccountChanged = NSNotification.Name("NCCurrentAccountChanged")
 }

@@ -55,6 +55,7 @@ class NCSlideDownInteractiveTransition: UIPercentDrivenInteractiveTransition {
 	}
 	
 	override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
+		super.startInteractiveTransition(transitionContext)
 		guard let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else {return}
 		guard let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) else {return}
 		containerView = transitionContext.containerView
@@ -76,9 +77,10 @@ class NCSlideDownInteractiveTransition: UIPercentDrivenInteractiveTransition {
 			if presenting {
 				if p > 0 {
 					scrollView.contentOffset = startContentOffset
+					self.update(p)
 				}
 				else {
-					self.update(p)
+					self.update(0)
 				}
 			}
 			else {

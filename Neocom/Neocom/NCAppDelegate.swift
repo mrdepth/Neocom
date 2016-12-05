@@ -18,7 +18,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-		CSScheme.currentScheme = CSScheme.Dark
+		setupAppearance()
 		return true
 	}
 
@@ -44,6 +44,25 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	}
 
+	private func setupAppearance() {
+		CSScheme.currentScheme = CSScheme.Dark
+		let navigationBar = UINavigationBar.appearance(whenContainedInInstancesOf: [NCNavigationController.self])
+		navigationBar.setBackgroundImage(UIImage.image(color: UIColor.background), for: UIBarMetrics.default)
+		navigationBar.shadowImage = UIImage.image(color: UIColor.background)
+		navigationBar.barTintColor = UIColor.background
+		let tableView = NCTableView.appearance()
+		tableView.backgroundColor = UIColor.background
+		tableView.separatorColor = UIColor.separator
+		NCTableViewCell.appearance().backgroundColor = UIColor.cellBackground
+		NCTableViewHeaderCell.appearance().backgroundColor = UIColor.background
+		NCBackgroundView.appearance().backgroundColor = UIColor.background
+		
+		let searchBar = UISearchBar.appearance(whenContainedInInstancesOf: [NCTableView.self])
+		searchBar.barTintColor = UIColor.background
+		searchBar.tintColor = UIColor.white
+		searchBar.setSearchFieldBackgroundImage(UIImage.searchFieldBackgroundImage(color: UIColor.separator), for: UIControlState.normal)
+		searchBar.backgroundImage = UIImage.image(color: UIColor.background)
+	}
 
 }
 

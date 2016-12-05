@@ -10,7 +10,7 @@ import UIKit
 
 class NCTableViewCell: UITableViewCell {
 	var object: Any?
-	lazy var binder: NCBinder = {
+	private(set) lazy var binder: NCBinder = {
 		return NCBinder(target: self)
 	}()
 	
@@ -22,7 +22,7 @@ class NCTableViewCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		self.selectedBackgroundView = UIView(frame: self.bounds)
-		self.selectedBackgroundView?.backgroundColor = UIColor.separatorColor
+		self.selectedBackgroundView?.backgroundColor = UIColor.separator
 	}
 }
 

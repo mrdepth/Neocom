@@ -8,6 +8,7 @@
 
 #import "Test.h"
 #import "Neocom-Swift.h"
+#import <UIKit/UIKit.h>
 
 @implementation Test
 

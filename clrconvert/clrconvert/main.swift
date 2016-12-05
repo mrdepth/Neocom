@@ -46,7 +46,7 @@ func colorScheme(_ colorList: NSColorList) -> [String:NSColor] {
 }
 
 func method(_ colorName: String) -> String {
-	return "\tpublic class var \(lowerFirstLetter(colorName))Color: UIColor {\n" +
+	return "\tpublic class var \(lowerFirstLetter(colorName)): UIColor {\n" +
 		"\t\tget {\n" +
 		"\t\t\treturn UIColor(number: g_currentScheme![CSColorName.\(upperFirstLetter(colorName)).rawValue])\n" +
 		"\t\t}\n\t}\n"

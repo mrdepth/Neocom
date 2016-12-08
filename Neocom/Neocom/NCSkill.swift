@@ -60,15 +60,15 @@ class NCSkill: Hashable {
 			typeID = Int(type.typeID)
 			typeName = type.typeName
 			let attributes = type.allAttributes
-			primaryAttributeID = attributes[NCDBAttributeID.PrimaryAttribute.rawValue]?.value
-			secondaryAttributeID = attributes[NCDBAttributeID.SecondaryAttribute.rawValue]?.value
-			rank = attributes[NCDBAttributeID.SkillTimeConstant.rawValue]?.value
+			primaryAttributeID = attributes[NCDBAttributeID.primaryAttribute.rawValue]?.value
+			secondaryAttributeID = attributes[NCDBAttributeID.secondaryAttribute.rawValue]?.value
+			rank = attributes[NCDBAttributeID.skillTimeConstant.rawValue]?.value
 		}
 		if let typeName = typeName, let primaryAttributeID = primaryAttributeID, let secondaryAttributeID = secondaryAttributeID, let rank = rank {
 			self.typeID = typeID
 			self.typeName = typeName
-			self.primaryAttributeID = NCDBAttributeID(rawValue: Int(primaryAttributeID)) ?? .None
-			self.secondaryAttributeID = NCDBAttributeID(rawValue: Int(secondaryAttributeID)) ?? .None
+			self.primaryAttributeID = NCDBAttributeID(rawValue: Int(primaryAttributeID)) ?? .none
+			self.secondaryAttributeID = NCDBAttributeID(rawValue: Int(secondaryAttributeID)) ?? .none
 			self.rank = Int(rank)
 			self.level = level
 			self.startSkillPoints = startSkillPoints

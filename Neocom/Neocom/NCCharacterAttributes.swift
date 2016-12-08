@@ -24,11 +24,11 @@ class NCCharacterAttributes {
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 			for implant in characterSheet.implants {
 				if let attributes = invTypes[implant.typeID]?.allAttributes {
-					self.intelligence += Int(attributes[NCDBAttributeID.IntelligenceBonus.rawValue]?.value ?? 0)
-					self.memory += Int(attributes[NCDBAttributeID.MemoryBonus.rawValue]?.value ?? 0)
-					self.perception += Int(attributes[NCDBAttributeID.PerceptionBonus.rawValue]?.value ?? 0)
-					self.willpower += Int(attributes[NCDBAttributeID.WillpowerBonus.rawValue]?.value ?? 0)
-					self.charisma += Int(attributes[NCDBAttributeID.CharismaBonus.rawValue]?.value ?? 0)
+					self.intelligence += Int(attributes[NCDBAttributeID.intelligenceBonus.rawValue]?.value ?? 0)
+					self.memory += Int(attributes[NCDBAttributeID.memoryBonus.rawValue]?.value ?? 0)
+					self.perception += Int(attributes[NCDBAttributeID.perceptionBonus.rawValue]?.value ?? 0)
+					self.willpower += Int(attributes[NCDBAttributeID.willpowerBonus.rawValue]?.value ?? 0)
+					self.charisma += Int(attributes[NCDBAttributeID.charismaBonus.rawValue]?.value ?? 0)
 				}
 			}
 		})
@@ -47,15 +47,15 @@ class NCCharacterAttributes {
 	
 	func effectiveAttributeValue(attributeID: NCDBAttributeID) -> Int {
 		switch attributeID {
-		case .Intelligence:
+		case .intelligence:
 			return intelligence
-		case .Memory:
+		case .memory:
 			return memory
-		case .Perception:
+		case .perception:
 			return perception
-		case .Willpower:
+		case .willpower:
 			return willpower
-		case .Charisma:
+		case .charisma:
 			return charisma
 		default:
 			return 0

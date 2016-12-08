@@ -9,7 +9,6 @@
 import UIKit
 import EVEAPI
 
-
 @UIApplicationMain
 class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -19,6 +18,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		setupAppearance()
+		
 		return true
 	}
 
@@ -51,7 +51,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		navigationBar.shadowImage = UIImage.image(color: UIColor.background)
 		navigationBar.barTintColor = UIColor.background
 		let tableView = NCTableView.appearance()
-		tableView.backgroundColor = UIColor.background
+		tableView.tableBackgroundColor = UIColor.background
 		tableView.separatorColor = UIColor.separator
 		NCTableViewCell.appearance().backgroundColor = UIColor.cellBackground
 		NCTableViewHeaderCell.appearance().backgroundColor = UIColor.background

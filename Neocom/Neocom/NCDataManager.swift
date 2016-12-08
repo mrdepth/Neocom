@@ -20,7 +20,7 @@ class NCDataManager {
 	
 	init() {}
 	
-	func addAPI(keyID:Int, vCode:String, excludeCharacterIDs:IndexSet, completionHandler: @escaping (_ accounts:[NSManagedObjectID], _ error: Error?) -> Void) {
+	func addAPI(keyID:Int, vCode:String, excludeCharacterIDs:Set<Int64>, completionHandler: @escaping (_ accounts:[NSManagedObjectID], _ error: Error?) -> Void) {
 		let api = EVEOnlineAPI(apiKey: EVEAPIKey(keyID: keyID, vCode: vCode), cachePolicy: .reloadIgnoringLocalCacheData)
 		api.apiKeyInfo { (result, error) in
 			if let result = result, let storage = NCStorage.sharedStorage {
@@ -36,7 +36,7 @@ class NCDataManager {
 					}
 					
 					if apiKey == nil {
-						apiKey = NCAPIKey(context: managedObjectContext)
+						apiKey = NCAPIKey(entity: NSEntityDescription.entity(forEntityName: "APIKey", in: managedObjectContext)!, insertInto: managedObjectContext)
 						apiKey!.keyID = Int32(keyID)
 						apiKey!.vCode = vCode
 						apiKey!.apiKeyInfo = result
@@ -59,14 +59,14 @@ class NCDataManager {
 						}
 						if let accounts = apiKey?.accounts as? Set<NCAccount> {
 							for account in accounts {
-								if account.characterID == Int32(character.characterID) {
+								if account.characterID == character.characterID {
 									continue mainLoop
 								}
 							}
 						}
-						let account = NCAccount(context: managedObjectContext)
+						let account = NCAccount(entity: NSEntityDescription.entity(forEntityName: "Account", in: managedObjectContext)!, insertInto: managedObjectContext)
 						account.apiKey = apiKey
-						account.characterID = Int32(character.characterID)
+						account.characterID = character.characterID
 						account.order = Int32(order);
 						account.uuid = UUID().uuidString
 						accounts.append(account.objectID)
@@ -127,7 +127,7 @@ class NCDataManager {
 	func characterInfo(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (_ result: EVECharacterInfo?, _ cacheRecordID: NSManagedObjectID?, _ error: Error?) -> Void) {
 		loadFromCache(forKey: "EVECharacterInfo", account: account.uuid, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { (block) -> Void in
 			let api = EVEOnlineAPI(apiKey: account.eveAPIKey, cachePolicy: cachePolicy)
-			api.characterInfo(characterID: Int(account.characterID), completionBlock: { (result, error) in
+			api.characterInfo(characterID: account.characterID, completionBlock: { (result, error) in
 				if let result = result {
 					block(result, nil, result.currentTime, result.cachedUntil)
 				}
@@ -166,13 +166,13 @@ class NCDataManager {
 		})
 	}
 
-	func image(characterID: Int, preferredSize: CGSize, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (_ result: UIImage?, _ cacheRecordID: NSManagedObjectID?, _ error: Error?) -> Void) {
+	func image(characterID: Int64, preferredSize: CGSize, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (_ result: UIImage?, _ cacheRecordID: NSManagedObjectID?, _ error: Error?) -> Void) {
 	}
 
-	func image(corporationID: Int, preferredSize: CGSize, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (_ result: UIImage?, _ cacheRecordID: NSManagedObjectID?, _ error: Error?) -> Void) {
+	func image(corporationID: Int64, preferredSize: CGSize, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (_ result: UIImage?, _ cacheRecordID: NSManagedObjectID?, _ error: Error?) -> Void) {
 	}
 
-	func image(allianceID: Int, preferredSize: CGSize, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (_ result: UIImage?, _ cacheRecordID: NSManagedObjectID?, _ error: Error?) -> Void) {
+	func image(allianceID: Int64, preferredSize: CGSize, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (_ result: UIImage?, _ cacheRecordID: NSManagedObjectID?, _ error: Error?) -> Void) {
 	}
 
 	func image(typeID: Int, preferredSize: CGSize, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (_ result: UIImage?, _ cacheRecordID: NSManagedObjectID?, _ error: Error?) -> Void) {

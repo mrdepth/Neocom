@@ -10,12 +10,6 @@ import UIKit
 
 class NCDBImageValueTransformer: ValueTransformer {
 	
-	override class func initialize() {
-		if self == NCDBImageValueTransformer.self {
-			ValueTransformer.setValueTransformer(NCDBImageValueTransformer(), forName: NSValueTransformerName("NCDBImageValueTransformer"))
-		}
-	}
-	
 	override func transformedValue(_ value: Any?) -> Any? {
 		if let image = value as? UIImage {
 			return UIImagePNGRepresentation(image)
@@ -32,5 +26,9 @@ class NCDBImageValueTransformer: ValueTransformer {
 		else {
 			return nil
 		}
+	}
+	
+	override class func allowsReverseTransformation() -> Bool {
+		return true
 	}
 }

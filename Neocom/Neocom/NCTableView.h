@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface NCTableView : UITableView
-@property(nullable, nonatomic, copy) UIColor* backgroundColor UI_APPEARANCE_SELECTOR;
+@property(nullable, nonatomic, copy) UIColor* tableBackgroundColor UI_APPEARANCE_SELECTOR;
 
 @end

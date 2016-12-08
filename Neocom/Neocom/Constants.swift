@@ -9,21 +9,21 @@
 import Foundation
 
 enum NCDBAttributeID: Int {
-	case None = 0
-	case CharismaBonus = 175
-	case IntelligenceBonus = 176
-	case MemoryBonus = 177
-	case PerceptionBonus = 178
-	case WillpowerBonus = 179
-	case PrimaryAttribute = 180
-	case SecondaryAttribute = 181
-	case SkillTimeConstant = 275
+	case none = 0
+	case charismaBonus = 175
+	case intelligenceBonus = 176
+	case memoryBonus = 177
+	case perceptionBonus = 178
+	case willpowerBonus = 179
+	case primaryAttribute = 180
+	case secondaryAttribute = 181
+	case skillTimeConstant = 275
 	
-	case Charisma = 164
-	case Intelligence = 165
-	case Memory = 166
-	case Perception = 167
-	case Willpower = 168
+	case charisma = 164
+	case intelligence = 165
+	case memory = 166
+	case perception = 167
+	case willpower = 168
 }
 
 extension NSNotification.Name {

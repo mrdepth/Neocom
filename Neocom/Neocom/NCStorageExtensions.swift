@@ -24,7 +24,7 @@ extension NCAccount {
 	
 	var character: EVEAPIKeyInfoCharacter? {
 		get {
-			return self.apiKey?.apiKeyInfo?.key.characters.first(where: { $0.characterID == Int(self.characterID)})
+			return self.apiKey?.apiKeyInfo?.key.characters.first(where: { $0.characterID == Int64(self.characterID)})
 		}
 	}
 }

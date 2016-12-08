@@ -1061,13 +1061,13 @@
         <!--Categories-->
         <scene sceneID="gnW-os-f9e">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseCategoriesViewController" id="3gM-tI-Gzj" customClass="NCDatabaseCategoriesViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseCategoriesViewController" id="3gM-tI-Gzj" customClass="NCDatabaseCategoriesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="sLS-i1-xgD" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="Fwy-PM-dGI" customClass="NCTableViewDefaultCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="Fwy-PM-dGI" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fwy-PM-dGI" id="6vR-7b-kmd">
@@ -1120,7 +1120,7 @@
         <!--Navigation Controller-->
         <scene sceneID="pKK-lS-DlH">
             <objects>
-                <navigationController id="xQw-PF-Dfb" customClass="NCNavigationController" sceneMemberID="viewController">
+                <navigationController id="xQw-PF-Dfb" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="f08-Tg-hJA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1386,13 +1386,13 @@
         <!--Groups-->
         <scene sceneID="cdW-mE-5EV">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseGroupsViewController" id="brt-UG-tok" customClass="NCDatabaseGroupsViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseGroupsViewController" id="brt-UG-tok" customClass="NCDatabaseGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="eUr-eD-RWp" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="Xbc-UY-tVT" customClass="NCTableViewDefaultCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="Xbc-UY-tVT" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xbc-UY-tVT" id="sO4-0T-baf">
@@ -1445,13 +1445,13 @@
         <!--Items-->
         <scene sceneID="anc-z9-EM5">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseTypesViewController" id="LaV-C9-qm4" customClass="NCDatabaseTypesViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseTypesViewController" id="LaV-C9-qm4" customClass="NCDatabaseTypesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="f9d-QU-03D" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="se7-2j-LOy" customClass="NCTableViewDefaultCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="se7-2j-LOy" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="se7-2j-LOy" id="53s-hu-49G">
@@ -2343,13 +2343,13 @@
         <!--Items-->
         <scene sceneID="YRh-xD-nde">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseTypeInfoViewController" id="JbH-Km-dUZ" customClass="NCDatabaseTypeInfoViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseTypeInfoViewController" id="JbH-Km-dUZ" customClass="NCDatabaseTypeInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="32e-ET-Vux" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="XL6-6s-b7q" customClass="NCTableViewDefaultCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="XL6-6s-b7q" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XL6-6s-b7q" id="U9l-zq-RzD">
@@ -2401,7 +2401,7 @@
         <!--Database Type Info Header View Controller-->
         <scene sceneID="TAg-DL-EGY">
             <objects>
-                <viewController storyboardIdentifier="NCDatabaseTypeInfoHeaderViewControllerSmall" id="APn-Bn-pC7" customClass="NCDatabaseTypeInfoHeaderViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCDatabaseTypeInfoHeaderViewControllerSmall" id="APn-Bn-pC7" customClass="NCDatabaseTypeInfoHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7dt-Eg-l5U"/>
                         <viewControllerLayoutGuide type="bottom" id="CQ4-jd-dvC"/>
@@ -2410,7 +2410,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nqc-Za-8tE" customClass="NCBackgroundView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nqc-Za-8tE" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Yl-uL-rLo">
@@ -2470,10 +2470,10 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="imageView" destination="1Yl-uL-rLo" id="7Eg-ut-hd6"/>
-                        <outlet property="subtitleLabel" destination="9Mq-Kj-wYr" id="1Lj-O3-Jaz"/>
-                        <outlet property="textView" destination="hSW-FZ-W1G" id="vwX-yr-bVn"/>
-                        <outlet property="titleLabel" destination="AEQ-fZ-ZZd" id="Kcv-FC-X1V"/>
+                        <outlet property="imageView" destination="1Yl-uL-rLo" id="VG7-K4-SAn"/>
+                        <outlet property="subtitleLabel" destination="9Mq-Kj-wYr" id="GYw-B4-K8L"/>
+                        <outlet property="textView" destination="hSW-FZ-W1G" id="Vl3-9A-ppk"/>
+                        <outlet property="titleLabel" destination="AEQ-fZ-ZZd" id="Owl-Po-18s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8sF-Sr-AdF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2483,7 +2483,7 @@
         <!--Database Type Info Header View Controller-->
         <scene sceneID="xD4-hi-Lb8">
             <objects>
-                <viewController storyboardIdentifier="NCDatabaseTypeInfoHeaderViewControllerLarge" id="YAi-tu-FdN" customClass="NCDatabaseTypeInfoHeaderViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCDatabaseTypeInfoHeaderViewControllerLarge" id="YAi-tu-FdN" customClass="NCDatabaseTypeInfoHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5wa-Dc-1gG"/>
                         <viewControllerLayoutGuide type="bottom" id="5hb-9E-BEu"/>
@@ -2511,25 +2511,25 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="evV-Pm-oeT">
-                                        <rect key="frame" x="47" y="30" width="226" height="35"/>
+                                        <rect key="frame" x="209" y="30" width="64" height="33.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="28"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
-                                        <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hED-0i-F8z">
-                                        <rect key="frame" x="47" y="69" width="226" height="17"/>
+                                        <rect key="frame" x="240" y="67.5" width="33" height="16"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                         <nil key="highlightedColor"/>
-                                        <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="9f2-Ia-xwu" secondAttribute="trailing" priority="750" constant="15" id="FJi-l1-iCr"/>
                                     <constraint firstItem="9f2-Ia-xwu" firstAttribute="leading" secondItem="zpN-zo-ZXY" secondAttribute="leading" priority="750" constant="15" id="JcX-nf-Wt2"/>
-                                    <constraint firstItem="evV-Pm-oeT" firstAttribute="leading" secondItem="9f2-Ia-xwu" secondAttribute="leading" constant="15" id="LMU-RG-e4T"/>
+                                    <constraint firstItem="evV-Pm-oeT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9f2-Ia-xwu" secondAttribute="leading" constant="15" id="LMU-RG-e4T"/>
                                     <constraint firstItem="hED-0i-F8z" firstAttribute="trailing" secondItem="evV-Pm-oeT" secondAttribute="trailing" id="Npk-hv-HwJ"/>
                                     <constraint firstItem="12S-Os-AfF" firstAttribute="leading" secondItem="zpN-zo-ZXY" secondAttribute="leading" constant="15" id="S9H-bt-cwJ"/>
                                     <constraint firstItem="9f2-Ia-xwu" firstAttribute="top" secondItem="zpN-zo-ZXY" secondAttribute="top" constant="15" id="VXn-8F-bbV"/>
@@ -2539,7 +2539,7 @@
                                     <constraint firstItem="evV-Pm-oeT" firstAttribute="trailing" secondItem="9f2-Ia-xwu" secondAttribute="trailing" constant="-15" id="b6W-U9-Gx8"/>
                                     <constraint firstItem="12S-Os-AfF" firstAttribute="top" secondItem="9f2-Ia-xwu" secondAttribute="bottom" constant="8" id="da8-nn-OjC"/>
                                     <constraint firstItem="evV-Pm-oeT" firstAttribute="top" secondItem="9f2-Ia-xwu" secondAttribute="top" constant="15" id="fJA-sE-qOF"/>
-                                    <constraint firstItem="hED-0i-F8z" firstAttribute="leading" secondItem="evV-Pm-oeT" secondAttribute="leading" id="uYQ-7U-ZxL"/>
+                                    <constraint firstItem="hED-0i-F8z" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9f2-Ia-xwu" secondAttribute="leading" constant="15" id="mHd-Ak-Fsf"/>
                                     <constraint firstItem="hED-0i-F8z" firstAttribute="top" secondItem="evV-Pm-oeT" secondAttribute="bottom" constant="4" id="zWN-h5-14i"/>
                                 </constraints>
                             </view>
@@ -2572,7 +2572,7 @@
         <image name="necrorise.png" width="256" height="256"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="N8o-qX-9ny"/>
+        <segue reference="B28-Sl-QBx"/>
         <segue reference="3rH-dc-yMi"/>
     </inferredMetricsTieBreakers>
 </document>

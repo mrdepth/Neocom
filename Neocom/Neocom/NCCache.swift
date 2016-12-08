@@ -69,10 +69,11 @@ class NCCache: NSObject {
 		performBackgroundTask { (managedObjectContext) in
 			var record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
 			if record == nil {
-				let r = NCCacheRecord(context: managedObjectContext)
+				
+				let r = NCCacheRecord(entity: NSEntityDescription.entity(forEntityName: "CacheRecord", in: managedObjectContext)!, insertInto: managedObjectContext)
 				r.account = account
 				r.key = key
-				r.data = NCCacheRecordData(context: managedObjectContext)
+				r.data = NCCacheRecordData(entity: NSEntityDescription.entity(forEntityName: "CacheRecordData", in: managedObjectContext)!, insertInto: managedObjectContext)
 				record = r
 			}
 			if object != nil || record!.data!.data == nil {

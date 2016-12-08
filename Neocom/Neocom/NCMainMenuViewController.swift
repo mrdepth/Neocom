@@ -221,6 +221,13 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	
 	//MARK: UIScrollViewDelegate
 	
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let row = self.mainMenu[indexPath.section][indexPath.row]
+		if let segue = row["segueIdentifier"] as? String {
+			performSegue(withIdentifier: segue, sender: tableView.cellForRow(at: indexPath))
+		}
+	}
+	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		let rect = CGRect(x: 0, y: self.topLayoutGuide.length, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y, self.headerMinHeight))
 		self.headerViewController?.view.frame = self.view.convert(rect, to:self.tableView)
@@ -294,7 +301,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	
 	private func loadMenu() {
 		let corporate: Bool
-		let apiKeyAccessMask: Int
+		let apiKeyAccessMask: Int64
 		if let account = NCAccount.currentAccount {
 			corporate = account.eveAPIKey.corporate
 			apiKeyAccessMask = account.apiKey!.apiKeyInfo!.key.accessMask
@@ -308,7 +315,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 		var sections = [[[String: Any]]]()
 		for section in mainMenu {
 			let rows = section.filter({ (row) -> Bool in
-				if let accessMask = row[accessMaskKey] as? Int, accessMask & apiKeyAccessMask == accessMask {
+				if let accessMask = row[accessMaskKey] as? Int64, accessMask & apiKeyAccessMask == accessMask {
 					return true
 				}
 				else {

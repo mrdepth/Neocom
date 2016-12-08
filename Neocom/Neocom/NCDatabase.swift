@@ -32,6 +32,7 @@ class NCDatabase {
 	static let sharedDatabase: NCDatabase? = NCDatabase()
 
 	init() {
+		ValueTransformer.setValueTransformer(NCDBImageValueTransformer(), forName: NSValueTransformerName("NCDBImageValueTransformer"))
 	}
 	
 	func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
@@ -55,6 +56,11 @@ class NCDatabase {
 	private(set) lazy var invTypes: NCFetchedCollection<NCDBInvType> = {
 		return NCDBInvType.invTypes(managedObjectContext: self.viewContext)
 	}()
+	
+	private(set) lazy var eveIcons: NCFetchedCollection<NCDBEveIcon> = {
+		return NCDBEveIcon.eveIcons(managedObjectContext: self.viewContext)
+	}()
+
 }
 
 extension NCDBInvType {
@@ -66,5 +72,27 @@ extension NCDBInvType {
 		get {
 			return NCFetchedCollection<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute", predicateFormat: "type == %@ AND attributeType.attributeID == %@", argumentArray: [self], managedObjectContext: self.managedObjectContext!)
 		}
+	}
+}
+
+extension NCDBEveIcon {
+	class func eveIcons(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBEveIcon> {
+		return NCFetchedCollection<NCDBEveIcon>(entityName: "EveIcon", predicateFormat: "iconFile == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+	
+	class func icon(file: String) -> NCDBEveIcon? {
+		return NCDatabase.sharedDatabase?.eveIcons[file]
+	}
+	
+	class var defaultCategory: NCDBEveIcon {
+		return defaultGroup
+	}
+
+	class var defaultGroup: NCDBEveIcon {
+		return icon(file: "38_174")!
+	}
+
+	class var defaultType: NCDBEveIcon {
+		return icon(file: "07_15")!
 	}
 }

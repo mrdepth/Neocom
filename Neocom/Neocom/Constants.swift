@@ -26,6 +26,27 @@ enum NCDBAttributeID: Int {
 	case willpower = 168
 }
 
+enum NCDBAttributeCategoryID: Int {
+	case requiredSkills = 8
+	case null = 9
+}
+
+enum NCDBUnitID: Int {
+	case none = 0
+	case milliseconds = 101
+	case inverseAbsolutePercent = 108
+	case modifierPercent = 109
+	case inversedModifierPercent = 111
+	case groupID = 115
+	case typeID = 116
+	case sizeClass = 117
+	case attributeID = 119
+	case absolutePercent = 127
+	case boolean = 137
+	case bonus = 139
+	
+}
+
 extension NSNotification.Name {
 	public static let NCCurrentAccountChanged = NSNotification.Name("NCCurrentAccountChanged")
 }

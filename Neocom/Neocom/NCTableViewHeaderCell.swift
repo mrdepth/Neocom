@@ -9,7 +9,9 @@
 import UIKit
 
 class NCTableViewHeaderCell: UITableViewCell {
-
+	@IBOutlet weak var titleLabel: UILabel?
+	@IBOutlet weak var expandIcon: UIImageView?
+	
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

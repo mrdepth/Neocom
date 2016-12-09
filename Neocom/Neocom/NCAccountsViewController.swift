@@ -37,7 +37,7 @@ class NCAccountInfo: NSObject {
 				self.skillColor = UIColor.white
 				self.trainingProgress = firstTrainingSkill.trainingProgress
 				if let endTime = firstTrainingSkill.trainingEndDate {
-					self.trainingTime = NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .Minutes)
+					self.trainingTime = NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .minutes)
 				}
 				else {
 					self.trainingTime = " "
@@ -64,7 +64,7 @@ class NCAccountInfo: NSObject {
 					guard let accountStatus = value as? EVEAccountStatus else {return accountStatusRecord.error?.localizedDescription ?? " "}
 					let t = accountStatus.paidUntil.timeIntervalSinceNow
 					if t > 0 {
-						return "\(DateFormatter.localizedString(from: accountStatus.paidUntil, dateStyle: .medium, timeStyle: .none)) (\(NCTimeIntervalFormatter.localizedString(from: t, precision: .Days)))"
+						return "\(DateFormatter.localizedString(from: accountStatus.paidUntil, dateStyle: .medium, timeStyle: .none)) (\(NCTimeIntervalFormatter.localizedString(from: t, precision: .days)))"
 					}
 					else {
 						return NSLocalizedString("expired", comment: "")
@@ -96,12 +96,12 @@ class NCAccountInfo: NSObject {
 				
 				self.binder.bind("sp", toObject: characterInfoRecord.data!, withKeyPath: "data.skillPoints", transformer: NCValueTransformer(handler: { (value) -> Any? in
 					guard let sp = value as? Double else {return " "}
-					return NCUnitFormatter.localizedString(from: sp, unit: .None, style: .Short)
+					return NCUnitFormatter.localizedString(from: sp, unit: .none, style: .short)
 				}))
 
 				self.binder.bind("wealth", toObject: characterInfoRecord.data!, withKeyPath: "data.accountBalance", transformer: NCValueTransformer(handler: { (value) -> Any? in
 					guard let wealth = value as? Double else {return " "}
-					return NCUnitFormatter.localizedString(from: wealth, unit: .None, style: .Short)
+					return NCUnitFormatter.localizedString(from: wealth, unit: .none, style: .short)
 				}))
 
 				self.binder.bind("location", toObject: characterInfoRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { (value) -> Any? in
@@ -150,7 +150,7 @@ class NCAccountInfo: NSObject {
 					guard let skillQueue = value as? EVESkillQueue else {return skillQueueRecord.error?.localizedDescription ?? " "}
 					if let firstSkill = skillQueue.skillQueue.first {
 						let endTime = firstSkill.endTime
-						return String(format: NSLocalizedString("%d skills in queue (%@)", comment: ""), skillQueue.skillQueue.count, NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .Minutes))
+						return String(format: NSLocalizedString("%d skills in queue (%@)", comment: ""), skillQueue.skillQueue.count, NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .minutes))
 					}
 					else {
 						return " "
@@ -173,7 +173,7 @@ class NCAccountInfo: NSObject {
 					for account in accountBalance.accounts {
 						isk += account.balance
 					}
-					return NCUnitFormatter.localizedString(from: isk, unit: .None, style: .Short)
+					return NCUnitFormatter.localizedString(from: isk, unit: .none, style: .short)
 				}))
 			}
 			else {

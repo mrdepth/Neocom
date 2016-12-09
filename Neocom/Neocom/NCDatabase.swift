@@ -75,6 +75,12 @@ extension NCDBInvType {
 	}
 }
 
+extension NCDBInvGroup {
+	class func invGroups(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBInvGroup> {
+		return NCFetchedCollection<NCDBInvGroup>(entityName: "InvGroup", predicateFormat: "groupID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+}
+
 extension NCDBEveIcon {
 	class func eveIcons(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBEveIcon> {
 		return NCFetchedCollection<NCDBEveIcon>(entityName: "EveIcon", predicateFormat: "iconFile == %@", argumentArray: [], managedObjectContext: managedObjectContext)
@@ -94,5 +100,11 @@ extension NCDBEveIcon {
 
 	class var defaultType: NCDBEveIcon {
 		return icon(file: "07_15")!
+	}
+}
+
+extension NCDBDgmAttributeType {
+	class func dgmAttributeTypes(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBDgmAttributeType> {
+		return NCFetchedCollection<NCDBDgmAttributeType>(entityName: "DgmAttributeType", predicateFormat: "attributeID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }

@@ -10,13 +10,13 @@ import Foundation
 
 class NCTimeIntervalFormatter: Formatter {
 	enum Precision: Int {
-		case Seconds
-		case Minutes
-		case Hours
-		case Days
+		case seconds
+		case minutes
+		case hours
+		case days
 	};
 	
-	var precision: Precision = .Seconds
+	var precision: Precision = .seconds
 
 	class func localizedString(from timeInterval: TimeInterval, precision: Precision) -> String {
 		let t = UInt(timeInterval)
@@ -28,19 +28,19 @@ class NCTimeIntervalFormatter: Formatter {
 		var string = ""
 		var empty = true
 
-		if (precision.rawValue <= Precision.Days.rawValue && d > 0) {
+		if (precision.rawValue <= Precision.days.rawValue && d > 0) {
 			string += "\(d)d"
 			empty = false
 		}
-		if (precision.rawValue <= Precision.Hours.rawValue && h > 0) {
+		if (precision.rawValue <= Precision.hours.rawValue && h > 0) {
 			string += "\(empty ? "" : " ")\(h)h"
 			empty = false
 		}
-		if (precision.rawValue <= Precision.Minutes.rawValue && m > 0) {
+		if (precision.rawValue <= Precision.minutes.rawValue && m > 0) {
 			string += "\(empty ? "" : " ")\(m)m"
 			empty = false
 		}
-		if (precision.rawValue <= Precision.Seconds.rawValue && s > 0) {
+		if (precision.rawValue <= Precision.seconds.rawValue && s > 0) {
 			string += "\(empty ? "" : " ")\(s)s"
 			empty = false
 		}

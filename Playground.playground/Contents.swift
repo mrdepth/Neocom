@@ -4,4 +4,6 @@ import UIKit
 
 var str = "Hello, playground"
 
-let r = 0...5
+var set = NSOrderedSet(array: [1,2,3,4,5])
+
+let s = set.set as? Set<Int>

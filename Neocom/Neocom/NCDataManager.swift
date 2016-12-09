@@ -181,6 +181,47 @@ class NCDataManager {
 	func callList(cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (_ result: EVECallList?, _ cacheRecordID: NSManagedObjectID?, _ error: Error?) -> Void) {
 	}
 	
+	func price(typeIDs: [Int], completionHandler: @escaping (_ result: EVECallList?, _ error: Error?) -> Void) {
+	}
+
+	func marketPrices(cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (_ result: [ESMarketPrice]?, _ cacheRecordID: NSManagedObjectID?, _ error: Error?) -> Void) {
+		loadFromCache(forKey: "ESMarketPrices", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { (block) -> Void in
+			let api = ESAPI()
+			api.marketPrices(completionBlock: { (result, error) in
+				if let result = result {
+					block(result, nil, Date(), Date(timeIntervalSinceNow: 3600 * 24))
+				}
+				else {
+					block(nil, error ?? NCDataManagerError.InternalError, nil, nil)
+				}
+			})
+		})
+	}
+	
+	func updateMarketPrices(completionHandler: ((_ result: [ESMarketPrice]?, _ cacheRecordID: NSManagedObjectID?, _ error: Error?) -> Void)?) {
+		NCCache.sharedCache?.performBackgroundTask({ (managedObjectContext) in
+			let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: "ESMarketPrices", account: nil)))?.last
+			if record == nil || record!.expired {
+				self.marketPrices(cachePolicy: .useProtocolCachePolicy, completionHandler: { (result, managedObjectID, error) in
+					NCCache.sharedCache?.performBackgroundTask({ (managedObjectContext) in
+						if let result = result {
+							if let objects = try? managedObjectContext.fetch(NSFetchRequest<NCCachePrice>(entityName: "CachePrice")) {
+								for object in objects {
+									managedObjectContext.delete(object)
+								}
+							}
+							for price in result {
+								let record = NCCachePrice(entity: NSEntityDescription.entity(forEntityName: "CachePrice", in: managedObjectContext)!, insertInto: managedObjectContext)
+								record.typeID = Int32(price.typeID)
+								record.price = price.adjustedPrice
+							}
+						}
+					})
+				})
+			}
+		})
+	}
+
 	//MARK: Private
 	
 	private func loadFromCache<Element> (forKey key: String,

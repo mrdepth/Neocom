@@ -10,18 +10,18 @@ import Foundation
 
 class NCUnitFormatter: Formatter {
 	enum Unit {
-		case None
-		case ISK
-		case SkillPoints
+		case none
+		case isk
+		case skillPoints
 	}
 	
 	enum Style {
-		case Short
-		case Full
+		case short
+		case full
 	}
 	
-	var unit: Unit = .None
-	var style: Style = .Full
+	var unit: Unit = .none
+	var style: Style = .full
 	var useSIPrefix: Bool = false
 	
 	private static let numberFormatter1: NumberFormatter = {
@@ -46,10 +46,10 @@ class NCUnitFormatter: Formatter {
 		let unitAbbreviation: String
 		
 		switch (unit) {
-		case .ISK:
+		case .isk:
 			unitAbbreviation = NSLocalizedString("ISK", comment: "")
 			break;
-		case .SkillPoints:
+		case .skillPoints:
 			unitAbbreviation = NSLocalizedString("SP", comment: "")
 			break;
 		default:
@@ -59,7 +59,7 @@ class NCUnitFormatter: Formatter {
 		
 		var value = number
 		let suffix: String
-		if (style == Style.Short) {
+		if (style == .short) {
 			if (value >= 10_000_000_000_000) {
 				suffix = NSLocalizedString("T", comment: "trillion")
 				value /= 1_000_000_000.0

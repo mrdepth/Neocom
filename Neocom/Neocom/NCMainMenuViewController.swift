@@ -25,7 +25,7 @@ class NCMainMenuDetails: NSObject {
 				self.binder.bind("jumpClones", toObject: characterSheet.data!, withKeyPath: "data", transformer: NCValueTransformer { (value) -> Any? in
 					if let value = value as? EVECharacterSheet {
 						let t = value.cloneJumpDate.timeIntervalSinceNow + 3600 * 24
-						return String.init(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .Minutes) : NSLocalizedString("Now", comment: ""))
+						return String.init(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: ""))
 					}
 					else {
 						return characterSheet.error?.localizedDescription
@@ -38,12 +38,13 @@ class NCMainMenuDetails: NSObject {
 			}
 		}
 	}
+	
 	var characterInfo: NCCacheRecord? {
 		didSet {
 			if let characterInfo = characterInfo {
 				self.binder.bind("skillPoints", toObject: characterInfo.data!, withKeyPath: "data.skillPoints", transformer: NCValueTransformer { (value) -> Any? in
 					if let value = value as? Double {
-						return NCUnitFormatter.localizedString(from: value, unit: .SkillPoints, style: .Full)
+						return NCUnitFormatter.localizedString(from: value, unit: .skillPoints, style: .full)
 					}
 					else {
 						return characterInfo.error?.localizedDescription
@@ -65,7 +66,7 @@ class NCMainMenuDetails: NSObject {
 				self.binder.bind("skillQueueInfo", toObject: skillQueue.data!, withKeyPath: "data", transformer: NCValueTransformer { (value) -> Any? in
 					if let value = value as? EVESkillQueue {
 						if let lastSkill = value.skillQueue.last {
-							return String.init(format: "%d skills in queue (%@)", value.skillQueue.count, NCTimeIntervalFormatter.localizedString(from: lastSkill.endTime.timeIntervalSinceNow, precision: .Minutes))
+							return String.init(format: "%d skills in queue (%@)", value.skillQueue.count, NCTimeIntervalFormatter.localizedString(from: lastSkill.endTime.timeIntervalSinceNow, precision: .minutes))
 						}
 						else {
 							return NSLocalizedString("No skills in training", comment: "")
@@ -92,7 +93,7 @@ class NCMainMenuDetails: NSObject {
 						for account in value.accounts {
 							isk += account.balance
 						}
-						return NCUnitFormatter.localizedString(from: isk, unit: .ISK, style: .Full)
+						return NCUnitFormatter.localizedString(from: isk, unit: .isk, style: .full)
 					}
 					else {
 						return accountBalance.error?.localizedDescription

@@ -139,6 +139,8 @@
 		1295ED7A1DF981630048C895 /* NCLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295ED791DF981630048C895 /* NCLabel.swift */; };
 		1295ED7C1DF996C80048C895 /* NCDatabaseTypeInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295ED7B1DF996C80048C895 /* NCDatabaseTypeInfoViewController.swift */; };
 		1295ED7E1DF999660048C895 /* NCDatabaseTypeInfoHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295ED7D1DF999660048C895 /* NCDatabaseTypeInfoHeaderViewController.swift */; };
+		1295ED8E1DFAA99A0048C895 /* NCTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295ED8D1DFAA99A0048C895 /* NCTreeNode.swift */; };
+		1295ED901DFAAE5E0048C895 /* NCDatabaseTypeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295ED8F1DFAAE5E0048C895 /* NCDatabaseTypeInfo.swift */; };
 		12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */; };
 		12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D951DEF58A100561A7A /* ViewController.swift */; };
 		12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12AC8D9A1DEF58A100561A7A /* Assets.xcassets */; };
@@ -345,6 +347,8 @@
 		1295ED791DF981630048C895 /* NCLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLabel.swift; sourceTree = "<group>"; };
 		1295ED7B1DF996C80048C895 /* NCDatabaseTypeInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseTypeInfoViewController.swift; sourceTree = "<group>"; };
 		1295ED7D1DF999660048C895 /* NCDatabaseTypeInfoHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseTypeInfoHeaderViewController.swift; sourceTree = "<group>"; };
+		1295ED8D1DFAA99A0048C895 /* NCTreeNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTreeNode.swift; sourceTree = "<group>"; };
+		1295ED8F1DFAAE5E0048C895 /* NCDatabaseTypeInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseTypeInfo.swift; sourceTree = "<group>"; };
 		12AC8D901DEF58A100561A7A /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAppDelegate.swift; sourceTree = "<group>"; };
 		12AC8D951DEF58A100561A7A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -599,6 +603,7 @@
 				1295ED6F1DF967240048C895 /* NCDatabaseGroupsViewController.swift */,
 				1295ED711DF969210048C895 /* NCDatabaseTypesViewController.swift */,
 				1295ED7B1DF996C80048C895 /* NCDatabaseTypeInfoViewController.swift */,
+				1295ED8F1DFAAE5E0048C895 /* NCDatabaseTypeInfo.swift */,
 				1295ED7D1DF999660048C895 /* NCDatabaseTypeInfoHeaderViewController.swift */,
 			);
 			name = Database;
@@ -659,6 +664,7 @@
 				1256BE491DF210B300A2A24B /* Formatters */,
 				1256BE4E1DF4659E00A2A24B /* NCSlideDownAnimationController */,
 				1256BE561DF472D400A2A24B /* Views */,
+				1295ED8D1DFAA99A0048C895 /* NCTreeNode.swift */,
 				12AC8DC51DF0894400561A7A /* NCDataManager.swift */,
 				12EA54B91DF559AC0045E151 /* UIImage+NC.swift */,
 				12EA54C21DF59EBF0045E151 /* NSAttributedString+NC.swift */,
@@ -938,8 +944,10 @@
 				12EA54C51DF59F800045E151 /* Math.swift in Sources */,
 				1295ED721DF969210048C895 /* NCDatabaseTypesViewController.swift in Sources */,
 				12AC8DCE1DF08D9B00561A7A /* NCCache.xcdatamodeld in Sources */,
+				1295ED901DFAAE5E0048C895 /* NCDatabaseTypeInfo.swift in Sources */,
 				1295ED761DF9727C0048C895 /* NSExpressionDescription+NC.swift in Sources */,
 				1256BE441DF1F09900A2A24B /* NCSkill.swift in Sources */,
+				1295ED8E1DFAA99A0048C895 /* NCTreeNode.swift in Sources */,
 				1295ED7A1DF981630048C895 /* NCLabel.swift in Sources */,
 				1256BE421DF1F07D00A2A24B /* NCCharacterAttributes.swift in Sources */,
 				12AC8DB21DEF5B6D00561A7A /* NCDatabase.swift in Sources */,

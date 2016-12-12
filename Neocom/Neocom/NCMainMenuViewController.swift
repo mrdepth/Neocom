@@ -19,7 +19,7 @@ class NCMainMenuDetails: NSObject {
 	dynamic var balance: String?
 	dynamic var jumpClones: String?
 
-	var characterSheet: NCCacheRecord? {
+	/*var characterSheet: NCCacheRecord? {
 		didSet {
 			if let characterSheet = characterSheet {
 				self.binder.bind("jumpClones", toObject: characterSheet.data!, withKeyPath: "data", transformer: NCValueTransformer { (value) -> Any? in
@@ -105,7 +105,7 @@ class NCMainMenuDetails: NSObject {
 				self.balance = nil
 			}
 		}
-	}
+	}*/
 
 	init(account: NCAccount) {
 		self.account = account
@@ -301,8 +301,8 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	}
 	
 	private func loadMenu() {
-		let corporate: Bool
-		let apiKeyAccessMask: Int64
+		/*let corporate: Bool
+		let apiKeyAccessMask: Int
 		if let account = NCAccount.currentAccount {
 			corporate = account.eveAPIKey.corporate
 			apiKeyAccessMask = account.apiKey!.apiKeyInfo!.key.accessMask
@@ -328,7 +328,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 			}
 		}
 		
-		self.mainMenu = sections
+		self.mainMenu = sections*/
 	}
 
 }

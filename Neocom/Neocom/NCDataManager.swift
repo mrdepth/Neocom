@@ -19,8 +19,8 @@ class NCDataManager {
 
 	
 	init() {}
-	
-	func addAPI(keyID:Int, vCode:String, excludeCharacterIDs:Set<Int64>, completionHandler: @escaping (_ accounts:[NSManagedObjectID], _ error: Error?) -> Void) {
+	/*
+	func addAPI(keyID:Int, vCode:String, excludeCharacterIDs:IndexSet, completionHandler: @escaping (_ accounts:[NSManagedObjectID], _ error: Error?) -> Void) {
 		let api = EVEOnlineAPI(apiKey: EVEAPIKey(keyID: keyID, vCode: vCode), cachePolicy: .reloadIgnoringLocalCacheData)
 		api.apiKeyInfo { (result, error) in
 			if let result = result, let storage = NCStorage.sharedStorage {
@@ -336,6 +336,6 @@ class NCDataManager {
 			break
 		}
 	}
-
+*/
 //	- (void) locationWithLocationIDs:(NSArray<NSNumber*>*) locationIDs cachePolicy:(NSURLRequestCachePolicy) cachePolicy completionHandler:(void(^)(NSDictionary<NSNumber*, NCLocation*>* result, NSError* error)) block;
 }

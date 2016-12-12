@@ -10,21 +10,27 @@ import Foundation
 import EVEAPI
 
 extension NCAccount {
-	@nonobjc static var currentAccount: NCAccount? {
-		didSet {
-			NotificationCenter.default.post(name: NSNotification.Name.NCCurrentAccountChanged, object: currentAccount)
-		}
-	}
+	@nonobjc static var currentAccount: NCAccount?
 
-	var eveAPIKey: EVEAPIKey {
+	var token: OAuth2Token? {
 		get {
-			return EVEAPIKey(keyID: Int(self.apiKey!.keyID), vCode: self.apiKey!.vCode!)
+			let token = OAuth2Token(accessToken: accessToken!, refreshToken: refreshToken!, tokenType: tokenType!, characterID: characterID, characterName: characterName!, realm: realm!)
+			token.expiresOn = expiresOn! as Date
+			return token
+		}
+		set {
+			if let token = newValue {
+				if accessToken != token.accessToken {accessToken = token.accessToken}
+				if refreshToken != token.refreshToken {refreshToken = token.refreshToken}
+				if tokenType != token.tokenType {tokenType = token.tokenType}
+				if characterID != token.characterID {characterID = token.characterID}
+				if characterName != token.characterName {characterName = token.characterName}
+				if realm != token.realm {realm = token.realm}
+				if let expiresOn = token.expiresOn as NSDate?, expiresOn != self.expiresOn {
+					self.expiresOn = expiresOn
+				}
+			}
 		}
 	}
 	
-	var character: EVEAPIKeyInfoCharacter? {
-		get {
-			return self.apiKey?.apiKeyInfo?.key.characters.first(where: { $0.characterID == Int64(self.characterID)})
-		}
-	}
 }

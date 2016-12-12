@@ -11,9 +11,6 @@
       location = "group:ThirdParty/EVEOnlineAPI/EVEAPI/EVEAPI.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:ThirdParty/EVEOnlineAPI/ThirdParty/AFNetworking/AFNetworking.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Playground.playground">
+      location = "group:ThirdParty/EVEOnlineAPI/ThirdParty/Alamofire/Alamofire.xcodeproj">
    </FileRef>
 </Workspace>

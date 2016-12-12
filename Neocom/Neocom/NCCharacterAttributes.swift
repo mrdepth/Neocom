@@ -19,7 +19,7 @@ class NCCharacterAttributes {
 	init() {
 	}
 	
-	init(characterSheet: EVECharacterSheet) {
+	/*init(characterSheet: EVECharacterSheet) {
 		NCDatabase.sharedDatabase?.performTaskAndWait({ (managedObjectContext) in
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 			for implant in characterSheet.implants {
@@ -32,7 +32,7 @@ class NCCharacterAttributes {
 				}
 			}
 		})
-	}
+	}*/
 	
 	func skillpointsPerSecond(forSkill skill: NCSkill) -> Double {
 		return skillpointsPerSecond(primaryAttributeID: skill.primaryAttributeID, secondaryAttribute: skill.secondaryAttributeID)

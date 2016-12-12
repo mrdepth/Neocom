@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName="NCAccount" syncable="YES" codeGenerationType="class">
-        <attribute name="characterID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="accessToken" attributeType="String" syncable="YES"/>
+        <attribute name="characterID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="characterName" attributeType="String" syncable="YES"/>
+        <attribute name="expiresOn" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="apiKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="APIKey" inverseName="accounts" inverseEntity="APIKey" syncable="YES"/>
+        <attribute name="realm" attributeType="String" syncable="YES"/>
+        <attribute name="refreshToken" attributeType="String" syncable="YES"/>
+        <attribute name="tokenType" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" syncable="YES"/>
         <relationship name="mailBox" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="MailBox" inverseName="account" inverseEntity="MailBox" syncable="YES"/>
         <relationship name="skillPlans" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SkillPlan" inverseName="account" inverseEntity="SkillPlan" syncable="YES"/>
-    </entity>
-    <entity name="APIKey" representedClassName="NCAPIKey" syncable="YES" codeGenerationType="class">
-        <attribute name="apiKeyInfo" optional="YES" attributeType="Transformable" customClassName="EVEAPI.EVEAPIKeyInfo" syncable="YES"/>
-        <attribute name="keyID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="vCode" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Account" inverseName="apiKey" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="DamagePattern" representedClassName="NCDamagePattern" syncable="YES" codeGenerationType="class">
         <attribute name="em" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -80,7 +79,6 @@
     </entity>
     <configuration name="Cloud">
         <memberEntity name="Account"/>
-        <memberEntity name="APIKey"/>
         <memberEntity name="DamagePattern"/>
         <memberEntity name="DronesSet"/>
         <memberEntity name="FitCharacter"/>
@@ -97,8 +95,7 @@
         <memberEntity name="Setting"/>
     </configuration>
     <elements>
-        <element name="Account" positionX="18" positionY="63" width="128" height="135"/>
-        <element name="APIKey" positionX="9" positionY="81" width="128" height="105"/>
+        <element name="Account" positionX="18" positionY="63" width="128" height="210"/>
         <element name="DamagePattern" positionX="45" positionY="90" width="128" height="120"/>
         <element name="DronesSet" positionX="9" positionY="54" width="128" height="75"/>
         <element name="FitCharacter" positionX="36" positionY="81" width="128" height="75"/>

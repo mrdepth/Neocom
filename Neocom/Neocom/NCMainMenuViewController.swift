@@ -121,7 +121,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	private var headerMaxHeight: CGFloat = 0
 	private var mainMenu: [[[String: Any]]] = []
 	private var mainMenuDetails: NCMainMenuDetails? = nil
-	private var interactive: Bool = false
+	private var isInteractive: Bool = false
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -152,9 +152,9 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 				return
 			}
 			else if let navigationController = toVC as? UINavigationController {
-//				if let topVC = navigationController.topViewController as? NCAccountsViewController {
-//					return
-//				}
+				if navigationController.topViewController is NCAccountsViewController {
+					return
+				}
 			}
 			self.navigationController?.setNavigationBarHidden(false, animated: animated)
 		}
@@ -234,11 +234,10 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 		self.headerViewController?.view.frame = self.view.convert(rect, to:self.tableView)
 		self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(rect.size.height, 0, 0, 0)
 		if (scrollView.contentOffset.y < -50 && self.transitionCoordinator == nil && scrollView.isTracking) {
-			self.interactive = true
+			self.isInteractive = true
 			self.performSegue(withIdentifier: "NCAccountsViewController", sender: self)
-			self.interactive = false;
+			self.isInteractive = false;
 		}
-
 	}
 	
 	//MARK: UIViewControllerTransitioningDelegate
@@ -248,7 +247,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	}
 	
 	func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-		return interactive ? NCSlideDownInteractiveTransition(scrollView: self.tableView) : nil
+		return isInteractive ? NCSlideDownInteractiveTransition(scrollView: self.tableView) : nil
 	}
 	
 	//MARK: Private

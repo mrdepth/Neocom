@@ -60,32 +60,35 @@ class NCAccountInfo: NSObject {
 	dynamic var trainingTime: String = " "
 	dynamic var account: NCAccount
 	
+	private func updateLocation() {
+		if let ship = ship, let solarSystem = solarSystem {
+			let s = NSMutableAttributedString()
+			s.append(NSAttributedString(string: ship, attributes: [NSForegroundColorAttributeName: UIColor.white]))
+			s.append(NSAttributedString(string: ", \(solarSystem)", attributes: [NSForegroundColorAttributeName: UIColor.lightText]))
+			self.location = s
+		}
+		else if let solarSystem = solarSystem {
+			let s = NSAttributedString(string: solarSystem, attributes: [NSForegroundColorAttributeName: UIColor.lightText])
+			self.location = s
+		}
+		else if let ship = ship {
+			let s = NSAttributedString(string: ship, attributes: [NSForegroundColorAttributeName: UIColor.white])
+			self.location = s
+		}
+		else {
+			self.location = NSAttributedString(string: " ")
+		}
+	}
+	
 	var solarSystem: String? {
 		didSet {
-			
+			updateLocation()
 		}
 	}
 	
 	var ship: String? {
 		didSet {
-			if let ship = ship, let solarSystem = solarSystem {
-				let s = NSMutableAttributedString()
-				s.append(NSAttributedString(string: ship, attributes: [NSForegroundColorAttributeName: UIColor.white]))
-				s.append(NSAttributedString(string: ", \(solarSystem)", attributes: [NSForegroundColorAttributeName: UIColor.lightText]))
-				self.location = s
-			}
-			guard let characterInfo = value as? EVECharacterInfo else {return " "}
-			if !characterInfo.lastKnownLocation.isEmpty && !characterInfo.shipTypeName.isEmpty {
-			}
-			else if !characterInfo.lastKnownLocation.isEmpty {
-				return NSAttributedString(string: characterInfo.lastKnownLocation, attributes: [NSForegroundColorAttributeName: UIColor.lightText])
-			}
-			else if !characterInfo.shipTypeName.isEmpty {
-				return NSAttributedString(string: characterInfo.shipTypeName, attributes: [NSForegroundColorAttributeName: UIColor.white])
-			}
-			else {
-				return NSAttributedString(string: " ")
-			}
+			updateLocation()
 		}
 	}
 	
@@ -214,7 +217,7 @@ class NCAccountInfo: NSObject {
 				self.binder.bind("solarSystem", toObject: characterLocationRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
 					guard let location = value as? ESCharacterLocation else {return characterLocationRecord.error?.localizedDescription ?? nil}
 					guard let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[location.solarSystemID] else {return nil}
-					return solarSystem.solarSystemName
+					return "\(solarSystem.solarSystemName!) / \(solarSystem.constellation!.region!.regionName!)"
 				}))
 			}
 			else {
@@ -234,6 +237,17 @@ class NCAccountInfo: NSObject {
 			}
 			else {
 				self.ship = nil
+			}
+		}
+	}
+	
+	var characterImageRecord: NCCacheRecord? {
+		didSet {
+			if let characterImageRecord = characterImageRecord {
+				self.binder.bind("characterImage", toObject: characterImageRecord.data!, withKeyPath: "data", transformer: NCImageFromDataValueTransformer())
+			}
+			else {
+				self.characterImage = nil
 			}
 		}
 	}
@@ -398,9 +412,10 @@ class NCAccountInfo: NSObject {
 	}
 }
 
-class NCAccountsViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+class NCAccountsViewController: UITableViewController, NSFetchedResultsControllerDelegate, UIViewControllerTransitioningDelegate {
 	private var results: NSFetchedResultsController<NCAccount>?
 	private var accountsInfo: [NSManagedObjectID: NCAccountInfo] = [:]
+	private var isInteractive: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -412,9 +427,9 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 		if results == nil {
 			if let context = NCStorage.sharedStorage?.viewContext {
 				let request = NSFetchRequest<NCAccount>(entityName: "Account")
-				request.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
+				request.sortDescriptors = [NSSortDescriptor(key: "characterName", ascending: true)]
 				
-				let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "Order", cacheName: nil)
+				let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "characterName", cacheName: nil)
 				try? results.performFetch()
 				self.results = results
 				self.accountsInfo = [:]
@@ -422,12 +437,25 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 			}
 		}
 	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		navigationController?.transitioningDelegate = self
+	}
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
+	@IBAction func onAddAccount(_ sender: Any) {
+		UIApplication.shared.openURL(ESAPI.oauth2url(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESScope.all))
+	}
+
+	@IBAction func onClose(_ sender: Any) {
+		dismiss(animated: true, completion: nil)
+	}
+	
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -473,9 +501,20 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 		cell.binder.bind("trainingProgressView.progress", toObject: accountInfo!, withKeyPath: "trainingProgress", transformer: nil)
 		cell.binder.bind("wealthLabel.text", toObject: accountInfo!, withKeyPath: "wealth", transformer: nil)
 		cell.binder.bind("spLabel.text", toObject: accountInfo!, withKeyPath: "sp", transformer: nil)
+		cell.binder.bind("locationLabel.attributedText", toObject: accountInfo!, withKeyPath: "location", transformer: nil)
+		cell.binder.bind("characterImageView.image", toObject: accountInfo!, withKeyPath: "characterImage", transformer: nil)
         return cell
     }
 	
+	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		let bottom = max(scrollView.contentSize.height - scrollView.bounds.size.height, 0)
+		let y = scrollView.contentOffset.y - bottom
+		if (y > 40 && transitionCoordinator == nil && scrollView.isTracking) {
+			self.isInteractive = true
+			dismiss(animated: true, completion: nil)
+			self.isInteractive = false
+		}
+	}
 
     /*
     // Override to support conditional editing of the table view.
@@ -521,6 +560,16 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
         // Pass the selected object to the new view controller.
     }
     */
+	
+	// MARK: UIViewControllerTransitioningDelegate
+	
+	func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+		return NCSlideDownAnimationController()
+	}
+	
+	func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+		return isInteractive ? NCSlideDownInteractiveTransition(scrollView: self.tableView) : nil
+	}
 	
 	// MARK: Private
 	
@@ -570,6 +619,34 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 						break
 					}
 				}
+				
+				dataManager.characterLocation(account: accountInfo.account, cachePolicy: cachePolicy) { result in
+					switch result {
+					case let .success(value: _, cacheRecordID: recordID):
+						accountInfo.characterLocationRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+					case .failure:
+						break
+					}
+				}
+
+				dataManager.characterShip(account: accountInfo.account, cachePolicy: cachePolicy) { result in
+					switch result {
+					case let .success(value: _, cacheRecordID: recordID):
+						accountInfo.characterShipRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+					case .failure:
+						break
+					}
+				}
+				
+				dataManager.image(characterID: accountInfo.account.characterID, dimension: 80,  cachePolicy: cachePolicy) { result in
+					switch result {
+					case let .success(value: _, cacheRecordID: recordID):
+						accountInfo.characterImageRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+					case .failure:
+						break
+					}
+				}
+
 			case let .failure(error):
 				accountInfo.characterError = error
 				progress.completedUnitCount += 1

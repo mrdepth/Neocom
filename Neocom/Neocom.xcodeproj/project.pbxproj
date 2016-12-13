@@ -146,6 +146,10 @@
 		1256BF2B1DF4770B00A2A24B /* MainMenu.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC61DF4770A00A2A24B /* MainMenu.xcassets */; };
 		1256BF2C1DF4770B00A2A24B /* UI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC71DF4770A00A2A24B /* UI.xcassets */; };
 		1256BF2E1DF48AA800A2A24B /* NCBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BF2D1DF48AA800A2A24B /* NCBackgroundView.swift */; };
+		126157001E008AF60041B817 /* dgm.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FE1E008AE00041B817 /* dgm.sqlite */; };
+		126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FF1E008AE00041B817 /* NCDatabase.sqlite */; };
+		126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157031E008E770041B817 /* NCRoundedImageView.swift */; };
+		126157061E0095380041B817 /* NCProgressHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157051E0095380041B817 /* NCProgressHandler.swift */; };
 		12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */; };
 		12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D951DEF58A100561A7A /* ViewController.swift */; };
 		12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12AC8D9A1DEF58A100561A7A /* Assets.xcassets */; };
@@ -358,6 +362,10 @@
 		1256BEC61DF4770A00A2A24B /* MainMenu.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MainMenu.xcassets; sourceTree = "<group>"; };
 		1256BEC71DF4770A00A2A24B /* UI.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = UI.xcassets; sourceTree = "<group>"; };
 		1256BF2D1DF48AA800A2A24B /* NCBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBackgroundView.swift; sourceTree = "<group>"; };
+		126156FE1E008AE00041B817 /* dgm.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = dgm.sqlite; path = ../../dbTools/dbinit/dgm.sqlite; sourceTree = "<group>"; };
+		126156FF1E008AE00041B817 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = ../../dbTools/dbinit/NCDatabase.sqlite; sourceTree = "<group>"; };
+		126157031E008E770041B817 /* NCRoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRoundedImageView.swift; sourceTree = "<group>"; };
+		126157051E0095380041B817 /* NCProgressHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCProgressHandler.swift; sourceTree = "<group>"; };
 		12AC8D901DEF58A100561A7A /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAppDelegate.swift; sourceTree = "<group>"; };
 		12AC8D951DEF58A100561A7A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -470,6 +478,7 @@
 				1230A31F1DFFE2CF00627D92 /* NCTableViewHeaderCell.swift */,
 				1256BE591DF4742F00A2A24B /* NCTableViewCell.swift */,
 				1256BF2D1DF48AA800A2A24B /* NCBackgroundView.swift */,
+				126157031E008E770041B817 /* NCRoundedImageView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -643,6 +652,8 @@
 				12AC8D9F1DEF58A100561A7A /* Info.plist */,
 				12AC8DBA1DF01BF000561A7A /* Neocom-Bridging-Header.h */,
 				12AC8DD51DF0AF6900561A7A /* Dark.clr */,
+				126156FE1E008AE00041B817 /* dgm.sqlite */,
+				126156FF1E008AE00041B817 /* NCDatabase.sqlite */,
 			);
 			path = Neocom;
 			sourceTree = "<group>";
@@ -668,6 +679,7 @@
 				1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */,
 				1230A3201DFFE2CF00627D92 /* NCTreeNode.swift */,
 				1256BE471DF1F3B100A2A24B /* Constants.swift */,
+				126157051E0095380041B817 /* NCProgressHandler.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -832,10 +844,12 @@
 				1256BEEB1DF4770A00A2A24B /* multispectral.png in Resources */,
 				1256BF221DF4770B00A2A24B /* level_300.gif in Resources */,
 				1256BF031DF4770B00A2A24B /* tracking.png in Resources */,
+				126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */,
 				1256BF121DF4770B00A2A24B /* level_100.gif in Resources */,
 				1256BF1B1DF4770B00A2A24B /* level_200.gif in Resources */,
 				1256BED81DF4770A00A2A24B /* cpu.png in Resources */,
 				1256BEDD1DF4770A00A2A24B /* droneCapacity.png in Resources */,
+				126157001E008AF60041B817 /* dgm.sqlite in Resources */,
 				1256BEFF1DF4770A00A2A24B /* targets.png in Resources */,
 				1256BEFC1DF4770A00A2A24B /* slotRig.png in Resources */,
 				1256BF1A1DF4770B00A2A24B /* level_151.gif in Resources */,
@@ -925,6 +939,7 @@
 				1230A32D1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift in Sources */,
 				1256BE3B1DF1EFA600A2A24B /* NCSplitViewController.swift in Sources */,
 				1256BE5A1DF4742F00A2A24B /* NCTableViewCell.swift in Sources */,
+				126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */,
 				1256BE3D1DF1F01D00A2A24B /* NCNavigationController.swift in Sources */,
 				12AC8DB01DEF5B0500561A7A /* NCDatabase.xcdatamodeld in Sources */,
 				1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */,
@@ -944,6 +959,7 @@
 				12AC8DD41DF09BDE00561A7A /* NCCacheRecord+NC.swift in Sources */,
 				1256BE461DF1F0B100A2A24B /* NCTrainingQueue.swift in Sources */,
 				1230A32A1DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift in Sources */,
+				126157061E0095380041B817 /* NCProgressHandler.swift in Sources */,
 				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
 				12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */,
 				1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */,

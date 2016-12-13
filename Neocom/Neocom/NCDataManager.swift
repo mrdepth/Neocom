@@ -89,6 +89,36 @@ class NCDataManager {
 		})
 	}
 	
+	func characterLocation(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<ESCharacterLocation>) -> Void) {
+		loadFromCache(forKey: "ESCharacterLocation", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
+			api?.character.location { result in
+				completion(result, 3600.0)
+				api = nil
+			}
+		})
+	}
+
+	func characterShip(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<ESCharacterShip>) -> Void) {
+		loadFromCache(forKey: "ESShip", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
+			api?.character.ship { result in
+				completion(result, 3600.0)
+				api = nil
+			}
+		})
+	}
+	
+	func image(characterID: Int64, dimension: Int, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<Data>) -> Void) {
+		loadFromCache(forKey: "image.character.\(characterID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			var api: ESAPI? = ESAPI(cachePolicy: cachePolicy)
+			api?.image(characterID: characterID, dimension: dimension * Int(UIScreen.main.scale)) { result in
+				completion(result, 3600.0)
+				api = nil
+			}
+		})
+	}
+	
 	//MARK: Private
 	
 	private func loadFromCache<T> (forKey key: String,

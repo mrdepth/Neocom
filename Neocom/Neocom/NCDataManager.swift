@@ -9,16 +9,207 @@
 import Foundation
 import CoreData
 import EVEAPI
+import Alamofire
+
+enum NCResult<T> {
+	case success(value: T, cacheRecordID: NSManagedObjectID)
+	case failure(Error)
+}
+
+typealias NCLoaderCompletion<T> = (_ result: Result<T>, _ cacheTime: TimeInterval) -> Void
 
 
 class NCDataManager {
 	enum NCDataManagerError: Error {
-		case InternalError
-		case NoCacheData
+		case internalError
+		case noCacheData
 	}
 
 	
 	init() {}
+	
+	func character(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<ESCharacter>) -> Void) {
+		loadFromCache(forKey: "ESCharacter", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
+			api?.character { result in
+				completion(result, 3600.0)
+				api = nil
+			}
+		})
+	}
+	
+	func corporation(corporationID: Int64, account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<ESCorporation>) -> Void) {
+		loadFromCache(forKey: "ESCoproration.\(corporationID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
+			api?.corporation(corporationID: corporationID) { result in
+				completion(result, 3600.0)
+				api = nil
+			}
+		})
+	}
+
+	func alliance(allianceID: Int64, account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<ESAlliance>) -> Void) {
+		loadFromCache(forKey: "ESAlliance.\(allianceID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
+			api?.alliance(allianceID: allianceID) { result in
+				completion(result, 3600.0)
+				api = nil
+			}
+		})
+	}
+
+	func skillQueue(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<[ESSkillQueueItem]>) -> Void) {
+		loadFromCache(forKey: "ESSkillQueue", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
+			api?.character.skillQueue { result in
+				completion(result, 3600.0)
+				api = nil
+			}
+		})
+	}
+	
+	func skills(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<ESSkills>) -> Void) {
+		loadFromCache(forKey: "ESSkills", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
+			api?.character.skills { result in
+				completion(result, 3600.0)
+				api = nil
+			}
+		})
+	}
+	
+	
+	func wallets(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<[ESWallet]>) -> Void) {
+		loadFromCache(forKey: "ESWallets", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
+			api?.character.wallets { result in
+				completion(result, 3600.0)
+				api = nil
+			}
+		})
+	}
+	
+	//MARK: Private
+	
+	private func loadFromCache<T> (forKey key: String,
+	                           account: NCAccount?,
+	                           cachePolicy:URLRequest.CachePolicy,
+	                           completionHandler: @escaping (NCResult<T>) -> Void,
+	                           elseLoad loader: @escaping (@escaping NCLoaderCompletion<T>) -> Void) {
+		guard let cache = NCCache.sharedCache else {
+			completionHandler(.failure(NCDataManagerError.internalError))
+			return
+		}
+		let acc: String?
+		if let characterID = account?.characterID {
+			acc = String(characterID)
+		}
+		else {
+			acc = nil
+		}
+		
+		let progress = Progress(totalUnitCount: 1)
+		
+		switch cachePolicy {
+		case .reloadIgnoringLocalCacheData:
+			progress.becomeCurrent(withPendingUnitCount: 1)
+			loader { (result, cacheTime) in
+				switch (result) {
+				case let .success(value):
+					cache.store(value as? NSSecureCoding, forKey: key, account: acc, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
+						completionHandler(.success(value: value, cacheRecordID: objectID))
+					}
+				case let .failure(error):
+					completionHandler(.failure(error))
+					break
+				}
+			}
+			progress.resignCurrent()
+			
+		case .returnCacheDataElseLoad:
+			cache.performBackgroundTask { (managedObjectContext) in
+				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: acc)))?.last
+				let object = record?.data?.data as? T
+				
+				DispatchQueue.main.async {
+					if let object = object {
+						progress.completedUnitCount += 1
+						completionHandler(.success(value: object, cacheRecordID: record!.objectID))
+					}
+					else {
+						progress.becomeCurrent(withPendingUnitCount: 1)
+						loader { (result, cacheTime) in
+							switch (result) {
+							case let .success(value):
+								cache.store(value as? NSSecureCoding, forKey: key, account: acc, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
+									completionHandler(.success(value: value, cacheRecordID: objectID))
+								}
+							case let .failure(error):
+								completionHandler(.failure(error))
+								break
+							}
+						}
+
+						progress.resignCurrent()
+					}
+				}
+			}
+		case .returnCacheDataDontLoad:
+			cache.performBackgroundTask { (managedObjectContext) in
+				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: acc)))?.last
+				let object = record?.data?.data as? T
+				
+				DispatchQueue.main.async {
+					if let object = object {
+						progress.completedUnitCount += 1
+						completionHandler(.success(value: object, cacheRecordID: record!.objectID))
+					}
+					else {
+						completionHandler(.failure(NCDataManagerError.noCacheData))
+					}
+				}
+			}
+		default:
+			cache.performBackgroundTask { (managedObjectContext) in
+				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: acc)))?.last
+				let object = record?.data?.data as? T
+				let expired = record?.expired ?? true
+				DispatchQueue.main.async {
+					if let object = object {
+						progress.completedUnitCount += 1
+						completionHandler(.success(value: object, cacheRecordID: record!.objectID))
+						if expired {
+							loader { (result, cacheTime) in
+								switch (result) {
+								case let .success(value):
+									cache.store(value as? NSSecureCoding, forKey: key, account: acc, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil, completionHandler: nil)
+								default:
+									break
+								}
+							}
+						}
+					}
+					else {
+						progress.becomeCurrent(withPendingUnitCount: 1)
+						loader { (result, cacheTime) in
+							switch (result) {
+							case let .success(value):
+								cache.store(value as? NSSecureCoding, forKey: key, account: acc, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
+									completionHandler(.success(value: value, cacheRecordID: objectID))
+								}
+							case let .failure(error):
+								completionHandler(.failure(error))
+								break
+							}
+						}
+						progress.resignCurrent()
+					}
+				}
+			}
+			break
+		}
+	}
+	
 	/*
 	func addAPI(keyID:Int, vCode:String, excludeCharacterIDs:IndexSet, completionHandler: @escaping (_ accounts:[NSManagedObjectID], _ error: Error?) -> Void) {
 		let api = EVEOnlineAPI(apiKey: EVEAPIKey(keyID: keyID, vCode: vCode), cachePolicy: .reloadIgnoringLocalCacheData)

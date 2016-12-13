@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EVEAPI
 
 class NCMainMenuHeaderViewController: UIViewController {
 	@IBOutlet weak var characterNameLabel: UILabel?
@@ -26,7 +27,7 @@ class NCMainMenuHeaderViewController: UIViewController {
 		corporationImageView?.image = nil
 		allianceImageView?.image = nil
 		
-		if let account = NCAccount.currentAccount, let character = account.character {
+		/*if let account = NCAccount.currentAccount, let character = account.character {
 			let dataManager = NCDataManager()
 			if account.eveAPIKey.corporate {
 				if let corporationImageView = corporationImageView, character.corporationID > 0 {
@@ -61,10 +62,14 @@ class NCMainMenuHeaderViewController: UIViewController {
 					})
 				}
 			}
-		}
+		}*/
 	}
 
 	@IBAction func onLogout(_ sender: Any) {
 		NCAccount.currentAccount = nil
+	}
+	
+	@IBAction func onAddAccount(_ sender: Any) {
+		UIApplication.shared.openURL(ESAPI.oauth2url(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESScope.all))
 	}
 }

@@ -256,7 +256,8 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	private func updateHeader() {
 		let identifier: String
 		if let account = NCAccount.currentAccount {
-			identifier = account.eveAPIKey.corporate ? "NCMainMenuCorporationHeaderViewController" : "NCMainMenuCharacterHeaderViewController"
+			//identifier = account.eveAPIKey.corporate ? "NCMainMenuCorporationHeaderViewController" : "NCMainMenuCharacterHeaderViewController"
+			identifier = "NCMainMenuCharacterHeaderViewController"
 		}
 		else {
 			identifier = (try? NCStorage.sharedStorage!.viewContext.count(for: NSFetchRequest<NCAccount>(entityName: "Account"))) ?? 0 > 0 ? "NCMainMenuLoginHeaderViewController" : "NCMainMenuHeaderViewController"

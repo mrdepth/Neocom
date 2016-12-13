@@ -70,10 +70,10 @@ class NCCache: NSObject {
 			var record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
 			if record == nil {
 				
-				let r = NCCacheRecord(entity: NSEntityDescription.entity(forEntityName: "CacheRecord", in: managedObjectContext)!, insertInto: managedObjectContext)
+				let r = NCCacheRecord(entity: NSEntityDescription.entity(forEntityName: "Record", in: managedObjectContext)!, insertInto: managedObjectContext)
 				r.account = account
 				r.key = key
-				r.data = NCCacheRecordData(entity: NSEntityDescription.entity(forEntityName: "CacheRecordData", in: managedObjectContext)!, insertInto: managedObjectContext)
+				r.data = NCCacheRecordData(entity: NSEntityDescription.entity(forEntityName: "RecordData", in: managedObjectContext)!, insertInto: managedObjectContext)
 				record = r
 			}
 			if object != nil || record!.data!.data == nil {

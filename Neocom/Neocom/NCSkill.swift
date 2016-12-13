@@ -22,7 +22,7 @@ class NCSkill: Hashable {
 			if let trainingStartDate = trainingStartDate,
 				let trainingEndDate = trainingEndDate,
 				let startSkillPoints = startSkillPoints,
-				trainingEndDate < Date() {
+				trainingEndDate > Date() {
 				let endSP = skillPoints(at: level + 1)
 				let t = trainingEndDate.timeIntervalSince(trainingStartDate)
 				if t > 0 {
@@ -84,7 +84,16 @@ class NCSkill: Hashable {
 	}
 	
 	convenience init?(type: NCDBInvType, skill: ESSkillQueueItem) {
-		self.init(type: type, level: skill.finishedLevel - 1, startSkillPoints: skill.trainingStartSP, trainingStartDate: skill.queuePosition == 0 ? skill.startDate : nil, trainingEndDate: skill.queuePosition == 0 ? skill.finishDate : nil)
+		let active: Bool
+		if let startDate = skill.startDate, let finishDate = skill.finishDate {
+			let date = Date()
+			active = startDate <= date && finishDate > date
+		}
+		else {
+			active = false;
+		}
+		
+		self.init(type: type, level: skill.finishedLevel - 1, startSkillPoints: skill.trainingStartSP, trainingStartDate: active ? skill.startDate : nil, trainingEndDate: active ? skill.finishDate : nil)
 	}
 	
 	class func rank(skillPoints: Int, level: Int) -> Int {

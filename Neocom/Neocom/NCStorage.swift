@@ -53,6 +53,14 @@ class NCStorage: NSObject {
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 		context.perform {
 			block(context)
+			if (context.hasChanges) {
+				do {
+					try context.save()
+				}
+				catch {
+					print ("\(error)")
+				}
+			}
 		}
 	}
 	
@@ -62,6 +70,14 @@ class NCStorage: NSObject {
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 		context.performAndWait {
 			block(context)
+			if (context.hasChanges) {
+				do {
+					try context.save()
+				}
+				catch {
+					print ("\(error)")
+				}
+			}
 		}
 	}
 	

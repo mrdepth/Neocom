@@ -29,7 +29,19 @@ public class NCBinder: NSObject {
 		unbindAll()
 	}
 	
-	
+	public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+		guard let object = object as AnyObject?, let keyPath = keyPath else {return}
+		for (_, value) in bindings {
+			if value.observable === object as AnyObject && keyPath == value.keyPath {
+				var v = object.value(forKeyPath: keyPath)
+				if let transformer = value.transformer {
+					v = transformer.transformedValue(v)
+				}
+				value.target.setValue(v, forKeyPath: value.binding)
+				break
+			}
+		}
+	}
 	
 	public func bind(_ binding: String, toObject observable: AnyObject, withKeyPath keyPath: String, transformer: ValueTransformer?) {
 		self.bindings[binding] = NCBinding(target: target, observable: observable, binding: binding, keyPath: keyPath, transformer: transformer)
@@ -39,7 +51,7 @@ public class NCBinder: NSObject {
 		if let transformer = transformer {
 			value = transformer.transformedValue(value)
 		}
-		self.target.setValue(value, forKey: binding)
+		self.target.setValue(value, forKeyPath: binding)
 	}
 	
 	public func unbind(_ binding: String) {

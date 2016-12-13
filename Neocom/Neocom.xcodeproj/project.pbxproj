@@ -7,6 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1230A3241DFFE2CF00627D92 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3111DFFE2CF00627D92 /* Math.swift */; };
+		1230A3251DFFE2CF00627D92 /* NCAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3121DFFE2CF00627D92 /* NCAccountsViewController.swift */; };
+		1230A3261DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3131DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift */; };
+		1230A3271DFFE2CF00627D92 /* NCDatabaseGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3141DFFE2CF00627D92 /* NCDatabaseGroupsViewController.swift */; };
+		1230A3281DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3151DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift */; };
+		1230A3291DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3161DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift */; };
+		1230A32A1DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3171DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift */; };
+		1230A32B1DFFE2CF00627D92 /* NCDatabaseTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3181DFFE2CF00627D92 /* NCDatabaseTypesViewController.swift */; };
+		1230A32C1DFFE2CF00627D92 /* NCGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3191DFFE2CF00627D92 /* NCGate.swift */; };
+		1230A32D1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A31A1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift */; };
+		1230A32E1DFFE2CF00627D92 /* NCLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A31B1DFFE2CF00627D92 /* NCLabel.swift */; };
+		1230A32F1DFFE2CF00627D92 /* NCTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1230A31D1DFFE2CF00627D92 /* NCTableView.m */; };
+		1230A3301DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A31E1DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift */; };
+		1230A3311DFFE2CF00627D92 /* NCTableViewHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A31F1DFFE2CF00627D92 /* NCTableViewHeaderCell.swift */; };
+		1230A3321DFFE2CF00627D92 /* NCTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3201DFFE2CF00627D92 /* NCTreeNode.swift */; };
+		1230A3331DFFE2CF00627D92 /* NSAttributedString+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3211DFFE2CF00627D92 /* NSAttributedString+NC.swift */; };
+		1230A3341DFFE2CF00627D92 /* NSExpressionDescription+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */; };
+		1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */; };
+		1230A33A1E001D7300627D92 /* NCAccountsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3391E001D7300627D92 /* NCAccountsCell.swift */; };
 		1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE331DF1C38200A2A24B /* NCStorage.swift */; };
 		1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */; };
 		1256BE391DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */; };
@@ -22,7 +41,6 @@
 		1256BE501DF465BC00A2A24B /* NCSlideDownAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE4F1DF465BC00A2A24B /* NCSlideDownAnimationController.swift */; };
 		1256BE531DF4725B00A2A24B /* NCMainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE521DF4725B00A2A24B /* NCMainMenuViewController.swift */; };
 		1256BE551DF4728800A2A24B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE541DF4728800A2A24B /* Main.storyboard */; };
-		1256BE581DF472E700A2A24B /* NCTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE571DF472E700A2A24B /* NCTableView.swift */; };
 		1256BE5A1DF4742F00A2A24B /* NCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE591DF4742F00A2A24B /* NCTableViewCell.swift */; };
 		1256BE5C1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE5B1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift */; };
 		1256BE5E1DF476C000A2A24B /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE5D1DF476C000A2A24B /* mainMenu.plist */; };
@@ -200,6 +218,26 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1230A3111DFFE2CF00627D92 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		1230A3121DFFE2CF00627D92 /* NCAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsViewController.swift; sourceTree = "<group>"; };
+		1230A3131DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCategoriesViewController.swift; sourceTree = "<group>"; };
+		1230A3141DFFE2CF00627D92 /* NCDatabaseGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseGroupsViewController.swift; sourceTree = "<group>"; };
+		1230A3151DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseTypeInfo.swift; sourceTree = "<group>"; };
+		1230A3161DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseTypeInfoHeaderViewController.swift; sourceTree = "<group>"; };
+		1230A3171DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseTypeInfoViewController.swift; sourceTree = "<group>"; };
+		1230A3181DFFE2CF00627D92 /* NCDatabaseTypesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseTypesViewController.swift; sourceTree = "<group>"; };
+		1230A3191DFFE2CF00627D92 /* NCGate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCGate.swift; sourceTree = "<group>"; };
+		1230A31A1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCImageFromDataValueTransformer.swift; sourceTree = "<group>"; };
+		1230A31B1DFFE2CF00627D92 /* NCLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLabel.swift; sourceTree = "<group>"; };
+		1230A31C1DFFE2CF00627D92 /* NCTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableView.h; sourceTree = "<group>"; };
+		1230A31D1DFFE2CF00627D92 /* NCTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableView.m; sourceTree = "<group>"; };
+		1230A31E1DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTableViewBackgroundLabel.swift; sourceTree = "<group>"; };
+		1230A31F1DFFE2CF00627D92 /* NCTableViewHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTableViewHeaderCell.swift; sourceTree = "<group>"; };
+		1230A3201DFFE2CF00627D92 /* NCTreeNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTreeNode.swift; sourceTree = "<group>"; };
+		1230A3211DFFE2CF00627D92 /* NSAttributedString+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+NC.swift"; sourceTree = "<group>"; };
+		1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSExpressionDescription+NC.swift"; sourceTree = "<group>"; };
+		1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+NC.swift"; sourceTree = "<group>"; };
+		1230A3391E001D7300627D92 /* NCAccountsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsCell.swift; sourceTree = "<group>"; };
 		1256BE331DF1C38200A2A24B /* NCStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorage.swift; sourceTree = "<group>"; };
 		1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorageExtensions.swift; sourceTree = "<group>"; };
 		1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBannerNavigationViewController.swift; sourceTree = "<group>"; };
@@ -215,7 +253,6 @@
 		1256BE4F1DF465BC00A2A24B /* NCSlideDownAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSlideDownAnimationController.swift; sourceTree = "<group>"; };
 		1256BE521DF4725B00A2A24B /* NCMainMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMainMenuViewController.swift; sourceTree = "<group>"; };
 		1256BE541DF4728800A2A24B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		1256BE571DF472E700A2A24B /* NCTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTableView.swift; sourceTree = "<group>"; };
 		1256BE591DF4742F00A2A24B /* NCTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTableViewCell.swift; sourceTree = "<group>"; };
 		1256BE5B1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMainMenuHeaderViewController.swift; sourceTree = "<group>"; };
 		1256BE5D1DF476C000A2A24B /* mainMenu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mainMenu.plist; sourceTree = "<group>"; };
@@ -361,6 +398,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1230A3361DFFE30400627D92 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				1230A3131DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift */,
+				1230A3141DFFE2CF00627D92 /* NCDatabaseGroupsViewController.swift */,
+				1230A3151DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift */,
+				1230A3161DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift */,
+				1230A3171DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift */,
+				1230A3181DFFE2CF00627D92 /* NCDatabaseTypesViewController.swift */,
+			);
+			name = Database;
+			sourceTree = "<group>";
+		};
 		1256BE371DF1EF6600A2A24B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -402,6 +452,8 @@
 		1256BE511DF471EC00A2A24B /* NCMainMenuViewController */ = {
 			isa = PBXGroup;
 			children = (
+				1230A3121DFFE2CF00627D92 /* NCAccountsViewController.swift */,
+				1230A3391E001D7300627D92 /* NCAccountsCell.swift */,
 				1256BE521DF4725B00A2A24B /* NCMainMenuViewController.swift */,
 				1256BE5B1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift */,
 			);
@@ -411,7 +463,11 @@
 		1256BE561DF472D400A2A24B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1256BE571DF472E700A2A24B /* NCTableView.swift */,
+				1230A31B1DFFE2CF00627D92 /* NCLabel.swift */,
+				1230A31C1DFFE2CF00627D92 /* NCTableView.h */,
+				1230A31D1DFFE2CF00627D92 /* NCTableView.m */,
+				1230A31E1DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift */,
+				1230A31F1DFFE2CF00627D92 /* NCTableViewHeaderCell.swift */,
 				1256BE591DF4742F00A2A24B /* NCTableViewCell.swift */,
 				1256BF2D1DF48AA800A2A24B /* NCBackgroundView.swift */,
 			);
@@ -574,6 +630,7 @@
 			children = (
 				12AC8DAA1DEF59C800561A7A /* Utility */,
 				1256BE511DF471EC00A2A24B /* NCMainMenuViewController */,
+				1230A3361DFFE30400627D92 /* Database */,
 				12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */,
 				12AC8D951DEF58A100561A7A /* ViewController.swift */,
 				12AC8DBB1DF01BF100561A7A /* Test.h */,
@@ -602,7 +659,14 @@
 				1256BE491DF210B300A2A24B /* Formatters */,
 				1256BE4E1DF4659E00A2A24B /* NCSlideDownAnimationController */,
 				1256BE561DF472D400A2A24B /* Views */,
+				1230A3111DFFE2CF00627D92 /* Math.swift */,
+				1230A3191DFFE2CF00627D92 /* NCGate.swift */,
+				1230A31A1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift */,
 				12AC8DC51DF0894400561A7A /* NCDataManager.swift */,
+				1230A3211DFFE2CF00627D92 /* NSAttributedString+NC.swift */,
+				1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */,
+				1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */,
+				1230A3201DFFE2CF00627D92 /* NCTreeNode.swift */,
 				1256BE471DF1F3B100A2A24B /* Constants.swift */,
 			);
 			name = Utility;
@@ -855,38 +919,56 @@
 			files = (
 				12AC8DCA1DF08AE800561A7A /* NCStorage.xcdatamodeld in Sources */,
 				1256BE501DF465BC00A2A24B /* NCSlideDownAnimationController.swift in Sources */,
+				1230A3321DFFE2CF00627D92 /* NCTreeNode.swift in Sources */,
+				1230A3261DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift in Sources */,
 				1256BE391DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift in Sources */,
+				1230A32D1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift in Sources */,
 				1256BE3B1DF1EFA600A2A24B /* NCSplitViewController.swift in Sources */,
 				1256BE5A1DF4742F00A2A24B /* NCTableViewCell.swift in Sources */,
 				1256BE3D1DF1F01D00A2A24B /* NCNavigationController.swift in Sources */,
 				12AC8DB01DEF5B0500561A7A /* NCDatabase.xcdatamodeld in Sources */,
+				1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */,
 				12AC8DC21DF0833B00561A7A /* NCBinder.swift in Sources */,
 				12AC8DBD1DF01BF100561A7A /* Test.m in Sources */,
 				1256BE481DF1F3B100A2A24B /* Constants.swift in Sources */,
+				1230A32C1DFFE2CF00627D92 /* NCGate.swift in Sources */,
 				1256BE4B1DF210C500A2A24B /* NCTimeIntervalFormatter.swift in Sources */,
 				1256BE4D1DF4193000A2A24B /* NCUnitFormatter.swift in Sources */,
+				1230A3281DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift in Sources */,
 				12AC8DCE1DF08D9B00561A7A /* NCCache.xcdatamodeld in Sources */,
+				1230A32F1DFFE2CF00627D92 /* NCTableView.m in Sources */,
+				1230A32E1DFFE2CF00627D92 /* NCLabel.swift in Sources */,
 				1256BE441DF1F09900A2A24B /* NCSkill.swift in Sources */,
 				1256BE421DF1F07D00A2A24B /* NCCharacterAttributes.swift in Sources */,
 				12AC8DB21DEF5B6D00561A7A /* NCDatabase.swift in Sources */,
 				12AC8DD41DF09BDE00561A7A /* NCCacheRecord+NC.swift in Sources */,
 				1256BE461DF1F0B100A2A24B /* NCTrainingQueue.swift in Sources */,
-				1256BE581DF472E700A2A24B /* NCTableView.swift in Sources */,
+				1230A32A1DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift in Sources */,
 				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
 				12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */,
 				1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */,
 				12AC8DB91DF012BA00561A7A /* NCTreeController.swift in Sources */,
 				1256BE531DF4725B00A2A24B /* NCMainMenuViewController.swift in Sources */,
+				1230A3331DFFE2CF00627D92 /* NSAttributedString+NC.swift in Sources */,
 				12AC8DD21DF090A600561A7A /* NCCache.swift in Sources */,
 				12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */,
+				1230A3311DFFE2CF00627D92 /* NCTableViewHeaderCell.swift in Sources */,
+				1230A33A1E001D7300627D92 /* NCAccountsCell.swift in Sources */,
+				1230A3301DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift in Sources */,
 				12AC8DC61DF0894400561A7A /* NCDataManager.swift in Sources */,
 				1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */,
+				1230A3241DFFE2CF00627D92 /* Math.swift in Sources */,
+				1230A3251DFFE2CF00627D92 /* NCAccountsViewController.swift in Sources */,
+				1230A3271DFFE2CF00627D92 /* NCDatabaseGroupsViewController.swift in Sources */,
 				1256BE401DF1F06D00A2A24B /* NCCharacter.swift in Sources */,
 				1256BE5C1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift in Sources */,
 				12AC8DB61DEF6A3200561A7A /* NCDBImageValueTransformer.swift in Sources */,
+				1230A3341DFFE2CF00627D92 /* NSExpressionDescription+NC.swift in Sources */,
 				1256BF2E1DF48AA800A2A24B /* NCBackgroundView.swift in Sources */,
 				12AC8DB41DEF642600561A7A /* NCFetchedCollection.swift in Sources */,
+				1230A32B1DFFE2CF00627D92 /* NCDatabaseTypesViewController.swift in Sources */,
 				12AC8DE21DF0B5F200561A7A /* Dark.clr in Sources */,
+				1230A3291DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1012,7 +1094,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				INFOPLIST_FILE = Neocom/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.eveuniverse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1029,7 +1111,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				INFOPLIST_FILE = Neocom/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.eveuniverse;
 				PRODUCT_NAME = "$(TARGET_NAME)";

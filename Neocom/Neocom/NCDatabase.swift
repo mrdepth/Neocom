@@ -61,6 +61,10 @@ class NCDatabase {
 		return NCDBEveIcon.eveIcons(managedObjectContext: self.viewContext)
 	}()
 
+	private(set) lazy var mapSolarSystems: NCFetchedCollection<NCDBMapSolarSystem> = {
+		return NCDBMapSolarSystem.mapSolarSystems(managedObjectContext: self.viewContext)
+	}()
+
 }
 
 extension NCDBInvType {
@@ -106,5 +110,11 @@ extension NCDBEveIcon {
 extension NCDBDgmAttributeType {
 	class func dgmAttributeTypes(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBDgmAttributeType> {
 		return NCFetchedCollection<NCDBDgmAttributeType>(entityName: "DgmAttributeType", predicateFormat: "attributeID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+}
+
+extension NCDBMapSolarSystem {
+	class func mapSolarSystems(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBMapSolarSystem> {
+		return NCFetchedCollection<NCDBMapSolarSystem>(entityName: "MapSolarSystem", predicateFormat: "solarSystemID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }

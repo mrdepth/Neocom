@@ -19,7 +19,7 @@ class NCTimeIntervalFormatter: Formatter {
 	var precision: Precision = .seconds
 
 	class func localizedString(from timeInterval: TimeInterval, precision: Precision) -> String {
-		let t = UInt(timeInterval)
+		let t = UInt(timeInterval.clamped(to: 0...Double(Int.max)))
 		let d = t / (60 * 60 * 24);
 		let h = (t / (60 * 60)) % 24;
 		let m = (t / 60) % 60;
@@ -44,8 +44,7 @@ class NCTimeIntervalFormatter: Formatter {
 			string += "\(empty ? "" : " ")\(s)s"
 			empty = false
 		}
-
-		return string;
+		return empty ? "0s" : string;
 	}
 	
 	override func string(for obj: Any?) -> String? {

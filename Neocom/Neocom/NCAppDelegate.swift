@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 @UIApplicationMain
 class NCAppDelegate: UIResponder, UIApplicationDelegate {
@@ -43,6 +44,32 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	}
+	
+	func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+		
+		if OAuth2Handler.handleOpenURL(url, clientID: ESClientID, secretKey: ESSecretKey, completionHandler: { (result) in
+			switch result {
+			case let .success(token):
+				NCStorage.sharedStorage?.performBackgroundTask({ (managedObjectContext) in
+					
+					let account = NCAccount(entity: NSEntityDescription.entity(forEntityName: "Account", in: managedObjectContext)!, insertInto: managedObjectContext)
+					account.token = token
+					account.uuid = UUID().uuidString
+				})
+				
+				break
+			case let .failure(error):
+				break
+			}
+		}) {
+			return true
+		}
+		else {
+			return false
+		}
+	}
+	
+	//MARK: Private
 
 	private func setupAppearance() {
 		CSScheme.currentScheme = CSScheme.Dark

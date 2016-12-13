@@ -13,3 +13,9 @@ extension Int {
 		return Swift.max(to.lowerBound, Swift.min(to.upperBound, self))
 	}
 }
+
+extension Double {
+	func clamped(to: ClosedRange<Double>) -> Double {
+		return max(to.lowerBound, min(to.upperBound, self))
+	}
+}

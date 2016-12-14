@@ -21,6 +21,8 @@ class NCAccountCell: NCTableViewCell {
 	@IBOutlet weak var skillQueueLabel: UILabel!
 	@IBOutlet weak var trainingProgressView: UIProgressView!
 	
+	var progressHandler: NCProgressHandler?
+	
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		let layer = self.trainingProgressView.superview?.layer;

@@ -36,3 +36,11 @@ catch {
 }
 
 
+func hashCombine(seed: inout Int, value: Int) {
+	seed ^= value &+ Int(truncatingBitPattern: Int64(0x9e3779b9)) &+ (seed << 6) &+ (seed >> 2)
+}
+
+var seed = Int(0x8000000)
+
+hashCombine(seed: &seed, value: 123)
+hashCombine(seed: &seed, value: 321)

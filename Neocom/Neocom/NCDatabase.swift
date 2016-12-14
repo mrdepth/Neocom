@@ -65,6 +65,13 @@ class NCDatabase {
 		return NCDBMapSolarSystem.mapSolarSystems(managedObjectContext: self.viewContext)
 	}()
 
+	private(set) lazy var staStations: NCFetchedCollection<NCDBStaStation> = {
+		return NCDBStaStation.staStations(managedObjectContext: self.viewContext)
+	}()
+
+	private(set) lazy var mapDenormalize: NCFetchedCollection<NCDBMapDenormalize> = {
+		return NCDBMapDenormalize.mapDenormalize(managedObjectContext: self.viewContext)
+	}()
 }
 
 extension NCDBInvType {
@@ -116,5 +123,17 @@ extension NCDBDgmAttributeType {
 extension NCDBMapSolarSystem {
 	class func mapSolarSystems(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBMapSolarSystem> {
 		return NCFetchedCollection<NCDBMapSolarSystem>(entityName: "MapSolarSystem", predicateFormat: "solarSystemID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+}
+
+extension NCDBStaStation {
+	class func staStations(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBStaStation> {
+		return NCFetchedCollection<NCDBStaStation>(entityName: "StaStation", predicateFormat: "stationID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+}
+
+extension NCDBMapDenormalize {
+	class func mapDenormalize(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBMapDenormalize> {
+		return NCFetchedCollection<NCDBMapDenormalize>(entityName: "MapDenormalize", predicateFormat: "itemID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }

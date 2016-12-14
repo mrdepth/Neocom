@@ -47,10 +47,16 @@ enum NCDBUnitID: Int {
 	
 }
 
-extension NSNotification.Name {
-	public static let NCCurrentAccountChanged = NSNotification.Name("NCCurrentAccountChanged")
+extension Notification.Name {
+	public static let NCCurrentAccountChanged = Notification.Name("NCCurrentAccountChanged")
 }
 
 let ESClientID = "c2cc974798d4485d966fba773a8f7ef8"
 let ESSecretKey = "GNhSE9GJ6q3QiuPSTIJ8Q1J6on4ClM4v9zvc0Qzu"
 let ESCallbackURL = URL(string: "neocom://sso")!
+
+extension UserDefaults {
+	struct Key {
+		static let NCCurrentAccount = "NCCurrectAccount"
+	}
+}

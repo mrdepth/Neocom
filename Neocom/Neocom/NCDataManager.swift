@@ -22,101 +22,229 @@ typealias NCLoaderCompletion<T> = (_ result: Result<T>, _ cacheTime: TimeInterva
 class NCDataManager {
 	enum NCDataManagerError: Error {
 		case internalError
+		case invalidResponse
 		case noCacheData
 	}
-
+	let account: NCAccount?
+	let cachePolicy: URLRequest.CachePolicy
+	var observer: NSObjectProtocol?
+	lazy var api: ESAPI = {
+		if let account = self.account {
+			let token = account.token
+			self.observer = NotificationCenter.default.addObserver(forName: NSNotification.Name.OAuth2TokenDidRefresh, object: token, queue: OperationQueue.main) { note in
+				guard let token = note.object as? OAuth2Token else {return}
+				account.managedObjectContext?.perform {
+					account.token = token
+					if account.managedObjectContext?.hasChanges ?? false {
+						try? account.managedObjectContext?.save()
+					}
+				}
+			}
+			return ESAPI(token: token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: self.cachePolicy)
+		}
+		else {
+			return ESAPI(cachePolicy: self.cachePolicy)
+		}
+	}()
 	
-	init() {}
+	init(account: NCAccount?, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) {
+		self.account = account
+		self.cachePolicy = cachePolicy
+	}
 	
-	func character(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<ESCharacter>) -> Void) {
+	deinit {
+		if let observer = observer {
+			NotificationCenter.default.removeObserver(observer)
+		}
+	}
+	
+	func character(completionHandler: @escaping (NCResult<ESCharacter>) -> Void) {
 		loadFromCache(forKey: "ESCharacter", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
-			api?.character { result in
+			self.api.character { result in
 				completion(result, 3600.0)
-				api = nil
 			}
 		})
 	}
 	
-	func corporation(corporationID: Int64, account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<ESCorporation>) -> Void) {
+	func corporation(corporationID: Int64, completionHandler: @escaping (NCResult<ESCorporation>) -> Void) {
 		loadFromCache(forKey: "ESCoproration.\(corporationID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
-			api?.corporation(corporationID: corporationID) { result in
+			self.api.corporation(corporationID: corporationID) { result in
 				completion(result, 3600.0)
-				api = nil
 			}
 		})
 	}
 
-	func alliance(allianceID: Int64, account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<ESAlliance>) -> Void) {
+	func alliance(allianceID: Int64, completionHandler: @escaping (NCResult<ESAlliance>) -> Void) {
 		loadFromCache(forKey: "ESAlliance.\(allianceID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
-			api?.alliance(allianceID: allianceID) { result in
+			self.api.alliance(allianceID: allianceID) { result in
 				completion(result, 3600.0)
-				api = nil
 			}
 		})
 	}
 
-	func skillQueue(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<[ESSkillQueueItem]>) -> Void) {
+	func skillQueue(completionHandler: @escaping (NCResult<[ESSkillQueueItem]>) -> Void) {
 		loadFromCache(forKey: "ESSkillQueue", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
-			api?.character.skillQueue { result in
+			self.api.character.skillQueue { result in
 				completion(result, 3600.0)
-				api = nil
 			}
 		})
 	}
 	
-	func skills(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<ESSkills>) -> Void) {
+	func skills(completionHandler: @escaping (NCResult<ESSkills>) -> Void) {
 		loadFromCache(forKey: "ESSkills", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
-			api?.character.skills { result in
+			self.api.character.skills { result in
 				completion(result, 3600.0)
-				api = nil
 			}
 		})
 	}
 	
 	
-	func wallets(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<[ESWallet]>) -> Void) {
+	func wallets(completionHandler: @escaping (NCResult<[ESWallet]>) -> Void) {
 		loadFromCache(forKey: "ESWallets", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
-			api?.character.wallets { result in
+			self.api.character.wallets { result in
 				completion(result, 3600.0)
-				api = nil
 			}
 		})
 	}
 	
-	func characterLocation(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<ESCharacterLocation>) -> Void) {
+	func characterLocation(completionHandler: @escaping (NCResult<ESCharacterLocation>) -> Void) {
 		loadFromCache(forKey: "ESCharacterLocation", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
-			api?.character.location { result in
+			self.api.character.location { result in
 				completion(result, 3600.0)
-				api = nil
 			}
 		})
 	}
 
-	func characterShip(account: NCAccount, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<ESCharacterShip>) -> Void) {
+	func characterShip(completionHandler: @escaping (NCResult<ESCharacterShip>) -> Void) {
 		loadFromCache(forKey: "ESShip", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			var api: ESAPI? = ESAPI(token: account.token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: cachePolicy)
-			api?.character.ship { result in
+			self.api.character.ship { result in
 				completion(result, 3600.0)
-				api = nil
 			}
 		})
 	}
 	
-	func image(characterID: Int64, dimension: Int, cachePolicy:URLRequest.CachePolicy, completionHandler: @escaping (NCResult<Data>) -> Void) {
-		loadFromCache(forKey: "image.character.\(characterID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			var api: ESAPI? = ESAPI(cachePolicy: cachePolicy)
-			api?.image(characterID: characterID, dimension: dimension * Int(UIScreen.main.scale)) { result in
+	func clones(completionHandler: @escaping (NCResult<ESClones>) -> Void) {
+		loadFromCache(forKey: "ESClones", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.api.clones { result in
 				completion(result, 3600.0)
-				api = nil
 			}
 		})
+	}
+	
+	func image(characterID: Int64, dimension: Int, completionHandler: @escaping (NCResult<UIImage>) -> Void) {
+		loadFromCache(forKey: "image.character.\(characterID).\(dimension)", account: nil, cachePolicy: cachePolicy, completionHandler: { (result: NCResult<Data>) in
+			switch result {
+			case let .success(value: value, cacheRecordID: recordID):
+				if let image = UIImage(data: value, scale: UIScreen.main.scale) {
+					completionHandler(.success(value: image, cacheRecordID: recordID))
+				}
+				else {
+					completionHandler(.failure(NCDataManagerError.invalidResponse))
+				}
+			case let .failure(error):
+				completionHandler(.failure(error))
+			}
+		}, elseLoad: { completion in
+			self.api.image(characterID: characterID, dimension: dimension * Int(UIScreen.main.scale)) { result in
+				completion(result, 3600.0)
+			}
+		})
+	}
+	
+	func image(corporationID: Int64, dimension: Int, completionHandler: @escaping (NCResult<UIImage>) -> Void) {
+		loadFromCache(forKey: "image.corporation.\(corporationID).\(dimension)", account: nil, cachePolicy: cachePolicy, completionHandler: { (result: NCResult<Data>) in
+			switch result {
+			case let .success(value: value, cacheRecordID: recordID):
+				if let image = UIImage(data: value, scale: UIScreen.main.scale) {
+					completionHandler(.success(value: image, cacheRecordID: recordID))
+				}
+				else {
+					completionHandler(.failure(NCDataManagerError.invalidResponse))
+				}
+			case let .failure(error):
+				completionHandler(.failure(error))
+			}
+		}, elseLoad: { completion in
+			self.api.image(corporationID: corporationID, dimension: dimension * Int(UIScreen.main.scale)) { result in
+				completion(result, 3600.0)
+			}
+		})
+	}
+	
+	func image(allianceID: Int64, dimension: Int, completionHandler: @escaping (NCResult<UIImage>) -> Void) {
+		loadFromCache(forKey: "image.alliance.\(allianceID).\(dimension)", account: nil, cachePolicy: cachePolicy, completionHandler: { (result: NCResult<Data>) in
+			switch result {
+			case let .success(value: value, cacheRecordID: recordID):
+				if let image = UIImage(data: value, scale: UIScreen.main.scale) {
+					completionHandler(.success(value: image, cacheRecordID: recordID))
+				}
+				else {
+					completionHandler(.failure(NCDataManagerError.invalidResponse))
+				}
+			case let .failure(error):
+				completionHandler(.failure(error))
+			}
+		}, elseLoad: { completion in
+			self.api.image(allianceID: allianceID, dimension: dimension * Int(UIScreen.main.scale)) { result in
+				completion(result, 3600.0)
+			}
+		})
+	}
+	
+	func locations(ids: [Int64], completionHandler: @escaping ([Int64: NCLocation]) -> Void) {
+		var locations = [Int64: NCLocation]()
+		var missing = [Int64]()
+		
+		for id in ids {
+			if (66000000 < id && id < 66014933) { //staStations
+				if let station = NCDatabase.sharedDatabase?.staStations[Int(id) - 6000001] {
+					locations[id] = NCLocation(station)
+				}
+				else {
+					missing.append(id)
+				}
+			}
+			else if (60000000 < id && id < 61000000) { //staStations
+				if let station = NCDatabase.sharedDatabase?.staStations[Int(id)] {
+					locations[id] = NCLocation(station)
+				}
+				else {
+					missing.append(id)
+				}
+			}
+			else if let int = Int(exactly: id) { //mapDenormalize
+				
+				if let mapDenormalize = NCDatabase.sharedDatabase?.mapDenormalize[int] {
+					locations[id] = NCLocation(mapDenormalize)
+				}
+				else {
+					missing.append(id)
+				}
+			}
+			else {
+				missing.append(id)
+			}
+		}
+		if missing.count > 0 {
+			api.universe.names(ids: missing) { result in
+				switch result {
+				case let .success(value):
+					for name in value {
+						if let location = NCLocation(name) {
+							locations[name.id] = location
+						}
+					}
+				case .failure:
+					break
+				}
+				completionHandler(locations)
+			}
+		}
+		else {
+			DispatchQueue.main.async {
+				completionHandler(locations)
+			}
+		}
 	}
 	
 	//MARK: Private
@@ -210,9 +338,12 @@ class NCDataManager {
 						completionHandler(.success(value: object, cacheRecordID: record!.objectID))
 						if expired {
 							loader { (result, cacheTime) in
+								let _ = self
 								switch (result) {
 								case let .success(value):
-									cache.store(value as? NSSecureCoding, forKey: key, account: acc, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil, completionHandler: nil)
+									cache.store(value as? NSSecureCoding, forKey: key, account: acc, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { _ in
+										let _ = self
+									}
 								default:
 									break
 								}
@@ -226,9 +357,11 @@ class NCDataManager {
 							case let .success(value):
 								cache.store(value as? NSSecureCoding, forKey: key, account: acc, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
 									completionHandler(.success(value: value, cacheRecordID: objectID))
+									let _ = self
 								}
 							case let .failure(error):
 								completionHandler(.failure(error))
+								let _ = self
 								break
 							}
 						}
@@ -238,6 +371,10 @@ class NCDataManager {
 			}
 			break
 		}
+	}
+	
+	@objc private func didRefreshToken(_ note: Notification) {
+		
 	}
 	
 	/*

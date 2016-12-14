@@ -26,47 +26,119 @@ class NCMainMenuHeaderViewController: UIViewController {
 		characterImageView?.image = nil
 		corporationImageView?.image = nil
 		allianceImageView?.image = nil
+		allianceLabel?.superview?.isHidden = true
 		
-		/*if let account = NCAccount.currentAccount, let character = account.character {
-			let dataManager = NCDataManager()
-			if account.eveAPIKey.corporate {
-				if let corporationImageView = corporationImageView, character.corporationID > 0 {
-					dataManager.image(corporationID: character.corporationID, preferredSize: CGSize(width: 128, height:128), cachePolicy: .useProtocolCachePolicy, completionHandler: { (image, _, _) in
-						corporationImageView.image = image
-					})
-				}
-				if let allianceImageView = allianceImageView, character.allianceID > 0 {
-					dataManager.image(allianceID: character.allianceID, preferredSize: CGSize(width: 32, height:32), cachePolicy: .useProtocolCachePolicy, completionHandler: { (image, _, _) in
-						allianceImageView.image = image
-					})
-				}
-				else {
-					heightConstraint?.priority = 999
-				}
-			}
-			else {
-				if let characterImageView = characterImageView {
-					dataManager.image(characterID: character.characterID, preferredSize: CGSize(width: 128, height:128), cachePolicy: .useProtocolCachePolicy, completionHandler: { (image, _, _) in
-						characterImageView.image = image
-					})
-				}
+		if let account = NCAccount.current {
+			let progressHandler = NCProgressHandler(view: view, totalUnitCount: 6)
+			let dataManager = NCDataManager(account: account)
+			let dispatchGroup = DispatchGroup()
+			
+			
+			dispatchGroup.enter()
+			progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
+			dataManager.character { result in
+				switch result {
+					
+				case let .success(value: value, cacheRecordID: _):
+					self.characterNameLabel?.text = value.name
+					let corporationID = value.corporationID
+					
+					dispatchGroup.enter()
+					progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
+					dataManager.corporation(corporationID: corporationID) { result in
+						switch result {
+						case let .success(value: value, cacheRecordID: _):
+							self.corporationLabel?.text = value.corporationName
+							let allianceID = value.allianceID
+							if allianceID > 0 {
+								self.allianceLabel?.superview?.isHidden = false
+								dispatchGroup.enter()
+								progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
+								dataManager.alliance(allianceID: allianceID) { result in
+									switch result {
+									case let .success(value: value, cacheRecordID: _):
+										self.allianceLabel?.text = value.allianceName
+										
+										dispatchGroup.enter()
+										progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
+										dataManager.image(allianceID: allianceID, dimension: 32) { result in
+											switch result {
+											case let .success(value: value, cacheRecordID: _):
+												self.allianceImageView?.image = value
+											default:
+												break
+											}
+											dispatchGroup.leave()
+										}
+										progressHandler.progress.resignCurrent()
+									case let .failure(error):
+										self.allianceLabel?.text = error.localizedDescription
+									}
+									
+									dispatchGroup.leave()
+								}
+								progressHandler.progress.resignCurrent()
+							}
+							else {
+								self.allianceLabel?.superview?.isHidden = true
+							}
+							
+							dispatchGroup.enter()
+							progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
+							dataManager.image(corporationID: corporationID, dimension: 32) { result in
+								switch result {
+								case let .success(value: value, cacheRecordID: _):
+									self.corporationImageView?.image = value
+								default:
+									break
+								}
+								dispatchGroup.leave()
+							}
+							progressHandler.progress.resignCurrent()
+						case let .failure(error):
+							self.corporationLabel?.text = error.localizedDescription
+						}
 
-				if let corporationImageView = corporationImageView, character.corporationID > 0 {
-					dataManager.image(corporationID: character.corporationID, preferredSize: CGSize(width: 32, height:32), cachePolicy: .useProtocolCachePolicy, completionHandler: { (image, _, _) in
-						corporationImageView.image = image
-					})
+						dispatchGroup.leave()
+					}
+					progressHandler.progress.resignCurrent()
+					
+					dispatchGroup.enter()
+					progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
+					dataManager.image(characterID: account.characterID, dimension: 128) { result in
+						switch result {
+						case let .success(value: value, cacheRecordID: _):
+							self.characterImageView?.image = value
+						default:
+							break
+						}
+						dispatchGroup.leave()
+					}
+					progressHandler.progress.resignCurrent()
+					
+				case let .failure(error):
+					self.characterNameLabel?.text = error.localizedDescription
+					
 				}
-				if let allianceImageView = allianceImageView, character.allianceID > 0 {
-					dataManager.image(allianceID: character.allianceID, preferredSize: CGSize(width: 32, height:32), cachePolicy: .useProtocolCachePolicy, completionHandler: { (image, _, _) in
-						allianceImageView.image = image
-					})
-				}
+				
+				dispatchGroup.leave()
 			}
-		}*/
+			progressHandler.progress.resignCurrent()
+			
+			dispatchGroup.notify(queue: .main) {
+				progressHandler.finih()
+			}
+		}
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == "NCAccountsViewController", let delegate = self.parent as? UIViewControllerTransitioningDelegate {
+			segue.destination.transitioningDelegate = delegate
+		}
 	}
 
 	@IBAction func onLogout(_ sender: Any) {
-		NCAccount.currentAccount = nil
+		NCAccount.current = nil
 	}
 	
 	@IBAction func onAddAccount(_ sender: Any) {

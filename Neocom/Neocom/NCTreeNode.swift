@@ -38,7 +38,7 @@ class NCTreeSection: NCTreeNode {
 		super.init(cellIdentifier: cellIdentifier, nodeIdentifier: nodeIdentifier, children: children)
 	}
 
-	init(cellIdentifier: String, nodeIdentifier: String? = nil, attributedTitle: NSAttributedString, children: [NCTreeNode]? = nil) {
+	init(cellIdentifier: String, nodeIdentifier: String? = nil, attributedTitle: NSAttributedString?, children: [NCTreeNode]? = nil) {
 		self.title = nil
 		self.attributedTitle = attributedTitle
 		self.configurationHandler = nil

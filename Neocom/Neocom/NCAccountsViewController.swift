@@ -157,7 +157,14 @@ class NCAccountInfo: NSObject {
 				}))
 				
 				self.binder.bind("skillQueue", toObject: skillQueueRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { (value) -> Any? in
-					guard let skillQueue = value as? [ESSkillQueueItem] else {return skillQueueRecord.error?.localizedDescription ?? " "}
+					let date = Date()
+					guard let skillQueue = (value as? [ESSkillQueueItem])?.filter({
+						guard let finishDate = $0.finishDate else {return false}
+						return finishDate >= date
+					})
+						else {
+							return skillQueueRecord.error?.localizedDescription ?? " "
+					}
 					guard let skill = skillQueue.last else {return " "}
 					guard let endTime = skill.finishDate else {return " "}
 					return String(format: NSLocalizedString("%d skills in queue (%@)", comment: ""), skillQueue.count, NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .minutes))
@@ -430,6 +437,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				request.sortDescriptors = [NSSortDescriptor(key: "characterName", ascending: true)]
 				
 				let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "characterName", cacheName: nil)
+				results.delegate = self
 				try? results.performFetch()
 				self.results = results
 				self.accountsInfo = [:]
@@ -482,13 +490,24 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 		cell.trainingTimeLabel.text = " "
 		cell.skillQueueLabel.text = " "
 		cell.trainingProgressView.progress = 0
+		cell.progressHandler = nil
 		
 		let account = results!.object(at: indexPath)
 		
 		var accountInfo = accountsInfo[account.objectID]
 		if accountInfo == nil {
 			accountInfo = NCAccountInfo(account: account)
-			loadAccountInfo(accountInfo!)
+			
+			let progressHandler = NCProgressHandler(view: cell, totalUnitCount: 1)
+			cell.progressHandler = progressHandler
+			progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
+			loadAccountInfo(accountInfo!) {
+				progressHandler.finih()
+				if cell.progressHandler === progressHandler {
+					cell.progressHandler = nil
+				}
+			}
+			progressHandler.progress.resignCurrent()
 			accountsInfo[account.objectID] = accountInfo!
 		}
 		
@@ -506,6 +525,30 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
         return cell
     }
 	
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+	
+	override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+		return .delete
+	}
+	
+    // Override to support editing the table view.
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+			let account = results!.object(at: indexPath)
+			account.managedObjectContext?.delete(account)
+			try? account.managedObjectContext?.save()
+            //tableView.deleteRows(at: [indexPath], with: .fade)
+        } else if editingStyle == .insert {
+        }
+    }
+	
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		NCAccount.current = results!.object(at: indexPath)
+		dismiss(animated: true, completion: nil)
+	}
+
 	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		let bottom = max(scrollView.contentSize.height - scrollView.bounds.size.height, 0)
 		let y = scrollView.contentOffset.y - bottom
@@ -515,42 +558,43 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 			self.isInteractive = false
 		}
 	}
+	
+	// MARK: NSFetchedResultsControllerDelegate
+	
+	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		tableView.beginUpdates()
+	}
+	
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		tableView.endUpdates()
+	}
+	
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+		switch type {
+		case .insert:
+			tableView.insertSections(IndexSet(integer: sectionIndex), with: .automatic)
+		case .delete:
+			tableView.deleteSections(IndexSet(integer: sectionIndex), with: .automatic)
+		default:
+			break
+		}
+	}
+	
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+		switch type {
+		case .insert:
+			tableView.insertRows(at: [newIndexPath!], with: .automatic)
+		case .delete:
+			tableView.deleteRows(at: [indexPath!], with: .automatic)
+		case .update:
+			tableView.reloadRows(at: [indexPath!], with: .automatic)
+		case .move:
+			tableView.deleteRows(at: [indexPath!], with: .automatic)
+			tableView.insertRows(at: [newIndexPath!], with: .automatic)
+		}
+	}
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
+	
     /*
     // MARK: - Navigation
 
@@ -574,82 +618,115 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 	// MARK: Private
 	
 	private func loadAccountInfo(_ accountInfo: NCAccountInfo, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil) {
-		let progress = Progress(totalUnitCount: 2)
+		let progress = Progress(totalUnitCount: 8)
 		
-		let dataManager = NCDataManager()
+		let dataManager = NCDataManager(account: accountInfo.account, cachePolicy: cachePolicy)
 		
 		progress.becomeCurrent(withPendingUnitCount: 1)
-		dataManager.character(account: accountInfo.account, cachePolicy: cachePolicy) { result in
+		dataManager.character { result in
 			switch result {
 			case let .success(value: value, cacheRecordID: recordID):
+				let dispatchGroup = DispatchGroup()
 				accountInfo.characterRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 				
-				dataManager.corporation(corporationID: value.corporationID, account: accountInfo.account, cachePolicy: cachePolicy) { result in
+				dispatchGroup.enter()
+				progress.becomeCurrent(withPendingUnitCount: 1)
+				dataManager.corporation(corporationID: value.corporationID) { result in
 					switch result {
 					case let .success(value: _, cacheRecordID: recordID):
 						accountInfo.corporationRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case let .failure(error):
 						accountInfo.corporationError = error
 					}
+					dispatchGroup.leave()
 				}
+				progress.resignCurrent()
 				
-				dataManager.skillQueue(account: accountInfo.account, cachePolicy: cachePolicy) { result in
+				dispatchGroup.enter()
+				progress.becomeCurrent(withPendingUnitCount: 1)
+				dataManager.skillQueue { result in
 					switch result {
 					case let .success(value: _, cacheRecordID: recordID):
 						accountInfo.skillQueueRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case let .failure(error):
 						accountInfo.skillQueueError = error
 					}
+					dispatchGroup.leave()
 				}
-				
-				dataManager.wallets(account: accountInfo.account, cachePolicy: cachePolicy) { result in
+				progress.resignCurrent()
+
+				dispatchGroup.enter()
+				progress.becomeCurrent(withPendingUnitCount: 1)
+				dataManager.wallets { result in
 					switch result {
 					case let .success(value: _, cacheRecordID: recordID):
 						accountInfo.walletsRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case .failure:
 						break
 					}
+					dispatchGroup.leave()
 				}
-
-				dataManager.skills(account: accountInfo.account, cachePolicy: cachePolicy) { result in
+				progress.resignCurrent()
+				
+				dispatchGroup.enter()
+				progress.becomeCurrent(withPendingUnitCount: 1)
+				dataManager.skills { result in
 					switch result {
 					case let .success(value: _, cacheRecordID: recordID):
 						accountInfo.skillsRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case .failure:
 						break
 					}
+					dispatchGroup.leave()
 				}
+				progress.resignCurrent()
 				
-				dataManager.characterLocation(account: accountInfo.account, cachePolicy: cachePolicy) { result in
+				dispatchGroup.enter()
+				progress.becomeCurrent(withPendingUnitCount: 1)
+				dataManager.characterLocation { result in
 					switch result {
 					case let .success(value: _, cacheRecordID: recordID):
 						accountInfo.characterLocationRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case .failure:
 						break
 					}
+					dispatchGroup.leave()
 				}
-
-				dataManager.characterShip(account: accountInfo.account, cachePolicy: cachePolicy) { result in
+				progress.resignCurrent()
+				
+				dispatchGroup.enter()
+				progress.becomeCurrent(withPendingUnitCount: 1)
+				dataManager.characterShip { result in
 					switch result {
 					case let .success(value: _, cacheRecordID: recordID):
 						accountInfo.characterShipRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case .failure:
 						break
 					}
+					dispatchGroup.leave()
 				}
+				progress.resignCurrent()
 				
-				dataManager.image(characterID: accountInfo.account.characterID, dimension: 80,  cachePolicy: cachePolicy) { result in
+				dispatchGroup.enter()
+				progress.becomeCurrent(withPendingUnitCount: 1)
+				dataManager.image(characterID: accountInfo.account.characterID, dimension: 80) { result in
 					switch result {
 					case let .success(value: _, cacheRecordID: recordID):
 						accountInfo.characterImageRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case .failure:
 						break
 					}
+					dispatchGroup.leave()
+				}
+				progress.resignCurrent()
+				
+				dispatchGroup.notify(queue: .main) {
+					completionHandler?()
 				}
 
 			case let .failure(error):
 				accountInfo.characterError = error
-				progress.completedUnitCount += 1
+				progress.completedUnitCount = progress.totalUnitCount
 				completionHandler?()
 				break
 			}

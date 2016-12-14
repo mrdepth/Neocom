@@ -117,7 +117,7 @@
 				NSMutableArray* constraints = [NSMutableArray new];
 				[constraints addObject:[NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:bar attribute:NSLayoutAttributeLeading multiplier:1 constant:0]];
 				[constraints addObject:[NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:bar attribute:NSLayoutAttributeTrailing multiplier:1 constant:0]];
-				[constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[bar]-0-[progress]" options:0 metrics:nil views:@{@"progress": self.progressView, @"bar":bar}]];
+				[constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[bar]-0-[progress]" options:0 metrics:nil views:@{@"progress": self.progressView, @"bar":bar}]];
 				[NSLayoutConstraint activateConstraints:constraints];
 			}
 			[self.controller.view layoutIfNeeded];

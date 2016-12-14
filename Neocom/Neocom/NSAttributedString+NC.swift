@@ -60,4 +60,12 @@ extension NSAttributedString {
 		return s
 	}
 	
+	func uppercased() -> NSAttributedString {
+		let s = NSMutableAttributedString(string: self.string.uppercased())
+		self.enumerateAttributes(in: NSMakeRange(0, self.length), options: []) { (attr, range, _) in
+			s.addAttributes(attr, range: range)
+		}
+		return s
+	}
+	
 }

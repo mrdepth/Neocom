@@ -150,6 +150,11 @@
 		126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FF1E008AE00041B817 /* NCDatabase.sqlite */; };
 		126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157031E008E770041B817 /* NCRoundedImageView.swift */; };
 		126157061E0095380041B817 /* NCProgressHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157051E0095380041B817 /* NCProgressHandler.swift */; };
+		129E60EE1E0152A900B56EB8 /* NCAutoHeightLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */; };
+		129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */; };
+		129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */; };
+		129E60F61E018BD400B56EB8 /* NCLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F51E018BD400B56EB8 /* NCLocation.swift */; };
+		129E60F81E0196AD00B56EB8 /* UIColor+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F71E0196AD00B56EB8 /* UIColor+NC.swift */; };
 		12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */; };
 		12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D951DEF58A100561A7A /* ViewController.swift */; };
 		12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12AC8D9A1DEF58A100561A7A /* Assets.xcassets */; };
@@ -366,6 +371,11 @@
 		126156FF1E008AE00041B817 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = ../../dbTools/dbinit/NCDatabase.sqlite; sourceTree = "<group>"; };
 		126157031E008E770041B817 /* NCRoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRoundedImageView.swift; sourceTree = "<group>"; };
 		126157051E0095380041B817 /* NCProgressHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCProgressHandler.swift; sourceTree = "<group>"; };
+		129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAutoHeightLabel.swift; sourceTree = "<group>"; };
+		129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTintImageView.swift; sourceTree = "<group>"; };
+		129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
+		129E60F51E018BD400B56EB8 /* NCLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocation.swift; sourceTree = "<group>"; };
+		129E60F71E0196AD00B56EB8 /* UIColor+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+NC.swift"; sourceTree = "<group>"; };
 		12AC8D901DEF58A100561A7A /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAppDelegate.swift; sourceTree = "<group>"; };
 		12AC8D951DEF58A100561A7A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -479,6 +489,8 @@
 				1256BE591DF4742F00A2A24B /* NCTableViewCell.swift */,
 				1256BF2D1DF48AA800A2A24B /* NCBackgroundView.swift */,
 				126157031E008E770041B817 /* NCRoundedImageView.swift */,
+				129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */,
+				129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -615,12 +627,20 @@
 			path = Levels;
 			sourceTree = "<group>";
 		};
+		129E60F21E0186B200B56EB8 /* NCJumpClonesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */,
+			);
+			name = NCJumpClonesViewController;
+			sourceTree = "<group>";
+		};
 		12AC8D871DEF58A100561A7A = {
 			isa = PBXGroup;
 			children = (
 				12BC40A11DFF1EBB00657D40 /* Alamofire.framework */,
-				12AC8DDA1DF0B5E500561A7A /* clrconvert.xcodeproj */,
 				12AC8DA51DEF597400561A7A /* EVEAPI.framework */,
+				12AC8DDA1DF0B5E500561A7A /* clrconvert.xcodeproj */,
 				12AC8D921DEF58A100561A7A /* Neocom */,
 				12AC8D911DEF58A100561A7A /* Products */,
 			);
@@ -640,6 +660,7 @@
 				12AC8DAA1DEF59C800561A7A /* Utility */,
 				1256BE511DF471EC00A2A24B /* NCMainMenuViewController */,
 				1230A3361DFFE30400627D92 /* Database */,
+				129E60F21E0186B200B56EB8 /* NCJumpClonesViewController */,
 				12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */,
 				12AC8D951DEF58A100561A7A /* ViewController.swift */,
 				12AC8DBB1DF01BF100561A7A /* Test.h */,
@@ -674,12 +695,14 @@
 				1230A3191DFFE2CF00627D92 /* NCGate.swift */,
 				1230A31A1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift */,
 				12AC8DC51DF0894400561A7A /* NCDataManager.swift */,
+				129E60F51E018BD400B56EB8 /* NCLocation.swift */,
 				1230A3211DFFE2CF00627D92 /* NSAttributedString+NC.swift */,
 				1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */,
 				1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */,
 				1230A3201DFFE2CF00627D92 /* NCTreeNode.swift */,
 				1256BE471DF1F3B100A2A24B /* Constants.swift */,
 				126157051E0095380041B817 /* NCProgressHandler.swift */,
+				129E60F71E0196AD00B56EB8 /* UIColor+NC.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -764,7 +787,7 @@
 			attributes = {
 				CLASSPREFIX = NC;
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Artem Shimanski";
 				TargetAttributes = {
 					12AC8D8F1DEF58A100561A7A = {
@@ -932,11 +955,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				12AC8DCA1DF08AE800561A7A /* NCStorage.xcdatamodeld in Sources */,
+				129E60F81E0196AD00B56EB8 /* UIColor+NC.swift in Sources */,
 				1256BE501DF465BC00A2A24B /* NCSlideDownAnimationController.swift in Sources */,
 				1230A3321DFFE2CF00627D92 /* NCTreeNode.swift in Sources */,
 				1230A3261DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift in Sources */,
 				1256BE391DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift in Sources */,
 				1230A32D1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift in Sources */,
+				129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */,
 				1256BE3B1DF1EFA600A2A24B /* NCSplitViewController.swift in Sources */,
 				1256BE5A1DF4742F00A2A24B /* NCTableViewCell.swift in Sources */,
 				126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */,
@@ -947,6 +972,7 @@
 				12AC8DBD1DF01BF100561A7A /* Test.m in Sources */,
 				1256BE481DF1F3B100A2A24B /* Constants.swift in Sources */,
 				1230A32C1DFFE2CF00627D92 /* NCGate.swift in Sources */,
+				129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */,
 				1256BE4B1DF210C500A2A24B /* NCTimeIntervalFormatter.swift in Sources */,
 				1256BE4D1DF4193000A2A24B /* NCUnitFormatter.swift in Sources */,
 				1230A3281DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift in Sources */,
@@ -954,9 +980,11 @@
 				1230A32F1DFFE2CF00627D92 /* NCTableView.m in Sources */,
 				1230A32E1DFFE2CF00627D92 /* NCLabel.swift in Sources */,
 				1256BE441DF1F09900A2A24B /* NCSkill.swift in Sources */,
+				129E60EE1E0152A900B56EB8 /* NCAutoHeightLabel.swift in Sources */,
 				1256BE421DF1F07D00A2A24B /* NCCharacterAttributes.swift in Sources */,
 				12AC8DB21DEF5B6D00561A7A /* NCDatabase.swift in Sources */,
 				12AC8DD41DF09BDE00561A7A /* NCCacheRecord+NC.swift in Sources */,
+				129E60F61E018BD400B56EB8 /* NCLocation.swift in Sources */,
 				1256BE461DF1F0B100A2A24B /* NCTrainingQueue.swift in Sources */,
 				1230A32A1DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift in Sources */,
 				126157061E0095380041B817 /* NCProgressHandler.swift in Sources */,
@@ -1028,6 +1056,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1078,6 +1107,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

@@ -10,14 +10,17 @@
 			<string>Character Sheet</string>
 			<key>image</key>
 			<string>charactersheet</string>
-			<key>charAccessMask</key>
-			<integer>16777224</integer>
-			<key>corpAccessMask</key>
-			<integer>-1</integer>
 			<key>modal</key>
 			<false/>
 			<key>detailsKeyPath</key>
 			<string>skillPoints</string>
+			<key>scopes</key>
+			<array>
+				<string>esi-wallet.read_character_wallet.v1</string>
+				<string>esi-skills.read_skills.v1</string>
+				<string>esi-location.read_location.v1</string>
+				<string>esi-location.read_ship_type.v1</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -26,14 +29,14 @@
 			<string>Jump Clones</string>
 			<key>image</key>
 			<string>jumpclones</string>
-			<key>charAccessMask</key>
-			<integer>8</integer>
-			<key>corpAccessMask</key>
-			<integer>-1</integer>
 			<key>modal</key>
 			<false/>
 			<key>detailsKeyPath</key>
 			<string>jumpClones</string>
+			<key>scopes</key>
+			<array>
+				<string>esi-clones.read_clones.v1</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -42,12 +45,13 @@
 			<string>Skills</string>
 			<key>image</key>
 			<string>skills</string>
-			<key>charAccessMask</key>
-			<integer>262152</integer>
-			<key>corpAccessMask</key>
-			<integer>-1</integer>
 			<key>detailsKeyPath</key>
 			<string>skillQueueInfo</string>
+			<key>scopes</key>
+			<array>
+				<string>esi-skills.read_skillqueue.v1</string>
+				<string>esi-skills.read_skills.v1</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -56,12 +60,14 @@
 			<string>EVE Mail</string>
 			<key>image</key>
 			<string>evemail</string>
-			<key>charAccessMask</key>
-			<integer>3584</integer>
-			<key>corpAccessMask</key>
-			<integer>-1</integer>
 			<key>detailsKeyPath</key>
 			<string>unreadMails</string>
+			<key>scopes</key>
+			<array>
+				<string>esi-mail.read_mail.v1</string>
+				<string>esi-mail.send_mail.v1</string>
+				<string>esi-mail.organize_mail.v1</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -70,10 +76,11 @@
 			<string>Calendar Events</string>
 			<key>image</key>
 			<string>calendar</string>
-			<key>charAccessMask</key>
-			<integer>1048580</integer>
-			<key>corpAccessMask</key>
-			<integer>-1</integer>
+			<key>scopes</key>
+			<array>
+				<string>esi-calendar.read_calendar_events.v1</string>
+				<string>esi-calendar.respond_calendar_events.v1</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -82,12 +89,13 @@
 			<string>Wealth</string>
 			<key>image</key>
 			<string>folder</string>
-			<key>charAccessMask</key>
-			<integer>1</integer>
-			<key>corpAccessMask</key>
-			<integer>1</integer>
 			<key>detailsKeyPath</key>
 			<string>balance</string>
+			<key>scopes</key>
+			<array>
+				<string>esi-wallet.read_character_wallet.v1</string>
+				<string>esi-assets.read_assets.v1</string>
+			</array>
 		</dict>
 	</array>
 	<array>
@@ -98,10 +106,6 @@
 			<string>Database</string>
 			<key>image</key>
 			<string>items</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -110,10 +114,6 @@
 			<string>Certificates</string>
 			<key>image</key>
 			<string>certificates</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -122,10 +122,6 @@
 			<string>Market</string>
 			<key>image</key>
 			<string>market</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -134,10 +130,6 @@
 			<string>NPC</string>
 			<key>image</key>
 			<string>criminal</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -146,10 +138,6 @@
 			<string>Wormholes</string>
 			<key>image</key>
 			<string>terminate</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -158,10 +146,6 @@
 			<string>Incursions</string>
 			<key>image</key>
 			<string>incursions</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 	</array>
 	<array>
@@ -172,10 +156,6 @@
 			<string>Fitting</string>
 			<key>image</key>
 			<string>fitting</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -184,10 +164,10 @@
 			<string>Kill Reports</string>
 			<key>image</key>
 			<string>killreport</string>
-			<key>charAccessMask</key>
-			<integer>256</integer>
-			<key>corpAccessMask</key>
-			<integer>256</integer>
+			<key>scopes</key>
+			<array>
+				<string>esi-killmails.read_killmails.v1</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -196,10 +176,6 @@
 			<string>zKillBoard Reports</string>
 			<key>image</key>
 			<string>killrights</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 	</array>
 	<array>
@@ -210,10 +186,10 @@
 			<string>Assets</string>
 			<key>image</key>
 			<string>assets</string>
-			<key>charAccessMask</key>
-			<integer>2</integer>
-			<key>corpAccessMask</key>
-			<integer>2</integer>
+			<key>scopes</key>
+			<array>
+				<string>esi-assets.read_assets.v1</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -222,10 +198,8 @@
 			<string>Market Orders</string>
 			<key>image</key>
 			<string>marketdeliveries</string>
-			<key>charAccessMask</key>
-			<integer>4096</integer>
-			<key>corpAccessMask</key>
-			<integer>4096</integer>
+			<key>scopes</key>
+			<array/>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -234,10 +208,8 @@
 			<string>Contracts</string>
 			<key>image</key>
 			<string>contracts</string>
-			<key>charAccessMask</key>
-			<integer>67108864</integer>
-			<key>corpAccessMask</key>
-			<integer>8388608</integer>
+			<key>scopes</key>
+			<array/>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -246,10 +218,8 @@
 			<string>Wallet Transactions</string>
 			<key>image</key>
 			<string>journal</string>
-			<key>charAccessMask</key>
-			<integer>4194304</integer>
-			<key>corpAccessMask</key>
-			<integer>10485760</integer>
+			<key>scopes</key>
+			<array/>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -258,10 +228,8 @@
 			<string>Wallet Journal</string>
 			<key>image</key>
 			<string>wallet</string>
-			<key>charAccessMask</key>
-			<integer>2097152</integer>
-			<key>corpAccessMask</key>
-			<integer>1048576</integer>
+			<key>scopes</key>
+			<array/>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -270,10 +238,8 @@
 			<string>Industry Jobs</string>
 			<key>image</key>
 			<string>industry</string>
-			<key>charAccessMask</key>
-			<integer>128</integer>
-			<key>corpAccessMask</key>
-			<integer>128</integer>
+			<key>scopes</key>
+			<array/>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -282,10 +248,8 @@
 			<string>POS&apos;es</string>
 			<key>image</key>
 			<string>station</string>
-			<key>charAccessMask</key>
-			<integer>-1</integer>
-			<key>corpAccessMask</key>
-			<integer>655360</integer>
+			<key>scopes</key>
+			<array/>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -294,10 +258,6 @@
 			<string>Shopping List</string>
 			<key>image</key>
 			<string>note</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -306,10 +266,10 @@
 			<string>Planetaries</string>
 			<key>image</key>
 			<string>planets</string>
-			<key>charAccessMask</key>
-			<integer>2</integer>
-			<key>corpAccessMask</key>
-			<integer>-1</integer>
+			<key>scopes</key>
+			<array>
+				<string>esi-planets.manage_planets.v1</string>
+			</array>
 		</dict>
 	</array>
 	<array>
@@ -320,10 +280,6 @@
 			<string>News</string>
 			<key>image</key>
 			<string>newspost</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -332,10 +288,6 @@
 			<string>About</string>
 			<key>image</key>
 			<string>info</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -344,10 +296,6 @@
 			<string>Remove Ads</string>
 			<key>image</key>
 			<string>votes</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -356,10 +304,6 @@
 			<string>Settings</string>
 			<key>image</key>
 			<string>settings</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>url</key>
@@ -368,10 +312,6 @@
 			<string>Rate &amp; Review</string>
 			<key>image</key>
 			<string>achievements</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>url</key>
@@ -380,10 +320,6 @@
 			<string>Follow us on Facebook</string>
 			<key>image</key>
 			<string>facebook</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>url</key>
@@ -392,10 +328,6 @@
 			<string>Follow us on VK</string>
 			<key>image</key>
 			<string>vk</string>
-			<key>charAccessMask</key>
-			<integer>0</integer>
-			<key>corpAccessMask</key>
-			<integer>0</integer>
 		</dict>
 	</array>
 </array>

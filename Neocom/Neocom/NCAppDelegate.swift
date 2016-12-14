@@ -15,9 +15,13 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
 
-
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+//		let directory = URL.init(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]).appendingPathComponent("com.shimanski.eveuniverse.NCCache")
+//		let url = directory.appendingPathComponent("store.sqlite")
+//		try? FileManager.default.removeItem(at: url)
+
+		
 		setupAppearance()
 		
 		return true

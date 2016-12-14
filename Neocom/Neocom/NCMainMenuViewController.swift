@@ -11,14 +11,90 @@ import EVEAPI
 import CoreData
 
 class NCMainMenuDetails: NSObject {
-	let account: NCAccount?
-	var binder: NCBinder!
+	let account: NCAccount
 	dynamic var skillPoints: String?
 	dynamic var skillQueueInfo: String?
 	dynamic var unreadMails: String?
 	dynamic var balance: String?
 	dynamic var jumpClones: String?
 
+	private(set) lazy var binder: NCBinder = {
+		return NCBinder(target: self)
+	}()
+	
+	var skillsRecord: NCCacheRecord? {
+		didSet {
+			if let skillsRecord = skillsRecord {
+				self.binder.bind("skillPoints", toObject: skillsRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
+					guard let skills = value as? ESSkills else {return skillsRecord.error?.localizedDescription ?? nil}
+					return NCUnitFormatter.localizedString(from: Double(skills.totalSP), unit: .skillPoints, style: .full)
+				}))
+			}
+			else {
+				self.skillPoints = nil
+			}
+		}
+	}
+	
+	var clonesRecord: NCCacheRecord? {
+		didSet {
+			if let clonesRecord = clonesRecord {
+				self.binder.bind("jumpClones", toObject: clonesRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
+					guard let clones = value as? ESClones else {return clonesRecord.error?.localizedDescription ?? nil}
+					let t = 3600 * 24 + clones.lastJumpDate.timeIntervalSinceNow
+					return String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: ""))
+				}))
+			}
+			else {
+				self.jumpClones = nil
+			}
+		}
+	}
+	
+	var skillQueueRecord: NCCacheRecord? {
+		didSet {
+			if let skillQueueRecord = skillQueueRecord {
+				self.binder.bind("skillQueueInfo", toObject: skillQueueRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
+					let date = Date()
+					
+					guard let skillQueue = (value as? [ESSkillQueueItem])?.filter({
+						guard let finishDate = $0.finishDate else {return false}
+						return finishDate >= date
+					}),
+							let skill = skillQueue.last,
+							let endTime = skill.finishDate
+						else
+					{
+						return NSLocalizedString("No skills in training", comment: "")
+					}
+					
+					return String(format: NSLocalizedString("%d skills in queue (%@)", comment: ""), skillQueue.count, NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .minutes))
+				}))
+			}
+			else {
+				self.skillQueueInfo = nil
+			}
+		}
+	}
+	
+	var walletsRecord: NCCacheRecord? {
+		didSet {
+			if let walletsRecord = walletsRecord {
+				self.binder.bind("balance", toObject: walletsRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
+					guard let wallets = value as? [ESWallet] else {return nil}
+					var wealth = 0.0
+					for wallet in wallets {
+						wealth += wallet.balance
+					}
+					return NCUnitFormatter.localizedString(from: wealth, unit: .isk, style: .full)
+				}))
+			}
+			else {
+				self.balance = nil
+			}
+		}
+	}
+	
 	/*var characterSheet: NCCacheRecord? {
 		didSet {
 			if let characterSheet = characterSheet {
@@ -110,7 +186,6 @@ class NCMainMenuDetails: NSObject {
 	init(account: NCAccount) {
 		self.account = account
 		super.init()
-		self.binder = NCBinder(target: self)
 	}
 }
 
@@ -254,7 +329,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	
 	private func updateHeader() {
 		let identifier: String
-		if let account = NCAccount.currentAccount {
+		if let account = NCAccount.current {
 			//identifier = account.eveAPIKey.corporate ? "NCMainMenuCorporationHeaderViewController" : "NCMainMenuCharacterHeaderViewController"
 			identifier = "NCMainMenuCharacterHeaderViewController"
 		}
@@ -301,34 +376,73 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	}
 	
 	private func loadMenu() {
-		/*let corporate: Bool
-		let apiKeyAccessMask: Int
-		if let account = NCAccount.currentAccount {
-			corporate = account.eveAPIKey.corporate
-			apiKeyAccessMask = account.apiKey!.apiKeyInfo!.key.accessMask
-		}
-		else {
-			corporate = false
-			apiKeyAccessMask = 0
-		}
-		let accessMaskKey = corporate ? "corpAccessMask" : "charAccessMask"
+		let currentScopes = Set<String>((NCAccount.current?.scopes as? Set<NCScope>)?.map { return $0.name!} ?? [])
+		
 		let mainMenu = NSArray.init(contentsOf: Bundle.main.url(forResource: "mainMenu", withExtension: "plist")!) as! [[[String: Any]]]
 		var sections = [[[String: Any]]]()
 		for section in mainMenu {
 			let rows = section.filter({ (row) -> Bool in
-				if let accessMask = row[accessMaskKey] as? Int64, accessMask & apiKeyAccessMask == accessMask {
-					return true
+				if let scopes = row["scopes"] as? [String] {
+					return Set(scopes).isSubset(of: currentScopes)
 				}
 				else {
-					return false
+					return true
 				}
 			})
 			if rows.count > 0 {
 				sections.append(rows)
 			}
 		}
-		
-		self.mainMenu = sections*/
+		self.mainMenu = sections
+		updateAccountInfo()
+	}
+	
+	private func updateAccountInfo() {
+		if let account = NCAccount.current {
+			let mainMenuDetails = NCMainMenuDetails(account: account)
+			self.mainMenuDetails = mainMenuDetails
+			let dataManager = NCDataManager(account: account)
+			
+			dataManager.skills { result in
+				switch result {
+				case let .success(value: _, cacheRecordID: recordID):
+					mainMenuDetails.skillsRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+				default:
+					break
+				}
+			}
+
+			dataManager.skillQueue { result in
+				switch result {
+				case let .success(value: _, cacheRecordID: recordID):
+					mainMenuDetails.skillQueueRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+				default:
+					break
+				}
+			}
+
+			dataManager.clones { result in
+				switch result {
+				case let .success(value: _, cacheRecordID: recordID):
+					mainMenuDetails.clonesRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+				default:
+					break
+				}
+			}
+			
+			dataManager.wallets { result in
+				switch result {
+				case let .success(value: _, cacheRecordID: recordID):
+					mainMenuDetails.walletsRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+				default:
+					break
+				}
+			}
+			
+		}
+		else {
+			self.mainMenuDetails = nil
+		}
 	}
 
 }

@@ -56,7 +56,8 @@ class NCLocation {
 	var displayName: NSAttributedString {
 		let s = NSMutableAttributedString()
 		if let security = self.security {
-			s.append(NSAttributedString(string: "\(security)" , attributes: [NSForegroundColorAttributeName: UIColor(security: security)]))
+			
+			s.append(NSAttributedString(string: String(format: "%.1f ", security) , attributes: [NSForegroundColorAttributeName: UIColor(security: security)]))
 		}
 		if let solarSystemName = solarSystemName, let stationName = stationName {
 			s.append(NSAttributedString(string: "\(solarSystemName) / \(stationName)"))

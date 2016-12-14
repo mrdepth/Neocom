@@ -50,8 +50,13 @@ class NCTreeControllerNode: NSObject {
 		
 		let n: Int
 		if let childrenKeyPath = self.childrenKeyPath {
-			if let item = self.item, let array = item.value(forKeyPath: childrenKeyPath) as? [Any] {
-				n = array.count
+			if let item = self.item {
+				if let array = item.value(forKeyPath: childrenKeyPath) as? [Any] {
+					n = array.count
+				}
+				else {
+					n = 0
+				}
 			}
 			else {
 				n = self.treeController.content?.count ?? 0

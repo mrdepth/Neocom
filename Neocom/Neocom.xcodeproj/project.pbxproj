@@ -150,6 +150,9 @@
 		126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FF1E008AE00041B817 /* NCDatabase.sqlite */; };
 		126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157031E008E770041B817 /* NCRoundedImageView.swift */; };
 		126157061E0095380041B817 /* NCProgressHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157051E0095380041B817 /* NCProgressHandler.swift */; };
+		1261570A1E01D2250041B817 /* NCCharacterSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157091E01D2250041B817 /* NCCharacterSheetViewController.swift */; };
+		1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1261570C1E01D2F70041B817 /* NCSkillQueueViewController.swift */; };
+		1261570F1E01D3410041B817 /* NCManagedObjectObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1261570E1E01D3410041B817 /* NCManagedObjectObserver.swift */; };
 		129E60EE1E0152A900B56EB8 /* NCAutoHeightLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */; };
 		129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */; };
 		129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */; };
@@ -371,6 +374,9 @@
 		126156FF1E008AE00041B817 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = ../../dbTools/dbinit/NCDatabase.sqlite; sourceTree = "<group>"; };
 		126157031E008E770041B817 /* NCRoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRoundedImageView.swift; sourceTree = "<group>"; };
 		126157051E0095380041B817 /* NCProgressHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCProgressHandler.swift; sourceTree = "<group>"; };
+		126157091E01D2250041B817 /* NCCharacterSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCCharacterSheetViewController.swift; sourceTree = "<group>"; };
+		1261570C1E01D2F70041B817 /* NCSkillQueueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillQueueViewController.swift; sourceTree = "<group>"; };
+		1261570E1E01D3410041B817 /* NCManagedObjectObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCManagedObjectObserver.swift; sourceTree = "<group>"; };
 		129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAutoHeightLabel.swift; sourceTree = "<group>"; };
 		129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTintImageView.swift; sourceTree = "<group>"; };
 		129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
@@ -627,6 +633,22 @@
 			path = Levels;
 			sourceTree = "<group>";
 		};
+		126157081E01D2080041B817 /* NCCharacterSheetViewController */ = {
+			isa = PBXGroup;
+			children = (
+				126157091E01D2250041B817 /* NCCharacterSheetViewController.swift */,
+			);
+			name = NCCharacterSheetViewController;
+			sourceTree = "<group>";
+		};
+		1261570B1E01D2E30041B817 /* NCSkillQueueViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1261570C1E01D2F70041B817 /* NCSkillQueueViewController.swift */,
+			);
+			name = NCSkillQueueViewController;
+			sourceTree = "<group>";
+		};
 		129E60F21E0186B200B56EB8 /* NCJumpClonesViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -660,7 +682,9 @@
 				12AC8DAA1DEF59C800561A7A /* Utility */,
 				1256BE511DF471EC00A2A24B /* NCMainMenuViewController */,
 				1230A3361DFFE30400627D92 /* Database */,
+				126157081E01D2080041B817 /* NCCharacterSheetViewController */,
 				129E60F21E0186B200B56EB8 /* NCJumpClonesViewController */,
+				1261570B1E01D2E30041B817 /* NCSkillQueueViewController */,
 				12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */,
 				12AC8D951DEF58A100561A7A /* ViewController.swift */,
 				12AC8DBB1DF01BF100561A7A /* Test.h */,
@@ -703,6 +727,7 @@
 				1256BE471DF1F3B100A2A24B /* Constants.swift */,
 				126157051E0095380041B817 /* NCProgressHandler.swift */,
 				129E60F71E0196AD00B56EB8 /* UIColor+NC.swift */,
+				1261570E1E01D3410041B817 /* NCManagedObjectObserver.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -997,14 +1022,17 @@
 				12AC8DD21DF090A600561A7A /* NCCache.swift in Sources */,
 				12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */,
 				1230A3311DFFE2CF00627D92 /* NCTableViewHeaderCell.swift in Sources */,
+				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
 				1230A33A1E001D7300627D92 /* NCAccountsCell.swift in Sources */,
 				1230A3301DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift in Sources */,
 				12AC8DC61DF0894400561A7A /* NCDataManager.swift in Sources */,
 				1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */,
 				1230A3241DFFE2CF00627D92 /* Math.swift in Sources */,
 				1230A3251DFFE2CF00627D92 /* NCAccountsViewController.swift in Sources */,
+				1261570A1E01D2250041B817 /* NCCharacterSheetViewController.swift in Sources */,
 				1230A3271DFFE2CF00627D92 /* NCDatabaseGroupsViewController.swift in Sources */,
 				1256BE401DF1F06D00A2A24B /* NCCharacter.swift in Sources */,
+				1261570F1E01D3410041B817 /* NCManagedObjectObserver.swift in Sources */,
 				1256BE5C1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift in Sources */,
 				12AC8DB61DEF6A3200561A7A /* NCDBImageValueTransformer.swift in Sources */,
 				1230A3341DFFE2CF00627D92 /* NSExpressionDescription+NC.swift in Sources */,

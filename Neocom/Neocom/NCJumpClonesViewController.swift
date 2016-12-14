@@ -19,6 +19,13 @@ class NCJumpCloneRow: NCTreeRow {
 		self.image = image
 		super.init(cellIdentifier: cellIdentifier)
 	}
+	
+	override func configure(cell: UITableViewCell) {
+		let cell = cell as? NCTableViewDefaultCell
+		cell?.titleLabel?.text = title
+		cell?.subtitleLabel?.text = subtitle
+		cell?.imageView?.image = image
+	}
 }
 
 class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegate {
@@ -97,7 +104,7 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 							if rows.count == 0 {
 								rows.append(NCJumpCloneRow(cellIdentifier: "PlaceholderCell", title: NSLocalizedString("NO IMPLANTS INSTALLED", comment: ""), subtitle: nil, image: nil))
 							}
-							sections.append(NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: nil, attributedTitle: locations[jumpClone.location.locationID]?.displayName, children: rows))
+							sections.append(NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: nil, attributedTitle: locations[jumpClone.location.locationID]?.displayName.uppercased(), children: rows))
 						}
 						
 						self.treeController.content = sections

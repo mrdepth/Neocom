@@ -107,7 +107,7 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 							rows.append(NCJumpCloneRow(cellIdentifier: "Cell",
 							                           title: implant?.typeName,
 							                           subtitle: "\(titles[attributeID]!) +\(Int(bonus))",
-								image: (implant?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image) as? UIImage))
+								image: implant?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image))
 						}
 					}
 				}

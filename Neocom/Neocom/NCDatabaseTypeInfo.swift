@@ -99,11 +99,11 @@ class NCDatabaseTypeInfo {
 						
 					case .attributeID:
 						guard let attributeType = NCDBDgmAttributeType.dgmAttributeTypes(managedObjectContext: managedObjectContext)[Int(attribute.value)] else {break}
-						rows.append(NCDatabaseTypeInfoRow(title: title, subtitle: attributeType.displayName ?? attributeType.attributeName ?? "", image: attributeType.icon?.image?.image as? UIImage, accessory: nil, object: nil))
+						rows.append(NCDatabaseTypeInfoRow(title: title, subtitle: attributeType.displayName ?? attributeType.attributeName ?? "", image: attributeType.icon?.image?.image, accessory: nil, object: nil))
 						
 					case .groupID:
 						guard let group = NCDBInvGroup.invGroups(managedObjectContext: managedObjectContext)[Int(attribute.value)] else {break}
-						let image = (attributeType.icon?.image?.image ?? group.icon?.image?.image) as? UIImage
+						let image = attributeType.icon?.image?.image ?? group.icon?.image?.image
 						rows.append(NCDatabaseTypeInfoRow(title: title, subtitle: group.groupName ?? "", image: image, accessory: nil, object: group.objectID))
 						break
 					case .sizeClass:
@@ -116,13 +116,13 @@ class NCDatabaseTypeInfo {
 						default:
 							sizeClass = NSLocalizedString("Large", comment: "")
 						}
-						rows.append(NCDatabaseTypeInfoRow(title: title, subtitle: sizeClass, image: attributeType.icon?.image?.image as? UIImage, accessory: nil, object: nil))
+						rows.append(NCDatabaseTypeInfoRow(title: title, subtitle: sizeClass, image: attributeType.icon?.image?.image, accessory: nil, object: nil))
 					case .bonus:
 						let bonus = "+" + NCUnitFormatter.localizedString(from: Double(attribute.value), unit: .none, style: .full)
-						rows.append(NCDatabaseTypeInfoRow(title: title, subtitle: bonus, image: attributeType.icon?.image?.image as? UIImage, accessory: nil, object: nil))
+						rows.append(NCDatabaseTypeInfoRow(title: title, subtitle: bonus, image: attributeType.icon?.image?.image, accessory: nil, object: nil))
 					case .boolean:
 						let boolean = Int(attribute.value) == 0 ? NSLocalizedString("No", comment: "") : NSLocalizedString("Yes", comment: "")
-						rows.append(NCDatabaseTypeInfoRow(title: title, subtitle: boolean, image: attributeType.icon?.image?.image as? UIImage, accessory: nil, object: nil))
+						rows.append(NCDatabaseTypeInfoRow(title: title, subtitle: boolean, image: attributeType.icon?.image?.image, accessory: nil, object: nil))
 					default:
 						break
 					}

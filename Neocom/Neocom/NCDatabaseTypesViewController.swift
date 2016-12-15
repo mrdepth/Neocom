@@ -102,7 +102,7 @@ class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdat
 			icon = nil
 		}
 		
-		cell.iconView?.image = (icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image) as? UIImage
+		cell.iconView?.image = icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		return cell
 	}
 	

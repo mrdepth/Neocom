@@ -63,7 +63,7 @@ class NCDatabaseGroupsViewController: UITableViewController, UISearchResultsUpda
 		let object = results?.object(at: indexPath)
 		cell.object = object
 		cell.titleLabel?.text = object?.groupName
-		cell.iconView?.image = (object?.icon?.image?.image ?? NCDBEveIcon.defaultGroup.image?.image) as? UIImage
+		cell.iconView?.image = object?.icon?.image?.image ?? NCDBEveIcon.defaultGroup.image?.image
 		return cell
 	}
 	

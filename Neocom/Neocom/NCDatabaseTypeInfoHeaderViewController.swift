@@ -20,6 +20,6 @@ class NCDatabaseTypeInfoHeaderViewController: UIViewController {
 		super.viewDidLoad()
 		titleLabel.text = type?.typeName
 		textView.attributedText = type?.typeDescription?.text?.withFont(textView.font!, textColor: textView.textColor!)
-		imageView.image = (type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image) as? UIImage
+		imageView.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 	}
 }

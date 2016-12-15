@@ -58,7 +58,7 @@ class NCDatabaseCategoriesViewController: UITableViewController, UISearchResults
 		let object = results?.object(at: indexPath)
 		cell.object = object
 		cell.titleLabel?.text = object?.categoryName
-		cell.iconView?.image = (object?.icon?.image?.image ?? NCDBEveIcon.defaultCategory.image?.image) as? UIImage
+		cell.iconView?.image = object?.icon?.image?.image ?? NCDBEveIcon.defaultCategory.image?.image
 		return cell
 	}
 	

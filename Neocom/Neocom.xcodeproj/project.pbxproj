@@ -435,10 +435,10 @@
 			children = (
 				1230A3131DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift */,
 				1230A3141DFFE2CF00627D92 /* NCDatabaseGroupsViewController.swift */,
-				1230A3151DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift */,
 				1230A3161DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift */,
 				1230A3171DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift */,
 				1230A3181DFFE2CF00627D92 /* NCDatabaseTypesViewController.swift */,
+				1230A3151DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift */,
 			);
 			name = Database;
 			sourceTree = "<group>";

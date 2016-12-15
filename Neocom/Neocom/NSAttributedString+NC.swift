@@ -12,7 +12,7 @@ extension NSAttributedString {
 	@nonobjc private static var roman = ["0","I","II","III","IV","V"]
 	
 	convenience init(skillName: String, level: Int) {
-		let s = NSMutableAttributedString(string: skillName)
+		let s = NSMutableAttributedString(string: skillName, attributes: [NSForegroundColorAttributeName: UIColor.white])
 		let level = level.clamped(to: 0...5)
 		s.append(NSAttributedString(string: " \(NSAttributedString.roman[level])", attributes: [NSForegroundColorAttributeName: UIColor.caption]))
 		self.init(attributedString: s)

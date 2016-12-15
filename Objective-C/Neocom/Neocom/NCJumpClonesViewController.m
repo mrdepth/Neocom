@@ -27,6 +27,7 @@
 
 @implementation NCJumpClonesViewController
 
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	

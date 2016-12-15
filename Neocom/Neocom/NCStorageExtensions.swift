@@ -70,8 +70,27 @@ extension NCAccount {
 				scope.name = name
 				scope.account = self
 			}
-
 		}
 	}
 	
+}
+
+extension NCSetting {
+	class func setting(key: String) -> NCSetting? {
+		guard let context = NCStorage.sharedStorage?.viewContext else {return nil}
+		
+		let request = NSFetchRequest<NCSetting>(entityName: "Setting")
+		request.predicate = NSPredicate(format: "key == %@", key)
+		request.fetchLimit = 1
+		
+		if let setting = (try? context.fetch(request))?.first {
+			return setting
+		}
+		else {
+			let setting = NCSetting(entity: NSEntityDescription.entity(forEntityName: "Setting", in: context)!, insertInto: context)
+			setting.key = key
+			//setting.value = defaultValue as? NSObject
+			return setting
+		}
+	}
 }

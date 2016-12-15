@@ -47,6 +47,9 @@ enum NCDBUnitID: Int {
 	
 }
 
+enum NCDBCategoryID: Int {
+	case skills = 16
+}
 extension Notification.Name {
 	public static let NCCurrentAccountChanged = Notification.Name("NCCurrentAccountChanged")
 }

@@ -25,7 +25,7 @@
 		1230A3331DFFE2CF00627D92 /* NSAttributedString+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3211DFFE2CF00627D92 /* NSAttributedString+NC.swift */; };
 		1230A3341DFFE2CF00627D92 /* NSExpressionDescription+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */; };
 		1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */; };
-		1230A33A1E001D7300627D92 /* NCAccountsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3391E001D7300627D92 /* NCAccountsCell.swift */; };
+		1230A33A1E001D7300627D92 /* NCTableViewAccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3391E001D7300627D92 /* NCTableViewAccountCell.swift */; };
 		1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE331DF1C38200A2A24B /* NCStorage.swift */; };
 		1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */; };
 		1256BE391DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */; };
@@ -158,6 +158,10 @@
 		129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */; };
 		129E60F61E018BD400B56EB8 /* NCLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F51E018BD400B56EB8 /* NCLocation.swift */; };
 		129E60F81E0196AD00B56EB8 /* UIColor+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F71E0196AD00B56EB8 /* UIColor+NC.swift */; };
+		129E61021E0287F500B56EB8 /* NCTableViewSkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61011E0287F500B56EB8 /* NCTableViewSkillCell.swift */; };
+		129E61041E028B3900B56EB8 /* String+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61031E028B3900B56EB8 /* String+NC.swift */; };
+		129E61061E0291FD00B56EB8 /* NCSkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61051E0291FD00B56EB8 /* NCSkillsViewController.swift */; };
+		129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61071E029BCB00B56EB8 /* Array+NC.swift */; };
 		12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */; };
 		12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D951DEF58A100561A7A /* ViewController.swift */; };
 		12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12AC8D9A1DEF58A100561A7A /* Assets.xcassets */; };
@@ -249,7 +253,7 @@
 		1230A3211DFFE2CF00627D92 /* NSAttributedString+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+NC.swift"; sourceTree = "<group>"; };
 		1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSExpressionDescription+NC.swift"; sourceTree = "<group>"; };
 		1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+NC.swift"; sourceTree = "<group>"; };
-		1230A3391E001D7300627D92 /* NCAccountsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsCell.swift; sourceTree = "<group>"; };
+		1230A3391E001D7300627D92 /* NCTableViewAccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTableViewAccountCell.swift; sourceTree = "<group>"; };
 		1256BE331DF1C38200A2A24B /* NCStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorage.swift; sourceTree = "<group>"; };
 		1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorageExtensions.swift; sourceTree = "<group>"; };
 		1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBannerNavigationViewController.swift; sourceTree = "<group>"; };
@@ -382,6 +386,10 @@
 		129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
 		129E60F51E018BD400B56EB8 /* NCLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocation.swift; sourceTree = "<group>"; };
 		129E60F71E0196AD00B56EB8 /* UIColor+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+NC.swift"; sourceTree = "<group>"; };
+		129E61011E0287F500B56EB8 /* NCTableViewSkillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTableViewSkillCell.swift; sourceTree = "<group>"; };
+		129E61031E028B3900B56EB8 /* String+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+NC.swift"; sourceTree = "<group>"; };
+		129E61051E0291FD00B56EB8 /* NCSkillsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillsViewController.swift; sourceTree = "<group>"; };
+		129E61071E029BCB00B56EB8 /* Array+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+NC.swift"; sourceTree = "<group>"; };
 		12AC8D901DEF58A100561A7A /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAppDelegate.swift; sourceTree = "<group>"; };
 		12AC8D951DEF58A100561A7A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -473,26 +481,20 @@
 			name = NCSlideDownAnimationController;
 			sourceTree = "<group>";
 		};
-		1256BE511DF471EC00A2A24B /* NCMainMenuViewController */ = {
+		1256BE511DF471EC00A2A24B /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
 				1230A3121DFFE2CF00627D92 /* NCAccountsViewController.swift */,
-				1230A3391E001D7300627D92 /* NCAccountsCell.swift */,
 				1256BE521DF4725B00A2A24B /* NCMainMenuViewController.swift */,
 				1256BE5B1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift */,
 			);
-			name = NCMainMenuViewController;
+			name = MainMenu;
 			sourceTree = "<group>";
 		};
 		1256BE561DF472D400A2A24B /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				1230A31B1DFFE2CF00627D92 /* NCLabel.swift */,
-				1230A31C1DFFE2CF00627D92 /* NCTableView.h */,
-				1230A31D1DFFE2CF00627D92 /* NCTableView.m */,
-				1230A31E1DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift */,
-				1230A31F1DFFE2CF00627D92 /* NCTableViewHeaderCell.swift */,
-				1256BE591DF4742F00A2A24B /* NCTableViewCell.swift */,
 				1256BF2D1DF48AA800A2A24B /* NCBackgroundView.swift */,
 				126157031E008E770041B817 /* NCRoundedImageView.swift */,
 				129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */,
@@ -633,28 +635,36 @@
 			path = Levels;
 			sourceTree = "<group>";
 		};
-		126157081E01D2080041B817 /* NCCharacterSheetViewController */ = {
+		126157081E01D2080041B817 /* Character */ = {
 			isa = PBXGroup;
 			children = (
 				126157091E01D2250041B817 /* NCCharacterSheetViewController.swift */,
+				129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */,
 			);
-			name = NCCharacterSheetViewController;
+			name = Character;
 			sourceTree = "<group>";
 		};
-		1261570B1E01D2E30041B817 /* NCSkillQueueViewController */ = {
+		1261570B1E01D2E30041B817 /* Skills */ = {
 			isa = PBXGroup;
 			children = (
 				1261570C1E01D2F70041B817 /* NCSkillQueueViewController.swift */,
+				129E61051E0291FD00B56EB8 /* NCSkillsViewController.swift */,
 			);
-			name = NCSkillQueueViewController;
+			name = Skills;
 			sourceTree = "<group>";
 		};
-		129E60F21E0186B200B56EB8 /* NCJumpClonesViewController */ = {
+		129E61001E0287CA00B56EB8 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */,
+				1230A31C1DFFE2CF00627D92 /* NCTableView.h */,
+				1230A31D1DFFE2CF00627D92 /* NCTableView.m */,
+				1230A31E1DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift */,
+				1230A31F1DFFE2CF00627D92 /* NCTableViewHeaderCell.swift */,
+				1256BE591DF4742F00A2A24B /* NCTableViewCell.swift */,
+				129E61011E0287F500B56EB8 /* NCTableViewSkillCell.swift */,
+				1230A3391E001D7300627D92 /* NCTableViewAccountCell.swift */,
 			);
-			name = NCJumpClonesViewController;
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		12AC8D871DEF58A100561A7A = {
@@ -680,11 +690,10 @@
 			isa = PBXGroup;
 			children = (
 				12AC8DAA1DEF59C800561A7A /* Utility */,
-				1256BE511DF471EC00A2A24B /* NCMainMenuViewController */,
+				1256BE511DF471EC00A2A24B /* MainMenu */,
 				1230A3361DFFE30400627D92 /* Database */,
-				126157081E01D2080041B817 /* NCCharacterSheetViewController */,
-				129E60F21E0186B200B56EB8 /* NCJumpClonesViewController */,
-				1261570B1E01D2E30041B817 /* NCSkillQueueViewController */,
+				126157081E01D2080041B817 /* Character */,
+				1261570B1E01D2E30041B817 /* Skills */,
 				12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */,
 				12AC8D951DEF58A100561A7A /* ViewController.swift */,
 				12AC8DBB1DF01BF100561A7A /* Test.h */,
@@ -715,12 +724,15 @@
 				1256BE491DF210B300A2A24B /* Formatters */,
 				1256BE4E1DF4659E00A2A24B /* NCSlideDownAnimationController */,
 				1256BE561DF472D400A2A24B /* Views */,
+				129E61001E0287CA00B56EB8 /* Cells */,
 				1230A3111DFFE2CF00627D92 /* Math.swift */,
 				1230A3191DFFE2CF00627D92 /* NCGate.swift */,
 				1230A31A1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift */,
 				12AC8DC51DF0894400561A7A /* NCDataManager.swift */,
 				129E60F51E018BD400B56EB8 /* NCLocation.swift */,
 				1230A3211DFFE2CF00627D92 /* NSAttributedString+NC.swift */,
+				129E61031E028B3900B56EB8 /* String+NC.swift */,
+				129E61071E029BCB00B56EB8 /* Array+NC.swift */,
 				1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */,
 				1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */,
 				1230A3201DFFE2CF00627D92 /* NCTreeNode.swift */,
@@ -1008,6 +1020,7 @@
 				129E60EE1E0152A900B56EB8 /* NCAutoHeightLabel.swift in Sources */,
 				1256BE421DF1F07D00A2A24B /* NCCharacterAttributes.swift in Sources */,
 				12AC8DB21DEF5B6D00561A7A /* NCDatabase.swift in Sources */,
+				129E61041E028B3900B56EB8 /* String+NC.swift in Sources */,
 				12AC8DD41DF09BDE00561A7A /* NCCacheRecord+NC.swift in Sources */,
 				129E60F61E018BD400B56EB8 /* NCLocation.swift in Sources */,
 				1256BE461DF1F0B100A2A24B /* NCTrainingQueue.swift in Sources */,
@@ -1016,6 +1029,7 @@
 				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
 				12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */,
 				1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */,
+				129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */,
 				12AC8DB91DF012BA00561A7A /* NCTreeController.swift in Sources */,
 				1256BE531DF4725B00A2A24B /* NCMainMenuViewController.swift in Sources */,
 				1230A3331DFFE2CF00627D92 /* NSAttributedString+NC.swift in Sources */,
@@ -1023,7 +1037,7 @@
 				12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */,
 				1230A3311DFFE2CF00627D92 /* NCTableViewHeaderCell.swift in Sources */,
 				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
-				1230A33A1E001D7300627D92 /* NCAccountsCell.swift in Sources */,
+				1230A33A1E001D7300627D92 /* NCTableViewAccountCell.swift in Sources */,
 				1230A3301DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift in Sources */,
 				12AC8DC61DF0894400561A7A /* NCDataManager.swift in Sources */,
 				1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */,
@@ -1036,6 +1050,8 @@
 				1256BE5C1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift in Sources */,
 				12AC8DB61DEF6A3200561A7A /* NCDBImageValueTransformer.swift in Sources */,
 				1230A3341DFFE2CF00627D92 /* NSExpressionDescription+NC.swift in Sources */,
+				129E61061E0291FD00B56EB8 /* NCSkillsViewController.swift in Sources */,
+				129E61021E0287F500B56EB8 /* NCTableViewSkillCell.swift in Sources */,
 				1256BF2E1DF48AA800A2A24B /* NCBackgroundView.swift in Sources */,
 				12AC8DB41DEF642600561A7A /* NCFetchedCollection.swift in Sources */,
 				1230A32B1DFFE2CF00627D92 /* NCDatabaseTypesViewController.swift in Sources */,

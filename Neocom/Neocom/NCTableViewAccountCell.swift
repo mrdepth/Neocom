@@ -1,5 +1,5 @@
 //
-//  NCAccountsCell.swift
+//  NCTableViewAccountCell.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 13.12.16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NCAccountCell: NCTableViewCell {
+class NCTableViewAccountCell: NCTableViewCell {
 	@IBOutlet weak var characterNameLabel: UILabel!
 	@IBOutlet weak var characterImageView: UIImageView!
 	@IBOutlet weak var corporationLabel: UILabel!

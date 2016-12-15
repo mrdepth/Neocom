@@ -116,7 +116,7 @@
 			NSMutableArray* to = [NSMutableArray new];
 			for (EVESkillQueueItem* item in queue.skillQueue) {
 				NCDBInvType* type = invTypes[item.typeID];
-				NCSkill* skill = [[NCSkill alloc] initWithInvType:type skill:item inQueue:queue];
+				NCSkill* skill = f[[NCSkill alloc] initWithInvType:type skill:item inQueue:queue];
 				if (type)
 					[to addObject:[[NCSkillQueueRow alloc] initWithSkill:skill]];
 			}

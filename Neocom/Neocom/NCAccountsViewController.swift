@@ -21,7 +21,6 @@ class NCAccountInfo: NSObject {
 	dynamic var location: NSAttributedString?
 	dynamic var subscription: String = " "
 	dynamic var skill: NSAttributedString?
-	dynamic var skillColor: UIColor = UIColor.white
 	dynamic var skillQueue: String = " "
 	
 	var firstTrainingSkill: ESSkillQueueItem? {
@@ -31,13 +30,12 @@ class NCAccountInfo: NSObject {
 				guard let firstTrainingSkill = NCSkill(type: type, skill: skill) else {return}
 
 				if !firstTrainingSkill.typeName.isEmpty {
-					self.skill = NSAttributedString(skillName: firstTrainingSkill.typeName, level: firstTrainingSkill.level + 1)
+					self.skill = NSAttributedString(skillName: firstTrainingSkill.typeName, level: 1 + (firstTrainingSkill.level ?? 0))
 				}
 				else {
 					self.skill = NSAttributedString(string: String(format: NSLocalizedString("Unknown skill %d", comment: ""), firstTrainingSkill.typeID))
 				}
 				
-				self.skillColor = UIColor.white
 				self.trainingProgress = firstTrainingSkill.trainingProgress
 				if let endTime = firstTrainingSkill.trainingEndDate {
 					self.trainingTime = NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .minutes)
@@ -48,15 +46,14 @@ class NCAccountInfo: NSObject {
 
 			}
 			else {
-				self.skill = NSAttributedString(string: NSLocalizedString("No skills in training", comment: ""))
-				self.skillColor = UIColor.lightText
+				self.skill = NSAttributedString(string: NSLocalizedString("No skills in training", comment: ""), attributes: [NSForegroundColorAttributeName: UIColor.lightText])
 				self.trainingProgress = 0
 				self.trainingTime = " "
 			}
 		}
 	}
 	
-	dynamic var trainingProgress: Double = 0
+	dynamic var trainingProgress: Float = 0
 	dynamic var trainingTime: String = " "
 	dynamic var account: NCAccount
 	
@@ -478,7 +475,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCAccountCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCTableViewAccountCell
 		cell.characterNameLabel.text = " "
 		cell.characterImageView.image = nil
 		cell.corporationLabel.text = " "
@@ -513,7 +510,6 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 		
 		cell.binder.bind("characterNameLabel.text", toObject: accountInfo!, withKeyPath: "characterName", transformer: nil)
 		cell.binder.bind("corporationLabel.text", toObject: accountInfo!, withKeyPath: "corporation", transformer: nil)
-		cell.binder.bind("skillLabel.textColor", toObject: accountInfo!, withKeyPath: "skillColor", transformer: nil)
 		cell.binder.bind("skillLabel.attributedText", toObject: accountInfo!, withKeyPath: "skill", transformer: nil)
 		cell.binder.bind("skillQueueLabel.text", toObject: accountInfo!, withKeyPath: "skillQueue", transformer: nil)
 		cell.binder.bind("trainingTimeLabel.text", toObject: accountInfo!, withKeyPath: "trainingTime", transformer: nil)

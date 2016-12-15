@@ -31,23 +31,9 @@ class NCTreeSection: NCTreeNode {
 	let attributedTitle: NSAttributedString?
 	let configurationHandler: ((UITableViewCell) -> Void)?
 	
-	init(cellIdentifier: String, nodeIdentifier: String? = nil, title: String, children: [NCTreeNode]? = nil) {
+	init(cellIdentifier: String, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [NCTreeNode]? = nil, configurationHandler: ((UITableViewCell) -> Void)? = nil) {
 		self.title = title
-		self.attributedTitle = nil
-		self.configurationHandler = nil
-		super.init(cellIdentifier: cellIdentifier, nodeIdentifier: nodeIdentifier, children: children)
-	}
-
-	init(cellIdentifier: String, nodeIdentifier: String? = nil, attributedTitle: NSAttributedString?, children: [NCTreeNode]? = nil) {
-		self.title = nil
 		self.attributedTitle = attributedTitle
-		self.configurationHandler = nil
-		super.init(cellIdentifier: cellIdentifier, nodeIdentifier: nodeIdentifier, children: children)
-	}
-
-	init(cellIdentifier: String, nodeIdentifier: String? = nil, children: [NCTreeNode]? = nil, configurationHandler: ((UITableViewCell) -> Void)? = nil) {
-		self.title = nil
-		self.attributedTitle = nil
 		self.configurationHandler = configurationHandler
 		super.init(cellIdentifier: cellIdentifier, nodeIdentifier: nodeIdentifier, children: children)
 	}

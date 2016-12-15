@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -386,7 +386,7 @@
             <objects>
                 <tableViewController id="xIe-Ri-8Ng" customClass="NCAPIKeyInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="PWN-Ec-uZB" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -513,7 +513,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="4be-G7-25Y" customClass="NCAccountCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="4be-G7-25Y" customClass="NCTableViewAccountCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="134"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4be-G7-25Y" id="pif-W0-SxT">
@@ -1873,13 +1873,13 @@
         <!--Delegate-->
         <scene sceneID="mns-Nf-1Ib">
             <objects>
-                <tableViewController storyboardIdentifier="NCSkillQueueViewController" id="mN5-NM-lcw" customClass="NCSkillQueueViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCSkillQueueViewController" id="mN5-NM-lcw" customClass="NCSkillQueueViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="GGd-bF-5ed" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="ng1-8B-G3X" customClass="NCTableViewDefaultCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="ng1-8B-G3X" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ng1-8B-G3X" id="IX0-cd-oFJ">
@@ -1940,7 +1940,7 @@
                                     <outlet property="titleLabel" destination="dcv-Nm-KnC" id="uqG-Op-mpN"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaceholderCell" id="f6k-LN-5RA" customClass="NCTableViewDefaultCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaceholderCell" id="f6k-LN-5RA" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="98" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="f6k-LN-5RA" id="GCT-tK-91P">
@@ -1970,7 +1970,7 @@
                                     <outlet property="titleLabel" destination="vqd-pr-GdG" id="gMF-XX-Wo1"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCTableViewHeaderCell" rowHeight="40" id="2da-0d-cP5" customClass="NCTableViewHeaderCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCTableViewHeaderCell" rowHeight="40" id="2da-0d-cP5" customClass="NCTableViewHeaderCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="140" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2da-0d-cP5" id="RPu-8H-eem">
@@ -2003,7 +2003,7 @@
                                     <outlet property="titleLabel" destination="gha-Ij-rPQ" id="bgI-xe-w5A"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCTableViewSkillCell" id="Fnf-z6-W8p" customClass="NCTableViewSkillCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCTableViewSkillCell" id="Fnf-z6-W8p" customClass="NCTableViewSkillCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="180" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fnf-z6-W8p" id="aFl-wH-41w">
@@ -2086,7 +2086,7 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QMH-7R-F0l" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="kpF-MD-yeT" customClass="ASTreeController">
+                <customObject id="kpF-MD-yeT" customClass="NCTreeController" customModule="Neocom" customModuleProvider="target">
                     <connections>
                         <outlet property="delegate" destination="mN5-NM-lcw" id="8Rr-U9-Qho"/>
                         <outlet property="tableView" destination="GGd-bF-5ed" id="g9r-eB-9Bc"/>
@@ -2114,13 +2114,13 @@
         <!--Delegate-->
         <scene sceneID="G3e-C5-BDH">
             <objects>
-                <tableViewController id="YFv-rg-bYX" customClass="NCSkillQueueViewController" sceneMemberID="viewController">
+                <tableViewController id="YFv-rg-bYX" customClass="NCSkillsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="xqf-X5-6q1" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="A4f-QX-T2y" customClass="NCTableViewDefaultCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="A4f-QX-T2y" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="A4f-QX-T2y" id="sxL-1D-TpA">
@@ -2181,7 +2181,7 @@
                                     <outlet property="titleLabel" destination="ImU-gF-Sx6" id="NmM-JA-t8K"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaceholderCell" id="wYY-94-q9X" customClass="NCTableViewDefaultCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaceholderCell" id="wYY-94-q9X" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="98" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wYY-94-q9X" id="NV6-yC-pJu">
@@ -2211,7 +2211,7 @@
                                     <outlet property="titleLabel" destination="GbU-nQ-Lj8" id="IQB-qN-zJ1"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCTableViewHeaderCell" rowHeight="40" id="sA9-SI-h0u" customClass="NCTableViewHeaderCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCTableViewHeaderCell" rowHeight="40" id="sA9-SI-h0u" customClass="NCTableViewHeaderCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="140" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sA9-SI-h0u" id="XRg-1z-ca2">
@@ -2244,32 +2244,21 @@
                                     <outlet property="titleLabel" destination="gmU-tf-kFU" id="IPW-ry-n7T"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCTableViewSkillCell" id="uVl-rd-IsZ" customClass="NCTableViewSkillCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCTableViewSkillCell" id="uVl-rd-IsZ" customClass="NCTableViewSkillCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="180" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uVl-rd-IsZ" id="qn5-u4-9u2">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="249" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="P4M-Y3-Km9">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="42.5"/>
-                                            <color key="progressTintColor" red="0.1215686275" green="0.17254901959999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </progressView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="LABEL" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="3NJ-M9-4t4">
                                             <rect key="frame" x="266" y="4" width="39" height="16"/>
                                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                             <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYH-U2-9ac">
-                                            <rect key="frame" x="274" y="22" width="31" height="15"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="252" text="Label" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="10H-e6-O8P">
-                                            <rect key="frame" x="15" y="22" width="251" height="15"/>
+                                            <rect key="frame" x="15" y="22" width="290" height="15"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -2282,36 +2271,28 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="P4M-Y3-Km9" secondAttribute="trailing" id="6PZ-Cm-AfI"/>
-                                        <constraint firstItem="EYH-U2-9ac" firstAttribute="top" secondItem="ZMY-g2-SIx" secondAttribute="bottom" id="8Iv-c7-rxP"/>
-                                        <constraint firstItem="EYH-U2-9ac" firstAttribute="leading" secondItem="10H-e6-O8P" secondAttribute="trailing" constant="8" id="8zb-2k-Cgq"/>
                                         <constraint firstItem="10H-e6-O8P" firstAttribute="leading" secondItem="qn5-u4-9u2" secondAttribute="leading" constant="15" id="NF8-Vk-h9h"/>
                                         <constraint firstItem="3NJ-M9-4t4" firstAttribute="top" secondItem="qn5-u4-9u2" secondAttribute="top" constant="4" id="Rhl-lH-9DF"/>
                                         <constraint firstItem="10H-e6-O8P" firstAttribute="top" secondItem="ZMY-g2-SIx" secondAttribute="bottom" id="e8n-fk-CJm"/>
                                         <constraint firstAttribute="trailing" secondItem="3NJ-M9-4t4" secondAttribute="trailing" constant="15" id="edO-yP-khD"/>
                                         <constraint firstItem="ZMY-g2-SIx" firstAttribute="leading" secondItem="qn5-u4-9u2" secondAttribute="leading" constant="15" id="inJ-n4-1Ob"/>
+                                        <constraint firstAttribute="trailing" secondItem="10H-e6-O8P" secondAttribute="trailing" constant="15" id="jbj-dQ-mHG"/>
                                         <constraint firstItem="3NJ-M9-4t4" firstAttribute="leading" secondItem="ZMY-g2-SIx" secondAttribute="trailing" constant="8" id="lIX-IO-eVI"/>
-                                        <constraint firstItem="P4M-Y3-Km9" firstAttribute="top" secondItem="qn5-u4-9u2" secondAttribute="top" id="n4J-o3-4Ke"/>
-                                        <constraint firstAttribute="trailing" secondItem="EYH-U2-9ac" secondAttribute="trailing" constant="15" id="nGU-Yt-7Ag"/>
                                         <constraint firstAttribute="bottom" secondItem="10H-e6-O8P" secondAttribute="bottom" constant="4" id="pPq-hs-aey"/>
                                         <constraint firstItem="ZMY-g2-SIx" firstAttribute="top" secondItem="qn5-u4-9u2" secondAttribute="top" constant="4" id="sEc-wC-nFH"/>
-                                        <constraint firstAttribute="bottom" secondItem="P4M-Y3-Km9" secondAttribute="bottom" id="uAi-4u-f1U"/>
-                                        <constraint firstItem="P4M-Y3-Km9" firstAttribute="leading" secondItem="qn5-u4-9u2" secondAttribute="leading" id="xhn-O0-8kI"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="levelLabel" destination="3NJ-M9-4t4" id="3hW-wb-RgC"/>
-                                    <outlet property="progressView" destination="P4M-Y3-Km9" id="xQg-6x-6mx"/>
-                                    <outlet property="spLabel" destination="10H-e6-O8P" id="8Rh-G1-Ew4"/>
                                     <outlet property="titleLabel" destination="ZMY-g2-SIx" id="k3r-7S-JmR"/>
-                                    <outlet property="trainingTimeLabel" destination="EYH-U2-9ac" id="9iQ-8o-fb7"/>
+                                    <outlet property="trainingTimeLabel" destination="10H-e6-O8P" id="ojT-0Y-dAJ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="kpF-MD-yeT" id="aBH-nJ-36D"/>
-                            <outlet property="delegate" destination="kpF-MD-yeT" id="vki-RB-dEP"/>
+                            <outlet property="dataSource" destination="5HK-IZ-xoc" id="viE-ty-Pwx"/>
+                            <outlet property="delegate" destination="5HK-IZ-xoc" id="JFk-Ia-Ax9"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="RJQ-Nx-V4m">
@@ -2324,17 +2305,21 @@
                                 <segment title="Can Train"/>
                                 <segment title="All"/>
                             </segments>
+                            <connections>
+                                <action selector="onChangeSegment:" destination="YFv-rg-bYX" eventType="valueChanged" id="F6G-FB-qiH"/>
+                            </connections>
                         </segmentedControl>
                     </navigationItem>
                     <connections>
-                        <outlet property="treeController" destination="kpF-MD-yeT" id="Zhe-ko-26I"/>
+                        <outlet property="segmentedControl" destination="10U-Rs-mT1" id="uCb-xB-rMe"/>
+                        <outlet property="treeController" destination="5HK-IZ-xoc" id="AFI-Dv-oHb"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AYt-ty-Txd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="5HK-IZ-xoc" customClass="ASTreeController">
+                <customObject id="5HK-IZ-xoc" customClass="NCTreeController" customModule="Neocom" customModuleProvider="target">
                     <connections>
                         <outlet property="delegate" destination="YFv-rg-bYX" id="oxG-uE-QGl"/>
-                        <outlet property="tableView" destination="xqf-X5-6q1" id="JYf-up-Uj9"/>
+                        <outlet property="tableView" destination="xqf-X5-6q1" id="k8I-9T-uTX"/>
                     </connections>
                 </customObject>
             </objects>

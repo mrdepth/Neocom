@@ -17,11 +17,12 @@ class NCSkill: Hashable {
 	let rank: Int
 	let startSkillPoints: Int?
 	
-	private var skillPoints: Int {
+	var skillPoints: Int {
 		get {
 			if let trainingStartDate = trainingStartDate,
 				let trainingEndDate = trainingEndDate,
 				let startSkillPoints = startSkillPoints,
+				let level = level,
 				trainingEndDate > Date() {
 				let endSP = skillPoints(at: level + 1)
 				let t = trainingEndDate.timeIntervalSince(trainingStartDate)
@@ -35,25 +36,27 @@ class NCSkill: Hashable {
 					return endSP
 				}
 			}
-			return startSkillPoints ?? 0
+			//return startSkillPoints ?? 0
+			return skillPoints(at: level ?? 0)
 		}
 	}
 	
-	var trainingProgress: Double {
+	var trainingProgress: Float {
 		get {
-			let start = Double(skillPoints(at: self.level))
-			let end = Double(skillPoints(at: self.level + 1))
+			guard let level = self.level else {return 0}
+			let start = Double(skillPoints(at: level))
+			let end = Double(skillPoints(at: level + 1))
 			let sp = Double(skillPoints)
 			let progress = (sp - start) / (end - start);
-			return progress
+			return Float(progress)
 		}
 	}
 	
-	let level: Int
+	let level: Int?
 	let trainingStartDate: Date?
 	let trainingEndDate: Date?
 	
-	init?(type: NCDBInvType, level: Int = 0, startSkillPoints: Int? = nil, trainingStartDate: Date? = nil, trainingEndDate: Date? = nil) {
+	init?(type: NCDBInvType, level: Int? = nil, startSkillPoints: Int? = nil, trainingStartDate: Date? = nil, trainingEndDate: Date? = nil) {
 		var typeID: Int = 0
 		var typeName: String?
 		var primaryAttributeID: Float?
@@ -85,7 +88,7 @@ class NCSkill: Hashable {
 	
 	convenience init?(type: NCDBInvType, skill: ESSkillQueueItem) {
 		let active: Bool
-		if let startDate = skill.startDate, let finishDate = skill.finishDate {
+		/*if let startDate = skill.startDate, let finishDate = skill.finishDate {
 			let date = Date()
 			active = startDate <= date && finishDate > date
 		}
@@ -93,7 +96,8 @@ class NCSkill: Hashable {
 			active = false;
 		}
 		
-		self.init(type: type, level: skill.finishedLevel - 1, startSkillPoints: skill.trainingStartSP, trainingStartDate: active ? skill.startDate : nil, trainingEndDate: active ? skill.finishDate : nil)
+		self.init(type: type, level: skill.finishedLevel - 1, startSkillPoints: skill.trainingStartSP, trainingStartDate: active ? skill.startDate : nil, trainingEndDate: active ? skill.finishDate : nil)*/
+		self.init(type: type, level: skill.finishedLevel - 1, startSkillPoints: skill.trainingStartSP, trainingStartDate: skill.startDate, trainingEndDate: skill.finishDate)
 	}
 	
 	class func rank(skillPoints: Int, level: Int) -> Int {
@@ -121,7 +125,7 @@ class NCSkill: Hashable {
 	}
 
 	func trainingTimeToLevelUp(characterAttributes: NCCharacterAttributes) -> TimeInterval {
-		return trainingTime(to: self.level + 1, characterAttributes: characterAttributes)
+		return trainingTime(to: 1 + (self.level ?? 0), characterAttributes: characterAttributes)
 	}
 
 	//MARK: Hashable

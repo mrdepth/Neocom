@@ -367,7 +367,7 @@
 	NSTimeInterval expireInTime = [row.expireDate timeIntervalSinceDate:self.currentDate];
 	
 	if (expireInTime > 0)
-		cell.expireLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Expired in %@", nil), [NSString stringWithTimeLeft:expireInTime componentsLimit:2]];
+		cell.expireLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Expires in %@", nil), [NSString stringWithTimeLeft:expireInTime componentsLimit:2]];
 	else
 		cell.expireLabel.text = NSLocalizedString(@"Expired", nil);
 	

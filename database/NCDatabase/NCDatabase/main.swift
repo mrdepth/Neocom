@@ -228,7 +228,7 @@ extension NCDBEveIcon {
 		let url = factionsURL.appendingPathComponent(factionFile)
 		guard FileManager.default.fileExists(atPath: url.path) else {return nil}
 		self.init(context: context)
-		self.iconFile = factionsURL.deletingPathExtension().lastPathComponent
+		self.iconFile = url.deletingPathExtension().lastPathComponent
 		image = NCDBEveIconImage(context: context)
 		image?.image = try! UIImage(contentsOf: url)
 		eveIcons[factionFile] = self
@@ -238,7 +238,7 @@ extension NCDBEveIcon {
 		let url = typesURL.appendingPathComponent(typeFile).appendingPathExtension("png")
 		guard FileManager.default.fileExists(atPath: url.path) else {return nil}
 		self.init(context: context)
-		self.iconFile = factionsURL.deletingPathExtension().lastPathComponent
+		self.iconFile = url.deletingPathExtension().lastPathComponent
 		image = NCDBEveIconImage(context: context)
 		image?.image = try! UIImage(contentsOf: url)
 		eveIcons[typeFile] = self
@@ -320,6 +320,49 @@ try! database.exec("SELECT * FROM chrRaces") { row in
 	race.icon = row["iconID"] != nil ? eveIcons[row["iconID"] as! NSNumber] : nil
 	chrRaces[race.raceID as NSNumber] = race
 }
+
+// MARK: chrFactions
+
+print ("chrFactions")
+var chrFactions = [NSNumber: NCDBChrFaction]()
+
+try! database.exec("SELECT * FROM chrFactions") { row in
+	let faction = NCDBChrFaction(context: context)
+	faction.factionID = Int32(row["factionID"] as! NSNumber)
+	faction.factionName = row["factionName"] as? String
+	faction.icon = row["iconID"] != nil ? eveIcons[row["iconID"] as! NSNumber] : nil
+	faction.race = chrRaces[row["raceIDs"] as! NSNumber]
+	chrFactions[faction.factionID as NSNumber] = faction
+}
+
+// MARK: chrBloodlines
+
+print ("chrBloodlines")
+var chrBloodlines = [NSNumber: NCDBChrBloodline]()
+
+try! database.exec("SELECT * FROM chrBloodlines") { row in
+	let bloodline = NCDBChrBloodline(context: context)
+	bloodline.bloodlineID = Int32(row["bloodlineID"] as! NSNumber)
+	bloodline.bloodlineName = row["bloodlineName"] as? String
+	bloodline.icon = row["iconID"] != nil ? eveIcons[row["iconID"] as! NSNumber] : nil
+	bloodline.race = chrRaces[row["raceID"] as! NSNumber]
+	chrBloodlines[bloodline.bloodlineID as NSNumber] = bloodline
+}
+
+// MARK: chrAncestries
+
+print ("chrAncestries")
+var chrAncestries = [NSNumber: NCDBChrAncestry]()
+
+try! database.exec("SELECT * FROM chrAncestries") { row in
+	let ancestry = NCDBChrAncestry(context: context)
+	ancestry.ancestryID = Int32(row["ancestryID"] as! NSNumber)
+	ancestry.ancestryName = row["ancestryName"] as? String
+	ancestry.icon = row["iconID"] != nil ? eveIcons[row["iconID"] as! NSNumber] : nil
+	ancestry.bloodline = chrBloodlines[row["bloodlineID"] as! NSNumber]
+	chrAncestries[ancestry.ancestryID as NSNumber] = ancestry
+}
+
 
 // MARK: invCategories
 
@@ -408,7 +451,7 @@ try! database.exec("SELECT * FROM invMetaTypes") { row in
 // MARK: invTypes
 
 print ("invTypes")
-var invTypes = [AnyHashable: NCDBInvType]()
+var invTypes = [NSNumber: NCDBInvType]()
 
 try! database.exec("SELECT * FROM invTypes") { row in
 	let type = NCDBInvType(context: context)
@@ -424,7 +467,12 @@ try! database.exec("SELECT * FROM invTypes") { row in
 	type.marketGroup = row["marketGroupID"] != nil ? invMarketGroups[row["marketGroupID"] as! NSNumber] : nil
 	type.race = row["raceID"] != nil ? chrRaces[row["raceID"] as! NSNumber] : nil
 	type.typeName = (row["typeName"] as! String).replacingEscapes()
-	type.metaGroup = type.published ? defaultMetaGroup : unpublishedMetaGroup
+	if type.published {
+		type.metaGroup = invMetaTypes[type.typeID as NSNumber] ?? defaultMetaGroup
+	}
+	else {
+		type.metaGroup = unpublishedMetaGroup
+	}
 	
 	var sections = [String:[String]]()
 	try! database.exec("SELECT a.*, b.typeName FROM invTraits AS a, invTypes AS b WHERE a.typeID = \(type.typeID) AND a.skillID=b.typeID ORDER BY traitID") { row in
@@ -439,14 +487,14 @@ try! database.exec("SELECT * FROM invTypes") { row in
 		if let bonus = bonus?.doubleValue, let unitID = unitID, let unit = eveUnits[unitID] {
 			var int: Double = 0
 			if modf(bonus, &int) != 0 {
-				trait = "<color=caption><b>\(bonus)\(unit.displayName!)</b></color> \(bonusText)"
+				trait = "<color=white><b>\(bonus)\(unit.displayName!)</b></color> \(bonusText)"
 			}
 			else {
-				trait = "<color=caption><b>\(Int(int))\(unit.displayName!)</b></color> \(bonusText)"
+				trait = "<color=white><b>\(Int(int))\(unit.displayName!)</b></color> \(bonusText)"
 			}
 		}
 		else {
-			trait = "<color=caption><b>-</b></color> \(bonusText)"
+			trait = "<color=white><b>-</b></color> \(bonusText)"
 		}
 		
 		let section: String
@@ -460,21 +508,412 @@ try! database.exec("SELECT * FROM invTypes") { row in
 		array.append(trait)
 		sections[section] = array
 	}
-	sections.sorted{return $0.key > $1.key}.map {
-		return $0.key
-	}
-	
 	let trait = sections.sorted{return $0.key > $1.key}.map {
-		let trait = $0.value.joined(separator: ",")
-		return "\($0.key)\n\(trait)"
-	}
+		return "\($0.key)\n\($0.value.joined(separator: ","))"
+		}.joined(separator: "\n")
 	
-	
-	for key in sections.keys.sorted() {
-		trait.append("\(key)\n")
-		trait.append("\(sections[key]!.joined(separator: "\n"))")
-	}
+	var description = row["description"] as? String ?? ""
 	if !trait.isEmpty {
-		print ("\(trait)")
+		description += "\n" + trait
+	}
+	type.typeDescription = NCDBTxtDescription(context: context)
+	type.typeDescription?.text = NSAttributedString(html: description)
+	invTypes[type.typeID as NSNumber] = type
+}
+
+for (typeID, type) in invTypes {
+	if let parentTypeID = invParentTypes[typeID as NSNumber] {
+		type.parentType = invTypes[parentTypeID]
 	}
 }
+
+// MARK: dgmAttributeCategories
+
+print ("dgmAttributeCategories")
+var dgmAttributeCategories = [NSNumber: NCDBDgmAttributeCategory]()
+
+try! database.exec("SELECT * FROM dgmAttributeCategories") { row in
+	let attributeCategory = NCDBDgmAttributeCategory(context: context)
+	attributeCategory.categoryID = Int32(row["categoryID"] as! NSNumber)
+	attributeCategory.categoryName = row["categoryName"] as? String
+	dgmAttributeCategories[attributeCategory.categoryID as NSNumber] = attributeCategory
+}
+
+// MARK: dgmAttributeTypes
+
+print ("dgmAttributeTypes")
+var dgmAttributeTypes = [NSNumber: NCDBDgmAttributeType]()
+
+try! database.exec("SELECT * FROM dgmAttributeTypes") { row in
+	let attributeType = NCDBDgmAttributeType(context: context)
+	attributeType.attributeID = Int32(row["attributeID"] as! NSNumber)
+	attributeType.attributeName = row["attributeName"] as? String
+	attributeType.displayName = row["displayName"] as? String
+	attributeType.published = (row["published"] as! Int64) == 1
+	attributeType.attributeCategory = row["categoryID"] != nil ? dgmAttributeCategories[row["categoryID"] as! NSNumber] : nil
+	attributeType.icon = row["iconID"] != nil ? eveIcons[row["iconID"] as! NSNumber] : nil
+	attributeType.unit = row["unitID"] != nil ? eveUnits[row["unitID"] as! NSNumber] : nil
+	dgmAttributeTypes[attributeType.attributeID as NSNumber] = attributeType
+}
+
+// MARK: dgmTypeAttributes
+
+print ("dgmTypeAttributes")
+
+let NCDBMetaGroupAttributeID = 1692 as Int32
+let NCDBMetaLevelAttributeID = 633 as Int32
+
+try! database.exec("SELECT * FROM dgmTypeAttributes") { row in
+	guard let type = invTypes[row["typeID"] as! NSNumber] else {return}
+	let attributeType = dgmAttributeTypes[row["attributeID"] as! NSNumber]!
+	let attribute = NCDBDgmTypeAttribute(context: context)
+	attribute.type = type
+	attribute.attributeType = attributeType
+	attribute.value = (row["value"] as! NSNumber).floatValue
+	if attributeType.attributeID == NCDBMetaGroupAttributeID {
+		if let metaGroup = invMetaGroups[Int(attribute.value) as NSNumber], type.published {
+			type.metaGroup = metaGroup
+		}
+	}
+	if attributeType.attributeID == NCDBMetaLevelAttributeID {
+		type.metaLevel = Int16(attribute.value)
+	}
+}
+
+// MARK: dgmEffects
+
+print ("dgmEffects")
+var dgmEffects = [NSNumber: NCDBDgmEffect]()
+
+try! database.exec("SELECT * FROM dgmEffects") { row in
+	let effect = NCDBDgmEffect(context: context)
+	effect.effectID = Int32(row["effectID"] as! NSNumber)
+	dgmEffects[effect.effectID as NSNumber] = effect
+}
+
+// MARK: dgmTypeEffects
+
+print ("dgmTypeEffects")
+
+try! database.exec("SELECT * FROM dgmTypeEffects") { row in
+	guard let type = invTypes[row["typeID"] as! NSNumber] else {return}
+	guard let effect = dgmEffects[row["effectID"] as! NSNumber] else {return}
+	effect.addToTypes(type)
+}
+
+// MARK: certMasteryLevels
+
+print ("certMasteryLevels")
+var certMasteryLevels = [NSNumber: NCDBCertMasteryLevel]()
+
+try! database.exec("SELECT * FROM certSkills GROUP BY certLevelInt") { row in
+	let level = NCDBCertMasteryLevel(context: context)
+	level.level = Int16(row["certLevelInt"] as! NSNumber)
+	level.displayName = row["certLevelText"] as? String
+	level.icon = eveIcons["79_0\(level.level + 1)"]!
+	certMasteryLevels[level.level as NSNumber] = level
+}
+
+// MARK: certCerts
+
+print ("certCerts")
+var certCerts = [NSNumber: NCDBCertCertificate]()
+var certMasteries = [IndexPath: NCDBCertMastery]()
+
+try! database.exec("SELECT * FROM certCerts") { row in
+	let certificate = NCDBCertCertificate(context: context)
+	certificate.certificateID = Int32(row["certID"] as! NSNumber)
+	certificate.certificateName = row["name"] as? String
+	certificate.group = invGroups[row["groupID"] as! NSNumber]
+	certificate.certificateDescription = NCDBTxtDescription(context: context)
+	certificate.certificateDescription?.text = NSAttributedString(html: row["description"] as? String)
+	
+	for (_, level) in certMasteryLevels {
+		let mastery = NCDBCertMastery(context: context)
+		mastery.certificate = certificate
+		mastery.level = level
+		certMasteries[IndexPath(item: Int(mastery.level!.level), section: Int(certificate.certificateID))] = mastery
+	}
+
+	
+	certCerts[certificate.certificateID as NSNumber] = certificate
+}
+
+// MARK: certMasteries
+
+print ("certMasteries")
+
+try! database.exec("SELECT * FROM certMasteries") { row in
+	let certificate = certCerts[row["certID"] as! NSNumber]!
+	let mastery = certMasteries[IndexPath(item: Int(row["masteryLevel"] as! NSNumber), section: Int(row["certID"] as! NSNumber))]!
+	mastery.certificate?.addToTypes(invTypes[row["typeID"] as! NSNumber]!)
+}
+
+// MARK: certSkills
+
+print ("certSkills")
+
+try! database.exec("SELECT * FROM certSkills") { row in
+	let certID = row["certID"] as! NSNumber
+	let certLevel = row["certLevelInt"] as! NSNumber
+	let skill = NCDBCertSkill(context: context)
+	skill.mastery = certMasteries[IndexPath(item: certLevel.intValue, section: certID.intValue)]!
+	skill.skillLevel = (row["skillLevel"] as! NSNumber).int16Value
+	skill.type = invTypes[row["skillID"] as! NSNumber]!
+}
+
+// MARK: mapRegions
+
+print ("mapRegions")
+var mapRegions = [NSNumber: NCDBMapRegion]()
+
+try! database.exec("SELECT * FROM mapRegions") { row in
+	let region = NCDBMapRegion(context: context)
+	region.regionID = Int32(row["regionID"] as! NSNumber)
+	region.regionName = row["regionName"] as? String
+	region.faction = row["factionID"] != nil ? chrFactions[row["factionID"] as! NSNumber] : nil
+	mapRegions[region.regionID as NSNumber] = region
+}
+
+// MARK: mapConstellations
+
+print ("mapConstellations")
+var mapConstellations = [NSNumber: NCDBMapConstellation]()
+
+try! database.exec("SELECT * FROM mapConstellations") { row in
+	let constellation = NCDBMapConstellation(context: context)
+	constellation.constellationID = Int32(row["constellationID"] as! NSNumber)
+	constellation.constellationName = row["constellationName"] as? String
+	constellation.region = mapRegions[row["regionID"] as! NSNumber]
+	constellation.faction = row["factionID"] != nil ? chrFactions[row["factionID"] as! NSNumber] : nil
+	mapConstellations[constellation.constellationID as NSNumber] = constellation
+}
+
+// MARK: mapSolarSystems
+
+print ("mapSolarSystems")
+var mapSolarSystems = [NSNumber: NCDBMapSolarSystem]()
+
+try! database.exec("SELECT * FROM mapSolarSystems") { row in
+	let solarSystem = NCDBMapSolarSystem(context: context)
+	solarSystem.solarSystemID = Int32(row["solarSystemID"] as! NSNumber)
+	solarSystem.solarSystemName = row["solarSystemName"] as? String
+	solarSystem.security = Float(row["security"] as! NSNumber)
+	solarSystem.constellation = mapConstellations[row["constellationID"] as! NSNumber]
+	solarSystem.faction = row["factionID"] != nil ? chrFactions[row["factionID"] as! NSNumber] : nil
+	mapSolarSystems[solarSystem.solarSystemID as NSNumber] = solarSystem
+}
+
+// MARK: mapDenormalize
+
+print ("mapDenormalize")
+var mapDenormalize = [NSNumber: NCDBMapDenormalize]()
+
+try! database.exec("SELECT * FROM mapDenormalize WHERE groupID IN (8, 15) AND itemID NOT IN (SELECT stationID FROM staStations)") { row in
+	let denormalize = NCDBMapDenormalize(context: context)
+	denormalize.itemID = Int32(row["itemID"] as! NSNumber)
+	denormalize.itemName = row["itemName"] as? String
+	denormalize.security = Float(row["security"] as! NSNumber)
+	denormalize.region = row["regionID"] != nil ? mapRegions[row["regionID"] as! NSNumber] : nil
+	denormalize.constellation = row["constellationID"] != nil ? mapConstellations[row["constellationID"] as! NSNumber] : nil
+	denormalize.solarSystem = row["solarSystemID"] != nil ? mapSolarSystems[row["solarSystemID"] as! NSNumber] : nil
+	denormalize.type = invTypes[row["typeID"] as! NSNumber]
+	mapDenormalize[denormalize.itemID as NSNumber] = denormalize
+}
+
+// MARK: staStations
+
+print ("staStations")
+var staStations = [NSNumber: NCDBStaStation]()
+
+try! database.exec("SELECT * FROM staStations") { row in
+	let station = NCDBStaStation(context: context)
+	station.stationID = Int32(row["stationID"] as! NSNumber)
+	station.stationName = row["stationName"] as? String
+	station.security = Float(row["security"] as! NSNumber)
+	station.stationType = invTypes[row["stationTypeID"] as! NSNumber]!
+	station.solarSystem = row["solarSystemID"] != nil ? mapSolarSystems[row["solarSystemID"] as! NSNumber] : nil
+	staStations[station.stationID as NSNumber] = station
+}
+
+// MARK: npcGroups
+
+print ("npcGroups")
+var npcGroups = [NSNumber: NCDBNpcGroup]()
+var npcParentGroup = [NSNumber: NSNumber]()
+
+try! database.exec("SELECT * FROM npcGroup") { row in
+	let group = NCDBNpcGroup(context: context)
+	group.npcGroupName = row["npcGroupName"] as? String
+	group.group = row["groupID"] != nil ? invGroups[row["groupID"] as! NSNumber] : nil
+	group.icon = row["iconName"] != nil ? eveIcons[row["iconName"] as! String] : nil
+	if let parent = row["parentNpcGroupID"] as? NSNumber {
+		npcParentGroup[row["npcGroupID"] as! NSNumber] = parent
+	}
+	npcGroups[row["npcGroupID"] as! NSNumber] = group
+}
+
+for (groupID, parentGroupID) in npcParentGroup {
+	npcGroups[groupID]?.parentNpcGroup = npcGroups[parentGroupID]
+}
+
+// MARK: ramActivities
+
+print ("ramActivities")
+var ramActivities = [NSNumber: NCDBRamActivity]()
+
+try! database.exec("SELECT * FROM ramActivities") { row in
+	let activity = NCDBRamActivity(context: context)
+	activity.activityID = Int32(row["activityID"] as! NSNumber)
+	activity.activityName = row["activityName"] as? String
+	activity.published = (row["published"] as! Int64) == 1
+	activity.icon = row["iconNo"] != nil ? eveIcons[row["iconNo"] as! String] : nil
+	ramActivities[activity.activityID as NSNumber] = activity
+}
+
+// MARK: ramAssemblyLineTypes
+
+print ("ramAssemblyLineTypes")
+var ramAssemblyLineTypes = [NSNumber: NCDBRamAssemblyLineType]()
+
+try! database.exec("SELECT * FROM ramAssemblyLineTypes") { row in
+	let assemblyLineType = NCDBRamAssemblyLineType(context: context)
+	assemblyLineType.assemblyLineTypeID = Int32(row["assemblyLineTypeID"] as! NSNumber)
+	assemblyLineType.assemblyLineTypeName = row["assemblyLineTypeName"] as? String
+	assemblyLineType.baseTimeMultiplier = Float(row["baseTimeMultiplier"] as! NSNumber)
+	assemblyLineType.baseMaterialMultiplier = Float(row["baseMaterialMultiplier"] as! NSNumber)
+	assemblyLineType.baseCostMultiplier = Float(row["baseCostMultiplier"] as! NSNumber)
+	assemblyLineType.minCostPerHour = row["minCostPerHour"] != nil ? Float(row["minCostPerHour"] as! NSNumber) : 0
+	assemblyLineType.volume = Float(row["volume"] as! NSNumber)
+	assemblyLineType.activity = ramActivities[row["activityID"] as! NSNumber]
+	ramAssemblyLineTypes[assemblyLineType.assemblyLineTypeID as NSNumber] = assemblyLineType
+}
+
+// MARK: ramInstallationTypeContents
+
+print ("ramInstallationTypeContents")
+
+try! database.exec("SELECT * FROM ramInstallationTypeContents") { row in
+	let installationTypeContent = NCDBRamInstallationTypeContent(context: context)
+	installationTypeContent.quantity = Int32(row["quantity"] as! NSNumber)
+	installationTypeContent.assemblyLineType = ramAssemblyLineTypes[row["assemblyLineTypeID"] as! NSNumber]
+	installationTypeContent.installationType = invTypes[row["installationTypeID"] as! NSNumber]
+}
+
+
+// MARK: invTypeRequiredSkills
+
+print ("invTypeRequiredSkills")
+
+extension NCDBInvType {
+	func getAttribute(_ attributeID: Int) -> NCDBDgmTypeAttribute? {
+		return (self.attributes as? Set<NCDBDgmTypeAttribute>)?.filter {
+			return $0.attributeType!.attributeID == Int32(attributeID)
+			}.first
+	}
+}
+
+for (_, type) in invTypes {
+	for (skillID, level) in [(182, 277), (183, 278), (184, 279), (1285, 1286), (1289, 1287), (1290, 1288)] {
+		if let skillID = type.getAttribute(skillID),
+			let level = type.getAttribute(level),
+			let skill = invTypes[Int(skillID.value) as NSNumber] {
+			let requiredSkill = NCDBInvTypeRequiredSkill(context: context)
+			requiredSkill.type = type
+			requiredSkill.skillType = skill
+			requiredSkill.skillLevel = Int16(level.value)
+		}
+	}
+}
+
+
+// MARK: industryBlueprints
+
+print ("industryBlueprints")
+var industryBlueprints = [NSNumber: NCDBIndBlueprintType]()
+
+try! database.exec("SELECT * FROM industryBlueprints") { row in
+	guard let type = invTypes[row["typeID"] as! NSNumber] else {return}
+	let blueprintType = NCDBIndBlueprintType(context: context)
+	blueprintType.maxProductionLimit = Int32(row["maxProductionLimit"] as! NSNumber)
+	blueprintType.type = type
+	industryBlueprints[blueprintType.type!.typeID as NSNumber] = blueprintType
+}
+
+// MARK: industryActivity
+
+print ("industryActivity")
+var industryActivity = [IndexPath: NCDBIndActivity]()
+
+try! database.exec("SELECT * FROM industryActivity") { row in
+	let activity = NCDBIndActivity(context: context)
+	activity.time = Int32(row["time"] as! NSNumber)
+	activity.blueprintType = industryBlueprints[row["typeID"] as! NSNumber]
+	activity.activity = ramActivities[row["activityID"] as! NSNumber]
+	industryActivity[IndexPath(item: (row["activityID"] as! NSNumber).intValue, section: (row["typeID"] as! NSNumber).intValue)] = activity
+}
+
+// MARK: industryActivityMaterials
+
+print ("industryActivityMaterials")
+
+try! database.exec("SELECT * FROM industryActivityMaterials") { row in
+	let requiredMaterial = NCDBIndRequiredMaterial(context: context)
+	requiredMaterial.quantity = Int32(row["quantity"] as! NSNumber)
+	requiredMaterial.materialType = invTypes[row["materialTypeID"] as! NSNumber]
+	requiredMaterial.activity = industryActivity[IndexPath(item: (row["activityID"] as! NSNumber).intValue, section: (row["typeID"] as! NSNumber).intValue)]
+}
+
+// MARK: industryActivityProducts
+
+print ("industryActivityProducts")
+var industryActivityProducts = [IndexPath: NCDBIndProduct]()
+
+try! database.exec("SELECT * FROM industryActivityProducts") { row in
+	let product = NCDBIndProduct(context: context)
+	product.quantity = Int32(row["quantity"] as! NSNumber)
+	product.productType = invTypes[row["productTypeID"] as! NSNumber]
+	product.activity = industryActivity[IndexPath(item: (row["activityID"] as! NSNumber).intValue, section: (row["typeID"] as! NSNumber).intValue)]
+	let key = IndexPath(indexes: [(row["activityID"] as! NSNumber).intValue, (row["typeID"] as! NSNumber).intValue, (row["productTypeID"] as! NSNumber).intValue])
+	
+	industryActivityProducts[key] = product
+}
+
+// MARK: industryActivityProbabilities
+
+print ("industryActivityProbabilities")
+
+try! database.exec("SELECT * FROM industryActivityProbabilities") { row in
+	let key = IndexPath(indexes: [(row["activityID"] as! NSNumber).intValue, (row["typeID"] as! NSNumber).intValue, (row["productTypeID"] as! NSNumber).intValue])
+	let product = industryActivityProducts[key]!
+	product.probability = Float(row["probability"] as! NSNumber)
+
+}
+
+// MARK: industryActivitySkills
+
+print ("industryActivitySkills")
+
+try! database.exec("SELECT * FROM industryActivitySkills") { row in
+	let requiredSkill = NCDBIndRequiredSkill(context: context)
+	requiredSkill.skillLevel = Int16(row["level"] as! NSNumber)
+	requiredSkill.skillType = invTypes[row["skillID"] as! NSNumber]
+	requiredSkill.activity = industryActivity[IndexPath(item: (row["activityID"] as! NSNumber).intValue, section: (row["typeID"] as! NSNumber).intValue)]
+}
+
+// MARK: whTypes
+
+print ("whTypes")
+
+try! database.exec("SELECT * FROM invTypes WHERE groupID = 988") { row in
+	let whType = NCDBWhType(context: context)
+	whType.type = invTypes[row["typeID"] as! NSNumber]!
+	whType.targetSystemClass = Int32(whType.type!.getAttribute(1381)?.value ?? 0)
+	whType.maxStableTime = Float(whType.type!.getAttribute(1382)?.value ?? 0)
+	whType.maxStableMass = Float(whType.type!.getAttribute(1383)?.value ?? 0)
+	whType.maxRegeneration = Float(whType.type!.getAttribute(1384)?.value ?? 0)
+	whType.maxJumpMass = Float(whType.type!.getAttribute(1385)?.value ?? 0)
+}
+
+print ("Save...")
+try! context.save()

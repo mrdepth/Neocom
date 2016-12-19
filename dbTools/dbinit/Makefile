@@ -29,7 +29,7 @@ Icons: eveIcons.sql EVEIconsConverter
 	${T}/EVEIconsConverter ./input/Icons/items ${T}/Icons
 
 eveIcons.sql: EVEIconsIDsParser
-	${T}/EVEIconsIDsParser ./input/sde/iconIDs.yaml ${T}/eveIcons.sql
+	${T}/EVEIconsIDsParser ./input/sde/fsd/iconIDs.yaml ${T}/eveIcons.sql
 
 Types: EVETypesConverter
 	${T}/EVETypesConverter ./input/Types ${T}/Types ${T}/typesMap.sql
@@ -56,7 +56,7 @@ evedb.sqlite: createTables.sql Types eveIcons.sql npc.sql
 	$(T)/dbpatch $(T)/evedb.sqlite
 
 
-NCDatabase.sqlite: NCDatabase evedb.sqlite Icons Types
+NCDatabase.sqlite: evedb.sqlite Icons Types NCDatabase
 	${T}/NCDatabase ./NCDatabase.sqlite ${T}/evedb.sqlite ${T}/Icons ${T}/Types ./input/Factions "${EXPANSION}"
 
 tmp:

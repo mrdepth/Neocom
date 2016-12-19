@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16C67" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CertCertificate" representedClassName="NCDBCertCertificate" syncable="YES" codeGenerationType="class">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String" syncable="YES"/>
@@ -24,10 +24,34 @@
         <relationship name="mastery" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertMastery" inverseName="skills" inverseEntity="CertMastery" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="masterySkills" inverseEntity="InvType" syncable="YES"/>
     </entity>
+    <entity name="ChrAncestry" representedClassName="NCDBChrAncestry" syncable="YES" codeGenerationType="class">
+        <attribute name="ancestryID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="ancestryName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="bloodline" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrBloodline" inverseName="ancestries" inverseEntity="ChrBloodline" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="ancestries" inverseEntity="EveIcon" syncable="YES"/>
+    </entity>
+    <entity name="ChrBloodline" representedClassName="NCDBChrBloodline" syncable="YES" codeGenerationType="class">
+        <attribute name="bloodlineID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="bloodlineName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="ancestries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrAncestry" inverseName="bloodline" inverseEntity="ChrAncestry" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="bloodlines" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="bloodlines" inverseEntity="ChrRace" syncable="YES"/>
+    </entity>
+    <entity name="ChrFaction" representedClassName="NCDBChrFaction" syncable="YES" codeGenerationType="class">
+        <attribute name="factionID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="factionName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="constellations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="faction" inverseEntity="MapConstellation" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="factions" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="factions" inverseEntity="ChrRace" syncable="YES"/>
+        <relationship name="regions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapRegion" inverseName="faction" inverseEntity="MapRegion" syncable="YES"/>
+        <relationship name="solarSystems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="faction" inverseEntity="MapSolarSystem" syncable="YES"/>
+    </entity>
     <entity name="ChrRace" representedClassName="NCDBChrRace" syncable="YES" codeGenerationType="class">
         <attribute name="raceID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="raceName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="bloodlines" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrBloodline" inverseName="race" inverseEntity="ChrBloodline" syncable="YES"/>
         <relationship name="dgmppCategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemCategory" inverseName="race" inverseEntity="DgmppItemCategory" syncable="YES"/>
+        <relationship name="factions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="race" inverseEntity="ChrFaction" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="races" inverseEntity="EveIcon" syncable="YES"/>
         <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="race" inverseEntity="InvType" syncable="YES"/>
     </entity>
@@ -119,8 +143,11 @@
     <entity name="EveIcon" representedClassName="NCDBEveIcon" syncable="YES" codeGenerationType="class">
         <attribute name="iconFile" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="activities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamActivity" inverseName="icon" inverseEntity="RamActivity" syncable="YES"/>
+        <relationship name="ancestries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrAncestry" inverseName="icon" inverseEntity="ChrAncestry" syncable="YES"/>
         <relationship name="attributeTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="icon" inverseEntity="DgmAttributeType" syncable="YES"/>
+        <relationship name="bloodlines" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrBloodline" inverseName="icon" inverseEntity="ChrBloodline" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvCategory" inverseName="icon" inverseEntity="InvCategory" syncable="YES"/>
+        <relationship name="factions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="icon" inverseEntity="ChrFaction" syncable="YES"/>
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="icon" inverseEntity="InvGroup" syncable="YES"/>
         <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIconImage" inverseName="icon" inverseEntity="EveIconImage" syncable="YES"/>
         <relationship name="itemGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="icon" inverseEntity="DgmppItemGroup" syncable="YES"/>
@@ -265,8 +292,8 @@
     <entity name="MapConstellation" representedClassName="NCDBMapConstellation" syncable="YES" codeGenerationType="class">
         <attribute name="constellationID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="constellationName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="factionID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="constellation" inverseEntity="MapDenormalize" syncable="YES"/>
+        <relationship name="faction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="constellations" inverseEntity="ChrFaction" syncable="YES"/>
         <relationship name="region" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapRegion" inverseName="constellations" inverseEntity="MapRegion" syncable="YES"/>
         <relationship name="solarSystems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="constellation" inverseEntity="MapSolarSystem" syncable="YES"/>
     </entity>
@@ -280,19 +307,19 @@
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="denormalize" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="MapRegion" representedClassName="NCDBMapRegion" syncable="YES" codeGenerationType="class">
-        <attribute name="factionID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="regionID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="regionName" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="constellations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="region" inverseEntity="MapConstellation" syncable="YES"/>
         <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="region" inverseEntity="MapDenormalize" syncable="YES"/>
+        <relationship name="faction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="regions" inverseEntity="ChrFaction" syncable="YES"/>
     </entity>
     <entity name="MapSolarSystem" representedClassName="NCDBMapSolarSystem" syncable="YES" codeGenerationType="class">
-        <attribute name="factionID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="solarSystemID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="solarSystemName" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="constellation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="solarSystems" inverseEntity="MapConstellation" syncable="YES"/>
         <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="solarSystem" inverseEntity="MapDenormalize" syncable="YES"/>
+        <relationship name="faction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="solarSystems" inverseEntity="ChrFaction" syncable="YES"/>
         <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StaStation" inverseName="solarSystem" inverseEntity="StaStation" syncable="YES"/>
     </entity>
     <entity name="NpcGroup" representedClassName="NCDBNpcGroup" syncable="YES" codeGenerationType="class">
@@ -313,6 +340,7 @@
     <entity name="RamAssemblyLineType" representedClassName="NCDBRamAssemblyLineType" syncable="YES" codeGenerationType="class">
         <attribute name="assemblyLineTypeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="assemblyLineTypeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="baseCostMultiplier" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="baseMaterialMultiplier" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="baseTimeMultiplier" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="minCostPerHour" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -356,7 +384,7 @@
         <element name="CertMastery" positionX="-189" positionY="180" width="128" height="90"/>
         <element name="CertMasteryLevel" positionX="-162" positionY="180" width="128" height="105"/>
         <element name="CertSkill" positionX="-171" positionY="189" width="128" height="90"/>
-        <element name="ChrRace" positionX="9" positionY="54" width="128" height="120"/>
+        <element name="ChrRace" positionX="9" positionY="54" width="128" height="150"/>
         <element name="DgmAttributeCategory" positionX="18" positionY="63" width="128" height="90"/>
         <element name="DgmAttributeType" positionX="0" positionY="54" width="128" height="165"/>
         <element name="DgmEffect" positionX="36" positionY="81" width="128" height="75"/>
@@ -369,7 +397,7 @@
         <element name="DgmppItemShipResources" positionX="160" positionY="192" width="128" height="150"/>
         <element name="DgmppItemSpaceStructureResources" positionX="-189" positionY="180" width="128" height="165"/>
         <element name="DgmTypeAttribute" positionX="-36" positionY="27" width="128" height="90"/>
-        <element name="EveIcon" positionX="18" positionY="63" width="128" height="240"/>
+        <element name="EveIcon" positionX="18" positionY="63" width="128" height="285"/>
         <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="75"/>
         <element name="EveUnit" positionX="0" positionY="153" width="128" height="90"/>
         <element name="IndActivity" positionX="-171" positionY="198" width="128" height="135"/>
@@ -386,17 +414,20 @@
         <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="105"/>
         <element name="InvType" positionX="-396" positionY="85" width="128" height="600"/>
         <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="90"/>
-        <element name="MapConstellation" positionX="81" positionY="225" width="128" height="135"/>
+        <element name="MapConstellation" positionX="81" positionY="225" width="128" height="30"/>
         <element name="MapDenormalize" positionX="90" positionY="234" width="128" height="150"/>
         <element name="MapRegion" positionX="99" positionY="243" width="128" height="120"/>
-        <element name="MapSolarSystem" positionX="108" positionY="252" width="128" height="150"/>
+        <element name="MapSolarSystem" positionX="108" positionY="252" width="128" height="30"/>
         <element name="NpcGroup" positionX="117" positionY="261" width="128" height="120"/>
         <element name="RamActivity" positionX="63" positionY="207" width="128" height="135"/>
-        <element name="RamAssemblyLineType" positionX="72" positionY="216" width="128" height="165"/>
+        <element name="RamAssemblyLineType" positionX="72" positionY="216" width="128" height="180"/>
         <element name="RamInstallationTypeContent" positionX="81" positionY="225" width="128" height="90"/>
         <element name="StaStation" positionX="99" positionY="243" width="128" height="120"/>
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
         <element name="Version" positionX="-153" positionY="216" width="128" height="90"/>
         <element name="WhType" positionX="-189" positionY="180" width="128" height="150"/>
+        <element name="ChrFaction" positionX="-189" positionY="180" width="128" height="30"/>
+        <element name="ChrAncestry" positionX="-180" positionY="189" width="128" height="105"/>
+        <element name="ChrBloodline" positionX="-171" positionY="198" width="128" height="120"/>
     </elements>
 </model>

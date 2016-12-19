@@ -563,7 +563,7 @@ void convertInvMetaTypes(NSManagedObjectContext* context, EVEDBDatabase* databas
 		EVEDBInvMetaType* eveMetaType = [[EVEDBInvMetaType alloc] initWithStatement:stmt];
 		NCDBInvType* type = invTypes[@(eveMetaType.typeID)];
 		NCDBInvType* parentType = eveMetaType.parentTypeID ? invTypes[@(eveMetaType.parentTypeID)] : nil;
-		if (parentType)
+		if (parentType)t
 			type.parentType = parentType;
 		if (type.metaGroup.metaGroupID != NCDBUnpublishedMetaGroup)
 			type.metaGroup = invMetaGroups[@(eveMetaType.metaGroupID)];

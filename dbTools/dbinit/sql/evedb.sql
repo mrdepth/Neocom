@@ -36,6 +36,9 @@ INSERT INTO eveDB.industryActivitySkills SELECT * FROM industryActivitySkills;
 INSERT INTO eveDB.industryBlueprints SELECT * FROM industryBlueprints;
 
 INSERT INTO eveDB.chrRaces SELECT * FROM chrRaces;
+INSERT INTO eveDB.chrAncestries SELECT * FROM chrAncestries;
+INSERT INTO eveDB.chrBloodlines SELECT * FROM chrBloodlines;
+INSERT INTO eveDB.chrFactions SELECT * FROM chrFactions;
 
 --INSERT INTO eveDB.invTypes SELECT * FROM invTypes;
 --INSERT INTO eveDB.invGroups SELECT * FROM invGroups;

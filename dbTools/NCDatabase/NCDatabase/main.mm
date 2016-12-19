@@ -82,7 +82,7 @@ NSString* factionsPath;
 		NSString* key = [string capitalizedString];
 		for (NSColorList* colorList in [NSColorList availableColorLists]) {
 			NSColor* color = [colorList colorWithKey:key];
-			if (color)
+			if (color).
 				return color;
 		}
 	}

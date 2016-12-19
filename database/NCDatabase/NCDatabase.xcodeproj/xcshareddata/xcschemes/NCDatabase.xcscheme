@@ -64,18 +64,38 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-sde /Users/shimanski/Documents/git/EVEUniverse/dbTools/dbinit/input/sde/sqlite-latest.sqlite"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-out /Users/shimanski/Documents/git/EVEUniverse/dbTools/dbinit/tmp/NCDatabase.sqlite"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-icons /Users/shimanski/Documents/git/EVEUniverse/dbTools/dbinit/input/Icons"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-types /Users/shimanski/Documents/git/EVEUniverse/dbTools/dbinit/input/Types"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-sde /Users/shimanski/work/git/EVEUniverse/dbTools/dbinit/tmp/evedb.sqlite"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-out /Users/shimanski/work/git/EVEUniverse/dbTools/dbinit/tmp/NCDatabase.sqlite"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-icons /Users/shimanski/work/git/EVEUniverse/dbTools/dbinit/tmp/Icons"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-types /Users/shimanski/work/git/EVEUniverse/dbTools/dbinit/tmp/Types"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-factions /Users/shimanski/work/git/EVEUniverse/dbTools/dbinit/input/Factions"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

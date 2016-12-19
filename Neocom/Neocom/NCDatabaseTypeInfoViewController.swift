@@ -8,12 +8,15 @@
 
 import UIKit
 
-class NCDatabaseTypeInfoViewController: UITableViewController {
+class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerDelegate {
 	var type: NCDBInvType?
 	var headerViewController: NCDatabaseTypeInfoHeaderViewController?
 	
+	@IBOutlet var treeController: NCTreeController!
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		treeController.childrenKeyPath = "children"
+		treeController.delegate = self
 		
 		if let type = type {
 			title = type.typeName
@@ -27,6 +30,11 @@ class NCDatabaseTypeInfoViewController: UITableViewController {
 			tableView.addSubview(headerViewController.view)
 			addChildViewController(headerViewController)
 			self.headerViewController = headerViewController
+			
+			NCDatabaseTypeInfo.typeInfo(typeID: type.objectID) { result in
+				self.treeController.content = result
+				self.treeController.reloadData()
+			}
 		}
 		else {
 			title = NSLocalizedString("Unknown", comment: "")
@@ -44,6 +52,12 @@ class NCDatabaseTypeInfoViewController: UITableViewController {
 				self.tableView.tableHeaderView = self.tableView.tableHeaderView
 			}
 		}
+	}
+	
+	// MARK: NCTreeControllerDelegate
+	
+	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
+		return (item as! NCTreeNode).cellIdentifier
 	}
 }
 

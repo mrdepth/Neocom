@@ -60,7 +60,9 @@ extension NSAttributedString {
 		
 		let s = NSMutableAttributedString(string: html)
 		
-		var expression = try! NSRegularExpression(pattern: "<(a[^>]*href|url)=[\"']?(.*?)[\"']?>(.*?)<\\/(a|url)>", options: [.caseInsensitive])
+		let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+		
+		var expression = try! NSRegularExpression(pattern: "<(a[^>]*href|url)=[\"']?(.*?)[\"']?>(.*?)<\\/(a|url)>", options: options)
 		
 		for result in expression.matches(in: s.string, options: [], range: NSMakeRange(0, s.length)).reversed() {
 			let replace = s.attributedSubstring(from: result.rangeAt(3)).mutableCopy() as! NSMutableAttributedString
@@ -69,7 +71,7 @@ extension NSAttributedString {
 			s.replaceCharacters(in: result.rangeAt(0), with: replace)
 		}
 		
-		expression = try! NSRegularExpression(pattern: "<b[^>]*>(.*?)</b>", options: [.caseInsensitive])
+		expression = try! NSRegularExpression(pattern: "<b[^>]*>(.*?)</b>", options: options)
 		
 		for result in expression.matches(in: s.string, options: [], range: NSMakeRange(0, s.length)).reversed() {
 			let replace = s.attributedSubstring(from: result.rangeAt(1)).mutableCopy() as! NSMutableAttributedString
@@ -77,7 +79,7 @@ extension NSAttributedString {
 			s.replaceCharacters(in: result.rangeAt(0), with: replace)
 		}
 		
-		expression = try! NSRegularExpression(pattern: "<i[^>]*>(.*?)</i>", options: [.caseInsensitive])
+		expression = try! NSRegularExpression(pattern: "<i[^>]*>(.*?)</i>", options: options)
 		
 		for result in expression.matches(in: s.string, options: [], range: NSMakeRange(0, s.length)).reversed() {
 			let replace = s.attributedSubstring(from: result.rangeAt(1)).mutableCopy() as! NSMutableAttributedString
@@ -85,7 +87,7 @@ extension NSAttributedString {
 			s.replaceCharacters(in: result.rangeAt(0), with: replace)
 		}
 
-		expression = try! NSRegularExpression(pattern: "<u[^>]*>(.*?)</u>", options: [.caseInsensitive])
+		expression = try! NSRegularExpression(pattern: "<u[^>]*>(.*?)</u>", options: options)
 		
 		for result in expression.matches(in: s.string, options: [], range: NSMakeRange(0, s.length)).reversed() {
 			let replace = s.attributedSubstring(from: result.rangeAt(1)).mutableCopy() as! NSMutableAttributedString
@@ -104,7 +106,7 @@ extension NSAttributedString {
 			s.replaceCharacters(in: result.rangeAt(0), with: replace)
 		}
 
-		expression = try! NSRegularExpression(pattern: "</?.*?>", options: [.caseInsensitive])
+		expression = try! NSRegularExpression(pattern: "</?.*?>", options: options)
 		
 		for result in expression.matches(in: s.string, options: [], range: NSMakeRange(0, s.length)).reversed() {
 			s.replaceCharacters(in: result.rangeAt(0), with: NSAttributedString(string: ""))
@@ -122,9 +124,12 @@ extension String {
 			let hexString = s.substring(with: result.rangeAt(1))
 			let scanner = Scanner(string: hexString)
 			var i: UInt32 = 0
-			assert(scanner.scanHexInt32(&i))
+			if !scanner.scanHexInt32(&i) {
+				exit(EXIT_FAILURE)
+			}
 			s.replaceCharacters(in: result.rangeAt(0), with: String(unichar(i)))
 		}
+		s.replaceOccurrences(of: "\\r\\n", with: "\n", options: [], range: NSMakeRange(0, s.length))
 		return String(s)
 	}
 }
@@ -132,13 +137,17 @@ extension String {
 class SQLiteDB {
 	var db: OpaquePointer?
 	init(filePath: String) throws {
-		assert(sqlite3_open_v2(filePath, &db, SQLITE_OPEN_READONLY, nil) == SQLITE_OK)
+		print(filePath)
+		if sqlite3_open_v2(filePath, &db, SQLITE_OPEN_READONLY, nil) != SQLITE_OK {
+			exit(EXIT_FAILURE)
+		}
 	}
 	
 	func exec(_ sql: String, block: ([String: Any]) -> Void) throws {
 		var stmt: OpaquePointer?
-		assert(sqlite3_prepare(db, sql, Int32(sql.lengthOfBytes(using: .utf8)), &stmt, nil) == SQLITE_OK)
-		
+		if sqlite3_prepare(db, sql, Int32(sql.lengthOfBytes(using: .utf8)), &stmt, nil) != SQLITE_OK {
+			exit(EXIT_FAILURE)
+		}
 		while sqlite3_step(stmt) == SQLITE_ROW {
 			let n = sqlite3_column_count(stmt)
 			var dic = [String: Any]()
@@ -167,7 +176,8 @@ class SQLiteDB {
 						dic[name] = text
 					}
 				default:
-					assert(false, "Invalid SQLite type \(sqlite3_column_type(stmt, i))")
+					print ("Invalid SQLite type \(sqlite3_column_type(stmt, i))")
+					exit(EXIT_FAILURE)
 					break
 				}
 			}
@@ -189,7 +199,7 @@ for arg in CommandLine.arguments[1..<CommandLine.arguments.count] {
 		key = nil
 	}
 	else {
-		assert(false)
+		exit(EXIT_FAILURE)
 	}
 }
 
@@ -467,6 +477,13 @@ try! database.exec("SELECT * FROM invTypes") { row in
 	type.marketGroup = row["marketGroupID"] != nil ? invMarketGroups[row["marketGroupID"] as! NSNumber] : nil
 	type.race = row["raceID"] != nil ? chrRaces[row["raceID"] as! NSNumber] : nil
 	type.typeName = (row["typeName"] as! String).replacingEscapes()
+	if let imageName = row["imageName"] as? String, let image = eveIcons[imageName] {
+		type.icon = image
+	}
+	else if let iconID = row["iconID"] as? NSNumber, let icon = eveIcons[iconID] {
+		type.icon = icon
+	}
+	
 	if type.published {
 		type.metaGroup = invMetaTypes[type.typeID as NSNumber] ?? defaultMetaGroup
 	}
@@ -475,7 +492,7 @@ try! database.exec("SELECT * FROM invTypes") { row in
 	}
 	
 	var sections = [String:[String]]()
-	try! database.exec("SELECT a.*, b.typeName FROM invTraits AS a, invTypes AS b WHERE a.typeID = \(type.typeID) AND a.skillID=b.typeID ORDER BY traitID") { row in
+	try! database.exec("SELECT a.*, b.typeName FROM invTraits AS a LEFT JOIN invTypes as b ON a.skillID=b.typeID WHERE a.typeID = \(type.typeID) ORDER BY traitID") { row in
 		let skillID = row["skillID"] as? NSNumber
 		let skillName = row["typeName"] as? String
 		let typeID = row["typeID"] as! NSNumber
@@ -508,13 +525,13 @@ try! database.exec("SELECT * FROM invTypes") { row in
 		array.append(trait)
 		sections[section] = array
 	}
-	let trait = sections.sorted{return $0.key > $1.key}.map {
-		return "\($0.key)\n\($0.value.joined(separator: ","))"
-		}.joined(separator: "\n")
+	let trait = sections.sorted{return $0.key < $1.key}.map {
+		return "\($0.key)\n\($0.value.joined(separator: "\n"))"
+		}.joined(separator: "\n\n")
 	
-	var description = row["description"] as? String ?? ""
+	var description = (row["description"] as? String)?.replacingEscapes() ?? ""
 	if !trait.isEmpty {
-		description += "\n" + trait
+		description += "\n\n" + trait
 	}
 	type.typeDescription = NCDBTxtDescription(context: context)
 	type.typeDescription?.text = NSAttributedString(html: description)
@@ -626,7 +643,7 @@ try! database.exec("SELECT * FROM certCerts") { row in
 	certificate.certificateName = row["name"] as? String
 	certificate.group = invGroups[row["groupID"] as! NSNumber]
 	certificate.certificateDescription = NCDBTxtDescription(context: context)
-	certificate.certificateDescription?.text = NSAttributedString(html: row["description"] as? String)
+	certificate.certificateDescription?.text = NSAttributedString(html: (row["description"] as? String)?.replacingEscapes())
 	
 	for (_, level) in certMasteryLevels {
 		let mastery = NCDBCertMastery(context: context)

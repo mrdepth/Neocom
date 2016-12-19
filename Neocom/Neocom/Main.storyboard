@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -398,7 +398,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ffC-Zw-1kd">
-                                            <rect key="frame" x="15" y="10" width="226" height="21"/>
+                                            <rect key="frame" x="15" y="9" width="226" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -458,7 +458,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" image="addAccount" translatesAutoresizingMaskIntoConstraints="NO" id="K6e-er-KOx" customClass="NCTintImageView" customModule="Neocom" customModuleProvider="target">
-                                        <rect key="frame" x="117.5" y="0.0" width="86" height="86"/>
+                                        <rect key="frame" x="117" y="0.0" width="86" height="86"/>
                                         <color key="tintColor" white="1" alpha="0.050000000000000003" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="32" id="crz-5O-yyz"/>
@@ -1516,7 +1516,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="iOQ-Zg-Pgy">
-                                            <rect key="frame" x="43.5" y="0.0" width="233" height="233"/>
+                                            <rect key="frame" x="44" y="0.0" width="232" height="232"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="iOQ-Zg-Pgy" secondAttribute="height" id="0Mm-TH-Zvj"/>
                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="512" id="fr4-Sj-2Bg"/>
@@ -1546,14 +1546,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qGb-UC-aex">
-                                            <rect key="frame" x="15" y="5" width="32" height="32"/>
+                                            <rect key="frame" x="15" y="4" width="32" height="32"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="32" id="PkN-9m-LJY"/>
                                                 <constraint firstAttribute="height" priority="999" constant="32" id="vLv-Lj-XmB"/>
                                             </constraints>
                                         </imageView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hiq-1e-Jaf">
-                                            <rect key="frame" x="55" y="5" width="250" height="32"/>
+                                            <rect key="frame" x="55" y="4" width="250" height="32"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Hak-4p-mxL">
                                                     <rect key="frame" x="0.0" y="0.0" width="250" height="16"/>
@@ -1637,13 +1637,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5Oq-oi-1NP">
-                                            <rect key="frame" x="32" y="15" width="273" height="17"/>
+                                            <rect key="frame" x="32" y="15" width="273" height="16"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="DDS-sU-Qjn">
-                                            <rect key="frame" x="8" y="16" width="16" height="16"/>
+                                            <rect key="frame" x="8" y="15" width="16" height="16"/>
                                             <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </imageView>
                                     </subviews>
@@ -2022,19 +2022,19 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ezA-8E-ZH5">
-                                            <rect key="frame" x="274" y="23" width="31" height="15"/>
+                                            <rect key="frame" x="274" y="22" width="31" height="15"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="252" text="Label" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tVg-at-Vr7">
-                                            <rect key="frame" x="15" y="23" width="251" height="15"/>
+                                            <rect key="frame" x="15" y="22" width="251" height="15"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyr-Gg-aXE">
-                                            <rect key="frame" x="15" y="4" width="243" height="19"/>
+                                            <rect key="frame" x="15" y="4" width="243" height="18"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -2325,7 +2325,7 @@
             </objects>
             <point key="canvasLocation" x="1537.5" y="2364.0845070422533"/>
         </scene>
-        <!--Items-->
+        <!--Type Info-->
         <scene sceneID="YRh-xD-nde">
             <objects>
                 <tableViewController storyboardIdentifier="NCDatabaseTypeInfoViewController" id="JbH-Km-dUZ" customClass="NCDatabaseTypeInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
@@ -2373,13 +2373,21 @@
                             </tableViewCell>
                         </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="JbH-Km-dUZ" id="rcL-GJ-u3w"/>
-                            <outlet property="delegate" destination="JbH-Km-dUZ" id="WxW-en-hy2"/>
+                            <outlet property="dataSource" destination="cKP-jj-sLH" id="jM7-gx-qJN"/>
+                            <outlet property="delegate" destination="cKP-jj-sLH" id="RHa-gK-lcL"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Items" id="NJI-qa-8Hn"/>
+                    <navigationItem key="navigationItem" title="Type Info" id="NJI-qa-8Hn"/>
+                    <connections>
+                        <outlet property="treeController" destination="cKP-jj-sLH" id="vvi-gW-bfv"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rzx-Wn-Vps" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="cKP-jj-sLH" customClass="NCTreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="32e-ET-Vux" id="4QI-cx-Dw9"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="5076" y="1018"/>
         </scene>
@@ -2496,14 +2504,14 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="evV-Pm-oeT">
-                                        <rect key="frame" x="209" y="30" width="64" height="33.5"/>
+                                        <rect key="frame" x="209" y="30" width="64" height="34"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="28"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hED-0i-F8z">
-                                        <rect key="frame" x="240" y="67.5" width="33" height="16"/>
+                                        <rect key="frame" x="240" y="68" width="33" height="16"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>

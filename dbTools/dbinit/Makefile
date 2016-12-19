@@ -23,7 +23,7 @@ EVENPCBuilder: tmp
 	xcodebuild -project ../EVENPCBuilder/EVENPCBuilder.xcodeproj -configuration Release TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
 
 NCDatabase: tmp
-	xcodebuild -project ../NCDatabase/NCDatabase.xcodeproj -configuration Release BUILT_PRODUCTS_DIR=${T} TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
+	xcodebuild -project ../../database/NCDatabase/NCDatabase.xcodeproj -configuration Release BUILT_PRODUCTS_DIR=${T} TARGET_BUILD_DIR=${T} OBJROOT=${T}/build SYMROOT=${T}/build
 
 Icons: eveIcons.sql EVEIconsConverter
 	${T}/EVEIconsConverter ./input/Icons/items ${T}/Icons
@@ -56,8 +56,8 @@ evedb.sqlite: createTables.sql Types eveIcons.sql npc.sql
 	$(T)/dbpatch $(T)/evedb.sqlite
 
 
-NCDatabase.sqlite: evedb.sqlite Icons Types NCDatabase
-	${T}/NCDatabase ./NCDatabase.sqlite ${T}/evedb.sqlite ${T}/Icons ${T}/Types ./input/Factions "${EXPANSION}"
+NCDatabase.sqlite: evedb.sqlite Icons Types
+	./NCDatabase -out ./NCDatabase.sqlite -sde ${T}/evedb.sqlite -icons ${T}/Icons -types ${T}/Types -factions ./input/Factions -expansion "${EXPANSION}"
 
 tmp:
 	mkdir -p ${T}

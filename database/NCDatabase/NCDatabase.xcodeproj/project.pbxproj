@@ -139,8 +139,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				129E61191E03CC5F00B56EB8 /* main.swift in Sources */,
 				129E61211E03CC6E00B56EB8 /* NCDatabase.xcdatamodeld in Sources */,
+				129E61191E03CC5F00B56EB8 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,6 +279,7 @@
 				129E611E1E03CC5F00B56EB8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

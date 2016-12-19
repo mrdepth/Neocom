@@ -130,6 +130,9 @@ class NCDatabaseTypeInfo {
 					if let unitID = attributeType.unit?.unitID, Int(unitID) == NCDBUnitID.typeID.rawValue {
 					}
 				}
+				if rows.count > 0 {
+					sections.append(NCTreeSection(cellIdentifier: "Cell", nodeIdentifier: section.name, title: section.name, attributedTitle: nil, children: rows, configurationHandler: nil))
+				}
 			}
 		})
 	}

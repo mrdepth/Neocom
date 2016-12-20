@@ -24,6 +24,9 @@ enum NCDBAttributeID: Int {
 	case memory = 166
 	case perception = 167
 	case willpower = 168
+	
+	case warpSpeedMultiplier = 600
+	case baseWarpSpeed = 1281
 }
 
 enum NCDBAttributeCategoryID: Int {

@@ -59,6 +59,14 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
 		return (item as! NCTreeNode).cellIdentifier
 	}
+	
+	func treeController(_ treeController: NCTreeController, configureCell cell: UITableViewCell, withItem item: AnyObject) {
+		(item as! NCTreeNode).configure(cell: cell)
+	}
+	
+	func treeController(_ treeController: NCTreeController, isItemExpandable item: AnyObject) -> Bool {
+		return (item as! NCTreeNode).canExpand
+	}
 }
 
 

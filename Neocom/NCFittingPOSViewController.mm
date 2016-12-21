@@ -19,6 +19,7 @@
 #import "NCFittingPOSStatsViewController.h"
 #import "NSString+Neocom.h"
 #import "UIColor+Neocom.h"
+#import "UIAlertController+Neocom.h"
 
 #define ActionButtonShowControlTowerInfo NSLocalizedString(@"Control Tower Info", nil)
 #define ActionButtonSetName NSLocalizedString(@"Set Fit Name", nil)
@@ -57,6 +58,10 @@
 		[self updateSectionSegmentedControlWithTraitCollection:self.traitCollection];
 //		[self.sectionSegmentedControl removeSegmentAtIndex:self.sectionSegmentedControl.numberOfSegments - 1 animated:NO];
 
+	BOOL disableSaveChangesPrompt = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDisableSaveChangesPromptKey];
+	if (disableSaveChangesPrompt)
+		self.navigationItem.leftBarButtonItem = nil;
+
 	self.taskManager.maxConcurrentOperationCount = 1;
 	self.title = self.fit.loadoutName;
 	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
@@ -93,12 +98,28 @@
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
-	if ([self isMovingFromParentViewController] || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (self.fit.loadoutID)
-			[self.fit save];
-		self.fit = nil;
-		if ([self.storageManagedObjectContext hasChanges])
-			[self.storageManagedObjectContext save:nil];
+	if ([self isMovingFromParentViewController] || !self.splitViewController) {
+		BOOL disableSaveChangesPrompt = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDisableSaveChangesPromptKey];
+		if (disableSaveChangesPrompt) {
+			if (self.fit.loadoutID)
+				[self.fit save];
+			self.fit = nil;
+			if ([self.storageManagedObjectContext hasChanges])
+				[self.storageManagedObjectContext save:nil];
+		}
+		else if (self.fit) {
+			UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"Save Changes?", nil) preferredStyle:UIAlertControllerStyleAlert];
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Save", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				[self.fit save];
+				self.fit = nil;
+				if ([self.storageManagedObjectContext hasChanges])
+					[self.storageManagedObjectContext save:nil];
+			}]];
+			
+			[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Discard", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+			}]];
+			[[UIAlertController frontMostViewController] presentViewController:controller animated:YES completion:nil];
+		}
 	}
 	[super viewWillDisappear:animated];
 }
@@ -317,6 +338,26 @@
 	}
 	else
 		[self presentViewController:controller animated:YES completion:nil];
+}
+
+- (IBAction)onBack:(id)sender {
+	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"Save Changes?", nil) preferredStyle:UIAlertControllerStyleAlert];
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Save and Exit", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self.fit save];
+		self.fit = nil;
+		if ([self.storageManagedObjectContext hasChanges])
+			[self.storageManagedObjectContext save:nil];
+		[self.navigationController popViewControllerAnimated:YES];
+	}]];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Discard and Exit", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		self.fit = nil;
+		[self.navigationController popViewControllerAnimated:YES];
+	}]];
+	
+	[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+	[self presentViewController:controller animated:YES completion:nil];
+	
 }
 
 - (void) willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {

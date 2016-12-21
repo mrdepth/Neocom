@@ -599,6 +599,7 @@
 						cell.shipPriceLabel.text = data[@"shipPrice"];
 						cell.fittingsPriceLabel.text = data[@"fittingsPrice"];
 						cell.dronesPriceLabel.text = data[@"dronesPrice"];
+						cell.implantsPriceLabel.text = data[@"implantsPrice"];
 						cell.totalPriceLabel.text = data[@"totalPrice"];
 					};
 					row.loadingBlock = ^(NCFittingShipStatsViewController* controller, void (^completionBlock)(NSDictionary* data)) {
@@ -608,6 +609,7 @@
 								auto ship = character->getShip();
 								NSMutableDictionary* types = [NSMutableDictionary new];
 								NSMutableSet* drones = [NSMutableSet set];
+								NSMutableSet* implants = [NSMutableSet set];
 								__block int32_t shipTypeID;
 								shipTypeID = ship->getTypeID();
 								
@@ -620,10 +622,17 @@
 									types[@(i->getTypeID())] = @([types[@(i->getTypeID())] intValue] + 1);
 									[drones addObject:@(i->getTypeID())];
 								}
+								
+								for (const auto& i: character->getImplants()) {
+									types[@(i->getTypeID())] = @([types[@(i->getTypeID())] intValue] + 1);
+									[implants addObject:@(i->getTypeID())];
+								}
+
 								[[NCPriceManager sharedManager] requestPricesWithTypes:[types allKeys] completionBlock:^(NSDictionary *prices) {
 									__block float shipPrice = 0;
 									__block float fittingsPrice = 0;
 									__block float dronesPrice = 0;
+									__block float implantsPrice = 0;
 									
 									[prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NSNumber* obj, BOOL *stop) {
 										int32_t typeID = [key intValue];
@@ -631,6 +640,8 @@
 											shipPrice = [obj doubleValue];
 										else if ([drones containsObject:@(typeID)])
 											dronesPrice += [obj doubleValue] * [types[key] intValue];
+										else if ([implants containsObject:@(typeID)])
+											implantsPrice += [obj doubleValue] * [types[key] intValue];
 										else
 											fittingsPrice += [obj doubleValue] * [types[key] intValue];
 									}];
@@ -639,7 +650,8 @@
 									@{@"shipPrice": [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:shipPrice unit:nil]],
 									  @"fittingsPrice": [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:fittingsPrice unit:nil]],
 									  @"dronesPrice": [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:dronesPrice unit:nil]],
-									  @"totalPrice": [NSString stringWithFormat:NSLocalizedString(@"Total: %@ ISK", nil), [NSString shortStringWithFloat:totalPrice unit:nil]]};
+									  @"implantsPrice": [NSString stringWithFormat:NSLocalizedString(@"Implants: %@ ISK", nil), [NSString shortStringWithFloat:implantsPrice unit:nil]],
+									  @"totalPrice": [NSString stringWithFormat:NSLocalizedString(@"Ship's total: %@ ISK", nil), [NSString shortStringWithFloat:totalPrice unit:nil]]};
 									dispatch_async(dispatch_get_main_queue(), ^{
 										completionBlock(data);
 									});

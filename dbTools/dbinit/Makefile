@@ -29,7 +29,7 @@ Icons: eveIcons.sql EVEIconsConverter
 	${T}/EVEIconsConverter ./input/Icons/items ${T}/Icons
 
 eveIcons.sql: EVEIconsIDsParser
-	${T}/EVEIconsIDsParser ./input/sde/iconIDs.yaml ${T}/eveIcons.sql
+	${T}/EVEIconsIDsParser ./input/sde/fsd/iconIDs.yaml ${T}/eveIcons.sql
 
 Types: EVETypesConverter
 	${T}/EVETypesConverter ./input/Types ${T}/Types ${T}/typesMap.sql

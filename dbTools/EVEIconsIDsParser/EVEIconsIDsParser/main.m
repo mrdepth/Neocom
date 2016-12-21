@@ -64,7 +64,20 @@ int main(int argc, const char * argv[])
 			 PRIMARY KEY (\"iconID\")\n\
 			 );\n\n"];
 			
-			for (NSDictionary* record in records) {
+			for (NSMutableDictionary* record in records) {
+				NSString* iconFile = [[record[@"iconFile"] lastPathComponent] stringByDeletingPathExtension];
+				NSArray* components = [iconFile componentsSeparatedByString:@"_"];
+				if (components.count == 3) {
+					int a = [components[0] intValue];
+					int b = [components[2] intValue];
+					if (a > 0 || b > 0) {
+						iconFile = [NSString stringWithFormat:@"%.2d_%.2d", a, b];
+					}
+				}
+				if (iconFile)
+					record[@"iconFile"] = iconFile;
+
+				
 				[sql appendFormat:@"INSERT INTO eveIcons VALUES (%@, \"%@\", \"%@\");\n", record[@"iconID"], record[@"iconFile"] ? record[@"iconFile"] : @"", record[@"description"] ? record[@"description"] : @""];
 			}
 			[sql writeToFile:[NSString stringWithUTF8String:argv[2]] atomically:YES encoding:NSUTF8StringEncoding error:nil];

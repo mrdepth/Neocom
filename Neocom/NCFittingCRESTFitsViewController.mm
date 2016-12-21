@@ -204,7 +204,7 @@
 					completionBlock(error);
 				});
 			}];
-		} progressBlock:nil];
+		}];
 	}
 	else
 		completionBlock(nil);

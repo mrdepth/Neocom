@@ -431,7 +431,7 @@
 										loadingProgress.completedUnitCount++;
 									}
 								}];
-							} progressBlock:nil];
+							}];
 						}
 						else {
 							dispatch_group_leave(finishGroup);
@@ -440,7 +440,7 @@
 							}
 						}
 					}];
-				} progressBlock:nil];
+				}];
 			};
 			
 			if (corporate)

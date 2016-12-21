@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -538,7 +538,7 @@
         <scene sceneID="aKy-5B-ghi">
             <objects>
                 <tableViewController id="xOJ-XJ-7d3" customClass="NCFittingCharacterPickerViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="sHC-30-iZA" customClass="CollapsableTableView">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="sHC-30-iZA">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -3730,8 +3730,14 @@ IAogA
                                                         <constraint firstItem="6zt-NN-WPz" firstAttribute="leading" secondItem="GdF-fD-uKr" secondAttribute="trailing" constant="8" id="yvP-4M-E3M"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Total:" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GDT-I8-FAf" customClass="LUILabel">
-                                                    <rect key="frame" x="278" y="37" width="32" height="15"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Ship's total:" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GDT-I8-FAf" customClass="LUILabel">
+                                                    <rect key="frame" x="243" y="37" width="67" height="15"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Implants:" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="qIT-rz-mq8" customClass="LUILabel">
+                                                    <rect key="frame" x="171" y="37" width="52" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3743,6 +3749,8 @@ IAogA
                                                 <constraint firstItem="r98-cH-dWJ" firstAttribute="leading" secondItem="DhH-be-seN" secondAttribute="leading" id="E5L-XH-gdf"/>
                                                 <constraint firstItem="GDT-I8-FAf" firstAttribute="trailing" secondItem="Zb5-SH-IF0" secondAttribute="trailing" id="Mkt-96-38i"/>
                                                 <constraint firstItem="GDT-I8-FAf" firstAttribute="top" secondItem="r98-cH-dWJ" secondAttribute="bottom" constant="3" id="NLa-ci-lHm"/>
+                                                <constraint firstItem="GDT-I8-FAf" firstAttribute="leading" secondItem="qIT-rz-mq8" secondAttribute="trailing" constant="20" id="OMr-CR-B8D"/>
+                                                <constraint firstItem="GDT-I8-FAf" firstAttribute="centerY" secondItem="qIT-rz-mq8" secondAttribute="centerY" id="WVj-Wl-I1q"/>
                                                 <constraint firstAttribute="bottom" secondItem="GDT-I8-FAf" secondAttribute="bottom" constant="2" id="feB-AF-cVI"/>
                                                 <constraint firstItem="r98-cH-dWJ" firstAttribute="top" secondItem="DhH-be-seN" secondAttribute="top" id="qqP-VH-GHH"/>
                                             </constraints>
@@ -3760,6 +3768,7 @@ IAogA
                                 <connections>
                                     <outlet property="dronesPriceLabel" destination="Zb5-SH-IF0" id="dci-pc-NXN"/>
                                     <outlet property="fittingsPriceLabel" destination="re0-p2-aR3" id="TBe-zZ-ctf"/>
+                                    <outlet property="implantsPriceLabel" destination="qIT-rz-mq8" id="9Lp-2r-jsb"/>
                                     <outlet property="layoutContentView" destination="DhH-be-seN" id="N8Y-i0-14I"/>
                                     <outlet property="shipPriceLabel" destination="f6q-0x-AOR" id="Sw9-cV-qAn"/>
                                     <outlet property="totalPriceLabel" destination="GDT-I8-FAf" id="2d7-uy-y0p"/>
@@ -4405,8 +4414,8 @@ IAogA
         <image name="warpSpeed" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="LNf-bb-MDO"/>
-        <segue reference="M1g-g8-PJm"/>
         <segue reference="D7k-l2-ZfU"/>
+        <segue reference="M1g-g8-PJm"/>
+        <segue reference="LNf-bb-MDO"/>
     </inferredMetricsTieBreakers>
 </document>

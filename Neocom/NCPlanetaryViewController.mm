@@ -650,7 +650,7 @@
 							}
 							dispatch_group_leave(finishDispatchGroup);
 						}
-					} progressBlock:nil];
+					}];
 					
 					dispatch_group_enter(finishDispatchGroup);
 					[api planetaryRoutesWithPlanetID:item.planetID
@@ -660,7 +660,7 @@
 											 colonyProgress.completedUnitCount++;
 										 }
 										 dispatch_group_leave(finishDispatchGroup);
-									 } progressBlock:nil];
+									 }];
 
 				}
 				
@@ -676,7 +676,7 @@
 				});
 			}];
 
-		} progressBlock:nil];
+		}];
 	}];
 }
 

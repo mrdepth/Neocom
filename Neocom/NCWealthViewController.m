@@ -20,8 +20,18 @@
 @property (nonatomic, assign) double contracts;
 @property (nonatomic, assign) double implants;
 @property (nonatomic, assign) double blueprints;
+
 @property (nonatomic, strong) NSDictionary* categories;
 @property (nonatomic, assign) BOOL corporate;
+
+@property (nonatomic, strong) NSError* accountError;
+@property (nonatomic, strong) NSError* assetsError;
+@property (nonatomic, strong) NSError* industryError;
+@property (nonatomic, strong) NSError* marketError;
+@property (nonatomic, strong) NSError* contractsError;
+@property (nonatomic, strong) NSError* implantsError;
+@property (nonatomic, strong) NSError* blueprintsError;
+
 @end
 
 @implementation NCWealthViewControllerData
@@ -37,6 +47,15 @@
 		self.blueprints = [aDecoder decodeDoubleForKey:@"blueprints"];
 		self.categories = [aDecoder decodeObjectForKey:@"categories"];
 		self.corporate = [aDecoder decodeBoolForKey:@"corporate"];
+		
+		self.accountError = [aDecoder decodeObjectForKey:@"accountError"];
+		self.assetsError = [aDecoder decodeObjectForKey:@"assetsError"];
+		self.industryError = [aDecoder decodeObjectForKey:@"industryError"];
+		self.marketError = [aDecoder decodeObjectForKey:@"marketError"];
+		self.contractsError = [aDecoder decodeObjectForKey:@"contractsError"];
+		self.implantsError = [aDecoder decodeObjectForKey:@"implantsError"];
+		self.blueprintsError = [aDecoder decodeObjectForKey:@"blueprintsError"];
+
 	}
 	return self;
 }
@@ -51,6 +70,15 @@
 	[aCoder encodeDouble:self.blueprints forKey:@"blueprints"];
 	[aCoder encodeObject:self.categories forKey:@"categories"];
 	[aCoder encodeBool:self.corporate forKey:@"corporate"];
+	
+	[aCoder encodeObject:self.accountError forKey:@"accountError"];
+	[aCoder encodeObject:self.assetsError forKey:@"assetsError"];
+	[aCoder encodeObject:self.industryError forKey:@"industryError"];
+	[aCoder encodeObject:self.marketError forKey:@"marketError"];
+	[aCoder encodeObject:self.contractsError forKey:@"contractsError"];
+	[aCoder encodeObject:self.implantsError forKey:@"implantsError"];
+	[aCoder encodeObject:self.blueprintsError forKey:@"blueprintsError"];
+
 }
 
 @end
@@ -121,6 +149,7 @@
 		data.corporate = corporate;
 		
 		[api accountBalanceWithCompletionBlock:^(EVEAccountBalance *result, NSError *error) {
+			data.accountError = error;
 			double sum = 0;
 			for (EVEAccountBalanceItem* account in result.accounts)
 				sum += account.balance;
@@ -135,8 +164,9 @@
 			if (self.tableView.numberOfSections > 0)
 				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 
-		} progressBlock:nil];
+		}];
 		[api assetListWithCompletionBlock:^(EVEAssetList *result, NSError *error) {
+			data.assetsError = error;
 			NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
 			[databaseManagedObjectContext performBlock:^{
 				
@@ -199,8 +229,9 @@
 					});
 				}
 			}];
-		} progressBlock:nil];
+		}];
 		[api industryJobsWithCompletionBlock:^(EVEIndustryJobs *result, NSError *error) {
+			data.industryError = error;
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 				@autoreleasepool {
 					NSMutableDictionary* typeIDs = [NSMutableDictionary new];
@@ -210,12 +241,6 @@
 							if (job.status == EVEIndustryJobStatusActive || job.status == EVEIndustryJobStatusPaused)
 								typeIDs[@(job.productTypeID)] = @([typeIDs[@(job.productTypeID)] longLongValue] + job.runs);
 						}
-/*						else {
-							if (job.productTypeID)
-								typeIDs[@(job.productTypeID)] = @([typeIDs[@(job.productTypeID)] longLongValue] + 1);
-							else
-								typeIDs[@(job.blueprintTypeID)] = @([typeIDs[@(job.blueprintTypeID)] longLongValue] + 1);
-						}*/
 					}
 					
 					
@@ -252,8 +277,9 @@
 					}
 				}
 			});
-		} progressBlock:nil];
+		}];
 		[api marketOrdersWithOrderID:0 completionBlock:^(EVEMarketOrders *result, NSError *error) {
+			data.marketError = error;
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 				@autoreleasepool {
 					__block double sum = 0;
@@ -298,8 +324,9 @@
 						finalize();
 				}
 			});
-		} progressBlock:nil];
+		}];
 		[api contractsWithContractID:0 completionBlock:^(EVEContracts *result, NSError *error) {
+			data.contractsError = error;
 			double sum = 0;
 			for (EVEContractsItem* contract in result.contractList) {
 				if (contract.issuerID == characterID && (contract.status == EVEContractStatusInProgress || contract.status == EVEContractStatusOutstanding))
@@ -317,9 +344,10 @@
 			}
 			if (self.tableView.numberOfSections > 0)
 				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-		} progressBlock:nil];
+		}];
 
 		[api blueprintsWithCompletionBlock:^(EVEBlueprints *result, NSError *error) {
+			data.blueprintsError = error;
 			NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContext];
 			[databaseManagedObjectContext performBlock:^{
 				NSMutableDictionary* blueprints = [NSMutableDictionary new];
@@ -404,12 +432,13 @@
 			}
 			if (self.tableView.numberOfSections > 0)
 				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0], [NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-		} progressBlock:nil];
+		}];
 
 		
 		if (!corporate) {
 			NSMutableDictionary* typeIDs = [NSMutableDictionary new];
 			[api characterSheetWithCompletionBlock:^(EVECharacterSheet *result, NSError *error) {
+				data.implantsError = error;
 				for (EVECharacterSheetImplant* implant in result.implants)
 					typeIDs[@(implant.typeID)] = @([typeIDs[@(implant.typeID)] longLongValue] + 1);
 				for (EVECharacterSheetJumpCloneImplant* implant in result.jumpCloneImplants)
@@ -448,7 +477,7 @@
 				}
 
 				
-			} progressBlock:nil];
+			}];
 		}
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -497,27 +526,27 @@
 		else {
 			if (indexPath.row == 1) {
 				cell.titleLabel.text = NSLocalizedString(@"Account", nil);
-				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.account)]];
+				cell.subtitleLabel.text = data.accountError ? [data.accountError localizedDescription] : [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.account)]];
 			}
 			else if (indexPath.row == 3) {
 				cell.titleLabel.text = NSLocalizedString(@"Industry", nil);
-				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.industry)]];
+				cell.subtitleLabel.text = data.industryError ? [data.industryError localizedDescription] : [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.industry)]];
 			}
 			else if (indexPath.row == 4) {
 				cell.titleLabel.text = NSLocalizedString(@"Market", nil);
-				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.market)]];
+				cell.subtitleLabel.text = data.marketError ? [data.marketError localizedDescription] : [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.market)]];
 			}
 			else if (indexPath.row == 5) {
 				cell.titleLabel.text = NSLocalizedString(@"Contracts", nil);
-				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.contracts)]];
+				cell.subtitleLabel.text = data.contractsError ? [data.contractsError localizedDescription] : [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.contracts)]];
 			}
 			else if (indexPath.row == 6) {
 				cell.titleLabel.text = NSLocalizedString(@"Implants", nil);
-				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.implants)]];
+				cell.subtitleLabel.text = data.implantsError ? [data.implantsError localizedDescription] : [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.implants)]];
 			}
 			else if (indexPath.row == 7) {
 				cell.titleLabel.text = NSLocalizedString(@"Blueprints", nil);
-				cell.subtitleLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.blueprints)]];
+				cell.subtitleLabel.text = data.blueprintsError ? [data.blueprintsError localizedDescription] : [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.blueprints)]];
 			}
 			else if (indexPath.row == 8) {
 				cell.titleLabel.text = NSLocalizedString(@"Total", nil);

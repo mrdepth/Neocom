@@ -233,7 +233,7 @@
 						progress.completedUnitCount++;
 					}
 					dispatch_group_leave(finishDispatchGroup);
-				} progressBlock:nil];
+				}];
 
 				
 				dispatch_group_notify(finishDispatchGroup, dispatch_get_main_queue(), ^{

@@ -80,7 +80,7 @@
 	[[EVEOnlineAPI new] callListWithCompletionBlock:^(EVECallList *result, NSError *error) {
 		[self saveCacheData:result cacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:3600 * 24 * 7]];
 		completionBlock(nil);
-	} progressBlock:nil];
+	}];
 }
 
 - (void) loadCacheData:(id)cacheData withCompletionBlock:(void (^)())completionBlock {

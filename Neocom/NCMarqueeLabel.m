@@ -52,6 +52,7 @@
 }
 
 - (void) awakeFromNib {
+	[super awakeFromNib];
 	CALayer* layer = [CALayer layer];
 	[self.layer addSublayer:layer];
 	layer.frame = self.layer.bounds;

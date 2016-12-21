@@ -125,7 +125,7 @@
 				completionBlock(lastError);
 			});
 
-		} progressBlock:nil];
+		}];
 	}];
 }
 

@@ -159,7 +159,7 @@
 			[self performSegueWithIdentifier:@"NCKillMailDetailsViewController" sender:result.kills[0]];
 		else if (error)
 			[self presentViewController:[UIAlertController alertWithError:error] animated:YES completion:nil];
-	} progressBlock:nil];
+	}];
 }
 
 #pragma mark - NCTableViewController
@@ -236,7 +236,7 @@
 			});
 
 		});
-	} progressBlock:nil];
+	}];
 }
 
 @end

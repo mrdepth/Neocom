@@ -34,7 +34,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>5.8.15556</string>
+	<string>5.9.15827</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -97,7 +97,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>5.8.15556</string>
+	<string>5.9.15827</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -107,6 +107,10 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Frames needs to access your Calendar. </string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This lets you share photos from your library and save photos to your Camera Roll.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

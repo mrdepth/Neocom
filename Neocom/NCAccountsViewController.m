@@ -305,7 +305,7 @@
 					@synchronized(accountProgress) {
 						accountProgress.completedUnitCount++;
 					}
-				} progressBlock:nil];
+				}];
 				
 				if (corporate) {
 					dispatch_group_enter(partialFinishDispatchGroup);
@@ -315,7 +315,7 @@
 						@synchronized(accountProgress) {
 							accountProgress.completedUnitCount++;
 						}
-					} progressBlock:nil];
+					}];
 				}
 				else
 					@synchronized(accountProgress) {
@@ -426,7 +426,8 @@
 - (void) managedObjectContextDidFinishUpdate:(NSNotification *)notification {
 	[super managedObjectContextDidFinishUpdate:notification];
 	[notification.userInfo enumerateKeysAndObjectsUsingBlock:^(id key, NSSet* set, BOOL *stop) {
-		for (NSManagedObject* object in set)
+		if ([set isKindOfClass:[NSSet class]]) {
+			for (NSManagedObject* object in set)
 			if ([object isKindOfClass:[NCAccount class]]) {
 				*stop = YES;
 				dispatch_async(dispatch_get_main_queue(), ^{
@@ -435,6 +436,7 @@
 				});
 				break;
 			}
+		}
 	}];
 }
 

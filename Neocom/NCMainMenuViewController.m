@@ -358,7 +358,7 @@
 				[self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:60];
 			}
 			
-		} progressBlock:nil];
+		}];
 	};
 	
 	if (!self.serverStatus || !self.serverStatus.eveapi.cachedUntil || [[self.serverStatus.eveapi localTimeWithServerTime:self.serverStatus.eveapi.cachedUntil] compare:[NSDate date]] == NSOrderedAscending) {

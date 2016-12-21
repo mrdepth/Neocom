@@ -101,6 +101,10 @@ CREATE INDEX eveDB.mapSolarSystems_regionID_solarSystemName ON "mapSolarSystems"
 CREATE INDEX eveDB.mapSolarSystems_solarSystemName ON "mapSolarSystems" ("solarSystemName" ASC);
 CREATE INDEX eveDB.invTraits_typeID ON "invTraits" ("typeID" ASC);
 
+--Missing chargeSize
+INSERT INTO eveDB.dgmTypeAttributes (typeID,attributeID,value) VALUES(263,128,0);
+INSERT INTO eveDB.dgmTypeAttributes (typeID,attributeID,value) VALUES(33330,128,0);
+
 --COMMIT TRANSACTION;
 
 .read "./tmp/typesMap.sql"

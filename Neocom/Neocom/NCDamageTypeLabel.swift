@@ -1,5 +1,5 @@
 //
-//  NCResistanceLabel.swift
+//  NCDamageTypeLabel.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 20.12.16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum NCResistance: Int {
+enum NCDamageType: Int {
 	case em
 	case thermal
 	case kinetic
@@ -16,17 +16,17 @@ enum NCResistance: Int {
 }
 
 @IBDesignable
-class NCResistanceLabel: NCLabel {
-	@IBInspectable var value: Float = 0 {
+class NCDamageTypeLabel: NCLabel {
+	@IBInspectable var progress: Float = 0 {
 		didSet {
-			self.text = "\(Int(value * 100))%"
+			setNeedsDisplay()
 		}
 	}
-	@IBInspectable var resistance: Int = NCResistance.em.rawValue
+	@IBInspectable var damageType: Int = NCDamageType.em.rawValue
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		switch NCResistance(rawValue: self.resistance) ?? .em {
+		switch NCDamageType(rawValue: self.damageType) ?? .em {
 		case .em:
 			self.tintColor = UIColor(number: 0x3482C5FF)
 		case .thermal:
@@ -53,7 +53,7 @@ class NCResistanceLabel: NCLabel {
 		let context = UIGraphicsGetCurrentContext()
 		context?.saveGState()
 		var left = rect
-		left.size.width *= CGFloat(value)
+		left.size.width *= CGFloat(progress)
 		tintColor.setFill()
 		context?.fill(left)
 		context?.restoreGState()

@@ -1,5 +1,5 @@
 //
-//  NCTableViewSkillCell.swift
+//  NCSkillTableViewCell.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 15.12.16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NCTableViewSkillCell: NCTableViewCell {
+class NCSkillTableViewCell: NCTableViewCell {
 	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var levelLabel: UILabel?
 	@IBOutlet weak var spLabel: UILabel?

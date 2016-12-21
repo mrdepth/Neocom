@@ -16,6 +16,8 @@ class NCDatabaseGroupsViewController: UITableViewController, UISearchResultsUpda
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		tableView.estimatedRowHeight = tableView.rowHeight
+		tableView.rowHeight = UITableViewAutomaticDimension
 		setupSearchController()
 		title = category?.categoryName
 	}
@@ -42,7 +44,7 @@ class NCDatabaseGroupsViewController: UITableViewController, UISearchResultsUpda
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "NCDatabaseTypesViewController" {
 			let controller = segue.destination as? NCDatabaseTypesViewController
-			let group = (sender as! NCTableViewDefaultCell).object as! NCDBInvGroup
+			let group = (sender as! NCDefaultTableViewCell).object as! NCDBInvGroup
 			controller?.predicate = NSPredicate(format: "group = %@", group)
 			controller?.title = group.groupName
 		}
@@ -59,7 +61,7 @@ class NCDatabaseGroupsViewController: UITableViewController, UISearchResultsUpda
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCTableViewDefaultCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCDefaultTableViewCell
 		let object = results?.object(at: indexPath)
 		cell.object = object
 		cell.titleLabel?.text = object?.groupName

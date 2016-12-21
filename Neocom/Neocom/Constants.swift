@@ -27,9 +27,27 @@ enum NCDBAttributeID: Int {
 	
 	case warpSpeedMultiplier = 600
 	case baseWarpSpeed = 1281
+	
+	case kineticDamageResonance = 109
+	case thermalDamageResonance = 110
+	case explosiveDamageResonance = 111
+	case emDamageResonance = 113
+	case armorEmDamageResonance = 267
+	case armorExplosiveDamageResonance = 268
+	case armorKineticDamageResonance = 269
+	case armorThermalDamageResonance = 270
+	case shieldEmDamageResonance = 271
+	case shieldExplosiveDamageResonance = 272
+	case shieldKineticDamageResonance = 273
+	case shieldThermalDamageResonance = 274
 }
 
 enum NCDBAttributeCategoryID: Int {
+	case none = 0
+	case fitting = 1
+	case shield = 2
+	case armor = 3
+	case structure = 4
 	case requiredSkills = 8
 	case null = 9
 }
@@ -44,6 +62,7 @@ enum NCDBUnitID: Int {
 	case typeID = 116
 	case sizeClass = 117
 	case attributeID = 119
+	case fittingSlots = 122
 	case absolutePercent = 127
 	case boolean = 137
 	case bonus = 139
@@ -51,7 +70,9 @@ enum NCDBUnitID: Int {
 }
 
 enum NCDBCategoryID: Int {
-	case skills = 16
+	case ship = 6
+	case blueprint = 9
+	case skill = 16
 }
 extension Notification.Name {
 	public static let NCCurrentAccountChanged = Notification.Name("NCCurrentAccountChanged")

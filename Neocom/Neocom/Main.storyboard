@@ -32,7 +32,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="MdZ-HI-hsS" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="MdZ-HI-hsS" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="100" width="320" height="43"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MdZ-HI-hsS" id="9Yd-WR-M0p">
@@ -386,7 +386,7 @@
             <objects>
                 <tableViewController id="xIe-Ri-8Ng" customClass="NCAPIKeyInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="PWN-Ec-uZB" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -513,7 +513,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="4be-G7-25Y" customClass="NCTableViewAccountCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="4be-G7-25Y" customClass="NCAccountTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="134"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4be-G7-25Y" id="pif-W0-SxT">
@@ -941,7 +941,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="eNG-aU-9Ew" customClass="NCBackgroundView">
-                            <rect key="frame" x="0.0" y="287.5" width="320" height="44"/>
+                            <rect key="frame" x="0.0" y="288" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hZ3-NN-20f">
@@ -1066,7 +1066,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="Fwy-PM-dGI" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="Fwy-PM-dGI" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fwy-PM-dGI" id="6vR-7b-kmd">
@@ -1088,12 +1088,13 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="S6D-BK-kZ3" firstAttribute="centerY" secondItem="6vR-7b-kmd" secondAttribute="centerY" id="6O8-jL-4Il"/>
                                         <constraint firstItem="S6D-BK-kZ3" firstAttribute="leading" secondItem="6vR-7b-kmd" secondAttribute="leading" constant="15" id="B8p-Tv-gck"/>
                                         <constraint firstItem="7Zg-Oh-73Y" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6vR-7b-kmd" secondAttribute="top" constant="2" id="CgC-Qi-8zX"/>
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="7Zg-Oh-73Y" secondAttribute="bottom" constant="2" id="NIJ-eX-J3E"/>
+                                        <constraint firstItem="S6D-BK-kZ3" firstAttribute="top" secondItem="6vR-7b-kmd" secondAttribute="top" constant="4" id="Use-5x-M22"/>
                                         <constraint firstAttribute="trailing" secondItem="7Zg-Oh-73Y" secondAttribute="trailing" id="YZk-xC-QyK"/>
                                         <constraint firstItem="7Zg-Oh-73Y" firstAttribute="centerY" secondItem="6vR-7b-kmd" secondAttribute="centerY" id="fpR-oH-Rmo"/>
+                                        <constraint firstAttribute="bottom" secondItem="S6D-BK-kZ3" secondAttribute="bottom" priority="999" constant="4" id="umB-nu-JcA"/>
                                         <constraint firstItem="7Zg-Oh-73Y" firstAttribute="leading" secondItem="S6D-BK-kZ3" secondAttribute="trailing" constant="8" id="yDZ-c7-a1N"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -1391,7 +1392,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="Xbc-UY-tVT" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="Xbc-UY-tVT" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xbc-UY-tVT" id="sO4-0T-baf">
@@ -1413,12 +1414,13 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="pYI-HK-wNS" firstAttribute="centerY" secondItem="sO4-0T-baf" secondAttribute="centerY" id="CNY-AK-n9Y"/>
                                         <constraint firstAttribute="trailing" secondItem="Mqw-m3-y9S" secondAttribute="trailing" id="D5Q-sN-Fpq"/>
                                         <constraint firstItem="Mqw-m3-y9S" firstAttribute="top" relation="greaterThanOrEqual" secondItem="sO4-0T-baf" secondAttribute="top" constant="2" id="Ktv-57-KD0"/>
                                         <constraint firstItem="Mqw-m3-y9S" firstAttribute="leading" secondItem="pYI-HK-wNS" secondAttribute="trailing" constant="8" id="TUO-yX-qGg"/>
                                         <constraint firstItem="Mqw-m3-y9S" firstAttribute="centerY" secondItem="sO4-0T-baf" secondAttribute="centerY" id="kYk-Hh-XDp"/>
+                                        <constraint firstItem="pYI-HK-wNS" firstAttribute="top" secondItem="sO4-0T-baf" secondAttribute="top" constant="4" id="nCy-a6-mSX"/>
                                         <constraint firstItem="pYI-HK-wNS" firstAttribute="leading" secondItem="sO4-0T-baf" secondAttribute="leading" constant="15" id="oRb-53-Rj3"/>
+                                        <constraint firstAttribute="bottom" secondItem="pYI-HK-wNS" secondAttribute="bottom" priority="999" constant="4" id="xrd-Bm-LeG"/>
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Mqw-m3-y9S" secondAttribute="bottom" constant="2" id="ysM-8G-I1O"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -1450,7 +1452,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="se7-2j-LOy" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="se7-2j-LOy" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="se7-2j-LOy" id="53s-hu-49G">
@@ -1472,13 +1474,14 @@
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="hCr-wE-zpH" secondAttribute="bottom" priority="999" constant="4" id="CKJ-Fj-Ocl"/>
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="QWg-rK-qri" secondAttribute="bottom" constant="4" id="CYt-xg-VoO"/>
-                                        <constraint firstItem="hCr-wE-zpH" firstAttribute="centerY" secondItem="53s-hu-49G" secondAttribute="centerY" id="Eb8-39-fsG"/>
                                         <constraint firstAttribute="trailing" secondItem="QWg-rK-qri" secondAttribute="trailing" id="KHM-9M-623"/>
                                         <constraint firstItem="hCr-wE-zpH" firstAttribute="leading" secondItem="53s-hu-49G" secondAttribute="leading" constant="15" id="Ous-Dj-qqB"/>
                                         <constraint firstItem="QWg-rK-qri" firstAttribute="centerY" secondItem="53s-hu-49G" secondAttribute="centerY" id="VoP-BY-ynK"/>
                                         <constraint firstItem="QWg-rK-qri" firstAttribute="leading" secondItem="hCr-wE-zpH" secondAttribute="trailing" constant="8" id="Z4e-DC-pJn"/>
                                         <constraint firstItem="QWg-rK-qri" firstAttribute="top" relation="greaterThanOrEqual" secondItem="53s-hu-49G" secondAttribute="top" constant="4" id="bns-ST-cqu"/>
+                                        <constraint firstItem="hCr-wE-zpH" firstAttribute="top" secondItem="53s-hu-49G" secondAttribute="top" constant="4" id="lk7-li-Rez"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1508,7 +1511,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PortraitCell" rowHeight="233" id="4Oe-Op-aqY" customClass="NCTableViewDefaultCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PortraitCell" rowHeight="233" id="4Oe-Op-aqY" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="56" width="320" height="233"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Oe-Op-aqY" id="Bv6-1d-vjd">
@@ -1538,7 +1541,7 @@
                                     <outlet property="iconView" destination="iOQ-Zg-Pgy" id="cjl-jv-Krj"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="ofy-jS-14d" customClass="NCTableViewDefaultCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="ofy-jS-14d" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="289" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ofy-jS-14d" id="uWI-kk-JAy">
@@ -1599,7 +1602,7 @@
                                     <outlet property="titleLabel" destination="Hak-4p-mxL" id="joz-6o-Los"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaceholderCell" id="0xl-be-tAn" customClass="NCTableViewDefaultCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaceholderCell" id="0xl-be-tAn" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="330" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0xl-be-tAn" id="QWy-Kf-ifz">
@@ -1709,7 +1712,7 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="PVr-ye-cz4" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="PVr-ye-cz4" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PVr-ye-cz4" id="av5-sH-8x0">
@@ -1770,7 +1773,7 @@
                                     <outlet property="titleLabel" destination="hhZ-h1-9Uu" id="ufN-nq-aE9"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaceholderCell" id="uPa-LN-8O0" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaceholderCell" id="uPa-LN-8O0" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="97" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uPa-LN-8O0" id="HU0-gg-nHI">
@@ -1879,7 +1882,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="ng1-8B-G3X" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="ng1-8B-G3X" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ng1-8B-G3X" id="IX0-cd-oFJ">
@@ -1940,7 +1943,7 @@
                                     <outlet property="titleLabel" destination="dcv-Nm-KnC" id="uqG-Op-mpN"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaceholderCell" id="f6k-LN-5RA" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaceholderCell" id="f6k-LN-5RA" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="98" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="f6k-LN-5RA" id="GCT-tK-91P">
@@ -2003,7 +2006,7 @@
                                     <outlet property="titleLabel" destination="gha-Ij-rPQ" id="bgI-xe-w5A"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCTableViewSkillCell" id="Fnf-z6-W8p" customClass="NCTableViewSkillCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCSkillTableViewCell" id="Fnf-z6-W8p" customClass="NCSkillTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="180" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fnf-z6-W8p" id="aFl-wH-41w">
@@ -2120,7 +2123,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="A4f-QX-T2y" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="A4f-QX-T2y" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="56" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="A4f-QX-T2y" id="sxL-1D-TpA">
@@ -2181,7 +2184,7 @@
                                     <outlet property="titleLabel" destination="ImU-gF-Sx6" id="NmM-JA-t8K"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaceholderCell" id="wYY-94-q9X" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaceholderCell" id="wYY-94-q9X" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="98" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wYY-94-q9X" id="NV6-yC-pJu">
@@ -2244,7 +2247,7 @@
                                     <outlet property="titleLabel" destination="gmU-tf-kFU" id="IPW-ry-n7T"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCTableViewSkillCell" id="uVl-rd-IsZ" customClass="NCTableViewSkillCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCSkillTableViewCell" id="uVl-rd-IsZ" customClass="NCSkillTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="180" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uVl-rd-IsZ" id="qn5-u4-9u2">
@@ -2367,7 +2370,7 @@
                                     <outlet property="titleLabel" destination="Mlm-Bw-pRq" id="s3y-OY-fmk"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="gC9-A1-CGU" customClass="NCTableViewDefaultCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="gC9-A1-CGU" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="96" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gC9-A1-CGU" id="ApF-E6-iJ6">
@@ -2413,7 +2416,6 @@
                                         <constraint firstItem="X9s-8A-Kw1" firstAttribute="centerY" secondItem="ApF-E6-iJ6" secondAttribute="centerY" id="BuR-au-ai7"/>
                                         <constraint firstAttribute="trailing" secondItem="X9s-8A-Kw1" secondAttribute="trailing" constant="15" id="HaW-Sq-KF0"/>
                                         <constraint firstAttribute="bottom" secondItem="X9s-8A-Kw1" secondAttribute="bottom" priority="250" constant="4" id="Ioe-Os-WAz"/>
-                                        <constraint firstItem="doU-dG-h3X" firstAttribute="centerY" secondItem="ApF-E6-iJ6" secondAttribute="centerY" id="MKg-9J-aQu"/>
                                         <constraint firstItem="doU-dG-h3X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ApF-E6-iJ6" secondAttribute="top" constant="4" id="Ocm-bW-boa"/>
                                         <constraint firstItem="X9s-8A-Kw1" firstAttribute="top" secondItem="ApF-E6-iJ6" secondAttribute="top" priority="250" constant="4" id="YJJ-aY-Kdz"/>
                                         <constraint firstItem="X9s-8A-Kw1" firstAttribute="leading" secondItem="doU-dG-h3X" secondAttribute="trailing" constant="8" id="bxh-qv-z0O"/>
@@ -2426,6 +2428,177 @@
                                     <outlet property="iconView" destination="doU-dG-h3X" id="JEb-dE-UcD"/>
                                     <outlet property="subtitleLabel" destination="xCQ-0t-hBJ" id="aiq-5T-eVr"/>
                                     <outlet property="titleLabel" destination="sAQ-Y4-W6s" id="ItN-DH-lbb"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCDamageTypeTableViewCell" id="Bhk-P7-VOZ" customClass="NCDamageTypeTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="137" width="320" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bhk-P7-VOZ" id="M5R-RD-tH8">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WJF-4c-hNp">
+                                            <rect key="frame" x="15" y="4" width="290" height="20"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6sL-vy-pbt">
+                                                    <rect key="frame" x="0.0" y="0.0" width="66.5" height="20"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="em" translatesAutoresizingMaskIntoConstraints="NO" id="cJP-oO-00D">
+                                                            <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="cJP-oO-00D" secondAttribute="height" multiplier="1:1" id="icx-B5-kYo"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VNZ-fk-G4e" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
+                                                            <rect key="frame" x="22" y="0.0" width="44.5" height="20"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="damageType">
+                                                                    <integer key="value" value="0"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                                                    <real key="value" value="0.5"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="VNZ-fk-G4e" secondAttribute="trailing" id="HZz-88-TUr"/>
+                                                        <constraint firstItem="cJP-oO-00D" firstAttribute="top" secondItem="6sL-vy-pbt" secondAttribute="top" id="MfJ-0f-clV"/>
+                                                        <constraint firstAttribute="bottom" secondItem="VNZ-fk-G4e" secondAttribute="bottom" id="X5e-Gk-MoA"/>
+                                                        <constraint firstItem="VNZ-fk-G4e" firstAttribute="leading" secondItem="cJP-oO-00D" secondAttribute="trailing" constant="2" id="YDf-I5-oBi"/>
+                                                        <constraint firstItem="cJP-oO-00D" firstAttribute="leading" secondItem="6sL-vy-pbt" secondAttribute="leading" id="bVE-E5-ACi"/>
+                                                        <constraint firstAttribute="bottom" secondItem="cJP-oO-00D" secondAttribute="bottom" id="ecH-fY-5aR"/>
+                                                        <constraint firstItem="VNZ-fk-G4e" firstAttribute="top" secondItem="6sL-vy-pbt" secondAttribute="top" id="syg-PY-pkL"/>
+                                                    </constraints>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vdU-IA-9wf">
+                                                    <rect key="frame" x="74.5" y="0.0" width="66.5" height="20"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thermal" translatesAutoresizingMaskIntoConstraints="NO" id="agj-gE-whI">
+                                                            <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="agj-gE-whI" secondAttribute="height" multiplier="1:1" id="FT4-v1-Pf9"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ET7-UD-cS7" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
+                                                            <rect key="frame" x="22" y="0.0" width="44.5" height="20"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                                                    <real key="value" value="0.5"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="damageType">
+                                                                    <integer key="value" value="1"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="ET7-UD-cS7" secondAttribute="trailing" id="5gD-Hj-WXn"/>
+                                                        <constraint firstAttribute="bottom" secondItem="ET7-UD-cS7" secondAttribute="bottom" id="D5f-rg-9dS"/>
+                                                        <constraint firstAttribute="bottom" secondItem="agj-gE-whI" secondAttribute="bottom" id="EjU-SR-Ry6"/>
+                                                        <constraint firstItem="ET7-UD-cS7" firstAttribute="leading" secondItem="agj-gE-whI" secondAttribute="trailing" constant="2" id="HDh-Us-tp1"/>
+                                                        <constraint firstItem="ET7-UD-cS7" firstAttribute="top" secondItem="vdU-IA-9wf" secondAttribute="top" id="fQc-9p-kLB"/>
+                                                        <constraint firstItem="agj-gE-whI" firstAttribute="leading" secondItem="vdU-IA-9wf" secondAttribute="leading" id="rI2-Bu-AKG"/>
+                                                        <constraint firstItem="agj-gE-whI" firstAttribute="top" secondItem="vdU-IA-9wf" secondAttribute="top" id="vt4-cD-XWn"/>
+                                                    </constraints>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PqH-s0-U2M">
+                                                    <rect key="frame" x="149" y="0.0" width="66.5" height="20"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kinetic" translatesAutoresizingMaskIntoConstraints="NO" id="5nd-2X-bhx">
+                                                            <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="5nd-2X-bhx" secondAttribute="height" multiplier="1:1" id="ckd-vj-UBO"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m3M-55-UBe" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
+                                                            <rect key="frame" x="22" y="0.0" width="44.5" height="20"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                                                    <real key="value" value="0.5"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="damageType">
+                                                                    <integer key="value" value="2"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="m3M-55-UBe" firstAttribute="leading" secondItem="5nd-2X-bhx" secondAttribute="trailing" constant="2" id="35a-9Z-H1m"/>
+                                                        <constraint firstItem="5nd-2X-bhx" firstAttribute="top" secondItem="PqH-s0-U2M" secondAttribute="top" id="PsF-Yd-zeL"/>
+                                                        <constraint firstItem="5nd-2X-bhx" firstAttribute="leading" secondItem="PqH-s0-U2M" secondAttribute="leading" id="WFm-ck-521"/>
+                                                        <constraint firstAttribute="bottom" secondItem="5nd-2X-bhx" secondAttribute="bottom" id="YKw-Tu-e4R"/>
+                                                        <constraint firstItem="m3M-55-UBe" firstAttribute="top" secondItem="PqH-s0-U2M" secondAttribute="top" id="aUU-eF-0NZ"/>
+                                                        <constraint firstAttribute="bottom" secondItem="m3M-55-UBe" secondAttribute="bottom" id="clR-6f-LE9"/>
+                                                        <constraint firstAttribute="trailing" secondItem="m3M-55-UBe" secondAttribute="trailing" id="yuG-iy-r2E"/>
+                                                    </constraints>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T8V-Gh-jgU">
+                                                    <rect key="frame" x="223.5" y="0.0" width="66.5" height="20"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="explosion" translatesAutoresizingMaskIntoConstraints="NO" id="DWi-HM-7J4">
+                                                            <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="DWi-HM-7J4" secondAttribute="height" multiplier="1:1" id="a8R-kG-U5D"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s4j-Go-cRz" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
+                                                            <rect key="frame" x="22" y="0.0" width="44.5" height="20"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                                                    <real key="value" value="0.5"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="damageType">
+                                                                    <integer key="value" value="3"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="s4j-Go-cRz" secondAttribute="bottom" id="4jh-Ze-hLo"/>
+                                                        <constraint firstItem="s4j-Go-cRz" firstAttribute="top" secondItem="T8V-Gh-jgU" secondAttribute="top" id="Djc-Vd-soE"/>
+                                                        <constraint firstAttribute="trailing" secondItem="s4j-Go-cRz" secondAttribute="trailing" id="JWQ-dg-5jz"/>
+                                                        <constraint firstItem="s4j-Go-cRz" firstAttribute="leading" secondItem="DWi-HM-7J4" secondAttribute="trailing" constant="2" id="KSf-ke-HmK"/>
+                                                        <constraint firstItem="DWi-HM-7J4" firstAttribute="top" secondItem="T8V-Gh-jgU" secondAttribute="top" id="gGN-eN-pZv"/>
+                                                        <constraint firstAttribute="bottom" secondItem="DWi-HM-7J4" secondAttribute="bottom" id="xN6-Q9-UOy"/>
+                                                        <constraint firstItem="DWi-HM-7J4" firstAttribute="leading" secondItem="T8V-Gh-jgU" secondAttribute="leading" id="xiK-tN-Abb"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="Q3r-Gm-95f"/>
+                                            </constraints>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="WJF-4c-hNp" secondAttribute="trailing" constant="15" id="Jff-uw-y8l"/>
+                                        <constraint firstAttribute="bottom" secondItem="WJF-4c-hNp" secondAttribute="bottom" priority="999" constant="4" id="dDa-tP-4n5"/>
+                                        <constraint firstItem="WJF-4c-hNp" firstAttribute="top" secondItem="M5R-RD-tH8" secondAttribute="top" constant="4" id="p5P-6I-i3O"/>
+                                        <constraint firstItem="WJF-4c-hNp" firstAttribute="leading" secondItem="M5R-RD-tH8" secondAttribute="leading" constant="15" id="pBG-Xe-ggn"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="emLabel" destination="VNZ-fk-G4e" id="iSj-c7-otT"/>
+                                    <outlet property="explosiveLabel" destination="s4j-Go-cRz" id="bR8-lp-7vT"/>
+                                    <outlet property="kineticLabel" destination="m3M-55-UBe" id="lZc-Dd-c0m"/>
+                                    <outlet property="thermalLabel" destination="ET7-UD-cS7" id="kJm-0z-Dh2"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -2446,7 +2619,7 @@
                     </connections>
                 </customObject>
             </objects>
-            <point key="canvasLocation" x="5076" y="1018"/>
+            <point key="canvasLocation" x="5075.625" y="1017.2535211267606"/>
         </scene>
         <!--Database Type Info Header View Controller-->
         <scene sceneID="TAg-DL-EGY">
@@ -2618,8 +2791,12 @@
     </scenes>
     <resources>
         <image name="addAccount" width="100" height="100"/>
+        <image name="em" width="32" height="32"/>
+        <image name="explosion" width="32" height="32"/>
+        <image name="kinetic" width="32" height="32"/>
         <image name="login" width="100" height="100"/>
         <image name="necrorise.png" width="256" height="256"/>
+        <image name="thermal" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gkq-nf-oBK"/>

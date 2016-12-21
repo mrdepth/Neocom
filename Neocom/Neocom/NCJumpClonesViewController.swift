@@ -22,7 +22,7 @@ class NCJumpCloneRow: NCTreeRow {
 	}
 	
 	override func configure(cell: UITableViewCell) {
-		let cell = cell as? NCTableViewDefaultCell
+		let cell = cell as? NCDefaultTableViewCell
 		cell?.titleLabel?.text = title
 		cell?.subtitleLabel?.text = subtitle
 		cell?.imageView?.image = image
@@ -34,9 +34,9 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		treeController.childrenKeyPath = "children"
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
+		treeController.childrenKeyPath = "children"
 		refreshControl = UIRefreshControl()
 		refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
 	}

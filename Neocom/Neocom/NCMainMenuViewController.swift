@@ -273,7 +273,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCTableViewDefaultCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCDefaultTableViewCell
 		let row = self.mainMenu[indexPath.section][indexPath.row]
 		cell.titleLabel?.text = row["title"] as? String
 		if let detailsKeyPath = row["detailsKeyPath"] as? String, let mainMenuDetails = self.mainMenuDetails {

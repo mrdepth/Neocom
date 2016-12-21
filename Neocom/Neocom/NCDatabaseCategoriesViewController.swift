@@ -15,6 +15,8 @@ class NCDatabaseCategoriesViewController: UITableViewController, UISearchResults
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		tableView.estimatedRowHeight = tableView.rowHeight
+		tableView.rowHeight = UITableViewAutomaticDimension
 		setupSearchController()
 	}
 	
@@ -39,7 +41,7 @@ class NCDatabaseCategoriesViewController: UITableViewController, UISearchResults
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "NCDatabaseGroupsViewController" {
 			let controller = segue.destination as? NCDatabaseGroupsViewController
-			controller?.category = (sender as? NCTableViewDefaultCell)?.object as? NCDBInvCategory
+			controller?.category = (sender as? NCDefaultTableViewCell)?.object as? NCDBInvCategory
 		}
 	}
 	
@@ -54,7 +56,7 @@ class NCDatabaseCategoriesViewController: UITableViewController, UISearchResults
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCTableViewDefaultCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCDefaultTableViewCell
 		let object = results?.object(at: indexPath)
 		cell.object = object
 		cell.titleLabel?.text = object?.categoryName

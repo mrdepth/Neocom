@@ -87,16 +87,6 @@ class NCSkill: Hashable {
 	}
 	
 	convenience init?(type: NCDBInvType, skill: ESSkillQueueItem) {
-		let active: Bool
-		/*if let startDate = skill.startDate, let finishDate = skill.finishDate {
-			let date = Date()
-			active = startDate <= date && finishDate > date
-		}
-		else {
-			active = false;
-		}
-		
-		self.init(type: type, level: skill.finishedLevel - 1, startSkillPoints: skill.trainingStartSP, trainingStartDate: active ? skill.startDate : nil, trainingEndDate: active ? skill.finishDate : nil)*/
 		self.init(type: type, level: skill.finishedLevel - 1, startSkillPoints: skill.trainingStartSP, trainingStartDate: skill.startDate, trainingEndDate: skill.finishDate)
 	}
 	

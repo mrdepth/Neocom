@@ -14,11 +14,11 @@ fileprivate class NCSkillQueueRow: NCTreeRow {
 	let skill: NCSkill
 	init(skill: NCSkill) {
 		self.skill = skill
-		super.init(cellIdentifier: "NCTableViewSkillCell")
+		super.init(cellIdentifier: "NCSkillTableViewCell")
 	}
 	
 	override func configure(cell: UITableViewCell) {
-		if let cell = cell as? NCTableViewSkillCell {
+		if let cell = cell as? NCSkillTableViewCell {
 			cell.titleLabel?.text = "\(skill.typeName) (x\(skill.rank))"
 			cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:min(1 + (skill.level ?? 0), 5))
 			cell.progressView?.progress = skill.trainingProgress

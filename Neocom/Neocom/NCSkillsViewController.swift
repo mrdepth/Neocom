@@ -14,11 +14,11 @@ fileprivate class NCSkillRow: NCTreeRow {
 	let skill: NCSkill
 	init(skill: NCSkill) {
 		self.skill = skill
-		super.init(cellIdentifier: "NCTableViewSkillCell")
+		super.init(cellIdentifier: "NCSkillTableViewCell")
 	}
 	
 	fileprivate override func configure(cell: UITableViewCell) {
-		if let cell = cell as? NCTableViewSkillCell {
+		if let cell = cell as? NCSkillTableViewCell {
 			cell.titleLabel?.text = "\(skill.typeName) (x\(skill.rank))"
 			if let level = skill.level {
 				cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)
@@ -140,7 +140,7 @@ class NCSkillsViewController: UITableViewController, NCTreeControllerDelegate {
 		let progress = Progress(totalUnitCount: 1)
 		NCDatabase.sharedDatabase?.performBackgroundTask{ managedObjectContext in
 			let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
-			request.predicate = NSPredicate(format: "published == TRUE AND group.category.categoryID == %d", NCDBCategoryID.skills.rawValue)
+			request.predicate = NSPredicate(format: "published == TRUE AND group.category.categoryID == %d", NCDBCategoryID.skill.rawValue)
 			
 			request.sortDescriptors = [NSSortDescriptor(key: "group.groupName", ascending: true), NSSortDescriptor(key: "typeName", ascending: true)]
 			let result = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: "group.groupName", cacheName: nil)

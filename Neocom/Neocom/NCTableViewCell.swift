@@ -26,7 +26,7 @@ class NCTableViewCell: UITableViewCell {
 	}
 }
 
-class NCTableViewDefaultCell: NCTableViewCell {
+class NCDefaultTableViewCell: NCTableViewCell {
 	@IBOutlet weak var iconView: UIImageView?
 	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var subtitleLabel: UILabel?

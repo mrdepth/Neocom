@@ -475,7 +475,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCTableViewAccountCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCAccountTableViewCell
 		cell.characterNameLabel.text = " "
 		cell.characterImageView.image = nil
 		cell.corporationLabel.text = " "

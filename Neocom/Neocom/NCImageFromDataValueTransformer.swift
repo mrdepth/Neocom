@@ -11,6 +11,6 @@ import Foundation
 class NCImageFromDataValueTransformer: ValueTransformer {
 	override func transformedValue(_ value: Any?) -> Any? {
 		guard let data = value as? Data else {return nil}
-		return UIImage(data: data)
+		return UIImage(data: data, scale: UIScreen.main.scale)
 	}
 }

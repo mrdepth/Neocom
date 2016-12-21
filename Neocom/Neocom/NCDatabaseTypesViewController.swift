@@ -17,6 +17,8 @@ class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdat
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		tableView.estimatedRowHeight = tableView.rowHeight
+		tableView.rowHeight = UITableViewAutomaticDimension
 		if navigationController != nil {
 			setupSearchController()
 		}
@@ -73,7 +75,7 @@ class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdat
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "NCDatabaseTypeInfoViewController" {
 			let controller = segue.destination as? NCDatabaseTypeInfoViewController
-			let object = (sender as! NCTableViewDefaultCell).object as! NSDictionary
+			let object = (sender as! NCDefaultTableViewCell).object as! NSDictionary
 			controller?.type = NCDatabase.sharedDatabase?.invTypes[object["typeID"] as! Int]
 		}
 	}
@@ -89,7 +91,7 @@ class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdat
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCTableViewDefaultCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCDefaultTableViewCell
 		let object = results?.object(at: indexPath)
 		cell.object = object
 		cell.titleLabel?.text = object?["typeName"] as? String

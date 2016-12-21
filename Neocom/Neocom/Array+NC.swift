@@ -36,4 +36,10 @@ extension Array where Element: Hashable {
 			}
 		}
 	}
+	
+	mutating func remove(at: IndexSet) {
+		for i in at.reversed() {
+			self.remove(at: i)
+		}
+	}
 }

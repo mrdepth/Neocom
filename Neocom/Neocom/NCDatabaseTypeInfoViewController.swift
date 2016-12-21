@@ -15,6 +15,8 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 	@IBOutlet var treeController: NCTreeController!
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		tableView.estimatedRowHeight = tableView.rowHeight
+		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.childrenKeyPath = "children"
 		treeController.delegate = self
 		
@@ -31,7 +33,7 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 			addChildViewController(headerViewController)
 			self.headerViewController = headerViewController
 			
-			NCDatabaseTypeInfo.typeInfo(typeID: type.objectID) { result in
+			NCDatabaseTypeInfo.typeInfo(type: type) { result in
 				self.treeController.content = result
 				self.treeController.reloadData()
 			}

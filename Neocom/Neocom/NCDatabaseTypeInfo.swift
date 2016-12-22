@@ -182,21 +182,51 @@ class NCDatabaseTypeSkillRow: NCTreeNode {
 }
 
 class NCDatabaseTypeMarketRow: NCTreeRow {
-	let volume: ClosedRange<Int>
-	let price: ClosedRange<Double>
+	let volume: UIBezierPath
+	let median: UIBezierPath
+	let donchian: UIBezierPath
 	let date: ClosedRange<Date>
-	let chartImage: UIImage
-	init(chartImage: UIImage, history: [ESMarketHistory], volume: ClosedRange<Int>, price: ClosedRange<Double>, date: ClosedRange<Date>) {
+	init(history: [ESMarketHistory], volume: UIBezierPath, median: UIBezierPath, donchian: UIBezierPath, date: ClosedRange<Date>) {
 		self.volume = volume
-		self.price = price
+		self.median = median
+		self.donchian = donchian
 		self.date = date
-		self.chartImage = chartImage
 		super.init(cellIdentifier: "NCMarketHistoryTableViewCell")
 	}
 	
+	static let months = [NSLocalizedString("Jan", comment: ""), NSLocalizedString("Feb", comment: ""), NSLocalizedString("Mar", comment: ""), NSLocalizedString("Apr", comment: ""), NSLocalizedString("May", comment: ""), NSLocalizedString("Jun", comment: ""), NSLocalizedString("Jul", comment: ""), NSLocalizedString("Aug", comment: ""), NSLocalizedString("Sep", comment: ""), NSLocalizedString("Oct", comment: ""), NSLocalizedString("Nov", comment: ""), NSLocalizedString("Dec", comment: "")]
+	
 	override func configure(cell: UITableViewCell) {
 		let cell = cell as! NCMarketHistoryTableViewCell
-		cell.marketHistoryView.chartImage = chartImage
+		cell.marketHistoryView.volume = volume
+		cell.marketHistoryView.median = median
+		cell.marketHistoryView.donchian = donchian
+		
+		var rect = donchian.bounds
+		rect.origin.y -= rect.size.height / 2.0
+		rect.size.height *= 3.0 / 2.0
+		var dy = rect.size.height / 4.0
+		var y = rect.maxY - dy / 2.0
+		for label in (cell.pricesStackView.subviews as? [UILabel])?[0..<3] ?? [] {
+			label.text = NCUnitFormatter.localizedString(from: Double(y), unit: .none, style: .short)
+			y -= dy
+		}
+
+		rect = volume.bounds
+		rect.size.height *= 3
+		dy = rect.size.height / 4.0
+		y = rect.maxY - dy * (2 + 0.5)
+		for label in cell.volumesStackView.subviews as? [UILabel] ?? [] {
+			label.text = NCUnitFormatter.localizedString(from: Double(round(y)), unit: .none, style: .short)
+			y -= dy
+		}
+		
+		let calendar = Calendar(identifier: .gregorian)
+		var month = (calendar.component(.month, from: date.upperBound) - cell.montshStackView.subviews.count) + 12
+		for label in cell.montshStackView.subviews as? [UILabel] ?? [] {
+			label.text = NCDatabaseTypeMarketRow.months[month % 12]
+			month += 1
+		}
 	}
 }
 
@@ -421,10 +451,7 @@ class NCDatabaseTypeInfo {
 	class func marketHistory(history: [ESMarketHistory]) -> NCDatabaseTypeMarketRow? {
 		guard history.count > 0 else {return nil}
 		
-		let range = history.suffix(60).indices
-		
-		let width = CGFloat(range.count)
-		let bounds = CGRect(x: 0, y: 0, width: width, height: width * 0.33).integral
+		let range = history.suffix(90).indices
 		
 		let volume = UIBezierPath()
 		volume.move(to: CGPoint(x: 0, y: 0))
@@ -454,8 +481,8 @@ class NCDatabaseTypeInfo {
 			else {
 				avg.addLine(to: CGPoint(x: x, y: CGFloat(item.average)))
 			}
-			volume.append(UIBezierPath(rect: CGRect(x: x, y: 0, width: 1, height: CGFloat(item.volume))))
-			donchian.append(UIBezierPath(rect: CGRect(x: x, y: CGFloat(lowest.lowest), width: 1, height: abs(CGFloat(highest.highest - lowest.lowest)))))
+			volume.append(UIBezierPath(rect: CGRect(x: x - 0.5, y: 0, width: 1, height: CGFloat(item.volume))))
+			donchian.append(UIBezierPath(rect: CGRect(x: x - 0.5, y: CGFloat(lowest.lowest), width: 1, height: abs(CGFloat(highest.highest - lowest.lowest)))))
 			x += 1
 			
 			v = min(v.lowerBound, item.volume)...max(v.upperBound, item.volume)
@@ -464,7 +491,9 @@ class NCDatabaseTypeInfo {
 		
 		donchian.close()
 		
-		var transform = CGAffineTransform.identity
+		return NCDatabaseTypeMarketRow(history: history, volume: volume, median: avg, donchian: donchian, date: d)
+		
+		/*var transform = CGAffineTransform.identity
 		var rect = volume.bounds
 		if rect.size.width > 0 && rect.size.height > 0 {
 			transform = transform.scaledBy(x: 1, y: -1)
@@ -501,6 +530,6 @@ class NCDatabaseTypeInfo {
 		}
 		else {
 			return nil
-		}
+		}*/
 	}
 }

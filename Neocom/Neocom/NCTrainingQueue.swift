@@ -11,24 +11,27 @@ import EVEAPI
 
 class NCTrainingSkill: Hashable {
 	let skill: NCSkill
+	let level: Int
 	
-	var level: Int {
-		return skill.level! + 1
-	}
-	
-	init?(type: NCDBInvType, skill: NCSkill?, level: Int) {
+	init?(type: NCDBInvType, skill: NCSkill? = nil, level: Int, trainedLevel: Int? = nil) {
 		guard level > 0 && level <= 5 else {return nil}
+		let trainedLevel = trainedLevel ?? skill?.level ?? 0
+		guard level > trainedLevel else {return nil}
 		
-		if skill?.level == level - 1 {
-			guard let skill = NCSkill(type: type, level: level - 1, startSkillPoints: skill?.startSkillPoints, trainingStartDate: skill?.trainingStartDate, trainingEndDate: skill?.trainingEndDate) else {return nil}
+		if let skill = skill, let skillLevel = skill.level, skillLevel == trainedLevel {
+			guard let skill = NCSkill(type: type, level: trainedLevel, startSkillPoints: skill.startSkillPoints, trainingStartDate: skill.trainingStartDate, trainingEndDate: skill.trainingEndDate) else {return nil}
 			self.skill = skill
 		}
 		else {
-			guard let skill = NCSkill(type: type, level: level - 1) else {return nil}
+			guard let skill = NCSkill(type: type, level: trainedLevel) else {return nil}
 			self.skill = skill
 		}
+		self.level = level
 	}
 	
+	func trainingTime(characterAttributes: NCCharacterAttributes) -> TimeInterval{
+		return skill.trainingTime(to: level, characterAttributes: characterAttributes)
+	}
 	
 	//MARK: Hashable
 	
@@ -53,7 +56,7 @@ class NCTrainingQueue {
 		self.trainedSkills = character.skills
 	}
 	
-	func addRequiredSkills(type: NCDBInvType) {
+	func addRequiredSkills(for type: NCDBInvType) {
 		for skill in type.requiredSkills?.array as? [NCDBInvTypeRequiredSkill] ?? [] {
 			guard let skillType = skill.skillType else {continue}
 			add(skill: skillType, level: Int(skill.skillLevel))
@@ -68,10 +71,13 @@ class NCTrainingQueue {
 			return
 		}
 		
-		addRequiredSkills(type: type)
+		addRequiredSkills(for: type)
 		for level in (trainedLevel + 1)...level {
 			if skills.first(where: {return $0.skill.typeID == typeID && $0.level == level}) == nil {
-				guard let trainingSkill = NCTrainingSkill(type: type, skill: trainedSkill, level: level) else {break}
+				guard let trainingSkill = NCTrainingSkill(type: type,
+				                                          skill: trainedSkill,
+				                                          level: level,
+				                                          trainedLevel: level - 1) else {break}
 				skills.append(trainingSkill)
 			}
 		}
@@ -95,4 +101,13 @@ class NCTrainingQueue {
 		}
 		skills.remove(at: indexes)
 	}
+	
+	func trainingTime(characterAttributes: NCCharacterAttributes) -> TimeInterval{
+		var trainingTime: TimeInterval = 0
+		for skill in skills {
+			trainingTime += skill.trainingTime(characterAttributes: characterAttributes)
+		}
+		return trainingTime
+	}
+
 }

@@ -66,7 +66,6 @@ enum NCDBUnitID: Int {
 	case absolutePercent = 127
 	case boolean = 137
 	case bonus = 139
-	
 }
 
 enum NCDBCategoryID: Int {
@@ -74,6 +73,11 @@ enum NCDBCategoryID: Int {
 	case blueprint = 9
 	case skill = 16
 }
+
+enum NCDBRegionID: Int {
+	case theForge = 10000002
+}
+
 extension Notification.Name {
 	public static let NCCurrentAccountChanged = Notification.Name("NCCurrentAccountChanged")
 }
@@ -85,5 +89,6 @@ let ESCallbackURL = URL(string: "neocom://sso")!
 extension UserDefaults {
 	struct Key {
 		static let NCCurrentAccount = "NCCurrectAccount"
+		static let NCMarketRegion = "NCMarketRegion"
 	}
 }

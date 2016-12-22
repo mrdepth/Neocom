@@ -129,7 +129,8 @@ extension String {
 			}
 			s.replaceCharacters(in: result.rangeAt(0), with: String(unichar(i)))
 		}
-		s.replaceOccurrences(of: "\\r\\n", with: "\n", options: [], range: NSMakeRange(0, s.length))
+		s.replaceOccurrences(of: "\\r", with: "", options: [], range: NSMakeRange(0, s.length))
+		s.replaceOccurrences(of: "\\n", with: "\n", options: [], range: NSMakeRange(0, s.length))
 		return String(s)
 	}
 }
@@ -627,7 +628,7 @@ try! database.exec("SELECT * FROM certSkills GROUP BY certLevelInt") { row in
 	let level = NCDBCertMasteryLevel(context: context)
 	level.level = Int16(row["certLevelInt"] as! NSNumber)
 	level.displayName = row["certLevelText"] as? String
-	level.icon = eveIcons["79_0\(level.level + 1)"]!
+	level.icon = eveIcons["79_0\(level.level + 2)"]!
 	certMasteryLevels[level.level as NSNumber] = level
 }
 

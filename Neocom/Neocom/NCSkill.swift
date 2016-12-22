@@ -57,33 +57,26 @@ class NCSkill: Hashable {
 	let trainingEndDate: Date?
 	
 	init?(type: NCDBInvType, level: Int? = nil, startSkillPoints: Int? = nil, trainingStartDate: Date? = nil, trainingEndDate: Date? = nil) {
-		var typeID: Int = 0
-		var typeName: String?
-		var primaryAttributeID: Float?
-		var secondaryAttributeID: Float?
-		var rank: Float?
-		type.managedObjectContext?.performAndWait {
-			typeID = Int(type.typeID)
-			typeName = type.typeName
-			let attributes = type.allAttributes
-			primaryAttributeID = attributes[NCDBAttributeID.primaryAttribute.rawValue]?.value
-			secondaryAttributeID = attributes[NCDBAttributeID.secondaryAttribute.rawValue]?.value
-			rank = attributes[NCDBAttributeID.skillTimeConstant.rawValue]?.value
+
+		let attributes = type.allAttributes
+
+		guard let typeName = type.typeName,
+			let primaryAttributeID = attributes[NCDBAttributeID.primaryAttribute.rawValue]?.value,
+			let secondaryAttributeID = attributes[NCDBAttributeID.secondaryAttribute.rawValue]?.value,
+			let rank = attributes[NCDBAttributeID.skillTimeConstant.rawValue]?.value
+			else {
+				return nil
 		}
-		if let typeName = typeName, let primaryAttributeID = primaryAttributeID, let secondaryAttributeID = secondaryAttributeID, let rank = rank {
-			self.typeID = typeID
-			self.typeName = typeName
-			self.primaryAttributeID = NCDBAttributeID(rawValue: Int(primaryAttributeID)) ?? .none
-			self.secondaryAttributeID = NCDBAttributeID(rawValue: Int(secondaryAttributeID)) ?? .none
-			self.rank = Int(rank)
-			self.level = level
-			self.startSkillPoints = startSkillPoints
-			self.trainingStartDate = trainingStartDate
-			self.trainingEndDate = trainingEndDate
-		}
-		else {
-			return nil
-		}
+		
+		self.typeID = Int(type.typeID)
+		self.typeName = typeName
+		self.primaryAttributeID = NCDBAttributeID(rawValue: Int(primaryAttributeID)) ?? .none
+		self.secondaryAttributeID = NCDBAttributeID(rawValue: Int(secondaryAttributeID)) ?? .none
+		self.rank = Int(rank)
+		self.level = level
+		self.startSkillPoints = startSkillPoints
+		self.trainingStartDate = trainingStartDate
+		self.trainingEndDate = trainingEndDate
 	}
 	
 	convenience init?(type: NCDBInvType, skill: ESSkillQueueItem) {
@@ -124,8 +117,13 @@ class NCSkill: Hashable {
 		get {
 			var dic = [String: AnyHashable]()
 			dic["typeID"] = typeID
-			dic["level"] = level
-			dic["startSkillPoints"] = startSkillPoints
+			if let level = level {
+				dic["level"] = level
+			}
+			if let startSkillPoints = startSkillPoints {
+				dic["startSkillPoints"] = startSkillPoints
+			}
+			
 			if let trainingStartDate = trainingStartDate {
 				dic["trainingStartDate"] = trainingStartDate
 			}

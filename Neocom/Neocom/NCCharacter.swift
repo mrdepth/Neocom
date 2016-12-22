@@ -52,7 +52,7 @@ class NCCharacter {
 			dispatchGroup.enter()
 			dataManager.skills { result in
 				switch result {
-				case let .success(value: value, cacheRecordID: nil):
+				case let .success(value: value, cacheRecordID: _):
 					skills = value
 				default:
 					break
@@ -63,7 +63,7 @@ class NCCharacter {
 			dispatchGroup.enter()
 			dataManager.skillQueue { result in
 				switch result {
-				case let .success(value: value, cacheRecordID: nil):
+				case let .success(value: value, cacheRecordID: _):
 					skillQueue = value
 				default:
 					break

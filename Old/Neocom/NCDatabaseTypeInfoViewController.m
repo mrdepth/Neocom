@@ -505,7 +505,7 @@
 					NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 					row.title = [NSString stringWithFormat:NSLocalizedString(@"Mastery %d", nil), [key intValue] + 1];
 					if (trainingQueue.trainingTime > 0) {
-						row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+						row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
 						row.iconID = [unlcaimedIcon objectID];
 					}
 					else

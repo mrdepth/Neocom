@@ -27,6 +27,7 @@
 		1230A3341DFFE2CF00627D92 /* NSExpressionDescription+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */; };
 		1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */; };
 		1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3391E001D7300627D92 /* NCAccountTableViewCell.swift */; };
+		1243DC1F1E0BDE1700F00B9A /* NCMarketHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */; };
 		1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE331DF1C38200A2A24B /* NCStorage.swift */; };
 		1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */; };
 		1256BE391DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */; };
@@ -184,6 +185,7 @@
 		12AC8DD21DF090A600561A7A /* NCCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD11DF090A600561A7A /* NCCache.swift */; };
 		12AC8DD41DF09BDE00561A7A /* NCCacheRecord+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD31DF09BDE00561A7A /* NCCacheRecord+NC.swift */; };
 		12AC8DE21DF0B5F200561A7A /* Dark.clr in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD51DF0AF6900561A7A /* Dark.clr */; };
+		12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */; };
 		12BC40A21DFF1EBB00657D40 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BC40A11DFF1EBB00657D40 /* Alamofire.framework */; };
 		12BC40A31DFF1EBB00657D40 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12BC40A11DFF1EBB00657D40 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -257,6 +259,7 @@
 		1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSExpressionDescription+NC.swift"; sourceTree = "<group>"; };
 		1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+NC.swift"; sourceTree = "<group>"; };
 		1230A3391E001D7300627D92 /* NCAccountTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountTableViewCell.swift; sourceTree = "<group>"; };
+		1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketHistoryView.swift; sourceTree = "<group>"; };
 		1256BE331DF1C38200A2A24B /* NCStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorage.swift; sourceTree = "<group>"; };
 		1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorageExtensions.swift; sourceTree = "<group>"; };
 		1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBannerNavigationViewController.swift; sourceTree = "<group>"; };
@@ -418,6 +421,7 @@
 		12AC8DD31DF09BDE00561A7A /* NCCacheRecord+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NCCacheRecord+NC.swift"; sourceTree = "<group>"; };
 		12AC8DD51DF0AF6900561A7A /* Dark.clr */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Dark.clr; sourceTree = "<group>"; };
 		12AC8DDA1DF0B5E500561A7A /* clrconvert.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = clrconvert.xcodeproj; path = ../clrconvert/clrconvert.xcodeproj; sourceTree = "<group>"; };
+		12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketHistoryTableViewCell.swift; sourceTree = "<group>"; };
 		12BC40A11DFF1EBB00657D40 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -504,6 +508,7 @@
 				129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */,
 				129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */,
 				1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */,
+				1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -669,6 +674,7 @@
 				129E61011E0287F500B56EB8 /* NCSkillTableViewCell.swift */,
 				1230A3391E001D7300627D92 /* NCAccountTableViewCell.swift */,
 				128E61411E0A707200C15EEB /* NCDamageTypeTableViewCell.swift */,
+				12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1032,6 +1038,7 @@
 				12AC8DD41DF09BDE00561A7A /* NCCacheRecord+NC.swift in Sources */,
 				129E60F61E018BD400B56EB8 /* NCLocation.swift in Sources */,
 				1256BE461DF1F0B100A2A24B /* NCTrainingQueue.swift in Sources */,
+				1243DC1F1E0BDE1700F00B9A /* NCMarketHistoryView.swift in Sources */,
 				1230A32A1DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift in Sources */,
 				126157061E0095380041B817 /* NCProgressHandler.swift in Sources */,
 				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
@@ -1045,6 +1052,7 @@
 				12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */,
 				1230A3311DFFE2CF00627D92 /* NCTableViewHeaderCell.swift in Sources */,
 				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
+				12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */,
 				1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */,
 				1230A3301DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift in Sources */,
 				12AC8DC61DF0894400561A7A /* NCDataManager.swift in Sources */,

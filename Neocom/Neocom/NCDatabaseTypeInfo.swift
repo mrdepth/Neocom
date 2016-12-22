@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import EVEAPI
 
 class NCDatabaseTypeInfoRow: NCTreeRow {
 	let title: String?
@@ -121,24 +122,42 @@ class NCDatabaseTypeSkillRow: NCTreeNode {
 	let accessory: UIImage?
 	let object: Any?
 	let tintColor: UIColor?
+	let subtitle: String?
 	
-	init(skill: NCDBInvTypeRequiredSkill, trainedLevel: Int?, children: [NCTreeNode]?) {
-		self.title = "\(skill.skillType!.typeName!) \(skill.skillLevel)"
+	init(skill: NCDBInvTypeRequiredSkill, character: NCCharacter, children: [NCTreeNode]?) {
+		self.title = "\(skill.skillType!.typeName!) - \(skill.skillLevel)"
 		//let eveIcons = NCDBEveIcon.eveIcons(managedObjectContext: skill.managedObjectContext!)
 		//self.image = eveIcons["50_11"]?.image?.image
 		self.accessory = nil
-		if let trainedLevel = trainedLevel {
-			let trained = trainedLevel >= Int(skill.skillLevel)
-			self.image = UIImage(named: trained ? "skillRequirementMe" : "skillRequirementNotMe")
+		
+		let trainingTime: TimeInterval
+		
+		if let type = skill.skillType, let trainedSkill = character.skills[Int(type.typeID)], let trainedLevel = trainedSkill.level {
 			//self.image = eveIcons[trainedLevel >= Int(skill.skillLevel) ? "38_193" : "38_195"]?.image?.image
-			self.tintColor = trained ? UIColor.caption : UIColor.lightGray
+			if trainedLevel >= Int(skill.skillLevel) {
+				self.image = UIImage(named: "skillRequirementMe")
+				self.tintColor = UIColor.caption
+				trainingTime = 0
+			}
+			else {
+				trainingTime = NCTrainingSkill(type: type, skill: trainedSkill, level: Int(skill.skillLevel))?.trainingTime(characterAttributes: character.attributes) ?? 0
+				self.image = UIImage(named: "skillRequirementNotMe")
+				self.tintColor = UIColor.lightGray
+			}
 		}
 		else {
+			if let type = skill.skillType {
+				trainingTime = NCTrainingSkill(type: type, level: Int(skill.skillLevel))?.trainingTime(characterAttributes: character.attributes) ?? 0
+			}
+			else {
+				trainingTime = 0
+			}
 			//self.image = eveIcons["38_194"]?.image?.image
 			self.image = UIImage(named: "skillRequirementNotInjected")
 			self.tintColor = UIColor.lightGray
 		}
 		self.object = skill.skillType
+		self.subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
 		
 		super.init(cellIdentifier: "Cell", nodeIdentifier: nil, children: children)
 	}
@@ -146,7 +165,7 @@ class NCDatabaseTypeSkillRow: NCTreeNode {
 	override func configure(cell: UITableViewCell) {
 		let cell = cell as! NCDefaultTableViewCell
 		cell.titleLabel?.text = title
-		cell.subtitleLabel?.text = nil
+		cell.subtitleLabel?.text = subtitle
 		cell.iconView?.image = image
 		cell.iconView?.tintColor = self.tintColor
 		if let accessory = accessory {
@@ -159,6 +178,25 @@ class NCDatabaseTypeSkillRow: NCTreeNode {
 	
 	override var canExpand: Bool {
 		return false
+	}
+}
+
+class NCDatabaseTypeMarketRow: NCTreeRow {
+	let volume: ClosedRange<Int>
+	let price: ClosedRange<Double>
+	let date: ClosedRange<Date>
+	let chartImage: UIImage
+	init(chartImage: UIImage, history: [ESMarketHistory], volume: ClosedRange<Int>, price: ClosedRange<Double>, date: ClosedRange<Date>) {
+		self.volume = volume
+		self.price = price
+		self.date = date
+		self.chartImage = chartImage
+		super.init(cellIdentifier: "NCMarketHistoryTableViewCell")
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		let cell = cell as! NCMarketHistoryTableViewCell
+		cell.marketHistoryView.chartImage = chartImage
 	}
 }
 
@@ -188,7 +226,42 @@ class NCDatabaseTypeResistanceRow: NCTreeRow {
 class NCDatabaseTypeInfo {
 	
 	class func typeInfo(type: NCDBInvType, completionHandler: @escaping ([NCTreeSection]) -> Void) {
-		shipInfo(type: type, completionHandler: completionHandler)
+		let dispatchGroup = DispatchGroup()
+		var sections: [NCTreeSection]?
+		var marketSection: NCTreeSection?
+		if type.marketGroup != nil {
+			let regionID = (UserDefaults.standard.value(forKey: UserDefaults.Key.NCMarketRegion) as? Int) ?? NCDBRegionID.theForge.rawValue
+			
+			dispatchGroup.enter()
+			NCDataManager(account: NCAccount.current).history(typeID: Int(type.typeID), regionID: regionID) { result in
+				switch result {
+				case let .success(value: value, cacheRecordID: _):
+					DispatchQueue.global(qos: .background).async {
+						autoreleasepool {
+							if let row = NCDatabaseTypeInfo.marketHistory(history: value) {
+								marketSection = NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "Market", title: NSLocalizedString("Market", comment: "").uppercased(), children: [row])
+							}
+							dispatchGroup.leave()
+						}
+					}
+				default:
+					dispatchGroup.leave()
+				}
+			}
+		}
+		dispatchGroup.enter()
+		shipInfo(type: type) { result in
+			sections = result
+			dispatchGroup.leave()
+		}
+		
+		dispatchGroup.notify(queue: .main) {
+			var sections = sections ?? []
+			if let marketSection = marketSection {
+				sections.insert(marketSection, at: 0)
+			}
+			completionHandler(sections)
+		}
 	}
 	
 	class func shipInfo(type: NCDBInvType, completionHandler: @escaping ([NCTreeSection]) -> Void) {
@@ -204,6 +277,10 @@ class NCDatabaseTypeInfo {
 				}
 				
 				guard let type = (try? managedObjectContext.existingObject(with: type.objectID)) as? NCDBInvType else {return}
+				
+				if let mastery = NCDatabaseTypeInfo.masteries(type: type, character: character) {
+					sections.append(mastery)
+				}
 				
 				let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
 				request.predicate = NSPredicate(format: "type == %@ AND attributeType.published == TRUE", type)
@@ -286,17 +363,144 @@ class NCDatabaseTypeInfo {
 				var rows = [NCDatabaseTypeSkillRow]()
 				for requiredSkill in skill.requiredSkills?.array as? [NCDBInvTypeRequiredSkill] ?? [] {
 					guard let type = requiredSkill.skillType else {continue}
-					let trainedSkill = character.skills[Int(type.typeID)]
-					let row = NCDatabaseTypeSkillRow(skill: requiredSkill, trainedLevel: trainedSkill?.level, children: subskills(skill: type))
+					let row = NCDatabaseTypeSkillRow(skill: requiredSkill, character: character, children: subskills(skill: type))
 					rows.append(row)
 				}
 				return rows
 			}
 			
-			let trainedSkill = character.skills[Int(type.typeID)]
-			let row = NCDatabaseTypeSkillRow(skill: requiredSkill, trainedLevel: trainedSkill?.level, children: subskills(skill: type))
+			let row = NCDatabaseTypeSkillRow(skill: requiredSkill, character: character, children: subskills(skill: type))
 			rows.append(row)
 		}
-		return NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: String(NCDBAttributeCategoryID.requiredSkills.rawValue), title: NSLocalizedString("Required Skills", comment: ""), attributedTitle: nil, children: rows, configurationHandler: nil)
+		let trainingQueue = NCTrainingQueue(character: character)
+		trainingQueue.addRequiredSkills(for: type)
+		let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
+		let title = NSMutableAttributedString(string: NSLocalizedString("Required Skills", comment: "").uppercased())
+		if trainingTime > 0 {
+			title.append(NSAttributedString(
+				string: " (\(NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))",
+				attributes: [NSForegroundColorAttributeName: UIColor.white]))
+		}
+		return NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: String(NCDBAttributeCategoryID.requiredSkills.rawValue), title: nil, attributedTitle: title, children: rows, configurationHandler: nil)
+	}
+	
+	class func masteries(type: NCDBInvType, character: NCCharacter) -> NCTreeSection? {
+		var masteries = [Int: [NCDBCertMastery]]()
+		for certificate in type.certificates?.allObjects as? [NCDBCertCertificate] ?? [] {
+			for mastery in certificate.masteries?.array as? [NCDBCertMastery] ?? [] {
+				let level = Int(mastery.level?.level ?? 0)
+				var array = masteries[level] ?? []
+				array.append(mastery)
+				masteries[level] = array
+			}
+		}
+		let unclaimedIcon = NCDBEveIcon.eveIcons(managedObjectContext: type.managedObjectContext!)["79_01"]
+		var rows = [NCDatabaseTypeInfoRow]()
+		for (key, array) in masteries.sorted(by: {return $0.key < $1.key}) {
+			guard let level = array.first?.level else {continue}
+			let trainingQueue = NCTrainingQueue(character: character)
+			for mastery in array {
+				trainingQueue.add(mastery: mastery)
+			}
+			let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
+			let title = NSLocalizedString("Mastery", comment: "") + " \(key + 1)"
+			let subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
+			let icon = trainingTime > 0 ? unclaimedIcon : level.icon
+			let row = NCDatabaseTypeInfoRow(title: title, subtitle: subtitle, image: icon?.image?.image, accessory: nil, object: level)
+			rows.append(row)
+		}
+		
+		if rows.count > 0 {
+			return NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "Mastery", title: NSLocalizedString("Mastery", comment: "").uppercased(), children: rows)
+		}
+		else {
+			return nil
+		}
+	}
+	
+	class func marketHistory(history: [ESMarketHistory]) -> NCDatabaseTypeMarketRow? {
+		guard history.count > 0 else {return nil}
+		
+		let range = history.suffix(60).indices
+		
+		let width = CGFloat(range.count)
+		let bounds = CGRect(x: 0, y: 0, width: width, height: width * 0.33).integral
+		
+		let volume = UIBezierPath()
+		volume.move(to: CGPoint(x: 0, y: 0))
+		
+		let donchian = UIBezierPath()
+		let avg = UIBezierPath()
+		
+		var x: CGFloat = 0
+		var isFirst = true
+		
+		var v = 0...0 as ClosedRange<Int>
+		var p = 0...0 as ClosedRange<Double>
+		let d = history[range.first!].date...history[range.last!].date
+		
+		for i in range {
+			let item = history[i]
+			let lowest = history[max(i - 4, 0)...i].min {
+				$0.lowest < $1.lowest
+				}!
+			let highest = history[max(i - 4, 0)...i].max {
+				$0.highest < $1.highest
+				}!
+			if isFirst {
+				avg.move(to: CGPoint(x: x, y: CGFloat(item.average)))
+				isFirst = false
+			}
+			else {
+				avg.addLine(to: CGPoint(x: x, y: CGFloat(item.average)))
+			}
+			volume.append(UIBezierPath(rect: CGRect(x: x, y: 0, width: 1, height: CGFloat(item.volume))))
+			donchian.append(UIBezierPath(rect: CGRect(x: x, y: CGFloat(lowest.lowest), width: 1, height: abs(CGFloat(highest.highest - lowest.lowest)))))
+			x += 1
+			
+			v = min(v.lowerBound, item.volume)...max(v.upperBound, item.volume)
+			p = min(p.lowerBound, lowest.lowest)...max(p.upperBound, highest.highest)
+		}
+		
+		donchian.close()
+		
+		var transform = CGAffineTransform.identity
+		var rect = volume.bounds
+		if rect.size.width > 0 && rect.size.height > 0 {
+			transform = transform.scaledBy(x: 1, y: -1)
+			transform = transform.translatedBy(x: 0, y: -bounds.size.height)
+			transform = transform.scaledBy(x: bounds.size.width / rect.size.width, y: bounds.size.height / rect.size.height * 0.25)
+			transform = transform.translatedBy(x: -rect.origin.x, y: -rect.origin.y)
+			volume.apply(transform)
+		}
+		
+		
+		rect = donchian.bounds.union(avg.bounds)
+		if rect.size.width > 0 && rect.size.height > 0 {
+			transform = CGAffineTransform.identity
+			transform = transform.scaledBy(x: 1, y: -1)
+			transform = transform.translatedBy(x: 0, y: -bounds.size.height * 0.75)
+			transform = transform.scaledBy(x: bounds.size.width / rect.size.width, y: bounds.size.height / rect.size.height * 0.75)
+			transform = transform.translatedBy(x: -rect.origin.x, y: -rect.origin.y)
+			donchian.apply(transform)
+			avg.apply(transform)
+		}
+		
+		UIGraphicsBeginImageContextWithOptions(bounds.size, false, UIScreen.main.scale)
+		UIBezierPath(rect: bounds).fill()
+		UIColor.lightGray.setFill()
+		donchian.fill()
+		UIColor.blue.setFill()
+		volume.fill()
+		UIColor.orange.setStroke()
+		avg.stroke()
+		let image = UIGraphicsGetImageFromCurrentImageContext()
+		UIGraphicsEndImageContext()
+		if let image = image {
+			return NCDatabaseTypeMarketRow(chartImage: image, history: history, volume: v, price: p, date: d)
+		}
+		else {
+			return nil
+		}
 	}
 }

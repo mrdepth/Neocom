@@ -247,6 +247,22 @@ class NCDataManager {
 		}
 	}
 	
+	func prices(completionHandler: @escaping (NCResult<[ESMarketPrice]>) -> Void) {
+		loadFromCache(forKey: "ESMarketPrices", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.api.market.prices { result in
+				completion(result, 3600.0 * 12)
+			}
+		})
+	}
+
+	func history(typeID: Int, regionID: Int, completionHandler: @escaping (NCResult<[ESMarketHistory]>) -> Void) {
+		loadFromCache(forKey: "ESMarketHistory.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.api.market.history(typeID: typeID, regionID: regionID) { result in
+				completion(result, 3600.0 * 12)
+			}
+		})
+	}
+
 	//MARK: Private
 	
 	private func loadFromCache<T> (forKey key: String,

@@ -386,7 +386,7 @@
             <objects>
                 <tableViewController id="xIe-Ri-8Ng" customClass="NCAPIKeyInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="PWN-Ec-uZB" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -941,7 +941,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="eNG-aU-9Ew" customClass="NCBackgroundView">
-                            <rect key="frame" x="0.0" y="288" width="320" height="44"/>
+                            <rect key="frame" x="0.0" y="287.5" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hZ3-NN-20f">
@@ -2599,6 +2599,33 @@
                                     <outlet property="explosiveLabel" destination="s4j-Go-cRz" id="bR8-lp-7vT"/>
                                     <outlet property="kineticLabel" destination="m3M-55-UBe" id="lZc-Dd-c0m"/>
                                     <outlet property="thermalLabel" destination="ET7-UD-cS7" id="kJm-0z-Dh2"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCMarketHistoryTableViewCell" id="NnJ-hG-Oy7" customClass="NCMarketHistoryTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="178" width="320" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NnJ-hG-Oy7" id="Yew-2Z-FhM">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o6p-2J-VAM" customClass="NCMarketHistoryView" customModule="Neocom" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="106.5"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="o6p-2J-VAM" secondAttribute="height" multiplier="3:1" id="ogh-Oh-WUa"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="o6p-2J-VAM" firstAttribute="top" secondItem="Yew-2Z-FhM" secondAttribute="top" id="2k5-Cl-Cx9"/>
+                                        <constraint firstItem="o6p-2J-VAM" firstAttribute="leading" secondItem="Yew-2Z-FhM" secondAttribute="leading" id="JgB-1s-lWr"/>
+                                        <constraint firstAttribute="trailing" secondItem="o6p-2J-VAM" secondAttribute="trailing" id="Xfn-TT-WcF"/>
+                                        <constraint firstAttribute="bottom" secondItem="o6p-2J-VAM" secondAttribute="bottom" priority="999" id="lDa-YX-CYC"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="marketHistoryView" destination="o6p-2J-VAM" id="q0P-GJ-dtn"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

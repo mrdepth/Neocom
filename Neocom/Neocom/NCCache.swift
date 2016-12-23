@@ -53,6 +53,9 @@ class NCCache: NSObject {
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 		context.perform {
 			block(context)
+			if context.hasChanges {
+				try? context.save()
+			}
 		}
 	}
 	
@@ -62,6 +65,9 @@ class NCCache: NSObject {
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 		context.performAndWait {
 			block(context)
+			if context.hasChanges {
+				try? context.save()
+			}
 		}
 	}
 	

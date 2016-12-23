@@ -182,51 +182,107 @@ class NCDatabaseTypeSkillRow: NCTreeNode {
 }
 
 class NCDatabaseTypeMarketRow: NCTreeRow {
-	let volume: UIBezierPath
-	let median: UIBezierPath
-	let donchian: UIBezierPath
-	let date: ClosedRange<Date>
-	init(history: [ESMarketHistory], volume: UIBezierPath, median: UIBezierPath, donchian: UIBezierPath, date: ClosedRange<Date>) {
+	var volume: UIBezierPath?
+	var median: UIBezierPath?
+	var donchian: UIBezierPath?
+	var date: ClosedRange<Date>?
+	let history: NSManagedObjectID
+	var observer: NCManagedObjectObserver?
+	weak var cell: NCMarketHistoryTableViewCell?
+	
+	init(history: NSManagedObjectID) {
+		self.history = history
+		super.init(cellIdentifier: "NCMarketHistoryTableViewCell")
+		self.observer = NCManagedObjectObserver(managedObjectID: history)  {[weak self] (_, _) in
+			self?.reload()
+		}
+		reload()
+	}
+	
+	func reload() {
+		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
+			guard let record = (try? managedObjectContext.existingObject(with: self.history)) as? NCCacheRecord else {return}
+			guard let history = record.data?.data as? [ESMarketHistory] else {return}
+			guard history.count > 0 else {return}
+			guard let date = history.last?.date.addingTimeInterval(-3600 * 24 * 90) else {return}
+			guard let i = history.index(where: {
+				$0.date > date
+			}) else {
+				return
+			}
+			
+			let range = history.suffix(from: i).indices
+			
+			let volume = UIBezierPath()
+			volume.move(to: CGPoint(x: 0, y: 0))
+			
+			let donchian = UIBezierPath()
+			let avg = UIBezierPath()
+			
+			var x: CGFloat = 0
+			var isFirst = true
+			
+			var v = 0...0 as ClosedRange<Int>
+			var p = 0...0 as ClosedRange<Double>
+			let d = history[range.first!].date...history[range.last!].date
+			var prevT: TimeInterval?
+			
+			for i in range {
+				let item = history[i]
+				let t = item.date.timeIntervalSinceReferenceDate
+				x = CGFloat(item.date.timeIntervalSinceReferenceDate)
+				let lowest = history[max(i - 4, 0)...i].min {
+					$0.lowest < $1.lowest
+					}!
+				let highest = history[max(i - 4, 0)...i].max {
+					$0.highest < $1.highest
+					}!
+				if isFirst {
+					avg.move(to: CGPoint(x: x, y: CGFloat(item.average)))
+					isFirst = false
+				}
+				else {
+					avg.addLine(to: CGPoint(x: x, y: CGFloat(item.average)))
+				}
+				if let prevT = prevT {
+					volume.append(UIBezierPath(rect: CGRect(x: CGFloat(prevT), y: 0, width: CGFloat(t - prevT), height: CGFloat(item.volume))))
+					donchian.append(UIBezierPath(rect: CGRect(x: CGFloat(prevT), y: CGFloat(lowest.lowest), width: CGFloat(t - prevT), height: abs(CGFloat(highest.highest - lowest.lowest)))))
+				}
+				prevT = t
+				
+				v = min(v.lowerBound, item.volume)...max(v.upperBound, item.volume)
+				p = min(p.lowerBound, lowest.lowest)...max(p.upperBound, highest.highest)
+			}
+			
+			donchian.close()
+			DispatchQueue.main.async {
+				self.volume = volume
+				self.median = avg
+				self.donchian = donchian
+				self.date = d
+				if let cell = self.cell {
+					self.configure(cell: cell)
+				}
+			}
+		}
+	}
+	
+	/*init(history: [ESMarketHistory], volume: UIBezierPath, median: UIBezierPath, donchian: UIBezierPath, date: ClosedRange<Date>) {
 		self.volume = volume
 		self.median = median
 		self.donchian = donchian
 		self.date = date
 		super.init(cellIdentifier: "NCMarketHistoryTableViewCell")
-	}
+	}*/
 	
-	static let months = [NSLocalizedString("Jan", comment: ""), NSLocalizedString("Feb", comment: ""), NSLocalizedString("Mar", comment: ""), NSLocalizedString("Apr", comment: ""), NSLocalizedString("May", comment: ""), NSLocalizedString("Jun", comment: ""), NSLocalizedString("Jul", comment: ""), NSLocalizedString("Aug", comment: ""), NSLocalizedString("Sep", comment: ""), NSLocalizedString("Oct", comment: ""), NSLocalizedString("Nov", comment: ""), NSLocalizedString("Dec", comment: "")]
 	
 	override func configure(cell: UITableViewCell) {
 		let cell = cell as! NCMarketHistoryTableViewCell
+		self.cell = cell
 		cell.marketHistoryView.volume = volume
 		cell.marketHistoryView.median = median
 		cell.marketHistoryView.donchian = donchian
-		
-		var rect = donchian.bounds
-		rect.origin.y -= rect.size.height / 2.0
-		rect.size.height *= 3.0 / 2.0
-		var dy = rect.size.height / 4.0
-		var y = rect.maxY - dy / 2.0
-		for label in (cell.pricesStackView.subviews as? [UILabel])?[0..<3] ?? [] {
-			label.text = NCUnitFormatter.localizedString(from: Double(y), unit: .none, style: .short)
-			y -= dy
-		}
-
-		rect = volume.bounds
-		rect.size.height *= 3
-		dy = rect.size.height / 4.0
-		y = rect.maxY - dy * (2 + 0.5)
-		for label in cell.volumesStackView.subviews as? [UILabel] ?? [] {
-			label.text = NCUnitFormatter.localizedString(from: Double(round(y)), unit: .none, style: .short)
-			y -= dy
-		}
-		
-		let calendar = Calendar(identifier: .gregorian)
-		var month = (calendar.component(.month, from: date.upperBound) - cell.montshStackView.subviews.count) + 12
-		for label in cell.montshStackView.subviews as? [UILabel] ?? [] {
-			label.text = NCDatabaseTypeMarketRow.months[month % 12]
-			month += 1
-		}
+		cell.marketHistoryView.date = date
 	}
 }
 
@@ -256,37 +312,34 @@ class NCDatabaseTypeResistanceRow: NCTreeRow {
 class NCDatabaseTypeInfo {
 	
 	class func typeInfo(type: NCDBInvType, completionHandler: @escaping ([NCTreeSection]) -> Void) {
-		let dispatchGroup = DispatchGroup()
-		var sections: [NCTreeSection]?
+
 		var marketSection: NCTreeSection?
 		if type.marketGroup != nil {
 			let regionID = (UserDefaults.standard.value(forKey: UserDefaults.Key.NCMarketRegion) as? Int) ?? NCDBRegionID.theForge.rawValue
+			let typeID = Int(type.typeID)
+			marketSection = NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "Market", title: NSLocalizedString("Market", comment: "").uppercased(), children: [])
 			
-			dispatchGroup.enter()
-			NCDataManager(account: NCAccount.current).history(typeID: Int(type.typeID), regionID: regionID) { result in
+			let dataManager = NCDataManager(account: NCAccount.current)
+			
+			dataManager.marketHistory(typeID: typeID, regionID: regionID) { result in
 				switch result {
-				case let .success(value: value, cacheRecordID: _):
-					DispatchQueue.global(qos: .background).async {
-						autoreleasepool {
-							if let row = NCDatabaseTypeInfo.marketHistory(history: value) {
-								marketSection = NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "Market", title: NSLocalizedString("Market", comment: "").uppercased(), children: [row])
-							}
-							dispatchGroup.leave()
-						}
-					}
+				case let .success(value: _, cacheRecordID: recordID):
+					let row = NCDatabaseTypeMarketRow(history: recordID)
+					marketSection?.mutableArrayValue(forKey: "children").add(row)
 				default:
-					dispatchGroup.leave()
+					break
 				}
 			}
+			
+			dataManager.prices(typeIDs: [typeID]) { result in
+				guard let price = result[typeID] else {return}
+				let subtitle = NCUnitFormatter.localizedString(from: price, unit: .isk, style: .full)
+				let row = NCDatabaseTypeInfoRow(title: NSLocalizedString("Price", comment: ""), subtitle: subtitle, image: UIImage(named: "wallet"), accessory: nil, object: nil)
+				marketSection?.mutableArrayValue(forKey: "children").insert(row, at: 0)
+			}
 		}
-		dispatchGroup.enter()
 		shipInfo(type: type) { result in
-			sections = result
-			dispatchGroup.leave()
-		}
-		
-		dispatchGroup.notify(queue: .main) {
-			var sections = sections ?? []
+			var sections = result
 			if let marketSection = marketSection {
 				sections.insert(marketSection, at: 0)
 			}
@@ -448,7 +501,7 @@ class NCDatabaseTypeInfo {
 		}
 	}
 	
-	class func marketHistory(history: [ESMarketHistory]) -> NCDatabaseTypeMarketRow? {
+	/*class func marketHistory(history: [ESMarketHistory]) -> NCDatabaseTypeMarketRow? {
 		guard history.count > 0 else {return nil}
 		
 		let range = history.suffix(90).indices
@@ -531,5 +584,5 @@ class NCDatabaseTypeInfo {
 		else {
 			return nil
 		}*/
-	}
+	}*/
 }

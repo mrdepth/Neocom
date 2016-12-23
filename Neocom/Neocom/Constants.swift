@@ -75,8 +75,7 @@ enum NCDBCategoryID: Int {
 }
 
 enum NCDBRegionID: Int {
-	//case theForge = 10000002
-	case theForge = 10000030
+	case theForge = 10000002
 }
 
 extension Notification.Name {

@@ -103,7 +103,7 @@ class NCTreeControllerNode: NSObject {
 			let node = NCTreeControllerNode(treeController: self.treeController, parent: self)
 			node.index = i
 			node.indentationLevel = self.indentationLevel + 1
-			array.append(node)
+			array.insert(node, at: i)
 		}
 		var index = 0
 		for child in array {
@@ -131,22 +131,42 @@ class NCTreeControllerNode: NSObject {
 			let item = self.item,
 			let object = object as AnyObject?,
 			object === item && childrenKeyPath == keyPath {
-			if let kind = change?[.kindKey] as? NSKeyValueChange {
+			if let n = change?[.kindKey] as? NSNumber, let kind = NSKeyValueChange(rawValue: n.uintValue) {
+				let indexes = change?[.indexesKey] as? IndexSet
 				switch kind {
 				case .setting:
-					break
+					let array = item.value(forKeyPath: childrenKeyPath) as? [Any]
+					treeController.deleteChildren(IndexSet(integersIn: 0..<children.count), ofNode: self, withRowAnimation: .automatic)
+					treeController.insertChildren(IndexSet(integersIn: 0..<(array?.count ?? 0)), ofNode: self, withRowAnimation: .automatic)
 				case .insertion:
-					break
+					if let indexes = indexes {
+						treeController.insertChildren(indexes, ofNode: self, withRowAnimation: .automatic)
+					}
 				case .removal:
-					break
+					if let indexes = indexes {
+						treeController.deleteChildren(indexes, ofNode: self, withRowAnimation: .automatic)
+					}
 				case .replacement:
-					break
+					if let indexes = indexes {
+						treeController.reloadChildren(indexes, ofNode: self, withRowAnimation: .automatic)
+					}
 				}
 			}
 		}
 	}
 }
-
+/*case NSKeyValueChangeSetting:
+[self.treeController removeChildren:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.children.count)] ofNode:self withRowAnimation:UITableViewRowAnimationFade];
+[self.treeController insertChildren:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [[self.item valueForKeyPath:childrenKeyPath] count])] ofNode:self withRowAnimation:UITableViewRowAnimationFade];
+case NSKeyValueChangeInsertion:
+[self.treeController insertChildren:indexes ofNode:self withRowAnimation:UITableViewRowAnimationFade];
+break;
+case NSKeyValueChangeRemoval:
+[self.treeController removeChildren:indexes ofNode:self withRowAnimation:UITableViewRowAnimationFade];
+break;
+case NSKeyValueChangeReplacement:
+[self.treeController reloadChildren:indexes ofNode:self withRowAnimation:UITableViewRowAnimationFade];
+break;*/
 
 @objc protocol NCTreeControllerDelegate: NSObjectProtocol {
 	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String
@@ -384,7 +404,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 				}
 			}
 		}
-		enumerate(self.root)
+		enumerate(node)
 		return numberOfRows
 	}
 	
@@ -505,7 +525,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 			if child.expanded {
 				let n = numberOfRows(node: child)
 				if contains {
-					for _ in 0...n {
+					for _ in 0..<n {
 						array.append(IndexPath(row: row, section:0))
 						row += 1
 					}
@@ -519,7 +539,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 		return array
 	}
 	
-	private func reloadChildren(_ children: IndexSet, ofNode node: NCTreeControllerNode, withRowAnimation animation: UITableViewRowAnimation) {
+	fileprivate func reloadChildren(_ children: IndexSet, ofNode node: NCTreeControllerNode, withRowAnimation animation: UITableViewRowAnimation) {
 		var array = [IndexPath]()
 		
 		for index in children {
@@ -532,7 +552,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 		}
 	}
 	
-	private func insertChildren(_ children: IndexSet, ofNode node: NCTreeControllerNode, withRowAnimation animation: UITableViewRowAnimation) {
+	fileprivate func insertChildren(_ children: IndexSet, ofNode node: NCTreeControllerNode, withRowAnimation animation: UITableViewRowAnimation) {
 		
 		assert(self.content != nil || self.delegate!.treeController!(self, numberOfChildrenOfItem: node.item) == node.children.count + children.count)
 		node.insertChildren(children)
@@ -543,7 +563,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 		}
 	}
 	
-	private func deleteChildren(_ children: IndexSet, ofNode node: NCTreeControllerNode, withRowAnimation animation: UITableViewRowAnimation) {
+	fileprivate func deleteChildren(_ children: IndexSet, ofNode node: NCTreeControllerNode, withRowAnimation animation: UITableViewRowAnimation) {
 		
 		assert(self.content != nil || self.delegate!.treeController!(self, numberOfChildrenOfItem: node.item) == node.children.count + children.count)
 		

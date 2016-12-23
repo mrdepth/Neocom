@@ -10,8 +10,4 @@ import UIKit
 
 class NCMarketHistoryTableViewCell: NCTableViewCell {
 	@IBOutlet weak var marketHistoryView: NCMarketHistoryView!
-
-	@IBOutlet weak var pricesStackView: UIStackView!
-	@IBOutlet weak var montshStackView: UIStackView!
-	@IBOutlet weak var volumesStackView: UIStackView!
 }

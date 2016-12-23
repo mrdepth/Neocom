@@ -3,6 +3,9 @@
 import UIKit
 import EVEAPI
 
+
+
+
 var history = [ESMarketHistory]()
 
 let data = try! Data(contentsOf: Bundle.main.url(forResource: "market", withExtension: "json")!)
@@ -11,101 +14,190 @@ array.forEach {
 	history.append(ESMarketHistory(dictionary: $0)!)
 }
 
-let range = history.suffix(365).indices
-
-let width = CGFloat(range.count)
-let bounds = CGRect(x: 0, y: 0, width: width, height: width * 0.33).integral
-
-let volume = UIBezierPath()
-volume.move(to: CGPoint(x: 0, y: 0))
-
-let donchian = UIBezierPath()
-let avg = UIBezierPath()
-
-var x: CGFloat = 0
-var isFirst = true
-
-var v = 0...0 as ClosedRange<Int>
-var p = 0...0 as ClosedRange<Double>
-let d = history[range.first!].date...history[range.last!].date
+let row = marketHistory(history: history)!
 
 
-var dx = 0...0 as ClosedRange<Double>
-var dx2 = 0...0 as ClosedRange<Double>
-let n = Double(range.count)
-for i in range {
-	let item = history[i]
-	let lowest = history[max(i - 4, 0)...i].min {
-		$0.lowest < $1.lowest
-		}!
-	let highest = history[max(i - 4, 0)...i].max {
-		$0.highest < $1.highest
-		}!
-	if isFirst {
-		avg.move(to: CGPoint(x: x, y: CGFloat(item.average)))
-		isFirst = false
-	}
-	else {
-		avg.addLine(to: CGPoint(x: x, y: CGFloat(item.average)))
-	}
-	volume.append(UIBezierPath(rect: CGRect(x: x, y: 0, width: 1, height: CGFloat(item.volume))))
-	donchian.append(UIBezierPath(rect: CGRect(x: x, y: CGFloat(lowest.lowest), width: 1, height: abs(CGFloat(highest.highest - lowest.lowest)))))
-	x += 1
+
+public class NCMarketHistoryView: UIView {
+	private var donchianRange: ClosedRange<Double>?
+	private var volumeRange: ClosedRange<Double>?
 	
-	v = min(v.lowerBound, item.volume)...max(v.upperBound, item.volume)
-	p = min(p.lowerBound, lowest.lowest)...max(p.upperBound, highest.highest)
-	dx = (dx.lowerBound + lowest.lowest / n)...(dx.upperBound + highest.highest / n)
-	dx2 = (dx2.lowerBound + pow(lowest.lowest, 2) / n)...(dx2.upperBound + pow(highest.highest, 2) / n)
+	public var donchian: UIBezierPath? {
+		didSet {
+			if let donchian = donchian {
+				let bounds = donchian.bounds
+				let h = bounds.size.height / (1.0 - NCMarketHistoryView.ratio)
+				donchianRange = (Double(bounds.maxY - h))...Double(bounds.maxY)
+			}
+			else {
+				donchianRange = nil
+			}
+		}
+	}
+	
+	public var volume: UIBezierPath? {
+		didSet {
+			if let volume = volume {
+				let bounds = volume.bounds
+				let h = bounds.size.height / NCMarketHistoryView.ratio
+				volumeRange = 0...Double(h)
+			}
+			else {
+				volumeRange = nil
+			}
+		}
+	}
+	public var median: UIBezierPath?
+	public var date: ClosedRange<Date>?
+	
+	private static let gridSize = CGSize(width: 32, height: 32)
+	private static let ratio = 0.33 as CGFloat
+
+	
+	override public func draw(_ rect: CGRect) {
+		var canvas = self.bounds.insetBy(dx: 60, dy: 30)
+		let context = UIGraphicsGetCurrentContext()
+		context?.saveGState()
+		context?.translateBy(x: canvas.origin.x, y: canvas.origin.y)
+
+		canvas.origin = CGPoint.zero
+		drawDonchianAndMedian(canvas: canvas)
+		drawVolume(canvas: canvas)
+		drawGrid(canvas: canvas)
+		
+		context?.restoreGState()
+	}
+	
+	func drawVolume(canvas: CGRect) {
+		guard let volume = volume?.copy() as? UIBezierPath else {return}
+		
+		var transform = CGAffineTransform.identity
+		let rect = volume.bounds
+		if rect.size.width > 0 && rect.size.height > 0 {
+			transform = transform.scaledBy(x: 1, y: -1)
+			transform = transform.translatedBy(x: 0, y: -canvas.size.height)
+			transform = transform.scaledBy(x: canvas.size.width / rect.size.width, y: canvas.size.height / rect.size.height * NCMarketHistoryView.ratio)
+			transform = transform.translatedBy(x: -rect.origin.x, y: -rect.origin.y)
+			volume.apply(transform)
+		}
+		
+		UIColor(number: 0x00d5ff44).setFill()
+		volume.fill()
+	}
+	
+	func drawDonchianAndMedian(canvas: CGRect) {
+		guard let donchian = donchian?.copy() as? UIBezierPath,
+			let median = median?.copy() as? UIBezierPath
+			else {
+				return
+		}
+		
+		let rect = donchian.bounds
+		if rect.size.width > 0 && rect.size.height > 0 {
+			transform = CGAffineTransform.identity
+			transform = transform.scaledBy(x: 1, y: -1)
+			transform = transform.translatedBy(x: 0, y: -canvas.size.height * (1.0 - NCMarketHistoryView.ratio))
+			transform = transform.scaledBy(x: canvas.size.width / rect.size.width, y: canvas.size.height / rect.size.height * (1.0 - NCMarketHistoryView.ratio))
+			transform = transform.translatedBy(x: -rect.origin.x, y: -rect.origin.y)
+			donchian.apply(transform)
+			median.apply(transform)
+		}
+		
+		UIColor(white: 1, alpha: 0.2).setFill()
+		donchian.fill()
+		UIColor(number: 0x00d5ff77).setStroke()
+		median.stroke()
+	}
+	
+	private static let months = [NSLocalizedString("Jan", comment: ""), NSLocalizedString("Feb", comment: ""), NSLocalizedString("Mar", comment: ""), NSLocalizedString("Apr", comment: ""), NSLocalizedString("May", comment: ""), NSLocalizedString("Jun", comment: ""), NSLocalizedString("Jul", comment: ""), NSLocalizedString("Aug", comment: ""), NSLocalizedString("Sep", comment: ""), NSLocalizedString("Oct", comment: ""), NSLocalizedString("Nov", comment: ""), NSLocalizedString("Dec", comment: "")]
+
+	
+	func drawGrid(canvas: CGRect) {
+		guard let donchianRange = donchianRange else {return}
+		guard let volumeRange = volumeRange else {return}
+		guard let dates = self.date else {return}
+		
+		let gridSize = NCMarketHistoryView.gridSize
+		var y = 0 as CGFloat
+		let grid = UIBezierPath()
+		
+		let attributes: [String: Any] = [NSFontAttributeName: UIFont.systemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor.white]
+		let size = CGSize.init(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+		
+		var donchian = donchianRange.upperBound
+		let donchianStep = (donchianRange.upperBound - donchianRange.lowerBound) * Double(gridSize.height / canvas.size.height)
+		var volume = volumeRange.upperBound
+		let volumeStep = (volumeRange.upperBound - volumeRange.lowerBound) * Double(gridSize.height / canvas.size.height)
+		
+		while y <= canvas.size.height {
+			grid.move(to: CGPoint(x: 0, y: y))
+			grid.addLine(to: CGPoint(x: canvas.size.width, y: y))
+
+			if (donchian > 0) {
+				let s = NSAttributedString(string: NCUnitFormatter.localizedString(from: donchian, unit: .none, style: .short), attributes: attributes)
+				var rect = s.boundingRect(with: size, options: [], context: nil)
+				rect.origin.x = -rect.size.width - 4
+				rect.origin.y = y - rect.size.height / 2
+				if rect.maxY < canvas.size.height {
+					s.draw(in: rect)
+				}
+				donchian -= donchianStep
+			}
+			
+			if y >= canvas.height * (1.0 - NCMarketHistoryView.ratio) {
+				let s = NSAttributedString(string: NCUnitFormatter.localizedString(from: volume, unit: .none, style: .short), attributes: attributes)
+				var rect = s.boundingRect(with: size, options: [], context: nil)
+				rect.origin.x = canvas.maxX + 4
+				rect.origin.y = y - rect.size.height / 2
+				if rect.maxY < canvas.size.height {
+					s.draw(in: rect)
+				}
+			}
+			volume -= volumeStep
+			y += gridSize.height
+		}
+		
+		
+		let dateRange = dates.lowerBound.timeIntervalSinceReferenceDate...dates.upperBound.timeIntervalSinceReferenceDate
+		var date = dateRange.lowerBound
+		let dateStep = (dateRange.upperBound - dateRange.lowerBound) * Double(gridSize.width / canvas.size.width)
+		let calendar = Calendar(identifier: .gregorian)
+		var month = calendar.component(.month, from: dates.lowerBound)
+		
+		var x = 0 as CGFloat
+		while x <= canvas.size.width {
+			grid.move(to: CGPoint(x: x, y: 0))
+			grid.addLine(to: CGPoint(x: x, y: canvas.size.height))
+			
+			let m = calendar.component(.month, from: Date(timeIntervalSinceReferenceDate: date))
+			if m != month {
+				month = m
+				
+				let s = NSAttributedString(string: NCMarketHistoryView.months[month - 1], attributes: attributes)
+				var rect = s.boundingRect(with: size, options: [], context: nil)
+				rect.origin.x = x - rect.size.width / 2
+				rect.origin.y -= rect.size.height + 4
+				if rect.maxX < canvas.size.width {
+					s.draw(in: rect)
+				}
+
+			}
+			
+			date += dateStep
+			x += gridSize.width
+		}
+		
+		UIColor(white: 1.0, alpha: 0.1).setStroke()
+		grid.stroke()
+	}
 }
 
+let view = NCMarketHistoryView(frame: CGRect(x: 0, y: 0, width: 600, height: 400))
 
-let highest = history.max {
-	$0.highest < $1.highest
-	}!
+view.donchian = row.donchian
+view.volume = row.volume
+view.median = row.median
+view.date = row.date
+view.setNeedsDisplay()
+view
 
-let deviationL = (dx2.lowerBound - pow(dx.lowerBound, 2))
-sqrt(deviationL)
-let deviationH = (dx2.upperBound - pow(dx.upperBound, 2))
-sqrt(deviationH)
-let mean = dx.lowerBound...dx.upperBound
-let sigmaL = (mean.lowerBound - sqrt(deviationL) * 3)
-let sigmaH = (mean.upperBound + sqrt(deviationH) * 3)
-dx
-dx2
-donchian.close()
-
-var transform = CGAffineTransform.identity
-var rect = volume.bounds
-if rect.size.width > 0 && rect.size.height > 0 {
-	transform = transform.scaledBy(x: 1, y: -1)
-	transform = transform.translatedBy(x: 0, y: -bounds.size.height)
-	transform = transform.scaledBy(x: bounds.size.width / rect.size.width, y: bounds.size.height / rect.size.height * 0.25)
-	transform = transform.translatedBy(x: -rect.origin.x, y: -rect.origin.y)
-	volume.apply(transform)
-}
-
-
-rect = donchian.bounds.union(avg.bounds)
-rect = avg.bounds
-rect.origin.y = CGFloat(mean.lowerBound)
-rect.size.height = CGFloat(mean.upperBound - mean.lowerBound)
-if rect.size.width > 0 && rect.size.height > 0 {
-	transform = CGAffineTransform.identity
-	transform = transform.scaledBy(x: 1, y: -1)
-	transform = transform.translatedBy(x: 0, y: -bounds.size.height * 0.75)
-	transform = transform.scaledBy(x: bounds.size.width / rect.size.width, y: bounds.size.height / rect.size.height * 0.75)
-	transform = transform.translatedBy(x: -rect.origin.x, y: -rect.origin.y)
-	donchian.apply(transform)
-	avg.apply(transform)
-}
-
-UIGraphicsBeginImageContextWithOptions(bounds.size, false, UIScreen.main.scale)
-UIBezierPath(rect: bounds).fill()
-UIColor.lightGray.setFill()
-donchian.fill()
-UIColor.blue.setFill()
-volume.fill()
-UIColor.orange.setStroke()
-avg.stroke()
-let image = UIGraphicsGetImageFromCurrentImageContext()
-UIGraphicsEndImageContext()

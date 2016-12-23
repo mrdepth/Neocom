@@ -25,21 +25,12 @@ class NCDataManager {
 		case invalidResponse
 		case noCacheData
 	}
-	let account: NCAccount?
+	let account: String?
+	let token: OAuth2Token?
 	let cachePolicy: URLRequest.CachePolicy
 	var observer: NSObjectProtocol?
 	lazy var api: ESAPI = {
-		if let account = self.account {
-			let token = account.token
-			self.observer = NotificationCenter.default.addObserver(forName: NSNotification.Name.OAuth2TokenDidRefresh, object: token, queue: OperationQueue.main) { note in
-				guard let token = note.object as? OAuth2Token else {return}
-				account.managedObjectContext?.perform {
-					account.token = token
-					if account.managedObjectContext?.hasChanges ?? false {
-						try? account.managedObjectContext?.save()
-					}
-				}
-			}
+		if let token = self.token {
 			return ESAPI(token: token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: self.cachePolicy)
 		}
 		else {
@@ -48,7 +39,14 @@ class NCDataManager {
 	}()
 	
 	init(account: NCAccount?, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) {
-		self.account = account
+		if let account = account {
+			self.account = String(account.characterID)
+			self.token = account.token
+		}
+		else {
+			self.account = nil
+			self.token = nil
+		}
 		self.cachePolicy = cachePolicy
 	}
 	
@@ -247,15 +245,84 @@ class NCDataManager {
 		}
 	}
 	
-	func prices(completionHandler: @escaping (NCResult<[ESMarketPrice]>) -> Void) {
-		loadFromCache(forKey: "ESMarketPrices", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.market.prices { result in
-				completion(result, 3600.0 * 12)
+	func updateMarketPrices(completionHandler: ((_ isUpdated: Bool) -> Void)?) {
+		NCCache.sharedCache?.performBackgroundTask{ managedObjectContext in
+			let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: "ESMarketPrices", account: nil)))?.last
+			if record == nil || record!.expired {
+				self.marketPrices { result in
+					let _ = self
+					switch result {
+					case let .success(value: value, cacheRecordID: _):
+						NCCache.sharedCache?.performBackgroundTask{ managedObjectContext in
+							if let objects = try? managedObjectContext.fetch(NSFetchRequest<NCCachePrice>(entityName: "Price")) {
+								for object in objects {
+									managedObjectContext.delete(object)
+								}
+							}
+							for price in value {
+								let record = NCCachePrice(entity: NSEntityDescription.entity(forEntityName: "Price", in: managedObjectContext)!, insertInto: managedObjectContext)
+								record.typeID = Int32(price.typeID)
+								record.price = price.averagePrice
+							}
+							if managedObjectContext.hasChanges {
+								try? managedObjectContext.save()
+							}
+							DispatchQueue.main.async {
+								completionHandler?(true)
+							}
+						}
+					default:
+						completionHandler?(false)
+					}
+				}
 			}
-		})
+			else {
+				DispatchQueue.main.async {
+					completionHandler?(false)
+				}
+			}
+		}
+	}
+	
+	func prices(typeIDs: [Int], completionHandler: @escaping ([Int: Double]) -> Void) {
+		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
+			let request = NSFetchRequest<NCCachePrice>(entityName: "Price")
+			request.predicate = NSPredicate(format: "typeID in %@", typeIDs)
+			var prices = [Int: Double]()
+			for price in (try? managedObjectContext.fetch(request)) ?? [] {
+				prices[Int(price.typeID)] = price.price
+			}
+			
+			let missing = typeIDs.filter {return prices[$0] == nil}
+			if missing.count > 0 {
+				self.updateMarketPrices { isUpdated in
+					if isUpdated {
+						NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
+							let request = NSFetchRequest<NCCachePrice>(entityName: "Price")
+							request.predicate = NSPredicate(format: "typeID in %@", missing)
+							for price in (try? managedObjectContext.fetch(request)) ?? [] {
+								prices[Int(price.typeID)] = price.price
+							}
+							DispatchQueue.main.async {
+								completionHandler(prices)
+							}
+
+						}
+					}
+					else {
+						completionHandler(prices)
+					}
+				}
+			}
+			else {
+				DispatchQueue.main.async {
+					completionHandler(prices)
+				}
+			}
+		}
 	}
 
-	func history(typeID: Int, regionID: Int, completionHandler: @escaping (NCResult<[ESMarketHistory]>) -> Void) {
+	func marketHistory(typeID: Int, regionID: Int, completionHandler: @escaping (NCResult<[ESMarketHistory]>) -> Void) {
 		loadFromCache(forKey: "ESMarketHistory.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.api.market.history(typeID: typeID, regionID: regionID) { result in
 				completion(result, 3600.0 * 12)
@@ -265,21 +332,23 @@ class NCDataManager {
 
 	//MARK: Private
 	
+	func marketPrices(completionHandler: @escaping (NCResult<[ESMarketPrice]>) -> Void) {
+		loadFromCache(forKey: "ESMarketPrices", account: nil, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+			self.api.market.prices { result in
+				completion(result, 3600.0 * 12)
+			}
+		})
+	}
+
+	
 	private func loadFromCache<T> (forKey key: String,
-	                           account: NCAccount?,
+	                           account: String?,
 	                           cachePolicy:URLRequest.CachePolicy,
 	                           completionHandler: @escaping (NCResult<T>) -> Void,
 	                           elseLoad loader: @escaping (@escaping NCLoaderCompletion<T>) -> Void) {
 		guard let cache = NCCache.sharedCache else {
 			completionHandler(.failure(NCDataManagerError.internalError))
 			return
-		}
-		let acc: String?
-		if let characterID = account?.characterID {
-			acc = String(characterID)
-		}
-		else {
-			acc = nil
 		}
 		
 		let progress = Progress(totalUnitCount: 1)
@@ -290,7 +359,7 @@ class NCDataManager {
 			loader { (result, cacheTime) in
 				switch (result) {
 				case let .success(value):
-					cache.store(value as? NSSecureCoding, forKey: key, account: acc, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
+					cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
 						completionHandler(.success(value: value, cacheRecordID: objectID))
 					}
 				case let .failure(error):
@@ -302,7 +371,7 @@ class NCDataManager {
 			
 		case .returnCacheDataElseLoad:
 			cache.performBackgroundTask { (managedObjectContext) in
-				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: acc)))?.last
+				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
 				let object = record?.data?.data as? T
 				
 				DispatchQueue.main.async {
@@ -315,7 +384,7 @@ class NCDataManager {
 						loader { (result, cacheTime) in
 							switch (result) {
 							case let .success(value):
-								cache.store(value as? NSSecureCoding, forKey: key, account: acc, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
+								cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
 									completionHandler(.success(value: value, cacheRecordID: objectID))
 								}
 							case let .failure(error):
@@ -330,7 +399,7 @@ class NCDataManager {
 			}
 		case .returnCacheDataDontLoad:
 			cache.performBackgroundTask { (managedObjectContext) in
-				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: acc)))?.last
+				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
 				let object = record?.data?.data as? T
 				
 				DispatchQueue.main.async {
@@ -345,7 +414,7 @@ class NCDataManager {
 			}
 		default:
 			cache.performBackgroundTask { (managedObjectContext) in
-				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: acc)))?.last
+				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
 				let object = record?.data?.data as? T
 				let expired = record?.expired ?? true
 				DispatchQueue.main.async {
@@ -357,7 +426,7 @@ class NCDataManager {
 								let _ = self
 								switch (result) {
 								case let .success(value):
-									cache.store(value as? NSSecureCoding, forKey: key, account: acc, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { _ in
+									cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { _ in
 										let _ = self
 									}
 								default:
@@ -371,7 +440,7 @@ class NCDataManager {
 						loader { (result, cacheTime) in
 							switch (result) {
 							case let .success(value):
-								cache.store(value as? NSSecureCoding, forKey: key, account: acc, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
+								cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
 									completionHandler(.success(value: value, cacheRecordID: objectID))
 									let _ = self
 								}
@@ -387,10 +456,6 @@ class NCDataManager {
 			}
 			break
 		}
-	}
-	
-	@objc private func didRefreshToken(_ note: Notification) {
-		
 	}
 	
 	/*

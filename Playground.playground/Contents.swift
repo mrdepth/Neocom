@@ -61,6 +61,7 @@ public class NCMarketHistoryView: UIView {
 		context?.translateBy(x: canvas.origin.x, y: canvas.origin.y)
 
 		canvas.origin = CGPoint.zero
+		
 		drawDonchianAndMedian(canvas: canvas)
 		drawVolume(canvas: canvas)
 		drawGrid(canvas: canvas)
@@ -81,8 +82,19 @@ public class NCMarketHistoryView: UIView {
 			volume.apply(transform)
 		}
 		
-		UIColor(number: 0x00d5ff44).setFill()
-		volume.fill()
+//		UIColor(number: 0x005566FF).setFill()
+//		volume.fill()
+		
+		let colorSpace = CGColorSpaceCreateDeviceRGB()
+		let colors = [UIColor(number: 0x005566FF).cgColor,
+		              UIColor(number: 0x00404dFF).cgColor,
+		              ] as CFArray
+		let locations: [CGFloat] = [0, 1]
+		let gradient = CGGradient(colorsSpace: colorSpace, colors: colors, locations: locations)
+		volume.addClip()
+		let bounds = volume.bounds
+		UIGraphicsGetCurrentContext()?.drawLinearGradient(gradient!, start: CGPoint(x: 0, y:bounds.minY), end: CGPoint(x: 0, y:bounds.maxY), options: [])
+
 	}
 	
 	func drawDonchianAndMedian(canvas: CGRect) {
@@ -103,9 +115,9 @@ public class NCMarketHistoryView: UIView {
 			median.apply(transform)
 		}
 		
-		UIColor(white: 1, alpha: 0.2).setFill()
+		UIColor(number: 0x404040FF).setFill()
 		donchian.fill()
-		UIColor(number: 0x00d5ff77).setStroke()
+		UIColor(number: 0x00b5d9FF).setStroke()
 		median.stroke()
 	}
 	

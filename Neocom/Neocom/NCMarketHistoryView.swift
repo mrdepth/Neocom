@@ -52,7 +52,7 @@ class NCMarketHistoryView: UIView {
 		}
 	}
 	
-	private static let gridSize = CGSize(width: 32, height: 32)
+	private static let gridSize = CGSize(width: 24, height: 24)
 	private static let ratio = 0.33 as CGFloat
 	
 	override func draw(_ rect: CGRect) {
@@ -90,7 +90,7 @@ class NCMarketHistoryView: UIView {
 			volume.apply(transform)
 		}
 		
-		UIColor(number: 0x00d5ff44).setFill()
+		UIColor(number: 0x005566FF).setFill()
 		volume.fill()
 	}
 	
@@ -113,13 +113,13 @@ class NCMarketHistoryView: UIView {
 			median.apply(transform)
 		}
 		
-		UIColor(white: 1, alpha: 0.1).setFill()
+		UIColor(number: 0x404040FF).setFill()
 		donchian.fill()
-		UIColor(number: 0x00d5ff77).setStroke()
+		UIColor(number: 0x00b5d9FF).setStroke()
 		median.stroke()
 	}
 	
-	private static let months = [NSLocalizedString("Jan", comment: ""), NSLocalizedString("Feb", comment: ""), NSLocalizedString("Mar", comment: ""), NSLocalizedString("Apr", comment: ""), NSLocalizedString("May", comment: ""), NSLocalizedString("Jun", comment: ""), NSLocalizedString("Jul", comment: ""), NSLocalizedString("Aug", comment: ""), NSLocalizedString("Sep", comment: ""), NSLocalizedString("Oct", comment: ""), NSLocalizedString("Nov", comment: ""), NSLocalizedString("Dec", comment: "")]
+	private static let months = [NSLocalizedString("JAN", comment: ""), NSLocalizedString("FEB", comment: ""), NSLocalizedString("MAR", comment: ""), NSLocalizedString("APR", comment: ""), NSLocalizedString("MAY", comment: ""), NSLocalizedString("JUN", comment: ""), NSLocalizedString("JUL", comment: ""), NSLocalizedString("AUG", comment: ""), NSLocalizedString("SEP", comment: ""), NSLocalizedString("OCT", comment: ""), NSLocalizedString("NOV", comment: ""), NSLocalizedString("DEC", comment: "")]
 	
 	
 	func drawGrid(canvas: CGRect) {
@@ -131,7 +131,7 @@ class NCMarketHistoryView: UIView {
 		var y = 0 as CGFloat
 		let grid = UIBezierPath()
 		
-		let attributes: [String: Any] = [NSFontAttributeName: UIFont.systemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor.white]
+		let attributes: [String: Any] = [NSFontAttributeName: UIFont.systemFont(ofSize: 10), NSForegroundColorAttributeName: UIColor.white]
 		let size = CGSize.init(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
 		
 		var donchian = donchianRange.upperBound

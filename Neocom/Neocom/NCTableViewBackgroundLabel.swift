@@ -15,6 +15,7 @@ class NCTableViewBackgroundLabel: NCLabel {
 		numberOfLines = 0
 		pointSize = 15
 		font = UIFont.systemFont(ofSize: fontSize(contentSizeCategory: UIApplication.shared.preferredContentSizeCategory))
+		textColor = UIColor.lightText
 	}
 	
 	convenience init(text: String) {
@@ -24,7 +25,7 @@ class NCTableViewBackgroundLabel: NCLabel {
 		paragraph.headIndent = 20
 		paragraph.tailIndent = -20
 		paragraph.alignment = NSTextAlignment.center
-
+		attributedText = NSAttributedString(string: text, attributes: [NSParagraphStyleAttributeName: paragraph])
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

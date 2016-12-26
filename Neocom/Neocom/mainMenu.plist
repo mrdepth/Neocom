@@ -109,7 +109,7 @@
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
-			<string>NCDatabaseCertificatesViewController</string>
+			<string>NCDatabaseCertificateGroupsViewController</string>
 			<key>title</key>
 			<string>Certificates</string>
 			<key>image</key>

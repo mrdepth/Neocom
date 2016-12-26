@@ -56,6 +56,17 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 		}
 	}
 	
+	@IBAction func unwindFromRegionPicker(segue: UIStoryboardSegue) {
+		guard let controller = segue.source as? NCRegionPickerViewController else {return}
+		guard let region = controller.region else {return}
+		navigationItem.rightBarButtonItem?.title = region.regionName
+		UserDefaults.standard.set(Int(region.regionID), forKey: UserDefaults.Key.NCMarketRegion)
+		treeController.content = nil
+		treeController.reloadData()
+		reload()
+		NotificationCenter.default.post(name: .NCMarketRegionChanged, object: region)
+	}
+	
 	//MARK: NCTreeControllerDelegate
 	
 	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
@@ -100,10 +111,14 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 			let buyRows = buy.map { return NCDatabaseMarketInfoRow(order: $0, location: locations[$0.locationID])}
 			let sections = [NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "Sellers", title: NSLocalizedString("SELLERS", comment: ""), attributedTitle: nil, children: sellRows),
 			                NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "Buyers", title: NSLocalizedString("BUYERS", comment: ""), attributedTitle: nil, children: buyRows)]
-			
-			self.treeController.content = sections
-			self.tableView.backgroundView = nil
-			self.treeController.reloadData()
+			if sellRows.isEmpty && buyRows.isEmpty {
+				self.tableView.backgroundView = NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
+			}
+			else {
+				self.treeController.content = sections
+				self.tableView.backgroundView = nil
+				self.treeController.reloadData()
+			}
 			completionHandler?()
 
 		}
@@ -112,7 +127,9 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 	private func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil ) {
 		let dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
 		let regionID = UserDefaults.standard.object(forKey: UserDefaults.Key.NCMarketRegion) as? Int ?? NCDBRegionID.theForge.rawValue
+		let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
 		
+		progress.progress.becomeCurrent(withPendingUnitCount: 1)
 		dataManager.marketOrders(typeID: Int(type!.typeID), regionID: regionID) { result in
 			switch result {
 			case let .success(value: value, cacheRecordID: recordID):
@@ -121,12 +138,20 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 					guard let value = record.data?.data as? [ESMarketOrder] else {return}
 					self?.process(value, dataManager: dataManager, completionHandler: nil)
 				}
-				self.process(value, dataManager: dataManager, completionHandler: completionHandler)
+				progress.progress.becomeCurrent(withPendingUnitCount: 1)
+				self.process(value, dataManager: dataManager) {
+					progress.finih()
+					completionHandler?()
+				}
+				progress.progress.resignCurrent()
 			case let .failure(error):
 				if self.treeController.content == nil {
 					self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
 				}
+				progress.finih()
+				completionHandler?()
 			}
 		}
+		progress.progress.resignCurrent()
 	}
 }

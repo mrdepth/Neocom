@@ -483,7 +483,7 @@ class NCDatabaseTypeInfo {
 				masteries[level] = array
 			}
 		}
-		let unclaimedIcon = NCDBEveIcon.eveIcons(managedObjectContext: type.managedObjectContext!)["79_01"]
+		let unclaimedIcon = NCDBEveIcon.eveIcons(managedObjectContext: type.managedObjectContext!)[NCDBEveIconName.certificateUnclaimed.rawValue]
 		var rows = [NCDatabaseTypeInfoRow]()
 		for (key, array) in masteries.sorted(by: {return $0.key < $1.key}) {
 			guard let level = array.first?.level else {continue}

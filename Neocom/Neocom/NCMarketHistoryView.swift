@@ -19,7 +19,7 @@ class NCMarketHistoryView: UIView {
 			if let donchian = donchian {
 				let bounds = donchian.bounds
 				let h = bounds.size.height / (1.0 - NCMarketHistoryView.ratio)
-				donchianRange = (Double(bounds.maxY - h))...Double(bounds.maxY)
+				donchianRange = h > 0 ? (Double(bounds.maxY - h))...Double(bounds.maxY) : 0...0
 			}
 			else {
 				donchianRange = nil
@@ -33,7 +33,7 @@ class NCMarketHistoryView: UIView {
 			if let volume = volume {
 				let bounds = volume.bounds
 				let h = bounds.size.height / NCMarketHistoryView.ratio
-				volumeRange = 0...Double(h)
+				volumeRange = h > 0 ? 0...Double(h) : 0...0
 			}
 			else {
 				volumeRange = nil
@@ -154,7 +154,7 @@ class NCMarketHistoryView: UIView {
 				donchian -= donchianStep
 			}
 			
-			if y >= canvas.height * (1.0 - NCMarketHistoryView.ratio) {
+			if y >= canvas.height * (1.0 - NCMarketHistoryView.ratio) && volume > 0 {
 				let s = NSAttributedString(string: NCUnitFormatter.localizedString(from: round(volume), unit: .none, style: .short), attributes: attributes)
 				var rect = s.boundingRect(with: size, options: [], context: nil)
 				rect.origin.x = canvas.maxX + 4

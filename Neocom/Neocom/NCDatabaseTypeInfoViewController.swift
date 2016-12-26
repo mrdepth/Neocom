@@ -41,6 +41,12 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 		else {
 			title = NSLocalizedString("Unknown", comment: "")
 		}
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(didChangeMarketRegion(_:)), name: .NCMarketRegionChanged, object: nil)
+	}
+	
+	deinit {
+		NotificationCenter.default.removeObserver(self)
 	}
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -89,6 +95,17 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 		default:
 			treeController.deselectItem(item, animated: true)
 			break
+		}
+	}
+	
+	// MARK: Private
+	
+	@objc private func didChangeMarketRegion(_ note: Notification) {
+		if let type = type {
+			NCDatabaseTypeInfo.typeInfo(type: type) { result in
+				self.treeController.content = result
+				self.treeController.reloadData()
+			}
 		}
 	}
 }

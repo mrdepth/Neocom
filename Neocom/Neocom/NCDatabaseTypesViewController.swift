@@ -32,7 +32,7 @@ class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdat
 		}
 	}
 	
-	public func reloadData() {
+	func reloadData() {
 		gate.perform {
 			NCDatabase.sharedDatabase?.performTaskAndWait({ (managedObjectContext) in
 				let request = NSFetchRequest<NSDictionary>(entityName: "InvType")

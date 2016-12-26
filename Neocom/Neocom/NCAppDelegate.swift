@@ -55,10 +55,15 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 			switch result {
 			case let .success(token):
 				NCStorage.sharedStorage?.performBackgroundTask({ (managedObjectContext) in
-					
 					let account = NCAccount(entity: NSEntityDescription.entity(forEntityName: "Account", in: managedObjectContext)!, insertInto: managedObjectContext)
 					account.token = token
 					account.uuid = UUID().uuidString
+					DispatchQueue.main.async {
+						guard let context = NCStorage.sharedStorage?.viewContext else {return}
+						let request = NSFetchRequest<NCAccount>(entityName: "Account")
+						guard let result = try? context.fetch(request), result.count == 1 else {return}
+						NCAccount.current = result.first
+					}
 				})
 				
 				break

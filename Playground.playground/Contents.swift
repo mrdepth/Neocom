@@ -3,8 +3,20 @@
 import UIKit
 import EVEAPI
 
+var a = [1,2,5,2,10001, 1000, 1000, 5,4,10,1000]
+
+let b = a.partition(by: {
+	return $0 >= 1000
+})
+
+a[b..<a.count]
+
+let i: Int? = 10
+
+i == 10
 
 
+/*
 
 var history = [ESMarketHistory]()
 
@@ -213,3 +225,4 @@ view.date = row.date
 view.setNeedsDisplay()
 view
 
+*/

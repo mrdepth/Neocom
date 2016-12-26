@@ -116,6 +116,12 @@ extension NCDBEveIcon {
 	class var defaultType: NCDBEveIcon {
 		return icon(file: "07_15")!
 	}
+	
+	class func icon(masteryLevel: Int?) -> NCDBEveIcon? {
+		guard let masteryLevel = masteryLevel else {return icon(file: "79_01")}
+		guard (0...4).contains(masteryLevel) else {return nil}
+		return icon(file: "07_\(masteryLevel + 2)")
+	}
 }
 
 extension NCDBDgmAttributeType {

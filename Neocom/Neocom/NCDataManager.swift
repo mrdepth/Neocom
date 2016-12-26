@@ -25,10 +25,10 @@ class NCDataManager {
 		case invalidResponse
 		case noCacheData
 	}
-	let account: String?
+	var account: String?
 	let token: OAuth2Token?
 	let cachePolicy: URLRequest.CachePolicy
-	var observer: NSObjectProtocol?
+	var observer: NCManagedObjectObserver?
 	lazy var api: ESAPI = {
 		if let token = self.token {
 			return ESAPI(token: token, clientID: ESClientID, secretKey: ESSecretKey, cachePolicy: self.cachePolicy)
@@ -39,15 +39,18 @@ class NCDataManager {
 	}()
 	
 	init(account: NCAccount?, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) {
-		if let account = account {
-			self.account = String(account.characterID)
-			self.token = account.token
+		self.cachePolicy = cachePolicy
+		if let acc = account {
+			/*observer = NCManagedObjectObserver(managedObjectID: acc.objectID) {[weak self] (_, _) in
+				self?.token = acc.token
+			}*/
+			self.account = String(acc.characterID)
+			self.token = acc.token
 		}
 		else {
 			self.account = nil
 			self.token = nil
 		}
-		self.cachePolicy = cachePolicy
 	}
 	
 	deinit {
@@ -407,6 +410,12 @@ class NCDataManager {
 						completionHandler(.success(value: value, cacheRecordID: objectID))
 					}
 				case let .failure(error):
+					/*switch error {
+					case ESError.forbidden:
+						break
+					default:
+						break
+					}*/
 					completionHandler(.failure(error))
 					break
 				}

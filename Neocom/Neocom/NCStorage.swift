@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import EVEAPI
 
 class NCStorage: NSObject {
 	private(set) lazy var managedObjectModel: NSManagedObjectModel = {
@@ -45,6 +46,12 @@ class NCStorage: NSObject {
 	static let sharedStorage: NCStorage? = NCStorage()
 	
 	override init() {
+		super.init()
+		NotificationCenter.default.addObserver(self, selector: #selector(oauth2TokenDidRefresh(_:)), name: .OAuth2TokenDidRefresh, object: nil)
+	}
+	
+	deinit {
+		NotificationCenter.default.removeObserver(self)
 	}
 	
 	func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
@@ -83,7 +90,24 @@ class NCStorage: NSObject {
 	
 	//MARK: Private
 	
-	func managedObjectContextDidSave(_ notification: NSNotification) {
-		
+	func managedObjectContextDidSave(_ notification: Notification) {
+		guard let context = notification.object as? NSManagedObjectContext,
+			viewContext !== context && context.persistentStoreCoordinator === viewContext.persistentStoreCoordinator
+		else {
+			return
+		}
+		viewContext.perform {
+			self.viewContext.mergeChanges(fromContextDidSave: notification)
+		}
+	}
+	
+	func oauth2TokenDidRefresh(_ notification: Notification) {
+		guard let token = notification.object as? OAuth2Token else {return}
+		performBackgroundTask { managedObjectContext in
+			let request = NSFetchRequest<NCAccount>(entityName: "Account")
+			request.predicate = NSPredicate(format: "refreshToken == %@", token.refreshToken)
+			guard let account = (try? managedObjectContext.fetch(request))?.last else {return}
+			account.token = token
+		}
 	}
 }

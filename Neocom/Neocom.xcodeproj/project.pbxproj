@@ -156,6 +156,8 @@
 		1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1261570C1E01D2F70041B817 /* NCSkillQueueViewController.swift */; };
 		1261570F1E01D3410041B817 /* NCManagedObjectObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1261570E1E01D3410041B817 /* NCManagedObjectObserver.swift */; };
 		128E61421E0A707200C15EEB /* NCDamageTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128E61411E0A707200C15EEB /* NCDamageTypeTableViewCell.swift */; };
+		12961DB81E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */; };
+		12961DBA1E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */; };
 		129E60EE1E0152A900B56EB8 /* NCAutoHeightLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */; };
 		129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */; };
 		129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */; };
@@ -388,6 +390,8 @@
 		1261570C1E01D2F70041B817 /* NCSkillQueueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillQueueViewController.swift; sourceTree = "<group>"; };
 		1261570E1E01D3410041B817 /* NCManagedObjectObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCManagedObjectObserver.swift; sourceTree = "<group>"; };
 		128E61411E0A707200C15EEB /* NCDamageTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamageTypeTableViewCell.swift; sourceTree = "<group>"; };
+		12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseMarketInfoViewController.swift; sourceTree = "<group>"; };
+		12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketInfoTableViewCell.swift; sourceTree = "<group>"; };
 		129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAutoHeightLabel.swift; sourceTree = "<group>"; };
 		129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTintImageView.swift; sourceTree = "<group>"; };
 		129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
@@ -447,6 +451,7 @@
 				1230A3161DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift */,
 				1230A3171DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift */,
 				1230A3151DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift */,
+				12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -675,6 +680,7 @@
 				1230A3391E001D7300627D92 /* NCAccountTableViewCell.swift */,
 				128E61411E0A707200C15EEB /* NCDamageTypeTableViewCell.swift */,
 				12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */,
+				12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1016,6 +1022,7 @@
 				1256BE5A1DF4742F00A2A24B /* NCTableViewCell.swift in Sources */,
 				126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */,
 				1256BE3D1DF1F01D00A2A24B /* NCNavigationController.swift in Sources */,
+				12961DB81E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift in Sources */,
 				12AC8DB01DEF5B0500561A7A /* NCDatabase.xcdatamodeld in Sources */,
 				1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */,
 				128E61421E0A707200C15EEB /* NCDamageTypeTableViewCell.swift in Sources */,
@@ -1040,6 +1047,7 @@
 				1256BE461DF1F0B100A2A24B /* NCTrainingQueue.swift in Sources */,
 				1243DC1F1E0BDE1700F00B9A /* NCMarketHistoryView.swift in Sources */,
 				1230A32A1DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift in Sources */,
+				12961DBA1E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift in Sources */,
 				126157061E0095380041B817 /* NCProgressHandler.swift in Sources */,
 				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
 				12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */,

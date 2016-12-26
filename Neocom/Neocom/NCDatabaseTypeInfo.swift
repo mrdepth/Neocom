@@ -107,10 +107,16 @@ class NCDatabaseTypeInfoRow: NCTreeRow {
 		cell.subtitleLabel?.text = subtitle
 		cell.iconView?.image = image
 		if let accessory = accessory {
+			cell.accessoryType = .none
 			cell.accessoryView = UIImageView(image: accessory)
+		}
+		else if segue != nil {
+			cell.accessoryView = nil
+			cell.accessoryType = .disclosureIndicator
 		}
 		else {
 			cell.accessoryView = nil
+			cell.accessoryType = .none
 		}
 	}
 
@@ -334,7 +340,7 @@ class NCDatabaseTypeInfo {
 			dataManager.prices(typeIDs: [typeID]) { result in
 				guard let price = result[typeID] else {return}
 				let subtitle = NCUnitFormatter.localizedString(from: price, unit: .isk, style: .full)
-				let row = NCDatabaseTypeInfoRow(title: NSLocalizedString("Price", comment: ""), subtitle: subtitle, image: UIImage(named: "wallet"), accessory: nil, object: nil)
+				let row = NCDatabaseTypeInfoRow(title: NSLocalizedString("Price", comment: ""), subtitle: subtitle, image: UIImage(named: "wallet"), accessory: nil, object: nil, segue: "NCDatabaseMarketInfoViewController")
 				marketSection?.mutableArrayValue(forKey: "children").insert(row, at: 0)
 			}
 		}

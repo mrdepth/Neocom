@@ -192,9 +192,13 @@ class NCDataManager {
 	func locations(ids: [Int64], completionHandler: @escaping ([Int64: NCLocation]) -> Void) {
 		var locations = [Int64: NCLocation]()
 		var missing = [Int64]()
+		var structures = [Int64]()
 		
 		for id in ids {
-			if (66000000 < id && id < 66014933) { //staStations
+			if id > Int64(Int32.max) {
+				structures.append(id)
+			}
+			else if (66000000 < id && id < 66014933) { //staStations
 				if let station = NCDatabase.sharedDatabase?.staStations[Int(id) - 6000001] {
 					locations[id] = NCLocation(station)
 				}
@@ -223,10 +227,13 @@ class NCDataManager {
 				missing.append(id)
 			}
 		}
+		let dispatchGroup = DispatchGroup()
 		if missing.count > 0 {
-			api.universe.names(ids: missing) { result in
+			dispatchGroup.enter()
+			self.universeNames(ids: missing) { result in
+				let _ = self
 				switch result {
-				case let .success(value):
+				case let .success(value: value, cacheRecordID: _):
 					for name in value {
 						if let location = NCLocation(name) {
 							locations[name.id] = location
@@ -235,15 +242,44 @@ class NCDataManager {
 				case .failure:
 					break
 				}
-				completionHandler(locations)
+				dispatchGroup.leave()
 			}
 		}
-		else {
-			DispatchQueue.main.async {
-				completionHandler(locations)
+		for id in structures {
+			dispatchGroup.enter()
+			self.universeStructure(structureID: id) { result in
+				let _ = self
+				switch result {
+				case let .success(value: value, cacheRecordID: _):
+					locations[id] = NCLocation(value)
+				case .failure:
+					break
+				}
+				dispatchGroup.leave()
 			}
+		}
+		
+		dispatchGroup.notify(queue: .main) {
+			completionHandler(locations)
 		}
 	}
+	
+	func universeNames(ids: [Int64], completionHandler: @escaping (NCResult<[ESName]>) -> Void) {
+		loadFromCache(forKey: "ESNames.\(ids.hashValue)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.api.universe.names(ids: ids) { result in
+				completion(result, 3600.0 * 24)
+			}
+		})
+	}
+
+	func universeStructure(structureID: Int64, completionHandler: @escaping (NCResult<ESStructure>) -> Void) {
+		loadFromCache(forKey: "ESStructure.\(structureID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.api.universe.structure(structureID: structureID) { result in
+				completion(result, 3600.0 * 24)
+			}
+		})
+	}
+
 	
 	func updateMarketPrices(completionHandler: ((_ isUpdated: Bool) -> Void)?) {
 		NCCache.sharedCache?.performBackgroundTask{ managedObjectContext in
@@ -325,6 +361,14 @@ class NCDataManager {
 	func marketHistory(typeID: Int, regionID: Int, completionHandler: @escaping (NCResult<[ESMarketHistory]>) -> Void) {
 		loadFromCache(forKey: "ESMarketHistory.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.api.market.history(typeID: typeID, regionID: regionID) { result in
+				completion(result, 3600.0 * 12)
+			}
+		})
+	}
+
+	func marketOrders(typeID: Int, regionID: Int, completionHandler: @escaping (NCResult<[ESMarketOrder]>) -> Void) {
+		loadFromCache(forKey: "ESMarketOrder.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.api.market.orders(typeID: typeID, regionID: regionID) { result in
 				completion(result, 3600.0 * 12)
 			}
 		})

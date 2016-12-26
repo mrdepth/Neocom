@@ -1,0 +1,132 @@
+//
+//  NCDatabaseMarketInfoViewController.swift
+//  Neocom
+//
+//  Created by Artem Shimanski on 25.12.16.
+//  Copyright © 2016 Artem Shimanski. All rights reserved.
+//
+
+import UIKit
+import EVEAPI
+
+class NCDatabaseMarketInfoRow: NCTreeRow {
+	let price: String
+	let location: NSAttributedString
+	let quantity: String
+	
+	init(order: ESMarketOrder, location: NCLocation?) {
+		self.price = NCUnitFormatter.localizedString(from: order.price, unit: .isk, style: .full)
+		self.location = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown location", comment: ""))
+		self.quantity = NCUnitFormatter.localizedString(from: Double(order.volumeRemain), unit: .none, style: .full)
+		super.init(cellIdentifier: "Cell")
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		let cell = cell as! NCMarketInfoTableViewCell;
+		cell.priceLabel.text = price
+		cell.locationLabel.attributedText = location
+		cell.quantityLabel.text = quantity
+	}
+}
+
+class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControllerDelegate {
+	var type: NCDBInvType?
+	@IBOutlet weak var treeController: NCTreeController!
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		tableView.estimatedRowHeight = tableView.rowHeight
+		tableView.rowHeight = UITableViewAutomaticDimension
+		treeController.childrenKeyPath = "children"
+		treeController.delegate = self
+		refreshControl = UIRefreshControl()
+		refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
+		
+		let regionID = UserDefaults.standard.object(forKey: UserDefaults.Key.NCMarketRegion) as? Int ?? NCDBRegionID.theForge.rawValue
+		if let region = NCDatabase.sharedDatabase?.mapRegions[regionID] {
+			navigationItem.rightBarButtonItem?.title = region.regionName
+		}
+
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		if treeController.content == nil {
+			reload()
+		}
+	}
+	
+	//MARK: NCTreeControllerDelegate
+	
+	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
+		return (item as! NCTreeNode).cellIdentifier
+	}
+	
+	func treeController(_ treeController: NCTreeController, configureCell cell: UITableViewCell, withItem item: AnyObject) {
+		(item as! NCTreeNode).configure(cell: cell)
+	}
+	
+	//MARK: Private
+	
+	@objc private func refresh() {
+		let progress = NCProgressHandler(totalUnitCount: 1)
+		progress.progress.becomeCurrent(withPendingUnitCount: 1)
+		reload(cachePolicy: .reloadIgnoringLocalCacheData) {
+			self.refreshControl?.endRefreshing()
+		}
+		progress.progress.resignCurrent()
+	}
+	
+	private var observer: NCManagedObjectObserver?
+	
+	private func process(_ value: [ESMarketOrder], dataManager: NCDataManager, completionHandler: (() -> Void)?) {
+		let locations = Set(value.map {return $0.locationID})
+		
+		dataManager.locations(ids: locations.sorted()) { locations in
+			var buy = [ESMarketOrder]()
+			var sell = [ESMarketOrder]()
+			for order in value {
+				if order.isBuyOrder {
+					buy.append(order)
+				}
+				else {
+					sell.append(order)
+				}
+			}
+			buy.sort {return $0.price > $1.price}
+			sell.sort {return $0.price < $1.price}
+			
+			let sellRows = sell.map { return NCDatabaseMarketInfoRow(order: $0, location: locations[$0.locationID])}
+			let buyRows = buy.map { return NCDatabaseMarketInfoRow(order: $0, location: locations[$0.locationID])}
+			let sections = [NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "Sellers", title: NSLocalizedString("SELLERS", comment: ""), attributedTitle: nil, children: sellRows),
+			                NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "Buyers", title: NSLocalizedString("BUYERS", comment: ""), attributedTitle: nil, children: buyRows)]
+			
+			self.treeController.content = sections
+			self.tableView.backgroundView = nil
+			self.treeController.reloadData()
+			completionHandler?()
+
+		}
+	}
+	
+	private func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil ) {
+		let dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
+		let regionID = UserDefaults.standard.object(forKey: UserDefaults.Key.NCMarketRegion) as? Int ?? NCDBRegionID.theForge.rawValue
+		
+		dataManager.marketOrders(typeID: Int(type!.typeID), regionID: regionID) { result in
+			switch result {
+			case let .success(value: value, cacheRecordID: recordID):
+				self.observer = NCManagedObjectObserver(managedObjectID: recordID) { [weak self] _, _ in
+					guard let record = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord else {return}
+					guard let value = record.data?.data as? [ESMarketOrder] else {return}
+					self?.process(value, dataManager: dataManager, completionHandler: nil)
+				}
+				self.process(value, dataManager: dataManager, completionHandler: completionHandler)
+			case let .failure(error):
+				if self.treeController.content == nil {
+					self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
+				}
+			}
+		}
+	}
+}

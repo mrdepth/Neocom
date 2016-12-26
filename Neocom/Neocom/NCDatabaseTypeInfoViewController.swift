@@ -56,6 +56,16 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 		}
 	}
 	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		switch segue.identifier {
+		case "NCDatabaseMarketInfoViewController"?:
+			let controller = segue.destination as! NCDatabaseMarketInfoViewController
+			controller.type = type
+		default:
+			break
+		}
+	}
+	
 	// MARK: NCTreeControllerDelegate
 	
 	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
@@ -68,6 +78,18 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 	
 	func treeController(_ treeController: NCTreeController, isItemExpandable item: AnyObject) -> Bool {
 		return (item as! NCTreeNode).canExpand
+	}
+	
+	func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) {
+		switch item {
+		case let item as NCDatabaseTypeInfoRow where item.segue != nil:
+			self.performSegue(withIdentifier: item.segue!, sender: cell)
+		case is NCDatabaseTypeMarketRow:
+			self.performSegue(withIdentifier: "NCDatabaseMarketInfoViewController", sender: cell)
+		default:
+			treeController.deselectItem(item, animated: true)
+			break
+		}
 	}
 }
 

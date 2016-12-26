@@ -65,6 +65,10 @@ class NCDatabase {
 		return NCDBMapSolarSystem.mapSolarSystems(managedObjectContext: self.viewContext)
 	}()
 
+	private(set) lazy var mapRegions: NCFetchedCollection<NCDBMapRegion> = {
+		return NCDBMapRegion.mapRegions(managedObjectContext: self.viewContext)
+	}()
+
 	private(set) lazy var staStations: NCFetchedCollection<NCDBStaStation> = {
 		return NCDBStaStation.staStations(managedObjectContext: self.viewContext)
 	}()
@@ -123,6 +127,12 @@ extension NCDBDgmAttributeType {
 extension NCDBMapSolarSystem {
 	class func mapSolarSystems(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBMapSolarSystem> {
 		return NCFetchedCollection<NCDBMapSolarSystem>(entityName: "MapSolarSystem", predicateFormat: "solarSystemID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+}
+
+extension NCDBMapRegion {
+	class func mapRegions(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBMapRegion> {
+		return NCFetchedCollection<NCDBMapRegion>(entityName: "MapRegion", predicateFormat: "regionID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }
 

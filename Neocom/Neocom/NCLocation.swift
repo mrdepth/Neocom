@@ -39,7 +39,17 @@ class NCLocation {
 	convenience init(_ mapDenormalize: NCDBMapDenormalize) {
 		self.init(mapDenormalize.solarSystem!)
 	}
-	
+
+	convenience init(_ structure: ESStructure) {
+		if let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[structure.solarSystemID] {
+			self.init(solarSystem)
+		}
+		else {
+			self.init()
+		}
+		self.stationName = structure.name
+	}
+
 	init?(_ name: ESName) {
 		switch name.category {
 		case .station:

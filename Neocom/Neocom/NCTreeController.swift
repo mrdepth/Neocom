@@ -198,7 +198,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 	@IBOutlet weak var tableView: UITableView?
 	
 	
-	public func reloadRows(items: [AnyObject], rowAnimation animation: UITableViewRowAnimation) {
+	func reloadRows(items: [AnyObject], rowAnimation animation: UITableViewRowAnimation) {
 		var indexPaths = [IndexPath]()
 		for item in items {
 			if let indexPath = indexPath(item: item) {
@@ -210,41 +210,47 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 		}
 	}
 
-	public func insertChildren(_ children: IndexSet, ofItem item: AnyObject?,  withRowAnimation animation: UITableViewRowAnimation) {
+	func insertChildren(_ children: IndexSet, ofItem item: AnyObject?,  withRowAnimation animation: UITableViewRowAnimation) {
 		let node = self.node(item: item)!
 
 		assert(self.content == nil && self.delegate!.treeController!(self, numberOfChildrenOfItem: item) == node.children.count + children.count)
 		insertChildren(children, ofNode: node, withRowAnimation: animation)
 	}
 
-	public func deleteChildren(_ children: IndexSet, ofItem item: AnyObject?,  withRowAnimation animation: UITableViewRowAnimation) {
+	func deleteChildren(_ children: IndexSet, ofItem item: AnyObject?,  withRowAnimation animation: UITableViewRowAnimation) {
 		let node = self.node(item: item)!
 		
 		assert(self.content == nil && self.delegate!.treeController!(self, numberOfChildrenOfItem: item) == node.children.count - children.count)
 		deleteChildren(children, ofNode: node, withRowAnimation: animation)
 	}
 	
-	public func itemExpanded(_ item: AnyObject) -> Bool {
+	func deselectItem(_ item: AnyObject, animated: Bool) {
+		guard let indexPath = indexPath(item: item) else {return}
+		tableView?.deselectRow(at: indexPath, animated: animated)
+	}
+
+	
+	func itemExpanded(_ item: AnyObject) -> Bool {
 		return node(item: item)!.expanded
 	}
 	
-	public func reloadData() {
+	func reloadData() {
 		_root = nil
 		_numberOfRows = nil
 		self.tableView?.reloadData()
 	}
 	
-	public func parentItem(forItem item: AnyObject) -> AnyObject? {
+	func parentItem(forItem item: AnyObject) -> AnyObject? {
 		return self.node(item: item)!.parent?.item
 	}
 
 	//MARK: UITableViewDataSource
 	
-	public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return self.numberOfRows
 	}
 	
-	public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let node = self.node(indexPath: indexPath)!
 		let cell = tableView.dequeueReusableCell(withIdentifier: self.delegate!.treeController(self, cellIdentifierForItem: node.item!), for: indexPath)
 		cell.indentationLevel = node.indentationLevel
@@ -257,11 +263,11 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 		return cell;
 	}
 	
-	public func numberOfSections(in tableView: UITableView) -> Int {
+	func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
 	
-	public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+	func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		if let node = self.node(indexPath: indexPath) {
 			return self.delegate?.treeController?(self, canEditChild: node.index, ofItem: node.item!) ?? false
 		}
@@ -270,7 +276,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 		}
 	}
 	
-	public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 		if let node = self.node(indexPath: indexPath) {
 			self.delegate?.treeController?(self, commitEditingStyle: editingStyle, forChild: node.index, ofItem: node.item!)
 		}
@@ -278,25 +284,25 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 	
 	//MARK: UITableViewDelegate
 	
-	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if let node = self.node(indexPath: indexPath), node.children.count > 0 && node.expandable {
-			var row = indexPath.row
-			var indexPaths = [IndexPath]()
-			
-			func enumerate(_ node: NCTreeControllerNode) {
-				for child in node.children {
-					row += 1
-					indexPaths.append(IndexPath(row: row, section: 0))
-					if child.expanded {
-						enumerate(child)
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if let node = self.node(indexPath: indexPath), let cell = tableView.cellForRow(at: indexPath) {
+			if node.children.count > 0 && node.expandable {
+				var row = indexPath.row
+				var indexPaths = [IndexPath]()
+				
+				func enumerate(_ node: NCTreeControllerNode) {
+					for child in node.children {
+						row += 1
+						indexPaths.append(IndexPath(row: row, section: 0))
+						if child.expanded {
+							enumerate(child)
+						}
 					}
 				}
-			}
-
-			enumerate(node)
-			node.expanded = !node.expanded;
-			
-			if let cell = tableView.cellForRow(at: indexPath) {
+				
+				enumerate(node)
+				node.expanded = !node.expanded;
+				
 				if let cell = cell as? NCExpandable {
 					cell.setExpanded(node.expanded, animated: true)
 				}
@@ -311,12 +317,12 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 					tableView.deleteRows(at: indexPaths, with: .fade)
 					self.delegate?.treeController?(self, didCollapseCell: cell, withItem: node.item!)
 				}
-				self.delegate?.treeController?(self, didSelectCell: cell, withItem: node.item!)
 			}
+			self.delegate?.treeController?(self, didSelectCell: cell, withItem: node.item!)
 		}
 	}
 	
-	public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+	func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
 		if let node = self.node(indexPath: indexPath) {
 			if let height = self.delegate?.treeController?(self, estimatedHeightForRowWithItem: node.item!) {
 				return height
@@ -333,7 +339,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 		}
 	}
 	
-	public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		if let node = self.node(indexPath: indexPath) {
 			if let height = self.delegate?.treeController?(self, heightForRowWithItem: node.item!) {
 				return height
@@ -347,7 +353,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 		}
 	}
 	
-	public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+	func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
 		if let node = self.node(indexPath: indexPath) {
 			if let editingStyle = self.delegate?.treeController?(self, editingStyleForChild: node.index, ofItem: node.item!) {
 				return editingStyle
@@ -356,7 +362,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 		return .none
 	}
 	
-	public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		if let node = self.node(indexPath: indexPath) {
 			node.estimatedHeight = cell.bounds.size.height
 		}

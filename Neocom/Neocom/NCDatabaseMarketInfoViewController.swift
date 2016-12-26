@@ -109,8 +109,8 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 			
 			let sellRows = sell.map { return NCDatabaseMarketInfoRow(order: $0, location: locations[$0.locationID])}
 			let buyRows = buy.map { return NCDatabaseMarketInfoRow(order: $0, location: locations[$0.locationID])}
-			let sections = [NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "Sellers", title: NSLocalizedString("SELLERS", comment: ""), attributedTitle: nil, children: sellRows),
-			                NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "Buyers", title: NSLocalizedString("BUYERS", comment: ""), attributedTitle: nil, children: buyRows)]
+			let sections = [NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Sellers", title: NSLocalizedString("SELLERS", comment: ""), attributedTitle: nil, children: sellRows),
+			                NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Buyers", title: NSLocalizedString("BUYERS", comment: ""), attributedTitle: nil, children: buyRows)]
 			if sellRows.isEmpty && buyRows.isEmpty {
 				self.tableView.backgroundView = NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
 			}

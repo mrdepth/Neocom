@@ -323,7 +323,7 @@ class NCDatabaseTypeInfo {
 		if type.marketGroup != nil {
 			let regionID = (UserDefaults.standard.value(forKey: UserDefaults.Key.NCMarketRegion) as? Int) ?? NCDBRegionID.theForge.rawValue
 			let typeID = Int(type.typeID)
-			marketSection = NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "Market", title: NSLocalizedString("Market", comment: "").uppercased(), children: [])
+			marketSection = NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Market", title: NSLocalizedString("Market", comment: "").uppercased(), children: [])
 			
 			let dataManager = NCDataManager(account: NCAccount.current)
 			
@@ -434,7 +434,7 @@ class NCDatabaseTypeInfo {
 							
 						}
 						if rows.count > 0 {
-							sections.append(NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: String(attributeCategory.categoryID), title: sectionTitle.uppercased(), attributedTitle: nil, children: rows, configurationHandler: nil))
+							sections.append(NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: String(attributeCategory.categoryID), title: sectionTitle.uppercased(), attributedTitle: nil, children: rows, configurationHandler: nil))
 						}
 					}
 				}
@@ -470,7 +470,7 @@ class NCDatabaseTypeInfo {
 				string: " (\(NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))",
 				attributes: [NSForegroundColorAttributeName: UIColor.white]))
 		}
-		return NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: String(NCDBAttributeCategoryID.requiredSkills.rawValue), title: nil, attributedTitle: title, children: rows, configurationHandler: nil)
+		return NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: String(NCDBAttributeCategoryID.requiredSkills.rawValue), title: nil, attributedTitle: title, children: rows, configurationHandler: nil)
 	}
 	
 	class func masteries(type: NCDBInvType, character: NCCharacter) -> NCTreeSection? {
@@ -483,7 +483,7 @@ class NCDatabaseTypeInfo {
 				masteries[level] = array
 			}
 		}
-		let unclaimedIcon = NCDBEveIcon.eveIcons(managedObjectContext: type.managedObjectContext!)[NCDBEveIconName.certificateUnclaimed.rawValue]
+		let unclaimedIcon = NCDBEveIcon.eveIcons(managedObjectContext: type.managedObjectContext!)[NCDBEveIcon.File.certificateUnclaimed.rawValue]
 		var rows = [NCDatabaseTypeInfoRow]()
 		for (key, array) in masteries.sorted(by: {return $0.key < $1.key}) {
 			guard let level = array.first?.level else {continue}
@@ -500,7 +500,7 @@ class NCDatabaseTypeInfo {
 		}
 		
 		if rows.count > 0 {
-			return NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "Mastery", title: NSLocalizedString("Mastery", comment: "").uppercased(), children: rows)
+			return NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Mastery", title: NSLocalizedString("Mastery", comment: "").uppercased(), children: rows)
 		}
 		else {
 			return nil

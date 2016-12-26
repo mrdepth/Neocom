@@ -32,6 +32,8 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		if let group = group, results == nil {
+			let progress = NCProgressHandler(totalUnitCount: 1)
+			progress.progress.becomeCurrent(withPendingUnitCount: 1)
 			NCCharacter.load(account: NCAccount.current) { result in
 				self.character = result
 				let request = NSFetchRequest<NCDBCertCertificate>(entityName: "CertCertificate")
@@ -42,7 +44,9 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 				self.results = results
 				self.rows = [:]
 				self.tableView.reloadData()
+				progress.finih()
 			}
+			progress.progress.resignCurrent()
 		}
 	}
 	
@@ -53,9 +57,9 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "NCDatabaseGroupsViewController" {
-			let controller = segue.destination as? NCDatabaseGroupsViewController
-			controller?.category = (sender as? NCDefaultTableViewCell)?.object as? NCDBInvCategory
+		if segue.identifier == "NCDatabaseCertificateInfoViewController" {
+			let controller = segue.destination as? NCDatabaseCertificateInfoViewController
+			controller?.certificate = (sender as? NCDefaultTableViewCell)?.object as? NCDBCertCertificate
 		}
 	}
 	
@@ -106,7 +110,7 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 				else {
 					subtitle = ""
 				}
-				image = level?.icon?.image?.image ?? NCDBEveIcon.eveIcons(managedObjectContext: managedObjectContext)[NCDBEveIconName.certificateUnclaimed.rawValue]?.image?.image
+				image = level?.icon?.image?.image ?? NCDBEveIcon.eveIcons(managedObjectContext: managedObjectContext)[NCDBEveIcon.File.certificateUnclaimed.rawValue]?.image?.image
 				
 				DispatchQueue.main.async {
 					row.image = image

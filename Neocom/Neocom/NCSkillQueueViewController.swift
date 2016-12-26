@@ -58,7 +58,7 @@ fileprivate class NCSkillQueueSection: NCTreeSection {
 			}
 		}
 
-		super.init(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "SkillQueue", children: children)
+		super.init(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "SkillQueue", children: children)
 
 		self.observer = NCManagedObjectObserver(managedObjectID: cacheRecord.objectID) { [weak self] (updated, deleted) in
 			guard let strongSelf = self else {return}
@@ -93,7 +93,7 @@ fileprivate class NCSkillQueueSection: NCTreeSection {
 	
 	override func configure(cell: UITableViewCell) {
 		let date = Date()
-		if let cell = cell as? NCTableViewHeaderCell,
+		if let cell = cell as? NCHeaderTableViewCell,
 			let skillQueue = (cacheRecord.data?.data as? [ESSkillQueueItem])?.filter({return $0.finishDate != nil && $0.finishDate! > date}) {
 			if let lastSkill = skillQueue.last, let endDate = lastSkill.finishDate {
 				cell.titleLabel?.text = String(format: NSLocalizedString("%@ (%d skills)", comment: ""),

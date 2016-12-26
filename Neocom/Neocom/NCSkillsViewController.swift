@@ -55,7 +55,7 @@ fileprivate class NCSkillSection: NCTreeSection {
 		//let title = "\(group.groupName?.uppercased() ?? "") (\(children.count))"
 		let title = "\(group.groupName?.uppercased() ?? "") (\(NCUnitFormatter.localizedString(from: Double(skillPoints), unit: .skillPoints, style: .full)))"
 		//let title = String(format: NSLocalizedString("%@ (%@)", comment: ""), group.groupName?.uppercased() ?? "", NCUnitFormatter.localizedString(from: Double(sp), unit: .skillPoints, style: .full))
-		super.init(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: String(group.groupID), title: title, children: children)
+		super.init(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: String(group.groupID), title: title, children: children)
 	}
 }
 

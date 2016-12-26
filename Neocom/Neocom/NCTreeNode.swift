@@ -39,10 +39,10 @@ class NCTreeSection: NCTreeNode {
 	}
 
 	override func configure(cell: UITableViewCell) {
-		if let title = title, let cell = cell as? NCTableViewHeaderCell {
+		if let title = title, let cell = cell as? NCHeaderTableViewCell {
 			cell.titleLabel?.text = title
 		}
-		else if let attributedTitle = attributedTitle, let cell = cell as? NCTableViewHeaderCell {
+		else if let attributedTitle = attributedTitle, let cell = cell as? NCHeaderTableViewCell {
 			cell.titleLabel?.attributedText = attributedTitle
 		}
 		else {

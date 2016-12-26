@@ -1,5 +1,5 @@
 //
-//  NCTableViewHeaderCell.swift
+//  NCHeaderTableViewCell.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 05.12.16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NCTableViewHeaderCell: UITableViewCell, NCExpandable {
+class NCHeaderTableViewCell: UITableViewCell, NCExpandable {
 	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var expandIcon: UIImageView?
 	

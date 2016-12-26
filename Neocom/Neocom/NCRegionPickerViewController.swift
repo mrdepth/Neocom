@@ -137,10 +137,10 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 					}
 				}
 				if knownSpace.count > 0 {
-					sections.append(NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "KnownSpace", title: NSLocalizedString("KNOWN SPACE", comment: ""), children: knownSpace))
+					sections.append(NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "KnownSpace", title: NSLocalizedString("KNOWN SPACE", comment: ""), children: knownSpace))
 				}
 				if whSpace.count > 0 {
-					sections.append(NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: "WHSpace", title: NSLocalizedString("WH SPACE", comment: ""), children: whSpace))
+					sections.append(NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "WHSpace", title: NSLocalizedString("WH SPACE", comment: ""), children: whSpace))
 				}
 				
 				DispatchQueue.main.async {

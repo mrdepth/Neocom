@@ -90,7 +90,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		tableView.tableBackgroundColor = UIColor.background
 		tableView.separatorColor = UIColor.separator
 		NCTableViewCell.appearance().backgroundColor = UIColor.cellBackground
-		NCTableViewHeaderCell.appearance().backgroundColor = UIColor.background
+		NCHeaderTableViewCell.appearance().backgroundColor = UIColor.background
 		NCBackgroundView.appearance().backgroundColor = UIColor.background
 		
 		let searchBar = UISearchBar.appearance(whenContainedInInstancesOf: [NCTableView.self])

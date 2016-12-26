@@ -49,6 +49,9 @@ class NCCharacter {
 			
 			let dispatchGroup = DispatchGroup()
 			
+			let progress = Progress(totalUnitCount: 2)
+			
+			progress.becomeCurrent(withPendingUnitCount: 1)
 			dispatchGroup.enter()
 			dataManager.skills { result in
 				switch result {
@@ -59,7 +62,9 @@ class NCCharacter {
 				}
 				dispatchGroup.leave()
 			}
+			progress.resignCurrent()
 			
+			progress.becomeCurrent(withPendingUnitCount: 1)
 			dispatchGroup.enter()
 			dataManager.skillQueue { result in
 				switch result {
@@ -70,6 +75,7 @@ class NCCharacter {
 				}
 				dispatchGroup.leave()
 			}
+			progress.resignCurrent()
 			
 			dispatchGroup.notify(queue: .global(qos: .background)) {
 				autoreleasepool {

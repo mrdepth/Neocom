@@ -114,7 +114,7 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 				if rows.count == 0 {
 					rows.append(NCJumpCloneRow(cellIdentifier: "PlaceholderCell", title: NSLocalizedString("NO IMPLANTS INSTALLED", comment: ""), subtitle: nil, image: nil))
 				}
-				sections.append(NCTreeSection(cellIdentifier: "NCTableViewHeaderCell", nodeIdentifier: nil, attributedTitle: locations[jumpClone.location.locationID]?.displayName.uppercased(), children: rows))
+				sections.append(NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: nil, attributedTitle: locations[jumpClone.location.locationID]?.displayName.uppercased(), children: rows))
 			}
 			
 			self.treeController.content = sections

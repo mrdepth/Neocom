@@ -78,9 +78,13 @@ enum NCDBRegionID: Int {
 	case theForge = 10000002
 }
 
-enum NCDBEveIconName: String {
-	case certificateUnclaimed = "79_01"
+extension NCDBEveIcon {
+	enum File: String {
+		case certificateUnclaimed = "79_01"
+	}
 }
+
+
 
 extension Notification.Name {
 	public static let NCCurrentAccountChanged = Notification.Name("NCCurrentAccountChanged")

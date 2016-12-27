@@ -14,7 +14,9 @@ extension NSAttributedString {
 	convenience init(skillName: String, level: Int) {
 		let s = NSMutableAttributedString(string: skillName, attributes: [NSForegroundColorAttributeName: UIColor.white])
 		let level = level.clamped(to: 0...5)
-		s.append(NSAttributedString(string: " \(NSAttributedString.roman[level])", attributes: [NSForegroundColorAttributeName: UIColor.caption]))
+		if level > 0 {
+			s.append(NSAttributedString(string: " \(NSAttributedString.roman[level])", attributes: [NSForegroundColorAttributeName: UIColor.caption]))
+		}
 		self.init(attributedString: s)
 	}
 	
@@ -32,7 +34,7 @@ extension NSAttributedString {
 						s.addAttribute(NSFontAttributeName, value: theFont, range: range)
 						hasFont = true
 					}
-				case "NSURL":
+				case NSLinkAttributeName:
 					if let fontDescriptor = font.fontDescriptor.withSymbolicTraits([.traitBold]) {
 						let theFont = UIFont(descriptor: fontDescriptor, size: font.pointSize)
 						s.addAttributes([NSFontAttributeName: theFont, NSForegroundColorAttributeName: UIColor.caption], range: range)

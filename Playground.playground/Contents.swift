@@ -11,9 +11,11 @@ let b = a.partition(by: {
 
 a[b..<a.count]
 
-let i: Int? = 10
+let i: Int? = nil
 
-i == 10
+i == 0
+
+"a".caseInsensitiveCompare("A") == .orderedSame
 
 
 /*

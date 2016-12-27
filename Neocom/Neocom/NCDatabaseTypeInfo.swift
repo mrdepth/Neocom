@@ -14,15 +14,13 @@ class NCDatabaseTypeInfoRow: NCTreeRow {
 	let title: String?
 	let subtitle: String?
 	let image: UIImage?
-	let accessory: UIImage?
 	let object: Any?
 	let segue: String?
 	
-	init(title: String?, subtitle: String?, image: UIImage?, accessory: UIImage?, object: Any?, segue: String? = nil) {
+	init(title: String?, subtitle: String?, image: UIImage?, object: Any?, segue: String? = nil) {
 		self.title = title
 		self.subtitle = subtitle
 		self.image = image
-		self.accessory = accessory
 		self.object = object
 		self.segue = segue
 		super.init(cellIdentifier: "Cell")
@@ -41,7 +39,6 @@ class NCDatabaseTypeInfoRow: NCTreeRow {
 		var title: String?
 		var subtitle: String?
 		var image: UIImage?
-		var accessory: UIImage?
 		var object: Any?
 		var segue: String?
 
@@ -55,6 +52,14 @@ class NCDatabaseTypeInfoRow: NCTreeRow {
 			image = attributeType.icon?.image?.image ?? group.icon?.image?.image
 			subtitle = group.groupName ?? ""
 			object = group.objectID
+			segue = "NCDatabaseTypesViewController"
+			break
+		case .typeID:
+			guard let type = NCDBInvType.invTypes(managedObjectContext: attribute.managedObjectContext!)[Int(attribute.value)] else {break}
+			image = type.icon?.image?.image ?? attributeType.icon?.image?.image
+			subtitle = type.typeName ?? ""
+			object = type.objectID
+			segue = "NCDatabaseTypeInfoViewController"
 			break
 		case .sizeClass:
 			switch Int(attribute.value) {
@@ -65,7 +70,7 @@ class NCDatabaseTypeInfoRow: NCTreeRow {
 			case 3:
 				subtitle = NSLocalizedString("Large", comment: "")
 			default:
-				subtitle = NSLocalizedString("XL", comment: "")
+				subtitle = NSLocalizedString("X-Large", comment: "")
 			}
 		case .bonus:
 			subtitle = "+" + NCUnitFormatter.localizedString(from: Double(attribute.value), unit: .none, style: .full)
@@ -98,19 +103,18 @@ class NCDatabaseTypeInfoRow: NCTreeRow {
 		if image == nil {
 			image = attributeType.icon?.image?.image
 		}
-		self.init(title: title, subtitle: subtitle, image: image, accessory: accessory, object: object, segue: segue)
+		self.init(title: title?.uppercased(), subtitle: subtitle, image: image, object: object, segue: segue)
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		let cell = cell as! NCDefaultTableViewCell
 		cell.titleLabel?.text = title
+		cell.titleLabel?.textColor = UIColor.caption
 		cell.subtitleLabel?.text = subtitle
+		cell.subtitleLabel?.textColor = UIColor.white
 		cell.iconView?.image = image
-		if let accessory = accessory {
-			cell.accessoryType = .none
-			cell.accessoryView = UIImageView(image: accessory)
-		}
-		else if segue != nil {
+		cell.object = object
+		if segue != nil {
 			cell.accessoryView = nil
 			cell.accessoryType = .disclosureIndicator
 		}
@@ -123,32 +127,27 @@ class NCDatabaseTypeInfoRow: NCTreeRow {
 }
 
 class NCDatabaseTypeSkillRow: NCTreeNode {
-	let title: String?
+	let title: NSAttributedString?
 	let image: UIImage?
-	let accessory: UIImage?
 	let object: Any?
 	let tintColor: UIColor?
 	let subtitle: String?
 	
 	init(skill: NCDBInvTypeRequiredSkill, character: NCCharacter, children: [NCTreeNode]?) {
-		self.title = "\(skill.skillType!.typeName!) - \(skill.skillLevel)"
-		//let eveIcons = NCDBEveIcon.eveIcons(managedObjectContext: skill.managedObjectContext!)
-		//self.image = eveIcons["50_11"]?.image?.image
-		self.accessory = nil
-		
+		self.title = NSAttributedString(skillName: skill.skillType!.typeName!, level: Int(skill.skillLevel))
+
 		let trainingTime: TimeInterval
 		
 		if let type = skill.skillType, let trainedSkill = character.skills[Int(type.typeID)], let trainedLevel = trainedSkill.level {
-			//self.image = eveIcons[trainedLevel >= Int(skill.skillLevel) ? "38_193" : "38_195"]?.image?.image
 			if trainedLevel >= Int(skill.skillLevel) {
 				self.image = UIImage(named: "skillRequirementMe")
-				self.tintColor = UIColor.caption
+				self.tintColor = UIColor.white
 				trainingTime = 0
 			}
 			else {
 				trainingTime = NCTrainingSkill(type: type, skill: trainedSkill, level: Int(skill.skillLevel))?.trainingTime(characterAttributes: character.attributes) ?? 0
 				self.image = UIImage(named: "skillRequirementNotMe")
-				self.tintColor = UIColor.lightGray
+				self.tintColor = UIColor.lightText
 			}
 		}
 		else {
@@ -158,11 +157,10 @@ class NCDatabaseTypeSkillRow: NCTreeNode {
 			else {
 				trainingTime = 0
 			}
-			//self.image = eveIcons["38_194"]?.image?.image
 			self.image = UIImage(named: "skillRequirementNotInjected")
-			self.tintColor = UIColor.lightGray
+			self.tintColor = UIColor.lightText
 		}
-		self.object = skill.skillType
+		self.object = skill.skillType?.objectID
 		self.subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
 		
 		super.init(cellIdentifier: "Cell", nodeIdentifier: nil, children: children)
@@ -170,16 +168,13 @@ class NCDatabaseTypeSkillRow: NCTreeNode {
 	
 	override func configure(cell: UITableViewCell) {
 		let cell = cell as! NCDefaultTableViewCell
-		cell.titleLabel?.text = title
+		cell.titleLabel?.attributedText = title
 		cell.subtitleLabel?.text = subtitle
+		cell.subtitleLabel?.textColor = self.tintColor
 		cell.iconView?.image = image
 		cell.iconView?.tintColor = self.tintColor
-		if let accessory = accessory {
-			cell.accessoryView = UIImageView(image: accessory)
-		}
-		else {
-			cell.accessoryView = nil
-		}
+		cell.object = object
+		cell.accessoryType = .disclosureIndicator
 	}
 	
 	override var canExpand: Bool {
@@ -259,8 +254,6 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 				v = min(v.lowerBound, item.volume)...max(v.upperBound, item.volume)
 				p = min(p.lowerBound, lowest.lowest)...max(p.upperBound, highest.highest)
 			}
-			
-			donchian.close()
 			DispatchQueue.main.async {
 				self.volume = volume
 				self.median = avg
@@ -340,7 +333,7 @@ class NCDatabaseTypeInfo {
 			dataManager.prices(typeIDs: [typeID]) { result in
 				guard let price = result[typeID] else {return}
 				let subtitle = NCUnitFormatter.localizedString(from: price, unit: .isk, style: .full)
-				let row = NCDatabaseTypeInfoRow(title: NSLocalizedString("Price", comment: ""), subtitle: subtitle, image: UIImage(named: "wallet"), accessory: nil, object: nil, segue: "NCDatabaseMarketInfoViewController")
+				let row = NCDatabaseTypeInfoRow(title: NSLocalizedString("Price", comment: ""), subtitle: subtitle, image: UIImage(named: "wallet"), object: nil, segue: "NCDatabaseMarketInfoViewController")
 				marketSection?.mutableArrayValue(forKey: "children").insert(row, at: 0)
 			}
 		}
@@ -422,7 +415,7 @@ class NCDatabaseTypeInfo {
 								let baseWarpSpeed = type.allAttributes[NCDBAttributeID.baseWarpSpeed.rawValue]?.value ?? 1.0
 								var s = NCUnitFormatter.localizedString(from: Double(attribute.value * baseWarpSpeed), unit: .none, style: .full)
 								s += " " + NSLocalizedString("AU/sec", comment: "")
-								rows.append(NCDatabaseTypeInfoRow(title: NSLocalizedString("Warp Speed", comment: ""), subtitle: s, image: attributeType.icon?.image?.image, accessory: nil, object: nil))
+								rows.append(NCDatabaseTypeInfoRow(title: NSLocalizedString("Warp Speed", comment: ""), subtitle: s, image: attributeType.icon?.image?.image, object: nil))
 							default:
 								guard let row = NCDatabaseTypeInfoRow(attribute: attribute) else {continue}
 								rows.append(row)
@@ -492,10 +485,10 @@ class NCDatabaseTypeInfo {
 				trainingQueue.add(mastery: mastery)
 			}
 			let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
-			let title = NSLocalizedString("Mastery", comment: "") + " \(key + 1)"
+			let title = NSLocalizedString("LEVEL", comment: "") + " \(String(romanNumber: key + 1))"
 			let subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
 			let icon = trainingTime > 0 ? unclaimedIcon : level.icon
-			let row = NCDatabaseTypeInfoRow(title: title, subtitle: subtitle, image: icon?.image?.image, accessory: nil, object: level)
+			let row = NCDatabaseTypeInfoRow(title: title, subtitle: subtitle, image: icon?.image?.image, object: level)
 			rows.append(row)
 		}
 		

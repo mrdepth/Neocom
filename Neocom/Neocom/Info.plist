@@ -28,6 +28,16 @@
 				<string>neocom</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLName</key>
+			<string>com.shimanski.neocom.scheme. showinfo</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>showinfo</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>

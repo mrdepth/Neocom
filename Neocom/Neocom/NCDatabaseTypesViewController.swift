@@ -114,7 +114,7 @@ class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdat
 	
 	//MARK: UITableViewDelegate
 	
-	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	/*override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if let object = results?.object(at: indexPath) {
 			let controller = self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypeInfoViewController") as! NCDatabaseTypeInfoViewController
 			controller.type = NCDatabase.sharedDatabase?.invTypes[object["typeID"] as! Int]
@@ -125,7 +125,7 @@ class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdat
 				show(controller, sender: self)
 			}
 		}
-	}
+	}*/
 	
 	//MARK: UISearchResultsUpdating
 	

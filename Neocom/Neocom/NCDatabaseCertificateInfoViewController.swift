@@ -10,27 +10,28 @@ import UIKit
 import CoreData
 
 class NCDatabaseCertSkillRow: NCTreeRow {
-	let title: String?
+	//let title: String?
+	let title: NSAttributedString?
 	let image: UIImage?
 	let object: Any?
 	let tintColor: UIColor?
 	let subtitle: String?
 	
 	init(skill: NCDBCertSkill, character: NCCharacter) {
-		self.title = "\(skill.type!.typeName!) - \(skill.skillLevel)"
+		self.title = NSAttributedString(skillName: skill.type!.typeName!, level: Int(skill.skillLevel))
 		
 		let trainingTime: TimeInterval
 		
 		if let type = skill.type, let trainedSkill = character.skills[Int(type.typeID)], let trainedLevel = trainedSkill.level {
 			if trainedLevel >= Int(skill.skillLevel) {
 				self.image = UIImage(named: "skillRequirementMe")
-				self.tintColor = UIColor.caption
+				self.tintColor = UIColor.white
 				trainingTime = 0
 			}
 			else {
 				trainingTime = NCTrainingSkill(type: type, skill: trainedSkill, level: Int(skill.skillLevel))?.trainingTime(characterAttributes: character.attributes) ?? 0
 				self.image = UIImage(named: "skillRequirementNotMe")
-				self.tintColor = UIColor.lightGray
+				self.tintColor = UIColor.lightText
 			}
 		}
 		else {
@@ -42,9 +43,9 @@ class NCDatabaseCertSkillRow: NCTreeRow {
 			}
 			//self.image = eveIcons["38_194"]?.image?.image
 			self.image = UIImage(named: "skillRequirementNotInjected")
-			self.tintColor = UIColor.lightGray
+			self.tintColor = UIColor.lightText
 		}
-		self.object = skill.type
+		self.object = skill.type?.objectID
 		self.subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
 		
 		super.init(cellIdentifier: "Cell")
@@ -52,10 +53,12 @@ class NCDatabaseCertSkillRow: NCTreeRow {
 	
 	override func configure(cell: UITableViewCell) {
 		let cell = cell as! NCDefaultTableViewCell
-		cell.titleLabel?.text = title
+		cell.titleLabel?.attributedText = title
 		cell.subtitleLabel?.text = subtitle
+		cell.subtitleLabel?.textColor = self.tintColor
 		cell.iconView?.image = image
 		cell.iconView?.tintColor = self.tintColor
+		cell.object = object
 	}
 	
 	override var canExpand: Bool {
@@ -76,7 +79,7 @@ class NCDatabaseCertTypeRow: NCTreeRow {
 		trainingQueue.addRequiredSkills(for: type)
 		let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
 		self.image = type.icon?.image?.image
-		self.object = type
+		self.object = type.objectID
 		self.subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
 		super.init(cellIdentifier: "Cell")
 	}
@@ -84,8 +87,11 @@ class NCDatabaseCertTypeRow: NCTreeRow {
 	override func configure(cell: UITableViewCell) {
 		let cell = cell as! NCDefaultTableViewCell
 		cell.titleLabel?.text = title
+		cell.titleLabel?.textColor = UIColor.white
 		cell.subtitleLabel?.text = subtitle
+		cell.subtitleLabel?.textColor = UIColor.lightText
 		cell.iconView?.image = image ?? NCDBEveIcon.defaultType.image?.image
+		cell.object = object
 	}
 	
 	override var canExpand: Bool {
@@ -155,14 +161,15 @@ class NCDatabaseCertificateInfoViewController: UITableViewController, NCTreeCont
 							let row = NCDatabaseCertSkillRow(skill: skill, character: character)
 							rows.append(row)
 						}
-						
-						masteries.append(NCDatabaseCertMasterySection(mastery: mastery, character: character, children: rows))
+						let section = NCDatabaseCertMasterySection(mastery: mastery, character: character, children: rows)
+						section.expanded = section.trainingTime > 0
+						masteries.append(section)
 					}
 					progress.progress.completedUnitCount += 1
 					
 					let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 					request.predicate = NSPredicate(format: "published = TRUE AND ANY certificates == %@", certificate)
-					request.sortDescriptors = [NSSortDescriptor(key: "group.groupName", ascending: true)]
+					request.sortDescriptors = [NSSortDescriptor(key: "group.groupName", ascending: true), NSSortDescriptor(key: "typeName", ascending: true)]
 					let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: "group.groupName", cacheName: nil)
 					try? controller.performFetch()
 					
@@ -175,7 +182,8 @@ class NCDatabaseCertificateInfoViewController: UITableViewController, NCTreeCont
 							rows.append(row)
 						}
 						let title = "\(section.name) (\(rows.count))"
-						let section = NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: nil, title: title, children: rows)
+						let section = NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: nil, title: title.uppercased(), children: rows)
+						section.expanded = false
 						types.append(section)
 					}
 					progress.progress.completedUnitCount += 1
@@ -184,6 +192,7 @@ class NCDatabaseCertificateInfoViewController: UITableViewController, NCTreeCont
 						self.results = [masteries, types]
 						self.treeController.content = self.results?[self.segmentedControl.selectedSegmentIndex]
 						self.treeController.reloadData()
+						self.tableView.backgroundView = self.results?[self.segmentedControl.selectedSegmentIndex].count == 0 ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
 						progress.finih()
 					}
 				}
@@ -208,6 +217,15 @@ class NCDatabaseCertificateInfoViewController: UITableViewController, NCTreeCont
 	@IBAction func onChangeSection(_ sender: Any) {
 		self.treeController.content = results?[segmentedControl.selectedSegmentIndex]
 		self.treeController.reloadData()
+		self.tableView.backgroundView = results?[segmentedControl.selectedSegmentIndex].count == 0 ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == "NCDatabaseTypeInfoViewController" {
+			let controller = segue.destination as? NCDatabaseTypeInfoViewController
+			let object = (sender as! NCDefaultTableViewCell).object as! NSManagedObjectID
+			controller?.type = (try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object)) as? NCDBInvType
+		}
 	}
 	
 	// MARK: NCTreeControllerDelegate
@@ -218,5 +236,17 @@ class NCDatabaseCertificateInfoViewController: UITableViewController, NCTreeCont
 	
 	func treeController(_ treeController: NCTreeController, configureCell cell: UITableViewCell, withItem item: AnyObject) {
 		(item as! NCTreeNode).configure(cell: cell)
+	}
+	
+	func treeController(_ treeController: NCTreeController, isItemExpanded item: AnyObject) -> Bool {
+		return (item as? NCTreeSection)?.expanded ?? true
+	}
+	
+	func treeController(_ treeController: NCTreeController, didExpandCell cell: UITableViewCell, withItem item: AnyObject) {
+		(item as? NCTreeSection)?.expanded = true
+	}
+	
+	func treeController(_ treeController: NCTreeController, didCollapseCell cell: UITableViewCell, withItem item: AnyObject) {
+		(item as? NCTreeSection)?.expanded = false
 	}
 }

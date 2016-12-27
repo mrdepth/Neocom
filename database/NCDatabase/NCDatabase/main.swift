@@ -67,7 +67,7 @@ extension NSAttributedString {
 		for result in expression.matches(in: s.string, options: [], range: NSMakeRange(0, s.length)).reversed() {
 			let replace = s.attributedSubstring(from: result.rangeAt(3)).mutableCopy() as! NSMutableAttributedString
 			let url = URL(string: s.attributedSubstring(from: result.rangeAt(2)).string.replacingOccurrences(of: " ", with: ""))
-			replace.addAttribute("NSURL", value: url!, range: NSMakeRange(0, replace.length))
+			replace.addAttribute(NSLinkAttributeName, value: url!, range: NSMakeRange(0, replace.length))
 			s.replaceCharacters(in: result.rangeAt(0), with: replace)
 		}
 		
@@ -138,7 +138,6 @@ extension String {
 class SQLiteDB {
 	var db: OpaquePointer?
 	init(filePath: String) throws {
-		print(filePath)
 		if sqlite3_open_v2(filePath, &db, SQLITE_OPEN_READONLY, nil) != SQLITE_OK {
 			exit(EXIT_FAILURE)
 		}

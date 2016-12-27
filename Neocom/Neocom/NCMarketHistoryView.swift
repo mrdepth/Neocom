@@ -113,7 +113,7 @@ class NCMarketHistoryView: UIView {
 			median.apply(transform)
 		}
 		
-		UIColor(number: 0x404040FF).setFill()
+		UIColor(number: 0x333333FF).setFill()
 		donchian.fill()
 		UIColor(number: 0x00b5d9FF).setStroke()
 		median.stroke()

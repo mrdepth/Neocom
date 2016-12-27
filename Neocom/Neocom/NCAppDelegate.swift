@@ -73,6 +73,28 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		}) {
 			return true
 		}
+		else if let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+			switch components.scheme?.lowercased() {
+			case "showinfo"?:
+				guard let typeID = Int(components.path), let type = NCDatabase.sharedDatabase?.invTypes[typeID] else {return false}
+				var controller = (window?.rootViewController as? UISplitViewController)?.viewControllers.last
+				while controller?.presentedViewController != nil {
+					controller = controller?.presentedViewController
+				}
+				guard !(controller is UIAlertController) else {return false}
+				guard let databaseTypeInfoViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NCDatabaseTypeInfoViewController") as? NCDatabaseTypeInfoViewController else {return false}
+				databaseTypeInfoViewController.type = type
+				while let child = (controller as? UINavigationController)?.topViewController as? UINavigationController {
+					controller = child
+				}
+				if let navigationController = controller as? UINavigationController {
+					navigationController.pushViewController(databaseTypeInfoViewController, animated: true)
+				}
+				return true
+			default:
+				return false
+			}
+		}
 		else {
 			return false
 		}
@@ -86,6 +108,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		navigationBar.setBackgroundImage(UIImage.image(color: UIColor.background), for: UIBarMetrics.default)
 		navigationBar.shadowImage = UIImage.image(color: UIColor.background)
 		navigationBar.barTintColor = UIColor.background
+		navigationBar.tintColor = UIColor.white
 		let tableView = NCTableView.appearance()
 		tableView.tableBackgroundColor = UIColor.background
 		tableView.separatorColor = UIColor.separator

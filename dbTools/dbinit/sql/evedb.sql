@@ -60,6 +60,7 @@ UPDATE eveDB.dgmAttributeTypes SET iconID=1393 WHERE attributeID=976;
 UPDATE eveDB.dgmAttributeTypes SET iconID=1394 WHERE attributeID=977;
 
 UPDATE eveDB.dgmAttributeTypes SET published = 0 WHERE attributeName like "requiredSkill%Level";
+UPDATE eveDB.dgmAttributeTypes SET iconID = 3759 WHERE attributeID = 600;
 
 UPDATE eveDB.invTypes SET published = 0 WHERE typeName like "%QA%";
 

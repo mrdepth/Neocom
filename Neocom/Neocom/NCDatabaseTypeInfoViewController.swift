@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerDelegate {
 	var type: NCDBInvType?
@@ -37,6 +38,38 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 				self.treeController.content = result
 				self.treeController.reloadData()
 			}
+			NCDataManager().image(typeID: Int(type.typeID), dimension: 512) { result in
+				switch result {
+				case let .success(value: value, cacheRecordID: _):
+					let to = self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypeInfoHeaderViewControllerLarge") as! NCDatabaseTypeInfoHeaderViewController
+					to.type = type
+					to.image = value
+					var frame = CGRect.zero
+					frame.size = to.view.systemLayoutSizeFitting(CGSize(width: self.view.bounds.size.width, height:0), withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+					to.view.frame = frame
+					to.view.layoutIfNeeded()
+
+					let from = self.headerViewController!
+					
+					from.willMove(toParentViewController: nil)
+					self.addChildViewController(to)
+					to.view.alpha = 0.0;
+					self.transition(from: from, to: to, duration: 0.25, options: [], animations: {
+						from.view.alpha = 0.0;
+						to.view.alpha = 1.0;
+						self.tableView?.tableHeaderView?.frame = frame;
+						self.tableView?.tableHeaderView = self.tableView?.tableHeaderView;
+					}, completion: { (fihisned) in
+						from.removeFromParentViewController()
+						to.didMove(toParentViewController: self)
+					})
+
+					
+				default:
+					break
+				}
+			}
+			
 		}
 		else {
 			title = NSLocalizedString("Unknown", comment: "")
@@ -67,6 +100,10 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 		case "NCDatabaseMarketInfoViewController"?:
 			let controller = segue.destination as! NCDatabaseMarketInfoViewController
 			controller.type = type
+		case "NCDatabaseTypeInfoViewController"?:
+			let controller = segue.destination as? NCDatabaseTypeInfoViewController
+			let object = (sender as! NCDefaultTableViewCell).object as! NSManagedObjectID
+			controller?.type = (try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object)) as? NCDBInvType
 		default:
 			break
 		}
@@ -88,10 +125,24 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 	
 	func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) {
 		switch item {
+		case is NCDatabaseTypeMarketRow, 
+		     is NCDatabaseTypeInfoRow where (item as? NCDatabaseTypeInfoRow)?.segue == "NCDatabaseMarketInfoViewController":
+			let controller = self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseMarketInfoViewController") as! NCDatabaseMarketInfoViewController
+			controller.type = type
+			self.show(controller, sender: cell)
 		case let item as NCDatabaseTypeInfoRow where item.segue != nil:
-			self.performSegue(withIdentifier: item.segue!, sender: cell)
+			let controller = self.storyboard?.instantiateViewController(withIdentifier: item.segue!)
+			switch item.segue! {
+			case "NCDatabaseMarketInfoViewController":
+				(controller as! NCDatabaseMarketInfoViewController).type = type
+			case "NCDatabaseTypeInfoViewController":
+				let object = item.object as! NSManagedObjectID
+				(controller as! NCDatabaseTypeInfoViewController).type = try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object) as! NCDBInvType
+			default:
+				break
+			}
+			self.show(controller!, sender: cell)
 		case is NCDatabaseTypeMarketRow:
-			self.performSegue(withIdentifier: "NCDatabaseMarketInfoViewController", sender: cell)
 		default:
 			treeController.deselectItem(item, animated: true)
 			break
@@ -108,6 +159,7 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 			}
 		}
 	}
+	
 }
 
 

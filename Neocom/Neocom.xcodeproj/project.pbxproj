@@ -195,6 +195,7 @@
 		12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */; };
 		12E2674D1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */; };
 		12E2674F1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */; };
+		12E267C01E12A89F00A13442 /* NCAdaptiveSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E267BF1E12A89F00A13442 /* NCAdaptiveSegue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -437,6 +438,7 @@
 		12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRegionPickerViewController.swift; sourceTree = "<group>"; };
 		12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateGroupsViewController.swift; sourceTree = "<group>"; };
 		12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificatesViewController.swift; sourceTree = "<group>"; };
+		12E267BF1E12A89F00A13442 /* NCAdaptiveSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAdaptiveSegue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -773,6 +775,7 @@
 				126157051E0095380041B817 /* NCProgressHandler.swift */,
 				129E60F71E0196AD00B56EB8 /* UIColor+NC.swift */,
 				1261570E1E01D3410041B817 /* NCManagedObjectObserver.swift */,
+				12E267BF1E12A89F00A13442 /* NCAdaptiveSegue.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1026,6 +1029,7 @@
 			files = (
 				1227B81E1E096A4F00C816A0 /* NCDamageTypeLabel.swift in Sources */,
 				12AC8DCA1DF08AE800561A7A /* NCStorage.xcdatamodeld in Sources */,
+				12E267C01E12A89F00A13442 /* NCAdaptiveSegue.swift in Sources */,
 				129E60F81E0196AD00B56EB8 /* UIColor+NC.swift in Sources */,
 				1256BE501DF465BC00A2A24B /* NCSlideDownAnimationController.swift in Sources */,
 				1230A3321DFFE2CF00627D92 /* NCTreeNode.swift in Sources */,

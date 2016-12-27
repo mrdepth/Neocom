@@ -9,11 +9,10 @@
 import UIKit
 import CoreData
 
-fileprivate struct NCDatabaseCertificateRow {
-	var isLoading: Bool = false
-	var subtitle: String?
-	var image: UIImage?
-	var certificate: NCDBCertCertificate?
+fileprivate class NCDatabaseCertificateRow: NSObject {
+	dynamic var subtitle: String?
+	dynamic var image: UIImage?
+	dynamic var certificate: NCDBCertCertificate?
 }
 
 class NCDatabaseCertificatesViewController: UITableViewController {
@@ -32,18 +31,23 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		if let group = group, results == nil {
+			let request = NSFetchRequest<NCDBCertCertificate>(entityName: "CertCertificate")
+			request.predicate = NSPredicate(format: "group == %@", group)
+			request.sortDescriptors = [NSSortDescriptor(key: "certificateName", ascending: true)]
+			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+			try? results.performFetch()
+			self.results = results
+			self.tableView.reloadData()
+
+			
 			let progress = NCProgressHandler(totalUnitCount: 1)
 			progress.progress.becomeCurrent(withPendingUnitCount: 1)
 			NCCharacter.load(account: NCAccount.current) { result in
-				self.character = result
-				let request = NSFetchRequest<NCDBCertCertificate>(entityName: "CertCertificate")
-				request.predicate = NSPredicate(format: "group == %@", group)
-				request.sortDescriptors = [NSSortDescriptor(key: "certificateName", ascending: true)]
-				let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-				try? results.performFetch()
-				self.results = results
 				self.rows = [:]
-				self.tableView.reloadData()
+				self.character = result
+				if let indexPaths = self.tableView.indexPathsForVisibleRows {
+					self.tableView.reloadRows(at: indexPaths, with: .none)
+				}
 				progress.finih()
 			}
 			progress.progress.resignCurrent()
@@ -80,15 +84,19 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 		cell.object = object
 		cell.titleLabel?.text = object?.certificateName
 		cell.iconView?.image = nil
-		cell.subtitleLabel?.text = " "
+		cell.subtitleLabel?.text = nil
 		
-		if let row = rows?[indexPath] {
-			cell.iconView?.image = row.image
-			cell.subtitleLabel?.text = row.subtitle
+		guard let character = character else {
+			cell.iconView?.image = NCDatabase.sharedDatabase?.eveIcons[NCDBEveIcon.File.certificateUnclaimed.rawValue]?.image?.image
+			return cell
 		}
-		else if let character = self.character {
-			var row = NCDatabaseCertificateRow()
-			row.isLoading = true
+		
+		var row = rows?[indexPath]
+		if row == nil {
+			row = NCDatabaseCertificateRow()
+			row?.image = NCDatabase.sharedDatabase?.eveIcons[NCDBEveIcon.File.certificateUnclaimed.rawValue]?.image?.image
+			rows?[indexPath] = row
+			
 			NCDatabase.sharedDatabase?.performBackgroundTask{ managedObjectContext in
 				let certificate = (try! managedObjectContext.existingObject(with: object!.objectID)) as! NCDBCertCertificate
 				let trainingQueue = NCTrainingQueue(character: character)
@@ -103,7 +111,7 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 				let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
 				let subtitle: String
 				let image: UIImage?
-
+				
 				if trainingTime > 0 {
 					subtitle = String(format: NSLocalizedString("%@ to level %d", comment: ""), NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds), (level?.level ?? -1) + 2)
 				}
@@ -113,16 +121,14 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 				image = level?.icon?.image?.image ?? NCDBEveIcon.eveIcons(managedObjectContext: managedObjectContext)[NCDBEveIcon.File.certificateUnclaimed.rawValue]?.image?.image
 				
 				DispatchQueue.main.async {
-					row.image = image
-					row.subtitle = subtitle
-					if let obj = cell.object as? NCDBCertCertificate?, obj === object {
-						cell.iconView?.image = image
-						cell.subtitleLabel?.text = subtitle
-					}
+					row?.image = image
+					row?.subtitle = subtitle
 				}
 			}
-			rows?[indexPath] = row
 		}
+
+		cell.binder.bind("subtitleLabel.text", toObject: row!, withKeyPath: "subtitle", transformer: nil)
+		cell.binder.bind("iconView.image", toObject: row!, withKeyPath: "image", transformer: nil)
 		return cell
 	}
 	

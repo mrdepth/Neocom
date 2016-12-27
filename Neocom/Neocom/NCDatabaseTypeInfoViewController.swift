@@ -130,19 +130,12 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 			let controller = self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseMarketInfoViewController") as! NCDatabaseMarketInfoViewController
 			controller.type = type
 			self.show(controller, sender: cell)
-		case let item as NCDatabaseTypeInfoRow where item.segue != nil:
-			let controller = self.storyboard?.instantiateViewController(withIdentifier: item.segue!)
-			switch item.segue! {
-			case "NCDatabaseMarketInfoViewController":
-				(controller as! NCDatabaseMarketInfoViewController).type = type
-			case "NCDatabaseTypeInfoViewController":
-				let object = item.object as! NSManagedObjectID
-				(controller as! NCDatabaseTypeInfoViewController).type = try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object) as! NCDBInvType
-			default:
-				break
-			}
-			self.show(controller!, sender: cell)
-		case is NCDatabaseTypeMarketRow:
+		case is NCDatabaseTypeSkillRow,
+		     is NCDatabaseTypeInfoRow where (item as? NCDatabaseTypeInfoRow)?.segue == "NCDatabaseTypeInfoViewController":
+			let controller = self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseTypeInfoViewController") as! NCDatabaseTypeInfoViewController
+			let object = item.object as! NSManagedObjectID
+			controller.type = try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object) as! NCDBInvType
+			self.show(controller, sender: cell)
 		default:
 			treeController.deselectItem(item, animated: true)
 			break

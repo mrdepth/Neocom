@@ -16,8 +16,14 @@ class NCMarketHistoryView: UIView {
 	
 	var donchian: UIBezierPath? {
 		didSet {
-			if let donchian = donchian {
-				let bounds = donchian.bounds
+			setNeedsDisplay()
+		}
+	}
+	
+	var donchianVisibleRange: CGRect? {
+		didSet {
+			if let donchianVisibleRange = donchianVisibleRange {
+				let bounds = donchianVisibleRange
 				let h = bounds.size.height / (1.0 - NCMarketHistoryView.ratio)
 				donchianRange = h > 0 ? (Double(bounds.maxY - h))...Double(bounds.maxY) : 0...0
 			}
@@ -64,11 +70,16 @@ class NCMarketHistoryView: UIView {
 		UIBezierPath(rect: canvas).fill()
 		let context = UIGraphicsGetCurrentContext()
 		context?.saveGState()
-		context?.translateBy(x: canvas.origin.x, y: canvas.origin.y)
 		
+		context?.translateBy(x: canvas.origin.x, y: canvas.origin.y)
 		canvas.origin = CGPoint.zero
+		
+		context?.saveGState()
+		context?.clip(to: canvas)
 		drawDonchianAndMedian(canvas: canvas)
 		drawVolume(canvas: canvas)
+		context?.restoreGState()
+		
 		drawGrid(canvas: canvas)
 		
 		context?.restoreGState()
@@ -96,13 +107,14 @@ class NCMarketHistoryView: UIView {
 	
 	func drawDonchianAndMedian(canvas: CGRect) {
 		guard let donchian = donchian?.copy() as? UIBezierPath,
-			let median = median?.copy() as? UIBezierPath
+			let median = median?.copy() as? UIBezierPath,
+			let rect = donchianVisibleRange
 			else {
 				return
 		}
 		
 		var transform = CGAffineTransform.identity
-		let rect = donchian.bounds
+		//let rect = donchian.bounds
 		if rect.size.width > 0 && rect.size.height > 0 {
 			transform = CGAffineTransform.identity
 			transform = transform.scaledBy(x: 1, y: -1)

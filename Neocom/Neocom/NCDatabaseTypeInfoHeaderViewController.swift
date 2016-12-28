@@ -19,6 +19,7 @@ class NCDatabaseTypeInfoHeaderViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		self.view.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
 		titleLabel.text = type?.typeName
 		
 		var groups = [String]()

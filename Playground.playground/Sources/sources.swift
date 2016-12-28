@@ -24,7 +24,7 @@ public class NCDatabaseTypeMarketRow {
 
 public func marketHistory(history: [ESMarketHistory]) -> NCDatabaseTypeMarketRow? {
 	guard history.count > 0 else {return nil}
-	guard let date = history.last?.date.addingTimeInterval(-3600 * 24 * 90) else {return nil}
+	guard let date = history.last?.date.addingTimeInterval(-3600 * 24 * 365) else {return nil}
 	guard let i = history.index(where: {
 		$0.date > date
 	}) else {

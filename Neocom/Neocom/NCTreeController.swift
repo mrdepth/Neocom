@@ -243,6 +243,11 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 	func parentItem(forItem item: AnyObject) -> AnyObject? {
 		return self.node(item: item)!.parent?.item
 	}
+	
+	func item(forIndexPath indexPath: IndexPath) -> AnyObject? {
+		let node = self.node(indexPath: indexPath)!
+		return node.item
+	}
 
 	//MARK: UITableViewDataSource
 	

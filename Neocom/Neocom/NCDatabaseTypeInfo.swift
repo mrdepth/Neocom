@@ -186,6 +186,7 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 	var volume: UIBezierPath?
 	var median: UIBezierPath?
 	var donchian: UIBezierPath?
+	var donchianVisibleRange: CGRect?
 	var date: ClosedRange<Date>?
 	let history: NSManagedObjectID
 	var observer: NCManagedObjectObserver?
@@ -205,7 +206,7 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 			guard let record = (try? managedObjectContext.existingObject(with: self.history)) as? NCCacheRecord else {return}
 			guard let history = record.data?.data as? [ESMarketHistory] else {return}
 			guard history.count > 0 else {return}
-			guard let date = history.last?.date.addingTimeInterval(-3600 * 24 * 90) else {return}
+			guard let date = history.last?.date.addingTimeInterval(-3600 * 24 * 365) else {return}
 			guard let i = history.index(where: {
 				$0.date > date
 			}) else {
@@ -213,6 +214,29 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 			}
 			
 			let range = history.suffix(from: i).indices
+			
+			let visibleRange = { () -> ClosedRange<Double> in
+				var h2 = 0 as Double
+				var h = 0 as Double
+				var l2 = 0 as Double
+				var l = 0 as Double
+				let n = Double(range.count)
+				for i in range {
+					let item = history[i]
+					h += item.highest / n
+					h2 += (item.highest * item.highest) / n
+					l += item.lowest / n
+					l2 += (item.lowest * item.lowest) / n
+				}
+				let avgl = l
+				let avgh = h
+				h *= h
+				l *= l
+				let devh = h < h2 ? sqrt(h2 - h) : 0
+				let devl = l < l2 ? sqrt(l2 - l) : 0
+				return (avgl - devl * 3)...(avgh + devh * 3)
+			}()
+
 			
 			let volume = UIBezierPath()
 			volume.move(to: CGPoint(x: 0, y: 0))
@@ -228,8 +252,18 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 			let d = history[range.first!].date...history[range.last!].date
 			var prevT: TimeInterval?
 			
+			var lowest = Double.greatestFiniteMagnitude as Double
+			var highest = 0 as Double
+			
 			for i in range {
 				let item = history[i]
+				if visibleRange.contains(item.lowest) {
+					lowest = min(lowest, item.lowest)
+				}
+				if visibleRange.contains(item.highest) {
+					highest = max(highest, item.highest)
+				}
+				
 				let t = item.date.timeIntervalSinceReferenceDate
 				x = CGFloat(item.date.timeIntervalSinceReferenceDate)
 				let lowest = history[max(i - 4, 0)...i].min {
@@ -254,10 +288,18 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 				v = min(v.lowerBound, item.volume)...max(v.upperBound, item.volume)
 				p = min(p.lowerBound, lowest.lowest)...max(p.upperBound, highest.highest)
 			}
+			
+			var donchianVisibleRange = donchian.bounds
+			if lowest < highest {
+				donchianVisibleRange.origin.y = CGFloat(lowest)
+				donchianVisibleRange.size.height = CGFloat(highest - lowest)
+			}
+			
 			DispatchQueue.main.async {
 				self.volume = volume
 				self.median = avg
 				self.donchian = donchian
+				self.donchianVisibleRange = donchianVisibleRange
 				self.date = d
 				if let cell = self.cell {
 					self.configure(cell: cell)
@@ -266,21 +308,13 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 		}
 	}
 	
-	/*init(history: [ESMarketHistory], volume: UIBezierPath, median: UIBezierPath, donchian: UIBezierPath, date: ClosedRange<Date>) {
-		self.volume = volume
-		self.median = median
-		self.donchian = donchian
-		self.date = date
-		super.init(cellIdentifier: "NCMarketHistoryTableViewCell")
-	}*/
-	
-	
 	override func configure(cell: UITableViewCell) {
 		let cell = cell as! NCMarketHistoryTableViewCell
 		self.cell = cell
 		cell.marketHistoryView.volume = volume
 		cell.marketHistoryView.median = median
 		cell.marketHistoryView.donchian = donchian
+		cell.marketHistoryView.donchianVisibleRange = donchianVisibleRange
 		cell.marketHistoryView.date = date
 	}
 }
@@ -305,6 +339,34 @@ class NCDatabaseTypeResistanceRow: NCTreeRow {
 		cell.kineticLabel.text = "\(Int(kinetic * 100))%"
 		cell.explosiveLabel.progress = explosive
 		cell.explosiveLabel.text = "\(Int(explosive * 100))%"
+	}
+}
+
+class NCDatabaseTypeDamageRow: NCTreeRow {
+	var em: Float = 0
+	var thermal: Float = 0
+	var kinetic: Float = 0
+	var explosive: Float = 0
+	
+	init() {
+		super.init(cellIdentifier: "NCDamageTypeTableViewCell")
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		let cell = cell as! NCDamageTypeTableViewCell
+		var total = em + thermal + kinetic + explosive
+		if total == 0 {
+			total = 1
+		}
+		
+		cell.emLabel.progress = em / total
+		cell.emLabel.text = NCUnitFormatter.localizedString(from: em, unit: .none, style: .short)
+		cell.thermalLabel.progress = thermal / total
+		cell.thermalLabel.text = NCUnitFormatter.localizedString(from: thermal, unit: .none, style: .short)
+		cell.kineticLabel.progress = kinetic / total
+		cell.kineticLabel.text = NCUnitFormatter.localizedString(from: kinetic, unit: .none, style: .short)
+		cell.explosiveLabel.progress = explosive / total
+		cell.explosiveLabel.text = NCUnitFormatter.localizedString(from: explosive, unit: .none, style: .short)
 	}
 }
 
@@ -333,11 +395,11 @@ class NCDatabaseTypeInfo {
 			dataManager.prices(typeIDs: [typeID]) { result in
 				guard let price = result[typeID] else {return}
 				let subtitle = NCUnitFormatter.localizedString(from: price, unit: .isk, style: .full)
-				let row = NCDatabaseTypeInfoRow(title: NSLocalizedString("Price", comment: ""), subtitle: subtitle, image: UIImage(named: "wallet"), object: nil, segue: "NCDatabaseMarketInfoViewController")
+				let row = NCDatabaseTypeInfoRow(title: NSLocalizedString("PRICE", comment: ""), subtitle: subtitle, image: UIImage(named: "wallet"), object: nil, segue: "NCDatabaseMarketInfoViewController")
 				marketSection?.mutableArrayValue(forKey: "children").insert(row, at: 0)
 			}
 		}
-		shipInfo(type: type) { result in
+		itemInfo(type: type) { result in
 			var sections = result
 			if let marketSection = marketSection {
 				sections.insert(marketSection, at: 0)
@@ -346,7 +408,7 @@ class NCDatabaseTypeInfo {
 		}
 	}
 	
-	class func shipInfo(type: NCDBInvType, completionHandler: @escaping ([NCTreeSection]) -> Void) {
+	class func itemInfo(type: NCDBInvType, completionHandler: @escaping ([NCTreeSection]) -> Void) {
 		
 		NCCharacter.load(account: NCAccount.current) { character in
 			NCDatabase.sharedDatabase?.performBackgroundTask({ (managedObjectContext) in
@@ -388,28 +450,53 @@ class NCDatabaseTypeInfo {
 						
 						var rows = [NCTreeNode]()
 						
-						let resistanceRow: NCDatabaseTypeResistanceRow?
-						switch NCDBAttributeCategoryID(rawValue: Int(attributeCategory.categoryID)) ?? NCDBAttributeCategoryID.none {
-						case .shield:
-							resistanceRow = NCDatabaseTypeResistanceRow()
-						case .armor:
-							resistanceRow = NCDatabaseTypeResistanceRow()
-						case .structure:
-							resistanceRow = NCDatabaseTypeResistanceRow()
-						default:
-							resistanceRow = nil
+						var resistanceRow: NCDatabaseTypeResistanceRow?
+						
+						func resistance() -> NCDatabaseTypeResistanceRow? {
+							if resistanceRow == nil {
+								resistanceRow = NCDatabaseTypeResistanceRow()
+							}
+							return resistanceRow
 						}
+						
+						var damageRow: NCDatabaseTypeDamageRow?
+						
+						func damage() -> NCDatabaseTypeDamageRow? {
+							if damageRow == nil {
+								damageRow = NCDatabaseTypeDamageRow()
+							}
+							return damageRow
+						}
+						
+						
 						
 						for attribute in (section.objects as? [NCDBDgmTypeAttribute]) ?? [] {
 							switch NCDBAttributeID(rawValue: Int(attribute.attributeType!.attributeID)) ?? NCDBAttributeID.none {
-							case .emDamageResonance, .armorEmDamageResonance, .shieldEmDamageResonance:
-								resistanceRow?.em = 1 - attribute.value
-							case .thermalDamageResonance, .armorThermalDamageResonance, .shieldThermalDamageResonance:
-								resistanceRow?.thermal = 1 - attribute.value
-							case .kineticDamageResonance, .armorKineticDamageResonance, .shieldKineticDamageResonance:
-								resistanceRow?.kinetic = 1 - attribute.value
-							case .explosiveDamageResonance, .armorExplosiveDamageResonance, .shieldExplosiveDamageResonance:
-								resistanceRow?.explosive = 1 - attribute.value
+							case .emDamageResonance, .armorEmDamageResonance, .shieldEmDamageResonance,
+							     .hullEmDamageResonance, .passiveArmorEmDamageResonance, .passiveShieldEmDamageResonance:
+								guard let row = resistance() else {continue}
+								row.em = max(row.em, 1 - attribute.value)
+							case .thermalDamageResonance, .armorThermalDamageResonance, .shieldThermalDamageResonance,
+							     .hullThermalDamageResonance, .passiveArmorThermalDamageResonance, .passiveShieldThermalDamageResonance:
+								guard let row = resistance() else {continue}
+								row.thermal = max(row.thermal, 1 - attribute.value)
+							case .kineticDamageResonance, .armorKineticDamageResonance, .shieldKineticDamageResonance,
+							     .hullKineticDamageResonance, .passiveArmorKineticDamageResonance, .passiveShieldKineticDamageResonance:
+								guard let row = resistance() else {continue}
+								row.kinetic = max(row.kinetic, 1 - attribute.value)
+							case .explosiveDamageResonance, .armorExplosiveDamageResonance, .shieldExplosiveDamageResonance,
+							     .hullExplosiveDamageResonance, .passiveArmorExplosiveDamageResonance, .passiveShieldExplosiveDamageResonance:
+								guard let row = resistance() else {continue}
+								row.explosive = max(row.explosive, 1 - attribute.value)
+							case .emDamage:
+								damage()?.em = attribute.value
+							case .thermalDamage:
+								damage()?.thermal = attribute.value
+							case .kineticDamage:
+								damage()?.kinetic = attribute.value
+							case .explosiveDamage:
+								damage()?.explosive = attribute.value
+
 							case .warpSpeedMultiplier:
 								guard let attributeType = attribute.attributeType else {continue}
 								let baseWarpSpeed = type.allAttributes[NCDBAttributeID.baseWarpSpeed.rawValue]?.value ?? 1.0
@@ -425,6 +512,9 @@ class NCDatabaseTypeInfo {
 						if let resistanceRow = resistanceRow {
 							rows.append(resistanceRow)
 							
+						}
+						if let damageRow = damageRow {
+							rows.append(damageRow)
 						}
 						if rows.count > 0 {
 							sections.append(NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: String(attributeCategory.categoryID), title: sectionTitle.uppercased(), attributedTitle: nil, children: rows, configurationHandler: nil))
@@ -488,7 +578,7 @@ class NCDatabaseTypeInfo {
 			let title = NSLocalizedString("LEVEL", comment: "") + " \(String(romanNumber: key + 1))"
 			let subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
 			let icon = trainingTime > 0 ? unclaimedIcon : level.icon
-			let row = NCDatabaseTypeInfoRow(title: title, subtitle: subtitle, image: icon?.image?.image, object: level)
+			let row = NCDatabaseTypeInfoRow(title: title, subtitle: subtitle, image: icon?.image?.image, object: level.objectID, segue: "NCDatabaseCertificateMasteryViewController")
 			rows.append(row)
 		}
 		
@@ -500,88 +590,4 @@ class NCDatabaseTypeInfo {
 		}
 	}
 	
-	/*class func marketHistory(history: [ESMarketHistory]) -> NCDatabaseTypeMarketRow? {
-		guard history.count > 0 else {return nil}
-		
-		let range = history.suffix(90).indices
-		
-		let volume = UIBezierPath()
-		volume.move(to: CGPoint(x: 0, y: 0))
-		
-		let donchian = UIBezierPath()
-		let avg = UIBezierPath()
-		
-		var x: CGFloat = 0
-		var isFirst = true
-		
-		var v = 0...0 as ClosedRange<Int>
-		var p = 0...0 as ClosedRange<Double>
-		let d = history[range.first!].date...history[range.last!].date
-		
-		for i in range {
-			let item = history[i]
-			let lowest = history[max(i - 4, 0)...i].min {
-				$0.lowest < $1.lowest
-				}!
-			let highest = history[max(i - 4, 0)...i].max {
-				$0.highest < $1.highest
-				}!
-			if isFirst {
-				avg.move(to: CGPoint(x: x, y: CGFloat(item.average)))
-				isFirst = false
-			}
-			else {
-				avg.addLine(to: CGPoint(x: x, y: CGFloat(item.average)))
-			}
-			volume.append(UIBezierPath(rect: CGRect(x: x - 0.5, y: 0, width: 1, height: CGFloat(item.volume))))
-			donchian.append(UIBezierPath(rect: CGRect(x: x - 0.5, y: CGFloat(lowest.lowest), width: 1, height: abs(CGFloat(highest.highest - lowest.lowest)))))
-			x += 1
-			
-			v = min(v.lowerBound, item.volume)...max(v.upperBound, item.volume)
-			p = min(p.lowerBound, lowest.lowest)...max(p.upperBound, highest.highest)
-		}
-		
-		donchian.close()
-		
-		return NCDatabaseTypeMarketRow(history: history, volume: volume, median: avg, donchian: donchian, date: d)
-		
-		/*var transform = CGAffineTransform.identity
-		var rect = volume.bounds
-		if rect.size.width > 0 && rect.size.height > 0 {
-			transform = transform.scaledBy(x: 1, y: -1)
-			transform = transform.translatedBy(x: 0, y: -bounds.size.height)
-			transform = transform.scaledBy(x: bounds.size.width / rect.size.width, y: bounds.size.height / rect.size.height * 0.25)
-			transform = transform.translatedBy(x: -rect.origin.x, y: -rect.origin.y)
-			volume.apply(transform)
-		}
-		
-		
-		rect = donchian.bounds.union(avg.bounds)
-		if rect.size.width > 0 && rect.size.height > 0 {
-			transform = CGAffineTransform.identity
-			transform = transform.scaledBy(x: 1, y: -1)
-			transform = transform.translatedBy(x: 0, y: -bounds.size.height * 0.75)
-			transform = transform.scaledBy(x: bounds.size.width / rect.size.width, y: bounds.size.height / rect.size.height * 0.75)
-			transform = transform.translatedBy(x: -rect.origin.x, y: -rect.origin.y)
-			donchian.apply(transform)
-			avg.apply(transform)
-		}
-		
-		UIGraphicsBeginImageContextWithOptions(bounds.size, false, UIScreen.main.scale)
-		UIBezierPath(rect: bounds).fill()
-		UIColor.lightGray.setFill()
-		donchian.fill()
-		UIColor.blue.setFill()
-		volume.fill()
-		UIColor.orange.setStroke()
-		avg.stroke()
-		let image = UIGraphicsGetImageFromCurrentImageContext()
-		UIGraphicsEndImageContext()
-		if let image = image {
-			return NCDatabaseTypeMarketRow(chartImage: image, history: history, volume: v, price: p, date: d)
-		}
-		else {
-			return nil
-		}*/
-	}*/
 }

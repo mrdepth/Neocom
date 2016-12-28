@@ -42,6 +42,14 @@ class NCUnitFormatter: Formatter {
 		
 	}()
 
+	class func localizedString(from number: Int, unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
+		return localizedString(from: Double(number), unit: unit, style: style)
+	}
+
+	class func localizedString(from number: Float, unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
+		return localizedString(from: Double(number), unit: unit, style: style)
+	}
+
 	class func localizedString(from number: Double, unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
 		let unitAbbreviation: String
 		

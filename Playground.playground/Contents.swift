@@ -3,22 +3,7 @@
 import UIKit
 import EVEAPI
 
-var a = [1,2,5,2,10001, 1000, 1000, 5,4,10,1000]
 
-let b = a.partition(by: {
-	return $0 >= 1000
-})
-
-a[b..<a.count]
-
-let i: Int? = nil
-
-i == 0
-
-"a".caseInsensitiveCompare("A") == .orderedSame
-
-
-/*
 
 var history = [ESMarketHistory]()
 
@@ -30,6 +15,12 @@ array.forEach {
 
 let row = marketHistory(history: history)!
 
+var avg = 0 as Double
+for h in history {
+	print("\(Int64(h.highest))")
+	avg += h.highest
+}
+avg /= Double(history.count)
 
 
 public class NCMarketHistoryView: UIView {
@@ -39,7 +30,8 @@ public class NCMarketHistoryView: UIView {
 	public var donchian: UIBezierPath? {
 		didSet {
 			if let donchian = donchian {
-				let bounds = donchian.bounds
+				var bounds = donchian.bounds
+				bounds.size.height = CGFloat(avg) - bounds.origin.y
 				let h = bounds.size.height / (1.0 - NCMarketHistoryView.ratio)
 				donchianRange = (Double(bounds.maxY - h))...Double(bounds.maxY)
 			}
@@ -118,7 +110,8 @@ public class NCMarketHistoryView: UIView {
 				return
 		}
 		
-		let rect = donchian.bounds
+		var rect = donchian.bounds
+		rect.size.height = CGFloat(avg) - rect.origin.y
 		if rect.size.width > 0 && rect.size.height > 0 {
 			transform = CGAffineTransform.identity
 			transform = transform.scaledBy(x: 1, y: -1)
@@ -227,4 +220,3 @@ view.date = row.date
 view.setNeedsDisplay()
 view
 
-*/

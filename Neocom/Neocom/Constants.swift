@@ -40,6 +40,25 @@ enum NCDBAttributeID: Int {
 	case shieldExplosiveDamageResonance = 272
 	case shieldKineticDamageResonance = 273
 	case shieldThermalDamageResonance = 274
+	
+	case passiveShieldThermalDamageResonance = 1425
+	case passiveShieldKineticDamageResonance = 1424
+	case passiveShieldExplosiveDamageResonance = 1422
+	case passiveShieldEmDamageResonance = 1423
+	case hullThermalDamageResonance = 977
+	case hullKineticDamageResonance = 976
+	case hullExplosiveDamageResonance = 975
+	case hullEmDamageResonance = 974
+	case passiveArmorThermalDamageResonance = 1419
+	case passiveArmorKineticDamageResonance = 1420
+	case passiveArmorExplosiveDamageResonance = 1421
+	case passiveArmorEmDamageResonance = 1418
+	
+	case emDamage = 114
+	case explosiveDamage = 116
+	case kineticDamage = 117
+	case thermalDamage = 118
+	
 }
 
 enum NCDBAttributeCategoryID: Int {

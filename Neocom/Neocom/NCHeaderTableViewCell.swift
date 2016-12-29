@@ -44,3 +44,10 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable {
 	}
 
 }
+
+class NCSkillsHeaderTableViewCell: NCHeaderTableViewCell {
+	var trainingQueue: NCTrainingQueue?
+	var character: NCCharacter?
+	@IBOutlet weak var trainButton: UIButton?
+
+}

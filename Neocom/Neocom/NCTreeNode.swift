@@ -14,11 +14,13 @@ class NCTreeNode: NSObject {
 	let nodeIdentifier: String?
 	var canExpand: Bool {get {return self.children?.count ?? 0 > 0}}
 	var expanded: Bool = true
+	var object: Any?
 	
-	init(cellIdentifier: String, nodeIdentifier: String? = nil, children: [NCTreeNode]? = nil) {
+	init(cellIdentifier: String, nodeIdentifier: String? = nil, children: [NCTreeNode]? = nil, object: Any? = nil) {
 		self.cellIdentifier = cellIdentifier
 		self.nodeIdentifier = nodeIdentifier
 		self.children = children
+		self.object = object
 	}
 	
 	func configure(cell: UITableViewCell) {
@@ -31,11 +33,11 @@ class NCTreeSection: NCTreeNode {
 	let attributedTitle: NSAttributedString?
 	let configurationHandler: ((UITableViewCell) -> Void)?
 	
-	init(cellIdentifier: String, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [NCTreeNode]? = nil, configurationHandler: ((UITableViewCell) -> Void)? = nil) {
+	init(cellIdentifier: String, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [NCTreeNode]? = nil, object: Any? = nil, configurationHandler: ((UITableViewCell) -> Void)? = nil) {
 		self.title = title
 		self.attributedTitle = attributedTitle
 		self.configurationHandler = configurationHandler
-		super.init(cellIdentifier: cellIdentifier, nodeIdentifier: nodeIdentifier, children: children)
+		super.init(cellIdentifier: cellIdentifier, nodeIdentifier: nodeIdentifier, children: children, object: object)
 	}
 
 	override func configure(cell: UITableViewCell) {
@@ -55,9 +57,9 @@ class NCTreeSection: NCTreeNode {
 class NCTreeRow: NCTreeNode {
 	let configurationHandler: ((UITableViewCell) -> Void)?
 	
-	init(cellIdentifier: String, configurationHandler: ((UITableViewCell) -> Void)? = nil ) {
+	init(cellIdentifier: String, object: Any? = nil, configurationHandler: ((UITableViewCell) -> Void)? = nil ) {
 		self.configurationHandler = configurationHandler
-		super.init(cellIdentifier: cellIdentifier, nodeIdentifier: nil, children: nil)
+		super.init(cellIdentifier: cellIdentifier, nodeIdentifier: nil, children: nil, object: object)
 	}
 	
 	override func configure(cell: UITableViewCell) {

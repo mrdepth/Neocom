@@ -110,6 +110,33 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 		}
 	}
 	
+	@IBAction func onTrain(_ sender: UIButton) {
+		func find(_ view: UIView?) -> UITableViewCell? {
+			guard let cell = view as? UITableViewCell else {
+				return find(view?.superview)
+			}
+			return cell
+		}
+		guard let account = NCAccount.current,
+			let cell = find(sender) as? NCSkillsHeaderTableViewCell,
+			let trainingQueue = cell.trainingQueue,
+			let character = cell.character else {
+				return
+		}
+		let message = String(format: NSLocalizedString("Training time: %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: trainingQueue.trainingTime(characterAttributes: character.attributes), precision: .seconds))
+		let controller = UIAlertController(title: NSLocalizedString("Add to skill plan?", comment: ""), message: message, preferredStyle: .alert)
+
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Add", comment: ""), style: .default) { action in
+			account.activeSkillPlan?.add(trainingQueue: trainingQueue)
+			
+			self.treeController.reloadData()
+		})
+
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+		present(controller, animated: true)
+		
+	}
+	
 	// MARK: NCTreeControllerDelegate
 	
 	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {

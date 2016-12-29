@@ -13,7 +13,6 @@ class NCDatabaseCertSkillRow: NCTreeRow {
 	//let title: String?
 	let title: NSAttributedString?
 	let image: UIImage?
-	let object: Any?
 	let tintColor: UIColor?
 	let subtitle: String?
 	
@@ -45,10 +44,9 @@ class NCDatabaseCertSkillRow: NCTreeRow {
 			self.image = UIImage(named: "skillRequirementNotInjected")
 			self.tintColor = UIColor.lightText
 		}
-		self.object = skill.type?.objectID
 		self.subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
 		
-		super.init(cellIdentifier: "Cell")
+		super.init(cellIdentifier: "Cell", object: skill.type?.objectID)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -69,7 +67,6 @@ class NCDatabaseCertSkillRow: NCTreeRow {
 class NCDatabaseCertTypeRow: NCTreeRow {
 	let title: String?
 	let image: UIImage?
-	let object: Any?
 	let subtitle: String?
 	
 	init(type: NCDBInvType, character: NCCharacter) {
@@ -79,9 +76,8 @@ class NCDatabaseCertTypeRow: NCTreeRow {
 		trainingQueue.addRequiredSkills(for: type)
 		let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
 		self.image = type.icon?.image?.image
-		self.object = type.objectID
 		self.subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
-		super.init(cellIdentifier: "Cell")
+		super.init(cellIdentifier: "Cell", object: type.objectID)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -107,7 +103,7 @@ class NCDatabaseCertMasterySection: NCTreeSection {
 		trainingQueue = NCTrainingQueue(character: character)
 		trainingQueue.add(mastery: mastery)
 		trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
-		let title = NSMutableAttributedString(string: String(format: NSLocalizedString("LEVEL %d", comment: ""), Int(mastery.level!.level) + 1), attributes: [NSForegroundColorAttributeName: UIColor.caption])
+		let title = NSMutableAttributedString(string: NSLocalizedString("Level", comment: "").uppercased() + " \(String(romanNumber: Int(mastery.level!.level + 1)))", attributes: [NSForegroundColorAttributeName: UIColor.caption])
 		if trainingTime > 0 {
 			title.append(NSAttributedString(string: " (\(NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))", attributes: [NSForegroundColorAttributeName: UIColor.white]))
 		}

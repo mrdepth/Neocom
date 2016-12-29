@@ -14,16 +14,14 @@ class NCDatabaseTypeInfoRow: NCTreeRow {
 	let title: String?
 	let subtitle: String?
 	let image: UIImage?
-	let object: Any?
 	let segue: String?
 	
 	init(title: String?, subtitle: String?, image: UIImage?, object: Any?, segue: String? = nil) {
 		self.title = title
 		self.subtitle = subtitle
 		self.image = image
-		self.object = object
 		self.segue = segue
-		super.init(cellIdentifier: "Cell")
+		super.init(cellIdentifier: "Cell", object: object)
 	}
 	
 	convenience init?(attribute: NCDBDgmTypeAttribute) {
@@ -129,36 +127,33 @@ class NCDatabaseTypeInfoRow: NCTreeRow {
 class NCDatabaseTypeSkillRow: NCTreeNode {
 	let title: NSAttributedString?
 	let image: UIImage?
-	let object: Any?
-	let tintColor: UIColor?
 	let subtitle: String?
+	let trainingTime: TimeInterval
+	let skill: NCTrainingSkill?
 	
 	init(skill: NCDBInvType, level: Int, character: NCCharacter, children: [NCTreeNode]?) {
 		self.title = NSAttributedString(skillName: skill.typeName!, level: level)
 		
-		let trainingTime: TimeInterval
-		
 		if let trainedSkill = character.skills[Int(skill.typeID)], let trainedLevel = trainedSkill.level {
 			if trainedLevel >= level {
 				self.image = UIImage(named: "skillRequirementMe")
-				self.tintColor = UIColor.white
 				trainingTime = 0
+				self.skill = nil
 			}
 			else {
-				trainingTime = NCTrainingSkill(type: skill, skill: trainedSkill, level: level)?.trainingTime(characterAttributes: character.attributes) ?? 0
+				self.skill = NCTrainingSkill(type: skill, skill: trainedSkill, level: level)
+				trainingTime = self.skill?.trainingTime(characterAttributes: character.attributes) ?? 0
 				self.image = UIImage(named: "skillRequirementNotMe")
-				self.tintColor = UIColor.lightText
 			}
 		}
 		else {
-			trainingTime = NCTrainingSkill(type: skill, level: level)?.trainingTime(characterAttributes: character.attributes) ?? 0
+			self.skill = NCTrainingSkill(type: skill, level: level)
+			trainingTime = self.skill?.trainingTime(characterAttributes: character.attributes) ?? 0
 			self.image = UIImage(named: "skillRequirementNotInjected")
-			self.tintColor = UIColor.lightText
 		}
-		self.object = skill.objectID
 		self.subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
 		
-		super.init(cellIdentifier: "Cell", nodeIdentifier: nil, children: children)
+		super.init(cellIdentifier: "Cell", nodeIdentifier: nil, children: children, object: skill.objectID)
 	}
 	
 	convenience init(skill: NCDBInvTypeRequiredSkill, character: NCCharacter, children: [NCTreeNode]?) {
@@ -170,14 +165,28 @@ class NCDatabaseTypeSkillRow: NCTreeNode {
 	}
 
 	override func configure(cell: UITableViewCell) {
+		let tintColor = trainingTime > 0 ? UIColor.lightText : UIColor.white
 		let cell = cell as! NCDefaultTableViewCell
 		cell.titleLabel?.attributedText = title
 		cell.subtitleLabel?.text = subtitle
-		cell.subtitleLabel?.textColor = self.tintColor
+		cell.subtitleLabel?.textColor = tintColor
 		cell.iconView?.image = image
-		cell.iconView?.tintColor = self.tintColor
+		cell.iconView?.tintColor = tintColor
 		cell.object = object
 		cell.accessoryType = .disclosureIndicator
+		
+		if let skill = self.skill, trainingTime > 0 {
+			let typeID = skill.skill.typeID
+			let level = skill.level
+
+			let item = NCAccount.current?.activeSkillPlan?.skills?.first(where: { (skill) -> Bool in
+				let skill = skill as! NCSkillPlanSkill
+				return Int(skill.typeID) == typeID && Int(skill.level) >= level
+			})
+			if item != nil {
+				cell.iconView?.image = #imageLiteral(resourceName: "skillRequirementQueued")
+			}
+		}
 	}
 	
 	override var canExpand: Bool {
@@ -370,6 +379,33 @@ class NCDatabaseTypeDamageRow: NCTreeRow {
 		cell.kineticLabel.text = NCUnitFormatter.localizedString(from: kinetic, unit: .none, style: .short)
 		cell.explosiveLabel.progress = explosive / total
 		cell.explosiveLabel.text = NCUnitFormatter.localizedString(from: explosive, unit: .none, style: .short)
+	}
+}
+
+class NCDatabaseSkillsSection: NCTreeSection {
+	let trainingQueue: NCTrainingQueue
+	let character: NCCharacter
+	let trainingTime: TimeInterval
+	
+	init(nodeIdentifier: String?, trainingQueue: NCTrainingQueue, character: NCCharacter, children: [NCTreeNode]? = nil) {
+		self.trainingQueue = trainingQueue
+		self.character = character
+		trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
+		let title = NSMutableAttributedString(string: NSLocalizedString("Required Skills", comment: "").uppercased())
+		if trainingTime > 0 {
+			title.append(NSAttributedString(
+				string: " (\(NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))",
+				attributes: [NSForegroundColorAttributeName: UIColor.white]))
+		}
+		super.init(cellIdentifier: "NCSkillsHeaderTableViewCell", nodeIdentifier: nodeIdentifier, title: nil, attributedTitle: title, children: children)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		let cell = cell as! NCSkillsHeaderTableViewCell
+		cell.titleLabel?.attributedText = attributedTitle
+		cell.trainButton?.isHidden = NCAccount.current == nil || trainingTime == 0
+		cell.trainingQueue = trainingQueue
+		cell.character = character
 	}
 }
 
@@ -600,7 +636,7 @@ struct NCDatabaseTypeInfo {
 	}
 
 	
-	static func requiredSkills(type: NCDBInvType, character: NCCharacter) -> NCTreeSection {
+	static func requiredSkills(type: NCDBInvType, character: NCCharacter) -> NCDatabaseSkillsSection {
 		var rows = [NCTreeNode]()
 		for requiredSkill in type.requiredSkills?.array as? [NCDBInvTypeRequiredSkill] ?? [] {
 			guard let type = requiredSkill.skillType else {continue}
@@ -609,17 +645,10 @@ struct NCDatabaseTypeInfo {
 		}
 		let trainingQueue = NCTrainingQueue(character: character)
 		trainingQueue.addRequiredSkills(for: type)
-		let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
-		let title = NSMutableAttributedString(string: NSLocalizedString("Required Skills", comment: "").uppercased())
-		if trainingTime > 0 {
-			title.append(NSAttributedString(
-				string: " (\(NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))",
-				attributes: [NSForegroundColorAttributeName: UIColor.white]))
-		}
-		return NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: String(NCDBAttributeCategoryID.requiredSkills.rawValue), title: nil, attributedTitle: title, children: rows, configurationHandler: nil)
+		return NCDatabaseSkillsSection(nodeIdentifier: String(NCDBAttributeCategoryID.requiredSkills.rawValue), trainingQueue: trainingQueue, character: character, children: rows)
 	}
 	
-	static func requiredSkills(activity: NCDBIndActivity, character: NCCharacter) -> NCTreeSection? {
+	static func requiredSkills(activity: NCDBIndActivity, character: NCCharacter) -> NCDatabaseSkillsSection? {
 		var rows = [NCTreeNode]()
 		for requiredSkill in activity.requiredSkills?.sortedArray(using: [NSSortDescriptor(key: "skillType.typeName", ascending: true)]) as? [NCDBIndRequiredSkill] ?? [] {
 			guard let type = requiredSkill.skillType else {continue}
@@ -629,14 +658,7 @@ struct NCDatabaseTypeInfo {
 		
 		let trainingQueue = NCTrainingQueue(character: character)
 		trainingQueue.addRequiredSkills(for: activity)
-		let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
-		let title = NSMutableAttributedString(string: NSLocalizedString("Required Skills", comment: "").uppercased())
-		if trainingTime > 0 {
-			title.append(NSAttributedString(
-				string: " (\(NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))",
-				attributes: [NSForegroundColorAttributeName: UIColor.white]))
-		}
-		return rows.count > 0 ? NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: String(NCDBAttributeCategoryID.requiredSkills.rawValue), title: nil, attributedTitle: title, children: rows, configurationHandler: nil) : nil
+		return NCDatabaseSkillsSection(nodeIdentifier: nil, trainingQueue: trainingQueue, character: character, children: rows)
 	}
 	
 	static func masteries(type: NCDBInvType, character: NCCharacter) -> NCTreeSection? {
@@ -658,7 +680,7 @@ struct NCDatabaseTypeInfo {
 				trainingQueue.add(mastery: mastery)
 			}
 			let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
-			let title = NSLocalizedString("LEVEL", comment: "") + " \(String(romanNumber: key + 1))"
+			let title = NSLocalizedString("Level", comment: "").uppercased() + " \(String(romanNumber: key + 1))"
 			let subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
 			let icon = trainingTime > 0 ? unclaimedIcon : level.icon
 			let row = NCDatabaseTypeInfoRow(title: title, subtitle: subtitle, image: icon?.image?.image, object: level.objectID, segue: "NCDatabaseCertificateMasteryViewController")

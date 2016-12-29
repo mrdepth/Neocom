@@ -40,7 +40,7 @@ class NCDatabaseCertificateMasteryViewController: UITableViewController, NCTreeC
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.childrenKeyPath = "children"
 		treeController.delegate = self
-		title = String(format: NSLocalizedString("LEVEL %d", comment: ""), Int(level?.level ?? 0) + 1)
+		title = NSLocalizedString("Level", comment: "") + " \(String(romanNumber: Int((level?.level ?? 0) + 1)))"
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

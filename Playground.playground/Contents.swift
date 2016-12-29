@@ -7,6 +7,16 @@ var array: [AnyObject] = ["1" as NSString, "2" as NSString, 3 as NSNumber]
 
 let a = array as? [NSString]
 
+var o: Any? = nil
+
+o = (1, "asdf")
+
+if let (b,c) = o as? (Int, String) {
+	b
+	c
+	
+}
+
 /*
 var history = [ESMarketHistory]()
 

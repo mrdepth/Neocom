@@ -37,7 +37,7 @@
                                         <rect key="frame" x="0.0" y="100" width="320" height="43"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MdZ-HI-hsS" id="9Yd-WR-M0p">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="42.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="42"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BUe-qS-SyQ">
@@ -965,7 +965,7 @@
                                 <rect key="frame" x="0.0" y="206" width="320" height="64"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="i1S-wv-rtR" id="mxh-DB-v5L">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9bY-0E-PiD" customClass="NCRoundImageView">
@@ -2376,8 +2376,54 @@
                                     <outlet property="titleLabel" destination="Mlm-Bw-pRq" id="s3y-OY-fmk"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCSkillsHeaderTableViewCell" rowHeight="40" id="L33-tK-KW4" customClass="NCSkillsHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="96" width="320" height="40"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L33-tK-KW4" id="cNs-lU-gs4">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfk-h7-reA">
+                                            <rect key="frame" x="32" y="15" width="226" height="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="6YP-aP-mSa">
+                                            <rect key="frame" x="8" y="15" width="16" height="16"/>
+                                            <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AFG-KV-mAv">
+                                            <rect key="frame" x="266" y="9" width="39" height="28"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <state key="normal" title="TRAIN">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onTrain:" destination="JbH-Km-dUZ" eventType="touchUpInside" id="WAr-qU-ynT"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="AFG-KV-mAv" firstAttribute="leading" secondItem="zfk-h7-reA" secondAttribute="trailing" constant="8" id="5Ti-Z6-D5I"/>
+                                        <constraint firstItem="zfk-h7-reA" firstAttribute="centerY" secondItem="6YP-aP-mSa" secondAttribute="centerY" id="QjA-eO-Lsr"/>
+                                        <constraint firstAttribute="trailing" secondItem="AFG-KV-mAv" secondAttribute="trailing" constant="15" id="T3e-xe-RzM"/>
+                                        <constraint firstItem="AFG-KV-mAv" firstAttribute="centerY" secondItem="zfk-h7-reA" secondAttribute="centerY" id="V28-L5-DbV"/>
+                                        <constraint firstAttribute="bottom" secondItem="zfk-h7-reA" secondAttribute="bottom" constant="8" id="WDi-xX-UZD"/>
+                                        <constraint firstItem="zfk-h7-reA" firstAttribute="top" secondItem="cNs-lU-gs4" secondAttribute="top" constant="15" id="hEU-dt-Ck7"/>
+                                        <constraint firstItem="zfk-h7-reA" firstAttribute="leading" secondItem="6YP-aP-mSa" secondAttribute="trailing" constant="8" id="ma6-7m-Pfk"/>
+                                        <constraint firstItem="6YP-aP-mSa" firstAttribute="leading" secondItem="cNs-lU-gs4" secondAttribute="leading" constant="8" id="rkr-s4-vMR"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="expandIcon" destination="6YP-aP-mSa" id="iuI-02-Zrx"/>
+                                    <outlet property="titleLabel" destination="zfk-h7-reA" id="e4t-6l-sYs"/>
+                                    <outlet property="trainButton" destination="AFG-KV-mAv" id="928-Jd-FCJ"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="gC9-A1-CGU" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="96" width="320" height="41"/>
+                                <rect key="frame" x="0.0" y="136" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gC9-A1-CGU" id="ApF-E6-iJ6">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -2437,7 +2483,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCDamageTypeTableViewCell" id="Bhk-P7-VOZ" customClass="NCDamageTypeTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="137" width="320" height="41"/>
+                                <rect key="frame" x="0.0" y="177" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bhk-P7-VOZ" id="M5R-RD-tH8">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -2608,7 +2654,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCMarketHistoryTableViewCell" rowHeight="147" id="NnJ-hG-Oy7" customClass="NCMarketHistoryTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="178" width="320" height="147"/>
+                                <rect key="frame" x="0.0" y="218" width="320" height="147"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NnJ-hG-Oy7" id="Yew-2Z-FhM">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="146"/>
@@ -2744,7 +2790,7 @@
                     </connections>
                 </customObject>
             </objects>
-            <point key="canvasLocation" x="6418" y="1018"/>
+            <point key="canvasLocation" x="6416.25" y="1017.2535211267606"/>
         </scene>
         <!--Database Type Info Header View Controller-->
         <scene sceneID="TAg-DL-EGY">

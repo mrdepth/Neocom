@@ -73,6 +73,31 @@ extension NCAccount {
 		}
 	}
 	
+	var activeSkillPlan: NCSkillPlan? {
+		if let skillPlan = skillPlans?.filtered(using: NSPredicate(format: "active == TRUE")).first as? NCSkillPlan {
+			return skillPlan
+		}
+		else if let skillPlan = skillPlans?.anyObject() as? NCSkillPlan {
+			skillPlan.active = true
+			if skillPlan.managedObjectContext?.hasChanges ?? false {
+				try? skillPlan.managedObjectContext?.save()
+			}
+			return skillPlan
+		}
+		else if let managedObjectContext = managedObjectContext {
+			let skillPlan = NCSkillPlan(entity: NSEntityDescription.entity(forEntityName: "SkillPlan", in: managedObjectContext)!, insertInto: managedObjectContext)
+			skillPlan.active = true
+			skillPlan.account = self
+			skillPlan.name = NSLocalizedString("Default", comment: "")
+			if skillPlan.managedObjectContext?.hasChanges ?? false {
+				try? skillPlan.managedObjectContext?.save()
+			}
+			return skillPlan
+		}
+		else {
+			return nil
+		}
+	}
 }
 
 extension NCSetting {
@@ -91,6 +116,27 @@ extension NCSetting {
 			setting.key = key
 			//setting.value = defaultValue as? NSObject
 			return setting
+		}
+	}
+}
+
+extension NCSkillPlan {
+	func add(trainingQueue: NCTrainingQueue) {
+		var set = Set<IndexPath>()
+		var lastPosition = 0 as Int32
+		for skill in self.skills?.allObjects as? [NCSkillPlanSkill] ?? [] {
+			set.insert(IndexPath(indexes: [Int(skill.typeID), Int(skill.level)]))
+			lastPosition = max(lastPosition, skill.position)
+		}
+		for skill in trainingQueue.skills {
+			if !set.contains(IndexPath(indexes: [skill.skill.typeID, skill.level])) {
+				let skillPlanSkill = NCSkillPlanSkill(entity: NSEntityDescription.entity(forEntityName: "SkillPlanSkill", in: managedObjectContext!)!, insertInto: managedObjectContext!)
+				skillPlanSkill.skillPlan = self
+				skillPlanSkill.typeID = Int32(skill.skill.typeID)
+				skillPlanSkill.level = Int16(skill.level)
+				lastPosition += 1
+				skillPlanSkill.position = lastPosition
+			}
 		}
 	}
 }

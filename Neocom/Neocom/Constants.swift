@@ -95,6 +95,7 @@ enum NCDBCategoryID: Int {
 
 enum NCDBRegionID: Int {
 	case theForge = 10000002
+	case whSpace = 11000000
 }
 
 extension NCDBEveIcon {

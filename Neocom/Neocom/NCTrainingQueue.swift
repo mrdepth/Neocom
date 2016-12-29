@@ -90,6 +90,13 @@ class NCTrainingQueue {
 		}
 	}
 	
+	func addRequiredSkills(for activity: NCDBIndActivity) {
+		for skill in activity.requiredSkills?.allObjects as? [NCDBIndRequiredSkill] ?? [] {
+			guard let skillType = skill.skillType else {continue}
+			add(skill: skillType, level: Int(skill.skillLevel))
+		}
+	}
+	
 	func remove(skill: NCTrainingSkill) {
 		var indexes = IndexSet()
 		var i = 0

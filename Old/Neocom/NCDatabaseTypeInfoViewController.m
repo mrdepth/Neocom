@@ -781,7 +781,7 @@
 				
 				if (activity.products.count > 0) {
 					for (NCDBIndProduct* product in [activity.products sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"productType.typeName" ascending:YES]]]) {
-						row = [NCDatabaseTypeInfoViewControllerRow new];
+						row = [NCDatabaseTypeInfoView ControllerRow new];
 						row.title = NSLocalizedString(@"Product", nil);
 						row.detail = product.productType.typeName;
 						row.iconID = [product.productType.icon objectID];

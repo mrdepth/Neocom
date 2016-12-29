@@ -3,8 +3,11 @@
 import UIKit
 import EVEAPI
 
+var array: [AnyObject] = ["1" as NSString, "2" as NSString, 3 as NSNumber]
 
+let a = array as? [NSString]
 
+/*
 var history = [ESMarketHistory]()
 
 let data = try! Data(contentsOf: Bundle.main.url(forResource: "market", withExtension: "json")!)
@@ -220,3 +223,4 @@ view.date = row.date
 view.setNeedsDisplay()
 view
 
+*/

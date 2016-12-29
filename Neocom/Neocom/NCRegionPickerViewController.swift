@@ -99,12 +99,12 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 					let regions = NSFetchRequest<NSManagedObjectID>(entityName: "MapRegion")
 					regions.resultType = .managedObjectIDResultType
 					regions.sortDescriptors = [NSSortDescriptor(key: "regionName", ascending: true)]
-					regions.predicate = NSPredicate(format: "regionID < 11000000 AND regionName CONTAINS[C] %@", searchString)
+					regions.predicate = NSPredicate(format: "regionID < %d AND regionName CONTAINS[C] %@", NCDBRegionID.whSpace.rawValue, searchString)
 					if let results = try? managedObjectContext.fetch(regions) {
 						knownSpace.append(contentsOf: results.map {return NCRegionPickerRow(regionID: $0, selected: $0 == selection)})
 					}
 					
-					regions.predicate = NSPredicate(format: "regionID >= 11000000 AND regionName CONTAINS[C] %@", searchString)
+					regions.predicate = NSPredicate(format: "regionID >= %d AND regionName CONTAINS[C] %@", NCDBRegionID.whSpace.rawValue, searchString)
 					if let results = try? managedObjectContext.fetch(regions) {
 						whSpace.append(contentsOf: results.map {return NCRegionPickerRow(regionID: $0, selected: $0 == selection)})
 					}
@@ -112,12 +112,12 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 					let solarSystems = NSFetchRequest<NSManagedObjectID>(entityName: "MapSolarSystem")
 					solarSystems.resultType = .managedObjectIDResultType
 					solarSystems.sortDescriptors = [NSSortDescriptor(key: "constellation.region.regionName", ascending: true)]
-					solarSystems.predicate = NSPredicate(format: "constellation.region.regionID < 11000000 AND solarSystemName CONTAINS[C] %@", searchString)
+					solarSystems.predicate = NSPredicate(format: "constellation.region.regionID < %d AND solarSystemName CONTAINS[C] %@", NCDBRegionID.whSpace.rawValue, searchString)
 					if let results = try? managedObjectContext.fetch(solarSystems) {
 						knownSpace.append(contentsOf: results.map {return NCRegionPickerRow(solarSystemID: $0, selected: $0 == selection)})
 					}
 					
-					solarSystems.predicate = NSPredicate(format: "constellation.region.regionID >= 11000000 AND solarSystemName CONTAINS[C] %@", searchString)
+					solarSystems.predicate = NSPredicate(format: "constellation.region.regionID >= %d AND solarSystemName CONTAINS[C] %@", NCDBRegionID.whSpace.rawValue, searchString)
 					if let results = try? managedObjectContext.fetch(solarSystems) {
 						whSpace.append(contentsOf: results.map {return NCRegionPickerRow(solarSystemID: $0, selected: $0 == selection)})
 					}
@@ -127,11 +127,11 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 					let request = NSFetchRequest<NSManagedObjectID>(entityName: "MapRegion")
 					request.resultType = .managedObjectIDResultType
 					request.sortDescriptors = [NSSortDescriptor(key: "regionName", ascending: true)]
-					request.predicate = NSPredicate(format: "regionID < 11000000")
+					request.predicate = NSPredicate(format: "regionID < %d, ", NCDBRegionID.whSpace.rawValue)
 					if let results = try? managedObjectContext.fetch(request) {
 						knownSpace.append(contentsOf: results.map {return NCRegionPickerRow(regionID: $0, selected: $0 == selection)})
 					}
-					request.predicate = NSPredicate(format: "regionID >= 11000000")
+					request.predicate = NSPredicate(format: "regionID >= %d", NCDBRegionID.whSpace.rawValue)
 					if let results = try? managedObjectContext.fetch(request) {
 						whSpace.append(contentsOf: results.map {return NCRegionPickerRow(regionID: $0, selected: $0 == selection)})
 					}

@@ -26,5 +26,21 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable {
 	func setExpanded(_ expanded: Bool, animated: Bool) {
 		expandIcon?.image = UIImage(named: expanded ? "collapse" : "expand")
 	}
+	
+	var indentationConstraint: NSLayoutConstraint? {
+		get {
+			guard let expandIcon = self.expandIcon else {return nil}
+			return expandIcon.superview?.constraints.first {
+				return $0.firstItem === expandIcon && $0.secondItem === expandIcon.superview && $0.firstAttribute == .leading && $0.secondAttribute == .leading
+			}
+		}
+	}
+	
+	override var indentationLevel: Int {
+		didSet {
+			//let level = max(0, indentationLevel - 1)
+			self.indentationConstraint?.constant = CGFloat(8 + indentationLevel * 10)
+		}
+	}
 
 }

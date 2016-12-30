@@ -23,7 +23,15 @@ class NCDatabaseCertificateInfoHeaderViewController: UIViewController {
 		
 		guard let certificate = certificate else {return}
 		
-		NCCharacter.load(account: NCAccount.current) { character in
+		NCCharacter.load(account: NCAccount.current) { result in
+			let character: NCCharacter
+			switch result {
+			case let .success(value):
+				character = value
+			default:
+				character = NCCharacter()
+			}
+			
 			let trainingQueue = NCTrainingQueue(character: character)
 			var level: NCDBCertMasteryLevel?
 			for mastery in (certificate.masteries?.sortedArray(using: [NSSortDescriptor(key: "level.level", ascending: true)]) as? [NCDBCertMastery]) ?? [] {

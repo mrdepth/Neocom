@@ -43,8 +43,16 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 			let progress = NCProgressHandler(totalUnitCount: 1)
 			progress.progress.becomeCurrent(withPendingUnitCount: 1)
 			NCCharacter.load(account: NCAccount.current) { result in
+				let character: NCCharacter
+				switch result {
+				case let .success(value):
+					character = value
+				default:
+					character = NCCharacter()
+				}
+
 				self.rows = [:]
-				self.character = result
+				self.character = character
 				if let indexPaths = self.tableView.indexPathsForVisibleRows {
 					self.tableView.reloadRows(at: indexPaths, with: .none)
 				}

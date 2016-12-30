@@ -3,19 +3,27 @@
 import UIKit
 import EVEAPI
 
-var array: [AnyObject] = ["1" as NSString, "2" as NSString, 3 as NSNumber]
 
-let a = array as? [NSString]
-
-var o: Any? = nil
-
-o = (1, "asdf")
-
-if let (b,c) = o as? (Int, String) {
-	b
-	c
-	
+class mystr {
+	let int: Int
+	let string: String
+	init(int: Int, string: String) {
+		self.int = int
+		
+		self.string = string
+	}
 }
+
+let mynote = NSNotification.Name("asdf")
+let str = mystr(int: 10, string: "123")
+let str2 = mystr(int: 10, string: "123")
+
+var observer = NotificationCenter.default.addObserver(forName: mynote, object: str, queue: .main) { note in
+	print ("\(note.object)")
+}
+
+NotificationCenter.default.post(name: mynote, object: str, userInfo: nil)
+
 
 /*
 var history = [ESMarketHistory]()

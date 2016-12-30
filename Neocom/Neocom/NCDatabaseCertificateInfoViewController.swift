@@ -9,61 +9,6 @@
 import UIKit
 import CoreData
 
-class NCDatabaseCertSkillRow: NCTreeRow {
-	//let title: String?
-	let title: NSAttributedString?
-	let image: UIImage?
-	let tintColor: UIColor?
-	let subtitle: String?
-	
-	init(skill: NCDBCertSkill, character: NCCharacter) {
-		self.title = NSAttributedString(skillName: skill.type!.typeName!, level: Int(skill.skillLevel))
-		
-		let trainingTime: TimeInterval
-		
-		if let type = skill.type, let trainedSkill = character.skills[Int(type.typeID)], let trainedLevel = trainedSkill.level {
-			if trainedLevel >= Int(skill.skillLevel) {
-				self.image = UIImage(named: "skillRequirementMe")
-				self.tintColor = UIColor.white
-				trainingTime = 0
-			}
-			else {
-				trainingTime = NCTrainingSkill(type: type, skill: trainedSkill, level: Int(skill.skillLevel))?.trainingTime(characterAttributes: character.attributes) ?? 0
-				self.image = UIImage(named: "skillRequirementNotMe")
-				self.tintColor = UIColor.lightText
-			}
-		}
-		else {
-			if let type = skill.type {
-				trainingTime = NCTrainingSkill(type: type, level: Int(skill.skillLevel))?.trainingTime(characterAttributes: character.attributes) ?? 0
-			}
-			else {
-				trainingTime = 0
-			}
-			//self.image = eveIcons["38_194"]?.image?.image
-			self.image = UIImage(named: "skillRequirementNotInjected")
-			self.tintColor = UIColor.lightText
-		}
-		self.subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
-		
-		super.init(cellIdentifier: "Cell", object: skill.type?.objectID)
-	}
-	
-	override func configure(cell: UITableViewCell) {
-		let cell = cell as! NCDefaultTableViewCell
-		cell.titleLabel?.attributedText = title
-		cell.subtitleLabel?.text = subtitle
-		cell.subtitleLabel?.textColor = self.tintColor
-		cell.iconView?.image = image
-		cell.iconView?.tintColor = self.tintColor
-		cell.object = object
-	}
-	
-	override var canExpand: Bool {
-		return false
-	}
-}
-
 class NCDatabaseCertTypeRow: NCTreeRow {
 	let title: String?
 	let image: UIImage?
@@ -99,7 +44,9 @@ class NCDatabaseCertTypeRow: NCTreeRow {
 class NCDatabaseCertMasterySection: NCTreeSection {
 	let trainingQueue: NCTrainingQueue
 	let trainingTime: TimeInterval
+	let character: NCCharacter
 	init(mastery: NCDBCertMastery, character: NCCharacter, children: [NCTreeNode]?) {
+		self.character = character
 		trainingQueue = NCTrainingQueue(character: character)
 		trainingQueue.add(mastery: mastery)
 		trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
@@ -108,7 +55,15 @@ class NCDatabaseCertMasterySection: NCTreeSection {
 			title.append(NSAttributedString(string: " (\(NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))", attributes: [NSForegroundColorAttributeName: UIColor.white]))
 		}
 		
-		super.init(cellIdentifier: "NCHeaderTableViewCell", attributedTitle: title, children: children)
+		super.init(cellIdentifier: "NCSkillsHeaderTableViewCell", attributedTitle: title, children: children)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		let cell = cell as! NCSkillsHeaderTableViewCell
+		cell.titleLabel?.attributedText = attributedTitle
+		cell.trainButton?.isHidden = NCAccount.current == nil || trainingTime == 0
+		cell.trainingQueue = trainingQueue
+		cell.character = character
 	}
 }
 
@@ -147,17 +102,28 @@ class NCDatabaseCertificateInfoViewController: UITableViewController, NCTreeCont
 			
 			
 			progress.progress.becomeCurrent(withPendingUnitCount: 1)
-			NCCharacter.load(account: NCAccount.current) { character in
+			NCCharacter.load(account: NCAccount.current) { result in
+				let character: NCCharacter
+				switch result {
+				case let .success(value):
+					character = value
+				default:
+					character = NCCharacter()
+				}
+
 				NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 					let certificate = try! managedObjectContext.existingObject(with: certificate.objectID) as! NCDBCertCertificate
 					var masteries = [NCTreeSection]()
 					for mastery in (certificate.masteries?.sortedArray(using: [NSSortDescriptor(key: "level.level", ascending: true)]) as? [NCDBCertMastery]) ?? [] {
-						var rows = [NCDatabaseCertSkillRow]()
+						var rows = [NCDatabaseTypeSkillRow]()
 						for skill in mastery.skills?.sortedArray(using: [NSSortDescriptor(key: "type.typeName", ascending: true)]) as? [NCDBCertSkill] ?? [] {
-							let row = NCDatabaseCertSkillRow(skill: skill, character: character)
+							let row = NCDatabaseTypeSkillRow(skill: skill, character: character)
 							rows.append(row)
 						}
-						let section = NCDatabaseCertMasterySection(mastery: mastery, character: character, children: rows)
+						let trainingQueue = NCTrainingQueue(character: character)
+						trainingQueue.add(mastery: mastery)
+						let title = NSLocalizedString("Level", comment: "").uppercased() + " \(String(romanNumber: Int(mastery.level!.level + 1)))"
+						let section = NCDatabaseSkillsSection(nodeIdentifier: nil, title: title, trainingQueue: trainingQueue, character: character, children: rows)
 						section.expanded = section.trainingTime > 0
 						masteries.append(section)
 					}
@@ -222,6 +188,33 @@ class NCDatabaseCertificateInfoViewController: UITableViewController, NCTreeCont
 			let object = (sender as! NCDefaultTableViewCell).object as! NSManagedObjectID
 			controller?.type = (try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object)) as? NCDBInvType
 		}
+	}
+	
+	@IBAction func onTrain(_ sender: UIButton) {
+		func find(_ view: UIView?) -> UITableViewCell? {
+			guard let cell = view as? UITableViewCell else {
+				return find(view?.superview)
+			}
+			return cell
+		}
+		guard let account = NCAccount.current,
+			let cell = sender.ancestor(of: NCSkillsHeaderTableViewCell.self),
+			let trainingQueue = cell.trainingQueue,
+			let character = cell.character else {
+				return
+		}
+		let message = String(format: NSLocalizedString("Training time: %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: trainingQueue.trainingTime(characterAttributes: character.attributes), precision: .seconds))
+		let controller = UIAlertController(title: NSLocalizedString("Add to skill plan?", comment: ""), message: message, preferredStyle: .alert)
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Add", comment: ""), style: .default) { action in
+			account.activeSkillPlan?.add(trainingQueue: trainingQueue)
+			
+			self.treeController.reloadData()
+		})
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+		present(controller, animated: true)
+		
 	}
 	
 	// MARK: NCTreeControllerDelegate

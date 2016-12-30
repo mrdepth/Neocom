@@ -156,12 +156,16 @@ class NCDatabaseTypeSkillRow: NCTreeNode {
 		super.init(cellIdentifier: "Cell", nodeIdentifier: nil, children: children, object: skill.objectID)
 	}
 	
-	convenience init(skill: NCDBInvTypeRequiredSkill, character: NCCharacter, children: [NCTreeNode]?) {
+	convenience init(skill: NCDBInvTypeRequiredSkill, character: NCCharacter, children: [NCTreeNode]? = nil) {
 		self.init(skill: skill.skillType!, level: Int(skill.skillLevel), character: character, children: children)
 	}
 
-	convenience init(skill: NCDBIndRequiredSkill, character: NCCharacter, children: [NCTreeNode]?) {
+	convenience init(skill: NCDBIndRequiredSkill, character: NCCharacter, children: [NCTreeNode]? = nil) {
 		self.init(skill: skill.skillType!, level: Int(skill.skillLevel), character: character, children: children)
+	}
+
+	convenience init(skill: NCDBCertSkill, character: NCCharacter, children: [NCTreeNode]? = nil) {
+		self.init(skill: skill.type!, level: Int(skill.skillLevel), character: character, children: children)
 	}
 
 	override func configure(cell: UITableViewCell) {
@@ -387,17 +391,17 @@ class NCDatabaseSkillsSection: NCTreeSection {
 	let character: NCCharacter
 	let trainingTime: TimeInterval
 	
-	init(nodeIdentifier: String?, trainingQueue: NCTrainingQueue, character: NCCharacter, children: [NCTreeNode]? = nil) {
+	init(nodeIdentifier: String?, title: String?, trainingQueue: NCTrainingQueue, character: NCCharacter, children: [NCTreeNode]? = nil) {
 		self.trainingQueue = trainingQueue
 		self.character = character
 		trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
-		let title = NSMutableAttributedString(string: NSLocalizedString("Required Skills", comment: "").uppercased())
+		let attributedTitle = NSMutableAttributedString(string: title ?? "")
 		if trainingTime > 0 {
-			title.append(NSAttributedString(
+			attributedTitle.append(NSAttributedString(
 				string: " (\(NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))",
 				attributes: [NSForegroundColorAttributeName: UIColor.white]))
 		}
-		super.init(cellIdentifier: "NCSkillsHeaderTableViewCell", nodeIdentifier: nodeIdentifier, title: nil, attributedTitle: title, children: children)
+		super.init(cellIdentifier: "NCSkillsHeaderTableViewCell", nodeIdentifier: nodeIdentifier, attributedTitle: attributedTitle, children: children)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -423,7 +427,7 @@ struct NCDatabaseTypeInfo {
 			
 			dataManager.marketHistory(typeID: typeID, regionID: regionID) { result in
 				switch result {
-				case let .success(value: _, cacheRecordID: recordID):
+				case let .success(_, recordID):
 					let row = NCDatabaseTypeMarketRow(history: recordID)
 					marketSection?.mutableArrayValue(forKey: "children").add(row)
 				default:
@@ -462,7 +466,15 @@ struct NCDatabaseTypeInfo {
 	
 	static func itemInfo(type: NCDBInvType, completionHandler: @escaping ([NCTreeSection]) -> Void) {
 		
-		NCCharacter.load(account: NCAccount.current) { character in
+		NCCharacter.load(account: NCAccount.current) { result in
+			let character: NCCharacter
+			switch result {
+			case let .success(value):
+				character = value
+			default:
+				character = NCCharacter()
+			}
+
 			NCDatabase.sharedDatabase?.performBackgroundTask({ (managedObjectContext) in
 				var sections = [NCTreeSection]()
 				
@@ -580,7 +592,15 @@ struct NCDatabaseTypeInfo {
 
 	static func blueprintInfo(type: NCDBInvType, completionHandler: @escaping ([NCTreeSection]) -> Void) {
 		
-		NCCharacter.load(account: NCAccount.current) { character in
+		NCCharacter.load(account: NCAccount.current) { result in
+			let character: NCCharacter
+			switch result {
+			case let .success(value):
+				character = value
+			default:
+				character = NCCharacter()
+			}
+
 			NCDatabase.sharedDatabase?.performBackgroundTask({ (managedObjectContext) in
 				var sections = [NCTreeSection]()
 				
@@ -645,7 +665,7 @@ struct NCDatabaseTypeInfo {
 		}
 		let trainingQueue = NCTrainingQueue(character: character)
 		trainingQueue.addRequiredSkills(for: type)
-		return NCDatabaseSkillsSection(nodeIdentifier: String(NCDBAttributeCategoryID.requiredSkills.rawValue), trainingQueue: trainingQueue, character: character, children: rows)
+		return NCDatabaseSkillsSection(nodeIdentifier: String(NCDBAttributeCategoryID.requiredSkills.rawValue), title: NSLocalizedString("Required Skills", comment: "").uppercased(), trainingQueue: trainingQueue, character: character, children: rows)
 	}
 	
 	static func requiredSkills(activity: NCDBIndActivity, character: NCCharacter) -> NCDatabaseSkillsSection? {
@@ -658,7 +678,7 @@ struct NCDatabaseTypeInfo {
 		
 		let trainingQueue = NCTrainingQueue(character: character)
 		trainingQueue.addRequiredSkills(for: activity)
-		return NCDatabaseSkillsSection(nodeIdentifier: nil, trainingQueue: trainingQueue, character: character, children: rows)
+		return NCDatabaseSkillsSection(nodeIdentifier: nil, title: NSLocalizedString("Required Skills", comment: "").uppercased(), trainingQueue: trainingQueue, character: character, children: rows)
 	}
 	
 	static func masteries(type: NCDBInvType, character: NCCharacter) -> NCTreeSection? {

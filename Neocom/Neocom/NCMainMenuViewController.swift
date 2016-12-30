@@ -405,7 +405,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 			
 			dataManager.skills { result in
 				switch result {
-				case let .success(value: _, cacheRecordID: recordID):
+				case let .success(_, recordID):
 					mainMenuDetails.skillsRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 				default:
 					break
@@ -414,7 +414,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 
 			dataManager.skillQueue { result in
 				switch result {
-				case let .success(value: _, cacheRecordID: recordID):
+				case let .success(_, recordID):
 					mainMenuDetails.skillQueueRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 				default:
 					break
@@ -423,7 +423,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 
 			dataManager.clones { result in
 				switch result {
-				case let .success(value: _, cacheRecordID: recordID):
+				case let .success(_, recordID):
 					mainMenuDetails.clonesRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 				default:
 					break
@@ -432,7 +432,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 			
 			dataManager.wallets { result in
 				switch result {
-				case let .success(value: _, cacheRecordID: recordID):
+				case let .success(_, recordID):
 					mainMenuDetails.walletsRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 				default:
 					break

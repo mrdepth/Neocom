@@ -621,7 +621,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 		progress.becomeCurrent(withPendingUnitCount: 1)
 		dataManager.character { result in
 			switch result {
-			case let .success(value: value, cacheRecordID: recordID):
+			case let .success(value, recordID):
 				let dispatchGroup = DispatchGroup()
 				accountInfo.characterRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 				
@@ -629,7 +629,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.corporation(corporationID: value.corporationID) { result in
 					switch result {
-					case let .success(value: _, cacheRecordID: recordID):
+					case let .success(_, recordID):
 						accountInfo.corporationRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case let .failure(error):
 						accountInfo.corporationError = error
@@ -642,7 +642,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.skillQueue { result in
 					switch result {
-					case let .success(value: _, cacheRecordID: recordID):
+					case let .success(_, recordID):
 						accountInfo.skillQueueRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case let .failure(error):
 						accountInfo.skillQueueError = error
@@ -655,7 +655,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.wallets { result in
 					switch result {
-					case let .success(value: _, cacheRecordID: recordID):
+					case let .success(_, recordID):
 						accountInfo.walletsRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case .failure:
 						break
@@ -668,7 +668,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.skills { result in
 					switch result {
-					case let .success(value: _, cacheRecordID: recordID):
+					case let .success(_, recordID):
 						accountInfo.skillsRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case .failure:
 						break
@@ -681,7 +681,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.characterLocation { result in
 					switch result {
-					case let .success(value: _, cacheRecordID: recordID):
+					case let .success(_, recordID):
 						accountInfo.characterLocationRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case .failure:
 						break
@@ -694,7 +694,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.characterShip { result in
 					switch result {
-					case let .success(value: _, cacheRecordID: recordID):
+					case let .success(_, recordID):
 						accountInfo.characterShipRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case .failure:
 						break
@@ -707,7 +707,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.image(characterID: accountInfo.account.characterID, dimension: 80) { result in
 					switch result {
-					case let .success(value: _, cacheRecordID: recordID):
+					case let .success(_, recordID):
 						accountInfo.characterImageRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
 					case .failure:
 						break

@@ -109,6 +109,7 @@ extension NCDBEveIcon {
 extension Notification.Name {
 	public static let NCCurrentAccountChanged = Notification.Name("NCCurrentAccountChanged")
 	public static let NCMarketRegionChanged = Notification.Name("NCMarketRegionChanged")
+	public static let NCCharacterChanged = Notification.Name("NCCharacterChanged")
 }
 
 let ESClientID = "c2cc974798d4485d966fba773a8f7ef8"

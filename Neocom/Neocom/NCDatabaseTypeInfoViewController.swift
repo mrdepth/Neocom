@@ -41,7 +41,7 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 			}
 			NCDataManager().image(typeID: Int(type.typeID), dimension: 512) { result in
 				switch result {
-				case let .success(value: value, cacheRecordID: _):
+				case let .success(value, _):
 					let to = self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypeInfoHeaderViewControllerLarge") as! NCDatabaseTypeInfoHeaderViewController
 					to.type = type
 					to.image = value
@@ -118,7 +118,7 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 			return cell
 		}
 		guard let account = NCAccount.current,
-			let cell = find(sender) as? NCSkillsHeaderTableViewCell,
+			let cell = sender.ancestor(of: NCSkillsHeaderTableViewCell.self),
 			let trainingQueue = cell.trainingQueue,
 			let character = cell.character else {
 				return

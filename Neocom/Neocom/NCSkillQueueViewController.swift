@@ -40,40 +40,32 @@ fileprivate class NCSkillQueueRow: NCTreeRow {
 }
 
 fileprivate class NCSkillQueueSection: NCTreeSection {
-	var observer: NCManagedObjectObserver?
-	let cacheRecord: NCCacheRecord
+	var observer: NSObjectProtocol?
+	let character: NCCharacter
 	
-	init(cacheRecord: NCCacheRecord) {
-		self.cacheRecord = cacheRecord
+	init(character: NCCharacter) {
+		self.character = character
 		
-		var children = [NCSkillQueueRow]()
-		let date = Date()
-		if let invTypes = NCDatabase.sharedDatabase?.invTypes,
-			let skillQueue = (cacheRecord.data?.data as? [ESSkillQueueItem])?.filter({return $0.finishDate != nil && $0.finishDate! > date}) {
-			for item in skillQueue {
-				guard let type = invTypes[item.skillID] else {continue}
-				guard let skill = NCSkill(type: type, skill: item) else {continue}
-				let row = NCSkillQueueRow(skill: skill)
-				children.append(row)
+		let invTypes = NCDatabase.sharedDatabase?.invTypes
+		func rows(_ skillQueue: [ESSkillQueueItem]) -> [NCSkillQueueRow] {
+			let date = Date()
+			return skillQueue.flatMap { (item) in
+				guard let finishDate = item.finishDate, finishDate > date else {return nil}
+				guard let type = invTypes?[item.skillID] else {return nil}
+				guard let skill = NCSkill(type: type, skill: item) else {return nil}
+				return NCSkillQueueRow(skill: skill)
 			}
 		}
 
+		let children = rows(character.skillQueue)
+		
 		super.init(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "SkillQueue", children: children)
 
-		self.observer = NCManagedObjectObserver(managedObjectID: cacheRecord.objectID) { [weak self] (updated, deleted) in
+		observer = NotificationCenter.default.addObserver(forName: .NCCharacterChanged, object: character, queue: .main) {[weak self] note in
 			guard let strongSelf = self else {return}
-			guard let skillQueue = (cacheRecord.data?.data as? [ESSkillQueueItem])?.filter({return $0.finishDate != nil && $0.finishDate! > date}) else {return}
-			guard let invTypes = NCDatabase.sharedDatabase?.invTypes else {return}
 			
-			var to = [NCSkillQueueRow]()
+			let to = rows(character.skillQueue)
 			
-			for item in skillQueue {
-				guard let type = invTypes[item.skillID] else {continue}
-				guard let skill = NCSkill(type: type, skill: item) else {continue}
-				let row = NCSkillQueueRow(skill: skill)
-				to.append(row)
-			}
-
 			let from = strongSelf.mutableArrayValue(forKey: "children")
 			(from.copy() as! [NCSkillQueueRow]).transition(to: to, handler: { (old, new, type) in
 				switch type {
@@ -89,20 +81,39 @@ fileprivate class NCSkillQueueSection: NCTreeSection {
 				}
 			})
 		}
+
 	}
+	
 	
 	override func configure(cell: UITableViewCell) {
 		let date = Date()
-		if let cell = cell as? NCHeaderTableViewCell,
-			let skillQueue = (cacheRecord.data?.data as? [ESSkillQueueItem])?.filter({return $0.finishDate != nil && $0.finishDate! > date}) {
-			if let lastSkill = skillQueue.last, let endDate = lastSkill.finishDate {
-				cell.titleLabel?.text = String(format: NSLocalizedString("%@ (%d skills)", comment: ""),
-				NCTimeIntervalFormatter.localizedString(from: max(0, endDate.timeIntervalSinceNow), precision: .minutes), skillQueue.count)
-			}
-			else {
-				cell.titleLabel?.text = NSLocalizedString("No skills in training", comment: "")
+		let cell = cell as! NCHeaderTableViewCell
+		let skillQueue = character.skillQueue.filter({return $0.finishDate != nil && $0.finishDate! > date})
+		if let lastSkill = skillQueue.last, let endDate = lastSkill.finishDate {
+			cell.titleLabel?.text = String(format: NSLocalizedString("%@ (%d skills)", comment: ""),
+			                               NCTimeIntervalFormatter.localizedString(from: max(0, endDate.timeIntervalSinceNow), precision: .minutes), skillQueue.count)
+		}
+		else {
+			cell.titleLabel?.text = NSLocalizedString("No skills in training", comment: "")
+		}
+	}
+}
+
+fileprivate class NCSkillPlanSection: NCTreeSection {
+	init(skillPlan: NCSkillPlan, character: NCCharacter) {
+		let skills = skillPlan.skills?.sortedArray(using: [NSSortDescriptor(key: "position", ascending: true)]) as? [NCSkillPlanSkill] ?? []
+		
+		let invTypes = NCDatabase.sharedDatabase?.invTypes
+		func rows(_ skillQueue: [NCSkillPlanSkill]) -> [NCSkillQueueRow] {
+			return skillQueue.flatMap { (item) in
+				guard let type = invTypes?[Int(item.typeID)] else {return nil}
+				guard let skill = NCSkill(type: type, level: Int(item.level)) else {return nil}
+				return NCSkillQueueRow(skill: skill)
 			}
 		}
+
+		let children = rows(skills)
+		super.init(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "SkillPlan", children: children)
 	}
 }
 
@@ -149,14 +160,14 @@ class NCSkillQueueViewController: UITableViewController {
 	
 	private func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil ) {
 		if let account = NCAccount.current {
-			let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
-			
-			dataManager.skillQueue { result in
+			NCCharacter.load(account: account) { result in
 				switch result {
-				case let .success(value: _, cacheRecordID: recordID):
-					let section = NCSkillQueueSection(cacheRecord: (try! NCCache.sharedCache!.viewContext.existingObject(with: recordID)) as! NCCacheRecord)
-					self.treeController.content = [section]
+				case let .success(character):
+					let skillQueue = NCSkillQueueSection(character: character)
+					let skillPlan = NCSkillPlanSection(skillPlan: account.activeSkillPlan!, character: character)
+					self.treeController.content = [skillQueue, skillPlan]
 					self.treeController.reloadData()
+					
 				case let .failure(error):
 					if self.treeController.content == nil {
 						self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)

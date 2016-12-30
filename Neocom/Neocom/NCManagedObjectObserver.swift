@@ -15,11 +15,9 @@ class NCManagedObjectObserver {
 	var objectIDs = Set<NSManagedObjectID>()
 	var observer: NSObjectProtocol?
 	
-	init(managedObjectID: NSManagedObjectID? = nil, handler: @escaping Handler) {
+	init(managedObjectIDs: [NSManagedObjectID]? = nil, handler: @escaping Handler) {
 		self.handler = handler
-		if let managedObjectID = managedObjectID {
-			objectIDs.insert(managedObjectID)
-		}
+		self.objectIDs = Set(managedObjectIDs ?? [])
 		
 		observer = NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: .main) { [weak self] (note) in
 			guard let strongSelf = self else {return}
@@ -32,6 +30,10 @@ class NCManagedObjectObserver {
 				}
 			}
 		}
+	}
+	
+	convenience init(managedObjectID: NSManagedObjectID, handler: @escaping Handler) {
+		self.init(managedObjectIDs: [managedObjectID], handler: handler)
 	}
 	
 	deinit {

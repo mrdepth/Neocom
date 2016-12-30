@@ -3478,6 +3478,53 @@
                                     <outlet property="titleLabel" destination="g59-8C-DkM" id="t0W-ov-0wq"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCSkillsHeaderTableViewCell" rowHeight="40" id="ifj-5f-4h2" customClass="NCSkillsHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="137" width="320" height="40"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ifj-5f-4h2" id="P1n-bY-kMr">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LER-Vx-6XC">
+                                            <rect key="frame" x="32" y="15" width="226" height="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="GpD-5y-pnf">
+                                            <rect key="frame" x="8" y="15" width="16" height="16"/>
+                                            <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2NE-x3-OQi">
+                                            <rect key="frame" x="266" y="9" width="39" height="28"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <state key="normal" title="TRAIN">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onTrain:" destination="919-jM-IW7" eventType="touchUpInside" id="fSh-hG-Gqi"/>
+                                                <action selector="onTrain:" destination="JbH-Km-dUZ" eventType="touchUpInside" id="xie-gl-AQY"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="2NE-x3-OQi" secondAttribute="trailing" constant="15" id="2hc-e3-aRc"/>
+                                        <constraint firstItem="LER-Vx-6XC" firstAttribute="centerY" secondItem="GpD-5y-pnf" secondAttribute="centerY" id="JSb-sq-vAy"/>
+                                        <constraint firstItem="LER-Vx-6XC" firstAttribute="top" secondItem="P1n-bY-kMr" secondAttribute="top" constant="15" id="T3m-9q-42W"/>
+                                        <constraint firstItem="2NE-x3-OQi" firstAttribute="leading" secondItem="LER-Vx-6XC" secondAttribute="trailing" constant="8" id="VXZ-zr-sf6"/>
+                                        <constraint firstItem="LER-Vx-6XC" firstAttribute="leading" secondItem="GpD-5y-pnf" secondAttribute="trailing" constant="8" id="cn4-tn-f8O"/>
+                                        <constraint firstItem="GpD-5y-pnf" firstAttribute="leading" secondItem="P1n-bY-kMr" secondAttribute="leading" constant="8" id="iWC-cr-VSB"/>
+                                        <constraint firstAttribute="bottom" secondItem="LER-Vx-6XC" secondAttribute="bottom" constant="8" id="kH6-oz-iYW"/>
+                                        <constraint firstItem="2NE-x3-OQi" firstAttribute="centerY" secondItem="LER-Vx-6XC" secondAttribute="centerY" id="yIE-zY-q7O"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="expandIcon" destination="GpD-5y-pnf" id="x5I-GX-Hp1"/>
+                                    <outlet property="titleLabel" destination="LER-Vx-6XC" id="NeZ-Vr-ykJ"/>
+                                    <outlet property="trainButton" destination="2NE-x3-OQi" id="NNy-Ej-KoJ"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="94c-v0-1u1" id="qCm-Qd-mCO"/>
@@ -3652,37 +3699,52 @@
                                     <outlet property="titleLabel" destination="kgM-C4-XWV" id="bJd-z4-E86"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCHeaderTableViewCell" rowHeight="40" id="UY6-yc-G5w" customClass="NCHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCSkillsHeaderTableViewCell" rowHeight="40" id="Ji2-jB-Yty" customClass="NCSkillsHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="97" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UY6-yc-G5w" id="cLj-3c-cwm">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ji2-jB-Yty" id="afd-dK-DHB">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9w-tU-1Xq">
-                                            <rect key="frame" x="32" y="15" width="273" height="16"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dgS-2c-Rtb">
+                                            <rect key="frame" x="32" y="15" width="226" height="16"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="mJi-C6-dfh">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="abz-6d-slQ">
                                             <rect key="frame" x="8" y="15" width="16" height="16"/>
                                             <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dh8-FB-CDn">
+                                            <rect key="frame" x="266" y="9" width="39" height="28"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <state key="normal" title="TRAIN">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onTrain:" destination="919-jM-IW7" eventType="touchUpInside" id="8ha-9C-46b"/>
+                                                <action selector="onTrain:" destination="JbH-Km-dUZ" eventType="touchUpInside" id="bdF-5J-x9Y"/>
+                                                <action selector="onTrain:" destination="eI9-Lf-Pgf" eventType="touchUpInside" id="xdz-Sh-wpG"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="z9w-tU-1Xq" firstAttribute="centerY" secondItem="mJi-C6-dfh" secondAttribute="centerY" id="Ssg-x2-dvH"/>
-                                        <constraint firstItem="mJi-C6-dfh" firstAttribute="leading" secondItem="cLj-3c-cwm" secondAttribute="leading" constant="8" id="guD-pa-Igp"/>
-                                        <constraint firstAttribute="bottom" secondItem="z9w-tU-1Xq" secondAttribute="bottom" constant="8" id="hQC-Np-HQp"/>
-                                        <constraint firstItem="z9w-tU-1Xq" firstAttribute="top" secondItem="cLj-3c-cwm" secondAttribute="top" constant="15" id="mzR-u9-ktI"/>
-                                        <constraint firstItem="z9w-tU-1Xq" firstAttribute="leading" secondItem="mJi-C6-dfh" secondAttribute="trailing" constant="8" id="vna-03-Fjp"/>
-                                        <constraint firstAttribute="trailing" secondItem="z9w-tU-1Xq" secondAttribute="trailing" constant="15" id="w0C-C3-gtt"/>
+                                        <constraint firstItem="dgS-2c-Rtb" firstAttribute="centerY" secondItem="abz-6d-slQ" secondAttribute="centerY" id="0fr-ax-7Af"/>
+                                        <constraint firstItem="abz-6d-slQ" firstAttribute="leading" secondItem="afd-dK-DHB" secondAttribute="leading" constant="8" id="CnJ-9j-cpn"/>
+                                        <constraint firstItem="dgS-2c-Rtb" firstAttribute="leading" secondItem="abz-6d-slQ" secondAttribute="trailing" constant="8" id="D5b-VY-6Pi"/>
+                                        <constraint firstAttribute="bottom" secondItem="dgS-2c-Rtb" secondAttribute="bottom" constant="8" id="Gsr-aR-PoF"/>
+                                        <constraint firstItem="Dh8-FB-CDn" firstAttribute="leading" secondItem="dgS-2c-Rtb" secondAttribute="trailing" constant="8" id="R6P-TZ-aAe"/>
+                                        <constraint firstAttribute="trailing" secondItem="Dh8-FB-CDn" secondAttribute="trailing" constant="15" id="YMM-af-gxH"/>
+                                        <constraint firstItem="dgS-2c-Rtb" firstAttribute="top" secondItem="afd-dK-DHB" secondAttribute="top" constant="15" id="Zl6-iS-4N5"/>
+                                        <constraint firstItem="Dh8-FB-CDn" firstAttribute="centerY" secondItem="dgS-2c-Rtb" secondAttribute="centerY" id="qgv-ac-nsG"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="expandIcon" destination="mJi-C6-dfh" id="i8h-bk-yPk"/>
-                                    <outlet property="titleLabel" destination="z9w-tU-1Xq" id="QUN-vY-bnp"/>
+                                    <outlet property="expandIcon" destination="abz-6d-slQ" id="8mU-FZ-i3n"/>
+                                    <outlet property="titleLabel" destination="dgS-2c-Rtb" id="ptS-Ch-qNp"/>
+                                    <outlet property="trainButton" destination="Dh8-FB-CDn" id="Kkh-BV-BBW"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

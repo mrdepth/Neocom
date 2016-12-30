@@ -131,7 +131,7 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 			
 			dataManager.clones { result in
 				switch result {
-				case let .success(value: value, cacheRecordID: recordID):
+				case let .success(value, recordID):
 					self.observer = NCManagedObjectObserver(managedObjectID: recordID) { [weak self] _, _ in
 						guard let record = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord else {return}
 						guard let value = record.data?.data as? ESClones else {return}

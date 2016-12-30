@@ -8,10 +8,13 @@
 
 import Foundation
 import EVEAPI
+import CoreData
 
 class NCCharacter {
-	let skills: [Int: NCSkill]
-	let attributes: NCCharacterAttributes
+	
+	private(set) var skills: [Int: NCSkill]
+	private(set) var skillQueue: [ESSkillQueueItem]
+	private(set) var attributes: NCCharacterAttributes
 	
 	init(attributes: NCCharacterAttributes? = nil, skills: ESSkills? = nil, skillQueue: [ESSkillQueueItem]? = nil) {
 		var skillsMap = [Int: NCSkill]()
@@ -21,7 +24,6 @@ class NCCharacter {
 				map[IndexPath(indexes: [item.skillID, item.finishedLevel - 1])] = item
 			}
 		}
-		
 		if let skills = skills {
 			NCDatabase.sharedDatabase?.performTaskAndWait({ (managedObjectContext) in
 				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
@@ -39,13 +41,16 @@ class NCCharacter {
 		}
 		self.attributes = attributes ?? NCCharacterAttributes()
 		self.skills = skillsMap
+		self.skillQueue = skillQueue ?? []
 	}
 	
-	class func load(account: NCAccount?, completionHandler: @escaping(NCCharacter) -> Void) {
+	var observer: NCManagedObjectObserver?
+	
+	class func load(account: NCAccount?, completionHandler: @escaping(NCResult<NCCharacter>) -> Void) {
 		if let account = account {
 			let dataManager = NCDataManager(account: account)
-			var skills: ESSkills?
-			var skillQueue: [ESSkillQueueItem]?
+			var skillsResult: NCCachedResult<ESSkills>?
+			var skillQueueResult: NCCachedResult<[ESSkillQueueItem]>?
 			
 			let dispatchGroup = DispatchGroup()
 			
@@ -54,12 +59,7 @@ class NCCharacter {
 			progress.becomeCurrent(withPendingUnitCount: 1)
 			dispatchGroup.enter()
 			dataManager.skills { result in
-				switch result {
-				case let .success(value: value, cacheRecordID: _):
-					skills = value
-				default:
-					break
-				}
+				skillsResult = result
 				dispatchGroup.leave()
 			}
 			progress.resignCurrent()
@@ -67,27 +67,126 @@ class NCCharacter {
 			progress.becomeCurrent(withPendingUnitCount: 1)
 			dispatchGroup.enter()
 			dataManager.skillQueue { result in
-				switch result {
-				case let .success(value: value, cacheRecordID: _):
-					skillQueue = value
-				default:
-					break
-				}
+				skillQueueResult = result
 				dispatchGroup.leave()
 			}
 			progress.resignCurrent()
 			
 			dispatchGroup.notify(queue: .global(qos: .background)) {
 				autoreleasepool {
-					let character = NCCharacter(attributes: nil, skills: skills, skillQueue: skillQueue)
-					DispatchQueue.main.async {
-						completionHandler(character)
+					var result: NCResult<NCCharacter>?
+					defer {
+						DispatchQueue.main.async {
+							completionHandler(result!)
+						}
 					}
+					
+					var skills: ESSkills?
+					var skillsRecordID: NSManagedObjectID?
+					var skillQueue: [ESSkillQueueItem]?
+					var skillQueueRecordID: NSManagedObjectID?
+					
+					switch skillsResult {
+					case let .success(value, recordID)?:
+						skills = value
+						skillsRecordID = recordID
+						break
+					case let .failure(error)?:
+						result = .failure(error)
+						return
+					default:
+						result = .failure(ESError.internalError)
+						return
+					}
+					
+					switch skillQueueResult {
+					case let .success(value, recordID)?:
+						skillQueue = value
+						skillQueueRecordID = recordID
+						break
+					case let .failure(error)?:
+						result = .failure(error)
+						return
+					default:
+						result = .failure(ESError.internalError)
+						return
+					}
+					
+					
+					let character = NCCharacter(attributes: nil, skills: skills!, skillQueue: skillQueue!)
+					result = .success(character)
+					
+					character.observer = NCManagedObjectObserver() {[weak character] (updated, deleted) in
+						guard let character = character else {return}
+						guard let updated = updated else {return}
+						
+						NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
+							var skills: ESSkills?
+							var skillQueue: [ESSkillQueueItem]?
+							var skillsMap = [Int: NCSkill]()
+							synchronized(self) {
+								for objectID in updated {
+									if objectID == skillsRecordID {
+										skills = ((try? managedObjectContext.existingObject(with: objectID)) as? NCCacheRecord)?.data?.data as? ESSkills
+									}
+									else if objectID == skillQueueRecordID {
+										skillQueue = ((try? managedObjectContext.existingObject(with: objectID)) as? NCCacheRecord)?.data?.data as? [ESSkillQueueItem]
+									}
+								}
+								
+								var map = [IndexPath: ESSkillQueueItem]()
+								for item in skillQueue ?? character.skillQueue {
+									map[IndexPath(indexes: [item.skillID, item.finishedLevel - 1])] = item
+								}
+								
+								if let skills = skills {
+									NCDatabase.sharedDatabase?.performTaskAndWait({ (managedObjectContext) in
+										let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
+										for skill in skills.skills {
+											guard let type = invTypes[skill.skillID] else {continue}
+											if let item = map[IndexPath(indexes: [skill.skillID, skill.currentSkillLevel])],
+												let skill = NCSkill(type: type, skill: item) {
+												skillsMap[skill.typeID] = skill
+											}
+											else if let skill = NCSkill(type: type, level: skill.currentSkillLevel, startSkillPoints: skill.skillPointsInSkill) {
+												skillsMap[skill.typeID] = skill
+											}
+										}
+									})
+								}
+								else if skillQueue != nil {
+									skillsMap = character.skills
+									NCDatabase.sharedDatabase?.performTaskAndWait({ (managedObjectContext) in
+										let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
+										for (_, skill) in skillsMap {
+											if let item = map[IndexPath(indexes: [skill.typeID, skill.level ?? 0])],
+												let type = invTypes[skill.typeID],
+												let skill = NCSkill(type: type, skill: item) {
+												skillsMap[skill.typeID] = skill
+											}
+										}
+									})
+								}
+								else {
+									skillsMap = character.skills
+								}
+							}
+							DispatchQueue.main.async {
+								character.skillQueue = skillQueue ?? character.skillQueue
+								character.skills = skillsMap
+								NotificationCenter.default.post(name: .NCCharacterChanged, object: character)
+							}
+						}
+						
+					}
+					
+					
 				}
 			}
 		}
 		else {
-			completionHandler(NCCharacter())
+			completionHandler(.success(NCCharacter()))
 		}
+
 	}
 }

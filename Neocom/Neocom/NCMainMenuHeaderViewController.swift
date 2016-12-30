@@ -39,7 +39,7 @@ class NCMainMenuHeaderViewController: UIViewController {
 			dataManager.character { result in
 				switch result {
 					
-				case let .success(value: value, cacheRecordID: _):
+				case let .success(value, _):
 					self.characterNameLabel?.text = value.name
 					let corporationID = value.corporationID
 					
@@ -47,7 +47,7 @@ class NCMainMenuHeaderViewController: UIViewController {
 					progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
 					dataManager.corporation(corporationID: corporationID) { result in
 						switch result {
-						case let .success(value: value, cacheRecordID: _):
+						case let .success(value, _):
 							self.corporationLabel?.text = value.corporationName
 							let allianceID = value.allianceID
 							if allianceID > 0 {
@@ -56,14 +56,14 @@ class NCMainMenuHeaderViewController: UIViewController {
 								progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
 								dataManager.alliance(allianceID: allianceID) { result in
 									switch result {
-									case let .success(value: value, cacheRecordID: _):
+									case let .success(value, _):
 										self.allianceLabel?.text = value.allianceName
 										
 										dispatchGroup.enter()
 										progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
 										dataManager.image(allianceID: allianceID, dimension: 32) { result in
 											switch result {
-											case let .success(value: value, cacheRecordID: _):
+											case let .success(value, _):
 												self.allianceImageView?.image = value
 											default:
 												break
@@ -87,7 +87,7 @@ class NCMainMenuHeaderViewController: UIViewController {
 							progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
 							dataManager.image(corporationID: corporationID, dimension: 32) { result in
 								switch result {
-								case let .success(value: value, cacheRecordID: _):
+								case let .success(value, _):
 									self.corporationImageView?.image = value
 								default:
 									break
@@ -107,7 +107,7 @@ class NCMainMenuHeaderViewController: UIViewController {
 					progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
 					dataManager.image(characterID: account.characterID, dimension: 128) { result in
 						switch result {
-						case let .success(value: value, cacheRecordID: _):
+						case let .success(value, _):
 							self.characterImageView?.image = value
 						default:
 							break

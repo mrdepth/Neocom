@@ -139,4 +139,8 @@ extension NCSkillPlan {
 			}
 		}
 	}
+	
+	func remove(skill: NCSkillPlanSkill) {
+		skill.managedObjectContext?.delete(skill)
+	}
 }

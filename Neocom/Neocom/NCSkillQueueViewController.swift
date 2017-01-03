@@ -26,7 +26,12 @@ fileprivate class NCSkillQueueRow: NCTreeRow {
 			let a = NCUnitFormatter.localizedString(from: Double(skill.skillPoints), unit: .none, style: .full)
 			let b = NCUnitFormatter.localizedString(from: Double(skill.skillPoints(at: 1 + (skill.level ?? 0))), unit: .skillPoints, style: .full)
 			cell.spLabel?.text = "\(a) / \(b)"
-			cell.trainingTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: max(skill.trainingEndDate?.timeIntervalSinceNow ?? 0, 0), precision: .minutes)
+			if let from = skill.trainingStartDate, let to = skill.trainingEndDate {
+				cell.trainingTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: max(to.timeIntervalSince(from), 0), precision: .minutes)
+			}
+			else {
+				cell.trainingTimeLabel?.text = nil
+			}
 		}
 	}
 	
@@ -35,6 +40,38 @@ fileprivate class NCSkillQueueRow: NCTreeRow {
 	}
 	
 	static func ==(lhs: NCSkillQueueRow, rhs: NCSkillQueueRow) -> Bool {
+		return lhs.hashValue == rhs.hashValue
+	}
+}
+
+fileprivate class NCSkillPlanRow: NCTreeRow {
+	let skill: NCTrainingSkill
+	let character: NCCharacter
+	init(skill: NCTrainingSkill, character: NCCharacter) {
+		self.skill = skill
+		self.character = character
+		super.init(cellIdentifier: "NCSkillTableViewCell")
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		if let cell = cell as? NCSkillTableViewCell {
+			cell.titleLabel?.text = "\(skill.skill.typeName) (x\(skill.skill.rank))"
+			cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:min(skill.level, 5))
+			cell.progressView?.progress = 0
+			
+			let a = NCUnitFormatter.localizedString(from: Double(skill.skill.skillPoints), unit: .none, style: .full)
+			let b = NCUnitFormatter.localizedString(from: Double(skill.skill.skillPoints(at: skill.level)), unit: .skillPoints, style: .full)
+			cell.spLabel?.text = "\(a) / \(b)"
+			let t = skill.trainingTime(characterAttributes: character.attributes)
+			cell.trainingTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes)
+		}
+	}
+	
+	override var hashValue: Int {
+		return skill.hashValue
+	}
+	
+	static func ==(lhs: NCSkillPlanRow, rhs: NCSkillPlanRow) -> Bool {
 		return lhs.hashValue == rhs.hashValue
 	}
 }
@@ -104,16 +141,29 @@ fileprivate class NCSkillPlanSection: NCTreeSection {
 		let skills = skillPlan.skills?.sortedArray(using: [NSSortDescriptor(key: "position", ascending: true)]) as? [NCSkillPlanSkill] ?? []
 		
 		let invTypes = NCDatabase.sharedDatabase?.invTypes
-		func rows(_ skillQueue: [NCSkillPlanSkill]) -> [NCSkillQueueRow] {
-			return skillQueue.flatMap { (item) in
-				guard let type = invTypes?[Int(item.typeID)] else {return nil}
-				guard let skill = NCSkill(type: type, level: Int(item.level)) else {return nil}
-				return NCSkillQueueRow(skill: skill)
+		let trainingQueue = NCTrainingQueue(character: character)
+		for skill in skills {
+			guard let type = invTypes?[Int(skill.typeID)] else {continue}
+			if let trainedSkill = character.skills[Int(skill.typeID)], trainedSkill.level ?? 0 >= Int(skill.level) {
+				skillPlan.remove(skill: skill)
+			}
+			else {
+				trainingQueue.add(skill: type, level: Int(skill.level))
 			}
 		}
-
-		let children = rows(skills)
-		super.init(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "SkillPlan", children: children)
+		if skillPlan.managedObjectContext?.hasChanges == true {
+			try? skillPlan.managedObjectContext?.save()
+		}
+		
+		let children = trainingQueue.skills.map{ skill in
+			return NCSkillPlanRow(skill: skill, character: character)
+		}
+		let title = NSMutableAttributedString(string: NSLocalizedString("TRAINING PLAN:", comment: ""))
+		if let name = skillPlan.name?.uppercased() {
+			title.append(NSAttributedString(string: " \(name)", attributes: [NSForegroundColorAttributeName: UIColor.caption]))
+		}
+		title.append(NSAttributedString(string: " (\(NCTimeIntervalFormatter.localizedString(from: trainingQueue.trainingTime(characterAttributes: character.attributes), precision: .seconds)))"))
+		super.init(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "SkillPlan", attributedTitle: title, children: children)
 	}
 }
 
@@ -147,6 +197,14 @@ class NCSkillQueueViewController: UITableViewController {
 		(item as! NCTreeNode).configure(cell: cell)
 	}
 	
+	func treeController(_ treeController: NCTreeController, canEditChild child:Int, ofItem item: AnyObject?) -> Bool {
+		return item is NCSkillPlanSection
+	}
+	
+	func treeController(_ treeController: NCTreeController, editingStyleForChild child: Int, ofItem item: AnyObject?) -> UITableViewCellEditingStyle {
+		return item is NCSkillPlanSection ? .delete : .none
+	}
+	
 	//MARK: Private
 	
 	@objc private func refresh() {
@@ -173,8 +231,12 @@ class NCSkillQueueViewController: UITableViewController {
 						self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
 					}
 				}
+				completionHandler?()
 			}
 			
+		}
+		else {
+			completionHandler?()
 		}
 	}
 

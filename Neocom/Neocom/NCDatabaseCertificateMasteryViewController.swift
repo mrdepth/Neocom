@@ -133,6 +133,10 @@ class NCDatabaseCertificateMasteryViewController: UITableViewController, NCTreeC
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Add", comment: ""), style: .default) { action in
 			account.activeSkillPlan?.add(trainingQueue: trainingQueue)
 			
+			if account.managedObjectContext?.hasChanges == true {
+				try? account.managedObjectContext?.save()
+			}
+
 			self.treeController.reloadData()
 		})
 		

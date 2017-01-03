@@ -181,9 +181,9 @@ break;*/
 	@objc optional func treeController(_ treeController: NCTreeController, didExpandCell cell: UITableViewCell, withItem item: AnyObject) -> Void
 	@objc optional func treeController(_ treeController: NCTreeController, didCollapseCell cell: UITableViewCell, withItem item: AnyObject) -> Void
 	@objc optional func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) -> Void
-	@objc optional func treeController(_ treeController: NCTreeController, canEditChild child:Int, ofItem item: AnyObject) -> Bool
-	@objc optional func treeController(_ treeController: NCTreeController, editingStyleForChild child: Int, ofItem item: AnyObject) -> UITableViewCellEditingStyle
-	@objc optional func treeController(_ treeController: NCTreeController, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forChild child: Int, ofItem item: AnyObject) -> Void
+	@objc optional func treeController(_ treeController: NCTreeController, canEditChild child:Int, ofItem item: AnyObject?) -> Bool
+	@objc optional func treeController(_ treeController: NCTreeController, editingStyleForChild child: Int, ofItem item: AnyObject?) -> UITableViewCellEditingStyle
+	@objc optional func treeController(_ treeController: NCTreeController, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forChild child: Int, ofItem item: AnyObject?) -> Void
 }
 
 @objc protocol NCExpandable {
@@ -274,7 +274,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		if let node = self.node(indexPath: indexPath) {
-			return self.delegate?.treeController?(self, canEditChild: node.index, ofItem: node.item!) ?? false
+			return self.delegate?.treeController?(self, canEditChild: node.index, ofItem: node.parent?.item) ?? false
 		}
 		else {
 			return false
@@ -283,7 +283,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 		if let node = self.node(indexPath: indexPath) {
-			self.delegate?.treeController?(self, commitEditingStyle: editingStyle, forChild: node.index, ofItem: node.item!)
+			self.delegate?.treeController?(self, commitEditingStyle: editingStyle, forChild: node.index, ofItem: node.parent?.item)
 		}
 	}
 	
@@ -360,7 +360,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
 		if let node = self.node(indexPath: indexPath) {
-			if let editingStyle = self.delegate?.treeController?(self, editingStyleForChild: node.index, ofItem: node.item!) {
+			if let editingStyle = self.delegate?.treeController?(self, editingStyleForChild: node.index, ofItem: node.parent?.item) {
 				return editingStyle
 			}
 		}

@@ -29,9 +29,9 @@ class NCTreeNode: NSObject {
 }
 
 class NCTreeSection: NCTreeNode {
-	let title: String?
-	let attributedTitle: NSAttributedString?
-	let configurationHandler: ((UITableViewCell) -> Void)?
+	dynamic var title: String?
+	dynamic var attributedTitle: NSAttributedString?
+	var configurationHandler: ((UITableViewCell) -> Void)?
 	
 	init(cellIdentifier: String, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [NCTreeNode]? = nil, object: Any? = nil, configurationHandler: ((UITableViewCell) -> Void)? = nil) {
 		self.title = title
@@ -41,11 +41,13 @@ class NCTreeSection: NCTreeNode {
 	}
 
 	override func configure(cell: UITableViewCell) {
-		if let title = title, let cell = cell as? NCHeaderTableViewCell {
-			cell.titleLabel?.text = title
+		if title != nil, let cell = cell as? NCHeaderTableViewCell {
+			//cell.titleLabel?.text = title
+			cell.binder.bind("titleLabel.text", toObject: self, withKeyPath: "title", transformer: nil)
 		}
-		else if let attributedTitle = attributedTitle, let cell = cell as? NCHeaderTableViewCell {
-			cell.titleLabel?.attributedText = attributedTitle
+		else if attributedTitle != nil, let cell = cell as? NCHeaderTableViewCell {
+			//cell.titleLabel?.attributedText = attributedTitle
+			cell.binder.bind("titleLabel.attributedText", toObject: self, withKeyPath: "attributedTitle", transformer: nil)
 		}
 		else {
 			configurationHandler?(cell)
@@ -57,12 +59,44 @@ class NCTreeSection: NCTreeNode {
 class NCTreeRow: NCTreeNode {
 	let configurationHandler: ((UITableViewCell) -> Void)?
 	
-	init(cellIdentifier: String, object: Any? = nil, configurationHandler: ((UITableViewCell) -> Void)? = nil ) {
+	init(cellIdentifier: String, object: Any? = nil, children: [NCTreeNode]? = nil, configurationHandler: ((UITableViewCell) -> Void)? = nil ) {
 		self.configurationHandler = configurationHandler
-		super.init(cellIdentifier: cellIdentifier, nodeIdentifier: nil, children: nil, object: object)
+		super.init(cellIdentifier: cellIdentifier, nodeIdentifier: nil, children: children, object: object)
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		configurationHandler?(cell)
+	}
+}
+
+class NCDefaultTreeRow: NCTreeRow {
+	dynamic var image: UIImage?
+	dynamic var title: String?
+	dynamic var attributedTitle: NSAttributedString?
+	dynamic var subtitle: String?
+	var segue: String?
+	dynamic var accessoryType: UITableViewCellAccessoryType
+	
+	init(cellIdentifier: String, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, segue: String? = nil, object: Any? = nil, children: [NCTreeNode]? = nil) {
+		self.image = image
+		self.title = title
+		self.attributedTitle = attributedTitle
+		self.subtitle = subtitle
+		self.segue = segue
+		self.accessoryType = accessoryType
+		super.init(cellIdentifier: cellIdentifier, object: object, children: children, configurationHandler: nil)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.iconView?.image = image
+		if let attributedTitle = attributedTitle {
+			cell.titleLabel?.attributedText = attributedTitle
+		}
+		else {
+			cell.titleLabel?.text = title
+		}
+		cell.subtitleLabel?.text = subtitle
+		cell.accessoryType = accessoryType
 	}
 }

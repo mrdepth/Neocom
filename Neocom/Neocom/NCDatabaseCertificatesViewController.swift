@@ -56,7 +56,7 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 				if let indexPaths = self.tableView.indexPathsForVisibleRows {
 					self.tableView.reloadRows(at: indexPaths, with: .none)
 				}
-				progress.finih()
+				progress.finish()
 			}
 			progress.progress.resignCurrent()
 		}

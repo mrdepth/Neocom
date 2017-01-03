@@ -499,7 +499,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 			cell.progressHandler = progressHandler
 			progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
 			loadAccountInfo(accountInfo!) {
-				progressHandler.finih()
+				progressHandler.finish()
 				if cell.progressHandler === progressHandler {
 					cell.progressHandler = nil
 				}

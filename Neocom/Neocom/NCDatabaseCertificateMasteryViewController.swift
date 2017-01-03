@@ -98,7 +98,7 @@ class NCDatabaseCertificateMasteryViewController: UITableViewController, NCTreeC
 						self.results = certificates
 						self.treeController.content = certificates
 						self.treeController.reloadData()
-						progress.finih()
+						progress.finish()
 					}
 				}
 			}

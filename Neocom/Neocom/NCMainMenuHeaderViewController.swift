@@ -126,7 +126,7 @@ class NCMainMenuHeaderViewController: UIViewController {
 			progressHandler.progress.resignCurrent()
 			
 			dispatchGroup.notify(queue: .main) {
-				progressHandler.finih()
+				progressHandler.finish()
 			}
 		}
 	}

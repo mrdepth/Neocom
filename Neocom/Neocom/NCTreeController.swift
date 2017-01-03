@@ -34,7 +34,6 @@ class NCTreeControllerNode: NSObject {
 			else {
 				return self.treeController.delegate!.treeController!(self.treeController, child: self.index, ofItem: parent.item)
 			}
-			
 		}
 		return nil
 	}()
@@ -155,18 +154,6 @@ class NCTreeControllerNode: NSObject {
 		}
 	}
 }
-/*case NSKeyValueChangeSetting:
-[self.treeController removeChildren:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.children.count)] ofNode:self withRowAnimation:UITableViewRowAnimationFade];
-[self.treeController insertChildren:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [[self.item valueForKeyPath:childrenKeyPath] count])] ofNode:self withRowAnimation:UITableViewRowAnimationFade];
-case NSKeyValueChangeInsertion:
-[self.treeController insertChildren:indexes ofNode:self withRowAnimation:UITableViewRowAnimationFade];
-break;
-case NSKeyValueChangeRemoval:
-[self.treeController removeChildren:indexes ofNode:self withRowAnimation:UITableViewRowAnimationFade];
-break;
-case NSKeyValueChangeReplacement:
-[self.treeController reloadChildren:indexes ofNode:self withRowAnimation:UITableViewRowAnimationFade];
-break;*/
 
 @objc protocol NCTreeControllerDelegate: NSObjectProtocol {
 	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String
@@ -184,6 +171,7 @@ break;*/
 	@objc optional func treeController(_ treeController: NCTreeController, canEditChild child:Int, ofItem item: AnyObject?) -> Bool
 	@objc optional func treeController(_ treeController: NCTreeController, editingStyleForChild child: Int, ofItem item: AnyObject?) -> UITableViewCellEditingStyle
 	@objc optional func treeController(_ treeController: NCTreeController, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forChild child: Int, ofItem item: AnyObject?) -> Void
+	@objc optional func treeController(_ treeController: NCTreeController, editActionsForChild child: Int, ofItem item: AnyObject?) -> [UITableViewRowAction]?
 }
 
 @objc protocol NCExpandable {
@@ -192,8 +180,28 @@ break;*/
 
 class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 	
-	public var childrenKeyPath: String?
-	public dynamic var content: [AnyObject]?
+	var childrenKeyPath: String?
+	dynamic var content: [NSObject]?/* {
+		didSet {
+			if let root = _root, let oldValue = oldValue, let content = content {
+				self.tableView?.beginUpdates()
+				oldValue.transition(to: content, handler: { (old, new, type) in
+					switch type {
+					case .insert:
+						insertChildren(IndexSet(integer: new!), ofNode: root, withRowAnimation: .bottom)
+					case .delete:
+						deleteChildren(IndexSet(integer: old!), ofNode: root, withRowAnimation: .bottom)
+					case .move:
+						deleteChildren(IndexSet(integer: old!), ofNode: root, withRowAnimation: .fade)
+						insertChildren(IndexSet(integer: new!), ofNode: root, withRowAnimation: .fade)
+					case .update:
+						reloadChildren(IndexSet(integer: new!), ofNode: root, withRowAnimation: .fade)
+					}
+				})
+				self.tableView?.endUpdates()
+			}
+		}
+	}*/
 	@IBOutlet weak var delegate: NCTreeControllerDelegate?
 	@IBOutlet weak var tableView: UITableView?
 	
@@ -284,6 +292,15 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 		if let node = self.node(indexPath: indexPath) {
 			self.delegate?.treeController?(self, commitEditingStyle: editingStyle, forChild: node.index, ofItem: node.parent?.item)
+		}
+	}
+	
+	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+		if let node = self.node(indexPath: indexPath) {
+			return self.delegate?.treeController?(self, editActionsForChild: node.index, ofItem: node.parent?.item)
+		}
+		else {
+			return nil
 		}
 	}
 	
@@ -463,7 +480,7 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 	}
 	
 	private func indexPath(node: NCTreeControllerNode) -> IndexPath? {
-		guard let item = node.item else {return nil}
+		guard let item = node.item else {return IndexPath(row: -1, section: 0)}
 		var row = 0
 		
 		func enumerate(_ node: NCTreeControllerNode) -> NCTreeControllerNode? {

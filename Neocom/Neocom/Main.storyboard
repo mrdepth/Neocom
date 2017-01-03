@@ -2012,15 +2012,69 @@
                                     <outlet property="titleLabel" destination="gha-Ij-rPQ" id="bgI-xe-w5A"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCSkillPlansHeaderTableViewCell" rowHeight="40" id="7Gv-9V-1TS" customClass="NCHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="180" width="320" height="40"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Gv-9V-1TS" id="MU2-Gb-W4F">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p0Z-gT-gls">
+                                            <rect key="frame" x="32" y="15" width="195" height="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="ZSR-LW-Rci">
+                                            <rect key="frame" x="8" y="15" width="16" height="16"/>
+                                            <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8lX-Tj-Ltf">
+                                            <rect key="frame" x="281" y="11" width="24" height="24"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <state key="normal" image="addItem">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onAddSkillPlan:" destination="mN5-NM-lcw" eventType="touchUpInside" id="1Gp-Kz-44R"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tva-Ok-aL6">
+                                            <rect key="frame" x="242" y="11" width="24" height="24"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <state key="normal" image="importItem">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Tva-Ok-aL6" firstAttribute="centerY" secondItem="p0Z-gT-gls" secondAttribute="centerY" id="2nl-lV-nTY"/>
+                                        <constraint firstItem="ZSR-LW-Rci" firstAttribute="leading" secondItem="MU2-Gb-W4F" secondAttribute="leading" constant="8" id="4Mk-TV-XOE"/>
+                                        <constraint firstItem="p0Z-gT-gls" firstAttribute="top" secondItem="MU2-Gb-W4F" secondAttribute="top" constant="15" id="4bb-ij-CGK"/>
+                                        <constraint firstAttribute="trailing" secondItem="8lX-Tj-Ltf" secondAttribute="trailing" constant="15" id="QXv-mH-d1C"/>
+                                        <constraint firstItem="p0Z-gT-gls" firstAttribute="leading" secondItem="ZSR-LW-Rci" secondAttribute="trailing" constant="8" id="TC2-6k-Lfg"/>
+                                        <constraint firstAttribute="bottom" secondItem="p0Z-gT-gls" secondAttribute="bottom" constant="8" id="XO6-qF-o0R"/>
+                                        <constraint firstItem="p0Z-gT-gls" firstAttribute="centerY" secondItem="ZSR-LW-Rci" secondAttribute="centerY" id="Z5J-0S-6P2"/>
+                                        <constraint firstItem="Tva-Ok-aL6" firstAttribute="leading" secondItem="p0Z-gT-gls" secondAttribute="trailing" constant="15" id="ZVw-Mg-ZYw"/>
+                                        <constraint firstItem="8lX-Tj-Ltf" firstAttribute="leading" secondItem="Tva-Ok-aL6" secondAttribute="trailing" constant="15" id="gXe-Jl-O4p"/>
+                                        <constraint firstItem="8lX-Tj-Ltf" firstAttribute="centerY" secondItem="p0Z-gT-gls" secondAttribute="centerY" id="i9G-hg-FmY"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="expandIcon" destination="ZSR-LW-Rci" id="hZ4-3E-o6q"/>
+                                    <outlet property="titleLabel" destination="p0Z-gT-gls" id="tQh-fR-Jpc"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCSkillTableViewCell" id="Fnf-z6-W8p" customClass="NCSkillTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="180" width="320" height="42"/>
+                                <rect key="frame" x="0.0" y="220" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fnf-z6-W8p" id="aFl-wH-41w">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="249" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="6dT-LF-Ym3">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="42.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
                                             <color key="progressTintColor" red="0.1215686275" green="0.17254901959999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </progressView>
@@ -2084,14 +2138,10 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Skill Queue" id="Y9w-NW-zjw">
                         <barButtonItem key="backBarButtonItem" title="Back" id="4W8-WC-yaO"/>
-                        <barButtonItem key="rightBarButtonItem" title="Skills" id="kZH-NM-grk">
-                            <connections>
-                                <segue destination="YFv-rg-bYX" kind="show" id="Ioo-Pz-ufV"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="treeController" destination="kpF-MD-yeT" id="Nzv-4i-FcA"/>
+                        <segue destination="YFv-rg-bYX" kind="show" identifier="NCSkillsViewController" id="4yA-Kr-12m"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QMH-7R-F0l" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2307,7 +2357,7 @@
                     <navigationItem key="navigationItem" id="RJQ-Nx-V4m">
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="10U-Rs-mT1">
-                            <rect key="frame" x="14.5" y="7" width="291" height="30"/>
+                            <rect key="frame" x="15" y="7" width="291" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="My"/>
@@ -3773,8 +3823,10 @@
     </scenes>
     <resources>
         <image name="addAccount" width="100" height="100"/>
+        <image name="addItem" width="24" height="24"/>
         <image name="em" width="32" height="32"/>
         <image name="explosion" width="32" height="32"/>
+        <image name="importItem" width="24" height="24"/>
         <image name="kinetic" width="32" height="32"/>
         <image name="login" width="100" height="100"/>
         <image name="necrorise.png" width="256" height="256"/>

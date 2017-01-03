@@ -155,7 +155,7 @@ class NCDatabaseCertificateInfoViewController: UITableViewController, NCTreeCont
 						self.treeController.content = self.results?[self.segmentedControl.selectedSegmentIndex]
 						self.treeController.reloadData()
 						self.tableView.backgroundView = self.results?[self.segmentedControl.selectedSegmentIndex].count == 0 ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-						progress.finih()
+						progress.finish()
 					}
 				}
 			}

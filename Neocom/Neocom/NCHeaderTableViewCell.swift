@@ -11,11 +11,20 @@ import UIKit
 class NCHeaderTableViewCell: UITableViewCell, NCExpandable {
 	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var expandIcon: UIImageView?
-	
+	var object: Any?
+	private(set) lazy var binder: NCBinder = {
+		return NCBinder(target: self)
+	}()
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
+
+	override func prepareForReuse() {
+		binder.unbindAll()
+		super.prepareForReuse()
+	}
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-extension Array where Element: Hashable {
+extension Array where Element: Equatable {
 	func transition(to: Array<Element>, handler: (_ oldIndex: Int?, _ newIndex: Int?, _ changeType: NSFetchedResultsChangeType) -> Void) {
 		let from = self
 		var arr = from
@@ -42,4 +42,34 @@ extension Array where Element: Hashable {
 			self.remove(at: i)
 		}
 	}
+}
+
+extension Array where Element: NSObject {
+	func transition(to: Array<Element>, handler: (_ oldIndex: Int?, _ newIndex: Int?, _ changeType: NSFetchedResultsChangeType) -> Void) {
+		let from = self
+		var arr = from
+		for i in (0..<from.count).reversed() {
+			
+			if to.index(where: {return from[i] === $0}) == nil {
+				handler(i, nil, .delete)
+				arr.remove(at: i)
+			}
+		}
+		
+		for i in 0..<to.count {
+			let obj = to[i]
+			if let j = arr.index(where: {return obj === $0}) {
+				if j != i {
+					handler(from.index(where: {return obj === $0}), i, .move)
+				}
+				else {
+					handler(from.index(where: {return obj === $0}), i, .update)
+				}
+			}
+			else {
+				handler(nil, i, .insert)
+			}
+		}
+	}
+	
 }

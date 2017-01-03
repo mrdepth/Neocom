@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import EVEAPI
 
+
 fileprivate class NCSkillRow: NCTreeRow {
 	let skill: NCSkill
 	init(skill: NCSkill) {
@@ -224,7 +225,7 @@ class NCSkillsViewController: UITableViewController, NCTreeControllerDelegate {
 					}
 					progress.progress.becomeCurrent(withPendingUnitCount: 1)
 					self.process(value, dataManager: dataManager) {
-						progress.finih()
+						progress.finish()
 						completionHandler?()
 					}
 					progress.progress.resignCurrent()

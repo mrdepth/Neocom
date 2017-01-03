@@ -140,7 +140,7 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 				}
 				progress.progress.becomeCurrent(withPendingUnitCount: 1)
 				self.process(value, dataManager: dataManager) {
-					progress.finih()
+					progress.finish()
 					completionHandler?()
 				}
 				progress.progress.resignCurrent()
@@ -148,7 +148,7 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 				if self.treeController.content == nil {
 					self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
 				}
-				progress.finih()
+				progress.finish()
 				completionHandler?()
 			}
 		}

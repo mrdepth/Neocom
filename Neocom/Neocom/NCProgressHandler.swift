@@ -42,7 +42,7 @@ class NCProgressHandler: NSObject {
 
 	deinit {
 		totalProgress.removeObserver(self, forKeyPath: "fractionCompleted")
-		self.finih()
+		self.finish()
 	}
 	
 	private var _progressView: UIProgressView?
@@ -85,7 +85,7 @@ class NCProgressHandler: NSObject {
 		if keyPath == "fractionCompleted" {
 			DispatchQueue.main.async {
 				if self.totalProgress.completedUnitCount >= 1 {
-					self.finih()
+					self.finish()
 				}
 				else {
 					self.progressView?.setProgress(Float(self.totalProgress.fractionCompleted), animated: true)
@@ -94,7 +94,7 @@ class NCProgressHandler: NSObject {
 		}
 	}
 	
-	func finih() {
+	func finish() {
 		timer?.invalidate()
 		timer = nil
 		if let progressView = _progressView {

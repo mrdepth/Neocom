@@ -82,14 +82,14 @@ class NCCharacter {
 					}
 					
 					var skills: ESSkills?
-					var skillsRecordID: NSManagedObjectID?
+					var skillsRecord: NCCacheRecord?
 					var skillQueue: [ESSkillQueueItem]?
-					var skillQueueRecordID: NSManagedObjectID?
+					var skillQueueRecord: NCCacheRecord?
 					
 					switch skillsResult {
-					case let .success(value, recordID)?:
+					case let .success(value, cacheRecord)?:
 						skills = value
-						skillsRecordID = recordID
+						skillsRecord = cacheRecord
 						break
 					case let .failure(error)?:
 						result = .failure(error)
@@ -100,9 +100,9 @@ class NCCharacter {
 					}
 					
 					switch skillQueueResult {
-					case let .success(value, recordID)?:
+					case let .success(value, cacheRecord)?:
 						skillQueue = value
-						skillQueueRecordID = recordID
+						skillQueueRecord = cacheRecord
 						break
 					case let .failure(error)?:
 						result = .failure(error)
@@ -125,12 +125,12 @@ class NCCharacter {
 							var skillQueue: [ESSkillQueueItem]?
 							var skillsMap = [Int: NCSkill]()
 							synchronized(self) {
-								for objectID in updated {
-									if objectID == skillsRecordID {
-										skills = ((try? managedObjectContext.existingObject(with: objectID)) as? NCCacheRecord)?.data?.data as? ESSkills
+								for object in updated {
+									if object.objectID == skillsRecord?.objectID {
+										skills = ((try? managedObjectContext.existingObject(with: object.objectID)) as? NCCacheRecord)?.data?.data as? ESSkills
 									}
-									else if objectID == skillQueueRecordID {
-										skillQueue = ((try? managedObjectContext.existingObject(with: objectID)) as? NCCacheRecord)?.data?.data as? [ESSkillQueueItem]
+									else if object.objectID == skillQueueRecord?.objectID {
+										skillQueue = ((try? managedObjectContext.existingObject(with: object.objectID)) as? NCCacheRecord)?.data?.data as? [ESSkillQueueItem]
 									}
 								}
 								

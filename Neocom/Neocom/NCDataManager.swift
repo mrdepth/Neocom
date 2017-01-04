@@ -12,7 +12,7 @@ import EVEAPI
 import Alamofire
 
 enum NCCachedResult<T> {
-	case success(value: T, cacheRecordID: NSManagedObjectID)
+	case success(value: T, cacheRecord: NCCacheRecord?)
 	case failure(Error)
 }
 
@@ -140,9 +140,9 @@ class NCDataManager {
 	func image(characterID: Int64, dimension: Int, completionHandler: @escaping (NCCachedResult<UIImage>) -> Void) {
 		loadFromCache(forKey: "image.character.\(characterID).\(dimension)", account: nil, cachePolicy: cachePolicy, completionHandler: { (result: NCCachedResult<Data>) in
 			switch result {
-			case let .success(value, recordID):
+			case let .success(value, cacheRecord):
 				if let image = UIImage(data: value, scale: UIScreen.main.scale) {
-					completionHandler(.success(value: image, cacheRecordID: recordID))
+					completionHandler(.success(value: image, cacheRecord: cacheRecord))
 				}
 				else {
 					completionHandler(.failure(NCDataManagerError.invalidResponse))
@@ -160,9 +160,9 @@ class NCDataManager {
 	func image(corporationID: Int64, dimension: Int, completionHandler: @escaping (NCCachedResult<UIImage>) -> Void) {
 		loadFromCache(forKey: "image.corporation.\(corporationID).\(dimension)", account: nil, cachePolicy: cachePolicy, completionHandler: { (result: NCCachedResult<Data>) in
 			switch result {
-			case let .success(value, recordID):
+			case let .success(value, cacheRecord):
 				if let image = UIImage(data: value, scale: UIScreen.main.scale) {
-					completionHandler(.success(value: image, cacheRecordID: recordID))
+					completionHandler(.success(value: image, cacheRecord: cacheRecord))
 				}
 				else {
 					completionHandler(.failure(NCDataManagerError.invalidResponse))
@@ -180,9 +180,9 @@ class NCDataManager {
 	func image(allianceID: Int64, dimension: Int, completionHandler: @escaping (NCCachedResult<UIImage>) -> Void) {
 		loadFromCache(forKey: "image.alliance.\(allianceID).\(dimension)", account: nil, cachePolicy: cachePolicy, completionHandler: { (result: NCCachedResult<Data>) in
 			switch result {
-			case let .success(value, recordID):
+			case let .success(value, cacheRecord):
 				if let image = UIImage(data: value, scale: UIScreen.main.scale) {
-					completionHandler(.success(value: image, cacheRecordID: recordID))
+					completionHandler(.success(value: image, cacheRecord: cacheRecord))
 				}
 				else {
 					completionHandler(.failure(NCDataManagerError.invalidResponse))
@@ -200,9 +200,9 @@ class NCDataManager {
 	func image(typeID: Int, dimension: Int, completionHandler: @escaping (NCCachedResult<UIImage>) -> Void) {
 		loadFromCache(forKey: "image.type.\(typeID).\(dimension)", account: nil, cachePolicy: cachePolicy, completionHandler: { (result: NCCachedResult<Data>) in
 			switch result {
-			case let .success(value, recordID):
+			case let .success(value, cacheRecord):
 				if let image = UIImage(data: value, scale: UIScreen.main.scale) {
-					completionHandler(.success(value: image, cacheRecordID: recordID))
+					completionHandler(.success(value: image, cacheRecord: cacheRecord))
 				}
 				else {
 					completionHandler(.failure(NCDataManagerError.invalidResponse))
@@ -431,8 +431,8 @@ class NCDataManager {
 			loader { (result, cacheTime) in
 				switch (result) {
 				case let .success(value):
-					cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
-						completionHandler(.success(value: value, cacheRecordID: objectID))
+					cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
+						completionHandler(.success(value: value, cacheRecord: cacheRecord))
 					}
 				case let .failure(error):
 					/*switch error {
@@ -455,15 +455,15 @@ class NCDataManager {
 				DispatchQueue.main.async {
 					if let object = object {
 						progress.completedUnitCount += 1
-						completionHandler(.success(value: object, cacheRecordID: record!.objectID))
+						completionHandler(.success(value: object, cacheRecord: (try? NCCache.sharedCache?.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord))
 					}
 					else {
 						progress.becomeCurrent(withPendingUnitCount: 1)
 						loader { (result, cacheTime) in
 							switch (result) {
 							case let .success(value):
-								cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
-									completionHandler(.success(value: value, cacheRecordID: objectID))
+								cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
+									completionHandler(.success(value: value, cacheRecord: cacheRecord))
 								}
 							case let .failure(error):
 								completionHandler(.failure(error))
@@ -483,7 +483,7 @@ class NCDataManager {
 				DispatchQueue.main.async {
 					if let object = object {
 						progress.completedUnitCount += 1
-						completionHandler(.success(value: object, cacheRecordID: record!.objectID))
+						completionHandler(.success(value: object, cacheRecord: (try? NCCache.sharedCache?.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord))
 					}
 					else {
 						completionHandler(.failure(NCDataManagerError.noCacheData))
@@ -498,7 +498,7 @@ class NCDataManager {
 				DispatchQueue.main.async {
 					if let object = object {
 						progress.completedUnitCount += 1
-						completionHandler(.success(value: object, cacheRecordID: record!.objectID))
+						completionHandler(.success(value: object, cacheRecord: (try? NCCache.sharedCache?.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord))
 						if expired {
 							loader { (result, cacheTime) in
 								let _ = self
@@ -518,8 +518,8 @@ class NCDataManager {
 						loader { (result, cacheTime) in
 							switch (result) {
 							case let .success(value):
-								cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { objectID in
-									completionHandler(.success(value: value, cacheRecordID: objectID))
+								cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
+									completionHandler(.success(value: value, cacheRecord: cacheRecord))
 									let _ = self
 								}
 							case let .failure(error):

@@ -13,8 +13,9 @@ class NCTrainingSkill: Hashable {
 	let skill: NCSkill
 	let level: Int
 	
-	init?(type: NCDBInvType, skill: NCSkill? = nil, level: Int, trainedLevel: Int? = nil) {
+	init?(type: NCDBInvType?, skill: NCSkill? = nil, level: Int, trainedLevel: Int? = nil) {
 		guard level > 0 && level <= 5 else {return nil}
+		guard let type = type else {return nil}
 		let trainedLevel = trainedLevel ?? skill?.level ?? 0
 		guard level > trainedLevel else {return nil}
 		

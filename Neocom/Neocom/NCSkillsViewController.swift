@@ -18,6 +18,11 @@ fileprivate class NCSkillRow: NCTreeRow {
 		super.init(cellIdentifier: "NCSkillTableViewCell")
 	}
 	
+	lazy var image: UIImage? = {
+		let typeID = Int32(self.skill.typeID)
+		return NCAccount.current?.activeSkillPlan?.skills?.first(where: { ($0 as? NCSkillPlanSkill)?.typeID == typeID }) != nil ? #imageLiteral(resourceName: "skillRequirementQueued") : nil
+	}()
+	
 	fileprivate override func configure(cell: UITableViewCell) {
 		if let cell = cell as? NCSkillTableViewCell {
 			cell.titleLabel?.text = "\(skill.typeName) (x\(skill.rank))"
@@ -40,11 +45,7 @@ fileprivate class NCSkillRow: NCTreeRow {
 				cell.trainingTimeLabel?.text = NSLocalizedString("COMPLETED", comment: "")
 			}
 			
-			
-//			let a = NCUnitFormatter.localizedString(from: Double(skill.skillPoints), unit: .none, style: .full)
-//			let b = NCUnitFormatter.localizedString(from: Double(skill.skillPoints(at: skill.level + 1)), unit: .skillPoints, style: .full)
-//			cell.spLabel?.text = "\(a) / \(b)"
-//			cell.trainingTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: max(skill.trainingEndDate?.timeIntervalSinceNow ?? 0, 0), precision: .minutes)
+			cell.iconView?.image = image
 		}
 	}
 }
@@ -217,11 +218,12 @@ class NCSkillsViewController: UITableViewController, NCTreeControllerDelegate {
 			progress.progress.becomeCurrent(withPendingUnitCount: 1)
 			dataManager.skills { result in
 				switch result {
-				case let .success(value, recordID):
-					self.observer = NCManagedObjectObserver(managedObjectID: recordID) { [weak self] _, _ in
-						guard let record = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord else {return}
-						guard let value = record.data?.data as? ESSkills else {return}
-						self?.process(value, dataManager: dataManager, completionHandler: nil)
+				case let .success(value, cacheRecord):
+					if let cacheRecord = cacheRecord {
+						self.observer = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] _, _ in
+							guard let value = cacheRecord.data?.data as? ESSkills else {return}
+							self?.process(value, dataManager: dataManager, completionHandler: nil)
+						}
 					}
 					progress.progress.becomeCurrent(withPendingUnitCount: 1)
 					self.process(value, dataManager: dataManager) {

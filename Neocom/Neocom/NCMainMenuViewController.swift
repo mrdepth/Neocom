@@ -329,7 +329,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	
 	private func updateHeader() {
 		let identifier: String
-		if let account = NCAccount.current {
+		if NCAccount.current != nil {
 			//identifier = account.eveAPIKey.corporate ? "NCMainMenuCorporationHeaderViewController" : "NCMainMenuCharacterHeaderViewController"
 			identifier = "NCMainMenuCharacterHeaderViewController"
 		}
@@ -405,8 +405,8 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 			
 			dataManager.skills { result in
 				switch result {
-				case let .success(_, recordID):
-					mainMenuDetails.skillsRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+				case let .success(_, cacheRecord):
+					mainMenuDetails.skillsRecord = cacheRecord
 				default:
 					break
 				}
@@ -414,8 +414,8 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 
 			dataManager.skillQueue { result in
 				switch result {
-				case let .success(_, recordID):
-					mainMenuDetails.skillQueueRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+				case let .success(_, cacheRecord):
+					mainMenuDetails.skillQueueRecord = cacheRecord
 				default:
 					break
 				}
@@ -423,8 +423,8 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 
 			dataManager.clones { result in
 				switch result {
-				case let .success(_, recordID):
-					mainMenuDetails.clonesRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+				case let .success(_, cacheRecord):
+					mainMenuDetails.clonesRecord = cacheRecord
 				default:
 					break
 				}
@@ -432,8 +432,8 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 			
 			dataManager.wallets { result in
 				switch result {
-				case let .success(_, recordID):
-					mainMenuDetails.walletsRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+				case let .success(_, cacheRecord):
+					mainMenuDetails.walletsRecord = cacheRecord
 				default:
 					break
 				}

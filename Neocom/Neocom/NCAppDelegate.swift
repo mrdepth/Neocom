@@ -121,6 +121,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		searchBar.tintColor = UIColor.white
 		searchBar.setSearchFieldBackgroundImage(UIImage.searchFieldBackgroundImage(color: UIColor.separator), for: UIControlState.normal)
 		searchBar.backgroundImage = UIImage.image(color: UIColor.background)
+		
 	}
 
 }

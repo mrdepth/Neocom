@@ -204,14 +204,14 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 	var donchian: UIBezierPath?
 	var donchianVisibleRange: CGRect?
 	var date: ClosedRange<Date>?
-	let history: NSManagedObjectID
+	let history: NCCacheRecord
 	var observer: NCManagedObjectObserver?
 	weak var cell: NCMarketHistoryTableViewCell?
 	
-	init(history: NSManagedObjectID) {
+	init(history: NCCacheRecord) {
 		self.history = history
 		super.init(cellIdentifier: "NCMarketHistoryTableViewCell")
-		self.observer = NCManagedObjectObserver(managedObjectID: history)  {[weak self] (_, _) in
+		self.observer = NCManagedObjectObserver(managedObject: history)  {[weak self] (_, _) in
 			self?.reload()
 		}
 		reload()
@@ -219,7 +219,7 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 	
 	func reload() {
 		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
-			guard let record = (try? managedObjectContext.existingObject(with: self.history)) as? NCCacheRecord else {return}
+			guard let record = (try? managedObjectContext.existingObject(with: self.history.objectID)) as? NCCacheRecord else {return}
 			guard let history = record.data?.data as? [ESMarketHistory] else {return}
 			guard history.count > 0 else {return}
 			guard let date = history.last?.date.addingTimeInterval(-3600 * 24 * 365) else {return}
@@ -427,9 +427,11 @@ struct NCDatabaseTypeInfo {
 			
 			dataManager.marketHistory(typeID: typeID, regionID: regionID) { result in
 				switch result {
-				case let .success(_, recordID):
-					let row = NCDatabaseTypeMarketRow(history: recordID)
-					marketSection?.mutableArrayValue(forKey: "children").add(row)
+				case let .success(_, cacheRecord):
+					if let cacheRecord = cacheRecord {
+						let row = NCDatabaseTypeMarketRow(history: cacheRecord)
+						marketSection?.mutableArrayValue(forKey: "children").add(row)
+					}
 				default:
 					break
 				}

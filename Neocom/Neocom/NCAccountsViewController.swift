@@ -621,16 +621,16 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 		progress.becomeCurrent(withPendingUnitCount: 1)
 		dataManager.character { result in
 			switch result {
-			case let .success(value, recordID):
+			case let .success(value, cacheRecord):
 				let dispatchGroup = DispatchGroup()
-				accountInfo.characterRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+				accountInfo.characterRecord = cacheRecord
 				
 				dispatchGroup.enter()
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.corporation(corporationID: value.corporationID) { result in
 					switch result {
-					case let .success(_, recordID):
-						accountInfo.corporationRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+					case let .success(_, cacheRecord):
+						accountInfo.corporationRecord = cacheRecord
 					case let .failure(error):
 						accountInfo.corporationError = error
 					}
@@ -642,8 +642,8 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.skillQueue { result in
 					switch result {
-					case let .success(_, recordID):
-						accountInfo.skillQueueRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+					case let .success(_, cacheRecord):
+						accountInfo.skillQueueRecord = cacheRecord
 					case let .failure(error):
 						accountInfo.skillQueueError = error
 					}
@@ -655,8 +655,8 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.wallets { result in
 					switch result {
-					case let .success(_, recordID):
-						accountInfo.walletsRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+					case let .success(_, cacheRecord):
+						accountInfo.walletsRecord = cacheRecord
 					case .failure:
 						break
 					}
@@ -668,8 +668,8 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.skills { result in
 					switch result {
-					case let .success(_, recordID):
-						accountInfo.skillsRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+					case let .success(_, cacheRecord):
+						accountInfo.skillsRecord = cacheRecord
 					case .failure:
 						break
 					}
@@ -681,8 +681,8 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.characterLocation { result in
 					switch result {
-					case let .success(_, recordID):
-						accountInfo.characterLocationRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+					case let .success(_, cacheRecord):
+						accountInfo.characterLocationRecord = cacheRecord
 					case .failure:
 						break
 					}
@@ -694,8 +694,8 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.characterShip { result in
 					switch result {
-					case let .success(_, recordID):
-						accountInfo.characterShipRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+					case let .success(_, cacheRecord):
+						accountInfo.characterShipRecord = cacheRecord
 					case .failure:
 						break
 					}
@@ -707,8 +707,8 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				dataManager.image(characterID: accountInfo.account.characterID, dimension: 80) { result in
 					switch result {
-					case let .success(_, recordID):
-						accountInfo.characterImageRecord = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord
+					case let .success(_, cacheRecord):
+						accountInfo.characterImageRecord = cacheRecord
 					case .failure:
 						break
 					}

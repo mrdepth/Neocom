@@ -41,16 +41,20 @@ class NCTreeSection: NCTreeNode {
 	}
 
 	override func configure(cell: UITableViewCell) {
-		if title != nil, let cell = cell as? NCHeaderTableViewCell {
-			//cell.titleLabel?.text = title
-			cell.binder.bind("titleLabel.text", toObject: self, withKeyPath: "title", transformer: nil)
+		if let configurationHandler = configurationHandler {
+			configurationHandler(cell)
 		}
-		else if attributedTitle != nil, let cell = cell as? NCHeaderTableViewCell {
-			//cell.titleLabel?.attributedText = attributedTitle
-			cell.binder.bind("titleLabel.attributedText", toObject: self, withKeyPath: "attributedTitle", transformer: nil)
-		}
-		else {
-			configurationHandler?(cell)
+		else if let cell = cell as? NCHeaderTableViewCell {
+			cell.object = object
+			if title != nil {
+				//cell.titleLabel?.text = title
+				cell.binder.bind("titleLabel.text", toObject: self, withKeyPath: "title", transformer: nil)
+			}
+			else if attributedTitle != nil {
+				//cell.titleLabel?.attributedText = attributedTitle
+				cell.binder.bind("titleLabel.attributedText", toObject: self, withKeyPath: "attributedTitle", transformer: nil)
+			}
+
 		}
 	}
 }

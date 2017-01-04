@@ -71,7 +71,7 @@ class NCCache: NSObject {
 		}
 	}
 	
-	func store(_ object: NSSecureCoding?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, completionHandler: ((NSManagedObjectID) -> Void)?) {
+	func store(_ object: NSSecureCoding?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, completionHandler: ((NCCacheRecord?) -> Void)?) {
 		performBackgroundTask { (managedObjectContext) in
 			var record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
 			if record == nil {
@@ -92,7 +92,7 @@ class NCCache: NSObject {
 			}
 			if let completionHandler = completionHandler {
 				DispatchQueue.main.async {
-					completionHandler(record!.objectID)
+					completionHandler((try? self.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord)
 				}
 			}
 		}

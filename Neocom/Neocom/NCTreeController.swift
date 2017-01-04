@@ -135,19 +135,19 @@ class NCTreeControllerNode: NSObject {
 				switch kind {
 				case .setting:
 					let array = item.value(forKeyPath: childrenKeyPath) as? [Any]
-					treeController.deleteChildren(IndexSet(integersIn: 0..<children.count), ofNode: self, withRowAnimation: .automatic)
-					treeController.insertChildren(IndexSet(integersIn: 0..<(array?.count ?? 0)), ofNode: self, withRowAnimation: .automatic)
+					treeController.deleteChildren(IndexSet(integersIn: 0..<children.count), ofNode: self, withRowAnimation: .bottom)
+					treeController.insertChildren(IndexSet(integersIn: 0..<(array?.count ?? 0)), ofNode: self, withRowAnimation: .bottom)
 				case .insertion:
 					if let indexes = indexes {
-						treeController.insertChildren(indexes, ofNode: self, withRowAnimation: .automatic)
+						treeController.insertChildren(indexes, ofNode: self, withRowAnimation: .bottom)
 					}
 				case .removal:
 					if let indexes = indexes {
-						treeController.deleteChildren(indexes, ofNode: self, withRowAnimation: .automatic)
+						treeController.deleteChildren(indexes, ofNode: self, withRowAnimation: .bottom)
 					}
 				case .replacement:
 					if let indexes = indexes {
-						treeController.reloadChildren(indexes, ofNode: self, withRowAnimation: .automatic)
+						treeController.reloadChildren(indexes, ofNode: self, withRowAnimation: .fade)
 					}
 				}
 			}
@@ -255,6 +255,15 @@ class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 	func item(forIndexPath indexPath: IndexPath) -> AnyObject? {
 		let node = self.node(indexPath: indexPath)!
 		return node.item
+	}
+	
+	override func responds(to aSelector: Selector!) -> Bool {
+		if aSelector == #selector(tableView(_:canEditRowAt:)) || aSelector == #selector(tableView(_:editingStyleForRowAt:)) {
+			return self.delegate?.responds(to: aSelector) == true
+		}
+		else {
+			return super.responds(to: aSelector)
+		}
 	}
 
 	//MARK: UITableViewDataSource

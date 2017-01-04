@@ -3,3 +3,4 @@
 //
 
 #import "NCTableView.h"
+#import "NCFittingEngine.h"

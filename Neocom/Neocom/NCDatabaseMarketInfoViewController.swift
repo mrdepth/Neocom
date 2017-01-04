@@ -132,11 +132,12 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 		progress.progress.becomeCurrent(withPendingUnitCount: 1)
 		dataManager.marketOrders(typeID: Int(type!.typeID), regionID: regionID) { result in
 			switch result {
-			case let .success(value, recordID):
-				self.observer = NCManagedObjectObserver(managedObjectID: recordID) { [weak self] _, _ in
-					guard let record = (try? NCCache.sharedCache?.viewContext.existingObject(with: recordID)) as? NCCacheRecord else {return}
-					guard let value = record.data?.data as? [ESMarketOrder] else {return}
-					self?.process(value, dataManager: dataManager, completionHandler: nil)
+			case let .success(value, cacheRecord):
+				if let cacheRecord = cacheRecord {
+					self.observer = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] _, _ in
+						guard let value = cacheRecord.data?.data as? [ESMarketOrder] else {return}
+						self?.process(value, dataManager: dataManager, completionHandler: nil)
+					}
 				}
 				progress.progress.becomeCurrent(withPendingUnitCount: 1)
 				self.process(value, dataManager: dataManager) {

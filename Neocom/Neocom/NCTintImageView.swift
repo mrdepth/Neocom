@@ -16,6 +16,10 @@ class NCTintImageView: UIImageView {
 		tintColor = color
 	}
 	
+	override var intrinsicContentSize: CGSize {
+		return image != nil ? super.intrinsicContentSize : CGSize.zero
+	}
+	
 #if TARGET_INTERFACE_BUILDER
 	override func prepareForInterfaceBuilder() {
 		image = image?.withRenderingMode(.alwaysTemplate)

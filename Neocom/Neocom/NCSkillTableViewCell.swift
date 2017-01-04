@@ -9,6 +9,7 @@
 import UIKit
 
 class NCSkillTableViewCell: NCTableViewCell {
+	@IBOutlet weak var iconView: UIImageView?
 	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var levelLabel: UILabel?
 	@IBOutlet weak var spLabel: UILabel?

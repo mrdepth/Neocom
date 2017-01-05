@@ -9,31 +9,37 @@
 #import "NCFittingItem.h"
 #import "NCFittingProtected.h"
 
-@interface NCFittingAttributes()
-@property (weak, nonatomic) NCFittingItem* item;
-@end
+@implementation NCFittingAttributes {
+	std::shared_ptr<dgmpp::Item> _item;
+}
 
-@implementation NCFittingAttributes
-
-- (nonnull instancetype) initWithItem:(nonnull NCFittingItem*) item {
+- (nonnull instancetype) initWithItem:(std::shared_ptr<dgmpp::Item> const&) item {
 	if (self = [super init]) {
-		self.item = item;
+		_item = item;
 	}
 	return self;
 }
 
 - (nullable NCFittingAttribute*) objectAtIndexedSubscript:(NSInteger) attributeID {
-	auto attribute = self.item->_item->getAttribute(static_cast<dgmpp::TypeID>(attributeID));
+	auto attribute = _item->getAttribute(static_cast<dgmpp::TypeID>(attributeID));
 	return attribute ? [[NCFittingAttribute alloc] initWithAttribute:attribute] : nil;
 }
 
 @end
 
-@implementation NCFittingItem
+@implementation NCFittingItem {
+	NCFittingAttributes* _attributes;
+}
 
 - (nonnull instancetype) initWithItem:(std::shared_ptr<dgmpp::Item> const&) item {
-	if (self = [super init]) {
+	if (self = [self init]) {
 		_item = item;
+	}
+	return self;
+}
+
+- (nonnull instancetype) init {
+	if (self = [self init]) {
 	}
 	return self;
 }
@@ -64,7 +70,7 @@
 
 - (nonnull NCFittingAttributes*) attributes {
 	if (!_attributes) {
-		_attributes = [[NCFittingAttributes alloc] initWithItem: self];
+		_attributes = [[NCFittingAttributes alloc] initWithItem: _item];
 	}
 	return _attributes;
 }

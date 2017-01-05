@@ -8,6 +8,7 @@
 
 #import "NCFittingEngine.h"
 #import <Dgmpp/Dgmpp.h>
+#import "NCFittingProtected.h"
 
 @interface NCFittingEngine() {
 	std::shared_ptr<dgmpp::Engine> _engine;
@@ -22,6 +23,10 @@
 		_engine = std::make_shared<dgmpp::Engine>(std::make_shared<dgmpp::SqliteConnector>([[[NSBundle mainBundle] pathForResource:@"dgmpp" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]));
 	}
 	return self;
+}
+
+- (nonnull NCFittingGang*) gang {
+	return [[NCFittingGang alloc] initWithItem: _engine->getGang()];
 }
 
 @end

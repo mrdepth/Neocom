@@ -8,6 +8,22 @@
 
 #import "NCFittingItem.h"
 
+@class NCFittingShip, NCFittingCharge;
 @interface NCFittingDrone : NCFittingItem
+@property (readonly) NCFittingFighterSquadron squadron;
+@property (readonly) NSInteger squadronSize;
+@property (nonatomic, strong, nullable) NCFittingShip* target;
+@property (readonly) BOOL dealsDamage;
+@property (readonly, nullable) NCFittingCharge* charge;
+@property (nonatomic, assign) BOOL isActive;
+
+@property (readonly) double cycleTime;
+@property (readonly) NCFittingDamage dps;
+@property (readonly) NCFittingDamage volley;
+- (NCFittingDamage) dpsWithTarget:(NCFittingHostileTarget) target NS_SWIFT_NAME(dps(target:));
+@property (readonly) double maxRange;
+@property (readonly) double falloff;
+@property (readonly) double accuracyScore;
+
 
 @end

@@ -8,6 +8,15 @@
 
 #import "NCFittingCharge.h"
 
-@implementation NCFittingCharge
+@implementation NCFittingCharge {
+	NSInteger _typeID;
+}
+
+- (nonnull instancetype) initWithTypeID:(NSInteger) typeID {
+	if (self = [super init]) {
+		_typeID = typeID;
+	}
+	return self;
+}
 
 @end

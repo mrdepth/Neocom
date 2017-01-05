@@ -207,6 +207,7 @@
 		12DBEABD1E1D40280088A486 /* NCFittingAttribute.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DBEABC1E1D40280088A486 /* NCFittingAttribute.mm */; };
 		12DBEAC11E1D48A80088A486 /* NCFittingGang.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DBEAC01E1D48A80088A486 /* NCFittingGang.mm */; };
 		12DBEAC41E1D49C70088A486 /* NCFittingCharacter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DBEAC31E1D49C70088A486 /* NCFittingCharacter.mm */; };
+		12DBEAE91E1E8FEC0088A486 /* NCFittingMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */; };
 		12E2674D1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */; };
 		12E2674F1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */; };
 		12E267C01E12A89F00A13442 /* NCAdaptiveSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E267BF1E12A89F00A13442 /* NCAdaptiveSegue.swift */; };
@@ -480,6 +481,8 @@
 		12DBEAC01E1D48A80088A486 /* NCFittingGang.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingGang.mm; sourceTree = "<group>"; };
 		12DBEAC21E1D49C70088A486 /* NCFittingCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacter.h; sourceTree = "<group>"; };
 		12DBEAC31E1D49C70088A486 /* NCFittingCharacter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCharacter.mm; sourceTree = "<group>"; };
+		12DBEAE71E1E6DF50088A486 /* NCFittingTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCFittingTypes.h; sourceTree = "<group>"; };
+		12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingMenuViewController.swift; sourceTree = "<group>"; };
 		12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateGroupsViewController.swift; sourceTree = "<group>"; };
 		12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificatesViewController.swift; sourceTree = "<group>"; };
 		12E267BF1E12A89F00A13442 /* NCAdaptiveSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAdaptiveSegue.swift; sourceTree = "<group>"; };
@@ -885,6 +888,7 @@
 			isa = PBXGroup;
 			children = (
 				12DBEA321E1D36D40088A486 /* Engine */,
+				12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
@@ -917,6 +921,7 @@
 				12961DDB1E1D64E4008A3F4D /* NCFittingDrone.mm */,
 				12DBEABB1E1D40280088A486 /* NCFittingAttribute.h */,
 				12DBEABC1E1D40280088A486 /* NCFittingAttribute.mm */,
+				12DBEAE71E1E6DF50088A486 /* NCFittingTypes.h */,
 			);
 			name = Engine;
 			sourceTree = "<group>";
@@ -1145,6 +1150,7 @@
 				12961DB81E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift in Sources */,
 				12961DD91E1D64D4008A3F4D /* NCFittingCharge.mm in Sources */,
 				12961DD31E1D64B8008A3F4D /* NCFittingShip.mm in Sources */,
+				12DBEAE91E1E8FEC0088A486 /* NCFittingMenuViewController.swift in Sources */,
 				12AC8DB01DEF5B0500561A7A /* NCDatabase.xcdatamodeld in Sources */,
 				12E2674D1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift in Sources */,
 				1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */,

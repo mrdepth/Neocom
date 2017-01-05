@@ -9,5 +9,6 @@
 #import "NCFittingItem.h"
 
 @interface NCFittingImplant : NCFittingItem
+@property (readonly) NSInteger slot;
 
 @end

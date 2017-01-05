@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NCFittingTypes.h"
 
 @class NCFittingItem;
 @class NCFittingAttribute;
@@ -24,4 +25,7 @@
 @property (readonly) NSInteger categoryID;
 @property (readonly, nullable) NCFittingItem* owner;
 @property (readonly, nonnull) NCFittingAttributes* attributes;
+
+- (nonnull instancetype) init NS_SWIFT_UNAVAILABLE("");
+
 @end

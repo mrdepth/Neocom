@@ -37,7 +37,6 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="data" maxCount="1" deletionRule="Cascade" destinationEntity="LoadoutData" inverseName="loadout" inverseEntity="LoadoutData" syncable="YES"/>
     </entity>
     <entity name="LoadoutData" representedClassName="NCLoadoutData" syncable="YES" codeGenerationType="class">
@@ -111,7 +110,7 @@
         <element name="DronesSet" positionX="9" positionY="54" width="128" height="75"/>
         <element name="FitCharacter" positionX="36" positionY="81" width="128" height="75"/>
         <element name="ImplantSet" positionX="54" positionY="99" width="128" height="75"/>
-        <element name="Loadout" positionX="0" positionY="45" width="128" height="120"/>
+        <element name="Loadout" positionX="0" positionY="45" width="128" height="105"/>
         <element name="LoadoutData" positionX="9" positionY="54" width="128" height="75"/>
         <element name="MailBox" positionX="-45" positionY="0" width="128" height="90"/>
         <element name="Scope" positionX="9" positionY="126" width="128" height="75"/>

@@ -7,10 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NCFittingGang.h"
+#import "NCFittingCharacter.h"
+#import "NCFittingSkill.h"
+#import "NCFittingImplant.h"
+#import "NCFittingBooster.h"
+#import "NCFittingShip.h"
+#import "NCFittingModule.h"
+#import "NCFittingDrone.h"
+#import "NCFittingCharge.h"
+#import "NCFittingAttribute.h"
 
 @interface NCFittingEngine : NSObject
+@property (readonly, nonnull) NCFittingGang* gang;
 
 - (nonnull instancetype) init NS_DESIGNATED_INITIALIZER;
-
 
 @end

@@ -9,10 +9,6 @@
 #import "NCFittingCharacter.h"
 #import "NCFittingProtected.h"
 
-struct {
-	
-} state;
-
 @implementation NCFittingSkills {
 	std::shared_ptr<dgmpp::Character> _character;
 }
@@ -30,12 +26,11 @@ struct {
 }
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len {
-	auto skills = _character->getSkills();
-	auto i = new typeof(skills.begin());
-	*i = skills.begin();
-	*(reinterpret_cast<typeof(i)*> (state->extra)) = i;
-	
 	return 0;
+}
+
+- (NSUInteger) count {
+	return _character->getSkills().size();
 }
 
 @end
@@ -56,6 +51,14 @@ struct {
 	return implant ? [[NCFittingImplant alloc] initWithItem:implant] : nil;
 }
 
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len {
+	return 0;
+}
+
+- (NSUInteger) count {
+	return _character->getImplants().size();
+}
+
 @end
 
 @implementation NCFittingBoosters {
@@ -74,6 +77,15 @@ struct {
 	return booster ? [[NCFittingBooster alloc] initWithItem:booster] : nil;
 }
 
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len {
+	return 0;
+}
+
+- (NSUInteger) count {
+	return _character->getBoosters().size();
+}
+
+
 @end
 
 @implementation NCFittingCharacter {
@@ -82,11 +94,11 @@ struct {
 	NCFittingBoosters* _boosters;
 }
 
-- (nullable NCFittingImplant*) addImplant:(NSInteger) typeID {
-	return [self addImplant:typeID forced:NO];
+- (nullable NCFittingImplant*) addImplantWithTypeID:(NSInteger) typeID {
+	return [self addImplantWithTypeID:typeID forced:NO];
 }
 
-- (nullable NCFittingImplant*) addImplant:(NSInteger) typeID forced:(BOOL) forced {
+- (nullable NCFittingImplant*) addImplantWithTypeID:(NSInteger) typeID forced:(BOOL) forced {
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
 	auto implant = character->addImplant(static_cast<dgmpp::TypeID>(typeID), forced);
 	return implant ? [[NCFittingImplant alloc] initWithItem:implant] : nil;
@@ -98,11 +110,11 @@ struct {
 	character->removeImplant(i);
 }
 
-- (nullable NCFittingBooster*) addBooster:(NSInteger) typeID {
-	return [self addBooster:typeID forced:NO];
+- (nullable NCFittingBooster*) addBoosterWithTypeID:(NSInteger) typeID {
+	return [self addBoosterWithTypeID:typeID forced:NO];
 }
 
-- (nullable NCFittingBooster*) addBooster:(NSInteger) typeID forced:(BOOL) forced {
+- (nullable NCFittingBooster*) addBoosterWithTypeID:(NSInteger) typeID forced:(BOOL) forced {
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
 	auto booster = character->addBooster(static_cast<dgmpp::TypeID>(typeID), forced);
 	return booster ? [[NCFittingBooster alloc] initWithItem:booster] : nil;

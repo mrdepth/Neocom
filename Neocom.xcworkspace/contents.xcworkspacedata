@@ -14,9 +14,9 @@
       location = "group:ThirdParty/EVEOnlineAPI/ThirdParty/Alamofire/Alamofire.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:ThirdParty/dgmpp/dgmpp.xcodeproj">
+      location = "group:Playground.playground">
    </FileRef>
    <FileRef
-      location = "group:Playground.playground">
+      location = "group:ThirdParty/dgmpp/dgmpp.xcodeproj">
    </FileRef>
 </Workspace>

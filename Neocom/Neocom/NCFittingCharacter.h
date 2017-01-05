@@ -9,15 +9,18 @@
 #import "NCFittingItem.h"
 
 @class NCFittingSkill, NCFittingImplant, NCFittingBooster;
-@interface NCFittingSkills<NSFastEnumeration> : NSObject
+@interface NCFittingSkills: NSObject<NSFastEnumeration>
+@property (readonly) NSUInteger count;
 - (nullable NCFittingSkill*) objectAtIndexedSubscript:(NSInteger) typeID;
 @end
 
-@interface NCFittingImplants : NSObject
+@interface NCFittingImplants : NSObject<NSFastEnumeration>
+@property (readonly) NSUInteger count;
 - (nullable NCFittingImplant*) objectAtIndexedSubscript:(NSInteger) slot;
 @end
 
-@interface NCFittingBoosters : NSObject
+@interface NCFittingBoosters : NSObject<NSFastEnumeration>
+@property (readonly) NSUInteger count;
 - (nullable NCFittingBooster*) objectAtIndexedSubscript:(NSInteger) slot;
 @end
 
@@ -28,10 +31,10 @@
 @property (readonly, nonnull) NCFittingImplants* implants;
 @property (readonly, nonnull) NCFittingBoosters* boosters;
 
-- (nullable NCFittingImplant*) addImplant:(NSInteger) typeID;
-- (nullable NCFittingImplant*) addImplant:(NSInteger) typeID forced:(BOOL) forced;
+- (nullable NCFittingImplant*) addImplantWithTypeID:(NSInteger) typeID NS_SWIFT_NAME(addImplant(typeID:));
+- (nullable NCFittingImplant*) addImplantWithTypeID:(NSInteger) typeID forced:(BOOL) forced NS_SWIFT_NAME(addImplant(typeID:forced:));
 - (void) removeImplant:(nonnull NCFittingImplant*) implant;
-- (nullable NCFittingBooster*) addBooster:(NSInteger) typeID;
-- (nullable NCFittingBooster*) addBooster:(NSInteger) typeID forced:(BOOL) forced;
+- (nullable NCFittingBooster*) addBoosterWithTypeID:(NSInteger) typeID NS_SWIFT_NAME(addBooster(typeID:));
+- (nullable NCFittingBooster*) addBoosterWithTypeID:(NSInteger) typeID forced:(BOOL) forced NS_SWIFT_NAME(addBooster(typeID:forced:));
 - (void) removeBooster:(nonnull NCFittingBooster*) booster;
 @end

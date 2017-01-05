@@ -10,4 +10,6 @@
 
 @interface NCFittingCharge : NCFittingItem
 
+- (nonnull instancetype) initWithTypeID:(NSInteger) typeID;
+
 @end

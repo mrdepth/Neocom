@@ -7,7 +7,13 @@
 //
 
 #import "NCFittingImplant.h"
+#import "NCFittingProtected.h"
 
 @implementation NCFittingImplant
+
+- (NSInteger) slot {
+	auto implant = std::dynamic_pointer_cast<dgmpp::Implant>(self.item);
+	return implant->getSlot();
+}
 
 @end

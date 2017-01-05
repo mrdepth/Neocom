@@ -9,5 +9,5 @@
 #import "NCFittingItem.h"
 
 @interface NCFittingBooster : NCFittingItem
-
+@property (readonly) NSInteger slot;
 @end

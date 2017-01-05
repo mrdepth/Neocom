@@ -7,7 +7,13 @@
 //
 
 #import "NCFittingBooster.h"
+#import "NCFittingProtected.h"
 
 @implementation NCFittingBooster
+
+- (NSInteger) slot {
+	auto booster = std::dynamic_pointer_cast<dgmpp::Booster>(self.item);
+	return booster->getSlot();
+}
 
 @end

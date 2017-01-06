@@ -17,6 +17,26 @@ class NCDBImageValueTransformer: ValueTransformer {
 	}
 }
 
+enum NCDBDgmppItemCategoryID: Int32 {
+	case none = 0
+	case hi
+	case med
+	case low
+	case rig
+	case subsystem
+	case mode
+	case charge
+	case drone
+	case implant
+	case booster
+	case ship
+	case structure
+	case service
+	case structureDrone
+	case structureRig
+}
+
+
 ValueTransformer.setValueTransformer(NCDBImageValueTransformer(), forName: NSValueTransformerName("NCDBImageValueTransformer"))
 
 extension NSColor {
@@ -209,7 +229,7 @@ let out = URL(fileURLWithPath: args["-out"]!)
 let iconsURL = URL(fileURLWithPath: args["-icons"]!)
 let typesURL = URL(fileURLWithPath: args["-types"]!)
 let factionsURL = URL(fileURLWithPath: args["-factions"]!)
-try? FileManager.default.removeItem(at: out)
+//try? FileManager.default.removeItem(at: out)
 
 let managedObjectModel = NSManagedObjectModel.mergedModel(from: nil)!
 let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
@@ -217,7 +237,7 @@ try! persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, co
 let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 context.persistentStoreCoordinator = persistentStoreCoordinator
 
-
+/*
 // MARK: eveIcons
 
 print ("eveIcons")
@@ -305,6 +325,7 @@ try! database.exec("SELECT * FROM invTypes WHERE imageName IS NOT NULL GROUP BY 
 		}
 	}
 }
+
 
 // MARK: eveUnits
 
@@ -932,5 +953,171 @@ try! database.exec("SELECT * FROM invTypes WHERE groupID = 988") { row in
 	whType.maxJumpMass = Float(whType.type!.getAttribute(1385)?.value ?? 0)
 }
 
-print ("Save...")
-try! context.save()
+*/
+// MARK: dgmppItems
+
+print ("dgmppItems")
+
+//let request = NSFetchRequest<NCDBInvMarketGroup>(entityName: "InvMarketGroup")
+//request.predicate = NSPredicate(format: "ANY types in SUBQUERY(types, $type, ANY $type.effects.effectID == 11)")
+//for marketGroup in try! context.fetch(request) {
+//	print ("\(marketGroup.marketGroupName)")
+//}
+
+var dgmppItemGroups = [IndexPath: NCDBDgmppItemGroup]()
+
+extension NCDBDgmppItemGroup {
+	
+	class func itemGroup(marketGroup: NCDBInvMarketGroup, category: NCDBDgmppItemCategory) -> NCDBDgmppItemGroup? {
+		guard marketGroup.marketGroupID != 1659 else {return nil}
+		let key = IndexPath(indexes: [Int(marketGroup.marketGroupID), Int(category.category), Int(category.subcategory), Int(category.race?.raceID ?? 0)])
+		if let group = dgmppItemGroups[key] {
+			return group
+		}
+		else {
+			guard let group = NCDBDgmppItemGroup(marketGroup: marketGroup, category: category) else {return nil}
+			dgmppItemGroups[key] = group
+			return group
+		}
+	}
+	
+	convenience init?(marketGroup: NCDBInvMarketGroup, category: NCDBDgmppItemCategory) {
+		let parentGroup: NCDBDgmppItemGroup?
+		let itemCategory: NCDBDgmppItemCategory?
+		if let parent = marketGroup.parentGroup {
+			parentGroup = NCDBDgmppItemGroup.itemGroup(marketGroup: parent, category: category)
+			itemCategory = nil
+		}
+		else {
+			itemCategory = category
+			parentGroup = nil
+		}
+		guard parentGroup != nil || itemCategory != nil else {return nil}
+
+		self.init(context: context)
+		groupName = marketGroup.marketGroupName
+		icon = marketGroup.icon
+		self.parentGroup = parentGroup
+		self.category = itemCategory
+	}
+}
+
+extension NCDBDgmppItemCategory {
+	convenience init(categoryID: NCDBDgmppItemCategoryID, subcategory: Int32 = 0, categoryName: String, race: NCDBChrRace? = nil) {
+		self.init(context: context)
+		self.category = categoryID.rawValue
+		self.subcategory = subcategory
+		//self.categoryName = categoryName
+		self.race = race
+	}
+}
+
+func compress(itemGroup: NCDBDgmppItemGroup?) {
+	guard let itemGroup = itemGroup else {return}
+	let parent = itemGroup.parentGroup
+	if itemGroup.subGroups?.count == 1 {
+		let child = itemGroup.subGroups?.anyObject() as? NCDBDgmppItemGroup
+		child?.parentGroup = itemGroup.parentGroup
+		child?.category = itemGroup.category
+		itemGroup.managedObjectContext?.delete(itemGroup)
+	}
+	compress(itemGroup: parent)
+}
+
+func trim(_ itemGroups: [NCDBDgmppItemGroup]) {
+	func leaf(_ itemGroup: NCDBDgmppItemGroup) -> NCDBDgmppItemGroup? {
+		guard let parent = itemGroup.parentGroup else {return itemGroup}
+		return leaf(parent)
+	}
+	
+	var leaves: Set<NCDBDgmppItemGroup>? = Set(itemGroups.flatMap { leaf($0) })
+	while leaves?.count == 1 {
+		let leaf = leaves?.first
+		if let subGroups = leaf?.subGroups as? Set<NCDBDgmppItemGroup> {
+			for group in subGroups {
+				group.category = leaf?.category
+			}
+			leaves = leaf?.subGroups as? Set<NCDBDgmppItemGroup>
+			leaf?.removeFromSubGroups(subGroups as NSSet)
+			leaf?.managedObjectContext?.delete(leaf!)
+		}
+	}
+	print ("\(Array(leaves!).flatMap {$0.groupName} )")
+}
+
+func importItems(types: [NCDBInvType], category: NCDBDgmppItemCategory) {
+	let groups = types.flatMap { type -> NCDBDgmppItemGroup? in
+		guard let marketGroup = type.marketGroup else {return nil}
+		guard let group = NCDBDgmppItemGroup.itemGroup(marketGroup: marketGroup, category: category) else {return nil}
+		type.dgmppItem = NCDBDgmppItem(context: context)
+		group.addToItems(type.dgmppItem!)
+		return group
+	}
+	
+	for group in groups {
+		compress(itemGroup: group)
+	}
+	trim(groups)
+}
+
+func importItems(category: NCDBDgmppItemCategory, predicate: NSPredicate) {
+	let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
+	request.predicate = predicate
+	let types = try! context.fetch(request)
+	importItems(types: types, category: category)
+}
+
+
+
+func tablesFrom(conditions: [String]) -> Set<String> {
+	var tables = Set<String>()
+	let expression = try! NSRegularExpression(pattern: "\\b([a-zA-Z]{1,}?)\\.[a-zA-Z]{1,}?\\b", options: [.caseInsensitive])
+	for condition in conditions {
+		let s = condition as NSString
+		for result in expression.matches(in: condition, options: [], range: NSMakeRange(0, s.length)) {
+			tables.insert(s.substring(with: result.rangeAt(1)))
+		}
+	}
+	return tables
+}
+
+importItems(category: NCDBDgmppItemCategory(categoryID: .ship, categoryName: "Ships"), predicate: NSPredicate(format: "group.category.categoryID == 6"))
+importItems(category: NCDBDgmppItemCategory(categoryID: .drone, subcategory: 18, categoryName: "Drones"), predicate: NSPredicate(format: "group.category.categoryID == 18"))
+importItems(category: NCDBDgmppItemCategory(categoryID: .drone, subcategory: 87, categoryName: "Fighters"), predicate: NSPredicate(format: "group.category.categoryID == 87"))
+importItems(category: NCDBDgmppItemCategory(categoryID: .ship, categoryName: "Structures"), predicate: NSPredicate(format: "marketGroup.parentGroup.marketGroupID == 2199"))
+
+for subcategory in [7, 66] as [Int32] {
+	importItems(category: NCDBDgmppItemCategory(categoryID: .hi, subcategory: subcategory, categoryName: "Hi Slot"), predicate: NSPredicate(format: "group.category.categoryID == %d AND ANY effects.effectID == 12", subcategory))
+	importItems(category: NCDBDgmppItemCategory(categoryID: .med, subcategory: subcategory, categoryName: "Med Slot"), predicate: NSPredicate(format: "group.category.categoryID == %d AND ANY effects.effectID == 13", subcategory))
+	importItems(category: NCDBDgmppItemCategory(categoryID: .low, subcategory: subcategory, categoryName: "Low Slot"), predicate: NSPredicate(format: "group.category.categoryID == %d AND ANY effects.effectID == 11", subcategory))
+	try! database.exec("select value from dgmTypeAttributes as a, dgmTypeEffects as b, invTypes as c, invGroups as d where b.effectID = 2663 AND attributeID=1547 AND a.typeID=b.typeID AND b.typeID=c.typeID AND c.groupID = d.groupID AND d.categoryID = \(subcategory) group by value;") { row in
+		let value = row["value"] as! NSNumber
+		importItems(category: NCDBDgmppItemCategory(categoryID: subcategory == 7 ? .rig : .structureRig, subcategory: value.int32Value, categoryName: "Rig Slot"), predicate: NSPredicate(format: "group.category.categoryID == %d AND ANY effects.effectID == 2663 AND SUBQUERY(attributes, $attribute, $attribute.attributeType.attributeID == 1547 AND $attribute.value == %@).@count > 0", subcategory, value))
+	}
+}
+
+var chrRaces = [NSNumber: NCDBChrRace]()
+
+try! database.exec("select raceID from invTypes as a, dgmTypeEffects as b where b.effectID = 3772 AND a.typeID=b.typeID group by raceID;") { row in
+	let raceID = row["raceID"] as! NSNumber
+	let race = chrRaces[raceID]
+	importItems(category: NCDBDgmppItemCategory(categoryID: .subsystem, subcategory: 7, categoryName: "Subsystems", race: race), predicate: NSPredicate(format: "ANY effects.effectID == 3772 AND race.raceID == %@", raceID))
+}
+
+importItems(category: NCDBDgmppItemCategory(categoryID: .service, subcategory: 66, categoryName: "Service Slot"), predicate: NSPredicate(format: "group.category.categoryID == 66 AND ANY effects.effectID == 6306"))
+
+try! database.exec("select value from dgmTypeAttributes as a, invTypes as b where attributeID=331 and a.typeID=b.typeID and b.published = 1 group by value;") { row in
+	let value = row["value"] as! NSNumber
+	importItems(category: NCDBDgmppItemCategory(categoryID: .implant, subcategory: value.int32Value, categoryName: "Implants"), predicate: NSPredicate(format: "SUBQUERY(attributes, $attribute, $attribute.attributeType.attributeID == 1547 AND $attribute.value == %@).@count > 0", value))
+}
+
+try! database.exec("select value from dgmTypeAttributes as a, invTypes as b where attributeID=1087 and a.typeID=b.typeID and b.published = 1 group by value;") { row in
+	let value = row["value"] as! NSNumber
+	importItems(category: NCDBDgmppItemCategory(categoryID: .booster, subcategory: value.int32Value, categoryName: "Boosters"), predicate: NSPredicate(format: "SUBQUERY(attributes, $attribute, $attribute.attributeType.attributeID == 1087 AND $attribute.value == %@).@count > 0", value))
+}
+
+
+
+
+//print ("Save...")
+//try! context.save()

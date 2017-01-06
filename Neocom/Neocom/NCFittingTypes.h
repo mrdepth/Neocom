@@ -24,7 +24,6 @@ typedef NS_ENUM(NSInteger, NCFittingModuleSlot) {
 	NCFittingModuleSlotLow,
 	NCFittingModuleSlotRig,
 	NCFittingModuleSlotSubsystem,
-	NCFittingModuleSlotStructure,
 	NCFittingModuleSlotMode,
 	NCFittingModuleSlotService
 };

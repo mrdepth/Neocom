@@ -1,7 +1,26 @@
 //: Playground - noun: a place where people can play
 
 import UIKit
-import EVEAPI
+//import EVEAPI
+
+enum E: Int {
+	case a
+	case b
+}
+
+var dic = [E.a: [1,2,3], E.b: [1,2,3]]
+
+let dic2 = dic.map { (key, value) -> (Int, [Int]) in
+	return (key.rawValue, value)
+}
+
+//dic2 as NSDictionary
+
+dic.map { (i) -> Int in
+	return 1
+}
+//let data = NSKeyedArchiver.archivedData(withRootObject: dic)
+
 
 
 /*

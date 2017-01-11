@@ -153,3 +153,20 @@ extension NCDBMapDenormalize {
 		return NCFetchedCollection<NCDBMapDenormalize>(entityName: "MapDenormalize", predicateFormat: "itemID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }
+
+extension NCDBDgmppItemCategory {
+	class func category(categoryID: NCDBDgmppItemCategoryID, subcategory: Int? = nil, race: NCDBChrRace? = nil) -> NCDBDgmppItemCategory? {
+		let request = NSFetchRequest<NCDBDgmppItemCategory>(entityName: "DgmppItemCategory")
+		var predicates = [NSPredicate]()
+		predicates.append(NSPredicate(format: "category == %d", categoryID.rawValue))
+		if let subcategory = subcategory {
+			predicates.append(NSPredicate(format: "subcategory == %d", subcategory))
+		}
+		if let race = race {
+			predicates.append(NSPredicate(format: "race == %@", race))
+		}
+		request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+		request.fetchLimit = 1
+		return (try? NCDatabase.sharedDatabase?.viewContext.fetch(request))??.first
+	}
+}

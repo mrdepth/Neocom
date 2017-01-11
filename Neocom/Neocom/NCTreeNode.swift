@@ -93,6 +93,7 @@ class NCDefaultTreeRow: NCTreeRow {
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.object = object
 		cell.iconView?.image = image
 		if let attributedTitle = attributedTitle {
 			cell.titleLabel?.attributedText = attributedTitle

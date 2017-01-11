@@ -944,7 +944,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="eNG-aU-9Ew" customClass="NCBackgroundView">
-                            <rect key="frame" x="0.0" y="288" width="320" height="44"/>
+                            <rect key="frame" x="0.0" y="287.5" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hZ3-NN-20f">
@@ -3993,6 +3993,7 @@
                     <navigationItem key="navigationItem" title="Fitting" id="4u0-qD-hlY"/>
                     <connections>
                         <outlet property="treeController" destination="4Qj-mG-w8h" id="ejS-Na-uru"/>
+                        <segue destination="PVa-hj-s7N" kind="presentation" identifier="NCTypePickerViewController" id="msR-Pg-K6v"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zmq-fG-3fz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4021,6 +4022,141 @@
             </objects>
             <point key="canvasLocation" x="-109" y="3075"/>
         </scene>
+        <!--Type Picker-->
+        <scene sceneID="I3Q-tU-Y1w">
+            <objects>
+                <tableViewController storyboardIdentifier="NCTypePickerGroupsViewController" id="72C-D2-VZZ" customClass="NCTypePickerGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="dSg-H9-OhG" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="Rpi-Vi-phx" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="56" width="320" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Rpi-Vi-phx" id="o9d-vO-jfe">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Af6-0c-FZ3">
+                                            <rect key="frame" x="15" y="4" width="32" height="32"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="32" id="e18-Os-mtv"/>
+                                                <constraint firstAttribute="width" constant="32" id="hf4-XA-yA5"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="vbj-ea-1gT">
+                                            <rect key="frame" x="55" y="11" width="232" height="18"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="vbj-ea-1gT" secondAttribute="trailing" id="17c-YI-Q3G"/>
+                                        <constraint firstAttribute="bottom" secondItem="Af6-0c-FZ3" secondAttribute="bottom" priority="999" constant="4" id="CKE-eC-RZv"/>
+                                        <constraint firstItem="vbj-ea-1gT" firstAttribute="leading" secondItem="Af6-0c-FZ3" secondAttribute="trailing" constant="8" id="Vux-GK-uus"/>
+                                        <constraint firstItem="Af6-0c-FZ3" firstAttribute="leading" secondItem="o9d-vO-jfe" secondAttribute="leading" constant="15" id="ac5-1w-sYY"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="vbj-ea-1gT" secondAttribute="bottom" constant="2" id="nka-DT-mKL"/>
+                                        <constraint firstItem="vbj-ea-1gT" firstAttribute="centerY" secondItem="o9d-vO-jfe" secondAttribute="centerY" id="pqg-wi-asW"/>
+                                        <constraint firstItem="Af6-0c-FZ3" firstAttribute="top" secondItem="o9d-vO-jfe" secondAttribute="top" constant="4" id="u3w-1Z-5Kf"/>
+                                        <constraint firstItem="vbj-ea-1gT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="o9d-vO-jfe" secondAttribute="top" constant="2" id="v4P-N5-qHB"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="iconView" destination="Af6-0c-FZ3" id="vgy-fr-Tvq"/>
+                                    <outlet property="titleLabel" destination="vbj-ea-1gT" id="TbS-b9-ALF"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="72C-D2-VZZ" id="tqM-96-0ZO"/>
+                            <outlet property="delegate" destination="72C-D2-VZZ" id="DZ9-we-Hmo"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Type Picker" id="Wkz-1F-82C"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FxU-l5-9Ft" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="606" y="3876"/>
+        </scene>
+        <!--Type Picker View Controller-->
+        <scene sceneID="05G-Wu-oMH">
+            <objects>
+                <navigationController id="PVa-hj-s7N" customClass="NCTypePickerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="lnc-zu-VOP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="72C-D2-VZZ" kind="relationship" relationship="rootViewController" id="LO1-Bc-cf7"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mN9-OR-nXK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-107" y="3877"/>
+        </scene>
+        <!--Items-->
+        <scene sceneID="ikr-1j-EHC">
+            <objects>
+                <tableViewController storyboardIdentifier="NCTypePickerTypesViewController" id="Fbb-CQ-Hze" customClass="NCTypePickerTypesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="tNn-eY-Sbt" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="Cell" id="jKL-Q8-FLc" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="56" width="320" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jKL-Q8-FLc" id="Z2H-Rp-C1i">
+                                    <rect key="frame" x="0.0" y="0.0" width="273" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Hdx-ZJ-8PA">
+                                            <rect key="frame" x="15" y="4" width="32" height="32"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="32" id="RFE-le-0tN"/>
+                                                <constraint firstAttribute="width" constant="32" id="r9z-06-0nA"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ncy-p7-d37">
+                                            <rect key="frame" x="55" y="11" width="218" height="18"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Ncy-p7-d37" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Z2H-Rp-C1i" secondAttribute="top" constant="4" id="5f0-QH-V01"/>
+                                        <constraint firstItem="Ncy-p7-d37" firstAttribute="leading" secondItem="Hdx-ZJ-8PA" secondAttribute="trailing" constant="8" id="AOJ-h7-qsC"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Ncy-p7-d37" secondAttribute="bottom" constant="4" id="L07-0B-FQe"/>
+                                        <constraint firstItem="Hdx-ZJ-8PA" firstAttribute="leading" secondItem="Z2H-Rp-C1i" secondAttribute="leading" constant="15" id="S4B-8j-9mN"/>
+                                        <constraint firstAttribute="bottom" secondItem="Hdx-ZJ-8PA" secondAttribute="bottom" priority="999" constant="4" id="gC8-7P-RZV"/>
+                                        <constraint firstItem="Ncy-p7-d37" firstAttribute="centerY" secondItem="Z2H-Rp-C1i" secondAttribute="centerY" id="ham-Kj-t6a"/>
+                                        <constraint firstAttribute="trailing" secondItem="Ncy-p7-d37" secondAttribute="trailing" id="pAv-fb-J3v"/>
+                                        <constraint firstItem="Hdx-ZJ-8PA" firstAttribute="top" secondItem="Z2H-Rp-C1i" secondAttribute="top" constant="4" id="sbW-hl-gQ7"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="iconView" destination="Hdx-ZJ-8PA" id="ahk-W8-AFD"/>
+                                    <outlet property="titleLabel" destination="Ncy-p7-d37" id="nZT-jI-0N8"/>
+                                    <segue destination="JbH-Km-dUZ" kind="show" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="aqM-GB-MGS"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Fbb-CQ-Hze" id="Lav-oZ-eHJ"/>
+                            <outlet property="delegate" destination="Fbb-CQ-Hze" id="QMe-as-0JO"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Items" id="TVy-qB-1yc"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OG3-9M-84C" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1341" y="3877"/>
+        </scene>
     </scenes>
     <resources>
         <image name="actionsItem" width="24" height="24"/>
@@ -4037,6 +4173,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="B28-Sl-QBx"/>
-        <segue reference="G5B-Vd-LBO"/>
+        <segue reference="aqM-GB-MGS"/>
     </inferredMetricsTieBreakers>
 </document>

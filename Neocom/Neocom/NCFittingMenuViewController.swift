@@ -28,12 +28,29 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 		super.viewWillAppear(animated)
 		if treeController.content == nil {
 			var sections = [NCTreeNode]()
-			sections.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
+			sections.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, segue: "NCTypePickerViewController", object: NCDBDgmppItemCategoryID.ship))
 			sections.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "station"), title: NSLocalizedString("New Structure Fit", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
 			sections.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
 			sections.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
 			treeController.content = sections
 			treeController.reloadData()
+		}
+	}
+	
+	// MARK: Navigation
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		switch segue.identifier {
+		case "NCTypePickerViewController"?:
+			guard let controller = segue.destination as? NCTypePickerViewController else {return}
+			guard let categoryID = (sender as? NCTableViewCell)?.object as? NCDBDgmppItemCategoryID else {return}
+			controller.category = NCDBDgmppItemCategory.category(categoryID: categoryID)
+			controller.completionHandler = { [weak self] (type) in
+				print ("\(type)")
+				self?.dismiss(animated: true)
+			}
+		default:
+			break
 		}
 	}
 	
@@ -51,4 +68,10 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 		return (item as! NCTreeNode).canExpand
 	}
 
+	func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) -> Void {
+		guard let row = item as? NCDefaultTreeRow else {return}
+		if let segue = row.segue {
+			self.performSegue(withIdentifier: segue, sender: cell)
+		}
+	}
 }

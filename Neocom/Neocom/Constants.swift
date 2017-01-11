@@ -98,6 +98,25 @@ enum NCDBRegionID: Int {
 	case whSpace = 11000000
 }
 
+enum NCDBDgmppItemCategoryID: Int {
+	case none = 0
+	case hi
+	case med
+	case low
+	case rig
+	case subsystem
+	case mode
+	case charge
+	case drone
+	case implant
+	case booster
+	case ship
+	case structure
+	case service
+	case structureDrone
+	case structureRig
+}
+
 extension NCDBEveIcon {
 	enum File: String {
 		case certificateUnclaimed = "79_01"

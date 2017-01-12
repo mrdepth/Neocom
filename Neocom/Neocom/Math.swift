@@ -19,3 +19,9 @@ extension Double {
 		return max(to.lowerBound, min(to.upperBound, self))
 	}
 }
+
+extension Float {
+	func clamped(to: ClosedRange<Float>) -> Float {
+		return max(to.lowerBound, min(to.upperBound, self))
+	}
+}

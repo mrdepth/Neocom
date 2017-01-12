@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -3885,7 +3885,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NCFittingMenuViewController" id="eQN-sQ-qzr" customClass="NCFittingMenuViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="VMR-5Q-eCj" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="472"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -4004,7 +4004,60 @@
                     </connections>
                 </customObject>
             </objects>
-            <point key="canvasLocation" x="606" y="3074"/>
+            <point key="canvasLocation" x="1341" y="3075"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="7hw-gv-FBN">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="OqY-EE-BWz" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aC4-tx-qp0"/>
+                        <viewControllerLayoutGuide type="bottom" id="zHM-ms-8wZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3Qx-fO-JVG" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kLB-nz-D95" customClass="NCSegmentedPageControl" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="320" height="32"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="4q0-BC-82a"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="segments" value="Ships|Structures|Test"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="spacing">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="selectedSegmentIndex">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wly-UB-0AG">
+                                <rect key="frame" x="0.0" y="96" width="320" height="472"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="eQN-sQ-qzr" kind="embed" id="1CE-UP-DMk"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Wly-UB-0AG" secondAttribute="trailing" id="6tY-Lj-wE4"/>
+                            <constraint firstItem="kLB-nz-D95" firstAttribute="leading" secondItem="3Qx-fO-JVG" secondAttribute="leading" id="Csc-7Q-n2a"/>
+                            <constraint firstItem="zHM-ms-8wZ" firstAttribute="top" secondItem="Wly-UB-0AG" secondAttribute="bottom" id="Cuu-yi-h8x"/>
+                            <constraint firstItem="kLB-nz-D95" firstAttribute="top" secondItem="aC4-tx-qp0" secondAttribute="bottom" id="IsZ-M2-bdT"/>
+                            <constraint firstItem="Wly-UB-0AG" firstAttribute="top" secondItem="kLB-nz-D95" secondAttribute="bottom" id="WHM-Wa-kqM"/>
+                            <constraint firstItem="Wly-UB-0AG" firstAttribute="leading" secondItem="3Qx-fO-JVG" secondAttribute="leading" id="lbK-gq-ES8"/>
+                            <constraint firstAttribute="trailing" secondItem="kLB-nz-D95" secondAttribute="trailing" id="ltL-If-G43"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="KQq-RS-fsv"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HZd-Cy-vHP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="605.625" y="3075"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="qMi-sZ-onF">
@@ -4015,7 +4068,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="eQN-sQ-qzr" kind="relationship" relationship="rootViewController" id="oAh-aX-ubJ"/>
+                        <segue destination="OqY-EE-BWz" kind="relationship" relationship="rootViewController" id="Z7j-mt-DwX"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yvx-At-5gg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4032,10 +4085,10 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="Rpi-Vi-phx" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="56" width="320" height="41"/>
+                                <rect key="frame" x="0.0" y="55" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Rpi-Vi-phx" id="o9d-vO-jfe">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="40"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="41"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Af6-0c-FZ3">

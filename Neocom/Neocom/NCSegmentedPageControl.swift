@@ -8,30 +8,46 @@
 
 import UIKit
 
-@IBDesignable
+//@IBDesignable
 class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
-	@IBInspectable var selectedSegmentIndex: Float = 0 {
-		didSet {
-			let x = (scrollView.contentSize.width - scrollView.contentInset.left) * CGFloat(selectedSegmentIndex) / CGFloat(labels.count)
-			scrollView.setContentOffset(CGPoint(x: x - scrollView.contentInset.left, y:0), animated: false)
-		}
-	}
+	@IBInspectable var titleInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
 	
-	@IBInspectable var spacing: CGFloat = 20
-	var font: UIFont? = UIFont.preferredFont(forTextStyle: .subheadline)
 	@IBInspectable var segments: String? {
 		didSet {
 			self.titles = segments?.components(separatedBy: "|") ?? []
 		}
 	}
 	
-	private lazy var scrollView: UIScrollView = {
+	@IBOutlet weak var scrollView: UIScrollView!
+
+	var font: UIFont = UIFont.preferredFont(forTextStyle: .subheadline)
+
+	private lazy var contentView: UIScrollView = {
 		let scrollView = UIScrollView(frame: self.bounds)
 		scrollView.backgroundColor = .clear
 		scrollView.delegate = self
 		scrollView.showsVerticalScrollIndicator = false
 		scrollView.showsHorizontalScrollIndicator = false
-		self.addSubview(scrollView)
+		scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+		scrollView.translatesAutoresizingMaskIntoConstraints = true
+		scrollView.isOpaque = false
+
+		let maskingView = UIView(frame: self.bounds)
+		maskingView.backgroundColor = .clear
+		
+
+		let mask = CAGradientLayer()
+		mask.colors = [UIColor(white: 1.0, alpha: 0.0).cgColor, UIColor(white: 1.0, alpha: 1.0).cgColor, UIColor(white: 1.0, alpha: 1.0).cgColor, UIColor(white: 1.0, alpha: 0.0).cgColor]
+		mask.locations = [0, 0.25, 0.75, 1.0]
+		mask.startPoint = .zero
+		mask.endPoint = CGPoint(x: 1, y: 0)
+		
+		maskingView.layer.mask = mask
+		maskingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+		maskingView.translatesAutoresizingMaskIntoConstraints = true
+
+		self.addSubview(maskingView)
+		maskingView.addSubview(scrollView)
 		return scrollView
 	}()
 	
@@ -39,7 +55,12 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 		let imageView = UIImageView(image: #imageLiteral(resourceName: "indicatorLeft").withRenderingMode(.alwaysTemplate))
 		imageView.tintColor = self.tintColor
 		imageView.contentMode = .center
-		self.insertSubview(imageView, aboveSubview: self.scrollView)
+		self.insertSubview(imageView, aboveSubview: self.contentView)
+
+		imageView.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint(item: imageView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 10).isActive = true
+		NSLayoutConstraint(item: imageView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
+		
 		return imageView
 	}()
 
@@ -47,7 +68,12 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 		let imageView = UIImageView(image: #imageLiteral(resourceName: "indicatorRight").withRenderingMode(.alwaysTemplate))
 		imageView.tintColor = self.tintColor
 		imageView.contentMode = .center
-		self.insertSubview(imageView, aboveSubview: self.scrollView)
+		self.insertSubview(imageView, aboveSubview: self.contentView)
+		
+		imageView.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint(item: imageView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: -10).isActive = true
+		NSLayoutConstraint(item: imageView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
+
 		return imageView
 	}()
 
@@ -66,10 +92,9 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 				label.textColor = tintColor
 				label.textAlignment = .center
 				labels.append(label)
-				scrollView.addSubview(label)
+				contentView.addSubview(label)
 			}
-			
-			invalidateIntrinsicContentSize()
+			setNeedsLayout()
 		}
 	}
 	
@@ -79,97 +104,87 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 	}
 	
 	@objc private func onTap(sender: UITapGestureRecognizer) {
-		var sel = selection()
+		guard labels.count > 0 else {return}
+		var p = scrollView.contentOffset.x / scrollView.bounds.size.width
 		var x = sender.location(in: self).x / self.bounds.size.width
 		if x < 0.25 {
-			sel -= 1
+			p -= 1
 		}
 		if x >= 0.75 {
-			sel += 1
+			p += 1
 		}
-		sel = round(sel).clamped(to: 0...Float(labels.count - 1))
+		p = round(p).clamped(to: 0...CGFloat(labels.count - 1))
 		
-		x = (scrollView.contentSize.width - scrollView.contentInset.left) * CGFloat(sel) / CGFloat(labels.count)
-		scrollView.setContentOffset(CGPoint(x: x - scrollView.contentInset.left, y:0), animated: true)
+		x = scrollView.bounds.size.width * p
+		scrollView.setContentOffset(CGPoint(x: x, y: 0), animated: true)
 	}
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		leftIndicator.frame = CGRect(origin: .zero, size: CGSize(width: bounds.size.height, height: bounds.size.height))
-		rightIndicator.frame = CGRect(origin: CGPoint(x:bounds.maxX - bounds.size.height, y:0), size: CGSize(width: bounds.size.height, height: bounds.size.height))
+		let mask = contentView.superview!.layer.mask as! CAGradientLayer
+		mask.frame = bounds
 		
-		guard labels.count > 0 else {return}
-		scrollView.frame = bounds
-		var maxSize = CGSize.zero
+		contentView.superview?.frame = bounds
+		contentView.frame = bounds
+		
+		let w = max(labels.map({$0.intrinsicContentSize.width}).max() ?? 0 + 20, bounds.size.width / 3.0)
+		let inset = (bounds.size.width - w) / 2
+		let rect = CGRect(x: 0, y: 0, width: w, height: bounds.size.height)
+		
+		//var center = self.convert(CGPoint(x: bounds.midX, y: bounds.midY), to: contentView)
+		var center = CGPoint(x: w / 2, y: rect.size.height / 2)
 		for label in labels {
-			let size = label.intrinsicContentSize
-			maxSize.width = max(maxSize.width, size.width)
-			maxSize.height = max(maxSize.height, size.height)
+			label.bounds = rect
+			label.center = center
+			center.x += rect.size.width
 		}
-		let count = CGFloat(labels.count)
-		maxSize.width = max(maxSize.width, bounds.size.width / 3.0)
-		maxSize.height = bounds.size.height
-		
-		var rect = CGRect(origin: .zero, size: maxSize)
-		for label in labels {
-			label.frame = rect
-			rect.origin.x += rect.size.width
-		}
-		
-		scrollView.contentSize = CGSize(width: rect.maxX, height: rect.maxY)
-		var insets = UIEdgeInsets.zero
-		insets.left = (bounds.size.width - maxSize.width) / 2
-		scrollView.contentInset = insets
-		
-		let x = (scrollView.contentSize.width - insets.left) * CGFloat(selectedSegmentIndex) / count
-		scrollView.contentOffset = CGPoint(x: x - insets.left, y:0)
+		contentView.contentSize = CGSize(width: center.x - rect.size.width / 2, height: rect.maxY)
+		contentView.contentInset = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
 
+		if scrollView.contentSize.width > 0 {
+			let x = scrollView.contentOffset.x / scrollView.contentSize.width * contentView.contentSize.width - contentView.contentInset.left
+			contentView.contentOffset = CGPoint(x: x, y: 0)
+		}
 	}
-
+	
 	// MARK: UIScrollViewDelegate
 	
-	private func selection() -> Float {
-		let count = CGFloat(labels.count)
-		let x = scrollView.contentOffset.x
-		let insets = scrollView.contentInset
-		return Float((x + insets.left) * count / (scrollView.contentSize.width - insets.left))
-	}
-	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		let sel = selection()
-		self.leftIndicator.tintColor = sel > 0.5 ? self.tintColor : .darkGray
-		self.rightIndicator.tintColor = sel < Float(labels.count - 1) - 0.5 ? self.tintColor : .darkGray
+		guard self.scrollView.contentSize.width > 0 else {return}
+		guard self.contentView.contentSize.width > 0 else {return}
+		
+		if scrollView === contentView && (scrollView.isDragging || scrollView.isDecelerating) {
+			let x = (scrollView.contentOffset.x + scrollView.contentInset.left) / scrollView.contentSize.width * self.scrollView.contentSize.width
+			self.scrollView.contentOffset = CGPoint(x: x, y: 0)
+		}
+		else if scrollView === self.scrollView {
+			let x = scrollView.contentOffset.x / scrollView.contentSize.width * contentView.contentSize.width - contentView.contentInset.left
+			contentView.contentOffset = CGPoint(x: x, y: 0)
+		}
+		
+		let p = self.scrollView.contentOffset.x / self.scrollView.bounds.size.width
+		
 		for (i, label) in labels.enumerated() {
-			let x = (abs(Double(sel) - Double(i))).clamped(to: 0...1)
-			let s = CGFloat(cos(x * Double.pi / 2) * (1.0 - 0.7) + 0.7)
+			let x = (abs(p - CGFloat(i))).clamped(to: 0...1)
+			let s = cos(x * CGFloat.pi / 2) * (1.0 - 0.7) + 0.7
 			
 			label.transform = CGAffineTransform(scaleX: s, y: s)
 		}
-	}
-	
-	func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-		selectedSegmentIndex = selection()
-	}
-	
-	func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-		if !decelerate {
-			selectedSegmentIndex = selection()
-		}
-	}
-	
-	func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-		selectedSegmentIndex = selection()
+		
+		leftIndicator.tintColor = p > 0.5 ? tintColor : .darkGray
+		rightIndicator.tintColor = p < CGFloat(labels.count - 1) - 0.5 ? tintColor : .darkGray
 	}
 	
 	func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-		var point = targetContentOffset.pointee
-		
-		let count = CGFloat(labels.count)
-		let x = point.x
-		let insets = scrollView.contentInset
-		let sel = round(Float((x + insets.left) * count / (scrollView.contentSize.width - insets.left))).clamped(to: 0...(Float(count) - 1))
-		point.x = (scrollView.contentSize.width - scrollView.contentInset.left) * CGFloat(sel) / CGFloat(labels.count) - insets.left
-		targetContentOffset.pointee = point
+		if scrollView === contentView {
+			var point = targetContentOffset.pointee
+			
+			var x = (point.x + scrollView.contentInset.left) / scrollView.contentSize.width * self.scrollView.contentSize.width / self.scrollView.bounds.size.width
+			x = round(x.clamped(to: 0...CGFloat(labels.count - 1)))
+			x = x * scrollView.bounds.size.width / self.scrollView.contentSize.width * scrollView.contentSize.width - scrollView.contentInset.left
+			point.x = x
+			targetContentOffset.pointee = point
+		}
 	}
-
+	
 }

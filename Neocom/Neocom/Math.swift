@@ -25,3 +25,9 @@ extension Float {
 		return max(to.lowerBound, min(to.upperBound, self))
 	}
 }
+
+extension CGFloat {
+	func clamped(to: ClosedRange<CGFloat>) -> CGFloat {
+		return fmax(to.lowerBound, fmin(to.upperBound, self))
+	}
+}

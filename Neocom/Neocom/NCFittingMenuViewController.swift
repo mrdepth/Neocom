@@ -10,6 +10,7 @@ import UIKit
 
 class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelegate {
 	@IBOutlet var treeController: NCTreeController!
+	var sections: [[NCTreeNode]]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,13 +27,19 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if treeController.content == nil {
-			var sections = [NCTreeNode]()
-			sections.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, segue: "NCTypePickerViewController", object: NCDBDgmppItemCategoryID.ship))
-			sections.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "station"), title: NSLocalizedString("New Structure Fit", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
-			sections.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
-			sections.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
-			treeController.content = sections
+		if sections == nil {
+			var ships = [NCTreeNode]()
+			ships.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, segue: "NCTypePickerViewController", object: NCDBDgmppItemCategoryID.ship))
+			ships.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
+			ships.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
+			
+			var structures = [NCTreeNode]()
+			structures.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "station"), title: NSLocalizedString("New Structure Fit", comment: ""), accessoryType: .disclosureIndicator, segue: "NCTypePickerViewController", object: NCDBDgmppItemCategoryID.structure))
+			structures.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
+			
+			sections = [ships, structures]
+			
+			treeController.content = sections?[0]
 			treeController.reloadData()
 		}
 	}
@@ -73,5 +80,9 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 		if let segue = row.segue {
 			self.performSegue(withIdentifier: segue, sender: cell)
 		}
+	}
+	
+	func treeController(_ treeController: NCTreeController, canEditChild child: Int, ofItem item: AnyObject?) -> Bool {
+		return true
 	}
 }

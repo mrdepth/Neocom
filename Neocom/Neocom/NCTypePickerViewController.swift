@@ -9,10 +9,13 @@
 import UIKit
 import CoreData
 
-class NCTypePickerViewController: NCNavigationController {
+class NCTypePickerViewController: UINavigationController {
 	var category: NCDBDgmppItemCategory?
 	var type: NCDBInvType?
 	var completionHandler: ((NCDBInvType) -> Void)!
+	lazy var groupsViewController: NCTypePickerGroupsViewController? = {
+		return self.childViewControllers.first(where: {return $0 is NCTypePickerGroupsViewController}) as? NCTypePickerGroupsViewController
+	}()
 
 	private var results: NSFetchedResultsController<NSDictionary>?
 	
@@ -22,8 +25,8 @@ class NCTypePickerViewController: NCNavigationController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		if let category = category {
-			let controller = self.viewControllers[0] as! NCTypePickerGroupsViewController
-			controller.group = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category)
+			
+			self.groupsViewController?.group = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category)
 		}
 		super.viewWillAppear(animated)
 	}

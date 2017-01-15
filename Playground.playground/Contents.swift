@@ -3,240 +3,124 @@
 import UIKit
 //import EVEAPI
 
-enum E: Int {
-	case a
-	case b
+extension Int {
+	func clamped(to: ClosedRange<Int>) -> Int {
+		return Swift.max(to.lowerBound, Swift.min(to.upperBound, self))
+	}
 }
 
-var dic = [E.a: [1,2,3], E.b: [1,2,3]]
-
-let dic2 = dic.map { (key, value) -> (Int, [Int]) in
-	return (key.rawValue, value)
+extension CGFloat {
+	func clamped(to: ClosedRange<CGFloat>) -> CGFloat {
+		return fmax(to.lowerBound, fmin(to.upperBound, self))
+	}
 }
 
-//dic2 as NSDictionary
 
-dic.map { (i) -> Int in
-	return 1
-}
-//let data = NSKeyedArchiver.archivedData(withRootObject: dic)
-
-
-
-/*
-var history = [ESMarketHistory]()
-
-let data = try! Data(contentsOf: Bundle.main.url(forResource: "market", withExtension: "json")!)
-let array = try! JSONSerialization.jsonObject(with: data, options: []) as! [[String:Any]]
-array.forEach {
-	history.append(ESMarketHistory(dictionary: $0)!)
+extension CGRect {
+	func lerp(to: CGRect, t: CGFloat) -> CGRect {
+		func lerp(_ a: CGFloat, _ b: CGFloat, _ t: CGFloat) -> CGFloat {
+			return a + (b - a) * t
+		}
+		
+		var r = CGRect.zero
+		r.origin.x = lerp(self.origin.x, to.origin.x, t)
+		r.origin.y = lerp(self.origin.y, to.origin.y, t)
+		r.size.width = lerp(self.size.width, to.size.width, t)
+		r.size.height = lerp(self.size.height, to.size.height, t)
+		return r
+	}
 }
 
-let row = marketHistory(history: history)!
-
-var avg = 0 as Double
-for h in history {
-	print("\(Int64(h.highest))")
-	avg += h.highest
-}
-avg /= Double(history.count)
-
-
-public class NCMarketHistoryView: UIView {
-	private var donchianRange: ClosedRange<Double>?
-	private var volumeRange: ClosedRange<Double>?
-	
-	public var donchian: UIBezierPath? {
+class NCSegmentedPageControl: UIControl {
+	@IBInspectable var spacing: CGFloat = 10
+	@IBInspectable var segments: String? {
 		didSet {
-			if let donchian = donchian {
-				var bounds = donchian.bounds
-				bounds.size.height = CGFloat(avg) - bounds.origin.y
-				let h = bounds.size.height / (1.0 - NCMarketHistoryView.ratio)
-				donchianRange = (Double(bounds.maxY - h))...Double(bounds.maxY)
-			}
-			else {
-				donchianRange = nil
-			}
+			self.titles = segments?.components(separatedBy: "|") ?? []
 		}
 	}
 	
-	public var volume: UIBezierPath? {
+	var titles: [String] = [] {
 		didSet {
-			if let volume = volume {
-				let bounds = volume.bounds
-				let h = bounds.size.height / NCMarketHistoryView.ratio
-				volumeRange = 0...Double(h)
-			}
-			else {
-				volumeRange = nil
+			for title in titles {
+				let button = UIButton(frame: .zero)
+				button.setTitle(title, for: .normal)
+				button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
+				button.setTitleColor(.black, for: .normal)
+				stackView.addArrangedSubview(button)
 			}
 		}
 	}
-	public var median: UIBezierPath?
-	public var date: ClosedRange<Date>?
 	
-	private static let gridSize = CGSize(width: 32, height: 32)
-	private static let ratio = 0.33 as CGFloat
-
+	@IBOutlet weak var scrollView: UIScrollView!
 	
-	override public func draw(_ rect: CGRect) {
-		var canvas = self.bounds.insetBy(dx: 60, dy: 30)
-		let context = UIGraphicsGetCurrentContext()
-		context?.saveGState()
-		context?.translateBy(x: canvas.origin.x, y: canvas.origin.y)
-
-		canvas.origin = CGPoint.zero
+	private lazy var contentView: UIScrollView = {
+		let contentView = UIScrollView(frame: self.bounds)
+		contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+		self.addSubview(contentView)
+		return contentView
+	}()
+	
+	public lazy var stackView: UIStackView = {
+		let stackView = UIStackView(frame: self.bounds)
+		stackView.alignment = .center
+		stackView.distribution = .fillProportionally
+		stackView.axis = .horizontal
+		stackView.spacing = self.spacing
+		stackView.translatesAutoresizingMaskIntoConstraints = false
+		self.contentView.addSubview(stackView)
+		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[view]-10-|", options: [], metrics: nil, views: ["view": stackView]))
+		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: [], metrics: nil, views: ["view": stackView]))
+		NSLayoutConstraint(item: stackView, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: self.contentView, attribute: .width, multiplier: 1, constant: 0).isActive = true
+		return stackView
+	}()
+	
+	public lazy var indicator: UIView = {
+		let indicator = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 4))
+		indicator.backgroundColor = UIColor.yellow
+		self.contentView.addSubview(indicator)
+		return indicator
+	}()
+	
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		contentView.frame = bounds
+		guard stackView.arrangedSubviews.count > 0 else {return}
+		let p = scrollView.contentOffset.x / scrollView.bounds.size.width
 		
-		drawDonchianAndMedian(canvas: canvas)
-		drawVolume(canvas: canvas)
-		drawGrid(canvas: canvas)
+		let fromLabel = stackView.arrangedSubviews[Int(trunc(p)).clamped(to: 0...stackView.arrangedSubviews.count)]
+		let toLabel = stackView.arrangedSubviews[Int(ceil(p)).clamped(to: 0...stackView.arrangedSubviews.count)]
 		
-		context?.restoreGState()
+		let from = fromLabel.convert(fromLabel.bounds, to: contentView)
+		let to = toLabel.convert(toLabel.bounds, to: contentView)
+		
+		var rect = from.lerp(to: to, t: 1.0 - (ceil(p) - p))
+		rect.size.height = 3
+		rect.origin.y = bounds.size.height - rect.size.height
+		indicator.frame = rect
+		let x = indicator.center.x - contentView.bounds.size.width / 2
+		contentView.contentOffset.x = x.clamped(to: 0...(contentView.contentSize.width - contentView.bounds.size.width))
 	}
 	
-	func drawVolume(canvas: CGRect) {
-		guard let volume = volume?.copy() as? UIBezierPath else {return}
-		
-		var transform = CGAffineTransform.identity
-		let rect = volume.bounds
-		if rect.size.width > 0 && rect.size.height > 0 {
-			transform = transform.scaledBy(x: 1, y: -1)
-			transform = transform.translatedBy(x: 0, y: -canvas.size.height)
-			transform = transform.scaledBy(x: canvas.size.width / rect.size.width, y: canvas.size.height / rect.size.height * NCMarketHistoryView.ratio)
-			transform = transform.translatedBy(x: -rect.origin.x, y: -rect.origin.y)
-			volume.apply(transform)
-		}
-		
-//		UIColor(number: 0x005566FF).setFill()
-//		volume.fill()
-		
-		let colorSpace = CGColorSpaceCreateDeviceRGB()
-		let colors = [UIColor(number: 0x005566FF).cgColor,
-		              UIColor(number: 0x00404dFF).cgColor,
-		              ] as CFArray
-		let locations: [CGFloat] = [0, 1]
-		let gradient = CGGradient(colorsSpace: colorSpace, colors: colors, locations: locations)
-		volume.addClip()
-		let bounds = volume.bounds
-		UIGraphicsGetCurrentContext()?.drawLinearGradient(gradient!, start: CGPoint(x: 0, y:bounds.minY), end: CGPoint(x: 0, y:bounds.maxY), options: [])
-
-	}
-	
-	func drawDonchianAndMedian(canvas: CGRect) {
-		guard let donchian = donchian?.copy() as? UIBezierPath,
-			let median = median?.copy() as? UIBezierPath
-			else {
-				return
-		}
-		
-		var rect = donchian.bounds
-		rect.size.height = CGFloat(avg) - rect.origin.y
-		if rect.size.width > 0 && rect.size.height > 0 {
-			transform = CGAffineTransform.identity
-			transform = transform.scaledBy(x: 1, y: -1)
-			transform = transform.translatedBy(x: 0, y: -canvas.size.height * (1.0 - NCMarketHistoryView.ratio))
-			transform = transform.scaledBy(x: canvas.size.width / rect.size.width, y: canvas.size.height / rect.size.height * (1.0 - NCMarketHistoryView.ratio))
-			transform = transform.translatedBy(x: -rect.origin.x, y: -rect.origin.y)
-			donchian.apply(transform)
-			median.apply(transform)
-		}
-		
-		UIColor(number: 0x404040FF).setFill()
-		donchian.fill()
-		UIColor(number: 0x00b5d9FF).setStroke()
-		median.stroke()
-	}
-	
-	private static let months = [NSLocalizedString("Jan", comment: ""), NSLocalizedString("Feb", comment: ""), NSLocalizedString("Mar", comment: ""), NSLocalizedString("Apr", comment: ""), NSLocalizedString("May", comment: ""), NSLocalizedString("Jun", comment: ""), NSLocalizedString("Jul", comment: ""), NSLocalizedString("Aug", comment: ""), NSLocalizedString("Sep", comment: ""), NSLocalizedString("Oct", comment: ""), NSLocalizedString("Nov", comment: ""), NSLocalizedString("Dec", comment: "")]
-
-	
-	func drawGrid(canvas: CGRect) {
-		guard let donchianRange = donchianRange else {return}
-		guard let volumeRange = volumeRange else {return}
-		guard let dates = self.date else {return}
-		
-		let gridSize = NCMarketHistoryView.gridSize
-		var y = 0 as CGFloat
-		let grid = UIBezierPath()
-		
-		let attributes: [String: Any] = [NSFontAttributeName: UIFont.systemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor.white]
-		let size = CGSize.init(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
-		
-		var donchian = donchianRange.upperBound
-		let donchianStep = (donchianRange.upperBound - donchianRange.lowerBound) * Double(gridSize.height / canvas.size.height)
-		var volume = volumeRange.upperBound
-		let volumeStep = (volumeRange.upperBound - volumeRange.lowerBound) * Double(gridSize.height / canvas.size.height)
-		
-		while y <= canvas.size.height {
-			grid.move(to: CGPoint(x: 0, y: y))
-			grid.addLine(to: CGPoint(x: canvas.size.width, y: y))
-
-			if (donchian > 0) {
-				let s = NSAttributedString(string: NCUnitFormatter.localizedString(from: donchian, unit: .none, style: .short), attributes: attributes)
-				var rect = s.boundingRect(with: size, options: [], context: nil)
-				rect.origin.x = -rect.size.width - 4
-				rect.origin.y = y - rect.size.height / 2
-				if rect.maxY < canvas.size.height {
-					s.draw(in: rect)
-				}
-				donchian -= donchianStep
-			}
-			
-			if y >= canvas.height * (1.0 - NCMarketHistoryView.ratio) {
-				let s = NSAttributedString(string: NCUnitFormatter.localizedString(from: volume, unit: .none, style: .short), attributes: attributes)
-				var rect = s.boundingRect(with: size, options: [], context: nil)
-				rect.origin.x = canvas.maxX + 4
-				rect.origin.y = y - rect.size.height / 2
-				if rect.maxY < canvas.size.height {
-					s.draw(in: rect)
-				}
-			}
-			volume -= volumeStep
-			y += gridSize.height
-		}
-		
-		
-		let dateRange = dates.lowerBound.timeIntervalSinceReferenceDate...dates.upperBound.timeIntervalSinceReferenceDate
-		var date = dateRange.lowerBound
-		let dateStep = (dateRange.upperBound - dateRange.lowerBound) * Double(gridSize.width / canvas.size.width)
-		let calendar = Calendar(identifier: .gregorian)
-		var month = calendar.component(.month, from: dates.lowerBound)
-		
-		var x = 0 as CGFloat
-		while x <= canvas.size.width {
-			grid.move(to: CGPoint(x: x, y: 0))
-			grid.addLine(to: CGPoint(x: x, y: canvas.size.height))
-			
-			let m = calendar.component(.month, from: Date(timeIntervalSinceReferenceDate: date))
-			if m != month {
-				month = m
-				
-				let s = NSAttributedString(string: NCMarketHistoryView.months[month - 1], attributes: attributes)
-				var rect = s.boundingRect(with: size, options: [], context: nil)
-				rect.origin.x = x - rect.size.width / 2
-				rect.origin.y -= rect.size.height + 4
-				if rect.maxX < canvas.size.width {
-					s.draw(in: rect)
-				}
-
-			}
-			
-			date += dateStep
-			x += gridSize.width
-		}
-		
-		UIColor(white: 1.0, alpha: 0.1).setStroke()
-		grid.stroke()
+	override var intrinsicContentSize: CGSize {
+		return contentView.contentSize
 	}
 }
 
-let view = NCMarketHistoryView(frame: CGRect(x: 0, y: 0, width: 600, height: 400))
+let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 160))
+let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: 320, height: 160))
+window.addSubview(scrollView)
+scrollView.contentSize = CGSize(width: 320 * 5, height: 160)
+scrollView.contentOffset = CGPoint(x: 0, y: 0)
 
-view.donchian = row.donchian
-view.volume = row.volume
-view.median = row.median
-view.date = row.date
-view.setNeedsDisplay()
-view
+let pageControl = NCSegmentedPageControl(frame: CGRect(x: 0, y: 0, width: 320, height: 28))
+pageControl.scrollView = scrollView
+pageControl.segments = "SECTION1|PAGE2"
+window.addSubview(pageControl)
+window.makeKeyAndVisible()
+window.layoutIfNeeded()
+pageControl.setNeedsLayout()
+pageControl.layoutIfNeeded()
 
-*/
+
+window
+

@@ -78,8 +78,9 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 	func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) -> Void {
 		guard let row = item as? NCDefaultTreeRow else {return}
 		if let segue = row.segue {
-			let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController
-			self.present(controller!, animated: true, completion: nil)
+			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController else {return}
+			controller.category = NCDBDgmppItemCategory.category(categoryID: row.object as! NCDBDgmppItemCategoryID)
+			self.present(controller, animated: true, completion: nil)
 			//self.performSegue(withIdentifier: segue, sender: cell)
 		}
 	}

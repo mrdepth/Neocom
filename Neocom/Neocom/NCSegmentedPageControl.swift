@@ -83,8 +83,7 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 		let fromLabel = stackView.arrangedSubviews[Int(trunc(p)).clamped(to: 0...lastPage)]
 		let toLabel = stackView.arrangedSubviews[Int(ceil(p)).clamped(to: 0...lastPage)]
 		
-		let from = fromLabel.convert(fromLabel.bounds, to: cont
-			entView)
+		let from = fromLabel.convert(fromLabel.bounds, to: contentView)
 		let to = toLabel.convert(toLabel.bounds, to: contentView)
 		
 		var rect = from.lerp(to: to, t: 1.0 - (ceil(p) - p))

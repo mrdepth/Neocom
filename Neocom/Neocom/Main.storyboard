@@ -4263,7 +4263,7 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="Rpi-Vi-phx" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="56" width="320" height="41"/>
+                                <rect key="frame" x="0.0" y="55.5" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Rpi-Vi-phx" id="o9d-vO-jfe">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="40.5"/>
@@ -4472,7 +4472,7 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="Cell" id="qJm-1N-FEe" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="56" width="320" height="41"/>
+                                <rect key="frame" x="0.0" y="55.5" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qJm-1N-FEe" id="fFV-5q-ZqV">
                                     <rect key="frame" x="0.0" y="0.0" width="273" height="40.5"/>

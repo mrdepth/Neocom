@@ -14,7 +14,7 @@ class NCTypePickerViewController: UINavigationController {
 	var type: NCDBInvType?
 	var completionHandler: ((NCDBInvType) -> Void)!
 	lazy var groupsViewController: NCTypePickerGroupsViewController? = {
-		return self.childViewControllers.first(where: {return $0 is NCTypePickerGroupsViewController}) as? NCTypePickerGroupsViewController
+		return self.viewControllers.first?.childViewControllers.first(where: {return $0 is NCTypePickerGroupsViewController}) as? NCTypePickerGroupsViewController
 	}()
 
 	private var results: NSFetchedResultsController<NSDictionary>?
@@ -33,7 +33,6 @@ class NCTypePickerViewController: UINavigationController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 	
 }

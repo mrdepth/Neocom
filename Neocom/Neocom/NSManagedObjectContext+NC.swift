@@ -18,4 +18,14 @@ extension NSManagedObjectContext {
 		request.fetchLimit = 1
 		return (try? self.fetch(request))?.first
 	}
+	
+	func fetch<Type:NSFetchRequestResult>(_ entityName:String, `where`: String, _ args: CVarArg...) -> [Type]? {
+		let request = NSFetchRequest<Type>(entityName: entityName)
+		request.predicate = withVaList(args) {
+			return NSPredicate(format: `where`, arguments: $0)
+		}
+		request.fetchLimit = 1
+		return (try? self.fetch(request))
+	}
+
 }

@@ -80,6 +80,10 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 		if let segue = row.segue {
 			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController else {return}
 			controller.category = NCDBDgmppItemCategory.category(categoryID: row.object as! NCDBDgmppItemCategoryID)
+			controller.completionHandler = { [weak self] (type) in
+				print ("\(type)")
+				self?.dismiss(animated: true)
+			}
 			self.present(controller, animated: true, completion: nil)
 			//self.performSegue(withIdentifier: segue, sender: cell)
 		}

@@ -9,13 +9,13 @@
 import Foundation
 
 class NCUnitFormatter: Formatter {
-	enum Unit {
+	enum Unit: Int {
 		case none
 		case isk
 		case skillPoints
 	}
 	
-	enum Style {
+	enum Style: Int {
 		case short
 		case full
 	}
@@ -41,6 +41,27 @@ class NCUnitFormatter: Formatter {
 		return numberFormatter
 		
 	}()
+	
+	init(unit: Unit = .none, style: Style = .full, useSIPrefix: Bool = false) {
+		self.unit = unit
+		self.style = style
+		self.useSIPrefix = useSIPrefix
+		super.init()
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		self.unit = Unit(rawValue: aDecoder.decodeInteger(forKey: "unit")) ?? .none
+		self.style = Style(rawValue: aDecoder.decodeInteger(forKey: "style")) ?? .full
+		self.useSIPrefix = aDecoder.decodeBool(forKey: "useSIPrefix")
+		super.init(coder: aDecoder)
+	}
+	
+	override func encode(with aCoder: NSCoder) {
+		super.encode(with: aCoder)
+		aCoder.encode(unit.rawValue, forKey: "unit")
+		aCoder.encode(style.rawValue, forKey: "style")
+		aCoder.encode(useSIPrefix, forKey: "useSIPrefix")
+	}
 	
 	class func localizedString(from number: Int32, unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
 		return localizedString(from: Double(number), unit: unit, style: style)

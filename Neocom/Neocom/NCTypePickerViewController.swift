@@ -24,11 +24,11 @@ class NCTypePickerViewController: UINavigationController {
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
-		if let category = category {
-			
-			self.groupsViewController?.group = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category)
-		}
 		super.viewWillAppear(animated)
+		if let category = category, let groupsViewController = self.groupsViewController {
+			groupsViewController.group = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category)
+			self.viewControllers.first?.title = groupsViewController.group?.groupName
+		}
 	}
 
     override func didReceiveMemoryWarning() {

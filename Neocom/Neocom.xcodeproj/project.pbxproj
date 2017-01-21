@@ -127,6 +127,8 @@
 		12E267C01E12A89F00A13442 /* NCAdaptiveSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E267BF1E12A89F00A13442 /* NCAdaptiveSegue.swift */; };
 		12E314BC1E165D5D000A926D /* UIView+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E314BB1E165D5D000A926D /* UIView+NC.swift */; };
 		12FC3CC81E13F4A400B7744E /* NCDatabaseCertificateMasteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FC3CC71E13F4A400B7744E /* NCDatabaseCertificateMasteryViewController.swift */; };
+		12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */; };
+		12FF4D401E33A5DB00A8BAD4 /* NCResourceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -316,6 +318,8 @@
 		12E267BF1E12A89F00A13442 /* NCAdaptiveSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAdaptiveSegue.swift; sourceTree = "<group>"; };
 		12E314BB1E165D5D000A926D /* UIView+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+NC.swift"; sourceTree = "<group>"; };
 		12FC3CC71E13F4A400B7744E /* NCDatabaseCertificateMasteryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateMasteryViewController.swift; sourceTree = "<group>"; };
+		12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerRecentViewController.swift; sourceTree = "<group>"; };
+		12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCResourceLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -359,6 +363,7 @@
 				121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */,
 				121D10AD1E262F8900DD671B /* NCTypePickerGroupsViewController.swift */,
 				121D10B11E263E3700DD671B /* NCTypePickerTypesViewController.swift */,
+				12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -420,6 +425,7 @@
 				129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */,
 				129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */,
 				1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */,
+				12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */,
 				1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */,
 				1230A31E1DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift */,
 				12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */,
@@ -796,6 +802,7 @@
 				12961DD31E1D64B8008A3F4D /* NCFittingShip.mm in Sources */,
 				12DBEAE91E1E8FEC0088A486 /* NCFittingMenuViewController.swift in Sources */,
 				12AC8DB01DEF5B0500561A7A /* NCDatabase.xcdatamodeld in Sources */,
+				12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */,
 				12E2674D1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift in Sources */,
 				1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */,
 				128E61421E0A707200C15EEB /* NCDamageTypeTableViewCell.swift in Sources */,
@@ -818,6 +825,7 @@
 				12DBEAB71E1D3BD80088A486 /* NCFittingEngine.mm in Sources */,
 				12961DBD1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift in Sources */,
 				1256BE421DF1F07D00A2A24B /* NCCharacterAttributes.swift in Sources */,
+				12FF4D401E33A5DB00A8BAD4 /* NCResourceLabel.swift in Sources */,
 				12AC8DB21DEF5B6D00561A7A /* NCDatabase.swift in Sources */,
 				129E61041E028B3900B56EB8 /* String+NC.swift in Sources */,
 				12AC8DD41DF09BDE00561A7A /* NCCacheRecord+NC.swift in Sources */,

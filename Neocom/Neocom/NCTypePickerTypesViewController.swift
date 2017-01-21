@@ -121,6 +121,21 @@ class NCTypePickerTypesViewController: UITableViewController, UISearchResultsUpd
 		guard let typePickerController = navigationController as? NCTypePickerViewController else {return}
 		guard let object = results?.object(at: indexPath) else {return}
 		guard let type = NCDatabase.sharedDatabase?.invTypes[object["typeID"] as! Int] else {return}
+		guard let context = NCCache.sharedCache?.viewContext else {return}
+		
+		guard let category = typePickerController.category else {return}
+		var recent: NCCacheTypePickerRecent? = context.fetch("TypePickerRecent", where: "category == %d AND subcategory == %d AND raceID == %d AND typeID == %d", category.category, category.subcategory, category.race?.raceID ?? 0, type.typeID)
+		if recent == nil {
+			recent = NCCacheTypePickerRecent(entity: NSEntityDescription.entity(forEntityName: "TypePickerRecent", in: context)!, insertInto: context)
+			recent?.category = category.category
+			recent?.subcategory = category.subcategory
+			recent?.raceID = category.race?.raceID ?? 0
+			recent?.typeID = type.typeID
+		}
+		recent?.date = Date() as NSDate
+		if context.hasChanges {
+			try? context.save()
+		}
 		typePickerController.completionHandler(type)
 	}
 	

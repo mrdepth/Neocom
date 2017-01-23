@@ -81,7 +81,8 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController else {return}
 			controller.category = NCDBDgmppItemCategory.category(categoryID: row.object as! NCDBDgmppItemCategoryID)
 			controller.completionHandler = { [weak self] (type) in
-				print ("\(type)")
+				let engine = NCFittingEngine()
+				let fleet = NCFleet(typeID: Int(type.typeID), engine: engine)
 				self?.dismiss(animated: true)
 			}
 			self.present(controller, animated: true, completion: nil)

@@ -21,8 +21,20 @@ class NCResourceLabel: NCLabel {
 			updateText()
 		}
 	}
+	
+	var unit: NCUnitFormatter.Unit = .none {
+		didSet {
+			shortFormatter = NCRangeFormatter(unit: unit, style: .short)
+			fullFormatter = NCRangeFormatter(unit: unit, style: .full)
+		}
+	}
 
-	lazy var formatter: NCUnitFormatter = NCUnitFormatter()
+	lazy var shortFormatter: NCRangeFormatter = {
+		return NCRangeFormatter(unit: self.unit, style: .short)
+	}()
+	lazy var fullFormatter: NCRangeFormatter = {
+		return NCRangeFormatter(unit: self.unit, style: .full)
+	}()
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -35,7 +47,8 @@ class NCResourceLabel: NCLabel {
 	
 	#if TARGET_INTERFACE_BUILDER
 	override func prepareForInterfaceBuilder() {
-	self.awakeFromNib()
+		self.awakeFromNib()
+		updateText()
 	}
 	#endif
 	
@@ -43,7 +56,7 @@ class NCResourceLabel: NCLabel {
 #if TARGET_INTERFACE_BUILDER
 		let progress = 0.5
 #else
-		let progress = maximumValue > 0 ? value / maximumValue : 0.0
+		let progress = maximumValue > 0 ? (value / maximumValue).clamped(to: 0...1) : 0.0
 #endif
 		let context = UIGraphicsGetCurrentContext()
 		context?.saveGState()
@@ -56,7 +69,11 @@ class NCResourceLabel: NCLabel {
 	}
 	
 	private func updateText() {
-//		let a = NCUnitFormatter.localizedString(from: maximumValue, unit: .none, style: <#T##NCUnitFormatter.Style#>, useSIPrefix: <#T##Bool#>)
-//		text = "\(a)/(b)"
+		tintColor = value > maximumValue ? .red : UIColor(number: 0x009400ff)
+		text = fullFormatter.string(for: value, maximum: maximumValue)
+		let rect = textRect(forBounds: CGRect.infinite, limitedToNumberOfLines: 1)
+		if bounds.size.width < rect.size.width {
+			text = shortFormatter.string(for: value, maximum: maximumValue)
+		}
 	}
 }

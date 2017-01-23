@@ -17,7 +17,7 @@
 
 @end
 
-@interface NCFittingItem : NSObject
+@interface NCFittingItem : NSObject<NSCopying>
 @property (readonly) NSInteger typeID;
 @property (readonly, nonnull) NSString* typeName;
 @property (readonly, nonnull) NSString* groupName;

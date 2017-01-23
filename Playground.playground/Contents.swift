@@ -3,124 +3,222 @@
 import UIKit
 //import EVEAPI
 
-extension Int {
-	func clamped(to: ClosedRange<Int>) -> Int {
-		return Swift.max(to.lowerBound, Swift.min(to.upperBound, self))
-	}
-}
 
-extension CGFloat {
-	func clamped(to: ClosedRange<CGFloat>) -> CGFloat {
-		return fmax(to.lowerBound, fmin(to.upperBound, self))
-	}
-}
+var a = [3,5,4,3,34,56]
 
+a.sort { $0 > $1 }
+a
 
-extension CGRect {
-	func lerp(to: CGRect, t: CGFloat) -> CGRect {
-		func lerp(_ a: CGFloat, _ b: CGFloat, _ t: CGFloat) -> CGFloat {
-			return a + (b - a) * t
-		}
-		
-		var r = CGRect.zero
-		r.origin.x = lerp(self.origin.x, to.origin.x, t)
-		r.origin.y = lerp(self.origin.y, to.origin.y, t)
-		r.size.width = lerp(self.size.width, to.size.width, t)
-		r.size.height = lerp(self.size.height, to.size.height, t)
-		return r
-	}
-}
-
-class NCSegmentedPageControl: UIControl {
-	@IBInspectable var spacing: CGFloat = 10
-	@IBInspectable var segments: String? {
-		didSet {
-			self.titles = segments?.components(separatedBy: "|") ?? []
-		}
+class NCUnitFormatter: Formatter {
+	enum Unit: Int {
+		case none
+		case isk
+		case skillPoints
 	}
 	
-	var titles: [String] = [] {
-		didSet {
-			for title in titles {
-				let button = UIButton(frame: .zero)
-				button.setTitle(title, for: .normal)
-				button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-				button.setTitleColor(.black, for: .normal)
-				stackView.addArrangedSubview(button)
+	enum Style: Int {
+		case short
+		case full
+	}
+	
+	let unit: Unit
+	let style: Style
+	let useSIPrefix: Bool
+	
+	private static let numberFormatter1: NumberFormatter = {
+		let numberFormatter = NumberFormatter()
+		numberFormatter.positiveFormat = "#,##0.##"
+		numberFormatter.groupingSeparator = " "
+		numberFormatter.decimalSeparator = "."
+		return numberFormatter
+		
+	}()
+	
+	private static let numberFormatter2: NumberFormatter = {
+		let numberFormatter = NumberFormatter()
+		numberFormatter.positiveFormat = "#,##0"
+		numberFormatter.groupingSeparator = " "
+		numberFormatter.decimalSeparator = "."
+		return numberFormatter
+		
+	}()
+	
+	init(unit: Unit = .none, style: Style = .full, useSIPrefix: Bool = false) {
+		self.unit = unit
+		self.style = style
+		self.useSIPrefix = useSIPrefix
+		super.init()
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		self.unit = Unit(rawValue: aDecoder.decodeInteger(forKey: "unit")) ?? .none
+		self.style = Style(rawValue: aDecoder.decodeInteger(forKey: "style")) ?? .full
+		self.useSIPrefix = aDecoder.decodeBool(forKey: "useSIPrefix")
+		super.init(coder: aDecoder)
+	}
+	
+	override func encode(with aCoder: NSCoder) {
+		super.encode(with: aCoder)
+		aCoder.encode(unit.rawValue, forKey: "unit")
+		aCoder.encode(style.rawValue, forKey: "style")
+		aCoder.encode(useSIPrefix, forKey: "useSIPrefix")
+	}
+	
+	class func localizedString(from number: Int32, unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
+		return localizedString(from: Double(number), unit: unit, style: style)
+	}
+	
+	
+	class func localizedString(from number: Int, unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
+		return localizedString(from: Double(number), unit: unit, style: style)
+	}
+	
+	class func localizedString(from number: Float, unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
+		return localizedString(from: Double(number), unit: unit, style: style)
+	}
+	
+	class func localizedString(from number: Double, unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
+		let unitAbbreviation: String
+		
+		switch (unit) {
+		case .isk:
+			unitAbbreviation = NSLocalizedString("ISK", comment: "")
+			break;
+		case .skillPoints:
+			unitAbbreviation = NSLocalizedString("SP", comment: "")
+			break;
+		default:
+			unitAbbreviation = ""
+			break;
+		}
+		
+		var value = number
+		let suffix: String
+		if (style == .short) {
+			if (value >= 10_000_000_000_000) {
+				suffix = NSLocalizedString("T", comment: "trillion")
+				value /= 1_000_000_000.0
+			}
+			else if (value >= 10_000_000_000) {
+				if (useSIPrefix) {
+					suffix = NSLocalizedString("G", comment: "billion")
+				}
+				else {
+					suffix = NSLocalizedString("B", comment: "billion")
+				}
+				value /= 1_000_000_000.0
+			}
+			else if (value >= 10_000_000) {
+				suffix = NSLocalizedString("M", comment:"million")
+				value /= 1_000_000.0
+			}
+			else if (value >= 10_000) {
+				suffix = NSLocalizedString("k", comment: "thousand")
+				value /= 1000.0
+			}
+			else {
+				suffix = ""
 			}
 		}
+		else {
+			suffix = ""
+		}
+		
+		var s = ""
+		if value < 10.0 {
+			s = numberFormatter1.string(from: NSNumber(value: value))!
+		}
+		else {
+			s = numberFormatter2.string(from: NSNumber(value: value))!
+		}
+		if !suffix.isEmpty {
+			s += suffix
+		}
+		if !unitAbbreviation.isEmpty {
+			s += " \(unitAbbreviation)"
+		}
+		return s;
 	}
 	
-	@IBOutlet weak var scrollView: UIScrollView!
-	
-	private lazy var contentView: UIScrollView = {
-		let contentView = UIScrollView(frame: self.bounds)
-		contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-		self.addSubview(contentView)
-		return contentView
-	}()
-	
-	public lazy var stackView: UIStackView = {
-		let stackView = UIStackView(frame: self.bounds)
-		stackView.alignment = .center
-		stackView.distribution = .fillProportionally
-		stackView.axis = .horizontal
-		stackView.spacing = self.spacing
-		stackView.translatesAutoresizingMaskIntoConstraints = false
-		self.contentView.addSubview(stackView)
-		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[view]-10-|", options: [], metrics: nil, views: ["view": stackView]))
-		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: [], metrics: nil, views: ["view": stackView]))
-		NSLayoutConstraint(item: stackView, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: self.contentView, attribute: .width, multiplier: 1, constant: 0).isActive = true
-		return stackView
-	}()
-	
-	public lazy var indicator: UIView = {
-		let indicator = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 4))
-		indicator.backgroundColor = UIColor.yellow
-		self.contentView.addSubview(indicator)
-		return indicator
-	}()
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		contentView.frame = bounds
-		guard stackView.arrangedSubviews.count > 0 else {return}
-		let p = scrollView.contentOffset.x / scrollView.bounds.size.width
+	class func localizedString(from number: (Double, Double?), unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
+		let unitAbbreviation: String
 		
-		let fromLabel = stackView.arrangedSubviews[Int(trunc(p)).clamped(to: 0...stackView.arrangedSubviews.count)]
-		let toLabel = stackView.arrangedSubviews[Int(ceil(p)).clamped(to: 0...stackView.arrangedSubviews.count)]
+		switch (unit) {
+		case .isk:
+			unitAbbreviation = NSLocalizedString("ISK", comment: "")
+			break;
+		case .skillPoints:
+			unitAbbreviation = NSLocalizedString("SP", comment: "")
+			break;
+		default:
+			unitAbbreviation = ""
+			break;
+		}
 		
-		let from = fromLabel.convert(fromLabel.bounds, to: contentView)
-		let to = toLabel.convert(toLabel.bounds, to: contentView)
+		var (v, m) = number
 		
-		var rect = from.lerp(to: to, t: 1.0 - (ceil(p) - p))
-		rect.size.height = 3
-		rect.origin.y = bounds.size.height - rect.size.height
-		indicator.frame = rect
-		let x = indicator.center.x - contentView.bounds.size.width / 2
-		contentView.contentOffset.x = x.clamped(to: 0...(contentView.contentSize.width - contentView.bounds.size.width))
+		let value = max(fabs(v), fabs(m ?? 0))
+		let divider: Double
+		let suffix: String
+		if (style == .short) {
+			if (value >= 10_000_000_000_000) {
+				suffix = NSLocalizedString("T", comment: "trillion")
+				divider = 1_000_000_000.0
+			}
+			else if (value >= 10_000_000_000) {
+				if (useSIPrefix) {
+					suffix = NSLocalizedString("G", comment: "billion")
+				}
+				else {
+					suffix = NSLocalizedString("B", comment: "billion")
+				}
+				divider = 1_000_000_000.0
+			}
+			else if (value >= 10_000_000) {
+				suffix = NSLocalizedString("M", comment:"million")
+				divider = 1_000_000.0
+			}
+			else if (value >= 10_000) {
+				suffix = NSLocalizedString("k", comment: "thousand")
+				divider = 1000.0
+			}
+			else {
+				suffix = ""
+				divider = 1.0
+			}
+		}
+		else {
+			suffix = ""
+			divider = 1.0
+		}
+		
+		var s = ""
+		v /= divider
+		let formatter = v < 10.0 ? numberFormatter1 : numberFormatter2
+		s = formatter.string(from: NSNumber(value: v))!
+		m? /= divider
+		if let m = m {
+			s += "/\(formatter.string(from: NSNumber(value: m))!)"
+		}
+		
+		if !suffix.isEmpty {
+			s += suffix
+		}
+		if !unitAbbreviation.isEmpty {
+			s += " \(unitAbbreviation)"
+		}
+		return s;
 	}
 	
-	override var intrinsicContentSize: CGSize {
-		return contentView.contentSize
+	override func string(for obj: Any?) -> String? {
+		guard let obj = obj as? Double else {return nil}
+		return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: true)
 	}
+	
 }
 
-let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 160))
-let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: 320, height: 160))
-window.addSubview(scrollView)
-scrollView.contentSize = CGSize(width: 320 * 5, height: 160)
-scrollView.contentOffset = CGPoint(x: 0, y: 0)
 
-let pageControl = NCSegmentedPageControl(frame: CGRect(x: 0, y: 0, width: 320, height: 28))
-pageControl.scrollView = scrollView
-pageControl.segments = "SECTION1|PAGE2"
-window.addSubview(pageControl)
-window.makeKeyAndVisible()
-window.layoutIfNeeded()
-pageControl.setNeedsLayout()
-pageControl.layoutIfNeeded()
+let formatter = NCUnitFormatter(unit: .isk, style: .short)
 
-
-window
-
+formatter.string(for: 1000_000_000)
+NCUnitFormatter.localizedString(from: (1000_0000.0, 1000_000_000_00.0), unit: .isk, style: .short, useSIPrefix: false)

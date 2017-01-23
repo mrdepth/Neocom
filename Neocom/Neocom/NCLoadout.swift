@@ -76,14 +76,18 @@ class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 }
 
 
-class NCFittingLoadout: NSObject, NSCoding {
+public class NCFittingLoadout: NSObject, NSCoding {
 	var modules: [NCFittingModuleSlot: [NCFittingLoadoutModule]]?
 	var drones: [NCFittingLoadoutDrone]?
 	var cargo: [NCFittingLoadoutItem]?
 	var implants: [NCFittingLoadoutItem]?
 	var boosters: [NCFittingLoadoutItem]?
 	
-	required init?(coder aDecoder: NSCoder) {
+	override init() {
+		super.init()
+	}
+	
+	public required init?(coder aDecoder: NSCoder) {
 		modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()
 		for (key, value) in aDecoder.decodeObject(forKey: "modules") as? [Int: [NCFittingLoadoutModule]] ?? [:] {
 			guard let key = NCFittingModuleSlot(rawValue: key) else {continue}
@@ -97,7 +101,7 @@ class NCFittingLoadout: NSObject, NSCoding {
 		super.init()
 	}
 	
-	func encode(with aCoder: NSCoder) {
+	public func encode(with aCoder: NSCoder) {
 		var dic = [Int: [NCFittingLoadoutModule]]()
 		for (key, value) in modules ?? [:] {
 			dic[key.rawValue] = value
@@ -116,6 +120,40 @@ class NCFittingLoadout: NSObject, NSCoding {
 		}
 		if boosters?.count ?? 0 > 0 {
 			aCoder.encode(boosters, forKey: "boosters")
+		}
+	}
+}
+
+
+extension NCFittingCharacter {
+	var loadout: NCFittingLoadout {
+		get {
+			return NCFittingLoadout()
+		}
+		set {
+			let ship = self.ship!
+			for implant in loadout.implants ?? [] {
+				addImplant(typeID: implant.typeID)
+			}
+			for booster in loadout.boosters ?? [] {
+				addBooster(typeID: booster.typeID)
+			}
+			for drone in loadout.drones ?? [] {
+				for _ in 0..<drone.count {
+					ship.addDrone(typeID: drone.typeID)
+				}
+			}
+			for (_, modules) in loadout.modules?.sorted(by: { $0.key.rawValue > $1.key.rawValue }) ?? [] {
+				for module in modules {
+					for _ in 0..<module.count {
+						guard let m = ship.addModule(typeID: module.typeID) else {continue}
+						m.preferredState = module.state
+						if let charge = module.charge {
+							m.charge = NCFittingCharge(typeID: charge.typeID)
+						}
+					}
+				}
+			}
 		}
 	}
 }

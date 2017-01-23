@@ -13,6 +13,41 @@ class NCUnitFormatter: Formatter {
 		case none
 		case isk
 		case skillPoints
+		case gigaJoule
+		case megaWatts
+		case teraflops
+		case kilogram
+		
+		var useSIPrefix: Bool {
+			switch self {
+			case .isk, .skillPoints:
+				return false
+			case .gigaJoule, .megaWatts, .teraflops, .kilogram:
+				return true
+			default:
+				return false
+			}
+		}
+		
+		var abbreviation: String {
+			switch (self) {
+			case .isk:
+				return NSLocalizedString("ISK", comment: "")
+			case .skillPoints:
+				return NSLocalizedString("SP", comment: "")
+			case .gigaJoule:
+				return NSLocalizedString("GJ", comment: "")
+			case .megaWatts:
+				return NSLocalizedString("MW", comment: "")
+			case .teraflops:
+				return NSLocalizedString("tf", comment: "")
+			case .kilogram:
+				return NSLocalizedString("kg", comment: "")
+				
+			default:
+				return ""
+			}
+		}
 	}
 	
 	enum Style: Int {
@@ -20,9 +55,9 @@ class NCUnitFormatter: Formatter {
 		case full
 	}
 	
-	var unit: Unit = .none
-	var style: Style = .full
-	var useSIPrefix: Bool = false
+	let unit: Unit
+	let style: Style
+	let useSIPrefix: Bool?
 	
 	private static let numberFormatter1: NumberFormatter = {
 		let numberFormatter = NumberFormatter()
@@ -42,7 +77,7 @@ class NCUnitFormatter: Formatter {
 		
 	}()
 	
-	init(unit: Unit = .none, style: Style = .full, useSIPrefix: Bool = false) {
+	init(unit: Unit = .none, style: Style = .full, useSIPrefix: Bool? = nil) {
 		self.unit = unit
 		self.style = style
 		self.useSIPrefix = useSIPrefix
@@ -52,7 +87,7 @@ class NCUnitFormatter: Formatter {
 	required init?(coder aDecoder: NSCoder) {
 		self.unit = Unit(rawValue: aDecoder.decodeInteger(forKey: "unit")) ?? .none
 		self.style = Style(rawValue: aDecoder.decodeInteger(forKey: "style")) ?? .full
-		self.useSIPrefix = aDecoder.decodeBool(forKey: "useSIPrefix")
+		self.useSIPrefix = aDecoder.decodeObject(forKey: "useSIPrefix") as? Bool
 		super.init(coder: aDecoder)
 	}
 	
@@ -63,33 +98,22 @@ class NCUnitFormatter: Formatter {
 		aCoder.encode(useSIPrefix, forKey: "useSIPrefix")
 	}
 	
-	class func localizedString(from number: Int32, unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
+	class func localizedString(from number: Int32, unit: Unit, style: Style, useSIPrefix: Bool? = nil) -> String {
 		return localizedString(from: Double(number), unit: unit, style: style)
 	}
 
 
-	class func localizedString(from number: Int, unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
+	class func localizedString(from number: Int, unit: Unit, style: Style, useSIPrefix: Bool? = nil) -> String {
 		return localizedString(from: Double(number), unit: unit, style: style)
 	}
 
-	class func localizedString(from number: Float, unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
+	class func localizedString(from number: Float, unit: Unit, style: Style, useSIPrefix: Bool? = nil) -> String {
 		return localizedString(from: Double(number), unit: unit, style: style)
 	}
 
-	class func localizedString(from number: Double, unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
-		let unitAbbreviation: String
-		
-		switch (unit) {
-		case .isk:
-			unitAbbreviation = NSLocalizedString("ISK", comment: "")
-			break;
-		case .skillPoints:
-			unitAbbreviation = NSLocalizedString("SP", comment: "")
-			break;
-		default:
-			unitAbbreviation = ""
-			break;
-		}
+	class func localizedString(from number: Double, unit: Unit, style: Style, useSIPrefix: Bool? = nil) -> String {
+		let unitAbbreviation: String = unit.abbreviation
+		let useSIPrefix = useSIPrefix ?? unit.useSIPrefix
 		
 		var value = number
 		let suffix: String
@@ -139,9 +163,89 @@ class NCUnitFormatter: Formatter {
 		return s;
 	}
 
+	/*class func localizedString(from number: (Double, Double?), unit: Unit, style: Style, useSIPrefix: Bool = false) -> String {
+		let unitAbbreviation: String
+		
+		switch (unit) {
+		case .isk:
+			unitAbbreviation = NSLocalizedString("ISK", comment: "")
+			break;
+		case .skillPoints:
+			unitAbbreviation = NSLocalizedString("SP", comment: "")
+			break;
+		default:
+			unitAbbreviation = ""
+			break;
+		}
+		
+		var (v, m) = number
+		
+		let value = max(fabs(v), fabs(m ?? 0))
+		let divider: Double
+		let suffix: String
+		if (style == .short) {
+			if (value >= 10_000_000_000_000) {
+				suffix = NSLocalizedString("T", comment: "trillion")
+				divider = 1_000_000_000.0
+			}
+			else if (value >= 10_000_000_000) {
+				if (useSIPrefix) {
+					suffix = NSLocalizedString("G", comment: "billion")
+				}
+				else {
+					suffix = NSLocalizedString("B", comment: "billion")
+				}
+				divider = 1_000_000_000.0
+			}
+			else if (value >= 10_000_000) {
+				suffix = NSLocalizedString("M", comment:"million")
+				divider = 1_000_000.0
+			}
+			else if (value >= 10_000) {
+				suffix = NSLocalizedString("k", comment: "thousand")
+				divider = 1000.0
+			}
+			else {
+				suffix = ""
+				divider = 1.0
+			}
+		}
+		else {
+			suffix = ""
+			divider = 1.0
+		}
+		
+		var s = ""
+		v /= divider
+		let formatter = v < 10.0 ? numberFormatter1 : numberFormatter2
+		s = formatter.string(from: NSNumber(value: v))!
+		m? /= divider
+		if let m = m {
+			s += "/\(formatter.string(from: NSNumber(value: m))!)"
+		}
+		
+		if !suffix.isEmpty {
+			s += suffix
+		}
+		if !unitAbbreviation.isEmpty {
+			s += " \(unitAbbreviation)"
+		}
+		return s;
+	}*/
+	
 	override func string(for obj: Any?) -> String? {
-		guard let obj = obj as? Double else {return nil}
-		return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: true)
+		switch obj {
+		case let obj as Double:
+			return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: true)
+		case let obj as Float:
+			return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: true)
+		case let obj as Int:
+			return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: true)
+		case let obj as Int32:
+			return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: true)
+		default:
+			return nil
+		}
 	}
 
 }

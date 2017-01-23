@@ -20,7 +20,7 @@
 
 - (nonnull instancetype) init {
 	if (self = [super init]) {
-		_engine = std::make_shared<dgmpp::Engine>(std::make_shared<dgmpp::SqliteConnector>([[[NSBundle mainBundle] pathForResource:@"dgmpp" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]));
+		_engine = std::make_shared<dgmpp::Engine>(std::make_shared<dgmpp::SqliteConnector>([[[NSBundle mainBundle] pathForResource:@"dgm" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]));
 	}
 	return self;
 }

@@ -39,7 +39,7 @@
 }
 
 - (nonnull instancetype) init {
-	if (self = [self init]) {
+	if (self = [super init]) {
 	}
 	return self;
 }
@@ -83,5 +83,8 @@
 	return (intptr_t) _item.get();
 }
 
+- (id)copyWithZone:(nullable NSZone *)zone {
+	return [[NCFittingItem allocWithZone:zone] initWithItem:_item];
+}
 
 @end

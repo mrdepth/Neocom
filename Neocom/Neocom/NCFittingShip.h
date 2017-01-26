@@ -18,7 +18,7 @@
 - (nonnull instancetype) initWithTypeID:(NSInteger) typeID;
 
 - (nullable NCFittingModule*) addModuleWithTypeID:(NSInteger) typeID NS_SWIFT_NAME(addModule(typeID:));
-- (nullable NCFittingModule*) addModuleWithTypeID:(NSInteger) typeID forced:(BOOL) forced NS_SWIFT_NAME(addModule(typeID:forced:));
+- (nullable NCFittingModule*) addModuleWithTypeID:(NSInteger) typeID forced:(BOOL) forced socket:(NSInteger) socket NS_SWIFT_NAME(addModule(typeID:forced:socket:));
 - (nullable NCFittingModule*) replaceModule:(nonnull NCFittingModule*) module withTypeID:(NSInteger) typeID NS_SWIFT_NAME(replaceModule(module:typeID:));
 - (void) removeModule:(nonnull NCFittingModule*) module;
 - (nonnull NSArray<NCFittingModule*>*) modulesWithSlot:(NCFittingModuleSlot) slot NS_SWIFT_NAME(modules(slot:));

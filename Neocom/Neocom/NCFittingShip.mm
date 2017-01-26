@@ -25,12 +25,12 @@
 }
 
 - (nullable NCFittingModule*) addModuleWithTypeID:(NSInteger) typeID {
-	return [self addModuleWithTypeID:typeID forced:false];
+	return [self addModuleWithTypeID:typeID forced:false socket:-1];
 }
 
-- (nullable NCFittingModule*) addModuleWithTypeID:(NSInteger) typeID forced:(BOOL) forced {
+- (nullable NCFittingModule*) addModuleWithTypeID:(NSInteger) typeID forced:(BOOL) forced socket:(NSInteger) socket {
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
-	auto module = ship->addModule(static_cast<dgmpp::TypeID>(typeID), forced);
+	auto module = ship->addModule(static_cast<dgmpp::TypeID>(typeID), forced, static_cast<int>(socket));
 	return module ? [[NCFittingModule alloc] initWithItem:module] : nil;
 }
 

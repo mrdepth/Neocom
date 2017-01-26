@@ -32,6 +32,16 @@
 	return static_cast<NCFittingModuleState>(module->getPreferredState());
 }
 
+- (NSInteger) socket {
+	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
+	return module->getSocket();
+}
+
+- (void) setSocket:(NSInteger)socket {
+	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
+	module->setSocket(static_cast<int>(socket));
+}
+
 - (void) setPreferredState:(NCFittingModuleState)preferredState {
 	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
 	module->setPreferredState(static_cast<dgmpp::Module::State>(preferredState));

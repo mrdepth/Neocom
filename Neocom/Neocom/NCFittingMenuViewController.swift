@@ -56,6 +56,11 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 				print ("\(type)")
 				self?.dismiss(animated: true)
 			}
+		case "NCShipFittingViewController"?:
+			guard let controller = segue.destination as? NCShipFittingViewController else {return}
+			guard let (engine, fleet) = sender as? (NCFittingEngine, NCFleet) else {return}
+			controller.engine = engine
+			controller.fleet = fleet
 		default:
 			break
 		}
@@ -84,6 +89,7 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 				let engine = NCFittingEngine()
 				let fleet = NCFleet(typeID: Int(type.typeID), engine: engine)
 				self?.dismiss(animated: true)
+				self?.performSegue(withIdentifier: "NCShipFittingViewController", sender: (engine, fleet))
 			}
 			self.present(controller, animated: true, completion: nil)
 			//self.performSegue(withIdentifier: segue, sender: cell)

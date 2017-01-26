@@ -15,6 +15,7 @@
 @property (readonly) NCFittingModuleHardpoint hardpoint;
 @property (readonly) NCFittingModuleState state;
 @property (nonatomic, assign) NCFittingModuleState preferredState;
+@property (nonatomic, assign) NSInteger socket;
 - (BOOL) canHaveState:(NCFittingModuleState) state;
 
 @property (nonatomic, strong, nullable) NCFittingCharge* charge;

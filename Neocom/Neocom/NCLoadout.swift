@@ -157,3 +157,111 @@ extension NCFittingCharacter {
 		}
 	}
 }
+
+extension NCFittingModuleSlot {
+	var image: UIImage? {
+		switch self {
+		case .hi:
+			return #imageLiteral(resourceName: "slotHigh")
+		case .med:
+			return #imageLiteral(resourceName: "slotMed")
+		case .low:
+			return #imageLiteral(resourceName: "slotLow")
+		case .rig:
+			return #imageLiteral(resourceName: "slotRig")
+		case .subsystem:
+			return #imageLiteral(resourceName: "slotSubsystem")
+		case .service:
+			return #imageLiteral(resourceName: "slotService")
+		case .mode:
+			return #imageLiteral(resourceName: "slotSubsystem")
+		default:
+			return nil
+		}
+	}
+	
+	var title: String? {
+		switch self {
+		case .hi:
+			return NSLocalizedString("Hi Slot", comment: "")
+		case .med:
+			return NSLocalizedString("Med Slot", comment: "")
+		case .low:
+			return NSLocalizedString("Low Slot", comment: "")
+		case .rig:
+			return NSLocalizedString("Rig Slot", comment: "")
+		case .subsystem:
+			return NSLocalizedString("Subsystems", comment: "")
+		case .service:
+			return NSLocalizedString("Services", comment: "")
+		case .mode:
+			return NSLocalizedString("Mode", comment: "")
+		default:
+			return nil
+		}
+	}
+}
+
+extension NCFittingModuleState {
+	var image: UIImage? {
+		switch self {
+		case .offline:
+			return #imageLiteral(resourceName: "offline")
+		case .online:
+			return #imageLiteral(resourceName: "online")
+		case .active:
+			return #imageLiteral(resourceName: "active")
+		case .overloaded:
+			return #imageLiteral(resourceName: "overheated")
+		default:
+			return nil
+		}
+	}
+	
+	var title: String? {
+		switch self {
+		case .offline:
+			return NSLocalizedString("Offline", comment: "")
+		case .online:
+			return NSLocalizedString("Online", comment: "")
+		case .active:
+			return NSLocalizedString("Active", comment: "")
+		case .overloaded:
+			return NSLocalizedString("Overheated", comment: "")
+		default:
+			return nil
+		}
+	}
+}
+
+extension NCFittingScanType {
+	var image: UIImage? {
+		switch self {
+		case .gravimetric:
+			return #imageLiteral(resourceName: "gravimetric")
+		case .magnetometric:
+			return #imageLiteral(resourceName: "magnetometric")
+		case .ladar:
+			return #imageLiteral(resourceName: "ladar")
+		case .radar:
+			return #imageLiteral(resourceName: "radar")
+		case .multispectral:
+			return #imageLiteral(resourceName: "multispectral")
+		}
+	}
+	
+	var title: String? {
+		switch self {
+		case .gravimetric:
+			return NSLocalizedString("Gravimetric", comment: "")
+		case .magnetometric:
+			return NSLocalizedString("Magnetometric", comment: "")
+		case .ladar:
+			return NSLocalizedString("Ladar", comment: "")
+		case .radar:
+			return NSLocalizedString("Radar", comment: "")
+		case .multispectral:
+			return NSLocalizedString("Multispectral", comment: "")
+		}
+	}
+}

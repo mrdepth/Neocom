@@ -11,18 +11,21 @@
 
 @implementation NCFittingSkills {
 	std::shared_ptr<dgmpp::Character> _character;
+	__weak NCFittingEngine* _engine;
 }
 
-- (nonnull instancetype) initWithCharacter:(std::shared_ptr<dgmpp::Character> const&) character {
+- (nonnull instancetype) initWithCharacter:(std::shared_ptr<dgmpp::Character> const&) character engine:(nonnull NCFittingEngine*) engine {
 	if (self = [super init]) {
 		_character = character;
+		_engine = engine;
 	}
 	return self;
 }
 
 - (nullable NCFittingSkill*) objectAtIndexedSubscript:(NSInteger) typeID {
+	NCVerifyFittingContext(_engine);
 	auto skill = _character->getSkill(static_cast<dgmpp::TypeID>(typeID));
-	return skill ? [[NCFittingSkill alloc] initWithItem:skill] : nil;
+	return skill ? [[NCFittingSkill alloc] initWithItem:skill engine:_engine] : nil;
 }
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len {
@@ -37,18 +40,21 @@
 
 @implementation NCFittingImplants {
 	std::shared_ptr<dgmpp::Character> _character;
+	__weak NCFittingEngine* _engine;
 }
 
-- (nonnull instancetype) initWithCharacter:(std::shared_ptr<dgmpp::Character> const&) character {
+- (nonnull instancetype) initWithCharacter:(std::shared_ptr<dgmpp::Character> const&) character engine:(nonnull NCFittingEngine*) engine {
 	if (self = [super init]) {
 		_character = character;
+		_engine = engine;
 	}
 	return self;
 }
 
 - (nullable NCFittingImplant*) objectAtIndexedSubscript:(NSInteger) slot {
+	NCVerifyFittingContext(_engine);
 	auto implant = _character->getImplant(static_cast<int>(slot));
-	return implant ? [[NCFittingImplant alloc] initWithItem:implant] : nil;
+	return implant ? [[NCFittingImplant alloc] initWithItem:implant engine:_engine] : nil;
 }
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len {
@@ -63,18 +69,21 @@
 
 @implementation NCFittingBoosters {
 	std::shared_ptr<dgmpp::Character> _character;
+	__weak NCFittingEngine* _engine;
 }
 
-- (nonnull instancetype) initWithCharacter:(std::shared_ptr<dgmpp::Character> const&) character {
+- (nonnull instancetype) initWithCharacter:(std::shared_ptr<dgmpp::Character> const&) character engine:(nonnull NCFittingEngine*) engine {
 	if (self = [super init]) {
 		_character = character;
+		_engine = engine;
 	}
 	return self;
 }
 
 - (nullable NCFittingBooster*) objectAtIndexedSubscript:(NSInteger) slot {
+	NCVerifyFittingContext(_engine);
 	auto booster = _character->getBooster(static_cast<int>(slot));
-	return booster ? [[NCFittingBooster alloc] initWithItem:booster] : nil;
+	return booster ? [[NCFittingBooster alloc] initWithItem:booster engine:_engine] : nil;
 }
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len {
@@ -95,67 +104,83 @@
 }
 
 - (nullable NCFittingImplant*) addImplantWithTypeID:(NSInteger) typeID {
+	NCVerifyFittingContext(self.engine);
 	return [self addImplantWithTypeID:typeID forced:NO];
 }
 
 - (nullable NCFittingImplant*) addImplantWithTypeID:(NSInteger) typeID forced:(BOOL) forced {
+	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
 	auto implant = character->addImplant(static_cast<dgmpp::TypeID>(typeID), forced);
-	return implant ? [[NCFittingImplant alloc] initWithItem:implant] : nil;
+	[self.engine didUpdate];
+	return implant ? [[NCFittingImplant alloc] initWithItem:implant engine:self.engine] : nil;
 }
 
 - (void) removeImplant:(nonnull NCFittingImplant*) implant {
+	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
 	auto i = std::dynamic_pointer_cast<dgmpp::Implant>(implant.item);
 	character->removeImplant(i);
+	[self.engine didUpdate];
 }
 
 - (nullable NCFittingBooster*) addBoosterWithTypeID:(NSInteger) typeID {
+	NCVerifyFittingContext(self.engine);
 	return [self addBoosterWithTypeID:typeID forced:NO];
 }
 
 - (nullable NCFittingBooster*) addBoosterWithTypeID:(NSInteger) typeID forced:(BOOL) forced {
+	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
 	auto booster = character->addBooster(static_cast<dgmpp::TypeID>(typeID), forced);
-	return booster ? [[NCFittingBooster alloc] initWithItem:booster] : nil;
+	[self.engine didUpdate];
+	return booster ? [[NCFittingBooster alloc] initWithItem:booster engine:self.engine] : nil;
 }
 
 - (void) removeBooster:(nonnull NCFittingBooster*) booster {
+	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
 	auto b = std::dynamic_pointer_cast<dgmpp::Booster>(booster.item);
 	character->removeBooster(b);
+	[self.engine didUpdate];
 }
 
 - (nullable NCFittingShip*) ship {
+	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-	return character->getShip() ? [[NCFittingShip alloc] initWithItem:character->getShip()] : nil;
+	return character->getShip() ? [[NCFittingShip alloc] initWithItem:character->getShip() engine:self.engine] : nil;
 }
 
 - (void) setShip:(NCFittingShip *)ship {
+	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
 	ship.item = character->setShip(static_cast<dgmpp::TypeID>(ship.typeID));
+	[self.engine didUpdate];
 }
 
 - (nonnull NCFittingSkills*) skills {
+	NCVerifyFittingContext(self.engine);
 	if (!_skills) {
 		auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-		_skills = [[NCFittingSkills alloc] initWithCharacter: character];
+		_skills = [[NCFittingSkills alloc] initWithCharacter: character engine:self.engine];
 	}
 	return _skills;
 }
 
 - (nonnull NCFittingImplants*) implants {
+	NCVerifyFittingContext(self.engine);
 	if (!_implants) {
 		auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-		_implants = [[NCFittingImplants alloc] initWithCharacter: character];
+		_implants = [[NCFittingImplants alloc] initWithCharacter: character engine:self.engine];
 	}
 	return _implants;
 }
 
 - (nonnull NCFittingBoosters*) boosters {
+	NCVerifyFittingContext(self.engine);
 	if (!_boosters) {
 		auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-		_boosters = [[NCFittingBoosters alloc] initWithCharacter: character];
+		_boosters = [[NCFittingBoosters alloc] initWithCharacter: character engine:self.engine];
 	}
 	return _boosters;
 }

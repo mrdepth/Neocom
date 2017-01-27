@@ -89,6 +89,7 @@ enum NCDBUnitID: Int {
 
 enum NCDBCategoryID: Int {
 	case ship = 6
+	case module = 7
 	case blueprint = 9
 	case skill = 16
 }

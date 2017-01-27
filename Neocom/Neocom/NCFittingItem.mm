@@ -11,18 +11,21 @@
 
 @implementation NCFittingAttributes {
 	std::shared_ptr<dgmpp::Item> _item;
+	__weak NCFittingEngine* _engine;
 }
 
-- (nonnull instancetype) initWithItem:(std::shared_ptr<dgmpp::Item> const&) item {
+- (nonnull instancetype) initWithItem:(std::shared_ptr<dgmpp::Item> const&) item engine:(nonnull NCFittingEngine*) engine {
 	if (self = [super init]) {
 		_item = item;
+		_engine = engine;
 	}
 	return self;
 }
 
 - (nullable NCFittingAttribute*) objectAtIndexedSubscript:(NSInteger) attributeID {
+	NCVerifyFittingContext(_engine);
 	auto attribute = _item->getAttribute(static_cast<dgmpp::TypeID>(attributeID));
-	return attribute ? [[NCFittingAttribute alloc] initWithAttribute:attribute] : nil;
+	return attribute ? [[NCFittingAttribute alloc] initWithAttribute:attribute engine:_engine] : nil;
 }
 
 @end
@@ -31,9 +34,10 @@
 	NCFittingAttributes* _attributes;
 }
 
-- (nonnull instancetype) initWithItem:(std::shared_ptr<dgmpp::Item> const&) item {
+- (nonnull instancetype) initWithItem:(std::shared_ptr<dgmpp::Item> const&) item engine:(nonnull NCFittingEngine*) engine {
 	if (self = [self init]) {
 		_item = item;
+		_engine = engine;
 	}
 	return self;
 }
@@ -65,12 +69,13 @@
 }
 
 - (nullable NCFittingItem*) owner {
-	return _item->getOwner() ? [[NCFittingItem alloc] initWithItem:_item->getOwner()] : nil;
+	return _item->getOwner() ? [[NCFittingItem alloc] initWithItem:_item->getOwner() engine:_engine] : nil;
 }
 
 - (nonnull NCFittingAttributes*) attributes {
+	NCVerifyFittingContext(self.engine);
 	if (!_attributes) {
-		_attributes = [[NCFittingAttributes alloc] initWithItem: _item];
+		_attributes = [[NCFittingAttributes alloc] initWithItem: _item engine:_engine];
 	}
 	return _attributes;
 }
@@ -84,7 +89,7 @@
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone {
-	return [[NCFittingItem allocWithZone:zone] initWithItem:_item];
+	return [[NCFittingItem allocWithZone:zone] initWithItem:_item engine:_engine];
 }
 
 @end

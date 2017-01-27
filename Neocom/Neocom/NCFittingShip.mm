@@ -29,142 +29,178 @@
 }
 
 - (nullable NCFittingModule*) addModuleWithTypeID:(NSInteger) typeID forced:(BOOL) forced socket:(NSInteger) socket {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto module = ship->addModule(static_cast<dgmpp::TypeID>(typeID), forced, static_cast<int>(socket));
-	return module ? [[NCFittingModule alloc] initWithItem:module] : nil;
+	[self.engine didUpdate];
+	return module ? [[NCFittingModule alloc] initWithItem:module engine:self.engine] : nil;
 }
 
 - (nullable NCFittingModule*) replaceModule:(nonnull NCFittingModule*) module withTypeID:(NSInteger) typeID {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto result = ship->replaceModule(std::dynamic_pointer_cast<dgmpp::Module>(module.item), static_cast<dgmpp::TypeID>(typeID));
-	return result ? [[NCFittingModule alloc] initWithItem:result] : nil;
+	[self.engine didUpdate];
+	return result ? [[NCFittingModule alloc] initWithItem:result engine:self.engine] : nil;
 }
 
 - (void) removeModule:(nonnull NCFittingModule*) module {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	ship->removeModule(std::dynamic_pointer_cast<dgmpp::Module>(module.item));
+	[self.engine didUpdate];
 }
 
 - (nonnull NSArray<NCFittingModule*>*) modulesWithSlot:(NCFittingModuleSlot) slot {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
-	dgmpp::ModulesList modules;
-	ship->getModules(static_cast<dgmpp::Module::Slot>(slot), std::inserter(modules, modules.begin()));
+	dgmpp::ModulesList modules = ship->getModules(static_cast<dgmpp::Module::Slot>(slot), true);
 	NSMutableArray* array = [NSMutableArray new];
 	for (auto i: modules) {
-		[array addObject:[[NCFittingModule alloc] initWithItem:i]];
+		[array addObject:[[NCFittingModule alloc] initWithItem:i engine:self.engine]];
 	}
 	return array;
 }
 
 - (nullable NCFittingDrone*) addDroneWithTypeID:(NSInteger) typeID {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto drone = ship->addDrone(static_cast<dgmpp::TypeID>(typeID));
-	return drone ? [[NCFittingDrone alloc] initWithItem:drone] : nil;
+	[self.engine didUpdate];
+	return drone ? [[NCFittingDrone alloc] initWithItem:drone engine:self.engine] : nil;
 }
 
 - (void) removeDrone:(nonnull NCFittingDrone*) drone {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	ship->removeDrone(std::dynamic_pointer_cast<dgmpp::Drone>(drone.item));
+	[self.engine didUpdate];
 }
 
 //MARK: Calculations
 
 - (NSInteger) totalSlots:(NCFittingModuleSlot) slot {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getNumberOfSlots(static_cast<dgmpp::Module::Slot>(slot));
 }
 
 - (NSInteger) freeSlots:(NCFittingModuleSlot) slot {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getFreeSlots(static_cast<dgmpp::Module::Slot>(slot));
 }
 
 - (NSInteger) usedSlots:(NCFittingModuleSlot) slot {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getUsedSlots(static_cast<dgmpp::Module::Slot>(slot));
 }
 
 - (NSInteger) totalHardpoints:(NCFittingModuleHardpoint) hardpoint {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getNumberOfHardpoints(static_cast<dgmpp::Module::Hardpoint>(hardpoint));
 }
 
 - (NSInteger) freeHardpoints:(NCFittingModuleHardpoint) hardpoint {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getFreeHardpoints(static_cast<dgmpp::Module::Hardpoint>(hardpoint));
 }
 
 - (NSInteger) usedHardpoints:(NCFittingModuleHardpoint) hardpoint {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getUsedHardpoints(static_cast<dgmpp::Module::Hardpoint>(hardpoint));
 }
 
+- (NSInteger) rigSize {
+	NCVerifyFittingContext(self.engine);
+	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	return ship->getRigSize();
+}
+
 - (double) capacity {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getCapacity();
 }
 
 - (double) oreHoldCapacity {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getOreHoldCapacity();
 }
 
 - (double) calibrationUsed {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getCalibrationUsed();
 }
 
 - (double) totalCalibration {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getTotalCalibration();
 }
 
 - (double) powerGridUsed {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getPowerGridUsed();
 }
 
 - (double) totalPowerGrid {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getTotalPowerGrid();
 }
 
 - (double) cpuUsed {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getCpuUsed();
 }
 
 - (double) totalCPU {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getTotalCpu();
 }
 
 - (double) droneBandwidthUsed {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getDroneBandwidthUsed();
 }
 
 - (double) totalDroneBandwidth {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getTotalDroneBandwidth();
 }
 
 - (double) droneBayUsed {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getDroneBayUsed();
 }
 
 - (double) totalDroneBay {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getTotalDroneBay();
 }
 
 - (double) fighterHangarUsed {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getFighterHangarUsed();
 }
 
 - (double) totalFighterHangar {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getTotalFighterHangar();
 }
@@ -172,31 +208,37 @@
 //MARK: Capacitor
 
 - (double) capCapacity {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getCapCapacity();
 }
 
 - (BOOL) isCapStable {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->isCapStable();
 }
 
 - (NSTimeInterval) capLastsTime {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getCapLastsTime();
 }
 
 - (double) capStableLevel {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getCapStableLevel();
 }
 
 - (double) capUsed {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getCapUsed();
 }
 
 - (double) capRecharge {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getCapRecharge();
 }
@@ -204,6 +246,7 @@
 //MARK: Tank
 
 - (NCFittingResistances) resistances {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto resistances = ship->getResistances();
 	NCFittingResistances result;
@@ -227,6 +270,7 @@
 }
 
 - (NCFittingTank) tank {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto tank = ship->getTank();
 	NCFittingTank result;
@@ -240,6 +284,7 @@
 }
 
 - (NCFittingTank) effectiveTank {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto tank = ship->getEffectiveTank();
 	NCFittingTank result;
@@ -253,6 +298,7 @@
 }
 
 - (NCFittingTank) sustainableTank {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto tank = ship->getSustainableTank();
 	NCFittingTank result;
@@ -266,6 +312,7 @@
 }
 
 - (NCFittingTank) effectiveSustainableTank {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto tank = ship->getEffectiveSustainableTank();
 	NCFittingTank result;
@@ -279,6 +326,7 @@
 }
 
 - (NCFittingHitPoints) hitPoints {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto hitPoints = ship->getHitPoints();
 	NCFittingHitPoints result;
@@ -291,6 +339,7 @@
 }
 
 - (NCFittingHitPoints) effectiveHitPoints {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto hitPoints = ship->getEffectiveHitPoints();
 	NCFittingHitPoints result;
@@ -303,12 +352,14 @@
 }
 
 - (double) shieldRecharge {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getShieldRecharge();
 }
 
 //MARK: DPS
 - (NCFittingDamage) weaponDPS {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto damage = ship->getWeaponDps();
 	NCFittingDamage result;
@@ -322,6 +373,7 @@
 }
 
 - (NCFittingDamage) weaponVolley {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto damage = ship->getWeaponVolley();
 	NCFittingDamage result;
@@ -335,6 +387,7 @@
 }
 
 - (NCFittingDamage) weaponDPSWithTarget:(NCFittingHostileTarget) target {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	dgmpp::HostileTarget hostileTarget(target.range, target.angularVelocity, target.signature, target.velocity);
 	auto damage = ship->getWeaponDps(hostileTarget);
@@ -349,6 +402,7 @@
 }
 
 - (NCFittingDamage) droneDPS {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto damage = ship->getDroneDps();
 	NCFittingDamage result;
@@ -362,6 +416,7 @@
 }
 
 - (NCFittingDamage) droneVolley {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto damage = ship->getDroneVolley();
 	NCFittingDamage result;
@@ -375,6 +430,7 @@
 }
 
 - (NCFittingDamage) droneDPSWithTarget:(NCFittingHostileTarget) target {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	dgmpp::HostileTarget hostileTarget(target.range, target.angularVelocity, target.signature, target.velocity);
 	auto damage = ship->getDroneDps(hostileTarget);
@@ -391,56 +447,67 @@
 //MARK: Mobility
 
 - (double) alignTime {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getAlignTime();
 }
 
 - (double) warpSpeed {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getWarpSpeed();
 }
 
 - (double) maxWarpDistance {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getMaxWarpDistance();
 }
 
 - (double) velocity {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getVelocity();
 }
 
 - (double) signatureRadius {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getSignatureRadius();
 }
 
 - (double) mass {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getMass();
 }
 
 - (double) volume {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getVolume();
 }
 
 - (double) agility {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getAgility();
 }
 
 - (double) maxVelocityInOrbit:(double) orbit {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getMaxVelocityInOrbit(orbit);
 }
 
 - (double) orbitRadiusWithTransverseVelocity:(double) velocity {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getOrbitRadiusWithTransverseVelocity(velocity);
 }
 
 - (double) orbitRadiusWithAngularVelocity:(double) velocity {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getOrbitRadiusWithAngularVelocity(velocity);
 }
@@ -448,31 +515,37 @@
 //MARK: Targeting
 
 - (NSInteger) maxTargets {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getMaxTargets();
 }
 
 - (double) maxTargetRange {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getMaxTargetRange();
 }
 
 - (double) scanStrength {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getScanStrength();
 }
 
 - (NCFittingScanType) scanType {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return static_cast<NCFittingScanType>(ship->getScanType());
 }
 
 - (double) probeSize {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getProbeSize();
 }
 
 - (double) scanResolution {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getScanResolution();
 }
@@ -480,21 +553,25 @@
 //MARK: Drones
 
 - (NSInteger) droneSquadronLimit:(NCFittingFighterSquadron) squadron {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getDroneSquadronLimit(static_cast<dgmpp::Drone::FighterSquadron>(squadron));
 }
 
 - (NSInteger) droneSquadronUsed:(NCFittingFighterSquadron) squadron {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getDroneSquadronUsed(static_cast<dgmpp::Drone::FighterSquadron>(squadron));
 }
 
 - (NSInteger) totalFighterLaunchTubes {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getTotalFighterLaunchTubes();
 }
 
 - (NSInteger) fighterLaunchTubesUsed {
+	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	return ship->getFighterLaunchTubesUsed();
 }

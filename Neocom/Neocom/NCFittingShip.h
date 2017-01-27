@@ -35,6 +35,8 @@
 - (NSInteger) freeHardpoints:(NCFittingModuleHardpoint) hardpoint;
 - (NSInteger) usedHardpoints:(NCFittingModuleHardpoint) hardpoint;
 
+@property (readonly) NSInteger rigSize;
+
 @property (readonly) double capacity;
 @property (readonly) double oreHoldCapacity;
 

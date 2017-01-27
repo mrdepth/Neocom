@@ -10,6 +10,7 @@
 #define NCFittingProtected_h
 
 #import <Dgmpp/Dgmpp.h>
+#import "NCFittingEngine.h"
 #import "NCFittingItem.h"
 #import "NCFittingAttribute.h"
 #import "NCFittingCharacter.h"
@@ -22,17 +23,32 @@
 #import "NCFittingCharge.h"
 #import "NCFittingDrone.h"
 
+#if DEBUG
+#define NCVerifyFittingContext(engine) ([engine verifyContext])
+#else
+#define NCVerifyFittingContext
+#endif
+
 @interface NCFittingItem()
 @property (nonatomic, assign) std::shared_ptr<dgmpp::Item> item;
+@property (nonatomic, weak, nullable) NCFittingEngine* engine;
 
-- (nonnull instancetype) initWithItem:(std::shared_ptr<dgmpp::Item> const&) item;
+- (nonnull instancetype) initWithItem:(std::shared_ptr<dgmpp::Item> const&) item engine:(nonnull NCFittingEngine*) engine;
+
 @end
 
 @interface NCFittingAttribute()
-- (nonnull instancetype) initWithAttribute:(std::shared_ptr<dgmpp::Attribute> const&) attribute;
+- (nonnull instancetype) initWithAttribute:(std::shared_ptr<dgmpp::Attribute> const&) attribute engine:(nonnull NCFittingEngine*) engine;
 @end
 
 @interface NCFittingShip()
+@end
+
+@interface NCFittingEngine()
+- (void) didUpdate;
+#if DEBUG
+- (void) verifyContext;
+#endif
 @end
 
 

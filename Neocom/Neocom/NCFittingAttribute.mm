@@ -11,17 +11,19 @@
 
 @implementation NCFittingAttribute {
 	std::shared_ptr<dgmpp::Attribute> _attribute;
+	__weak NCFittingEngine* _engine;
 }
 
-- (nonnull instancetype) initWithAttribute:(std::shared_ptr<dgmpp::Attribute> const&) attribute {
+- (nonnull instancetype) initWithAttribute:(std::shared_ptr<dgmpp::Attribute> const&) attribute engine:(nonnull NCFittingEngine*) engine {
 	if (self = [super init]) {
 		_attribute = attribute;
+		_engine = engine;
 	}
 	return self;
 }
 
 - (nonnull NCFittingItem*) owner {
-	return [[NCFittingItem alloc] initWithItem:_attribute->getOwner()];
+	return [[NCFittingItem alloc] initWithItem:_attribute->getOwner() engine: _engine];
 }
 
 - (NSInteger) attributeID {
@@ -33,6 +35,7 @@
 }
 
 - (double) value {
+	NCVerifyFittingContext(_engine);
 	return _attribute->getValue();
 }
 

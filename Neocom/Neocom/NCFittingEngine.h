@@ -18,9 +18,12 @@
 #import "NCFittingCharge.h"
 #import "NCFittingAttribute.h"
 
+extern _Nonnull NSNotificationName const NCFittingEngineDidUpdateNotification;
+
 @interface NCFittingEngine : NSObject
 @property (readonly, nonnull) NCFittingGang* gang;
 
 - (nonnull instancetype) init NS_DESIGNATED_INITIALIZER;
+- (void) performBlock:(nonnull void(^)()) block;
 
 @end

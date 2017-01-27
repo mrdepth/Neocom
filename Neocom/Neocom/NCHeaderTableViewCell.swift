@@ -10,7 +10,8 @@ import UIKit
 
 class NCHeaderTableViewCell: UITableViewCell, NCExpandable {
 	@IBOutlet weak var titleLabel: UILabel?
-	@IBOutlet weak var expandIcon: UIImageView?
+	@IBOutlet weak var iconView: UIImageView?
+	@IBOutlet weak var expandIconView: UIImageView?
 	var object: Any?
 	private(set) lazy var binder: NCBinder = {
 		return NCBinder(target: self)
@@ -33,14 +34,14 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable {
     }
 	
 	func setExpanded(_ expanded: Bool, animated: Bool) {
-		expandIcon?.image = UIImage(named: expanded ? "collapse" : "expand")
+		expandIconView?.image = UIImage(named: expanded ? "collapse" : "expand")
 	}
 	
 	var indentationConstraint: NSLayoutConstraint? {
 		get {
-			guard let expandIcon = self.expandIcon else {return nil}
-			return expandIcon.superview?.constraints.first {
-				return $0.firstItem === expandIcon && $0.secondItem === expandIcon.superview && $0.firstAttribute == .leading && $0.secondAttribute == .leading
+			guard let expandIconView = self.expandIconView else {return nil}
+			return expandIconView.superview?.constraints.first {
+				return $0.firstItem === expandIconView && $0.secondItem === expandIconView.superview && $0.firstAttribute == .leading && $0.secondAttribute == .leading
 			}
 		}
 	}

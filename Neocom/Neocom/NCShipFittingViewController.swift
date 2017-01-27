@@ -11,4 +11,8 @@ import UIKit
 class NCShipFittingViewController: UIViewController {
 	var fleet: NCFleet?
 	var engine: NCFittingEngine?
+	
+	lazy var typePickerViewController: NCTypePickerViewController? = {
+		return self.storyboard?.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController
+	}()
 }

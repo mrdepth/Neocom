@@ -10,13 +10,13 @@ import UIKit
 
 @IBDesignable
 class NCResourceLabel: NCLabel {
-	var maximumValue: Float = 0 {
+	var maximumValue: Double = 0 {
 		didSet {
 			updateText()
 		}
 	}
 	
-	var value: Float = 0 {
+	var value: Double = 0 {
 		didSet {
 			updateText()
 		}

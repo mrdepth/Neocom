@@ -32,6 +32,7 @@
 		1230A3341DFFE2CF00627D92 /* NSExpressionDescription+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */; };
 		1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */; };
 		1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3391E001D7300627D92 /* NCAccountTableViewCell.swift */; };
+		123AEFF51E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AEFF41E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift */; };
 		12424E3E1E3642430078AB0F /* NCFleet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E3D1E3642430078AB0F /* NCFleet.swift */; };
 		12424E421E3651DC0078AB0F /* NCShipFittingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E411E3651DC0078AB0F /* NCShipFittingViewController.swift */; };
 		1243DC1F1E0BDE1700F00B9A /* NCMarketHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */; };
@@ -210,6 +211,7 @@
 		1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSExpressionDescription+NC.swift"; sourceTree = "<group>"; };
 		1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+NC.swift"; sourceTree = "<group>"; };
 		1230A3391E001D7300627D92 /* NCAccountTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountTableViewCell.swift; sourceTree = "<group>"; };
+		123AEFF41E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleTableViewCell.swift; sourceTree = "<group>"; };
 		12424E3D1E3642430078AB0F /* NCFleet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFleet.swift; sourceTree = "<group>"; };
 		12424E411E3651DC0078AB0F /* NCShipFittingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCShipFittingViewController.swift; sourceTree = "<group>"; };
 		1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketHistoryView.swift; sourceTree = "<group>"; };
@@ -497,6 +499,7 @@
 				128E61411E0A707200C15EEB /* NCDamageTypeTableViewCell.swift */,
 				12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */,
 				12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */,
+				123AEFF41E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -802,6 +805,7 @@
 				1230A3321DFFE2CF00627D92 /* NCTreeNode.swift in Sources */,
 				1230A3261DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift in Sources */,
 				1256BE391DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift in Sources */,
+				123AEFF51E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift in Sources */,
 				12DBEABD1E1D40280088A486 /* NCFittingAttribute.mm in Sources */,
 				1230A32D1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift in Sources */,
 				129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */,

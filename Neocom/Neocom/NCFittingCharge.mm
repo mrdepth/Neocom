@@ -7,6 +7,7 @@
 //
 
 #import "NCFittingCharge.h"
+#import "NCFittingProtected.h"
 
 @implementation NCFittingCharge {
 	NSInteger _typeID;
@@ -17,6 +18,10 @@
 		_typeID = typeID;
 	}
 	return self;
+}
+
+- (NSInteger) typeID {
+	return self.item ? [super typeID] : _typeID;
 }
 
 @end

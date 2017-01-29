@@ -31,7 +31,6 @@
 
 @interface NCFittingItem()
 @property (nonatomic, assign) std::shared_ptr<dgmpp::Item> item;
-@property (nonatomic, weak, nullable) NCFittingEngine* engine;
 
 - (nonnull instancetype) initWithItem:(std::shared_ptr<dgmpp::Item> const&) item engine:(nonnull NCFittingEngine*) engine;
 

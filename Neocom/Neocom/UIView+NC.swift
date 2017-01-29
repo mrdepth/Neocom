@@ -13,3 +13,9 @@ extension UIView {
 		return self as? T ?? self.superview?.ancestor(of: type)
 	}
 }
+
+extension UITableViewCell {
+	var tableView: UITableView? {
+		return ancestor(of: UITableView.self)
+	}
+}

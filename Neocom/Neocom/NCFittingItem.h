@@ -11,6 +11,7 @@
 
 @class NCFittingItem;
 @class NCFittingAttribute;
+@class NCFittingEngine;
 @interface NCFittingAttributes : NSObject
 
 - (nullable NCFittingAttribute*) objectAtIndexedSubscript:(NSInteger) attributeID;
@@ -25,6 +26,7 @@
 @property (readonly) NSInteger categoryID;
 @property (readonly, nullable) NCFittingItem* owner;
 @property (readonly, nonnull) NCFittingAttributes* attributes;
+@property (nonatomic, weak, nullable) NCFittingEngine* engine;
 
 - (nonnull instancetype) init NS_SWIFT_UNAVAILABLE("");
 

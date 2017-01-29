@@ -41,17 +41,13 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 	_updated = YES;
 }
 
-- (void) postNotification {
-	[[NSNotificationCenter defaultCenter] postNotificationName:NCFittingEngineDidUpdateNotification object:self];
-}
-
 - (void) performBlock:(nonnull void(^)()) block {
 	[_operationQueue addOperationWithBlock:^{
 		block();
 		if (_updated) {
 			_updated = NO;
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[self postNotification];
+				[[NSNotificationCenter defaultCenter] postNotificationName:NCFittingEngineDidUpdateNotification object:self];
 			});
 		}
 	}];

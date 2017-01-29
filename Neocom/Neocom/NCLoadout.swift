@@ -191,11 +191,11 @@ extension NCFittingModuleSlot {
 		case .rig:
 			return NSLocalizedString("Rig Slot", comment: "")
 		case .subsystem:
-			return NSLocalizedString("Subsystems", comment: "")
+			return NSLocalizedString("Subsystem Slot", comment: "")
 		case .service:
 			return NSLocalizedString("Services", comment: "")
 		case .mode:
-			return NSLocalizedString("Mode", comment: "")
+			return NSLocalizedString("Tactical Mode", comment: "")
 		default:
 			return nil
 		}

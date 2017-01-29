@@ -12,29 +12,85 @@ class NCFittingModuleRow: NCTreeRow {
 	lazy var type: NCDBInvType? = {
 		return NCDatabase.sharedDatabase?.invTypes[self.module.typeID]
 	}()
+	lazy var chargeType: NCDBInvType? = {
+		guard let charge = self.charge else {return nil}
+		return NCDatabase.sharedDatabase?.invTypes[charge.typeID]
+	}()
 	
 	let module: NCFittingModule
+	let charge: NCFittingCharge?
 	let slot: NCFittingModuleSlot
+	let state: NCFittingModuleState
+	let isEnabled: Bool
 	
 	init(module: NCFittingModule) {
 		self.module = module
+		self.charge = module.charge
 		self.slot = module.slot
+		self.state = module.state
+		self.isEnabled = module.isEnabled
+		needsUpdate = true
 		super.init(cellIdentifier: module.isDummy ? "Cell" : "ModuleCell")
 	}
+	
+	var needsUpdate: Bool
+	var subtitle: NSAttributedString?
 	
 	override func configure(cell: UITableViewCell) {
 		if module.isDummy {
 			guard let cell = cell as? NCDefaultTableViewCell else {return}
+			cell.object = module
 			cell.iconView?.image = slot.image
 			cell.titleLabel?.text = slot.title
 		}
 		else {
 			guard let cell = cell as? NCFittingModuleTableViewCell else {return}
+			cell.object = module
 			cell.titleLabel?.text = type?.typeName
+			cell.titleLabel?.textColor = isEnabled ? .white : .red
 			cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
-			cell.stateView?.image = module.state.image
-			cell.subtitleLabel?.text = nil
+			cell.stateView?.image = state.image
+			cell.subtitleLabel?.attributedText = subtitle
+			
+			if needsUpdate {
+				let font = cell.subtitleLabel!.font!
+
+				let module = self.module
+				let charge = self.charge
+				let chargeName = chargeType?.typeName
+				let chargeImage = chargeType?.icon?.image?.image
+				
+				module.engine?.perform {
+					let string = NSMutableAttributedString()
+					if let chargeName = chargeName  {
+						let attachment = NSTextAttachment()
+						attachment.image = chargeImage
+						attachment.bounds = CGRect(x: 0, y: font.descender, width: font.lineHeight, height: font.lineHeight)
+						string.append(NSAttributedString(attachment: attachment))
+						string.append(NSAttributedString(string: " \(chargeName) x\(module.charges)"))
+					}
+					
+					DispatchQueue.main.async {
+						self.needsUpdate = false
+						self.subtitle = string
+						guard let tableView = cell.tableView else {return}
+						guard let indexPath = tableView.indexPath(for: cell) else {return}
+						tableView.reloadRows(at: [indexPath], with: .fade)
+					}
+				}
+			}
+			else {
+				cell.subtitleLabel?.attributedText = subtitle
+			}
 		}
+	}
+	
+	override var hashValue: Int {
+		return module.hashValue
+	}
+	
+	public static func ==(lhs: NCFittingModuleRow, rhs: NCFittingModuleRow) -> Bool {
+		return lhs.hashValue == rhs.hashValue
 	}
 }
 
@@ -51,6 +107,15 @@ class NCFittingModuleSection: NCTreeSection {
 		cell.iconView?.image = slot.image
 		cell.titleLabel?.text = slot.title?.uppercased()
 	}
+	
+	override var hashValue: Int {
+		return slot.rawValue
+	}
+	
+	public static func ==(lhs: NCFittingModuleSection, rhs: NCFittingModuleSection) -> Bool {
+		return lhs.hashValue == rhs.hashValue
+	}
+
 }
 
 
@@ -106,8 +171,42 @@ class NCFittingModulesViewController: UIViewController, NCTreeControllerDelegate
 			obsever = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
 				guard let strongSelf = self else {return}
 				
-				strongSelf.treeController.content = strongSelf.modulesSections
-				strongSelf.treeController.reloadData()
+				strongSelf.engine?.perform {
+					let sections = strongSelf.modulesSections
+					DispatchQueue.main.async {
+						let from = strongSelf.treeController.content as? [NCFittingModuleSection]
+						strongSelf.treeController.content = sections
+
+						let treeController = strongSelf.treeController
+						from?.transition(to: sections, handler: { (old, new, type) in
+							switch type {
+							case .insert:
+								treeController?.insertChildren(IndexSet(integer: new!), ofItem: nil, withRowAnimation: .automatic)
+							case .delete:
+								treeController?.deleteChildren(IndexSet(integer: old!), ofItem: nil, withRowAnimation: .automatic)
+							case .move:
+								treeController?.deleteChildren(IndexSet(integer: old!), ofItem: nil, withRowAnimation: .automatic)
+								treeController?.insertChildren(IndexSet(integer: new!), ofItem: nil, withRowAnimation: .automatic)
+							case .update:
+								let section = from?[old!]
+								section?.children?.transition(to: sections[new!].children!, handler: { (old, new, type) in
+									switch type {
+									case .insert:
+										treeController?.insertChildren(IndexSet(integer: new!), ofItem: section, withRowAnimation: .automatic)
+									case .delete:
+										treeController?.deleteChildren(IndexSet(integer: old!), ofItem: section, withRowAnimation: .automatic)
+									case .move:
+										treeController?.deleteChildren(IndexSet(integer: old!), ofItem: section, withRowAnimation: .automatic)
+										treeController?.insertChildren(IndexSet(integer: new!), ofItem: section, withRowAnimation: .automatic)
+									case .update:
+										break
+									}
+								})
+							}
+						})
+						//strongSelf.treeController.reloadData()
+					}
+				}
 				strongSelf.update()
 			}
 		}
@@ -125,12 +224,13 @@ class NCFittingModulesViewController: UIViewController, NCTreeControllerDelegate
 	
 	func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) {
 		guard let item = item as? NCFittingModuleRow else {return}
+		guard let pilot = fleet?.active else {return}
 		//guard let ship = ship else {return}
 		guard let typePickerViewController = typePickerViewController else {return}
 		
 		if item.module.isDummy {
 			let category: NCDBDgmppItemCategory?
-			switch item.module.slot {
+			switch item.slot {
 			case .hi:
 				category = NCDBDgmppItemCategory.category(categoryID: .hi, subcategory: NCDBCategoryID.module.rawValue)
 			case .med:
@@ -146,7 +246,10 @@ class NCFittingModulesViewController: UIViewController, NCTreeControllerDelegate
 			}
 			typePickerViewController.category = category
 			typePickerViewController.completionHandler = { [weak typePickerViewController] type in
-//				ship.addModule(typeID: Int(type.typeID))
+				let typeID = Int(type.typeID)
+				self.engine?.perform {
+					_ = pilot.ship?.addModule(typeID: typeID)
+				}
 				typePickerViewController?.dismiss(animated: true)
 			}
 			present(typePickerViewController, animated: true)

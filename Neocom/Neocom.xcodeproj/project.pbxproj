@@ -117,6 +117,8 @@
 		12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */; };
 		12BC40A21DFF1EBB00657D40 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BC40A11DFF1EBB00657D40 /* Alamofire.framework */; };
 		12BC40A31DFF1EBB00657D40 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12BC40A11DFF1EBB00657D40 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		12BFC45B1E3F7892000ED8D6 /* TreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFC45A1E3F7892000ED8D6 /* TreeController.swift */; };
+		12BFC45D1E3F7CD2000ED8D6 /* TreeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFC45C1E3F7CD2000ED8D6 /* TreeRow.swift */; };
 		12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */; };
 		12D1CFFB1E277E2400C31B61 /* NCSegmentedPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */; };
 		12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */; };
@@ -306,6 +308,8 @@
 		12AC8DDA1DF0B5E500561A7A /* clrconvert.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = clrconvert.xcodeproj; path = ../clrconvert/clrconvert.xcodeproj; sourceTree = "<group>"; };
 		12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketHistoryTableViewCell.swift; sourceTree = "<group>"; };
 		12BC40A11DFF1EBB00657D40 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		12BFC45A1E3F7892000ED8D6 /* TreeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeController.swift; sourceTree = "<group>"; };
+		12BFC45C1E3F7CD2000ED8D6 /* TreeRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeRow.swift; sourceTree = "<group>"; };
 		12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRegionPickerViewController.swift; sourceTree = "<group>"; };
 		12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSegmentedPageControl.swift; sourceTree = "<group>"; };
 		12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dgmpp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -604,6 +608,8 @@
 				12AC8DB81DF012BA00561A7A /* NCTreeController.swift */,
 				12AC8DC11DF0833B00561A7A /* NCBinder.swift */,
 				12AC8DC31DF088A000561A7A /* NCValueTransformer.swift */,
+				12BFC45A1E3F7892000ED8D6 /* TreeController.swift */,
+				12BFC45C1E3F7CD2000ED8D6 /* TreeRow.swift */,
 			);
 			name = NCTreeController;
 			sourceTree = "<group>";
@@ -827,6 +833,7 @@
 				12AC8DBD1DF01BF100561A7A /* Test.m in Sources */,
 				1256BE481DF1F3B100A2A24B /* Constants.swift in Sources */,
 				121D10B21E263E3700DD671B /* NCTypePickerTypesViewController.swift in Sources */,
+				12BFC45B1E3F7892000ED8D6 /* TreeController.swift in Sources */,
 				1230A32C1DFFE2CF00627D92 /* NCGate.swift in Sources */,
 				12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */,
 				129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */,
@@ -862,6 +869,7 @@
 				12961DBF1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift in Sources */,
 				12AC8DB91DF012BA00561A7A /* NCTreeController.swift in Sources */,
 				1256BE531DF4725B00A2A24B /* NCMainMenuViewController.swift in Sources */,
+				12BFC45D1E3F7CD2000ED8D6 /* TreeRow.swift in Sources */,
 				1230A3331DFFE2CF00627D92 /* NSAttributedString+NC.swift in Sources */,
 				12AC8DD21DF090A600561A7A /* NCCache.swift in Sources */,
 				12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */,

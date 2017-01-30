@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NCFittingModuleRow: NCTreeRow {
+class NCFittingModuleRow: TreeRow {
 	lazy var type: NCDBInvType? = {
 		return NCDatabase.sharedDatabase?.invTypes[self.module.typeID]
 	}()
@@ -31,6 +31,12 @@ class NCFittingModuleRow: NCTreeRow {
 		self.isEnabled = module.isEnabled
 		needsUpdate = true
 		super.init(cellIdentifier: module.isDummy ? "Cell" : "ModuleCell")
+	}
+	
+	override func changed(from: TreeNode) -> Bool {
+		guard let from = from as? NCFittingModuleRow else {return false}
+		subtitle = from.subtitle
+		return !module.isDummy
 	}
 	
 	var needsUpdate: Bool
@@ -89,17 +95,23 @@ class NCFittingModuleRow: NCTreeRow {
 		return module.hashValue
 	}
 	
-	public static func ==(lhs: NCFittingModuleRow, rhs: NCFittingModuleRow) -> Bool {
-		return lhs.hashValue == rhs.hashValue
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCFittingModuleRow)?.hashValue == hashValue
 	}
+	
 }
 
-class NCFittingModuleSection: NCTreeSection {
+class NCFittingModuleSection: TreeSection {
 	let slot: NCFittingModuleSlot
 	
 	init(slot: NCFittingModuleSlot, children: [NCFittingModuleRow]) {
 		self.slot = slot
-		super.init(cellIdentifier: "HeaderCell", title: "Title", children: children)
+		super.init(cellIdentifier: "HeaderCell")
+		self.children = children
+	}
+	
+	override var isExpandable: Bool {
+		return false
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -112,15 +124,15 @@ class NCFittingModuleSection: NCTreeSection {
 		return slot.rawValue
 	}
 	
-	public static func ==(lhs: NCFittingModuleSection, rhs: NCFittingModuleSection) -> Bool {
-		return lhs.hashValue == rhs.hashValue
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCFittingModuleSection)?.hashValue == hashValue
 	}
 
 }
 
 
-class NCFittingModulesViewController: UIViewController, NCTreeControllerDelegate {
-	@IBOutlet weak var treeController: NCTreeController!
+class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
+	@IBOutlet weak var treeController: TreeController!
 	@IBOutlet weak var tableView: UITableView!
 
 	@IBOutlet weak var powerGridLabel: NCResourceLabel!
@@ -145,10 +157,10 @@ class NCFittingModulesViewController: UIViewController, NCTreeControllerDelegate
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		treeController.childrenKeyPath = "children"
-		treeController.delegate = self
+		//treeController.childrenKeyPath = "children"
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
+		treeController.delegate = self
 		
 		powerGridLabel.unit = .megaWatts
 		cpuLabel.unit = .teraflops
@@ -158,15 +170,17 @@ class NCFittingModulesViewController: UIViewController, NCTreeControllerDelegate
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		engine?.perform {
-			let sections = self.modulesSections
-			DispatchQueue.main.async {
-				self.treeController.content = sections
-				self.treeController.reloadData()
+		if self.treeController.rootNode == nil {
+			engine?.perform {
+				let sections = self.modulesSections
+				DispatchQueue.main.async {
+					self.treeController.rootNode = TreeNode()
+					self.treeController.rootNode?.children = sections
+				}
 			}
+			update()
 		}
-		
-		update()
+	
 		if obsever == nil {
 			obsever = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
 				guard let strongSelf = self else {return}
@@ -174,7 +188,8 @@ class NCFittingModulesViewController: UIViewController, NCTreeControllerDelegate
 				strongSelf.engine?.perform {
 					let sections = strongSelf.modulesSections
 					DispatchQueue.main.async {
-						let from = strongSelf.treeController.content as? [NCFittingModuleSection]
+						strongSelf.treeController.rootNode?.children = sections
+						/*let from = strongSelf.treeController.content as? [NCFittingModuleSection]
 						strongSelf.treeController.content = sections
 
 						let treeController = strongSelf.treeController
@@ -199,11 +214,12 @@ class NCFittingModulesViewController: UIViewController, NCTreeControllerDelegate
 										treeController?.deleteChildren(IndexSet(integer: old!), ofItem: section, withRowAnimation: .automatic)
 										treeController?.insertChildren(IndexSet(integer: new!), ofItem: section, withRowAnimation: .automatic)
 									case .update:
+										//treeController?.reloadRows(items: [section!.children![new!]], rowAnimation: .automatic)
 										break
 									}
 								})
 							}
-						})
+						})*/
 						//strongSelf.treeController.reloadData()
 					}
 				}
@@ -214,16 +230,16 @@ class NCFittingModulesViewController: UIViewController, NCTreeControllerDelegate
 	
 	//MARK: - NCTreeControllerDelegate
 	
-	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
+	/*func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
 		return (item as! NCTreeNode).cellIdentifier
 	}
 	
 	func treeController(_ treeController: NCTreeController, configureCell cell: UITableViewCell, withItem item: AnyObject) {
 		(item as? NCTreeNode)?.configure(cell: cell)
-	}
+	}*/
 	
-	func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) {
-		guard let item = item as? NCFittingModuleRow else {return}
+	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		guard let item = node as? NCFittingModuleRow else {return}
 		guard let pilot = fleet?.active else {return}
 		//guard let ship = ship else {return}
 		guard let typePickerViewController = typePickerViewController else {return}

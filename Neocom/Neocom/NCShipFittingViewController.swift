@@ -22,6 +22,7 @@ class NCShipFittingViewController: UIViewController {
 			let ship = self.fleet?.active?.ship
 			let module = ship?.addModule(typeID: 3130)
 			module?.charge = NCFittingCharge(typeID: 230)
+			module?.preferredState = .overloaded
 			d.leave()
 		}
 		d.wait()
@@ -30,4 +31,5 @@ class NCShipFittingViewController: UIViewController {
 	lazy var typePickerViewController: NCTypePickerViewController? = {
 		return self.storyboard?.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController
 	}()
+	
 }

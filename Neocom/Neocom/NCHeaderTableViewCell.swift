@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NCHeaderTableViewCell: UITableViewCell, NCExpandable {
+class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
 	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var iconView: UIImageView?
 	@IBOutlet weak var expandIconView: UIImageView?

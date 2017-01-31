@@ -289,6 +289,16 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 	@IBOutlet public weak var tableView: UITableView!
 	@IBOutlet public weak var delegate: TreeControllerDelegate?
 	
+	public func cell(for node: TreeNode) -> UITableViewCell? {
+		guard let indexPath = node.indexPath else {return nil}
+		return tableView.cellForRow(at: indexPath)
+	}
+	
+	public func node(for cell: UITableViewCell) -> TreeNode? {
+		guard let indexPath = tableView.indexPath(for: cell) else {return nil}
+		return rootNode?.node(at: indexPath.row)
+	}
+	
 	//MARK: - UITableViewDataSource
 	
 	public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -299,6 +309,11 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 		let node = rootNode!.node(at: indexPath.row)!
 		let cell = tableView.dequeueReusableCell(withIdentifier: delegate?.treeController?(self, cellIdentifierForNode: node) ?? node.cellIdentifier!)!
 		cell.indentationLevel = node.indentationLevel ?? 0
+		
+		if let cell = cell as? Expandable {
+			cell.setExpanded(node.isExpanded, animated: false)
+		}
+
 		node.configure(cell: cell)
 		delegate?.treeController?(self, configureCell: cell, withNode: node)
 		return cell

@@ -9,7 +9,7 @@
 import Foundation
 
 class NCUnitFormatter: Formatter {
-	enum Unit: Int {
+	enum Unit {
 		case none
 		case isk
 		case skillPoints
@@ -17,13 +17,17 @@ class NCUnitFormatter: Formatter {
 		case megaWatts
 		case teraflops
 		case kilogram
+		case meter
+		case custom(String, Bool)
 		
 		var useSIPrefix: Bool {
 			switch self {
-			case .isk, .skillPoints:
+			case .isk, .skillPoints, .meter:
 				return false
 			case .gigaJoule, .megaWatts, .teraflops, .kilogram:
 				return true
+			case let .custom(_, bool):
+				return bool
 			default:
 				return false
 			}
@@ -32,18 +36,22 @@ class NCUnitFormatter: Formatter {
 		var abbreviation: String {
 			switch (self) {
 			case .isk:
-				return NSLocalizedString("ISK", comment: "")
+				return NSLocalizedString(" ISK", comment: "isk")
 			case .skillPoints:
-				return NSLocalizedString("SP", comment: "")
+				return NSLocalizedString(" SP", comment: "skillPoints")
 			case .gigaJoule:
-				return NSLocalizedString("GJ", comment: "")
+				return NSLocalizedString(" GJ", comment: "gigaJoule")
 			case .megaWatts:
-				return NSLocalizedString("MW", comment: "")
+				return NSLocalizedString(" MW", comment: "megaWatts")
 			case .teraflops:
-				return NSLocalizedString("tf", comment: "")
+				return NSLocalizedString(" tf", comment: "teraflops")
 			case .kilogram:
-				return NSLocalizedString("kg", comment: "")
-				
+				return NSLocalizedString(" kg", comment: "kilogram")
+			case .meter:
+				return NSLocalizedString(" m", comment: "meter")
+			case let .custom(string, _):
+				return string
+
 			default:
 				return ""
 			}
@@ -85,7 +93,8 @@ class NCUnitFormatter: Formatter {
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
-		self.unit = Unit(rawValue: aDecoder.decodeInteger(forKey: "unit")) ?? .none
+		//self.unit = Unit(rawValue: aDecoder.decodeInteger(forKey: "unit")) ?? .none
+		self.unit = .none
 		self.style = Style(rawValue: aDecoder.decodeInteger(forKey: "style")) ?? .full
 		self.useSIPrefix = aDecoder.decodeObject(forKey: "useSIPrefix") as? Bool
 		super.init(coder: aDecoder)
@@ -93,7 +102,7 @@ class NCUnitFormatter: Formatter {
 	
 	override func encode(with aCoder: NSCoder) {
 		super.encode(with: aCoder)
-		aCoder.encode(unit.rawValue, forKey: "unit")
+		//aCoder.encode(unit.rawValue, forKey: "unit")
 		aCoder.encode(style.rawValue, forKey: "style")
 		aCoder.encode(useSIPrefix, forKey: "useSIPrefix")
 	}
@@ -158,7 +167,7 @@ class NCUnitFormatter: Formatter {
 			s += suffix
 		}
 		if !unitAbbreviation.isEmpty {
-			s += " \(unitAbbreviation)"
+			s += "\(unitAbbreviation)"
 		}
 		return s;
 	}

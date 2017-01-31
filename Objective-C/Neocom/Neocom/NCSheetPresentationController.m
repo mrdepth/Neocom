@@ -418,7 +418,7 @@
 //  UIViewControllerAnimatedTransitioning protocol, or nil if the default
 //  dismissal animation should be used.
 //
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+- (id<UIViewControllerAnimatedTransitioning>):(UIViewController *)dismissed
 {
 	return self;
 }

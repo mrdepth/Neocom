@@ -27,7 +27,8 @@ class NCRangeFormatter: Formatter {
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
-		self.unit = NCUnitFormatter.Unit(rawValue: aDecoder.decodeInteger(forKey: "unit")) ?? .none
+		//self.unit = NCUnitFormatter.Unit(rawValue: aDecoder.decodeInteger(forKey: "unit")) ?? .none
+		self.unit = .none
 		self.style = NCUnitFormatter.Style(rawValue: aDecoder.decodeInteger(forKey: "style")) ?? .full
 		self.useSIPrefix = aDecoder.decodeObject(forKey: "useSIPrefix") as? Bool
 		super.init(coder: aDecoder)
@@ -35,7 +36,7 @@ class NCRangeFormatter: Formatter {
 	
 	override func encode(with aCoder: NSCoder) {
 		super.encode(with: aCoder)
-		aCoder.encode(unit.rawValue, forKey: "unit")
+		//aCoder.encode(unit.rawValue, forKey: "unit")
 		aCoder.encode(style.rawValue, forKey: "style")
 		aCoder.encode(useSIPrefix, forKey: "useSIPrefix")
 	}

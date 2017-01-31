@@ -105,7 +105,7 @@
 }
 
 - (nullable NCFittingItem*) owner {
-	return _item->getOwner() ? [[NCFittingItem alloc] initWithItem:_item->getOwner() engine:_engine] : nil;
+	return _item->getOwner() ? [NCFittingItem item:_item->getOwner() withEngine:_engine] : nil;
 }
 
 - (nonnull NCFittingAttributes*) attributes {

@@ -70,4 +70,55 @@ extension NSAttributedString {
 		return s
 	}
 	
+	convenience init(image: UIImage?, font: UIFont?) {
+		self.init(attachment: NSTextAttachment(image: image, font: font))
+	}
+	
+	static func +  (_ lhs: NSAttributedString, _ rhs: NSAttributedString) -> NSAttributedString {
+		let s = lhs.mutableCopy() as! NSMutableAttributedString
+		s.append(rhs)
+		return s
+	}
+
+	static func +  (_ lhs: NSAttributedString, _ rhs: String) -> NSAttributedString {
+		let s = lhs.mutableCopy() as! NSMutableAttributedString
+		s.append(NSAttributedString(string: rhs))
+		return s
+	}
+	
+	static func +  (_ lhs: String, _ rhs: NSAttributedString) -> NSAttributedString {
+		let s = NSMutableAttributedString(string: lhs)
+		s.append(rhs)
+		return s
+	}
+
+}
+
+extension NSMutableAttributedString {
+	func appendLine(_ attrString: NSAttributedString) {
+		if self.length > 0 {
+			self.append(NSAttributedString(string: "\n"))
+		}
+		self.append(attrString)
+	}
+}
+
+extension String {
+	//subscript(_ attr: [String: Any]) -> NSAttributedString {
+	//	return NSAttributedString(string: self, attributes: attr)
+	//}
+	static func * (_ lhs: String, _ rhs: [String: Any]) -> NSAttributedString {
+		return NSAttributedString(string: lhs, attributes: rhs)
+	}
+}
+
+extension NSTextAttachment {
+	
+	convenience init(image: UIImage?, font: UIFont?) {
+		self.init()
+		self.image = image
+		if let font = font {
+			bounds = CGRect(x: 0, y: font.descender, width: font.lineHeight, height: font.lineHeight)
+		}
+	}
 }

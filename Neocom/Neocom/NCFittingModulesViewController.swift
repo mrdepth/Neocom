@@ -22,6 +22,7 @@ class NCFittingModuleRow: TreeRow {
 	let slot: NCFittingModuleSlot
 	let state: NCFittingModuleState
 	let isEnabled: Bool
+	let hasTarget: Bool
 	
 	init(module: NCFittingModule) {
 		self.module = module
@@ -29,6 +30,7 @@ class NCFittingModuleRow: TreeRow {
 		self.slot = module.slot
 		self.state = module.state
 		self.isEnabled = module.isEnabled
+		self.hasTarget = module.target != nil
 		needsUpdate = true
 		super.init(cellIdentifier: module.isDummy ? "Cell" : "ModuleCell")
 	}
@@ -57,12 +59,14 @@ class NCFittingModuleRow: TreeRow {
 			cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 			cell.stateView?.image = state.image
 			cell.subtitleLabel?.attributedText = subtitle
+			cell.targetIconView.image = hasTarget ? #imageLiteral(resourceName: "targets") : nil
+			
+			cell.subtitleLabel?.superview?.isHidden = subtitle == nil || subtitle?.length == 0
 			
 			if needsUpdate {
 				let font = cell.subtitleLabel!.font!
 
 				let module = self.module
-				let charge = self.charge
 				let chargeName = chargeType?.typeName
 				let chargeImage = chargeType?.icon?.image?.image
 				
@@ -70,17 +74,48 @@ class NCFittingModuleRow: TreeRow {
 					guard let ship = module.owner as? NCFittingShip else {return}
 					let string = NSMutableAttributedString()
 					if let chargeName = chargeName  {
-						let attachment = NSTextAttachment()
-						attachment.image = chargeImage
-						attachment.bounds = CGRect(x: 0, y: font.descender, width: font.lineHeight, height: font.lineHeight)
-						string.append(NSAttributedString(attachment: attachment))
-						string.append(NSAttributedString(string: " \(chargeName) x\(module.charges)"))
+						var s = NSAttributedString(image: chargeImage, font: font) + " \(chargeName)"
+						if module.charges > 0 {
+							s = s + " x\(module.charges)" * [NSForegroundColorAttributeName: UIColor.caption]
+						}
+						string.appendLine(s)
 					}
 					let optimal = module.maxRange
 					let falloff = module.falloff
 					let angularVelocity = module.angularVelocity(targetSignature: ship.attributes[NCDBAttributeID.signatureRadius.rawValue]?.initialValue ?? 0)
 					let accuracyScore = module.accuracyScore
 					let lifeTime = module.lifeTime
+					
+					if optimal > 0 {
+						let s: NSAttributedString
+						let attr = [NSForegroundColorAttributeName: UIColor.caption]
+						let image = NSAttributedString(image: #imageLiteral(resourceName: "targetingRange"), font: font)
+						if falloff > 0 {
+							s = image + " \(NSLocalizedString("optimal + falloff", comment: "")): " + (NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full) + " + " + NCUnitFormatter.localizedString(from: falloff, unit: .meter, style: .full)) * attr
+						}
+						else {
+							s =  image + "\(NSLocalizedString("optimal", comment: "")): " + NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full) * attr
+						}
+						string.appendLine(s)
+					}
+					
+					if accuracyScore > 0 {
+						let v0 = ship.maxVelocity(orbit: optimal)
+						let v1 = ship.maxVelocity(orbit: optimal + falloff)
+						let orbitRadius = ship.orbitRadius(angularVelocity: angularVelocity)
+
+						let color = angularVelocity * optimal > v0 ? UIColor.green : (angularVelocity * (optimal + falloff) > v1 ? UIColor.yellow : UIColor.red);
+						let accuracy = NCUnitFormatter.localizedString(from: accuracyScore, unit: .none, style: .full) * [NSForegroundColorAttributeName: UIColor.caption]
+						let range = NCUnitFormatter.localizedString(from: orbitRadius, unit: .custom(NSLocalizedString("+ m", comment: "meter"), false), style: .full) * [NSForegroundColorAttributeName: color]
+						let s = NSAttributedString(image: #imageLiteral(resourceName: "tracking"), font: font) + " \(NSLocalizedString("accuracy", comment: "")): " + accuracy + " (" + NSAttributedString(image: #imageLiteral(resourceName: "targetingRange"), font: font) + " " + range + " )"
+						
+						string.appendLine(s)
+					}
+					
+					if lifeTime > 0 {
+						let s = NSAttributedString(image: #imageLiteral(resourceName: "overheated"), font: font) + " \(NSLocalizedString("lifetime", comment: "")): " + NCTimeIntervalFormatter.localizedString(from: lifeTime, precision: .seconds) * [NSForegroundColorAttributeName: UIColor.caption]
+						string.appendLine(s)
+					}
 					
 					DispatchQueue.main.async {
 						self.needsUpdate = false
@@ -235,6 +270,22 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 				typePickerViewController?.dismiss(animated: true)
 			}
 			present(typePickerViewController, animated: true)
+		}
+		else {
+			performSegue(withIdentifier: "NCFittingModuleActionsViewController", sender: treeController.cell(for: node))
+		}
+	}
+	
+	//MARK: - Navigation
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		switch segue.identifier {
+		case "NCFittingModuleActionsViewController"?:
+			guard let controller = (segue.destination as? UINavigationController)?.topViewController as? NCFittingModuleActionsViewController else {return}
+			guard let cell = sender as? NCFittingModuleTableViewCell else {return}
+			controller.module = cell.object as? NCFittingModule
+		default:
+			break
 		}
 	}
 	

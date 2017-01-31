@@ -14,6 +14,7 @@
 @property (readonly) NSInteger attributeID;
 @property (readonly, nonnull) NSString* attributeName;
 @property (readonly) double value;
+@property (readonly) double initialValue;
 @property (readonly) BOOL isStackable;
 @property (readonly) BOOL highIsGood;
 

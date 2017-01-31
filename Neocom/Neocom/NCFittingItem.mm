@@ -8,6 +8,15 @@
 
 #import "NCFittingItem.h"
 #import "NCFittingProtected.h"
+#import "NCFittingGang.h"
+#import "NCFittingCharacter.h"
+#import "NCFittingSkill.h"
+#import "NCFittingImplant.h"
+#import "NCFittingBooster.h"
+#import "NCFittingShip.h"
+#import "NCFittingModule.h"
+#import "NCFittingDrone.h"
+#import "NCFittingCharge.h"
 
 @implementation NCFittingAttributes {
 	std::shared_ptr<dgmpp::Item> _item;
@@ -40,6 +49,33 @@
 		_engine = engine;
 	}
 	return self;
+}
+
++ (nonnull instancetype) item:(std::shared_ptr<dgmpp::Item> const&) item withEngine:(nonnull NCFittingEngine*) engine {
+	if (!item)
+		return nil;
+	
+	if (std::dynamic_pointer_cast<dgmpp::Gang>(item) != nullptr)
+		return [[NCFittingGang alloc] initWithItem:item engine:engine];
+	else if (std::dynamic_pointer_cast<dgmpp::Character>(item) != nullptr)
+		return [[NCFittingCharacter alloc] initWithItem:item engine:engine];
+	else if (std::dynamic_pointer_cast<dgmpp::Ship>(item) != nullptr)
+		return [[NCFittingShip alloc] initWithItem:item engine:engine];
+	else if (std::dynamic_pointer_cast<dgmpp::Skill>(item) != nullptr)
+		return [[NCFittingSkill alloc] initWithItem:item engine:engine];
+	else if (std::dynamic_pointer_cast<dgmpp::Implant>(item) != nullptr)
+		return [[NCFittingImplant alloc] initWithItem:item engine:engine];
+	else if (std::dynamic_pointer_cast<dgmpp::Booster>(item) != nullptr)
+		return [[NCFittingBooster alloc] initWithItem:item engine:engine];
+	else if (std::dynamic_pointer_cast<dgmpp::Module>(item) != nullptr)
+		return [[NCFittingModule alloc] initWithItem:item engine:engine];
+	else if (std::dynamic_pointer_cast<dgmpp::Drone>(item) != nullptr)
+		return [[NCFittingDrone alloc] initWithItem:item engine:engine];
+	else if (std::dynamic_pointer_cast<dgmpp::Charge>(item) != nullptr)
+		return [[NCFittingCharge alloc] initWithItem:item engine:engine];
+	else
+		return [[NCFittingItem alloc] initWithItem:item engine:engine];
+		
 }
 
 - (nonnull instancetype) init {

@@ -16,7 +16,7 @@
 	auto gang = std::dynamic_pointer_cast<dgmpp::Gang>(self.item);
 	auto pilot = gang->addPilot();
 	[self.engine didUpdate];
-	return [[NCFittingCharacter alloc] initWithItem: pilot engine:self.engine];
+	return (NCFittingCharacter*) [NCFittingItem item: pilot withEngine:self.engine];
 }
 
 - (void) removePilot:(nonnull NCFittingCharacter*) character {
@@ -32,7 +32,7 @@
 	NSMutableArray* array = [NSMutableArray new];
 	auto gang = std::dynamic_pointer_cast<dgmpp::Gang>(self.item);
 	for (auto pilot: gang->getPilots()) {
-		[array addObject:[[NCFittingCharacter alloc] initWithItem: pilot engine:self.engine]];
+		[array addObject:(NCFittingCharacter*) [NCFittingItem item: pilot withEngine:self.engine]];
 	}
 	return array;
 }
@@ -40,7 +40,7 @@
 - (nullable NCFittingCharacter*) fleetBooster {
 	NCVerifyFittingContext(self.engine);
 	auto gang = std::dynamic_pointer_cast<dgmpp::Gang>(self.item);
-	return gang->getFleetBooster() ? [[NCFittingCharacter alloc] initWithItem: gang->getFleetBooster() engine:self.engine] : nil;
+	return gang->getFleetBooster() ? (NCFittingCharacter*) [NCFittingItem item: gang->getFleetBooster() withEngine:self.engine] : nil;
 }
 
 - (void) setFleetBooster:(nullable NCFittingCharacter*) fleetBooster {
@@ -56,7 +56,7 @@
 - (nullable NCFittingCharacter*) wingBooster {
 	NCVerifyFittingContext(self.engine);
 	auto gang = std::dynamic_pointer_cast<dgmpp::Gang>(self.item);
-	return gang->getWingBooster() ? [[NCFittingCharacter alloc] initWithItem: gang->getWingBooster() engine:self.engine] : nil;
+	return gang->getWingBooster() ? (NCFittingCharacter*) [NCFittingItem item: gang->getWingBooster() withEngine:self.engine] : nil;
 }
 
 - (void) setWingBooster:(NCFittingCharacter *) wingBooster {
@@ -72,7 +72,7 @@
 - (nullable NCFittingCharacter*) squadBooster {
 	NCVerifyFittingContext(self.engine);
 	auto gang = std::dynamic_pointer_cast<dgmpp::Gang>(self.item);
-	return gang->getSquadBooster() ? [[NCFittingCharacter alloc] initWithItem: gang->getSquadBooster() engine:self.engine] : nil;
+	return gang->getSquadBooster() ? (NCFittingCharacter*) [NCFittingItem item: gang->getSquadBooster() withEngine:self.engine] : nil;
 }
 
 - (void) setSquadBooster:(NCFittingCharacter *) squadBooster {

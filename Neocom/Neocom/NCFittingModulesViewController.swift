@@ -67,6 +67,7 @@ class NCFittingModuleRow: TreeRow {
 				let chargeImage = chargeType?.icon?.image?.image
 				
 				module.engine?.perform {
+					guard let ship = module.owner as? NCFittingShip else {return}
 					let string = NSMutableAttributedString()
 					if let chargeName = chargeName  {
 						let attachment = NSTextAttachment()
@@ -75,6 +76,11 @@ class NCFittingModuleRow: TreeRow {
 						string.append(NSAttributedString(attachment: attachment))
 						string.append(NSAttributedString(string: " \(chargeName) x\(module.charges)"))
 					}
+					let optimal = module.maxRange
+					let falloff = module.falloff
+					let angularVelocity = module.angularVelocity(targetSignature: ship.attributes[NCDBAttributeID.signatureRadius.rawValue]?.initialValue ?? 0)
+					let accuracyScore = module.accuracyScore
+					let lifeTime = module.lifeTime
 					
 					DispatchQueue.main.async {
 						self.needsUpdate = false
@@ -189,38 +195,6 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 					let sections = strongSelf.modulesSections
 					DispatchQueue.main.async {
 						strongSelf.treeController.rootNode?.children = sections
-						/*let from = strongSelf.treeController.content as? [NCFittingModuleSection]
-						strongSelf.treeController.content = sections
-
-						let treeController = strongSelf.treeController
-						from?.transition(to: sections, handler: { (old, new, type) in
-							switch type {
-							case .insert:
-								treeController?.insertChildren(IndexSet(integer: new!), ofItem: nil, withRowAnimation: .automatic)
-							case .delete:
-								treeController?.deleteChildren(IndexSet(integer: old!), ofItem: nil, withRowAnimation: .automatic)
-							case .move:
-								treeController?.deleteChildren(IndexSet(integer: old!), ofItem: nil, withRowAnimation: .automatic)
-								treeController?.insertChildren(IndexSet(integer: new!), ofItem: nil, withRowAnimation: .automatic)
-							case .update:
-								let section = from?[old!]
-								section?.children?.transition(to: sections[new!].children!, handler: { (old, new, type) in
-									switch type {
-									case .insert:
-										treeController?.insertChildren(IndexSet(integer: new!), ofItem: section, withRowAnimation: .automatic)
-									case .delete:
-										treeController?.deleteChildren(IndexSet(integer: old!), ofItem: section, withRowAnimation: .automatic)
-									case .move:
-										treeController?.deleteChildren(IndexSet(integer: old!), ofItem: section, withRowAnimation: .automatic)
-										treeController?.insertChildren(IndexSet(integer: new!), ofItem: section, withRowAnimation: .automatic)
-									case .update:
-										//treeController?.reloadRows(items: [section!.children![new!]], rowAnimation: .automatic)
-										break
-									}
-								})
-							}
-						})*/
-						//strongSelf.treeController.reloadData()
 					}
 				}
 				strongSelf.update()
@@ -228,15 +202,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 		}
 	}
 	
-	//MARK: - NCTreeControllerDelegate
-	
-	/*func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
-		return (item as! NCTreeNode).cellIdentifier
-	}
-	
-	func treeController(_ treeController: NCTreeController, configureCell cell: UITableViewCell, withItem item: AnyObject) {
-		(item as? NCTreeNode)?.configure(cell: cell)
-	}*/
+	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let item = node as? NCFittingModuleRow else {return}
@@ -270,10 +236,6 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 			}
 			present(typePickerViewController, animated: true)
 		}
-	}
-	
-	func treeController(_ treeController: NCTreeController, isItemExpandable item: AnyObject) -> Bool {
-		return false
 	}
 	
 	//MARK: - Private

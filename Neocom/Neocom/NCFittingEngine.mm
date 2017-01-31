@@ -34,7 +34,7 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 
 - (nonnull NCFittingGang*) gang {
 	NCVerifyFittingContext(self);
-	return [[NCFittingGang alloc] initWithItem: _engine->getGang() engine:self];
+	return (NCFittingGang*) [NCFittingItem item: _engine->getGang() withEngine:self];
 }
 
 - (void) didUpdate {

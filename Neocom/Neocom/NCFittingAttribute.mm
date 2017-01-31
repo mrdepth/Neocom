@@ -23,7 +23,7 @@
 }
 
 - (nonnull NCFittingItem*) owner {
-	return [[NCFittingItem alloc] initWithItem:_attribute->getOwner() engine: _engine];
+	return [NCFittingItem item:_attribute->getOwner() withEngine:_engine];
 }
 
 - (NSInteger) attributeID {
@@ -37,6 +37,11 @@
 - (double) value {
 	NCVerifyFittingContext(_engine);
 	return _attribute->getValue();
+}
+
+- (double) initialValue {
+	NCVerifyFittingContext(_engine);
+	return _attribute->getInitialValue();
 }
 
 - (BOOL) isStackable {

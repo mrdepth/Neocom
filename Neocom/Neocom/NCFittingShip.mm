@@ -33,7 +33,7 @@
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto module = ship->addModule(static_cast<dgmpp::TypeID>(typeID), forced, static_cast<int>(socket));
 	[self.engine didUpdate];
-	return module ? [[NCFittingModule alloc] initWithItem:module engine:self.engine] : nil;
+	return module ? (NCFittingModule*) [NCFittingItem item:module withEngine:self.engine] : nil;
 }
 
 - (nullable NCFittingModule*) replaceModule:(nonnull NCFittingModule*) module withTypeID:(NSInteger) typeID {
@@ -41,7 +41,7 @@
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto result = ship->replaceModule(std::dynamic_pointer_cast<dgmpp::Module>(module.item), static_cast<dgmpp::TypeID>(typeID));
 	[self.engine didUpdate];
-	return result ? [[NCFittingModule alloc] initWithItem:result engine:self.engine] : nil;
+	return result ? (NCFittingModule*) [NCFittingItem item:result withEngine:self.engine] : nil;
 }
 
 - (void) removeModule:(nonnull NCFittingModule*) module {
@@ -57,7 +57,7 @@
 	dgmpp::ModulesList modules = ship->getModules(static_cast<dgmpp::Module::Slot>(slot), true);
 	NSMutableArray* array = [NSMutableArray new];
 	for (auto i: modules) {
-		[array addObject:[[NCFittingModule alloc] initWithItem:i engine:self.engine]];
+		[array addObject:(NCFittingModule*) [NCFittingItem item:i withEngine:self.engine]];
 	}
 	return array;
 }
@@ -67,7 +67,7 @@
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto drone = ship->addDrone(static_cast<dgmpp::TypeID>(typeID));
 	[self.engine didUpdate];
-	return drone ? [[NCFittingDrone alloc] initWithItem:drone engine:self.engine] : nil;
+	return drone ? (NCFittingDrone*) [NCFittingItem item:drone withEngine:self.engine] : nil;
 }
 
 - (void) removeDrone:(nonnull NCFittingDrone*) drone {

@@ -27,7 +27,7 @@
 - (NCFittingShip*) target {
 	NCVerifyFittingContext(self.engine);
 	auto drone = std::dynamic_pointer_cast<dgmpp::Drone>(self.item);
-	return drone->getTarget() ? [[NCFittingShip alloc] initWithItem:drone->getTarget() engine:self.engine] : nil;
+	return drone->getTarget() ? (NCFittingShip*) [NCFittingItem item:drone->getTarget() withEngine:self.engine] : nil;
 }
 
 - (void) setTarget:(NCFittingShip *)target {
@@ -49,7 +49,7 @@
 - (nullable NCFittingCharge*) charge {
 	NCVerifyFittingContext(self.engine);
 	auto drone = std::dynamic_pointer_cast<dgmpp::Drone>(self.item);
-	return drone->getCharge() ? [[NCFittingCharge alloc] initWithItem:drone->getCharge() engine:self.engine] : nil;
+	return drone->getCharge() ? (NCFittingCharge*) [NCFittingItem item:drone->getCharge() withEngine:self.engine] : nil;
 }
 
 - (BOOL) isActive {

@@ -59,6 +59,7 @@ enum NCDBAttributeID: Int {
 	case kineticDamage = 117
 	case thermalDamage = 118
 	
+	case signatureRadius = 552
 }
 
 enum NCDBAttributeCategoryID: Int {

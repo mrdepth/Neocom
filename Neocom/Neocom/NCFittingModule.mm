@@ -57,7 +57,7 @@
 - (nullable NCFittingCharge*) charge {
 	NCVerifyFittingContext(self.engine);
 	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
-	return module->getCharge() ? [[NCFittingCharge alloc] initWithItem:module->getCharge() engine:self.engine] : nil;
+	return module->getCharge() ? (NCFittingCharge*) [NCFittingItem item:module->getCharge() withEngine:self.engine] : nil;
 }
 
 - (void) setCharge:(NCFittingCharge *)charge {
@@ -92,7 +92,7 @@
 - (NCFittingShip*) target {
 	NCVerifyFittingContext(self.engine);
 	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
-	return module->getTarget() ? [[NCFittingShip alloc] initWithItem:module->getTarget() engine:self.engine] : nil;
+	return module->getTarget() ? (NCFittingShip*) [NCFittingItem item:module->getTarget() withEngine:self.engine] : nil;
 }
 
 - (void) setTarget:(NCFittingShip *)target {

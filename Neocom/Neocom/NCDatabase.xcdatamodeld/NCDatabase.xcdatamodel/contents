@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16C67" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CertCertificate" representedClassName="NCDBCertCertificate" syncable="YES" codeGenerationType="class">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String" syncable="YES"/>
@@ -85,7 +85,7 @@
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="items" inverseEntity="DgmppItemGroup" syncable="YES"/>
         <relationship name="requirements" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemRequirements" inverseName="item" inverseEntity="DgmppItemRequirements" syncable="YES"/>
         <relationship name="shipResources" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemShipResources" inverseName="item" inverseEntity="DgmppItemShipResources" syncable="YES"/>
-        <relationship name="spaceStructureResources" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemSpaceStructureResources" inverseName="item" inverseEntity="DgmppItemSpaceStructureResources" syncable="YES"/>
+        <relationship name="structureResources" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemStructureResources" inverseName="item" inverseEntity="DgmppItemStructureResources" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="dgmppItem" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="DgmppItemCategory" representedClassName="NCDBDgmppItemCategory" syncable="YES" codeGenerationType="class">
@@ -125,7 +125,7 @@
         <attribute name="turrets" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="shipResources" inverseEntity="DgmppItem" syncable="YES"/>
     </entity>
-    <entity name="DgmppItemSpaceStructureResources" representedClassName="NCDBDgmppItemSpaceStructureResources" syncable="YES" codeGenerationType="class">
+    <entity name="DgmppItemStructureResources" representedClassName="NCDBDgmppItemStructureResources" syncable="YES" codeGenerationType="class">
         <attribute name="hiSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="launchers" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lowSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -133,7 +133,7 @@
         <attribute name="rigSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="serviceSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="turrets" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="spaceStructureResources" inverseEntity="DgmppItem" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="structureResources" inverseEntity="DgmppItem" syncable="YES"/>
     </entity>
     <entity name="DgmTypeAttribute" representedClassName="NCDBDgmTypeAttribute" syncable="YES" codeGenerationType="class">
         <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -384,6 +384,9 @@
         <element name="CertMastery" positionX="-189" positionY="180" width="128" height="90"/>
         <element name="CertMasteryLevel" positionX="-162" positionY="180" width="128" height="105"/>
         <element name="CertSkill" positionX="-171" positionY="189" width="128" height="90"/>
+        <element name="ChrAncestry" positionX="-180" positionY="189" width="128" height="105"/>
+        <element name="ChrBloodline" positionX="-171" positionY="198" width="128" height="120"/>
+        <element name="ChrFaction" positionX="-189" positionY="180" width="128" height="30"/>
         <element name="ChrRace" positionX="9" positionY="54" width="128" height="150"/>
         <element name="DgmAttributeCategory" positionX="18" positionY="63" width="128" height="90"/>
         <element name="DgmAttributeType" positionX="0" positionY="54" width="128" height="165"/>
@@ -395,7 +398,7 @@
         <element name="DgmppItemGroup" positionX="160" positionY="192" width="128" height="135"/>
         <element name="DgmppItemRequirements" positionX="160" positionY="192" width="128" height="105"/>
         <element name="DgmppItemShipResources" positionX="160" positionY="192" width="128" height="150"/>
-        <element name="DgmppItemSpaceStructureResources" positionX="-189" positionY="180" width="128" height="165"/>
+        <element name="DgmppItemStructureResources" positionX="-189" positionY="180" width="128" height="165"/>
         <element name="DgmTypeAttribute" positionX="-36" positionY="27" width="128" height="90"/>
         <element name="EveIcon" positionX="18" positionY="63" width="128" height="285"/>
         <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="75"/>
@@ -426,8 +429,5 @@
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
         <element name="Version" positionX="-153" positionY="216" width="128" height="90"/>
         <element name="WhType" positionX="-189" positionY="180" width="128" height="150"/>
-        <element name="ChrFaction" positionX="-189" positionY="180" width="128" height="30"/>
-        <element name="ChrAncestry" positionX="-180" positionY="189" width="128" height="105"/>
-        <element name="ChrBloodline" positionX="-171" positionY="198" width="128" height="120"/>
     </elements>
 </model>

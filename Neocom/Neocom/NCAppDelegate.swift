@@ -111,6 +111,8 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		navigationBar.shadowImage = UIImage.image(color: UIColor.background)
 		navigationBar.barTintColor = UIColor.background
 		navigationBar.tintColor = UIColor.white
+		navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+		navigationBar.barStyle = .black
 		let tableView = NCTableView.appearance()
 		tableView.tableBackgroundColor = UIColor.background
 		tableView.separatorColor = UIColor.separator

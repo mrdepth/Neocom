@@ -1229,7 +1229,7 @@ void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database)
 			case SLOT_STARBASE_STRUCTURE: {
 				item.requirements = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemRequirements" inManagedObjectContext:context];
 				item.requirements.powerGrid = getAttributeValue(item.type, 30);
-				item.requirements.cpu = getAttributeValue(item.type, 50);
+				item.reqsuirements.cpu = getAttributeValue(item.type, 50);
 				item.requirements.calibration = getAttributeValue(item.type, 1153);
 				break;
 			}

@@ -7,14 +7,19 @@
 //
 
 import UIKit
+import CoreData
 
 class TreeRow: TreeNode {
+	let segue: String?
+	let accessoryButtonSegue: String?
 	override var isExpandable: Bool {
 		return false
 	}
 	
-	init(cellIdentifier: String) {
-		super.init()
+	init(cellIdentifier: String?, segue: String? = nil, accessoryButtonSegue: String? = nil) {
+		self.segue = segue
+		self.accessoryButtonSegue = accessoryButtonSegue
+		super.init(cellIdentifier: cellIdentifier)
 		self.cellIdentifier = cellIdentifier
 	}
 }
@@ -24,9 +29,8 @@ class TreeSection: TreeNode {
 		return true
 	}
 	
-	init(cellIdentifier: String) {
-		super.init()
-		self.cellIdentifier = cellIdentifier
+	override init(cellIdentifier: String?) {
+		super.init(cellIdentifier: cellIdentifier)
 	}
 }
 
@@ -61,18 +65,16 @@ class DefaultTreeRow: TreeRow {
 	dynamic var title: String?
 	dynamic var attributedTitle: NSAttributedString?
 	dynamic var subtitle: String?
-	var segue: String?
 	dynamic var accessoryType: UITableViewCellAccessoryType
 	
-	init(cellIdentifier: String, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, segue: String? = nil) {
+	init(cellIdentifier: String, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, segue: String? = nil, accessoryButtonSegue: String? = nil) {
 		self.image = image
 		self.title = title
 		self.attributedTitle = attributedTitle
 		self.subtitle = subtitle
-		self.segue = segue
 		self.accessoryType = accessoryType
 
-		super.init(cellIdentifier: cellIdentifier)
+		super.init(cellIdentifier: cellIdentifier, segue: segue, accessoryButtonSegue: accessoryButtonSegue)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -87,5 +89,18 @@ class DefaultTreeRow: TreeRow {
 		}
 		cell.subtitleLabel?.text = subtitle
 		cell.accessoryType = accessoryType
+	}
+}
+
+class NCDefaultFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: FetchedResultsSectionNode<ResultType> {
+	
+	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
+		super.init(section: section, objectNode: objectNode)
+		self.cellIdentifier = "NCHeaderTableViewCell"
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCHeaderTableViewCell else {return}
+		cell.titleLabel?.text = section.name
 	}
 }

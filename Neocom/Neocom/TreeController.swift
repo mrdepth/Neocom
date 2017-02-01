@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 public enum ChangeType : UInt {
 	case insert
@@ -90,6 +91,14 @@ extension IndexSet {
 
 open class TreeNode: NSObject {
 	
+	public init(cellIdentifier: String? = nil) {
+		self.cellIdentifier = cellIdentifier
+		super.init()
+		if isExpanded {
+			lazyLoad()
+		}
+	}
+	
 	open var children: [TreeNode]? {
 		didSet {
 			for child in oldValue ?? [] {
@@ -104,6 +113,9 @@ open class TreeNode: NSObject {
 				child.index = index
 				index += 1
 				count += child.isExpanded ? child.descendantCount : 0
+				if child.isExpanded && child.children == nil {
+					child.lazyLoad()
+				}
 			}
 			descendantCount = count
 			performTransition(from: oldValue)
@@ -272,6 +284,7 @@ open class TreeNode: NSObject {
 	@objc optional func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) -> Void
 	@objc optional func treeController(_ treeController: TreeController, didExpandCellWithNode node: TreeNode) -> Void
 	@objc optional func treeController(_ treeController: TreeController, didCollapseCellWithNode node: TreeNode) -> Void
+	@objc optional func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) -> Void;
 	
 }
 
@@ -338,7 +351,12 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 			}
 		}
 		
-		delegate!.treeController?(self, didSelectCellWithNode: node)
+		delegate?.treeController?(self, didSelectCellWithNode: node)
+	}
+	
+	public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+		guard let node = rootNode?.node(at: indexPath.row) else {return}
+		delegate?.treeController?(self, accessoryButtonTappedWithNode: node)
 	}
 	
 	
@@ -362,3 +380,47 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 		node.estimatedHeight = cell.bounds.size.height
 	}
 }
+
+
+class FetchedResultsNode<ResultType: NSFetchRequestResult>: TreeNode {
+	let resultsController: NSFetchedResultsController<ResultType>
+	let sectionNode: FetchedResultsSectionNode<ResultType>.Type
+	let objectNode: FetchedResultsObjectNode<ResultType>.Type
+	
+	required init(resultsController: NSFetchedResultsController<ResultType>, sectionNode: FetchedResultsSectionNode<ResultType>.Type, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
+		self.resultsController = resultsController
+		self.sectionNode = sectionNode
+		self.objectNode = objectNode
+		super.init()
+	}
+	
+	override func lazyLoad() {
+		children = resultsController.sections?.map {self.sectionNode.init(section: $0, objectNode: self.objectNode)}
+	}
+	
+}
+
+class FetchedResultsSectionNode<ResultType: NSFetchRequestResult> : TreeNode {
+	let section: NSFetchedResultsSectionInfo
+	let objectNode: FetchedResultsObjectNode<ResultType>.Type
+	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
+		self.objectNode = objectNode
+		self.section = section
+		super.init()
+	}
+	
+	override func lazyLoad() {
+		children = section.objects?.flatMap {objectNode.init(object: $0 as! ResultType)}
+	}
+}
+
+class FetchedResultsObjectNode<ResultType: NSFetchRequestResult>: TreeNode {
+	let object: ResultType
+	required init(object: ResultType) {
+		self.object = object
+		super.init()
+	}
+}
+
+
+//let l: FetchedResultsSectionNode<FetchedResultsObjectNode<NSDictionary>>? = nil

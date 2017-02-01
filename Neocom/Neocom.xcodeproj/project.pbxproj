@@ -64,6 +64,9 @@
 		1256BF2B1DF4770B00A2A24B /* MainMenu.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC61DF4770A00A2A24B /* MainMenu.xcassets */; };
 		1256BF2C1DF4770B00A2A24B /* UI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC71DF4770A00A2A24B /* UI.xcassets */; };
 		1256BF2E1DF48AA800A2A24B /* NCBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BF2D1DF48AA800A2A24B /* NCBackgroundView.swift */; };
+		125AB80F1E41D9F500B8A2A8 /* UIViewController+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */; };
+		125AB8111E41DEE600B8A2A8 /* NCChargeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AB8101E41DEE600B8A2A8 /* NCChargeTableViewCell.swift */; };
+		125AB8141E42033200B8A2A8 /* NCFittingAmmoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AB8131E42033200B8A2A8 /* NCFittingAmmoViewController.swift */; };
 		126157001E008AF60041B817 /* dgm.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FE1E008AE00041B817 /* dgm.sqlite */; };
 		126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FF1E008AE00041B817 /* NCDatabase.sqlite */; };
 		126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157031E008E770041B817 /* NCRoundedImageView.swift */; };
@@ -248,6 +251,9 @@
 		1256BEC61DF4770A00A2A24B /* MainMenu.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MainMenu.xcassets; sourceTree = "<group>"; };
 		1256BEC71DF4770A00A2A24B /* UI.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = UI.xcassets; sourceTree = "<group>"; };
 		1256BF2D1DF48AA800A2A24B /* NCBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBackgroundView.swift; sourceTree = "<group>"; };
+		125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+NC.swift"; sourceTree = "<group>"; };
+		125AB8101E41DEE600B8A2A8 /* NCChargeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCChargeTableViewCell.swift; sourceTree = "<group>"; };
+		125AB8131E42033200B8A2A8 /* NCFittingAmmoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingAmmoViewController.swift; sourceTree = "<group>"; };
 		126156FE1E008AE00041B817 /* dgm.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = dgm.sqlite; path = ../../dbTools/dbinit/dgm.sqlite; sourceTree = "<group>"; };
 		126156FF1E008AE00041B817 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = ../../dbTools/dbinit/NCDatabase.sqlite; sourceTree = "<group>"; };
 		126157031E008E770041B817 /* NCRoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRoundedImageView.swift; sourceTree = "<group>"; };
@@ -511,6 +517,7 @@
 				12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */,
 				12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */,
 				123AEFF41E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift */,
+				125AB8101E41DEE600B8A2A8 /* NCChargeTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -595,6 +602,7 @@
 				1261570E1E01D3410041B817 /* NCManagedObjectObserver.swift */,
 				12E314BB1E165D5D000A926D /* UIView+NC.swift */,
 				121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */,
+				125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -659,6 +667,7 @@
 				12424E411E3651DC0078AB0F /* NCShipFittingViewController.swift */,
 				1291194A1E3918CC00870428 /* NCFittingModulesViewController.swift */,
 				12EFE7EB1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift */,
+				125AB8131E42033200B8A2A8 /* NCFittingAmmoViewController.swift */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
@@ -837,6 +846,7 @@
 				1230A3261DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift in Sources */,
 				1256BE391DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift in Sources */,
 				123AEFF51E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift in Sources */,
+				125AB8141E42033200B8A2A8 /* NCFittingAmmoViewController.swift in Sources */,
 				12DBEABD1E1D40280088A486 /* NCFittingAttribute.mm in Sources */,
 				1230A32D1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift in Sources */,
 				129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */,
@@ -882,6 +892,7 @@
 				129E60F61E018BD400B56EB8 /* NCLocation.swift in Sources */,
 				1256BE461DF1F0B100A2A24B /* NCTrainingQueue.swift in Sources */,
 				128AE8171E360FF1002E3A1E /* NCRangeFormatter.swift in Sources */,
+				125AB8111E41DEE600B8A2A8 /* NCChargeTableViewCell.swift in Sources */,
 				1243DC1F1E0BDE1700F00B9A /* NCMarketHistoryView.swift in Sources */,
 				1230A32A1DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift in Sources */,
 				12961DCD1E1D649A008A3F4D /* NCFittingBooster.mm in Sources */,
@@ -903,6 +914,7 @@
 				12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */,
 				12961DD61E1D64C9008A3F4D /* NCFittingModule.mm in Sources */,
 				1230A3311DFFE2CF00627D92 /* NCHeaderTableViewCell.swift in Sources */,
+				125AB80F1E41D9F500B8A2A8 /* UIViewController+NC.swift in Sources */,
 				12DBEAC11E1D48A80088A486 /* NCFittingGang.mm in Sources */,
 				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
 				12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */,

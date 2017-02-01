@@ -14,7 +14,14 @@ class NCAdaptiveSegue: UIStoryboardSegue {
 			source.presentingViewController?.navigationController?.pushViewController(destination, animated: true)
 		}
 		else {
-			source.navigationController?.pushViewController(destination, animated: true)
+			if source.presentationController is NCSheetPresentationController || source.navigationController?.presentationController is NCSheetPresentationController {
+				let navigationController = NCNavigationController(rootViewController: destination)
+				source.present(navigationController, animated: true, completion: nil)
+				destination.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
+			}
+			else if let navigationController = source.navigationController {
+				navigationController.pushViewController(destination, animated: true)
+			}
 		}
 	}
 }

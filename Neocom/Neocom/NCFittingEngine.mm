@@ -53,6 +53,19 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 	}];
 }
 
+- (void) performBlockAndWait:(nonnull void(^)()) block {
+	[_operationQueue addOperationWithBlock:^{
+		block();
+		if (_updated) {
+			_updated = NO;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[[NSNotificationCenter defaultCenter] postNotificationName:NCFittingEngineDidUpdateNotification object:self];
+			});
+		}
+	}];
+	[_operationQueue waitUntilAllOperationsAreFinished];
+}
+
 #if DEBUG
 - (void) verifyContext {
 	NSAssert([NSOperationQueue currentQueue] == _operationQueue, @"Concurency assertion");

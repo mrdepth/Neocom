@@ -25,5 +25,6 @@ extern _Nonnull NSNotificationName const NCFittingEngineDidUpdateNotification;
 
 - (nonnull instancetype) init NS_DESIGNATED_INITIALIZER;
 - (void) performBlock:(nonnull void(^)()) block;
+- (void) performBlockAndWait:(nonnull void(^)()) block;
 
 @end

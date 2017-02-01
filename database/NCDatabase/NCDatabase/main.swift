@@ -1187,5 +1187,46 @@ for type in try! context.fetch(request) {
 	}
 }
 
+print ("dgmppItems info")
+request.predicate = NSPredicate(format: "dgmppItem <> NULL")
+for type in try! context.fetch(request) {
+	switch NCDBDgmppItemCategoryID(rawValue: (type.dgmppItem!.groups!.anyObject() as! NCDBDgmppItemGroup).category!.category)! {
+	case .hi, .med, .low, .rig, .structureRig:
+		type.dgmppItem?.requirements = NCDBDgmppItemRequirements(context: context)
+		type.dgmppItem?.requirements?.powerGrid = type.getAttribute(30)?.value ?? 0
+		type.dgmppItem?.requirements?.cpu = type.getAttribute(50)?.value ?? 0
+		type.dgmppItem?.requirements?.calibration = type.getAttribute(1153)?.value ?? 0
+	case .charge, .drone, .structureDrone:
+		type.dgmppItem?.damage = NCDBDgmppItemDamage(context: context)
+		var multiplier = max(type.getAttribute(64)?.value ?? 0, type.getAttribute(212)?.value ?? 0)
+		if multiplier == 0 {
+			multiplier = 1
+		}
+		type.dgmppItem?.damage?.emAmount = (type.getAttribute(114)?.value ?? 0) * multiplier
+		type.dgmppItem?.damage?.kineticAmount = (type.getAttribute(117)?.value ?? 0) * multiplier
+		type.dgmppItem?.damage?.thermalAmount = (type.getAttribute(118)?.value ?? 0) * multiplier
+		type.dgmppItem?.damage?.explosiveAmount = (type.getAttribute(116)?.value ?? 0) * multiplier
+	case .ship:
+		type.dgmppItem?.shipResources = NCDBDgmppItemShipResources(context: context)
+		type.dgmppItem?.shipResources?.hiSlots = Int16(type.getAttribute(14)?.value ?? 0)
+		type.dgmppItem?.shipResources?.medSlots = Int16(type.getAttribute(13)?.value ?? 0)
+		type.dgmppItem?.shipResources?.lowSlots = Int16(type.getAttribute(12)?.value ?? 0)
+		type.dgmppItem?.shipResources?.rigSlots = Int16(type.getAttribute(1137)?.value ?? 0)
+		type.dgmppItem?.shipResources?.turrets = Int16(type.getAttribute(102)?.value ?? 0)
+		type.dgmppItem?.shipResources?.launchers = Int16(type.getAttribute(101)?.value ?? 0)
+	case .structure:
+		type.dgmppItem?.structureResources = NCDBDgmppItemStructureResources(context: context)
+		type.dgmppItem?.structureResources?.hiSlots = Int16(type.getAttribute(14)?.value ?? 0)
+		type.dgmppItem?.structureResources?.medSlots = Int16(type.getAttribute(13)?.value ?? 0)
+		type.dgmppItem?.structureResources?.lowSlots = Int16(type.getAttribute(12)?.value ?? 0)
+		type.dgmppItem?.structureResources?.rigSlots = Int16(type.getAttribute(1137)?.value ?? 0)
+		type.dgmppItem?.structureResources?.serviceSlots = Int16(type.getAttribute(2056)?.value ?? 0)
+		type.dgmppItem?.structureResources?.turrets = Int16(type.getAttribute(102)?.value ?? 0)
+		type.dgmppItem?.structureResources?.launchers = Int16(type.getAttribute(101)?.value ?? 0)
+	default:
+		break
+	}
+}
+
 print ("Save...")
 try! context.save()

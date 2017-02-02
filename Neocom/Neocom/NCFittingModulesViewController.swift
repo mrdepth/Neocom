@@ -194,7 +194,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 		return (parent as? NCShipFittingViewController)?.typePickerViewController
 	}
 	
-	private var obsever: NSObjectProtocol?
+	private var observer: NSObjectProtocol?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -222,8 +222,8 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 			update()
 		}
 	
-		if obsever == nil {
-			obsever = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+		if observer == nil {
+			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
 				guard let strongSelf = self else {return}
 				
 				strongSelf.engine?.perform {

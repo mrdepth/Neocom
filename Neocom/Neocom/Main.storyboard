@@ -4515,7 +4515,7 @@
                                 <rect key="frame" x="0.0" y="56" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="517-qc-QBX" id="gMK-go-dk0">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PAw-xB-IqW">
@@ -4546,7 +4546,7 @@
                                 <rect key="frame" x="0.0" y="98" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tYh-wd-wy2" id="UjP-dt-Jh3">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="90b-FV-99A">
@@ -4557,14 +4557,14 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="FkD-MO-P6R">
-                                            <rect key="frame" x="55" y="11" width="250" height="18"/>
+                                            <rect key="frame" x="55" y="11" width="37.5" height="18"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="FkD-MO-P6R" secondAttribute="trailing" constant="15" id="1su-T2-uUI"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="FkD-MO-P6R" secondAttribute="trailing" constant="15" id="1su-T2-uUI"/>
                                         <constraint firstItem="90b-FV-99A" firstAttribute="leading" secondItem="UjP-dt-Jh3" secondAttribute="leading" constant="15" id="Khk-q5-ffQ"/>
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="FkD-MO-P6R" secondAttribute="bottom" constant="2" id="bSk-TJ-VPn"/>
                                         <constraint firstAttribute="bottom" secondItem="90b-FV-99A" secondAttribute="bottom" priority="999" constant="4" id="cOI-7C-nar"/>
@@ -4575,16 +4575,61 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="FkD-MO-P6R" secondAttribute="trailing" constant="15" id="OVD-4x-jaK"/>
+                                </constraints>
                                 <connections>
                                     <outlet property="iconView" destination="90b-FV-99A" id="qPb-OP-7jD"/>
                                     <outlet property="titleLabel" destination="FkD-MO-P6R" id="pw5-qH-Ntt"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ModuleCell" rowHeight="87" id="pic-0D-JOO" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="138" width="320" height="87"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pic-0D-JOO" id="ITc-ad-1FZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="86"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hPh-ak-SiW">
+                                            <rect key="frame" x="15" y="2" width="32" height="32"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="32" id="MW1-t4-a8m"/>
+                                                <constraint firstAttribute="width" constant="32" id="T7s-FO-1sr"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="sjf-6e-qES">
+                                            <rect key="frame" x="55" y="2" width="250" height="32"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="mxW-3a-448"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WFc-En-dQz">
+                                            <rect key="frame" x="15" y="42" width="290" height="36"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="hPh-ak-SiW" firstAttribute="leading" secondItem="ITc-ad-1FZ" secondAttribute="leading" constant="15" id="K9L-o0-U0a"/>
+                                        <constraint firstItem="sjf-6e-qES" firstAttribute="leading" secondItem="hPh-ak-SiW" secondAttribute="trailing" constant="8" id="Xr3-TZ-Mhz"/>
+                                        <constraint firstItem="sjf-6e-qES" firstAttribute="centerY" secondItem="hPh-ak-SiW" secondAttribute="centerY" id="iz2-ck-azw"/>
+                                        <constraint firstAttribute="trailing" secondItem="sjf-6e-qES" secondAttribute="trailing" constant="15" id="roS-17-Kmk"/>
+                                        <constraint firstItem="sjf-6e-qES" firstAttribute="top" secondItem="ITc-ad-1FZ" secondAttribute="top" constant="2" id="u5q-fM-LX9"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="iconView" destination="hPh-ak-SiW" id="Mis-8V-BDp"/>
+                                    <outlet property="titleLabel" destination="sjf-6e-qES" id="g6o-uI-ab1"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCHeaderTableViewCell" rowHeight="40" id="qZz-zs-k3b" customClass="NCHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="138" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="225" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qZz-zs-k3b" id="usn-oS-YRR">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="285-x3-b86">
@@ -4614,7 +4659,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="NCChargeTableViewCell" rowHeight="58" id="e0S-Ps-cnI" customClass="NCChargeTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="178" width="320" height="58"/>
+                                <rect key="frame" x="0.0" y="265" width="320" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="e0S-Ps-cnI" id="8q0-Bh-PPN">
                                     <rect key="frame" x="0.0" y="0.0" width="273" height="57"/>
@@ -4840,7 +4885,7 @@
                     <connections>
                         <outlet property="treeController" destination="MZy-0f-5uu" id="VJc-NJ-QWi"/>
                         <segue destination="JbH-Km-dUZ" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="Rwd-a3-YNu"/>
-                        <segue destination="IQs-G0-iFu" kind="show" identifier="NCFittingAmmoViewController" id="ff8-za-LHg"/>
+                        <segue destination="IQs-G0-iFu" kind="custom" identifier="NCFittingAmmoViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="ff8-za-LHg"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E3E-HO-Vo4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5400,6 +5445,44 @@
                                     <outlet property="titleLabel" destination="ypn-g0-uL4" id="Vtz-IJ-tb4"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="Cell" rowHeight="40" id="3EE-1M-qJL" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="153" width="320" height="40"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3EE-1M-qJL" id="GL8-bg-oiB">
+                                    <rect key="frame" x="0.0" y="0.0" width="273" height="39"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vaE-0J-CX9">
+                                            <rect key="frame" x="15" y="4" width="32" height="32"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="32" id="Fk9-F2-euc"/>
+                                                <constraint firstAttribute="height" constant="32" id="PQE-9o-zMW"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="IYH-mN-7Ue">
+                                            <rect key="frame" x="55" y="11" width="218" height="18"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="vaE-0J-CX9" firstAttribute="leading" secondItem="GL8-bg-oiB" secondAttribute="leading" constant="15" id="FNM-Nr-aYu"/>
+                                        <constraint firstItem="IYH-mN-7Ue" firstAttribute="top" relation="greaterThanOrEqual" secondItem="GL8-bg-oiB" secondAttribute="top" constant="2" id="KiL-dx-HO0"/>
+                                        <constraint firstItem="IYH-mN-7Ue" firstAttribute="centerY" secondItem="GL8-bg-oiB" secondAttribute="centerY" id="LHZ-Tl-htm"/>
+                                        <constraint firstAttribute="trailing" secondItem="IYH-mN-7Ue" secondAttribute="trailing" id="V9h-Hh-2WX"/>
+                                        <constraint firstItem="IYH-mN-7Ue" firstAttribute="leading" secondItem="vaE-0J-CX9" secondAttribute="trailing" constant="8" id="bSD-53-2WR"/>
+                                        <constraint firstItem="vaE-0J-CX9" firstAttribute="top" secondItem="GL8-bg-oiB" secondAttribute="top" constant="4" id="bgu-Kj-2RH"/>
+                                        <constraint firstAttribute="bottom" secondItem="vaE-0J-CX9" secondAttribute="bottom" priority="999" constant="4" id="seq-BE-d4a"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="IYH-mN-7Ue" secondAttribute="bottom" constant="2" id="yd4-aO-zyL"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="iconView" destination="vaE-0J-CX9" id="Tfe-cH-K08"/>
+                                    <outlet property="titleLabel" destination="IYH-mN-7Ue" id="O9r-EO-Zqh"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="Vom-lb-hlb" id="gIa-VQ-Hed"/>
@@ -5409,7 +5492,7 @@
                     <navigationItem key="navigationItem" title="Ammo" id="wqZ-s9-Btc"/>
                     <connections>
                         <outlet property="treeController" destination="Vom-lb-hlb" id="tJj-qe-RTs"/>
-                        <segue destination="JbH-Km-dUZ" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveSegue" id="sI4-wZ-ljQ"/>
+                        <segue destination="JbH-Km-dUZ" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="sI4-wZ-ljQ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V71-7J-eFW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5445,7 +5528,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="1uk-Gc-c1m"/>
-        <segue reference="sI4-wZ-ljQ"/>
+        <segue reference="Rwd-a3-YNu"/>
         <segue reference="NgW-vJ-ZCI"/>
     </inferredMetricsTieBreakers>
 </document>

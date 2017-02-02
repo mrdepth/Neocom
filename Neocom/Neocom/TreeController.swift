@@ -94,9 +94,6 @@ open class TreeNode: NSObject {
 	public init(cellIdentifier: String? = nil) {
 		self.cellIdentifier = cellIdentifier
 		super.init()
-		if isExpanded {
-			lazyLoad()
-		}
 	}
 	
 	open var children: [TreeNode]? {
@@ -105,20 +102,23 @@ open class TreeNode: NSObject {
 				child.parent = nil
 			}
 			
-			var count = children?.count ?? 0
+			//var count = children?.count ?? 0
 			
 			var index = 0
 			for child in children ?? [] {
 				child.parent = self
 				child.index = index
 				index += 1
-				count += child.isExpanded ? child.descendantCount : 0
-				if child.isExpanded && child.children == nil {
-					child.lazyLoad()
-				}
+//				count += child.isExpanded ? child.descendantCount : 0
+//				if child.isExpanded && child.children == nil {
+//					child.lazyLoad()
+//				}
 			}
-			descendantCount = count
-			performTransition(from: oldValue)
+//			descendantCount = count
+			descendantCount = nil
+			if !disableTransitions {
+				performTransition(from: oldValue)
+			}
 		}
 	}
 	
@@ -158,13 +158,33 @@ open class TreeNode: NSObject {
 	
 	open var cellIdentifier: String?
 	
-	fileprivate var descendantCount: Int = 0 {
-		didSet {
+	private var _descendantCount: Int? = nil
+	
+	fileprivate var descendantCount: Int! {
+		get {
+			if _descendantCount == nil {
+				if self.children == nil {
+					_lazyLoad()
+				}
+				
+				var count = 0
+				for child in self.children ?? [] {
+					count += 1
+					if child.isExpanded {
+						count += child.descendantCount ?? 0
+					}
+				}
+				_descendantCount = count
+			}
+			return _descendantCount!
+		}
+		set {
 			if isExpanded {
-				if oldValue != descendantCount {
-					{parent?.descendantCount += descendantCount - oldValue}() //Recursive call workaround
+				if newValue == nil {
+					{parent?.descendantCount = nil} ()
 				}
 			}
+			_descendantCount = newValue
 		}
 	}
 	
@@ -174,6 +194,13 @@ open class TreeNode: NSObject {
 	
 	open func lazyLoad() {
 		
+	}
+	
+	private var disableTransitions: Bool = false
+	private func _lazyLoad() {
+		disableTransitions = true
+		lazyLoad()
+		disableTransitions = false
 	}
 	
 	open func changed(from: TreeNode) -> Bool {
@@ -189,7 +216,8 @@ open class TreeNode: NSObject {
 			}
 			else {
 				if oldValue != isExpanded {
-					parent?.descendantCount += isExpanded ? descendantCount : -descendantCount
+					//parent?.descendantCount += isExpanded ? descendantCount : -descendantCount
+					parent?.descendantCount = nil
 					
 					if let tableView = treeController?.tableView, let indexPath = indexPath {
 						let rows = IndexSet(integersIn: 1...descendantCount).indexPaths(rowsShift: indexPath.row, section: 0)
@@ -336,10 +364,6 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 		return 1
 	}
 	
-	public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-		
-	}
-	
 	//MARK: - UITableViewDelegate
 	
 	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -363,6 +387,10 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 	public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 		guard let node = rootNode?.node(at: indexPath.row) else {return nil}
 		return delegate?.treeController?(self, editActionsForNode: node)
+	}
+	
+	public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+		return self.tableView(tableView, editActionsForRowAt: indexPath) != nil
 	}
 	
 	public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -419,6 +447,14 @@ class FetchedResultsObjectNode<ResultType: NSFetchRequestResult>: TreeNode {
 	required init(object: ResultType) {
 		self.object = object
 		super.init()
+	}
+	
+	override var hashValue: Int {
+		return object.hash
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? FetchedResultsObjectNode<ResultType>)?.hashValue == hashValue
 	}
 }
 

@@ -76,6 +76,10 @@ class NCDatabase {
 	private(set) lazy var mapDenormalize: NCFetchedCollection<NCDBMapDenormalize> = {
 		return NCDBMapDenormalize.mapDenormalize(managedObjectContext: self.viewContext)
 	}()
+	
+	private(set) lazy var invMetaGroups: NCFetchedCollection<NCDBInvMetaGroup> = {
+		return NCDBInvMetaGroup.invMetaGroups(managedObjectContext: self.viewContext)
+	}()
 }
 
 extension NCDBInvType {
@@ -88,6 +92,7 @@ extension NCDBInvType {
 			return NCFetchedCollection<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute", predicateFormat: "type == %@ AND attributeType.attributeID == %@", argumentArray: [self], managedObjectContext: self.managedObjectContext!)
 		}
 	}
+	
 }
 
 extension NCDBInvGroup {
@@ -168,5 +173,11 @@ extension NCDBDgmppItemCategory {
 		request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 		request.fetchLimit = 1
 		return (try? NCDatabase.sharedDatabase?.viewContext.fetch(request))??.first
+	}
+}
+
+extension NCDBInvMetaGroup {
+	class func invMetaGroups(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBInvMetaGroup> {
+		return NCFetchedCollection<NCDBInvMetaGroup>(entityName: "InvMetaGroup", predicateFormat: "metaGroupID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }

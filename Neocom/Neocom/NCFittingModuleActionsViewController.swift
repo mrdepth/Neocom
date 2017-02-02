@@ -41,6 +41,19 @@ class NCFittingModuleStateRow: TreeRow {
 			}
 		}
 	}
+	
+	override var hashValue: Int {
+		return module.hashValue
+	}
+	
+	override func changed(from: TreeNode) -> Bool {
+		return false
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCFittingModuleStateRow)?.hashValue == hashValue
+	}
+	
 }
 
 class NCFittingModuleInfoRow: TreeRow {
@@ -65,30 +78,43 @@ class NCFittingModuleInfoRow: TreeRow {
 
 class NCFittingChargeRow: NCChargeRow {
 	let charges: Int
-	let module: NCFittingModule?
-	lazy var chargeCategory: NCDBDgmppItemCategory? = {
-		guard let module = self.module else {return nil}
-		return NCDatabase.sharedDatabase?.invTypes[module.typeID]?.dgmppItem?.charge
-	}()
-	init(charge: NCFittingCharge) {
-		module = charge.owner as? NCFittingModule
-		charges = (charge.owner as? NCFittingModule)?.charges ?? 0
-		super.init(typeID: charge.typeID, segue: "NCFittingAmmoViewController", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
+	init(type: NCDBInvType, charges: Int) {
+		self.charges = charges
+		super.init(type: type, segue: "NCFittingAmmoViewController", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
-		guard let cell = cell as? NCChargeTableViewCell else {return}
-		cell.object = chargeCategory
 		if charges > 0 {
-			cell.titleLabel?.attributedText = (type?.typeName ?? "") + " x\(charges)" * [NSForegroundColorAttributeName: UIColor.caption]
+			let title = (type.typeName ?? "") + " x\(charges)" * [NSForegroundColorAttributeName: UIColor.caption]
+			if let cell = cell as? NCChargeTableViewCell {
+				cell.titleLabel?.attributedText = title
+			}
+			else if let cell = cell as? NCDefaultTableViewCell{
+				cell.titleLabel?.attributedText = title
+				cell.accessoryType = .detailButton
+			}
+
 		}
 	}
 }
 
 class NCFittingModuleActionsViewController: UITableViewController, TreeControllerDelegate {
 	var module: NCFittingModule?
+	lazy var type: NCDBInvType? = {
+		guard let module = self.module else {return nil}
+		return NCDatabase.sharedDatabase?.invTypes[module.typeID]
+	}()
+	
+	lazy var chargeCategory: NCDBDgmppItemCategory? = {
+		return self.type?.dgmppItem?.charge
+	}()
+	var chargeSection: DefaultTreeSection?
+
+	
 	@IBOutlet var treeController: TreeController!
+	
+	private var observer: NSObjectProtocol?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -98,26 +124,14 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
 
-		guard let module = self.module else {return}
+		reload()
 		
-		var sections = [TreeNode]()
-		module.engine?.performBlockAndWait {
-			
-			sections.append(NCFittingModuleInfoRow(module: module))
-			
-			if module.canHaveState(.online) {
-				let section = DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingModuleStateRow(module: module)])
-				sections.append(section)
+		if let module = module, observer == nil {
+			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: module.engine, queue: nil) { [weak self] (note) in
+				self?.reload()
 			}
-			if let charge = module.charge {
-				let section = DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Charge", title: NSLocalizedString("Charge", comment: "").uppercased(), children: [NCFittingChargeRow(charge: charge)])
-				sections.append(section)
-			}
-			
 		}
-		let root = TreeNode()
-		root.children = sections
-		treeController.rootNode = root
+
 	}
 
 	@IBAction func onDelete(_ sender: UIButton) {
@@ -149,8 +163,22 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		guard let node = node as? TreeRow else {return}
-		guard let segue = node.segue else {return}
+		guard let segue = node.accessoryButtonSegue else {return}
 		performSegue(withIdentifier: segue, sender: treeController.cell(for: node))
+	}
+	
+	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
+		if node is NCFittingChargeRow {
+			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Unload", comment: "Unload ammo"), handler: { _ in
+				self.module?.engine?.perform {
+					self.module?.charge = nil
+				}
+				let row = DefaultTreeRow(cellIdentifier: "Cell", title: NSLocalizedString("Select Ammo", comment: ""),  segue: "NCFittingAmmoViewController")
+				self.chargeSection?.children = [row]
+
+			})]
+		}
+		return nil
 	}
 	
 	//MARK: - Navigation
@@ -165,14 +193,64 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 			}
 			controller.type = type
 		case "NCFittingAmmoViewController"?:
-			guard let controller = segue.destination as? NCFittingAmmoViewController,
-				let cell = sender as? NCTableViewCell,
-				let category = cell.object as? NCDBDgmppItemCategory else {
-					return
+			guard let controller = segue.destination as? NCFittingAmmoViewController else {return}
+			controller.category = self.chargeCategory
+			controller.completionHandler = { [weak self, weak controller] type in
+				let typeID = Int(type.typeID)
+				controller?.dismiss(animated: true, completion: nil)
+				
+				self?.module?.engine?.perform {
+					self?.module?.charge = NCFittingCharge(typeID: typeID)
+				}
 			}
-			controller.category = category
 		default:
 			break
 		}
+	}
+	
+	//MARK: Private
+	
+	private func reload() {
+		guard let module = self.module else {return}
+		
+		var sections = [TreeNode]()
+		
+		var charge: NCFittingCharge?
+		var chargeGroups: IndexSet?
+		var charges: Int?
+		module.engine?.performBlockAndWait {
+			
+			sections.append(NCFittingModuleInfoRow(module: module))
+			
+			if module.canHaveState(.online) {
+				let section = DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingModuleStateRow(module: module)])
+				sections.append(section)
+			}
+			chargeGroups = module.chargeGroups
+			charges = module.charges
+			charge = module.charge
+		}
+		if let chargeGroups = chargeGroups, chargeGroups.count > 0 {
+			let row: TreeNode
+			if let charge = charge, let type = NCDatabase.sharedDatabase?.invTypes[charge.typeID] {
+				row = NCFittingChargeRow(type: type, charges: charges ?? 0)
+			}
+			else {
+				row = DefaultTreeRow(cellIdentifier: "Cell", title: NSLocalizedString("Select Ammo", comment: ""),  segue: "NCFittingAmmoViewController")
+			}
+			let section = DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Charge", title: NSLocalizedString("Charge", comment: "").uppercased(), children: [row])
+			sections.append(section)
+			chargeSection = section
+		}
+		
+		if treeController.rootNode == nil {
+			let root = TreeNode()
+			root.children = sections
+			treeController.rootNode = root
+		}
+		else {
+			treeController.rootNode?.children = sections
+		}
+		
 	}
 }

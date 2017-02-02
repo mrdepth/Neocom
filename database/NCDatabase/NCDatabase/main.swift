@@ -456,9 +456,10 @@ try! database.exec("SELECT * FROM invMetaGroups") { row in
 	invMetaGroups[metaGroup.metaGroupID as NSNumber] = metaGroup
 }
 
-let defaultMetaGroup = NCDBInvMetaGroup(context: context)
-defaultMetaGroup.metaGroupID = 1000
-defaultMetaGroup.metaGroupName = ""
+//let defaultMetaGroup = NCDBInvMetaGroup(context: context)
+//defaultMetaGroup.metaGroupID = 1000
+//defaultMetaGroup.metaGroupName = ""
+let defaultMetaGroup = invMetaGroups[1]
 
 let unpublishedMetaGroup = NCDBInvMetaGroup(context: context)
 unpublishedMetaGroup.metaGroupID = 1001
@@ -1173,14 +1174,17 @@ for type in try! context.fetch(request) {
 			
 			let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 			if let chargeSize = chargeSize {
-				request.predicate = NSPredicate(format: "group.groupID IN %@ AND SUBQUERY(attributes, $attribute, $attribute.attributeType.attributeID == 128 AND $attribute.value == %d).@count > 0", chargeGroups, Int(chargeSize))
+				request.predicate = NSPredicate(format: "group.groupID IN %@ AND published = 1 AND SUBQUERY(attributes, $attribute, $attribute.attributeType.attributeID == 128 AND $attribute.value == %d).@count > 0", chargeGroups, Int(chargeSize))
 			}
 			else {
-				request.predicate = NSPredicate(format: "group.groupID IN %@ AND volume < %f", chargeGroups, type.capacity)
+				request.predicate = NSPredicate(format: "group.groupID IN %@ AND published = 1 AND volume < %f", chargeGroups, type.capacity)
 			}
 			for charge in try! context.fetch(request) {
-				charge.dgmppItem = NCDBDgmppItem(context: context)
-				charge.dgmppItem?.addToGroups(root)
+				if charge.dgmppItem == nil {
+					charge.dgmppItem = NCDBDgmppItem(context: context)
+				}
+				root.addToItems(charge.dgmppItem!)
+				//charge.dgmppItem?.addToGroups(root)
 			}
 		}
 
@@ -1197,15 +1201,21 @@ for type in try! context.fetch(request) {
 		type.dgmppItem?.requirements?.cpu = type.getAttribute(50)?.value ?? 0
 		type.dgmppItem?.requirements?.calibration = type.getAttribute(1153)?.value ?? 0
 	case .charge, .drone, .structureDrone:
-		type.dgmppItem?.damage = NCDBDgmppItemDamage(context: context)
 		var multiplier = max(type.getAttribute(64)?.value ?? 0, type.getAttribute(212)?.value ?? 0)
 		if multiplier == 0 {
 			multiplier = 1
 		}
-		type.dgmppItem?.damage?.emAmount = (type.getAttribute(114)?.value ?? 0) * multiplier
-		type.dgmppItem?.damage?.kineticAmount = (type.getAttribute(117)?.value ?? 0) * multiplier
-		type.dgmppItem?.damage?.thermalAmount = (type.getAttribute(118)?.value ?? 0) * multiplier
-		type.dgmppItem?.damage?.explosiveAmount = (type.getAttribute(116)?.value ?? 0) * multiplier
+		let em = (type.getAttribute(114)?.value ?? 0) * multiplier
+		let kinetic = (type.getAttribute(117)?.value ?? 0) * multiplier
+		let thermal = (type.getAttribute(118)?.value ?? 0) * multiplier
+		let explosive = (type.getAttribute(116)?.value ?? 0) * multiplier
+		if em + kinetic + thermal + explosive > 0 {
+			type.dgmppItem?.damage = NCDBDgmppItemDamage(context: context)
+			type.dgmppItem?.damage?.emAmount = em
+			type.dgmppItem?.damage?.kineticAmount = kinetic
+			type.dgmppItem?.damage?.thermalAmount = thermal
+			type.dgmppItem?.damage?.explosiveAmount = explosive
+		}
 	case .ship:
 		type.dgmppItem?.shipResources = NCDBDgmppItemShipResources(context: context)
 		type.dgmppItem?.shipResources?.hiSlots = Int16(type.getAttribute(14)?.value ?? 0)

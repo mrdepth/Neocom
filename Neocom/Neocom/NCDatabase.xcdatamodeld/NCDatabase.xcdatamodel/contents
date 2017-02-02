@@ -249,7 +249,6 @@
         <attribute name="basePrice" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="capacity" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="mass" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="metaGroupName" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="metaLevel" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="portionSize" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
@@ -415,7 +414,7 @@
         <element name="InvGroup" positionX="0" positionY="45" width="128" height="165"/>
         <element name="InvMarketGroup" positionX="-18" positionY="36" width="128" height="135"/>
         <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="105"/>
-        <element name="InvType" positionX="-396" positionY="85" width="128" height="600"/>
+        <element name="InvType" positionX="-396" positionY="85" width="128" height="585"/>
         <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="90"/>
         <element name="MapConstellation" positionX="81" positionY="225" width="128" height="30"/>
         <element name="MapDenormalize" positionX="90" positionY="234" width="128" height="150"/>

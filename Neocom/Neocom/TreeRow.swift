@@ -12,13 +12,15 @@ import CoreData
 class TreeRow: TreeNode {
 	let segue: String?
 	let accessoryButtonSegue: String?
+	var object: Any?
 	override var isExpandable: Bool {
 		return false
 	}
 	
-	init(cellIdentifier: String?, segue: String? = nil, accessoryButtonSegue: String? = nil) {
+	init(cellIdentifier: String?, segue: String? = nil, accessoryButtonSegue: String? = nil, object: Any? = nil) {
 		self.segue = segue
 		self.accessoryButtonSegue = accessoryButtonSegue
+		self.object = object
 		super.init(cellIdentifier: cellIdentifier)
 		self.cellIdentifier = cellIdentifier
 	}
@@ -58,6 +60,15 @@ class DefaultTreeSection: TreeSection {
 			}
 		}
 	}
+	
+	override var hashValue: Int {
+		return nodeIdentifier?.hashValue ?? super.hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		guard let nodeIdentifier = nodeIdentifier else {return super.isEqual(object)}
+		return nodeIdentifier.hashValue == (object as? DefaultTreeSection)?.nodeIdentifier?.hashValue
+	}
 }
 
 class DefaultTreeRow: TreeRow {
@@ -67,19 +78,19 @@ class DefaultTreeRow: TreeRow {
 	dynamic var subtitle: String?
 	dynamic var accessoryType: UITableViewCellAccessoryType
 	
-	init(cellIdentifier: String, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, segue: String? = nil, accessoryButtonSegue: String? = nil) {
+	init(cellIdentifier: String, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, segue: String? = nil, accessoryButtonSegue: String? = nil, object: Any? = nil) {
 		self.image = image
 		self.title = title
 		self.attributedTitle = attributedTitle
 		self.subtitle = subtitle
 		self.accessoryType = accessoryType
 
-		super.init(cellIdentifier: cellIdentifier, segue: segue, accessoryButtonSegue: accessoryButtonSegue)
+		super.init(cellIdentifier: cellIdentifier, segue: segue, accessoryButtonSegue: accessoryButtonSegue, object: object)
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
-		cell.object = self
+		cell.object = object
 		cell.iconView?.image = image
 		if let attributedTitle = attributedTitle {
 			cell.titleLabel?.attributedText = attributedTitle
@@ -102,5 +113,32 @@ class NCDefaultFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fetc
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCHeaderTableViewCell else {return}
 		cell.titleLabel?.text = section.name
+	}
+	
+	override var isExpandable: Bool {
+		return true
+	}
+}
+
+class NCMetaGroupFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: FetchedResultsSectionNode<ResultType> {
+	let metaGroupID: Int?
+	lazy var metaGroup: NCDBInvMetaGroup? = {
+		guard let metaGroupID = self.metaGroupID else {return nil}
+		return NCDatabase.sharedDatabase?.invMetaGroups[metaGroupID]
+	}()
+	
+	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
+		metaGroupID = Int(section.name)
+		super.init(section: section, objectNode: objectNode)
+		self.cellIdentifier = "NCHeaderTableViewCell"
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCHeaderTableViewCell else {return}
+		cell.titleLabel?.text = metaGroup?.metaGroupName
+	}
+	
+	override var isExpandable: Bool {
+		return true
 	}
 }

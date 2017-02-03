@@ -149,10 +149,28 @@
 	return module->getShots();
 }
 
-- (NSInteger) capUse {
+- (double) capUse {
 	NCVerifyFittingContext(self.engine);
 	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
 	return module->getCapUse();
+}
+
+- (double) cpuUse {
+	NCVerifyFittingContext(self.engine);
+	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
+	return module->getCpuUse();
+}
+
+- (double) powerGridUse {
+	NCVerifyFittingContext(self.engine);
+	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
+	return module->getPowerGridUse();
+}
+
+- (double) calibrationUse {
+	NCVerifyFittingContext(self.engine);
+	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
+	return module->getCalibrationUse();
 }
 
 - (NCFittingDamage) dps {

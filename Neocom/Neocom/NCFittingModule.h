@@ -31,7 +31,10 @@
 @property (nonatomic, assign) BOOL factorReload;
 @property (readonly) NSInteger charges;
 @property (readonly) NSInteger shots;
-@property (readonly) NSInteger capUse;
+@property (readonly) double capUse;
+@property (readonly) double cpuUse;
+@property (readonly) double powerGridUse;
+@property (readonly) double calibrationUse;
 
 @property (readonly) NCFittingDamage dps;
 @property (readonly) NCFittingDamage volley;

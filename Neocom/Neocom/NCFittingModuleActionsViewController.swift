@@ -42,12 +42,13 @@ class NCFittingModuleStateRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
-		return module.hashValue
-	}
-	
+
 	override func changed(from: TreeNode) -> Bool {
 		return false
+	}
+
+	override var hashValue: Int {
+		return module.hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
@@ -58,20 +59,44 @@ class NCFittingModuleStateRow: TreeRow {
 
 class NCFittingModuleInfoRow: TreeRow {
 	let module: NCFittingModule
+	let cpu: Double
+	let powerGrid: Double
+	let capacitor: Double
+	
 	lazy var type: NCDBInvType? = {
 		return NCDatabase.sharedDatabase?.invTypes[self.module.typeID]
 	}()
 	
 	init(module: NCFittingModule) {
 		self.module = module
-		super.init(cellIdentifier: "Cell", segue: "NCDatabaseTypeInfoViewController")
+		let cpu = module.cpuUse
+		let powerGrid = module.powerGridUse
+		let capacitor = module.capUse
+		self.cpu = cpu
+		self.powerGrid = powerGrid
+		self.capacitor = capacitor
+		if cpu != 0 || powerGrid != 0 || capacitor != 0 {
+			super.init(cellIdentifier: "NCFittingModuleInfoTableViewCell", segue: "NCDatabaseTypeInfoViewController")
+		}
+		else {
+			super.init(cellIdentifier: "Cell", segue: "NCDatabaseTypeInfoViewController")
+		}
 	}
 	
 	override func configure(cell: UITableViewCell) {
-		guard let cell = cell as? NCDefaultTableViewCell else {return}
-		cell.titleLabel?.text = type?.typeName
-		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
-		cell.object = type
+		if let cell = cell as? NCFittingModuleInfoTableViewCell {
+			cell.titleLabel?.text = type?.typeName
+			cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+			cell.object = type
+			cell.powerGridLabel?.text = NCUnitFormatter.localizedString(from: powerGrid, unit: .megaWatts, style: .short)
+			cell.cpuLabel?.text = NCUnitFormatter.localizedString(from: cpu, unit: .teraflops, style: .short)
+			cell.capUseLabel?.text = (capacitor < 0 ? "+" : "") + NCUnitFormatter.localizedString(from: -capacitor, unit: .gigaJoule, style: .short)
+		}
+		else if let cell = cell as? NCDefaultTableViewCell {
+			cell.titleLabel?.text = type?.typeName
+			cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+			cell.object = type
+		}
 	}
 
 }
@@ -105,10 +130,16 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 		guard let module = self.module else {return nil}
 		return NCDatabase.sharedDatabase?.invTypes[module.typeID]
 	}()
-	
+
+	lazy var hullType: NCDBDgmppHullType? = {
+		guard let ship = self.module?.owner as? NCFittingShip else {return nil}
+		return NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.hullType
+	}()
+
 	lazy var chargeCategory: NCDBDgmppItemCategory? = {
 		return self.type?.dgmppItem?.charge
 	}()
+	
 	var chargeSection: DefaultTreeSection?
 
 	
@@ -118,14 +149,19 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		navigationController?.preferredContentSize = CGSize(width: view.bounds.size.width, height: 320)
+		//navigationController?.preferredContentSize = CGSize(width: view.bounds.size.width, height: 320)
 
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
 
 		reload()
-		
+		tableView.layoutIfNeeded()
+		var size = tableView.contentSize
+		size.height += tableView.contentInset.top
+		size.height += tableView.contentInset.bottom
+		navigationController?.preferredContentSize = size
+
 		if let module = module, observer == nil {
 			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: module.engine, queue: nil) { [weak self] (note) in
 				self?.reload()
@@ -143,6 +179,15 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 		self.dismiss(animated: true, completion: nil)
 	}
 
+	@IBAction func onChangeHullType(_ sender: UIStepper) {
+		guard let cell = sender.ancestor(of: NCFittingModuleDamageChartTableViewCell.self) else {return}
+		guard let node = cell.object as? NCFittingModuleDamageChartRow else {return}
+		guard let hullType = node.hullTypes?[Int(sender.value)] else {return}
+		self.hullType = hullType
+		node.hullType = hullType
+		node.configure(cell: cell)
+		//treeController.reloadCells(for: [node])
+	}
 	
 	@IBAction func onChangeState(_ sender: UISegmentedControl) {
 		guard let cell = sender.ancestor(of: NCFittingModuleStateTableViewCell.self) else {return}
@@ -197,10 +242,10 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 			controller.category = self.chargeCategory
 			controller.completionHandler = { [weak self, weak controller] type in
 				let typeID = Int(type.typeID)
-				controller?.dismiss(animated: true, completion: nil)
-				
-				self?.module?.engine?.perform {
-					self?.module?.charge = NCFittingCharge(typeID: typeID)
+				controller?.dismiss(animated: true) {
+					self?.module?.engine?.perform {
+						self?.module?.charge = NCFittingCharge(typeID: typeID)
+					}
 				}
 			}
 		default:
@@ -218,6 +263,8 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 		var charge: NCFittingCharge?
 		var chargeGroups: IndexSet?
 		var charges: Int?
+		var dpsSection: TreeSection?
+		let hullType = self.hullType
 		module.engine?.performBlockAndWait {
 			
 			sections.append(NCFittingModuleInfoRow(module: module))
@@ -229,6 +276,12 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 			chargeGroups = module.chargeGroups
 			charges = module.charges
 			charge = module.charge
+			
+			if module.dps.total > 0 {
+				let row = NCFittingModuleDamageChartRow(module: module)
+				row.hullType = hullType
+				dpsSection = DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "DPS", title: NSLocalizedString("DPS", comment: "").uppercased(), children: [row])
+			}
 		}
 		if let chargeGroups = chargeGroups, chargeGroups.count > 0 {
 			let row: TreeNode
@@ -242,6 +295,9 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 			sections.append(section)
 			chargeSection = section
 		}
+		if let dpsSection = dpsSection {
+			sections.append(dpsSection)
+		}
 		
 		if treeController.rootNode == nil {
 			let root = TreeNode()
@@ -251,6 +307,5 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 		else {
 			treeController.rootNode?.children = sections
 		}
-		
 	}
 }

@@ -340,6 +340,14 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 		return rootNode?.node(at: indexPath.row)
 	}
 	
+	public func reloadCells(for nodes: [TreeNode]) {
+		let indexPaths = nodes.flatMap({$0.indexPath})
+		if (indexPaths.count > 0) {
+			tableView.reloadRows(at: indexPaths, with: .fade)
+		}
+	}
+
+	
 	//MARK: - UITableViewDataSource
 	
 	public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

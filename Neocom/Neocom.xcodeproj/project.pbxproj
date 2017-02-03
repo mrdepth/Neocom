@@ -123,6 +123,9 @@
 		12BFC45B1E3F7892000ED8D6 /* TreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFC45A1E3F7892000ED8D6 /* TreeController.swift */; };
 		12BFC45D1E3F7CD2000ED8D6 /* TreeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFC45C1E3F7CD2000ED8D6 /* TreeRow.swift */; };
 		12BFC46E1E409AC2000ED8D6 /* NCThinLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFC46D1E409AC2000ED8D6 /* NCThinLineView.swift */; };
+		12C44CFA1E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */; };
+		12C44CFE1E44776500BA43ED /* NCFittingModuleDamageChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CFD1E44776500BA43ED /* NCFittingModuleDamageChartView.swift */; };
+		12C44D001E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */; };
 		12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */; };
 		12D1CFFB1E277E2400C31B61 /* NCSegmentedPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */; };
 		12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */; };
@@ -320,6 +323,9 @@
 		12BFC45A1E3F7892000ED8D6 /* TreeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeController.swift; sourceTree = "<group>"; };
 		12BFC45C1E3F7CD2000ED8D6 /* TreeRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeRow.swift; sourceTree = "<group>"; };
 		12BFC46D1E409AC2000ED8D6 /* NCThinLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCThinLineView.swift; sourceTree = "<group>"; };
+		12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleInfoTableViewCell.swift; sourceTree = "<group>"; };
+		12C44CFD1E44776500BA43ED /* NCFittingModuleDamageChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleDamageChartView.swift; sourceTree = "<group>"; };
+		12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleDamageChartTableViewCell.swift; sourceTree = "<group>"; };
 		12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRegionPickerViewController.swift; sourceTree = "<group>"; };
 		12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSegmentedPageControl.swift; sourceTree = "<group>"; };
 		12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dgmpp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -458,6 +464,7 @@
 				1230A31E1DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift */,
 				12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */,
 				12BFC46D1E409AC2000ED8D6 /* NCThinLineView.swift */,
+				12C44CFD1E44776500BA43ED /* NCFittingModuleDamageChartView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -517,7 +524,9 @@
 				12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */,
 				12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */,
 				123AEFF41E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift */,
+				12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */,
 				125AB8101E41DEE600B8A2A8 /* NCChargeTableViewCell.swift */,
+				12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -841,6 +850,7 @@
 				129E60F81E0196AD00B56EB8 /* UIColor+NC.swift in Sources */,
 				12D1CFFB1E277E2400C31B61 /* NCSegmentedPageControl.swift in Sources */,
 				12424E3E1E3642430078AB0F /* NCFleet.swift in Sources */,
+				12C44D001E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift in Sources */,
 				1256BE501DF465BC00A2A24B /* NCSlideDownAnimationController.swift in Sources */,
 				1230A3321DFFE2CF00627D92 /* NCTreeNode.swift in Sources */,
 				1230A3261DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift in Sources */,
@@ -870,6 +880,7 @@
 				121D10B21E263E3700DD671B /* NCTypePickerTypesViewController.swift in Sources */,
 				12BFC45B1E3F7892000ED8D6 /* TreeController.swift in Sources */,
 				1230A32C1DFFE2CF00627D92 /* NCGate.swift in Sources */,
+				12C44CFE1E44776500BA43ED /* NCFittingModuleDamageChartView.swift in Sources */,
 				12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */,
 				129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */,
 				1256BE4B1DF210C500A2A24B /* NCTimeIntervalFormatter.swift in Sources */,
@@ -924,6 +935,7 @@
 				12961DD01E1D64A6008A3F4D /* NCFittingImplant.mm in Sources */,
 				12FC3CC81E13F4A400B7744E /* NCDatabaseCertificateMasteryViewController.swift in Sources */,
 				12DBEAC41E1D49C70088A486 /* NCFittingCharacter.mm in Sources */,
+				12C44CFA1E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift in Sources */,
 				1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */,
 				12DBEABA1E1D3F3D0088A486 /* NCFittingItem.mm in Sources */,
 				12E2674F1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift in Sources */,
@@ -1078,7 +1090,7 @@
 				INFOPLIST_FILE = Neocom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.eveuniverse;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Neocom/Neocom-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1095,7 +1107,7 @@
 				INFOPLIST_FILE = Neocom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.eveuniverse;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Neocom/Neocom-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;

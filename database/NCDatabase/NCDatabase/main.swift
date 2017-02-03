@@ -1238,5 +1238,36 @@ for type in try! context.fetch(request) {
 	}
 }
 
+print ("dgmppHullTypes")
+
+do {
+	func types(_ marketGroup: NCDBInvMarketGroup) -> [NCDBInvType] {
+		var array = (marketGroup.types?.allObjects as? [NCDBInvType]) ?? []
+		for group in marketGroup.subGroups?.allObjects ?? [] {
+			array.append(contentsOf: types(group as! NCDBInvMarketGroup))
+		}
+		return array
+	}
+	
+	for marketGroup in invMarketGroups[4]?.subGroups ?? [] {
+		let marketGroup = marketGroup as! NCDBInvMarketGroup
+		let hullType = NCDBDgmppHullType(context: context)
+		hullType.hullTypeName = marketGroup.marketGroupName
+
+		let array = types(marketGroup)
+		var signature = 0 as Double
+		for type in array {
+			type.hullType = hullType
+			signature += Double(type.getAttribute(552)!.value)
+		}
+		signature /= Double(array.count)
+		signature = ceil(signature / 5) * 5
+		
+		hullType.signature = Float(signature)
+	}
+	
+}
+
+
 print ("Save...")
 try! context.save()

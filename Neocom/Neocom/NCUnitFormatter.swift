@@ -124,7 +124,8 @@ class NCUnitFormatter: Formatter {
 		let unitAbbreviation: String = unit.abbreviation
 		let useSIPrefix = useSIPrefix ?? unit.useSIPrefix
 		
-		var value = number
+		let sign = number < 0 ? -1.0 : 1.0
+		var value = abs(number)
 		let suffix: String
 		if (style == .short) {
 			if (value >= 10_000_000_000_000) {
@@ -158,10 +159,10 @@ class NCUnitFormatter: Formatter {
 		
 		var s = ""
 		if value < 10.0 {
-			s = numberFormatter1.string(from: NSNumber(value: value))!
+			s = numberFormatter1.string(from: NSNumber(value: value * sign))!
 		}
 		else {
-			s = numberFormatter2.string(from: NSNumber(value: value))!
+			s = numberFormatter2.string(from: NSNumber(value: value * sign))!
 		}
 		if !suffix.isEmpty {
 			s += suffix

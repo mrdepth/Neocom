@@ -265,3 +265,9 @@ extension NCFittingScanType {
 		}
 	}
 }
+
+extension NCFittingDamage {
+	var total: Double {
+		return em + kinetic + thermal + explosive
+	}
+}

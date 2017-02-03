@@ -112,7 +112,7 @@ class NCDefaultFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fetc
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCHeaderTableViewCell else {return}
-		cell.titleLabel?.text = section.name
+		cell.titleLabel?.text = section.name.uppercased()
 	}
 	
 	override var isExpandable: Bool {
@@ -135,7 +135,7 @@ class NCMetaGroupFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fe
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCHeaderTableViewCell else {return}
-		cell.titleLabel?.text = metaGroup?.metaGroupName
+		cell.titleLabel?.text = metaGroup?.metaGroupName?.uppercased()
 	}
 	
 	override var isExpandable: Bool {

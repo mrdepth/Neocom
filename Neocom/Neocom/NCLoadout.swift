@@ -271,3 +271,18 @@ extension NCFittingDamage {
 		return em + kinetic + thermal + explosive
 	}
 }
+
+extension NCFittingFighterSquadron {
+	var title: String? {
+		switch self {
+		case .heavy:
+			return NSLocalizedString("Heavy", comment: "")
+		case .light:
+			return NSLocalizedString("Light", comment: "")
+		case .support:
+			return NSLocalizedString("Support", comment: "")
+		case .none:
+			return NSLocalizedString("Drone", comment: "")
+		}
+	}
+}

@@ -73,7 +73,8 @@ class NCFittingModuleDamageChartView: UIView {
 				guard let ship = module.owner as? NCFittingShip else {return}
 				let optimal = module.maxRange
 				let falloff = module.falloff
-				let maxX = optimal + max(falloff * 2, optimal * 0.5)
+				//let maxX = optimal + max(falloff * 2, optimal * 0.5)
+				let maxX = ceil((optimal + max(falloff * 2, optimal * 0.5)) / 10000) * 10000
 				guard maxX > 0 else {return}
 				let dx = maxX / n
 				

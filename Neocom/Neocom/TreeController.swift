@@ -88,6 +88,22 @@ extension IndexSet {
 	}
 }
 
+private class TreeNodeSnapshot: TreeNode {
+	let _indexPath: IndexPath?
+	override var indexPath: IndexPath? {
+		return _indexPath
+	}
+	
+	init(node: TreeNode) {
+		_indexPath = node.indexPath
+		super.init()
+		isExpanded = node.isExpanded
+		self.children = node.children
+//		if (isExpanded) {
+//			self.children = node.children?.map({TreeNodeSnapshot(node: $0)})
+//		}
+	}
+}
 
 open class TreeNode: NSObject {
 	
@@ -96,62 +112,60 @@ open class TreeNode: NSObject {
 		super.init()
 	}
 	
+	var from: TreeNode?
 	open var children: [TreeNode]? {
-		didSet {
-			for child in oldValue ?? [] {
-				child.parent = nil
+		willSet {
+			if !disableTransitions && !(self is TreeNodeSnapshot) {
+				from = TreeNodeSnapshot(node: self)
 			}
-			
-			//var count = children?.count ?? 0
-			
+		}
+		didSet {
 			var index = 0
 			for child in children ?? [] {
 				child.parent = self
 				child.index = index
 				index += 1
-//				count += child.isExpanded ? child.descendantCount : 0
-//				if child.isExpanded && child.children == nil {
-//					child.lazyLoad()
-//				}
 			}
-//			descendantCount = count
 			descendantCount = nil
-			if !disableTransitions {
-				performTransition(from: oldValue)
+			if !disableTransitions, let from = from {
+				performTransition(from: from)
+				if let tableView = treeController?.tableView, let indexPath = self.indexPath, indexPath.row >= 0 {
+					tableView.reloadRows(at: [indexPath], with: .fade)
+				}
 			}
+			from = nil
 		}
 	}
 	
-	private func performTransition(from: [TreeNode]?) {
-		if isExpanded, let tableView = treeController?.tableView, let indexPath = indexPath {
-			
+	private func performTransition(from: TreeNode?) {
+		if isExpanded, let tableView = treeController?.tableView, let toIndexPath = indexPath, let fromIndexPath = from?.indexPath {
+			let from = from?.isExpanded == true ? from?.children ?? [] : []
 			tableView.beginUpdates()
-			
-			(children ?? []).changes(from: from ?? [], handler: { (old, new, type) in
+			(children ?? []).changes(from: from, handler: { (old, new, type) in
 				switch type {
 				case .insert:
-					let rows = children!.descendantIndexesOfItem(at: new!).indexPaths(rowsShift: indexPath.row + 1, section: 0)
+					let rows = children!.descendantIndexesOfItem(at: new!).indexPaths(rowsShift: toIndexPath.row + 1, section: 0)
 					tableView.insertRows(at: rows, with: .fade)
 				case .delete:
-					let rows = from!.descendantIndexesOfItem(at: old!).indexPaths(rowsShift: indexPath.row + 1, section: 0)
+					let rows = from.descendantIndexesOfItem(at: old!).indexPaths(rowsShift: fromIndexPath.row + 1, section: 0)
 					tableView.deleteRows(at: rows, with: .fade)
 				case .move:
-					let oldRows = from!.descendantIndexesOfItem(at: old!).indexPaths(rowsShift: indexPath.row + 1, section: 0)
+					let oldRows = from.descendantIndexesOfItem(at: old!).indexPaths(rowsShift: fromIndexPath.row + 1, section: 0)
 					tableView.deleteRows(at: oldRows, with: .fade)
-					let newRows = children!.descendantIndexesOfItem(at: new!).indexPaths(rowsShift: indexPath.row + 1, section: 0)
+					let newRows = children!.descendantIndexesOfItem(at: new!).indexPaths(rowsShift: toIndexPath.row + 1, section: 0)
 					tableView.insertRows(at: newRows, with: .fade)
 				case .update:
-					guard let oldNode = from?[old!] else {break}
 					guard let to = children?[new!] else {break}
+					let oldNode = from[old!]
 					to.estimatedHeight = oldNode.estimatedHeight
-					to.performTransition(from: oldNode.children)
-					if to.changed(from: oldNode), let indexPath = to.indexPath {
+					to.performTransition(from: oldNode)
+					
+					if to.changed(from: oldNode), let indexPath = oldNode.indexPath {
 						tableView.reloadRows(at: [indexPath], with: .fade)
 					}
 					break
 				}
 			})
-			
 			tableView.endUpdates()
 		}
 	}
@@ -204,7 +218,7 @@ open class TreeNode: NSObject {
 	}
 	
 	open func changed(from: TreeNode) -> Bool {
-		return false
+		return isExpanded != from.isExpanded
 	}
 	
 	open var isExpanded: Bool = true {

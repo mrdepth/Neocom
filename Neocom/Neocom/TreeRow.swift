@@ -10,8 +10,8 @@ import UIKit
 import CoreData
 
 class TreeRow: TreeNode {
-	let segue: String?
-	let accessoryButtonSegue: String?
+	var segue: String?
+	var accessoryButtonSegue: String?
 	var object: Any?
 	override var isExpandable: Bool {
 		return false
@@ -140,5 +140,20 @@ class NCMetaGroupFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fe
 	
 	override var isExpandable: Bool {
 		return true
+	}
+}
+
+class NCTypeInfoNode: FetchedResultsObjectNode<NCDBInvType> {
+	required init(object: NCDBInvType) {
+		super.init(object: object)
+		self.cellIdentifier = "Cell"
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		if let cell = cell as? NCDefaultTableViewCell {
+			cell.titleLabel?.text = object.typeName
+			cell.iconView?.image = object.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+			cell.object = object
+		}
 	}
 }

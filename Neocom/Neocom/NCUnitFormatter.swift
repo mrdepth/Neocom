@@ -18,13 +18,16 @@ class NCUnitFormatter: Formatter {
 		case teraflops
 		case kilogram
 		case meter
+		case megaBitsPerSecond
+		case cubicMeter
+		case meterPerSecond
 		case custom(String, Bool)
 		
 		var useSIPrefix: Bool {
 			switch self {
-			case .isk, .skillPoints, .meter:
+			case .isk, .skillPoints, .meter, .meterPerSecond:
 				return false
-			case .gigaJoule, .megaWatts, .teraflops, .kilogram:
+			case .gigaJoule, .megaWatts, .teraflops, .kilogram, .megaBitsPerSecond, .cubicMeter:
 				return true
 			case let .custom(_, bool):
 				return bool
@@ -49,6 +52,12 @@ class NCUnitFormatter: Formatter {
 				return NSLocalizedString(" kg", comment: "kilogram")
 			case .meter:
 				return NSLocalizedString(" m", comment: "meter")
+			case .megaBitsPerSecond:
+				return NSLocalizedString(" Mbit/s", comment: "megaBitsPerSecond")
+			case .cubicMeter:
+				return NSLocalizedString(" m³", comment: "cubicMeter")
+			case .meterPerSecond:
+				return NSLocalizedString(" m/s", comment: "meterPerSecond")
 			case let .custom(string, _):
 				return string
 

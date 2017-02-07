@@ -24,6 +24,53 @@
 	return self.item ? [super typeID] : _typeID;
 }
 
+- (nonnull NSArray<NCFittingModule*>*) modules {
+	NCVerifyFittingContext(self.engine);
+	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	dgmpp::ModulesList modules = ship->getModules(true);
+	NSMutableArray* array = [NSMutableArray new];
+	for (auto i: modules) {
+		[array addObject:(NCFittingModule*) [NCFittingItem item:i withEngine:self.engine]];
+	}
+	return array;
+}
+
+- (nonnull NSArray<NCFittingDrone*>*) drones {
+	NCVerifyFittingContext(self.engine);
+	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	NSMutableArray* array = [NSMutableArray new];
+	for (auto i: ship->getDrones()) {
+		[array addObject:(NCFittingDrone*) [NCFittingItem item:i withEngine:self.engine]];
+	}
+	return array;
+}
+
+- (NCFittingDamage) damagePattern {
+	NCVerifyFittingContext(self.engine);
+	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	auto damage = ship->getDamagePattern();
+	NCFittingDamage result;
+	
+	result.em = damage.emAmount;
+	result.thermal = damage.thermalAmount;
+	result.kinetic = damage.kineticAmount;
+	result.explosive = damage.explosiveAmount;
+	
+	return result;
+}
+
+- (void) setDamagePattern:(NCFittingDamage)damagePattern {
+	NCVerifyFittingContext(self.engine);
+	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	dgmpp::DamagePattern result;
+	result.emAmount = damagePattern.em;
+	result.thermalAmount = damagePattern.thermal;
+	result.kineticAmount = damagePattern.kinetic;
+	result.explosiveAmount = damagePattern.explosive;
+	ship->setDamagePattern(result);
+	[self.engine didUpdate];
+}
+
 - (nullable NCFittingModule*) addModuleWithTypeID:(NSInteger) typeID {
 	return [self addModuleWithTypeID:typeID forced:false socket:-1];
 }
@@ -63,9 +110,13 @@
 }
 
 - (nullable NCFittingDrone*) addDroneWithTypeID:(NSInteger) typeID {
+	return [self addDroneWithTypeID:typeID squadronTag:-1];
+}
+
+- (nullable NCFittingDrone*) addDroneWithTypeID:(NSInteger) typeID squadronTag:(NSInteger) squadronTag {
 	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
-	auto drone = ship->addDrone(static_cast<dgmpp::TypeID>(typeID));
+	auto drone = ship->addDrone(static_cast<dgmpp::TypeID>(typeID), static_cast<int>(squadronTag));
 	[self.engine didUpdate];
 	return drone ? (NCFittingDrone*) [NCFittingItem item:drone withEngine:self.engine] : nil;
 }

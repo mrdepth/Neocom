@@ -10,52 +10,60 @@ import Foundation
 
 class NCFittingModuleRow: TreeRow {
 	lazy var type: NCDBInvType? = {
-		return NCDatabase.sharedDatabase?.invTypes[self.module.typeID]
+		guard let module = self.modules.first else {return nil}
+		return NCDatabase.sharedDatabase?.invTypes[module.typeID]
 	}()
 	lazy var chargeType: NCDBInvType? = {
 		guard let charge = self.charge else {return nil}
 		return NCDatabase.sharedDatabase?.invTypes[charge.typeID]
 	}()
 	
-	let module: NCFittingModule
+	let modules: [NCFittingModule]
 	let charge: NCFittingCharge?
 	let slot: NCFittingModuleSlot
 	let state: NCFittingModuleState
 	let isEnabled: Bool
 	let hasTarget: Bool
 	
-	init(module: NCFittingModule) {
-		self.module = module
-		self.charge = module.charge
-		self.slot = module.slot
-		self.state = module.state
-		self.isEnabled = module.isEnabled
-		self.hasTarget = module.target != nil
-		needsUpdate = true
-		super.init(cellIdentifier: module.isDummy ? "Cell" : "ModuleCell")
+	init(modules: [NCFittingModule]) {
+		self.modules = modules
+		let module = modules.first
+		self.charge = module?.charge
+		self.slot = module?.slot ?? .unknown
+		self.state = module?.state ?? .unknown
+		self.isEnabled = module?.isEnabled ?? true
+		self.hasTarget = module?.target != nil
+		super.init(cellIdentifier: module?.isDummy == true ? "Cell" : "ModuleCell")
 	}
 	
 	override func changed(from: TreeNode) -> Bool {
 		guard let from = from as? NCFittingModuleRow else {return false}
 		subtitle = from.subtitle
-		return !module.isDummy
+		return modules.first?.isDummy == false
 	}
 	
-	var needsUpdate: Bool
+	var needsUpdate: Bool = true
 	var subtitle: NSAttributedString?
 	
 	override func configure(cell: UITableViewCell) {
-		if module.isDummy {
+		let module = modules.first
+		if module?.isDummy == true {
 			guard let cell = cell as? NCDefaultTableViewCell else {return}
-			cell.object = module
+			cell.object = modules
 			cell.iconView?.image = slot.image
 			cell.titleLabel?.text = slot.title
 		}
 		else {
 			guard let cell = cell as? NCFittingModuleTableViewCell else {return}
-			cell.object = module
-			cell.titleLabel?.text = type?.typeName
+			cell.object = modules
 			cell.titleLabel?.textColor = isEnabled ? .white : .red
+
+			if modules.count > 1 {
+				cell.titleLabel?.attributedText = (type?.typeName ?? "") + " " + "x\(modules.count)" * [NSForegroundColorAttributeName: UIColor.caption]
+			}
+			else {
+				cell.titleLabel?.text = type?.typeName
+			}
 			cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 			cell.stateView?.image = state.image
 			cell.subtitleLabel?.attributedText = subtitle
@@ -66,9 +74,9 @@ class NCFittingModuleRow: TreeRow {
 			if needsUpdate {
 				let font = cell.subtitleLabel!.font!
 
-				let module = self.module
 				let chargeName = chargeType?.typeName
 				let chargeImage = chargeType?.icon?.image?.image
+				guard let module = module else {return}
 				
 				module.engine?.perform {
 					guard let ship = module.owner as? NCFittingShip else {return}
@@ -85,6 +93,7 @@ class NCFittingModuleRow: TreeRow {
 					let angularVelocity = module.angularVelocity(targetSignature: ship.attributes[NCDBAttributeID.signatureRadius.rawValue]?.initialValue ?? 0)
 					let accuracyScore = module.accuracyScore
 					let lifeTime = module.lifeTime
+					let cycleTime = module.cycleTime
 					
 					if optimal > 0 {
 						let s: NSAttributedString
@@ -111,6 +120,10 @@ class NCFittingModuleRow: TreeRow {
 						
 						string.appendLine(s)
 					}
+					if cycleTime > 0 {
+						let s = NSAttributedString(image: #imageLiteral(resourceName: "dps"), font: font) + " \(NSLocalizedString("rate of fire", comment: "")): " + NCTimeIntervalFormatter.localizedString(from: cycleTime, precision: .seconds) * [NSForegroundColorAttributeName: UIColor.caption]
+						string.appendLine(s)
+					}
 					
 					if lifeTime > 0 {
 						let s = NSAttributedString(image: #imageLiteral(resourceName: "overheated"), font: font) + " \(NSLocalizedString("lifetime", comment: "")): " + NCTimeIntervalFormatter.localizedString(from: lifeTime, precision: .seconds) * [NSForegroundColorAttributeName: UIColor.caption]
@@ -133,7 +146,7 @@ class NCFittingModuleRow: TreeRow {
 	}
 	
 	override var hashValue: Int {
-		return module.hashValue
+		return modules.first?.hashValue ?? 0
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
@@ -144,10 +157,12 @@ class NCFittingModuleRow: TreeRow {
 
 class NCFittingModuleSection: TreeSection {
 	let slot: NCFittingModuleSlot
+	let grouped: Bool
 	
-	init(slot: NCFittingModuleSlot, children: [NCFittingModuleRow]) {
+	init(slot: NCFittingModuleSlot, children: [NCFittingModuleRow], grouped: Bool) {
 		self.slot = slot
-		super.init(cellIdentifier: "HeaderCell")
+		self.grouped = grouped
+		super.init(cellIdentifier: "NCFittingSlotHeaderTableViewCell")
 		self.children = children
 	}
 	
@@ -156,9 +171,11 @@ class NCFittingModuleSection: TreeSection {
 	}
 	
 	override func configure(cell: UITableViewCell) {
-		guard let cell = cell as? NCHeaderTableViewCell else {return}
+		guard let cell = cell as? NCFittingSlotHeaderTableViewCell else {return}
 		cell.iconView?.image = slot.image
 		cell.titleLabel?.text = slot.title?.uppercased()
+		let title = grouped ? NSLocalizedString("UNGROUP", comment: "") : NSLocalizedString("GROUP", comment: "")
+		cell.groupButton?.setTitle(title, for: .normal)
 	}
 	
 	override var hashValue: Int {
@@ -167,6 +184,10 @@ class NCFittingModuleSection: TreeSection {
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCFittingModuleSection)?.hashValue == hashValue
+	}
+	
+	override func changed(from: TreeNode) -> Bool {
+		return (from as? NCFittingModuleSection)?.grouped != grouped
 	}
 
 }
@@ -194,6 +215,8 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 		return (parent as? NCShipFittingViewController)?.typePickerViewController
 	}
 	
+	var grouping = [NCFittingModuleSlot: Bool]()
+	
 	private var observer: NSObjectProtocol?
 	
 	override func viewDidLoad() {
@@ -212,31 +235,22 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 		super.viewWillAppear(animated)
 		
 		if self.treeController.rootNode == nil {
-			engine?.perform {
-				let sections = self.modulesSections
-				DispatchQueue.main.async {
-					self.treeController.rootNode = TreeNode()
-					self.treeController.rootNode?.children = sections
-				}
-			}
-			update()
+			reload()
 		}
 	
 		if observer == nil {
 			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
-				guard let strongSelf = self else {return}
-				
-				strongSelf.engine?.perform {
-					let sections = strongSelf.modulesSections
-					DispatchQueue.main.async {
-						strongSelf.treeController.rootNode?.children = sections
-					}
-				}
-				strongSelf.update()
+				self?.reload()
 			}
 		}
 	}
 	
+	@IBAction func onChangeGroup(_ sender: UIButton) {
+		guard let cell = sender.ancestor(of: NCFittingSlotHeaderTableViewCell.self) else {return}
+		guard let node = treeController.node(for: cell) as? NCFittingModuleSection else {return}
+		self.grouping[node.slot] = !node.grouped
+		reload()
+	}
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
@@ -244,8 +258,8 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 		guard let pilot = fleet?.active else {return}
 		//guard let ship = ship else {return}
 		guard let typePickerViewController = typePickerViewController else {return}
-		
-		if item.module.isDummy {
+		let module = item.modules.first
+		if module?.isDummy == true {
 			let category: NCDBDgmppItemCategory?
 			switch item.slot {
 			case .hi:
@@ -283,28 +297,13 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 		case "NCFittingModuleActionsViewController"?:
 			guard let controller = (segue.destination as? UINavigationController)?.topViewController as? NCFittingModuleActionsViewController else {return}
 			guard let cell = sender as? NCFittingModuleTableViewCell else {return}
-			controller.module = cell.object as? NCFittingModule
+			controller.modules = cell.object as? [NCFittingModule]
 		default:
 			break
 		}
 	}
 	
 	//MARK: - Private
-	
-	private var modulesSections: [NCFittingModuleSection] {
-		guard let ship = fleet?.active?.ship else {return []}
-
-		var sections = [NCFittingModuleSection]()
-		for slot in [NCFittingModuleSlot.hi, NCFittingModuleSlot.med, NCFittingModuleSlot.low, NCFittingModuleSlot.rig, NCFittingModuleSlot.subsystem, NCFittingModuleSlot.service, NCFittingModuleSlot.mode] {
-			let rows = ship.modules(slot: slot).flatMap({ (module) -> NCFittingModuleRow? in
-				return NCFittingModuleRow(module: module)
-			})
-			if (rows.count > 0) {
-				sections.append(NCFittingModuleSection(slot: slot, children: rows))
-			}
-		}
-		return sections
-	}
 	
 	private func update() {
 		engine?.perform {
@@ -316,8 +315,10 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 			let calibrationUsed = ship.calibrationUsed
 			let totalCalibration = ship.totalCalibration
 			
-			let turrets = "\(ship.usedHardpoints(.turret))/\(ship.freeHardpoints(.turret))"
-			let launchers = "\(ship.usedHardpoints(.launcher))/\(ship.freeHardpoints(.launcher))"
+			let turrets = "\(ship.usedHardpoints(.turret))/\(ship.totalHardpoints(.turret))"
+			let launchers = "\(ship.usedHardpoints(.launcher))/\(ship.totalHardpoints(.launcher))"
+			let turretsColor = ship.usedHardpoints(.turret) <= ship.totalHardpoints(.turret) ? UIColor.white : UIColor.red
+			let launchersColor = ship.usedHardpoints(.launcher) <= ship.totalHardpoints(.launcher) ? UIColor.white : UIColor.red
 			DispatchQueue.main.async {
 				self.powerGridLabel.value = powerGridUsed
 				self.powerGridLabel.maximumValue = totalPowerGrid
@@ -328,8 +329,60 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 				
 				self.turretsLabel.text = turrets
 				self.launchersLabel.text = launchers
+				self.turretsLabel.textColor = turretsColor
+				self.launchersLabel.textColor = launchersColor
 			}
-			
 		}
+	}
+	
+	private func reload() {
+		let grouping = self.grouping
+		engine?.perform {
+			guard let ship = self.fleet?.active?.ship else {return}
+			
+			var sections = [NCFittingModuleSection]()
+			for slot in [NCFittingModuleSlot.hi, NCFittingModuleSlot.med, NCFittingModuleSlot.low, NCFittingModuleSlot.rig, NCFittingModuleSlot.subsystem, NCFittingModuleSlot.service, NCFittingModuleSlot.mode] {
+				let grouped = grouping[slot] ?? false
+				let rows: [NCFittingModuleRow]
+				if grouped {
+					var groups = [[NCFittingModule]]()
+					for module in ship.modules(slot: slot) {
+						let charge = module.charge?.typeID ?? 0
+						let state = module.state
+						let type = module.typeID
+						
+						if let index = groups.index(where: { i in
+							guard let m = i.first else {return false}
+							return type == m.typeID && state == m.state && charge == (m.charge?.typeID ?? 0)
+						}) {
+							groups[index].append(module)
+						}
+						else {
+							groups.append([module])
+						}
+						
+					}
+					rows = groups.flatMap({ (modules) -> NCFittingModuleRow? in
+						return NCFittingModuleRow(modules: modules)
+					})
+				}
+				else {
+					rows = ship.modules(slot: slot).flatMap({ (module) -> NCFittingModuleRow? in
+						return NCFittingModuleRow(modules: [module])
+					})
+				}
+				if (rows.count > 0) {
+					sections.append(NCFittingModuleSection(slot: slot, children: rows, grouped: grouping[slot] ?? false))
+				}
+			}
+
+			DispatchQueue.main.async {
+				if self.treeController.rootNode == nil {
+					self.treeController.rootNode = TreeNode()
+				}
+				self.treeController.rootNode?.children = sections
+			}
+		}
+		update()
 	}
 }

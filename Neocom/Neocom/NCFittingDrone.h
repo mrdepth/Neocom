@@ -16,6 +16,7 @@
 @property (readonly) BOOL dealsDamage;
 @property (readonly, nullable) NCFittingCharge* charge;
 @property (nonatomic, assign) BOOL isActive;
+@property (nonatomic, assign) NSInteger squadronTag;
 
 @property (readonly) double cycleTime;
 @property (readonly) NCFittingDamage dps;
@@ -24,6 +25,7 @@
 @property (readonly) double maxRange;
 @property (readonly) double falloff;
 @property (readonly) double accuracyScore;
+@property (readonly) double velocity;
 
 
 @end

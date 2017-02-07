@@ -9,9 +9,12 @@
 #import "NCFittingItem.h"
 
 @class NCFittingSkill, NCFittingImplant, NCFittingBooster;
-@interface NCFittingSkills: NSObject<NSFastEnumeration>
+@interface NCFittingSkills: NSObject
 @property (readonly) NSUInteger count;
+@property (readonly, nonnull) NSArray<NCFittingSkill*>* all;
 - (nullable NCFittingSkill*) objectAtIndexedSubscript:(NSInteger) typeID;
+
+
 @end
 
 @interface NCFittingImplants : NSObject<NSFastEnumeration>

@@ -24,6 +24,7 @@
 - (nonnull NSArray<NCFittingModule*>*) modulesWithSlot:(NCFittingModuleSlot) slot NS_SWIFT_NAME(modules(slot:));
 
 - (nullable NCFittingDrone*) addDroneWithTypeID:(NSInteger) typeID NS_SWIFT_NAME(addDrone(typeID:));
+- (nullable NCFittingDrone*) addDroneWithTypeID:(NSInteger) typeID squadronTag:(NSInteger) squadronTag NS_SWIFT_NAME(addDrone(typeID:squadronTag:));
 - (void) removeDrone:(nonnull NCFittingDrone*) drone;
 
 

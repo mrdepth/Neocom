@@ -15,17 +15,22 @@ class NCShipFittingViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		engine = NCFittingEngine()
-		let d = DispatchGroup()
-		d.enter()
-		engine?.perform {
+		engine?.performBlockAndWait {
 			self.fleet = NCFleet(typeID: 645, engine: self.engine!)
-			let ship = self.fleet?.active?.ship
-			let module = ship?.addModule(typeID: 3130)
-			module?.charge = NCFittingCharge(typeID: 230)
-			module?.preferredState = .overloaded
-			d.leave()
+			let pilot = self.fleet?.active
+			for skill in pilot?.skills.all ?? [] {
+				skill.level = 5
+			}
+			let ship = pilot?.ship
+			for _ in 0..<3 {
+				let module = ship?.addModule(typeID: 3130)
+				module?.charge = NCFittingCharge(typeID: 230)
+				//module?.preferredState = .overloaded
+			}
+			for _ in 0..<5 {
+				_ = ship?.addDrone(typeID: 2446)
+			}
 		}
-		d.wait()
 	}
 	
 	lazy var typePickerViewController: NCTypePickerViewController? = {

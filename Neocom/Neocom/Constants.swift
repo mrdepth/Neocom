@@ -93,6 +93,8 @@ enum NCDBCategoryID: Int {
 	case module = 7
 	case blueprint = 9
 	case skill = 16
+	case drone = 18
+	case fighter = 87
 }
 
 enum NCDBRegionID: Int {

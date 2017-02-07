@@ -62,7 +62,6 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		navigationController?.preferredContentSize = CGSize(width: view.bounds.size.width, height: 320)
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension

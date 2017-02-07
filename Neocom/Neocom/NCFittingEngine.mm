@@ -14,7 +14,9 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 
 @interface NCFittingEngine() {
 	std::shared_ptr<dgmpp::Engine> _engine;
-	NSOperationQueue* _operationQueue;
+	//NSOperationQueue* _operationQueue;
+	dispatch_queue_t _dispatchQueue;
+	NSThread* _context;
 	BOOL _updated;
 }
 
@@ -25,8 +27,9 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 - (nonnull instancetype) init {
 	if (self = [super init]) {
 		_engine = std::make_shared<dgmpp::Engine>(std::make_shared<dgmpp::SqliteConnector>([[[NSBundle mainBundle] pathForResource:@"dgm" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]));
-		_operationQueue = [NSOperationQueue new];
-		_operationQueue.maxConcurrentOperationCount = 1;
+		//_operationQueue = [NSOperationQueue new];
+		//_operationQueue.maxConcurrentOperationCount = 1;
+		_dispatchQueue = dispatch_queue_create("NCFittingEngine", DISPATCH_QUEUE_SERIAL);
 		_updated = NO;
 	}
 	return self;
@@ -42,7 +45,18 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 }
 
 - (void) performBlock:(nonnull void(^)()) block {
-	[_operationQueue addOperationWithBlock:^{
+	dispatch_async(_dispatchQueue, ^{
+		_context = [NSThread currentThread];
+		block();
+		_context = nil;
+		if (_updated) {
+			_updated = NO;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[[NSNotificationCenter defaultCenter] postNotificationName:NCFittingEngineDidUpdateNotification object:self];
+			});
+		}
+	});
+	/*[_operationQueue addOperationWithBlock:^{
 		block();
 		if (_updated) {
 			_updated = NO;
@@ -50,11 +64,22 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 				[[NSNotificationCenter defaultCenter] postNotificationName:NCFittingEngineDidUpdateNotification object:self];
 			});
 		}
-	}];
+	}];*/
 }
 
 - (void) performBlockAndWait:(nonnull void(^)()) block {
-	[_operationQueue addOperationWithBlock:^{
+	dispatch_sync(_dispatchQueue, ^{
+		_context = [NSThread currentThread];
+		block();
+		_context = nil;
+		if (_updated) {
+			_updated = NO;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[[NSNotificationCenter defaultCenter] postNotificationName:NCFittingEngineDidUpdateNotification object:self];
+			});
+		}
+	});
+	/*[_operationQueue addOperationWithBlock:^{
 		block();
 		if (_updated) {
 			_updated = NO;
@@ -63,12 +88,13 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 			});
 		}
 	}];
-	[_operationQueue waitUntilAllOperationsAreFinished];
+	[_operationQueue waitUntilAllOperationsAreFinished];*/
 }
 
 #if DEBUG
 - (void) verifyContext {
-	NSAssert([NSOperationQueue currentQueue] == _operationQueue, @"Concurency assertion");
+	//NSAssert([NSOperationQueue currentQueue] == _operationQueue, @"Concurency assertion");
+	NSAssert([NSThread currentThread] == _context, @"Concurency assertion");
 }
 #endif
 

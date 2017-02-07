@@ -28,8 +28,17 @@
 	return skill ? (NCFittingSkill*) [NCFittingItem item:skill withEngine:_engine] : nil;
 }
 
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len {
-	return 0;
+//- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len {
+//	return 0;
+//}
+
+- (NSArray<NCFittingSkill*>*) all {
+	NCVerifyFittingContext(_engine);
+	NSMutableArray* skills = [NSMutableArray new];
+	for (const auto& skill: _character->getSkills()) {
+		[skills addObject:[NCFittingItem item:skill.second withEngine:_engine]];
+	}
+	return skills;
 }
 
 - (NSUInteger) count {

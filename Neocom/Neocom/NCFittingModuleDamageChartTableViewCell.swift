@@ -21,6 +21,7 @@ class NCFittingModuleDamageChartTableViewCell: NCTableViewCell {
 class NCFittingModuleDamageChartRow: TreeRow {
 	let module: NCFittingModule
 	let ship: NCFittingShip?
+	let count: Int
 	lazy var hullTypes: [NCDBDgmppHullType]? = {
 		let request = NSFetchRequest<NCDBDgmppHullType>(entityName: "DgmppHullType")
 		request.sortDescriptors = [NSSortDescriptor(key: "signature", ascending: true), NSSortDescriptor(key: "hullTypeName", ascending: true)]
@@ -32,9 +33,10 @@ class NCFittingModuleDamageChartRow: TreeRow {
 		return NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.hullType
 	}()
 	
-	init(module: NCFittingModule) {
+	init(module: NCFittingModule, count: Int) {
 		self.module = module
 		self.ship = module.owner as? NCFittingShip
+		self.count = count
 		super.init(cellIdentifier: "NCFittingModuleDamageChartTableViewCell")
 	}
 	
@@ -51,11 +53,17 @@ class NCFittingModuleDamageChartRow: TreeRow {
 		module.engine?.perform {
 			let optimal = self.module.maxRange
 			let falloff = self.module.falloff
-			let maxRange = optimal + max(falloff * 2, optimal * 0.5)
+			//let maxRange = optimal + max(falloff * 2, optimal * 0.5)
+			let maxRange = ceil((optimal + max(falloff * 2, optimal * 0.5)) / 10000) * 10000
 			let dps = self.module.dps.total
 			
 			DispatchQueue.main.async {
-				cell.rawDpsLabel.text = NSLocalizedString("RAW DPS:", comment: "") + " " + NCUnitFormatter.localizedString(from: dps, unit: .none, style: .full)
+				if self.count > 1 {
+					cell.rawDpsLabel.text = NSLocalizedString("RAW DPS:", comment: "") + " " + NCUnitFormatter.localizedString(from: dps, unit: .none, style: .full) + " x \(self.count) = " + NCUnitFormatter.localizedString(from: dps * Double(self.count), unit: .none, style: .full)
+				}
+				else {
+					cell.rawDpsLabel.text = NSLocalizedString("RAW DPS:", comment: "") + " " + NCUnitFormatter.localizedString(from: dps * Double(self.count), unit: .none, style: .full)
+				}
 				cell.optimalLabel.text = NSLocalizedString("Optimal", comment: "") + "\n" + NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full)
 				if falloff > 0 {
 					cell.falloffLabel.text = NSLocalizedString("Falloff", comment: "") + "\n+" + NCUnitFormatter.localizedString(from: falloff, unit: .meter, style: .full)
@@ -89,5 +97,5 @@ class NCFittingModuleDamageChartRow: TreeRow {
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCFittingModuleStateRow)?.hashValue == hashValue
 	}
-
+	
 }

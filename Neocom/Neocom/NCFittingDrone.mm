@@ -65,6 +65,19 @@
 	[self.engine didUpdate];
 }
 
+- (NSInteger) squadronTag {
+	NCVerifyFittingContext(self.engine);
+	auto drone = std::dynamic_pointer_cast<dgmpp::Drone>(self.item);
+	return drone->getSquadronTag();
+}
+
+- (void) setSquadronTag:(NSInteger)squadronTag {
+	NCVerifyFittingContext(self.engine);
+	auto drone = std::dynamic_pointer_cast<dgmpp::Drone>(self.item);
+	drone->setSquadronTag(static_cast<int>(squadronTag));
+	[self.engine didUpdate];
+}
+
 - (double) cycleTime {
 	NCVerifyFittingContext(self.engine);
 	auto drone = std::dynamic_pointer_cast<dgmpp::Drone>(self.item);
@@ -130,6 +143,12 @@
 	NCVerifyFittingContext(self.engine);
 	auto drone = std::dynamic_pointer_cast<dgmpp::Drone>(self.item);
 	return drone->getAccuracyScore();
+}
+
+- (double) velocity {
+	NCVerifyFittingContext(self.engine);
+	auto drone = std::dynamic_pointer_cast<dgmpp::Drone>(self.item);
+	return drone->getVelocity();
 }
 
 @end

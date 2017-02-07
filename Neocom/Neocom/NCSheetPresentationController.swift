@@ -20,11 +20,13 @@ class NCSheetSegue: UIStoryboardSegue {
 	}
 }
 
-class NCSheetPresentationController: UIPresentationController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning {
+class NCSheetPresentationController: UIPresentationController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIGestureRecognizerDelegate {
 
 	private var dimmingView: UIView?
 	private var presentationWrappingView: UIView?
 	private var keyboardFrame: CGRect = .zero
+	private var panGestureRecognizer: UIPanGestureRecognizer?
+	private var interactiveTransition: UIPercentDrivenInteractiveTransition?
 
 	override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
 		presentedViewController.modalPresentationStyle = .custom
@@ -61,6 +63,13 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 			
 			presentationRoundedCornerView.addSubview(presentedViewControllerWrapperView)
 			presentationWrapperView.addSubview(presentationRoundedCornerView)
+			
+			
+			panGestureRecognizer?.view?.removeGestureRecognizer(panGestureRecognizer!)
+			let recognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
+			recognizer.delegate = self
+			presentationRoundedCornerView.addGestureRecognizer(recognizer)
+			panGestureRecognizer = recognizer
 		}
 		
 		do {
@@ -155,7 +164,7 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 	//MARK: - UIViewControllerAnimatedTransitioning
 	
 	func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-		return transitionContext?.isAnimated == true ? 0.5 : 0.0
+		return transitionContext?.isAnimated == true ? 0.25 : 0.0
 	}
 	
 	func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -189,7 +198,7 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 		}
 		
 		let transitionDuration = self.transitionDuration(using: transitionContext)
-		UIView.animate(withDuration: transitionDuration, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [], animations: { 
+		/*UIView.animate(withDuration: transitionDuration, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [], animations: {
 			if isPresenting {
 				toView?.frame = toViewFinalFrame
 			}
@@ -198,6 +207,17 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 			}
 			
 		}) { finished in
+			let wasCancelled = transitionContext.transitionWasCancelled
+			transitionContext.completeTransition(!wasCancelled)
+		}*/
+		UIView.animate(withDuration: transitionDuration, delay: 0, options: [.curveEaseOut], animations: {
+			if isPresenting {
+				toView?.frame = toViewFinalFrame
+			}
+			else {
+				fromView?.frame = fromViewFinalFrame
+			}
+		}) { _ in
 			let wasCancelled = transitionContext.transitionWasCancelled
 			transitionContext.completeTransition(!wasCancelled)
 		}
@@ -218,6 +238,10 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 		return self
 	}
 	
+	func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+		return interactiveTransition
+	}
+	
 	//MARK: - Notifications
 	
 	@IBAction private func dimmingViewTapped(_ sender: UITapGestureRecognizer) {
@@ -236,4 +260,64 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 	@objc private func keyboardWillChangeFrame(_ note: Notification) {
 		
 	}
+	
+	//MARK: - Gesture Recognizer
+	
+	@objc private func onPan(_ recognizer: UIPanGestureRecognizer) {
+		switch recognizer.state {
+		case .began:
+			if recognizer.view?.hitTest(recognizer.location(in: recognizer.view), with: nil)?.ancestor(of: UIPickerView.self) != nil {
+				recognizer.isEnabled = false
+				recognizer.isEnabled = true
+			}
+		case .changed:
+			let tableView = recognizer.view?.hitTest(recognizer.location(in: recognizer.view), with: nil)?.ancestor(of: UITableView.self)
+			let t = recognizer.translation(in: recognizer.view)
+
+			if let tableView = tableView, tableView.isTracking, tableView.contentOffset.y > -tableView.contentInset.top {
+				recognizer.setTranslation(.zero, in: recognizer.view)
+			}
+			else if t.y > 0 {
+				if let interactiveTransition = interactiveTransition {
+					interactiveTransition.update(t.y / recognizer.view!.bounds.size.height)
+				}
+				else {
+					tableView?.panGestureRecognizer.isEnabled = false
+					tableView?.panGestureRecognizer.isEnabled = true
+					interactiveTransition = UIPercentDrivenInteractiveTransition()
+					interactiveTransition?.completionSpeed = 0.5
+					interactiveTransition?.completionCurve = .easeOut
+
+					presentedViewController.dismiss(animated: true, completion: nil)
+				}
+			}
+		case .ended:
+			let v = recognizer.velocity(in: recognizer.view)
+			let t = recognizer.translation(in: recognizer.view)
+			if v.y > 0 || (v.y >= 0 && t.y > 0) {
+				interactiveTransition?.finish()
+			}
+			else {
+				interactiveTransition?.cancel()
+			}
+			interactiveTransition = nil
+		case .cancelled:
+			interactiveTransition?.cancel()
+			interactiveTransition = nil
+		default:
+			break
+		}
+	}
+	
+	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+		return true
+	}
+	
+//	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//		return true
+//	}
+	
+//	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//		return true
+//	}
 }

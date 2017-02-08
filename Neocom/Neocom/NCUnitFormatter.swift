@@ -14,6 +14,7 @@ class NCUnitFormatter: Formatter {
 		case isk
 		case skillPoints
 		case gigaJoule
+		case gigaJoulePerSecond
 		case megaWatts
 		case teraflops
 		case kilogram
@@ -27,7 +28,7 @@ class NCUnitFormatter: Formatter {
 			switch self {
 			case .isk, .skillPoints, .meter, .meterPerSecond:
 				return false
-			case .gigaJoule, .megaWatts, .teraflops, .kilogram, .megaBitsPerSecond, .cubicMeter:
+			case .gigaJoule, .gigaJoulePerSecond, .megaWatts, .teraflops, .kilogram, .megaBitsPerSecond, .cubicMeter:
 				return true
 			case let .custom(_, bool):
 				return bool
@@ -44,6 +45,8 @@ class NCUnitFormatter: Formatter {
 				return NSLocalizedString(" SP", comment: "skillPoints")
 			case .gigaJoule:
 				return NSLocalizedString(" GJ", comment: "gigaJoule")
+			case .gigaJoulePerSecond:
+				return NSLocalizedString(" GJ/s", comment: "gigaJoulePerSecond")
 			case .megaWatts:
 				return NSLocalizedString(" MW", comment: "megaWatts")
 			case .teraflops:

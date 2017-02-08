@@ -308,29 +308,25 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 	private func update() {
 		engine?.perform {
 			guard let ship = self.fleet?.active?.ship else {return}
-			let powerGridUsed = ship.powerGridUsed
-			let totalPowerGrid = ship.totalPowerGrid
-			let cpuUsed = ship.cpuUsed
-			let totalCPU = ship.totalCPU
-			let calibrationUsed = ship.calibrationUsed
-			let totalCalibration = ship.totalCalibration
-			
-			let turrets = "\(ship.usedHardpoints(.turret))/\(ship.totalHardpoints(.turret))"
-			let launchers = "\(ship.usedHardpoints(.launcher))/\(ship.totalHardpoints(.launcher))"
-			let turretsColor = ship.usedHardpoints(.turret) <= ship.totalHardpoints(.turret) ? UIColor.white : UIColor.red
-			let launchersColor = ship.usedHardpoints(.launcher) <= ship.totalHardpoints(.launcher) ? UIColor.white : UIColor.red
+			let powerGrid = (ship.powerGridUsed, ship.totalPowerGrid)
+			let cpu = (ship.cpuUsed, ship.totalCPU)
+			let calibration = (ship.calibrationUsed, ship.totalCalibration)
+			let turrets = (ship.usedHardpoints(.turret), ship.totalHardpoints(.turret))
+			let launchers = (ship.usedHardpoints(.launcher), ship.totalHardpoints(.launcher))
+
 			DispatchQueue.main.async {
-				self.powerGridLabel.value = powerGridUsed
-				self.powerGridLabel.maximumValue = totalPowerGrid
-				self.cpuLabel.value = cpuUsed
-				self.cpuLabel.maximumValue = totalCPU
-				self.calibrationLabel.value = calibrationUsed
-				self.calibrationLabel.maximumValue = totalCalibration
+				self.powerGridLabel.value = powerGrid.0
+				self.powerGridLabel.maximumValue = powerGrid.1
+				self.cpuLabel.value = cpu.0
+				self.cpuLabel.maximumValue = cpu.1
+				self.calibrationLabel.value = calibration.0
+				self.calibrationLabel.maximumValue = calibration.1
 				
-				self.turretsLabel.text = turrets
-				self.launchersLabel.text = launchers
-				self.turretsLabel.textColor = turretsColor
-				self.launchersLabel.textColor = launchersColor
+				self.turretsLabel.text = "\(turrets.0)/\(turrets.1)"
+				self.launchersLabel.text = "\(launchers.0)/\(launchers.1)"
+				self.turretsLabel.textColor = turrets.0 > turrets.1 ? .red : .white
+				self.launchersLabel.textColor = launchers.0 > launchers.1 ? .red : .white
+
 			}
 		}
 	}

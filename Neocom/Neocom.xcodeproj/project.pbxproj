@@ -13,6 +13,7 @@
 		121D10B21E263E3700DD671B /* NCTypePickerTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10B11E263E3700DD671B /* NCTypePickerTypesViewController.swift */; };
 		121D10B51E265D5A00DD671B /* NCLoadout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10B41E265D5A00DD671B /* NCLoadout.swift */; };
 		1227B81E1E096A4F00C816A0 /* NCDamageTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */; };
+		122FFDF51E4B7D630066D45E /* NCFittingStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122FFDF41E4B7D630066D45E /* NCFittingStatsViewController.swift */; };
 		1230A3241DFFE2CF00627D92 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3111DFFE2CF00627D92 /* Math.swift */; };
 		1230A3251DFFE2CF00627D92 /* NCAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3121DFFE2CF00627D92 /* NCAccountsViewController.swift */; };
 		1230A3261DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3131DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift */; };
@@ -213,6 +214,7 @@
 		121D10B11E263E3700DD671B /* NCTypePickerTypesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerTypesViewController.swift; sourceTree = "<group>"; };
 		121D10B41E265D5A00DD671B /* NCLoadout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLoadout.swift; sourceTree = "<group>"; };
 		1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamageTypeLabel.swift; sourceTree = "<group>"; };
+		122FFDF41E4B7D630066D45E /* NCFittingStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingStatsViewController.swift; sourceTree = "<group>"; };
 		1230A3111DFFE2CF00627D92 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		1230A3121DFFE2CF00627D92 /* NCAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsViewController.swift; sourceTree = "<group>"; };
 		1230A3131DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCategoriesViewController.swift; sourceTree = "<group>"; };
@@ -551,11 +553,11 @@
 				12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */,
 				12424E181E489C16002DFE08 /* NCFittingSlotHeaderTableViewCell.swift */,
 				1293BC121E4A0F6E0099FD75 /* NCCountTableViewCell.swift */,
+				1293BC1D1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift */,
 				1293BC151E4B1FC60099FD75 /* NCResistancesTableViewCell.swift */,
 				1293BC171E4B44420099FD75 /* NCTankTableViewCell.swift */,
 				1293BC191E4B4E7C0099FD75 /* NCDamageTableViewCell.swift */,
 				1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */,
-				1293BC1D1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift */,
 				1293BC211E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift */,
 			);
 			name = Cells;
@@ -706,6 +708,7 @@
 				12424E411E3651DC0078AB0F /* NCShipFittingViewController.swift */,
 				1291194A1E3918CC00870428 /* NCFittingModulesViewController.swift */,
 				12424E1A1E48C9F3002DFE08 /* NCFittingDronesViewController.swift */,
+				122FFDF41E4B7D630066D45E /* NCFittingStatsViewController.swift */,
 				12EFE7EB1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift */,
 				1293BC101E49F1F30099FD75 /* NCFittingDroneActionsViewController.swift */,
 				125AB8131E42033200B8A2A8 /* NCFittingAmmoViewController.swift */,
@@ -914,6 +917,7 @@
 				12AC8DBD1DF01BF100561A7A /* Test.m in Sources */,
 				1256BE481DF1F3B100A2A24B /* Constants.swift in Sources */,
 				121D10B21E263E3700DD671B /* NCTypePickerTypesViewController.swift in Sources */,
+				122FFDF51E4B7D630066D45E /* NCFittingStatsViewController.swift in Sources */,
 				12BFC45B1E3F7892000ED8D6 /* TreeController.swift in Sources */,
 				1230A32C1DFFE2CF00627D92 /* NCGate.swift in Sources */,
 				12C44CFE1E44776500BA43ED /* NCFittingModuleDamageChartView.swift in Sources */,

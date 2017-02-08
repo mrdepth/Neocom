@@ -257,22 +257,18 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 	private func update() {
 		engine?.perform {
 			guard let ship = self.fleet?.active?.ship else {return}
-			let droneBayUsed = ship.droneBayUsed
-			let totalDroneBay = ship.totalDroneBay
-			let droneBandwidthUsed = ship.droneBandwidthUsed
-			let totalDroneBandwidth = ship.totalDroneBandwidth
-			let isCarrier = ship.totalFighterLaunchTubes > 0
-			let droneSquadronLimit = isCarrier ? ship.totalFighterLaunchTubes : ship.droneSquadronLimit(.none)
-			let droneSquadronUsed = isCarrier ? ship.fighterLaunchTubesUsed : ship.droneSquadronUsed(.none)
-			let dronesColor = droneSquadronUsed <= droneSquadronLimit ? UIColor.white : UIColor.red
+
+			let droneBay = (ship.droneBayUsed, ship.totalDroneBay)
+			let droneBandwidth = (ship.droneBandwidthUsed, ship.totalDroneBandwidth)
+			let droneSquadron = (ship.droneSquadronUsed(.none), ship.droneSquadronLimit(.none))
 
 			DispatchQueue.main.async {
-				self.droneBayLabel.value = droneBayUsed
-				self.droneBayLabel.maximumValue = totalDroneBay
-				self.droneBandwidthLabel.value = droneBandwidthUsed
-				self.droneBandwidthLabel.maximumValue = totalDroneBandwidth
-				self.dronesCountLabel.text = "\(droneSquadronUsed)/\(droneSquadronLimit)"
-				self.dronesCountLabel.textColor = dronesColor
+				self.droneBayLabel.value = droneBay.0
+				self.droneBayLabel.maximumValue = droneBay.1
+				self.droneBandwidthLabel.value = droneBandwidth.0
+				self.droneBandwidthLabel.maximumValue = droneBandwidth.1
+				self.dronesCountLabel.text = "\(droneSquadron.0)/\(droneSquadron.1)"
+				self.dronesCountLabel.textColor = droneSquadron.0 > droneSquadron.1 ? .red : .white
 			}
 		}
 	}

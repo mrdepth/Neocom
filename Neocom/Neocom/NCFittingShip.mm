@@ -294,6 +294,12 @@
 	return ship->getCapRecharge();
 }
 
+- (double) capRechargeTime {
+	NCVerifyFittingContext(self.engine);
+	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	return ship->getCapRechargeTime();
+}
+
 //MARK: Tank
 
 - (NCFittingResistances) resistances {

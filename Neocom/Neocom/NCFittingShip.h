@@ -61,6 +61,7 @@
 @property (readonly) double capStableLevel;
 @property (readonly) double capUsed;
 @property (readonly) double capRecharge;
+@property (readonly) double capRechargeTime;
 
 //MARK: Tank
 @property (readonly) NCFittingResistances resistances;

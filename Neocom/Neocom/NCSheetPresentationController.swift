@@ -210,7 +210,7 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 			let wasCancelled = transitionContext.transitionWasCancelled
 			transitionContext.completeTransition(!wasCancelled)
 		}*/
-		UIView.animate(withDuration: transitionDuration, delay: 0, options: [.curveEaseOut], animations: {
+		UIView.animate(withDuration: transitionDuration, delay: 0, options: interactiveTransition == nil ? [.curveEaseOut] : [.curveLinear], animations: {
 			if isPresenting {
 				toView?.frame = toViewFinalFrame
 			}
@@ -263,34 +263,43 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 	
 	//MARK: - Gesture Recognizer
 	
+	private var tableView: UITableView?
+	
 	@objc private func onPan(_ recognizer: UIPanGestureRecognizer) {
 		switch recognizer.state {
 		case .began:
-			if recognizer.view?.hitTest(recognizer.location(in: recognizer.view), with: nil)?.ancestor(of: UIPickerView.self) != nil {
-				recognizer.isEnabled = false
-				recognizer.isEnabled = true
-			}
+			tableView = recognizer.view?.hitTest(recognizer.location(in: recognizer.view), with: nil)?.ancestor(of: UITableView.self)
 		case .changed:
-			let tableView = recognizer.view?.hitTest(recognizer.location(in: recognizer.view), with: nil)?.ancestor(of: UITableView.self)
-			let t = recognizer.translation(in: recognizer.view)
+			//let tableView = self.tableView ?? recognizer.view?.hitTest(recognizer.location(in: recognizer.view), with: nil)?.ancestor(of: UITableView.self)
+			
+			let t = recognizer.translation(in: containerView!)
 
-			if let tableView = tableView, tableView.isTracking, tableView.contentOffset.y > -tableView.contentInset.top {
-				recognizer.setTranslation(.zero, in: recognizer.view)
-			}
-			else if t.y > 0 {
+			
+			if t.y > 0 {
 				if let interactiveTransition = interactiveTransition {
+					if let tableView = self.tableView {
+						var offset = tableView.contentOffset
+						offset.y = -tableView.contentInset.top
+						tableView.setContentOffset(offset, animated: false)
+						tableView.panGestureRecognizer.setTranslation(.zero, in: tableView)
+					}
+					
 					interactiveTransition.update(t.y / recognizer.view!.bounds.size.height)
 				}
 				else {
-					tableView?.panGestureRecognizer.isEnabled = false
-					tableView?.panGestureRecognizer.isEnabled = true
-					interactiveTransition = UIPercentDrivenInteractiveTransition()
-					interactiveTransition?.completionSpeed = 0.5
-					interactiveTransition?.completionCurve = .easeOut
-
-					presentedViewController.dismiss(animated: true, completion: nil)
+					if let tableView = tableView, tableView.isTracking, tableView.contentOffset.y > -tableView.contentInset.top {
+						recognizer.setTranslation(.zero, in: containerView!)
+					}
+					else {
+						interactiveTransition = UIPercentDrivenInteractiveTransition()
+						interactiveTransition?.completionSpeed = 0.5
+						interactiveTransition?.completionCurve = .easeOut
+						
+						presentedViewController.dismiss(animated: true, completion: nil)
+					}
 				}
 			}
+			
 		case .ended:
 			let v = recognizer.velocity(in: recognizer.view)
 			let t = recognizer.translation(in: recognizer.view)
@@ -301,12 +310,23 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 				interactiveTransition?.cancel()
 			}
 			interactiveTransition = nil
+			tableView = nil
 		case .cancelled:
 			interactiveTransition?.cancel()
 			interactiveTransition = nil
+			tableView = nil
 		default:
 			break
 		}
+	}
+	
+	func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+		return gestureRecognizer.view?.hitTest(gestureRecognizer.location(in: gestureRecognizer.view), with: nil)?.ancestor(of: UIPickerView.self) == nil
+	}
+	
+	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+		print("\(#function)")
+		return true
 	}
 	
 	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {

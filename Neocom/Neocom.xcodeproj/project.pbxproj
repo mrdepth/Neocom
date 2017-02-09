@@ -140,6 +140,7 @@
 		12C44D001E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */; };
 		12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */; };
 		12D1CFFB1E277E2400C31B61 /* NCSegmentedPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */; };
+		12DACE5B1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DACE5A1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift */; };
 		12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */; };
 		12DBEAAE1E1D3B710088A486 /* Dgmpp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		12DBEAB71E1D3BD80088A486 /* NCFittingEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DBEAB61E1D3BD80088A486 /* NCFittingEngine.mm */; };
@@ -352,6 +353,7 @@
 		12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleDamageChartTableViewCell.swift; sourceTree = "<group>"; };
 		12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRegionPickerViewController.swift; sourceTree = "<group>"; };
 		12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSegmentedPageControl.swift; sourceTree = "<group>"; };
+		12DACE5A1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingImplantsViewController.swift; sourceTree = "<group>"; };
 		12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dgmpp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12DBEAB01E1D3B860088A486 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		12DBEAB51E1D3BD80088A486 /* NCFittingEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingEngine.h; sourceTree = "<group>"; };
@@ -557,8 +559,8 @@
 				1293BC151E4B1FC60099FD75 /* NCResistancesTableViewCell.swift */,
 				1293BC171E4B44420099FD75 /* NCTankTableViewCell.swift */,
 				1293BC191E4B4E7C0099FD75 /* NCDamageTableViewCell.swift */,
-				1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */,
 				1293BC211E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift */,
+				1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -708,6 +710,7 @@
 				12424E411E3651DC0078AB0F /* NCShipFittingViewController.swift */,
 				1291194A1E3918CC00870428 /* NCFittingModulesViewController.swift */,
 				12424E1A1E48C9F3002DFE08 /* NCFittingDronesViewController.swift */,
+				12DACE5A1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift */,
 				122FFDF41E4B7D630066D45E /* NCFittingStatsViewController.swift */,
 				12EFE7EB1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift */,
 				1293BC101E49F1F30099FD75 /* NCFittingDroneActionsViewController.swift */,
@@ -1009,6 +1012,7 @@
 				1230A3291DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift in Sources */,
 				12E314BC1E165D5D000A926D /* UIView+NC.swift in Sources */,
 				12424E421E3651DC0078AB0F /* NCShipFittingViewController.swift in Sources */,
+				12DACE5B1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

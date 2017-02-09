@@ -19,14 +19,16 @@ class NCUnitFormatter: Formatter {
 		case teraflops
 		case kilogram
 		case meter
+		case millimeter
 		case megaBitsPerSecond
 		case cubicMeter
 		case meterPerSecond
+		case auPerSecond
 		case custom(String, Bool)
 		
 		var useSIPrefix: Bool {
 			switch self {
-			case .isk, .skillPoints, .meter, .meterPerSecond:
+			case .isk, .skillPoints, .meter, .millimeter, .meterPerSecond, .auPerSecond:
 				return false
 			case .gigaJoule, .gigaJoulePerSecond, .megaWatts, .teraflops, .kilogram, .megaBitsPerSecond, .cubicMeter:
 				return true
@@ -40,27 +42,31 @@ class NCUnitFormatter: Formatter {
 		var abbreviation: String {
 			switch (self) {
 			case .isk:
-				return NSLocalizedString(" ISK", comment: "isk")
+				return NSLocalizedString("ISK", comment: "isk")
 			case .skillPoints:
-				return NSLocalizedString(" SP", comment: "skillPoints")
+				return NSLocalizedString("SP", comment: "skillPoints")
 			case .gigaJoule:
-				return NSLocalizedString(" GJ", comment: "gigaJoule")
+				return NSLocalizedString("GJ", comment: "gigaJoule")
 			case .gigaJoulePerSecond:
-				return NSLocalizedString(" GJ/s", comment: "gigaJoulePerSecond")
+				return NSLocalizedString("GJ/s", comment: "gigaJoulePerSecond")
 			case .megaWatts:
-				return NSLocalizedString(" MW", comment: "megaWatts")
+				return NSLocalizedString("MW", comment: "megaWatts")
 			case .teraflops:
-				return NSLocalizedString(" tf", comment: "teraflops")
+				return NSLocalizedString("tf", comment: "teraflops")
 			case .kilogram:
-				return NSLocalizedString(" kg", comment: "kilogram")
+				return NSLocalizedString("kg", comment: "kilogram")
 			case .meter:
-				return NSLocalizedString(" m", comment: "meter")
+				return NSLocalizedString("m", comment: "meter")
+			case .millimeter:
+				return NSLocalizedString("mm", comment: "millimeter")
 			case .megaBitsPerSecond:
-				return NSLocalizedString(" Mbit/s", comment: "megaBitsPerSecond")
+				return NSLocalizedString("Mbit/s", comment: "megaBitsPerSecond")
 			case .cubicMeter:
-				return NSLocalizedString(" m³", comment: "cubicMeter")
+				return NSLocalizedString("m³", comment: "cubicMeter")
 			case .meterPerSecond:
-				return NSLocalizedString(" m/s", comment: "meterPerSecond")
+				return NSLocalizedString("m/s", comment: "meterPerSecond")
+			case .auPerSecond:
+				return NSLocalizedString("AU/s", comment: "auPerSecond")
 			case let .custom(string, _):
 				return string
 
@@ -138,7 +144,7 @@ class NCUnitFormatter: Formatter {
 		
 		let sign = number < 0 ? -1.0 : 1.0
 		var value = abs(number)
-		let suffix: String
+		var suffix: String
 		if (style == .short) {
 			if (value >= 10_000_000_000_000) {
 				suffix = NSLocalizedString("T", comment: "trillion")
@@ -176,12 +182,10 @@ class NCUnitFormatter: Formatter {
 		else {
 			s = numberFormatter2.string(from: NSNumber(value: value * sign))!
 		}
-		if !suffix.isEmpty {
-			s += suffix
-		}
 		if !unitAbbreviation.isEmpty {
-			s += "\(unitAbbreviation)"
+			suffix = " \(suffix)\(unitAbbreviation)"
 		}
+		s += suffix
 		return s;
 	}
 

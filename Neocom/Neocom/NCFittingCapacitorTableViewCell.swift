@@ -11,6 +11,7 @@ import UIKit
 class NCFittingCapacitorTableViewCell: NCTableViewCell {
 	@IBOutlet weak var capacityLabel: UILabel?
 	@IBOutlet weak var stateLabel: UILabel?
+	@IBOutlet weak var stateLevelLabel: UILabel?
 	@IBOutlet weak var rechargeTimeLabel: UILabel?
 	@IBOutlet weak var deltaLabel: UILabel?
 }
@@ -36,14 +37,16 @@ class NCFittingCapacitorRow: TreeRow {
 			
 			DispatchQueue.main.async {
 				if cell.object as? NCFittingShip === ship {
-					cell.capacityLabel?.text = NSLocalizedString("Total", comment: "") + ": " + NCUnitFormatter.localizedString(from: capCapacity, unit: .gigaJoule, style: .full)
-					cell.rechargeTimeLabel?.text = NSLocalizedString("Recharge", comment: "") + ": " + NCTimeIntervalFormatter.localizedString(from: capRechargeTime, precision: .seconds)
-					cell.deltaLabel?.text = NSLocalizedString("Delta", comment: "") + ": " + (delta > 0 ? "+" : "") + NCUnitFormatter.localizedString(from: delta, unit: .gigaJoulePerSecond, style: .full)
+					cell.capacityLabel?.text = NCUnitFormatter.localizedString(from: capCapacity, unit: .gigaJoule, style: .full)
+					cell.rechargeTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: capRechargeTime, precision: .seconds)
+					cell.deltaLabel?.text = (delta > 0 ? "+" : "") + NCUnitFormatter.localizedString(from: delta, unit: .gigaJoulePerSecond, style: .full)
 					if isCapStable {
-						cell.stateLabel?.text = NSLocalizedString("Stable", comment: "") + ": " + String(format: "%.1f%%", capState * 100)
+						cell.stateLabel?.text = NSLocalizedString("Stable:", comment: "")
+						cell.stateLevelLabel?.text = String(format:"%.1f%%", capState * 100)
 					}
 					else {
-						cell.stateLabel?.text = NSLocalizedString("Lasts", comment: "") + ": " + NCTimeIntervalFormatter.localizedString(from: capState, precision: .seconds)
+						cell.stateLabel?.text = NSLocalizedString("Lasts:", comment: "")
+						cell.stateLevelLabel?.text = NCTimeIntervalFormatter.localizedString(from: capState, precision: .seconds)
 					}
 				}
 			}

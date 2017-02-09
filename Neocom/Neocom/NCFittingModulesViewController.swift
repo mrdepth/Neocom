@@ -77,7 +77,7 @@ class NCFittingModuleRow: TreeRow {
 				let chargeName = chargeType?.typeName
 				let chargeImage = chargeType?.icon?.image?.image
 				guard let module = module else {return}
-				
+
 				module.engine?.perform {
 					guard let ship = module.owner as? NCFittingShip else {return}
 					let string = NSMutableAttributedString()
@@ -90,8 +90,6 @@ class NCFittingModuleRow: TreeRow {
 					}
 					let optimal = module.maxRange
 					let falloff = module.falloff
-					let angularVelocity = module.angularVelocity(targetSignature: ship.attributes[NCDBAttributeID.signatureRadius.rawValue]?.initialValue ?? 0)
-					let accuracyScore = module.accuracyScore
 					let lifeTime = module.lifeTime
 					let cycleTime = module.cycleTime
 					
@@ -108,12 +106,17 @@ class NCFittingModuleRow: TreeRow {
 						string.appendLine(s)
 					}
 					
-					if accuracyScore > 0 {
-						let v0 = ship.maxVelocity(orbit: optimal)
-						let v1 = ship.maxVelocity(orbit: optimal + falloff)
+					let signature = ship.attributes[NCDBAttributeID.signatureRadius.rawValue]?.initialValue ?? 0
+					let accuracy = module.accuracy(targetSignature: signature)
+
+					if accuracy != .none {
+						let accuracyScore = module.accuracyScore
+						let angularVelocity = module.angularVelocity(targetSignature: signature)
+						
 						let orbitRadius = ship.orbitRadius(angularVelocity: angularVelocity)
 
-						let color = angularVelocity * optimal > v0 ? UIColor.green : (angularVelocity * (optimal + falloff) > v1 ? UIColor.yellow : UIColor.red);
+						let color = accuracy.color
+						
 						let accuracy = NCUnitFormatter.localizedString(from: accuracyScore, unit: .none, style: .full) * [NSForegroundColorAttributeName: UIColor.caption]
 						let range = NCUnitFormatter.localizedString(from: orbitRadius, unit: .custom(NSLocalizedString("+ m", comment: "meter"), false), style: .full) * [NSForegroundColorAttributeName: color]
 						let s = NSAttributedString(image: #imageLiteral(resourceName: "tracking"), font: font) + " \(NSLocalizedString("accuracy", comment: "")): " + accuracy + " (" + NSAttributedString(image: #imageLiteral(resourceName: "targetingRange"), font: font) + " " + range + " )"

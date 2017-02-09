@@ -47,6 +47,8 @@
 @property (readonly) BOOL isEnabled;
 
 - (double) angularVelocityWithTargetSignature:(double) targetSignature NS_SWIFT_NAME(angularVelocity(targetSignature:));
-
+- (double) angularVelocityWithTargetSignature:(double) targetSignature hitChance:(double) hitChance NS_SWIFT_NAME(angularVelocity(targetSignature:hitChance:));
+- (NCFittingAccuracy) accuracyWithTargetSignature:(double) targetSignature NS_SWIFT_NAME(accuracy(targetSignature:));
+- (NCFittingAccuracy) accuracyWithTargetSignature:(double) targetSignature hitChance:(double) hitChance NS_SWIFT_NAME(accuracy(targetSignature:hitChance:));
 
 @end

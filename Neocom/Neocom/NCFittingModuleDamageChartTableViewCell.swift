@@ -15,6 +15,7 @@ class NCFittingModuleDamageChartTableViewCell: NCTableViewCell {
 	@IBOutlet weak var falloffLabel: UILabel!
 	@IBOutlet weak var rawDpsLabel: UILabel!
 	@IBOutlet weak var dpsLabel: UILabel!
+	@IBOutlet weak var dpsAccuracyView: UIView!
 	@IBOutlet weak var stepper: UIStepper!
 }
 
@@ -49,15 +50,19 @@ class NCFittingModuleDamageChartRow: TreeRow {
 			cell.stepper.value = Double(hullTypes?.index(of: hullType) ?? 0)
 		}
 		cell.dpsLabel.text = NSLocalizedString("DPS AGAINST", comment: "") + " " + (hullType?.hullTypeName?.uppercased() ?? "")
-		cell.damageChartView.targetSignature = Double(hullType?.signature ?? 0)
+		let targetSignature = Double(hullType?.signature ?? 0)
+		cell.damageChartView.targetSignature = targetSignature
 		module.engine?.perform {
 			let optimal = self.module.maxRange
 			let falloff = self.module.falloff
 			//let maxRange = optimal + max(falloff * 2, optimal * 0.5)
 			let maxRange = ceil((optimal + max(falloff * 2, optimal * 0.5)) / 10000) * 10000
 			let dps = self.module.dps.total
+			let accuracy = self.module.accuracy(targetSignature: targetSignature)
 			
 			DispatchQueue.main.async {
+				guard (cell.object as? NCFittingModuleDamageChartRow) == self else {return}
+				cell.dpsAccuracyView.backgroundColor = accuracy.color
 				if self.count > 1 {
 					cell.rawDpsLabel.text = NSLocalizedString("RAW DPS:", comment: "") + " " + NCUnitFormatter.localizedString(from: dps, unit: .none, style: .full) + " x \(self.count) = " + NCUnitFormatter.localizedString(from: dps * Double(self.count), unit: .none, style: .full)
 				}
@@ -66,7 +71,7 @@ class NCFittingModuleDamageChartRow: TreeRow {
 				}
 				cell.optimalLabel.text = NSLocalizedString("Optimal", comment: "") + "\n" + NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full)
 				if falloff > 0 {
-					cell.falloffLabel.text = NSLocalizedString("Falloff", comment: "") + "\n+" + NCUnitFormatter.localizedString(from: falloff, unit: .meter, style: .full)
+					cell.falloffLabel.text = NSLocalizedString("Falloff", comment: "") + "\n" + NCUnitFormatter.localizedString(from: optimal + falloff, unit: .meter, style: .full)
 				}
 				else {
 					cell.falloffLabel.isHidden = true
@@ -90,12 +95,18 @@ class NCFittingModuleDamageChartRow: TreeRow {
 		}
 	}
 	
+	override func changed(from: TreeNode) -> Bool {
+		guard let cell = treeController?.cell(for: self) else {return true}
+		configure(cell: cell)
+		return false
+	}
+	
 	override var hashValue: Int {
 		return module.hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCFittingModuleStateRow)?.hashValue == hashValue
+		return (object as? NCFittingModuleDamageChartRow)?.hashValue == hashValue
 	}
 	
 }

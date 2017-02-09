@@ -270,6 +270,9 @@ extension NCFittingDamage {
 	var total: Double {
 		return em + kinetic + thermal + explosive
 	}
+	static func + (lhs: NCFittingDamage, rhs: NCFittingDamage) -> NCFittingDamage {
+		return NCFittingDamage(em: lhs.em + rhs.em, thermal: lhs.thermal + rhs.thermal, kinetic: lhs.kinetic + rhs.kinetic, explosive: lhs.explosive + rhs.explosive)
+	}
 }
 
 extension NCFittingFighterSquadron {
@@ -283,6 +286,21 @@ extension NCFittingFighterSquadron {
 			return NSLocalizedString("Support", comment: "")
 		case .none:
 			return NSLocalizedString("Drone", comment: "")
+		}
+	}
+}
+
+extension NCFittingAccuracy {
+	var color: UIColor {
+		switch self {
+		case .none:
+			return .white
+		case .low:
+			return .red
+		case .average:
+			return .yellow
+		case .good:
+			return .green
 		}
 	}
 }

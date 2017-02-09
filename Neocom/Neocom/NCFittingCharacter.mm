@@ -28,10 +28,6 @@
 	return skill ? (NCFittingSkill*) [NCFittingItem item:skill withEngine:_engine] : nil;
 }
 
-//- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len {
-//	return 0;
-//}
-
 - (NSArray<NCFittingSkill*>*) all {
 	NCVerifyFittingContext(_engine);
 	NSMutableArray* skills = [NSMutableArray new];
@@ -66,8 +62,13 @@
 	return implant ? (NCFittingImplant*) [NCFittingItem item:implant withEngine:_engine] : nil;
 }
 
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len {
-	return 0;
+- (NSArray<NCFittingSkill*>*) all {
+	NCVerifyFittingContext(_engine);
+	NSMutableArray* implants = [NSMutableArray new];
+	for (const auto& implant: _character->getImplants()) {
+		[implants addObject:[NCFittingItem item:implant withEngine:_engine]];
+	}
+	return implants;
 }
 
 - (NSUInteger) count {
@@ -95,8 +96,13 @@
 	return booster ? (NCFittingBooster*) [NCFittingItem item:booster withEngine:_engine] : nil;
 }
 
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len {
-	return 0;
+- (NSArray<NCFittingSkill*>*) all {
+	NCVerifyFittingContext(_engine);
+	NSMutableArray* boosters = [NSMutableArray new];
+	for (const auto& booster: _character->getBoosters()) {
+		[boosters addObject:[NCFittingItem item:booster withEngine:_engine]];
+	}
+	return boosters;
 }
 
 - (NSUInteger) count {
@@ -192,6 +198,12 @@
 		_boosters = [[NCFittingBoosters alloc] initWithCharacter: character engine:self.engine];
 	}
 	return _boosters;
+}
+
+- (double) droneControlDistance {
+	NCVerifyFittingContext(self.engine);
+	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
+	return character->getDroneControlDistance();
 }
 
 @end

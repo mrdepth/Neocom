@@ -253,9 +253,39 @@
 }
 
 - (double) angularVelocityWithTargetSignature:(double) targetSignature {
+	return [self angularVelocityWithTargetSignature:targetSignature hitChance:0.75];
+}
+
+- (double) angularVelocityWithTargetSignature:(double) targetSignature hitChance:(double) hitChance NS_SWIFT_NAME(angularVelocity(targetSignature:hitChance:)) {
 	NCVerifyFittingContext(self.engine);
 	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
-	return module->getAngularVelocity(targetSignature);
+	return module->getAngularVelocity(targetSignature, hitChance);
 }
+
+- (NCFittingAccuracy) accuracyWithTargetSignature:(double) targetSignature {
+	return [self accuracyWithTargetSignature:targetSignature hitChance:0.75];
+}
+
+- (NCFittingAccuracy) accuracyWithTargetSignature:(double) targetSignature hitChance:(double) hitChance {
+	NCVerifyFittingContext(self.engine);
+	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
+	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(module->getOwner());
+	if (!ship || module->getAccuracyScore() <= 0)
+		return NCFittingAccuracyNone;
+	
+	double optimal = module->getMaxRange();
+	double falloff = module->getFalloff();
+	double angularVelocity = [self angularVelocityWithTargetSignature:targetSignature hitChance:hitChance];
+	double v0 = ship->getMaxVelocityInOrbit(optimal);
+	double v1 = ship->getMaxVelocityInOrbit(optimal + falloff);
+	if (angularVelocity * optimal > v0)
+		return NCFittingAccuracyGood;
+	else if (angularVelocity * (optimal + falloff) > v1)
+		return NCFittingAccuracyAverage;
+	else
+		return
+		NCFittingAccuracyLow;
+}
+
 
 @end

@@ -19,3 +19,62 @@ class NCDamageTableViewCell: NCTableViewCell {
 	@IBOutlet weak var volleyView: NCDamageStackView!
 	@IBOutlet weak var dpsView: NCDamageStackView!
 }
+
+class NCFirepowerRow: TreeRow {
+	let ship: NCFittingShip
+	
+	init(ship: NCFittingShip) {
+		self.ship = ship
+		super.init(cellIdentifier: "NCDamageTableViewCell")
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDamageTableViewCell else {return}
+		let ship = self.ship
+		cell.object = ship
+		ship.engine?.perform {
+			let weaponDPS = ship.weaponDPS
+			let weaponVolley = ship.weaponVolley
+			let droneDPS = ship.droneDPS
+			let droneVolley = ship.droneVolley
+			let dps = weaponDPS + droneDPS
+			let volley = weaponVolley + droneVolley
+			
+			DispatchQueue.main.async {
+				if cell.object as? NCFittingShip === ship {
+					let formatter = NCUnitFormatter(unit: .none, style: .short, useSIPrefix: false)
+					cell.dpsView.weaponLabel.text = formatter.string(for: weaponDPS.total)
+					cell.dpsView.droneLabel.text = formatter.string(for: droneDPS.total)
+					cell.dpsView.totalLabel.text = formatter.string(for: dps.total)
+					cell.volleyView.weaponLabel.text = formatter.string(for: weaponVolley.total)
+					cell.volleyView.droneLabel.text = formatter.string(for: droneVolley.total)
+					cell.volleyView.totalLabel.text = formatter.string(for: volley.total)
+					
+					func fill(label: NCDamageTypeLabel, value: Double, total: Double) {
+						label.progress = Float(value/total)
+						label.text = formatter.string(for: value)
+					}
+					
+					let total = dps.total
+					fill(label: cell.damagePatternView.emLabel, value: dps.em, total: total)
+					fill(label: cell.damagePatternView.kineticLabel, value: dps.kinetic, total: total)
+					fill(label: cell.damagePatternView.thermalLabel, value: dps.thermal, total: total)
+					fill(label: cell.damagePatternView.explosiveLabel, value: dps.explosive, total: total)
+				}
+			}
+		}
+	}
+	
+	override func changed(from: TreeNode) -> Bool {
+		return true
+	}
+	
+	override var hashValue: Int {
+		return ship.hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCFittingResourcesRow)?.hashValue == hashValue
+	}
+	
+}

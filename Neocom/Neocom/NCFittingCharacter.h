@@ -17,13 +17,15 @@
 
 @end
 
-@interface NCFittingImplants : NSObject<NSFastEnumeration>
+@interface NCFittingImplants : NSObject
 @property (readonly) NSUInteger count;
+@property (readonly, nonnull) NSArray<NCFittingImplant*>* all;
 - (nullable NCFittingImplant*) objectAtIndexedSubscript:(NSInteger) slot;
 @end
 
-@interface NCFittingBoosters : NSObject<NSFastEnumeration>
+@interface NCFittingBoosters : NSObject
 @property (readonly) NSUInteger count;
+@property (readonly, nonnull) NSArray<NCFittingBooster*>* all;
 - (nullable NCFittingBooster*) objectAtIndexedSubscript:(NSInteger) slot;
 @end
 
@@ -33,6 +35,7 @@
 @property (readonly, nonnull) NCFittingSkills* skills;
 @property (readonly, nonnull) NCFittingImplants* implants;
 @property (readonly, nonnull) NCFittingBoosters* boosters;
+@property (readonly) double droneControlDistance;
 
 - (nullable NCFittingImplant*) addImplantWithTypeID:(NSInteger) typeID NS_SWIFT_NAME(addImplant(typeID:));
 - (nullable NCFittingImplant*) addImplantWithTypeID:(NSInteger) typeID forced:(BOOL) forced NS_SWIFT_NAME(addImplant(typeID:forced:));

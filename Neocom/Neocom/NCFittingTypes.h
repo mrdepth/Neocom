@@ -49,6 +49,13 @@ typedef NS_ENUM(NSInteger, NCFittingFighterSquadron) {
 	NCFittingFighterSquadronSupport
 };
 
+typedef NS_ENUM(NSInteger, NCFittingAccuracy) {
+	NCFittingAccuracyNone = 0,
+	NCFittingAccuracyLow,
+	NCFittingAccuracyAverage,
+	NCFittingAccuracyGood
+};
+
 typedef struct {
 	double em;
 	double thermal;

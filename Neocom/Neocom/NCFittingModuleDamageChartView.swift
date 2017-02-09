@@ -118,6 +118,10 @@ class NCFittingModuleDamageChartView: UIView {
 
 				axisPath.apply(transform)
 
+				
+				let accuracy = module.accuracy(targetSignature: targetSignature)
+
+				
 				DispatchQueue.main.async {
 					func update(layer: CAShapeLayer, path: CGPath) {
 						if let from = layer.path {
@@ -132,6 +136,7 @@ class NCFittingModuleDamageChartView: UIView {
 							layer.path = path
 						}
 					}
+					self.dpsLayer.strokeColor = accuracy.color.cgColor
 					update(layer: self.hitChanceLayer, path: hitChancePath.cgPath)
 					update(layer: self.dpsLayer, path: dpsPath.cgPath)
 					update(layer: self.axisLayer, path: axisPath.cgPath)

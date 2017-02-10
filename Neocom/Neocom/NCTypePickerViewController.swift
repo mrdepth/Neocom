@@ -10,24 +10,37 @@ import UIKit
 import CoreData
 
 class NCTypePickerViewController: UINavigationController {
-	var category: NCDBDgmppItemCategory?/* {
+	private var isChanged: Bool = true
+	var category: NCDBDgmppItemCategory? {
 		didSet {
-			guard let category = category else {return}
-			guard oldValue !== category else {return}
-			guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return}
-			if (group.items?.count ?? 0) > 0 {
-				viewControllers = []
-			}
-			else {
+			if oldValue !== category {
+				guard let category = category else {return}
+				guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return}
+				if (group.items?.count ?? 0) > 0 {
+					guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerTypesViewController") as? NCTypePickerTypesViewController else {return}
+					controller.predicate = NSPredicate(format: "dgmppItem.groups CONTAINS %@ AND published == YES", group)
+					controller.title = group.groupName
+					viewControllers = [controller]
+					
+				}
+				else {
+					guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerRootViewController") else {return}
+					controller.loadViewIfNeeded()
+					viewControllers = [controller]
+					let groupsViewController = self.groupsViewController
+					groupsViewController?.group = group
+					self.viewControllers.first?.title = groupsViewController?.group?.groupName
+				}
+				viewControllers.first?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: .plain, target: self, action: #selector(dismissAnimated(_:)))
 			}
 		}
-	}*/
+	}
 	
 	var type: NCDBInvType?
 	var completionHandler: ((NCDBInvType) -> Void)!
-	lazy var groupsViewController: NCTypePickerGroupsViewController? = {
+	var groupsViewController: NCTypePickerGroupsViewController? {
 		return self.viewControllers.first?.childViewControllers.first(where: {return $0 is NCTypePickerGroupsViewController}) as? NCTypePickerGroupsViewController
-	}()
+	}
 
 	private var results: NSFetchedResultsController<NSDictionary>?
 	
@@ -37,10 +50,25 @@ class NCTypePickerViewController: UINavigationController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if let category = category, let groupsViewController = self.groupsViewController {
-			groupsViewController.group = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category)
-			self.viewControllers.first?.title = groupsViewController.group?.groupName
-		}
+		/*guard isChanged else {return}
+		isChanged = false
+		
+		if let category = category, let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) {
+			if (group.items?.count ?? 0) > 0 {
+				guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerTypesViewController") as? NCTypePickerTypesViewController else {return}
+				controller.predicate = NSPredicate(format: "dgmppItem.groups CONTAINS %@ AND published == YES", group)
+				controller.title = group.groupName
+				viewControllers = [controller]
+				
+			}
+			else {
+				guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerRootViewController") else {return}
+				viewControllers = [controller]
+				let groupsViewController = self.groupsViewController
+				groupsViewController?.group = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category)
+				self.viewControllers.first?.title = groupsViewController?.group?.groupName
+			}
+		}*/
 	}
 
     override func didReceiveMemoryWarning() {

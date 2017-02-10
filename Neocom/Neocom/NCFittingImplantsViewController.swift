@@ -37,7 +37,7 @@ class NCImplantRow: TreeRow {
 			cell.accessoryType = .detailButton
 		}
 		else {
-			cell.titleLabel?.text = NSLocalizedString("Slot", comment: "") + " \((slot ?? 0) + 1)"
+			cell.titleLabel?.text = NSLocalizedString("Slot", comment: "") + " \(slot ?? 0)"
 			cell.iconView?.image = #imageLiteral(resourceName: "implant")
 			cell.accessoryType = .none
 		}
@@ -84,7 +84,7 @@ class NCBoosterRow: TreeRow {
 			cell.accessoryType = .detailButton
 		}
 		else {
-			cell.titleLabel?.text = NSLocalizedString("Slot", comment: "") + " \((slot ?? 0) + 1)"
+			cell.titleLabel?.text = NSLocalizedString("Slot", comment: "") + " \(slot ?? 0)"
 			cell.iconView?.image = #imageLiteral(resourceName: "booster")
 			cell.accessoryType = .none
 		}
@@ -163,9 +163,23 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 				}
 				present(typePickerViewController, animated: true)
 			}
-			//performSegue(withIdentifier: "NCFittingDroneActionsViewController", sender: treeController.cell(for: node))
 		}
 		else if let item = node as? NCBoosterRow {
+			if let slot = item.slot {
+				guard let pilot = fleet?.active else {return}
+				guard let typePickerViewController = typePickerViewController else {return}
+				let category = NCDBDgmppItemCategory.category(categoryID: .booster, subcategory: slot)
+				
+				typePickerViewController.category = category
+				typePickerViewController.completionHandler = { [weak typePickerViewController] type in
+					let typeID = Int(type.typeID)
+					self.engine?.perform {
+						pilot.addBooster(typeID: typeID)
+					}
+					typePickerViewController?.dismiss(animated: true)
+				}
+				present(typePickerViewController, animated: true)
+			}
 		}
 	}
 	
@@ -176,18 +190,18 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 			guard let pilot = self.fleet?.active else {return}
 			var sections = [TreeNode]()
 			
-			var implants = (0...9).map({NCImplantRow(dummySlot: $0)})
+			var implants = (0...9).map({NCImplantRow(dummySlot: $0 + 1)})
 			
 			for implant in pilot.implants.all {
-				guard (0...9).contains(implant.slot) else {continue}
-				implants[implant.slot] = NCImplantRow(implant: implant)
+				guard (1...10).contains(implant.slot) else {continue}
+				implants[implant.slot - 1] = NCImplantRow(implant: implant)
 			}
 
-			var boosters = (0...3).map({NCBoosterRow(dummySlot: $0)})
+			var boosters = (0...3).map({NCBoosterRow(dummySlot: $0 + 1)})
 			
 			for booster in pilot.boosters.all {
-				guard (0...3).contains(booster.slot) else {continue}
-				boosters[booster.slot] = NCBoosterRow(booster: booster)
+				guard (1...4).contains(booster.slot) else {continue}
+				boosters[booster.slot - 1] = NCBoosterRow(booster: booster)
 			}
 
 			sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Implants", title: NSLocalizedString("Implants", comment: "").uppercased(), children: implants))

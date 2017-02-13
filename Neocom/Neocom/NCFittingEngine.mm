@@ -40,6 +40,17 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 	return (NCFittingGang*) [NCFittingItem item: _engine->getGang() withEngine:self];
 }
 
+- (nullable NCFittingArea*) area {
+	NCVerifyFittingContext(self);
+	return _engine->getArea() ? (NCFittingArea*) [NCFittingItem item:_engine->getArea() withEngine:self] : nil;
+}
+
+- (void) setArea:(NCFittingArea*)area {
+	NCVerifyFittingContext(self);
+	_engine->setArea(static_cast<dgmpp::TypeID>(area.typeID));
+	[self didUpdate];
+}
+
 - (void) didUpdate {
 	_updated = YES;
 }

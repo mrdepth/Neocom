@@ -321,7 +321,8 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 	}
 	
 	func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-		return gestureRecognizer.view?.hitTest(gestureRecognizer.location(in: gestureRecognizer.view), with: nil)?.ancestor(of: UIPickerView.self) == nil
+		let hitTest = gestureRecognizer.view?.hitTest(gestureRecognizer.location(in: gestureRecognizer.view), with: nil)
+		return hitTest?.ancestor(of: UIPickerView.self) == nil && hitTest?.ancestor(of: UICollectionView.self) == nil
 	}
 	
 	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {

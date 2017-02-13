@@ -36,6 +36,7 @@
 @property (readonly, nonnull) NCFittingImplants* implants;
 @property (readonly, nonnull) NCFittingBoosters* boosters;
 @property (readonly) double droneControlDistance;
+@property (nonatomic, nonnull) NSString* characterName;
 
 - (nullable NCFittingImplant*) addImplantWithTypeID:(NSInteger) typeID NS_SWIFT_NAME(addImplant(typeID:));
 - (nullable NCFittingImplant*) addImplantWithTypeID:(NSInteger) typeID forced:(BOOL) forced NS_SWIFT_NAME(addImplant(typeID:forced:));

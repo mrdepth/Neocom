@@ -17,11 +17,13 @@
 #import "NCFittingDrone.h"
 #import "NCFittingCharge.h"
 #import "NCFittingAttribute.h"
+#import "NCFittingArea.h"
 
 extern _Nonnull NSNotificationName const NCFittingEngineDidUpdateNotification;
 
 @interface NCFittingEngine : NSObject
 @property (readonly, nonnull) NCFittingGang* gang;
+@property (nonatomic, strong, nullable) NCFittingArea* area;
 
 - (nonnull instancetype) init NS_DESIGNATED_INITIALIZER;
 - (void) performBlock:(nonnull void(^)()) block;

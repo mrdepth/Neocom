@@ -56,17 +56,16 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		if OAuth2Handler.handleOpenURL(url, clientID: ESClientID, secretKey: ESSecretKey, completionHandler: { (result) in
 			switch result {
 			case let .success(token):
-				NCStorage.sharedStorage?.performBackgroundTask({ (managedObjectContext) in
-					let account = NCAccount(entity: NSEntityDescription.entity(forEntityName: "Account", in: managedObjectContext)!, insertInto: managedObjectContext)
-					account.token = token
-					account.uuid = UUID().uuidString
-					DispatchQueue.main.async {
-						guard let context = NCStorage.sharedStorage?.viewContext else {return}
-						let request = NSFetchRequest<NCAccount>(entityName: "Account")
-						guard let result = try? context.fetch(request), result.count == 1 else {return}
-						NCAccount.current = result.first
-					}
-				})
+				guard let context = NCStorage.sharedStorage?.viewContext else {break};
+				let account = NCAccount(entity: NSEntityDescription.entity(forEntityName: "Account", in: context)!, insertInto: context)
+				account.token = token
+				account.uuid = UUID().uuidString
+				if context.hasChanges {
+					try? context.save()
+				}
+				let request = NSFetchRequest<NCAccount>(entityName: "Account")
+				guard let result = try? context.fetch(request), result.count == 1 else {return}
+				NCAccount.current = result.first
 				
 				break
 			case let .failure(error):

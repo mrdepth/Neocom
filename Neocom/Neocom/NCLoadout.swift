@@ -267,6 +267,7 @@ extension NCFittingScanType {
 }
 
 extension NCFittingDamage {
+	static let omni = NCFittingDamage(em: 0.25, thermal: 0.25, kinetic: 0.25, explosive: 0.25)
 	var total: Double {
 		return em + kinetic + thermal + explosive
 	}

@@ -37,4 +37,14 @@ class NCShipFittingViewController: UIViewController {
 		return self.storyboard?.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController
 	}()
 	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		switch segue.identifier {
+		case "NCFittingActionsViewController"?:
+			guard let controller = (segue.destination as? UINavigationController)?.topViewController as? NCFittingActionsViewController else {return}
+			controller.pilot = fleet?.active
+		default:
+			break
+		}
+	}
+	
 }

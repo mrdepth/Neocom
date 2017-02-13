@@ -206,4 +206,16 @@
 	return character->getDroneControlDistance();
 }
 
+- (nonnull NSString*) characterName {
+	NCVerifyFittingContext(self.engine);
+	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
+	return [NSString stringWithCString:character->getCharacterName() ?: "" encoding:NSUTF8StringEncoding];
+}
+
+- (void) setCharacterName:(NSString *)characterName {
+	NCVerifyFittingContext(self.engine);
+	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
+	character->setCharacterName(characterName.UTF8String);
+}
+
 @end

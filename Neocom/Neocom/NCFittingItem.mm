@@ -73,6 +73,8 @@
 		return [[NCFittingDrone alloc] initWithItem:item engine:engine];
 	else if (std::dynamic_pointer_cast<dgmpp::Charge>(item) != nullptr)
 		return [[NCFittingCharge alloc] initWithItem:item engine:engine];
+	else if (std::dynamic_pointer_cast<dgmpp::Area>(item) != nullptr)
+		return [[NCFittingArea alloc] initWithItem:item engine:engine];
 	else
 		return [[NCFittingItem alloc] initWithItem:item engine:engine];
 		

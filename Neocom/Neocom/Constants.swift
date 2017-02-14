@@ -139,6 +139,8 @@ let ESClientID = "c2cc974798d4485d966fba773a8f7ef8"
 let ESSecretKey = "GNhSE9GJ6q3QiuPSTIJ8Q1J6on4ClM4v9zvc0Qzu"
 let ESCallbackURL = URL(string: "neocom://sso")!
 
+let NCURLScheme = "neocom"
+
 extension UserDefaults {
 	struct Key {
 		static let NCCurrentAccount = "NCCurrectAccount"

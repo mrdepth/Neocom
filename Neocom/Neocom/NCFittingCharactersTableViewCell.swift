@@ -38,7 +38,6 @@ extension UIImage {
 
 class NCFittingCharactersTableViewCell: NCTableViewCell {
 	@IBOutlet weak var collectionView: UICollectionView!
-	
 }
 
 class NCFittingCharacterCollectionViewCell: UICollectionViewCell {
@@ -46,14 +45,29 @@ class NCFittingCharacterCollectionViewCell: UICollectionViewCell {
 	@IBOutlet weak var titleLabel: UILabel!
 	var object: Any?
 	
+	override func awakeFromNib() {
+		imageView.layer.borderColor = UIColor.caption.cgColor
+		imageView.layer.borderWidth = 0
+	}
+	
+	override var isSelected: Bool {
+		didSet {
+			imageView.layer.borderWidth = isSelected ? 1.0 : 0.0
+			imageView.tintColor = isSelected ? .caption : .placeholder
+			titleLabel.textColor = isSelected ? .caption : .white
+		}
+	}
+	
 }
 
-class NCFittingCharactersRow: TreeRow, UICollectionViewDataSource {
+class NCFittingCharactersRow: TreeRow, UICollectionViewDataSource, UICollectionViewDelegate {
 	let pilot: NCFittingCharacter
 	
 	private lazy var accounts: [NCAccount] = {
 		return NCStorage.sharedStorage?.viewContext.fetch("Account", sortedBy: [NSSortDescriptor(key: "characterName", ascending: true)]) ?? []
 	}()
+	
+	private var contentOffset: CGPoint?
 	
 	init(pilot: NCFittingCharacter) {
 		self.pilot = pilot
@@ -62,7 +76,52 @@ class NCFittingCharactersRow: TreeRow, UICollectionViewDataSource {
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCFittingCharactersTableViewCell else {return}
+		
 		cell.collectionView.dataSource = self
+		cell.collectionView.delegate = self
+		
+		var indexPath: IndexPath?
+		
+		pilot.engine?.performBlockAndWait {
+			if let url = self.pilot.url {
+				if let i = self.accounts.index(where: {NCFittingCharacter.url(account: $0) == url}) {
+					indexPath = IndexPath(item: i, section: 0)
+				}
+				else if let i = [0,1,2,3,4,5].index(where: {NCFittingCharacter.url(level: $0) == url}) {
+					indexPath = IndexPath(item: i, section: 1)
+				}
+			}
+		}
+		
+		if let contentOffset = contentOffset {
+			cell.collectionView.contentOffset = contentOffset
+			if let indexPath = indexPath {
+				cell.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+			}
+
+		}
+		else {
+			if let indexPath = indexPath {
+				DispatchQueue.main.async {
+					cell.collectionView.layoutIfNeeded()
+					cell.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [.centeredHorizontally])
+				}
+			}
+		}
+
+	}
+	
+	override func changed(from: TreeNode) -> Bool {
+		contentOffset = (from as? NCFittingCharactersRow)?.contentOffset
+		return false
+	}
+	
+	override var hashValue: Int {
+		return pilot.hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCFittingCharactersRow)?.hashValue == hashValue
 	}
 	
 	//MARK: - UICollectionViewDataSource
@@ -72,7 +131,7 @@ class NCFittingCharactersRow: TreeRow, UICollectionViewDataSource {
 		case 0:
 			return accounts.count
 		case 1:
-			return 5
+			return NCFittingCharactersRow.titles.count
 		default:
 			return 0
 		}
@@ -104,16 +163,44 @@ class NCFittingCharactersRow: TreeRow, UICollectionViewDataSource {
 			}
 			
 		case 1:
-			cell.titleLabel.attributedText = NSLocalizedString("All Skills", comment: "") + "\n" + (NCFittingCharactersRow.titles[indexPath.item] * [NSForegroundColorAttributeName: UIColor.caption])
+			//cell.titleLabel.attributedText = NSLocalizedString("All Skills", comment: "") + "\n" + (NCFittingCharactersRow.titles[indexPath.item] * [NSForegroundColorAttributeName: UIColor.caption])
+			cell.titleLabel.text = NSLocalizedString("All Skills", comment: "") + "\n" + NCFittingCharactersRow.titles[indexPath.item]
 			cell.imageView.image = placeholder(level: indexPath.item)
+			cell.object = indexPath.item
 		default:
 			break
 		}
 		return cell
 	}
 	
+	//MARK: - UICollectionViewDelegate
+	
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		guard let cell = collectionView.cellForItem(at: indexPath) as? NCFittingCharacterCollectionViewCell else {return}
+		switch cell.object {
+		case let account as NCAccount:
+			let progress = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
+			pilot.setSkills(from: account) { _ in
+				progress.finish()
+			}
+		case let level as Int:
+			let progress = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
+			pilot.setSkills(level: level) { _ in
+				progress.finish()
+			}
+		default:
+			break
+		}
+	}
+	
+	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		contentOffset = scrollView.contentOffset
+	}
+	
+	//MARK: - Private
+	
 	private var placeholders = [Int: UIImage]()
-	private static var titles = ["I", "II", "III", "IV", "V"]
+	private static var titles = ["0", "I", "II", "III", "IV", "V"]
 	private func placeholder(level: Int) -> UIImage {
 		if let image = placeholders[level] {
 			return image

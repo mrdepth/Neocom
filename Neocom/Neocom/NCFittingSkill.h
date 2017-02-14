@@ -9,5 +9,5 @@
 #import "NCFittingItem.h"
 
 @interface NCFittingSkill : NCFittingItem
-@property (nonatomic, assign) NSInteger level;
+@property (nonatomic, readonly) NSInteger level;
 @end

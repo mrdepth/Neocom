@@ -305,3 +305,113 @@ extension NCFittingAccuracy {
 		}
 	}
 }
+
+extension NCFittingSkills{
+	func set(levels: [Int: Int]) {
+		__setLevels(levels as [NSNumber: NSNumber])
+	}
+}
+
+extension NCFittingDamage: Hashable {
+	public var hashValue: Int {
+		return [em, kinetic, thermal, explosive].hashValue
+	}
+	
+	public static func == (lhs: NCFittingDamage, rhs: NCFittingDamage) -> Bool {
+		return lhs.hashValue == rhs.hashValue
+	}
+}
+
+extension NCFittingCharacter {
+	
+	@nonobjc class func url(account: NCAccount) -> URL? {
+		guard let uuid = account.uuid else {return nil}
+		var components = URLComponents()
+		components.scheme = NCURLScheme
+		components.host = "character"
+		components.queryItems = [URLQueryItem(name: "accountUUID", value: uuid)]
+		return components.url
+	}
+
+	@nonobjc class func url(level: Int) -> URL? {
+		var components = URLComponents()
+		components.scheme = NCURLScheme
+		components.host = "character"
+		components.queryItems = [URLQueryItem(name: "level", value: String(level))]
+		return components.url
+	}
+	
+	var url: URL? {
+		return URL(string: characterName)
+	}
+	
+	@nonobjc func setSkills(from url: URL, completionHandler: ((Bool) -> Void)?) {
+		guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+			let queryItems = components.queryItems,
+			components.scheme == NCURLScheme,
+			components.host == "character" else {
+			completionHandler?(false)
+			return
+		}
+
+		if let item = queryItems.first(where: {$0.name == "accountUUID"}), let uuid = item.value {
+			if let account = NCStorage.sharedStorage?.accounts[uuid] {
+				setSkills(from: account, completionHandler: completionHandler)
+			}
+			else {
+				completionHandler?(false)
+			}
+		}
+		else if let item = queryItems.first(where: {$0.name == "level"}), let level = Int(item.value ?? ""){
+			setSkills(level: level, completionHandler: completionHandler)
+		}
+		else {
+			completionHandler?(false)
+		}
+	}
+
+	
+	@nonobjc func setSkills(from account: NCAccount, completionHandler: ((Bool) -> Void)?) {
+		guard let engine = engine else {
+			completionHandler?(false)
+			return
+		}
+		
+		let url = NCFittingCharacter.url(account: account)
+		NCDataManager(account: account, cachePolicy: .returnCacheDataElseLoad).skills { result in
+			switch result {
+			case let .success(value, _):
+				engine.perform {
+					var levels = [Int: Int]()
+					for skill in value.skills {
+						levels[skill.skillID] = skill.currentSkillLevel
+					}
+					
+					self.skills.set(levels: levels)
+					self.characterName = url?.absoluteString ?? ""
+					DispatchQueue.main.async {
+						completionHandler?(true)
+					}
+				}
+
+			default:
+				break
+			}
+		}
+	}
+	
+	@nonobjc func setSkills(level: Int, completionHandler: ((Bool) -> Void)? = nil) {
+		guard let engine = engine else {
+			completionHandler?(false)
+			return
+		}
+		let url = NCFittingCharacter.url(level: level)
+		engine.perform {
+			self.skills.setAllSkillsLevel(level)
+			self.characterName = url?.absoluteString ?? ""
+			DispatchQueue.main.async {
+				completionHandler?(true)
+			}
+		}
+	}
+}

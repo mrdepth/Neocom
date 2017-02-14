@@ -88,6 +88,11 @@ class NCStorage: NSObject {
 		}
 	}
 	
+	private(set) lazy var accounts: NCFetchedCollection<NCAccount> = {
+		return NCAccount.accounts(managedObjectContext: self.viewContext)
+	}()
+
+	
 	//MARK: Private
 	
 	func managedObjectContextDidSave(_ notification: Notification) {

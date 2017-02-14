@@ -14,6 +14,9 @@
 @property (readonly, nonnull) NSArray<NCFittingSkill*>* all;
 - (nullable NCFittingSkill*) objectAtIndexedSubscript:(NSInteger) typeID;
 
+- (void) setAllSkillsLevel: (NSInteger) level;
+- (void) setLevels: (nonnull NSDictionary<NSNumber*, NSNumber*>*) skillLevels NS_REFINED_FOR_SWIFT;
+
 
 @end
 

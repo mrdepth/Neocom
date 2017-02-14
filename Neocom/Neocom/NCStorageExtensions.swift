@@ -98,6 +98,11 @@ extension NCAccount {
 			return nil
 		}
 	}
+	
+	class func accounts(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCAccount> {
+		return NCFetchedCollection<NCAccount>(entityName: "Account", predicateFormat: "uuid == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+
 }
 
 extension NCSetting {

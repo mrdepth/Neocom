@@ -10,7 +10,6 @@ import UIKit
 
 class NCChargeTableViewCell: NCDamageTypeTableViewCell {
 	@IBOutlet weak var iconView: UIImageView?
-	@IBOutlet weak var titleLabel: UILabel?
 
 }
 

@@ -100,6 +100,9 @@
 		12961DD61E1D64C9008A3F4D /* NCFittingModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12961DD51E1D64C9008A3F4D /* NCFittingModule.mm */; };
 		12961DD91E1D64D4008A3F4D /* NCFittingCharge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12961DD81E1D64D4008A3F4D /* NCFittingCharge.mm */; };
 		12961DDC1E1D64E4008A3F4D /* NCFittingDrone.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12961DDB1E1D64E4008A3F4D /* NCFittingDrone.mm */; };
+		129B31691E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B31681E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift */; };
+		129B316C1E534B7300B9A88D /* NCFittingDamagePatternsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B316B1E534B7300B9A88D /* NCFittingDamagePatternsViewController.swift */; };
+		129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 129B316D1E53527C00B9A88D /* damagePatterns.plist */; };
 		129E60EE1E0152A900B56EB8 /* NCAutoHeightLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */; };
 		129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */; };
 		129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */; };
@@ -313,6 +316,9 @@
 		12961DD81E1D64D4008A3F4D /* NCFittingCharge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCharge.mm; sourceTree = "<group>"; };
 		12961DDA1E1D64E4008A3F4D /* NCFittingDrone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDrone.h; sourceTree = "<group>"; };
 		12961DDB1E1D64E4008A3F4D /* NCFittingDrone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingDrone.mm; sourceTree = "<group>"; };
+		129B31681E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingAreaEffectsViewController.swift; sourceTree = "<group>"; };
+		129B316B1E534B7300B9A88D /* NCFittingDamagePatternsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingDamagePatternsViewController.swift; sourceTree = "<group>"; };
+		129B316D1E53527C00B9A88D /* damagePatterns.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = damagePatterns.plist; sourceTree = "<group>"; };
 		129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAutoHeightLabel.swift; sourceTree = "<group>"; };
 		129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTintImageView.swift; sourceTree = "<group>"; };
 		129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
@@ -613,6 +619,7 @@
 				12AC8D9C1DEF58A100561A7A /* LaunchScreen.storyboard */,
 				1256BE5D1DF476C000A2A24B /* mainMenu.plist */,
 				12AC8D9F1DEF58A100561A7A /* Info.plist */,
+				129B316D1E53527C00B9A88D /* damagePatterns.plist */,
 				12AC8DBA1DF01BF000561A7A /* Neocom-Bridging-Header.h */,
 				12AC8DD51DF0AF6900561A7A /* Dark.clr */,
 				126156FE1E008AE00041B817 /* dgm.sqlite */,
@@ -725,6 +732,8 @@
 				125AB8131E42033200B8A2A8 /* NCFittingAmmoViewController.swift */,
 				12424E161E486ACD002DFE08 /* NCFittingVariationsViewController.swift */,
 				12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */,
+				129B31681E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift */,
+				129B316B1E534B7300B9A88D /* NCFittingDamagePatternsViewController.swift */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
@@ -883,6 +892,7 @@
 				1256BE5E1DF476C000A2A24B /* mainMenu.plist in Resources */,
 				12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */,
 				1256BECA1DF4770A00A2A24B /* memory.png in Resources */,
+				129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */,
 				1256BF2B1DF4770B00A2A24B /* MainMenu.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -927,6 +937,7 @@
 				12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */,
 				12E2674D1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift in Sources */,
 				1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */,
+				129B31691E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift in Sources */,
 				128E61421E0A707200C15EEB /* NCDamageTypeTableViewCell.swift in Sources */,
 				1293BC1E1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift in Sources */,
 				12AC8DC21DF0833B00561A7A /* NCBinder.swift in Sources */,
@@ -987,6 +998,7 @@
 				12DBEAC11E1D48A80088A486 /* NCFittingGang.mm in Sources */,
 				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
 				12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */,
+				129B316C1E534B7300B9A88D /* NCFittingDamagePatternsViewController.swift in Sources */,
 				1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */,
 				1230A3301DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift in Sources */,
 				1293BC1A1E4B4E7C0099FD75 /* NCDamageTableViewCell.swift in Sources */,

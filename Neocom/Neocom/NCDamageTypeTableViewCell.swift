@@ -9,6 +9,7 @@
 import UIKit
 
 class NCDamageTypeTableViewCell: NCTableViewCell {
+	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var emLabel: NCDamageTypeLabel!
 	@IBOutlet weak var thermalLabel: NCDamageTypeLabel!
 	@IBOutlet weak var kineticLabel: NCDamageTypeLabel!

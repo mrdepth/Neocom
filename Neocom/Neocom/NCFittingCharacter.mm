@@ -41,6 +41,22 @@
 	return _character->getSkills().size();
 }
 
+- (void) setAllSkillsLevel: (NSInteger) level {
+	NCVerifyFittingContext(_engine);
+	_character->setAllSkillsLevel(static_cast<int>(level));
+	[_engine didUpdate];
+}
+
+- (void) setLevels: (nonnull NSDictionary<NSNumber*, NSNumber*>*) skillLevels {
+	NCVerifyFittingContext(_engine);
+	__block std::map<dgmpp::TypeID, int> levels;
+	[skillLevels enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSNumber * _Nonnull obj, BOOL * _Nonnull stop) {
+		levels[key.intValue] = obj.intValue;
+	}];
+	_character->setSkillLevels(levels);
+	[_engine didUpdate];
+}
+
 @end
 
 @implementation NCFittingImplants {

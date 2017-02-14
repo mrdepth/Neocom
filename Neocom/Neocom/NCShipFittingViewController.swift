@@ -18,9 +18,8 @@ class NCShipFittingViewController: UIViewController {
 		engine?.performBlockAndWait {
 			self.fleet = NCFleet(typeID: 645, engine: self.engine!)
 			let pilot = self.fleet?.active
-			for skill in pilot?.skills.all ?? [] {
-				skill.level = 5
-			}
+			//pilot?.skills.setAllSkillsLevel(5)
+			pilot?.setSkills(level: 5)
 			let ship = pilot?.ship
 			for _ in 0..<3 {
 				let module = ship?.addModule(typeID: 3130)

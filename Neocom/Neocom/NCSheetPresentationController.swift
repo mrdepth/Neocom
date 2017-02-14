@@ -274,8 +274,11 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 			
 			let t = recognizer.translation(in: containerView!)
 
-			
-			if t.y > 0 {
+			if fabs(t.x) > 10 && t.x > t.y {
+				recognizer.isEnabled = false
+				recognizer.isEnabled = true
+			}
+			else if t.y > 0 {
 				if let interactiveTransition = interactiveTransition {
 					if let tableView = self.tableView {
 						var offset = tableView.contentOffset
@@ -303,7 +306,7 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 		case .ended:
 			let v = recognizer.velocity(in: recognizer.view)
 			let t = recognizer.translation(in: recognizer.view)
-			if v.y > 0 || (v.y >= 0 && t.y > 0) {
+			if v.y >= 0 && t.y > 40 {
 				interactiveTransition?.finish()
 			}
 			else {
@@ -322,7 +325,7 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 	
 	func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
 		let hitTest = gestureRecognizer.view?.hitTest(gestureRecognizer.location(in: gestureRecognizer.view), with: nil)
-		return hitTest?.ancestor(of: UIPickerView.self) == nil && hitTest?.ancestor(of: UICollectionView.self) == nil
+		return hitTest?.ancestor(of: UIPickerView.self) == nil //&& hitTest?.ancestor(of: UICollectionView.self) == nil
 	}
 	
 	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {

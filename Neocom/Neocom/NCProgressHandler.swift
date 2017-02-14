@@ -15,6 +15,7 @@ class NCProgressHandler: NSObject {
 	private var timer: Timer?
 	weak var viewController: UIViewController?
 	weak var view: UIView?
+	private var activityIndicatorView: UIActivityIndicatorView?
 	
 	init(totalUnitCount: Int64) {
 		totalProgress = Progress(totalUnitCount:3)
@@ -38,6 +39,18 @@ class NCProgressHandler: NSObject {
 	convenience init(view: UIView, totalUnitCount: Int64) {
 		self.init(totalUnitCount: totalUnitCount)
 		self.view = view
+	}
+
+	convenience init(view: UIView, totalUnitCount: Int64, activityIndicatorStyle style: UIActivityIndicatorViewStyle) {
+		self.init(totalUnitCount: totalUnitCount)
+		self.view = view
+		activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: style)
+		activityIndicatorView?.translatesAutoresizingMaskIntoConstraints = true
+		activityIndicatorView?.autoresizingMask = [.flexibleBottomMargin, .flexibleTopMargin, .flexibleLeftMargin, .flexibleRightMargin]
+		view.addSubview(activityIndicatorView!)
+		activityIndicatorView?.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+//		activityIndicatorView?.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//		activityIndicatorView?.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
 	}
 
 	deinit {
@@ -87,7 +100,7 @@ class NCProgressHandler: NSObject {
 				if self.totalProgress.completedUnitCount >= 1 {
 					self.finish()
 				}
-				else {
+				else if self.activityIndicatorView == nil {
 					self.progressView?.setProgress(Float(self.totalProgress.fractionCompleted), animated: true)
 				}
 			}
@@ -97,17 +110,17 @@ class NCProgressHandler: NSObject {
 	func finish() {
 		timer?.invalidate()
 		timer = nil
-		if let progressView = _progressView {
+		let views = ([_progressView, activityIndicatorView] as [UIView?]).flatMap({$0})
+		if views.count > 0 {
 			if Thread.isMainThread {
-				progressView.removeFromSuperview()
+				views.forEach ({$0.removeFromSuperview()})
 			}
 			else {
 				DispatchQueue.main.async {
-					progressView.removeFromSuperview()
+					views.forEach ({$0.removeFromSuperview()})
 				}
 			}
 		}
-
 	}
 	
 	@objc private func timerTick(_ timer: Timer) {

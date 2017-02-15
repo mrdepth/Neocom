@@ -27,7 +27,7 @@ class NCFittingDamagePatternInfoRow: NCFittingDamagePatternRow {
 class NCFittingDamagePatternsViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
 	var category: NCDBDgmppItemCategory?
-	var completionHandler: ((NCDBInvType) -> Void)!
+	var completionHandler: ((NCFittingDamage) -> Void)!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -59,12 +59,8 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		guard let node = node as? NCFittingAreaEffectRow, let type = node.type else {return}
-		completionHandler(type)
-	}
-	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		performSegue(withIdentifier: "NCDatabaseTypeInfoViewController", sender: treeController.cell(for: node))
+		guard let node = node as? NCFittingDamagePatternInfoRow else {return}
+		completionHandler(node.damagePattern)
 	}
 	
 	//MARK: - Navigation

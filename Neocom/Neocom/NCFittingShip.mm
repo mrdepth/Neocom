@@ -13,6 +13,19 @@
 	NSInteger _typeID;
 }
 
+- (nonnull NSString*) title {
+	NCVerifyFittingContext(self.engine);
+	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	return [NSString stringWithCString:ship->getTitle() ?: "" encoding:NSUTF8StringEncoding];
+}
+
+- (void) setTitle:(NSString *)title {
+	NCVerifyFittingContext(self.engine);
+	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	ship->setTitle(title.UTF8String);
+	[self.engine updateWithItem: self];
+}
+
 - (nonnull instancetype) initWithTypeID:(NSInteger) typeID {
 	if (self = [super init]) {
 		_typeID = typeID;
@@ -68,7 +81,7 @@
 	result.kineticAmount = damagePattern.kinetic;
 	result.explosiveAmount = damagePattern.explosive;
 	ship->setDamagePattern(result);
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (nullable NCFittingModule*) addModuleWithTypeID:(NSInteger) typeID {
@@ -79,7 +92,7 @@
 	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto module = ship->addModule(static_cast<dgmpp::TypeID>(typeID), forced, static_cast<int>(socket));
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 	return module ? (NCFittingModule*) [NCFittingItem item:module withEngine:self.engine] : nil;
 }
 
@@ -87,15 +100,21 @@
 	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto result = ship->replaceModule(std::dynamic_pointer_cast<dgmpp::Module>(module.item), static_cast<dgmpp::TypeID>(typeID));
-	[self.engine didUpdate];
-	return result ? (NCFittingModule*) [NCFittingItem item:result withEngine:self.engine] : nil;
+	NSString* identifier = [self.engine identifierForItem:module];
+	module = result ? (NCFittingModule*) [NCFittingItem item:result withEngine:self.engine] : nil;
+	if (module)
+		[self.engine assignIdentifier:identifier forItem:module];
+	[self.engine updateWithItem: self];
+	return module;
 }
 
 - (void) removeModule:(nonnull NCFittingModule*) module {
 	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	[self.engine assignIdentifier:nil forItem:module];
 	ship->removeModule(std::dynamic_pointer_cast<dgmpp::Module>(module.item));
-	[self.engine didUpdate];
+
+	[self.engine updateWithItem: self];
 }
 
 - (nonnull NSArray<NCFittingModule*>*) modulesWithSlot:(NCFittingModuleSlot) slot {
@@ -117,15 +136,16 @@
 	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto drone = ship->addDrone(static_cast<dgmpp::TypeID>(typeID), static_cast<int>(squadronTag));
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 	return drone ? (NCFittingDrone*) [NCFittingItem item:drone withEngine:self.engine] : nil;
 }
 
 - (void) removeDrone:(nonnull NCFittingDrone*) drone {
 	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	[self.engine assignIdentifier:nil forItem:drone];
 	ship->removeDrone(std::dynamic_pointer_cast<dgmpp::Drone>(drone.item));
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 //MARK: Calculations

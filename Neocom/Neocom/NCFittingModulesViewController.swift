@@ -33,7 +33,7 @@ class NCFittingModuleRow: TreeRow {
 		self.state = module?.state ?? .unknown
 		self.isEnabled = module?.isEnabled ?? true
 		self.hasTarget = module?.target != nil
-		super.init(cellIdentifier: module?.isDummy == true ? "Cell" : "ModuleCell")
+		super.init(cellIdentifier: module?.isDummy == true ? "NCDefaultTableViewCell" : "ModuleCell")
 	}
 	
 	override func changed(from: TreeNode) -> Bool {
@@ -210,7 +210,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 		return (parent as? NCShipFittingViewController)?.engine
 	}
 	
-	var fleet: NCFleet? {
+	var fleet: NCFittingFleet? {
 		return (parent as? NCShipFittingViewController)?.fleet
 	}
 	

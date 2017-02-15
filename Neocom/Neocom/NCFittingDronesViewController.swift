@@ -176,7 +176,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 		return (parent as? NCShipFittingViewController)?.engine
 	}
 	
-	var fleet: NCFleet? {
+	var fleet: NCFittingFleet? {
 		return (parent as? NCShipFittingViewController)?.fleet
 	}
 	
@@ -297,7 +297,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 				}
 			}
 			
-			rows.append(NCActionRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "drone"), title: NSLocalizedString("Add Drone", comment: ""), segue: "NCTypePickerViewController"))
+			rows.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "drone"), title: NSLocalizedString("Add Drone", comment: ""), segue: "NCTypePickerViewController"))
 			/*typealias TypeID = Int
 			typealias Squadron = [Int: [TypeID: [Bool: [NCFittingDrone]]]]
 			var squadrons = [NCFittingFighterSquadron: Squadron]()

@@ -466,6 +466,7 @@ class FetchedResultsSectionNode<ResultType: NSFetchRequestResult> : TreeNode {
 
 class FetchedResultsObjectNode<ResultType: NSFetchRequestResult>: TreeNode {
 	let object: ResultType
+	
 	required init(object: ResultType) {
 		self.object = object
 		super.init()
@@ -477,6 +478,10 @@ class FetchedResultsObjectNode<ResultType: NSFetchRequestResult>: TreeNode {
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? FetchedResultsObjectNode<ResultType>)?.hashValue == hashValue
+	}
+	
+	override var isExpandable: Bool {
+		return false
 	}
 }
 

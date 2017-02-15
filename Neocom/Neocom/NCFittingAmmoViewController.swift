@@ -13,7 +13,7 @@ class NCAmmoNode: FetchedResultsObjectNode<NCDBInvType> {
 	
 	required init(object: NCDBInvType) {
 		super.init(object: object)
-		self.cellIdentifier = object.dgmppItem?.damage == nil ? "Cell" : "NCChargeTableViewCell"
+		self.cellIdentifier = object.dgmppItem?.damage == nil ? "NCDefaultTableViewCell" : "NCChargeTableViewCell"
 	}
 	
 	override func configure(cell: UITableViewCell) {

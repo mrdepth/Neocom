@@ -9,12 +9,12 @@
 import UIKit
 
 
-class NCFittingTypeRow: TreeRow {
+/*class NCFittingTypeRow: TreeRow {
 	let type: NCDBInvType
 	
 	init(type: NCDBInvType, segue: String? = nil, accessoryButtonSegue: String? = nil) {
 		self.type = type
-		super.init(cellIdentifier: "Cell", segue: segue, accessoryButtonSegue: accessoryButtonSegue)
+		super.init(cellIdentifier: "NCDefaultTableViewCell", segue: segue, accessoryButtonSegue: accessoryButtonSegue)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -36,7 +36,7 @@ class NCFittingTypeRow: TreeRow {
 	override func changed(from: TreeNode) -> Bool {
 		return false
 	}
-}
+}*/
 
 class NCFittingDamagePatternRow: TreeRow {
 	let damagePattern: NCFittingDamage
@@ -74,11 +74,13 @@ class NCFittingDamagePatternRow: TreeRow {
 
 }
 
+class NCFittingAreaEffectRow: NCTypeInfoRow {
+	
+}
 
-
-class NCFittingActionsViewController: UITableViewController, TreeControllerDelegate {
+class NCFittingActionsViewController: UITableViewController, TreeControllerDelegate, UITextFieldDelegate {
 	@IBOutlet var treeController: TreeController!
-	var pilot: NCFittingCharacter?
+	var fleet: NCFittingFleet?
 	
 	private var observer: NSObjectProtocol?
 	
@@ -97,7 +99,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		size.height += tableView.contentInset.bottom
 		navigationController?.preferredContentSize = size
 		
-		if let pilot = pilot, observer == nil {
+		if let pilot = fleet?.active, observer == nil {
 			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: pilot.engine, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
@@ -122,13 +124,34 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard node is NCFittingAreaEffectRow else {return nil}
 		return [UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: ""), handler: {[weak self] _ in
-			guard let engine = self?.pilot?.engine else {return}
+			guard let engine = self?.fleet?.active?.engine else {return}
 			engine.perform {
 				engine.area = nil
 			}
 		})]
 	}
+	
+	//MARK: - UITextFieldDelegate
+	
+	func textFieldDidBeginEditing(_ textField: UITextField) {
+		guard let cell = textField.ancestor(of: UITableViewCell.self) else {return}
+		guard let indexPath = tableView.indexPath(for: cell) else {return}
+		tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+		
+	}
+	
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		textField.endEditing(true)
+		return true
+	}
 
+	@IBAction func onEndEditing(_ sender: UITextField) {
+		guard let pilot = fleet?.active else {return}
+		let text = sender.text
+		pilot.engine?.perform {
+			pilot.ship?.title = text ?? ""
+		}
+	}
 	
 	//MARK: - Navigation
 	
@@ -146,8 +169,19 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 			controller.completionHandler = { [weak self, weak controller] type in
 				let typeID = Int(type.typeID)
 				controller?.dismiss(animated: true) {
-					self?.pilot?.engine?.perform {
-						self?.pilot?.engine?.area = NCFittingArea(typeID: typeID)
+					self?.fleet?.active?.engine?.perform {
+						self?.fleet?.active?.engine?.area = NCFittingArea(typeID: typeID)
+					}
+				}
+			}
+		case "NCFittingDamagePatternsViewController"?:
+			guard let controller = segue.destination as? NCFittingDamagePatternsViewController else {return}
+			controller.completionHandler = { [weak self, weak controller] damagePattern in
+				controller?.dismiss(animated: true) {
+					self?.fleet?.active?.engine?.perform {
+						for (pilot, _) in self?.fleet?.pilots ?? [:] {
+							pilot.ship?.damagePattern = damagePattern
+						}
 					}
 				}
 			}
@@ -160,7 +194,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	//MARK: - Private
 	
 	private func reload() {
-		guard let pilot = pilot else {return}
+		guard let pilot = fleet?.active else {return}
 		guard let engine = pilot.engine else {return}
 		
 		var sections = [TreeNode]()
@@ -168,8 +202,10 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		let invTypes = NCDatabase.sharedDatabase?.invTypes
 
 		engine.performBlockAndWait {
+			let title = pilot.ship?.title
+			sections.append(NCTextFieldRow(text: title?.isEmpty == false ? title : nil, placeholder: NSLocalizedString("Ship Name", comment: "")))
 			if let ship = pilot.ship, let type = invTypes?[ship.typeID] {
-				let row = NCFittingTypeRow(type: type, segue: "NCDatabaseTypeInfoViewController", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
+				let row = NCTypeInfoRow(type: type, accessoryType: .detailButton, segue: "NCDatabaseTypeInfoViewController", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
 				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Ship", title: NSLocalizedString("Ship", comment: "").uppercased(), children: [row]))
 			}
 			
@@ -177,12 +213,11 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 
 			
 			if let area = engine.area, let type = invTypes?[area.typeID] {
-				let row = NCFittingAreaEffectRow(objectID: type.objectID)
-				row.segue = "NCFittingAreaEffectsViewController"
+				let row = NCFittingAreaEffectRow(type: type, accessoryType: .detailButton, segue: "NCFittingAreaEffectsViewController", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
 				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Area", title: NSLocalizedString("Area Effects", comment: "").uppercased(), children: [row]))
 			}
 			else {
-				let row = NCActionRow(cellIdentifier: "Cell", title: NSLocalizedString("Select Area Effects", comment: ""),  segue: "NCFittingAreaEffectsViewController")
+				let row = NCActionRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Select Area Effects", comment: ""),  segue: "NCFittingAreaEffectsViewController")
 				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Area", title: NSLocalizedString("Area Effects", comment: "").uppercased(), children: [row]))
 			}
 			

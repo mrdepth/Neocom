@@ -346,7 +346,7 @@ class NCDatabaseTypeResistanceRow: NCTreeRow {
 	}
 	
 	override func configure(cell: UITableViewCell) {
-		let cell = cell as! NCDamageTypeTableViewCell
+		guard let cell = cell as? NCDamageTypeTableViewCell else {return}
 		cell.emLabel.progress = em
 		cell.emLabel.text = "\(Int(em * 100))%"
 		cell.thermalLabel.progress = thermal

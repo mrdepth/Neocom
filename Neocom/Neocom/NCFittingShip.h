@@ -14,6 +14,7 @@
 @property (readonly, nonnull) NSArray<NCFittingModule*>* modules;
 @property (readonly, nonnull) NSArray<NCFittingDrone*>* drones;
 @property (nonatomic, assign) NCFittingDamage damagePattern;
+@property (nonatomic, nonnull) NSString* title;
 
 - (nonnull instancetype) initWithTypeID:(NSInteger) typeID;
 

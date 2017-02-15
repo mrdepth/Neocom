@@ -20,13 +20,13 @@ class NCImplantRow: TreeRow {
 	init(implant: NCFittingImplant) {
 		self.implant = implant
 		self.slot = nil
-		super.init(cellIdentifier: "Cell")
+		super.init(cellIdentifier: "NCDefaultTableViewCell")
 	}
 	
 	init(dummySlot: Int) {
 		self.implant = nil
 		self.slot = dummySlot
-		super.init(cellIdentifier: "Cell")
+		super.init(cellIdentifier: "NCDefaultTableViewCell")
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -67,13 +67,13 @@ class NCBoosterRow: TreeRow {
 	init(booster: NCFittingBooster) {
 		self.booster = booster
 		self.slot = nil
-		super.init(cellIdentifier: "Cell")
+		super.init(cellIdentifier: "NCDefaultTableViewCell")
 	}
 	
 	init(dummySlot: Int) {
 		self.booster = nil
 		self.slot = dummySlot
-		super.init(cellIdentifier: "Cell")
+		super.init(cellIdentifier: "NCDefaultTableViewCell")
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -112,7 +112,7 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 		return (parent as? NCShipFittingViewController)?.engine
 	}
 	
-	var fleet: NCFleet? {
+	var fleet: NCFittingFleet? {
 		return (parent as? NCShipFittingViewController)?.fleet
 	}
 	

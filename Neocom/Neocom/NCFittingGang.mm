@@ -15,7 +15,7 @@
 	NCVerifyFittingContext(self.engine);
 	auto gang = std::dynamic_pointer_cast<dgmpp::Gang>(self.item);
 	auto pilot = gang->addPilot();
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 	return (NCFittingCharacter*) [NCFittingItem item: pilot withEngine:self.engine];
 }
 
@@ -23,8 +23,9 @@
 	NCVerifyFittingContext(self.engine);
 	auto gang = std::dynamic_pointer_cast<dgmpp::Gang>(self.item);
 	auto pilot = std::dynamic_pointer_cast<dgmpp::Character>(character.item);
+	[self.engine assignIdentifier:nil forItem:[NCFittingItem item: pilot withEngine:self.engine]];
 	gang->removePilot(pilot);
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (nonnull NSArray<NCFittingCharacter*>*) pilots {
@@ -50,7 +51,7 @@
 		gang->setFleetBooster(std::dynamic_pointer_cast<dgmpp::Character>(fleetBooster.item));
 	else
 		gang->removeFleetBooster();
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (nullable NCFittingCharacter*) wingBooster {
@@ -66,7 +67,7 @@
 		gang->setWingBooster(std::dynamic_pointer_cast<dgmpp::Character>(wingBooster.item));
 	else
 		gang->removeWingBooster();
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (nullable NCFittingCharacter*) squadBooster {
@@ -82,7 +83,7 @@
 		gang->setSquadBooster(std::dynamic_pointer_cast<dgmpp::Character>(squadBooster.item));
 	else
 		gang->removeSquadBooster();
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 

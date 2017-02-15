@@ -15,7 +15,7 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 		return (parent as? NCShipFittingViewController)?.engine
 	}
 	
-	var fleet: NCFleet? {
+	var fleet: NCFittingFleet? {
 		return (parent as? NCShipFittingViewController)?.fleet
 	}
 	

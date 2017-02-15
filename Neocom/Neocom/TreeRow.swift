@@ -61,6 +61,20 @@ class DefaultTreeSection: TreeSection {
 		}
 	}
 	
+	override func changed(from: TreeNode) -> Bool {
+		guard let node = from as? DefaultTreeSection else {return false}
+		
+		if let title = self.title {
+			return title != node.title
+		}
+		else if let attributedTitle = self.attributedTitle {
+			return attributedTitle != self.attributedTitle
+		}
+		else {
+			return false
+		}
+	}
+	
 	override var hashValue: Int {
 		return nodeIdentifier?.hashValue ?? super.hashValue
 	}
@@ -144,9 +158,12 @@ class NCMetaGroupFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fe
 }
 
 class NCTypeInfoNode: FetchedResultsObjectNode<NCDBInvType> {
+	var segue: String?
+	var accessoryButtonSegue: String?
+	
 	required init(object: NCDBInvType) {
 		super.init(object: object)
-		self.cellIdentifier = "Cell"
+		self.cellIdentifier = "NCDefaultTableViewCell"
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -156,4 +173,47 @@ class NCTypeInfoNode: FetchedResultsObjectNode<NCDBInvType> {
 			cell.object = object
 		}
 	}
+}
+
+class NCTypeInfoRow: TreeRow {
+	let managedObjectContext: NSManagedObjectContext?
+	let accessoryType: UITableViewCellAccessoryType
+	lazy var type: NCDBInvType? = {
+		if let objectID = self.object as? NSManagedObjectID {
+			return (try? self.managedObjectContext?.existingObject(with: objectID)) as? NCDBInvType
+		}
+		else {
+			return (self.object as? NCDBInvType)
+		}
+	}()
+
+	init(type: NCDBInvType, accessoryType: UITableViewCellAccessoryType = .none, segue: String? = nil, accessoryButtonSegue: String? = nil) {
+		self.managedObjectContext = nil
+		self.accessoryType = accessoryType
+		super.init(cellIdentifier: "NCDefaultTableViewCell", segue: segue, accessoryButtonSegue: accessoryButtonSegue, object: type)
+	}
+	
+	init(objectID: NSManagedObjectID, managedObjectContext: NSManagedObjectContext, accessoryType: UITableViewCellAccessoryType = .none, segue: String? = nil, accessoryButtonSegue: String? = nil) {
+		self.managedObjectContext = managedObjectContext
+		self.accessoryType = accessoryType
+		super.init(cellIdentifier: "NCDefaultTableViewCell", segue: segue, accessoryButtonSegue: accessoryButtonSegue, object: objectID)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		if let cell = cell as? NCDefaultTableViewCell {
+			cell.titleLabel?.text = type?.typeName
+			cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+			cell.object = type
+			cell.accessoryType = accessoryType
+		}
+	}
+
+	override var hashValue: Int {
+		return type?.hash ?? 0
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCTypeInfoRow)?.hashValue == hashValue
+	}
+
 }

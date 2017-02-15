@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCFittingAreaEffectRow: TreeRow {
+/*class NCFittingAreaEffectRow: TreeRow {
 	let objectID: NSManagedObjectID
 	lazy var type: NCDBInvType? = {
 		return NCDatabase.sharedDatabase?.viewContext.object(with: self.objectID) as? NCDBInvType
@@ -17,7 +17,7 @@ class NCFittingAreaEffectRow: TreeRow {
 	
 	init(objectID: NSManagedObjectID) {
 		self.objectID = objectID
-		super.init(cellIdentifier: "Cell", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
+		super.init(cellIdentifier: "NCDefaultTableViewCell", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -27,7 +27,7 @@ class NCFittingAreaEffectRow: TreeRow {
 		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		cell.accessoryType = .detailButton
 	}
-}
+}*/
 
 class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
@@ -41,6 +41,8 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
 
+		guard let context = NCDatabase.sharedDatabase?.viewContext else {return}
+		
 		NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 			guard let types: [NCDBInvType] = managedObjectContext.fetch("InvType", sortedBy: [NSSortDescriptor(key: "typeName", ascending: true)], where: "group.groupID == 920") else {return}
 			
@@ -69,7 +71,7 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 			
 			let sections = arrays.enumerated().map { (i, array) -> DefaultTreeSection in
 				let prefix = i < n ? prefixes[i] : NSLocalizedString("Other", comment: "")
-				let rows = array.map({NCFittingAreaEffectRow(objectID: $0)})
+				let rows = array.map({NCTypeInfoRow(objectID: $0, managedObjectContext: context, accessoryType: .detailButton)})
 				
 				return DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: prefix, title: prefix.uppercased(), children: rows)
 			}
@@ -86,7 +88,7 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		guard let node = node as? NCFittingAreaEffectRow, let type = node.type else {return}
+		guard let node = node as? NCTypeInfoRow, let type = node.type else {return}
 		completionHandler(type)
 	}
 	

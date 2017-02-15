@@ -17,7 +17,8 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 	//NSOperationQueue* _operationQueue;
 	dispatch_queue_t _dispatchQueue;
 	NSThread* _context;
-	BOOL _updated;
+	NSMutableSet* _updates;
+	NSMutableDictionary* _identifiers;
 }
 
 @end
@@ -30,7 +31,8 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 		//_operationQueue = [NSOperationQueue new];
 		//_operationQueue.maxConcurrentOperationCount = 1;
 		_dispatchQueue = dispatch_queue_create("NCFittingEngine", DISPATCH_QUEUE_SERIAL);
-		_updated = NO;
+		_updates = [NSMutableSet new];
+		_identifiers = [NSMutableDictionary new];
 	}
 	return self;
 }
@@ -48,11 +50,11 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 - (void) setArea:(NCFittingArea*)area {
 	NCVerifyFittingContext(self);
 	_engine->setArea(static_cast<dgmpp::TypeID>(area.typeID));
-	[self didUpdate];
+	[self updateWithItem:area];
 }
 
-- (void) didUpdate {
-	_updated = YES;
+- (void) updateWithItem:(NCFittingItem*) item {
+	[_updates addObject:item];
 }
 
 - (void) performBlock:(nonnull void(^)()) block {
@@ -60,8 +62,8 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 		_context = [NSThread currentThread];
 		block();
 		_context = nil;
-		if (_updated) {
-			_updated = NO;
+		if (_updates.count > 0) {
+			[_updates removeAllObjects];
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[[NSNotificationCenter defaultCenter] postNotificationName:NCFittingEngineDidUpdateNotification object:self];
 			});
@@ -83,8 +85,8 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 		_context = [NSThread currentThread];
 		block();
 		_context = nil;
-		if (_updated) {
-			_updated = NO;
+		if (_updates.count > 0) {
+			[_updates removeAllObjects];
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[[NSNotificationCenter defaultCenter] postNotificationName:NCFittingEngineDidUpdateNotification object:self];
 			});
@@ -101,6 +103,25 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 	}];
 	[_operationQueue waitUntilAllOperationsAreFinished];*/
 }
+
+- (void) assignIdentifier:(nullable NSString*) identifier forItem:(nonnull NCFittingItem*) item {
+	if (identifier)
+		_identifiers[@(item.hash)] = identifier;
+	else
+		[_identifiers removeObjectForKey:@(item.hash)];
+}
+
+- (nonnull NSString*) identifierForItem:(nonnull NCFittingItem*) item {
+	NSString* identifier = _identifiers[@(item.hash)];
+	if (!identifier) {
+		identifier = [NSUUID UUID].UUIDString;
+		[self assignIdentifier:identifier forItem:item];
+		return identifier;
+	}
+	else
+		return identifier;
+}
+
 
 #if DEBUG
 - (void) verifyContext {

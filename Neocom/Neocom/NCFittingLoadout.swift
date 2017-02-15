@@ -11,10 +11,12 @@ import UIKit
 class NCFittingLoadoutItem: NSObject, NSCoding {
 	let typeID: Int
 	let count: Int
+	let identifier: String
 	
 	required init?(coder aDecoder: NSCoder) {
 		typeID = aDecoder.decodeInteger(forKey: "typeID")
 		count = aDecoder.decodeObject(forKey: "count") as? Int ?? 1
+		identifier = (aDecoder.decodeObject(forKey: "identifier") as? String) ?? UUID().uuidString
 		super.init()
 	}
 	
@@ -23,6 +25,7 @@ class NCFittingLoadoutItem: NSObject, NSCoding {
 		if count != 1 {
 			aCoder.encode(count, forKey: "count")
 		}
+		aCoder.encode(identifier, forKey: "identifier")
 	}
 	
 	public static func ==(lhs: NCFittingLoadoutItem, rhs: NCFittingLoadoutItem) -> Bool {
@@ -140,13 +143,15 @@ extension NCFittingCharacter {
 			}
 			for drone in loadout.drones ?? [] {
 				for _ in 0..<drone.count {
-					ship.addDrone(typeID: drone.typeID)
+					guard let item = ship.addDrone(typeID: drone.typeID) else {break}
+					item.engine?.assign(identifier: drone.identifier, for: item)
 				}
 			}
 			for (_, modules) in loadout.modules?.sorted(by: { $0.key.rawValue > $1.key.rawValue }) ?? [] {
 				for module in modules {
 					for _ in 0..<module.count {
-						guard let m = ship.addModule(typeID: module.typeID) else {continue}
+						guard let m = ship.addModule(typeID: module.typeID) else {break}
+						m.engine?.assign(identifier: module.identifier, for: m)
 						m.preferredState = module.state
 						if let charge = module.charge {
 							m.charge = NCFittingCharge(typeID: charge.typeID)

@@ -37,7 +37,7 @@
 		drone->clearTarget();
 	else
 		drone->setTarget(std::dynamic_pointer_cast<dgmpp::Ship>(target.item));
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (BOOL) dealsDamage {
@@ -62,7 +62,7 @@
 	NCVerifyFittingContext(self.engine);
 	auto drone = std::dynamic_pointer_cast<dgmpp::Drone>(self.item);
 	drone->setActive(isActive);
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (NSInteger) squadronTag {
@@ -75,7 +75,7 @@
 	NCVerifyFittingContext(self.engine);
 	auto drone = std::dynamic_pointer_cast<dgmpp::Drone>(self.item);
 	drone->setSquadronTag(static_cast<int>(squadronTag));
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (double) cycleTime {

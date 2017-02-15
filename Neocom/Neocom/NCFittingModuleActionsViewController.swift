@@ -81,7 +81,7 @@ class NCFittingModuleInfoRow: TreeRow {
 			super.init(cellIdentifier: "NCFittingModuleInfoTableViewCell", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
 		}
 		else {
-			super.init(cellIdentifier: "Cell", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
+			super.init(cellIdentifier: "NCDefaultTableViewCell", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
 		}
 		self.segue = (self.type?.variations?.count ?? 0) > 0 || (self.type?.parentType?.variations?.count ?? 0) > 0 ? "NCFittingVariationsViewController" : "NCDatabaseTypeInfoViewController"
 	}
@@ -249,7 +249,7 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 						module.charge = nil
 					}
 				}
-				let row = DefaultTreeRow(cellIdentifier: "Cell", title: NSLocalizedString("Select Ammo", comment: ""),  segue: "NCFittingAmmoViewController")
+				let row = DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Select Ammo", comment: ""),  segue: "NCFittingAmmoViewController")
 				self.chargeSection?.children = [row]
 
 			})]
@@ -322,6 +322,7 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 		var sections = [TreeNode]()
 		
 		let hullType = self.hullType
+		let count = modules.count
 		
 		module.engine?.performBlockAndWait {
 			
@@ -336,7 +337,7 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 					row = NCFittingChargeRow(type: type, charges: charges)
 				}
 				else {
-					row = DefaultTreeRow(cellIdentifier: "Cell", title: NSLocalizedString("Select Ammo", comment: ""),  segue: "NCFittingAmmoViewController")
+					row = DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Select Ammo", comment: ""),  segue: "NCFittingAmmoViewController")
 				}
 				let section = DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Charge", title: NSLocalizedString("Charge", comment: "").uppercased(), children: [row])
 				sections.append(section)
@@ -349,7 +350,7 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 			if module.dps.total > 0 {
 				let row = NCFittingModuleDamageChartRow(module: module, count: modules.count)
 				row.hullType = hullType
-				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "DPS", title: NSLocalizedString("DPS", comment: "").uppercased(), children: [row]))
+				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "DPS", title: NSLocalizedString("DPS", comment: "").uppercased() + ": \(NCUnitFormatter.localizedString(from: module.dps.total * Double(count), unit: .none, style: .full))", children: [row]))
 			}
 		}
 		

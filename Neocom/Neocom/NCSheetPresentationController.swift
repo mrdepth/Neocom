@@ -274,7 +274,7 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 			
 			let t = recognizer.translation(in: containerView!)
 
-			if fabs(t.x) > 10 && t.x > t.y {
+			if fabs(t.x) > 10 && fabs(t.x) > t.y {
 				recognizer.isEnabled = false
 				recognizer.isEnabled = true
 			}

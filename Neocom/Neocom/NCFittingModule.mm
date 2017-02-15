@@ -40,7 +40,7 @@
 	NCVerifyFittingContext(self.engine);
 	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
 	module->setPreferredState(static_cast<dgmpp::Module::State>(preferredState));
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (BOOL) isDummy {
@@ -64,7 +64,7 @@
 	NCVerifyFittingContext(self.engine);
 	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
 	charge.item = module->setCharge(static_cast<dgmpp::TypeID>(charge.typeID));
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (NSIndexSet*) chargeGroups {
@@ -102,7 +102,7 @@
 		module->clearTarget();
 	else
 		module->setTarget(std::dynamic_pointer_cast<dgmpp::Ship>(target.item));
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 
@@ -134,7 +134,7 @@
 	NCVerifyFittingContext(self.engine);
 	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
 	module->setFactorReload(factorReload);
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (NSInteger) charges {

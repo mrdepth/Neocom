@@ -44,7 +44,7 @@
 - (void) setAllSkillsLevel: (NSInteger) level {
 	NCVerifyFittingContext(_engine);
 	_character->setAllSkillsLevel(static_cast<int>(level));
-	[_engine didUpdate];
+	[_engine updateWithItem: [NCFittingItem item:_character withEngine:_engine]];
 }
 
 - (void) setLevels: (nonnull NSDictionary<NSNumber*, NSNumber*>*) skillLevels {
@@ -54,7 +54,7 @@
 		levels[key.intValue] = obj.intValue;
 	}];
 	_character->setSkillLevels(levels);
-	[_engine didUpdate];
+	[_engine updateWithItem: [NCFittingItem item:_character withEngine:_engine]];
 }
 
 @end
@@ -143,7 +143,7 @@
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
 	auto implant = character->addImplant(static_cast<dgmpp::TypeID>(typeID), forced);
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 	return implant ? (NCFittingImplant*) [NCFittingItem item:implant withEngine:self.engine] : nil;
 }
 
@@ -152,7 +152,7 @@
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
 	auto i = std::dynamic_pointer_cast<dgmpp::Implant>(implant.item);
 	character->removeImplant(i);
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (nullable NCFittingBooster*) addBoosterWithTypeID:(NSInteger) typeID {
@@ -164,7 +164,7 @@
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
 	auto booster = character->addBooster(static_cast<dgmpp::TypeID>(typeID), forced);
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 	return booster ? (NCFittingBooster*) [NCFittingItem item:booster withEngine:self.engine] : nil;
 }
 
@@ -173,7 +173,7 @@
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
 	auto b = std::dynamic_pointer_cast<dgmpp::Booster>(booster.item);
 	character->removeBooster(b);
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (nullable NCFittingShip*) ship {
@@ -185,8 +185,11 @@
 - (void) setShip:(NCFittingShip *)ship {
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
+	auto oldShip = character->getShip();
+	if (oldShip)
+		[self.engine assignIdentifier:nil forItem:[NCFittingItem item: oldShip withEngine:self.engine]];
 	ship.item = character->setShip(static_cast<dgmpp::TypeID>(ship.typeID));
-	[self.engine didUpdate];
+	[self.engine updateWithItem: self];
 }
 
 - (nonnull NCFittingSkills*) skills {
@@ -232,6 +235,7 @@
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
 	character->setCharacterName(characterName.UTF8String);
+	[self.engine updateWithItem: self];
 }
 
 @end

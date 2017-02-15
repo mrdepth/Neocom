@@ -45,7 +45,7 @@
 @end
 
 @interface NCFittingEngine()
-- (void) didUpdate;
+- (void) updateWithItem:(NCFittingItem*) item;
 #if DEBUG
 - (void) verifyContext;
 #endif

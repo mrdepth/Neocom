@@ -29,13 +29,13 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 		super.viewWillAppear(animated)
 		if sections == nil {
 			var ships = [NCTreeNode]()
-			ships.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, segue: "NCTypePickerViewController", object: NCDBDgmppItemCategoryID.ship))
-			ships.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
-			ships.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
+			ships.append(NCDefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, segue: "NCTypePickerViewController", object: NCDBDgmppItemCategoryID.ship))
+			ships.append(NCDefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
+			ships.append(NCDefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
 			
 			var structures = [NCTreeNode]()
-			structures.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "station"), title: NSLocalizedString("New Structure Fit", comment: ""), accessoryType: .disclosureIndicator, segue: "NCTypePickerViewController", object: NCDBDgmppItemCategoryID.structure))
-			structures.append(NCDefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
+			structures.append(NCDefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "station"), title: NSLocalizedString("New Structure Fit", comment: ""), accessoryType: .disclosureIndicator, segue: "NCTypePickerViewController", object: NCDBDgmppItemCategoryID.structure))
+			structures.append(NCDefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
 			
 			sections = [ships, structures]
 			
@@ -58,7 +58,7 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 			}
 		case "NCShipFittingViewController"?:
 			guard let controller = segue.destination as? NCShipFittingViewController else {return}
-			guard let (engine, fleet) = sender as? (NCFittingEngine, NCFleet) else {return}
+			guard let (engine, fleet) = sender as? (NCFittingEngine, NCFittingFleet) else {return}
 			controller.engine = engine
 			controller.fleet = fleet
 		default:
@@ -89,7 +89,7 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 				let engine = NCFittingEngine()
 				let typeID = Int(type.typeID)
 				engine.perform {
-					let fleet = NCFleet(typeID: typeID, engine: engine)
+					let fleet = NCFittingFleet(typeID: typeID, engine: engine)
 					DispatchQueue.main.async {
 						self?.dismiss(animated: true)
 						self?.performSegue(withIdentifier: "NCShipFittingViewController", sender: (engine, fleet))

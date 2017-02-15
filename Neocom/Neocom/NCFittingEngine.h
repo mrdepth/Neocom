@@ -29,4 +29,7 @@ extern _Nonnull NSNotificationName const NCFittingEngineDidUpdateNotification;
 - (void) performBlock:(nonnull void(^)()) block;
 - (void) performBlockAndWait:(nonnull void(^)()) block;
 
+- (void) assignIdentifier:(nullable NSString*) identifier forItem:(nonnull NCFittingItem*) item NS_SWIFT_NAME(assign(identifier:for:));
+- (nonnull NSString*) identifierForItem:(nonnull NCFittingItem*) item NS_SWIFT_NAME(identifier(for:));
+
 @end

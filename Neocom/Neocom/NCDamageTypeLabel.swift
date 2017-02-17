@@ -13,6 +13,32 @@ enum NCDamageType: Int {
 	case thermal
 	case kinetic
 	case explosive
+	
+	var color: UIColor {
+		switch self {
+		case .em:
+			return UIColor(number: 0x3482C5FF)
+		case .thermal:
+			return UIColor(number: 0xC0262AFF)
+		case .kinetic:
+			return UIColor(number: 0xA3A3A3FF)
+		case .explosive:
+			return UIColor(number: 0xC2882AFF)
+		}
+	}
+	
+	var image: UIImage {
+		switch self {
+		case .em:
+			return #imageLiteral(resourceName: "em")
+		case .thermal:
+			return #imageLiteral(resourceName: "thermal")
+		case .kinetic:
+			return #imageLiteral(resourceName: "kinetic")
+		case .explosive:
+			return #imageLiteral(resourceName: "explosion")
+		}
+	}
 }
 
 @IBDesignable
@@ -26,16 +52,7 @@ class NCDamageTypeLabel: NCLabel {
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		switch NCDamageType(rawValue: self.damageType) ?? .em {
-		case .em:
-			self.tintColor = UIColor(number: 0x3482C5FF)
-		case .thermal:
-			self.tintColor = UIColor(number: 0xC0262AFF)
-		case .kinetic:
-			self.tintColor = UIColor(number: 0xA3A3A3FF)
-		case .explosive:
-			self.tintColor = UIColor(number: 0xC2882AFF)
-		}
+		self.tintColor = (NCDamageType(rawValue: self.damageType) ?? .em).color
 		var rgba: [CGFloat] = [0, 0, 0, 0]
 		self.tintColor.getRed(&rgba[0], green: &rgba[1], blue: &rgba[2], alpha: &rgba[3])
 		self.backgroundColor = UIColor(red: rgba[0] * 0.4, green: rgba[1] * 0.4, blue: rgba[2] * 0.4, alpha: rgba[3])

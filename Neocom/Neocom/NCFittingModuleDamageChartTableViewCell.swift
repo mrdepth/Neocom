@@ -95,12 +95,10 @@ class NCFittingModuleDamageChartRow: TreeRow {
 		}
 	}
 	
-	override func changed(from: TreeNode) -> Bool {
-		guard let cell = treeController?.cell(for: self) else {return true}
-		configure(cell: cell)
-		return false
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		return .reconfigure
 	}
-	
+
 	override var hashValue: Int {
 		return module.hashValue
 	}

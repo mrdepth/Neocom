@@ -36,12 +36,12 @@ class NCFittingModuleRow: TreeRow {
 		super.init(cellIdentifier: module?.isDummy == true ? "NCDefaultTableViewCell" : "ModuleCell")
 	}
 	
-	override func changed(from: TreeNode) -> Bool {
-		guard let from = from as? NCFittingModuleRow else {return false}
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		guard let from = from as? NCFittingModuleRow else {return .dontReload}
 		subtitle = from.subtitle
-		return modules.first?.isDummy == false
+		return modules.first?.isDummy == false ? .reload : .dontReload
 	}
-	
+
 	var needsUpdate: Bool = true
 	var subtitle: NSAttributedString?
 	
@@ -189,8 +189,8 @@ class NCFittingModuleSection: TreeSection {
 		return (object as? NCFittingModuleSection)?.hashValue == hashValue
 	}
 	
-	override func changed(from: TreeNode) -> Bool {
-		return (from as? NCFittingModuleSection)?.grouped != grouped
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		return (from as? NCFittingModuleSection)?.grouped != grouped ? .reload : .dontReload
 	}
 
 }

@@ -44,5 +44,4 @@ extension UIColor {
 			self.init(number: 0xF00000FF)
 		}
 	}
-	
 }

@@ -65,8 +65,8 @@ class NCFirepowerRow: TreeRow {
 		}
 	}
 	
-	override func changed(from: TreeNode) -> Bool {
-		return true
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		return .reload
 	}
 	
 	override var hashValue: Int {

@@ -99,10 +99,13 @@ private class TreeNodeSnapshot: TreeNode {
 		super.init()
 		isExpanded = node.isExpanded
 		self.children = node.children
-//		if (isExpanded) {
-//			self.children = node.children?.map({TreeNodeSnapshot(node: $0)})
-//		}
 	}
+}
+
+public enum TreeNodeReloading {
+	case dontReload
+	case reload
+	case reconfigure
 }
 
 open class TreeNode: NSObject {
@@ -130,7 +133,9 @@ open class TreeNode: NSObject {
 			if !disableTransitions, let from = from {
 				performTransition(from: from)
 				if let tableView = treeController?.tableView, let indexPath = self.indexPath, indexPath.row >= 0 {
-					tableView.reloadRows(at: [indexPath], with: .fade)
+//					if self.changed(from: self) {
+//						tableView.reloadRows(at: [indexPath], with: .fade)
+//					}
 				}
 			}
 			from = nil
@@ -160,9 +165,16 @@ open class TreeNode: NSObject {
 					to.estimatedHeight = oldNode.estimatedHeight
 					to.performTransition(from: oldNode)
 					
-					if to.changed(from: oldNode), let indexPath = oldNode.indexPath {
+					switch (to.move(from: oldNode), oldNode.indexPath) {
+					case (.reload, let indexPath?):
 						tableView.reloadRows(at: [indexPath], with: .fade)
+					case (.reconfigure, _):
+						guard let cell = treeController?.cell(for: to) else {break}
+						to.configure(cell: cell)
+					default:
+						break
 					}
+					
 					break
 				}
 			})
@@ -217,9 +229,13 @@ open class TreeNode: NSObject {
 		disableTransitions = false
 	}
 	
-	open func changed(from: TreeNode) -> Bool {
-		return isExpanded != from.isExpanded
+	func move(from: TreeNode) -> TreeNodeReloading {
+		return .dontReload
 	}
+
+//	open func changed(from: TreeNode) -> Bool {
+//		return isExpanded != from.isExpanded
+//	}
 	
 	open var isExpanded: Bool = true {
 		didSet {
@@ -323,10 +339,12 @@ open class TreeNode: NSObject {
 	@objc optional func treeController(_ treeController: TreeController, cellIdentifierForNode node: TreeNode) -> String?
 	@objc optional func treeController(_ treeController: TreeController, configureCell cell: UITableViewCell, withNode node: TreeNode) -> Void
 	@objc optional func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]?
+	@objc optional func treeController(_ treeController: TreeController, editingStyleForNode node: TreeNode) -> UITableViewCellEditingStyle
 	@objc optional func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) -> Void
 	@objc optional func treeController(_ treeController: TreeController, didExpandCellWithNode node: TreeNode) -> Void
 	@objc optional func treeController(_ treeController: TreeController, didCollapseCellWithNode node: TreeNode) -> Void
 	@objc optional func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) -> Void;
+	@objc optional func treeController(_ treeController: TreeController, commit editingStyle: UITableViewCellEditingStyle, forNode node: TreeNode) -> Void;
 	
 }
 
@@ -353,7 +371,11 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 		guard let indexPath = tableView.indexPath(for: cell) else {return nil}
 		return rootNode?.node(at: indexPath.row)
 	}
-	
+
+	public func indexPath(for node: TreeNode) -> IndexPath? {
+		return node.indexPath
+	}
+
 	public func reloadCells(for nodes: [TreeNode]) {
 		let indexPaths = nodes.flatMap({$0.indexPath})
 		if (indexPaths.count > 0) {
@@ -361,6 +383,10 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 		}
 	}
 
+	public func deselectCell(for node: TreeNode, animated: Bool) {
+		guard let indexPath = node.indexPath else {return}
+		tableView.deselectRow(at: indexPath, animated: animated)
+	}
 	
 	//MARK: - UITableViewDataSource
 	
@@ -384,6 +410,11 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 	
 	public func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
+	}
+	
+	public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		guard let node = rootNode?.node(at: indexPath.row) else {return}
+		delegate?.treeController?(self, commit: editingStyle, forNode: node)
 	}
 	
 	//MARK: - UITableViewDelegate
@@ -411,8 +442,13 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 		return delegate?.treeController?(self, editActionsForNode: node)
 	}
 	
+	public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+		guard let node = rootNode?.node(at: indexPath.row) else {return .none}
+		return delegate?.treeController?(self, editingStyleForNode: node) ?? (self.tableView(tableView, editActionsForRowAt: indexPath) != nil ? .delete : .none)
+	}
+	
 	public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-		return self.tableView(tableView, editActionsForRowAt: indexPath) != nil
+		return self.tableView(tableView, editingStyleForRowAt: indexPath) != .none
 	}
 	
 	public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -432,20 +468,36 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 }
 
 
-class FetchedResultsNode<ResultType: NSFetchRequestResult>: TreeNode {
+class FetchedResultsNode<ResultType: NSFetchRequestResult>: TreeNode, NSFetchedResultsControllerDelegate {
 	let resultsController: NSFetchedResultsController<ResultType>
-	let sectionNode: FetchedResultsSectionNode<ResultType>.Type
+	let sectionNode: FetchedResultsSectionNode<ResultType>.Type?
 	let objectNode: FetchedResultsObjectNode<ResultType>.Type
 	
-	required init(resultsController: NSFetchedResultsController<ResultType>, sectionNode: FetchedResultsSectionNode<ResultType>.Type, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
+	init(resultsController: NSFetchedResultsController<ResultType>, sectionNode: FetchedResultsSectionNode<ResultType>.Type? = nil, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
 		self.resultsController = resultsController
 		self.sectionNode = sectionNode
 		self.objectNode = objectNode
 		super.init()
+		resultsController.delegate = self
 	}
 	
 	override func lazyLoad() {
-		children = resultsController.sections?.map {self.sectionNode.init(section: $0, objectNode: self.objectNode)}
+		try? resultsController.performFetch()
+		if let sectionNode = self.sectionNode {
+			children = resultsController.sections?.map {sectionNode.init(section: $0, objectNode: self.objectNode)}
+		}
+		else {
+			children = resultsController.fetchedObjects?.flatMap {objectNode.init(object: $0)}
+		}
+	}
+	
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		if let sectionNode = self.sectionNode {
+			children = resultsController.sections?.map {sectionNode.init(section: $0, objectNode: self.objectNode)}
+		}
+		else {
+			children = resultsController.fetchedObjects?.flatMap {objectNode.init(object: $0)}
+		}
 	}
 	
 }
@@ -461,6 +513,14 @@ class FetchedResultsSectionNode<ResultType: NSFetchRequestResult> : TreeNode {
 	
 	override func lazyLoad() {
 		children = section.objects?.flatMap {objectNode.init(object: $0 as! ResultType)}
+	}
+	
+	override var hashValue: Int {
+		return [section.name.hashValue, section.numberOfObjects].hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? FetchedResultsSectionNode<ResultType>)?.hashValue == hashValue
 	}
 }
 

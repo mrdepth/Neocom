@@ -49,12 +49,15 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 
 - (void) setArea:(NCFittingArea*)area {
 	NCVerifyFittingContext(self);
+	NCFittingArea* old = (NCFittingArea*) [NCFittingItem item:_engine->getArea() withEngine:self];
 	_engine->setArea(static_cast<dgmpp::TypeID>(area.typeID));
-	[self updateWithItem:area];
+	[self updateWithItem:area ?: old];
 }
 
 - (void) updateWithItem:(NCFittingItem*) item {
-	[_updates addObject:item];
+	if (item) {
+		[_updates addObject:item];
+	}
 }
 
 - (void) performBlock:(nonnull void(^)()) block {

@@ -24,6 +24,7 @@ class TreeRow: TreeNode {
 		super.init(cellIdentifier: cellIdentifier)
 		self.cellIdentifier = cellIdentifier
 	}
+	
 }
 
 class TreeSection: TreeNode {
@@ -61,17 +62,17 @@ class DefaultTreeSection: TreeSection {
 		}
 	}
 	
-	override func changed(from: TreeNode) -> Bool {
-		guard let node = from as? DefaultTreeSection else {return false}
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		guard let node = from as? DefaultTreeSection else {return .dontReload}
 		
 		if let title = self.title {
-			return title != node.title
+			return title != node.title ? .reload : .dontReload
 		}
 		else if let attributedTitle = self.attributedTitle {
-			return attributedTitle != self.attributedTitle
+			return attributedTitle != self.attributedTitle ? .reload : .dontReload
 		}
 		else {
-			return false
+			return .dontReload
 		}
 	}
 	

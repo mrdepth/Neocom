@@ -26,11 +26,11 @@ class NCFittingDroneRow: TreeRow {
 		super.init(cellIdentifier: "ModuleCell")
 	}
 	
-	override func changed(from: TreeNode) -> Bool {
-		guard let from = from as? NCFittingDroneRow else {return false}
-		subtitle = from.subtitle
-		return true
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		subtitle = (from as? NCFittingDroneRow)?.subtitle
+		return .reload
 	}
+
 	
 	var needsUpdate: Bool = true
 	var subtitle: NSAttributedString?
@@ -141,10 +141,11 @@ class NCFittingDroneSection: TreeSection {
 		return (object as? NCFittingModuleSection)?.hashValue == hashValue
 	}
 	
-	override func changed(from: TreeNode) -> Bool {
-		return (from as? NCFittingDroneSection)?.used != used || (from as? NCFittingDroneSection)?.limit != limit
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		let from = from as? NCFittingDroneSection
+		return (used != from?.used || limit != from?.limit) ? .reload : .dontReload
 	}
-	
+
 }
 
 class NCActionRow: DefaultTreeRow {
@@ -155,10 +156,6 @@ class NCActionRow: DefaultTreeRow {
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCActionRow)?.hashValue == hashValue
-	}
-	
-	override func changed(from: TreeNode) -> Bool {
-		return false
 	}
 	
 }

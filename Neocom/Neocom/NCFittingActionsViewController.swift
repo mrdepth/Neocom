@@ -68,14 +68,21 @@ class NCFittingDamagePatternRow: TreeRow {
 		return (object as? NCFittingDamagePatternRow)?.hashValue == hashValue
 	}
 	
-	override func changed(from: TreeNode) -> Bool {
-		return damagePattern != (from as? NCFittingDamagePatternRow)?.damagePattern
-	}
-
 }
 
 class NCFittingAreaEffectRow: NCTypeInfoRow {
 	
+}
+
+class NCLoadoutNameRow: NCTextFieldRow {
+	
+	override var hashValue: Int {
+		return 0
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCLoadoutNameRow)?.hashValue == hashValue
+	}
 }
 
 class NCFittingActionsViewController: UITableViewController, TreeControllerDelegate, UITextFieldDelegate {
@@ -203,7 +210,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 
 		engine.performBlockAndWait {
 			let title = pilot.ship?.title
-			sections.append(NCTextFieldRow(text: title?.isEmpty == false ? title : nil, placeholder: NSLocalizedString("Ship Name", comment: "")))
+			sections.append(NCLoadoutNameRow(text: title?.isEmpty == false ? title : nil, placeholder: NSLocalizedString("Ship Name", comment: "")))
 			if let ship = pilot.ship, let type = invTypes?[ship.typeID] {
 				let row = NCTypeInfoRow(type: type, accessoryType: .detailButton, segue: "NCDatabaseTypeInfoViewController", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
 				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Ship", title: NSLocalizedString("Ship", comment: "").uppercased(), children: [row]))

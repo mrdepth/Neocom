@@ -51,9 +51,6 @@ class NCImplantRow: TreeRow {
 		return (object as? NCImplantRow)?.hashValue == hashValue
 	}
 	
-	override func changed(from: TreeNode) -> Bool {
-		return false
-	}
 }
 
 class NCBoosterRow: TreeRow {
@@ -98,10 +95,6 @@ class NCBoosterRow: TreeRow {
 		return (object as? NCBoosterRow)?.hashValue == hashValue
 	}
 	
-	override func changed(from: TreeNode) -> Bool {
-		return false
-	}
-
 }
 
 

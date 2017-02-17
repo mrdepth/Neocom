@@ -32,8 +32,8 @@ class NCFittingDroneInfoRow: NCChargeRow {
 		}
 	}
 	
-	override func changed(from: TreeNode) -> Bool {
-		return true
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		return .reload
 	}
 	
 	override var hashValue: Int {
@@ -61,10 +61,6 @@ class NCFittingDroneStateRow: TreeRow {
 		cell.segmentedControl?.selectedSegmentIndex = isActive ? 1 : 0
 	}
 	
-	
-	override func changed(from: TreeNode) -> Bool {
-		return false
-	}
 	
 	override var hashValue: Int {
 		return drone.hashValue
@@ -95,8 +91,8 @@ class NCFittingDroneCountRow: NCCountRow {
 		super.init(value: drones.count, range: Range(range))
 	}
 
-	override func changed(from: TreeNode) -> Bool {
-		return true
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		return .reload
 	}
 	
 	override var hashValue: Int {

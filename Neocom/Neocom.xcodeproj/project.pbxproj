@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1205B8A11E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */; };
 		121D10AC1E262C7700DD671B /* NCTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */; };
 		121D10AE1E262F8900DD671B /* NCTypePickerGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10AD1E262F8900DD671B /* NCTypePickerGroupsViewController.swift */; };
 		121D10B01E26345D00DD671B /* NSManagedObjectContext+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */; };
@@ -217,6 +218,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamagePatternEditTableViewCell.swift; sourceTree = "<group>"; };
 		121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerViewController.swift; sourceTree = "<group>"; };
 		121D10AD1E262F8900DD671B /* NCTypePickerGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerGroupsViewController.swift; sourceTree = "<group>"; };
 		121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+NC.swift"; sourceTree = "<group>"; };
@@ -581,6 +583,7 @@
 				1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */,
 				12B563FB1E51E0A200F1BED0 /* NCFittingCharactersTableViewCell.swift */,
 				129B316F1E5439A100B9A88D /* NCTextFieldTableViewCell.swift */,
+				1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -996,6 +999,7 @@
 				12BFC45D1E3F7CD2000ED8D6 /* TreeRow.swift in Sources */,
 				12EFE7F61E40C840007BF69B /* NCSheetPresentationController.swift in Sources */,
 				1230A3331DFFE2CF00627D92 /* NSAttributedString+NC.swift in Sources */,
+				1205B8A11E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift in Sources */,
 				12D08F991E4DCCE30042B761 /* NCFittingActionsViewController.swift in Sources */,
 				12AC8DD21DF090A600561A7A /* NCCache.swift in Sources */,
 				12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */,

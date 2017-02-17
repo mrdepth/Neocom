@@ -43,10 +43,6 @@ class NCFittingModuleStateRow: TreeRow {
 	}
 	
 
-	override func changed(from: TreeNode) -> Bool {
-		return false
-	}
-
 	override var hashValue: Int {
 		return module.hashValue
 	}

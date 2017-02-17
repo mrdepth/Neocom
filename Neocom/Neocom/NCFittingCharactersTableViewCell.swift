@@ -111,9 +111,9 @@ class NCFittingCharactersRow: TreeRow, UICollectionViewDataSource, UICollectionV
 
 	}
 	
-	override func changed(from: TreeNode) -> Bool {
+	override func move(from: TreeNode) -> TreeNodeReloading {
 		contentOffset = (from as? NCFittingCharactersRow)?.contentOffset
-		return false
+		return .dontReload
 	}
 	
 	override var hashValue: Int {

@@ -81,7 +81,6 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 		
 		guard let context = NCDatabase.sharedDatabase?.viewContext else {return}
 		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "metaGroup.metaGroupID", cacheName: nil)
-		try? controller.performFetch()
 		
 		let root = FetchedResultsNode(resultsController: controller, sectionNode: NCMetaGroupFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCAmmoNode.self)
 		treeController.rootNode = root

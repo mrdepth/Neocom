@@ -289,7 +289,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 			present(typePickerViewController, animated: true)
 		}
 		else {
-			performSegue(withIdentifier: "NCFittingModuleActionsViewController", sender: treeController.cell(for: node))
+			Router.Fitting.ModuleActions(item.modules).perform(source: self, view: treeController.cell(for: item))
 		}
 	}
 	

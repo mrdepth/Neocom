@@ -10,16 +10,16 @@ import UIKit
 import CoreData
 
 class TreeRow: TreeNode {
-	var segue: String?
-	var accessoryButtonSegue: String?
+	var route: Route?
+	var accessoryButtonRoute: Route?
 	var object: Any?
 	override var isExpandable: Bool {
 		return false
 	}
 	
-	init(cellIdentifier: String?, segue: String? = nil, accessoryButtonSegue: String? = nil, object: Any? = nil) {
-		self.segue = segue
-		self.accessoryButtonSegue = accessoryButtonSegue
+	init(cellIdentifier: String?, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
+		self.route = route
+		self.accessoryButtonRoute = accessoryButtonRoute
 		self.object = object
 		super.init(cellIdentifier: cellIdentifier)
 		self.cellIdentifier = cellIdentifier
@@ -93,14 +93,14 @@ class DefaultTreeRow: TreeRow {
 	dynamic var subtitle: String?
 	dynamic var accessoryType: UITableViewCellAccessoryType
 	
-	init(cellIdentifier: String, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, segue: String? = nil, accessoryButtonSegue: String? = nil, object: Any? = nil) {
+	init(cellIdentifier: String, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
 		self.image = image
 		self.title = title
 		self.attributedTitle = attributedTitle
 		self.subtitle = subtitle
 		self.accessoryType = accessoryType
 
-		super.init(cellIdentifier: cellIdentifier, segue: segue, accessoryButtonSegue: accessoryButtonSegue, object: object)
+		super.init(cellIdentifier: cellIdentifier, route: route, accessoryButtonRoute: accessoryButtonRoute, object: object)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -188,16 +188,16 @@ class NCTypeInfoRow: TreeRow {
 		}
 	}()
 
-	init(type: NCDBInvType, accessoryType: UITableViewCellAccessoryType = .none, segue: String? = nil, accessoryButtonSegue: String? = nil) {
+	init(type: NCDBInvType, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
 		self.managedObjectContext = nil
 		self.accessoryType = accessoryType
-		super.init(cellIdentifier: "NCDefaultTableViewCell", segue: segue, accessoryButtonSegue: accessoryButtonSegue, object: type)
+		super.init(cellIdentifier: "NCDefaultTableViewCell", route: route, accessoryButtonRoute: accessoryButtonRoute, object: type)
 	}
 	
-	init(objectID: NSManagedObjectID, managedObjectContext: NSManagedObjectContext, accessoryType: UITableViewCellAccessoryType = .none, segue: String? = nil, accessoryButtonSegue: String? = nil) {
+	init(objectID: NSManagedObjectID, managedObjectContext: NSManagedObjectContext, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
 		self.managedObjectContext = managedObjectContext
 		self.accessoryType = accessoryType
-		super.init(cellIdentifier: "NCDefaultTableViewCell", segue: segue, accessoryButtonSegue: accessoryButtonSegue, object: objectID)
+		super.init(cellIdentifier: "NCDefaultTableViewCell", route: route, accessoryButtonRoute: accessoryButtonRoute, object: objectID)
 	}
 	
 	override func configure(cell: UITableViewCell) {

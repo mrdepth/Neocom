@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="NLP-L8-wGu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VKg-85-fZw">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -4510,7 +4510,6 @@
                         <outlet property="tableView" destination="MXo-B4-pkQ" id="2nd-lc-MIi"/>
                         <outlet property="treeController" destination="puO-8p-q53" id="p0k-Fu-3ox"/>
                         <outlet property="turretsLabel" destination="DtE-0W-3HG" id="Mv6-ev-cBL"/>
-                        <segue destination="Alm-f0-aPe" kind="custom" identifier="NCFittingModuleActionsViewController" customClass="NCSheetSegue" customModule="Neocom" customModuleProvider="target" id="IuY-BO-SVa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tmt-73-dHQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4522,26 +4521,10 @@
             </objects>
             <point key="canvasLocation" x="2191.875" y="3075"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Yci-bT-brG">
-            <objects>
-                <navigationController id="Alm-f0-aPe" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Ind-cP-V7q">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="a8X-ZI-63v" kind="relationship" relationship="rootViewController" id="YAU-sb-rkx"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FNH-0p-mCF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2946" y="3068"/>
-        </scene>
         <!--Module-->
         <scene sceneID="zPw-mR-bkM">
             <objects>
-                <tableViewController id="a8X-ZI-63v" customClass="NCFittingModuleActionsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCFittingModuleActionsViewController" id="a8X-ZI-63v" customClass="NCFittingModuleActionsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="1GZ-np-WL6" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -5205,6 +5188,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="treeController" destination="MZy-0f-5uu" id="VJc-NJ-QWi"/>
                         <segue destination="JbH-Km-dUZ" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="Rwd-a3-YNu"/>
@@ -5525,7 +5509,7 @@
         <!--Ammo-->
         <scene sceneID="rc7-Ao-JHu">
             <objects>
-                <tableViewController id="IQs-G0-iFu" customClass="NCFittingAmmoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCFittingAmmoViewController" id="IQs-G0-iFu" customClass="NCFittingAmmoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="iSW-KT-gm0" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -9277,26 +9261,10 @@ Label</string>
             </objects>
             <point key="canvasLocation" x="5767" y="4138"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="8nl-r7-gCM">
-            <objects>
-                <navigationController id="NLP-L8-wGu" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="4KN-xN-Kee">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="lis-mY-tqT" kind="relationship" relationship="rootViewController" id="OB3-EU-dAb"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="d83-Ac-Lft" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3516" y="5365"/>
-        </scene>
         <!--Damage Patterns-->
         <scene sceneID="Ba1-RM-o3h">
             <objects>
-                <tableViewController id="lis-mY-tqT" customClass="NCFittingDamagePatternsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCFittingDamagePatternsViewController" id="lis-mY-tqT" customClass="NCFittingDamagePatternsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="C6e-y8-E36" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -9726,11 +9694,10 @@ Label</string>
         <image name="warpSpeed" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="tAs-Rt-3LJ"/>
         <segue reference="1uk-Gc-c1m"/>
         <segue reference="934-eu-ds2"/>
         <segue reference="Rwd-a3-YNu"/>
-        <segue reference="tAs-Rt-3LJ"/>
-        <segue reference="Sa7-gn-Cp3"/>
         <segue reference="NgW-vJ-ZCI"/>
     </inferredMetricsTieBreakers>
 </document>

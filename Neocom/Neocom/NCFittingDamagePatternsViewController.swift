@@ -188,7 +188,7 @@ class NCCustomDamagePatternRow: FetchedResultsObjectNode<NCDamagePattern> {
 class NCFittingDamagePatternsViewController: UITableViewController, TreeControllerDelegate, UITextFieldDelegate {
 	@IBOutlet var treeController: TreeController!
 	var category: NCDBDgmppItemCategory?
-	var completionHandler: ((NCFittingDamage) -> Void)!
+	var completionHandler: ((NCFittingDamagePatternsViewController, NCFittingDamage) -> Void)!
 	
 	lazy private var managedObjectContext: NSManagedObjectContext? = {
 		guard let parentContext = NCStorage.sharedStorage?.viewContext else {return nil}
@@ -209,7 +209,7 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		var sections = [TreeNode]()
 		
 		
-		sections.append(DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "criminal"), title: NSLocalizedString("Select NPC Type", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
+		sections.append(DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "criminal"), title: NSLocalizedString("Select NPC Type", comment: ""), accessoryType: .disclosureIndicator))
 		
 		if let managedObjectContext = self.managedObjectContext {
 			sections.append(NCCustomDamagePatternsSection(managedObjectContext: managedObjectContext))
@@ -289,12 +289,12 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		else {
 			switch node {
 			case let node as NCCustomDamagePatternRow:
-				completionHandler(NCFittingDamage(em: Double(node.object.em),
+				completionHandler(self, NCFittingDamage(em: Double(node.object.em),
 				                                  thermal: Double(node.object.thermal),
 				                                  kinetic: Double(node.object.kinetic),
 				                                  explosive: Double(node.object.explosive)))
 			case let node as NCFittingDamagePatternInfoRow:
-				completionHandler(node.damagePattern)
+				completionHandler(self, node.damagePattern)
 			default:
 				break
 			}

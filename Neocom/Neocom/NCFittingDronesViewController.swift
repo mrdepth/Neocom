@@ -151,7 +151,7 @@ class NCFittingDroneSection: TreeSection {
 class NCActionRow: DefaultTreeRow {
 	
 	override var hashValue: Int {
-		return segue?.hashValue ?? 0
+		return route?.hashValue ?? 0
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
@@ -210,10 +210,10 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		if node is NCFittingDroneRow {
-			performSegue(withIdentifier: "NCFittingDroneActionsViewController", sender: treeController.cell(for: node))
+		if let node = node as? NCFittingDroneRow {
+			Router.Fitting.DroneActions(node.drones).perform(source: self, view: treeController.cell(for: node))
 		}
-		else if let item = node as? DefaultTreeRow, item.segue == "NCTypePickerViewController" {
+		else if node is NCActionRow {
 			guard let pilot = fleet?.active else {return}
 			guard let typePickerViewController = typePickerViewController else {return}
 			let category = NCDBDgmppItemCategory.category(categoryID: .drone, subcategory:  NCDBCategoryID.drone.rawValue)
@@ -223,7 +223,6 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 				let typeID = Int(type.typeID)
 				self.engine?.perform {
 					guard let ship = pilot.ship else {return}
-					//let n = ship.droneSquadronLimit(.none)
 					let tag = (ship.drones.flatMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
 					for _ in 0..<5 {
 						ship.addDrone(typeID: typeID, squadronTag: tag)
@@ -236,19 +235,6 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 		}
 	}
 
-	//MARK: - Navigation
-	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		switch segue.identifier {
-		case "NCFittingDroneActionsViewController"?:
-			guard let controller = (segue.destination as? UINavigationController)?.topViewController as? NCFittingDroneActionsViewController else {return}
-			guard let cell = sender as? NCFittingModuleTableViewCell else {return}
-			controller.drones = cell.object as? [NCFittingDrone]
-		default:
-			break
-		}
-	}
-	
 	//MARK: - Private
 	
 	private func update() {
@@ -294,7 +280,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 				}
 			}
 			
-			rows.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "drone"), title: NSLocalizedString("Add Drone", comment: ""), segue: "NCTypePickerViewController"))
+			rows.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "drone"), title: NSLocalizedString("Add Drone", comment: "")))
 			/*typealias TypeID = Int
 			typealias Squadron = [Int: [TypeID: [Bool: [NCFittingDrone]]]]
 			var squadrons = [NCFittingFighterSquadron: Squadron]()

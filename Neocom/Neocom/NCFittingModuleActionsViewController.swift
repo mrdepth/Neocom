@@ -60,11 +60,9 @@ class NCFittingModuleInfoRow: TreeRow {
 	let capacitor: Double
 	let count: Int
 	
-	lazy var type: NCDBInvType? = {
-		return NCDatabase.sharedDatabase?.invTypes[self.module.typeID]
-	}()
+	let type: NCDBInvType
 	
-	init(module: NCFittingModule, count: Int) {
+	init(module: NCFittingModule, type: NCDBInvType, count: Int, route: Route? = nil) {
 		self.module = module
 		self.count = count
 		let cpu = module.cpuUse
@@ -73,28 +71,29 @@ class NCFittingModuleInfoRow: TreeRow {
 		self.cpu = cpu
 		self.powerGrid = powerGrid
 		self.capacitor = capacitor
+		self.type = type
+		
 		if cpu != 0 || powerGrid != 0 || capacitor != 0 {
-			super.init(cellIdentifier: "NCFittingModuleInfoTableViewCell", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
+			super.init(cellIdentifier: "NCFittingModuleInfoTableViewCell", route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
 		}
 		else {
-			super.init(cellIdentifier: "NCDefaultTableViewCell", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
+			super.init(cellIdentifier: "NCDefaultTableViewCell", route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
 		}
-		self.segue = (self.type?.variations?.count ?? 0) > 0 || (self.type?.parentType?.variations?.count ?? 0) > 0 ? "NCFittingVariationsViewController" : "NCDatabaseTypeInfoViewController"
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		let title: NSAttributedString
 		if count > 1 {
-			title = (type?.typeName ?? "") + " " + "x\(count)" * [NSForegroundColorAttributeName: UIColor.caption]
+			title = (type.typeName ?? "") + " " + "x\(count)" * [NSForegroundColorAttributeName: UIColor.caption]
 		}
 		else {
-			title = NSAttributedString(string: type?.typeName ?? "")
+			title = NSAttributedString(string: type.typeName ?? "")
 		}
 
 		
 		if let cell = cell as? NCFittingModuleInfoTableViewCell {
 			cell.titleLabel?.attributedText = title
-			cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+			cell.iconView?.image = type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 			cell.object = type
 			cell.powerGridLabel?.text = NCUnitFormatter.localizedString(from: powerGrid, unit: .megaWatts, style: .short)
 			cell.cpuLabel?.text = NCUnitFormatter.localizedString(from: cpu, unit: .teraflops, style: .short)
@@ -102,7 +101,7 @@ class NCFittingModuleInfoRow: TreeRow {
 		}
 		else if let cell = cell as? NCDefaultTableViewCell {
 			cell.titleLabel?.attributedText = title
-			cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+			cell.iconView?.image = type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 			cell.object = type
 			cell.accessoryType = .detailButton
 		}
@@ -119,9 +118,9 @@ class NCFittingModuleInfoRow: TreeRow {
 
 class NCFittingChargeRow: NCChargeRow {
 	let charges: Int
-	init(type: NCDBInvType, charges: Int) {
+	init(type: NCDBInvType, charges: Int, route: Route? = nil) {
 		self.charges = charges
-		super.init(type: type, segue: "NCFittingAmmoViewController", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
+		super.init(type: type, route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -225,14 +224,14 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let node = node as? TreeRow else {return}
-		guard let segue = node.segue else {return}
-		performSegue(withIdentifier: segue, sender: treeController.cell(for: node))
+		guard let route = node.route else {return}
+		route.perform(source: self, view: treeController.cell(for: node))
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		guard let node = node as? TreeRow else {return}
-		guard let segue = node.accessoryButtonSegue else {return}
-		performSegue(withIdentifier: segue, sender: treeController.cell(for: node))
+		guard let route = node.accessoryButtonRoute else {return}
+		route.perform(source: self, view: treeController.cell(for: node))
 	}
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
@@ -245,7 +244,13 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 						module.charge = nil
 					}
 				}
-				let row = DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Select Ammo", comment: ""),  segue: "NCFittingAmmoViewController")
+				
+				let ammoRoute = Router.Fitting.Ammo(category: self.chargeCategory!) { [weak self] (controller, type) in
+					self?.setAmmo(controller: controller, type: type)
+				}
+
+				
+				let row = DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Select Ammo", comment: ""),  route: ammoRoute)
 				self.chargeSection?.children = [row]
 
 			})]
@@ -253,87 +258,78 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 		return nil
 	}
 	
-	//MARK: - Navigation
+	//MARK: Private
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		switch segue.identifier {
-		case "NCDatabaseTypeInfoViewController"?:
-			guard let controller = segue.destination as? NCDatabaseTypeInfoViewController,
-				let cell = sender as? NCTableViewCell,
-				let type = cell.object as? NCDBInvType else {
-					return
-			}
-			controller.type = type
-		case "NCFittingAmmoViewController"?:
-			guard let controller = segue.destination as? NCFittingAmmoViewController else {return}
-			controller.category = self.chargeCategory
-			controller.completionHandler = { [weak self, weak controller] type in
-				let typeID = Int(type.typeID)
-				controller?.dismiss(animated: true) {
-					guard let modules = self?.modules else {return}
-					modules.first?.engine?.perform {
-						for module in modules {
-							module.charge = NCFittingCharge(typeID: typeID)
-						}
-					}
+	private func setAmmo(controller: NCFittingAmmoViewController, type: NCDBInvType) {
+		let typeID = Int(type.typeID)
+		controller.dismiss(animated: true) {
+			guard let modules = self.modules else {return}
+			modules.first?.engine?.perform {
+				for module in modules {
+					module.charge = NCFittingCharge(typeID: typeID)
 				}
 			}
-		case "NCFittingVariationsViewController"?:
-			guard let controller = segue.destination as? NCFittingVariationsViewController,
-				let cell = sender as? NCTableViewCell,
-				let type = cell.object as? NCDBInvType else {
-					return
-			}
-			controller.type = type
-			controller.completionHandler = { [weak self, weak controller] type in
-				let typeID = Int(type.typeID)
-				controller?.dismiss(animated: true) {
-					guard let modules = self?.modules else {return}
-					guard let module = modules.first else {return}
-					module.engine?.perform {
-						guard let ship = module.owner as? NCFittingShip else {return}
-						let charge = module.charge
-						var out = [NCFittingModule]()
-						for module in modules {
-							if let m = ship.replaceModule(module: module, typeID: typeID) {
-								m.charge = charge
-								out.append(m)
-							}
-						}
-						self?.modules = out
-					}
-				}
-			}
-		default:
-			break
 		}
 	}
-	
-	//MARK: Private
 	
 	private func reload() {
 		guard let modules = self.modules else {return}
 		guard let module = modules.first else {return}
+		guard let type = self.type else {return}
 		
 		var sections = [TreeNode]()
 		
 		let hullType = self.hullType
 		let count = modules.count
 		
+		
 		module.engine?.performBlockAndWait {
 			
-			sections.append(NCFittingModuleInfoRow(module: module, count: modules.count))
+			let route: Route?
+			
+			if (type.variations?.count ?? 0) > 0 || (type.parentType?.variations?.count ?? 0) > 0 {
+				route = Router.Fitting.Variations(type: type) { [weak self] (controller, type) in
+					let typeID = Int(type.typeID)
+					controller.dismiss(animated: true) {
+						guard let modules = self?.modules else {return}
+						guard let module = modules.first else {return}
+						module.engine?.perform {
+							guard let ship = module.owner as? NCFittingShip else {return}
+							let charge = module.charge
+							var out = [NCFittingModule]()
+							for module in modules {
+								if let m = ship.replaceModule(module: module, typeID: typeID) {
+									m.charge = charge
+									out.append(m)
+								}
+							}
+							self?.modules = out
+						}
+					}
+				}
+			}
+			else {
+				route = Router.Database.TypeInfo(type)
+			}
+			
+			sections.append(NCFittingModuleInfoRow(module: module, type: type, count: modules.count, route: route))
+			
 			
 			let chargeGroups = module.chargeGroups
 			if chargeGroups.count > 0 {
+				
+				let ammoRoute = Router.Fitting.Ammo(category: self.chargeCategory!) { [weak self] (controller, type) in
+					self?.setAmmo(controller: controller, type: type)
+				}
+
 				let charges = module.charges
 				let charge = module.charge
 				let row: TreeNode
 				if let charge = charge, let type = NCDatabase.sharedDatabase?.invTypes[charge.typeID] {
-					row = NCFittingChargeRow(type: type, charges: charges)
+					row = NCFittingChargeRow(type: type, charges: charges, route: ammoRoute)
 				}
 				else {
-					row = DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Select Ammo", comment: ""),  segue: "NCFittingAmmoViewController")
+					row = DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Select Ammo", comment: ""),  route: ammoRoute)
 				}
 				let section = DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Charge", title: NSLocalizedString("Charge", comment: "").uppercased(), children: [row])
 				sections.append(section)

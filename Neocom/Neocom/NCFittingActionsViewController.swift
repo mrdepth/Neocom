@@ -41,9 +41,10 @@ import UIKit
 class NCFittingDamagePatternRow: TreeRow {
 	let damagePattern: NCFittingDamage
 	
-	init(damagePattern: NCFittingDamage) {
+	init(damagePattern: NCFittingDamage, route: Route? = nil) {
 		self.damagePattern = damagePattern
-		super.init(cellIdentifier: "NCDamageTypeTableViewCell", segue: "NCFittingDamagePatternsViewController")
+		super.init(cellIdentifier: "NCDamageTypeTableViewCell", route: route)
+		
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -118,14 +119,14 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let node = node as? TreeRow else {return}
-		guard let segue = node.segue else {return}
-		performSegue(withIdentifier: segue, sender: treeController.cell(for: node))
+		guard let route = node.route else {return}
+		route.perform(source: self, view: treeController.cell(for: node))
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		guard let node = node as? TreeRow else {return}
-		guard let segue = node.accessoryButtonSegue else {return}
-		performSegue(withIdentifier: segue, sender: treeController.cell(for: node))
+		guard let route = node.accessoryButtonRoute else {return}
+		route.perform(source: self, view: treeController.cell(for: node))
 	}
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
@@ -160,44 +161,6 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		}
 	}
 	
-	//MARK: - Navigation
-	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		switch segue.identifier {
-		case "NCDatabaseTypeInfoViewController"?:
-			guard let controller = segue.destination as? NCDatabaseTypeInfoViewController,
-				let cell = sender as? NCTableViewCell,
-				let type = cell.object as? NCDBInvType else {
-					return
-			}
-			controller.type = type
-		case "NCFittingAreaEffectsViewController"?:
-			guard let controller = segue.destination as? NCFittingAreaEffectsViewController else {return}
-			controller.completionHandler = { [weak self, weak controller] type in
-				let typeID = Int(type.typeID)
-				controller?.dismiss(animated: true) {
-					self?.fleet?.active?.engine?.perform {
-						self?.fleet?.active?.engine?.area = NCFittingArea(typeID: typeID)
-					}
-				}
-			}
-		case "NCFittingDamagePatternsViewController"?:
-			guard let controller = segue.destination as? NCFittingDamagePatternsViewController else {return}
-			controller.completionHandler = { [weak self, weak controller] damagePattern in
-				controller?.dismiss(animated: true) {
-					self?.fleet?.active?.engine?.perform {
-						for (pilot, _) in self?.fleet?.pilots ?? [:] {
-							pilot.ship?.damagePattern = damagePattern
-						}
-					}
-				}
-			}
-		default:
-			break
-		}
-	}
-
-	
 	//MARK: - Private
 	
 	private func reload() {
@@ -212,24 +175,42 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 			let title = pilot.ship?.title
 			sections.append(NCLoadoutNameRow(text: title?.isEmpty == false ? title : nil, placeholder: NSLocalizedString("Ship Name", comment: "")))
 			if let ship = pilot.ship, let type = invTypes?[ship.typeID] {
-				let row = NCTypeInfoRow(type: type, accessoryType: .detailButton, segue: "NCDatabaseTypeInfoViewController", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
+				let row = NCTypeInfoRow(type: type, accessoryType: .detailButton, route: Router.Database.TypeInfo(type), accessoryButtonRoute: Router.Database.TypeInfo(type))
 				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Ship", title: NSLocalizedString("Ship", comment: "").uppercased(), children: [row]))
 			}
 			
 			sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Character", title: NSLocalizedString("Character", comment: "").uppercased(), children: [NCFittingCharactersRow(pilot: pilot)]))
 
+			let areaEffectsRoute = Router.Fitting.AreaEffects { [weak self] (controller, type) in
+				let typeID = Int(type.typeID)
+				controller.dismiss(animated: true) {
+					self?.fleet?.active?.engine?.perform {
+						self?.fleet?.active?.engine?.area = NCFittingArea(typeID: typeID)
+					}
+				}
+			}
 			
 			if let area = engine.area, let type = invTypes?[area.typeID] {
-				let row = NCFittingAreaEffectRow(type: type, accessoryType: .detailButton, segue: "NCFittingAreaEffectsViewController", accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
+				let row = NCFittingAreaEffectRow(type: type, accessoryType: .detailButton, route: areaEffectsRoute, accessoryButtonRoute: Router.Database.TypeInfo(type))
 				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Area", title: NSLocalizedString("Area Effects", comment: "").uppercased(), children: [row]))
 			}
 			else {
-				let row = NCActionRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Select Area Effects", comment: ""),  segue: "NCFittingAreaEffectsViewController")
+				let row = NCActionRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Select Area Effects", comment: ""),  route: areaEffectsRoute)
 				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Area", title: NSLocalizedString("Area Effects", comment: "").uppercased(), children: [row]))
 			}
 			
+			let damagePatternsRoute = Router.Fitting.DamagePatterns {[weak self] (controller, damagePattern) in
+				controller.dismiss(animated: true) {
+					self?.fleet?.active?.engine?.perform {
+						for (pilot, _) in self?.fleet?.pilots ?? [:] {
+							pilot.ship?.damagePattern = damagePattern
+						}
+					}
+				}
+			}
+
 			let damagePattern = pilot.ship?.damagePattern ?? .omni
-			sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "DamagePattern", title: NSLocalizedString("Damage Pattern", comment: "").uppercased(), children: [NCFittingDamagePatternRow(damagePattern: damagePattern)]))
+			sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "DamagePattern", title: NSLocalizedString("Damage Pattern", comment: "").uppercased(), children: [NCFittingDamagePatternRow(damagePattern: damagePattern, route: damagePatternsRoute)]))
 		}
 		
 		if treeController.rootNode == nil {

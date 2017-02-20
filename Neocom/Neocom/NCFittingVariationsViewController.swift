@@ -12,7 +12,7 @@ import CoreData
 class NCFittingVariationsViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
 	var type: NCDBInvType?
-	var completionHandler: ((NCDBInvType) -> Void)!
+	var completionHandler: ((NCFittingVariationsViewController, NCDBInvType) -> Void)!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -43,26 +43,12 @@ class NCFittingVariationsViewController: UITableViewController, TreeControllerDe
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let node = node as? NCTypeInfoNode else {return}
-		completionHandler(node.object)
+		completionHandler(self, node.object)
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		performSegue(withIdentifier: "NCDatabaseTypeInfoViewController", sender: treeController.cell(for: node))
+		guard let node = node as? NCTypeInfoNode else {return}
+		Router.Database.TypeInfo(node.object).perform(source: self, view: treeController.cell(for: node))
 	}
 	
-	//MARK: - Navigation
-	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		switch segue.identifier {
-		case "NCDatabaseTypeInfoViewController"?:
-			guard let controller = segue.destination as? NCDatabaseTypeInfoViewController,
-				let cell = sender as? NCTableViewCell,
-				let type = cell.object as? NCDBInvType else {
-					return
-			}
-			controller.type = type
-		default:
-			break
-		}
-	}
 }

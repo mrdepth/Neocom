@@ -32,7 +32,7 @@ import CoreData
 class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
 	var category: NCDBDgmppItemCategory?
-	var completionHandler: ((NCDBInvType) -> Void)!
+	var completionHandler: ((NCFittingAreaEffectsViewController, NCDBInvType) -> Void)!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -89,26 +89,12 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let node = node as? NCTypeInfoRow, let type = node.type else {return}
-		completionHandler(type)
+		completionHandler(self, type)
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		performSegue(withIdentifier: "NCDatabaseTypeInfoViewController", sender: treeController.cell(for: node))
+		guard let node = node as? NCTypeInfoRow, let type = node.type else {return}
+		Router.Database.TypeInfo(type).perform(source: self, view: treeController.cell(for: node))
 	}
 		
-	//MARK: - Navigation
-	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		switch segue.identifier {
-		case "NCDatabaseTypeInfoViewController"?:
-			guard let controller = segue.destination as? NCDatabaseTypeInfoViewController,
-				let cell = sender as? NCTableViewCell,
-				let type = cell.object as? NCDBInvType else {
-					return
-			}
-			controller.type = type
-		default:
-			break
-		}
-	}
 }

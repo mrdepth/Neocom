@@ -198,18 +198,6 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 		}
 		
 		let transitionDuration = self.transitionDuration(using: transitionContext)
-		/*UIView.animate(withDuration: transitionDuration, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [], animations: {
-			if isPresenting {
-				toView?.frame = toViewFinalFrame
-			}
-			else {
-				fromView?.frame = fromViewFinalFrame
-			}
-			
-		}) { finished in
-			let wasCancelled = transitionContext.transitionWasCancelled
-			transitionContext.completeTransition(!wasCancelled)
-		}*/
 		UIView.animate(withDuration: transitionDuration, delay: 0, options: interactiveTransition == nil ? [.curveEaseOut] : [.curveLinear], animations: {
 			if isPresenting {
 				toView?.frame = toViewFinalFrame

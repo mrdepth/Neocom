@@ -11,10 +11,9 @@ import UIKit
 class NCFittingDroneInfoRow: NCChargeRow {
 	let count: Int
 	
-	init(type: NCDBInvType, count: Int) {
+	init(type: NCDBInvType, count: Int, route: Route? = nil) {
 		self.count = count
-		let segue = (type.variations?.count ?? 0) > 0 || (type.parentType?.variations?.count ?? 0) > 0 ? "NCFittingVariationsViewController" : "NCDatabaseTypeInfoViewController"
-		super.init(type: type, segue: segue, accessoryButtonSegue: "NCDatabaseTypeInfoViewController")
+		super.init(type: type, route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -171,60 +170,14 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let node = node as? TreeRow else {return}
-		guard let segue = node.segue else {return}
-		performSegue(withIdentifier: segue, sender: treeController.cell(for: node))
+		guard let route = node.route else {return}
+		route.perform(source: self, view: treeController.cell(for: node))
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		guard let node = node as? TreeRow else {return}
-		guard let segue = node.accessoryButtonSegue else {return}
-		performSegue(withIdentifier: segue, sender: treeController.cell(for: node))
-	}
-	
-	//MARK: - Navigation
-	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		switch segue.identifier {
-		case "NCDatabaseTypeInfoViewController"?:
-			guard let controller = segue.destination as? NCDatabaseTypeInfoViewController,
-				let cell = sender as? NCTableViewCell,
-				let type = cell.object as? NCDBInvType else {
-					return
-			}
-			controller.type = type
-		case "NCFittingVariationsViewController"?:
-			guard let controller = segue.destination as? NCFittingVariationsViewController,
-				let cell = sender as? NCTableViewCell,
-				let type = cell.object as? NCDBInvType else {
-					return
-			}
-			controller.type = type
-			controller.completionHandler = { [weak self, weak controller] type in
-				let typeID = Int(type.typeID)
-				controller?.dismiss(animated: true) {
-					guard let drones = self?.drones else {return}
-					guard let drone = drones.first else {return}
-					drone.engine?.perform {
-						guard let ship = drone.owner as? NCFittingShip else {return}
-						let isActive = drone.isActive
-						let tag = drone.squadronTag
-						let count = drones.count
-						var out = [NCFittingDrone]()
-						for drone in drones {
-							ship.removeDrone(drone)
-						}
-						for _ in 0..<count {
-							guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {break}
-							drone.isActive = isActive
-							out.append(drone)
-						}
-						self?.drones = out
-					}
-				}
-			}
-		default:
-			break
-		}
+		guard let route = node.accessoryButtonRoute else {return}
+		route.perform(source: self, view: treeController.cell(for: node))
 	}
 	
 	//MARK: Private
@@ -237,7 +190,39 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 
 		drone.engine?.performBlockAndWait {
 			guard let ship = drone.owner as? NCFittingShip else {return}
-			sections.append(NCFittingDroneInfoRow(type: type, count: drones.count))
+			
+			let route: Route
+			
+			if (type.variations?.count ?? 0) > 0 || (type.parentType?.variations?.count ?? 0) > 0 {
+				route = Router.Fitting.Variations (type: type) { [weak self] (controller, type) in
+					let typeID = Int(type.typeID)
+					controller.dismiss(animated: true) {
+						guard let drones = self?.drones else {return}
+						guard let drone = drones.first else {return}
+						drone.engine?.perform {
+							guard let ship = drone.owner as? NCFittingShip else {return}
+							let isActive = drone.isActive
+							let tag = drone.squadronTag
+							let count = drones.count
+							var out = [NCFittingDrone]()
+							for drone in drones {
+								ship.removeDrone(drone)
+							}
+							for _ in 0..<count {
+								guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {break}
+								drone.isActive = isActive
+								out.append(drone)
+							}
+							self?.drones = out
+						}
+					}
+				}
+			}
+			else {
+				route = Router.Database.TypeInfo(type)
+			}
+			
+			sections.append(NCFittingDroneInfoRow(type: type, count: drones.count, route: route))
 			
 			let handler = {[weak self] (_ count: Int, _ node: NCFittingDroneCountRow) in
 				guard let strongSelf = self else {return}

@@ -16,10 +16,10 @@ class NCChargeTableViewCell: NCDamageTypeTableViewCell {
 class NCChargeRow: TreeRow {
 	let type: NCDBInvType
 	
-	init(type: NCDBInvType, segue: String? = nil, accessoryButtonSegue: String? = nil) {
+	init(type: NCDBInvType, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
 		self.type = type
 		let cellIdentifier = type.dgmppItem?.damage == nil ? "Cell" : "NCChargeTableViewCell"
-		super.init(cellIdentifier: cellIdentifier, segue: segue, accessoryButtonSegue: accessoryButtonSegue)
+		super.init(cellIdentifier: cellIdentifier, route: route, accessoryButtonRoute: accessoryButtonRoute)
 	}
 	
 	override func configure(cell: UITableViewCell) {

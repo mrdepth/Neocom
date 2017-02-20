@@ -58,7 +58,7 @@ class NCAmmoNode: FetchedResultsObjectNode<NCDBInvType> {
 class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
 	var category: NCDBDgmppItemCategory?
-	var completionHandler: ((NCDBInvType) -> Void)!
+	var completionHandler: ((NCFittingAmmoViewController, NCDBInvType) -> Void)!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -90,11 +90,12 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let node = node as? NCAmmoNode else {return}
-		completionHandler(node.object)
+		completionHandler(self, node.object)
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		performSegue(withIdentifier: "NCDatabaseTypeInfoViewController", sender: treeController.cell(for: node))
+		guard let node = node as? NCAmmoNode else {return}
+		Router.Database.TypeInfo(node.object).perform(source: self, view: treeController.cell(for: node))
 	}
 	
 	//MARK: - Navigation

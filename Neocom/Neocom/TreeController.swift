@@ -250,6 +250,11 @@ open class TreeNode: NSObject {
 					parent?.descendantCount = nil
 					
 					if let tableView = treeController?.tableView, let indexPath = indexPath {
+						
+						if let cell = tableView.cellForRow(at: indexPath) as? Expandable {
+							cell.setExpanded(isExpanded, animated: true)
+						}
+						
 						let rows = IndexSet(integersIn: 1...descendantCount).indexPaths(rowsShift: indexPath.row, section: 0)
 						if isExpanded {
 							tableView.insertRows(at: rows, with: .automatic)
@@ -423,9 +428,6 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 		guard let node = rootNode?.node(at: indexPath.row) else {return}
 		if node.isExpandable {
 			node.isExpanded = !node.isExpanded
-			if let cell = tableView.cellForRow(at: indexPath) as? Expandable {
-				cell.setExpanded(node.isExpanded, animated: true)
-			}
 		}
 		
 		delegate?.treeController?(self, didSelectCellWithNode: node)
@@ -491,15 +493,47 @@ class FetchedResultsNode<ResultType: NSFetchRequestResult>: TreeNode, NSFetchedR
 		}
 	}
 	
-	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		if let sectionNode = self.sectionNode {
-			children = resultsController.sections?.map {sectionNode.init(section: $0, objectNode: self.objectNode)}
-		}
-		else {
-			children = resultsController.fetchedObjects?.flatMap {objectNode.init(object: $0)}
+	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		treeController?.tableView.beginUpdates()
+	}
+	
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+		guard let sectionNode = self.sectionNode else {return}
+		switch type {
+		case .insert:
+			children?.insert(sectionNode.init(section: sectionInfo, objectNode: self.objectNode), at: sectionIndex)
+		case .delete:
+			children?.remove(at: sectionIndex)
+		default:
+			break
 		}
 	}
 	
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+		guard self.sectionNode == nil else {return}
+		switch type {
+		case .insert:
+			children?.insert(objectNode.init(object: anObject as! ResultType), at: newIndexPath!.row)
+		case .delete:
+			children?.remove(at: indexPath!.row)
+		case .move:
+			children?.remove(at: indexPath!.row)
+			children?.insert(objectNode.init(object: anObject as! ResultType), at: newIndexPath!.row)
+		case .update:
+			children?[newIndexPath!.row] = objectNode.init(object: anObject as! ResultType)
+		}
+	}
+
+	
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		treeController?.tableView.endUpdates()
+//		if let sectionNode = self.sectionNode {
+//			children = resultsController.sections?.map {sectionNode.init(section: $0, objectNode: self.objectNode)}
+//		}
+//		else {
+//			children = resultsController.fetchedObjects?.flatMap {objectNode.init(object: $0)}
+//		}
+	}
 }
 
 class FetchedResultsSectionNode<ResultType: NSFetchRequestResult> : TreeNode {

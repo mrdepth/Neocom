@@ -10,6 +10,11 @@ import UIKit
 
 class NCDamagePatternEditTableViewCell: NCTextFieldTableViewCell {
 	@IBOutlet weak var pickerView: UIPickerView?
+	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+//		self.backgroundColor = .background
+	}
 }
 
 class NCDamagePatternEditRow: TreeRow, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -51,8 +56,12 @@ class NCDamagePatternEditRow: TreeRow, UIPickerViewDataSource, UIPickerViewDeleg
 	}
 	
 	func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+		let v = [damagePattern.em, damagePattern.thermal, damagePattern.kinetic, damagePattern.explosive].map({Int(round($0 * 100))})
+		let t = v[0] + v[1] + v[2] + v[3]
+		return v[component] + (101 - t)
+//		let s = Int(round(damagePattern.em * 100)
 		
-		return 101
+//		return 101
 	}
 	
 	//MARK: - UIPickerViewDelegate
@@ -75,6 +84,8 @@ class NCDamagePatternEditRow: TreeRow, UIPickerViewDataSource, UIPickerViewDeleg
 		case .explosive:
 			damagePattern.explosive = value
 		}
+		pickerView.reloadAllComponents()
+
 	}
 	
 	func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {

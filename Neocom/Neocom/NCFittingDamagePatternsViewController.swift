@@ -25,7 +25,7 @@ class NCFittingDamagePatternInfoRow: NCFittingDamagePatternRow {
 
 class NCAddDamagePatternRow: DefaultTreeRow {
 	init() {
-		super.init(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Add Damage Pattern", comment: ""))
+		super.init(cellIdentifier: "NCActionTableViewCell", title: NSLocalizedString("Add Damage Pattern", comment: ""))
 	}
 }
 
@@ -72,6 +72,11 @@ class NCCustomDamagePatternsSection: FetchedResultsNode<NCDamagePattern> {
 			cell.object = self
 			cell.titleLabel?.text = NSLocalizedString("Custom", comment: "").uppercased()
 		}
+	}
+	
+	override func lazyLoad() {
+		super.lazyLoad()
+		children?.append(NCAddDamagePatternRow())
 	}
 	
 	override var isExpandable: Bool {
@@ -168,6 +173,7 @@ class NCCustomDamagePatternRow: FetchedResultsObjectNode<NCDamagePattern> {
 		}
 		else if let cell = cell as? NCTextFieldTableViewCell {
 			let textField = cell.textField
+//			cell.backgroundColor = .background
 			textField?.text = editingObject?.name
 			handler = NCActionHandler(cell.textField, for: .editingChanged, handler: { [weak self] _ in
 				self?.editingObject?.name = textField?.text
@@ -202,9 +208,15 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		
 		var sections = [TreeNode]()
 		
+		
+		sections.append(DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "criminal"), title: NSLocalizedString("Select NPC Type", comment: ""), accessoryType: .disclosureIndicator, segue: ""))
+		
 		if let managedObjectContext = self.managedObjectContext {
 			sections.append(NCCustomDamagePatternsSection(managedObjectContext: managedObjectContext))
 		}
+		
+		//sections.append(NCAddDamagePatternRow())
+		
 		sections.append(NCPredefinedDamagePatternsSection())
 		
 		let root = TreeNode()
@@ -214,7 +226,12 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 	}
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
-		guard isEditing != editing else {return}
+		super.setEditing(editing, animated: animated)
+		if !editing {
+			try? managedObjectContext?.save()
+			try? managedObjectContext?.parent?.save()
+		}
+		/*guard isEditing != editing else {return}
 		super.setEditing(editing, animated: animated)
 		guard let i = treeController.rootNode?.children?.index(where: {$0 is NCCustomDamagePatternsSection}) else {return}
 		if editing {
@@ -228,7 +245,7 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 			try? managedObjectContext?.save()
 			try? managedObjectContext?.parent?.save()
 			treeController.rootNode?.children?.remove(at: i + 1)
-		}
+		}*/
 	}
 	
 	@IBAction func onDone(_ sender: UIButton) {
@@ -258,6 +275,9 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 				}
 				guard let cell = treeController.cell(for: node) as? NCTextFieldTableViewCell else {return}
 				cell.textField.becomeFirstResponder()
+				if let indexPath = tableView.indexPath(for: cell) {
+					tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+				}
 			case is NCAddDamagePatternRow:
 				addDamagePattern()
 //			case let node as NCFittingDamagePatternInfoRow:
@@ -283,8 +303,8 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 	
 	func treeController(_ treeController: TreeController, editingStyleForNode node: TreeNode) -> UITableViewCellEditingStyle {
 		switch node {
-		case is NCAddDamagePatternRow:
-			return .insert
+//		case is NCAddDamagePatternRow:
+//			return .insert
 		case is NCCustomDamagePatternRow, is NCFittingDamagePatternInfoRow:
 			return .delete
 		default:
@@ -318,6 +338,7 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 			guard let pattern = (node as? NCCustomDamagePatternRow)?.object else {return}
 			managedObjectContext.delete(pattern)
 			try? managedObjectContext.save()
+			try? managedObjectContext.parent?.save()
 		default:
 			break
 		}
@@ -360,6 +381,10 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		try? managedObjectContext.save()
 		
 		let section = treeController.rootNode?.children?.first(where: {$0 is NCCustomDamagePatternsSection})
+		if section?.isExpanded == false {
+			section?.isExpanded = true
+		}
+		
 		if let node = section?.children?.first(where: {($0 as? NCCustomDamagePatternRow)?.object == pattern}) as? NCCustomDamagePatternRow {
 			node.isEditing = true
 			treeController.reloadCells(for: [node])

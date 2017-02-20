@@ -9303,7 +9303,7 @@ Label</string>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCDamageTypeTableViewCell" rowHeight="58" id="brA-36-Yoy" customClass="NCDamageTypeTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="56" width="320" height="58"/>
+                                <rect key="frame" x="0.0" y="55.5" width="320" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="brA-36-Yoy" id="cVM-mG-01F">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="57.5"/>
@@ -9486,7 +9486,7 @@ Label</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCHeaderTableViewCell" rowHeight="40" id="Maf-vv-JNr" customClass="NCHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="114" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="113.5" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Maf-vv-JNr" id="9t5-dn-5gg">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
@@ -9518,20 +9518,20 @@ Label</string>
                                     <outlet property="titleLabel" destination="5hI-qA-5Jo" id="EmC-Qh-kOG"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCDefaultTableViewCell" rowHeight="40" id="s3P-W2-HCc" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="154" width="320" height="40"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCActionTableViewCell" rowHeight="40" id="s3P-W2-HCc" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="153.5" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s3P-W2-HCc" id="X2l-2N-KqP">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="z8l-gs-xqn">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="z8l-gs-xqn">
                                             <rect key="frame" x="15" y="2.5" width="290" height="32"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="32" id="VSO-vu-IIX"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -9547,8 +9547,49 @@ Label</string>
                                     <outlet property="titleLabel" destination="z8l-gs-xqn" id="KKZ-1y-M11"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="NCDefaultTableViewCell" rowHeight="40" id="hv9-F3-4Ce" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="193.5" width="320" height="40"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hv9-F3-4Ce" id="nTM-Vj-10c">
+                                    <rect key="frame" x="0.0" y="0.0" width="273" height="39.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XW6-w5-JjF">
+                                            <rect key="frame" x="15" y="4" width="32" height="32"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="32" id="V7n-x4-vkr"/>
+                                                <constraint firstAttribute="height" constant="32" id="sPq-TA-dwN"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8nf-D4-82u">
+                                            <rect key="frame" x="55" y="11" width="38" height="18"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8nf-D4-82u" secondAttribute="trailing" constant="15" id="Ajp-XQ-Hol"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="8nf-D4-82u" secondAttribute="bottom" constant="2" id="SGa-G3-uLC"/>
+                                        <constraint firstItem="XW6-w5-JjF" firstAttribute="leading" secondItem="nTM-Vj-10c" secondAttribute="leading" constant="15" id="WR4-6a-6fE"/>
+                                        <constraint firstItem="XW6-w5-JjF" firstAttribute="top" secondItem="nTM-Vj-10c" secondAttribute="top" constant="4" id="fzG-lJ-FYn"/>
+                                        <constraint firstItem="8nf-D4-82u" firstAttribute="centerY" secondItem="nTM-Vj-10c" secondAttribute="centerY" id="lxr-Dm-0Rj"/>
+                                        <constraint firstAttribute="bottom" secondItem="XW6-w5-JjF" secondAttribute="bottom" priority="999" constant="4" id="rKK-Vu-ySR"/>
+                                        <constraint firstItem="8nf-D4-82u" firstAttribute="top" relation="greaterThanOrEqual" secondItem="nTM-Vj-10c" secondAttribute="top" constant="2" id="uY5-Uq-bgS"/>
+                                        <constraint firstItem="8nf-D4-82u" firstAttribute="leading" secondItem="XW6-w5-JjF" secondAttribute="trailing" constant="8" id="xWh-ij-uMX"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8nf-D4-82u" secondAttribute="trailing" constant="15" id="Ezo-v5-dJd"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="iconView" destination="XW6-w5-JjF" id="xb7-IH-qU0"/>
+                                    <outlet property="titleLabel" destination="8nf-D4-82u" id="dTs-YI-8fV"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCTextFieldTableViewCell" id="4vZ-2I-MXv" customClass="NCTextFieldTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="194" width="320" height="42"/>
+                                <rect key="frame" x="0.0" y="233.5" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4vZ-2I-MXv" id="gOo-bA-yoJ">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="41.5"/>
@@ -9594,7 +9635,7 @@ Label</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCDamagePatternEditTableViewCell" rowHeight="216" id="r9V-5B-3eP" customClass="NCDamagePatternEditTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="236" width="320" height="216"/>
+                                <rect key="frame" x="0.0" y="275.5" width="320" height="216"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="r9V-5B-3eP" id="pPK-Br-YTG">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="215.5"/>
@@ -9686,10 +9727,10 @@ Label</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="1uk-Gc-c1m"/>
-        <segue reference="xQR-aS-ZtW"/>
         <segue reference="934-eu-ds2"/>
         <segue reference="Rwd-a3-YNu"/>
-        <segue reference="OB3-EU-dAb"/>
+        <segue reference="tAs-Rt-3LJ"/>
+        <segue reference="Sa7-gn-Cp3"/>
         <segue reference="NgW-vJ-ZCI"/>
     </inferredMetricsTieBreakers>
 </document>

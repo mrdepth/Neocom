@@ -20,7 +20,7 @@ class NCImplantRow: TreeRow {
 	init(implant: NCFittingImplant) {
 		self.implant = implant
 		self.slot = nil
-		super.init(cellIdentifier: "NCDefaultTableViewCell")
+		super.init(cellIdentifier: "NCDefaultTableViewCell", accessoryButtonRoute: Router.Database.TypeInfo(implant.typeID))
 	}
 	
 	init(dummySlot: Int) {
@@ -64,7 +64,7 @@ class NCBoosterRow: TreeRow {
 	init(booster: NCFittingBooster) {
 		self.booster = booster
 		self.slot = nil
-		super.init(cellIdentifier: "NCDefaultTableViewCell")
+		super.init(cellIdentifier: "NCDefaultTableViewCell", accessoryButtonRoute: Router.Database.TypeInfo(booster.typeID))
 	}
 	
 	init(dummySlot: Int) {
@@ -174,6 +174,12 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 				present(typePickerViewController, animated: true)
 			}
 		}
+	}
+	
+	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+		guard let route = (node as? TreeRow)?.accessoryButtonRoute else {return}
+		
+		route.perform(source: self, view: treeController.cell(for: node))
 	}
 	
 	//MARK: - Private

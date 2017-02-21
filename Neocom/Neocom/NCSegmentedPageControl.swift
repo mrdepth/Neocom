@@ -37,6 +37,15 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 		}
 	}
 	
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+		tintColor = .caption
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+	}
+	
 	private lazy var contentView: UIScrollView = {
 		let contentView = UIScrollView(frame: self.bounds)
 		contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]

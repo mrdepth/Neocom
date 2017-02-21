@@ -122,6 +122,23 @@ struct Router {
 	
 	struct Fitting {
 		
+		class Editor: Route {
+			let fleet: NCFittingFleet
+			let engine: NCFittingEngine
+			
+			init(fleet: NCFittingFleet, engine: NCFittingEngine) {
+				self.fleet = fleet
+				self.engine = engine
+				super.init(kind: .push, identifier: "NCShipFittingViewController")
+			}
+			
+			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+				let destination = destination as! NCShipFittingViewController
+				destination.fleet = fleet
+				destination.engine = engine
+			}
+		}
+		
 		class Ammo: Route {
 			let category: NCDBDgmppItemCategory
 			let completionHandler: (NCFittingAmmoViewController, NCDBInvType) -> Void

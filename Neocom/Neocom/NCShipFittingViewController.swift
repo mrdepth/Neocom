@@ -17,7 +17,7 @@ class NCShipFittingViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		engine = NCFittingEngine()
+		/*engine = NCFittingEngine()
 		engine?.performBlockAndWait {
 			self.fleet = NCFittingFleet(typeID: 645, engine: self.engine!)
 			let pilot = self.fleet?.active
@@ -32,7 +32,7 @@ class NCShipFittingViewController: UIViewController {
 			for _ in 0..<5 {
 				_ = ship?.addDrone(typeID: 2446)
 			}
-		}
+		}*/
 		
 		observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
 			self?.isModified = true

@@ -261,6 +261,8 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 		guard let pilot = fleet?.active else {return}
 		//guard let ship = ship else {return}
 		guard let typePickerViewController = typePickerViewController else {return}
+		let socket = (node.parent as? NCFittingModuleSection)?.grouped == true ? -1 : node.parent?.children?.index(of: item) ?? -1
+		
 		let module = item.modules.first
 		if module?.isDummy == true {
 			let category: NCDBDgmppItemCategory?
@@ -282,7 +284,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 			typePickerViewController.completionHandler = { [weak typePickerViewController] type in
 				let typeID = Int(type.typeID)
 				self.engine?.perform {
-					_ = pilot.ship?.addModule(typeID: typeID)
+					_ = pilot.ship?.addModule(typeID: typeID, socket: socket)
 				}
 				typePickerViewController?.dismiss(animated: true)
 			}

@@ -86,13 +86,15 @@ class NCFittingMenuViewController: UITableViewController, NCTreeControllerDelega
 			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController else {return}
 			controller.category = NCDBDgmppItemCategory.category(categoryID: row.object as! NCDBDgmppItemCategoryID)
 			controller.completionHandler = { [weak self] (type) in
+				guard let strongSelf = self else {return}
+				strongSelf.dismiss(animated: true)
+
 				let engine = NCFittingEngine()
 				let typeID = Int(type.typeID)
 				engine.perform {
 					let fleet = NCFittingFleet(typeID: typeID, engine: engine)
 					DispatchQueue.main.async {
-						self?.dismiss(animated: true)
-						self?.performSegue(withIdentifier: "NCShipFittingViewController", sender: (engine, fleet))
+						Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf, view: cell)
 					}
 				}
 			}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VKg-85-fZw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -3892,7 +3892,7 @@
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCDefaultTableViewCell" id="an9-zh-uaH" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="320" height="41"/>
+                                <rect key="frame" x="0.0" y="56" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="an9-zh-uaH" id="8lq-CO-hzd">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40.5"/>
@@ -3953,7 +3953,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCHeaderTableViewCell" rowHeight="40" id="DPs-bE-ANg" customClass="NCHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="96.5" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="97" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DPs-bE-ANg" id="heJ-Ms-uN7">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
@@ -3994,17 +3994,17 @@
                     <navigationItem key="navigationItem" id="4u0-qD-hlY">
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="82M-Z8-va9">
-                            <rect key="frame" x="80" y="7" width="160" height="30"/>
+                            <rect key="frame" x="42" y="7" width="236" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="Ships"/>
                                 <segment title="Structures"/>
+                                <segment title="Fleets"/>
                             </segments>
                         </segmentedControl>
                     </navigationItem>
                     <connections>
                         <outlet property="treeController" destination="4Qj-mG-w8h" id="ejS-Na-uru"/>
-                        <segue destination="ASK-Tv-kZO" kind="show" identifier="NCShipFittingViewController" id="Wh2-sH-Ikt"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zmq-fG-3fz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4015,12 +4015,12 @@
                     </connections>
                 </customObject>
             </objects>
-            <point key="canvasLocation" x="619" y="3075"/>
+            <point key="canvasLocation" x="621" y="3075"/>
         </scene>
         <!--Ship Fitting View Controller-->
         <scene sceneID="TDQ-Kl-iTl">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="ASK-Tv-kZO" customClass="NCShipFittingViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCShipFittingViewController" automaticallyAdjustsScrollViewInsets="NO" id="ASK-Tv-kZO" customClass="NCShipFittingViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="43c-Lu-rU0"/>
                         <viewControllerLayoutGuide type="bottom" id="bK5-Qi-tf7"/>
@@ -5191,9 +5191,6 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="treeController" destination="MZy-0f-5uu" id="VJc-NJ-QWi"/>
-                        <segue destination="JbH-Km-dUZ" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="Rwd-a3-YNu"/>
-                        <segue destination="IQs-G0-iFu" kind="custom" identifier="NCFittingAmmoViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="ff8-za-LHg"/>
-                        <segue destination="u2R-0g-2ic" kind="custom" identifier="NCFittingVariationsViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="934-eu-ds2"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E3E-HO-Vo4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5230,12 +5227,31 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="eQN-sQ-qzr" kind="relationship" relationship="rootViewController" id="sFv-Z9-CPZ"/>
+                        <segue destination="ZIk-q8-6Uo" kind="relationship" relationship="rootViewController" id="v7N-MX-NaR"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yvx-At-5gg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-109" y="3075"/>
+            <point key="canvasLocation" x="-821" y="3075"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="3Md-7m-zu6">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="ZIk-q8-6Uo" customClass="NCPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="XD9-rt-hix"/>
+                        <viewControllerLayoutGuide type="bottom" id="X0X-p2-QaU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Hj4-p7-Pu0" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="8fy-hD-In3"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bZ1-id-RpR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-138.75" y="3067.605633802817"/>
         </scene>
         <!--Type Picker-->
         <scene sceneID="I3Q-tU-Y1w">
@@ -5800,7 +5816,6 @@
                     <navigationItem key="navigationItem" title="Ammo" id="wqZ-s9-Btc"/>
                     <connections>
                         <outlet property="treeController" destination="Vom-lb-hlb" id="tJj-qe-RTs"/>
-                        <segue destination="JbH-Km-dUZ" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="sI4-wZ-ljQ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V71-7J-eFW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5901,7 +5916,6 @@
                     <navigationItem key="navigationItem" title="Variations" id="V98-0f-5wq"/>
                     <connections>
                         <outlet property="treeController" destination="ZLH-85-dn4" id="Q1D-eG-vvv"/>
-                        <segue destination="e4d-ID-zH6" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="w8S-cj-0TJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xKD-qO-9LV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -6229,7 +6243,6 @@
                         <outlet property="dronesCountLabel" destination="ulm-fq-hhX" id="Tvg-Vh-zUF"/>
                         <outlet property="tableView" destination="Wkk-wO-nl8" id="LjC-0c-3fv"/>
                         <outlet property="treeController" destination="Tr9-Kg-u6B" id="ULE-5Z-MNq"/>
-                        <segue destination="FhH-9q-LAS" kind="custom" identifier="NCFittingDroneActionsViewController" customClass="NCSheetSegue" customModule="Neocom" customModuleProvider="target" id="3Bw-GN-Nsy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Kt-Xn-Dbc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -6241,26 +6254,10 @@
             </objects>
             <point key="canvasLocation" x="2192" y="3818"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="ILH-BX-Fvq">
-            <objects>
-                <navigationController id="FhH-9q-LAS" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ulX-Gh-Bbc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="4sE-5K-cZE" kind="relationship" relationship="rootViewController" id="36k-Q6-3VW"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Qgg-aP-Dam" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2946" y="3867"/>
-        </scene>
         <!--Drone-->
         <scene sceneID="Ge1-Jz-o4L">
             <objects>
-                <tableViewController id="4sE-5K-cZE" customClass="NCFittingDroneActionsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCFittingDroneActionsViewController" id="4sE-5K-cZE" customClass="NCFittingDroneActionsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="o1W-od-14O" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -6582,10 +6579,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="treeController" destination="D3M-rR-tL6" id="wmc-B3-7JK"/>
-                        <segue destination="u2R-0g-2ic" kind="custom" identifier="NCFittingVariationsViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="HP2-h8-oIC"/>
-                        <segue destination="e4d-ID-zH6" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="xQR-aS-ZtW"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dRN-uM-qcu" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -6595,7 +6591,7 @@
                     </connections>
                 </customObject>
             </objects>
-            <point key="canvasLocation" x="3653" y="3867"/>
+            <point key="canvasLocation" x="3653" y="3852"/>
         </scene>
         <!--Fitting Stats View Controller-->
         <scene sceneID="F4I-EB-kM7">
@@ -9138,9 +9134,6 @@ Label</string>
                     </navigationItem>
                     <connections>
                         <outlet property="treeController" destination="734-hn-MGy" id="9nZ-kg-n2e"/>
-                        <segue destination="4jC-kN-XYT" kind="custom" identifier="NCFittingAreaEffectsViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="zyv-1w-QFF"/>
-                        <segue destination="e4d-ID-zH6" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="tAs-Rt-3LJ"/>
-                        <segue destination="lis-mY-tqT" kind="custom" identifier="NCFittingDamagePatternsViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="Sa7-gn-Cp3"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ado-9K-rJj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -9155,7 +9148,7 @@ Label</string>
         <!--Area Effects-->
         <scene sceneID="wZB-V6-OrC">
             <objects>
-                <tableViewController id="4jC-kN-XYT" customClass="NCFittingAreaEffectsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCFittingAreaEffectsViewController" id="4jC-kN-XYT" customClass="NCFittingAreaEffectsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="mQr-2d-dSy" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -9241,7 +9234,6 @@ Label</string>
                     <navigationItem key="navigationItem" title="Area Effects" id="XCb-c5-KQ0"/>
                     <connections>
                         <outlet property="treeController" destination="OpN-4P-pAr" id="wZc-fW-D70"/>
-                        <segue destination="e4d-ID-zH6" kind="custom" identifier="NCDatabaseTypeInfoViewController" customClass="NCAdaptiveSegue" customModule="Neocom" customModuleProvider="target" id="JnQ-RO-1Yz"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gf1-Yb-CFL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -9252,14 +9244,6 @@ Label</string>
                 </customObject>
             </objects>
             <point key="canvasLocation" x="4410" y="4627"/>
-        </scene>
-        <!--NCDatabaseTypeInfoViewController-->
-        <scene sceneID="jeD-aE-aSl">
-            <objects>
-                <viewControllerPlaceholder referencedIdentifier="NCDatabaseTypeInfoViewController" id="e4d-ID-zH6" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HG3-kQ-MDk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5767" y="4138"/>
         </scene>
         <!--Damage Patterns-->
         <scene sceneID="Ba1-RM-o3h">
@@ -9694,10 +9678,7 @@ Label</string>
         <image name="warpSpeed" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="tAs-Rt-3LJ"/>
-        <segue reference="1uk-Gc-c1m"/>
-        <segue reference="934-eu-ds2"/>
-        <segue reference="Rwd-a3-YNu"/>
         <segue reference="NgW-vJ-ZCI"/>
+        <segue reference="eUO-EC-Ai8"/>
     </inferredMetricsTieBreakers>
 </document>

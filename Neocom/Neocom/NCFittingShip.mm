@@ -88,6 +88,10 @@
 	return [self addModuleWithTypeID:typeID forced:false socket:-1];
 }
 
+- (nullable NCFittingModule*) addModuleWithTypeID:(NSInteger) typeID socket:(NSInteger) socket {
+	return [self addModuleWithTypeID:typeID forced:false socket:socket];
+}
+
 - (nullable NCFittingModule*) addModuleWithTypeID:(NSInteger) typeID forced:(BOOL) forced socket:(NSInteger) socket {
 	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);

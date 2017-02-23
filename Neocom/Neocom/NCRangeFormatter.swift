@@ -28,9 +28,9 @@ class NCRangeFormatter: Formatter {
 	
 	required init?(coder aDecoder: NSCoder) {
 		//self.unit = NCUnitFormatter.Unit(rawValue: aDecoder.decodeInteger(forKey: "unit")) ?? .none
-		self.unit = .none
-		self.style = NCUnitFormatter.Style(rawValue: aDecoder.decodeInteger(forKey: "style")) ?? .full
-		self.useSIPrefix = aDecoder.decodeObject(forKey: "useSIPrefix") as? Bool
+		unit = .none
+		style = NCUnitFormatter.Style(rawValue: aDecoder.decodeInteger(forKey: "style")) ?? .full
+		useSIPrefix = aDecoder.containsValue(forKey: "useSIPrefix") ? aDecoder.decodeBool(forKey: "useSIPrefix") : nil
 		super.init(coder: aDecoder)
 	}
 	

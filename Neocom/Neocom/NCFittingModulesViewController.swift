@@ -207,15 +207,15 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 	@IBOutlet weak var launchersLabel: UILabel!
 	
 	var engine: NCFittingEngine? {
-		return (parent as? NCShipFittingViewController)?.engine
+		return (parent as? NCFittingEditorViewController)?.engine
 	}
 	
 	var fleet: NCFittingFleet? {
-		return (parent as? NCShipFittingViewController)?.fleet
+		return (parent as? NCFittingEditorViewController)?.fleet
 	}
 	
 	var typePickerViewController: NCTypePickerViewController? {
-		return (parent as? NCShipFittingViewController)?.typePickerViewController
+		return (parent as? NCFittingEditorViewController)?.typePickerViewController
 	}
 	
 	var grouping = [NCFittingModuleSlot: Bool]()
@@ -281,7 +281,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 				return
 			}
 			typePickerViewController.category = category
-			typePickerViewController.completionHandler = { [weak typePickerViewController] type in
+			typePickerViewController.completionHandler = { [weak typePickerViewController] (_, type) in
 				let typeID = Int(type.typeID)
 				self.engine?.perform {
 					_ = pilot.ship?.addModule(typeID: typeID, socket: socket)

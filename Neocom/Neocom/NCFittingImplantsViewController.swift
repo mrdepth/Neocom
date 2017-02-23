@@ -102,15 +102,15 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 	@IBOutlet weak var treeController: TreeController!
 	
 	var engine: NCFittingEngine? {
-		return (parent as? NCShipFittingViewController)?.engine
+		return (parent as? NCFittingEditorViewController)?.engine
 	}
 	
 	var fleet: NCFittingFleet? {
-		return (parent as? NCShipFittingViewController)?.fleet
+		return (parent as? NCFittingEditorViewController)?.fleet
 	}
 	
 	var typePickerViewController: NCTypePickerViewController? {
-		return (parent as? NCShipFittingViewController)?.typePickerViewController
+		return (parent as? NCFittingEditorViewController)?.typePickerViewController
 	}
 
 	
@@ -147,7 +147,7 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 				let category = NCDBDgmppItemCategory.category(categoryID: .implant, subcategory: slot)
 				
 				typePickerViewController.category = category
-				typePickerViewController.completionHandler = { [weak typePickerViewController] type in
+				typePickerViewController.completionHandler = { [weak typePickerViewController] (_, type) in
 					let typeID = Int(type.typeID)
 					self.engine?.perform {
 						pilot.addImplant(typeID: typeID)
@@ -164,7 +164,7 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 				let category = NCDBDgmppItemCategory.category(categoryID: .booster, subcategory: slot)
 				
 				typePickerViewController.category = category
-				typePickerViewController.completionHandler = { [weak typePickerViewController] type in
+				typePickerViewController.completionHandler = { [weak typePickerViewController] (_, type) in
 					let typeID = Int(type.typeID)
 					self.engine?.perform {
 						pilot.addBooster(typeID: typeID)

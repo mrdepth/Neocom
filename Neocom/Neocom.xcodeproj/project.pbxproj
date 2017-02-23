@@ -40,7 +40,7 @@
 		12424E191E489C16002DFE08 /* NCFittingSlotHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E181E489C16002DFE08 /* NCFittingSlotHeaderTableViewCell.swift */; };
 		12424E1B1E48C9F3002DFE08 /* NCFittingDronesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E1A1E48C9F3002DFE08 /* NCFittingDronesViewController.swift */; };
 		12424E3E1E3642430078AB0F /* NCFittingFleet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E3D1E3642430078AB0F /* NCFittingFleet.swift */; };
-		12424E421E3651DC0078AB0F /* NCShipFittingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E411E3651DC0078AB0F /* NCShipFittingViewController.swift */; };
+		12424E421E3651DC0078AB0F /* NCFittingEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E411E3651DC0078AB0F /* NCFittingEditorViewController.swift */; };
 		1243DC1F1E0BDE1700F00B9A /* NCMarketHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */; };
 		1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE331DF1C38200A2A24B /* NCStorage.swift */; };
 		1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */; };
@@ -166,6 +166,7 @@
 		12E314BC1E165D5D000A926D /* UIView+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E314BB1E165D5D000A926D /* UIView+NC.swift */; };
 		12EFE7EC1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EFE7EB1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift */; };
 		12EFE7F61E40C840007BF69B /* NCSheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EFE7F51E40C840007BF69B /* NCSheetPresentationController.swift */; };
+		12F8FF9F1E5DBC58008F79D5 /* NCFittingShipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */; };
 		12FC3CC81E13F4A400B7744E /* NCDatabaseCertificateMasteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FC3CC71E13F4A400B7744E /* NCDatabaseCertificateMasteryViewController.swift */; };
 		12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */; };
 		12FF4D401E33A5DB00A8BAD4 /* NCResourceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */; };
@@ -254,7 +255,7 @@
 		12424E181E489C16002DFE08 /* NCFittingSlotHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingSlotHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		12424E1A1E48C9F3002DFE08 /* NCFittingDronesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingDronesViewController.swift; sourceTree = "<group>"; };
 		12424E3D1E3642430078AB0F /* NCFittingFleet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingFleet.swift; sourceTree = "<group>"; };
-		12424E411E3651DC0078AB0F /* NCShipFittingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCShipFittingViewController.swift; sourceTree = "<group>"; };
+		12424E411E3651DC0078AB0F /* NCFittingEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingEditorViewController.swift; sourceTree = "<group>"; };
 		1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketHistoryView.swift; sourceTree = "<group>"; };
 		1256BE331DF1C38200A2A24B /* NCStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorage.swift; sourceTree = "<group>"; };
 		1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorageExtensions.swift; sourceTree = "<group>"; };
@@ -398,6 +399,7 @@
 		12E314BB1E165D5D000A926D /* UIView+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+NC.swift"; sourceTree = "<group>"; };
 		12EFE7EB1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleActionsViewController.swift; sourceTree = "<group>"; };
 		12EFE7F51E40C840007BF69B /* NCSheetPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSheetPresentationController.swift; sourceTree = "<group>"; };
+		12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingShipsViewController.swift; sourceTree = "<group>"; };
 		12FC3CC71E13F4A400B7744E /* NCDatabaseCertificateMasteryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateMasteryViewController.swift; sourceTree = "<group>"; };
 		12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerRecentViewController.swift; sourceTree = "<group>"; };
 		12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCResourceLabel.swift; sourceTree = "<group>"; };
@@ -737,7 +739,8 @@
 				12DBEA321E1D36D40088A486 /* Engine */,
 				121D10B31E265D4600DD671B /* Loadouts */,
 				12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */,
-				12424E411E3651DC0078AB0F /* NCShipFittingViewController.swift */,
+				12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */,
+				12424E411E3651DC0078AB0F /* NCFittingEditorViewController.swift */,
 				1291194A1E3918CC00870428 /* NCFittingModulesViewController.swift */,
 				12424E1A1E48C9F3002DFE08 /* NCFittingDronesViewController.swift */,
 				12DACE5A1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift */,
@@ -1055,8 +1058,9 @@
 				1230A32B1DFFE2CF00627D92 /* NCDatabaseTypesViewController.swift in Sources */,
 				12AC8DE21DF0B5F200561A7A /* Dark.clr in Sources */,
 				1230A3291DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift in Sources */,
+				12F8FF9F1E5DBC58008F79D5 /* NCFittingShipsViewController.swift in Sources */,
 				12E314BC1E165D5D000A926D /* UIView+NC.swift in Sources */,
-				12424E421E3651DC0078AB0F /* NCShipFittingViewController.swift in Sources */,
+				12424E421E3651DC0078AB0F /* NCFittingEditorViewController.swift in Sources */,
 				129B31701E5439A100B9A88D /* NCTextFieldTableViewCell.swift in Sources */,
 				12DACE5B1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift in Sources */,
 			);

@@ -37,7 +37,7 @@ class NCTypePickerViewController: UINavigationController {
 	}
 	
 	var type: NCDBInvType?
-	var completionHandler: ((NCDBInvType) -> Void)!
+	var completionHandler: ((NCTypePickerViewController, NCDBInvType) -> Void)!
 	var groupsViewController: NCTypePickerGroupsViewController? {
 		return self.viewControllers.first?.childViewControllers.first(where: {return $0 is NCTypePickerGroupsViewController}) as? NCTypePickerGroupsViewController
 	}

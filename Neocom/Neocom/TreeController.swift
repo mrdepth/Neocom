@@ -132,11 +132,11 @@ open class TreeNode: NSObject {
 			descendantCount = nil
 			if !disableTransitions, let from = from {
 				performTransition(from: from)
-				if let tableView = treeController?.tableView, let indexPath = self.indexPath, indexPath.row >= 0 {
+//				if let tableView = treeController?.tableView, let indexPath = self.indexPath, indexPath.row >= 0 {
 //					if self.changed(from: self) {
 //						tableView.reloadRows(at: [indexPath], with: .fade)
 //					}
-				}
+//				}
 			}
 			from = nil
 		}
@@ -205,10 +205,8 @@ open class TreeNode: NSObject {
 			return _descendantCount!
 		}
 		set {
-			if isExpanded {
-				if newValue == nil {
-					{parent?.descendantCount = nil} ()
-				}
+			if isExpanded && newValue == nil {
+				{parent?.descendantCount = nil} ()
 			}
 			_descendantCount = newValue
 		}
@@ -233,10 +231,6 @@ open class TreeNode: NSObject {
 		return .dontReload
 	}
 
-//	open func changed(from: TreeNode) -> Bool {
-//		return isExpanded != from.isExpanded
-//	}
-	
 	open var isExpanded: Bool = true {
 		didSet {
 			if children == nil {
@@ -246,7 +240,6 @@ open class TreeNode: NSObject {
 			}
 			else {
 				if oldValue != isExpanded {
-					//parent?.descendantCount += isExpanded ? descendantCount : -descendantCount
 					parent?.descendantCount = nil
 					
 					if let tableView = treeController?.tableView, let indexPath = indexPath {

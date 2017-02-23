@@ -10,13 +10,20 @@ import UIKit
 
 class NCFittingLoadoutItem: NSObject, NSCoding {
 	let typeID: Int
-	let count: Int
-	let identifier: String
+	var count: Int
+	let identifier: String?
+	
+	init(item: NCFittingItem, count: Int = 1) {
+		self.typeID = item.typeID
+		self.count = count
+		self.identifier = item.identifier
+		super.init()
+	}
 	
 	required init?(coder aDecoder: NSCoder) {
 		typeID = aDecoder.decodeInteger(forKey: "typeID")
-		count = aDecoder.decodeObject(forKey: "count") as? Int ?? 1
-		identifier = (aDecoder.decodeObject(forKey: "identifier") as? String) ?? UUID().uuidString
+		count = aDecoder.containsValue(forKey: "count") ? aDecoder.decodeInteger(forKey: "count") : 1
+		identifier = (aDecoder.decodeObject(forKey: "identifier") as? String)
 		super.init()
 	}
 	
@@ -40,10 +47,24 @@ class NCFittingLoadoutItem: NSObject, NSCoding {
 class NCFittingLoadoutModule: NCFittingLoadoutItem {
 	let state: NCFittingModuleState
 	let charge: NCFittingLoadoutItem?
+	let socket: Int
+	
+	init(module: NCFittingModule) {
+		state = module.preferredState
+		if let charge = module.charge {
+			self.charge = NCFittingLoadoutItem(item: charge)
+		}
+		else {
+			self.charge = nil
+		}
+		socket = module.socket
+		super.init(item: module)
+	}
 	
 	required init?(coder aDecoder: NSCoder) {
 		state = NCFittingModuleState(rawValue: aDecoder.decodeInteger(forKey: "state")) ?? .unknown
 		charge = aDecoder.decodeObject(forKey: "charge") as? NCFittingLoadoutItem
+		socket = aDecoder.containsValue(forKey: "socket") ? aDecoder.decodeInteger(forKey: "socket") : -1
 		super.init(coder: aDecoder)
 	}
 	
@@ -51,6 +72,7 @@ class NCFittingLoadoutModule: NCFittingLoadoutItem {
 		super.encode(with: aCoder)
 		aCoder.encode(state.rawValue, forKey: "state")
 		aCoder.encode(charge, forKey: "charge")
+		aCoder.encode(socket, forKey: "socket")
 	}
 
 	override var hashValue: Int {
@@ -60,9 +82,17 @@ class NCFittingLoadoutModule: NCFittingLoadoutItem {
 
 class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 	let isActive: Bool
+	let squadronTag: Int
 	
+	init(drone: NCFittingDrone) {
+		self.isActive = drone.isActive
+		self.squadronTag = drone.squadronTag
+		super.init(item: drone)
+	}
+
 	required init?(coder aDecoder: NSCoder) {
-		isActive = aDecoder.decodeObject(forKey: "isActive") as? Bool ?? true
+		isActive = aDecoder.containsValue(forKey: "isActive") ? aDecoder.decodeBool(forKey: "isActive") : true
+		squadronTag = aDecoder.containsValue(forKey: "squadronTag") ? aDecoder.decodeInteger(forKey: "squadronTag") : -1
 		super.init(coder: aDecoder)
 	}
 	
@@ -71,6 +101,7 @@ class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 		if !isActive {
 			aCoder.encode(isActive, forKey: "isActive")
 		}
+		aCoder.encode(squadronTag, forKey: "squadronTag")
 	}
 
 	override var hashValue: Int {
@@ -127,41 +158,6 @@ public class NCFittingLoadout: NSObject, NSCoding {
 	}
 }
 
-
-extension NCFittingCharacter {
-	var loadout: NCFittingLoadout {
-		get {
-			return NCFittingLoadout()
-		}
-		set {
-			let ship = self.ship!
-			for implant in loadout.implants ?? [] {
-				addImplant(typeID: implant.typeID)
-			}
-			for booster in loadout.boosters ?? [] {
-				addBooster(typeID: booster.typeID)
-			}
-			for drone in loadout.drones ?? [] {
-				for _ in 0..<drone.count {
-					guard let item = ship.addDrone(typeID: drone.typeID) else {break}
-					item.engine?.assign(identifier: drone.identifier, for: item)
-				}
-			}
-			for (_, modules) in loadout.modules?.sorted(by: { $0.key.rawValue > $1.key.rawValue }) ?? [] {
-				for module in modules {
-					for _ in 0..<module.count {
-						guard let m = ship.addModule(typeID: module.typeID) else {break}
-						m.engine?.assign(identifier: module.identifier, for: m)
-						m.preferredState = module.state
-						if let charge = module.charge {
-							m.charge = NCFittingCharge(typeID: charge.typeID)
-						}
-					}
-				}
-			}
-		}
-	}
-}
 
 extension NCFittingModuleSlot {
 	var image: UIImage? {
@@ -327,7 +323,80 @@ extension NCFittingDamage: Hashable {
 	}
 }
 
+extension NCFittingItem {
+	var identifier: String? {
+		get {
+			return engine?.identifier(for: self)
+		}
+		set {
+			engine?.assign(identifier: newValue, for: self)
+		}
+	}
+}
+
 extension NCFittingCharacter {
+	
+	var loadout: NCFittingLoadout {
+		get {
+			let loadout = NCFittingLoadout()
+			loadout.implants = implants.all.map({NCFittingLoadoutItem(item: $0)})
+			loadout.boosters = boosters.all.map({NCFittingLoadoutItem(item: $0)})
+			
+			var drones = [String: NCFittingLoadoutDrone]()
+			for drone in ship?.drones ?? [] {
+				let identifier = drone.identifier ?? "\([drone.typeID, drone.isActive, drone.squadronTag].hashValue)"
+				
+				if (drones[identifier]?.count += 1) == nil {
+					drones[identifier] = NCFittingLoadoutDrone(drone: drone)
+				}
+			}
+			
+			loadout.drones = Array(drones.values)
+			
+			var modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()
+			
+			for module in ship?.modules ?? [] {
+				guard !module.isDummy else {continue}
+				var array = modules[module.slot] ?? []
+				array.append(NCFittingLoadoutModule(module: module))
+				modules[module.slot] = array
+			}
+			
+			loadout.modules = modules
+			
+			return loadout
+		}
+		set {
+			let ship = self.ship!
+			for implant in newValue.implants ?? [] {
+				addImplant(typeID: implant.typeID)
+			}
+			for booster in newValue.boosters ?? [] {
+				addBooster(typeID: booster.typeID)
+			}
+			for drone in newValue.drones ?? [] {
+				let identifier = drone.identifier ?? UUID().uuidString
+				for _ in 0..<drone.count {
+					guard let item = ship.addDrone(typeID: drone.typeID, squadronTag: drone.squadronTag) else {break}
+					item.isActive = drone.isActive
+					item.identifier = identifier
+				}
+			}
+			for (_, modules) in newValue.modules?.sorted(by: { $0.key.rawValue > $1.key.rawValue }) ?? [] {
+				for module in modules {
+					let identifier = module.identifier ?? UUID().uuidString
+					for _ in 0..<module.count {
+						guard let m = ship.addModule(typeID: module.typeID, socket: module.socket) else {break}
+						m.identifier = identifier
+						m.preferredState = module.state
+						if let charge = module.charge {
+							m.charge = NCFittingCharge(typeID: charge.typeID)
+						}
+					}
+				}
+			}
+		}
+	}
 	
 	@nonobjc class func url(account: NCAccount) -> URL? {
 		guard let uuid = account.uuid else {return nil}

@@ -170,15 +170,15 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 	@IBOutlet weak var dronesCountLabel: UILabel!
 	
 	var engine: NCFittingEngine? {
-		return (parent as? NCShipFittingViewController)?.engine
+		return (parent as? NCFittingEditorViewController)?.engine
 	}
 	
 	var fleet: NCFittingFleet? {
-		return (parent as? NCShipFittingViewController)?.fleet
+		return (parent as? NCFittingEditorViewController)?.fleet
 	}
 	
 	var typePickerViewController: NCTypePickerViewController? {
-		return (parent as? NCShipFittingViewController)?.typePickerViewController
+		return (parent as? NCFittingEditorViewController)?.typePickerViewController
 	}
 	
 	private var observer: NSObjectProtocol?
@@ -219,13 +219,17 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 			let category = NCDBDgmppItemCategory.category(categoryID: .drone, subcategory:  NCDBCategoryID.drone.rawValue)
 			
 			typePickerViewController.category = category
-			typePickerViewController.completionHandler = { [weak typePickerViewController] type in
+			typePickerViewController.completionHandler = { [weak typePickerViewController] (_, type) in
+				guard let engine = self.engine else {return}
 				let typeID = Int(type.typeID)
-				self.engine?.perform {
+				engine.perform {
 					guard let ship = pilot.ship else {return}
 					let tag = (ship.drones.flatMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
+					let identifier = UUID().uuidString
+					
 					for _ in 0..<5 {
-						ship.addDrone(typeID: typeID, squadronTag: tag)
+						guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {break}
+						engine.assign(identifier: identifier, for: drone)
 					}
 				}
 				typePickerViewController?.dismiss(animated: true)

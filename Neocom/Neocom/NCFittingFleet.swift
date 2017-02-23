@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import CoreData
 
 class NCFittingFleet {
-	var pilots = [NCFittingCharacter: NCLoadout?]()
+	var pilots = [NCFittingCharacter: NSManagedObjectID?]()
 	var active: NCFittingCharacter?
 	
 	init(fleet: NCFleet, engine: NCFittingEngine) {
@@ -25,7 +26,7 @@ class NCFittingFleet {
 		let gang = engine.gang
 		let pilot = gang.addPilot()
 		pilot.ship = NCFittingShip(typeID: typeID)
-		pilots[pilot] = nil as NCLoadout?
+		pilots[pilot] = nil as NSManagedObjectID?
 		active = pilots.first?.key
 	}
 	
@@ -36,7 +37,7 @@ class NCFittingFleet {
 		
 		pilot.ship = NCFittingShip(typeID: Int(loadout.typeID))
 		pilot.loadout = data
-		pilots[pilot] = loadout
+		pilots[pilot] = loadout.objectID
 		
 		if active == nil {
 			active = pilot
@@ -47,7 +48,7 @@ class NCFittingFleet {
 		let gang = engine.gang
 		let pilot = gang.addPilot()
 		pilot.ship = NCFittingShip(typeID: typeID)
-		pilots[pilot] = nil as NCLoadout?
+		pilots[pilot] = nil as NSManagedObjectID?
 		active = pilots.first?.key
 	}
 }

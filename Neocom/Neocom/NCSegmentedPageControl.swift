@@ -21,6 +21,8 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 		didSet {
 			for title in titles {
 				let button = UIButton(frame: .zero)
+				button.translatesAutoresizingMaskIntoConstraints = false
+				//button.titleEdgeInsets = UIEdgeInsetsMake(0, spacing / 2.0, 0, spacing / 2.0)
 				button.setTitle(title, for: .normal)
 				button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
 				button.setTitleColor(.white, for: .normal)
@@ -54,7 +56,7 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 	}()
 	
 	public lazy var stackView: UIStackView = {
-		let stackView = UIStackView(frame: self.bounds)
+		let stackView = UIStackView()
 		stackView.alignment = .center
 		stackView.distribution = .fillProportionally
 		stackView.axis = .horizontal
@@ -63,7 +65,9 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 		self.contentView.addSubview(stackView)
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(s)-[view]-(s)-|", options: [], metrics: ["s": self.spacing], views: ["view": stackView]))
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: [], metrics: nil, views: ["view": stackView]))
-		NSLayoutConstraint(item: stackView, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: self.contentView, attribute: .width, multiplier: 1, constant: -self.spacing * 2).isActive = true
+//		NSLayoutConstraint(item: stackView, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: self.contentView, attribute: .width, multiplier: 1, constant: -self.spacing * 2).isActive = true
+		stackView.widthAnchor.constraint(greaterThanOrEqualTo: self.contentView.widthAnchor, constant: -self.spacing * 2).isActive = true
+		stackView.heightAnchor.constraint(equalTo: self.contentView.heightAnchor).isActive = true
 		return stackView
 	}()
 	

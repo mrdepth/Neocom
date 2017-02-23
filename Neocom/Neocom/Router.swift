@@ -17,12 +17,12 @@ enum RouteKind {
 }
 
 class Route: Hashable {
-	let kind: RouteKind
+	let kind: RouteKind?
 	let identifier: String?
 	let storyboard: UIStoryboard?
 	let viewController: UIViewController?
 	
-	init(kind: RouteKind, storyboard: UIStoryboard? = nil,  identifier: String? = nil, viewController: UIViewController? = nil) {
+	init(kind: RouteKind? = nil, storyboard: UIStoryboard? = nil,  identifier: String? = nil, viewController: UIViewController? = nil) {
 		self.kind = kind
 		self.storyboard = storyboard
 		self.identifier = identifier
@@ -30,6 +30,8 @@ class Route: Hashable {
 	}
 	
 	func perform(source: UIViewController, view: UIView? = nil) {
+		guard let kind = kind else {return}
+
 		let destination: UIViewController! = viewController ?? (storyboard ?? UIStoryboard(name: "Main", bundle: nil))?.instantiateViewController(withIdentifier: identifier!)
 		prepareForSegue(source: source, destination: destination)
 		
@@ -69,7 +71,7 @@ class Route: Hashable {
 	}
 	
 	var hashValue: Int {
-		return kind.hashValue ^ (viewController?.hashValue ?? ((identifier?.hashValue ?? 0) ^ (storyboard?.hashValue ?? 0)))
+		return (kind?.hashValue ?? 0) ^ (viewController?.hashValue ?? ((identifier?.hashValue ?? 0) ^ (storyboard?.hashValue ?? 0)))
 	}
 	
 	static func == (lhs: Route, rhs: Route) -> Bool {
@@ -78,6 +80,18 @@ class Route: Hashable {
 }
 
 struct Router {
+	
+	class Custom: Route {
+		let handler: (UIViewController, UIView?) -> Void
+		init(_ handler: @escaping (UIViewController, UIView?) -> Void) {
+			self.handler = handler
+			super.init()
+		}
+		
+		override func perform(source: UIViewController, view: UIView?) {
+			handler(source, view)
+		}
+	}
 	
 	struct Database {
 		
@@ -118,6 +132,24 @@ struct Router {
 				}
 			}
 		}
+		
+		class TypePicker: Route {
+			let category: NCDBDgmppItemCategory
+			let completionHandler: (NCTypePickerViewController, NCDBInvType) -> Void
+			
+			init(category: NCDBDgmppItemCategory, completionHandler: @escaping (NCTypePickerViewController, NCDBInvType) -> Void) {
+				self.category = category
+				self.completionHandler = completionHandler
+				super.init(kind: .modal, identifier: "NCTypePickerViewController")
+			}
+			
+			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+				let destination = destination as! NCTypePickerViewController
+				destination.category = category
+				destination.completionHandler = completionHandler
+			}
+
+		}
 	}
 	
 	struct Fitting {
@@ -129,11 +161,11 @@ struct Router {
 			init(fleet: NCFittingFleet, engine: NCFittingEngine) {
 				self.fleet = fleet
 				self.engine = engine
-				super.init(kind: .push, identifier: "NCShipFittingViewController")
+				super.init(kind: .push, identifier: "NCFittingEditorViewController")
 			}
 			
 			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
-				let destination = destination as! NCShipFittingViewController
+				let destination = destination as! NCFittingEditorViewController
 				destination.fleet = fleet
 				destination.engine = engine
 			}

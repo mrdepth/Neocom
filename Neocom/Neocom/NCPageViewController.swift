@@ -8,35 +8,13 @@
 
 import UIKit
 
-class MyViewController: UIViewController {
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		print("\(#function): \(title)")
-	}
-	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		print("\(#function): \(title)")
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		print("\(#function): \(title)")
-	}
-	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-		print("\(#function): \(title)")
-	}
-}
-
 class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	lazy var pageControl: NCSegmentedPageControl = NCSegmentedPageControl()
 	lazy var scrollView: UIScrollView = UIScrollView()
 	
 	var viewControllers: [UIViewController]? {
 		didSet {
-			pageControl.titles = viewControllers?.map({$0.title ?? "-"}) ?? []
+			pageControl.titles = viewControllers?.map({$0.navigationItem.title?.uppercased() ?? "-"}) ?? []
 			self.view.setNeedsLayout()
 			scrollView.contentOffset = .zero
 			
@@ -58,18 +36,13 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 		view.addSubview(pageControl)
 		view.addSubview(scrollView)
 		pageControl.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor)
-		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[top]-0-[page(==32)]-0-[scrollView]-0-|", options: [], metrics: nil, views: ["top": topLayoutGuide, "page": pageControl, "scrollView": scrollView]))
+		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[top]-0-[page]-0-[scrollView]-0-|", options: [], metrics: nil, views: ["top": topLayoutGuide, "page": pageControl, "scrollView": scrollView]))
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[page]-0-|", options: [], metrics: nil, views: ["page": pageControl]))
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[scrollView]-0-|", options: [], metrics: nil, views: ["scrollView": scrollView]))
 		pageControl.scrollView = scrollView
 		scrollView.delegate = self
 		scrollView.isPagingEnabled = true
 		
-		viewControllers = ["1", "2", "3"].map({ title -> UIViewController in
-			let controller = MyViewController()
-			controller.title = title
-			return controller
-		})
 	}
 	
 	override func viewDidLayoutSubviews() {

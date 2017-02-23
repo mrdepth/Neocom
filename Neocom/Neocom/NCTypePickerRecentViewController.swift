@@ -115,7 +115,7 @@ class NCTypePickerRecentViewController: UITableViewController, NSFetchedResultsC
 		if context.hasChanges {
 			try? context.save()
 		}
-		typePickerController.completionHandler(type)
+		typePickerController.completionHandler(typePickerController, type)
 	}
 	
 	// MARK: - NSFetchedResultsControllerDelegate

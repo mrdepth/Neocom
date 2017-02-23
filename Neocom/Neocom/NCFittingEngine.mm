@@ -114,15 +114,16 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 		[_identifiers removeObjectForKey:@(item.hash)];
 }
 
-- (nonnull NSString*) identifierForItem:(nonnull NCFittingItem*) item {
-	NSString* identifier = _identifiers[@(item.hash)];
+- (nullable NSString*) identifierForItem:(nonnull NCFittingItem*) item {
+	return _identifiers[@(item.hash)];
+	/*NSString* identifier = _identifiers[@(item.hash)];
 	if (!identifier) {
 		identifier = [NSUUID UUID].UUIDString;
 		[self assignIdentifier:identifier forItem:item];
 		return identifier;
 	}
 	else
-		return identifier;
+		return identifier;*/
 }
 
 

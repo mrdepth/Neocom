@@ -390,7 +390,7 @@
             <objects>
                 <tableViewController id="xIe-Ri-8Ng" customClass="NCAPIKeyInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="PWN-Ec-uZB" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -2455,7 +2455,7 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCHeaderTableViewCell" rowHeight="40" id="Uqn-B1-EHv" customClass="NCHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="56" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uqn-B1-EHv" id="yzL-sF-xCY">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
@@ -2488,7 +2488,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCSkillsHeaderTableViewCell" rowHeight="40" id="L33-tK-KW4" customClass="NCSkillsHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="95.5" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="96" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L33-tK-KW4" id="cNs-lU-gs4">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
@@ -2534,7 +2534,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="gC9-A1-CGU" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="135.5" width="320" height="41"/>
+                                <rect key="frame" x="0.0" y="136" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gC9-A1-CGU" id="ApF-E6-iJ6">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40.5"/>
@@ -2594,7 +2594,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCDamageTypeTableViewCell" id="Bhk-P7-VOZ" customClass="NCDamageTypeTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="176.5" width="320" height="41"/>
+                                <rect key="frame" x="0.0" y="177" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bhk-P7-VOZ" id="M5R-RD-tH8">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40.5"/>
@@ -2765,7 +2765,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCMarketHistoryTableViewCell" rowHeight="147" id="NnJ-hG-Oy7" customClass="NCMarketHistoryTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="217.5" width="320" height="147"/>
+                                <rect key="frame" x="0.0" y="218" width="320" height="147"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NnJ-hG-Oy7" id="Yew-2Z-FhM">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="146.5"/>
@@ -3881,10 +3881,10 @@
             </objects>
             <point key="canvasLocation" x="7800" y="1779"/>
         </scene>
-        <!--Delegate-->
+        <!--Ships-->
         <scene sceneID="mhZ-Rp-YY6">
             <objects>
-                <tableViewController storyboardIdentifier="NCFittingMenuViewController" id="eQN-sQ-qzr" customClass="NCFittingMenuViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCFittingShipsViewController" id="eQN-sQ-qzr" customClass="NCFittingShipsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="VMR-5Q-eCj" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3892,7 +3892,7 @@
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCDefaultTableViewCell" id="an9-zh-uaH" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="56" width="320" height="41"/>
+                                <rect key="frame" x="0.0" y="55.5" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="an9-zh-uaH" id="8lq-CO-hzd">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40.5"/>
@@ -3953,7 +3953,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCHeaderTableViewCell" rowHeight="40" id="DPs-bE-ANg" customClass="NCHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="97" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="96.5" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DPs-bE-ANg" id="heJ-Ms-uN7">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
@@ -3991,36 +3991,24 @@
                             <outlet property="delegate" destination="4Qj-mG-w8h" id="H4j-5l-Flt"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="4u0-qD-hlY">
-                        <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="82M-Z8-va9">
-                            <rect key="frame" x="42" y="7" width="236" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="Ships"/>
-                                <segment title="Structures"/>
-                                <segment title="Fleets"/>
-                            </segments>
-                        </segmentedControl>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Ships" id="4u0-qD-hlY"/>
                     <connections>
                         <outlet property="treeController" destination="4Qj-mG-w8h" id="ejS-Na-uru"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zmq-fG-3fz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="4Qj-mG-w8h" customClass="NCTreeController" customModule="Neocom" customModuleProvider="target">
+                <customObject id="4Qj-mG-w8h" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
                     <connections>
-                        <outlet property="delegate" destination="eQN-sQ-qzr" id="kL7-mZ-dCN"/>
                         <outlet property="tableView" destination="VMR-5Q-eCj" id="jkr-CM-JkJ"/>
                     </connections>
                 </customObject>
             </objects>
             <point key="canvasLocation" x="621" y="3075"/>
         </scene>
-        <!--Ship Fitting View Controller-->
+        <!--Fitting Editor View Controller-->
         <scene sceneID="TDQ-Kl-iTl">
             <objects>
-                <viewController storyboardIdentifier="NCShipFittingViewController" automaticallyAdjustsScrollViewInsets="NO" id="ASK-Tv-kZO" customClass="NCShipFittingViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCFittingEditorViewController" automaticallyAdjustsScrollViewInsets="NO" id="ASK-Tv-kZO" customClass="NCFittingEditorViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="43c-Lu-rU0"/>
                         <viewControllerLayoutGuide type="bottom" id="bK5-Qi-tf7"/>
@@ -5234,10 +5222,10 @@
             </objects>
             <point key="canvasLocation" x="-821" y="3075"/>
         </scene>
-        <!--Page View Controller-->
+        <!--Fitting Menu View Controller-->
         <scene sceneID="3Md-7m-zu6">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="ZIk-q8-6Uo" customClass="NCPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCFittingMenuViewController" automaticallyAdjustsScrollViewInsets="NO" id="ZIk-q8-6Uo" customClass="NCFittingMenuViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XD9-rt-hix"/>
                         <viewControllerLayoutGuide type="bottom" id="X0X-p2-QaU"/>
@@ -9678,7 +9666,7 @@ Label</string>
         <image name="warpSpeed" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="VL7-VP-CSa"/>
         <segue reference="NgW-vJ-ZCI"/>
-        <segue reference="eUO-EC-Ai8"/>
     </inferredMetricsTieBreakers>
 </document>

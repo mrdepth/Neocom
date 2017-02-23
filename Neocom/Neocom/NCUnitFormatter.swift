@@ -114,7 +114,7 @@ class NCUnitFormatter: Formatter {
 		//self.unit = Unit(rawValue: aDecoder.decodeInteger(forKey: "unit")) ?? .none
 		self.unit = .none
 		self.style = Style(rawValue: aDecoder.decodeInteger(forKey: "style")) ?? .full
-		self.useSIPrefix = aDecoder.decodeObject(forKey: "useSIPrefix") as? Bool
+		useSIPrefix = aDecoder.containsValue(forKey: "useSIPrefix") ? aDecoder.decodeBool(forKey: "useSIPrefix") : nil
 		super.init(coder: aDecoder)
 	}
 	

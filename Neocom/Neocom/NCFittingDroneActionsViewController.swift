@@ -228,16 +228,19 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 				guard let strongSelf = self else {return}
 				guard var drones = strongSelf.drones else {return}
 				guard let drone = drones.first else {return}
-				ship.engine?.performBlockAndWait {
+				guard let engine = ship.engine else {return}
+				engine.performBlockAndWait {
 					var n = drones.count - count
 
 					let typeID = drone.typeID
 					let isActive = drone.isActive
 					let tag = drone.squadronTag
+					let identifier = drone.identifier
 
 					while n < 0 {
 						if let drone = ship.addDrone(typeID: typeID, squadronTag: tag) {
 							drone.isActive = isActive
+							engine.assign(identifier: identifier, for: drone)
 							drones.append(drone)
 						}
 						else {

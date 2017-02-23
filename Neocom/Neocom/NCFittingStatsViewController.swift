@@ -12,11 +12,11 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 	@IBOutlet weak var treeController: TreeController!
 
 	var engine: NCFittingEngine? {
-		return (parent as? NCShipFittingViewController)?.engine
+		return (parent as? NCFittingEditorViewController)?.engine
 	}
 	
 	var fleet: NCFittingFleet? {
-		return (parent as? NCShipFittingViewController)?.fleet
+		return (parent as? NCFittingEditorViewController)?.fleet
 	}
 	
 	private var observer: NSObjectProtocol?

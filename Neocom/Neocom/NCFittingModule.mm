@@ -24,6 +24,12 @@
 	return static_cast<NCFittingModuleHardpoint>(module->getHardpoint());
 }
 
+- (NSInteger) socket {
+	NCVerifyFittingContext(self.engine);
+	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
+	return module->getSocket();
+}
+
 - (NCFittingModuleState) state {
 	NCVerifyFittingContext(self.engine);
 	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);

@@ -157,7 +157,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		guard let pilot = fleet?.active else {return}
 		let text = sender.text
 		pilot.engine?.perform {
-			pilot.ship?.title = text ?? ""
+			pilot.ship?.name = text ?? ""
 		}
 	}
 	
@@ -172,7 +172,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		let invTypes = NCDatabase.sharedDatabase?.invTypes
 
 		engine.performBlockAndWait {
-			let title = pilot.ship?.title
+			let title = pilot.ship?.name
 			sections.append(NCLoadoutNameRow(text: title?.isEmpty == false ? title : nil, placeholder: NSLocalizedString("Ship Name", comment: "")))
 			if let ship = pilot.ship, let type = invTypes?[ship.typeID] {
 				let row = NCTypeInfoRow(type: type, accessoryType: .detailButton, route: Router.Database.TypeInfo(type), accessoryButtonRoute: Router.Database.TypeInfo(type))

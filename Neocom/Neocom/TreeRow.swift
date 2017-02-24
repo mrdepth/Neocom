@@ -32,7 +32,7 @@ class TreeSection: TreeNode {
 		return true
 	}
 	
-	override init(cellIdentifier: String?) {
+	override init(cellIdentifier: String? = nil) {
 		super.init(cellIdentifier: cellIdentifier)
 	}
 }

@@ -238,6 +238,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 		super.viewWillAppear(animated)
 		
 		if self.treeController.rootNode == nil {
+			self.treeController.rootNode = TreeNode()
 			reload()
 		}
 	
@@ -378,9 +379,6 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 			}
 
 			DispatchQueue.main.async {
-				if self.treeController.rootNode == nil {
-					self.treeController.rootNode = TreeNode()
-				}
 				self.treeController.rootNode?.children = sections
 			}
 		}

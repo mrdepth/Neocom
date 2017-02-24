@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCFittingEditorViewController: UIViewController {
+class NCFittingEditorViewController: NCPageViewController {
 	var fleet: NCFittingFleet?
 	var engine: NCFittingEngine?
 	
@@ -29,22 +29,13 @@ class NCFittingEditorViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		/*engine = NCFittingEngine()
-		engine?.performBlockAndWait {
-			self.fleet = NCFittingFleet(typeID: 645, engine: self.engine!)
-			let pilot = self.fleet?.active
-			//pilot?.skills.setAllSkillsLevel(5)
-			pilot?.setSkills(level: 5)
-			let ship = pilot?.ship
-			for _ in 0..<3 {
-				let module = ship?.addModule(typeID: 3130)
-				module?.charge = NCFittingCharge(typeID: 230)
-				//module?.preferredState = .overloaded
-			}
-			for _ in 0..<5 {
-				_ = ship?.addDrone(typeID: 2446)
-			}
-		}*/
+		viewControllers = [
+			storyboard!.instantiateViewController(withIdentifier: "NCFittingModulesViewController"),
+			storyboard!.instantiateViewController(withIdentifier: "NCFittingDronesViewController"),
+			storyboard!.instantiateViewController(withIdentifier: "NCFittingImplantsViewController"),
+			storyboard!.instantiateViewController(withIdentifier: "NCFittingFleetViewController"),
+			storyboard!.instantiateViewController(withIdentifier: "NCFittingStatsViewController"),
+		]
 		
 		observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
 			self?.isModified = true
@@ -62,14 +53,14 @@ class NCFittingEditorViewController: UIViewController {
 					for (character, objectID) in fleet.pilots {
 						guard let ship = character.ship else {continue}
 						if let objectID = objectID, let loadout = (try? managedObjectContext.existingObject(with: objectID)) as? NCLoadout {
-							loadout.name = ship.title
+							loadout.name = ship.name
 							loadout.data?.data = character.loadout
 						}
 						else {
 							let loadout = NCLoadout(entity: NSEntityDescription.entity(forEntityName: "Loadout", in: managedObjectContext)!, insertInto: managedObjectContext)
 							loadout.data = NCLoadoutData(entity: NSEntityDescription.entity(forEntityName: "LoadoutData", in: managedObjectContext)!, insertInto: managedObjectContext)
 							loadout.typeID = Int32(ship.typeID)
-							loadout.name = ship.title
+							loadout.name = ship.name
 							loadout.data?.data = character.loadout
 						}
 					}

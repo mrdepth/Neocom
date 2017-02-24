@@ -10,13 +10,13 @@ import UIKit
 import CoreData
 
 class NCLoadoutRow: TreeRow {
-	let typeName: String?
-	let loadoutName: String?
+	let typeName: String
+	let loadoutName: String
 	let image: UIImage?
 	let loadoutID: NSManagedObjectID
 	init(loadout: NCLoadout, type: NCDBInvType) {
-		typeName = type.typeName
-		loadoutName = loadout.name
+		typeName = type.typeName ?? ""
+		loadoutName = loadout.name ?? ""
 		image = type.icon?.image?.image
 		loadoutID = loadout.objectID
 		super.init(cellIdentifier: "NCDefaultTableViewCell")
@@ -27,6 +27,91 @@ class NCLoadoutRow: TreeRow {
 		cell.titleLabel?.text = typeName
 		cell.subtitleLabel?.text = loadoutName
 		cell.iconView?.image = image
+	}
+	
+	override var hashValue: Int {
+		return loadoutID.hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCLoadoutRow)?.hashValue == hashValue
+	}
+	
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		return .reconfigure
+	}
+}
+
+class NCLoadoutsSection: TreeSection {
+	let categoryID: NCDBDgmppItemCategoryID
+	let filter: NSPredicate?
+	private var observer: NSObjectProtocol?
+	
+	init(categoryID: NCDBDgmppItemCategoryID, filter: NSPredicate? = nil) {
+		self.categoryID = categoryID
+		self.filter = filter
+		super.init()
+		reload()
+		
+		observer = NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: nil) { [weak self] note in
+			if (note.object as? NSManagedObjectContext)?.persistentStoreCoordinator === NCStorage.sharedStorage?.persistentStoreCoordinator {
+				self?.reload()
+			}
+		}
+	}
+	
+	override var hashValue: Int {
+		return categoryID.hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCLoadoutsSection)?.hashValue == hashValue
+	}
+	
+	private func reload() {
+		let categoryID = Int32(self.categoryID.rawValue)
+		
+		NCStorage.sharedStorage?.performBackgroundTask { managedObjectContext in
+			let request = NSFetchRequest<NCLoadout>(entityName: "Loadout")
+			request.predicate = self.filter
+			guard let loadouts = try? managedObjectContext.fetch(request) else {return}
+			var groups = [String: DefaultTreeSection]()
+			
+			var sections = [TreeNode]()
+			
+			NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
+				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
+				for loadout in loadouts {
+					guard let type = invTypes[Int(loadout.typeID)] else {continue}
+					if type.dgmppItem?.groups?.first(where: {($0 as? NCDBDgmppItemGroup)?.category?.category == categoryID}) != nil {
+						//guard let groupID = type.group?.groupID else {continue}
+						guard let name = type.group?.groupName else {continue}
+						let key = name
+						let section = groups[key]
+						let row = NCLoadoutRow(loadout: loadout, type: type)
+						if let section = section {
+							section.children?.append(row)
+						}
+						else {
+							let section = DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: key, title: name.uppercased())
+							section.children = [row]
+							groups[key] = section
+						}
+					}
+				}
+			}
+			
+			for (_, group) in groups.sorted(by: { $0.key < $1.key}) {
+				group.children = (group.children as? [NCLoadoutRow])?.sorted(by: { (a, b) -> Bool in
+					return a.typeName == b.typeName ? a.loadoutName < b.loadoutName : a.typeName < b.typeName
+				})
+				sections.append(group)
+			}
+			
+			DispatchQueue.main.async {
+				self.children = sections
+			}
+		}
 	}
 }
 
@@ -49,6 +134,7 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 		super.viewWillAppear(animated)
 		
 		if treeController.rootNode == nil {
+			self.treeController.rootNode = TreeNode()
 			reload()
 		}
 	}
@@ -94,6 +180,21 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 		else if let route = (node as? TreeRow)?.route {
 			route.perform(source: self, view: treeController.cell(for: node))
 		}
+	}
+	
+	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
+		guard let node = node as? NCLoadoutRow else {return nil}
+		
+		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { _ in
+			guard let context = NCStorage.sharedStorage?.viewContext else {return}
+			guard let loadout = (try? context.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
+			context.delete(loadout)
+			if context.hasChanges {
+				try? context.save()
+			}
+		}
+		
+		return [deleteAction]
 	}
 	
 	// MARK: NCTreeControllerDelegate
@@ -143,7 +244,7 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 		var sections = [TreeNode]()
 	
 		
-		sections.append(DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
+		sections.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
 			guard let strongSelf = self else {return}
 			strongSelf.dismiss(animated: true)
 			
@@ -158,44 +259,10 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 
 		})))
 		
-		sections.append(DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator))
-		sections.append(DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
-
-		NCStorage.sharedStorage?.performBackgroundTask { managedObjectContext in
-			guard let loadouts: [NCLoadout] = managedObjectContext.fetch("Loadout") else {return}
-			var groups = [Int32: DefaultTreeSection]()
-			NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
-				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
-				for loadout in loadouts {
-					guard let type = invTypes[Int(loadout.typeID)] else {continue}
-					if type.dgmppItem?.groups?.first(where: {($0 as? NCDBDgmppItemGroup)?.category?.category == Int32(NCDBDgmppItemCategoryID.ship.rawValue)}) != nil {
-						guard let groupID = type.group?.groupID else {continue}
-						guard let name = type.group?.groupName else {continue}
-						let section = groups[groupID]
-						let row = NCLoadoutRow(loadout: loadout, type: type)
-						if let section = section {
-							section.children?.append(row)
-						}
-						else {
-							let section = DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", title: name.uppercased())
-							section.children = [row]
-							groups[groupID] = section
-						}
-					}
-				}
-			}
-
-			for (_, group) in groups.sorted(by: { $0.key < $1.key}) {
-				sections.append(group)
-			}
-			
-			DispatchQueue.main.async {
-				if self.treeController.rootNode == nil {
-					self.treeController.rootNode = TreeNode()
-				}
-				self.treeController.rootNode?.children = sections
-
-			}
-		}
+		sections.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator))
+		sections.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
+		
+		sections.append(NCLoadoutsSection(categoryID: .ship))
+		self.treeController.rootNode?.children = sections
 	}
 }

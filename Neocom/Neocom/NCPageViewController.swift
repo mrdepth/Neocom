@@ -14,7 +14,7 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	
 	var viewControllers: [UIViewController]? {
 		didSet {
-			pageControl.titles = viewControllers?.map({$0.navigationItem.title?.uppercased() ?? "-"}) ?? []
+			pageControl.titles = viewControllers?.map({$0.title?.uppercased() ?? "-"}) ?? []
 			self.view.setNeedsLayout()
 			scrollView.contentOffset = .zero
 			
@@ -56,6 +56,13 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 		}
 	}
 	
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		for controller in viewControllers ?? [] {
+			controller.setEditing(editing, animated: animated)
+		}
+	}
+	
 	//MARK: - UIScrollViewDelegate
 	
 	private class Appearance {
@@ -65,13 +72,11 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 		init(_ isAppearing: Bool, controller: UIViewController) {
 			self.isAppearing = isAppearing
 			controller.beginAppearanceTransition(isAppearing, animated: false)
-			print("begin \(isAppearing) \(controller.title)")
 			self.controller = controller
 		}
 		
 		deinit {
 			self.controller.endAppearanceTransition()
-			print("end \(isAppearing) \(controller.title)")
 		}
 		
 	}
@@ -88,12 +93,13 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 						appearances.append(Appearance(false, controller: controller))
 					}
 					else {
-						appearances.append(Appearance(true, controller: controller))
-						
 						if controller.parent == nil {
 							addChild(viewController: controller)
 							pendingChildren.append(controller)
 						}
+
+						appearances.append(Appearance(true, controller: controller))
+						
 						if controller.view.superview == nil {
 							scrollView.addSubview(controller.view)
 						}

@@ -13,16 +13,16 @@
 	NSInteger _typeID;
 }
 
-- (nonnull NSString*) title {
+- (nonnull NSString*) name {
 	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
-	return [NSString stringWithCString:ship->getTitle() ?: "" encoding:NSUTF8StringEncoding];
+	return [NSString stringWithCString:ship->getName() ?: "" encoding:NSUTF8StringEncoding];
 }
 
-- (void) setTitle:(NSString *)title {
+- (void) setName:(NSString *)name {
 	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
-	ship->setTitle(title.UTF8String);
+	ship->setName(name.UTF8String);
 	[self.engine updateWithItem: self];
 }
 

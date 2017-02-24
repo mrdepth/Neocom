@@ -108,6 +108,8 @@
 		129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 129B316D1E53527C00B9A88D /* damagePatterns.plist */; };
 		129B31701E5439A100B9A88D /* NCTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B316F1E5439A100B9A88D /* NCTextFieldTableViewCell.swift */; };
 		129B31781E5488AF00B9A88D /* NCFleetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B31771E5488AF00B9A88D /* NCFleetConfiguration.swift */; };
+		129C51A11E605E6D0066F2E4 /* NCFittingFleetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129C51A01E605E6D0066F2E4 /* NCFittingFleetViewController.swift */; };
+		129C51A41E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129C51A31E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift */; };
 		129E60EE1E0152A900B56EB8 /* NCAutoHeightLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */; };
 		129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */; };
 		129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */; };
@@ -330,6 +332,8 @@
 		129B316D1E53527C00B9A88D /* damagePatterns.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = damagePatterns.plist; sourceTree = "<group>"; };
 		129B316F1E5439A100B9A88D /* NCTextFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		129B31771E5488AF00B9A88D /* NCFleetConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFleetConfiguration.swift; sourceTree = "<group>"; };
+		129C51A01E605E6D0066F2E4 /* NCFittingFleetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingFleetViewController.swift; sourceTree = "<group>"; };
+		129C51A31E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingFleetMemberPickerViewController.swift; sourceTree = "<group>"; };
 		129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAutoHeightLabel.swift; sourceTree = "<group>"; };
 		129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTintImageView.swift; sourceTree = "<group>"; };
 		129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
@@ -752,6 +756,8 @@
 				12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */,
 				129B31681E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift */,
 				129B316B1E534B7300B9A88D /* NCFittingDamagePatternsViewController.swift */,
+				129C51A01E605E6D0066F2E4 /* NCFittingFleetViewController.swift */,
+				129C51A31E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
@@ -956,6 +962,7 @@
 				12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */,
 				12E2674D1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift in Sources */,
 				1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */,
+				129C51A11E605E6D0066F2E4 /* NCFittingFleetViewController.swift in Sources */,
 				129B31691E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift in Sources */,
 				128E61421E0A707200C15EEB /* NCDamageTypeTableViewCell.swift in Sources */,
 				1293BC1E1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift in Sources */,
@@ -966,6 +973,7 @@
 				122FFDF51E4B7D630066D45E /* NCFittingStatsViewController.swift in Sources */,
 				12BFC45B1E3F7892000ED8D6 /* TreeController.swift in Sources */,
 				1230A32C1DFFE2CF00627D92 /* NCGate.swift in Sources */,
+				129C51A41E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift in Sources */,
 				12C44CFE1E44776500BA43ED /* NCFittingModuleDamageChartView.swift in Sources */,
 				12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */,
 				129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */,

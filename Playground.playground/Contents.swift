@@ -2,9 +2,6 @@
 
 import UIKit
 
-let d = [1: "asdf", 2: "ffff", 3:"Sdfsdf"]
+let a = [0,1,2,3,3,4,5]
 
-var a = [String]()
-
-a.append(contentsOf: d.values)
-
+a[4..<a.count].index(of: 3)

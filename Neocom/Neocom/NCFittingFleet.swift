@@ -36,6 +36,7 @@ class NCFittingFleet {
 		let pilot = gang.addPilot()
 		
 		pilot.ship = NCFittingShip(typeID: Int(loadout.typeID))
+		pilot.ship?.name = loadout.name ?? ""
 		pilot.loadout = data
 		pilots[pilot] = loadout.objectID
 		

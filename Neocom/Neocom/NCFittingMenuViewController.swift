@@ -13,5 +13,6 @@ class NCFittingMenuViewController: NCPageViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		viewControllers = [storyboard!.instantiateViewController(withIdentifier: "NCFittingShipsViewController")]
+		navigationItem.rightBarButtonItem = editButtonItem
 	}
 }

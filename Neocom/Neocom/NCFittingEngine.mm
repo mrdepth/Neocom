@@ -54,7 +54,7 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 	[self updateWithItem:area ?: old];
 }
 
-- (void) updateWithItem:(NCFittingItem*) item {
+- (void) updateWithItem:(nullable NCFittingItem*) item {
 	if (item) {
 		[_updates addObject:item];
 	}

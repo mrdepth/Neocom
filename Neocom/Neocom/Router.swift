@@ -22,6 +22,8 @@ class Route: Hashable {
 	let storyboard: UIStoryboard?
 	let viewController: UIViewController?
 	
+	private var presentedViewController: UIViewController?
+	
 	init(kind: RouteKind? = nil, storyboard: UIStoryboard? = nil,  identifier: String? = nil, viewController: UIViewController? = nil) {
 		self.kind = kind
 		self.storyboard = storyboard
@@ -33,6 +35,8 @@ class Route: Hashable {
 		guard let kind = kind else {return}
 
 		let destination: UIViewController! = viewController ?? (storyboard ?? UIStoryboard(name: "Main", bundle: nil))?.instantiateViewController(withIdentifier: identifier!)
+		presentedViewController = destination
+		
 		prepareForSegue(source: source, destination: destination)
 		
 		switch kind {
@@ -51,6 +55,7 @@ class Route: Hashable {
 				let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
 				source.present(destination, animated: true, completion: nil)
 				destination.topViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
+				presentedViewController = destination
 			}
 			else if let navigationController = source.navigationController {
 				navigationController.pushViewController(destination, animated: true)
@@ -58,13 +63,20 @@ class Route: Hashable {
 			
 		case .sheet:
 			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
+			presentedViewController = destination
+			
 			let presentationController = NCSheetPresentationController(presentedViewController: destination, presenting: source)
 			withExtendedLifetime(presentationController) {
 				destination.transitioningDelegate = presentationController
 				source.present(destination, animated: true, completion: nil)
 			}
 		}
-		
+	}
+	
+	func unwind() {
+		if (presentedViewController as? UINavigationController)?.dismiss(animated: true, completion: nil) == nil {
+			_ = presentedViewController?.navigationController?.popViewController(animated: true)
+		}
 	}
 	
 	func prepareForSegue(source: UIViewController, destination: UIViewController) {
@@ -255,6 +267,23 @@ struct Router {
 			
 			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
 				(destination as! NCFittingDroneActionsViewController).drones = drones
+			}
+		}
+		
+		class FleetMemberPicker: Route {
+			let fleet: NCFittingFleet
+			let completionHandler: (NCFittingFleetMemberPickerViewController) -> Void
+			
+			init(fleet: NCFittingFleet, completionHandler: @escaping (NCFittingFleetMemberPickerViewController) -> Void) {
+				self.fleet = fleet
+				self.completionHandler = completionHandler
+				super.init(kind: .adaptive, identifier: "NCFittingFleetMemberPickerViewController")
+			}
+			
+			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+				let destination = destination as! NCFittingFleetMemberPickerViewController
+				destination.fleet = fleet
+				destination.completionHandler = completionHandler
 			}
 		}
 

@@ -1,19 +1,19 @@
 //
-//  NCFittingImplantsViewController.swift
+//  NCFittingFleetViewController.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 09.02.17.
+//  Created by Artem Shimanski on 24.02.17.
 //  Copyright © 2017 Artem Shimanski. All rights reserved.
 //
 
 import UIKit
 
-class NCImplantRow: TreeRow {
+class NCFleetMemberRow: TreeRow {
 	lazy var type: NCDBInvType? = {
 		guard let implant = self.implant else {return nil}
 		return NCDatabase.sharedDatabase?.invTypes[implant.typeID]
 	}()
-
+	
 	
 	let implant: NCFittingImplant?
 	let slot: Int?
@@ -53,52 +53,8 @@ class NCImplantRow: TreeRow {
 	
 }
 
-class NCBoosterRow: TreeRow {
-	lazy var type: NCDBInvType? = {
-		guard let booster = self.booster else {return nil}
-		return NCDatabase.sharedDatabase?.invTypes[booster.typeID]
-	}()
 
-	let booster: NCFittingBooster?
-	let slot: Int?
-	init(booster: NCFittingBooster) {
-		self.booster = booster
-		self.slot = nil
-		super.init(cellIdentifier: "NCDefaultTableViewCell", accessoryButtonRoute: Router.Database.TypeInfo(booster.typeID))
-	}
-	
-	init(dummySlot: Int) {
-		self.booster = nil
-		self.slot = dummySlot
-		super.init(cellIdentifier: "NCDefaultTableViewCell")
-	}
-	
-	override func configure(cell: UITableViewCell) {
-		guard let cell = cell as? NCDefaultTableViewCell else {return}
-		if let type = type {
-			cell.titleLabel?.text = type.typeName
-			cell.iconView?.image = type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
-			cell.accessoryType = .detailButton
-		}
-		else {
-			cell.titleLabel?.text = NSLocalizedString("Slot", comment: "") + " \(slot ?? 0)"
-			cell.iconView?.image = #imageLiteral(resourceName: "booster")
-			cell.accessoryType = .none
-		}
-	}
-	
-	override var hashValue: Int {
-		return booster?.hashValue ?? slot ?? 0
-	}
-	
-	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCBoosterRow)?.hashValue == hashValue
-	}
-	
-}
-
-
-class NCFittingImplantsViewController: UITableViewController, TreeControllerDelegate {
+class NCFittingFleetViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet weak var treeController: TreeController!
 	
 	var engine: NCFittingEngine? {
@@ -108,11 +64,6 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 	var fleet: NCFittingFleet? {
 		return (parent as? NCFittingEditorViewController)?.fleet
 	}
-	
-	var typePickerViewController: NCTypePickerViewController? {
-		return (parent as? NCFittingEditorViewController)?.typePickerViewController
-	}
-
 	
 	private var observer: NSObjectProtocol?
 	
@@ -141,7 +92,12 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		if let item = node as? NCImplantRow {
+		if let route = (node as? TreeRow)?.route {
+			route.perform(source: self, view: treeController.cell(for: node))
+		}
+
+		
+		/*if let item = node as? NCImplantRow {
 			if let slot = item.slot {
 				guard let pilot = fleet?.active else {return}
 				guard let typePickerViewController = typePickerViewController else {return}
@@ -174,7 +130,7 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 				}
 				present(typePickerViewController, animated: true)
 			}
-		}
+		}*/
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
@@ -186,7 +142,22 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 	//MARK: - Private
 	
 	private func reload() {
-		engine?.perform {
+		guard let fleet = self.fleet else {return}
+		if fleet.pilots.count == 1 {
+			var route: Route? = nil
+			
+			route = Router.Fitting.FleetMemberPicker(fleet: fleet, completionHandler: { [weak route] controller in
+				route?.unwind()
+			})
+			
+			let row = NCActionRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Create Fleet", comment: ""), route: route)
+			self.treeController.rootNode?.children = [row]
+		}
+		else {
+			
+		}
+		return
+		/*engine?.perform {
 			guard let pilot = self.fleet?.active else {return}
 			var sections = [TreeNode]()
 			
@@ -196,20 +167,20 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 				guard (1...10).contains(implant.slot) else {continue}
 				implants[implant.slot - 1] = NCImplantRow(implant: implant)
 			}
-
+			
 			var boosters = (0...3).map({NCBoosterRow(dummySlot: $0 + 1)})
 			
 			for booster in pilot.boosters.all {
 				guard (1...4).contains(booster.slot) else {continue}
 				boosters[booster.slot - 1] = NCBoosterRow(booster: booster)
 			}
-
+			
 			sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Implants", title: NSLocalizedString("Implants", comment: "").uppercased(), children: implants))
 			sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Boosters", title: NSLocalizedString("Boosters", comment: "").uppercased(), children: boosters))
 			
 			DispatchQueue.main.async {
 				self.treeController.rootNode?.children = sections
 			}
-		}
+		}*/
 	}
 }

@@ -197,6 +197,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 		super.viewWillAppear(animated)
 		
 		if self.treeController.rootNode == nil {
+			self.treeController.rootNode = TreeNode()
 			reload()
 		}
 		
@@ -328,9 +329,6 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 			sections.append(DefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "drone"), title: NSLocalizedString("Add Drone", comment: ""), segue: "NCTypePickerViewController"))*/
 			
 			DispatchQueue.main.async {
-				if self.treeController.rootNode == nil {
-					self.treeController.rootNode = TreeNode()
-				}
 				self.treeController.rootNode?.children = rows
 			}
 		}

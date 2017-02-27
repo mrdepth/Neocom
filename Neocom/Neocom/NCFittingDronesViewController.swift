@@ -151,7 +151,7 @@ class NCFittingDroneSection: TreeSection {
 class NCActionRow: DefaultTreeRow {
 	
 	override var hashValue: Int {
-		return route?.hashValue ?? 0
+		return [route?.hashValue ?? 0, title?.hashValue ?? 0].hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {

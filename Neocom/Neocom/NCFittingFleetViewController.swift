@@ -10,45 +10,33 @@ import UIKit
 
 class NCFleetMemberRow: TreeRow {
 	lazy var type: NCDBInvType? = {
-		guard let implant = self.implant else {return nil}
-		return NCDatabase.sharedDatabase?.invTypes[implant.typeID]
+		return NCDatabase.sharedDatabase?.invTypes[self.ship.typeID]
 	}()
 	
 	
-	let implant: NCFittingImplant?
-	let slot: Int?
-	init(implant: NCFittingImplant) {
-		self.implant = implant
-		self.slot = nil
-		super.init(cellIdentifier: "NCDefaultTableViewCell", accessoryButtonRoute: Router.Database.TypeInfo(implant.typeID))
-	}
-	
-	init(dummySlot: Int) {
-		self.implant = nil
-		self.slot = dummySlot
-		super.init(cellIdentifier: "NCDefaultTableViewCell")
+	let pilot: NCFittingCharacter
+	let ship: NCFittingShip
+	init(pilot: NCFittingCharacter) {
+		self.pilot = pilot
+		self.ship = pilot.ship!
+		super.init(cellIdentifier: "NCDefaultTableViewCell", accessoryButtonRoute: Router.Database.TypeInfo(ship.typeID))
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
-		if let type = type {
-			cell.titleLabel?.text = type.typeName
-			cell.iconView?.image = type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
-			cell.accessoryType = .detailButton
-		}
-		else {
-			cell.titleLabel?.text = NSLocalizedString("Slot", comment: "") + " \(slot ?? 0)"
-			cell.iconView?.image = #imageLiteral(resourceName: "implant")
-			cell.accessoryType = .none
-		}
+		guard let type = type else {return}
+		
+		cell.titleLabel?.text = type.typeName
+		cell.iconView?.image = type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+		cell.accessoryType = .detailButton
 	}
 	
 	override var hashValue: Int {
-		return implant?.hashValue ?? slot ?? 0
+		return pilot.hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCImplantRow)?.hashValue == hashValue
+		return (object as? NCFleetMemberRow)?.hashValue == hashValue
 	}
 	
 }
@@ -143,18 +131,27 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 	
 	private func reload() {
 		guard let fleet = self.fleet else {return}
+		let route = Router.Fitting.FleetMemberPicker(fleet: fleet, completionHandler: { controller in
+			_ = controller.navigationController?.popViewController(animated: true)
+		})
+
 		if fleet.pilots.count == 1 {
-			var route: Route? = nil
-			
-			route = Router.Fitting.FleetMemberPicker(fleet: fleet, completionHandler: { [weak route] controller in
-				route?.unwind()
-			})
-			
 			let row = NCActionRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Create Fleet", comment: ""), route: route)
 			self.treeController.rootNode?.children = [row]
 		}
 		else {
-			
+			engine?.perform({
+				var rows = [TreeNode]()
+				for (pilot, _) in fleet.pilots {
+					rows.append(NCFleetMemberRow(pilot: pilot))
+				}
+				
+				rows.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Add Pilot", comment: ""), route: route))
+				
+				DispatchQueue.main.async {
+					self.treeController.rootNode?.children = rows
+				}
+			})
 		}
 		return
 		/*engine?.perform {

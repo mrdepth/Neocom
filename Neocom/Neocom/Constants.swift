@@ -147,3 +147,8 @@ extension UserDefaults {
 		static let NCMarketRegion = "NCMarketRegion"
 	}
 }
+
+enum NCCellIdentifier {
+	case `default`
+	case action
+}

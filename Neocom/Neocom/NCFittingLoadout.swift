@@ -404,15 +404,15 @@ extension NCFittingCharacter {
 		components.scheme = NCURLScheme
 		components.host = "character"
 		components.queryItems = [URLQueryItem(name: "accountUUID", value: uuid)]
-		return components.url
+		return components.url!
 	}
 
-	@nonobjc class func url(level: Int) -> URL? {
+	@nonobjc class func url(level: Int) -> URL {
 		var components = URLComponents()
 		components.scheme = NCURLScheme
 		components.host = "character"
 		components.queryItems = [URLQueryItem(name: "level", value: String(level))]
-		return components.url
+		return components.url!
 	}
 	
 	var url: URL? {
@@ -482,7 +482,7 @@ extension NCFittingCharacter {
 		let url = NCFittingCharacter.url(level: level)
 		engine.perform {
 			self.skills.setAllSkillsLevel(level)
-			self.characterName = url?.absoluteString ?? ""
+			self.characterName = url.absoluteString
 			DispatchQueue.main.async {
 				completionHandler?(true)
 			}

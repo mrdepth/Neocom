@@ -9,6 +9,10 @@
 import UIKit
 
 class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
+	struct prototypes {
+		static let `default` = TableViewCellPrototype(nib: UINib(nibName: "NCHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCHeaderTableViewCell")
+	}
+
 	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var iconView: UIImageView?
 	@IBOutlet weak var expandIconView: UIImageView?

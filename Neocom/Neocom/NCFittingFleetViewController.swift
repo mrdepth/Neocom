@@ -19,7 +19,7 @@ class NCFleetMemberRow: TreeRow {
 	init(pilot: NCFittingCharacter) {
 		self.pilot = pilot
 		self.ship = pilot.ship!
-		super.init(cellIdentifier: "NCDefaultTableViewCell", accessoryButtonRoute: Router.Database.TypeInfo(ship.typeID))
+		super.init(prototype: NCDefaultTableViewCell.prototypes.default, accessoryButtonRoute: Router.Database.TypeInfo(ship.typeID))
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -27,6 +27,7 @@ class NCFleetMemberRow: TreeRow {
 		guard let type = type else {return}
 		
 		cell.titleLabel?.text = type.typeName
+		cell.subtitleLabel?.text = ship.name
 		cell.iconView?.image = type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		cell.accessoryType = .detailButton
 	}
@@ -136,7 +137,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		})
 
 		if fleet.pilots.count == 1 {
-			let row = NCActionRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Create Fleet", comment: ""), route: route)
+			let row = NCActionRow(prototype: "NCActionTableViewCell", title: NSLocalizedString("Create Fleet", comment: "").uppercased(), route: route)
 			self.treeController.rootNode?.children = [row]
 		}
 		else {
@@ -146,7 +147,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 					rows.append(NCFleetMemberRow(pilot: pilot))
 				}
 				
-				rows.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Add Pilot", comment: ""), route: route))
+				rows.append(NCActionRow(prototype: "NCActionTableViewCell", title: NSLocalizedString("Add Pilot", comment: "").uppercased(), route: route))
 				
 				DispatchQueue.main.async {
 					self.treeController.rootNode?.children = rows

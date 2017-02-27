@@ -73,7 +73,7 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 				let prefix = i < n ? prefixes[i] : NSLocalizedString("Other", comment: "")
 				let rows = array.map({NCTypeInfoRow(objectID: $0, managedObjectContext: context, accessoryType: .detailButton)})
 				
-				return DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: prefix, title: prefix.uppercased(), children: rows)
+				return DefaultTreeSection(prototype: NCHeaderTableViewCell.prototypes.default, nodeIdentifier: prefix, title: prefix.uppercased(), children: rows)
 			}
 			
 			DispatchQueue.main.async {

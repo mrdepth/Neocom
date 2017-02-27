@@ -591,3 +591,4 @@ class FetchedResultsObjectNode<ResultType: NSFetchRequestResult>: TreeNode {
 
 
 //let l: FetchedResultsSectionNode<FetchedResultsObjectNode<NSDictionary>>? = nil
+

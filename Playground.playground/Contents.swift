@@ -2,6 +2,22 @@
 
 import UIKit
 
-let a = [0,1,2,3,3,4,5]
+protocol TableViewCellPrototype {
+	static var reuseIdentifier: String {get}
+}
 
-a[4..<a.count].index(of: 3)
+class A: TableViewCellPrototype {
+	static let reuseIdentifier = "sdf"
+}
+
+class B<T: TableViewCellPrototype> {
+	func p() {
+		print("\(T.reuseIdentifier)")
+	}
+}
+
+let a: TableViewCellPrototype = A()
+
+type(of: a).reuseIdentifier
+
+B<A>().p()

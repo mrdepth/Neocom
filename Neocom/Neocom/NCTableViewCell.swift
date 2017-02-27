@@ -27,9 +27,14 @@ class NCTableViewCell: UITableViewCell {
 }
 
 class NCDefaultTableViewCell: NCTableViewCell {
+	struct prototypes {
+		static let `default` = TableViewCellPrototype(nib: UINib(nibName: "NCDefaultTableViewCell", bundle: nil), reuseIdentifier: "NCDefaultTableViewCell")
+	}
+	
 	@IBOutlet weak var iconView: UIImageView?
 	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var subtitleLabel: UILabel?
+	
 	var indentationConstraint: NSLayoutConstraint? {
 		get {
 			guard let iconView = self.iconView else {return nil}

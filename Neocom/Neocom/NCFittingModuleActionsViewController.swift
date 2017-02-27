@@ -74,10 +74,10 @@ class NCFittingModuleInfoRow: TreeRow {
 		self.type = type
 		
 		if cpu != 0 || powerGrid != 0 || capacitor != 0 {
-			super.init(cellIdentifier: "NCFittingModuleInfoTableViewCell", route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
+			super.init(prototype: "NCFittingModuleInfoTableViewCell", route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
 		}
 		else {
-			super.init(cellIdentifier: "NCDefaultTableViewCell", route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
+			super.init(prototype: NCDefaultTableViewCell.prototypes.default, route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
 		}
 	}
 	
@@ -329,7 +329,7 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 					row = NCFittingChargeRow(type: type, charges: charges, route: ammoRoute)
 				}
 				else {
-					row = DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Select Ammo", comment: ""),  route: ammoRoute)
+					row = DefaultTreeRow(cellIdentifier: "NCActionTableViewCell", title: NSLocalizedString("Select Ammo", comment: "").uppercased(),  route: ammoRoute)
 				}
 				let section = DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Charge", title: NSLocalizedString("Charge", comment: "").uppercased(), children: [row])
 				sections.append(section)

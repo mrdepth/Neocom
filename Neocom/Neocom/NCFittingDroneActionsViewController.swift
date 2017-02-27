@@ -50,7 +50,7 @@ class NCFittingDroneStateRow: TreeRow {
 	init(drone: NCFittingDrone) {
 		self.drone = drone
 		isActive = drone.isActive
-		super.init(cellIdentifier: "NCFittingModuleStateTableViewCell")
+		super.init(prototype: "NCFittingModuleStateTableViewCell")
 		
 	}
 	
@@ -257,8 +257,8 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 				}
 			}
 			
-			sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingDroneStateRow(drone: drone)]))
-			sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Count", title: NSLocalizedString("Count", comment: "").uppercased(), children: [NCFittingDroneCountRow(drones: drones, ship: ship, handler: handler)]))
+			sections.append(DefaultTreeSection(prototype: NCHeaderTableViewCell.prototypes.default, nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingDroneStateRow(drone: drone)]))
+			sections.append(DefaultTreeSection(prototype: NCHeaderTableViewCell.prototypes.default, nodeIdentifier: "Count", title: NSLocalizedString("Count", comment: "").uppercased(), children: [NCFittingDroneCountRow(drones: drones, ship: ship, handler: handler)]))
 			
 		}
 		

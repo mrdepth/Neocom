@@ -195,7 +195,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Area", title: NSLocalizedString("Area Effects", comment: "").uppercased(), children: [row]))
 			}
 			else {
-				let row = NCActionRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Select Area Effects", comment: ""),  route: areaEffectsRoute)
+				let row = NCActionRow(cellIdentifier: "NCActionTableViewCell", title: NSLocalizedString("Select Area Effects", comment: "").uppercased(),  route: areaEffectsRoute)
 				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Area", title: NSLocalizedString("Area Effects", comment: "").uppercased(), children: [row]))
 			}
 			

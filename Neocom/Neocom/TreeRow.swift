@@ -9,6 +9,24 @@
 import UIKit
 import CoreData
 
+struct TableViewCellPrototype {
+	var nib: UINib?
+	var reuseIdentifier: String
+}
+
+extension UITableView {
+	
+	func register(_ prototypes: [TableViewCellPrototype]) {
+		for prototype in prototypes {
+			register(prototype.nib, forCellReuseIdentifier: prototype.reuseIdentifier)
+		}
+	}
+	
+//	func dequeueReusableCell<T: TableViewCellPrototype> (for indexPath: IndexPath) -> T {
+//		return dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as! T
+//	}
+}
+
 class TreeRow: TreeNode {
 	var route: Route?
 	var accessoryButtonRoute: Route?
@@ -17,12 +35,11 @@ class TreeRow: TreeNode {
 		return false
 	}
 	
-	init(cellIdentifier: String?, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
+	init(prototype: TableViewCellPrototype?, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
 		self.route = route
 		self.accessoryButtonRoute = accessoryButtonRoute
 		self.object = object
-		super.init(cellIdentifier: cellIdentifier)
-		self.cellIdentifier = cellIdentifier
+		super.init(cellIdentifier: prototype?.reuseIdentifier)
 	}
 	
 }
@@ -32,8 +49,8 @@ class TreeSection: TreeNode {
 		return true
 	}
 	
-	override init(cellIdentifier: String? = nil) {
-		super.init(cellIdentifier: cellIdentifier)
+	init(prototype: TableViewCellPrototype? = nil) {
+		super.init(cellIdentifier: prototype?.reuseIdentifier)
 	}
 }
 
@@ -42,11 +59,11 @@ class DefaultTreeSection: TreeSection {
 	dynamic var title: String?
 	dynamic var attributedTitle: NSAttributedString?
 
-	init(cellIdentifier: String, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
+	init(prototype: TableViewCellPrototype?, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
 		self.title = title
 		self.attributedTitle = attributedTitle
 		self.nodeIdentifier = nodeIdentifier
-		super.init(cellIdentifier: cellIdentifier)
+		super.init(prototype: prototype)
 		self.children = children
 	}
 	
@@ -93,14 +110,14 @@ class DefaultTreeRow: TreeRow {
 	dynamic var subtitle: String?
 	dynamic var accessoryType: UITableViewCellAccessoryType
 	
-	init(cellIdentifier: String, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
+	init(prototype: TableViewCellPrototype?, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
 		self.image = image
 		self.title = title
 		self.attributedTitle = attributedTitle
 		self.subtitle = subtitle
 		self.accessoryType = accessoryType
 
-		super.init(cellIdentifier: cellIdentifier, route: route, accessoryButtonRoute: accessoryButtonRoute, object: object)
+		super.init(prototype: prototype, route: route, accessoryButtonRoute: accessoryButtonRoute, object: object)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -122,7 +139,7 @@ class NCDefaultFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fetc
 	
 	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
 		super.init(section: section, objectNode: objectNode)
-		self.cellIdentifier = "NCHeaderTableViewCell"
+		self.cellIdentifier = NCHeaderTableViewCell.prototypes.default.reuseIdentifier
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -145,7 +162,7 @@ class NCMetaGroupFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fe
 	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
 		metaGroupID = Int(section.name)
 		super.init(section: section, objectNode: objectNode)
-		self.cellIdentifier = "NCHeaderTableViewCell"
+		self.cellIdentifier = NCHeaderTableViewCell.prototypes.default.reuseIdentifier
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -164,7 +181,7 @@ class NCTypeInfoNode: FetchedResultsObjectNode<NCDBInvType> {
 	
 	required init(object: NCDBInvType) {
 		super.init(object: object)
-		self.cellIdentifier = "NCDefaultTableViewCell"
+		self.cellIdentifier = NCDefaultTableViewCell.prototypes.default.reuseIdentifier
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -191,13 +208,13 @@ class NCTypeInfoRow: TreeRow {
 	init(type: NCDBInvType, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
 		self.managedObjectContext = nil
 		self.accessoryType = accessoryType
-		super.init(cellIdentifier: "NCDefaultTableViewCell", route: route, accessoryButtonRoute: accessoryButtonRoute, object: type)
+		super.init(prototype: NCDefaultTableViewCell.prototypes.default, route: route, accessoryButtonRoute: accessoryButtonRoute, object: type)
 	}
 	
 	init(objectID: NSManagedObjectID, managedObjectContext: NSManagedObjectContext, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
 		self.managedObjectContext = managedObjectContext
 		self.accessoryType = accessoryType
-		super.init(cellIdentifier: "NCDefaultTableViewCell", route: route, accessoryButtonRoute: accessoryButtonRoute, object: objectID)
+		super.init(prototype: NCDefaultTableViewCell.prototypes.default, route: route, accessoryButtonRoute: accessoryButtonRoute, object: objectID)
 	}
 	
 	override func configure(cell: UITableViewCell) {

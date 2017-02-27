@@ -19,7 +19,7 @@ class NCLoadoutRow: TreeRow {
 		loadoutName = loadout.name ?? ""
 		image = type.icon?.image?.image
 		loadoutID = loadout.objectID
-		super.init(cellIdentifier: "NCDefaultTableViewCell")
+		super.init(prototype: NCDefaultTableViewCell.prototypes.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -120,6 +120,8 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		tableView.register([NCDefaultTableViewCell.prototypes.default,
+		                    NCHeaderTableViewCell.prototypes.default])
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
@@ -136,28 +138,6 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 		if treeController.rootNode == nil {
 			self.treeController.rootNode = TreeNode()
 			reload()
-		}
-	}
-	
-	// MARK: Navigation
-	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		switch segue.identifier {
-		case "NCTypePickerViewController"?:
-			guard let controller = segue.destination as? NCTypePickerViewController else {return}
-			guard let categoryID = (sender as? NCTableViewCell)?.object as? NCDBDgmppItemCategoryID else {return}
-			controller.category = NCDBDgmppItemCategory.category(categoryID: categoryID)
-			controller.completionHandler = { [weak self] (type) in
-				print ("\(type)")
-				self?.dismiss(animated: true)
-			}
-		case "NCFittingEditorViewController"?:
-			guard let controller = segue.destination as? NCFittingEditorViewController else {return}
-			guard let (engine, fleet) = sender as? (NCFittingEngine, NCFittingFleet) else {return}
-			controller.engine = engine
-			controller.fleet = fleet
-		default:
-			break
 		}
 	}
 	
@@ -197,54 +177,13 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 		return [deleteAction]
 	}
 	
-	// MARK: NCTreeControllerDelegate
-	
-	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
-		return (item as! NCTreeNode).cellIdentifier
-	}
-	
-	func treeController(_ treeController: NCTreeController, configureCell cell: UITableViewCell, withItem item: AnyObject) {
-		(item as! NCTreeNode).configure(cell: cell)
-	}
-	
-	func treeController(_ treeController: NCTreeController, isItemExpandable item: AnyObject) -> Bool {
-		return (item as! NCTreeNode).canExpand
-	}
-	
-	func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) -> Void {
-		guard let row = item as? NCDefaultTreeRow else {return}
-		if let segue = row.segue {
-			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController else {return}
-			controller.category = NCDBDgmppItemCategory.category(categoryID: row.object as! NCDBDgmppItemCategoryID)
-			controller.completionHandler = { [weak self] (_, type) in
-				guard let strongSelf = self else {return}
-				strongSelf.dismiss(animated: true)
-				
-				let engine = NCFittingEngine()
-				let typeID = Int(type.typeID)
-				engine.perform {
-					let fleet = NCFittingFleet(typeID: typeID, engine: engine)
-					DispatchQueue.main.async {
-						Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf, view: cell)
-					}
-				}
-			}
-			self.present(controller, animated: true, completion: nil)
-			//self.performSegue(withIdentifier: segue, sender: cell)
-		}
-	}
-	
-	func treeController(_ treeController: NCTreeController, canEditChild child: Int, ofItem item: AnyObject?) -> Bool {
-		return true
-	}
-	
 	//MARK: - Private
 	
 	private func reload() {
 		var sections = [TreeNode]()
 	
 		
-		sections.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
+		sections.append(NCActionRow(prototype: NCDefaultTableViewCell.prototypes.default, image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
 			guard let strongSelf = self else {return}
 			strongSelf.dismiss(animated: true)
 			
@@ -259,8 +198,8 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 
 		})))
 		
-		sections.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator))
-		sections.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
+		sections.append(NCActionRow(prototype: NCDefaultTableViewCell.prototypes.default, image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator))
+		sections.append(NCActionRow(prototype: NCDefaultTableViewCell.prototypes.default, image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
 		
 		sections.append(NCLoadoutsSection(categoryID: .ship))
 		self.treeController.rootNode?.children = sections

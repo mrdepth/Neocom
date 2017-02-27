@@ -71,7 +71,7 @@ class NCFittingCharactersRow: TreeRow, UICollectionViewDataSource, UICollectionV
 	
 	init(pilot: NCFittingCharacter) {
 		self.pilot = pilot
-		super.init(cellIdentifier: "NCFittingCharactersTableViewCell")
+		super.init(prototype: "NCFittingCharactersTableViewCell")
 	}
 	
 	override func configure(cell: UITableViewCell) {

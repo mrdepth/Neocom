@@ -38,7 +38,7 @@ class NCFittingModuleDamageChartRow: TreeRow {
 		self.module = module
 		self.ship = module.owner as? NCFittingShip
 		self.count = count
-		super.init(cellIdentifier: "NCFittingModuleDamageChartTableViewCell")
+		super.init(prototype: "NCFittingModuleDamageChartTableViewCell")
 	}
 	
 	override func configure(cell: UITableViewCell) {

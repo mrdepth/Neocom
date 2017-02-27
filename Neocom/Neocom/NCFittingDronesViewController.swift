@@ -23,7 +23,7 @@ class NCFittingDroneRow: TreeRow {
 		self.drones = drones
 		isActive = drone?.isActive == true
 		hasTarget = drone?.target != nil
-		super.init(cellIdentifier: "ModuleCell")
+		super.init(prototype: "ModuleCell")
 	}
 	
 	override func move(from: TreeNode) -> TreeNodeReloading {
@@ -114,7 +114,7 @@ class NCFittingDroneSection: TreeSection {
 		self.squadron = squadron
 		used = ship.droneSquadronUsed(squadron)
 		limit = ship.droneSquadronLimit(squadron)
-		super.init(cellIdentifier: "NCHeaderTableViewCell")
+		super.init(prototype: NCHeaderTableViewCell.prototypes.default)
 		self.children = children
 	}
 	
@@ -285,7 +285,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 				}
 			}
 			
-			rows.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "drone"), title: NSLocalizedString("Add Drone", comment: "")))
+			rows.append(NCActionRow(prototype: "NCActionTableViewCell", title: NSLocalizedString("Add Drone", comment: "").uppercased()))
 			/*typealias TypeID = Int
 			typealias Squadron = [Int: [TypeID: [Bool: [NCFittingDrone]]]]
 			var squadrons = [NCFittingFighterSquadron: Squadron]()

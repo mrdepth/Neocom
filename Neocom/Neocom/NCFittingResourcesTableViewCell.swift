@@ -32,7 +32,7 @@ class NCFittingResourcesRow: TreeRow {
 	
 	init(ship: NCFittingShip) {
 		self.ship = ship
-		super.init(cellIdentifier: "NCFittingResourcesTableViewCell")
+		super.init(prototype: "NCFittingResourcesTableViewCell")
 	}
 	
 	override func configure(cell: UITableViewCell) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16C67" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16D32" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName="NCAccount" syncable="YES" codeGenerationType="class">
         <attribute name="accessToken" attributeType="String" syncable="YES"/>
         <attribute name="characterID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -41,6 +41,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="data" maxCount="1" deletionRule="Cascade" destinationEntity="LoadoutData" inverseName="loadout" inverseEntity="LoadoutData" syncable="YES"/>
         <relationship name="fleets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Fleet" inverseName="loadouts" inverseEntity="Fleet" syncable="YES"/>
     </entity>
@@ -114,8 +115,9 @@
         <element name="DamagePattern" positionX="45" positionY="90" width="128" height="120"/>
         <element name="DronesSet" positionX="9" positionY="54" width="128" height="75"/>
         <element name="FitCharacter" positionX="36" positionY="81" width="128" height="75"/>
+        <element name="Fleet" positionX="9" positionY="126" width="128" height="75"/>
         <element name="ImplantSet" positionX="54" positionY="99" width="128" height="75"/>
-        <element name="Loadout" positionX="0" positionY="45" width="128" height="120"/>
+        <element name="Loadout" positionX="0" positionY="45" width="128" height="135"/>
         <element name="LoadoutData" positionX="9" positionY="54" width="128" height="75"/>
         <element name="MailBox" positionX="-45" positionY="0" width="128" height="90"/>
         <element name="Scope" positionX="9" positionY="126" width="128" height="75"/>
@@ -125,6 +127,5 @@
         <element name="ShoppingList" positionX="45" positionY="90" width="128" height="75"/>
         <element name="SkillPlan" positionX="9" positionY="54" width="128" height="105"/>
         <element name="SkillPlanSkill" positionX="9" positionY="126" width="128" height="105"/>
-        <element name="Fleet" positionX="9" positionY="126" width="128" height="75"/>
     </elements>
 </model>

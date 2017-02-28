@@ -10,7 +10,7 @@ import UIKit
 
 class NCTextFieldTableViewCell: NCTableViewCell {
 	@IBOutlet weak var textField: UITextField!
-	
+
 }
 
 class NCActionHandler: NSObject {
@@ -39,10 +39,10 @@ class NCTextFieldRow: TreeRow {
 	var text: String?
 	let placeholder: String?
 	
-	init(cellIdentifier: String = "NCTextFieldTableViewCell", text: String? = nil, placeholder: String? = nil) {
+	init(prototype: Prototype = Prototype.NCTextFieldTableViewCell.default, text: String? = nil, placeholder: String? = nil) {
 		self.text = text
 		self.placeholder = placeholder
-		super.init(cellIdentifier: cellIdentifier)
+		super.init(prototype: prototype)
 	}
 	
 	private var handler: NCActionHandler?
@@ -62,4 +62,10 @@ class NCTextFieldRow: TreeRow {
 	
 	//MARK: - Private
 	
+}
+
+extension Prototype {
+	struct NCTextFieldTableViewCell {
+		static let `default` = Prototype(nib: UINib(nibName: "NCTextFieldTableViewCell", bundle: nil), reuseIdentifier: "NCTextFieldTableViewCell")
+	}
 }

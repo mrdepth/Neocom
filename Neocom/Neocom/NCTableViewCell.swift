@@ -27,9 +27,6 @@ class NCTableViewCell: UITableViewCell {
 }
 
 class NCDefaultTableViewCell: NCTableViewCell {
-	struct prototypes {
-		static let `default` = TableViewCellPrototype(nib: UINib(nibName: "NCDefaultTableViewCell", bundle: nil), reuseIdentifier: "NCDefaultTableViewCell")
-	}
 	
 	@IBOutlet weak var iconView: UIImageView?
 	@IBOutlet weak var titleLabel: UILabel?
@@ -50,4 +47,21 @@ class NCDefaultTableViewCell: NCTableViewCell {
 			self.indentationConstraint?.constant = CGFloat(15 + level * 10)
 		}
 	}
+}
+
+class NCActionTableViewCell: NCTableViewCell {
+	@IBOutlet weak var titleLabel: UILabel?
+	
+}
+
+extension Prototype {
+	struct NCDefaultTableViewCell {
+		static let `default` = Prototype(nib: UINib(nibName: "NCDefaultTableViewCell", bundle: nil), reuseIdentifier: "NCDefaultTableViewCell")
+		static let compact = Prototype(nib: UINib(nibName: "NCDefaultCompactTableViewCell", bundle: nil), reuseIdentifier: "NCDefaultCompactTableViewCell")
+	}
+	
+	struct NCActionTableViewCell {
+		static let `default` = Prototype(nib: UINib(nibName: "NCActionTableViewCell", bundle: nil), reuseIdentifier: "NCActionTableViewCell")
+	}
+
 }

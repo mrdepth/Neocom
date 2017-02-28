@@ -40,6 +40,13 @@ class NCFittingCharactersTableViewCell: NCTableViewCell {
 	@IBOutlet weak var collectionView: UICollectionView!
 }
 
+extension Prototype {
+	struct NCFittingCharactersTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingCharactersTableViewCell")
+	}
+}
+
+
 class NCFittingCharacterCollectionViewCell: UICollectionViewCell {
 	@IBOutlet weak var imageView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
@@ -71,7 +78,7 @@ class NCFittingCharactersRow: TreeRow, UICollectionViewDataSource, UICollectionV
 	
 	init(pilot: NCFittingCharacter) {
 		self.pilot = pilot
-		super.init(prototype: "NCFittingCharactersTableViewCell")
+		super.init(prototype: Prototype.NCFittingCharactersTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {

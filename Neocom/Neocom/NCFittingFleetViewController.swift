@@ -19,7 +19,7 @@ class NCFleetMemberRow: TreeRow {
 	init(pilot: NCFittingCharacter) {
 		self.pilot = pilot
 		self.ship = pilot.ship!
-		super.init(prototype: NCDefaultTableViewCell.prototypes.default, accessoryButtonRoute: Router.Database.TypeInfo(ship.typeID))
+		super.init(prototype: Prototype.NCDefaultTableViewCell.compact, accessoryButtonRoute: Router.Database.TypeInfo(ship.typeID))
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -58,6 +58,13 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		tableView.register([Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCActionTableViewCell.default
+			])
+
+		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
@@ -137,7 +144,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		})
 
 		if fleet.pilots.count == 1 {
-			let row = NCActionRow(prototype: "NCActionTableViewCell", title: NSLocalizedString("Create Fleet", comment: "").uppercased(), route: route)
+			let row = NCActionRow(title: NSLocalizedString("Create Fleet", comment: "").uppercased(), route: route)
 			self.treeController.rootNode?.children = [row]
 		}
 		else {
@@ -147,7 +154,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 					rows.append(NCFleetMemberRow(pilot: pilot))
 				}
 				
-				rows.append(NCActionRow(prototype: "NCActionTableViewCell", title: NSLocalizedString("Add Pilot", comment: "").uppercased(), route: route))
+				rows.append(NCActionRow(title: NSLocalizedString("Add Pilot", comment: "").uppercased(), route: route))
 				
 				DispatchQueue.main.async {
 					self.treeController.rootNode?.children = rows

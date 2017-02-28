@@ -43,7 +43,7 @@ class NCFittingDamagePatternRow: TreeRow {
 	
 	init(damagePattern: NCFittingDamage, route: Route? = nil) {
 		self.damagePattern = damagePattern
-		super.init(cellIdentifier: "NCDamageTypeTableViewCell", route: route)
+		super.init(prototype: Prototype.NCDamageTypeTableViewCell.compact, route: route)
 		
 	}
 	
@@ -95,6 +95,12 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		//navigationController?.preferredContentSize = CGSize(width: view.bounds.size.width, height: 320)
+		
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCDamageTypeTableViewCell.compact,
+		                    Prototype.NCActionTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.compact,
+		                    ])
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
@@ -176,10 +182,10 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 			sections.append(NCLoadoutNameRow(text: title?.isEmpty == false ? title : nil, placeholder: NSLocalizedString("Ship Name", comment: "")))
 			if let ship = pilot.ship, let type = invTypes?[ship.typeID] {
 				let row = NCTypeInfoRow(type: type, accessoryType: .detailButton, route: Router.Database.TypeInfo(type), accessoryButtonRoute: Router.Database.TypeInfo(type))
-				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Ship", title: NSLocalizedString("Ship", comment: "").uppercased(), children: [row]))
+				sections.append(DefaultTreeSection(nodeIdentifier: "Ship", title: NSLocalizedString("Ship", comment: "").uppercased(), children: [row]))
 			}
 			
-			sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Character", title: NSLocalizedString("Character", comment: "").uppercased(), children: [NCFittingCharactersRow(pilot: pilot)]))
+			sections.append(DefaultTreeSection(nodeIdentifier: "Character", title: NSLocalizedString("Character", comment: "").uppercased(), children: [NCFittingCharactersRow(pilot: pilot)]))
 
 			let areaEffectsRoute = Router.Fitting.AreaEffects { [weak self] (controller, type) in
 				let typeID = Int(type.typeID)
@@ -192,11 +198,11 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 			
 			if let area = engine.area, let type = invTypes?[area.typeID] {
 				let row = NCFittingAreaEffectRow(type: type, accessoryType: .detailButton, route: areaEffectsRoute, accessoryButtonRoute: Router.Database.TypeInfo(type))
-				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Area", title: NSLocalizedString("Area Effects", comment: "").uppercased(), children: [row]))
+				sections.append(DefaultTreeSection(nodeIdentifier: "Area", title: NSLocalizedString("Area Effects", comment: "").uppercased(), children: [row]))
 			}
 			else {
-				let row = NCActionRow(cellIdentifier: "NCActionTableViewCell", title: NSLocalizedString("Select Area Effects", comment: "").uppercased(),  route: areaEffectsRoute)
-				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Area", title: NSLocalizedString("Area Effects", comment: "").uppercased(), children: [row]))
+				let row = NCActionRow(title: NSLocalizedString("Select Area Effects", comment: "").uppercased(),  route: areaEffectsRoute)
+				sections.append(DefaultTreeSection(nodeIdentifier: "Area", title: NSLocalizedString("Area Effects", comment: "").uppercased(), children: [row]))
 			}
 			
 			let damagePatternsRoute = Router.Fitting.DamagePatterns {[weak self] (controller, damagePattern) in
@@ -210,7 +216,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 			}
 
 			let damagePattern = pilot.ship?.damagePattern ?? .omni
-			sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "DamagePattern", title: NSLocalizedString("Damage Pattern", comment: "").uppercased(), children: [NCFittingDamagePatternRow(damagePattern: damagePattern, route: damagePatternsRoute)]))
+			sections.append(DefaultTreeSection(nodeIdentifier: "DamagePattern", title: NSLocalizedString("Damage Pattern", comment: "").uppercased(), children: [NCFittingDamagePatternRow(damagePattern: damagePattern, route: damagePatternsRoute)]))
 		}
 		
 		if treeController.rootNode == nil {

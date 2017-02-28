@@ -52,11 +52,14 @@ class NCFittingEditorViewController: NCPageViewController {
 				self?.engine?.performBlockAndWait {
 					var pilots = [String: NCLoadout] ()
 					for (character, objectID) in fleet.pilots {
+						
+						if character.identifier == nil {
+							character.identifier = UUID().uuidString
+						}
+						
 						guard let ship = character.ship else {continue}
 						if let objectID = objectID, let loadout = (try? managedObjectContext.existingObject(with: objectID)) as? NCLoadout {
-							if loadout.uuid == nil {
-								loadout.uuid = UUID().uuidString
-							}
+							loadout.uuid = character.identifier
 							loadout.name = ship.name
 							loadout.data?.data = character.loadout
 							pilots[loadout.uuid!] = loadout
@@ -67,19 +70,24 @@ class NCFittingEditorViewController: NCPageViewController {
 							loadout.typeID = Int32(ship.typeID)
 							loadout.name = ship.name
 							loadout.data?.data = character.loadout
-							loadout.uuid = UUID().uuidString
+							loadout.uuid = character.identifier
 							pilots[loadout.uuid!] = loadout
 						}
 					}
 					
 					if fleet.pilots.count > 1 {
-						let object = fleet.fleet ?? {
-							let object = NCFleet(entity: NSEntityDescription.entity(forEntityName: "Fleet", in: managedObjectContext)!, insertInto: managedObjectContext)
-							return object
-						}()
-						if (object.loadouts?.count ?? 0) > 0 {
-							object.removeFromLoadouts(object.loadouts!)
+						let object: NCFleet
+						if let fleetID = fleet.fleetID, let fleet = (try? managedObjectContext.existingObject(with: fleetID)) as? NCFleet {
+							if (fleet.loadouts?.count ?? 0) > 0 {
+								fleet.removeFromLoadouts(fleet.loadouts!)
+							}
+							object = fleet
 						}
+						else {
+							object = NCFleet(entity: NSEntityDescription.entity(forEntityName: "Fleet", in: managedObjectContext)!, insertInto: managedObjectContext)
+							object.name = NSLocalizedString("Fleet", comment: "")
+						}
+						
 						for (character, _) in fleet.pilots {
 							guard let pilot = pilots[character.identifier!] else {continue}
 							pilot.addToFleets(object)
@@ -88,9 +96,9 @@ class NCFittingEditorViewController: NCPageViewController {
 					}
 				}
 				
-				if managedObjectContext.hasChanges {
-					try? managedObjectContext.save()
-				}
+//				if managedObjectContext.hasChanges {
+//					try? managedObjectContext.save()
+//				}
 
 			}
 			

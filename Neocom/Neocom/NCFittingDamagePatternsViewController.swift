@@ -23,9 +23,9 @@ class NCFittingDamagePatternInfoRow: NCFittingDamagePatternRow {
 	}
 }
 
-class NCAddDamagePatternRow: DefaultTreeRow {
+class NCAddDamagePatternRow: NCActionRow {
 	init() {
-		super.init(cellIdentifier: "NCActionTableViewCell", title: NSLocalizedString("Add Damage Pattern", comment: ""))
+		super.init(title: NSLocalizedString("Add Damage Pattern", comment: ""))
 	}
 }
 
@@ -42,7 +42,7 @@ class NCPredefinedDamagePatternsSection: DefaultTreeSection {
 			return NCFittingDamagePatternInfoRow(damagePattern: vector, name: name)
 		}
 
-		super.init(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Predefined", title: NSLocalizedString("Predefined", comment: "").uppercased(), children: predefined!)
+		super.init(nodeIdentifier: "Predefined", title: NSLocalizedString("Predefined", comment: "").uppercased(), children: predefined!)
 	}
 	
 	override var hashValue: Int {
@@ -209,7 +209,7 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		var sections = [TreeNode]()
 		
 		
-		sections.append(DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "criminal"), title: NSLocalizedString("Select NPC Type", comment: ""), accessoryType: .disclosureIndicator))
+		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "criminal"), title: NSLocalizedString("Select NPC Type", comment: ""), accessoryType: .disclosureIndicator))
 		
 		if let managedObjectContext = self.managedObjectContext {
 			sections.append(NCCustomDamagePatternsSection(managedObjectContext: managedObjectContext))

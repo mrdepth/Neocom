@@ -1,5 +1,5 @@
 //
-//  NCDamageTableViewCell.swift
+//  NCFirepowerTableViewCell.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 08.02.17.
@@ -14,22 +14,30 @@ class NCDamageStackView: UIStackView {
 	@IBOutlet weak var totalLabel: UILabel!
 }
 
-class NCDamageTableViewCell: NCTableViewCell {
+class NCFirepowerTableViewCell: NCTableViewCell {
 	@IBOutlet weak var damagePatternView: NCResistancesStackView!
 	@IBOutlet weak var volleyView: NCDamageStackView!
 	@IBOutlet weak var dpsView: NCDamageStackView!
+	
 }
+
+extension Prototype {
+	struct NCFirepowerTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFirepowerTableViewCell")
+	}
+}
+
 
 class NCFirepowerRow: TreeRow {
 	let ship: NCFittingShip
 	
 	init(ship: NCFittingShip) {
 		self.ship = ship
-		super.init(cellIdentifier: "NCDamageTableViewCell")
+		super.init(prototype: Prototype.NCFirepowerTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {
-		guard let cell = cell as? NCDamageTableViewCell else {return}
+		guard let cell = cell as? NCFirepowerTableViewCell else {return}
 		let ship = self.ship
 		cell.object = ship
 		ship.engine?.perform {

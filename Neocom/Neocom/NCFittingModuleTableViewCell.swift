@@ -14,9 +14,26 @@ class NCFittingModuleTableViewCell: NCTableViewCell {
 	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var subtitleLabel: UILabel?
 	@IBOutlet weak var targetIconView: UIImageView!
-
 }
 
 class NCFittingModuleStateTableViewCell: NCTableViewCell {
 	@IBOutlet weak var segmentedControl: UISegmentedControl?
+}
+
+typealias NCFittingDroneTableViewCell = NCFittingModuleTableViewCell
+typealias NCFittingDroneStateTableViewCell = NCFittingModuleStateTableViewCell
+
+extension Prototype {
+	struct NCFittingModuleTableViewCell {
+		static let `default` = Prototype(nib: UINib(nibName: "NCFittingModuleTableViewCell", bundle: nil), reuseIdentifier: "NCFittingModuleTableViewCell")
+	}
+	
+	struct NCFittingModuleStateTableViewCell {
+		static let `default` = Prototype(nib: UINib(nibName: "NCFittingModuleStateTableViewCell", bundle: nil), reuseIdentifier: "NCFittingModuleStateTableViewCell")
+	}
+	
+
+	typealias NCFittingDroneTableViewCell = Prototype.NCFittingModuleTableViewCell
+	typealias NCFittingDroneStateTableViewCell = Prototype.NCFittingModuleStateTableViewCell
+
 }

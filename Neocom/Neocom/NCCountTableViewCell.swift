@@ -10,6 +10,13 @@ import UIKit
 
 class NCCountTableViewCell: NCTableViewCell {
 	@IBOutlet weak var pickerView: UIPickerView?
+	
+}
+
+extension Prototype {
+	struct NCCountTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCCountTableViewCell")
+	}
 }
 
 class NCCountRow: TreeRow, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -18,7 +25,7 @@ class NCCountRow: TreeRow, UIPickerViewDataSource, UIPickerViewDelegate {
 	init(value: Int, range: Range<Int>) {
 		self.value = value
 		self.range = range
-		super.init(cellIdentifier: "NCCountTableViewCell")
+		super.init(prototype: Prototype.NCCountTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {

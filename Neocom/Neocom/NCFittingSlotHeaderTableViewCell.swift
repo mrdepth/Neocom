@@ -10,4 +10,11 @@ import UIKit
 
 class NCFittingSlotHeaderTableViewCell: NCHeaderTableViewCell {
 	@IBOutlet weak var groupButton: UIButton?
+	
+}
+
+extension Prototype {
+	struct NCFittingSlotHeaderTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingSlotHeaderTableViewCell")
+	}
 }

@@ -33,7 +33,7 @@ class NCFittingModuleRow: TreeRow {
 		self.state = module?.state ?? .unknown
 		self.isEnabled = module?.isEnabled ?? true
 		self.hasTarget = module?.target != nil
-		super.init(cellIdentifier: module?.isDummy == true ? "NCDefaultTableViewCell" : "ModuleCell")
+		super.init(prototype: module?.isDummy == true ? Prototype.NCDefaultTableViewCell.compact : Prototype.NCFittingModuleTableViewCell.default)
 	}
 	
 	override func move(from: TreeNode) -> TreeNodeReloading {
@@ -165,7 +165,7 @@ class NCFittingModuleSection: TreeSection {
 	init(slot: NCFittingModuleSlot, children: [NCFittingModuleRow], grouped: Bool) {
 		self.slot = slot
 		self.grouped = grouped
-		super.init(cellIdentifier: "NCFittingSlotHeaderTableViewCell")
+		super.init(prototype: Prototype.NCFittingSlotHeaderTableViewCell.default)
 		self.children = children
 	}
 	
@@ -224,6 +224,9 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		tableView.register([Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCFittingModuleTableViewCell.default
+		                    ])
 		//treeController.childrenKeyPath = "children"
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension

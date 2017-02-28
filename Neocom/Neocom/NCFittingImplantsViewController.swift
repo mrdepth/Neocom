@@ -20,13 +20,13 @@ class NCImplantRow: TreeRow {
 	init(implant: NCFittingImplant) {
 		self.implant = implant
 		self.slot = nil
-		super.init(cellIdentifier: "NCDefaultTableViewCell", accessoryButtonRoute: Router.Database.TypeInfo(implant.typeID))
+		super.init(prototype: Prototype.NCDefaultTableViewCell.compact, accessoryButtonRoute: Router.Database.TypeInfo(implant.typeID))
 	}
 	
 	init(dummySlot: Int) {
 		self.implant = nil
 		self.slot = dummySlot
-		super.init(cellIdentifier: "NCDefaultTableViewCell")
+		super.init(prototype: Prototype.NCDefaultTableViewCell.compact)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -64,13 +64,13 @@ class NCBoosterRow: TreeRow {
 	init(booster: NCFittingBooster) {
 		self.booster = booster
 		self.slot = nil
-		super.init(cellIdentifier: "NCDefaultTableViewCell", accessoryButtonRoute: Router.Database.TypeInfo(booster.typeID))
+		super.init(prototype: Prototype.NCDefaultTableViewCell.compact, accessoryButtonRoute: Router.Database.TypeInfo(booster.typeID))
 	}
 	
 	init(dummySlot: Int) {
 		self.booster = nil
 		self.slot = dummySlot
-		super.init(cellIdentifier: "NCDefaultTableViewCell")
+		super.init(prototype: Prototype.NCDefaultTableViewCell.compact)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -118,6 +118,11 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		tableView.register([Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCHeaderTableViewCell.default
+			])
+
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
@@ -204,8 +209,8 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 				boosters[booster.slot - 1] = NCBoosterRow(booster: booster)
 			}
 
-			sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Implants", title: NSLocalizedString("Implants", comment: "").uppercased(), children: implants))
-			sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Boosters", title: NSLocalizedString("Boosters", comment: "").uppercased(), children: boosters))
+			sections.append(DefaultTreeSection(nodeIdentifier: "Implants", title: NSLocalizedString("Implants", comment: "").uppercased(), children: implants))
+			sections.append(DefaultTreeSection(nodeIdentifier: "Boosters", title: NSLocalizedString("Boosters", comment: "").uppercased(), children: boosters))
 			
 			DispatchQueue.main.async {
 				self.treeController.rootNode?.children = sections

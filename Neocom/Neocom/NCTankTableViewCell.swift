@@ -25,12 +25,19 @@ class NCTankTableViewCell: NCTableViewCell {
 	
 }
 
+extension Prototype {
+	struct NCTankTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCTankTableViewCell")
+	}
+}
+
+
 class NCTankRow: TreeRow {
 	let ship: NCFittingShip
 	
 	init(ship: NCFittingShip) {
 		self.ship = ship
-		super.init(cellIdentifier: "NCTankTableViewCell")
+		super.init(prototype: Prototype.NCTankTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {

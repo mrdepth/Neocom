@@ -18,6 +18,10 @@ class NCFittingFleetMemberPickerViewController: UITableViewController, TreeContr
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		tableView.register([Prototype.NCDefaultTableViewCell.default,
+		                    Prototype.NCHeaderTableViewCell.default])
+
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
@@ -67,7 +71,7 @@ class NCFittingFleetMemberPickerViewController: UITableViewController, TreeContr
 		
 		var sections = [TreeNode]()
 		
-		sections.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
+		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
 			guard let strongSelf = self else {return}
 			strongSelf.dismiss(animated: true)
 			

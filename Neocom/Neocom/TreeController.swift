@@ -131,7 +131,7 @@ open class TreeNode: NSObject {
 	private func performTransition(from: TreeNode?) {
 		if isExpanded, let tableView = treeController?.tableView, indexPath != nil, from?.indexPath != nil {
 			let from = from?.isExpanded == true ? from?.children ?? [] : []
-			tableView.beginUpdates()
+			treeController?.beginUpdates()
 			(children ?? []).changes(from: from, handler: { (old, new, type) in
 				switch type {
 				case .insert:
@@ -164,7 +164,7 @@ open class TreeNode: NSObject {
 					break
 				}
 			})
-			tableView.endUpdates()
+			treeController?.endUpdates()
 		}
 	}
 	
@@ -357,9 +357,9 @@ open class TreeNode: NSObject {
 	@objc optional func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) -> Void
 	@objc optional func treeController(_ treeController: TreeController, didExpandCellWithNode node: TreeNode) -> Void
 	@objc optional func treeController(_ treeController: TreeController, didCollapseCellWithNode node: TreeNode) -> Void
-	@objc optional func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) -> Void;
-	@objc optional func treeController(_ treeController: TreeController, commit editingStyle: UITableViewCellEditingStyle, forNode node: TreeNode) -> Void;
-	
+	@objc optional func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) -> Void
+	@objc optional func treeController(_ treeController: TreeController, commit editingStyle: UITableViewCellEditingStyle, forNode node: TreeNode) -> Void
+	@objc optional func treeControllerDidUpdateContent(_ treeController: TreeController) -> Void
 }
 
 @objc protocol Expandable {
@@ -371,6 +371,7 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 		didSet {
 			rootNode?.treeController = self
 			tableView.reloadData()
+			delegate?.treeControllerDidUpdateContent?(self)
 		}
 	}
 	@IBOutlet public weak var tableView: UITableView!
@@ -402,6 +403,22 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 		tableView.deselectRow(at: indexPath, animated: animated)
 	}
 	
+	
+	private var updatesCounter: Int = 0
+	
+	public func beginUpdates() {
+		tableView.beginUpdates()
+		updatesCounter += 1
+	}
+	
+	public func endUpdates() {
+		tableView.endUpdates()
+		updatesCounter -= 1
+		if updatesCounter == 0 {
+			delegate?.treeControllerDidUpdateContent?(self)
+		}
+	}
+	
 	//MARK: - UITableViewDataSource
 	
 	public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -411,7 +428,7 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 	public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let node = rootNode!.node(at: indexPath.row)!
 //		let cell = tableView.dequeueReusableCell(withIdentifier: delegate?.treeController?(self, cellIdentifierForNode: node) ?? node.cellIdentifier!)!
-		let cell = tableView.dequeueReusableCell(withIdentifier: node.cellIdentifier!)!
+		let cell = tableView.dequeueReusableCell(withIdentifier: node.cellIdentifier!, for: indexPath)
 		cell.indentationLevel = node.indentationLevel ?? 0
 		
 		if let cell = cell as? Expandable {
@@ -504,7 +521,7 @@ class FetchedResultsNode<ResultType: NSFetchRequestResult>: TreeNode, NSFetchedR
 	}
 	
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		treeController?.tableView.beginUpdates()
+		treeController?.beginUpdates()
 	}
 	
 	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
@@ -536,7 +553,7 @@ class FetchedResultsNode<ResultType: NSFetchRequestResult>: TreeNode, NSFetchedR
 
 	
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		treeController?.tableView.endUpdates()
+		treeController?.endUpdates()
 //		if let sectionNode = self.sectionNode {
 //			children = resultsController.sections?.map {sectionNode.init(section: $0, objectNode: self.objectNode)}
 //		}

@@ -19,7 +19,7 @@ class NCLoadoutRow: TreeRow {
 		loadoutName = loadout.name ?? ""
 		image = type.icon?.image?.image
 		loadoutID = loadout.objectID
-		super.init(prototype: NCDefaultTableViewCell.prototypes.default)
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -93,7 +93,7 @@ class NCLoadoutsSection: TreeSection {
 							section.children?.append(row)
 						}
 						else {
-							let section = DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: key, title: name.uppercased())
+							let section = DefaultTreeSection(nodeIdentifier: key, title: name.uppercased())
 							section.children = [row]
 							groups[key] = section
 						}
@@ -120,8 +120,8 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.register([NCDefaultTableViewCell.prototypes.default,
-		                    NCHeaderTableViewCell.prototypes.default])
+		tableView.register([Prototype.NCDefaultTableViewCell.default,
+		                    Prototype.NCHeaderTableViewCell.default])
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
@@ -183,7 +183,7 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 		var sections = [TreeNode]()
 	
 		
-		sections.append(NCActionRow(prototype: NCDefaultTableViewCell.prototypes.default, image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
+		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
 			guard let strongSelf = self else {return}
 			strongSelf.dismiss(animated: true)
 			
@@ -198,8 +198,8 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 
 		})))
 		
-		sections.append(NCActionRow(prototype: NCDefaultTableViewCell.prototypes.default, image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator))
-		sections.append(NCActionRow(prototype: NCDefaultTableViewCell.prototypes.default, image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
+		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator))
+		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
 		
 		sections.append(NCLoadoutsSection(categoryID: .ship))
 		self.treeController.rootNode?.children = sections

@@ -19,16 +19,25 @@ class NCFittingModuleDamageChartTableViewCell: NCTableViewCell {
 	@IBOutlet weak var stepper: UIStepper!
 }
 
+
+extension Prototype {
+	struct NCFittingModuleDamageChartTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingModuleDamageChartTableViewCell")
+	}
+}
+
 class NCFittingModuleDamageChartRow: TreeRow {
 	let module: NCFittingModule
 	let ship: NCFittingShip?
 	let count: Int
+	
 	lazy var hullTypes: [NCDBDgmppHullType]? = {
 		let request = NSFetchRequest<NCDBDgmppHullType>(entityName: "DgmppHullType")
 		request.sortDescriptors = [NSSortDescriptor(key: "signature", ascending: true), NSSortDescriptor(key: "hullTypeName", ascending: true)]
 		return (try? NCDatabase.sharedDatabase!.viewContext.fetch(request))
 
 	}()
+	
 	lazy var hullType: NCDBDgmppHullType? = {
 		guard let ship = self.ship else {return nil}
 		return NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.hullType
@@ -38,7 +47,7 @@ class NCFittingModuleDamageChartRow: TreeRow {
 		self.module = module
 		self.ship = module.owner as? NCFittingShip
 		self.count = count
-		super.init(prototype: "NCFittingModuleDamageChartTableViewCell")
+		super.init(prototype: Prototype.NCFittingModuleDamageChartTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {

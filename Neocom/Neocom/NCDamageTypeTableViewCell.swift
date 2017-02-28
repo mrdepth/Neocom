@@ -15,3 +15,10 @@ class NCDamageTypeTableViewCell: NCTableViewCell {
 	@IBOutlet weak var kineticLabel: NCDamageTypeLabel!
 	@IBOutlet weak var explosiveLabel: NCDamageTypeLabel!
 }
+
+extension Prototype {
+	struct NCDamageTypeTableViewCell {
+		static let `default` = Prototype(nib: UINib(nibName: "NCDamageTypeTableViewCell", bundle: nil), reuseIdentifier: "NCDamageTypeTableViewCell")
+		static let compact = Prototype(nib: UINib(nibName: "NCDamageTypeCompactTableViewCell", bundle: nil), reuseIdentifier: "NCDamageTypeCompactTableViewCell")
+	}
+}

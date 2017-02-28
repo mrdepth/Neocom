@@ -9,24 +9,6 @@
 import UIKit
 import CoreData
 
-struct TableViewCellPrototype {
-	var nib: UINib?
-	var reuseIdentifier: String
-}
-
-extension UITableView {
-	
-	func register(_ prototypes: [TableViewCellPrototype]) {
-		for prototype in prototypes {
-			register(prototype.nib, forCellReuseIdentifier: prototype.reuseIdentifier)
-		}
-	}
-	
-//	func dequeueReusableCell<T: TableViewCellPrototype> (for indexPath: IndexPath) -> T {
-//		return dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as! T
-//	}
-}
-
 class TreeRow: TreeNode {
 	var route: Route?
 	var accessoryButtonRoute: Route?
@@ -35,11 +17,11 @@ class TreeRow: TreeNode {
 		return false
 	}
 	
-	init(prototype: TableViewCellPrototype?, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
+	init(prototype: Prototype, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
 		self.route = route
 		self.accessoryButtonRoute = accessoryButtonRoute
 		self.object = object
-		super.init(cellIdentifier: prototype?.reuseIdentifier)
+		super.init(cellIdentifier: prototype.reuseIdentifier)
 	}
 	
 }
@@ -49,7 +31,7 @@ class TreeSection: TreeNode {
 		return true
 	}
 	
-	init(prototype: TableViewCellPrototype? = nil) {
+	init(prototype: Prototype? = nil) {
 		super.init(cellIdentifier: prototype?.reuseIdentifier)
 	}
 }
@@ -59,7 +41,7 @@ class DefaultTreeSection: TreeSection {
 	dynamic var title: String?
 	dynamic var attributedTitle: NSAttributedString?
 
-	init(prototype: TableViewCellPrototype?, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
+	init(prototype: Prototype = Prototype.NCHeaderTableViewCell.default, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
 		self.title = title
 		self.attributedTitle = attributedTitle
 		self.nodeIdentifier = nodeIdentifier
@@ -110,7 +92,7 @@ class DefaultTreeRow: TreeRow {
 	dynamic var subtitle: String?
 	dynamic var accessoryType: UITableViewCellAccessoryType
 	
-	init(prototype: TableViewCellPrototype?, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
+	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.default, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
 		self.image = image
 		self.title = title
 		self.attributedTitle = attributedTitle
@@ -135,11 +117,45 @@ class DefaultTreeRow: TreeRow {
 	}
 }
 
+class NCActionRow: TreeRow {
+	
+	var title: String?
+	var attributedTitle: NSAttributedString?
+	
+	init(prototype: Prototype = Prototype.NCActionTableViewCell.default, title: String? = nil, attributedTitle: NSAttributedString? = nil, route: Route? = nil, object: Any? = nil) {
+		self.title = title
+		self.attributedTitle = attributedTitle
+		super.init(prototype: prototype, route: route, object: object)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCActionTableViewCell else {return}
+		cell.object = object
+		if let attributedTitle = attributedTitle {
+			cell.titleLabel?.attributedText = attributedTitle
+		}
+		else {
+			cell.titleLabel?.text = title
+		}
+	}
+	
+	override var hashValue: Int {
+		return [route?.hashValue ?? 0, title?.hashValue ?? 0].hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCActionRow)?.hashValue == hashValue
+	}
+	
+}
+
+
+
 class NCDefaultFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: FetchedResultsSectionNode<ResultType> {
 	
 	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
 		super.init(section: section, objectNode: objectNode)
-		self.cellIdentifier = NCHeaderTableViewCell.prototypes.default.reuseIdentifier
+		self.cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -162,7 +178,7 @@ class NCMetaGroupFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fe
 	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
 		metaGroupID = Int(section.name)
 		super.init(section: section, objectNode: objectNode)
-		self.cellIdentifier = NCHeaderTableViewCell.prototypes.default.reuseIdentifier
+		self.cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -181,7 +197,7 @@ class NCTypeInfoNode: FetchedResultsObjectNode<NCDBInvType> {
 	
 	required init(object: NCDBInvType) {
 		super.init(object: object)
-		self.cellIdentifier = NCDefaultTableViewCell.prototypes.default.reuseIdentifier
+		self.cellIdentifier = Prototype.NCDefaultTableViewCell.default.reuseIdentifier
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -208,13 +224,13 @@ class NCTypeInfoRow: TreeRow {
 	init(type: NCDBInvType, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
 		self.managedObjectContext = nil
 		self.accessoryType = accessoryType
-		super.init(prototype: NCDefaultTableViewCell.prototypes.default, route: route, accessoryButtonRoute: accessoryButtonRoute, object: type)
+		super.init(prototype: Prototype.NCDefaultTableViewCell.compact, route: route, accessoryButtonRoute: accessoryButtonRoute, object: type)
 	}
 	
 	init(objectID: NSManagedObjectID, managedObjectContext: NSManagedObjectContext, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
 		self.managedObjectContext = managedObjectContext
 		self.accessoryType = accessoryType
-		super.init(prototype: NCDefaultTableViewCell.prototypes.default, route: route, accessoryButtonRoute: accessoryButtonRoute, object: objectID)
+		super.init(prototype: Prototype.NCDefaultTableViewCell.compact, route: route, accessoryButtonRoute: accessoryButtonRoute, object: objectID)
 	}
 	
 	override func configure(cell: UITableViewCell) {

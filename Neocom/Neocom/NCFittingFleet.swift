@@ -12,12 +12,15 @@ import CoreData
 class NCFittingFleet {
 	var pilots = [NCFittingCharacter: NSManagedObjectID?]()
 	var active: NCFittingCharacter?
-	var fleet: NCFleet?
+	var fleetID: NSManagedObjectID?
 	let engine: NCFittingEngine
 	
 	init(fleet: NCFleet, engine: NCFittingEngine) {
-		self.fleet = fleet
+		self.fleetID = fleet.objectID
 		self.engine = engine
+		for loadout in fleet.loadouts?.array as? [NCLoadout] ?? [] {
+			append(loadout: loadout, engine: engine)
+		}
 	}
 	
 	init(loadouts:[NCLoadout], engine: NCFittingEngine) {
@@ -95,6 +98,10 @@ class NCFittingFleet {
 			configuration.fleetBooster = engine.gang.fleetBooster?.identifier
 			configuration.wingBooster = engine.gang.wingBooster?.identifier
 			return configuration
+		}
+		set {
+			let configuration = newValue
+			
 		}
 	}
 

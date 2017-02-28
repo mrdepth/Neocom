@@ -23,14 +23,22 @@ class NCFittingMiscTableViewCell: NCTableViewCell {
 	@IBOutlet weak var cargoLabel: UILabel?
 	@IBOutlet weak var oreHoldLabel: UILabel?
 	@IBOutlet weak var warpSpeedLabel: UILabel?
+	
 }
+
+extension Prototype {
+	struct NCFittingMiscTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingMiscTableViewCell")
+	}
+}
+
 
 class NCFittingMiscRow: TreeRow {
 	let ship: NCFittingShip
 	
 	init(ship: NCFittingShip) {
 		self.ship = ship
-		super.init(cellIdentifier: "NCFittingMiscTableViewCell")
+		super.init(prototype: Prototype.NCFittingMiscTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {

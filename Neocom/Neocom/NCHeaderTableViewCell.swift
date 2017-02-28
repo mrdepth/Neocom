@@ -9,9 +9,6 @@
 import UIKit
 
 class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
-	struct prototypes {
-		static let `default` = TableViewCellPrototype(nib: UINib(nibName: "NCHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCHeaderTableViewCell")
-	}
 
 	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var iconView: UIImageView?
@@ -57,6 +54,12 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
 		}
 	}
 
+}
+
+extension Prototype {
+	struct NCHeaderTableViewCell {
+		static let `default` = Prototype(nib: UINib(nibName: "NCHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCHeaderTableViewCell")
+	}
 }
 
 class NCSkillsHeaderTableViewCell: NCHeaderTableViewCell {

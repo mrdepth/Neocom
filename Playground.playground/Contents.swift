@@ -2,22 +2,18 @@
 
 import UIKit
 
-protocol TableViewCellPrototype {
-	static var reuseIdentifier: String {get}
+struct Prototype {
+	
 }
 
-class A: TableViewCellPrototype {
-	static let reuseIdentifier = "sdf"
+class Cell {
+	
 }
 
-class B<T: TableViewCellPrototype> {
-	func p() {
-		print("\(T.reuseIdentifier)")
+extension Prototype {
+	struct Cell {
+		static let p = Prototype()
 	}
 }
 
-let a: TableViewCellPrototype = A()
-
-type(of: a).reuseIdentifier
-
-B<A>().p()
+Prototype.Cell.p

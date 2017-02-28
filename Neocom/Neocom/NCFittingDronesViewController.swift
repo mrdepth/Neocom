@@ -23,7 +23,7 @@ class NCFittingDroneRow: TreeRow {
 		self.drones = drones
 		isActive = drone?.isActive == true
 		hasTarget = drone?.target != nil
-		super.init(prototype: "ModuleCell")
+		super.init(prototype: Prototype.NCFittingDroneTableViewCell.default)
 	}
 	
 	override func move(from: TreeNode) -> TreeNodeReloading {
@@ -37,7 +37,7 @@ class NCFittingDroneRow: TreeRow {
 	
 	override func configure(cell: UITableViewCell) {
 		let drone = drones.first
-		guard let cell = cell as? NCFittingModuleTableViewCell else {return}
+		guard let cell = cell as? NCFittingDroneTableViewCell else {return}
 		cell.object = drones
 		
 		if drones.count > 1 {
@@ -114,7 +114,7 @@ class NCFittingDroneSection: TreeSection {
 		self.squadron = squadron
 		used = ship.droneSquadronUsed(squadron)
 		limit = ship.droneSquadronLimit(squadron)
-		super.init(prototype: NCHeaderTableViewCell.prototypes.default)
+		super.init(prototype: Prototype.NCHeaderTableViewCell.default)
 		self.children = children
 	}
 	
@@ -148,18 +148,6 @@ class NCFittingDroneSection: TreeSection {
 
 }
 
-class NCActionRow: DefaultTreeRow {
-	
-	override var hashValue: Int {
-		return [route?.hashValue ?? 0, title?.hashValue ?? 0].hashValue
-	}
-	
-	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCActionRow)?.hashValue == hashValue
-	}
-	
-}
-
 
 class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 	@IBOutlet weak var treeController: TreeController!
@@ -185,6 +173,10 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		tableView.register([Prototype.NCActionTableViewCell.default,
+		                    Prototype.NCFittingDroneTableViewCell.default
+			])
+
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
@@ -285,7 +277,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 				}
 			}
 			
-			rows.append(NCActionRow(prototype: "NCActionTableViewCell", title: NSLocalizedString("Add Drone", comment: "").uppercased()))
+			rows.append(NCActionRow(title: NSLocalizedString("Add Drone", comment: "").uppercased()))
 			/*typealias TypeID = Int
 			typealias Squadron = [Int: [TypeID: [Bool: [NCFittingDrone]]]]
 			var squadrons = [NCFittingFighterSquadron: Squadron]()

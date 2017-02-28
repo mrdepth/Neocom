@@ -17,11 +17,18 @@ class NCDamagePatternEditTableViewCell: NCTextFieldTableViewCell {
 	}
 }
 
+extension Prototype {
+	struct NCDamagePatternEditTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCDamagePatternEditTableViewCell")
+	}
+}
+
+
 class NCDamagePatternEditRow: TreeRow, UIPickerViewDataSource, UIPickerViewDelegate {
 	var damagePattern: NCDamagePattern
 	init(damagePattern: NCDamagePattern) {
 		self.damagePattern = damagePattern
-		super.init(cellIdentifier: "NCDamagePatternEditTableViewCell")
+		super.init(prototype: Prototype.NCDamagePatternEditTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {

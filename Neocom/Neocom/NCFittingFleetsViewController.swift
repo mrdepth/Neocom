@@ -7,15 +7,28 @@
 //
 
 import UIKit
+import CoreData
+
 
 class NCFittingFleetsViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
+		
+		guard let context = NCStorage.sharedStorage?.viewContext else {return}
+		
+		let request = NSFetchRequest<NCFleet>(entityName: "Fleet")
+		request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+		
+		let root = FetchedResultsNode(resultsController: controller, objectNode: NCFleetRow.self)
+		treeController.rootNode = root
+		
 	}
 	
 	override func didReceiveMemoryWarning() {
@@ -26,40 +39,33 @@ class NCFittingFleetsViewController: UITableViewController, TreeControllerDelega
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if treeController.rootNode == nil {
-			self.treeController.rootNode = TreeNode()
-			reload()
-		}
 	}
 	
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		
-		if let node = node as? NCLoadoutRow {
+		if let node = node as? NCFleetRow {
 			NCStorage.sharedStorage?.performBackgroundTask({ (managedObjectContext) in
-				guard let loadout = (try? managedObjectContext.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
+				guard let fleet = (try? managedObjectContext.existingObject(with: node.object.objectID)) as? NCFleet else {return}
 				let engine = NCFittingEngine()
 				engine.performBlockAndWait {
-					let fleet = NCFittingFleet(loadouts: [loadout], engine: engine)
+					let fleet = NCFittingFleet(fleet: fleet, engine: engine)
 					DispatchQueue.main.async {
 						Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: self)
 					}
 				}
 			})
 		}
-		else if let route = (node as? TreeRow)?.route {
-			route.perform(source: self, view: treeController.cell(for: node))
-		}
 	}
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
-		guard let node = node as? NCLoadoutRow else {return nil}
+		guard let node = node as? NCFleetRow else {return nil}
 		
 		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { _ in
 			guard let context = NCStorage.sharedStorage?.viewContext else {return}
-			guard let loadout = (try? context.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
-			context.delete(loadout)
+			let fleet = node.object
+			context.delete(fleet)
 			if context.hasChanges {
 				try? context.save()
 			}
@@ -68,13 +74,17 @@ class NCFittingFleetsViewController: UITableViewController, TreeControllerDelega
 		return [deleteAction]
 	}
 	
+	func treeControllerDidUpdateContent(_ treeController: TreeController) {
+		tableView.backgroundView = (treeController.rootNode?.children?.count ?? 0) > 0 ? nil : NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
+	}
+	
 	//MARK: - Private
 	
 	private func reload() {
 		var sections = [TreeNode]()
 		
 		
-		sections.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
+		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
 			guard let strongSelf = self else {return}
 			strongSelf.dismiss(animated: true)
 			
@@ -89,8 +99,8 @@ class NCFittingFleetsViewController: UITableViewController, TreeControllerDelega
 			
 		})))
 		
-		sections.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator))
-		sections.append(NCActionRow(cellIdentifier: "NCDefaultTableViewCell", image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
+		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator))
+		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
 		
 		sections.append(NCLoadoutsSection(categoryID: .ship))
 		self.treeController.rootNode?.children = sections

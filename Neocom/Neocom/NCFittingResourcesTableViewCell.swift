@@ -27,12 +27,18 @@ class NCFittingResourcesTableViewCell: NCTableViewCell {
 	}
 }
 
+extension Prototype {
+	struct NCFittingResourcesTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingResourcesTableViewCell")
+	}
+}
+
 class NCFittingResourcesRow: TreeRow {
 	let ship: NCFittingShip
 	
 	init(ship: NCFittingShip) {
 		self.ship = ship
-		super.init(prototype: "NCFittingResourcesTableViewCell")
+		super.init(prototype: Prototype.NCFittingResourcesTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {

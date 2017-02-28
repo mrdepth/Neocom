@@ -16,3 +16,9 @@ class NCFittingModuleInfoTableViewCell: NCTableViewCell {
 	@IBOutlet weak var capUseLabel: UILabel?
 	
 }
+
+extension Prototype {
+	struct NCFittingModuleInfoTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingModuleInfoTableViewCell")
+	}
+}

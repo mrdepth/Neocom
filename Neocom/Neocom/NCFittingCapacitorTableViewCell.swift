@@ -14,6 +14,13 @@ class NCFittingCapacitorTableViewCell: NCTableViewCell {
 	@IBOutlet weak var stateLevelLabel: UILabel?
 	@IBOutlet weak var rechargeTimeLabel: UILabel?
 	@IBOutlet weak var deltaLabel: UILabel?
+	
+}
+
+extension Prototype {
+	struct NCFittingCapacitorTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingCapacitorTableViewCell")
+	}
 }
 
 class NCFittingCapacitorRow: TreeRow {
@@ -21,7 +28,7 @@ class NCFittingCapacitorRow: TreeRow {
 	
 	init(ship: NCFittingShip) {
 		self.ship = ship
-		super.init(cellIdentifier: "NCFittingCapacitorTableViewCell")
+		super.init(prototype: Prototype.NCFittingCapacitorTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {

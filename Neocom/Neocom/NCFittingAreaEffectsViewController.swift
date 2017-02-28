@@ -37,6 +37,10 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		tableView.register([Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCHeaderTableViewCell.default
+		                    ])
+		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
@@ -73,7 +77,7 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 				let prefix = i < n ? prefixes[i] : NSLocalizedString("Other", comment: "")
 				let rows = array.map({NCTypeInfoRow(objectID: $0, managedObjectContext: context, accessoryType: .detailButton)})
 				
-				return DefaultTreeSection(prototype: NCHeaderTableViewCell.prototypes.default, nodeIdentifier: prefix, title: prefix.uppercased(), children: rows)
+				return DefaultTreeSection(nodeIdentifier: prefix, title: prefix.uppercased(), children: rows)
 			}
 			
 			DispatchQueue.main.async {

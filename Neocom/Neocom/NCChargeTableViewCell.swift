@@ -8,18 +8,30 @@
 
 import UIKit
 
-class NCChargeTableViewCell: NCDamageTypeTableViewCell {
+class NCChargeTableViewCell: NCTableViewCell {
 	@IBOutlet weak var iconView: UIImageView?
-
+	@IBOutlet weak var titleLabel: UILabel?
+	@IBOutlet weak var emLabel: NCDamageTypeLabel!
+	@IBOutlet weak var thermalLabel: NCDamageTypeLabel!
+	@IBOutlet weak var kineticLabel: NCDamageTypeLabel!
+	@IBOutlet weak var explosiveLabel: NCDamageTypeLabel!
 }
+
+extension Prototype {
+	struct NCChargeTableViewCell {
+		static let `default` = Prototype(nib: UINib(nibName: "NCChargeTableViewCell", bundle: nil), reuseIdentifier: "NCChargeTableViewCell")
+		static let compact = Prototype(nib: UINib(nibName: "NCChargeCompactTableViewCell", bundle: nil), reuseIdentifier: "NCChargeCompactTableViewCell")
+	}
+}
+
 
 class NCChargeRow: TreeRow {
 	let type: NCDBInvType
 	
-	init(type: NCDBInvType, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
+	init(prototype: Prototype = Prototype.NCChargeTableViewCell.default, type: NCDBInvType, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
 		self.type = type
-		let cellIdentifier = type.dgmppItem?.damage == nil ? "Cell" : "NCChargeTableViewCell"
-		super.init(cellIdentifier: cellIdentifier, route: route, accessoryButtonRoute: accessoryButtonRoute)
+		let p = type.dgmppItem?.damage == nil ? Prototype.NCDefaultTableViewCell.compact : prototype
+		super.init(prototype: p, route: route, accessoryButtonRoute: accessoryButtonRoute)
 	}
 	
 	override func configure(cell: UITableViewCell) {

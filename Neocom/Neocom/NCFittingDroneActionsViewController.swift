@@ -50,12 +50,12 @@ class NCFittingDroneStateRow: TreeRow {
 	init(drone: NCFittingDrone) {
 		self.drone = drone
 		isActive = drone.isActive
-		super.init(prototype: "NCFittingModuleStateTableViewCell")
+		super.init(prototype: Prototype.NCFittingDroneStateTableViewCell.default)
 		
 	}
 	
 	override func configure(cell: UITableViewCell) {
-		guard let cell = cell as? NCFittingModuleStateTableViewCell else {return}
+		guard let cell = cell as? NCFittingDroneStateTableViewCell else {return}
 		cell.object = self
 		cell.segmentedControl?.selectedSegmentIndex = isActive ? 1 : 0
 	}
@@ -123,6 +123,13 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		tableView.register([Prototype.NCFittingDroneStateTableViewCell.default,
+		                    Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCChargeTableViewCell.default,
+			])
+
 		//navigationController?.preferredContentSize = CGSize(width: view.bounds.size.width, height: 320)
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
@@ -257,8 +264,8 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 				}
 			}
 			
-			sections.append(DefaultTreeSection(prototype: NCHeaderTableViewCell.prototypes.default, nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingDroneStateRow(drone: drone)]))
-			sections.append(DefaultTreeSection(prototype: NCHeaderTableViewCell.prototypes.default, nodeIdentifier: "Count", title: NSLocalizedString("Count", comment: "").uppercased(), children: [NCFittingDroneCountRow(drones: drones, ship: ship, handler: handler)]))
+			sections.append(DefaultTreeSection(nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingDroneStateRow(drone: drone)]))
+			sections.append(DefaultTreeSection(nodeIdentifier: "Count", title: NSLocalizedString("Count", comment: "").uppercased(), children: [NCFittingDroneCountRow(drones: drones, ship: ship, handler: handler)]))
 			
 		}
 		

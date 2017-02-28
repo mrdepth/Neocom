@@ -25,12 +25,18 @@ class NCResistancesTableViewCell: NCTableViewCell {
 	@IBOutlet weak var ehpLabel: UILabel!
 }
 
+extension Prototype {
+	struct NCResistancesTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCResistancesTableViewCell")
+	}
+}
+
 class NCResistancesRow: TreeRow {
 	let ship: NCFittingShip
 	
 	init(ship: NCFittingShip) {
 		self.ship = ship
-		super.init(cellIdentifier: "NCResistancesTableViewCell")
+		super.init(prototype: Prototype.NCResistancesTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {

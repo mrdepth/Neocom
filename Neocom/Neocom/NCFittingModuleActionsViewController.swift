@@ -18,7 +18,7 @@ class NCFittingModuleStateRow: TreeRow {
 		let states: [NCFittingModuleState] = [.offline, .online, .active, .overloaded]
 		self.states = states.filter {module.canHaveState($0)}
 		
-		super.init(cellIdentifier: "NCFittingModuleStateTableViewCell")
+		super.init(prototype: Prototype.NCFittingModuleStateTableViewCell.default)
 		
 	}
 	
@@ -74,10 +74,10 @@ class NCFittingModuleInfoRow: TreeRow {
 		self.type = type
 		
 		if cpu != 0 || powerGrid != 0 || capacitor != 0 {
-			super.init(prototype: "NCFittingModuleInfoTableViewCell", route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
+			super.init(prototype: Prototype.NCFittingModuleInfoTableViewCell.default, route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
 		}
 		else {
-			super.init(prototype: NCDefaultTableViewCell.prototypes.default, route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
+			super.init(prototype: Prototype.NCDefaultTableViewCell.compact, route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
 		}
 	}
 	
@@ -120,7 +120,7 @@ class NCFittingChargeRow: NCChargeRow {
 	let charges: Int
 	init(type: NCDBInvType, charges: Int, route: Route? = nil) {
 		self.charges = charges
-		super.init(type: type, route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
+		super.init(prototype: Prototype.NCChargeTableViewCell.compact, type: type, route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -164,6 +164,16 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		tableView.register([Prototype.NCFittingModuleStateTableViewCell.default,
+		                    Prototype.NCDamageTypeTableViewCell.compact,
+		                    Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCChargeTableViewCell.compact,
+		                    Prototype.NCActionTableViewCell.default
+			])
+
+		
 		//navigationController?.preferredContentSize = CGSize(width: view.bounds.size.width, height: 320)
 
 		tableView.estimatedRowHeight = tableView.rowHeight
@@ -250,7 +260,7 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 				}
 
 				
-				let row = DefaultTreeRow(cellIdentifier: "NCDefaultTableViewCell", title: NSLocalizedString("Select Ammo", comment: ""),  route: ammoRoute)
+				let row = NCActionRow(title: NSLocalizedString("Select Ammo", comment: ""),  route: ammoRoute)
 				self.chargeSection?.children = [row]
 
 			})]
@@ -329,20 +339,20 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 					row = NCFittingChargeRow(type: type, charges: charges, route: ammoRoute)
 				}
 				else {
-					row = DefaultTreeRow(cellIdentifier: "NCActionTableViewCell", title: NSLocalizedString("Select Ammo", comment: "").uppercased(),  route: ammoRoute)
+					row = NCActionRow(title: NSLocalizedString("Select Ammo", comment: "").uppercased(),  route: ammoRoute)
 				}
-				let section = DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Charge", title: NSLocalizedString("Charge", comment: "").uppercased(), children: [row])
+				let section = DefaultTreeSection(nodeIdentifier: "Charge", title: NSLocalizedString("Charge", comment: "").uppercased(), children: [row])
 				sections.append(section)
 			}
 			
 			if module.canHaveState(.online) {
-				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingModuleStateRow(module: module)]))
+				sections.append(DefaultTreeSection(nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingModuleStateRow(module: module)]))
 			}
 
 			if module.dps.total > 0 {
 				let row = NCFittingModuleDamageChartRow(module: module, count: modules.count)
 				row.hullType = hullType
-				sections.append(DefaultTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "DPS", title: NSLocalizedString("DPS", comment: "").uppercased() + ": \(NCUnitFormatter.localizedString(from: module.dps.total * Double(count), unit: .none, style: .full))", children: [row]))
+				sections.append(DefaultTreeSection(nodeIdentifier: "DPS", title: NSLocalizedString("DPS", comment: "").uppercased() + ": \(NCUnitFormatter.localizedString(from: module.dps.total * Double(count), unit: .none, style: .full))", children: [row]))
 			}
 		}
 		

@@ -8,41 +8,6 @@
 
 import UIKit
 
-class NCFleetMemberRow: TreeRow {
-	lazy var type: NCDBInvType? = {
-		return NCDatabase.sharedDatabase?.invTypes[self.ship.typeID]
-	}()
-	
-	
-	let pilot: NCFittingCharacter
-	let ship: NCFittingShip
-	init(pilot: NCFittingCharacter) {
-		self.pilot = pilot
-		self.ship = pilot.ship!
-		super.init(prototype: Prototype.NCDefaultTableViewCell.compact, accessoryButtonRoute: Router.Database.TypeInfo(ship.typeID))
-	}
-	
-	override func configure(cell: UITableViewCell) {
-		guard let cell = cell as? NCDefaultTableViewCell else {return}
-		guard let type = type else {return}
-		
-		cell.titleLabel?.text = type.typeName
-		cell.subtitleLabel?.text = ship.name
-		cell.iconView?.image = type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
-		cell.accessoryType = .detailButton
-	}
-	
-	override var hashValue: Int {
-		return pilot.hashValue
-	}
-	
-	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCFleetMemberRow)?.hashValue == hashValue
-	}
-	
-}
-
-
 class NCFittingFleetViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet weak var treeController: TreeController!
 	
@@ -59,8 +24,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		tableView.register([Prototype.NCDefaultTableViewCell.compact,
-		                    Prototype.NCHeaderTableViewCell.default,
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCActionTableViewCell.default
 			])
 

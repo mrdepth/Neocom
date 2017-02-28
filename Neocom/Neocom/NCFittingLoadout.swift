@@ -403,7 +403,15 @@ extension NCFittingCharacter {
 		var components = URLComponents()
 		components.scheme = NCURLScheme
 		components.host = "character"
-		components.queryItems = [URLQueryItem(name: "accountUUID", value: uuid)]
+		
+		var queryItems = [URLQueryItem(name: "accountUUID", value: uuid)]
+		
+		if let name = account.characterName {
+			queryItems.append(URLQueryItem(name: "name", value: name))
+		}
+		queryItems.append(URLQueryItem(name: "characterID", value: "\(account.characterID)"))
+		
+		components.queryItems = queryItems
 		return components.url!
 	}
 
@@ -411,7 +419,10 @@ extension NCFittingCharacter {
 		var components = URLComponents()
 		components.scheme = NCURLScheme
 		components.host = "character"
-		components.queryItems = [URLQueryItem(name: "level", value: String(level))]
+		components.queryItems = [
+			URLQueryItem(name: "level", value: String(level)),
+			URLQueryItem(name: "name", value: NSLocalizedString("All Skills", comment: "") + " " + String(romanNumber: level))
+		]
 		return components.url!
 	}
 	

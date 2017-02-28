@@ -36,6 +36,7 @@
 		1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */; };
 		1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3391E001D7300627D92 /* NCAccountTableViewCell.swift */; };
 		123AEFF51E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AEFF41E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift */; };
+		124247C01E6605AD002E0460 /* NCFleetMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124247BF1E6605AD002E0460 /* NCFleetMemberTableViewCell.swift */; };
 		12424E171E486ACD002DFE08 /* NCFittingVariationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E161E486ACD002DFE08 /* NCFittingVariationsViewController.swift */; };
 		12424E191E489C16002DFE08 /* NCFittingSlotHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E181E489C16002DFE08 /* NCFittingSlotHeaderTableViewCell.swift */; };
 		12424E1B1E48C9F3002DFE08 /* NCFittingDronesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E1A1E48C9F3002DFE08 /* NCFittingDronesViewController.swift */; };
@@ -267,6 +268,7 @@
 		1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+NC.swift"; sourceTree = "<group>"; };
 		1230A3391E001D7300627D92 /* NCAccountTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountTableViewCell.swift; sourceTree = "<group>"; };
 		123AEFF41E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleTableViewCell.swift; sourceTree = "<group>"; };
+		124247BF1E6605AD002E0460 /* NCFleetMemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFleetMemberTableViewCell.swift; sourceTree = "<group>"; };
 		12424E161E486ACD002DFE08 /* NCFittingVariationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingVariationsViewController.swift; sourceTree = "<group>"; };
 		12424E181E489C16002DFE08 /* NCFittingSlotHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingSlotHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		12424E1A1E48C9F3002DFE08 /* NCFittingDronesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingDronesViewController.swift; sourceTree = "<group>"; };
@@ -625,6 +627,7 @@
 				129B316F1E5439A100B9A88D /* NCTextFieldTableViewCell.swift */,
 				1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */,
 				12D930F51E65A77300CBAE1C /* NCFleetTableViewCell.swift */,
+				124247BF1E6605AD002E0460 /* NCFleetMemberTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1045,6 +1048,7 @@
 				121D10B01E26345D00DD671B /* NSManagedObjectContext+NC.swift in Sources */,
 				12AC8DCE1DF08D9B00561A7A /* NCCache.xcdatamodeld in Sources */,
 				1230A32F1DFFE2CF00627D92 /* NCTableView.m in Sources */,
+				124247C01E6605AD002E0460 /* NCFleetMemberTableViewCell.swift in Sources */,
 				1230A32E1DFFE2CF00627D92 /* NCLabel.swift in Sources */,
 				1256BE441DF1F09900A2A24B /* NCSkill.swift in Sources */,
 				129E60EE1E0152A900B56EB8 /* NCAutoHeightLabel.swift in Sources */,

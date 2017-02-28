@@ -1,0 +1,108 @@
+//
+//  NCFleetMemberTableViewCell.swift
+//  Neocom
+//
+//  Created by Artem Shimanski on 28.02.17.
+//  Copyright © 2017 Artem Shimanski. All rights reserved.
+//
+
+import UIKit
+
+class NCFleetMemberTableViewCell: NCTableViewCell {
+	@IBOutlet weak var characterNameLabel: UILabel!
+	@IBOutlet weak var characterImageView: UIImageView!
+	@IBOutlet weak var typeNameLabel: UILabel!
+	@IBOutlet weak var shipNameLabel: UILabel!
+	@IBOutlet weak var typeImageView: UIImageView!
+
+}
+
+extension Prototype {
+	struct NCFleetMemberTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFleetMemberTableViewCell")
+	}
+}
+
+class NCFleetMemberRow: TreeRow {
+	lazy var type: NCDBInvType? = {
+		return NCDatabase.sharedDatabase?.invTypes[self.ship.typeID]
+	}()
+	
+	
+	let pilot: NCFittingCharacter
+	let ship: NCFittingShip
+	
+	let shipName: String
+	let characterName: String
+	let level: Int?
+	let characterID: Int64?
+	var characterImage: UIImage?
+	
+	init(pilot: NCFittingCharacter) {
+		self.pilot = pilot
+		self.ship = pilot.ship!
+		self.shipName = ship.name
+		
+		let url = pilot.url
+		let components = url != nil ? URLComponents(url: url!, resolvingAgainstBaseURL: true) : nil
+		let query = components?.queryItems
+		
+		characterName = query?.first(where: {$0.name == "name"})?.value ?? " "
+		
+		if let value = query?.first(where: {$0.name == "level" })?.value  {
+			level = Int(value)
+		}
+		else {
+			level = nil
+		}
+
+		if let value = query?.first(where: {$0.name == "characterID" })?.value  {
+			characterID = Int64(value)
+		}
+		else {
+			characterID = nil
+		}
+
+		super.init(prototype: Prototype.NCFleetMemberTableViewCell.default, accessoryButtonRoute: Router.Database.TypeInfo(ship.typeID))
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCFleetMemberTableViewCell else {return}
+		guard let type = type else {return}
+		
+		cell.object = self
+		cell.typeNameLabel?.text = type.typeName
+		cell.shipNameLabel?.text = shipName
+		cell.typeImageView?.image = type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+		cell.characterNameLabel.text = characterName
+		cell.characterImageView.image = characterImage
+		if characterImage == nil {
+			
+			if let level = level {
+				characterImage = UIImage.placeholder(text: String(romanNumber: level), size: cell.characterImageView.bounds.size)
+				cell.characterImageView.image = characterImage
+			}
+			else if let characterID = characterID {
+				NCDataManager().image(characterID: characterID, dimension: Int(cell.characterImageView.bounds.size.width)) { result in
+					
+					if case .success(let image, _) = result {
+						self.characterImage = image
+						if (cell.object as? NCFleetMemberRow) == self {
+							cell.characterImageView.image = image
+						}
+					}
+				}
+			}
+		}
+
+	}
+	
+	override var hashValue: Int {
+		return pilot.hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCFleetMemberRow)?.hashValue == hashValue
+	}
+	
+}

@@ -43,8 +43,8 @@ class NCFleetMemberRow: TreeRow {
 		self.ship = pilot.ship!
 		self.shipName = ship.name
 		
-		let url = pilot.url
-		let components = url != nil ? URLComponents(url: url!, resolvingAgainstBaseURL: true) : nil
+		let url = pilot.url ?? NCFittingCharacter.url(level: 0)
+		let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
 		let query = components?.queryItems
 		
 		characterName = query?.first(where: {$0.name == "name"})?.value ?? " "
@@ -78,11 +78,7 @@ class NCFleetMemberRow: TreeRow {
 		cell.characterImageView.image = characterImage
 		if characterImage == nil {
 			
-			if let level = level {
-				characterImage = UIImage.placeholder(text: String(romanNumber: level), size: cell.characterImageView.bounds.size)
-				cell.characterImageView.image = characterImage
-			}
-			else if let characterID = characterID {
+			if let characterID = characterID {
 				NCDataManager().image(characterID: characterID, dimension: Int(cell.characterImageView.bounds.size.width)) { result in
 					
 					if case .success(let image, _) = result {
@@ -93,12 +89,22 @@ class NCFleetMemberRow: TreeRow {
 					}
 				}
 			}
+			else {
+				characterImage = UIImage.placeholder(text: String(romanNumber: level ?? 0), size: cell.characterImageView.bounds.size)
+				cell.characterImageView.image = characterImage
+			}
+
 		}
 
 	}
 	
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		guard let from = from as? NCFleetMemberRow else {return .dontReload}
+		return from.characterName != characterName ? .reload : .reconfigure
+	}
+	
 	override var hashValue: Int {
-		return pilot.hashValue
+		return [pilot.hashValue].hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {

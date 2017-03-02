@@ -402,7 +402,12 @@ public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSourc
 		guard let indexPath = node.indexPath else {return}
 		tableView.deselectRow(at: indexPath, animated: animated)
 	}
-	
+
+	public func selectCell(for node: TreeNode, animated: Bool, scrollPosition: UITableViewScrollPosition) {
+		guard let indexPath = node.indexPath else {return}
+		tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
+	}
+
 	
 	private var updatesCounter: Int = 0
 	

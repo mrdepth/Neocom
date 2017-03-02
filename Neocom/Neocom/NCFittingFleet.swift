@@ -10,8 +10,12 @@ import Foundation
 import CoreData
 
 class NCFittingFleet {
-	var pilots = [NCFittingCharacter: NSManagedObjectID?]()
-	var active: NCFittingCharacter?
+	var pilots = [(NCFittingCharacter, NSManagedObjectID?)]()
+	var active: NCFittingCharacter? {
+		didSet {
+			NotificationCenter.default.post(name: .NCFittingEngineDidUpdate, object: engine)
+		}
+	}
 	var fleetID: NSManagedObjectID?
 	let engine: NCFittingEngine
 	
@@ -34,8 +38,8 @@ class NCFittingFleet {
 		let gang = engine.gang
 		let pilot = gang.addPilot()
 		pilot.ship = NCFittingShip(typeID: typeID)
-		pilots[pilot] = nil as NSManagedObjectID?
-		active = pilots.first?.key
+		pilots.append((pilot, nil))
+		active = pilots.first?.0
 		self.engine = engine
 	}
 	
@@ -48,7 +52,7 @@ class NCFittingFleet {
 		pilot.ship?.name = loadout.name ?? ""
 		pilot.loadout = data
 		pilot.identifier = loadout.uuid
-		pilots[pilot] = loadout.objectID
+		pilots.append((pilot, loadout.objectID))
 		
 		if active == nil {
 			active = pilot
@@ -59,8 +63,8 @@ class NCFittingFleet {
 		let gang = engine.gang
 		let pilot = gang.addPilot()
 		pilot.ship = NCFittingShip(typeID: typeID)
-		pilots[pilot] = nil as NSManagedObjectID?
-		active = pilots.first?.key
+		pilots.append((pilot, nil))
+		active = pilots.first?.0
 	}
 	
 	var configuration: NCFleetConfiguration {

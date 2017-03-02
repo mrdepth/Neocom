@@ -208,7 +208,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 			let damagePatternsRoute = Router.Fitting.DamagePatterns {[weak self] (controller, damagePattern) in
 				controller.dismiss(animated: true) {
 					self?.fleet?.active?.engine?.perform {
-						for (pilot, _) in self?.fleet?.pilots ?? [:] {
+						for (pilot, _) in self?.fleet?.pilots ?? [] {
 							pilot.ship?.damagePattern = damagePattern
 						}
 					}

@@ -31,7 +31,7 @@
                                 <rect key="frame" x="0.0" y="22" width="290" height="20"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yzk-Zi-6uM">
-                                        <rect key="frame" x="0.0" y="0.0" width="66.5" height="20"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="67" height="20"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="em" translatesAutoresizingMaskIntoConstraints="NO" id="HyY-7S-DR5">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -40,7 +40,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcQ-Te-YB4" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
-                                                <rect key="frame" x="22" y="0.0" width="44.5" height="20"/>
+                                                <rect key="frame" x="22" y="0.0" width="45" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -66,7 +66,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sGG-do-e8I">
-                                        <rect key="frame" x="74.5" y="0.0" width="66.5" height="20"/>
+                                        <rect key="frame" x="75" y="0.0" width="66" height="20"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thermal" translatesAutoresizingMaskIntoConstraints="NO" id="dfo-fh-8jO">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -75,7 +75,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v1m-m4-Xxr" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
-                                                <rect key="frame" x="22" y="0.0" width="44.5" height="20"/>
+                                                <rect key="frame" x="22" y="0.0" width="44" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -101,7 +101,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XqO-dg-4ai">
-                                        <rect key="frame" x="149" y="0.0" width="66.5" height="20"/>
+                                        <rect key="frame" x="149" y="0.0" width="67" height="20"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kinetic" translatesAutoresizingMaskIntoConstraints="NO" id="zSv-W6-qQH">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -110,7 +110,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9V-Ak-ZRi" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
-                                                <rect key="frame" x="22" y="0.0" width="44.5" height="20"/>
+                                                <rect key="frame" x="22" y="0.0" width="45" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -136,7 +136,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m3l-5f-D8h">
-                                        <rect key="frame" x="223.5" y="0.0" width="66.5" height="20"/>
+                                        <rect key="frame" x="224" y="0.0" width="66" height="20"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="explosion" translatesAutoresizingMaskIntoConstraints="NO" id="FOp-e7-XgP">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -145,7 +145,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zku-7P-H4Z" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
-                                                <rect key="frame" x="22" y="0.0" width="44.5" height="20"/>
+                                                <rect key="frame" x="22" y="0.0" width="44" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>

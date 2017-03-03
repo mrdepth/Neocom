@@ -84,6 +84,8 @@
 		1263C5091E64A7D0003D002D /* NCFittingFleetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1263C5081E64A7D0003D002D /* NCFittingFleetsViewController.swift */; };
 		1263C50D1E64BE9D003D002D /* NCDefaultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1263C50C1E64BE9D003D002D /* NCDefaultTableViewCell.xib */; };
 		1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */; };
+		1277286B1E699F2400880E48 /* NCFittingTargetTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1277286A1E699F2400880E48 /* NCFittingTargetTableViewCell.xib */; };
+		127728761E69A6AD00880E48 /* NCFittingTargetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127728751E69A6AD00880E48 /* NCFittingTargetTableViewCell.swift */; };
 		127BE3901E5AFC2900FA7F9F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BE38F1E5AFC2900FA7F9F /* Router.swift */; };
 		128AE8171E360FF1002E3A1E /* NCRangeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128AE8161E360FF1002E3A1E /* NCRangeFormatter.swift */; };
 		128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */; };
@@ -316,6 +318,8 @@
 		1263C5081E64A7D0003D002D /* NCFittingFleetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingFleetsViewController.swift; sourceTree = "<group>"; };
 		1263C50C1E64BE9D003D002D /* NCDefaultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultTableViewCell.xib; sourceTree = "<group>"; };
 		1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCHeaderTableViewCell.xib; sourceTree = "<group>"; };
+		1277286A1E699F2400880E48 /* NCFittingTargetTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingTargetTableViewCell.xib; sourceTree = "<group>"; };
+		127728751E69A6AD00880E48 /* NCFittingTargetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingTargetTableViewCell.swift; sourceTree = "<group>"; };
 		127BE38F1E5AFC2900FA7F9F /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		128AE8161E360FF1002E3A1E /* NCRangeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRangeFormatter.swift; sourceTree = "<group>"; };
 		128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCActionTableViewCell.xib; sourceTree = "<group>"; };
@@ -628,6 +632,7 @@
 				1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */,
 				12D930F51E65A77300CBAE1C /* NCFleetTableViewCell.swift */,
 				124247BF1E6605AD002E0460 /* NCFleetMemberTableViewCell.swift */,
+				127728751E69A6AD00880E48 /* NCFittingTargetTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -785,6 +790,7 @@
 				12D930E61E656B0C00CBAE1C /* NCChargeTableViewCell.xib */,
 				12D930E81E656B7E00CBAE1C /* NCChargeCompactTableViewCell.xib */,
 				12D930EE1E656FCC00CBAE1C /* NCTextFieldTableViewCell.xib */,
+				1277286A1E699F2400880E48 /* NCFittingTargetTableViewCell.xib */,
 			);
 			name = Prototypes;
 			sourceTree = "<group>";
@@ -973,6 +979,7 @@
 				12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */,
 				12D930EF1E656FCC00CBAE1C /* NCTextFieldTableViewCell.xib in Resources */,
 				1256BE5E1DF476C000A2A24B /* mainMenu.plist in Resources */,
+				1277286B1E699F2400880E48 /* NCFittingTargetTableViewCell.xib in Resources */,
 				128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */,
 				12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */,
 				1256BECA1DF4770A00A2A24B /* memory.png in Resources */,
@@ -1029,6 +1036,7 @@
 				129C51A11E605E6D0066F2E4 /* NCFittingFleetViewController.swift in Sources */,
 				129B31691E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift in Sources */,
 				128E61421E0A707200C15EEB /* NCDamageTypeTableViewCell.swift in Sources */,
+				127728761E69A6AD00880E48 /* NCFittingTargetTableViewCell.swift in Sources */,
 				1293BC1E1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift in Sources */,
 				12AC8DC21DF0833B00561A7A /* NCBinder.swift in Sources */,
 				12AC8DBD1DF01BF100561A7A /* Test.m in Sources */,

@@ -390,7 +390,7 @@
             <objects>
                 <tableViewController id="xIe-Ri-8Ng" customClass="NCAPIKeyInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="PWN-Ec-uZB" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -8181,16 +8181,16 @@ Label</string>
                                             </subviews>
                                         </stackView>
                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vb5-tC-D0U">
-                                            <rect key="frame" x="229.5" y="31" width="75.5" height="32"/>
+                                            <rect key="frame" x="232" y="31" width="73" height="32"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mna-Br-TYQ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="39.5" height="32"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="33" height="32"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Vch-kz-t4F" customClass="NCRoundedImageView" customModule="Neocom" customModuleProvider="target">
-                                                    <rect key="frame" x="43.5" y="0.0" width="32" height="32"/>
+                                                    <rect key="frame" x="41" y="0.0" width="32" height="32"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <color key="tintColor" white="1" alpha="0.050000000000000003" colorSpace="calibratedWhite"/>
                                                     <constraints>

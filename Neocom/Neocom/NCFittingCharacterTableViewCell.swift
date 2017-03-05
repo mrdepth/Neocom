@@ -49,19 +49,30 @@ extension Prototype {
 
 class NCFittingCharacterRow: TreeRow {
 	let account: NCAccount?
+	let character: NCFitCharacter?
 	let level: Int?
 	let url: URL?
 
 	init(account: NCAccount, route: Route? = nil) {
 		self.account = account
 		self.level = nil
+		self.character = nil
 		url = NCFittingCharacter.url(account: account)
+		super.init(prototype: Prototype.NCFittingCharacterTableViewCell.default, route: route)
+	}
+	
+	init(character: NCFitCharacter, route: Route? = nil) {
+		self.character = character
+		self.account = nil
+		self.level = nil
+		url = NCFittingCharacter.url(character: character)
 		super.init(prototype: Prototype.NCFittingCharacterTableViewCell.default, route: route)
 	}
 	
 	init(level: Int, route: Route? = nil) {
 		self.level = level
 		self.account = nil
+		self.character = nil
 		url = NCFittingCharacter.url(level: level)
 		super.init(prototype: Prototype.NCFittingCharacterTableViewCell.default, route: route)
 	}
@@ -114,4 +125,135 @@ class NCFittingCharacterRow: TreeRow {
 	
 	private static var titles = ["0", "I", "II", "III", "IV", "V"]
 
+}
+
+class NCCustomCharactersSection: FetchedResultsNode<NCFitCharacter> {
+	
+	init(managedObjectContext: NSManagedObjectContext) {
+		let request = NSFetchRequest<NCFitCharacter>(entityName: "FitCharacter")
+		request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+		try? controller.performFetch()
+		super.init(resultsController: controller, objectNode: NCCustomCharacterRow.self)
+		cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
+	}
+	
+	
+	override func configure(cell: UITableViewCell) {
+		if let cell = cell as? NCHeaderTableViewCell {
+			cell.object = self
+			cell.titleLabel?.text = NSLocalizedString("Custom", comment: "").uppercased()
+		}
+	}
+	
+	override func lazyLoad() {
+		super.lazyLoad()
+		children?.append(NCActionRow(title: NSLocalizedString("Add Character", comment: "").uppercased()))
+	}
+	
+	override var isExpandable: Bool {
+		return true
+	}
+	
+	override var hashValue: Int {
+		return #line
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCCustomCharactersSection)?.hashValue == hashValue
+	}
+}
+
+class NCCustomCharacterRow: FetchedResultsObjectNode<NCFitCharacter> {
+	
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		return .reload
+	}
+	
+	required init(object: NCFitCharacter) {
+		super.init(object: object)
+		self.cellIdentifier = Prototype.NCFittingCharacterTableViewCell.default.reuseIdentifier
+	}
+	
+	var image: UIImage?
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCFittingCharacterTableViewCell else {return}
+		cell.object = object
+		cell.characterImageView.image = image
+		cell.characterNameLabel.text = object.name
+		if image == nil {
+			let s = object.name?.substring(to: object.name!.startIndex) ?? NSLocalizedString("C", comment: "Custom character")
+			image = UIImage.placeholder(text: s, size: cell.characterImageView.bounds.size)
+		}
+		cell.characterImageView.image = image
+	}
+}
+
+class NCAccountCharactersSection: FetchedResultsNode<NCAccount> {
+	
+	init(managedObjectContext: NSManagedObjectContext) {
+		let request = NSFetchRequest<NCAccount>(entityName: "Account")
+		request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+		try? controller.performFetch()
+		super.init(resultsController: controller, objectNode: NCAccountCharacterRow.self)
+		cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
+	}
+	
+	
+	override func configure(cell: UITableViewCell) {
+		if let cell = cell as? NCHeaderTableViewCell {
+			cell.object = self
+			cell.titleLabel?.text = NSLocalizedString("Accounts", comment: "").uppercased()
+		}
+	}
+	
+	override var isExpandable: Bool {
+		return true
+	}
+
+	override var hashValue: Int {
+		return #line
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCAccountCharactersSection)?.hashValue == hashValue
+	}
+}
+
+
+class NCAccountCharacterRow: FetchedResultsObjectNode<NCAccount> {
+	
+	override func move(from: TreeNode) -> TreeNodeReloading {
+		return .reload
+	}
+	
+	required init(object: NCAccount) {
+		super.init(object: object)
+		self.cellIdentifier = Prototype.NCFittingCharacterTableViewCell.default.reuseIdentifier
+	}
+	
+	var image: UIImage?
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCFittingCharacterTableViewCell else {return}
+		cell.characterNameLabel.text = object.characterName
+		cell.object = object
+		if image == nil {
+			NCDataManager(account: object).image(characterID: object.characterID, dimension: Int(cell.characterImageView.bounds.size.width)) { result in
+				if (cell.object as? NCAccount) === self.object {
+					switch result {
+					case let .success(value, _):
+						self.image = value
+						if (cell.object as? NCAccount) == self.object {
+							cell.characterImageView.image = value
+						}
+					default:
+						break
+					}
+				}
+			}
+		}
+	}
 }

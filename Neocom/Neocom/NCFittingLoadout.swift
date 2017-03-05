@@ -425,7 +425,19 @@ extension NCFittingCharacter {
 		]
 		return components.url!
 	}
-	
+
+	@nonobjc class func url(character: NCFitCharacter) -> URL? {
+		guard let uuid = character.uuid else {return nil}
+		var components = URLComponents()
+		components.scheme = NCURLScheme
+		components.host = "character"
+		components.queryItems = [
+			URLQueryItem(name: "characterUUID", value: uuid),
+			URLQueryItem(name: "name", value: character.name ?? "")
+		]
+		return components.url!
+	}
+
 	var url: URL? {
 		return URL(string: characterName)
 	}

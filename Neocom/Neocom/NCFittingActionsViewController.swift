@@ -41,9 +41,9 @@ import UIKit
 class NCFittingDamagePatternRow: TreeRow {
 	let damagePattern: NCFittingDamage
 	
-	init(damagePattern: NCFittingDamage, route: Route? = nil) {
+	init(prototype: Prototype = Prototype.NCDamageTypeTableViewCell.compact, damagePattern: NCFittingDamage, route: Route? = nil) {
 		self.damagePattern = damagePattern
-		super.init(prototype: Prototype.NCDamageTypeTableViewCell.compact, route: route)
+		super.init(prototype: prototype, route: route)
 		
 	}
 	
@@ -100,6 +100,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		                    Prototype.NCDamageTypeTableViewCell.compact,
 		                    Prototype.NCActionTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCFittingCharacterTableViewCell.default
 		                    ])
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
@@ -185,13 +186,27 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 				sections.append(DefaultTreeSection(nodeIdentifier: "Ship", title: NSLocalizedString("Ship", comment: "").uppercased(), children: [row]))
 			}
 			
-			sections.append(DefaultTreeSection(nodeIdentifier: "Character", title: NSLocalizedString("Character", comment: "").uppercased(), children: [NCFittingCharactersRow(pilot: pilot)]))
+			let characterRow: NCFittingCharacterRow
+			let characterRoute = Router.Fitting.Characters(pilot: pilot) { (controller, url) in
+				controller.dismiss(animated: true) {
+					pilot.setSkills(from: url, completionHandler: nil)
+				}
+			}
+			
+			if let account = pilot.account {
+				characterRow = NCFittingCharacterRow(account: account, route: characterRoute)
+			}
+			else {
+				characterRow = NCFittingCharacterRow(level: pilot.level ?? 0, route: characterRoute)
+			}
+			
+			sections.append(DefaultTreeSection(nodeIdentifier: "Character", title: NSLocalizedString("Character", comment: "").uppercased(), children: [characterRow]))
 
 			let areaEffectsRoute = Router.Fitting.AreaEffects { [weak self] (controller, type) in
-				let typeID = Int(type.typeID)
+				let typeID = type != nil ? Int(type!.typeID) : nil
 				controller.dismiss(animated: true) {
 					self?.fleet?.active?.engine?.perform {
-						self?.fleet?.active?.engine?.area = NCFittingArea(typeID: typeID)
+						self?.fleet?.active?.engine?.area = typeID != nil ? NCFittingArea(typeID: typeID!) : nil
 					}
 				}
 			}

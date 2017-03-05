@@ -104,7 +104,7 @@
 - (void) setTarget:(NCFittingShip *)target {
 	NCVerifyFittingContext(self.engine);
 	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
-	if (target)
+	if (!target)
 		module->clearTarget();
 	else
 		module->setTarget(std::dynamic_pointer_cast<dgmpp::Ship>(target.item));

@@ -185,9 +185,9 @@ struct Router {
 		
 		class Ammo: Route {
 			let category: NCDBDgmppItemCategory
-			let completionHandler: (NCFittingAmmoViewController, NCDBInvType) -> Void
+			let completionHandler: (NCFittingAmmoViewController, NCDBInvType?) -> Void
 			
-			init(category: NCDBDgmppItemCategory, completionHandler: @escaping (NCFittingAmmoViewController, NCDBInvType) -> Void) {
+			init(category: NCDBDgmppItemCategory, completionHandler: @escaping (NCFittingAmmoViewController, NCDBInvType?) -> Void) {
 				self.category = category
 				self.completionHandler = completionHandler
 				super.init(kind: .adaptive, identifier: "NCFittingAmmoViewController")
@@ -202,9 +202,9 @@ struct Router {
 
 		
 		class AreaEffects: Route {
-			let completionHandler: (NCFittingAreaEffectsViewController, NCDBInvType) -> Void
+			let completionHandler: (NCFittingAreaEffectsViewController, NCDBInvType?) -> Void
 			
-			init(completionHandler: @escaping (NCFittingAreaEffectsViewController, NCDBInvType) -> Void) {
+			init(completionHandler: @escaping (NCFittingAreaEffectsViewController, NCDBInvType?) -> Void) {
 				self.completionHandler = completionHandler
 				super.init(kind: .adaptive, identifier: "NCFittingAreaEffectsViewController")
 			}
@@ -283,6 +283,40 @@ struct Router {
 			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
 				let destination = destination as! NCFittingFleetMemberPickerViewController
 				destination.fleet = fleet
+				destination.completionHandler = completionHandler
+			}
+		}
+
+		class Targets: Route {
+			let modules: [NCFittingModule]
+			let completionHandler: (NCFittingTargetsViewController, NCFittingShip?) -> Void
+			
+			init(modules: [NCFittingModule], completionHandler: @escaping (NCFittingTargetsViewController, NCFittingShip?) -> Void) {
+				self.modules = modules
+				self.completionHandler = completionHandler
+				super.init(kind: .adaptive, identifier: "NCFittingTargetsViewController")
+			}
+			
+			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+				let destination = destination as! NCFittingTargetsViewController
+				destination.modules = modules
+				destination.completionHandler = completionHandler
+			}
+		}
+
+		class Characters: Route {
+			let pilot: NCFittingCharacter
+			let completionHandler: (NCFittingCharactersViewController, URL) -> Void
+			
+			init(pilot: NCFittingCharacter, completionHandler: @escaping (NCFittingCharactersViewController, URL) -> Void) {
+				self.pilot = pilot
+				self.completionHandler = completionHandler
+				super.init(kind: .adaptive, identifier: "NCFittingCharactersViewController")
+			}
+			
+			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+				let destination = destination as! NCFittingCharactersViewController
+				destination.pilot = pilot
 				destination.completionHandler = completionHandler
 			}
 		}

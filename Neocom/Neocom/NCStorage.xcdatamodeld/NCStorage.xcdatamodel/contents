@@ -30,7 +30,7 @@
         <attribute name="skills" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="Fleet" representedClassName="NCFleet" syncable="YES" codeGenerationType="class">
-        <attribute name="configuration" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="configuration" optional="YES" attributeType="Transformable" customClassName="NCFleetConfiguration" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="loadouts" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Loadout" inverseName="fleets" inverseEntity="Loadout" syncable="YES"/>
     </entity>

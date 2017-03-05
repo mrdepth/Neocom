@@ -58,7 +58,7 @@ class NCAmmoNode: FetchedResultsObjectNode<NCDBInvType> {
 class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
 	var category: NCDBDgmppItemCategory?
-	var completionHandler: ((NCFittingAmmoViewController, NCDBInvType) -> Void)!
+	var completionHandler: ((NCFittingAmmoViewController, NCDBInvType?) -> Void)!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -84,6 +84,10 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 		
 		let root = FetchedResultsNode(resultsController: controller, sectionNode: NCMetaGroupFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCAmmoNode.self)
 		treeController.rootNode = root
+	}
+	
+	@IBAction func onClear(_ sender: Any) {
+		completionHandler(self, nil)
 	}
 	
 	//MARK: - TreeControllerDelegate

@@ -430,7 +430,19 @@ extension NCFittingCharacter {
 		return URL(string: characterName)
 	}
 	
-	@nonobjc func setSkills(from url: URL, completionHandler: ((Bool) -> Void)?) {
+	var account: NCAccount? {
+		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
+		guard let accountUUID = components.queryItems?.first(where: {$0.name == "accountUUID"})?.value else {return nil}
+		return NCStorage.sharedStorage?.accounts[accountUUID]
+	}
+	
+	var level: Int? {
+		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
+		guard let level = components.queryItems?.first(where: {$0.name == "level"})?.value else {return nil}
+		return Int(level)
+	}
+	
+	@nonobjc func setSkills(from url: URL, completionHandler: ((Bool) -> Void)? = nil) {
 		guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
 			let queryItems = components.queryItems,
 			components.scheme == NCURLScheme,
@@ -440,11 +452,15 @@ extension NCFittingCharacter {
 		}
 
 		if let item = queryItems.first(where: {$0.name == "accountUUID"}), let uuid = item.value {
-			if let account = NCStorage.sharedStorage?.accounts[uuid] {
-				setSkills(from: account, completionHandler: completionHandler)
-			}
-			else {
-				completionHandler?(false)
+			NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
+				
+				if let account = NCAccount.accounts(managedObjectContext: managedObjectContext)[uuid] {
+					self.setSkills(from: account, completionHandler: completionHandler)
+				}
+				else {
+					completionHandler?(false)
+				}
+
 			}
 		}
 		else if let item = queryItems.first(where: {$0.name == "level"}), let level = Int(item.value ?? ""){
@@ -456,7 +472,7 @@ extension NCFittingCharacter {
 	}
 
 	
-	@nonobjc func setSkills(from account: NCAccount, completionHandler: ((Bool) -> Void)?) {
+	@nonobjc func setSkills(from account: NCAccount, completionHandler: ((Bool) -> Void)? = nil) {
 		guard let engine = engine else {
 			completionHandler?(false)
 			return

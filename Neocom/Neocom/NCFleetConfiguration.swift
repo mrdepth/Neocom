@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NCFleetConfiguration: NSObject, NSCoding {
+public class NCFleetConfiguration: NSObject, NSCoding {
 	var pilots: [String: String]?
 	var links: [String: String]?
 	var fleetBooster: String?
@@ -19,7 +19,7 @@ class NCFleetConfiguration: NSObject, NSCoding {
 		super.init()
 	}
 	
-	required init?(coder aDecoder: NSCoder) {
+	public required init?(coder aDecoder: NSCoder) {
 		pilots = aDecoder.decodeObject(forKey: "pilots") as? [String: String]
 		links = aDecoder.decodeObject(forKey: "links") as? [String: String]
 		fleetBooster = aDecoder.decodeObject(forKey: "fleetBooster") as? String
@@ -28,7 +28,7 @@ class NCFleetConfiguration: NSObject, NSCoding {
 		super.init()
 	}
 	
-	func encode(with aCoder: NSCoder) {
+	public func encode(with aCoder: NSCoder) {
 		aCoder.encode(pilots, forKey: "pilots")
 		aCoder.encode(links, forKey: "links")
 		aCoder.encode(fleetBooster, forKey: "fleetBooster")

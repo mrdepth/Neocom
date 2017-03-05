@@ -25,6 +25,9 @@ class NCFittingFleet {
 		for loadout in fleet.loadouts?.array as? [NCLoadout] ?? [] {
 			append(loadout: loadout, engine: engine)
 		}
+		if let configuration = fleet.configuration {
+			self.configuration = configuration
+		}
 	}
 	
 	init(loadouts:[NCLoadout], engine: NCFittingEngine) {
@@ -84,7 +87,7 @@ class NCFittingFleet {
 						if module.identifier == nil {
 							module.identifier = UUID().uuidString
 						}
-						links[module.identifier!] = target.identifier!
+						links[module.identifier!] = target.owner!.identifier!
 					}
 				}
 				for drone in pilot.ship?.drones ?? [] {
@@ -105,7 +108,36 @@ class NCFittingFleet {
 		}
 		set {
 			let configuration = newValue
+			var pilotsMap = [String: NCFittingCharacter]()
 			
+			for (pilot, _) in self.pilots {
+				guard let identifier = pilot.identifier else {continue}
+				pilotsMap[identifier] = pilot
+			}
+			for (identifier, character) in configuration.pilots ?? [:]{
+				guard let pilot = pilotsMap[identifier], let url = URL(string:character) else {continue}
+				pilot.setSkills(from: url)
+			}
+			for (pilot, _) in self.pilots {
+				for module in pilot.ship?.modules ?? [] {
+					guard let identifier = module.identifier, let link = configuration.links?[identifier] else {continue}
+					module.target = pilotsMap[link]?.ship
+				}
+				for drone in pilot.ship?.drones ?? [] {
+					guard let identifier = drone.identifier, let link = configuration.links?[identifier] else {continue}
+					drone.target = pilotsMap[link]?.ship
+				}
+			}
+			let gang = self.engine.gang
+			if let fleetBooster = configuration.fleetBooster {
+				gang.fleetBooster = pilotsMap[fleetBooster]
+			}
+			if let squadBooster = configuration.squadBooster {
+				gang.squadBooster = pilotsMap[squadBooster]
+			}
+			if let wingBooster = configuration.wingBooster {
+				gang.wingBooster = pilotsMap[wingBooster]
+			}
 		}
 	}
 

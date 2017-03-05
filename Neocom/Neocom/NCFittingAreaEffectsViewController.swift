@@ -32,7 +32,7 @@ import CoreData
 class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
 	var category: NCDBDgmppItemCategory?
-	var completionHandler: ((NCFittingAreaEffectsViewController, NCDBInvType) -> Void)!
+	var completionHandler: ((NCFittingAreaEffectsViewController, NCDBInvType?) -> Void)!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -89,6 +89,10 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 		
 	}
 	
+	@IBAction func onClear(_ sender: Any) {
+		completionHandler(self, nil)
+	}
+
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {

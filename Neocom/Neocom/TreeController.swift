@@ -83,6 +83,7 @@ private class TreeNodeSnapshot: TreeNode {
 	init(node: TreeNode) {
 		_indexPath = node.indexPath
 		super.init()
+		cellIdentifier = node.cellIdentifier
 		isExpanded = node.isExpanded
 		self.children = node.children
 	}

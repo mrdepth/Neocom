@@ -19,7 +19,7 @@ class NCFleetMemberTableViewCell: NCTableViewCell {
 
 extension Prototype {
 	struct NCFleetMemberTableViewCell {
-		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFleetMemberTableViewCell")
+		static let `default` = Prototype(nib: UINib(nibName: "NCFleetMemberTableViewCell", bundle: nil), reuseIdentifier: "NCFleetMemberTableViewCell")
 	}
 }
 
@@ -38,7 +38,7 @@ class NCFleetMemberRow: TreeRow {
 	let characterID: Int64?
 	var characterImage: UIImage?
 	
-	init(pilot: NCFittingCharacter) {
+	init(pilot: NCFittingCharacter, route: Route? = nil) {
 		self.pilot = pilot
 		self.ship = pilot.ship!
 		self.shipName = ship.name
@@ -63,7 +63,7 @@ class NCFleetMemberRow: TreeRow {
 			characterID = nil
 		}
 
-		super.init(prototype: Prototype.NCFleetMemberTableViewCell.default, accessoryButtonRoute: Router.Database.TypeInfo(ship.typeID))
+		super.init(prototype: Prototype.NCFleetMemberTableViewCell.default, route: route)
 	}
 	
 	override func configure(cell: UITableViewCell) {

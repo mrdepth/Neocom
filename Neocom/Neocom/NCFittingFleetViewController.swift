@@ -25,7 +25,8 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		super.viewDidLoad()
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
-		                    Prototype.NCActionTableViewCell.default
+		                    Prototype.NCActionTableViewCell.default,
+		                    Prototype.NCFleetMemberTableViewCell.default
 			])
 
 		

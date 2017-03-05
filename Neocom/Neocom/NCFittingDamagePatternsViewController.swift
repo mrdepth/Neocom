@@ -13,7 +13,7 @@ class NCFittingDamagePatternInfoRow: NCFittingDamagePatternRow {
 	let name: String
 	init(damagePattern: NCFittingDamage, name: String) {
 		self.name = name
-		super.init(damagePattern: damagePattern)
+		super.init(prototype: Prototype.NCDamageTypeTableViewCell.default, damagePattern: damagePattern)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -113,7 +113,7 @@ class NCCustomDamagePatternRow: FetchedResultsObjectNode<NCDamagePattern> {
 			changed = true
 			if isEditing {
 				children = [NCDamagePatternEditRow(damagePattern: editingObject)]
-				cellIdentifier = "NCTextFieldTableViewCell"
+				cellIdentifier = Prototype.NCTextFieldTableViewCell.default.reuseIdentifier
 			}
 			else {
 				let total = editingObject.em + editingObject.thermal + editingObject.kinetic + editingObject.explosive
@@ -130,9 +130,9 @@ class NCCustomDamagePatternRow: FetchedResultsObjectNode<NCDamagePattern> {
 					editingObject.kinetic = 0.25
 					editingObject.explosive = 0.25
 				}
+				cellIdentifier = Prototype.NCDamageTypeTableViewCell.default.reuseIdentifier
 				children = []
 				try? editingContext.save()
-				cellIdentifier = "NCDamageTypeTableViewCell"
 			}
 			//self.cellIdentifier = isEditing ? "NCDamagePatternEditTableViewCell" : "NCDamageTypeTableViewCell"
 		}
@@ -151,7 +151,7 @@ class NCCustomDamagePatternRow: FetchedResultsObjectNode<NCDamagePattern> {
 	
 	required init(object: NCDamagePattern) {
 		super.init(object: object)
-		self.cellIdentifier = "NCDamageTypeTableViewCell"
+		self.cellIdentifier = Prototype.NCDamageTypeTableViewCell.default.reuseIdentifier
 	}
 	
 	private var handler: NCActionHandler?
@@ -199,6 +199,11 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		tableView.register([Prototype.NCDamageTypeTableViewCell.default,
+		                    Prototype.NCActionTableViewCell.default,
+		                    Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.default])
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension

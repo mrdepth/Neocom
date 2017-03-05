@@ -9,18 +9,20 @@
 import UIKit
 
 class NCFittingModuleStateRow: TreeRow {
-	let module: NCFittingModule
+	let modules: [NCFittingModule]
 	let states: [NCFittingModuleState]
 	
-	init(module: NCFittingModule) {
-		self.module = module
-		
+	init(modules: [NCFittingModule]) {
+		self.modules = modules
+		let module = modules.first!
 		let states: [NCFittingModuleState] = [.offline, .online, .active, .overloaded]
 		self.states = states.filter {module.canHaveState($0)}
 		
 		super.init(prototype: Prototype.NCFittingModuleStateTableViewCell.default)
 		
 	}
+	
+	var actionHandler: NCActionHandler?
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCFittingModuleStateTableViewCell else {return}
@@ -31,9 +33,21 @@ class NCFittingModuleStateRow: TreeRow {
 			cell.segmentedControl?.insertSegment(withTitle: state.title, at: i, animated: false)
 			i += 1
 		}
-		
+		guard let module = modules.first else {return}
+
+		let segmentedControl = cell.segmentedControl!
+		self.actionHandler = NCActionHandler(segmentedControl, for: .valueChanged) { [weak self, weak segmentedControl] _ in
+			guard let sender = segmentedControl else {return}
+			guard let state = self?.states[sender.selectedSegmentIndex] else {return}
+			module.engine?.perform {
+				for module in self?.modules ?? [] {
+					module.preferredState = state
+				}
+			}
+
+		}
 		module.engine?.perform {
-			let state = self.module.state
+			let state = module.state
 			DispatchQueue.main.async {
 				if let i = self.states.index(of: state) {
 					cell.segmentedControl?.selectedSegmentIndex = i
@@ -44,7 +58,7 @@ class NCFittingModuleStateRow: TreeRow {
 	
 
 	override var hashValue: Int {
-		return module.hashValue
+		return modules.first?.hashValue ?? 0
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
@@ -170,7 +184,8 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 		                    Prototype.NCDefaultTableViewCell.compact,
 		                    Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCChargeTableViewCell.compact,
-		                    Prototype.NCActionTableViewCell.default
+		                    Prototype.NCActionTableViewCell.default,
+		                    Prototype.NCFleetMemberTableViewCell.default
 			])
 
 		
@@ -217,19 +232,6 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 		//treeController.reloadCells(for: [node])
 	}
 	
-	@IBAction func onChangeState(_ sender: UISegmentedControl) {
-		guard let cell = sender.ancestor(of: NCFittingModuleStateTableViewCell.self) else {return}
-		guard let node = cell.object as? NCFittingModuleStateRow else {return}
-		guard let modules = self.modules else {return}
-		let state = node.states[sender.selectedSegmentIndex]
-		modules.first?.engine?.perform {
-			for module in modules {
-				module.preferredState = state
-			}
-			//self.module?.preferredState = state
-		}
-	}
-	
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
@@ -270,13 +272,13 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 	
 	//MARK: Private
 	
-	private func setAmmo(controller: NCFittingAmmoViewController, type: NCDBInvType) {
-		let typeID = Int(type.typeID)
+	private func setAmmo(controller: NCFittingAmmoViewController, type: NCDBInvType?) {
+		let typeID = type != nil ? Int(type!.typeID) : nil
 		controller.dismiss(animated: true) {
 			guard let modules = self.modules else {return}
 			modules.first?.engine?.perform {
 				for module in modules {
-					module.charge = NCFittingCharge(typeID: typeID)
+					module.charge = typeID != nil ? NCFittingCharge(typeID: typeID!) : nil
 				}
 			}
 		}
@@ -346,7 +348,28 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 			}
 			
 			if module.canHaveState(.online) {
-				sections.append(DefaultTreeSection(nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingModuleStateRow(module: module)]))
+				sections.append(DefaultTreeSection(nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingModuleStateRow(modules: modules)]))
+			}
+			
+			if module.requireTarget && ((module.owner?.owner?.owner as? NCFittingGang)?.pilots.count ?? 0) > 1 {
+				let row: TreeRow
+				let route = Router.Fitting.Targets(modules: modules, completionHandler: { (controller, target) in
+					controller.dismiss(animated: true, completion: { 
+						guard let modules = self.modules else {return}
+						modules.first?.engine?.perform {
+							for module in modules {
+								module.target = target
+							}
+						}
+					})
+				})
+				if let target = module.target?.owner as? NCFittingCharacter {
+					row = NCFleetMemberRow(pilot: target, route: route)
+				}
+				else {
+					row = NCActionRow(prototype: Prototype.NCActionTableViewCell.default, title: NSLocalizedString("Select Target", comment: "").uppercased(), route: route)
+				}
+				sections.append(DefaultTreeSection(nodeIdentifier: "Target", title: NSLocalizedString("Target", comment: "").uppercased(), children: [row]))
 			}
 
 			if module.dps.total > 0 {

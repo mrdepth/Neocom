@@ -447,7 +447,14 @@ extension NCFittingCharacter {
 		guard let accountUUID = components.queryItems?.first(where: {$0.name == "accountUUID"})?.value else {return nil}
 		return NCStorage.sharedStorage?.accounts[accountUUID]
 	}
-	
+
+	var fitCharacter: NCFitCharacter? {
+		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
+		guard let characterUUID = components.queryItems?.first(where: {$0.name == "characterUUID"})?.value else {return nil}
+		let character: NCFitCharacter? = NCStorage.sharedStorage?.viewContext.fetch("FitCharacter", where: "uuid == %@", characterUUID)
+		return character
+	}
+
 	var level: Int? {
 		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
 		guard let level = components.queryItems?.first(where: {$0.name == "level"})?.value else {return nil}

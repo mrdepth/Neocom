@@ -105,8 +105,10 @@ open class TreeNode: NSObject {
 	var from: TreeNode?
 	open var children: [TreeNode]? {
 		willSet {
-			if !disableTransitions && !(self is TreeNodeSnapshot) {
-				from = TreeNodeSnapshot(node: self)
+			if treeController?.disableTransitions == false {
+				if !disableTransitions && !(self is TreeNodeSnapshot) {
+					from = TreeNodeSnapshot(node: self)
+				}
 			}
 		}
 		didSet {
@@ -117,15 +119,13 @@ open class TreeNode: NSObject {
 				index += 1
 			}
 			size = nil
-			if !disableTransitions, let from = from {
-				performTransition(from: from)
-//				if let tableView = treeController?.tableView, let indexPath = self.indexPath, indexPath.row >= 0 {
-//					if self.changed(from: self) {
-//						tableView.reloadRows(at: [indexPath], with: .fade)
-//					}
-//				}
+			
+			if treeController?.disableTransitions == false {
+				if !disableTransitions, let from = from {
+					performTransition(from: from)
+				}
+				from = nil
 			}
-			from = nil
 		}
 	}
 	
@@ -368,6 +368,8 @@ open class TreeNode: NSObject {
 }
 
 public class TreeController: NSObject, UITableViewDelegate, UITableViewDataSource {
+	var disableTransitions: Bool = false
+	
 	public var rootNode: TreeNode? {
 		didSet {
 			rootNode?.treeController = self
@@ -513,7 +515,9 @@ class FetchedResultsNode<ResultType: NSFetchRequestResult>: TreeNode, NSFetchedR
 		self.sectionNode = sectionNode
 		self.objectNode = objectNode
 		super.init()
-		resultsController.delegate = self
+		if resultsController.fetchRequest.resultType == .managedObjectResultType || resultsController.fetchRequest.resultType == .managedObjectResultType {
+			resultsController.delegate = self
+		}
 	}
 	
 	override func lazyLoad() {

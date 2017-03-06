@@ -47,32 +47,12 @@ extension Prototype {
 	}
 }
 
-class NCFittingCharacterRow: TreeRow {
-	let account: NCAccount?
-	let character: NCFitCharacter?
-	let level: Int?
+class NCPredefinedCharacterRow: TreeRow {
+	let level: Int
 	let url: URL?
 
-	init(account: NCAccount, route: Route? = nil) {
-		self.account = account
-		self.level = nil
-		self.character = nil
-		url = NCFittingCharacter.url(account: account)
-		super.init(prototype: Prototype.NCFittingCharacterTableViewCell.default, route: route)
-	}
-	
-	init(character: NCFitCharacter, route: Route? = nil) {
-		self.character = character
-		self.account = nil
-		self.level = nil
-		url = NCFittingCharacter.url(character: character)
-		super.init(prototype: Prototype.NCFittingCharacterTableViewCell.default, route: route)
-	}
-	
 	init(level: Int, route: Route? = nil) {
 		self.level = level
-		self.account = nil
-		self.character = nil
 		url = NCFittingCharacter.url(level: level)
 		super.init(prototype: Prototype.NCFittingCharacterTableViewCell.default, route: route)
 	}
@@ -84,43 +64,21 @@ class NCFittingCharacterRow: TreeRow {
 		
 		cell.characterImageView?.image = image
 		
-		if let account = account {
-			cell.characterNameLabel.text = account.characterName
-			cell.object = account
-			if image == nil {
-				NCDataManager(account: account).image(characterID: account.characterID, dimension: Int(cell.characterImageView.bounds.size.width)) { result in
-					if (cell.object as? NCAccount) === account {
-						switch result {
-						case let .success(value, _):
-							self.image = value
-							if (cell.object as? NCAccount) == account {
-								cell.characterImageView.image = value
-							}
-						default:
-							break
-						}
-					}
-				}
-			}
+		let s = NCPredefinedCharacterRow.titles[level]
+		cell.characterNameLabel.text = NSLocalizedString("All Skills", comment: "") + " " + s
+		if image == nil {
+			image = UIImage.placeholder(text: s, size: cell.characterImageView.bounds.size)
+			cell.characterImageView.image = image
 		}
-		else {
-			let level = self.level ?? 0
-			let s = NCFittingCharacterRow.titles[level]
-			cell.characterNameLabel.text = NSLocalizedString("All Skills", comment: "") + " " + s
-			if image == nil {
-				image = UIImage.placeholder(text: s, size: cell.characterImageView.bounds.size)
-				cell.characterImageView.image = image
-			}
-			cell.object = level
-		}
+		cell.object = level
 	}
 	
 	override var hashValue: Int {
-		return account?.hashValue ?? level?.hashValue ?? 0
+		return level.hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCFittingCharacterRow)?.hashValue == hashValue
+		return (object as? NCPredefinedCharacterRow)?.hashValue == hashValue
 	}
 	
 	private static var titles = ["0", "I", "II", "III", "IV", "V"]
@@ -164,10 +122,17 @@ class NCCustomCharactersSection: FetchedResultsNode<NCFitCharacter> {
 	}
 }
 
-class NCCustomCharacterRow: FetchedResultsObjectNode<NCFitCharacter> {
+class NCCustomCharacterRow: FetchedResultsObjectNode<NCFitCharacter>, TreeNodeRoutable {
+	var route: Route?
+	var accessoryButtonRoute: Route?
 	
 	override func move(from: TreeNode) -> TreeNodeReloading {
 		return .reload
+	}
+	
+	convenience init(character: NCFitCharacter, route: Route? = nil) {
+		self.init(object: character)
+		self.route = route
 	}
 	
 	required init(object: NCFitCharacter) {
@@ -181,7 +146,7 @@ class NCCustomCharacterRow: FetchedResultsObjectNode<NCFitCharacter> {
 		guard let cell = cell as? NCFittingCharacterTableViewCell else {return}
 		cell.object = object
 		cell.characterImageView.image = image
-		cell.characterNameLabel.text = object.name
+		cell.characterNameLabel.text = object.name ?? NSLocalizedString("Unnamed", comment: "")
 		if image == nil {
 			let s = object.name?.substring(to: object.name!.startIndex) ?? NSLocalizedString("C", comment: "Custom character")
 			image = UIImage.placeholder(text: s, size: cell.characterImageView.bounds.size)
@@ -194,7 +159,7 @@ class NCAccountCharactersSection: FetchedResultsNode<NCAccount> {
 	
 	init(managedObjectContext: NSManagedObjectContext) {
 		let request = NSFetchRequest<NCAccount>(entityName: "Account")
-		request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+		request.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
 		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
 		try? controller.performFetch()
 		super.init(resultsController: controller, objectNode: NCAccountCharacterRow.self)
@@ -223,12 +188,19 @@ class NCAccountCharactersSection: FetchedResultsNode<NCAccount> {
 }
 
 
-class NCAccountCharacterRow: FetchedResultsObjectNode<NCAccount> {
+class NCAccountCharacterRow: FetchedResultsObjectNode<NCAccount>, TreeNodeRoutable {
+	var route: Route?
+	var accessoryButtonRoute: Route?
 	
 	override func move(from: TreeNode) -> TreeNodeReloading {
 		return .reload
 	}
 	
+	convenience init(account: NCAccount, route: Route? = nil) {
+		self.init(object: account)
+		self.route = route
+	}
+
 	required init(object: NCAccount) {
 		super.init(object: object)
 		self.cellIdentifier = Prototype.NCFittingCharacterTableViewCell.default.reuseIdentifier

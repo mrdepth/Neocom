@@ -9,7 +9,12 @@
 import UIKit
 import CoreData
 
-class TreeRow: TreeNode {
+protocol TreeNodeRoutable {
+	var route: Route? {get}
+	var accessoryButtonRoute: Route? {get}
+}
+
+class TreeRow: TreeNode, TreeNodeRoutable {
 	var route: Route?
 	var accessoryButtonRoute: Route?
 	var object: Any?

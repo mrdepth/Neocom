@@ -320,6 +320,21 @@ struct Router {
 				destination.completionHandler = completionHandler
 			}
 		}
+		
+		class CharacterEditor: Route {
+			let character: NCFitCharacter
+			
+			init(character: NCFitCharacter, kind: RouteKind = .adaptive) {
+				self.character = character
+				super.init(kind: kind, identifier: "NCFittingCharacterEditorViewController")
+			}
+			
+			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+				let destination = destination as! NCFittingCharacterEditorViewController
+				destination.character = character
+			}
+		}
+
 
 	}
 }

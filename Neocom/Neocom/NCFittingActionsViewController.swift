@@ -125,8 +125,8 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		guard let node = node as? TreeRow else {return}
-		guard let route = node.route else {return}
+		guard let item = node as? TreeNodeRoutable else {return}
+		guard let route = item.route else {return}
 		route.perform(source: self, view: treeController.cell(for: node))
 	}
 	
@@ -186,7 +186,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 				sections.append(DefaultTreeSection(nodeIdentifier: "Ship", title: NSLocalizedString("Ship", comment: "").uppercased(), children: [row]))
 			}
 			
-			let characterRow: NCFittingCharacterRow
+			let characterRow: TreeNode
 			let characterRoute = Router.Fitting.Characters(pilot: pilot) { (controller, url) in
 				controller.dismiss(animated: true) {
 					pilot.setSkills(from: url, completionHandler: nil)
@@ -194,10 +194,13 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 			}
 			
 			if let account = pilot.account {
-				characterRow = NCFittingCharacterRow(account: account, route: characterRoute)
+				characterRow = NCAccountCharacterRow(account: account, route: characterRoute)
+			}
+			else if let character = pilot.fitCharacter {
+				characterRow = NCCustomCharacterRow(character: character, route: characterRoute)
 			}
 			else {
-				characterRow = NCFittingCharacterRow(level: pilot.level ?? 0, route: characterRoute)
+				characterRow = NCPredefinedCharacterRow(level: pilot.level ?? 0, route: characterRoute)
 			}
 			
 			sections.append(DefaultTreeSection(nodeIdentifier: "Character", title: NSLocalizedString("Character", comment: "").uppercased(), children: [characterRow]))

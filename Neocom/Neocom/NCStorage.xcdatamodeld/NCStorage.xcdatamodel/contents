@@ -27,7 +27,7 @@
     </entity>
     <entity name="FitCharacter" representedClassName="NCFitCharacter" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="skills" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="skills" optional="YES" attributeType="Transformable" customClassName="Dictionary&lt;Int,Int&gt;" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Fleet" representedClassName="NCFleet" syncable="YES" codeGenerationType="class">

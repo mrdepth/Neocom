@@ -14,6 +14,8 @@
 		121D10B21E263E3700DD671B /* NCTypePickerTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10B11E263E3700DD671B /* NCTypePickerTypesViewController.swift */; };
 		121D10B51E265D5A00DD671B /* NCFittingLoadout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10B41E265D5A00DD671B /* NCFittingLoadout.swift */; };
 		122242461E5C3A0000269A01 /* NCPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122242451E5C3A0000269A01 /* NCPageViewController.swift */; };
+		1224AF621E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224AF611E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift */; };
+		1224AF641E6D92240043F96C /* NCSkillEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */; };
 		1227B81E1E096A4F00C816A0 /* NCDamageTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */; };
 		122FFDF51E4B7D630066D45E /* NCFittingStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122FFDF41E4B7D630066D45E /* NCFittingStatsViewController.swift */; };
 		1230A3241DFFE2CF00627D92 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3111DFFE2CF00627D92 /* Math.swift */; };
@@ -249,6 +251,8 @@
 		121D10B11E263E3700DD671B /* NCTypePickerTypesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerTypesViewController.swift; sourceTree = "<group>"; };
 		121D10B41E265D5A00DD671B /* NCFittingLoadout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingLoadout.swift; sourceTree = "<group>"; };
 		122242451E5C3A0000269A01 /* NCPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCPageViewController.swift; sourceTree = "<group>"; };
+		1224AF611E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingCharacterEditorViewController.swift; sourceTree = "<group>"; };
+		1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillEditTableViewCell.swift; sourceTree = "<group>"; };
 		1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamageTypeLabel.swift; sourceTree = "<group>"; };
 		122FFDF41E4B7D630066D45E /* NCFittingStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingStatsViewController.swift; sourceTree = "<group>"; };
 		1230A3111DFFE2CF00627D92 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
@@ -636,6 +640,7 @@
 				1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */,
 				12D930F51E65A77300CBAE1C /* NCFleetTableViewCell.swift */,
 				124247BF1E6605AD002E0460 /* NCFleetMemberTableViewCell.swift */,
+				1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -823,6 +828,7 @@
 				129C51A31E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift */,
 				12E932191E6ACEC40033D71A /* NCFittingTargetsViewController.swift */,
 				12E9321D1E6B56D40033D71A /* NCFittingCharactersViewController.swift */,
+				1224AF611E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
@@ -1126,6 +1132,7 @@
 				12C44CFA1E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift in Sources */,
 				1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */,
 				12DBEABA1E1D3F3D0088A486 /* NCFittingItem.mm in Sources */,
+				1224AF641E6D92240043F96C /* NCSkillEditTableViewCell.swift in Sources */,
 				12E2674F1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift in Sources */,
 				1230A3241DFFE2CF00627D92 /* Math.swift in Sources */,
 				1230A3251DFFE2CF00627D92 /* NCAccountsViewController.swift in Sources */,
@@ -1148,6 +1155,7 @@
 				121D10AE1E262F8900DD671B /* NCTypePickerGroupsViewController.swift in Sources */,
 				12AC8DB41DEF642600561A7A /* NCFetchedCollection.swift in Sources */,
 				1230A32B1DFFE2CF00627D92 /* NCDatabaseTypesViewController.swift in Sources */,
+				1224AF621E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift in Sources */,
 				12AC8DE21DF0B5F200561A7A /* Dark.clr in Sources */,
 				1230A3291DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift in Sources */,
 				12F8FF9F1E5DBC58008F79D5 /* NCFittingShipsViewController.swift in Sources */,

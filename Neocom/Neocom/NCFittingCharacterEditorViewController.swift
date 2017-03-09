@@ -24,7 +24,9 @@ class NCFittingCharacterEditorViewController: UITableViewController, TreeControl
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-//		treeController.disableTransitions = true
+		
+		tableView.estimatedRowHeight = tableView.rowHeight
+		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		let skills = character?.skills
 

@@ -10,3 +10,6 @@
 [submodule "ThirdParty/flurry-ios-sdk"]
 	path = ThirdParty/flurry-ios-sdk
 	url = https://github.com/flurry/flurry-ios-sdk.git
+[submodule "ThirdParty/TreeController"]
+	path = ThirdParty/TreeController
+	url = https://github.com/mrdepth/TreeController.git

@@ -30,9 +30,16 @@ class NCSkillEditRow: FetchedResultsObjectNode<NSDictionary> {
 		cellIdentifier = Prototype.NCSkillEditTableViewCell.default.reuseIdentifier
 	}
 	
+	private var handler: NCActionHandler?
+	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCSkillEditTableViewCell else {return}
 		cell.titleLabel.text = object["typeName"] as? String
 		cell.levelSegmentedControl.selectedSegmentIndex = level
+		
+		let segmentedControl = cell.levelSegmentedControl!
+		handler = NCActionHandler(cell.levelSegmentedControl, for: .valueChanged) { [weak self] _ in
+			self?.level = segmentedControl.selectedSegmentIndex
+		}
 	}
 }

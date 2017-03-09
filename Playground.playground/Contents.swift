@@ -2,18 +2,7 @@
 
 import UIKit
 
-struct Prototype {
-	
-}
+let s = "1234567890"
 
-class Cell {
-	
-}
-
-extension Prototype {
-	struct Cell {
-		static let p = Prototype()
-	}
-}
-
-Prototype.Cell.p
+let r = s.startIndex..<s.endIndex
+s.substring(with: r)

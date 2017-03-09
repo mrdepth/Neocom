@@ -33,7 +33,7 @@ class NCFittingCharacterEditorViewController: UITableViewController, TreeControl
 			let entity = NSEntityDescription.entity(forEntityName: "InvType", in: managedObjectContext)!
 			
 			request.sortDescriptors = [NSSortDescriptor(key: "group.groupName", ascending: true), NSSortDescriptor(key: "typeName", ascending: true)]
-			request.predicate = NSPredicate(format: "published == TRUE")
+			request.predicate = NSPredicate(format: "published == TRUE AND group.category.categoryID == %d", NCDBCategoryID.skill.rawValue)
 			request.resultType = .dictionaryResultType
 			let properties = entity.propertiesByName
 			request.propertiesToFetch = [

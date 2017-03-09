@@ -123,6 +123,10 @@ open class TreeNode: NSObject {
 			guard let treeController = treeController else {return}
 			guard oldValue != isExpanded else {return}
 			
+			if let cell = treeController.cell(for: self) as? Expandable {
+				cell.setExpanded(isExpanded, animated: true)
+			}
+			
 			guard isExpanded else {return}
 			guard var flatIndex = flatIndex else {return}
 			
@@ -141,7 +145,7 @@ open class TreeNode: NSObject {
 	}
 	
 	func loadChildren() {
-		isLoaded = true
+		
 	}
 	
 	private var isLoaded: Bool = false
@@ -157,6 +161,7 @@ open class TreeNode: NSObject {
 		if !isExpandable || isExpanded || !isViewable {
 			if !isLoaded {
 				loadChildren()
+				isLoaded = true
 			}
 			
 			for child in children ?? [] {
@@ -171,6 +176,7 @@ open class TreeNode: NSObject {
 		if !isExpandable || isExpanded || !isViewable {
 			if !isLoaded {
 				loadChildren()
+				isLoaded = true
 			}
 			
 			var array = [TreeNode]()
@@ -220,17 +226,21 @@ open class TreeController: NSObject, UITableViewDelegate, UITableViewDataSource 
 		didSet {
 			content?.treeController = self
 			let to = content?.flattened
-			replaceNodes(at: 0..<(flattened?.count ?? 0), with: to ?? [])
-//			for (i, node) in flattened?.enumerated() ?? [].enumerated() {
-//				node.flatIndex = i
-//			}
+			if oldValue == nil {
+				flattened = to ?? []
+				updateIndexes()
+				tableView.reloadData()
+			}
+			else {
+				replaceNodes(at: 0..<flattened.count, with: to ?? [])
+			}
 		}
 	}
 	
 	@IBOutlet public weak var tableView: UITableView!
 	@IBOutlet public weak var delegate: TreeControllerDelegate?
 	
-	private var flattened: [TreeNode]?
+	private var flattened: [TreeNode] = []
 
 	public func cell(for node: TreeNode) -> UITableViewCell? {
 		guard let index = node.flatIndex else {return nil}
@@ -240,7 +250,7 @@ open class TreeController: NSObject, UITableViewDelegate, UITableViewDataSource 
 	
 	public func node(for cell: UITableViewCell) -> TreeNode? {
 		guard let indexPath = tableView.indexPath(for: cell) else {return nil}
-		return flattened?[indexPath.row]
+		return flattened[indexPath.row]
 	}
 	
 	public func indexPath(for node: TreeNode) -> IndexPath? {
@@ -287,11 +297,11 @@ open class TreeController: NSObject, UITableViewDelegate, UITableViewDataSource 
 	//MARK: - UITableViewDataSource
 	
 	public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return flattened?.count ?? 0
+		return flattened.count
 	}
 	
 	public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let node = flattened![indexPath.row]
+		let node = flattened[indexPath.row]
 		let cell = tableView.dequeueReusableCell(withIdentifier: node.cellIdentifier!, for: indexPath)
 		cell.indentationLevel = node.indentationLevel
 		
@@ -300,7 +310,6 @@ open class TreeController: NSObject, UITableViewDelegate, UITableViewDataSource 
 		}
 		
 		node.configure(cell: cell)
-		cell.textLabel?.text = "\(node.parent?.flatIndex ?? 0) / \(node.flatIndex ?? 0)"
 		delegate?.treeController?(self, configureCell: cell, withNode: node)
 		return cell
 	}
@@ -310,14 +319,14 @@ open class TreeController: NSObject, UITableViewDelegate, UITableViewDataSource 
 	}
 	
 	public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-		let node = flattened![indexPath.row]
+		let node = flattened[indexPath.row]
 		delegate?.treeController?(self, commit: editingStyle, forNode: node)
 	}
 	
 	//MARK: - UITableViewDelegate
 	
 	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let node = flattened![indexPath.row]
+		let node = flattened[indexPath.row]
 		if node.isExpandable {
 			node.isExpanded = !node.isExpanded
 		}
@@ -326,18 +335,18 @@ open class TreeController: NSObject, UITableViewDelegate, UITableViewDataSource 
 	}
 	
 	public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-		let node = flattened![indexPath.row]
+		let node = flattened[indexPath.row]
 		delegate?.treeController?(self, accessoryButtonTappedWithNode: node)
 	}
 	
 	
 	public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-		let node = flattened![indexPath.row]
+		let node = flattened[indexPath.row]
 		return delegate?.treeController?(self, editActionsForNode: node)
 	}
 	
 	public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-		let node = flattened![indexPath.row]
+		let node = flattened[indexPath.row]
 		return delegate?.treeController?(self, editingStyleForNode: node) ?? (self.tableView(tableView, editActionsForRowAt: indexPath) != nil ? .delete : .none)
 	}
 	
@@ -346,7 +355,7 @@ open class TreeController: NSObject, UITableViewDelegate, UITableViewDataSource 
 	}
 	
 	public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-		let node = flattened![indexPath.row]
+		let node = flattened[indexPath.row]
 		if let estimatedHeight = node.estimatedHeight {
 			return estimatedHeight
 		}
@@ -356,7 +365,7 @@ open class TreeController: NSObject, UITableViewDelegate, UITableViewDataSource 
 	}
 	
 	public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		let node = flattened![indexPath.row]
+		let node = flattened[indexPath.row]
 		node.estimatedHeight = cell.bounds.size.height
 	}
 	
@@ -365,35 +374,38 @@ open class TreeController: NSObject, UITableViewDelegate, UITableViewDataSource 
 	//MARK - Private
 	
 	fileprivate func removeNodes(at range: CountableRange<Int>) {
-		for node in flattened?[range] ?? [] {
+		for node in flattened[range] {
 			node.flatIndex = nil
 		}
-		flattened?.removeSubrange(range)
-		var i = range.lowerBound
-		for node in flattened?[range.lowerBound ..< flattened!.count] ?? [] {
-			node.flatIndex = i
-			i += 1
-		}
+		flattened.removeSubrange(range)
+//		var i = range.lowerBound
+//		for node in flattened?[range.lowerBound ..< flattened!.count] ?? [] {
+//			node.flatIndex = i
+//			i += 1
+//		}
+		updateIndexes()
 		
 		tableView.deleteRows(at: range.map({IndexPath(row: $0, section: 0)}), with: .automatic)
 	}
 	
 	fileprivate func insertNodes(_ nodes: [TreeNode], at index: Int) {
-		flattened?.insert(contentsOf: nodes, at: index)
-		var i = index
-		for node in flattened?[index ..< flattened!.count] ?? [] {
-			node.flatIndex = i
-			i += 1
-		}
+		flattened.insert(contentsOf: nodes, at: index)
+//		var i = index
+//		for node in flattened?[index ..< flattened!.count] ?? [] {
+//			node.flatIndex = i
+//			i += 1
+//		}
+		updateIndexes()
 		let range = index..<(index + nodes.count)
 		tableView.insertRows(at: range.map({IndexPath(row: $0, section: 0)}), with: .automatic)
 	}
 	
 	fileprivate func replaceNodes(at range: CountableRange<Int>, with nodes: [TreeNode]) {
-		flattened?.replaceSubrange(range, with: nodes)
-		
 		beginUpdates()
-		let from = Array(flattened?[range] ?? [])
+
+		let from = Array(flattened[range])
+		flattened.replaceSubrange(range, with: nodes)
+		
 		let start = range.lowerBound
 		nodes.changes(from: from) { (old, new, type) in
 			switch type {
@@ -417,12 +429,31 @@ open class TreeController: NSObject, UITableViewDelegate, UITableViewDataSource 
 			}
 		}
 		
-		var i = range.lowerBound
-		for node in flattened?[range.lowerBound ..< flattened!.count] ?? [] {
-			node.flatIndex = i
-			i += 1
-		}
+//		var i = range.lowerBound
+//		for node in flattened?[range.lowerBound ..< flattened!.count] ?? [] {
+//			node.flatIndex = i
+//			i += 1
+//		}
+		updateIndexes()
 		endUpdates()
+	}
+	
+	fileprivate func updateIndexes() {
+		guard let content = content else {return}
+		var index: Int = 0
+		func update(_ node: TreeNode) {
+			node.flatIndex = index
+			if node.isViewable {
+				index += 1
+			}
+			
+			if !node.isExpandable || node.isExpanded || !node.isViewable {
+				for child in node.children ?? [] {
+					update(child)
+				}
+			}
+		}
+		update(content)
 	}
 
 }

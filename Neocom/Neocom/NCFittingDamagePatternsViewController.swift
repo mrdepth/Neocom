@@ -74,8 +74,8 @@ class NCCustomDamagePatternsSection: FetchedResultsNode<NCDamagePattern> {
 		}
 	}
 	
-	override func lazyLoad() {
-		super.lazyLoad()
+	override func loadChildren() {
+		super.loadChildren()
 		children?.append(NCAddDamagePatternRow())
 	}
 	
@@ -138,15 +138,15 @@ class NCCustomDamagePatternRow: FetchedResultsObjectNode<NCDamagePattern> {
 		}
 	}
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
 		
-		guard let from = from as? NCCustomDamagePatternRow else {return .dontReload}
+		guard let from = node as? NCCustomDamagePatternRow else {return .none}
 		let changed = from.changed
 		self.changed = false
 		editingContext = from.editingContext
 		editingObject = from.editingObject
 		isEditing = from.isEditing
-		return changed ? .reload : .dontReload
+		return changed ? .reload : .none
 	}
 	
 	required init(object: NCDamagePattern) {
@@ -226,7 +226,7 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		
 		let root = TreeNode()
 		root.children = sections
-		self.treeController.rootNode = root
+		self.treeController.content = root
 		
 	}
 	
@@ -385,7 +385,7 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		pattern.name = name
 		try? managedObjectContext.save()
 		
-		let section = treeController.rootNode?.children?.first(where: {$0 is NCCustomDamagePatternsSection})
+		let section = treeController.content?.children?.first(where: {$0 is NCCustomDamagePatternsSection})
 		if section?.isExpanded == false {
 			section?.isExpanded = true
 		}

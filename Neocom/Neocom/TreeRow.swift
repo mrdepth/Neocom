@@ -66,17 +66,17 @@ class DefaultTreeSection: TreeSection {
 		}
 	}
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
-		guard let node = from as? DefaultTreeSection else {return .dontReload}
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
+		guard let node = node as? DefaultTreeSection else {return .none}
 		
 		if let title = self.title {
-			return title != node.title ? .reload : .dontReload
+			return title != node.title ? .reload : .none
 		}
 		else if let attributedTitle = self.attributedTitle {
-			return attributedTitle != self.attributedTitle ? .reload : .dontReload
+			return attributedTitle != self.attributedTitle ? .reload : .none
 		}
 		else {
-			return .dontReload
+			return .none
 		}
 	}
 	

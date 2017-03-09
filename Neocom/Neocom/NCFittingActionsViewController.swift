@@ -237,13 +237,13 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 			sections.append(DefaultTreeSection(nodeIdentifier: "DamagePattern", title: NSLocalizedString("Damage Pattern", comment: "").uppercased(), children: [NCFittingDamagePatternRow(damagePattern: damagePattern, route: damagePatternsRoute)]))
 		}
 		
-		if treeController.rootNode == nil {
+		if treeController.content == nil {
 			let root = TreeNode()
 			root.children = sections
-			treeController.rootNode = root
+			treeController.content = root
 		}
 		else {
-			treeController.rootNode?.children = sections
+			treeController.content?.children = sections
 		}
 
 	}

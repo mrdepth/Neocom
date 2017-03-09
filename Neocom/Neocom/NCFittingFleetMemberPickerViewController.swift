@@ -35,7 +35,7 @@ class NCFittingFleetMemberPickerViewController: UITableViewController, TreeContr
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if treeController.rootNode == nil {
+		if treeController.content == nil {
 			reload()
 		}
 	}
@@ -94,9 +94,9 @@ class NCFittingFleetMemberPickerViewController: UITableViewController, TreeContr
 
 		
 		sections.append(NCLoadoutsSection(categoryID: .ship, filter: predicate))
-		if self.treeController.rootNode == nil {
-			self.treeController.rootNode = TreeNode()
+		if self.treeController.content == nil {
+			self.treeController.content = TreeNode()
 		}
-		self.treeController.rootNode?.children = sections
+		self.treeController.content?.children = sections
 	}
 }

@@ -24,7 +24,7 @@ class NCFittingCharacterEditorViewController: UITableViewController, TreeControl
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		treeController.disableTransitions = true
+//		treeController.disableTransitions = true
 		
 		let skills = character?.skills
 
@@ -56,7 +56,7 @@ class NCFittingCharacterEditorViewController: UITableViewController, TreeControl
 			}
 
 			DispatchQueue.main.async {
-				self.treeController.rootNode = root
+				self.treeController.content = root
 			}
 			
 		}

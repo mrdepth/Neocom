@@ -38,7 +38,7 @@ class NCFittingTargetsViewController: UITableViewController, TreeControllerDeleg
 			DispatchQueue.main.async {
 				let root = TreeNode()
 				root.children = rows
-				self.treeController.rootNode = root
+				self.treeController.content = root
 				if let i = i {
 					let row = rows[i]
 					self.treeController.selectCell(for: row, animated: false, scrollPosition: .bottom)

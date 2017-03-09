@@ -27,7 +27,7 @@ class NCFittingFleetsViewController: UITableViewController, TreeControllerDelega
 		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
 		
 		let root = FetchedResultsNode(resultsController: controller, objectNode: NCFleetRow.self)
-		treeController.rootNode = root
+		treeController.content = root
 		
 	}
 	
@@ -75,7 +75,7 @@ class NCFittingFleetsViewController: UITableViewController, TreeControllerDelega
 	}
 	
 	func treeControllerDidUpdateContent(_ treeController: TreeController) {
-		tableView.backgroundView = (treeController.rootNode?.children?.count ?? 0) > 0 ? nil : NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
+		tableView.backgroundView = (treeController.content?.children?.count ?? 0) > 0 ? nil : NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
 	}
 	
 	//MARK: - Private
@@ -103,6 +103,6 @@ class NCFittingFleetsViewController: UITableViewController, TreeControllerDelega
 		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
 		
 		sections.append(NCLoadoutsSection(categoryID: .ship))
-		self.treeController.rootNode?.children = sections
+		self.treeController.content?.children = sections
 	}
 }

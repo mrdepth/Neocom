@@ -38,8 +38,8 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if self.treeController.rootNode == nil {
-			self.treeController.rootNode = TreeNode()
+		if self.treeController.content == nil {
+			self.treeController.content = TreeNode()
 			reload()
 		}
 		
@@ -50,7 +50,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		}
 		
 		let active = fleet?.active
-		if let node = treeController.rootNode?.children?.first(where: {($0 as? NCFleetMemberRow)?.pilot == active}) {
+		if let node = treeController.content?.children?.first(where: {($0 as? NCFleetMemberRow)?.pilot == active}) {
 			treeController.selectCell(for: node, animated: true, scrollPosition: .none)
 		}
 
@@ -62,7 +62,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		if let route = (node as? TreeRow)?.route {
 			route.perform(source: self, view: treeController.cell(for: node))
 			let active = fleet?.active
-			if let node = treeController.rootNode?.children?.first(where: {($0 as? NCFleetMemberRow)?.pilot == active}) {
+			if let node = treeController.content?.children?.first(where: {($0 as? NCFleetMemberRow)?.pilot == active}) {
 				treeController.selectCell(for: node, animated: true, scrollPosition: .none)
 			}
 		}
@@ -88,7 +88,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 
 		if fleet.pilots.count == 1 {
 			let row = NCActionRow(title: NSLocalizedString("Create Fleet", comment: "").uppercased(), route: route)
-			self.treeController.rootNode?.children = [row]
+			self.treeController.content?.children = [row]
 		}
 		else {
 			engine?.perform({
@@ -106,7 +106,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 				rows.append(NCActionRow(title: NSLocalizedString("Add Pilot", comment: "").uppercased(), route: route))
 				
 				DispatchQueue.main.async {
-					self.treeController.rootNode?.children = rows
+					self.treeController.content?.children = rows
 					if let node = active {
 						self.treeController.selectCell(for: node, animated: false, scrollPosition: .none)
 					}

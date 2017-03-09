@@ -131,8 +131,8 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if self.treeController.rootNode == nil {
-			self.treeController.rootNode = TreeNode()
+		if self.treeController.content == nil {
+			self.treeController.content = TreeNode()
 			reload()
 		}
 		
@@ -213,7 +213,7 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 			sections.append(DefaultTreeSection(nodeIdentifier: "Boosters", title: NSLocalizedString("Boosters", comment: "").uppercased(), children: boosters))
 			
 			DispatchQueue.main.async {
-				self.treeController.rootNode?.children = sections
+				self.treeController.content?.children = sections
 			}
 		}
 	}

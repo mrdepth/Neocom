@@ -36,10 +36,10 @@ class NCFittingModuleRow: TreeRow {
 		super.init(prototype: module?.isDummy == true ? Prototype.NCDefaultTableViewCell.compact : Prototype.NCFittingModuleTableViewCell.default)
 	}
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
-		guard let from = from as? NCFittingModuleRow else {return .dontReload}
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
+		guard let from = node as? NCFittingModuleRow else {return .none}
 		subtitle = from.subtitle
-		return modules.first?.isDummy == false ? .reload : .dontReload
+		return modules.first?.isDummy == false ? .reload : .none
 	}
 
 	var needsUpdate: Bool = true
@@ -189,8 +189,8 @@ class NCFittingModuleSection: TreeSection {
 		return (object as? NCFittingModuleSection)?.hashValue == hashValue
 	}
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
-		return (from as? NCFittingModuleSection)?.grouped != grouped ? .reload : .dontReload
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
+		return (node as? NCFittingModuleSection)?.grouped != grouped ? .reload : .none
 	}
 
 }
@@ -240,8 +240,8 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if self.treeController.rootNode == nil {
-			self.treeController.rootNode = TreeNode()
+		if self.treeController.content == nil {
+			self.treeController.content = TreeNode()
 			reload()
 		}
 	
@@ -382,7 +382,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 			}
 
 			DispatchQueue.main.async {
-				self.treeController.rootNode?.children = sections
+				self.treeController.content?.children = sections
 			}
 		}
 		update()

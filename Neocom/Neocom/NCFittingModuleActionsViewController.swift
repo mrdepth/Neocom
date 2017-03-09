@@ -379,13 +379,13 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 			}
 		}
 		
-		if treeController.rootNode == nil {
+		if treeController.content == nil {
 			let root = TreeNode()
 			root.children = sections
-			treeController.rootNode = root
+			treeController.content = root
 		}
 		else {
-			treeController.rootNode?.children = sections
+			treeController.content?.children = sections
 		}
 	}
 }

@@ -36,7 +36,7 @@ class NCFittingVariationsViewController: UITableViewController, TreeControllerDe
 		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "metaGroup.metaGroupID", cacheName: nil)
 		
 		let root = FetchedResultsNode(resultsController: controller, sectionNode: NCMetaGroupFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCTypeInfoNode.self)
-		treeController.rootNode = root
+		treeController.content = root
 	}
 
 	//MARK: - TreeControllerDelegate

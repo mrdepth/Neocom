@@ -104,8 +104,8 @@ class NCCustomCharactersSection: FetchedResultsNode<NCFitCharacter> {
 		}
 	}
 	
-	override func lazyLoad() {
-		super.lazyLoad()
+	override func loadChildren() {
+		super.loadChildren()
 		children?.append(NCActionRow(title: NSLocalizedString("Add Character", comment: "").uppercased()))
 	}
 	
@@ -126,7 +126,7 @@ class NCCustomCharacterRow: FetchedResultsObjectNode<NCFitCharacter>, TreeNodeRo
 	var route: Route?
 	var accessoryButtonRoute: Route?
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
 		return .reload
 	}
 	
@@ -192,7 +192,7 @@ class NCAccountCharacterRow: FetchedResultsObjectNode<NCAccount>, TreeNodeRoutab
 	var route: Route?
 	var accessoryButtonRoute: Route?
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
 		return .reload
 	}
 	

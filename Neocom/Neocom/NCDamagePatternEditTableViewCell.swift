@@ -52,7 +52,7 @@ class NCDamagePatternEditRow: TreeRow, UIPickerViewDataSource, UIPickerViewDeleg
 		return (object as? NCDamagePatternEditRow)?.hashValue == hashValue
 	}
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
 		return .reconfigure
 	}
 	

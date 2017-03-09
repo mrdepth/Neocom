@@ -98,8 +98,8 @@ class NCFleetMemberRow: TreeRow {
 
 	}
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
-		guard let from = from as? NCFleetMemberRow else {return .dontReload}
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
+		guard let from = node as? NCFleetMemberRow else {return .none}
 		return from.characterName != characterName ? .reload : .reconfigure
 	}
 	

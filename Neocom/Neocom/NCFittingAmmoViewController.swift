@@ -83,7 +83,7 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "metaGroup.metaGroupID", cacheName: nil)
 		
 		let root = FetchedResultsNode(resultsController: controller, sectionNode: NCMetaGroupFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCAmmoNode.self)
-		treeController.rootNode = root
+		treeController.content = root
 	}
 	
 	@IBAction func onClear(_ sender: Any) {

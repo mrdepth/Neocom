@@ -51,7 +51,7 @@ class NCFittingCharactersViewController: UITableViewController, TreeControllerDe
 
 		let root = TreeNode()
 		root.children = sections
-		self.treeController.rootNode = root
+		self.treeController.content = root
 		
 		self.pilot?.engine?.performBlockAndWait {
 //			if let url = self.pilot?.url {

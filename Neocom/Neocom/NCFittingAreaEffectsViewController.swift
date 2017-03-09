@@ -83,7 +83,7 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 			DispatchQueue.main.async {
 				let root = TreeNode()
 				root.children = sections
-				self.treeController.rootNode = root
+				self.treeController.content = root
 			}
 		}
 		

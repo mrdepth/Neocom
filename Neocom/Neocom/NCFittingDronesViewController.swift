@@ -26,8 +26,8 @@ class NCFittingDroneRow: TreeRow {
 		super.init(prototype: Prototype.NCFittingDroneTableViewCell.default)
 	}
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
-		subtitle = (from as? NCFittingDroneRow)?.subtitle
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
+		subtitle = (node as? NCFittingDroneRow)?.subtitle
 		return .reload
 	}
 
@@ -141,9 +141,9 @@ class NCFittingDroneSection: TreeSection {
 		return (object as? NCFittingModuleSection)?.hashValue == hashValue
 	}
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
-		let from = from as? NCFittingDroneSection
-		return (used != from?.used || limit != from?.limit) ? .reload : .dontReload
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
+		let from = node as? NCFittingDroneSection
+		return (used != from?.used || limit != from?.limit) ? .reload : .none
 	}
 
 }
@@ -188,8 +188,8 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if self.treeController.rootNode == nil {
-			self.treeController.rootNode = TreeNode()
+		if self.treeController.content == nil {
+			self.treeController.content = TreeNode()
 			reload()
 		}
 		
@@ -321,7 +321,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 			sections.append(DefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "drone"), title: NSLocalizedString("Add Drone", comment: ""), segue: "NCTypePickerViewController"))*/
 			
 			DispatchQueue.main.async {
-				self.treeController.rootNode?.children = rows
+				self.treeController.content?.children = rows
 			}
 		}
 		update()

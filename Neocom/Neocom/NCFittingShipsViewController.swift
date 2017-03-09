@@ -37,7 +37,7 @@ class NCLoadoutRow: TreeRow {
 		return (object as? NCLoadoutRow)?.hashValue == hashValue
 	}
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
 		return .reconfigure
 	}
 }
@@ -135,8 +135,8 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if treeController.rootNode == nil {
-			self.treeController.rootNode = TreeNode()
+		if treeController.content == nil {
+			self.treeController.content = TreeNode()
 			reload()
 		}
 	}
@@ -202,6 +202,6 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
 		
 		sections.append(NCLoadoutsSection(categoryID: .ship))
-		self.treeController.rootNode?.children = sections
+		self.treeController.content?.children = sections
 	}
 }

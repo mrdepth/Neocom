@@ -35,8 +35,8 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if self.treeController.rootNode == nil {
-			self.treeController.rootNode = TreeNode()
+		if self.treeController.content == nil {
+			self.treeController.content = TreeNode()
 			reload()
 		}
 		
@@ -62,7 +62,7 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 			sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [NCFittingMiscRow(ship: ship)]))
 
 			DispatchQueue.main.async {
-				self.treeController.rootNode?.children = sections
+				self.treeController.content?.children = sections
 			}
 		}
 	}

@@ -104,7 +104,7 @@ class NCFittingModuleDamageChartRow: TreeRow {
 		}
 	}
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
 		return .reconfigure
 	}
 

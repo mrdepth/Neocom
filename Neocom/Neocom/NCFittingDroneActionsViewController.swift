@@ -31,7 +31,7 @@ class NCFittingDroneInfoRow: NCChargeRow {
 		}
 	}
 	
-	override func move(from: TreeNode) -> TreeNodeReloading {
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
 		return .reload
 	}
 	
@@ -90,7 +90,7 @@ class NCFittingDroneCountRow: NCCountRow {
 		super.init(value: drones.count, range: Range(range))
 	}
 
-	override func move(from: TreeNode) -> TreeNodeReloading {
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
 		return .reload
 	}
 	
@@ -269,13 +269,13 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 			
 		}
 		
-		if treeController.rootNode == nil {
+		if treeController.content == nil {
 			let root = TreeNode()
 			root.children = sections
-			treeController.rootNode = root
+			treeController.content = root
 		}
 		else {
-			treeController.rootNode?.children = sections
+			treeController.content?.children = sections
 		}
 	}
 

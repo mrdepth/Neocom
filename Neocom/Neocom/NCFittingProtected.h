@@ -26,7 +26,7 @@
 #if DEBUG
 #define NCVerifyFittingContext(engine) ([engine verifyContext])
 #else
-#define NCVerifyFittingContext
+#define NCVerifyFittingContext(engine)
 #endif
 
 @interface NCFittingItem()

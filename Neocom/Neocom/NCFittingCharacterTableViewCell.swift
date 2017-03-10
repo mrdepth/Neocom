@@ -106,7 +106,7 @@ class NCCustomCharactersSection: FetchedResultsNode<NCFitCharacter> {
 	
 	override func loadChildren() {
 		super.loadChildren()
-		children?.append(NCActionRow(title: NSLocalizedString("Add Character", comment: "").uppercased()))
+		children.append(NCActionRow(title: NSLocalizedString("Add Character", comment: "").uppercased()))
 	}
 	
 	override var isExpandable: Bool {
@@ -125,7 +125,8 @@ class NCCustomCharactersSection: FetchedResultsNode<NCFitCharacter> {
 class NCCustomCharacterRow: FetchedResultsObjectNode<NCFitCharacter>, TreeNodeRoutable {
 	var route: Route?
 	var accessoryButtonRoute: Route?
-	
+	let url: URL?
+
 	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
 		return .reload
 	}
@@ -136,6 +137,7 @@ class NCCustomCharacterRow: FetchedResultsObjectNode<NCFitCharacter>, TreeNodeRo
 	}
 	
 	required init(object: NCFitCharacter) {
+		url = NCFittingCharacter.url(character: object)
 		super.init(object: object)
 		self.cellIdentifier = Prototype.NCFittingCharacterTableViewCell.default.reuseIdentifier
 	}
@@ -148,7 +150,13 @@ class NCCustomCharacterRow: FetchedResultsObjectNode<NCFitCharacter>, TreeNodeRo
 		cell.characterImageView.image = image
 		cell.characterNameLabel.text = object.name ?? NSLocalizedString("Unnamed", comment: "")
 		if image == nil {
-			let s = object.name?.substring(to: object.name!.startIndex) ?? NSLocalizedString("C", comment: "Custom character")
+			let s: String
+			if let name = object.name, !name.isEmpty {
+				s = name.substring(to: name.index(after: name.startIndex))
+			}
+			else {
+				s = "C"
+			}
 			image = UIImage.placeholder(text: s, size: cell.characterImageView.bounds.size)
 		}
 		cell.characterImageView.image = image
@@ -191,6 +199,7 @@ class NCAccountCharactersSection: FetchedResultsNode<NCAccount> {
 class NCAccountCharacterRow: FetchedResultsObjectNode<NCAccount>, TreeNodeRoutable {
 	var route: Route?
 	var accessoryButtonRoute: Route?
+	let url: URL?
 	
 	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
 		return .reload
@@ -202,6 +211,7 @@ class NCAccountCharacterRow: FetchedResultsObjectNode<NCAccount>, TreeNodeRoutab
 	}
 
 	required init(object: NCAccount) {
+		url = NCFittingCharacter.url(account: object)
 		super.init(object: object)
 		self.cellIdentifier = Prototype.NCFittingCharacterTableViewCell.default.reuseIdentifier
 	}

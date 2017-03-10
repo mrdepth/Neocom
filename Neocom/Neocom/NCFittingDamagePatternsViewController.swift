@@ -76,7 +76,7 @@ class NCCustomDamagePatternsSection: FetchedResultsNode<NCDamagePattern> {
 	
 	override func loadChildren() {
 		super.loadChildren()
-		children?.append(NCAddDamagePatternRow())
+		children.append(NCAddDamagePatternRow())
 	}
 	
 	override var isExpandable: Bool {
@@ -267,7 +267,7 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		if isEditing {
 			switch node {
 			case let node as NCCustomDamagePatternRow:
-				let editingNode = node.parent?.children?.first(where: {($0 as? NCCustomDamagePatternRow)?.isEditing == true}) as? NCCustomDamagePatternRow
+				let editingNode = node.parent?.children.first(where: {($0 as? NCCustomDamagePatternRow)?.isEditing == true}) as? NCCustomDamagePatternRow
 				
 				if let editingNode = editingNode, editingNode != node {
 					editingNode.isEditing = false
@@ -385,12 +385,12 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		pattern.name = name
 		try? managedObjectContext.save()
 		
-		let section = treeController.content?.children?.first(where: {$0 is NCCustomDamagePatternsSection})
+		let section = treeController.content?.children.first(where: {$0 is NCCustomDamagePatternsSection})
 		if section?.isExpanded == false {
 			section?.isExpanded = true
 		}
 		
-		if let node = section?.children?.first(where: {($0 as? NCCustomDamagePatternRow)?.object == pattern}) as? NCCustomDamagePatternRow {
+		if let node = section?.children.first(where: {($0 as? NCCustomDamagePatternRow)?.object == pattern}) as? NCCustomDamagePatternRow {
 			node.isEditing = true
 			treeController.reloadCells(for: [node])
 			if let indexPath = treeController.indexPath(for: node) {

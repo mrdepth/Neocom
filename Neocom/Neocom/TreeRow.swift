@@ -51,7 +51,7 @@ class DefaultTreeSection: TreeSection {
 		self.attributedTitle = attributedTitle
 		self.nodeIdentifier = nodeIdentifier
 		super.init(prototype: prototype)
-		self.children = children
+		self.children = children ?? []
 	}
 	
 	override func configure(cell: UITableViewCell) {

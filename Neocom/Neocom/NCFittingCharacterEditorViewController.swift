@@ -9,10 +9,11 @@
 import UIKit
 import CoreData
 
-class NCFittingCharacterEditorViewController: UITableViewController, TreeControllerDelegate {
+class NCFittingCharacterEditorViewController: UITableViewController, TreeControllerDelegate, UITextFieldDelegate {
 	@IBOutlet var treeController: TreeController!
 	
 	var character: NCFitCharacter?
+	var skills: [Int:Int]?
 	
 	lazy private var managedObjectContext: NSManagedObjectContext? = {
 		guard let parentContext = NCStorage.sharedStorage?.viewContext else {return nil}
@@ -24,11 +25,12 @@ class NCFittingCharacterEditorViewController: UITableViewController, TreeControl
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		
-		let skills = character?.skills
+		self.skills = character?.skills ?? [:]
+		let name = character?.name
+		let skills = self.skills
 
 		NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 			let request = NSFetchRequest<NSDictionary>(entityName: "InvType")
@@ -48,15 +50,21 @@ class NCFittingCharacterEditorViewController: UITableViewController, TreeControl
 			let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: "groupName", cacheName: nil)
 			try? controller.performFetch()
 			
-			let root = FetchedResultsNode(resultsController: controller, sectionNode: NCDefaultFetchedResultsSectionNode<NSDictionary>.self, objectNode: NCSkillEditRow.self)
+			var sections = [TreeNode]()
+			sections.append(NCTextFieldRow(prototype: Prototype.NCTextFieldTableViewCell.default, text: name, placeholder: NSLocalizedString("Character Name", comment: "")))
+			sections.append(FetchedResultsNode(resultsController: controller, sectionNode: NCDefaultFetchedResultsSectionNode<NSDictionary>.self, objectNode: NCSkillEditRow.self))
 			
-			for section in root.children ?? [] {
-				for row in section.children ?? [] {
+			let root = TreeNode()
+			root.children = sections
+			
+			for section in root.children.last?.children ?? [] {
+				for row in section.children {
 					guard let row = row as? NCSkillEditRow else {continue}
 					row.level = skills?[row.typeID] ?? 0
 				}
 			}
 
+			
 			DispatchQueue.main.async {
 				self.treeController.content = root
 			}
@@ -64,6 +72,36 @@ class NCFittingCharacterEditorViewController: UITableViewController, TreeControl
 		}
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default])
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		view.endEditing(true)
+		super.viewWillDisappear(animated)
+		for section in self.treeController.content?.children.last?.children ?? [] {
+			for row in section.children {
+				guard let row = row as? NCSkillEditRow else {continue}
+				skills?[row.typeID] = row.level
+			}
+		}
+		character?.skills = skills
+		if character?.managedObjectContext?.hasChanges == true {
+			try? character?.managedObjectContext?.save()
+		}
+	}
+	
+	@IBAction func onRename(_ sender: Any) {
+		view.endEditing(true)
+	}
+	
+	@IBAction func didEndEditing(_ sender: UITextField) {
+		character?.name = sender.text
+	}
+	
+	//MARK: - UITextFieldDelegate
+	
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		textField.endEditing(true)
+		return true
 	}
 	
 	//MARK: - TreeControllerDelegate

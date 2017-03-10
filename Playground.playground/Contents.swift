@@ -1,8 +1,8 @@
 //: Playground - noun: a place where people can play
 
 import UIKit
+import SystemConfiguration
 
-let s = "1234567890"
 
-let r = s.startIndex..<s.endIndex
-s.substring(with: r)
+var flags: SCNetworkReachabilityFlags = [SCNetworkReachabilityFlags.connectionAutomatic, SCNetworkReachabilityFlags.connectionOnDemand]
+

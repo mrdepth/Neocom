@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCFittingCharacterTableViewCell" id="JML-TC-ClW" customClass="NCFittingCharacterTableViewCell" customModule="Neocom" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCFittingCharacterTableViewCell" editingAccessoryType="disclosureIndicator" id="JML-TC-ClW" customClass="NCFittingCharacterTableViewCell" customModule="Neocom" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JML-TC-ClW" id="4vw-NW-qfU">

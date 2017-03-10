@@ -265,7 +265,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 		guard let pilot = fleet?.active else {return}
 		//guard let ship = ship else {return}
 		guard let typePickerViewController = typePickerViewController else {return}
-		let socket = (node.parent as? NCFittingModuleSection)?.grouped == true ? -1 : node.parent?.children?.index(of: item) ?? -1
+		let socket = (node.parent as? NCFittingModuleSection)?.grouped == true ? -1 : node.parent?.children.index(of: item) ?? -1
 		
 		let module = item.modules.first
 		if module?.isDummy == true {

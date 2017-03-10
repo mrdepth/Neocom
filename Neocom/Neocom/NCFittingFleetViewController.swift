@@ -50,7 +50,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		}
 		
 		let active = fleet?.active
-		if let node = treeController.content?.children?.first(where: {($0 as? NCFleetMemberRow)?.pilot == active}) {
+		if let node = treeController.content?.children.first(where: {($0 as? NCFleetMemberRow)?.pilot == active}) {
 			treeController.selectCell(for: node, animated: true, scrollPosition: .none)
 		}
 
@@ -62,7 +62,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		if let route = (node as? TreeRow)?.route {
 			route.perform(source: self, view: treeController.cell(for: node))
 			let active = fleet?.active
-			if let node = treeController.content?.children?.first(where: {($0 as? NCFleetMemberRow)?.pilot == active}) {
+			if let node = treeController.content?.children.first(where: {($0 as? NCFleetMemberRow)?.pilot == active}) {
 				treeController.selectCell(for: node, animated: true, scrollPosition: .none)
 			}
 		}

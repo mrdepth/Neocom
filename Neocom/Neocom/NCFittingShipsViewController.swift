@@ -90,7 +90,7 @@ class NCLoadoutsSection: TreeSection {
 						let section = groups[key]
 						let row = NCLoadoutRow(loadout: loadout, type: type)
 						if let section = section {
-							section.children?.append(row)
+							section.children.append(row)
 						}
 						else {
 							let section = DefaultTreeSection(nodeIdentifier: key, title: name.uppercased())
@@ -104,7 +104,7 @@ class NCLoadoutsSection: TreeSection {
 			for (_, group) in groups.sorted(by: { $0.key < $1.key}) {
 				group.children = (group.children as? [NCLoadoutRow])?.sorted(by: { (a, b) -> Bool in
 					return a.typeName == b.typeName ? a.loadoutName < b.loadoutName : a.typeName < b.typeName
-				})
+				}) ?? []
 				sections.append(group)
 			}
 			

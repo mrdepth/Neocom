@@ -24,7 +24,6 @@ class NCFittingCharactersViewController: UITableViewController, TreeControllerDe
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
 		navigationItem.rightBarButtonItem = editButtonItem
 		
 		self.clearsSelectionOnViewWillAppear = false
@@ -52,15 +51,15 @@ class NCFittingCharactersViewController: UITableViewController, TreeControllerDe
 		let root = TreeNode()
 		root.children = sections
 		self.treeController.content = root
-		
-		self.pilot?.engine?.performBlockAndWait {
-//			if let url = self.pilot?.url {
-//				let selected = accountsRows?.first (where: { $0.url == url }) ?? levelsRows.first (where: { $0.url == url })
-//				
-//				if let selected = selected {
-//					self.treeController.selectCell(for: selected, animated: false, scrollPosition: .bottom)
-//				}
-//			}
+
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		if transitionCoordinator?.viewController(forKey: .to) == self.presentingViewController {
+			if let context = managedObjectContext?.parent, context.hasChanges {
+				try? context.save()
+			}
 		}
 	}
 	
@@ -70,13 +69,44 @@ class NCFittingCharactersViewController: UITableViewController, TreeControllerDe
 		if node is NCActionRow {
 			guard let context = managedObjectContext else {return}
 			let character = NCFitCharacter(entity: NSEntityDescription.entity(forEntityName: "FitCharacter", in: context)!, insertInto: context)
-			
+			character.uuid = UUID().uuidString
 			Router.Fitting.CharacterEditor(character: character).perform(source: self, view: treeController.cell(for: node))
-			
-//			try? context.save()
+		}
+		else if let node = node as? NCCustomCharacterRow {
+			if isEditing {
+				Router.Fitting.CharacterEditor(character: node.object).perform(source: self, view: treeController.cell(for: node))
+			}
+			else if let url = node.url {
+				if let context = managedObjectContext?.parent, context.hasChanges {
+					try? context.save()
+				}
+
+				self.completionHandler(self, url)
+			}
+		}
+		else if let node = node as? NCPredefinedCharacterRow, let url = node.url {
+			self.completionHandler(self, url)
+		}
+		else if let node = node as? NCAccountCharacterRow, let url = node.url {
+			self.completionHandler(self, url)
 		}
 //		if let node = node as? NCFittingCharacterRow, let url = node.url {
 //			self.completionHandler(self, url)
 //		}
+	}
+	
+	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
+		if let node = node as? NCCustomCharacterRow {
+			guard let context = managedObjectContext else {return nil}
+			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { (_, _) in
+				context.delete(node.object)
+				if context.hasChanges {
+					try? context.save()
+				}
+			})]
+		}
+		else {
+			return nil
+		}
 	}
 }

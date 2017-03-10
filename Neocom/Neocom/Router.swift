@@ -22,7 +22,7 @@ class Route: Hashable {
 	let storyboard: UIStoryboard?
 	let viewController: UIViewController?
 	
-	private var presentedViewController: UIViewController?
+	private weak var presentedViewController: UIViewController?
 	
 	init(kind: RouteKind? = nil, storyboard: UIStoryboard? = nil,  identifier: String? = nil, viewController: UIViewController? = nil) {
 		self.kind = kind
@@ -51,18 +51,20 @@ class Route: Hashable {
 			source.present(destination, animated: true, completion: nil)
 			
 		case .adaptive:
-			if source.presentationController is NCSheetPresentationController || source.navigationController?.presentationController is NCSheetPresentationController {
+			let presentedController = source.navigationController ?? source.parent?.navigationController ?? source.parent ?? source
+			if presentedController.modalPresentationStyle == .custom && presentedController.presentationController is NCSheetPresentationController {
 				let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
 				source.present(destination, animated: true, completion: nil)
 				destination.topViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
 				presentedViewController = destination
 			}
-			else if let navigationController = source.navigationController {
-				navigationController.pushViewController(destination, animated: true)
+			else {
+				source.navigationController?.pushViewController(destination, animated: true)
 			}
 			
 		case .sheet:
 			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
+			destination.modalPresentationStyle = .custom
 			presentedViewController = destination
 			
 			let presentationController = NCSheetPresentationController(presentedViewController: destination, presenting: source)

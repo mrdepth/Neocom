@@ -102,7 +102,6 @@ extension NCAccount {
 	class func accounts(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCAccount> {
 		return NCFetchedCollection<NCAccount>(entityName: "Account", predicateFormat: "uuid == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
-
 }
 
 extension NCSetting {
@@ -147,5 +146,11 @@ extension NCSkillPlan {
 	
 	func remove(skill: NCSkillPlanSkill) {
 		skill.managedObjectContext?.delete(skill)
+	}
+}
+
+extension NCFitCharacter {
+	class func fitCharacters(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCFitCharacter> {
+		return NCFetchedCollection<NCFitCharacter>(entityName: "FitCharacter", predicateFormat: "uuid == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }

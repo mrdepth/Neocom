@@ -75,7 +75,7 @@ class NCFittingFleetsViewController: UITableViewController, TreeControllerDelega
 	}
 	
 	func treeControllerDidUpdateContent(_ treeController: TreeController) {
-		tableView.backgroundView = (treeController.content?.children?.count ?? 0) > 0 ? nil : NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
+		tableView.backgroundView = (treeController.content?.children.count ?? 0) > 0 ? nil : NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
 	}
 	
 	//MARK: - Private

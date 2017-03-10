@@ -482,6 +482,18 @@ extension NCFittingCharacter {
 
 			}
 		}
+		else if let item = queryItems.first(where: {$0.name == "characterUUID"}), let uuid = item.value {
+			NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
+				
+				if let character = NCFitCharacter.fitCharacters(managedObjectContext: managedObjectContext)[uuid] {
+					self.setSkills(from: character, completionHandler: completionHandler)
+				}
+				else {
+					completionHandler?(false)
+				}
+				
+			}
+		}
 		else if let item = queryItems.first(where: {$0.name == "level"}), let level = Int(item.value ?? ""){
 			setSkills(level: level, completionHandler: completionHandler)
 		}
@@ -515,10 +527,29 @@ extension NCFittingCharacter {
 				}
 
 			default:
-				break
+				DispatchQueue.main.async {
+					completionHandler?(false)
+				}
 			}
 		}
 	}
+	
+	@nonobjc func setSkills(from character: NCFitCharacter, completionHandler: ((Bool) -> Void)? = nil) {
+		guard let engine = engine else {
+			completionHandler?(false)
+			return
+		}
+		let url = NCFittingCharacter.url(character: character)
+		let skills = character.skills ?? [:]
+		engine.perform {
+			self.skills.set(levels: skills)
+			self.characterName = url?.absoluteString ?? ""
+			DispatchQueue.main.async {
+				completionHandler?(true)
+			}
+		}
+	}
+
 	
 	@nonobjc func setSkills(level: Int, completionHandler: ((Bool) -> Void)? = nil) {
 		guard let engine = engine else {

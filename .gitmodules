@@ -13,3 +13,6 @@
 [submodule "ThirdParty/TreeController"]
 	path = ThirdParty/TreeController
 	url = https://github.com/mrdepth/TreeController.git
+[submodule "ThirdParty/CloudData"]
+	path = ThirdParty/CloudData
+	url = https://github.com/mrdepth/CloudData.git

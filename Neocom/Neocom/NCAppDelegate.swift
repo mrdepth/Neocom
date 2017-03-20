@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import CloudData
 
 
 @UIApplicationMain
@@ -18,7 +19,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-
+		NSPersistentStoreCoordinator.registerStoreClass(CloudStore.self, forStoreType: CloudStoreType)
 //		let directory = URL.init(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]).appendingPathComponent("com.shimanski.eveuniverse.NCCache")
 //		let url = directory.appendingPathComponent("store.sqlite")
 //		try? FileManager.default.removeItem(at: url)

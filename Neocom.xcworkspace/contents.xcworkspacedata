@@ -17,6 +17,9 @@
       location = "group:ThirdParty/dgmpp/dgmpp.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:ThirdParty/CloudData/CloudData/CloudData.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Playground.playground">
    </FileRef>
 </Workspace>

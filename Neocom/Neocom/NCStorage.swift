@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import EVEAPI
+import CloudData
 
 class NCStorage: NSObject {
 	private(set) lazy var managedObjectModel: NSManagedObjectModel = {
@@ -24,14 +25,27 @@ class NCStorage: NSObject {
 	
 	private(set) lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
 		var persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-		let directory = URL.init(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]).appendingPathComponent("com.shimanski.eveuniverse.NCStorage")
+		let directory = URL.init(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0])
 		try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
-		let url = directory.appendingPathComponent("store.sqlite")
+		var url = directory.appendingPathComponent("store.sqlite")
 		
 		for i in 0...1 {
 			do {
+				try persistentStoreCoordinator.addPersistentStore(ofType: CloudStoreType,
+				                                                  configurationName: "Cloud",
+				                                                  at: url,
+				                                                  options: [CloudStoreOptions.recordZoneKey: "Neocom"])
+				break
+			} catch {
+				try? FileManager.default.removeItem(at: url)
+			}
+		}
+		
+		url = directory.appendingPathComponent("local.sqlite")
+		for i in 0...1 {
+			do {
 				try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
-				                                                  configurationName: nil,
+				                                                  configurationName: "Local",
 				                                                  at: url,
 				                                                  options: nil)
 				break

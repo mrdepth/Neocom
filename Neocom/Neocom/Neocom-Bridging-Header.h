@@ -4,3 +4,4 @@
 
 #import "NCTableView.h"
 #import "NCFittingEngine.h"
+#import <zlib.h>

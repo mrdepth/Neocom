@@ -11,6 +11,85 @@ import EVEAPI
 import CoreData
 import CloudData
 
+extension Data {
+	var compressed: Data? {
+		var data = self
+		var chunk = Data()
+		
+		chunk.resetBytes(in: 0..<4096)
+		
+		var strm = z_stream_s()
+		strm.zalloc = nil
+		strm.zfree = nil
+		strm.opaque = nil
+		
+		let strmp: z_streamp = withUnsafeMutablePointer(to: &strm) { ptr in
+			return ptr
+		}
+		
+		guard deflateInit_(strmp, Z_DEFAULT_COMPRESSION, ZLIB_VERSION, Int32(MemoryLayout<z_stream_s>.size)) == Z_OK else {return nil}
+		defer {deflateEnd(strmp)}
+		var compressed = Data()
+		
+		data.withUnsafeMutableBytes {strm.next_in = $0}
+		strm.avail_in = uInt(data.count)
+		
+		repeat {
+			chunk.withUnsafeMutableBytes { strm.next_out = $0 }
+			strm.avail_out = uInt(chunk.count)
+			
+			let res = deflate(strmp, Z_FINISH)
+			guard res == Z_OK || res == Z_STREAM_END else {return nil}
+			compressed.append(chunk.subdata(in: 0..<chunk.count - Int(strm.avail_out)))
+		} while strm.avail_out == 0
+		
+		return compressed
+	}
+	
+	var uncompressed: Data? {
+		var data = self
+		var chunk = Data()
+		
+		chunk.resetBytes(in: 0..<4096)
+		
+		var strm = z_stream_s()
+		strm.zalloc = nil
+		strm.zfree = nil
+		strm.opaque = nil
+		
+		let strmp: z_streamp = withUnsafeMutablePointer(to: &strm) { ptr in
+			return ptr
+		}
+
+		guard inflateInit_(strmp, ZLIB_VERSION, Int32(MemoryLayout<z_stream_s>.size)) == Z_OK else {return nil}
+		defer {inflateEnd(strmp)}
+		var uncompressed = Data()
+		
+		data.withUnsafeMutableBytes {strm.next_in = $0}
+		strm.avail_in = uInt(data.count)
+		
+		repeat {
+			chunk.withUnsafeMutableBytes { strm.next_out = $0 }
+			strm.avail_out = uInt(chunk.count)
+			let res = inflate(strmp, Z_NO_FLUSH)
+			guard res == Z_OK || res == Z_STREAM_END else {return nil}
+			uncompressed.append(chunk.subdata(in: 0..<chunk.count - Int(strm.avail_out)))
+		} while strm.avail_out == 0
+		
+		return uncompressed
+	}
+}
+
+func test() {
+	var data = Data()
+	for _ in 0..<1024 {
+		data.append("1234567890".data(using: .utf8)!)
+	}
+	let compressed = data.compressed!
+	let uncompressed = compressed.uncompressed!
+	let s = String(data: uncompressed, encoding: .utf8)
+	print ("\(s)")
+}
 
 @UIApplicationMain
 class NCAppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +98,8 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+		test()
+		
 		NSPersistentStoreCoordinator.registerStoreClass(CloudStore.self, forStoreType: CloudStoreType)
 //		let directory = URL.init(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]).appendingPathComponent("com.shimanski.eveuniverse.NCCache")
 //		let url = directory.appendingPathComponent("store.sqlite")

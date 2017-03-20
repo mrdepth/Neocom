@@ -1,8 +1,11 @@
 //: Playground - noun: a place where people can play
 
 import UIKit
-import SystemConfiguration
 
+let set = NSMutableSet()
 
-var flags: SCNetworkReachabilityFlags = [SCNetworkReachabilityFlags.connectionAutomatic, SCNetworkReachabilityFlags.connectionOnDemand]
+set.add(1)
+set.add(2)
+set.add(3)
 
+let a = set as? AnySequence<Any>

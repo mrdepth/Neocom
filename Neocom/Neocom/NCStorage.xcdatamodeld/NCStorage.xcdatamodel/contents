@@ -108,6 +108,9 @@
         <memberEntity name="ShoppingItem"/>
         <memberEntity name="ShoppingList"/>
         <memberEntity name="SkillPlan"/>
+        <memberEntity name="Fleet"/>
+        <memberEntity name="Scope"/>
+        <memberEntity name="SkillPlanSkill"/>
     </configuration>
     <configuration name="Local">
         <memberEntity name="Setting"/>

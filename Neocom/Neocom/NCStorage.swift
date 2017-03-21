@@ -34,7 +34,8 @@ class NCStorage: NSObject {
 				try persistentStoreCoordinator.addPersistentStore(ofType: CloudStoreType,
 				                                                  configurationName: "Cloud",
 				                                                  at: url,
-				                                                  options: [CloudStoreOptions.recordZoneKey: "Neocom"])
+				                                                  options: [CloudStoreOptions.recordZoneKey: "Neocom",
+				                                                            CloudStoreOptions.binaryDataCompressionLevel: BinaryDataCompressionLevel.default])
 				break
 			} catch {
 				try? FileManager.default.removeItem(at: url)

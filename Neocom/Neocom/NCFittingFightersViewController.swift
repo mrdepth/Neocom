@@ -33,7 +33,8 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		tableView.register([Prototype.NCActionTableViewCell.default,
-		                    Prototype.NCFittingDroneTableViewCell.default
+		                    Prototype.NCFittingDroneTableViewCell.default,
+		                    Prototype.NCHeaderTableViewCell.default
 			])
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
@@ -68,7 +69,7 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 		else if node is NCActionRow {
 			guard let pilot = fleet?.active else {return}
 			guard let typePickerViewController = typePickerViewController else {return}
-			let category = NCDBDgmppItemCategory.category(categoryID: .drone, subcategory:  NCDBCategoryID.drone.rawValue)
+			let category = NCDBDgmppItemCategory.category(categoryID: .drone, subcategory:  NCDBCategoryID.fighter.rawValue)
 			
 			typePickerViewController.category = category
 			typePickerViewController.completionHandler = { [weak typePickerViewController] (_, type) in
@@ -116,7 +117,7 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 		engine?.perform {
 			guard let ship = self.fleet?.active?.ship else {return}
 			
-			var squadrons = [Int: [Int: [Bool: [NCFittingDrone]]]]()
+			/*var squadrons = [Int: [Int: [Bool: [NCFittingDrone]]]]()
 			for drone in ship.drones.filter({$0.squadron == .none} ) {
 				var a = squadrons[drone.squadronTag] ?? [:]
 				var b = a[drone.typeID] ?? [:]
@@ -136,51 +137,60 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 				}
 			}
 			
-			rows.append(NCActionRow(title: NSLocalizedString("Add Drone", comment: "").uppercased()))
-			/*typealias TypeID = Int
+			rows.append(NCActionRow(title: NSLocalizedString("Add Drone", comment: "").uppercased()))*/
+			
+			
+			
+			
+			
+			typealias TypeID = Int
 			typealias Squadron = [Int: [TypeID: [Bool: [NCFittingDrone]]]]
 			var squadrons = [NCFittingFighterSquadron: Squadron]()
 			for squadron in [NCFittingFighterSquadron.none, NCFittingFighterSquadron.heavy, NCFittingFighterSquadron.light, NCFittingFighterSquadron.support] {
-			if ship.droneSquadronLimit(squadron) > 0 {
-			squadrons[squadron] = [:]
-			}
+				if ship.droneSquadronLimit(squadron) > 0 {
+					squadrons[squadron] = [:]
+				}
 			}
 			
 			for drone in ship.drones {
-			var squadron = squadrons[drone.squadron] ?? [:]
-			var types = squadron[drone.squadronTag] ?? [:]
-			var drones = types[drone.typeID] ?? [:]
-			var array = drones[drone.isActive] ?? []
-			array.append(drone)
-			drones[drone.isActive] = array
-			types[drone.typeID] = drones
-			squadron[drone.squadronTag] = types
-			squadrons[drone.squadron] = squadron
+				var squadron = squadrons[drone.squadron] ?? [:]
+				var types = squadron[drone.squadronTag] ?? [:]
+				var drones = types[drone.typeID] ?? [:]
+				var array = drones[drone.isActive] ?? []
+				array.append(drone)
+				drones[drone.isActive] = array
+				types[drone.typeID] = drones
+				squadron[drone.squadronTag] = types
+				squadrons[drone.squadron] = squadron
 			}
 			
 			var sections = [TreeNode]()
 			for (type, squadron) in squadrons.sorted(by: { (a, b) -> Bool in return a.key.rawValue < b.key.rawValue}) {
-			var rows = [NCFittingDroneRow]()
-			for (_, types) in squadron.sorted(by: { (a, b) -> Bool in return a.key < b.key }) {
-			for (_, drones) in types.sorted(by: { (a, b) -> Bool in return a.value.first?.value.first?.typeName ?? "" < b.value.first?.value.first?.typeName ?? "" }) {
-			for (_, array) in drones.sorted(by: { (a, b) -> Bool in return a.key }) {
-			rows.append(NCFittingDroneRow(drones: array))
-			}
-			}
-			}
-			if type == .none {
-			sections.append(contentsOf: rows as [TreeNode])
-			}
-			else {
-			let section = NCFittingDroneSection(squadron: type, ship: ship, children: rows)
-			sections.append(section)
-			}
+				var rows = [NCFittingDroneRow]()
+				for (_, types) in squadron.sorted(by: { (a, b) -> Bool in return a.key < b.key }) {
+					for (_, drones) in types.sorted(by: { (a, b) -> Bool in return a.value.first?.value.first?.typeName ?? "" < b.value.first?.value.first?.typeName ?? "" }) {
+						for (_, array) in drones.sorted(by: { (a, b) -> Bool in return a.key }) {
+							rows.append(NCFittingDroneRow(drones: array))
+						}
+					}
+				}
+				if type == .none {
+					sections.append(contentsOf: rows as [TreeNode])
+				}
+				else {
+					let section = NCFittingDroneSection(squadron: type, ship: ship, children: rows)
+					sections.append(section)
+				}
 			}
 			
-			sections.append(DefaultTreeRow(cellIdentifier: "Cell", image: #imageLiteral(resourceName: "drone"), title: NSLocalizedString("Add Drone", comment: ""), segue: "NCTypePickerViewController"))*/
+			sections.append(NCActionRow(title: NSLocalizedString("Add Drone", comment: "").uppercased()))
+			
+			
+			
+			
 			
 			DispatchQueue.main.async {
-				self.treeController.content?.children = rows
+				self.treeController.content?.children = sections
 			}
 		}
 		update()

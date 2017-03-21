@@ -196,6 +196,12 @@
 	return ship->getRigSize();
 }
 
+- (NSInteger) raceID {
+	NCVerifyFittingContext(self.engine);
+	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	return ship->getRaceID();
+}
+
 - (double) capacity {
 	NCVerifyFittingContext(self.engine);
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);

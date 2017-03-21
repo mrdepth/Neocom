@@ -80,6 +80,11 @@ class NCDatabase {
 	private(set) lazy var invMetaGroups: NCFetchedCollection<NCDBInvMetaGroup> = {
 		return NCDBInvMetaGroup.invMetaGroups(managedObjectContext: self.viewContext)
 	}()
+	
+	private(set) lazy var chrRaces: NCFetchedCollection<NCDBChrRace> = {
+		return NCDBChrRace.chrRaces(managedObjectContext: self.viewContext)
+	}()
+
 }
 
 extension NCDBInvType {
@@ -179,5 +184,11 @@ extension NCDBDgmppItemCategory {
 extension NCDBInvMetaGroup {
 	class func invMetaGroups(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBInvMetaGroup> {
 		return NCFetchedCollection<NCDBInvMetaGroup>(entityName: "InvMetaGroup", predicateFormat: "metaGroupID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+}
+
+extension NCDBChrRace {
+	class func chrRaces(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBChrRace> {
+		return NCFetchedCollection<NCDBChrRace>(entityName: "ChrRace", predicateFormat: "raceID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }

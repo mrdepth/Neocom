@@ -126,10 +126,10 @@ class NCFittingDroneSection: TreeSection {
 		guard let cell = cell as? NCHeaderTableViewCell else {return}
 		cell.iconView?.image = #imageLiteral(resourceName: "drone")
 		if squadron == .none {
-			cell.titleLabel?.text = squadron.title
+			cell.titleLabel?.text = squadron.title?.uppercased()
 		}
 		else {
-			cell.titleLabel?.attributedText = (squadron.title ?? "") + "used/limit" * [NSForegroundColorAttributeName: UIColor.caption]
+			cell.titleLabel?.attributedText = (squadron.title?.uppercased() ?? "") + " \(used)/\(limit)" * [NSForegroundColorAttributeName: UIColor.caption]
 		}
 	}
 	
@@ -138,7 +138,7 @@ class NCFittingDroneSection: TreeSection {
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCFittingModuleSection)?.hashValue == hashValue
+		return (object as? NCFittingDroneSection)?.hashValue == hashValue
 	}
 	
 	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
@@ -220,8 +220,10 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 					let tag = (ship.drones.flatMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
 					let identifier = UUID().uuidString
 					
-					for _ in 0..<5 {
-						guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {break}
+					guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {return}
+					engine.assign(identifier: identifier, for: drone)
+					for _ in 1..<drone.squadronSize {
+						guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {continue}
 						engine.assign(identifier: identifier, for: drone)
 					}
 				}

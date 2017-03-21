@@ -39,6 +39,7 @@
 - (NSInteger) usedHardpoints:(NCFittingModuleHardpoint) hardpoint;
 
 @property (readonly) NSInteger rigSize;
+@property (readonly) NSInteger raceID;
 
 @property (readonly) double capacity;
 @property (readonly) double oreHoldCapacity;

@@ -29,9 +29,15 @@ class NCFittingEditorViewController: NCPageViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		let pilot = fleet?.active
+		var useFighters = false
+		engine?.performBlockAndWait {
+			useFighters = (pilot?.ship?.totalFighterLaunchTubes ?? 0) > 0
+		}
+		
 		viewControllers = [
 			storyboard!.instantiateViewController(withIdentifier: "NCFittingModulesViewController"),
-			storyboard!.instantiateViewController(withIdentifier: "NCFittingDronesViewController"),
+			storyboard!.instantiateViewController(withIdentifier: useFighters ? "NCFittingFightersViewController" : "NCFittingDronesViewController"),
 			storyboard!.instantiateViewController(withIdentifier: "NCFittingImplantsViewController"),
 			storyboard!.instantiateViewController(withIdentifier: "NCFittingFleetViewController"),
 			storyboard!.instantiateViewController(withIdentifier: "NCFittingStatsViewController"),

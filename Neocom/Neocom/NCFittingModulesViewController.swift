@@ -263,6 +263,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let item = node as? NCFittingModuleRow else {return}
 		guard let pilot = fleet?.active else {return}
+		
 		//guard let ship = ship else {return}
 		guard let typePickerViewController = typePickerViewController else {return}
 		let socket = (node.parent as? NCFittingModuleSection)?.grouped == true ? -1 : node.parent?.children.index(of: item) ?? -1
@@ -277,10 +278,20 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 				category = NCDBDgmppItemCategory.category(categoryID: .med, subcategory: NCDBCategoryID.module.rawValue)
 			case .low:
 				category = NCDBDgmppItemCategory.category(categoryID: .low, subcategory: NCDBCategoryID.module.rawValue)
-//			case .rig:
-//				category = NCDBDgmppItemCategory.category(categoryID: .rig, subcategory: ship.rigSize)
-			//case .subsystem:
-			//	category = NCDBDgmppItemCategory.category(categoryID: .subsystem, subcategory: ship.rigSize)
+			case .rig:
+				var rigSize: Int?
+				self.engine?.performBlockAndWait {
+					rigSize = pilot.ship?.rigSize
+				}
+				guard rigSize != nil else {return}
+				category = NCDBDgmppItemCategory.category(categoryID: .rig, subcategory: rigSize!)
+			case .subsystem:
+				var raceID: Int?
+				self.engine?.performBlockAndWait {
+					raceID = pilot.ship?.raceID
+				}
+				guard raceID != nil, let race = NCDatabase.sharedDatabase?.chrRaces[raceID!] else {return}
+				category = NCDBDgmppItemCategory.category(categoryID: .subsystem, subcategory: nil, race: race)
 			default:
 				return
 			}
@@ -288,7 +299,8 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 			typePickerViewController.completionHandler = { [weak typePickerViewController] (_, type) in
 				let typeID = Int(type.typeID)
 				self.engine?.perform {
-					_ = pilot.ship?.addModule(typeID: typeID, socket: socket)
+					guard let ship = pilot.ship else {return}
+					_ = ship.addModule(typeID: typeID, socket: socket)
 				}
 				typePickerViewController?.dismiss(animated: true)
 			}

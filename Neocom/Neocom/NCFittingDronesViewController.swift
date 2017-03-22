@@ -118,10 +118,6 @@ class NCFittingDroneSection: TreeSection {
 		self.children = children
 	}
 	
-	override var isExpandable: Bool {
-		return false
-	}
-	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCHeaderTableViewCell else {return}
 		cell.iconView?.image = #imageLiteral(resourceName: "drone")
@@ -219,11 +215,9 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 					guard let ship = pilot.ship else {return}
 					let tag = (ship.drones.flatMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
 					let identifier = UUID().uuidString
-					
-					guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {return}
-					engine.assign(identifier: identifier, for: drone)
-					for _ in 1..<drone.squadronSize {
-						guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {continue}
+
+					for _ in 0..<5 {
+						guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {break}
 						engine.assign(identifier: identifier, for: drone)
 					}
 				}

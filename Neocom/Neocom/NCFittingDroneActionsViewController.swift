@@ -45,24 +45,40 @@ class NCFittingDroneInfoRow: NCChargeRow {
 }
 
 class NCFittingDroneStateRow: TreeRow {
-	let drone: NCFittingDrone
+	let drones: [NCFittingDrone]
 	let isActive: Bool
-	init(drone: NCFittingDrone) {
-		self.drone = drone
-		isActive = drone.isActive
+	init(drones: [NCFittingDrone]) {
+		self.drones = drones
+		isActive = drones.first?.isActive ?? false
 		super.init(prototype: Prototype.NCFittingDroneStateTableViewCell.default)
 		
 	}
+	
+	var actionHandler: NCActionHandler?
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCFittingDroneStateTableViewCell else {return}
 		cell.object = self
 		cell.segmentedControl?.selectedSegmentIndex = isActive ? 1 : 0
+		
+		let segmentedControl = cell.segmentedControl!
+		
+		self.actionHandler = NCActionHandler(segmentedControl, for: .valueChanged) { [weak self, weak segmentedControl] _ in
+			guard let sender = segmentedControl else {return}
+			guard let drones = self?.drones else {return}
+			let isActive = sender.selectedSegmentIndex == 1
+			drones.first?.engine?.perform {
+				for drone in drones {
+					drone.isActive = isActive
+				}
+			}
+		}
+
 	}
 	
 	
 	override var hashValue: Int {
-		return drone.hashValue
+		return drones.first?.hashValue ?? 0
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
@@ -264,7 +280,7 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 				}
 			}
 			
-			sections.append(DefaultTreeSection(nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingDroneStateRow(drone: drone)]))
+			sections.append(DefaultTreeSection(nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingDroneStateRow(drones: drones)]))
 			sections.append(DefaultTreeSection(nodeIdentifier: "Count", title: NSLocalizedString("Count", comment: "").uppercased(), children: [NCFittingDroneCountRow(drones: drones, ship: ship, handler: handler)]))
 			
 		}

@@ -24,15 +24,18 @@ class NCFittingModuleRow: TreeRow {
 	let state: NCFittingModuleState
 	let isEnabled: Bool
 	let hasTarget: Bool
+	let hasStates: Bool
 	
 	init(modules: [NCFittingModule]) {
 		self.modules = modules
 		let module = modules.first
 		self.charge = module?.charge
-		self.slot = module?.slot ?? .unknown
+		let slot = module?.slot ?? .unknown
+		self.slot = slot
 		self.state = module?.state ?? .unknown
 		self.isEnabled = module?.isEnabled ?? true
 		self.hasTarget = module?.target != nil
+		self.hasStates = slot != .rig && slot != .service && slot != .subsystem
 		super.init(prototype: module?.isDummy == true ? Prototype.NCDefaultTableViewCell.compact : Prototype.NCFittingModuleTableViewCell.default)
 	}
 	
@@ -66,6 +69,7 @@ class NCFittingModuleRow: TreeRow {
 			}
 			cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 			cell.stateView?.image = state.image
+			cell.stateView?.isHidden = !hasStates
 			cell.subtitleLabel?.attributedText = subtitle
 			cell.targetIconView.image = hasTarget ? #imageLiteral(resourceName: "targets") : nil
 			

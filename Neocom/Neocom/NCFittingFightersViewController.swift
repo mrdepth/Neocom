@@ -77,11 +77,14 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 				let typeID = Int(type.typeID)
 				engine.perform {
 					guard let ship = pilot.ship else {return}
-					let tag = (ship.drones.flatMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
+//					let tag = (ship.drones.flatMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
+					let tag = -1
 					let identifier = UUID().uuidString
 					
-					for _ in 0..<5 {
-						guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {break}
+					guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {return}
+					engine.assign(identifier: identifier, for: drone)
+					for _ in 1..<drone.squadronSize {
+						guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {continue}
 						engine.assign(identifier: identifier, for: drone)
 					}
 				}
@@ -97,10 +100,9 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 	private func update() {
 		engine?.perform {
 			guard let ship = self.fleet?.active?.ship else {return}
-			
-			let droneBay = (ship.droneBayUsed, ship.totalDroneBay)
+			let droneBay = (ship.fighterHangarUsed, ship.totalFighterHangar)
 			let droneBandwidth = (ship.droneBandwidthUsed, ship.totalDroneBandwidth)
-			let droneSquadron = (ship.droneSquadronUsed(.none), ship.droneSquadronLimit(.none))
+			let droneSquadron = (ship.fighterLaunchTubesUsed, ship.totalFighterLaunchTubes)
 			
 			DispatchQueue.main.async {
 				self.droneBayLabel.value = droneBay.0

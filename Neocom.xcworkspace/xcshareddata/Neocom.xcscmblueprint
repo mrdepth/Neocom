@@ -7,6 +7,7 @@
     "CE59D664C95604646A8898B717A20F0AFC1A609F+++C9B12BA" : 9223372036854775807,
     "DA631F8342550455B5A2680DD706737CD895F617+++D72D75E" : 9223372036854775807,
     "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0+++7A13655" : 9223372036854775807,
+    "CAF619736A3A2301C2960592037A61156FDAC9EF+++620E525" : 9223372036854775807,
     "CBD3C72D1EC244FEC895CDE83582355773BC1B4F+++3DE7941" : 9223372036854775807,
     "0CFE9E88F22EAA7CB8181BCF8804EC4A2A59AFE8+++DD082C7" : 9223372036854775807,
     "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195+++E85DA45" : 9223372036854775807,
@@ -23,6 +24,7 @@
     "CE59D664C95604646A8898B717A20F0AFC1A609F+++C9B12BA" : "EVEUniverse\/ThirdParty\/dgmpp\/",
     "DA631F8342550455B5A2680DD706737CD895F617+++D72D75E" : "EVEUniverse\/ThirdParty\/CloudData\/",
     "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0+++7A13655" : "OSXNeocom\/ThirdParty\/EVEOnlineAPI\/",
+    "CAF619736A3A2301C2960592037A61156FDAC9EF+++620E525" : "EVEUniverse\/ThirdParty\/clrconvert\/",
     "CBD3C72D1EC244FEC895CDE83582355773BC1B4F+++3DE7941" : "EVEUniverse\/",
     "0CFE9E88F22EAA7CB8181BCF8804EC4A2A59AFE8+++DD082C7" : "EVEUniverse\/ThirdParty\/TreeController\/",
     "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195+++E85DA45" : "EVEUniverse\/ThirdParty\/tools\/",
@@ -82,6 +84,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/flurry\/flurry-ios-sdk.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BDDB80E32D86B8E2E7D04724D0619FC68FCBB3C1+++B67B998"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrdepth\/clrconvert.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CAF619736A3A2301C2960592037A61156FDAC9EF+++620E525"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrdepth\/Neocom.git",

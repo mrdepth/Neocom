@@ -16,3 +16,6 @@
 [submodule "ThirdParty/CloudData"]
 	path = ThirdParty/CloudData
 	url = https://github.com/mrdepth/CloudData.git
+[submodule "ThirdParty/clrconvert"]
+	path = ThirdParty/clrconvert
+	url = https://github.com/mrdepth/clrconvert.git

@@ -47,6 +47,14 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 		}
 	}
 	
+	@IBAction func onReloadFactor(_ sender: UISwitch) {
+		guard let engine = engine else {return}
+		let factor = sender.isOn
+		engine.perform {
+			engine.factorReload = factor
+		}
+	}
+	
 	//MARK: - Private
 	
 	private func reload() {

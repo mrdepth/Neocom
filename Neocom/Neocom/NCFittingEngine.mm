@@ -134,4 +134,19 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 }
 #endif
 
+- (void) setFactorReload:(BOOL)factorReload {
+	_factorReload = factorReload;
+	_engine->beginUpdates();
+	for (NCFittingCharacter* pilot in self.gang.pilots) {
+		auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(pilot.ship.item);
+		if (ship) {
+			ship->getCapacitorSimulator()->setReload(factorReload);
+		}
+		for (NCFittingModule* module in pilot.ship.modules) {
+			module.factorReload = factorReload;
+		}
+	}
+	_engine->commitUpdates();
+}
+
 @end

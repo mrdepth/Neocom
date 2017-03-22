@@ -24,6 +24,7 @@ extern _Nonnull NSNotificationName const NCFittingEngineDidUpdateNotification;
 @interface NCFittingEngine : NSObject
 @property (readonly, nonnull) NCFittingGang* gang;
 @property (nonatomic, strong, nullable) NCFittingArea* area;
+@property (nonatomic, assign) BOOL factorReload;
 
 - (nonnull instancetype) init NS_DESIGNATED_INITIALIZER;
 - (void) performBlock:(nonnull void(^)()) block;

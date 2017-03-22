@@ -97,7 +97,9 @@
 	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
 	auto module = ship->addModule(static_cast<dgmpp::TypeID>(typeID), forced, static_cast<int>(socket));
 	[self.engine updateWithItem: self];
-	return module ? (NCFittingModule*) [NCFittingItem item:module withEngine:self.engine] : nil;
+	NCFittingModule* m = module ? (NCFittingModule*) [NCFittingItem item:module withEngine:self.engine] : nil;
+	m.factorReload = self.engine.factorReload;
+	return m;
 }
 
 - (nullable NCFittingModule*) replaceModule:(nonnull NCFittingModule*) module withTypeID:(NSInteger) typeID {
@@ -106,8 +108,10 @@
 	auto result = ship->replaceModule(std::dynamic_pointer_cast<dgmpp::Module>(module.item), static_cast<dgmpp::TypeID>(typeID));
 	NSString* identifier = [self.engine identifierForItem:module];
 	module = result ? (NCFittingModule*) [NCFittingItem item:result withEngine:self.engine] : nil;
-	if (module)
+	if (module) {
+		module.factorReload = self.engine.factorReload;
 		[self.engine assignIdentifier:identifier forItem:module];
+	}
 	[self.engine updateWithItem: self];
 	return module;
 }

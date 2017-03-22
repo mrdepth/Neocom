@@ -8,7 +8,7 @@
 
 import UIKit
 
-@IBDesignable
+//@IBDesignable
 class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 	@IBInspectable var spacing: CGFloat = 15
 	@IBInspectable var segments: String? {

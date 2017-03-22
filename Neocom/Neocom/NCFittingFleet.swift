@@ -13,7 +13,9 @@ class NCFittingFleet {
 	var pilots = [(NCFittingCharacter, NSManagedObjectID?)]()
 	var active: NCFittingCharacter? {
 		didSet {
-			NotificationCenter.default.post(name: .NCFittingEngineDidUpdate, object: engine)
+			DispatchQueue.main.async {
+				NotificationCenter.default.post(name: .NCFittingEngineDidUpdate, object: self.engine)
+			}
 		}
 	}
 	var fleetID: NSManagedObjectID?
@@ -68,6 +70,17 @@ class NCFittingFleet {
 		pilot.ship = NCFittingShip(typeID: typeID)
 		pilots.append((pilot, nil))
 		active = pilots.first?.0
+	}
+	
+	func remove(pilot: NCFittingCharacter) {
+		if active == pilot {
+			active = pilots.first(where: { $0.0 != pilot })?.0
+		}
+		if let i = pilots.index(where: { $0.0 == pilot }) {
+			pilots.remove(at: i)
+		}
+		engine.gang.removePilot(pilot)
+		
 	}
 	
 	var configuration: NCFleetConfiguration {

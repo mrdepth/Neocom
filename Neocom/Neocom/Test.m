@@ -7,7 +7,7 @@
 //
 
 #import "Test.h"
-//#import "Neocom-Swift.h"
+#import "Neocom-Swift.h"
 
 @implementation Test
 

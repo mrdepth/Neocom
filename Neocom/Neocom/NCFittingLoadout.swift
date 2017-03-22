@@ -292,6 +292,21 @@ extension NCFittingFighterSquadron {
 	}
 }
 
+extension NCFittingGangBooster {
+	var title: String? {
+		switch self {
+		case .none:
+			return NSLocalizedString("None", comment: "")
+		case .squad:
+			return NSLocalizedString("Squad", comment: "")
+		case .wing:
+			return NSLocalizedString("Wing", comment: "")
+		case .fleet:
+			return NSLocalizedString("Fleet", comment: "")
+		}
+	}
+}
+
 extension NCFittingAccuracy {
 	var color: UIColor {
 		switch self {

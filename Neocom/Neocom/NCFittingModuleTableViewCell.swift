@@ -22,6 +22,7 @@ class NCFittingModuleStateTableViewCell: NCTableViewCell {
 
 typealias NCFittingDroneTableViewCell = NCFittingModuleTableViewCell
 typealias NCFittingDroneStateTableViewCell = NCFittingModuleStateTableViewCell
+typealias NCFittingBoosterTableViewCell = NCFittingModuleStateTableViewCell
 
 extension Prototype {
 	struct NCFittingModuleTableViewCell {
@@ -35,5 +36,6 @@ extension Prototype {
 
 	typealias NCFittingDroneTableViewCell = Prototype.NCFittingModuleTableViewCell
 	typealias NCFittingDroneStateTableViewCell = Prototype.NCFittingModuleStateTableViewCell
+	typealias NCFittingBoosterTableViewCell = Prototype.NCFittingModuleStateTableViewCell
 
 }

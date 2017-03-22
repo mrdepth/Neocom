@@ -67,7 +67,12 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 			}
 		}
 		else if let node = node as? NCFleetMemberRow {
-			fleet?.active = node.pilot
+			if fleet?.active == node.pilot {
+				parent?.performSegue(withIdentifier: "NCFittingActionsViewController", sender: treeController.cell(for: node))
+			}
+			else {
+				fleet?.active = node.pilot
+			}
 		}
 	}
 	

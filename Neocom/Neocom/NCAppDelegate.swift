@@ -20,6 +20,9 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		
+		application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert], categories: nil))
+		application.registerForRemoteNotifications()
+
 		NSPersistentStoreCoordinator.registerStoreClass(CloudStore.self, forStoreType: CloudStoreType)
 //		let directory = URL.init(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]).appendingPathComponent("com.shimanski.eveuniverse.NCCache")
 //		let url = directory.appendingPathComponent("store.sqlite")
@@ -101,6 +104,11 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		else {
 			return false
 		}
+	}
+	
+	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+		CloudStore.handleRemoteNotification(userInfo: userInfo)
+		completionHandler(.newData)
 	}
 	
 	//MARK: Private

@@ -13,7 +13,6 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 	@IBOutlet weak var tableView: UITableView!
 	
 	@IBOutlet weak var droneBayLabel: NCResourceLabel!
-	@IBOutlet weak var droneBandwidthLabel: NCResourceLabel!
 	@IBOutlet weak var dronesCountLabel: UILabel!
 	
 	var engine: NCFittingEngine? {
@@ -41,7 +40,6 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
 		
-		droneBandwidthLabel.unit = .megaBitsPerSecond
 		droneBayLabel.unit = .cubicMeter
 	}
 	
@@ -101,14 +99,11 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 		engine?.perform {
 			guard let ship = self.fleet?.active?.ship else {return}
 			let droneBay = (ship.fighterHangarUsed, ship.totalFighterHangar)
-			let droneBandwidth = (ship.droneBandwidthUsed, ship.totalDroneBandwidth)
 			let droneSquadron = (ship.fighterLaunchTubesUsed, ship.totalFighterLaunchTubes)
 			
 			DispatchQueue.main.async {
 				self.droneBayLabel.value = droneBay.0
 				self.droneBayLabel.maximumValue = droneBay.1
-				self.droneBandwidthLabel.value = droneBandwidth.0
-				self.droneBandwidthLabel.maximumValue = droneBandwidth.1
 				self.dronesCountLabel.text = "\(droneSquadron.0)/\(droneSquadron.1)"
 				self.dronesCountLabel.textColor = droneSquadron.0 > droneSquadron.1 ? .red : .white
 			}

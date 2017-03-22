@@ -86,6 +86,55 @@ class NCLoadoutNameRow: NCTextFieldRow {
 	}
 }
 
+class NCFittingBoosterRow: TreeRow {
+	let pilot: NCFittingCharacter
+	var booster: NCFittingGangBooster
+	
+	init(pilot: NCFittingCharacter) {
+		self.pilot = pilot
+		self.booster = pilot.booster
+		super.init(prototype: Prototype.NCFittingBoosterTableViewCell.default)
+		
+	}
+	
+	var actionHandler: NCActionHandler?
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCFittingBoosterTableViewCell else {return}
+		cell.object = self
+
+		let segmentedControl = cell.segmentedControl!
+
+		segmentedControl.removeAllSegments()
+		for i in 0..<4 {
+			segmentedControl.insertSegment(withTitle: (NCFittingGangBooster(rawValue: i) ?? .none).title, at: i, animated: false)
+		}
+
+		segmentedControl.selectedSegmentIndex = booster.rawValue
+		
+		
+		self.actionHandler = NCActionHandler(segmentedControl, for: .valueChanged) { [weak self, weak segmentedControl] _ in
+			guard let strongSelf = self else {return}
+			guard let sender = segmentedControl else {return}
+			strongSelf.booster = NCFittingGangBooster(rawValue: sender.selectedSegmentIndex) ?? .none
+			let pilot = strongSelf.pilot
+			
+			pilot.engine?.perform {
+				pilot.booster = strongSelf.booster
+			}
+		}
+	}
+	
+	
+	override var hashValue: Int {
+		return pilot.hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCFittingBoosterRow)?.hashValue == hashValue
+	}
+}
+
 class NCFittingActionsViewController: UITableViewController, TreeControllerDelegate, UITextFieldDelegate {
 	@IBOutlet var treeController: TreeController!
 	var fleet: NCFittingFleet?
@@ -100,7 +149,8 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		                    Prototype.NCDamageTypeTableViewCell.compact,
 		                    Prototype.NCActionTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact,
-		                    Prototype.NCFittingCharacterTableViewCell.default
+		                    Prototype.NCFittingCharacterTableViewCell.default,
+							Prototype.NCFittingBoosterTableViewCell.default
 		                    ])
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
@@ -120,6 +170,15 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 			}
 		}
 		
+	}
+	
+	@IBAction func onClear(_ sender: Any) {
+		guard let fleet = fleet else {return}
+		guard let pilot = fleet.active else {return}
+		pilot.engine?.perform {
+			fleet.remove(pilot: pilot)
+		}
+		dismiss(animated: true, completion: nil)
 	}
 	
 	//MARK: - TreeControllerDelegate
@@ -171,7 +230,8 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	//MARK: - Private
 	
 	private func reload() {
-		guard let pilot = fleet?.active else {return}
+		guard let fleet = fleet else {return}
+		guard let pilot = fleet.active else {return}
 		guard let engine = pilot.engine else {return}
 		
 		var sections = [TreeNode]()
@@ -212,6 +272,13 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 						self?.fleet?.active?.engine?.area = typeID != nil ? NCFittingArea(typeID: typeID!) : nil
 					}
 				}
+			}
+			
+			if fleet.pilots.count > 1 {
+				sections.append(DefaultTreeSection(nodeIdentifier: "Booster", title: NSLocalizedString("Booster", comment: "").uppercased(), children: [NCFittingBoosterRow(pilot: pilot)]))
+			}
+			else {
+				self.navigationItem.rightBarButtonItem = nil
 			}
 			
 			if let area = engine.area, let type = invTypes?[area.typeID] {

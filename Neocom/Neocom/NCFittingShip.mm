@@ -535,6 +535,20 @@
 	return result;
 }
 
+//MARK: Mining
+
+- (double) minerYield {
+	NCVerifyFittingContext(self.engine);
+	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	return ship->getMinerYield();;
+}
+
+- (double) droneYield {
+	NCVerifyFittingContext(self.engine);
+	auto ship = std::dynamic_pointer_cast<dgmpp::Ship>(self.item);
+	return ship->getDroneYield();
+}
+
 //MARK: Mobility
 
 - (double) alignTime {

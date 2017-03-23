@@ -18,6 +18,7 @@
 }
 */
 
+
 - (void) setTableBackgroundColor:(UIColor *)tableBackgroundColor {
 	_tableBackgroundColor = tableBackgroundColor;
 	[super setBackgroundColor:tableBackgroundColor];

@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
+import CloudData
 
 fileprivate class NCSkillQueueRow: NCTreeRow {
 	let skill: NCSkill
@@ -87,7 +88,7 @@ fileprivate class NCSkillPlanRow: NCTreeRow {
 }
 
 fileprivate class NCSkillQueueSection: NCTreeSection {
-	var observer: NSObjectProtocol?
+	var observer: NotificationObserver?
 	let character: NCCharacter
 	
 	init(character: NCCharacter) {
@@ -120,7 +121,7 @@ fileprivate class NCSkillQueueSection: NCTreeSection {
 		
 		super.init(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "SkillQueue", title: title(character.skillQueue), children: children)
 
-		observer = NotificationCenter.default.addObserver(forName: .NCCharacterChanged, object: character, queue: .main) {[weak self] note in
+		observer = NotificationCenter.default.addNotificationObserver(forName: .NCCharacterChanged, object: character, queue: .main) {[weak self] note in
 			guard let strongSelf = self else {return}
 			
 			let to = rows(character.skillQueue)

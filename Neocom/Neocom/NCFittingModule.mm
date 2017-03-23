@@ -258,6 +258,12 @@
 	return module->isEnabled();
 }
 
+- (double) miningYield {
+	NCVerifyFittingContext(self.engine);
+	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
+	return module->getMiningYield();
+}
+
 - (double) angularVelocityWithTargetSignature:(double) targetSignature {
 	return [self angularVelocityWithTargetSignature:targetSignature hitChance:0.75];
 }

@@ -11,12 +11,11 @@ import EVEAPI
 import CoreData
 import CloudData
 
-
 @UIApplicationMain
 class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
-
+	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudData
 
 class NCFittingFleetViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet weak var treeController: TreeController!
@@ -19,7 +20,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		return (parent as? NCFittingEditorViewController)?.fleet
 	}
 	
-	private var observer: NSObjectProtocol?
+	private var observer: NotificationObserver?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -44,7 +45,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		}
 		
 		if observer == nil {
-			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}

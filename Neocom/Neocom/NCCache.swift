@@ -47,6 +47,10 @@ class NCCache: NSObject {
 	override init() {
 	}
 	
+	deinit {
+		NotificationCenter.default.removeObserver(self)
+	}
+	
 	func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
 		let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
 		context.persistentStoreCoordinator = persistentStoreCoordinator

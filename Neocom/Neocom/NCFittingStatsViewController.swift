@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudData
 
 class NCFittingStatsViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet weak var treeController: TreeController!
@@ -19,7 +20,7 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 		return (parent as? NCFittingEditorViewController)?.fleet
 	}
 	
-	private var observer: NSObjectProtocol?
+	private var observer: NotificationObserver?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -41,7 +42,7 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 		}
 		
 		if observer == nil {
-			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}
@@ -53,6 +54,13 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 		engine.perform {
 			engine.factorReload = factor
 		}
+	}
+	
+	//MARK: - TreeControllerDelegate
+	
+	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		guard let route = (node as? TreeNodeRoutable)?.route else {return}
+		route.perform(source: self, view: treeController.cell(for: node))
 	}
 	
 	//MARK: - Private
@@ -67,6 +75,9 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 			sections.append(DefaultTreeSection(nodeIdentifier: "Capacitor", title: NSLocalizedString("Capacitor", comment: "").uppercased(), children: [NCFittingCapacitorRow(ship: ship)]))
 			sections.append(DefaultTreeSection(nodeIdentifier: "Tank", title: NSLocalizedString("Recharge Rates (HP/s, EHP/s)", comment: "").uppercased(), children: [NCTankRow(ship: ship)]))
 			sections.append(DefaultTreeSection(nodeIdentifier: "Firepower", title: NSLocalizedString("Firepower", comment: "").uppercased(), children: [NCFirepowerRow(ship: ship)]))
+			if ship.minerYield > 0 || ship.droneYield > 0 {
+				sections.append(DefaultTreeSection(nodeIdentifier: "Mining", title: NSLocalizedString("Mining", comment: "").uppercased(), children: [NCMiningYieldRow(ship: ship)]))
+			}
 			sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [NCFittingMiscRow(ship: ship)]))
 
 			DispatchQueue.main.async {

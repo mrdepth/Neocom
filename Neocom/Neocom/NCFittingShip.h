@@ -83,6 +83,10 @@
 @property (readonly) NCFittingDamage droneDPS;
 @property (readonly) NCFittingDamage droneVolley;
 - (NCFittingDamage) droneDPSWithTarget:(NCFittingHostileTarget) target NS_SWIFT_NAME(droneDPS(target:));
+//MARK: Mining
+@property (readonly) double minerYield;
+@property (readonly) double droneYield;
+
 
 //MARK: Mobility
 @property (readonly) double alignTime;

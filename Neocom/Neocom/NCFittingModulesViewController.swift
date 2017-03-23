@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CloudData
 
 class NCFittingModuleRow: TreeRow {
 	lazy var type: NCDBInvType? = {
@@ -224,7 +225,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 	
 	var grouping = [NCFittingModuleSlot: Bool]()
 	
-	private var observer: NSObjectProtocol?
+	private var observer: NotificationObserver?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -250,7 +251,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 		}
 	
 		if observer == nil {
-			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}

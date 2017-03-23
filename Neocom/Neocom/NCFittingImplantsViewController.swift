@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudData
 
 class NCImplantRow: TreeRow {
 	lazy var type: NCDBInvType? = {
@@ -114,7 +115,7 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 	}
 
 	
-	private var observer: NSObjectProtocol?
+	private var observer: NotificationObserver?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -137,7 +138,7 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 		}
 		
 		if observer == nil {
-			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}

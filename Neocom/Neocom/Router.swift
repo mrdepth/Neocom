@@ -76,9 +76,17 @@ class Route: Hashable {
 	}
 	
 	func unwind() {
-		if (presentedViewController as? UINavigationController)?.dismiss(animated: true, completion: nil) == nil {
-			_ = presentedViewController?.navigationController?.popViewController(animated: true)
+		guard let presentedViewController = presentedViewController else {return}
+
+		if let i = presentedViewController.navigationController?.viewControllers.index(of: presentedViewController), i > 0, let prev = presentedViewController.navigationController?.viewControllers[i-1] {
+			_ = presentedViewController.navigationController?.popToViewController(prev, animated: true)
 		}
+		else {
+			presentedViewController.dismiss(animated: true, completion: nil)
+		}
+		//if (presentedViewController as? UINavigationController)?.dismiss(animated: true, completion: nil) == nil {
+		//	_ = presentedViewController?.navigationController?.popViewController(animated: true)
+		//}
 	}
 	
 	func prepareForSegue(source: UIViewController, destination: UIViewController) {
@@ -93,7 +101,7 @@ class Route: Hashable {
 	}
 }
 
-struct Router {
+enum Router {
 	
 	class Custom: Route {
 		let handler: (UIViewController, UIView?) -> Void
@@ -107,7 +115,7 @@ struct Router {
 		}
 	}
 	
-	struct Database {
+	enum Database {
 		
 		class TypeInfo: Route {
 			let type: NCDBInvType?
@@ -166,7 +174,7 @@ struct Router {
 		}
 	}
 	
-	struct Fitting {
+	enum Fitting {
 		
 		class Editor: Route {
 			let fleet: NCFittingFleet

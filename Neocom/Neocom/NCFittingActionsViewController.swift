@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import CloudData
 
 /*class NCFittingTypeRow: TreeRow {
 	let type: NCDBInvType
@@ -139,7 +139,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	@IBOutlet var treeController: TreeController!
 	var fleet: NCFittingFleet?
 	
-	private var observer: NSObjectProtocol?
+	private var observer: NotificationObserver?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -165,14 +165,14 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		navigationController?.preferredContentSize = size
 		
 		if let pilot = fleet?.active, observer == nil {
-			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: pilot.engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: pilot.engine, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}
 		
 	}
 	
-	@IBAction func onClear(_ sender: Any) {
+	@IBAction func onDelete(_ sender: Any) {
 		guard let fleet = fleet else {return}
 		guard let pilot = fleet.active else {return}
 		pilot.engine?.perform {

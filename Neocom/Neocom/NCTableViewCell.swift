@@ -23,6 +23,7 @@ class NCTableViewCell: UITableViewCell {
 		super.awakeFromNib()
 		self.selectedBackgroundView = UIView(frame: self.bounds)
 		self.selectedBackgroundView?.backgroundColor = UIColor.separator
+		tintColor = .caption
 	}
 }
 

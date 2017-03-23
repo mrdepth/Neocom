@@ -8,12 +8,13 @@
 
 import UIKit
 import CoreData
+import CloudData
 
 class NCFittingEditorViewController: NCPageViewController {
 	var fleet: NCFittingFleet?
 	var engine: NCFittingEngine?
 	
-	private var observer: NSObjectProtocol?
+	private var observer: NotificationObserver?
 	private var isModified: Bool = false {
 		didSet {
 			guard oldValue != isModified else {return}
@@ -29,10 +30,19 @@ class NCFittingEditorViewController: NCPageViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		let titleLabel = UILabel(frame: CGRect(origin: .zero, size: .zero))
+		titleLabel.numberOfLines = 2
+		titleLabel.textAlignment = .center
+		titleLabel.textColor = .white
+		titleLabel.minimumScaleFactor = 0.5
+		titleLabel.font = navigationController?.navigationBar.titleTextAttributes?[NSFontAttributeName] as? UIFont ?? UIFont.systemFont(ofSize: 17)
+		navigationItem.titleView = titleLabel
+		
 		let pilot = fleet?.active
 		var useFighters = false
 		engine?.performBlockAndWait {
-			useFighters = (pilot?.ship?.totalFighterLaunchTubes ?? 0) > 0
+			guard let ship = pilot?.ship else {return}
+			useFighters = ship.totalFighterLaunchTubes > 0
 		}
 		
 		viewControllers = [
@@ -43,8 +53,11 @@ class NCFittingEditorViewController: NCPageViewController {
 			storyboard!.instantiateViewController(withIdentifier: "NCFittingStatsViewController"),
 		]
 		
-		observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+		updateTitle()
+		
+		observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
 			self?.isModified = true
+			self?.updateTitle()
 		}
 
 	}
@@ -137,4 +150,21 @@ class NCFittingEditorViewController: NCPageViewController {
 		}
 	}
 	
+	
+	
+	private func updateTitle() {
+		guard let titleLabel = navigationItem.titleView as? UILabel else {return}
+		let pilot = fleet?.active
+		var shipName: String = ""
+		var typeName: String = ""
+		
+		engine?.performBlockAndWait {
+			guard let ship = pilot?.ship else {return}
+			shipName = ship.name
+			typeName = NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.typeName ?? ""
+		}
+		titleLabel.attributedText = typeName * [:] + (!shipName.isEmpty ? "\n" + shipName * [NSFontAttributeName:UIFont.preferredFont(forTextStyle: .footnote), NSForegroundColorAttributeName: UIColor.lightText] : "" * [:])
+		titleLabel.sizeToFit()
+	}
+
 }

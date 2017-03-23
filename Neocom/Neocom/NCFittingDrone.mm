@@ -151,4 +151,10 @@
 	return drone->getVelocity();
 }
 
+- (double) miningYield {
+	NCVerifyFittingContext(self.engine);
+	auto drone = std::dynamic_pointer_cast<dgmpp::Drone>(self.item);
+	return drone->getMiningYield();
+}
+
 @end

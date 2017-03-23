@@ -207,6 +207,10 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 		NotificationCenter.default.addObserver(self, selector: #selector(currentAccountChanged(_:)), name: NSNotification.Name.NCCurrentAccountChanged, object: nil)
 	}
 	
+	deinit {
+		NotificationCenter.default.removeObserver(self)
+	}
+
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		let rect = CGRect(x: 0, y: self.topLayoutGuide.length, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y, self.headerMinHeight))

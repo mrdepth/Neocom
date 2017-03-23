@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudData
 
 class NCFittingModuleStateRow: TreeRow {
 	let modules: [NCFittingModule]
@@ -161,6 +162,14 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 	}
 
 	lazy var hullType: NCDBDgmppHullType? = {
+		guard let module = self.modules?.first else {return nil}
+		var targetTypeID: Int?
+		module.engine?.performBlockAndWait {
+			targetTypeID = module.target?.typeID
+		}
+		if let targetTypeID = targetTypeID, let hullType = NCDatabase.sharedDatabase?.invTypes[targetTypeID]?.hullType {
+			return hullType
+		}
 		guard let ship = self.modules?.first?.owner as? NCFittingShip else {return nil}
 		return NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.hullType
 	}()
@@ -174,10 +183,12 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 	
 	@IBOutlet var treeController: TreeController!
 	
-	private var observer: NSObjectProtocol?
+	private var observer: NotificationObserver?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+
 		
 		tableView.register([Prototype.NCFittingModuleStateTableViewCell.default,
 		                    Prototype.NCDamageTypeTableViewCell.compact,
@@ -203,7 +214,7 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 		navigationController?.preferredContentSize = size
 
 		if let module = modules?.first, observer == nil {
-			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: module.engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: module.engine, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}

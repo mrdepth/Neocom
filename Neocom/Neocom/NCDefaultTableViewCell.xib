@@ -24,49 +24,39 @@
                             <constraint firstAttribute="width" constant="32" id="gcM-ea-Mxa"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f3s-z8-H0k">
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="PW6-fD-80f">
                         <rect key="frame" x="55" y="4" width="250" height="32"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="qfT-yI-Vk5">
-                                <rect key="frame" x="0.0" y="0.0" width="250" height="16"/>
-                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
-                                <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zsf-gg-kMK">
-                                <rect key="frame" x="0.0" y="16" width="250" height="16"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="qfT-yI-Vk5">
+                                <rect key="frame" x="0.0" y="0.0" width="250" height="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zsf-gg-kMK">
+                                <rect key="frame" x="0.0" y="17" width="250" height="15"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="Zsf-gg-kMK" firstAttribute="top" secondItem="qfT-yI-Vk5" secondAttribute="bottom" id="3OX-IV-Fpi"/>
-                            <constraint firstAttribute="bottom" secondItem="Zsf-gg-kMK" secondAttribute="bottom" id="5ni-cL-hrs"/>
-                            <constraint firstItem="qfT-yI-Vk5" firstAttribute="leading" secondItem="f3s-z8-H0k" secondAttribute="leading" id="L4R-Nr-EFg"/>
-                            <constraint firstAttribute="trailing" secondItem="Zsf-gg-kMK" secondAttribute="trailing" id="QHP-Fn-Pxw"/>
-                            <constraint firstItem="Zsf-gg-kMK" firstAttribute="leading" secondItem="f3s-z8-H0k" secondAttribute="leading" id="UKk-Wd-JLk"/>
-                            <constraint firstAttribute="trailing" secondItem="qfT-yI-Vk5" secondAttribute="trailing" id="bkH-ha-XvI"/>
-                            <constraint firstItem="qfT-yI-Vk5" firstAttribute="top" secondItem="f3s-z8-H0k" secondAttribute="top" id="tfo-gD-jWR"/>
-                        </constraints>
-                    </view>
+                    </stackView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="ges-dc-9sd" firstAttribute="centerY" secondItem="cGI-2F-kHq" secondAttribute="centerY" id="2nh-eb-p3X"/>
+                    <constraint firstItem="PW6-fD-80f" firstAttribute="leading" secondItem="ges-dc-9sd" secondAttribute="trailing" constant="8" id="8Xv-uz-Btf"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ges-dc-9sd" secondAttribute="bottom" constant="4" id="BPH-L7-Fzc"/>
-                    <constraint firstItem="f3s-z8-H0k" firstAttribute="centerY" secondItem="cGI-2F-kHq" secondAttribute="centerY" id="MaN-8K-Y9Y"/>
-                    <constraint firstItem="f3s-z8-H0k" firstAttribute="leading" secondItem="ges-dc-9sd" secondAttribute="trailing" constant="8" id="N2W-fz-5mE"/>
-                    <constraint firstAttribute="bottom" secondItem="f3s-z8-H0k" secondAttribute="bottom" priority="250" constant="4" id="S6w-kL-Rx5"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="PW6-fD-80f" secondAttribute="bottom" constant="4" id="Hv7-5x-6xO"/>
                     <constraint firstItem="ges-dc-9sd" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cGI-2F-kHq" secondAttribute="top" constant="4" id="TA3-J7-Lzx"/>
                     <constraint firstItem="ges-dc-9sd" firstAttribute="leading" secondItem="cGI-2F-kHq" secondAttribute="leading" constant="15" id="TEu-t5-Kab"/>
-                    <constraint firstAttribute="trailing" secondItem="f3s-z8-H0k" secondAttribute="trailing" priority="999" id="XCj-HV-qCi"/>
-                    <constraint firstItem="f3s-z8-H0k" firstAttribute="top" secondItem="cGI-2F-kHq" secondAttribute="top" priority="250" constant="4" id="pff-sX-mXj"/>
+                    <constraint firstItem="PW6-fD-80f" firstAttribute="centerY" secondItem="cGI-2F-kHq" secondAttribute="centerY" id="c0d-PU-oQf"/>
+                    <constraint firstItem="PW6-fD-80f" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cGI-2F-kHq" secondAttribute="top" constant="4" id="uWm-eA-9nz"/>
+                    <constraint firstAttribute="trailing" secondItem="PW6-fD-80f" secondAttribute="trailing" priority="999" id="zsd-zM-EOg"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="f3s-z8-H0k" secondAttribute="trailing" constant="15" id="GE8-gn-War"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="PW6-fD-80f" secondAttribute="trailing" constant="15" id="oex-cV-jz1"/>
             </constraints>
             <connections>
                 <outlet property="iconView" destination="ges-dc-9sd" id="c2o-5E-uZr"/>

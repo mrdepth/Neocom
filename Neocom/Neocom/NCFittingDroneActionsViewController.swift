@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreData
+import CloudData
 
 class NCFittingDroneInfoRow: NCChargeRow {
 	let count: Int
@@ -135,7 +137,7 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 	
 	@IBOutlet var treeController: TreeController!
 	
-	private var observer: NSObjectProtocol?
+	private var observer: NotificationObserver?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -160,7 +162,7 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 		navigationController?.preferredContentSize = size
 		
 		if let drone = drones?.first, observer == nil {
-			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: drone.engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: drone.engine, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}

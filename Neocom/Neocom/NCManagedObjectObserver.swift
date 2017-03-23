@@ -8,18 +8,19 @@
 
 import Foundation
 import CoreData
+import CloudData
 
 class NCManagedObjectObserver {
 	typealias Handler =  (_ updated: Set<NSManagedObject>?, _ deleted:Set<NSManagedObject>?) -> Void
 	let handler: Handler
 	var objects = Set<NSManagedObject>()
-	var observer: NSObjectProtocol?
+	var observer: NotificationObserver?
 	
 	init(managedObjects: [NSManagedObject]? = nil, handler: @escaping Handler) {
 		self.handler = handler
 		self.objects = Set(managedObjects ?? [])
 		
-		observer = NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: .main) { [weak self] (note) in
+		observer = NotificationCenter.default.addNotificationObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: .main) { [weak self] (note) in
 			guard let strongSelf = self else {return}
 			
 			

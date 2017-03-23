@@ -37,6 +37,15 @@ class NCResistancesRow: TreeRow {
 	init(ship: NCFittingShip) {
 		self.ship = ship
 		super.init(prototype: Prototype.NCResistancesTableViewCell.default)
+		route = Router.Fitting.DamagePatterns {[weak self] (controller, damagePattern) in
+			self?.route?.unwind()
+			ship.engine?.perform {
+				guard let gang = ship.owner?.owner as? NCFittingGang else {return}
+				for pilot in gang.pilots {
+					pilot.ship?.damagePattern = damagePattern
+				}
+			}
+		}
 	}
 	
 	override func configure(cell: UITableViewCell) {

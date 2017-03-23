@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CloudData
 
 class NCLoadoutRow: TreeRow {
 	let typeName: String
@@ -45,7 +46,7 @@ class NCLoadoutRow: TreeRow {
 class NCLoadoutsSection: TreeSection {
 	let categoryID: NCDBDgmppItemCategoryID
 	let filter: NSPredicate?
-	private var observer: NSObjectProtocol?
+	private var observer: NotificationObserver?
 	
 	init(categoryID: NCDBDgmppItemCategoryID, filter: NSPredicate? = nil) {
 		self.categoryID = categoryID
@@ -53,7 +54,7 @@ class NCLoadoutsSection: TreeSection {
 		super.init()
 		reload()
 		
-		observer = NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: nil) { [weak self] note in
+		observer = NotificationCenter.default.addNotificationObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: nil) { [weak self] note in
 			if (note.object as? NSManagedObjectContext)?.persistentStoreCoordinator === NCStorage.sharedStorage?.persistentStoreCoordinator {
 				self?.reload()
 			}

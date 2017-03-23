@@ -26,6 +26,6 @@
 @property (readonly) double falloff;
 @property (readonly) double accuracyScore;
 @property (readonly) double velocity;
-
+@property (readonly) double miningYield;
 
 @end

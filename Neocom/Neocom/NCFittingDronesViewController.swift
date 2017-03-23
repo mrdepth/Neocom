@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudData
 
 class NCFittingDroneRow: TreeRow {
 	lazy var type: NCDBInvType? = {
@@ -165,7 +166,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 		return (parent as? NCFittingEditorViewController)?.typePickerViewController
 	}
 	
-	private var observer: NSObjectProtocol?
+	private var observer: NotificationObserver?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -190,7 +191,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 		}
 		
 		if observer == nil {
-			observer = NotificationCenter.default.addObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}

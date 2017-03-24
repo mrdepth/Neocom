@@ -194,6 +194,7 @@
 		12E9321C1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E9321B1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib */; };
 		12E9321E1E6B56D40033D71A /* NCFittingCharactersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9321D1E6B56D40033D71A /* NCFittingCharactersViewController.swift */; };
 		12E932201E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E9321F1E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib */; };
+		12EA6B401E850BF300C571DF /* NCLoadoutActivityItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EA6B3F1E850BF300C571DF /* NCLoadoutActivityItem.swift */; };
 		12EFE7EC1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EFE7EB1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift */; };
 		12EFE7F61E40C840007BF69B /* NCSheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EFE7F51E40C840007BF69B /* NCSheetPresentationController.swift */; };
 		12F8FF9F1E5DBC58008F79D5 /* NCFittingShipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */; };
@@ -458,6 +459,7 @@
 		12E9321B1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFleetMemberTableViewCell.xib; sourceTree = "<group>"; };
 		12E9321D1E6B56D40033D71A /* NCFittingCharactersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingCharactersViewController.swift; sourceTree = "<group>"; };
 		12E9321F1E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingCharacterTableViewCell.xib; sourceTree = "<group>"; };
+		12EA6B3F1E850BF300C571DF /* NCLoadoutActivityItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLoadoutActivityItem.swift; sourceTree = "<group>"; };
 		12EFE7EB1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleActionsViewController.swift; sourceTree = "<group>"; };
 		12EFE7F51E40C840007BF69B /* NCSheetPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSheetPresentationController.swift; sourceTree = "<group>"; };
 		12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingShipsViewController.swift; sourceTree = "<group>"; };
@@ -731,6 +733,7 @@
 				129E61001E0287CA00B56EB8 /* Cells */,
 				12EFE7F41E40C833007BF69B /* PresentationControllers */,
 				12EFE7F71E40C864007BF69B /* Segues */,
+				12EA6B3E1E850BB300C571DF /* Activity */,
 				1256BE471DF1F3B100A2A24B /* Constants.swift */,
 				1230A3111DFFE2CF00627D92 /* Math.swift */,
 				1230A3191DFFE2CF00627D92 /* NCGate.swift */,
@@ -899,6 +902,14 @@
 				12E745561E830922004AA646 /* clrconvert */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		12EA6B3E1E850BB300C571DF /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				12EA6B3F1E850BF300C571DF /* NCLoadoutActivityItem.swift */,
+			);
+			name = Activity;
 			sourceTree = "<group>";
 		};
 		12EFE7F41E40C833007BF69B /* PresentationControllers */ = {
@@ -1187,6 +1198,7 @@
 				1256BE5C1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift in Sources */,
 				12AC8DB61DEF6A3200561A7A /* NCDBImageValueTransformer.swift in Sources */,
 				1230A3341DFFE2CF00627D92 /* NSExpressionDescription+NC.swift in Sources */,
+				12EA6B401E850BF300C571DF /* NCLoadoutActivityItem.swift in Sources */,
 				129E61061E0291FD00B56EB8 /* NCSkillsViewController.swift in Sources */,
 				129E61021E0287F500B56EB8 /* NCSkillTableViewCell.swift in Sources */,
 				1256BF2E1DF48AA800A2A24B /* NCBackgroundView.swift in Sources */,

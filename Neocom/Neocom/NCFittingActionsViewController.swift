@@ -302,6 +302,11 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 
 			let damagePattern = pilot.ship?.damagePattern ?? .omni
 			sections.append(DefaultTreeSection(nodeIdentifier: "DamagePattern", title: NSLocalizedString("Damage Pattern", comment: "").uppercased(), children: [NCFittingDamagePatternRow(damagePattern: damagePattern, route: damagePatternsRoute)]))
+			
+			
+			sections.append(NCActionRow(prototype: Prototype.NCActionTableViewCell.default, title: NSLocalizedString("Share", comment: "").uppercased(), route: Router.Custom ({ [weak self] (controller, view) in
+				self?.performShare()
+			})))
 		}
 		
 		if treeController.content == nil {
@@ -312,6 +317,51 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		else {
 			treeController.content?.children = sections
 		}
+	}
+	
+	private func performShare() {
+		guard let pilot = fleet?.active else {return}
+		
+		pilot.engine?.perform {
+			guard let ship = pilot.ship else {return}
+			let typeID = ship.typeID
+			let name = ship.name
+			let loadout = pilot.loadout
+			
+			DispatchQueue.main.async { [weak self] in
+				guard let strongSelf = self else {return}
+				let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+				
+				
+				func share(representation: NCLoadoutRepresentation) {
+					guard let strongSelf = self else {return}
+					let controller = UIActivityViewController(activityItems: [NCLoadoutActivityItem(representation: representation)], applicationActivities: nil)
+					strongSelf.present(controller, animated: true, completion: nil)
+
+				}
+				
+				controller.addAction(UIAlertAction(title: NSLocalizedString("EFT", comment: ""), style: .default, handler: { _ in
+					share(representation: .dnaURL([(typeID: typeID, data: loadout, name: name)]))
+				}))
+				
+				controller.addAction(UIAlertAction(title: NSLocalizedString("DNA", comment: ""), style: .default, handler: { _ in
+					share(representation: .dnaURL([(typeID: typeID, data: loadout, name: name)]))
+				}))
+				
+				controller.addAction(UIAlertAction(title: NSLocalizedString("EVE XML", comment: ""), style: .default, handler: { _ in
+					share(representation: .dnaURL([(typeID: typeID, data: loadout, name: name)]))
+				}))
+				
+				controller.addAction(UIAlertAction(title: NSLocalizedString("Link", comment: ""), style: .default, handler: { _ in
+					share(representation: .dnaURL([(typeID: typeID, data: loadout, name: name)]))
+				}))
+				
+				controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+				
+				strongSelf.present(controller, animated: true, completion: nil)
+			}
+		}
+		
 
 	}
 }

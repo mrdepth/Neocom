@@ -153,8 +153,20 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 				engine.performBlockAndWait {
 					let fleet = NCFittingFleet(loadouts: [loadout], engine: engine)
 					DispatchQueue.main.async {
-						Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: self)
+						if let account = NCAccount.current {
+							fleet.active?.setSkills(from: account) { [weak self]  _ in
+								guard let strongSelf = self else {return}
+								Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
+							}
+						}
+						else {
+							fleet.active?.setSkills(level: 5) { [weak self] _ in
+								guard let strongSelf = self else {return}
+								Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
+							}
+						}
 					}
+
 				}
 			})
 		}
@@ -193,7 +205,18 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 			engine.perform {
 				let fleet = NCFittingFleet(typeID: typeID, engine: engine)
 				DispatchQueue.main.async {
-					Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
+					if let account = NCAccount.current {
+						fleet.active?.setSkills(from: account) { [weak self]  _ in
+							guard let strongSelf = self else {return}
+							Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
+						}
+					}
+					else {
+						fleet.active?.setSkills(level: 5) { [weak self] _ in
+							guard let strongSelf = self else {return}
+							Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
+						}
+					}
 				}
 			}
 

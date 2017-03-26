@@ -17,30 +17,30 @@ class NCTypePickerViewController: UINavigationController {
 				guard let category = category else {return}
 				guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return}
 				if (group.items?.count ?? 0) > 0 {
-					guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerTypesViewController") as? NCTypePickerTypesViewController else {return}
+					guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerContainerViewContrller") as? NCTypePickerContainerViewContrller else {return}
 					controller.predicate = NSPredicate(format: "dgmppItem.groups CONTAINS %@ AND published == YES", group)
 					controller.title = group.groupName
 					viewControllers = [controller]
 					
 				}
 				else {
-					guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerRootViewController") else {return}
+					guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerContainerViewContrller") as? NCTypePickerContainerViewContrller else {return}
+					controller.group = group
 					controller.loadViewIfNeeded()
 					viewControllers = [controller]
-					let groupsViewController = self.groupsViewController
-					groupsViewController?.group = group
-					self.viewControllers.first?.title = groupsViewController?.group?.groupName
+					//let groupsViewController = self.groupsViewController
+					//self.viewControllers.first?.title = groupsViewController?.group?.groupName
 				}
-				viewControllers.first?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: .plain, target: self, action: #selector(dismissAnimated(_:)))
+//				viewControllers.first?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: .plain, target: self, action: #selector(dismissAnimated(_:)))
 			}
 		}
 	}
 	
 	var type: NCDBInvType?
 	var completionHandler: ((NCTypePickerViewController, NCDBInvType) -> Void)!
-	var groupsViewController: NCTypePickerGroupsViewController? {
-		return self.viewControllers.first?.childViewControllers.first(where: {return $0 is NCTypePickerGroupsViewController}) as? NCTypePickerGroupsViewController
-	}
+//	var groupsViewController: NCTypePickerGroupsViewController? {
+//		return self.viewControllers.first?.childViewControllers.first(where: {return $0 is NCTypePickerGroupsViewController}) as? NCTypePickerGroupsViewController
+//	}
 
 	private var results: NSFetchedResultsController<NSDictionary>?
 	

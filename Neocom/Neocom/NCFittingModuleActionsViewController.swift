@@ -268,7 +268,7 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 					}
 				}
 				
-				let ammoRoute = Router.Fitting.Ammo(category: self.chargeCategory!) { [weak self] (controller, type) in
+				let ammoRoute = Router.Fitting.Ammo(category: self.chargeCategory!, modules: modules) { [weak self] (controller, type) in
 					self?.setAmmo(controller: controller, type: type)
 				}
 
@@ -341,7 +341,7 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 			let chargeGroups = module.chargeGroups
 			if chargeGroups.count > 0 {
 				
-				let ammoRoute = Router.Fitting.Ammo(category: self.chargeCategory!) { [weak self] (controller, type) in
+				let ammoRoute = Router.Fitting.Ammo(category: self.chargeCategory!, modules: modules) { [weak self] (controller, type) in
 					self?.setAmmo(controller: controller, type: type)
 				}
 

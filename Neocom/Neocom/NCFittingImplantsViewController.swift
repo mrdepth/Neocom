@@ -147,6 +147,7 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		treeController.deselectCell(for: node, animated: true)
 		if let item = node as? NCImplantRow {
 			if let slot = item.slot {
 				guard let pilot = fleet?.active else {return}

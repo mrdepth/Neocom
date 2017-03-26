@@ -131,53 +131,63 @@ enum NCLoadoutRepresentation {
 
 class NCLoadoutActivityItem: UIActivityItemProvider {
 	
-//	let loadout: NCFittingLoadout
 	let representation: NCLoadoutRepresentation
+	let value: Any?
+	let data: String?
 	
 	init(representation: NCLoadoutRepresentation) {
 		self.representation = representation
-//		let type = NCDatabase.sharedDatabase?.invTypes[typeID]
-//		self.loadout = loadout
-//		let image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image ?? #imageLiteral(resourceName: "priceShip")
-//		super.init(placeholderItem: loadout)
-		let value = (representation.value as? [Any])?.first ?? representation
+		var value = representation.value
+		var data: String?
+		
+		switch representation {
+		case .dna:
+			value = (value as? [String])?.joined(separator: "\n") ?? value
+		case .dnaURL, .httpURL:
+			value = (value as? [URL])?.map({$0.absoluteString}).joined(separator: "\n") ?? value
+		case let .eft(loadouts):
+			guard let loadout = loadouts.first else {break}
+			let typeName = NCDatabase.sharedDatabase?.invTypes[loadout.typeID]?.typeName ?? "\(loadout.typeID)"
+			let name = loadout.name.isEmpty ? "Unnamed" : loadout.name
+			
+			data = (value as? [String])?.first
+			value = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(typeName) - \(name).cfg")
+		case let .xml(loadouts):
+			let fileName: String
+			if loadouts.count > 1 {
+				fileName = "Loadouts.xml"
+			}
+			else {
+				guard let loadout = loadouts.first else {break}
+				let typeName = NCDatabase.sharedDatabase?.invTypes[loadout.typeID]?.typeName ?? "\(loadout.typeID)"
+				let name = loadout.name.isEmpty ? "Unnamed" : loadout.name
+				
+				fileName = "\(typeName) - \(name).xml"
+			}
+			
+			data = value as? String
+			value = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
+		default:
+			break
+		}
+		self.data = data
+		self.value = value
 		super.init(placeholderItem: value)
 	}
 	
 	override var item: Any {
-		let value = (representation as? [Any])?.first ?? representation
-//		return representation.value
-//		return loadout
-//		/return ""
-	}
-	
-	
-}
-
-extension NCFittingCharacter: UIActivityItemSource {
-	
-	public func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-//		return URL(string: "http://neocom.by")!
-		return ""
-	}
-	
-	public func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType) -> Any? {
-//		return URL(string: "http://neocom.by")!
-		return "asdfasdfsdf"
-	}
-	
-	public func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivityType?) -> String {
-		return "asdf"
-	}
-	
-	public func activityViewController(_ activityViewController: UIActivityViewController, thumbnailImageForActivityType activityType: UIActivityType?, suggestedSize size: CGSize) -> UIImage? {
-		var image: UIImage?
-		engine?.performBlockAndWait {
-			guard let ship = self.ship else {return}
-			image = NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+		if let data = data, let url = value as? URL {
+			try? data.write(to: url, atomically: true, encoding: .utf8)
+			return url
 		}
-		return image ?? #imageLiteral(resourceName: "priceShip")
+		else {
+			return value ?? ""
+		}
 	}
-
-
+	
+	deinit {
+		if let url = value as? URL {
+			try? FileManager.default.removeItem(at: url)
+		}
+	}
 }

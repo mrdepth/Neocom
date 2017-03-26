@@ -302,11 +302,13 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 
 			let damagePattern = pilot.ship?.damagePattern ?? .omni
 			sections.append(DefaultTreeSection(nodeIdentifier: "DamagePattern", title: NSLocalizedString("Damage Pattern", comment: "").uppercased(), children: [NCFittingDamagePatternRow(damagePattern: damagePattern, route: damagePatternsRoute)]))
+
 			
-			
-			sections.append(NCActionRow(prototype: Prototype.NCActionTableViewCell.default, title: NSLocalizedString("Share", comment: "").uppercased(), route: Router.Custom ({ [weak self] (controller, view) in
+			let shareAction = NCActionRow(prototype: Prototype.NCActionTableViewCell.default, title: NSLocalizedString("Share", comment: "").uppercased(), route: Router.Custom ({ [weak self] (controller, view) in
 				self?.performShare()
-			})))
+			}))
+			
+			sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [shareAction]))
 		}
 		
 		if treeController.content == nil {
@@ -341,7 +343,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 				}
 				
 				controller.addAction(UIAlertAction(title: NSLocalizedString("EFT", comment: ""), style: .default, handler: { _ in
-					share(representation: .dnaURL([(typeID: typeID, data: loadout, name: name)]))
+					share(representation: .eft([(typeID: typeID, data: loadout, name: name)]))
 				}))
 				
 				controller.addAction(UIAlertAction(title: NSLocalizedString("DNA", comment: ""), style: .default, handler: { _ in
@@ -349,11 +351,11 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 				}))
 				
 				controller.addAction(UIAlertAction(title: NSLocalizedString("EVE XML", comment: ""), style: .default, handler: { _ in
-					share(representation: .dnaURL([(typeID: typeID, data: loadout, name: name)]))
+					share(representation: .xml([(typeID: typeID, data: loadout, name: name)]))
 				}))
 				
 				controller.addAction(UIAlertAction(title: NSLocalizedString("Link", comment: ""), style: .default, handler: { _ in
-					share(representation: .dnaURL([(typeID: typeID, data: loadout, name: name)]))
+					share(representation: .httpURL([(typeID: typeID, data: loadout, name: name)]))
 				}))
 				
 				controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))

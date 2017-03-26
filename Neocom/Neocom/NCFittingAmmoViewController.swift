@@ -55,34 +55,59 @@ class NCAmmoNode: FetchedResultsObjectNode<NCDBInvType> {
 	}
 }
 
-class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
-	var category: NCDBDgmppItemCategory?
-	var completionHandler: ((NCFittingAmmoViewController, NCDBInvType?) -> Void)!
+class NCAmmoSection: FetchedResultsNode<NCDBInvType> {
+	init?(category: NCDBDgmppItemCategory) {
+		guard let context = NCDatabase.sharedDatabase?.viewContext else {return nil}
+		guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return nil}
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
-
-		guard let category = category else {return}
-		guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return}
-		title = group.groupName
-		
 		let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 		request.predicate = NSPredicate(format: "dgmppItem.groups CONTAINS %@", group)
 		request.sortDescriptors = [
 			NSSortDescriptor(key: "metaGroup.metaGroupID", ascending: true),
 			NSSortDescriptor(key: "metaLevel", ascending: true),
 			NSSortDescriptor(key: "typeName", ascending: true)]
-
 		
-		guard let context = NCDatabase.sharedDatabase?.viewContext else {return}
+		
 		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "metaGroup.metaGroupID", cacheName: nil)
 		
-		let root = FetchedResultsNode(resultsController: controller, sectionNode: NCMetaGroupFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCAmmoNode.self)
+		super.init(resultsController: controller, sectionNode: NCMetaGroupFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCAmmoNode.self)
+	}
+}
+
+class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate {
+	@IBOutlet var treeController: TreeController!
+	var category: NCDBDgmppItemCategory?
+	var completionHandler: ((NCFittingAmmoViewController, NCDBInvType?) -> Void)!
+	var modules: [NCFittingModule]?
+
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		let module = modules?.first
+		module?.engine?.performBlockAndWait {
+			if module?.charge == nil {
+				self.navigationItem.rightBarButtonItem = nil
+			}
+		}
+		
+		tableView.estimatedRowHeight = tableView.rowHeight
+		tableView.rowHeight = UITableViewAutomaticDimension
+		treeController.delegate = self
+		
+		tableView.register([Prototype.NCActionTableViewCell.default])
+
+		guard let category = category else {return}
+		guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return}
+		title = group.groupName
+		
+		guard let ammo = NCAmmoSection(category: category) else {return}
+		
+		let root = TreeNode()
+		
+		let route = Router.Fitting.AmmoDamageChart(category: category, modules: modules ?? [])
+		
+		root.children = [NCActionRow(title: NSLocalizedString("Compare", comment: ""), route: route), ammo]
+
 		treeController.content = root
 	}
 	
@@ -93,8 +118,12 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		guard let node = node as? NCAmmoNode else {return}
-		completionHandler(self, node.object)
+		if let route = (node as? TreeNodeRoutable)?.route {
+			route.perform(source: self, view: treeController.cell(for: node))
+		}
+		else if let node = node as? NCAmmoNode {
+			completionHandler(self, node.object)
+		}
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {

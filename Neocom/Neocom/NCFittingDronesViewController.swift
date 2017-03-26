@@ -200,6 +200,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate {
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		treeController.deselectCell(for: node, animated: true)
 		if let node = node as? NCFittingDroneRow {
 			Router.Fitting.DroneActions(node.drones).perform(source: self, view: treeController.cell(for: node))
 		}

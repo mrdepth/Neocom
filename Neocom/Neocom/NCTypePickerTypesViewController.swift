@@ -118,7 +118,8 @@ class NCTypePickerTypesViewController: UITableViewController, UISearchResultsUpd
 	
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		guard let typePickerController = navigationController as? NCTypePickerViewController else {return}
+		guard let typePickerController =  (presentingViewController?.navigationController as? NCTypePickerViewController) ??
+			navigationController as? NCTypePickerViewController else {return}
 		guard let object = results?.object(at: indexPath) else {return}
 		guard let type = NCDatabase.sharedDatabase?.invTypes[object["typeID"] as! Int] else {return}
 		guard let context = NCCache.sharedCache?.viewContext else {return}

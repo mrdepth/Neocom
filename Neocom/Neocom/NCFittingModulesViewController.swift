@@ -266,6 +266,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		treeController.deselectCell(for: node, animated: true)
 		guard let item = node as? NCFittingModuleRow else {return}
 		guard let pilot = fleet?.active else {return}
 		

@@ -149,6 +149,9 @@
 		12AC8DD21DF090A600561A7A /* NCCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD11DF090A600561A7A /* NCCache.swift */; };
 		12AC8DD41DF09BDE00561A7A /* NCCacheRecord+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD31DF09BDE00561A7A /* NCCacheRecord+NC.swift */; };
 		12AC8DE21DF0B5F200561A7A /* Dark.clr in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD51DF0AF6900561A7A /* Dark.clr */; };
+		12B1B82F1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1B82E1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift */; };
+		12B1B8331E8844F5007CCE40 /* NCFittingAmmoDamageChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1B8321E8844F5007CCE40 /* NCFittingAmmoDamageChartView.swift */; };
+		12B1B8351E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1B8341E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift */; };
 		12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */; };
 		12B563FA1E51B24500F1BED0 /* NCFittingArea.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B563F91E51B24500F1BED0 /* NCFittingArea.mm */; };
 		12B563FC1E51E0A200F1BED0 /* NCFittingCharacterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B563FB1E51E0A200F1BED0 /* NCFittingCharacterTableViewCell.swift */; };
@@ -406,6 +409,9 @@
 		12AC8DD11DF090A600561A7A /* NCCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCCache.swift; sourceTree = "<group>"; };
 		12AC8DD31DF09BDE00561A7A /* NCCacheRecord+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NCCacheRecord+NC.swift"; sourceTree = "<group>"; };
 		12AC8DD51DF0AF6900561A7A /* Dark.clr */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Dark.clr; sourceTree = "<group>"; };
+		12B1B82E1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerContainerViewContrller.swift; sourceTree = "<group>"; };
+		12B1B8321E8844F5007CCE40 /* NCFittingAmmoDamageChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingAmmoDamageChartView.swift; sourceTree = "<group>"; };
+		12B1B8341E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingAmmoDamageChartViewController.swift; sourceTree = "<group>"; };
 		12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketHistoryTableViewCell.swift; sourceTree = "<group>"; };
 		12B563F81E51B24500F1BED0 /* NCFittingArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingArea.h; sourceTree = "<group>"; };
 		12B563F91E51B24500F1BED0 /* NCFittingArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingArea.mm; sourceTree = "<group>"; };
@@ -512,6 +518,7 @@
 				12961DBE1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift */,
 				12FC3CC71E13F4A400B7744E /* NCDatabaseCertificateMasteryViewController.swift */,
 				121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */,
+				12B1B82E1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift */,
 				121D10AD1E262F8900DD671B /* NCTypePickerGroupsViewController.swift */,
 				121D10B11E263E3700DD671B /* NCTypePickerTypesViewController.swift */,
 				12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */,
@@ -584,6 +591,7 @@
 				12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */,
 				12BFC46D1E409AC2000ED8D6 /* NCThinLineView.swift */,
 				12C44CFD1E44776500BA43ED /* NCFittingModuleDamageChartView.swift */,
+				12B1B8321E8844F5007CCE40 /* NCFittingAmmoDamageChartView.swift */,
 				12DE67201E715D46005CA44C /* NCSegmentedControl.swift */,
 			);
 			name = Views;
@@ -838,6 +846,7 @@
 				12EFE7EB1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift */,
 				1293BC101E49F1F30099FD75 /* NCFittingDroneActionsViewController.swift */,
 				125AB8131E42033200B8A2A8 /* NCFittingAmmoViewController.swift */,
+				12B1B8341E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift */,
 				12424E161E486ACD002DFE08 /* NCFittingVariationsViewController.swift */,
 				12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */,
 				129B31681E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift */,
@@ -1090,6 +1099,8 @@
 				12961DD91E1D64D4008A3F4D /* NCFittingCharge.mm in Sources */,
 				12961DD31E1D64B8008A3F4D /* NCFittingShip.mm in Sources */,
 				12DBEAE91E1E8FEC0088A486 /* NCFittingMenuViewController.swift in Sources */,
+				12B1B8351E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift in Sources */,
+				12B1B8331E8844F5007CCE40 /* NCFittingAmmoDamageChartView.swift in Sources */,
 				12AC8DB01DEF5B0500561A7A /* NCDatabase.xcdatamodeld in Sources */,
 				12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */,
 				12E2674D1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift in Sources */,
@@ -1210,6 +1221,7 @@
 				12AC8DE21DF0B5F200561A7A /* Dark.clr in Sources */,
 				1230A3291DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift in Sources */,
 				12F8FF9F1E5DBC58008F79D5 /* NCFittingShipsViewController.swift in Sources */,
+				12B1B82F1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift in Sources */,
 				12E314BC1E165D5D000A926D /* UIView+NC.swift in Sources */,
 				12424E421E3651DC0078AB0F /* NCFittingEditorViewController.swift in Sources */,
 				129B31701E5439A100B9A88D /* NCTextFieldTableViewCell.swift in Sources */,

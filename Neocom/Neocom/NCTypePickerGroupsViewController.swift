@@ -23,7 +23,7 @@ class NCTypePickerGroupsViewController: UITableViewController, UISearchResultsUp
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		title = group?.groupName
+		//title = group?.groupName
 		if results == nil {
 			guard let group = group else {return}
 			let request = NSFetchRequest<NCDBDgmppItemGroup>(entityName: "DgmppItemGroup")
@@ -84,13 +84,14 @@ class NCTypePickerGroupsViewController: UITableViewController, UISearchResultsUp
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		guard let object = results?.object(at: indexPath) else {return}
 		if object.subGroups?.count ?? 0 > 0 {
-			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerGroupsViewController") as? NCTypePickerGroupsViewController else {return}
+			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerContainerViewContrller") as? NCTypePickerContainerViewContrller else {return}
 			controller.group = object
 			show(controller, sender: tableView.cellForRow(at: indexPath))
 		}
 		else {
-			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerTypesViewController") as? NCTypePickerTypesViewController else {return}
+			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerContainerViewContrller") as? NCTypePickerContainerViewContrller else {return}
 			controller.predicate = NSPredicate(format: "dgmppItem.groups CONTAINS %@", object)
+			controller.title = object.groupName
 			show(controller, sender: tableView.cellForRow(at: indexPath))
 		}
 	}

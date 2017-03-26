@@ -196,20 +196,39 @@ enum Router {
 		class Ammo: Route {
 			let category: NCDBDgmppItemCategory
 			let completionHandler: (NCFittingAmmoViewController, NCDBInvType?) -> Void
+			let modules: [NCFittingModule]
 			
-			init(category: NCDBDgmppItemCategory, completionHandler: @escaping (NCFittingAmmoViewController, NCDBInvType?) -> Void) {
+			init(category: NCDBDgmppItemCategory, modules: [NCFittingModule], completionHandler: @escaping (NCFittingAmmoViewController, NCDBInvType?) -> Void) {
 				self.category = category
 				self.completionHandler = completionHandler
+				self.modules = modules
 				super.init(kind: .adaptive, identifier: "NCFittingAmmoViewController")
 			}
 			
 			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
 				let destination = destination as! NCFittingAmmoViewController
 				destination.category = category
+				destination.modules = modules
 				destination.completionHandler = completionHandler
 			}
 		}
 
+		class AmmoDamageChart: Route {
+			let category: NCDBDgmppItemCategory
+			let modules: [NCFittingModule]
+			
+			init(category: NCDBDgmppItemCategory, modules: [NCFittingModule]) {
+				self.category = category
+				self.modules = modules
+				super.init(kind: .adaptive, identifier: "NCFittingAmmoDamageChartViewController")
+			}
+			
+			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+				let destination = destination as! NCFittingAmmoDamageChartViewController
+				destination.category = category
+				destination.modules = modules
+			}
+		}
 		
 		class AreaEffects: Route {
 			let completionHandler: (NCFittingAreaEffectsViewController, NCDBInvType?) -> Void

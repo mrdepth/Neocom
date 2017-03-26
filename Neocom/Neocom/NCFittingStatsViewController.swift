@@ -59,6 +59,7 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		treeController.deselectCell(for: node, animated: true)
 		guard let route = (node as? TreeNodeRoutable)?.route else {return}
 		route.perform(source: self, view: treeController.cell(for: node))
 	}

@@ -66,7 +66,7 @@ class NCFittingModuleDamageChartView: UIView {
 		let n = Double(round(bounds.size.width / 5))
 		let targetSignature = self.targetSignature
 		gate.perform {
-			module.engine?.performBlockAndWait {
+			module.engine?.perform {
 				let hitChancePath = UIBezierPath()
 				let dpsPath = UIBezierPath()
 

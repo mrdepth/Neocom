@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class NCFittingAmmoDamageChartViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
 	
@@ -26,9 +27,11 @@ class NCFittingAmmoDamageChartViewController: UITableViewController, TreeControl
 		title = group.groupName
 		
 		guard let ammo = NCAmmoSection(category: category) else {return}
+		guard let modules = modules else {return}
+		guard let module = modules.first else {return}
 		
 		let root = TreeNode()
-		root.children = [ammo]
+		root.children = [NCFittingAmmoDamageChartRow(module: module, count: modules.count), ammo]
 		
 		treeController.content = root
 

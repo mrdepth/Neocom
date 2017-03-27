@@ -10,6 +10,14 @@ import UIKit
 
 fileprivate let ChartColors: [UIColor] = [#colorLiteral(red: 0.9411764706, green: 0.9764705882, blue: 0.9098039216, alpha: 1), #colorLiteral(red: 0.7294117647, green: 0.8941176471, blue: 0.737254902, alpha: 1), #colorLiteral(red: 0.4823529412, green: 0.8, blue: 0.768627451, alpha: 1), #colorLiteral(red: 0.262745098, green: 0.6352941176, blue: 0.7921568627, alpha: 1), #colorLiteral(red: 0.03137254902, green: 0.4078431373, blue: 0.6745098039, alpha: 1)]
 
+class AnimationDelegate: NSObject, CAAnimationDelegate {
+	var didStopHandler: ((CAAnimation, Bool) -> Void)?
+	public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+		didStopHandler?(anim ,flag)
+	}
+	
+}
+
 class NCFittingAmmoDamageChartView: UIView {
 	var module: NCFittingModule? {
 		didSet {
@@ -36,9 +44,30 @@ class NCFittingAmmoDamageChartView: UIView {
 					self.layer.addSublayer(shapeLayer)
 				case .delete:
 					let layer = layers[old!].1
-					layer.removeFromSuperlayer()
+					
 					colors.insert(UIColor(cgColor: layer.strokeColor!))
 					layers.remove(at: old!)
+
+					let path = UIBezierPath(cgPath: layer.path!)
+					var transform = CGAffineTransform(translationX: 0, y: self.bounds.size.height)
+					transform = transform.scaledBy(x: 1, y: 0)
+					path.apply(transform)
+
+					var delegate: AnimationDelegate? = AnimationDelegate()
+					delegate?.didStopHandler = { _ in
+						layer.removeFromSuperlayer()
+						delegate?.didStopHandler = nil
+						delegate = nil
+					}
+					
+					let animation = CABasicAnimation(keyPath: "path")
+					animation.fromValue = layer.path
+					animation.toValue = path.cgPath
+					animation.duration = 0.25
+					animation.delegate = delegate
+					layer.add(animation, forKey: "path")
+					layer.path = path.cgPath
+
 				default:
 					break
 				}
@@ -54,8 +83,27 @@ class NCFittingAmmoDamageChartView: UIView {
 	
 	private var colors: Set<UIColor> = Set([#colorLiteral(red: 0.9411764706, green: 0.9764705882, blue: 0.9098039216, alpha: 1), #colorLiteral(red: 0.7294117647, green: 0.8941176471, blue: 0.737254902, alpha: 1), #colorLiteral(red: 0.4823529412, green: 0.8, blue: 0.768627451, alpha: 1), #colorLiteral(red: 0.262745098, green: 0.6352941176, blue: 0.7921568627, alpha: 1), #colorLiteral(red: 0.03137254902, green: 0.4078431373, blue: 0.6745098039, alpha: 1)])
 	
+	private lazy var axisLayer: CAShapeLayer = {
+		let layer = CAShapeLayer()
+		layer.frame = self.bounds
+		layer.backgroundColor = UIColor.clear.cgColor
+		layer.strokeColor = UIColor.lightGray.cgColor
+		layer.fillColor = nil
+		layer.lineWidth = 1.0 / UIScreen.main.scale
+		self.layer.addSublayer(layer)
+		return layer
+	}()
+	
 	override func layoutSubviews() {
 		super.layoutSubviews()
+		axisLayer.frame = bounds
+		
+		let axisPath = UIBezierPath()
+		axisPath.move(to: .zero)
+		axisPath.addLine(to: CGPoint(x: 0, y: bounds.size.height))
+		axisPath.addLine(to: CGPoint(x: bounds.size.width, y: bounds.size.height))
+		axisLayer.path = axisPath.cgPath
+		
 		for (_, layer) in layers {
 			layer.frame = bounds
 		}
@@ -105,13 +153,13 @@ class NCFittingAmmoDamageChartView: UIView {
 					
 					let optimal = module.maxRange
 					let falloff = module.falloff
-					let maxX = ceil((optimal + max(falloff * 2, optimal * 0.5)) / 10000) * 10000
+					let maxX = ceil((optimal + max(falloff * 3, optimal * 0.5)) / 10000) * 10000
 					guard maxX > 0 else {continue}
 					let maxDPS = dps(at: optimal * 0.1)
 					guard maxDPS > 0 else {return}
 					
 					size.width = max(size.width, CGFloat(maxX))
-					size.height = max(size.height, CGFloat(maxDPS))
+					
 					
 					let path = UIBezierPath()
 					let dx = maxX / n
@@ -124,6 +172,7 @@ class NCFittingAmmoDamageChartView: UIView {
 						path.addLine(to: CGPoint(x: x, y: dps(at: x, signature: targetSignature)))
 					}
 					paths.append(path)
+					size.height = max(size.height, path.bounds.maxY)
 				}
 				
 				module.charge = charge
@@ -139,7 +188,11 @@ class NCFittingAmmoDamageChartView: UIView {
 					func update(layer: CAShapeLayer, path: UIBezierPath) {
 						let from = layer.path ?? {
 							let from = path.copy() as! UIBezierPath
-							from.apply(CGAffineTransform(scaleX: 1, y: 0))
+							//var transform = CGAffineTransform(scaleX: 1, y: 0)
+							//transform = transform.translatedBy(x: 0, y: bounds.size.height)
+							var transform = CGAffineTransform(translationX: 0, y: bounds.size.height)
+							transform = transform.scaledBy(x: 1, y: 0)
+							from.apply(transform)
 							return from.cgPath
 						}()
 						

@@ -80,6 +80,10 @@ class NCFittingAmmoDamageChartView: UIView {
 	}
 	private var layers: [(Int, CAShapeLayer)] = []
 	
+	func color(for charge: Int) -> UIColor? {
+		guard let color = layers.first (where: {$0.0 == charge})?.1.strokeColor else {return nil}
+		return UIColor(cgColor: color)
+	}
 	
 	private var colors: Set<UIColor> = Set([#colorLiteral(red: 0.9411764706, green: 0.9764705882, blue: 0.9098039216, alpha: 1), #colorLiteral(red: 0.7294117647, green: 0.8941176471, blue: 0.737254902, alpha: 1), #colorLiteral(red: 0.4823529412, green: 0.8, blue: 0.768627451, alpha: 1), #colorLiteral(red: 0.262745098, green: 0.6352941176, blue: 0.7921568627, alpha: 1), #colorLiteral(red: 0.03137254902, green: 0.4078431373, blue: 0.6745098039, alpha: 1)])
 	

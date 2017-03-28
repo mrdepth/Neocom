@@ -9,10 +9,10 @@
 import UIKit
 
 extension UIImage {
-	class func image(color: UIColor) -> UIImage {
-		UIGraphicsBeginImageContextWithOptions(CGSize(width: 1, height: 1), false, 1);
+	class func image(color: UIColor, size: CGSize = CGSize(width: 1, height: 1), scale: CGFloat = 1) -> UIImage {
+		UIGraphicsBeginImageContextWithOptions(size, false, scale);
 		color.setFill()
-		UIBezierPath(rect: CGRect(x: 0, y: 0, width: 1, height: 1)).fill()
+		UIBezierPath(rect: CGRect(origin: .zero, size: size)).fill()
 		let image = UIGraphicsGetImageFromCurrentImageContext()!;
 		UIGraphicsEndImageContext();
 		return image.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: UIImageResizingMode.tile)

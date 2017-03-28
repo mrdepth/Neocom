@@ -10,12 +10,12 @@ import UIKit
 
 class NCFittingAmmoDamageChartTableViewCell: NCTableViewCell {
 	@IBOutlet weak var damageChartView: NCFittingAmmoDamageChartView!
-	@IBOutlet weak var optimalLabel: UILabel!
-	@IBOutlet weak var falloffLabel: UILabel!
-	@IBOutlet weak var rawDpsLabel: UILabel!
+	@IBOutlet weak var fullRangeLabel: UILabel!
+	@IBOutlet weak var halfRangeLabel: UILabel!
 	@IBOutlet weak var dpsLabel: UILabel!
-	@IBOutlet weak var dpsAccuracyView: UIView!
+	@IBOutlet weak var hullLabel: UILabel!
 	@IBOutlet weak var stepper: UIStepper!
+	@IBOutlet weak var chargesStackView: UIStackView!
 
 }
 
@@ -60,6 +60,24 @@ class NCFittingAmmoDamageChartRow: TreeRow {
 		let targetSignature = Double(hullType?.signature ?? 0)
 		
 		cell.damageChartView.targetSignature = targetSignature
+		
+		cell.chargesStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+		
+		guard let invTyps = NCDatabase.sharedDatabase?.invTypes else {return}
+		for chargeID in charges {
+			guard let text = invTyps[chargeID]?.typeName else {continue}
+			let label = UILabel(frame: .zero)
+			label.font = UIFont.preferredFont(forTextStyle: .footnote)
+			label.textColor = cell.damageChartView.color(for: chargeID) ?? .white
+			
+//			let w = label.font.lineHeight
+//			let image = UIImage.image(color: label.textColor, size: CGSize(width: w, height: w), scale: 1)
+//			label.attributedText = NSAttributedString(image: image, font: label.font)  + text
+			label.text = text
+			
+			cell.chargesStackView.addArrangedSubview(label)
+		}
+		
 	}
 }
 

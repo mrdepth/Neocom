@@ -11,18 +11,18 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="NCChargeTableViewCell" rowHeight="58" id="Lof-MG-FPa" customClass="NCChargeTableViewCell" customModule="Neocom" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="NCChargeTableViewCell" rowHeight="65" id="Lof-MG-FPa" customClass="NCChargeTableViewCell" customModule="Neocom" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="321" height="65"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lof-MG-FPa" id="aS4-Ce-Y7G">
-                <rect key="frame" x="0.0" y="0.0" width="273" height="57"/>
+                <rect key="frame" x="0.0" y="0.0" width="273" height="64.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="E0b-2a-Jym">
-                        <rect key="frame" x="15" y="4" width="258" height="56"/>
+                        <rect key="frame" x="15" y="4" width="259" height="56"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rS7-ap-Dt3">
-                                <rect key="frame" x="0.0" y="0.0" width="258" height="32"/>
+                                <rect key="frame" x="0.0" y="0.0" width="259" height="32"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Vca-cu-fxh">
                                         <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
@@ -32,7 +32,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="paX-uE-k9F">
-                                        <rect key="frame" x="40" y="0.0" width="218" height="32"/>
+                                        <rect key="frame" x="40" y="0.0" width="219" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="uzd-NE-qck"/>
                                         </constraints>
@@ -52,7 +52,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="q0P-4Y-6wD">
-                                <rect key="frame" x="0.0" y="36" width="258" height="20"/>
+                                <rect key="frame" x="0.0" y="36" width="259" height="20"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ajz-eg-TNW">
                                         <rect key="frame" x="0.0" y="0.0" width="59" height="20"/>
@@ -90,7 +90,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RGD-WE-0wu">
-                                        <rect key="frame" x="67" y="0.0" width="58" height="20"/>
+                                        <rect key="frame" x="67" y="0.0" width="58.5" height="20"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thermal" translatesAutoresizingMaskIntoConstraints="NO" id="CdP-TM-FFp">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -99,7 +99,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxl-OL-FNB" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
-                                                <rect key="frame" x="22" y="0.0" width="36" height="20"/>
+                                                <rect key="frame" x="22" y="0.0" width="36.5" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -125,7 +125,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cx1-iK-wIu">
-                                        <rect key="frame" x="133" y="0.0" width="59" height="20"/>
+                                        <rect key="frame" x="133.5" y="0.0" width="59" height="20"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kinetic" translatesAutoresizingMaskIntoConstraints="NO" id="azM-JL-Q4E">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -160,7 +160,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CPd-R9-Xt9">
-                                        <rect key="frame" x="200" y="0.0" width="58" height="20"/>
+                                        <rect key="frame" x="200.5" y="0.0" width="58.5" height="20"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="explosion" translatesAutoresizingMaskIntoConstraints="NO" id="hp8-QP-bDB">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -169,7 +169,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VcN-sO-TWr" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
-                                                <rect key="frame" x="22" y="0.0" width="36" height="20"/>
+                                                <rect key="frame" x="22" y="0.0" width="36.5" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -218,6 +218,7 @@
                 <outlet property="thermalLabel" destination="yxl-OL-FNB" id="QyP-9B-ssm"/>
                 <outlet property="titleLabel" destination="paX-uE-k9F" id="ofE-dq-eyU"/>
             </connections>
+            <point key="canvasLocation" x="34.5" y="119.5"/>
         </tableViewCell>
     </objects>
     <resources>

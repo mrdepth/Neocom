@@ -187,7 +187,7 @@ class NCSkillsViewController: UITableViewController, NCTreeControllerDelegate {
 				}
 				if let group = group {
 					var sp = 0 as Int64
-					allRows.forEach { sp += $0.skill.skillPoints }
+					allRows.forEach { sp += Int64($0.skill.skillPoints) }
 
 					allSections.append(NCSkillSection(group: group, children: allRows, skillPoints: sp))
 					if myRows.count > 0 {

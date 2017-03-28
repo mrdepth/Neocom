@@ -8,6 +8,7 @@
 
 import UIKit
 
+fileprivate let Limit = 5
 
 class NCFittingAmmoDamageChartViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
@@ -21,6 +22,10 @@ class NCFittingAmmoDamageChartViewController: UITableViewController, TreeControl
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
+
+		tableView.register([Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCChargeTableViewCell.default])
 
 		guard let category = category else {return}
 		guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return}
@@ -40,21 +45,35 @@ class NCFittingAmmoDamageChartViewController: UITableViewController, TreeControl
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		treeController.deselectCell(for: node, animated: true)
+		guard let node = node as? NCAmmoNode else {return}
+		guard let damageChartRow = treeController.content?.children.first as? NCFittingAmmoDamageChartRow else {return}
+		
+		if damageChartRow.charges.count >= Limit {
+			treeController.deselectCell(for: node, animated: true)
+		}
+		else {
+			let typeID = Int(node.object.typeID)
+			damageChartRow.charges.append(typeID)
+			
+			guard let cell = treeController.cell(for: damageChartRow) as? NCFittingAmmoDamageChartTableViewCell else {return}
+			damageChartRow.configure(cell: cell)
+			tableView.reloadRows(at: [], with: .fade)
+		}
+	}
+	
+	func treeController(_ treeController: TreeController, didDeselectCellWithNode node: TreeNode) {
 		guard let node = node as? NCAmmoNode else {return}
 		guard let damageChartRow = treeController.content?.children.first as? NCFittingAmmoDamageChartRow else {return}
 		let typeID = Int(node.object.typeID)
 		if let i = damageChartRow.charges.index(of: typeID) {
 			damageChartRow.charges.remove(at: i)
 		}
-		else {
-			damageChartRow.charges.append(typeID)
-		}
 		
 		guard let cell = treeController.cell(for: damageChartRow) as? NCFittingAmmoDamageChartTableViewCell else {return}
-
-		cell.damageChartView.charges = damageChartRow.charges
+		damageChartRow.configure(cell: cell)
+		tableView.reloadRows(at: [], with: .fade)
 	}
+	
 	
 	//MARK: - Navigation
 	

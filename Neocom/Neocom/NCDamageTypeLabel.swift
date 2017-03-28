@@ -54,10 +54,12 @@ class NCDamageTypeLabel: NCLabel {
 		super.awakeFromNib()
 		self.tintColor = (NCDamageType(rawValue: self.damageType) ?? .em).color
 		var rgba: [CGFloat] = [0, 0, 0, 0]
+		backgroundColor = UIColor.clear
 		self.tintColor.getRed(&rgba[0], green: &rgba[1], blue: &rgba[2], alpha: &rgba[3])
-		self.backgroundColor = UIColor(red: rgba[0] * 0.4, green: rgba[1] * 0.4, blue: rgba[2] * 0.4, alpha: rgba[3])
+		self.dimingColor = UIColor(red: rgba[0] * 0.4, green: rgba[1] * 0.4, blue: rgba[2] * 0.4, alpha: rgba[3])
 	}
 	
+	var dimingColor: UIColor!
 	
 	
 #if TARGET_INTERFACE_BUILDER
@@ -71,8 +73,16 @@ class NCDamageTypeLabel: NCLabel {
 		context?.saveGState()
 		var left = rect
 		left.size.width *= CGFloat(progress)
+		var right = rect
+		right.origin.x = left.maxX
+		right.size.width -= left.size.width
+		
 		tintColor.setFill()
 		context?.fill(left)
+		
+		dimingColor.setFill()
+		context?.fill(right)
+
 		context?.restoreGState()
 		super.draw(rect)
 	}

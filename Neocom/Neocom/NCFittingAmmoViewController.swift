@@ -13,7 +13,8 @@ class NCAmmoNode: FetchedResultsObjectNode<NCDBInvType> {
 	
 	required init(object: NCDBInvType) {
 		super.init(object: object)
-		self.cellIdentifier = object.dgmppItem?.damage == nil ? "NCDefaultTableViewCell" : "NCChargeTableViewCell"
+		
+		self.cellIdentifier = object.dgmppItem?.damage == nil ? Prototype.NCDefaultTableViewCell.compact.reuseIdentifier : Prototype.NCChargeTableViewCell.default.reuseIdentifier
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -94,7 +95,10 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
 		
-		tableView.register([Prototype.NCActionTableViewCell.default])
+		tableView.register([Prototype.NCActionTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCChargeTableViewCell.default])
 
 		guard let category = category else {return}
 		guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return}

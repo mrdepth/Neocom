@@ -200,14 +200,60 @@ class NCUnitFormatter: Formatter {
 	
 }
 
-
 class ChartView: UIView {
 	
 	var grid: CGSize = CGSize(width: 24, height: 24)
 	
 	var xFormatter: Formatter = NCUnitFormatter(unit: .meter, style: .short, useSIPrefix: nil)
 	var yFormatter: Formatter = NCUnitFormatter(unit: .none, style: .full, useSIPrefix: nil)
-	var dimension: (x: Double, y: Double) = (37845, 500)
+	var dimensions: (x: Double, y: Double) = (37845, 500)
+
+	func update(layer: CAShapeLayer, path: UIBezierPath) {
+		let from = layer.path ?? {
+			let from = path.copy() as! UIBezierPath
+			var transform = CGAffineTransform(translationX: 0, y: bounds.size.height)
+			transform = transform.scaledBy(x: 1, y: 0)
+			from.apply(transform)
+			return from.cgPath
+			}()
+		
+		let animation = CABasicAnimation(keyPath: "path")
+		animation.fromValue = from
+		animation.toValue = path.cgPath
+		animation.duration = 0.25
+		layer.add(animation, forKey: "path")
+		layer.path = path.cgPath
+	}
+
+	
+	var layers: [CAShapeLayer] = []
+	var charts: [(path: UIBezierPath, color: UIColor)] = [] {
+		didSet {
+			var old = layers
+			var new = [CAShapeLayer]()
+			let canvas = self.canvas
+			
+			for (path, color) in charts {
+				let layer = !old.isEmpty ? old.removeFirst() : {
+					let layer = CAShapeLayer()
+					layer.fillColor = nil
+					self.layer.addSublayer(layer)
+					return layer
+				}()
+				
+				layer.strokeColor = color.cgColor
+				layer.frame = canvas
+//				layer.path = path.cgPath
+				self.update(layer: layer, path: path)
+				new.append(layer)
+			}
+			for layer in old {
+				layer.removeFromSuperlayer()
+			}
+			
+			self.layers = new
+		}
+	}
 	
 	private lazy var attributes: [String: Any] = {
 		return [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote), NSForegroundColorAttributeName: UIColor.white]
@@ -247,10 +293,10 @@ class ChartView: UIView {
 		xCaptions.append((zero, s))
 		
 		var minX = zero.origin.x
-		if dimension.y > 0 {
+		if dimensions.y > 0 {
 			while y > zero.size.height / 2 {
 				
-				s = NSAttributedString(string: yFormatter.string(for: Double((h - y) / h) * dimension.y)!, attributes: attributes)
+				s = NSAttributedString(string: yFormatter.string(for: Double((h - y) / h) * dimensions.y)!, attributes: attributes)
 				var rect = s.boundingRect(with: .zero, options: [.usesLineFragmentOrigin], context: nil)
 				rect.origin.x = -rect.size.width
 				rect.origin.y = y - rect.size.height / 2
@@ -268,13 +314,13 @@ class ChartView: UIView {
 		zero = zero.applying(transform)
 		
 		var yCaptions = [(CGRect, NSAttributedString)]()
-		if dimension.x > 0 {
+		if dimensions.x > 0 {
 			zero.size.width += 4
 			var x = zero.maxX + grid.width
 			let w = bounds.size.width - zero.maxX
 			prev = zero
 			while x < bounds.size.width {
-				s = NSAttributedString(string: xFormatter.string(for: Double(x / w) * dimension.x)!, attributes: attributes)
+				s = NSAttributedString(string: xFormatter.string(for: Double(x / w) * dimensions.x)!, attributes: attributes)
 				var rect = s.boundingRect(with: .zero, options: [.usesLineFragmentOrigin], context: nil)
 				rect.origin.x = x - rect.size.width
 				rect.origin.y = bounds.size.height - rect.size.height
@@ -295,6 +341,11 @@ class ChartView: UIView {
 		
 		self.xCaptions = xCaptions
 		self.yCaptions = yCaptions
+		
+		let canvas = self.canvas
+		for layer in layers {
+			layer.frame = canvas
+		}
 	}
 	
 	override func draw(_ rect: CGRect) {
@@ -331,7 +382,10 @@ class ChartView: UIView {
 		path.move(to: p)
 		path.addLine(to: CGPoint(x: canvas.maxX, y: p.y))
 		path.stroke()
+		
+		super.draw(rect)
 	}
+
 }
 
 let chart = ChartView(frame: CGRect(origin: .zero, size: CGSize(width: 320, height:128)))
@@ -339,7 +393,6 @@ chart.backgroundColor = .black
 
 
 
-chart
 
 let font = UIFont.preferredFont(forTextStyle: .footnote)
 
@@ -354,3 +407,21 @@ font.ascender - font.descender
 
 let p = NSMutableParagraphStyle()
 print (p.description)
+
+let path = UIBezierPath()
+path.move(to: .zero)
+for i in 0..<360 {
+	let x = Double(i) / 180 * Double.pi
+	let y = sin(x)
+	path.addLine(to: CGPoint(x: x / (Double.pi * 2), y: y / 2))
+}
+
+let canvas = chart.canvas
+
+var transform = CGAffineTransform.identity
+transform = transform.translatedBy(x: 0, y: canvas.height / 2)
+transform = transform.scaledBy(x: canvas.width, y: canvas.height)
+path.apply(transform)
+path.bounds
+chart.charts = [(path: path, color: UIColor.red)]
+chart

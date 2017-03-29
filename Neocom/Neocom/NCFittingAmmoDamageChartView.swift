@@ -8,7 +8,19 @@
 
 import UIKit
 
-fileprivate let ChartColors: [UIColor] = [#colorLiteral(red: 0.9411764706, green: 0.9764705882, blue: 0.9098039216, alpha: 1), #colorLiteral(red: 0.7294117647, green: 0.8941176471, blue: 0.737254902, alpha: 1), #colorLiteral(red: 0.4823529412, green: 0.8, blue: 0.768627451, alpha: 1), #colorLiteral(red: 0.262745098, green: 0.6352941176, blue: 0.7921568627, alpha: 1), #colorLiteral(red: 0.03137254902, green: 0.4078431373, blue: 0.6745098039, alpha: 1)]
+let NCFittingAmmoDamageChartViewColorsLimit = 5
+
+//fileprivate let ChartColors: [UIColor] = [#colorLiteral(red: 0.5529411765, green: 0.8274509804, blue: 0.7803921569, alpha: 1), #colorLiteral(red: 1, green: 1, blue: 0.7019607843, alpha: 1), #colorLiteral(red: 0.7450980392, green: 0.7294117647, blue: 0.8549019608, alpha: 1), #colorLiteral(red: 0.9843137255, green: 0.5019607843, blue: 0.4470588235, alpha: 1), #colorLiteral(red: 0.5019607843, green: 0.6941176471, blue: 0.8274509804, alpha: 1)]
+fileprivate let ChartColors: [UIColor] = {
+	var colors = [UIColor]()
+	
+	
+	for i in 0..<NCFittingAmmoDamageChartViewColorsLimit {
+		colors.append(UIColor(hue: CGFloat(i) / CGFloat(NCFittingAmmoDamageChartViewColorsLimit), saturation: 0.5, brightness: 1.0, alpha: 1.0))
+	}
+	
+	return colors
+}()
 
 class AnimationDelegate: NSObject, CAAnimationDelegate {
 	var didStopHandler: ((CAAnimation, Bool) -> Void)?
@@ -85,7 +97,9 @@ class NCFittingAmmoDamageChartView: UIView {
 		return UIColor(cgColor: color)
 	}
 	
-	private var colors: Set<UIColor> = Set([#colorLiteral(red: 0.9411764706, green: 0.9764705882, blue: 0.9098039216, alpha: 1), #colorLiteral(red: 0.7294117647, green: 0.8941176471, blue: 0.737254902, alpha: 1), #colorLiteral(red: 0.4823529412, green: 0.8, blue: 0.768627451, alpha: 1), #colorLiteral(red: 0.262745098, green: 0.6352941176, blue: 0.7921568627, alpha: 1), #colorLiteral(red: 0.03137254902, green: 0.4078431373, blue: 0.6745098039, alpha: 1)])
+	var updateHandler: (([Int: (dps: Double, range: Double)]) -> Void)?
+	
+	private var colors: Set<UIColor> = Set(ChartColors)
 	
 	private lazy var axisLayer: CAShapeLayer = {
 		let layer = CAShapeLayer()
@@ -152,6 +166,8 @@ class NCFittingAmmoDamageChartView: UIView {
 				var paths = [UIBezierPath]()
 				var size = CGSize.zero
 
+				var statistics = [Int: (dps: Double, range: Double)]()
+				
 				for (typeID, _) in layers {
 					module.charge = NCFittingCharge(typeID: typeID)
 					
@@ -168,17 +184,25 @@ class NCFittingAmmoDamageChartView: UIView {
 					let path = UIBezierPath()
 					let dx = maxX / n
 					var x: Double = dx
-					
-					path.move(to: CGPoint(x: x, y: dps(at:x, signature: targetSignature)))
 
+					var y = dps(at:x, signature: targetSignature)
+					path.move(to: CGPoint(x: x, y: y))
+
+					var best = (dps: y, range: x)
 					while x < maxX {
 						x += dx
-						path.addLine(to: CGPoint(x: x, y: dps(at: x, signature: targetSignature)))
+						y = dps(at: x, signature: targetSignature)
+						if y > best.dps {
+							best = (dps: y, range: x)
+						}
+						path.addLine(to: CGPoint(x: x, y: y))
 					}
 					paths.append(path)
 					size.height = max(size.height, path.bounds.maxY)
+					
+					statistics[typeID] = best
+
 				}
-				
 				module.charge = charge
 				
 				var transform = CGAffineTransform(scaleX: 1.0 / size.width * bounds.size.width, y: -1.0 / size.height * bounds.size.height)
@@ -189,6 +213,7 @@ class NCFittingAmmoDamageChartView: UIView {
 				}
 				
 				DispatchQueue.main.async {
+					self.updateHandler?(statistics)
 					func update(layer: CAShapeLayer, path: UIBezierPath) {
 						let from = layer.path ?? {
 							let from = path.copy() as! UIBezierPath

@@ -10,8 +10,13 @@ import UIKit
 
 fileprivate let Limit = 5
 
-class NCFittingAmmoDamageChartViewController: UITableViewController, TreeControllerDelegate {
+class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
+	@IBOutlet weak var tableView: UITableView!
+	@IBOutlet weak var stepper: UIStepper!
+	@IBOutlet weak var chargesStackView: UIStackView!
+	@IBOutlet weak var damageChartView: NCFittingAmmoDamageChartView!
+
 	
 	var category: NCDBDgmppItemCategory?
 	var modules: [NCFittingModule]?
@@ -36,7 +41,7 @@ class NCFittingAmmoDamageChartViewController: UITableViewController, TreeControl
 		guard let module = modules.first else {return}
 		
 		let root = TreeNode()
-		root.children = [NCFittingAmmoDamageChartRow(module: module, count: modules.count), ammo]
+		root.children = [ammo]
 		
 		treeController.content = root
 

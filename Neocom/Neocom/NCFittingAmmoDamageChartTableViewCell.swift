@@ -55,6 +55,8 @@ class NCFittingAmmoDamageChartRow: TreeRow {
 
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCFittingAmmoDamageChartTableViewCell else {return}
+		let module = self.module
+
 		cell.damageChartView.module = module
 		cell.damageChartView.charges = charges
 		let targetSignature = Double(hullType?.signature ?? 0)
@@ -62,22 +64,40 @@ class NCFittingAmmoDamageChartRow: TreeRow {
 		cell.damageChartView.targetSignature = targetSignature
 		
 		cell.chargesStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-		
+
 		guard let invTyps = NCDatabase.sharedDatabase?.invTypes else {return}
-		for chargeID in charges {
-			guard let text = invTyps[chargeID]?.typeName else {continue}
+
+		var typeNames = [Int: String]()
+		var labels = [Int: UILabel]()
+		for chargeID in self.charges {
+			guard let typeName = invTyps[chargeID]?.typeName else {continue}
+			typeNames[chargeID] = typeName
+			
 			let label = UILabel(frame: .zero)
 			label.font = UIFont.preferredFont(forTextStyle: .footnote)
 			label.textColor = cell.damageChartView.color(for: chargeID) ?? .white
 			
-//			let w = label.font.lineHeight
-//			let image = UIImage.image(color: label.textColor, size: CGSize(width: w, height: w), scale: 1)
-//			label.attributedText = NSAttributedString(image: image, font: label.font)  + text
-			label.text = text
-			
+			label.text = typeName
 			cell.chargesStackView.addArrangedSubview(label)
+			labels[chargeID] = label
 		}
 		
+		let count = Double(self.count)
+		cell.damageChartView.updateHandler = { updates in
+			for (chargeID, label) in labels {
+				guard let update = updates[chargeID],
+					let typeName = typeNames[chargeID] else {continue}
+				
+				let dps = NCUnitFormatter.localizedString(from: update.dps * count, unit: .none, style: .full)
+				let range = NCUnitFormatter.localizedString(from: update.range, unit: .meter, style: .full)
+				label.text = "\(typeName) (\(dps) \(NSLocalizedString("at", comment: "DPS at range")) \(range))"
+			}
+			guard let maxDPS = updates.map({$0.value.dps}).max() else {return}
+			guard let maxRange = updates.map({$0.value.range}).max() else {return}
+			//cell.dpsLabel.text = NCUnitFormatter.localizedString(from: maxDPS, unit: .none, style: .full)
+			cell.fullRangeLabel.text = NCUnitFormatter.localizedString(from: maxRange, unit: .meter, style: .full)
+			cell.halfRangeLabel.text = NCUnitFormatter.localizedString(from: maxRange / 2, unit: .meter, style: .full)
+		}
 	}
 }
 

@@ -8196,7 +8196,7 @@
         <!--Ammo-->
         <scene sceneID="lp7-5i-P3W">
             <objects>
-                <tableViewController storyboardIdentifier="NCFittingAmmoDamageChartViewController" id="zel-te-hB4" customClass="NCFittingAmmoDamageChartViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="zel-te-hB4" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="mLr-NV-693" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -8210,29 +8210,29 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5TA-UT-3dd" customClass="NCFittingAmmoDamageChartView" customModule="Neocom" customModuleProvider="target">
-                                            <rect key="frame" x="51.5" y="12" width="253.5" height="128"/>
+                                            <rect key="frame" x="27.5" y="12" width="277.5" height="128"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="128" id="VpR-jn-jfe"/>
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fbq-2P-Kx0">
-                                            <rect key="frame" x="39" y="132" width="8.5" height="16"/>
+                                            <rect key="frame" x="15" y="132" width="8.5" height="16"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lAZ-CY-KnF">
-                                            <rect key="frame" x="51.5" y="140" width="253.5" height="16"/>
+                                            <rect key="frame" x="27.5" y="140" width="277.5" height="16"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A1V-XY-hFw">
-                                                    <rect key="frame" x="122.5" y="0.0" width="8.5" height="16"/>
+                                                    <rect key="frame" x="135" y="0.0" width="8.5" height="16"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Cj-I6-XXE">
-                                                    <rect key="frame" x="245" y="0.0" width="8.5" height="16"/>
+                                                    <rect key="frame" x="269" y="0.0" width="8.5" height="16"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -8248,8 +8248,8 @@
                                                 <constraint firstItem="A1V-XY-hFw" firstAttribute="centerX" secondItem="lAZ-CY-KnF" secondAttribute="centerX" id="jA3-5w-dMX"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="100%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eba-ti-9dZ">
-                                            <rect key="frame" x="15" y="4" width="32.5" height="16"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eba-ti-9dZ">
+                                            <rect key="frame" x="15" y="4" width="8.5" height="16"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -8339,6 +8339,110 @@
                 </customObject>
             </objects>
             <point key="canvasLocation" x="5190" y="3068"/>
+        </scene>
+        <!--Fitting Ammo Damage Chart View Controller-->
+        <scene sceneID="UE1-q7-PYK">
+            <objects>
+                <viewController storyboardIdentifier="NCFittingAmmoDamageChartViewController" automaticallyAdjustsScrollViewInsets="NO" id="g27-uQ-E9Z" customClass="NCFittingAmmoDamageChartViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kPV-v8-LPM"/>
+                        <viewControllerLayoutGuide type="bottom" id="KbX-BG-aD8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kgt-HT-EgE" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VRs-V8-649" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="177"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="AWv-NV-pDe">
+                                        <rect key="frame" x="15" y="140" width="290" height="33"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LUw-Zz-a0k">
+                                                <rect key="frame" x="0.0" y="0.0" width="290" height="29"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="DPS AGAINST" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0yx-PT-4MY">
+                                                        <rect key="frame" x="0.0" y="0.0" width="192" height="29"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="aMm-or-He1">
+                                                        <rect key="frame" x="196" y="0.0" width="94" height="29"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <action selector="onChangeHullType:" destination="a8X-ZI-63v" eventType="valueChanged" id="XVh-QL-gaf"/>
+                                                        </connections>
+                                                    </stepper>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstItem="aMm-or-He1" firstAttribute="leading" secondItem="0yx-PT-4MY" secondAttribute="trailing" constant="4" id="9KG-32-97l"/>
+                                                    <constraint firstItem="0yx-PT-4MY" firstAttribute="leading" secondItem="LUw-Zz-a0k" secondAttribute="leading" id="EoF-c3-8OO"/>
+                                                    <constraint firstAttribute="trailing" secondItem="aMm-or-He1" secondAttribute="trailing" id="Lc5-qs-MuF"/>
+                                                    <constraint firstAttribute="bottom" secondItem="0yx-PT-4MY" secondAttribute="bottom" id="N8t-dJ-rzh"/>
+                                                    <constraint firstAttribute="bottom" secondItem="aMm-or-He1" secondAttribute="bottom" id="a9R-Wg-n4f"/>
+                                                    <constraint firstItem="0yx-PT-4MY" firstAttribute="top" secondItem="LUw-Zz-a0k" secondAttribute="top" id="dyc-jP-aTW"/>
+                                                    <constraint firstItem="aMm-or-He1" firstAttribute="top" secondItem="LUw-Zz-a0k" secondAttribute="top" id="xFu-Cf-Evd"/>
+                                                </constraints>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="290" placeholderIntrinsicHeight="0.0" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="AeL-lh-qtR">
+                                                <rect key="frame" x="0.0" y="33" width="290" height="0.0"/>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="irB-C1-4eI" customClass="NCFittingAmmoDamageChartView" customModule="Neocom" customModuleProvider="target">
+                                        <rect key="frame" x="15" y="4" width="290" height="128"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="128" id="3OM-fR-1H9"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="AWv-NV-pDe" firstAttribute="leading" secondItem="VRs-V8-649" secondAttribute="leading" constant="15" id="1aQ-e0-9YI"/>
+                                    <constraint firstItem="irB-C1-4eI" firstAttribute="top" secondItem="VRs-V8-649" secondAttribute="top" constant="4" id="I61-0p-Z1k"/>
+                                    <constraint firstAttribute="trailing" secondItem="irB-C1-4eI" secondAttribute="trailing" constant="15" id="Jip-oH-2ly"/>
+                                    <constraint firstItem="irB-C1-4eI" firstAttribute="leading" secondItem="VRs-V8-649" secondAttribute="leading" constant="15" id="S7a-cI-dC6"/>
+                                    <constraint firstItem="AWv-NV-pDe" firstAttribute="top" secondItem="irB-C1-4eI" secondAttribute="bottom" constant="8" id="WXj-Od-yoe"/>
+                                    <constraint firstAttribute="trailing" secondItem="AWv-NV-pDe" secondAttribute="trailing" constant="15" id="XIX-bY-k4r"/>
+                                    <constraint firstAttribute="bottom" secondItem="AWv-NV-pDe" secondAttribute="bottom" constant="4" id="kFj-fb-aPx"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UQ4-x0-h8t" customClass="NCTableView">
+                                <rect key="frame" x="0.0" y="177" width="320" height="391"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="dD3-vu-MaU" id="eGn-xw-4bU"/>
+                                    <outlet property="delegate" destination="dD3-vu-MaU" id="r6v-7i-2FX"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="VRs-V8-649" firstAttribute="leading" secondItem="kgt-HT-EgE" secondAttribute="leading" id="AAL-Vu-yLW"/>
+                            <constraint firstItem="UQ4-x0-h8t" firstAttribute="leading" secondItem="kgt-HT-EgE" secondAttribute="leading" id="EZs-j0-kdY"/>
+                            <constraint firstAttribute="trailing" secondItem="UQ4-x0-h8t" secondAttribute="trailing" id="KlZ-ng-HC2"/>
+                            <constraint firstItem="VRs-V8-649" firstAttribute="top" secondItem="kgt-HT-EgE" secondAttribute="top" id="Xh1-xb-ckC"/>
+                            <constraint firstAttribute="trailing" secondItem="VRs-V8-649" secondAttribute="trailing" id="gBE-gm-XqY"/>
+                            <constraint firstItem="UQ4-x0-h8t" firstAttribute="top" secondItem="VRs-V8-649" secondAttribute="bottom" id="v25-Xw-e11"/>
+                            <constraint firstItem="KbX-BG-aD8" firstAttribute="top" secondItem="UQ4-x0-h8t" secondAttribute="bottom" id="zqX-t4-xUS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="UQ4-x0-h8t" id="1AP-qc-0jY"/>
+                        <outlet property="treeController" destination="dD3-vu-MaU" id="SMy-ql-Imk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wWN-cR-kqM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="dD3-vu-MaU" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="UQ4-x0-h8t" id="XvF-cc-zZt"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="5199.375" y="3725.7042253521126"/>
         </scene>
     </scenes>
     <resources>

@@ -78,7 +78,7 @@
 		125AB80F1E41D9F500B8A2A8 /* UIViewController+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */; };
 		125AB8111E41DEE600B8A2A8 /* NCChargeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AB8101E41DEE600B8A2A8 /* NCChargeTableViewCell.swift */; };
 		125AB8141E42033200B8A2A8 /* NCFittingAmmoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AB8131E42033200B8A2A8 /* NCFittingAmmoViewController.swift */; };
-		125EDE1F1E8C5365002CD084 /* NCLineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125EDE1E1E8C5365002CD084 /* NCLineChartView.swift */; };
+		125EDE1F1E8C5365002CD084 /* LineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125EDE1E1E8C5365002CD084 /* LineChartView.swift */; };
 		126157001E008AF60041B817 /* dgm.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FE1E008AE00041B817 /* dgm.sqlite */; };
 		126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FF1E008AE00041B817 /* NCDatabase.sqlite */; };
 		126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157031E008E770041B817 /* NCRoundedImageView.swift */; };
@@ -330,7 +330,7 @@
 		125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+NC.swift"; sourceTree = "<group>"; };
 		125AB8101E41DEE600B8A2A8 /* NCChargeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCChargeTableViewCell.swift; sourceTree = "<group>"; };
 		125AB8131E42033200B8A2A8 /* NCFittingAmmoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingAmmoViewController.swift; sourceTree = "<group>"; };
-		125EDE1E1E8C5365002CD084 /* NCLineChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLineChartView.swift; sourceTree = "<group>"; };
+		125EDE1E1E8C5365002CD084 /* LineChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChartView.swift; sourceTree = "<group>"; };
 		126156FE1E008AE00041B817 /* dgm.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = dgm.sqlite; path = ../../dbTools/dbinit/dgm.sqlite; sourceTree = "<group>"; };
 		126156FF1E008AE00041B817 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = ../../dbTools/dbinit/NCDatabase.sqlite; sourceTree = "<group>"; };
 		126157031E008E770041B817 /* NCRoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRoundedImageView.swift; sourceTree = "<group>"; };
@@ -597,7 +597,7 @@
 				12C44CFD1E44776500BA43ED /* NCFittingModuleDamageChartView.swift */,
 				12B1B8321E8844F5007CCE40 /* NCFittingAmmoDamageChartView.swift */,
 				12DE67201E715D46005CA44C /* NCSegmentedControl.swift */,
-				125EDE1E1E8C5365002CD084 /* NCLineChartView.swift */,
+				125EDE1E1E8C5365002CD084 /* LineChartView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1160,7 +1160,7 @@
 				126157061E0095380041B817 /* NCProgressHandler.swift in Sources */,
 				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
 				12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */,
-				125EDE1F1E8C5365002CD084 /* NCLineChartView.swift in Sources */,
+				125EDE1F1E8C5365002CD084 /* LineChartView.swift in Sources */,
 				1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */,
 				129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */,
 				12961DDC1E1D64E4008A3F4D /* NCFittingDrone.mm in Sources */,

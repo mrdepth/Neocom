@@ -8,6 +8,14 @@
 
 import UIKit
 
+class AnimationDelegate: NSObject, CAAnimationDelegate {
+	var didStopHandler: ((CAAnimation, Bool) -> Void)?
+	public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+		didStopHandler?(anim ,flag)
+	}
+}
+
+
 class NCFittingModuleDamageChartView: LineChartView {
 	var module: NCFittingModule? {
 		didSet {
@@ -69,10 +77,7 @@ class NCFittingModuleDamageChartView: LineChartView {
 				dpsPath.apply(transform)
 				
 				let axisPath = UIBezierPath()
-//				axisPath.move(to: CGPoint(x: 0, y: maxDPS))
-//				axisPath.addLine(to: .zero)
-//				axisPath.addLine(to: CGPoint(x: maxX, y: 0))
-//				
+
 				x = optimal
 				axisPath.move(to: CGPoint(x: x, y: 0))
 				axisPath.addLine(to: CGPoint(x: x, y: dps(at: x)))
@@ -88,152 +93,11 @@ class NCFittingModuleDamageChartView: LineChartView {
 				
 				
 				DispatchQueue.main.async {
-					/*func update(layer: CAShapeLayer, path: CGPath) {
-						if let from = layer.path {
-							let animation = CABasicAnimation(keyPath: "path")
-							animation.fromValue = from
-							animation.toValue = path
-							animation.duration = 0.25
-							layer.add(animation, forKey: "path")
-							layer.path = path
-						}
-						else {
-							layer.path = path
-						}
-					}
-					self.dpsLayer.strokeColor = accuracy.color.cgColor
-					update(layer: self.hitChanceLayer, path: hitChancePath.cgPath)
-					update(layer: self.dpsLayer, path: dpsPath.cgPath)
-					update(layer: self.axisLayer, path: axisPath.cgPath)*/
-					self.charts = [LineChart(path: dpsPath, color: accuracy.color), LineChart(path: hitChancePath, color: .caption), LineChart(path: axisPath, color: UIColor(white: 1.0, alpha: 0.3))]
+					self.charts = [LineChart(path: dpsPath, color: accuracy.color, identifier: 0), LineChart(path: hitChancePath, color: .caption, identifier: 1), LineChart(path: axisPath, color: UIColor(white: 1.0, alpha: 0.3), identifier: 2)]
 				}
 			}
 		}
 	}
-	
-	/*private lazy var dpsLayer: CAShapeLayer = {
-		let layer = CAShapeLayer()
-		layer.frame = self.bounds
-		layer.strokeColor = UIColor.green.cgColor
-		layer.fillColor = nil
-		self.layer.addSublayer(layer)
-		return layer
-	}()
-	
-	private lazy var hitChanceLayer: CAShapeLayer = {
-		let layer = CAShapeLayer()
-		layer.frame = self.bounds
-		layer.backgroundColor = UIColor.clear.cgColor
-		layer.strokeColor = UIColor.caption.cgColor
-		layer.fillColor = nil
-		self.layer.addSublayer(layer)
-		return layer
-	}()
-	
-	private lazy var axisLayer: CAShapeLayer = {
-		let layer = CAShapeLayer()
-		layer.frame = self.bounds
-		layer.backgroundColor = UIColor.clear.cgColor
-		layer.strokeColor = UIColor.lightGray.cgColor
-		layer.fillColor = nil
-		layer.lineWidth = 1.0 / UIScreen.main.scale
-		self.layer.addSublayer(layer)
-		return layer
-	}()
-
-
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		axisLayer.frame = bounds
-		dpsLayer.frame = bounds
-		hitChanceLayer.frame = bounds
-		reload()
-	}
-	
-	private lazy var gate = NCGate()
-	private func reload() {
-		guard let module = self.module else {return}
-		let bounds = self.bounds
-		let n = Double(round(bounds.size.width / 5))
-		let targetSignature = self.targetSignature
-		gate.perform {
-			module.engine?.perform {
-				let hitChancePath = UIBezierPath()
-				let dpsPath = UIBezierPath()
-
-				guard let ship = module.owner as? NCFittingShip else {return}
-				let optimal = module.maxRange
-				let falloff = module.falloff
-				let maxX = ceil((optimal + max(falloff * 2, optimal * 0.5)) / 10000) * 10000
-				guard maxX > 0 else {return}
-				let dx = maxX / n
-				
-				func dps(at range: Double, signature: Double = 0) -> Double {
-					let angularVelocity = signature > 0 ? ship.maxVelocity(orbit: range) / range : 0
-					return module.dps(target: NCFittingHostileTarget(angularVelocity: angularVelocity, velocity: 0, signature: signature, range: range)).total
-				}
-				
-				let maxDPS = dps(at: optimal * 0.1)
-				guard maxDPS > 0 else {return}
-				
-				var x: Double = dx
-				hitChancePath.move(to: CGPoint(x: 0, y: maxDPS))
-				hitChancePath.addLine(to: CGPoint(x: dx, y: maxDPS))
-				
-				dpsPath.move(to: CGPoint(x: x, y: dps(at:x, signature: targetSignature)))
-				
-				while x < maxX {
-					x += dx
-					hitChancePath.addLine(to: CGPoint(x: x, y: dps(at: x)))
-					dpsPath.addLine(to: CGPoint(x: x, y: dps(at: x, signature: targetSignature)))
-				}
-				var transform = CGAffineTransform(scaleX: CGFloat(1.0 / maxX) * bounds.size.width, y: -CGFloat(1.0 / maxDPS) * bounds.size.height)
-				transform = transform.translatedBy(x: 0, y: CGFloat(-maxDPS))
-				
-				hitChancePath.apply(transform)
-				dpsPath.apply(transform)
-				
-				let axisPath = UIBezierPath()
-				axisPath.move(to: CGPoint(x: 0, y: maxDPS))
-				axisPath.addLine(to: .zero)
-				axisPath.addLine(to: CGPoint(x: maxX, y: 0))
-				
-				x = optimal
-				axisPath.move(to: CGPoint(x: x, y: 0))
-				axisPath.addLine(to: CGPoint(x: x, y: dps(at: x)))
-
-				x = optimal + falloff
-				axisPath.move(to: CGPoint(x: x, y: 0))
-				axisPath.addLine(to: CGPoint(x: x, y: dps(at: x)))
-
-				axisPath.apply(transform)
-
-				
-				let accuracy = module.accuracy(targetSignature: targetSignature)
-
-				
-				DispatchQueue.main.async {
-					func update(layer: CAShapeLayer, path: CGPath) {
-						if let from = layer.path {
-							let animation = CABasicAnimation(keyPath: "path")
-							animation.fromValue = from
-							animation.toValue = path
-							animation.duration = 0.25
-							layer.add(animation, forKey: "path")
-							layer.path = path
-						}
-						else {
-							layer.path = path
-						}
-					}
-					self.dpsLayer.strokeColor = accuracy.color.cgColor
-					update(layer: self.hitChanceLayer, path: hitChancePath.cgPath)
-					update(layer: self.dpsLayer, path: dpsPath.cgPath)
-					update(layer: self.axisLayer, path: axisPath.cgPath)
-				}
-			}
-		}
-	}*/
 }
 
 

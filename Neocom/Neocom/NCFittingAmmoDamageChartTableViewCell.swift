@@ -54,7 +54,7 @@ class NCFittingAmmoDamageChartRow: TreeRow {
 	}
 
 	override func configure(cell: UITableViewCell) {
-		guard let cell = cell as? NCFittingAmmoDamageChartTableViewCell else {return}
+		/*guard let cell = cell as? NCFittingAmmoDamageChartTableViewCell else {return}
 		let module = self.module
 
 		cell.damageChartView.module = module
@@ -97,7 +97,7 @@ class NCFittingAmmoDamageChartRow: TreeRow {
 			//cell.dpsLabel.text = NCUnitFormatter.localizedString(from: maxDPS, unit: .none, style: .full)
 			cell.fullRangeLabel.text = NCUnitFormatter.localizedString(from: maxRange, unit: .meter, style: .full)
 			cell.halfRangeLabel.text = NCUnitFormatter.localizedString(from: maxRange / 2, unit: .meter, style: .full)
-		}
+		}*/
 	}
 }
 

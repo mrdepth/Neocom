@@ -22,26 +22,103 @@ fileprivate let ChartColors: [UIColor] = {
 	return colors
 }()
 
-class AnimationDelegate: NSObject, CAAnimationDelegate {
-	var didStopHandler: ((CAAnimation, Bool) -> Void)?
-	public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-		didStopHandler?(anim ,flag)
-	}
-	
-}
-
-class NCFittingAmmoDamageChartView: UIView {
+class NCFittingAmmoDamageChartView: LineChartView {
 	var module: NCFittingModule? {
 		didSet {
 			self.setNeedsLayout()
+			NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(reload), object: nil)
+			perform(#selector(reload), with: nil, afterDelay: 0)
 		}
 	}
 	var targetSignature: Double = 100 {
 		didSet {
 			self.setNeedsLayout()
+			NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(reload), object: nil)
+			perform(#selector(reload), with: nil, afterDelay: 0)
 		}
 	}
 
+	private lazy var gate = NCGate()
+	@objc private func reload() {
+		guard let module = self.module else {return}
+		let bounds = self.bounds
+		let n = Double(round(bounds.size.width / 5))
+		let targetSignature = self.targetSignature
+		
+		let charges = _charges
+		
+		gate.perform {
+			module.engine?.performBlockAndWait {
+				guard let ship = module.owner as? NCFittingShip else {return}
+				let charge = module.charge
+				
+				func dps(at range: Double, signature: Double = 0) -> Double {
+					let angularVelocity = signature > 0 ? ship.maxVelocity(orbit: range) / range : 0
+					return module.dps(target: NCFittingHostileTarget(angularVelocity: angularVelocity, velocity: 0, signature: signature, range: range)).total
+				}
+				
+				var paths = [UIBezierPath]()
+				var size = CGSize.zero
+				
+				var statistics = [Int: (dps: Double, range: Double)]()
+				
+				for (typeID, _) in charges {
+					module.charge = NCFittingCharge(typeID: typeID)
+					
+					let optimal = module.maxRange
+					let falloff = module.falloff
+					let maxX = ceil((optimal + max(falloff * 3, optimal * 0.5)) / 10000) * 10000
+					guard maxX > 0 else {continue}
+					let maxDPS = dps(at: optimal * 0.1)
+					guard maxDPS > 0 else {return}
+					
+					
+					
+					let path = UIBezierPath()
+					let dx = maxX / n
+					var x: Double = dx
+					
+					var y = dps(at:x, signature: targetSignature)
+					path.move(to: CGPoint(x: x, y: y))
+					
+					var best = (dps: y, range: x)
+					while x < maxX {
+						x += dx
+						y = dps(at: x, signature: targetSignature)
+						if y > best.dps {
+							best = (dps: y, range: x)
+						}
+						path.addLine(to: CGPoint(x: x, y: y))
+					}
+					size.width = max(size.width, CGFloat(x))
+
+					paths.append(path)
+					size.height = max(size.height, path.bounds.maxY)
+					
+					statistics[typeID] = best
+					
+				}
+				module.charge = charge
+				
+				var transform = CGAffineTransform(scaleX: 1.0 / size.width, y: -1.0 / size.height)
+				transform = transform.translatedBy(x: 0, y: -size.height)
+				
+				for path in paths {
+					path.apply(transform)
+				}
+
+				DispatchQueue.main.async {
+					self.updateHandler?(statistics)
+					self.charts = charges.enumerated().map({ (i, charge) -> LineChart in
+						return LineChart(path: paths[i], color: charge.1, identifier: charge.0)
+					})
+				}
+			}
+		}
+	}
+
+	
+	
 	var charges: [Int] {
 		set {
 			let from = charges
@@ -49,59 +126,36 @@ class NCFittingAmmoDamageChartView: UIView {
 				switch type {
 				case .insert:
 					let color = colors.removeFirst()
-					let shapeLayer = CAShapeLayer()
-					shapeLayer.fillColor = nil
-					shapeLayer.strokeColor = color.cgColor
-					layers.append((newValue[new!], shapeLayer))
-					self.layer.addSublayer(shapeLayer)
+					_charges.append((newValue[new!], color))
 				case .delete:
-					let layer = layers[old!].1
-					
-					colors.insert(UIColor(cgColor: layer.strokeColor!))
-					layers.remove(at: old!)
-
-					let path = UIBezierPath(cgPath: layer.path!)
-					var transform = CGAffineTransform(translationX: 0, y: self.bounds.size.height)
-					transform = transform.scaledBy(x: 1, y: 0)
-					path.apply(transform)
-
-					var delegate: AnimationDelegate? = AnimationDelegate()
-					delegate?.didStopHandler = { _ in
-						layer.removeFromSuperlayer()
-						delegate?.didStopHandler = nil
-						delegate = nil
-					}
-					
-					let animation = CABasicAnimation(keyPath: "path")
-					animation.fromValue = layer.path
-					animation.toValue = path.cgPath
-					animation.duration = 0.25
-					animation.delegate = delegate
-					layer.add(animation, forKey: "path")
-					layer.path = path.cgPath
-
+					let color = _charges[old!].1
+					colors.insert(color)
+					_charges.remove(at: old!)
 				default:
 					break
 				}
 			}
-			setNeedsLayout()
+			self.setNeedsLayout()
+			NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(reload), object: nil)
+			perform(#selector(reload), with: nil, afterDelay: 0)
 		}
 		get {
-			return layers.map({$0.0})
+			return _charges.map({$0.0})
 		}
 	}
-	private var layers: [(Int, CAShapeLayer)] = []
+	
+	private var _charges: [(Int, UIColor)] = []
 	
 	func color(for charge: Int) -> UIColor? {
-		guard let color = layers.first (where: {$0.0 == charge})?.1.strokeColor else {return nil}
-		return UIColor(cgColor: color)
+		guard let color = _charges.first (where: {$0.0 == charge})?.1 else {return nil}
+		return color
 	}
 	
 	var updateHandler: (([Int: (dps: Double, range: Double)]) -> Void)?
 	
 	private var colors: Set<UIColor> = Set(ChartColors)
 	
-	private lazy var axisLayer: CAShapeLayer = {
+	/*private lazy var axisLayer: CAShapeLayer = {
 		let layer = CAShapeLayer()
 		layer.frame = self.bounds
 		layer.backgroundColor = UIColor.clear.cgColor
@@ -238,6 +292,6 @@ class NCFittingAmmoDamageChartView: UIView {
 				}
 			}
 		}
-	}
+	}*/
 
 }

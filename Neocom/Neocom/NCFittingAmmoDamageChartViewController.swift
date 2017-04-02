@@ -21,6 +21,18 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 	var category: NCDBDgmppItemCategory?
 	var modules: [NCFittingModule]?
 	
+	lazy var hullType: NCDBDgmppHullType? = {
+		guard let module = self.modules?.first else {return nil}
+		var hullType: NCDBDgmppHullType?
+		module.engine?.performBlockAndWait {
+			guard let ship = module.owner as? NCFittingShip else {return}
+			hullType = NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.hullType
+		}
+		return hullType
+	}()
+	
+	var charges: [Int] = []
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -40,6 +52,18 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 		guard let modules = modules else {return}
 		guard let module = modules.first else {return}
 		
+		damageChartView.targetSignature = Double(hullType?.signature ?? 0)
+		damageChartView.module = module
+		damageChartView.xAxis = Axis(range: 0...0, formatter: NCUnitFormatter(unit: .meter, style: .short))
+		damageChartView.yAxis = Axis(range: 0...0, formatter: NCUnitFormatter(unit: .none, style: .short))
+		
+		damageChartView.updateHandler = { [weak damageChartView] updates in
+			let dps = updates.map ({$0.value.dps}).max() ?? 0
+			let range = updates.map ({$0.value.range}).max() ?? 0
+			damageChartView?.xAxis = Axis(range: 0...range, formatter: NCUnitFormatter(unit: .meter, style: .short))
+			damageChartView?.yAxis = Axis(range: 0...dps, formatter: NCUnitFormatter(unit: .none, style: .short))
+		}
+		
 		let root = TreeNode()
 		root.children = [ammo]
 		
@@ -51,31 +75,27 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let node = node as? NCAmmoNode else {return}
-		guard let damageChartRow = treeController.content?.children.first as? NCFittingAmmoDamageChartRow else {return}
 		
-		if damageChartRow.charges.count >= Limit {
+		if charges.count >= Limit {
 			treeController.deselectCell(for: node, animated: true)
 		}
 		else {
 			let typeID = Int(node.object.typeID)
-			damageChartRow.charges.append(typeID)
-			
-			guard let cell = treeController.cell(for: damageChartRow) as? NCFittingAmmoDamageChartTableViewCell else {return}
-			damageChartRow.configure(cell: cell)
+			charges.append(typeID)
+			damageChartView.charges = charges
 			tableView.reloadRows(at: [], with: .fade)
 		}
 	}
 	
 	func treeController(_ treeController: TreeController, didDeselectCellWithNode node: TreeNode) {
 		guard let node = node as? NCAmmoNode else {return}
-		guard let damageChartRow = treeController.content?.children.first as? NCFittingAmmoDamageChartRow else {return}
+
 		let typeID = Int(node.object.typeID)
-		if let i = damageChartRow.charges.index(of: typeID) {
-			damageChartRow.charges.remove(at: i)
+		if let i = charges.index(of: typeID) {
+			charges.remove(at: i)
 		}
 		
-		guard let cell = treeController.cell(for: damageChartRow) as? NCFittingAmmoDamageChartTableViewCell else {return}
-		damageChartRow.configure(cell: cell)
+		damageChartView.charges = charges
 		tableView.reloadRows(at: [], with: .fade)
 	}
 	

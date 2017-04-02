@@ -2418,7 +2418,7 @@
                     <navigationItem key="navigationItem" id="RJQ-Nx-V4m">
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="10U-Rs-mT1">
-                            <rect key="frame" x="15" y="7" width="291" height="30"/>
+                            <rect key="frame" x="14.5" y="7" width="291" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="My"/>
@@ -4400,7 +4400,7 @@
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6r7-FL-B8E">
-                                            <rect key="frame" x="39" y="132" width="8.5" height="16"/>
+                                            <rect key="frame" x="39" y="140" width="8.5" height="16"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -4529,7 +4529,7 @@
                                         <constraint firstAttribute="bottom" secondItem="QM1-8L-BAY" secondAttribute="bottom" priority="999" constant="4" id="ahf-Pt-l1v"/>
                                         <constraint firstItem="QM1-8L-BAY" firstAttribute="leading" secondItem="lyS-Y2-eX0" secondAttribute="leading" constant="15" id="gIh-Rp-e1G"/>
                                         <constraint firstItem="4hG-Pp-V30" firstAttribute="trailing" secondItem="fnL-7T-9qq" secondAttribute="trailing" id="ks7-1Q-t8D"/>
-                                        <constraint firstItem="6r7-FL-B8E" firstAttribute="centerY" secondItem="fnL-7T-9qq" secondAttribute="bottom" id="rsj-DR-eQq"/>
+                                        <constraint firstItem="6r7-FL-B8E" firstAttribute="top" secondItem="fnL-7T-9qq" secondAttribute="bottom" id="rsj-DR-eQq"/>
                                         <constraint firstItem="fnL-7T-9qq" firstAttribute="leading" secondItem="gsb-z0-tI8" secondAttribute="trailing" constant="4" id="wIx-Ls-1js"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -8217,7 +8217,7 @@
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fbq-2P-Kx0">
-                                            <rect key="frame" x="15" y="132" width="8.5" height="16"/>
+                                            <rect key="frame" x="15" y="140" width="8.5" height="16"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -8305,7 +8305,7 @@
                                         <constraint firstItem="Eba-ti-9dZ" firstAttribute="top" secondItem="Bmj-AE-BXa" secondAttribute="top" constant="4" id="dwM-2j-E6W"/>
                                         <constraint firstItem="lAZ-CY-KnF" firstAttribute="leading" secondItem="5TA-UT-3dd" secondAttribute="leading" id="flF-5K-4ht"/>
                                         <constraint firstItem="5TA-UT-3dd" firstAttribute="leading" secondItem="Fbq-2P-Kx0" secondAttribute="trailing" constant="4" id="jT2-Au-Xjh"/>
-                                        <constraint firstItem="Fbq-2P-Kx0" firstAttribute="centerY" secondItem="5TA-UT-3dd" secondAttribute="bottom" id="kFX-c0-8xw"/>
+                                        <constraint firstItem="Fbq-2P-Kx0" firstAttribute="top" secondItem="5TA-UT-3dd" secondAttribute="bottom" id="kFX-c0-8xw"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -8410,7 +8410,7 @@
                                     <constraint firstAttribute="bottom" secondItem="AWv-NV-pDe" secondAttribute="bottom" constant="4" id="kFj-fb-aPx"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UQ4-x0-h8t" customClass="NCTableView">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UQ4-x0-h8t" customClass="NCTableView">
                                 <rect key="frame" x="0.0" y="177" width="320" height="391"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -8431,6 +8431,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="damageChartView" destination="irB-C1-4eI" id="6aV-t8-Xhj"/>
+                        <outlet property="stepper" destination="aMm-or-He1" id="o6f-8U-GiL"/>
                         <outlet property="tableView" destination="UQ4-x0-h8t" id="1AP-qc-0jY"/>
                         <outlet property="treeController" destination="dD3-vu-MaU" id="SMy-ql-Imk"/>
                     </connections>

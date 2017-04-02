@@ -8,9 +8,25 @@
 
 import UIKit
 
-struct LineChart {
+class LineChart: Hashable {
+
 	var path: UIBezierPath
 	var color: UIColor
+	let identifier: Int?
+	
+	init(path: UIBezierPath, color: UIColor, identifier: Int? = nil) {
+		self.path = path
+		self.color = color
+		self.identifier = identifier
+	}
+	
+	var hashValue: Int {
+		return identifier?.hashValue ?? color.hashValue
+	}
+	
+	static func ==(lhs: LineChart, rhs: LineChart) -> Bool {
+		return lhs.hashValue == rhs.hashValue
+	}
 }
 
 struct Axis {
@@ -168,8 +184,8 @@ class LineChartView: UIView {
 		}
 		else {
 			let s = xAxis?.range.lowerBound == yAxis?.range.lowerBound
-				? xAxis?.formatter?.string(for: xAxis!.range.lowerBound) ?? "0"
-				: "\(xAxis?.formatter?.string(for: xAxis!.range.lowerBound) ?? "0")/\(yAxis?.formatter?.string(for: yAxis!.range.lowerBound) ?? "0")"
+				? yAxis?.formatter?.string(for: yAxis!.range.lowerBound) ?? "0"
+				: "\(yAxis?.formatter?.string(for: yAxis!.range.lowerBound) ?? "0")/\(xAxis?.formatter?.string(for: xAxis!.range.lowerBound) ?? "0")"
 			zeroPointLabel.attributedText = NSAttributedString(string: s, attributes: textAttributes)
 			extraSpace = 4
 		}
@@ -189,21 +205,27 @@ class LineChartView: UIView {
 		canvasView.constraints.first (where: {return ($0.firstItem as? UIView) == canvasView && $0.firstAttribute == .height})?.constant = canvasFrame.size.height
 		
 		var labels = yAxisView.subviews.flatMap {$0 as? UILabel}
-		if let axis = yAxis, !axis.range.isEmpty {
+		if let axis = yAxis {
+			let start = axis.range.upperBound > axis.range.lowerBound ? 1 : n
 			let r = axis.range.upperBound - axis.range.lowerBound
 			
 			var prev: UILabel?
-			for i in 1...n {
-				let label = !labels.isEmpty ? labels.removeFirst() : {
-					let label = UILabel(frame: .zero)
+			for i in start...n {
+				let label: UILabel
+				if labels.isEmpty {
+					label = UILabel(frame: .zero)
 					label.textAlignment = .right
 					label.translatesAutoresizingMaskIntoConstraints = false
 					yAxisView.addSubview(label)
 					NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[label]-0-|", options: [], metrics: nil, views: ["label": label]))
 					label.centerYAnchor.constraint(equalTo: yAxisView.bottomAnchor, constant: -CGFloat(i) * grid.height).isActive = true
-					return label
-					}()
+				}
+				else {
+					label = labels.removeFirst()
+					yAxisView.constraints.first {($0.firstItem as? UILabel) == label && $0.firstAttribute == .centerY}!.constant = -CGFloat(i) * grid.height
+				}
 				prev = label
+				NSLayoutConstraint.deactivate(yAxisView.constraints.filter {($0.firstItem as? UILabel) == label && $0.firstAttribute == .top})
 				
 				let value = Double(i) / Double(n) * r + axis.range.lowerBound
 				let s = axis.formatter?.string(for: value) ?? "\(value)"
@@ -221,7 +243,7 @@ class LineChartView: UIView {
 		canvasView.constraints.first (where: {return ($0.firstItem as? UIView) == canvasView && $0.firstAttribute == .width})?.constant = canvasFrame.size.width
 		
 		labels = xAxisView.subviews.flatMap {$0 as? UILabel}
-		if let axis = xAxis, !axis.range.isEmpty {
+		if let axis = xAxis, axis.range.upperBound > axis.range.lowerBound {
 			let r = axis.range.upperBound - axis.range.lowerBound
 			
 			var prev: UILabel?
@@ -238,16 +260,71 @@ class LineChartView: UIView {
 				
 				let value = Double(i) / Double(n) * r + axis.range.lowerBound
 				let s = axis.formatter?.string(for: value) ?? "\(value)"
-				label.attributedText = NSAttributedString(string: s, attributes: textAttributes)
+				UIView.animate(withDuration: 0.25, animations: { 
+					label.attributedText = NSAttributedString(string: s, attributes: self.textAttributes)
+				})
 			}
 			prev?.trailingAnchor.constraint(equalTo: xAxisView.trailingAnchor).isActive = true
 		}
 		labels.forEach {$0.removeFromSuperview()}
 		
-		var layers = chartLayers
-		chartLayers.removeAll()
+		//var layers = chartLayers
 		
-		for chart in charts {
+		yAxisView.setNeedsLayout()
+		xAxisView.setNeedsLayout()
+		self.setNeedsLayout()
+		self.layoutIfNeeded()
+
+		canvasFrame = canvasView.frame
+		
+		chartLayers.map {$0.chart}.transition(to: charts) { (old, new, type) in
+			switch type {
+			case .delete:
+				let layer = chartLayers[old!].layer
+				chartLayers.remove(at: old!)
+				
+				let path = UIBezierPath(cgPath: layer.path!)
+				var transform = CGAffineTransform(translationX: 0, y: canvasFrame.size.height)
+				transform = transform.scaledBy(x: 1, y: 0)
+				path.apply(transform)
+				
+				var delegate: AnimationDelegate? = AnimationDelegate()
+				delegate?.didStopHandler = { _ in
+					layer.removeFromSuperlayer()
+					delegate?.didStopHandler = nil
+					delegate = nil
+				}
+				
+				let animation = CABasicAnimation(keyPath: "path")
+				animation.fromValue = layer.path
+				animation.toValue = path.cgPath
+				animation.duration = 0.25
+				animation.delegate = delegate
+				layer.add(animation, forKey: "path")
+				layer.path = path.cgPath
+				
+			case .insert:
+				let chart = charts[new!]
+				let layer = CAShapeLayer()
+				layer.fillColor = nil
+				layer.strokeColor = chart.color.cgColor
+				canvasView.layer.addSublayer(layer)
+				chartLayers.insert((layer: layer, chart: chart), at: new!)
+				//chartLayers.append((layer: layer, chart: chart))
+			case .move:
+				let chart = charts[new!]
+				let layer = chartLayers.remove(at: old!).layer
+				layer.strokeColor = chart.color.cgColor
+				chartLayers.insert((layer: layer, chart: chart), at: new!)
+			case .update:
+				let chart = charts[new!]
+				let layer = chartLayers.remove(at: new!).layer
+				layer.strokeColor = chart.color.cgColor
+				chartLayers.insert((layer: layer, chart: chart), at: new!)
+			}
+		}
+		
+		/*for chart in charts {
 			let layer = !layers.isEmpty ? layers.removeFirst() : {
 				let layer = CAShapeLayer()
 				layer.fillColor = nil
@@ -257,13 +334,13 @@ class LineChartView: UIView {
 			layer.layer.strokeColor = chart.color.cgColor
 			chartLayers.append((layer: layer.layer, chart: chart))
 		}
-		layers.forEach {$0.layer.removeFromSuperlayer()}
+		layers.forEach {$0.layer.removeFromSuperlayer()}*/
 		
-		setNeedsLayout()
-		layoutIfNeeded()
+//		UIView.animate(withDuration: 0.25, delay: 0, options: [.beginFromCurrentState], animations: { 
+//		}, completion: nil)
 		
 		for layer in chartLayers {
-			layer.layer.frame = canvasFrame
+			layer.layer.frame = canvasView.bounds
 			let path = layer.chart.path.copy() as! UIBezierPath
 			path.apply(CGAffineTransform(scaleX: canvasFrame.size.width, y: canvasFrame.size.height))
 			

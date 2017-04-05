@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AnimationDelegate: NSObject, CAAnimationDelegate {
+/*class AnimationDelegate: NSObject, CAAnimationDelegate {
 	var didStopHandler: ((CAAnimation, Bool) -> Void)?
 	public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
 		didStopHandler?(anim ,flag)
@@ -16,7 +16,7 @@ class AnimationDelegate: NSObject, CAAnimationDelegate {
 }
 
 
-class NCFittingModuleDamageChartView: LineChartView {
+class NCFittingModuleDamageChartView: ChartView {
 	var module: NCFittingModule? {
 		didSet {
 			self.setNeedsLayout()
@@ -101,3 +101,4 @@ class NCFittingModuleDamageChartView: LineChartView {
 }
 
 
+*/

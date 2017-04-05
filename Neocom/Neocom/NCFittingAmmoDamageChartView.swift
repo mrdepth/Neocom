@@ -8,7 +8,7 @@
 
 import UIKit
 
-let NCFittingAmmoDamageChartViewColorsLimit = 5
+/*let NCFittingAmmoDamageChartViewColorsLimit = 5
 
 //fileprivate let ChartColors: [UIColor] = [#colorLiteral(red: 0.5529411765, green: 0.8274509804, blue: 0.7803921569, alpha: 1), #colorLiteral(red: 1, green: 1, blue: 0.7019607843, alpha: 1), #colorLiteral(red: 0.7450980392, green: 0.7294117647, blue: 0.8549019608, alpha: 1), #colorLiteral(red: 0.9843137255, green: 0.5019607843, blue: 0.4470588235, alpha: 1), #colorLiteral(red: 0.5019607843, green: 0.6941176471, blue: 0.8274509804, alpha: 1)]
 fileprivate let ChartColors: [UIColor] = {
@@ -22,7 +22,7 @@ fileprivate let ChartColors: [UIColor] = {
 	return colors
 }()
 
-class NCFittingAmmoDamageChartView: LineChartView {
+class NCFittingAmmoDamageChartView: ChartView {
 	var module: NCFittingModule? {
 		didSet {
 			self.setNeedsLayout()
@@ -295,3 +295,4 @@ class NCFittingAmmoDamageChartView: LineChartView {
 	}*/
 
 }
+*/

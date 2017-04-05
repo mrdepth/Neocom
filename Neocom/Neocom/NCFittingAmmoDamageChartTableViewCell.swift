@@ -9,7 +9,7 @@
 import UIKit
 
 class NCFittingAmmoDamageChartTableViewCell: NCTableViewCell {
-	@IBOutlet weak var damageChartView: NCFittingAmmoDamageChartView!
+//	@IBOutlet weak var damageChartView: NCFittingAmmoDamageChartView!
 	@IBOutlet weak var fullRangeLabel: UILabel!
 	@IBOutlet weak var halfRangeLabel: UILabel!
 	@IBOutlet weak var dpsLabel: UILabel!

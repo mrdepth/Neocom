@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LineChart: Hashable {
+/*class LineChart: Hashable {
 
 	var path: UIBezierPath
 	var color: UIColor
@@ -363,3 +363,4 @@ class LineChartView: UIView {
 	}
 	
 }
+*/

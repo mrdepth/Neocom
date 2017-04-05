@@ -11,6 +11,12 @@ import UIKit
 let Offset: CGFloat = 4
 let ThinnestLineWidth = 1.0 / UIScreen.main.scale
 
+extension CGSize {
+	func union(_ other: CGSize) -> CGSize {
+		return CGSize(width: max(width, other.width), height: max(height, other.height))
+	}
+}
+
 
 extension ClosedRange where Bound == Double {
 	func convert(_ x: Bound, to: ClosedRange<Bound>) -> Double {
@@ -18,6 +24,12 @@ extension ClosedRange where Bound == Double {
 	}
 }
 
+class AnimationDelegate: NSObject, CAAnimationDelegate {
+	var didStopHandler: ((CAAnimation, Bool) -> Void)?
+	public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+		didStopHandler?(anim ,flag)
+	}
+}
 
 class Chart: Hashable {
 	
@@ -29,24 +41,36 @@ class Chart: Hashable {
 		return lhs.hashValue == rhs.hashValue
 	}
 	
-	fileprivate weak var chartView: ChartView!
+	var needsUpdate: Bool = false {
+		didSet {
+			if needsUpdate {
+				chartView?.setNeedsLayout()
+			}
+		}
+	}
+	
+	fileprivate weak var chartView: ChartView?
 	func present(animated: Bool) {}
 	func dismiss(animated: Bool) {}
-	func update(animated: Bool) {}
+	func update() {}
 }
 
 class LineChart: Chart {
-	private(set) var data: [(x: Double, y: Double)] = []
+	var data: [(x: Double, y: Double)] = [] {
+		didSet {
+			needsUpdate = true
+		}
+	}
 	
 	var xRange: ClosedRange<Double> = 0...0 {
 		didSet {
-			update(animated: true)
+			needsUpdate = true
 		}
 	}
 	
 	var yRange: ClosedRange<Double> = 0...0 {
 		didSet {
-			update(animated: true)
+			needsUpdate = true
 		}
 	}
 	
@@ -64,12 +88,8 @@ class LineChart: Chart {
 		return layer
 	}()
 	
-	func setData(_ data: [(x: Double, y: Double)], animated: Bool) {
-		self.data = data
-		update(animated: animated)
-	}
-	
 	override func present(animated: Bool) {
+		guard let chartView = chartView else {return}
 		chartView.plot.layer.addSublayer(layer)
 		layer.frame = chartView.plot.bounds
 		let p = path()
@@ -78,7 +98,6 @@ class LineChart: Chart {
 		
 		if animated {
 			var transform = CGAffineTransform.identity
-			transform = transform.translatedBy(x: 0, y: layer.frame.size.height)
 			transform = transform.scaledBy(x: 1.0, y: 0.0)
 			p.apply(transform)
 			
@@ -90,20 +109,49 @@ class LineChart: Chart {
 	}
 	
 	override func dismiss(animated: Bool) {
+		if animated {
+			let layer = self.layer
+
+			guard let from = layer.path else {
+				layer.removeFromSuperlayer()
+				return
+			}
+			let to = UIBezierPath(cgPath: from)
+			var transform = CGAffineTransform.identity
+			transform = transform.scaledBy(x: 1.0, y: 0.0)
+			to.apply(transform)
+			
+			layer.path = to.cgPath
+			let animation = CABasicAnimation(keyPath: "path")
+			animation.fromValue = from
+			animation.duration = 0.25
+			var delegate: AnimationDelegate? = AnimationDelegate()
+			animation.delegate = delegate
+			
+			delegate?.didStopHandler = { _, _ in
+				layer.removeFromSuperlayer()
+				delegate = nil
+			}
+			
+			layer.add(animation, forKey: nil)
+
+		}
 	}
 	
 	private var updateWork: DispatchWorkItem?
 	
-	override func update(animated: Bool) {
+	override func update() {
 		guard chartView != nil else {return}
 		
 		updateWork?.cancel()
 		
 		updateWork = DispatchWorkItem { [weak self] in
 			guard let strongSelf = self else {return}
+			
 			let from = strongSelf.layer.path
+			strongSelf.layer.frame = strongSelf.layer.superlayer!.bounds
 			strongSelf.layer.path = strongSelf.path().cgPath
-			if animated {
+			if !CATransaction.disableActions() {
 				let animation = CABasicAnimation(keyPath: "path")
 				animation.fromValue = from
 				animation.duration = 0.25
@@ -150,10 +198,19 @@ class ChartAxis {
 	}
 	
 	var textAttributes: [String: Any] = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)]
-	var range: ClosedRange<Double> = 0...1
+	
+	var range: ClosedRange<Double> = 0...1 {
+		didSet {
+			chartView?.needsUpdateTitles = true
+			chartView?.setNeedsLayout()
+		}
+	}
+	
 	func title(for x: Double) -> String {
 		return String(format: "%.1f", x)
 	}
+	
+	fileprivate weak var chartView: ChartView?
 }
 
 class ChartView: UIView {
@@ -161,7 +218,8 @@ class ChartView: UIView {
 	var axes: [ChartAxis.Location: ChartAxis] = [:] {
 		didSet {
 			var l: Set<ChartAxis.Location> = [.left, .right, .bottom, .top]
-			for (location, _) in axes {
+			for (location, axis) in axes {
+				axis.chartView = self
 				l.remove(location)
 				if axesViews[location] == nil {
 					let stackView = UIStackView()
@@ -261,8 +319,13 @@ class ChartView: UIView {
 			}
 			
 		}
-		
+		let isChanged = plot.frame == plotFrame
 		plot.frame = plotFrame
+		for chart in charts {
+			if isChanged || chart.needsUpdate {
+				chart.update()
+			}
+		}
 	}
 	
 	func addChart(_ chart: Chart, animated: Bool) {
@@ -281,7 +344,7 @@ class ChartView: UIView {
 	}
 	
 	private var axesViews: [ChartAxis.Location: UIStackView] = [:]
-	private var needsUpdateTitles: Bool = true
+	fileprivate var needsUpdateTitles: Bool = true
 
 	private lazy var grid: CAShapeLayer = {
 		let grid = CAShapeLayer()
@@ -296,7 +359,7 @@ class ChartView: UIView {
 		var plotFrameInsets = UIEdgeInsets.zero
 		var sizes: [ChartAxis.Location: CGSize] = [:]
 		
-		for (location, axis) in axes {
+		/*for (location, axis) in axes {
 			let s = NSAttributedString(string: axis.title(for: axis.range.upperBound), attributes: axis.textAttributes)
 			let size = s.boundingRect(with: bounds.size, options: [.usesLineFragmentOrigin], context: nil).size
 			sizes[location] = size
@@ -311,26 +374,76 @@ class ChartView: UIView {
 			case .bottom:
 				plotFrameInsets.bottom = size.height.rounded(.up)
 			}
-		}
+		}*/
 		
-		let plotFrame = UIEdgeInsetsInsetRect(bounds, plotFrameInsets)
+		var titles: [ChartAxis.Location:[NSAttributedString]] = [:]
 		
-		for (location, axis) in axes {
+		var plotFrame = bounds
+		
+		for _ in 0..<10 {
 			
-			let n: Int
-			switch location {
-			case .left, .right:
-				n = Int(trunc(plotFrame.size.height / (sizes[location]!.height + 4)))
-			case .top, .bottom:
-				n = Int(trunc(plotFrame.size.width / (sizes[location]!.width + 8)))
+			for (location, axis) in axes {
+				
+				let n: Int
+				if let size = sizes[location] {
+					switch location {
+					case .left, .right:
+						n = Int(trunc(plotFrame.size.height / (size.height + 4)))
+					case .top, .bottom:
+						n = Int(trunc(plotFrame.size.width / (size.width + 8)))
+					}
+				}
+				else {
+					n = 1
+				}
+				
+				var array = [NSAttributedString]()
+				for i in 0..<n {
+					let x: Double
+					switch location {
+					case .bottom, .top:
+						x = (0...Double(n - 1)).convert(Double(i), to: axis.range)
+					case .left, .right:
+						x = (0...Double(n - 1)).convert(Double(n - i - 1), to: axis.range)
+					}
+					let s = NSAttributedString(string: axis.title(for: x), attributes: axis.textAttributes)
+					array.append(s)
+					let size = s.boundingRect(with: bounds.size, options: [.usesLineFragmentOrigin], context: nil).size
+					sizes[location] = size.union(sizes[location] ?? .zero)
+				}
+				titles[location] = array
+			}
+			var plotFrameInsets = UIEdgeInsets.zero
+
+			for (location, size) in sizes {
+				switch location {
+				case .left:
+					plotFrameInsets.left = (size.width + Offset).rounded(.up)
+				case .right:
+					plotFrameInsets.right = (size.width + Offset).rounded(.up)
+				case .top:
+					plotFrameInsets.top = size.height.rounded(.up)
+				case .bottom:
+					plotFrameInsets.bottom = size.height.rounded(.up)
+				}
 			}
 			
+			let other = UIEdgeInsetsInsetRect(bounds, plotFrameInsets)
+
+			defer {
+				plotFrame = other
+			}
+			if other == plotFrame {
+				break
+			}
+		}
+		
+		for (location, titles) in titles {
 			var size = CGSize.zero
 			let stackView = axesViews[location]!
 			var labels = stackView.arrangedSubviews as! [UILabel]
-			for i in 0..<n {
-				let x = (0...Double(n - 1)).convert(Double( stackView.axis == .horizontal ? i : (n - i - 1)), to: axis.range)
-				let s = NSAttributedString(string: axis.title(for: x), attributes: axis.textAttributes)
+			
+			for title in titles {
 				let label = !labels.isEmpty ? labels.removeFirst() : {
 					let label = UILabel(frame: .zero)
 					label.textColor = tintColor
@@ -338,8 +451,8 @@ class ChartView: UIView {
 					label.textAlignment = .center
 					stackView.addArrangedSubview(label)
 					return label
-				}()
-				label.attributedText = s
+					}()
+				label.attributedText = title
 				label.sizeToFit()
 				if stackView.axis == .horizontal {
 					size.width += label.bounds.size.width
@@ -350,8 +463,10 @@ class ChartView: UIView {
 					size.width = max(size.width, label.bounds.size.width)
 				}
 			}
+			
 			labels.forEach {$0.removeFromSuperview()}
 			stackView.bounds.size = size
+
 		}
 	}
 }

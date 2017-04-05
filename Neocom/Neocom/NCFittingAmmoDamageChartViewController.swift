@@ -119,6 +119,7 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 		let typeID = Int(node.object.typeID)
 		if let i = charges.index(of: typeID) {
 			charges.remove(at: i)
+			reload()
 		}
 		
 //		damageChartView.charges = charges
@@ -216,6 +217,10 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 			module.charge = charge
 			
 			DispatchQueue.main.async {
+
+				self.damageChartView.axes[.left]?.range = 0...size.y
+				self.damageChartView.axes[.bottom]?.range = 0...size.x
+
 				var charts = self.damageChartView.charts
 				
 				for (chargeID, data) in dataSets {
@@ -226,14 +231,14 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 						charts.remove(at: i)
 						chart.xRange = 0...size.x
 						chart.yRange = 0...size.y
-						chart.setData(data, animated: true)
+						chart.data = data
 					}
 					else {
 						let chart = AmmoDamageChart(chargeID: chargeID)
 						chart.color = self.chartColors.removeFirst()
 						chart.xRange = 0...size.x
 						chart.yRange = 0...size.y
-						chart.setData(data, animated: true)
+						chart.data = data
 						self.damageChartView.addChart(chart, animated: true)
 					}
 				}
@@ -242,6 +247,7 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 					self.chartColors.append((chart as! AmmoDamageChart).color)
 					self.damageChartView.removeChart(chart, animated: true)
 				}
+				
 			}
 		}
 	}

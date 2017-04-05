@@ -8,12 +8,7 @@
 
 import UIKit
 
-/*class AnimationDelegate: NSObject, CAAnimationDelegate {
-	var didStopHandler: ((CAAnimation, Bool) -> Void)?
-	public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-		didStopHandler?(anim ,flag)
-	}
-}
+/*
 
 
 class NCFittingModuleDamageChartView: ChartView {

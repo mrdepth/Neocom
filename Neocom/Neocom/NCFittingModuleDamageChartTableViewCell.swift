@@ -119,25 +119,25 @@ class NCFittingModuleDamageChartRow: TreeRow {
 				if cell.damageChartView.charts.isEmpty {
 					let dpsChart = LineChart()
 					dpsChart.color =  accuracy.color
-					dpsChart.setData(dpsData, animated: false)
+					dpsChart.data = dpsData
 					dpsChart.xRange = xRange
 					dpsChart.yRange = yRange
 					
 					let accuracyChart = LineChart()
 					accuracyChart.color =  .caption
-					accuracyChart.setData(hitChanceData, animated: false)
+					accuracyChart.data = hitChanceData
 					accuracyChart.xRange = xRange
 					accuracyChart.yRange = yRange
 					
 					let optimalChart = LineChart()
 					optimalChart.color =  UIColor(white: 1.0, alpha: 0.3)
-					optimalChart.setData(optimalData, animated: false)
+					optimalChart.data = optimalData
 					optimalChart.xRange = xRange
 					optimalChart.yRange = yRange
 					
 					let falloffChart = LineChart()
 					falloffChart.color =  UIColor(white: 1.0, alpha: 0.3)
-					falloffChart.setData(falloffData, animated: false)
+					falloffChart.data = falloffData
 					falloffChart.xRange = xRange
 					falloffChart.yRange = yRange
 					
@@ -151,22 +151,22 @@ class NCFittingModuleDamageChartRow: TreeRow {
 					chart?.color = accuracy.color
 					chart?.xRange = xRange
 					chart?.yRange = yRange
-					chart?.setData(dpsData, animated: true)
+					chart?.data = dpsData
 					
 					chart = (cell.damageChartView.charts[1] as? LineChart)
 					chart?.xRange = xRange
 					chart?.yRange = yRange
-					chart?.setData(hitChanceData, animated: true)
+					chart?.data = hitChanceData
 
 					chart = (cell.damageChartView.charts[2] as? LineChart)
 					chart?.xRange = xRange
 					chart?.yRange = yRange
-					chart?.setData(optimalData, animated: true)
+					chart?.data = optimalData
 
 					chart = (cell.damageChartView.charts[3] as? LineChart)
 					chart?.xRange = xRange
 					chart?.yRange = yRange
-					chart?.setData(falloffData, animated: true)
+					chart?.data = falloffData
 				}
 				
 				cell.dpsAccuracyView.backgroundColor = accuracy.color

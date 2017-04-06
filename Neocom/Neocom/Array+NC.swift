@@ -45,7 +45,12 @@ extension Array where Element: Equatable {
 				if obj == to[j] {
 					removed.remove(i)
 					inserted.remove(j)
-					moved.append((i, j))
+					if i != j {
+						moved.append((i, j))
+					}
+					else {
+						updated.append((i, j))
+					}
 				}
 			}
 		}
@@ -72,7 +77,8 @@ extension Array where Element: Equatable {
 }
 
 extension Array where Element: NSObject {
-	func transition(to: Array<Element>, handler: (_ oldIndex: Int?, _ newIndex: Int?, _ changeType: NSFetchedResultsChangeType) -> Void) {
+	
+	/*func transition(to: Array<Element>, handler: (_ oldIndex: Int?, _ newIndex: Int?, _ changeType: NSFetchedResultsChangeType) -> Void) {
 		let from = self
 		var arr = from
 		for i in (0..<from.count).reversed() {
@@ -97,6 +103,6 @@ extension Array where Element: NSObject {
 				handler(nil, i, .insert)
 			}
 		}
-	}
+	}*/
 	
 }

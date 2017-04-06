@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 fileprivate let Limit = 5
 
@@ -39,6 +40,8 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 	@IBOutlet weak var stepper: UIStepper!
 	@IBOutlet weak var chargesStackView: UIStackView!
 	@IBOutlet weak var damageChartView: ChartView!
+	@IBOutlet weak var hullLabel: UILabel!
+	@IBOutlet weak var hullTypeStepper: UIStepper!
 
 	
 	var category: NCDBDgmppItemCategory?
@@ -53,11 +56,24 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 		}
 		return hullType
 	}()
-	
-	var charges: [Int] = []
+
+	private lazy var hullTypes: [NCDBDgmppHullType]? = {
+		let request = NSFetchRequest<NCDBDgmppHullType>(entityName: "DgmppHullType")
+		request.sortDescriptors = [NSSortDescriptor(key: "signature", ascending: true), NSSortDescriptor(key: "hullTypeName", ascending: true)]
+		return (try? NCDatabase.sharedDatabase!.viewContext.fetch(request))
+		
+	}()
+
+	var charges: [Int] = [] {
+		didSet {
+			self.title = "\(charges.count) / \(Limit)"
+			self.navigationItem.rightBarButtonItem?.isEnabled = charges.count > 0
+		}
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		charges = []
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
@@ -72,31 +88,36 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 		title = group.groupName
 		
 		guard let ammo = NCAmmoSection(category: category) else {return}
-		guard let modules = modules else {return}
-		guard let module = modules.first else {return}
 		
 		damageChartView.axes[.left] = DamageAxis()
 		damageChartView.axes[.bottom] = RangeAxis()
 		
-		/*damageChartView.targetSignature = Double(hullType?.signature ?? 0)
-		damageChartView.module = module
-		damageChartView.xAxis = Axis(range: 0...0, formatter: NCUnitFormatter(unit: .meter, style: .short))
-		damageChartView.yAxis = Axis(range: 0...0, formatter: NCUnitFormatter(unit: .none, style: .short))
-		
-		damageChartView.updateHandler = { [weak damageChartView] updates in
-			let dps = updates.map ({$0.value.dps}).max() ?? 0
-			let range = updates.map ({$0.value.range}).max() ?? 0
-			damageChartView?.xAxis = Axis(range: 0...range, formatter: NCUnitFormatter(unit: .meter, style: .short))
-			damageChartView?.yAxis = Axis(range: 0...dps, formatter: NCUnitFormatter(unit: .none, style: .short))
-		}*/
-		
-		let root = TreeNode()
-		root.children = [ammo]
-		
-		treeController.content = root
+		hullLabel.text = NSLocalizedString("DPS AGAINST", comment: "") + " " + (hullType?.hullTypeName?.uppercased() ?? "")
+		hullTypeStepper.maximumValue = Double(hullTypes?.count ?? 1) - 1
+		if let hullType = hullType {
+			hullTypeStepper.value = Double(hullTypes?.index(of: hullType) ?? 0)
+		}
+
+		treeController.content = ammo
 
 	}
 	
+	@IBAction func onChangeHullType(_ sender: UIStepper) {
+		hullType = hullTypes?[Int(sender.value)]
+		hullLabel.text = NSLocalizedString("DPS AGAINST", comment: "") + " " + (hullType?.hullTypeName?.uppercased() ?? "")
+		reload()
+	}
+
+	@IBAction func onClear(_ sender: Any) {
+		charges = []
+		reload()
+		for section in treeController.content?.children ?? [] {
+			for child in section.children {
+				child.isSelected = false
+			}
+		}
+	}
+
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
@@ -124,6 +145,11 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 		
 //		damageChartView.charges = charges
 		tableView.reloadRows(at: [], with: .fade)
+	}
+	
+	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+		guard let node = node as? NCAmmoNode else {return}
+		Router.Database.TypeInfo(node.object).perform(source: self, view: treeController.cell(for: node))
 	}
 	
 	
@@ -158,7 +184,7 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 		guard let module = modules?.first else {return}
 		let charges = self.charges
 		
-		let n = tableView.bounds.size.width / 5
+		let n = tableView.bounds.size.width
 		let targetSignature = Double(hullType?.signature ?? 0)
 
 		module.engine?.perform {
@@ -177,18 +203,20 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 			
 			for typeID in charges {
 				module.charge = NCFittingCharge(typeID: typeID)
-				
 				let optimal = module.maxRange
 				let falloff = module.falloff
-				let maxX = ceil((optimal + max(falloff * 3, optimal * 0.5)) / 10000) * 10000
-				guard maxX > 0 else {continue}
-				let maxDPS = dps(at: optimal * 0.1)
-				guard maxDPS > 0 else {return}
-				
+				let maxX = ceil((optimal + max(falloff * 2, optimal * 0.5)) / 10000) * 10000
+				let maxY = dps(at: optimal * 0.1)
 				size.x = max(size.x, maxX)
+				size.y = max(size.y, maxY)
+			}
+			
+			for typeID in charges {
+				module.charge = NCFittingCharge(typeID: typeID)
 				
+				let maxX = size.x
+				guard maxX > 0 else {continue}
 				
-				let path = UIBezierPath()
 				var data: [(x: Double, y: Double)] = []
 				let dx = maxX / Double(n)
 				var x: Double = dx
@@ -197,17 +225,17 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 				data.append((x: x, y: y))
 				var best = (dps: y, range: x)
 				
-				size.y = max(size.y, y)
+//				size.y = max(size.y, y)
+				x += dx
 
 				while x < maxX {
-					x += dx
 					y = dps(at: x, signature: targetSignature)
 					if y > best.dps {
 						best = (dps: y, range: x)
 					}
 					data.append((x: x, y: y))
-					size.y = max(size.y, y)
-
+//					size.y = max(size.y, y)
+					x += dx
 				}
 				dataSets[typeID] = data
 				
@@ -221,13 +249,13 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 				self.damageChartView.axes[.left]?.range = 0...size.y
 				self.damageChartView.axes[.bottom]?.range = 0...size.x
 
-				var charts = self.damageChartView.charts
+				var charts = self.damageChartView.charts as! [AmmoDamageChart]
 				
 				for (chargeID, data) in dataSets {
 					
 					
-					if let i = charts.index(where: {($0 as? AmmoDamageChart)?.chargeID == chargeID}) {
-						let chart = charts[i] as! AmmoDamageChart
+					if let i = charts.index(where: {$0.chargeID == chargeID}) {
+						let chart = charts[i]
 						charts.remove(at: i)
 						chart.xRange = 0...size.x
 						chart.yRange = 0...size.y
@@ -243,11 +271,37 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 					}
 				}
 				
+				var labels = self.chargesStackView.arrangedSubviews as! [UILabel]
+				let invTypes = NCDatabase.sharedDatabase?.invTypes
+				let count = Double(self.modules?.count ?? 0)
+
 				for chart in charts {
-					self.chartColors.append((chart as! AmmoDamageChart).color)
+					self.chartColors.insert(chart.color, at: 0)
 					self.damageChartView.removeChart(chart, animated: true)
 				}
+
+				UIView.animate(withDuration: 0.25, animations: {
+					for chart in self.damageChartView.charts as! [AmmoDamageChart] {
+						let label = labels.count > 0 ? labels.removeFirst() : {
+							let label = UILabel()
+							label.font = UIFont.preferredFont(forTextStyle: .footnote)
+							self.chargesStackView.addArrangedSubview(label)
+							return label
+							}()
+						let best = statistics[chart.chargeID]!
+						let dps = NCUnitFormatter.localizedString(from: best.dps * count, unit: .none, style: .full)
+						let range = NCUnitFormatter.localizedString(from: best.range, unit: .meter, style: .full)
+						
+						let typeName = invTypes?[chart.chargeID]?.typeName ?? ""
+						label.text = "\(typeName) (\(dps) \(NSLocalizedString("at", comment: "DPS at range")) \(range))"
+						label.textColor = chart.color
+					}
+					labels.forEach {$0.removeFromSuperview()}
+					self.view.setNeedsLayout()
+					self.view.layoutIfNeeded()
+				})
 				
+
 			}
 		}
 	}

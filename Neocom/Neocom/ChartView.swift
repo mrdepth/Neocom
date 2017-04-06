@@ -11,6 +11,17 @@ import UIKit
 let Offset: CGFloat = 4
 let ThinnestLineWidth = 1.0 / UIScreen.main.scale
 
+class ChartShapeLayer: CAShapeLayer {
+	override func action(forKey event: String) -> CAAction? {
+		if event == "path" {
+			return CABasicAnimation(keyPath: "path")
+		}
+		else {
+			return super.action(forKey: event)
+		}
+	}
+}
+
 extension CGSize {
 	func union(_ other: CGSize) -> CGSize {
 		return CGSize(width: max(width, other.width), height: max(height, other.height))
@@ -50,8 +61,8 @@ class Chart: Hashable {
 	}
 	
 	fileprivate weak var chartView: ChartView?
-	func present(animated: Bool) {}
-	func dismiss(animated: Bool) {}
+	func present() {}
+	func dismiss() {}
 	func update() {}
 }
 
@@ -81,85 +92,56 @@ class LineChart: Chart {
 	}
 
 	private lazy var layer: CAShapeLayer = {
-		let layer = CAShapeLayer()
+		let layer = ChartShapeLayer()
 		layer.fillColor = nil
 		layer.strokeColor = self.color.cgColor
 		layer.transform = CATransform3DMakeAffineTransform(CGAffineTransform.init(scaleX: 1, y: -1))
 		return layer
 	}()
 	
-	override func present(animated: Bool) {
+	override func present() {
 		guard let chartView = chartView else {return}
-		chartView.plot.layer.addSublayer(layer)
+		chartView.plot.addSublayer(layer)
 		layer.frame = chartView.plot.bounds
 		let p = path()
 		
 		layer.path = p.cgPath
 		
-		if animated {
-			var transform = CGAffineTransform.identity
-			transform = transform.scaledBy(x: 1.0, y: 0.0)
-			p.apply(transform)
-			
-			let animation = CABasicAnimation(keyPath: "path")
-			animation.fromValue = p.cgPath
-			animation.duration = 0.25
-			layer.add(animation, forKey: nil)
-		}
+		var transform = CGAffineTransform.identity
+		transform = transform.scaledBy(x: 1.0, y: 0.0)
+		p.apply(transform)
+		
+		let animation = CABasicAnimation(keyPath: "path")
+		animation.fromValue = p.cgPath
+		animation.duration = 0.25
+		layer.add(animation, forKey: nil)
 	}
 	
-	override func dismiss(animated: Bool) {
-		if animated {
-			let layer = self.layer
-
-			guard let from = layer.path else {
-				layer.removeFromSuperlayer()
-				return
-			}
-			let to = UIBezierPath(cgPath: from)
-			var transform = CGAffineTransform.identity
-			transform = transform.scaledBy(x: 1.0, y: 0.0)
-			to.apply(transform)
-			
-			layer.path = to.cgPath
-			let animation = CABasicAnimation(keyPath: "path")
-			animation.fromValue = from
-			animation.duration = 0.25
-			var delegate: AnimationDelegate? = AnimationDelegate()
-			animation.delegate = delegate
-			
-			delegate?.didStopHandler = { _, _ in
-				layer.removeFromSuperlayer()
-				delegate = nil
-			}
-			
-			layer.add(animation, forKey: nil)
-
+	override func dismiss() {
+		let layer = self.layer
+		
+		guard let from = layer.path else {
+			layer.removeFromSuperlayer()
+			return
 		}
+		let to = UIBezierPath(cgPath: from)
+		var transform = CGAffineTransform.identity
+		transform = transform.scaledBy(x: 1.0, y: 0.0)
+		to.apply(transform)
+		
+		CATransaction.begin()
+		layer.path = to.cgPath
+		CATransaction.setCompletionBlock({
+			layer.removeFromSuperlayer()
+		})
+		CATransaction.commit()
 	}
 	
-	private var updateWork: DispatchWorkItem?
 	
 	override func update() {
-		guard chartView != nil else {return}
-		
-		updateWork?.cancel()
-		
-		updateWork = DispatchWorkItem { [weak self] in
-			guard let strongSelf = self else {return}
-			
-			let from = strongSelf.layer.path
-			strongSelf.layer.frame = strongSelf.layer.superlayer!.bounds
-			strongSelf.layer.path = strongSelf.path().cgPath
-			if !CATransaction.disableActions() {
-				let animation = CABasicAnimation(keyPath: "path")
-				animation.fromValue = from
-				animation.duration = 0.25
-				strongSelf.layer.add(animation, forKey: nil)
-			}
-			strongSelf.updateWork = nil
-		}
-		DispatchQueue.main.async(execute: updateWork!)
+		guard let chartView = chartView else {return}
+		layer.frame = chartView.plot.bounds
+		layer.path = path().cgPath
 	}
 	
 	private func path() -> UIBezierPath {
@@ -199,7 +181,7 @@ class ChartAxis {
 	
 	var textAttributes: [String: Any] = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)]
 	
-	var range: ClosedRange<Double> = 0...1 {
+	var range: ClosedRange<Double> = 0...0 {
 		didSet {
 			chartView?.needsUpdateTitles = true
 			chartView?.setNeedsLayout()
@@ -252,11 +234,11 @@ class ChartView: UIView {
 		}
 	}
 
-	private(set) lazy var plot: UIView = {
-		let plot = UIView(frame: self.bounds)
-		plot.translatesAutoresizingMaskIntoConstraints = false
-		self.addSubview(plot)
-		plot.backgroundColor = self.tintColor.withAlphaComponent(0.15)
+	private(set) lazy var plot: CALayer = {
+		let plot = CALayer()
+		plot.frame = self.bounds
+		self.layer.addSublayer(plot)
+//		plot.backgroundColor = self.tintColor.withAlphaComponent(0.15).cgColor
 		return plot
 	}()
 
@@ -287,7 +269,7 @@ class ChartView: UIView {
 		}
 		let plotFrame = UIEdgeInsetsInsetRect(bounds, plotFrameInsets)
 		
-		if grid.frame != plotFrame || grid.path == nil {
+		if grid.path == nil {
 			grid.frame = plotFrame
 			let w = plotFrame.width / (plotFrame.width / 24).rounded(.down)
 			let h = plotFrame.height / (plotFrame.height / 24).rounded(.down)
@@ -304,6 +286,16 @@ class ChartView: UIView {
 				p.y += h
 			}
 			grid.path = path.cgPath
+		}
+		else if grid.frame != plotFrame {
+			let from = grid.path!
+			let to = UIBezierPath(cgPath: from)
+			var transform = CGAffineTransform.identity
+			transform = transform.scaledBy(x: plotFrame.width / grid.frame.size.width, y: plotFrame.height / grid.frame.size.height)
+			to.apply(transform)
+			
+			grid.frame = plotFrame
+			grid.path = to.cgPath
 		}
 		
 		for (location, stackView) in axesViews {
@@ -326,18 +318,19 @@ class ChartView: UIView {
 				chart.update()
 			}
 		}
+		
 	}
 	
 	func addChart(_ chart: Chart, animated: Bool) {
 		layoutIfNeeded()
 		charts.append(chart)
 		chart.chartView = self
-		chart.present(animated: animated)
+		chart.present()
 	}
 	
 	func removeChart(_ chart: Chart, animated: Bool) {
 		if let i = charts.index(of: chart) {
-			chart.dismiss(animated: animated)
+			chart.dismiss()
 			charts.remove(at: i)
 			chart.chartView = nil
 		}
@@ -347,34 +340,19 @@ class ChartView: UIView {
 	fileprivate var needsUpdateTitles: Bool = true
 
 	private lazy var grid: CAShapeLayer = {
-		let grid = CAShapeLayer()
+		let grid = ChartShapeLayer()
 		grid.fillColor = nil
 		grid.strokeColor = self.tintColor.withAlphaComponent(0.5).cgColor
 		grid.lineWidth = ThinnestLineWidth
-		self.layer.insertSublayer(grid, above: self.plot.layer)
+		
+		grid.backgroundColor = self.tintColor.withAlphaComponent(0.15).cgColor
+		self.layer.insertSublayer(grid, below: self.plot)
 		return grid
 	}()
 	
 	private func updateTitles() {
 		var plotFrameInsets = UIEdgeInsets.zero
 		var sizes: [ChartAxis.Location: CGSize] = [:]
-		
-		/*for (location, axis) in axes {
-			let s = NSAttributedString(string: axis.title(for: axis.range.upperBound), attributes: axis.textAttributes)
-			let size = s.boundingRect(with: bounds.size, options: [.usesLineFragmentOrigin], context: nil).size
-			sizes[location] = size
-			
-			switch location {
-			case .left:
-				plotFrameInsets.left = (size.width + Offset).rounded(.up)
-			case .right:
-				plotFrameInsets.right = (size.width + Offset).rounded(.up)
-			case .top:
-				plotFrameInsets.top = size.height.rounded(.up)
-			case .bottom:
-				plotFrameInsets.bottom = size.height.rounded(.up)
-			}
-		}*/
 		
 		var titles: [ChartAxis.Location:[NSAttributedString]] = [:]
 		

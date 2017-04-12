@@ -95,7 +95,7 @@ fileprivate class NCSkillQueueSection: NCTreeSection {
 		self.character = character
 		
 		let invTypes = NCDatabase.sharedDatabase?.invTypes
-		func rows(_ skillQueue: [ESSkillQueueItem]) -> [NCSkillQueueRow] {
+		func rows(_ skillQueue: [ESI.Skills.SkillQueueItem]) -> [NCSkillQueueRow] {
 			let date = Date()
 			return skillQueue.flatMap { (item) in
 				guard let finishDate = item.finishDate, finishDate > date else {return nil}
@@ -107,7 +107,7 @@ fileprivate class NCSkillQueueSection: NCTreeSection {
 
 		let children = rows(character.skillQueue)
 		
-		func title(_ skillQueue: [ESSkillQueueItem]) -> String {
+		func title(_ skillQueue: [ESI.Skills.SkillQueueItem]) -> String {
 			if let lastSkill = skillQueue.last, let endDate = lastSkill.finishDate, endDate > Date() {
 				return String(format: NSLocalizedString("SKILL QUEUE: %@ (%d skills)", comment: ""),
 				                               NCTimeIntervalFormatter.localizedString(from: max(0, endDate.timeIntervalSinceNow), precision: .minutes), skillQueue.count)

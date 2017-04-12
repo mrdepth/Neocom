@@ -530,8 +530,9 @@ extension NCFittingCharacter {
 			case let .success(value, _):
 				engine.perform {
 					var levels = [Int: Int]()
-					for skill in value.skills {
-						levels[skill.skillID] = skill.currentSkillLevel
+					for skill in value.skills ?? [] {
+						guard let skillID = skill.skillID, let currentSkillLevel = skill.currentSkillLevel else {continue}
+						levels[skillID] = currentSkillLevel
 					}
 					
 					self.skills.set(levels: levels)

@@ -79,7 +79,7 @@ class NCSkill: Hashable {
 		self.trainingEndDate = trainingEndDate
 	}
 	
-	convenience init?(type: NCDBInvType, skill: ESSkillQueueItem) {
+	convenience init?(type: NCDBInvType, skill: ESI.Skills.SkillQueueItem) {
 		self.init(type: type, level: skill.finishedLevel - 1, startSkillPoints: skill.trainingStartSP, trainingStartDate: skill.startDate, trainingEndDate: skill.finishDate)
 	}
 	

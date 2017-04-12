@@ -23,7 +23,7 @@ class NCAccountInfo: NSObject {
 	dynamic var skill: NSAttributedString?
 	dynamic var skillQueue: String = " "
 	
-	var firstTrainingSkill: ESSkillQueueItem? {
+	var firstTrainingSkill: ESI.Skills.SkillQueueItem? {
 		didSet {
 			if let skill = firstTrainingSkill {
 				guard let type = NCDatabase.sharedDatabase?.invTypes[skill.skillID] else {return}
@@ -137,7 +137,7 @@ class NCAccountInfo: NSObject {
 		didSet {
 			if let skillQueueRecord = skillQueueRecord {
 				self.binder.bind("firstTrainingSkill", toObject: skillQueueRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
-					guard let skillQueue = value as? [ESSkillQueueItem] else {return nil}
+					guard let skillQueue = value as? [ESI.Skills.SkillQueueItem] else {return nil}
 					let date = Date()
 					guard let skill = skillQueue.first(where: {
 						if let finishDate = $0.finishDate {
@@ -155,7 +155,7 @@ class NCAccountInfo: NSObject {
 				
 				self.binder.bind("skillQueue", toObject: skillQueueRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { (value) -> Any? in
 					let date = Date()
-					guard let skillQueue = (value as? [ESSkillQueueItem])?.filter({
+					guard let skillQueue = (value as? [ESI.Skills.SkillQueueItem])?.filter({
 						guard let finishDate = $0.finishDate else {return false}
 						return finishDate >= date
 					})

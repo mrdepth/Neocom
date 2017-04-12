@@ -57,7 +57,7 @@ class NCMainMenuDetails: NSObject {
 				self.binder.bind("skillQueueInfo", toObject: skillQueueRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
 					let date = Date()
 					
-					guard let skillQueue = (value as? [ESSkillQueueItem])?.filter({
+					guard let skillQueue = (value as? [ESI.Skills.SkillQueueItem])?.filter({
 						guard let finishDate = $0.finishDate else {return false}
 						return finishDate >= date
 					}),

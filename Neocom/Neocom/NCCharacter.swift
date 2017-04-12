@@ -13,12 +13,12 @@ import CoreData
 class NCCharacter {
 	
 	private(set) var skills: [Int: NCSkill]
-	private(set) var skillQueue: [ESSkillQueueItem]
+	private(set) var skillQueue: [ESI.Skills.SkillQueueItem]
 	private(set) var attributes: NCCharacterAttributes
 	
-	init(attributes: NCCharacterAttributes? = nil, skills: ESSkills? = nil, skillQueue: [ESSkillQueueItem]? = nil) {
+	init(attributes: NCCharacterAttributes? = nil, skills: ESI.Skills.CharacterSkills? = nil, skillQueue: [ESI.Skills.SkillQueueItem]? = nil) {
 		var skillsMap = [Int: NCSkill]()
-		var map = [IndexPath: ESSkillQueueItem]()
+		var map = [IndexPath: ESI.Skills.SkillQueueItem]()
 		if let skillQueue = skillQueue {
 			for item in skillQueue {
 				map[IndexPath(indexes: [item.skillID, item.finishedLevel - 1])] = item
@@ -50,7 +50,7 @@ class NCCharacter {
 		if let account = account {
 			let dataManager = NCDataManager(account: account)
 			var skillsResult: NCCachedResult<ESSkills>?
-			var skillQueueResult: NCCachedResult<[ESSkillQueueItem]>?
+			var skillQueueResult: NCCachedResult<[ESI.Skills.SkillQueueItem]>?
 			
 			let dispatchGroup = DispatchGroup()
 			
@@ -83,7 +83,7 @@ class NCCharacter {
 					
 					var skills: ESSkills?
 					var skillsRecord: NCCacheRecord?
-					var skillQueue: [ESSkillQueueItem]?
+					var skillQueue: [ESI.Skills.SkillQueueItem]?
 					var skillQueueRecord: NCCacheRecord?
 					
 					switch skillsResult {
@@ -122,7 +122,7 @@ class NCCharacter {
 						
 						NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
 							var skills: ESSkills?
-							var skillQueue: [ESSkillQueueItem]?
+							var skillQueue: [ESI.Skills.SkillQueueItem]?
 							var skillsMap = [Int: NCSkill]()
 							synchronized(self) {
 								for object in updated {
@@ -130,11 +130,11 @@ class NCCharacter {
 										skills = ((try? managedObjectContext.existingObject(with: object.objectID)) as? NCCacheRecord)?.data?.data as? ESSkills
 									}
 									else if object.objectID == skillQueueRecord?.objectID {
-										skillQueue = ((try? managedObjectContext.existingObject(with: object.objectID)) as? NCCacheRecord)?.data?.data as? [ESSkillQueueItem]
+										skillQueue = ((try? managedObjectContext.existingObject(with: object.objectID)) as? NCCacheRecord)?.data?.data as? [ESI.Skills.SkillQueueItem]
 									}
 								}
 								
-								var map = [IndexPath: ESSkillQueueItem]()
+								var map = [IndexPath: ESI.Skills.SkillQueueItem]()
 								for item in skillQueue ?? character.skillQueue {
 									map[IndexPath(indexes: [item.skillID, item.finishedLevel - 1])] = item
 								}

@@ -186,10 +186,10 @@ class NCAccountInfo: NSObject {
 		didSet {
 			if let walletsRecord = walletsRecord {
 				self.binder.bind("wealth", toObject: walletsRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
-					guard let wallets = value as? [ESWallet] else {return walletsRecord.error?.localizedDescription ?? " "}
+					guard let wallets = value as? [ESI.Wallet.Balance] else {return walletsRecord.error?.localizedDescription ?? " "}
 					var wealth = 0.0
 					for wallet in wallets {
-						wealth += wallet.balance
+						wealth += Double(wallet.balance ?? 0)
 					}
 					return NCUnitFormatter.localizedString(from: wealth, unit: .none, style: .short)
 				}))
@@ -204,8 +204,8 @@ class NCAccountInfo: NSObject {
 		didSet {
 			if let skillsRecord = skillsRecord {
 				self.binder.bind("sp", toObject: skillsRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
-					guard let skills = value as? ESSkills else {return skillsRecord.error?.localizedDescription ?? " "}
-					return NCUnitFormatter.localizedString(from: Double(skills.totalSP), unit: .none, style: .short)
+					guard let skills = value as? ESI.Skills.CharacterSkills else {return skillsRecord.error?.localizedDescription ?? " "}
+					return NCUnitFormatter.localizedString(from: Double(skills.totalSP ?? 0), unit: .none, style: .short)
 				}))
 			}
 			else {
@@ -219,7 +219,7 @@ class NCAccountInfo: NSObject {
 		didSet {
 			if let characterLocationRecord = characterLocationRecord {
 				self.binder.bind("solarSystem", toObject: characterLocationRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
-					guard let location = value as? ESCharacterLocation else {return characterLocationRecord.error?.localizedDescription ?? nil}
+					guard let location = value as? ESI.Location.CharacterLocation else {return characterLocationRecord.error?.localizedDescription ?? nil}
 					guard let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[location.solarSystemID] else {return nil}
 					return "\(solarSystem.solarSystemName!) / \(solarSystem.constellation!.region!.regionName!)"
 				}))
@@ -234,7 +234,7 @@ class NCAccountInfo: NSObject {
 		didSet {
 			if let characterShipRecord = characterShipRecord {
 				self.binder.bind("ship", toObject: characterShipRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
-					guard let ship = value as? ESCharacterShip else {return characterShipRecord.error?.localizedDescription ?? nil}
+					guard let ship = value as? ESI.Location.CharacterShip else {return characterShipRecord.error?.localizedDescription ?? nil}
 					guard let type = NCDatabase.sharedDatabase?.invTypes[ship.shipTypeID] else {return nil}
 					return type.typeName
 				}))
@@ -454,7 +454,12 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
     }
 
 	@IBAction func onAddAccount(_ sender: Any) {
-		UIApplication.shared.openURL(ESAPI.oauth2url(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESScope.all))
+		let url = OAuth2Handler.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.all, state: "esi")
+		if #available(iOS 10.0, *) {
+			UIApplication.shared.open(url, options: [:], completionHandler: nil)
+		} else {
+			UIApplication.shared.openURL(url)
+		}
 	}
 
 	@IBAction func onClose(_ sender: Any) {
@@ -627,7 +632,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
 				
 				dispatchGroup.enter()
 				progress.becomeCurrent(withPendingUnitCount: 1)
-				dataManager.corporation(corporationID: value.corporationID) { result in
+				dataManager.corporation(corporationID: Int64(value.corporationID)) { result in
 					switch result {
 					case let .success(_, cacheRecord):
 						accountInfo.corporationRecord = cacheRecord

@@ -18,7 +18,7 @@ class NCCharacter {
 	
 	init(attributes: NCCharacterAttributes? = nil, skills: ESI.Skills.CharacterSkills? = nil, skillQueue: [ESI.Skills.SkillQueueItem]? = nil) {
 		var skillsMap = [Int: NCSkill]()
-		var map = [IndexPath: ESI.Skills.SkillQueueItem]()
+		var map: [IndexPath: ESI.Skills.SkillQueueItem] = [:]
 		if let skillQueue = skillQueue {
 			for item in skillQueue {
 				map[IndexPath(indexes: [item.skillID, item.finishedLevel - 1])] = item
@@ -27,13 +27,16 @@ class NCCharacter {
 		if let skills = skills {
 			NCDatabase.sharedDatabase?.performTaskAndWait({ (managedObjectContext) in
 				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
-				for skill in skills.skills {
-					guard let type = invTypes[skill.skillID] else {continue}
-					if let item = map[IndexPath(indexes: [skill.skillID, skill.currentSkillLevel])],
+				for skill in skills.skills ?? [] {
+					guard let skillID = skill.skillID else {continue}
+					guard let currentSkillLevel = skill.currentSkillLevel else {continue}
+					guard let type = invTypes[skillID] else {continue}
+
+					if let item = map[IndexPath(indexes: [skillID, currentSkillLevel])],
 						let skill = NCSkill(type: type, skill: item){
 						skillsMap[skill.typeID] = skill
 					}
-					else if let skill = NCSkill(type: type, level: skill.currentSkillLevel, startSkillPoints: skill.skillPointsInSkill) {
+					else if let skill = NCSkill(type: type, level: currentSkillLevel, startSkillPoints: Int(skill.skillpointsInSkill ?? 0)) {
 						skillsMap[skill.typeID] = skill
 					}
 				}
@@ -49,7 +52,7 @@ class NCCharacter {
 	class func load(account: NCAccount?, completionHandler: @escaping(NCResult<NCCharacter>) -> Void) {
 		if let account = account {
 			let dataManager = NCDataManager(account: account)
-			var skillsResult: NCCachedResult<ESSkills>?
+			var skillsResult: NCCachedResult<ESI.Skills.CharacterSkills>?
 			var skillQueueResult: NCCachedResult<[ESI.Skills.SkillQueueItem]>?
 			
 			let dispatchGroup = DispatchGroup()
@@ -81,7 +84,7 @@ class NCCharacter {
 						}
 					}
 					
-					var skills: ESSkills?
+					var skills: ESI.Skills.CharacterSkills?
 					var skillsRecord: NCCacheRecord?
 					var skillQueue: [ESI.Skills.SkillQueueItem]?
 					var skillQueueRecord: NCCacheRecord?
@@ -95,7 +98,7 @@ class NCCharacter {
 						result = .failure(error)
 						return
 					default:
-						result = .failure(ESError.internalError)
+						result = .failure(ESIError.internalError)
 						return
 					}
 					
@@ -108,7 +111,7 @@ class NCCharacter {
 						result = .failure(error)
 						return
 					default:
-						result = .failure(ESError.internalError)
+						result = .failure(ESIError.internalError)
 						return
 					}
 					
@@ -121,20 +124,20 @@ class NCCharacter {
 						guard let updated = updated else {return}
 						
 						NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
-							var skills: ESSkills?
+							var skills: ESI.Skills.CharacterSkills?
 							var skillQueue: [ESI.Skills.SkillQueueItem]?
 							var skillsMap = [Int: NCSkill]()
 							synchronized(self) {
 								for object in updated {
 									if object.objectID == skillsRecord?.objectID {
-										skills = ((try? managedObjectContext.existingObject(with: object.objectID)) as? NCCacheRecord)?.data?.data as? ESSkills
+										skills = ((try? managedObjectContext.existingObject(with: object.objectID)) as? NCCacheRecord)?.data?.data as? ESI.Skills.CharacterSkills
 									}
 									else if object.objectID == skillQueueRecord?.objectID {
 										skillQueue = ((try? managedObjectContext.existingObject(with: object.objectID)) as? NCCacheRecord)?.data?.data as? [ESI.Skills.SkillQueueItem]
 									}
 								}
 								
-								var map = [IndexPath: ESI.Skills.SkillQueueItem]()
+								var map: [IndexPath: ESI.Skills.SkillQueueItem] = [:]
 								for item in skillQueue ?? character.skillQueue {
 									map[IndexPath(indexes: [item.skillID, item.finishedLevel - 1])] = item
 								}
@@ -142,13 +145,15 @@ class NCCharacter {
 								if let skills = skills {
 									NCDatabase.sharedDatabase?.performTaskAndWait({ (managedObjectContext) in
 										let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
-										for skill in skills.skills {
-											guard let type = invTypes[skill.skillID] else {continue}
-											if let item = map[IndexPath(indexes: [skill.skillID, skill.currentSkillLevel])],
+										for skill in skills.skills ?? [] {
+											guard let skillID = skill.skillID else {continue}
+											guard let currentSkillLevel = skill.currentSkillLevel else {continue}
+											guard let type = invTypes[skillID] else {continue}
+											if let item = map[IndexPath(indexes: [skillID, currentSkillLevel])],
 												let skill = NCSkill(type: type, skill: item) {
 												skillsMap[skill.typeID] = skill
 											}
-											else if let skill = NCSkill(type: type, level: skill.currentSkillLevel, startSkillPoints: skill.skillPointsInSkill) {
+											else if let skill = NCSkill(type: type, level: currentSkillLevel, startSkillPoints: Int(skill.skillpointsInSkill ?? 0)) {
 												skillsMap[skill.typeID] = skill
 											}
 										}

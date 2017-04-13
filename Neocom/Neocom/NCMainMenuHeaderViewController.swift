@@ -45,23 +45,22 @@ class NCMainMenuHeaderViewController: UIViewController {
 					
 					dispatchGroup.enter()
 					progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
-					dataManager.corporation(corporationID: corporationID) { result in
+					dataManager.corporation(corporationID: Int64(corporationID)) { result in
 						switch result {
 						case let .success(value, _):
 							self.corporationLabel?.text = value.corporationName
-							let allianceID = value.allianceID
-							if allianceID > 0 {
+							if let allianceID = value.allianceID {
 								self.allianceLabel?.superview?.isHidden = false
 								dispatchGroup.enter()
 								progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
-								dataManager.alliance(allianceID: allianceID) { result in
+								dataManager.alliance(allianceID: Int64(allianceID)) { result in
 									switch result {
 									case let .success(value, _):
 										self.allianceLabel?.text = value.allianceName
 										
 										dispatchGroup.enter()
 										progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
-										dataManager.image(allianceID: allianceID, dimension: 32) { result in
+										dataManager.image(allianceID: Int64(allianceID), dimension: 32) { result in
 											switch result {
 											case let .success(value, _):
 												self.allianceImageView?.image = value
@@ -85,7 +84,7 @@ class NCMainMenuHeaderViewController: UIViewController {
 							
 							dispatchGroup.enter()
 							progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
-							dataManager.image(corporationID: corporationID, dimension: 32) { result in
+							dataManager.image(corporationID: Int64(corporationID), dimension: 32) { result in
 								switch result {
 								case let .success(value, _):
 									self.corporationImageView?.image = value
@@ -142,6 +141,12 @@ class NCMainMenuHeaderViewController: UIViewController {
 	}
 	
 	@IBAction func onAddAccount(_ sender: Any) {
-		UIApplication.shared.openURL(ESAPI.oauth2url(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESScope.all))
+		let url = OAuth2Handler.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.all, state: "esi")
+		if #available(iOS 10.0, *) {
+			UIApplication.shared.open(url, options: [:], completionHandler: nil)
+		} else {
+			UIApplication.shared.openURL(url)
+		}
+		
 	}
 }

@@ -26,8 +26,8 @@ class NCMainMenuDetails: NSObject {
 		didSet {
 			if let skillsRecord = skillsRecord {
 				self.binder.bind("skillPoints", toObject: skillsRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
-					guard let skills = value as? ESSkills else {return skillsRecord.error?.localizedDescription ?? nil}
-					return NCUnitFormatter.localizedString(from: Double(skills.totalSP), unit: .skillPoints, style: .full)
+					guard let skills = value as? ESI.Skills.CharacterSkills else {return skillsRecord.error?.localizedDescription ?? nil}
+					return NCUnitFormatter.localizedString(from: Double(skills.totalSP ?? 0), unit: .skillPoints, style: .full)
 				}))
 			}
 			else {
@@ -40,8 +40,8 @@ class NCMainMenuDetails: NSObject {
 		didSet {
 			if let clonesRecord = clonesRecord {
 				self.binder.bind("jumpClones", toObject: clonesRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
-					guard let clones = value as? ESClones else {return clonesRecord.error?.localizedDescription ?? nil}
-					let t = 3600 * 24 + clones.lastJumpDate.timeIntervalSinceNow
+					guard let clones = value as? ESI.Clones.JumpClones else {return clonesRecord.error?.localizedDescription ?? nil}
+					let t = 3600 * 24 + (clones.lastJumpDate ?? .distantPast).timeIntervalSinceNow
 					return String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: ""))
 				}))
 			}
@@ -81,10 +81,10 @@ class NCMainMenuDetails: NSObject {
 		didSet {
 			if let walletsRecord = walletsRecord {
 				self.binder.bind("balance", toObject: walletsRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
-					guard let wallets = value as? [ESWallet] else {return nil}
+					guard let wallets = value as? [ESI.Wallet.Balance] else {return nil}
 					var wealth = 0.0
 					for wallet in wallets {
-						wealth += wallet.balance
+						wealth += Double(wallet.balance ?? 0)
 					}
 					return NCUnitFormatter.localizedString(from: wealth, unit: .isk, style: .full)
 				}))

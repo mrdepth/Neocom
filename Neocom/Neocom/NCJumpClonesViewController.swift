@@ -71,17 +71,18 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 	
 	private var observer: NCManagedObjectObserver?
 	
-	private func process(_ value: ESClones, dataManager: NCDataManager, completionHandler: (() -> Void)?) {
+	private func process(_ value: ESI.Clones.JumpClones, dataManager: NCDataManager, completionHandler: (() -> Void)?) {
 		var locations = [Int64]()
 		for jumpClone in value.jumpClones {
-			locations.append(jumpClone.location.locationID)
+			guard let locationID = jumpClone.locationID else {continue}
+			locations.append(locationID)
 		}
 		
 		dataManager.locations(ids: locations) { locations in
 			
 			var sections = [NCTreeNode]()
 			
-			let t = 3600 * 24 + value.lastJumpDate.timeIntervalSinceNow
+			let t = 3600 * 24 + (value.lastJumpDate ?? .distantPast).timeIntervalSinceNow
 			sections.append(NCJumpCloneRow(cellIdentifier: "Cell",
 			                               title: NSLocalizedString("NEXT CLONE JUMP AVAILABILITY", comment: ""),
 			                               subtitle: String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: "")),
@@ -99,8 +100,7 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 			
 			for jumpClone in value.jumpClones {
 				var rows = [NCJumpCloneRow]()
-				
-				for case let implant in jumpClone.implants.map({ invTypes?[$0]}) {
+				for case let implant in jumpClone.implants?.map({ invTypes?[$0]}) ?? [] {
 					guard let attributes = implant?.allAttributes else {continue}
 					for attributeID in attributeIDs {
 						if let bonus = attributes[attributeID.rawValue]?.value, bonus > 0 {
@@ -114,7 +114,7 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 				if rows.count == 0 {
 					rows.append(NCJumpCloneRow(cellIdentifier: "PlaceholderCell", title: NSLocalizedString("NO IMPLANTS INSTALLED", comment: ""), subtitle: nil, image: nil))
 				}
-				sections.append(NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: nil, attributedTitle: locations[jumpClone.location.locationID]?.displayName.uppercased(), children: rows))
+				sections.append(NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: nil, attributedTitle: jumpClone.locationID != nil ? locations[jumpClone.locationID!]?.displayName.uppercased() : nil, children: rows))
 			}
 			
 			self.treeController.content = sections
@@ -134,7 +134,7 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 				case let .success(value, cacheRecord):
 					if let cacheRecord = cacheRecord {
 						self.observer = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] _, _ in
-							guard let value = cacheRecord.data?.data as? ESClones else {return}
+							guard let value = cacheRecord.data?.data as? ESI.Clones.JumpClones else {return}
 							self?.process(value, dataManager: dataManager, completionHandler: nil)
 						}
 					}

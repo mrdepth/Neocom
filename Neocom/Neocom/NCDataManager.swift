@@ -127,7 +127,7 @@ class NCDataManager {
 	}
 
 	func characterShip(completionHandler: @escaping (NCCachedResult<ESI.Location.CharacterShip>) -> Void) {
-		loadFromCache(forKey: "ESShip", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "ESI.Location.CharacterShip", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.api.location.getCurrentShip(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0)
 			}
@@ -135,7 +135,7 @@ class NCDataManager {
 	}
 	
 	func clones(completionHandler: @escaping (NCCachedResult<ESI.Clones.JumpClones>) -> Void) {
-		loadFromCache(forKey: "ESClones", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "ESI.Clones.JumpClones", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.api.clones.getClones(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0)
 			}

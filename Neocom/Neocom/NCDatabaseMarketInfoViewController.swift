@@ -14,7 +14,7 @@ class NCDatabaseMarketInfoRow: NCTreeRow {
 	let location: NSAttributedString
 	let quantity: String
 	
-	init(order: ESMarketOrder, location: NCLocation?) {
+	init(order: ESI.Market.Order, location: NCLocation?) {
 		self.price = NCUnitFormatter.localizedString(from: order.price, unit: .isk, style: .full)
 		self.location = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown location", comment: ""))
 		self.quantity = NCUnitFormatter.localizedString(from: Double(order.volumeRemain), unit: .none, style: .full)
@@ -90,12 +90,12 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 	
 	private var observer: NCManagedObjectObserver?
 	
-	private func process(_ value: [ESMarketOrder], dataManager: NCDataManager, completionHandler: (() -> Void)?) {
+	private func process(_ value: [ESI.Market.Order], dataManager: NCDataManager, completionHandler: (() -> Void)?) {
 		let locations = Set(value.map {return $0.locationID})
 		
 		dataManager.locations(ids: locations.sorted()) { locations in
-			var buy = [ESMarketOrder]()
-			var sell = [ESMarketOrder]()
+			var buy: [ESI.Market.Order] = []
+			var sell: [ESI.Market.Order] = []
 			for order in value {
 				if order.isBuyOrder {
 					buy.append(order)
@@ -135,7 +135,7 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 			case let .success(value, cacheRecord):
 				if let cacheRecord = cacheRecord {
 					self.observer = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] _, _ in
-						guard let value = cacheRecord.data?.data as? [ESMarketOrder] else {return}
+						guard let value = cacheRecord.data?.data as? [ESI.Market.Order] else {return}
 						self?.process(value, dataManager: dataManager, completionHandler: nil)
 					}
 				}

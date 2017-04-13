@@ -138,7 +138,7 @@ class NCSkillsViewController: UITableViewController, NCTreeControllerDelegate {
 	private var observer: NCManagedObjectObserver?
 	private var sections: [[NCSkillSection]]?
 	
-	private func process(_ value: ESSkills, dataManager: NCDataManager, completionHandler: (() -> Void)?) {
+	private func process(_ value: ESI.Skills.CharacterSkills, dataManager: NCDataManager, completionHandler: (() -> Void)?) {
 		let progress = Progress(totalUnitCount: 1)
 		NCDatabase.sharedDatabase?.performBackgroundTask{ managedObjectContext in
 			let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
@@ -148,8 +148,8 @@ class NCSkillsViewController: UITableViewController, NCTreeControllerDelegate {
 			let result = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: "group.groupName", cacheName: nil)
 			try! result.performFetch()
 			
-			var map = [Int: ESSkill]()
-			value.skills.forEach {map[$0.skillID] = $0}
+			var map: [Int: ESI.Skills.CharacterSkills.Skill] = [:]
+			value.skills?.forEach {map[$0.skillID ?? 0] = $0}
 			
 			var allSections = [NCSkillSection]()
 			var mySections = [NCSkillSection]()
@@ -221,7 +221,7 @@ class NCSkillsViewController: UITableViewController, NCTreeControllerDelegate {
 				case let .success(value, cacheRecord):
 					if let cacheRecord = cacheRecord {
 						self.observer = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] _, _ in
-							guard let value = cacheRecord.data?.data as? ESSkills else {return}
+							guard let value = cacheRecord.data?.data as? ESI.Skills.CharacterSkills else {return}
 							self?.process(value, dataManager: dataManager, completionHandler: nil)
 						}
 					}

@@ -55,7 +55,7 @@
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
-			<string>NCMailBoxViewController</string>
+			<string>NCMailViewController</string>
 			<key>title</key>
 			<string>EVE Mail</string>
 			<key>image</key>
@@ -63,11 +63,7 @@
 			<key>detailsKeyPath</key>
 			<string>unreadMails</string>
 			<key>scopes</key>
-			<array>
-				<string>esi-mail.read_mail.v1</string>
-				<string>esi-mail.send_mail.v1</string>
-				<string>esi-mail.organize_mail.v1</string>
-			</array>
+			<array/>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>

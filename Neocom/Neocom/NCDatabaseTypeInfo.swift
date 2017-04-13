@@ -220,7 +220,7 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 	func reload() {
 		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
 			guard let record = (try? managedObjectContext.existingObject(with: self.history.objectID)) as? NCCacheRecord else {return}
-			guard let history = record.data?.data as? [ESMarketHistory] else {return}
+			guard let history = record.data?.data as? [ESI.Market.History] else {return}
 			guard history.count > 0 else {return}
 			guard let date = history.last?.date.addingTimeInterval(-3600 * 24 * 365) else {return}
 			guard let i = history.index(where: {
@@ -239,10 +239,10 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 				let n = Double(range.count)
 				for i in range {
 					let item = history[i]
-					h += item.highest / n
-					h2 += (item.highest * item.highest) / n
-					l += item.lowest / n
-					l2 += (item.lowest * item.lowest) / n
+					h += Double(item.highest) / n
+					h2 += Double(item.highest * item.highest) / n
+					l += Double(item.lowest) / n
+					l2 += Double(item.lowest * item.lowest) / n
 				}
 				let avgl = l
 				let avgh = h
@@ -263,7 +263,7 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 			var x: CGFloat = 0
 			var isFirst = true
 			
-			var v = 0...0 as ClosedRange<Int>
+			var v = 0...0 as ClosedRange<Int64>
 			var p = 0...0 as ClosedRange<Double>
 			let d = history[range.first!].date...history[range.last!].date
 			var prevT: TimeInterval?
@@ -273,11 +273,11 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 			
 			for i in range {
 				let item = history[i]
-				if visibleRange.contains(item.lowest) {
-					lowest = min(lowest, item.lowest)
+				if visibleRange.contains(Double(item.lowest)) {
+					lowest = min(lowest, Double(item.lowest))
 				}
-				if visibleRange.contains(item.highest) {
-					highest = max(highest, item.highest)
+				if visibleRange.contains(Double(item.highest)) {
+					highest = max(highest, Double(item.highest))
 				}
 				
 				let t = item.date.timeIntervalSinceReferenceDate
@@ -302,7 +302,7 @@ class NCDatabaseTypeMarketRow: NCTreeRow {
 				prevT = t
 				
 				v = min(v.lowerBound, item.volume)...max(v.upperBound, item.volume)
-				p = min(p.lowerBound, lowest.lowest)...max(p.upperBound, highest.highest)
+				p = min(p.lowerBound, Double(lowest.lowest))...max(p.upperBound, Double(highest.highest))
 			}
 			
 			var donchianVisibleRange = donchian.bounds

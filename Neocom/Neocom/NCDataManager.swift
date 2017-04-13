@@ -21,6 +21,16 @@ enum NCResult<T> {
 	case failure(Error)
 }
 
+extension Dictionary {
+	init?(_ values: [(Key, Value)]?) {
+		guard let values = values else {return nil}
+		var dic = [Key: Value]()
+		values.forEach {dic[$0] = $1}
+		self = dic
+	}
+}
+
+
 typealias NCLoaderCompletion<T> = (_ result: Result<T>, _ cacheTime: TimeInterval) -> Void
 
 
@@ -407,7 +417,80 @@ class NCDataManager {
 			}
 		})
 	}
+	
+	func search(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false, completionHandler: @escaping (NCCachedResult<ESI.Search.SearchResult>) -> Void) {
+		loadFromCache(forKey: "ESI.Search.SearchResult.\(categories.hashValue).\(string.hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.api.search.search(categories: categories, search: string, strict: strict) { result in
+				completion(result, 3600.0 * 12)
+			}
+		})
+	}
 
+	func searchNames(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false, completionHandler: @escaping (NCCachedResult<[String: [Int64: String]]>) -> Void) {
+		loadFromCache(forKey: "ESI.Search.SearchNamesResult.\(categories.hashValue).\(string.hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			
+			self.search(string, categories: categories) { result in
+				switch result {
+				case let .success(value):
+					let searchResult = value.value
+					var ids = [Int]()
+					ids.append(contentsOf: searchResult.agent ?? [])
+					ids.append(contentsOf: searchResult.alliance ?? [])
+					ids.append(contentsOf: searchResult.character ?? [])
+					ids.append(contentsOf: searchResult.constellation ?? [])
+					ids.append(contentsOf: searchResult.corporation ?? [])
+					ids.append(contentsOf: searchResult.faction ?? [])
+					ids.append(contentsOf: searchResult.inventorytype ?? [])
+					ids.append(contentsOf: searchResult.region ?? [])
+					ids.append(contentsOf: searchResult.solarsystem ?? [])
+					ids.append(contentsOf: searchResult.station ?? [])
+					ids.append(contentsOf: searchResult.wormhole ?? [])
+					
+					if ids.count > 0 {
+						self.universeNames(ids: ids.map{ Int64($0) }) { result in
+							switch result {
+							case let .success(value):
+								var names = [Int: String]()
+								value.value.forEach {names[$0.id] = $0.name}
+								
+								func map(_ key: Int) -> (Int64, String)? {
+									guard let value = names[key] else {return nil}
+									return (Int64(key), value)
+								}
+								var result: [String: [Int64: String]] = [:]
+								result[ESI.Search.SearchCategories.agent.rawValue] = Dictionary(searchResult.agent?.flatMap(map))
+								result[ESI.Search.SearchCategories.alliance.rawValue] = Dictionary(searchResult.alliance?.flatMap(map))
+								result[ESI.Search.SearchCategories.character.rawValue] = Dictionary(searchResult.character?.flatMap(map))
+								result[ESI.Search.SearchCategories.constellation.rawValue] = Dictionary(searchResult.constellation?.flatMap(map))
+								result[ESI.Search.SearchCategories.corporation.rawValue] = Dictionary(searchResult.corporation?.flatMap(map))
+								result[ESI.Search.SearchCategories.faction.rawValue] = Dictionary(searchResult.faction?.flatMap(map))
+								result[ESI.Search.SearchCategories.inventorytype.rawValue] = Dictionary(searchResult.inventorytype?.flatMap(map))
+								result[ESI.Search.SearchCategories.region.rawValue] = Dictionary(searchResult.region?.flatMap(map))
+								result[ESI.Search.SearchCategories.solarsystem.rawValue] = Dictionary(searchResult.solarsystem?.flatMap(map))
+								result[ESI.Search.SearchCategories.station.rawValue] = Dictionary(searchResult.station?.flatMap(map))
+								result[ESI.Search.SearchCategories.wormhole.rawValue] = Dictionary(searchResult.wormhole?.flatMap(map))
+								completion(.success(result), 3600.0 * 12)
+								
+							case let .failure(error):
+								completion(.failure(error), 3600.0 * 12)
+							}
+						}
+					}
+					else {
+						completion(.success([:]), 3600.0 * 12)
+					}
+				case let .failure(error):
+					completion(.failure(error), 3600.0 * 12)
+				}
+			}
+			
+//			self.api.search.search(categories: categories, search: string, strict: strict) { result in
+//				completion(result, 3600.0 * 12)
+//			}
+		})
+	}
+
+	
 	//MARK: Private
 	
 	func marketPrices(completionHandler: @escaping (NCCachedResult<[ESI.Market.Price]>) -> Void) {

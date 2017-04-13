@@ -3,9 +3,8 @@
 import UIKit
 
 
-class A: NSObject {
-	
-}
+var c = NSURLComponents(string: "http://google.com")
+c?.queryItems = [URLQueryItem(name: "test", value: "/\\sdfwe&?")]
 
-
-[A].self
+let i: Any = "wef"
+String(describing: i)

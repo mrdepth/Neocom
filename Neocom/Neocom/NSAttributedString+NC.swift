@@ -92,6 +92,13 @@ extension NSAttributedString {
 		return s
 	}
 
+	static func * (_ lhs: NSAttributedString, _ rhs: [String: Any]) -> NSAttributedString {
+		let s = lhs.mutableCopy() as! NSMutableAttributedString
+		let range = NSMakeRange(0, lhs.length)
+		s.addAttributes(rhs, range: range)
+		return s
+	}
+
 }
 
 extension NSMutableAttributedString {
@@ -117,8 +124,8 @@ extension NSTextAttachment {
 	convenience init(image: UIImage?, font: UIFont?) {
 		self.init()
 		self.image = image
-		if let font = font {
-			bounds = CGRect(x: 0, y: font.descender, width: font.lineHeight, height: font.lineHeight)
+		if let font = font, let image = image {
+			bounds = CGRect(x: 0, y: font.descender, width: image.size.width / image.size.height * font.lineHeight, height: font.lineHeight)
 		}
 	}
 }

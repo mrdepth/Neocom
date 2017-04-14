@@ -25,14 +25,14 @@
 			<string>com.shimanski.neocom.scheme.neocom</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>neocom</string>
+				<string>eveauthnc</string>
 			</array>
 		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>com.shimanski.neocom.scheme. showinfo</string>
+			<string>com.shimanski.neocom.scheme.showinfo</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>showinfo</string>

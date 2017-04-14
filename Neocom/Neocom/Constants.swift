@@ -135,9 +135,9 @@ extension Notification.Name {
 	public static let NCCharacterChanged = Notification.Name("NCCharacterChanged")
 }
 
-let ESClientID = "c2cc974798d4485d966fba773a8f7ef8"
-let ESSecretKey = "GNhSE9GJ6q3QiuPSTIJ8Q1J6on4ClM4v9zvc0Qzu"
-let ESCallbackURL = URL(string: "neocom://sso")!
+let ESClientID = "a0cc80b7006944249313dc22205ec645"
+let ESSecretKey = "deUqMep7TONp68beUoC1c71oabAdKQOJdbiKpPcC"
+let ESCallbackURL = URL(string: "eveauthnc://sso/")!
 
 let NCURLScheme = "neocom"
 

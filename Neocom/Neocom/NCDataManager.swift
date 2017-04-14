@@ -419,7 +419,7 @@ class NCDataManager {
 	}
 	
 	func search(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false, completionHandler: @escaping (NCCachedResult<ESI.Search.SearchResult>) -> Void) {
-		loadFromCache(forKey: "ESI.Search.SearchResult.\(categories.hashValue).\(string.hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "ESI.Search.SearchResult.\(categories.hashValue).\(string.lowercased().hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.api.search.search(categories: categories, search: string, strict: strict) { result in
 				completion(result, 3600.0 * 12)
 			}
@@ -427,7 +427,7 @@ class NCDataManager {
 	}
 
 	func searchNames(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false, completionHandler: @escaping (NCCachedResult<[String: [Int64: String]]>) -> Void) {
-		loadFromCache(forKey: "ESI.Search.SearchNamesResult.\(categories.hashValue).\(string.hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "ESI.Search.SearchNamesResult.\(categories.hashValue).\(string.lowercased().hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			
 			self.search(string, categories: categories) { result in
 				switch result {
@@ -490,6 +490,13 @@ class NCDataManager {
 		})
 	}
 
+	func sendMail(body: String, subject: String, recipients: [ESI.Mail.NewMail.Recipient], completionHandler: @escaping (Result<Int>) -> Void) {
+		let mail = ESI.Mail.NewMail()
+		mail.body = body
+		mail.subject = subject
+		mail.recipients = recipients
+		self.api.mail.sendNewMail(characterID: Int(characterID), mail: mail, completionBlock: completionHandler)
+	}
 	
 	//MARK: Private
 	

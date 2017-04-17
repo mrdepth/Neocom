@@ -18,7 +18,7 @@ class NCDamagePatternEditTableViewCell: NCTextFieldTableViewCell {
 }
 
 extension Prototype {
-	struct NCDamagePatternEditTableViewCell {
+	enum NCDamagePatternEditTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCDamagePatternEditTableViewCell")
 	}
 }

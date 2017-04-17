@@ -25,11 +25,11 @@ typealias NCFittingDroneStateTableViewCell = NCFittingModuleStateTableViewCell
 typealias NCFittingBoosterTableViewCell = NCFittingModuleStateTableViewCell
 
 extension Prototype {
-	struct NCFittingModuleTableViewCell {
+	enum NCFittingModuleTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCFittingModuleTableViewCell", bundle: nil), reuseIdentifier: "NCFittingModuleTableViewCell")
 	}
 	
-	struct NCFittingModuleStateTableViewCell {
+	enum NCFittingModuleStateTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCFittingModuleStateTableViewCell", bundle: nil), reuseIdentifier: "NCFittingModuleStateTableViewCell")
 	}
 	

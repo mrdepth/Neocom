@@ -18,7 +18,7 @@ class NCChargeTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCChargeTableViewCell {
+	enum NCChargeTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCChargeTableViewCell", bundle: nil), reuseIdentifier: "NCChargeTableViewCell")
 		static let compact = Prototype(nib: UINib(nibName: "NCChargeCompactTableViewCell", bundle: nil), reuseIdentifier: "NCChargeCompactTableViewCell")
 	}

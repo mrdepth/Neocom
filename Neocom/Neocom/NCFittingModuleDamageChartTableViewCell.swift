@@ -22,7 +22,7 @@ class NCFittingModuleDamageChartTableViewCell: NCTableViewCell {
 
 
 extension Prototype {
-	struct NCFittingModuleDamageChartTableViewCell {
+	enum NCFittingModuleDamageChartTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingModuleDamageChartTableViewCell")
 	}
 }

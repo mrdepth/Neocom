@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16D32" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName="NCAccount" syncable="YES" codeGenerationType="class">
         <attribute name="accessToken" attributeType="String" syncable="YES"/>
         <attribute name="characterID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -10,7 +10,6 @@
         <attribute name="refreshToken" attributeType="String" syncable="YES"/>
         <attribute name="tokenType" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" syncable="YES"/>
-        <relationship name="mailBox" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="MailBox" inverseName="account" inverseEntity="MailBox" syncable="YES"/>
         <relationship name="scopes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Scope" inverseName="account" inverseEntity="Scope" syncable="YES"/>
         <relationship name="skillPlans" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SkillPlan" inverseName="account" inverseEntity="SkillPlan" syncable="YES"/>
     </entity>
@@ -50,11 +49,6 @@
     <entity name="LoadoutData" representedClassName="NCLoadoutData" syncable="YES" codeGenerationType="class">
         <attribute name="data" optional="YES" attributeType="Transformable" customClassName="NCFittingLoadout" syncable="YES"/>
         <relationship name="loadout" maxCount="1" deletionRule="Nullify" destinationEntity="Loadout" inverseName="data" inverseEntity="Loadout" syncable="YES"/>
-    </entity>
-    <entity name="MailBox" representedClassName="NCMailBox" syncable="YES" codeGenerationType="class">
-        <attribute name="readedMessagesIDs" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="mailBox" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="Scope" representedClassName="NCScope" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -103,7 +97,6 @@
         <memberEntity name="ImplantSet"/>
         <memberEntity name="Loadout"/>
         <memberEntity name="LoadoutData"/>
-        <memberEntity name="MailBox"/>
         <memberEntity name="ShoppingGroup"/>
         <memberEntity name="ShoppingItem"/>
         <memberEntity name="ShoppingList"/>
@@ -116,7 +109,7 @@
         <memberEntity name="Setting"/>
     </configuration>
     <elements>
-        <element name="Account" positionX="18" positionY="63" width="128" height="225"/>
+        <element name="Account" positionX="18" positionY="63" width="128" height="210"/>
         <element name="DamagePattern" positionX="45" positionY="90" width="128" height="120"/>
         <element name="DronesSet" positionX="9" positionY="54" width="128" height="75"/>
         <element name="FitCharacter" positionX="36" positionY="81" width="128" height="90"/>
@@ -124,7 +117,6 @@
         <element name="ImplantSet" positionX="54" positionY="99" width="128" height="75"/>
         <element name="Loadout" positionX="0" positionY="45" width="128" height="135"/>
         <element name="LoadoutData" positionX="9" positionY="54" width="128" height="75"/>
-        <element name="MailBox" positionX="-45" positionY="0" width="128" height="90"/>
         <element name="Scope" positionX="9" positionY="126" width="128" height="75"/>
         <element name="Setting" positionX="18" positionY="63" width="128" height="75"/>
         <element name="ShoppingGroup" positionX="27" positionY="72" width="128" height="150"/>

@@ -25,7 +25,7 @@ extension NCCacheRecord {
 		return request
 	}
 	
-	var expired: Bool {
+	var isExpired: Bool {
 		get {
 			guard self.date != nil else {return true}
 			guard let expireDate = self.expireDate as Date? else {return true}

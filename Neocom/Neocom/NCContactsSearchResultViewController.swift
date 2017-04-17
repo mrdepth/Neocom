@@ -60,6 +60,14 @@ class NCContactRow: TreeRow {
 			}
 		}
 	}
+	
+	override var hashValue: Int {
+		return Int(contactID)
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCContactRow)?.contactID == contactID
+	}
 }
 
 protocol NCContactsSearchResultViewControllerDelegate: NSObjectProtocol {

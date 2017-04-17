@@ -65,7 +65,7 @@ class NCTextFieldRow: TreeRow {
 }
 
 extension Prototype {
-	struct NCTextFieldTableViewCell {
+	enum NCTextFieldTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCTextFieldTableViewCell", bundle: nil), reuseIdentifier: "NCTextFieldTableViewCell")
 	}
 }

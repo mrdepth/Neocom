@@ -42,7 +42,7 @@ class NCFittingCharacterTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCFittingCharacterTableViewCell {
+	enum NCFittingCharacterTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCFittingCharacterTableViewCell", bundle: nil), reuseIdentifier: "NCFittingCharacterTableViewCell")
 	}
 }

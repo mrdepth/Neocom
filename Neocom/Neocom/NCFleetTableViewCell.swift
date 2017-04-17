@@ -17,7 +17,7 @@ class NCFleetTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCFleetTableViewCell {
+	enum NCFleetTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFleetTableViewCell")
 	}
 }

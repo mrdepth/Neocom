@@ -26,7 +26,7 @@ class NCTankTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCTankTableViewCell {
+	enum NCTankTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCTankTableViewCell")
 	}
 }

@@ -27,7 +27,7 @@ class NCFittingMiscTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCFittingMiscTableViewCell {
+	enum NCFittingMiscTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingMiscTableViewCell")
 	}
 }

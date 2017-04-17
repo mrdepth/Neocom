@@ -14,7 +14,7 @@ class NCFittingSlotHeaderTableViewCell: NCHeaderTableViewCell {
 }
 
 extension Prototype {
-	struct NCFittingSlotHeaderTableViewCell {
+	enum NCFittingSlotHeaderTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingSlotHeaderTableViewCell")
 	}
 }

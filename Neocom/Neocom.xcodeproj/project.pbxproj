@@ -78,9 +78,11 @@
 		125AB80F1E41D9F500B8A2A8 /* UIViewController+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */; };
 		125AB8111E41DEE600B8A2A8 /* NCChargeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AB8101E41DEE600B8A2A8 /* NCChargeTableViewCell.swift */; };
 		125AB8141E42033200B8A2A8 /* NCFittingAmmoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AB8131E42033200B8A2A8 /* NCFittingAmmoViewController.swift */; };
-		125CE1361E9FF0E7007B8B6B /* NCMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE1351E9FF0E7007B8B6B /* NCMailViewController.swift */; };
+		125CE1361E9FF0E7007B8B6B /* NCNewMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE1351E9FF0E7007B8B6B /* NCNewMailViewController.swift */; };
 		125CE1381E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */; };
 		125CE13A1E9FFFE5007B8B6B /* NCContactsSearchResultPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE1391E9FFFE5007B8B6B /* NCContactsSearchResultPresentationController.swift */; };
+		125CE13C1EA1275C007B8B6B /* NCMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */; };
+		125CE13E1EA12DCB007B8B6B /* NCMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE13D1EA12DCB007B8B6B /* NCMessageTableViewCell.swift */; };
 		126157001E008AF60041B817 /* dgm.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FE1E008AE00041B817 /* dgm.sqlite */; };
 		126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FF1E008AE00041B817 /* NCDatabase.sqlite */; };
 		126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157031E008E770041B817 /* NCRoundedImageView.swift */; };
@@ -330,9 +332,11 @@
 		125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+NC.swift"; sourceTree = "<group>"; };
 		125AB8101E41DEE600B8A2A8 /* NCChargeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCChargeTableViewCell.swift; sourceTree = "<group>"; };
 		125AB8131E42033200B8A2A8 /* NCFittingAmmoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingAmmoViewController.swift; sourceTree = "<group>"; };
-		125CE1351E9FF0E7007B8B6B /* NCMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailViewController.swift; sourceTree = "<group>"; };
+		125CE1351E9FF0E7007B8B6B /* NCNewMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCNewMailViewController.swift; sourceTree = "<group>"; };
 		125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContactsSearchResultViewController.swift; sourceTree = "<group>"; };
 		125CE1391E9FFFE5007B8B6B /* NCContactsSearchResultPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContactsSearchResultPresentationController.swift; sourceTree = "<group>"; };
+		125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailViewController.swift; sourceTree = "<group>"; };
+		125CE13D1EA12DCB007B8B6B /* NCMessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMessageTableViewCell.swift; sourceTree = "<group>"; };
 		126156FE1E008AE00041B817 /* dgm.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = dgm.sqlite; path = ../../dbTools/dbinit/dgm.sqlite; sourceTree = "<group>"; };
 		126156FF1E008AE00041B817 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = ../../dbTools/dbinit/NCDatabase.sqlite; sourceTree = "<group>"; };
 		126157031E008E770041B817 /* NCRoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRoundedImageView.swift; sourceTree = "<group>"; };
@@ -629,7 +633,8 @@
 			children = (
 				126157091E01D2250041B817 /* NCCharacterSheetViewController.swift */,
 				129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */,
-				125CE1351E9FF0E7007B8B6B /* NCMailViewController.swift */,
+				125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */,
+				125CE1351E9FF0E7007B8B6B /* NCNewMailViewController.swift */,
 				125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */,
 			);
 			name = Character;
@@ -676,6 +681,7 @@
 				12D930F51E65A77300CBAE1C /* NCFleetTableViewCell.swift */,
 				124247BF1E6605AD002E0460 /* NCFleetMemberTableViewCell.swift */,
 				1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */,
+				125CE13D1EA12DCB007B8B6B /* NCMessageTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1084,6 +1090,7 @@
 				125CE1381E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift in Sources */,
 				12C44D001E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift in Sources */,
 				1256BE501DF465BC00A2A24B /* NCSlideDownAnimationController.swift in Sources */,
+				125CE13E1EA12DCB007B8B6B /* NCMessageTableViewCell.swift in Sources */,
 				1230A3321DFFE2CF00627D92 /* NCTreeNode.swift in Sources */,
 				12B563FA1E51B24500F1BED0 /* NCFittingArea.mm in Sources */,
 				1230A3261DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift in Sources */,
@@ -1124,7 +1131,7 @@
 				1230A32C1DFFE2CF00627D92 /* NCGate.swift in Sources */,
 				129C51A41E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift in Sources */,
 				12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */,
-				125CE1361E9FF0E7007B8B6B /* NCMailViewController.swift in Sources */,
+				125CE1361E9FF0E7007B8B6B /* NCNewMailViewController.swift in Sources */,
 				129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */,
 				12E9321E1E6B56D40033D71A /* NCFittingCharactersViewController.swift in Sources */,
 				127DE7D81E9513B4008D4873 /* ChartView.swift in Sources */,
@@ -1165,6 +1172,7 @@
 				1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */,
 				129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */,
 				12961DDC1E1D64E4008A3F4D /* NCFittingDrone.mm in Sources */,
+				125CE13C1EA1275C007B8B6B /* NCMailViewController.swift in Sources */,
 				12961DBF1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift in Sources */,
 				12AC8DB91DF012BA00561A7A /* NCTreeController.swift in Sources */,
 				1256BE531DF4725B00A2A24B /* NCMainMenuViewController.swift in Sources */,

@@ -56,12 +56,12 @@ class NCActionTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCDefaultTableViewCell {
+	enum NCDefaultTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCDefaultTableViewCell", bundle: nil), reuseIdentifier: "NCDefaultTableViewCell")
 		static let compact = Prototype(nib: UINib(nibName: "NCDefaultCompactTableViewCell", bundle: nil), reuseIdentifier: "NCDefaultCompactTableViewCell")
 	}
 	
-	struct NCActionTableViewCell {
+	enum NCActionTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCActionTableViewCell", bundle: nil), reuseIdentifier: "NCActionTableViewCell")
 	}
 

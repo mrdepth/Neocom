@@ -8,6 +8,8 @@
 
 import Foundation
 import CoreData
+import EVEAPI
+
 
 class NCCache: NSObject {
 	private(set) lazy var managedObjectModel: NSManagedObjectModel = {

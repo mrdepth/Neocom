@@ -16,7 +16,7 @@ class NCSkillEditTableViewCell: NCTableViewCell {
 
 
 extension Prototype {
-	struct NCSkillEditTableViewCell {
+	enum NCSkillEditTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCSkillEditTableViewCell")
 	}
 }

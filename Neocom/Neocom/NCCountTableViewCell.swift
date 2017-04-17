@@ -14,7 +14,7 @@ class NCCountTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCCountTableViewCell {
+	enum NCCountTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCCountTableViewCell")
 	}
 }

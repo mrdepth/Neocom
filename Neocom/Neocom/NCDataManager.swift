@@ -328,7 +328,7 @@ class NCDataManager {
 	func updateMarketPrices(completionHandler: ((_ isUpdated: Bool) -> Void)?) {
 		NCCache.sharedCache?.performBackgroundTask{ managedObjectContext in
 			let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: "ESMarketPrices", account: nil)))?.last
-			if record == nil || record!.expired {
+			if record == nil || record!.isExpired {
 				self.marketPrices { result in
 					let _ = self
 					switch result {
@@ -498,7 +498,126 @@ class NCDataManager {
 		self.api.mail.sendNewMail(characterID: Int(characterID), mail: mail, completionBlock: completionHandler)
 	}
 	
-	//MARK: Private
+	func returnMailHeaders(lastMailID: Int64? = nil, completionHandler: @escaping (NCCachedResult<[ESI.Mail.Header]>) -> Void) {
+		loadFromCache(forKey: "ESI.Mail.Header.\(lastMailID ?? 0)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.api.mail.returnMailHeaders(characterID: Int(self.characterID), lastMailID: lastMailID != nil ? Int(lastMailID!) : nil) { result in
+				completion(result, 60)
+			}
+		})
+	}
+	
+	func fetchMail(completionHandler: @escaping (Result<String>) -> Void) {
+		guard let cache = NCCache.sharedCache else {
+			completionHandler(.failure(NCDataManagerError.internalError))
+			return
+		}
+		
+		cache.performBackgroundTask { managedObjectContext in
+			
+			let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: "ESI.Mail.Header.0", account: self.account)))?.first
+			let isExpired = record?.isExpired ?? true
+			let isInitial = (record?.data?.data == nil) ?? true
+			
+			if isExpired || isInitial {
+				
+				var headers: [ESI.Mail.Header] = []
+				var contacts: [Int64: NSManagedObjectID] = [:]
+				
+				func fetch(from: Int64?) {
+					self.returnMailHeaders(lastMailID: from) { result in
+						switch result {
+						case let .success(value, _):
+							headers.append(contentsOf: value)
+							if value.count > 0 && isInitial {
+								fetch(from: headers.map {$0.mailID ?? 0}.min())
+							}
+							else {
+								var ids = [Int64]()
+								for mail in headers {
+									ids.append(contentsOf: mail.recipients?.map {Int64($0.recipientID)} ?? [])
+									if let from = mail.from {
+										ids.append(Int64(from))
+									}
+								}
+								if contacts.count > 0 {
+									self.contacts(ids: ids) { result in
+										contacts = result
+									}
+								}
+							}
+						case let .failure(error):
+							completionHandler(.failure(error))
+						}
+					}
+				}
+				fetch(from: nil)
+				
+			}
+			else {
+				completionHandler(.success("1"))
+			}
+
+		}
+		
+		
+//		if isExpired
+	}
+	
+	func contacts(ids: [Int64], completionHandler: @escaping ([Int64: NSManagedObjectID]) -> Void) {
+		var contacts: [Int64: NCContact] = [:]
+		
+		func finish() {
+			DispatchQueue.main.async {
+				var result: [Int64: NSManagedObjectID] = [:]
+				contacts.forEach {result[$0.key] = $0.value.objectID}
+				completionHandler(result)
+			}
+		}
+		
+		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
+			
+			let ids = ids.sorted()
+			let request = NSFetchRequest<NCContact>(entityName: "Contact")
+			request.predicate = NSPredicate(format: "contactID in %@", ids)
+			
+			
+			for contact in (try? managedObjectContext.fetch(request)) ?? [] {
+				contacts[contact.contactID] = contact
+			}
+			let missing = ids.filter {return contacts[$0] == nil}
+			
+			if missing.count > 0 {
+				self.universeNames(ids: missing) { result in
+					switch result {
+					case let .success(value, _):
+						NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
+							let request = NSFetchRequest<NCContact>(entityName: "Contact")
+							for name in value {
+								request.predicate = NSPredicate(format: "contactID == %d", name.id)
+								let contact = (try? managedObjectContext.fetch(request))?.first ?? {
+									let contact = NCContact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: managedObjectContext)!, insertInto: managedObjectContext)
+									contact.contactID = Int64(name.id)
+									contact.name = name.name
+									contact.type = name.category.rawValue
+									return contact
+								}()
+								contacts[contact.contactID] = contact
+							}
+							finish()
+						}
+						break
+					case .failure:
+						finish()
+					}
+				}
+
+			}
+			else {
+				finish()
+			}
+		}
+	}
+	
 	
 	func marketPrices(completionHandler: @escaping (NCCachedResult<[ESI.Market.Price]>) -> Void) {
 		loadFromCache(forKey: "ESI.Market.Price", account: nil, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
@@ -508,6 +627,7 @@ class NCDataManager {
 		})
 	}
 
+	//MARK: Private
 	
 	private func loadFromCache<T> (forKey key: String,
 	                           account: String?,
@@ -590,7 +710,7 @@ class NCDataManager {
 			cache.performBackgroundTask { (managedObjectContext) in
 				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
 				let object = record?.data?.data as? T
-				let expired = record?.expired ?? true
+				let expired = record?.isExpired ?? true
 				DispatchQueue.main.async {
 					if let object = object {
 						progress.completedUnitCount += 1

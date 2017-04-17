@@ -57,7 +57,7 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
 }
 
 extension Prototype {
-	struct NCHeaderTableViewCell {
+	enum NCHeaderTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCHeaderTableViewCell")
 	}
 }

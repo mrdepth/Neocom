@@ -17,7 +17,7 @@ class NCDamageTypeTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCDamageTypeTableViewCell {
+	enum NCDamageTypeTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCDamageTypeTableViewCell", bundle: nil), reuseIdentifier: "NCDamageTypeTableViewCell")
 		static let compact = Prototype(nib: UINib(nibName: "NCDamageTypeCompactTableViewCell", bundle: nil), reuseIdentifier: "NCDamageTypeCompactTableViewCell")
 	}

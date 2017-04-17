@@ -15,7 +15,7 @@ class NCMiningYieldTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCMiningYieldTableViewCell {
+	enum NCMiningYieldTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCMiningYieldTableViewCell")
 	}
 }

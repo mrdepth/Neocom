@@ -18,7 +18,7 @@ class NCFittingCapacitorTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCFittingCapacitorTableViewCell {
+	enum NCFittingCapacitorTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingCapacitorTableViewCell")
 	}
 }

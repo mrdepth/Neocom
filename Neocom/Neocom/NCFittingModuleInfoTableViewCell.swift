@@ -18,7 +18,7 @@ class NCFittingModuleInfoTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCFittingModuleInfoTableViewCell {
+	enum NCFittingModuleInfoTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingModuleInfoTableViewCell")
 	}
 }

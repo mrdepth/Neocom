@@ -28,7 +28,7 @@ class NCFittingResourcesTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCFittingResourcesTableViewCell {
+	enum NCFittingResourcesTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingResourcesTableViewCell")
 	}
 }

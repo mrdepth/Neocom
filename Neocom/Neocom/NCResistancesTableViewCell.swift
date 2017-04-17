@@ -26,7 +26,7 @@ class NCResistancesTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCResistancesTableViewCell {
+	enum NCResistancesTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCResistancesTableViewCell")
 	}
 }

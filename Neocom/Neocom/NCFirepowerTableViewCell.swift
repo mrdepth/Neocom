@@ -22,7 +22,7 @@ class NCFirepowerTableViewCell: NCTableViewCell {
 }
 
 extension Prototype {
-	struct NCFirepowerTableViewCell {
+	enum NCFirepowerTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFirepowerTableViewCell")
 	}
 }

@@ -18,6 +18,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+		ESI.initialize()
 		
 		application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert], categories: nil))
 		application.registerForRemoteNotifications()

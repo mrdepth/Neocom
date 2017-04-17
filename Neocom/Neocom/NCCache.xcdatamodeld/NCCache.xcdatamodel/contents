@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Contact" representedClassName="NCContact" syncable="YES" codeGenerationType="class">
-        <attribute name="contactID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="contactID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="mailFrom" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail" inverseName="from" inverseEntity="Mail" syncable="YES"/>
         <relationship name="mailTo" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail" inverseName="to" inverseEntity="Mail" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="contactID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="Mail" representedClassName="NCMail" syncable="YES" codeGenerationType="class">
-        <attribute name="characterID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="characterID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
+        <attribute name="folder" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isRead" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="labels" optional="YES" attributeType="Transformable" customClassName="[Int64]" syncable="YES"/>
-        <attribute name="mailID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mailID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="body" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="MailBody" inverseName="mail" inverseEntity="MailBody" syncable="YES"/>
         <relationship name="from" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="mailFrom" inverseEntity="Contact" syncable="YES"/>
         <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Contact" inverseName="mailTo" inverseEntity="Contact" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="characterID"/>
+                <constraint value="mailID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="MailBody" representedClassName="NCMailBody" syncable="YES" codeGenerationType="class">
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
@@ -23,10 +36,15 @@
     </entity>
     <entity name="Price" representedClassName="NCCachePrice" syncable="YES" codeGenerationType="class">
         <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="typeID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="Record" representedClassName="NCCacheRecord" syncable="YES" codeGenerationType="class">
-        <attribute name="account" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="account" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="error" optional="YES" attributeType="Transformable" customClassName="NSError" syncable="YES"/>
         <attribute name="expireDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -38,15 +56,30 @@
         <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Record" inverseName="data" inverseEntity="Record" syncable="YES"/>
     </entity>
     <entity name="TypePickerRecent" representedClassName="NCCacheTypePickerRecent" syncable="YES" codeGenerationType="class">
-        <attribute name="category" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
-        <attribute name="date" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
-        <attribute name="raceID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
-        <attribute name="subcategory" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
-        <attribute name="typeID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
+        <attribute name="category" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="raceID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="subcategory" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="typeID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="category"/>
+                <index value="subcategory"/>
+                <index value="raceID"/>
+            </compoundIndex>
+        </compoundIndexes>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="category"/>
+                <constraint value="subcategory"/>
+                <constraint value="raceID"/>
+                <constraint value="typeID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <elements>
         <element name="Contact" positionX="27" positionY="81" width="128" height="120"/>
-        <element name="Mail" positionX="18" positionY="72" width="128" height="165"/>
+        <element name="Mail" positionX="18" positionY="72" width="128" height="195"/>
         <element name="MailBody" positionX="36" positionY="90" width="128" height="75"/>
         <element name="Price" positionX="9" positionY="36" width="128" height="75"/>
         <element name="Record" positionX="0" positionY="0" width="128" height="135"/>

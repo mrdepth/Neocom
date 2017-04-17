@@ -110,3 +110,87 @@ class NCCache: NSObject {
 		
 	}
 }
+
+
+extension NCCacheRecord {
+	@nonobjc class func fetchRequest(forKey key: String?, account: String?) -> NSFetchRequest<NCCacheRecord> {
+		let request = NSFetchRequest<NCCacheRecord>(entityName: "Record");
+		var predicates = [NSPredicate]()
+		if let key = key {
+			predicates.append(NSPredicate(format: "key == %@", key))
+			request.fetchLimit = 1
+		}
+		if let account = account {
+			predicates.append(NSPredicate(format: "account == %@", account))
+		}
+		
+		request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+		return request
+	}
+	
+	var isExpired: Bool {
+		get {
+			guard self.date != nil else {return true}
+			guard let expireDate = self.expireDate as Date? else {return true}
+			return Date() > expireDate
+		}
+	}
+}
+
+extension NCContact {
+	var contactType: ESI.Mail.RecipientType? {
+		guard let type = self.type else {return nil}
+		return ESI.Mail.RecipientType(rawValue: type)
+	}
+}
+
+extension NCMail {
+	enum Folder: Int {
+		case inbox
+		case corporation
+		case alliance
+		case mailingList
+		case sent
+		case unknown
+		
+		var name: String {
+			switch self {
+			case .alliance:
+				return NSLocalizedString("Alliance", comment: "")
+			case .corporation:
+				return NSLocalizedString("Corp", comment: "")
+			case .inbox:
+				return NSLocalizedString("Inbox", comment: "")
+			case .mailingList:
+				return NSLocalizedString("Mailing Lists", comment: "")
+			case .sent:
+				return NSLocalizedString("Sent", comment: "")
+			case .unknown:
+				return NSLocalizedString("Unknown", comment: "")
+			}
+		}
+	}
+	
+	/*var folder: Int {
+		if characterID == from?.contactID {
+			return Folder.sent.rawValue
+		}
+		else if to?.first(where: {($0 as? NCContact)?.contactID == self.characterID}) != nil {
+			return Folder.inbox.rawValue
+		}
+		else if to?.first(where: {($0 as? NCContact)?.contactType == .corporation}) != nil {
+			return Folder.corporation.rawValue
+		}
+		else if to?.first(where: {($0 as? NCContact)?.contactType == .alliance}) != nil {
+			return Folder.alliance.rawValue
+		}
+		else if to?.first(where: {($0 as? NCContact)?.contactType == .mailingList}) != nil {
+			return Folder.mailingList.rawValue
+		}
+		else {
+			return Folder.inbox.rawValue
+		}
+	}*/
+	
+}
+

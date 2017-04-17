@@ -119,7 +119,7 @@
                         <segue destination="OCg-dA-Ca5" kind="showDetail" identifier="NCSkillsViewController" id="vz3-Ia-BEu"/>
                         <segue destination="ftY-He-WPg" kind="showDetail" identifier="NCDatabaseCertificateGroupsViewController" id="ULd-LJ-DmT"/>
                         <segue destination="SQ8-Vx-wjY" kind="showDetail" identifier="NCFittingMenuViewController" id="h8J-y9-IBX"/>
-                        <segue destination="pyu-jZ-hsV" kind="showDetail" identifier="NCMailViewController" id="C8V-XG-qUt"/>
+                        <segue destination="2dw-Kn-sjm" kind="showDetail" identifier="NCMailViewController" id="c5R-Gf-nDa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mhh-2D-7TI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -8531,7 +8531,7 @@
         <!--Mail-->
         <scene sceneID="JUV-nw-H4g">
             <objects>
-                <tableViewController modalPresentationStyle="overCurrentContext" id="lEI-SQ-Zy7" customClass="NCContactsSearchResultViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController modalPresentationStyle="overCurrentContext" id="lEI-SQ-Zy7" customClass="NCMailViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="4MB-bv-33C" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -8618,8 +8618,8 @@
                             </tableViewCell>
                         </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="bXB-6Z-fJW" id="Gbi-qU-F0d"/>
-                            <outlet property="delegate" destination="bXB-6Z-fJW" id="jrd-4b-vW1"/>
+                            <outlet property="dataSource" destination="U7G-i2-P13" id="Itg-Kl-Q0a"/>
+                            <outlet property="delegate" destination="U7G-i2-P13" id="8gV-DL-VpF"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Mail" id="kJh-OL-kY7">
@@ -8630,7 +8630,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="treeController" destination="bXB-6Z-fJW" id="q5M-ii-Dsy"/>
+                        <outlet property="treeController" destination="U7G-i2-P13" id="JwA-vK-k4I"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m61-xv-I9M" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -8692,7 +8692,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="B28-Sl-QBx"/>
-        <segue reference="RZD-1L-8nG"/>
         <segue reference="aqM-GB-MGS"/>
     </inferredMetricsTieBreakers>
 </document>

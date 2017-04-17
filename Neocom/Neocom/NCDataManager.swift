@@ -308,7 +308,7 @@ class NCDataManager {
 	}
 	
 	func universeNames(ids: [Int64], completionHandler: @escaping (NCCachedResult<[ESI.Universe.Name]>) -> Void) {
-		let ids = ids.map{Int($0)}.sorted()
+		let ids = Set(ids).map{Int($0)}.sorted()
 		loadFromCache(forKey: "ESI.Universe.Name.\(ids.hashValue)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.api.universe.getNamesAndCategoriesForSetOfIDs(ids: ids) { result in
 				completion(result, 3600.0 * 24)
@@ -505,45 +505,57 @@ class NCDataManager {
 			}
 		})
 	}
-	
-	func fetchMail(completionHandler: @escaping (Result<String>) -> Void) {
+
+	func returnMailingLists(completionHandler: @escaping (NCCachedResult<[ESI.Mail.Subscription]>) -> Void) {
+		loadFromCache(forKey: "ESI.Mail.Subscription", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.api.mail.returnMailingListSubscriptions(characterID: Int(self.characterID)) { result in
+				completion(result, 3600.0 * 12)
+			}
+		})
+	}
+
+	func fetchMail(completionHandler: @escaping (Result<[NSManagedObjectID]>) -> Void) {
 		guard let cache = NCCache.sharedCache else {
 			completionHandler(.failure(NCDataManagerError.internalError))
 			return
 		}
-		
+
+//		var headers: [ESI.Mail.Header] = []
+//		var contacts: [Int64: NSManagedObjectID] = [:]
+		let characterID = self.characterID
+
 		cache.performBackgroundTask { managedObjectContext in
-			
 			let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: "ESI.Mail.Header.0", account: self.account)))?.first
 			let isExpired = record?.isExpired ?? true
-			let isInitial = (record?.data?.data == nil) ?? true
+			let isInitial = record?.data?.data == nil
 			
 			if isExpired || isInitial {
 				
-				var headers: [ESI.Mail.Header] = []
-				var contacts: [Int64: NSManagedObjectID] = [:]
-				
 				func fetch(from: Int64?) {
+					
 					self.returnMailHeaders(lastMailID: from) { result in
 						switch result {
 						case let .success(value, _):
-							headers.append(contentsOf: value)
-							if value.count > 0 && isInitial {
-								fetch(from: headers.map {$0.mailID ?? 0}.min())
+							let headers = value
+							
+							var ids = [Int64]()
+							for mail in headers {
+								ids.append(contentsOf: mail.recipients?.flatMap {$0.recipientType != .mailingList ? Int64($0.recipientID) : nil} ?? [])
+								if let from = mail.from {
+									ids.append(Int64(from))
+								}
+							}
+							if ids.count > 0 {
+								self.contacts(ids: ids) { result in
+									process(headers: headers, contacts: result)
+								}
 							}
 							else {
-								var ids = [Int64]()
-								for mail in headers {
-									ids.append(contentsOf: mail.recipients?.map {Int64($0.recipientID)} ?? [])
-									if let from = mail.from {
-										ids.append(Int64(from))
-									}
-								}
-								if contacts.count > 0 {
-									self.contacts(ids: ids) { result in
-										contacts = result
-									}
-								}
+								process(headers: headers, contacts: [:])
+							}
+							
+							if value.count > 0 && isInitial {
+								fetch(from: headers.map {$0.mailID ?? 0}.min())
 							}
 						case let .failure(error):
 							completionHandler(.failure(error))
@@ -554,16 +566,83 @@ class NCDataManager {
 				
 			}
 			else {
-				completionHandler(.success("1"))
+				DispatchQueue.main.async {
+					completionHandler(.success([]))
+				}
+				
 			}
-
 		}
 		
-		
-//		if isExpired
+		func process(headers: [ESI.Mail.Header], contacts: [Int64: NSManagedObjectID]) {
+			cache.performBackgroundTask { managedObjectContext in
+				managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+				var newMails: [NCMail] = []
+				
+				for header in headers {
+					guard let mailID = header.mailID else {continue}
+					guard let from = header.from else {continue}
+					let labels = header.labels?.sorted(by: <) ?? []
+					let request = NSFetchRequest<NCMail>(entityName: "Mail")
+					let recipients = header.recipients?.flatMap {contacts[Int64($0.recipientID)]}.flatMap {(try? managedObjectContext.existingObject(with: $0)) as? NCContact}
+					let to = Set(recipients ?? [])
+					
+					
+					request.predicate = NSPredicate(format: "mailID == %qi", header.mailID ?? 0)
+					request.fetchLimit = 1
+					let mail = (try? managedObjectContext.fetch(request))?.first ?? {
+						let mail = NCMail(entity: NSEntityDescription.entity(forEntityName: "Mail", in: managedObjectContext)!, insertInto: managedObjectContext)
+						mail.characterID = characterID
+						mail.mailID = mailID
+						mail.labels = labels
+						mail.timestamp = header.timestamp as NSDate?
+						mail.subject = header.subject
+						
+						if characterID == Int64(header.from ?? 0) {
+							mail.folder = Int32(NCMail.Folder.sent.rawValue)
+						}
+						else if header.recipients?.first(where: {Int64($0.recipientID) == characterID}) != nil {
+							mail.folder = Int32(NCMail.Folder.inbox.rawValue)
+						}
+						else if header.recipients?.first(where: {$0.recipientType == .corporation}) != nil {
+							mail.folder = Int32(NCMail.Folder.corporation.rawValue)
+						}
+						else if header.recipients?.first(where: {$0.recipientType == .alliance}) != nil {
+							mail.folder = Int32(NCMail.Folder.alliance.rawValue)
+						}
+						else if header.recipients?.first(where: {$0.recipientType == .mailingList}) != nil {
+							mail.folder = Int32(NCMail.Folder.mailingList.rawValue)
+						}
+						else {
+							mail.folder = Int32(NCMail.Folder.unknown.rawValue)
+						}
+
+						
+						newMails.append(mail)
+						return mail
+					}()
+
+					if let fromID = contacts[Int64(from)], let contact = try? managedObjectContext.existingObject(with: fromID) as? NCContact, mail.from != contact {
+						mail.from = contact
+					}
+					mail.isRead = mail.isRead || (header.isRead ?? false)
+					if mail.to != to as NSSet {
+						mail.to = to as NSSet
+					}
+				}
+				
+				if (managedObjectContext.hasChanges) {
+					try? managedObjectContext.save()
+				}
+				
+				DispatchQueue.main.async {
+					completionHandler(.success(newMails.map{$0.objectID}))
+				}
+			}
+		}
 	}
 	
 	func contacts(ids: [Int64], completionHandler: @escaping ([Int64: NSManagedObjectID]) -> Void) {
+		let ids = Set(ids)
 		var contacts: [Int64: NCContact] = [:]
 		
 		func finish() {
@@ -587,26 +666,57 @@ class NCDataManager {
 			let missing = ids.filter {return contacts[$0] == nil}
 			
 			if missing.count > 0 {
+				var mailingLists: [ESI.Mail.Subscription] = []
+				var names: [ESI.Universe.Name] = []
+				
+				let dispatchGroup = DispatchGroup()
+				
+				
+				dispatchGroup.enter()
 				self.universeNames(ids: missing) { result in
 					switch result {
 					case let .success(value, _):
-						NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
-							let request = NSFetchRequest<NCContact>(entityName: "Contact")
-							for name in value {
-								request.predicate = NSPredicate(format: "contactID == %d", name.id)
-								let contact = (try? managedObjectContext.fetch(request))?.first ?? {
-									let contact = NCContact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: managedObjectContext)!, insertInto: managedObjectContext)
-									contact.contactID = Int64(name.id)
-									contact.name = name.name
-									contact.type = name.category.rawValue
-									return contact
-								}()
-								contacts[contact.contactID] = contact
+						names = value
+						if Set(missing).subtracting(Set(value.map {Int64($0.id)})).count > 0 {
+							dispatchGroup.enter()
+							self.returnMailingLists { result in
+								switch result {
+								case let .success(value, _):
+									mailingLists = value.filter {ids.contains(Int64($0.mailingListID))}
+								case .failure:
+									break
+								}
+								dispatchGroup.leave()
 							}
-							finish()
 						}
-						break
 					case .failure:
+						break
+					}
+					dispatchGroup.leave()
+				}
+				
+				dispatchGroup.notify(queue: .main) {
+					NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
+						managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+						
+						let request = NSFetchRequest<NCContact>(entityName: "Contact")
+						
+						var result = names.map{($0.id, $0.name, $0.category.rawValue)}
+						result.append(contentsOf: mailingLists.map {($0.mailingListID, $0.name, ESI.Mail.RecipientType.mailingList.rawValue)})
+						
+						
+						for name in result {
+							request.predicate = NSPredicate(format: "contactID == %qi", name.0)
+							let contact = (try? managedObjectContext.fetch(request))?.first ?? {
+								let contact = NCContact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: managedObjectContext)!, insertInto: managedObjectContext)
+								contact.contactID = Int64(name.0)
+								contact.name = name.1
+								contact.type = name.2
+								return contact
+								}()
+							contacts[contact.contactID] = contact
+						}
+						
 						finish()
 					}
 				}
@@ -634,6 +744,7 @@ class NCDataManager {
 	                           cachePolicy:URLRequest.CachePolicy,
 	                           completionHandler: @escaping (NCCachedResult<T>) -> Void,
 	                           elseLoad loader: @escaping (@escaping NCLoaderCompletion<T>) -> Void) {
+
 		guard let cache = NCCache.sharedCache else {
 			completionHandler(.failure(NCDataManagerError.internalError))
 			return

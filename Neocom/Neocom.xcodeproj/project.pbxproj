@@ -82,7 +82,7 @@
 		125CE1381E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */; };
 		125CE13A1E9FFFE5007B8B6B /* NCContactsSearchResultPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE1391E9FFFE5007B8B6B /* NCContactsSearchResultPresentationController.swift */; };
 		125CE13C1EA1275C007B8B6B /* NCMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */; };
-		125CE13E1EA12DCB007B8B6B /* NCMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE13D1EA12DCB007B8B6B /* NCMessageTableViewCell.swift */; };
+		125CE13E1EA12DCB007B8B6B /* NCMailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */; };
 		126157001E008AF60041B817 /* dgm.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FE1E008AE00041B817 /* dgm.sqlite */; };
 		126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FF1E008AE00041B817 /* NCDatabase.sqlite */; };
 		126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157031E008E770041B817 /* NCRoundedImageView.swift */; };
@@ -153,7 +153,6 @@
 		12AC8DCA1DF08AE800561A7A /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DC81DF08AE800561A7A /* NCStorage.xcdatamodeld */; };
 		12AC8DCE1DF08D9B00561A7A /* NCCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DCC1DF08D9B00561A7A /* NCCache.xcdatamodeld */; };
 		12AC8DD21DF090A600561A7A /* NCCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD11DF090A600561A7A /* NCCache.swift */; };
-		12AC8DD41DF09BDE00561A7A /* NCCacheRecord+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD31DF09BDE00561A7A /* NCCacheRecord+NC.swift */; };
 		12AC8DE21DF0B5F200561A7A /* Dark.clr in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD51DF0AF6900561A7A /* Dark.clr */; };
 		12B1B82F1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1B82E1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift */; };
 		12B1B8351E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1B8341E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift */; };
@@ -336,7 +335,7 @@
 		125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContactsSearchResultViewController.swift; sourceTree = "<group>"; };
 		125CE1391E9FFFE5007B8B6B /* NCContactsSearchResultPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContactsSearchResultPresentationController.swift; sourceTree = "<group>"; };
 		125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailViewController.swift; sourceTree = "<group>"; };
-		125CE13D1EA12DCB007B8B6B /* NCMessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMessageTableViewCell.swift; sourceTree = "<group>"; };
+		125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailTableViewCell.swift; sourceTree = "<group>"; };
 		126156FE1E008AE00041B817 /* dgm.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = dgm.sqlite; path = ../../dbTools/dbinit/dgm.sqlite; sourceTree = "<group>"; };
 		126156FF1E008AE00041B817 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = ../../dbTools/dbinit/NCDatabase.sqlite; sourceTree = "<group>"; };
 		126157031E008E770041B817 /* NCRoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRoundedImageView.swift; sourceTree = "<group>"; };
@@ -417,7 +416,6 @@
 		12AC8DC91DF08AE800561A7A /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
 		12AC8DCD1DF08D9B00561A7A /* NCCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCCache.xcdatamodel; sourceTree = "<group>"; };
 		12AC8DD11DF090A600561A7A /* NCCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCCache.swift; sourceTree = "<group>"; };
-		12AC8DD31DF09BDE00561A7A /* NCCacheRecord+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NCCacheRecord+NC.swift"; sourceTree = "<group>"; };
 		12AC8DD51DF0AF6900561A7A /* Dark.clr */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Dark.clr; sourceTree = "<group>"; };
 		12B1B82E1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerContainerViewContrller.swift; sourceTree = "<group>"; };
 		12B1B8341E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingAmmoDamageChartViewController.swift; sourceTree = "<group>"; };
@@ -681,7 +679,7 @@
 				12D930F51E65A77300CBAE1C /* NCFleetTableViewCell.swift */,
 				124247BF1E6605AD002E0460 /* NCFleetMemberTableViewCell.swift */,
 				1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */,
-				125CE13D1EA12DCB007B8B6B /* NCMessageTableViewCell.swift */,
+				125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -815,7 +813,6 @@
 			children = (
 				12AC8DCC1DF08D9B00561A7A /* NCCache.xcdatamodeld */,
 				12AC8DD11DF090A600561A7A /* NCCache.swift */,
-				12AC8DD31DF09BDE00561A7A /* NCCacheRecord+NC.swift */,
 			);
 			name = NCCache;
 			sourceTree = "<group>";
@@ -1090,7 +1087,7 @@
 				125CE1381E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift in Sources */,
 				12C44D001E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift in Sources */,
 				1256BE501DF465BC00A2A24B /* NCSlideDownAnimationController.swift in Sources */,
-				125CE13E1EA12DCB007B8B6B /* NCMessageTableViewCell.swift in Sources */,
+				125CE13E1EA12DCB007B8B6B /* NCMailTableViewCell.swift in Sources */,
 				1230A3321DFFE2CF00627D92 /* NCTreeNode.swift in Sources */,
 				12B563FA1E51B24500F1BED0 /* NCFittingArea.mm in Sources */,
 				1230A3261DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift in Sources */,
@@ -1154,7 +1151,6 @@
 				12FF4D401E33A5DB00A8BAD4 /* NCResourceLabel.swift in Sources */,
 				12AC8DB21DEF5B6D00561A7A /* NCDatabase.swift in Sources */,
 				129E61041E028B3900B56EB8 /* String+NC.swift in Sources */,
-				12AC8DD41DF09BDE00561A7A /* NCCacheRecord+NC.swift in Sources */,
 				127BE3901E5AFC2900FA7F9F /* Router.swift in Sources */,
 				129E60F61E018BD400B56EB8 /* NCLocation.swift in Sources */,
 				1256BE461DF1F0B100A2A24B /* NCTrainingQueue.swift in Sources */,

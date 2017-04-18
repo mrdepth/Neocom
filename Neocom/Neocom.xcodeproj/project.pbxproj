@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1205B8A11E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */; };
+		1217B3C91EA63EB5005A8157 /* NCMailBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */; };
 		121D10AC1E262C7700DD671B /* NCTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */; };
 		121D10AE1E262F8900DD671B /* NCTypePickerGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10AD1E262F8900DD671B /* NCTypePickerGroupsViewController.swift */; };
 		121D10B01E26345D00DD671B /* NSManagedObjectContext+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */; };
@@ -260,6 +261,7 @@
 
 /* Begin PBXFileReference section */
 		1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamagePatternEditTableViewCell.swift; sourceTree = "<group>"; };
+		1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailBodyViewController.swift; sourceTree = "<group>"; };
 		121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerViewController.swift; sourceTree = "<group>"; };
 		121D10AD1E262F8900DD671B /* NCTypePickerGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerGroupsViewController.swift; sourceTree = "<group>"; };
 		121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+NC.swift"; sourceTree = "<group>"; };
@@ -632,6 +634,7 @@
 				126157091E01D2250041B817 /* NCCharacterSheetViewController.swift */,
 				129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */,
 				125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */,
+				1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */,
 				125CE1351E9FF0E7007B8B6B /* NCNewMailViewController.swift */,
 				125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */,
 			);
@@ -1155,6 +1158,7 @@
 				129E60F61E018BD400B56EB8 /* NCLocation.swift in Sources */,
 				1256BE461DF1F0B100A2A24B /* NCTrainingQueue.swift in Sources */,
 				128AE8171E360FF1002E3A1E /* NCRangeFormatter.swift in Sources */,
+				1217B3C91EA63EB5005A8157 /* NCMailBodyViewController.swift in Sources */,
 				125AB8111E41DEE600B8A2A8 /* NCChargeTableViewCell.swift in Sources */,
 				1243DC1F1E0BDE1700F00B9A /* NCMarketHistoryView.swift in Sources */,
 				1230A32A1DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift in Sources */,

@@ -19,6 +19,11 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	@IBOutlet weak var heightConstraint: NSLayoutConstraint!
 	@IBOutlet var accessoryView: UIView!
 	
+	var recipients: [(id: Int64, name: String, type: ESI.Mail.Recipient.RecipientType)] = []
+	var subject: String?
+	var body: NSAttributedString?
+
+	
 	private lazy var searchResultViewController: NCContactsSearchResultViewController? = {
 		let controller = self.childViewControllers.first as? NCContactsSearchResultViewController
 		controller?.delegate = self
@@ -51,6 +56,9 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		
 		textView.inputAccessoryView = accessoryView
 
+		subjectTextView.text = self.subject
+		textView.attributedText = body
+		updateRecipients()
 	}
 	
 	deinit {
@@ -77,19 +85,10 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	}
 	
 	@IBAction func onSend(_ sender: Any) {
-		let recipients = contacts.flatMap { contact -> ESI.Mail.NewMail.Recipient? in
-			let recipient = ESI.Mail.NewMail.Recipient()
-			recipient.recipientID = Int(contact.contactID)
-			switch contact.category {
-			case .alliance:
-				recipient.recipientType = .alliance
-			case .corporation:
-				recipient.recipientType = .corporation
-			case .character:
-				recipient.recipientType = .character
-			default:
-				return nil
-			}
+		let recipients = self.recipients.flatMap { contact -> ESI.Mail.Recipient? in
+			let recipient = ESI.Mail.Recipient()
+			recipient.recipientID = Int(contact.id)
+			recipient.recipientType = contact.type
 			return recipient
 		}
 		
@@ -155,9 +154,9 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 			else {
 				textView.attributedText.enumerateAttributes(in: range, options: [], using: { (attributes, _, _) in
 //					guard let attachment = attributes[NSAttachmentAttributeName] as? NSTextAttachment else {return}
-					guard let contactID = attributes["contactID"] as? Int64 else {return}
-					guard let i = contacts.index(where: {$0.contactID == contactID}) else {return}
-					contacts.remove(at: i)
+					guard let recipientID = attributes["recipientID"] as? Int64 else {return}
+					guard let i = recipients.index(where: {$0.id == recipientID}) else {return}
+					recipients.remove(at: i)
 				})
 			}
 		}
@@ -171,27 +170,14 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	
 	//MARK: - NCContactsSearchResultViewControllerDelegate
 	
-	private var contacts: [(contactID: Int64, name: String, category: ESI.Search.SearchCategories)] = []
-	
 	func contactsSearchResultsViewController(_ controller: NCContactsSearchResultViewController, didSelect contact: (contactID: Int64, name: String, category: ESI.Search.SearchCategories)) {
-		guard contacts.first(where: {$0.contactID == contact.contactID}) == nil else {return}
+		guard recipients.first(where: {$0.id == contact.contactID}) == nil else {return}
+		guard let type = ESI.Mail.Recipient.RecipientType(rawValue: contact.category.rawValue) else {return}
 		
-		contacts.append(contact)
-		toTextView.text = nil
+		recipients.append((id: contact.contactID, name: contact.name, type: type))
 		
-		var s = NSAttributedString()
-		for contact in contacts {
-			let i = (contact.name + ", ") * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: textView.font!]
-			let rect = i.boundingRect(with: .zero, options: [.usesLineFragmentOrigin], context: nil)
-			UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
-			i.draw(in: rect)
-			let image = UIGraphicsGetImageFromCurrentImageContext()
-			UIGraphicsEndImageContext()
-			
-			s = s + (NSAttributedString(image: image, font: toTextView.font!) * ["contactID": contact.contactID])
-		}
-		s = s * textView.typingAttributes
-		toTextView.attributedText = s
+		updateRecipients()
+		
 		updateConstraints(toTextView)
 		
 		view.endEditing(true)
@@ -256,6 +242,24 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	}
 	
 	private func update() {
-		navigationItem.rightBarButtonItem?.isEnabled = contacts.count > 0 && !textView.text.isEmpty
+		navigationItem.rightBarButtonItem?.isEnabled = recipients.count > 0 && !textView.text.isEmpty
+	}
+	
+	private func updateRecipients() {
+		toTextView.text = nil
+		
+		var s = NSAttributedString()
+		for contact in recipients {
+			let i = (contact.name + ", ") * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: textView.font!]
+			let rect = i.boundingRect(with: .zero, options: [.usesLineFragmentOrigin], context: nil)
+			UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
+			i.draw(in: rect)
+			let image = UIGraphicsGetImageFromCurrentImageContext()
+			UIGraphicsEndImageContext()
+			
+			s = s + (NSAttributedString(image: image, font: toTextView.font!) * ["recipientID": contact.id])
+		}
+		s = s * textView.typingAttributes
+		toTextView.attributedText = s
 	}
 }

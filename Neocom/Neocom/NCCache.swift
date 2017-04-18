@@ -106,8 +106,15 @@ class NCCache: NSObject {
 	
 	//MARK: Private
 	
-	func managedObjectContextDidSave(_ notification: NSNotification) {
-		
+	func managedObjectContextDidSave(_ notification: Notification) {
+		guard let context = notification.object as? NSManagedObjectContext,
+			viewContext !== context && context.persistentStoreCoordinator === viewContext.persistentStoreCoordinator
+			else {
+				return
+		}
+		viewContext.perform {
+			self.viewContext.mergeChanges(fromContextDidSave: notification)
+		}
 	}
 }
 
@@ -138,9 +145,9 @@ extension NCCacheRecord {
 }
 
 extension NCContact {
-	var contactType: ESI.Mail.RecipientType? {
+	var recipientType: ESI.Mail.Recipient.RecipientType? {
 		guard let type = self.type else {return nil}
-		return ESI.Mail.RecipientType(rawValue: type)
+		return ESI.Mail.Recipient.RecipientType(rawValue: type)
 	}
 }
 

@@ -232,21 +232,21 @@ class NCDataManager {
 		})
 	}
 
-	func locations(ids: [Int64], completionHandler: @escaping ([Int64: NCLocation]) -> Void) {
+	func locations(ids: Set<Int64>, completionHandler: @escaping ([Int64: NCLocation]) -> Void) {
 		var locations = [Int64: NCLocation]()
-		var missing = [Int64]()
-		var structures = [Int64]()
+		var missing = Set<Int64>()
+		var structures = Set<Int64>()
 		
 		for id in ids {
 			if id > Int64(Int32.max) {
-				structures.append(id)
+				structures.insert(id)
 			}
 			else if (66000000 < id && id < 66014933) { //staStations
 				if let station = NCDatabase.sharedDatabase?.staStations[Int(id) - 6000001] {
 					locations[id] = NCLocation(station)
 				}
 				else {
-					missing.append(id)
+					missing.insert(id)
 				}
 			}
 			else if (60000000 < id && id < 61000000) { //staStations
@@ -254,7 +254,7 @@ class NCDataManager {
 					locations[id] = NCLocation(station)
 				}
 				else {
-					missing.append(id)
+					missing.insert(id)
 				}
 			}
 			else if let int = Int(exactly: id) { //mapDenormalize
@@ -263,11 +263,11 @@ class NCDataManager {
 					locations[id] = NCLocation(mapDenormalize)
 				}
 				else {
-					missing.append(id)
+					missing.insert(id)
 				}
 			}
 			else {
-				missing.append(id)
+				missing.insert(id)
 			}
 		}
 		let dispatchGroup = DispatchGroup()
@@ -307,8 +307,8 @@ class NCDataManager {
 		}
 	}
 	
-	func universeNames(ids: [Int64], completionHandler: @escaping (NCCachedResult<[ESI.Universe.Name]>) -> Void) {
-		let ids = Set(ids).map{Int($0)}.sorted()
+	func universeNames(ids: Set<Int64>, completionHandler: @escaping (NCCachedResult<[ESI.Universe.Name]>) -> Void) {
+		let ids = ids.map{Int($0)}.sorted()
 		loadFromCache(forKey: "ESI.Universe.Name.\(ids.hashValue)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.api.universe.getNamesAndCategoriesForSetOfIDs(ids: ids) { result in
 				completion(result, 3600.0 * 24)
@@ -447,7 +447,7 @@ class NCDataManager {
 					ids.append(contentsOf: searchResult.wormhole ?? [])
 					
 					if ids.count > 0 {
-						self.universeNames(ids: ids.map{ Int64($0) }) { result in
+						self.universeNames(ids: Set(ids.map{ Int64($0) }) ) { result in
 							switch result {
 							case let .success(value):
 								var names = [Int: String]()
@@ -490,7 +490,7 @@ class NCDataManager {
 		})
 	}
 
-	func sendMail(body: String, subject: String, recipients: [ESI.Mail.NewMail.Recipient], completionHandler: @escaping (Result<Int>) -> Void) {
+	func sendMail(body: String, subject: String, recipients: [ESI.Mail.Recipient], completionHandler: @escaping (Result<Int>) -> Void) {
 		let mail = ESI.Mail.NewMail()
 		mail.body = body
 		mail.subject = subject
@@ -506,6 +506,14 @@ class NCDataManager {
 		})
 	}
 
+	func returnMailBody(mailID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Mail.MailBody>) -> Void) {
+		loadFromCache(forKey: "ESI.Mail.MailBody.\(mailID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.api.mail.returnMail(characterID: Int(self.characterID), mailID: Int(mailID)) { result in
+				completion(result, 3600.0 * 48)
+			}
+		})
+	}
+
 	func returnMailingLists(completionHandler: @escaping (NCCachedResult<[ESI.Mail.Subscription]>) -> Void) {
 		loadFromCache(forKey: "ESI.Mail.Subscription", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.api.mail.returnMailingListSubscriptions(characterID: Int(self.characterID)) { result in
@@ -514,7 +522,7 @@ class NCDataManager {
 		})
 	}
 
-	func fetchMail(completionHandler: @escaping (Result<[NSManagedObjectID]>) -> Void) {
+	/*func fetchMail(completionHandler: @escaping (Result<[NSManagedObjectID]>) -> Void) {
 		guard let cache = NCCache.sharedCache else {
 			completionHandler(.failure(NCDataManagerError.internalError))
 			return
@@ -527,10 +535,14 @@ class NCDataManager {
 		cache.performBackgroundTask { managedObjectContext in
 			let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: "ESI.Mail.Header.0", account: self.account)))?.first
 			let isExpired = record?.isExpired ?? true
-			let isInitial = record?.data?.data == nil
 			
-			if isExpired || isInitial {
-				
+			if isExpired {
+				let request = NSFetchRequest<NSDictionary>(entityName: "Mail")
+				request.predicate = NSPredicate(format: "characterID == %qi", characterID)
+				request.propertiesToFetch = [NSExpressionDescription(name: "mailID", resultType: .integer64AttributeType, expression: NSExpression(format: "max(mailID)"))]
+				request.resultType = .dictionaryResultType
+				let lastMailID = (try? managedObjectContext.fetch(request))?.first?["mailID"] as? Int64 ?? 0
+
 				func fetch(from: Int64?) {
 					
 					self.returnMailHeaders(lastMailID: from) { result in
@@ -554,9 +566,10 @@ class NCDataManager {
 								process(headers: headers, contacts: [:])
 							}
 							
-							if value.count > 0 && isInitial {
-								fetch(from: headers.map {$0.mailID ?? 0}.min())
+							if let minMailID = headers.map ({$0.mailID ?? 0}).min(), value.count > 0 && minMailID > lastMailID {
+								fetch(from: minMailID)
 							}
+							
 						case let .failure(error):
 							completionHandler(.failure(error))
 						}
@@ -639,10 +652,12 @@ class NCDataManager {
 				}
 			}
 		}
-	}
+	}*/
 	
-	func contacts(ids: [Int64], completionHandler: @escaping ([Int64: NSManagedObjectID]) -> Void) {
-		let ids = Set(ids)
+	private static var invalidIDs = Set<Int64>()
+	
+	func contacts(ids: Set<Int64>, completionHandler: @escaping ([Int64: NSManagedObjectID]) -> Void) {
+		let ids = ids.subtracting(NCDataManager.invalidIDs)
 		var contacts: [Int64: NCContact] = [:]
 		
 		func finish() {
@@ -655,7 +670,7 @@ class NCDataManager {
 		
 		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
 			
-			let ids = ids.sorted()
+//			let ids = ids.sorted()
 			let request = NSFetchRequest<NCContact>(entityName: "Contact")
 			request.predicate = NSPredicate(format: "contactID in %@", ids)
 			
@@ -663,12 +678,12 @@ class NCDataManager {
 			for contact in (try? managedObjectContext.fetch(request)) ?? [] {
 				contacts[contact.contactID] = contact
 			}
-			let missing = ids.filter {return contacts[$0] == nil}
+
+			var missing = Set(ids.filter {return contacts[$0] == nil})
 			
-			if missing.count > 0 {
+			if !missing.isEmpty {
 				var mailingLists: [ESI.Mail.Subscription] = []
 				var names: [ESI.Universe.Name] = []
-				
 				let dispatchGroup = DispatchGroup()
 				
 				
@@ -677,21 +692,26 @@ class NCDataManager {
 					switch result {
 					case let .success(value, _):
 						names = value
-						if Set(missing).subtracting(Set(value.map {Int64($0.id)})).count > 0 {
-							dispatchGroup.enter()
-							self.returnMailingLists { result in
-								switch result {
-								case let .success(value, _):
-									mailingLists = value.filter {ids.contains(Int64($0.mailingListID))}
-								case .failure:
-									break
-								}
-								dispatchGroup.leave()
-							}
+						missing.subtract(Set(value.map {Int64($0.id)}))
+					case let .failure(error):
+						if (error as? AFError)?.responseCode == 404 {
+							NCDataManager.invalidIDs.formUnion(missing)
 						}
-					case .failure:
-						break
 					}
+					
+					if !missing.isEmpty {
+						dispatchGroup.enter()
+						self.returnMailingLists { result in
+							switch result {
+							case let .success(value, _):
+								mailingLists = value.filter {ids.contains(Int64($0.mailingListID))}
+							case .failure:
+								break
+							}
+							dispatchGroup.leave()
+						}
+					}
+
 					dispatchGroup.leave()
 				}
 				
@@ -702,7 +722,7 @@ class NCDataManager {
 						let request = NSFetchRequest<NCContact>(entityName: "Contact")
 						
 						var result = names.map{($0.id, $0.name, $0.category.rawValue)}
-						result.append(contentsOf: mailingLists.map {($0.mailingListID, $0.name, ESI.Mail.RecipientType.mailingList.rawValue)})
+						result.append(contentsOf: mailingLists.map {($0.mailingListID, $0.name, ESI.Mail.Recipient.RecipientType.mailingList.rawValue)})
 						
 						
 						for name in result {

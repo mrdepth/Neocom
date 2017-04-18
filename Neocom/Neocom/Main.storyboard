@@ -8327,7 +8327,7 @@
             <objects>
                 <tableViewController modalPresentationStyle="overCurrentContext" id="nVS-iD-4Jy" customClass="NCContactsSearchResultViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="6F0-0W-H3N" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="472"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -8352,7 +8352,7 @@
         <!--New Message-->
         <scene sceneID="B6d-8Q-bAi">
             <objects>
-                <viewController definesPresentationContext="YES" id="cmp-JT-5vn" customClass="NCNewMailViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCNewMailViewController" definesPresentationContext="YES" id="cmp-JT-5vn" customClass="NCNewMailViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jaj-Tc-mZD"/>
                         <viewControllerLayoutGuide type="bottom" id="Nko-eJ-OLX"/>
@@ -8438,7 +8438,7 @@
                                 </connections>
                             </scrollView>
                             <containerView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y4i-uS-If2">
-                                <rect key="frame" x="0.0" y="96" width="320" height="472"/>
+                                <rect key="frame" x="0.0" y="32" width="320" height="536"/>
                                 <connections>
                                     <segue destination="nVS-iD-4Jy" kind="embed" id="qic-kJ-9x8"/>
                                 </connections>
@@ -8467,7 +8467,8 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="New Message" id="NL0-cF-7AH">
-                        <barButtonItem key="rightBarButtonItem" title="Send" id="yi0-9K-mUB">
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="RcR-Yv-aJ3"/>
+                        <barButtonItem key="rightBarButtonItem" title="Send" style="done" id="yi0-9K-mUB">
                             <connections>
                                 <action selector="onSend:" destination="cmp-JT-5vn" id="o4p-iP-Reg"/>
                             </connections>
@@ -8528,7 +8529,7 @@
             </objects>
             <point key="canvasLocation" x="-2618" y="948"/>
         </scene>
-        <!--Mail-->
+        <!--Mail View Controller-->
         <scene sceneID="JUV-nw-H4g">
             <objects>
                 <tableViewController modalPresentationStyle="overCurrentContext" id="lEI-SQ-Zy7" customClass="NCMailViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
@@ -8547,33 +8548,33 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="kPJ-95-Knn">
                                             <rect key="frame" x="15" y="4" width="290" height="35.5"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lZu-8o-xhF">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lZu-8o-xhF" customClass="NCRoundedImageView" customModule="Neocom" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="2" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="32" id="i91-DW-95P"/>
                                                         <constraint firstAttribute="height" constant="32" id="umE-4f-XsK"/>
                                                     </constraints>
                                                 </imageView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Jqx-zQ-ww6">
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Jqx-zQ-ww6">
                                                     <rect key="frame" x="40" y="0.0" width="250" height="35.5"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Sf-OP-UB9">
-                                                            <rect key="frame" x="0.0" y="0.0" width="250" height="18"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="250" height="35.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ez8-7b-gLZ">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="37.5" height="18"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="37.5" height="35.5"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vy5-mx-uhJ">
-                                                                    <rect key="frame" x="206" y="0.0" width="33" height="18"/>
+                                                                    <rect key="frame" x="206" y="0.0" width="33" height="35.5"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="disclosureIndicator" translatesAutoresizingMaskIntoConstraints="NO" id="Gi6-3t-HLp" customClass="NCTintImageView" customModule="Neocom" customModuleProvider="target">
-                                                                    <rect key="frame" x="243" y="3" width="7" height="12"/>
+                                                                    <rect key="frame" x="243" y="12" width="7" height="12"/>
                                                                     <color key="tintColor" cocoaTouchSystemColor="lightTextColor"/>
                                                                 </imageView>
                                                             </subviews>
@@ -8590,8 +8591,8 @@
                                                                 <constraint firstItem="Ez8-7b-gLZ" firstAttribute="leading" secondItem="1Sf-OP-UB9" secondAttribute="leading" id="uId-Js-PtG"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HEu-6D-2xc">
-                                                            <rect key="frame" x="0.0" y="18" width="250" height="17.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HEu-6D-2xc">
+                                                            <rect key="frame" x="0.0" y="35.5" width="250" height="0.0"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
@@ -8622,7 +8623,20 @@
                             <outlet property="delegate" destination="U7G-i2-P13" id="8gV-DL-VpF"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Mail" id="kJh-OL-kY7">
+                    <navigationItem key="navigationItem" id="kJh-OL-kY7">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="ymL-60-KHm">
+                            <rect key="frame" x="81" y="7" width="158" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="Inbox"/>
+                                <segment title="Sent"/>
+                                <segment title="Drafts"/>
+                            </segments>
+                            <connections>
+                                <action selector="onChangeSegment:" destination="lEI-SQ-Zy7" eventType="valueChanged" id="Rds-Z7-gqE"/>
+                            </connections>
+                        </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" systemItem="compose" id="ahD-2L-eUK">
                             <connections>
                                 <segue destination="pyu-jZ-hsV" kind="presentation" id="RZD-1L-8nG"/>
@@ -8641,6 +8655,140 @@
                 </customObject>
             </objects>
             <point key="canvasLocation" x="-1845" y="947.53521126760563"/>
+        </scene>
+        <!--Mail-->
+        <scene sceneID="Rwf-Fj-4Za">
+            <objects>
+                <viewController storyboardIdentifier="NCMailBodyViewController" id="ynZ-DU-hJK" customClass="NCMailBodyViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LCR-Zj-C4S"/>
+                        <viewControllerLayoutGuide type="bottom" id="kGA-4A-Xvd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ecd-f5-wZF" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="KHb-XZ-fWv">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="B7f-in-gZ4">
+                                        <rect key="frame" x="15" y="8" width="290" height="326.5"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="6XB-eB-quW">
+                                                <rect key="frame" x="0.0" y="0.0" width="290" height="18"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="From:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yWV-nh-Y1n">
+                                                        <rect key="frame" x="0.0" y="0.0" width="39.5" height="18"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LN4-kz-uo9">
+                                                        <rect key="frame" x="43.5" y="0.0" width="246.5" height="18"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ZvE-vs-V62">
+                                                <rect key="frame" x="0.0" y="20" width="290" height="18"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Odl-3z-6qj">
+                                                        <rect key="frame" x="0.0" y="0.0" width="21" height="18"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xHg-Zu-sNU">
+                                                        <rect key="frame" x="25" y="0.0" width="265" height="18"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bng-D3-y1m" customClass="NCThinLineView" customModule="Neocom" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="40" width="290" height="1"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <color key="tintColor" red="0.14901960780000001" green="0.2156862745" blue="0.25098039220000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="oRt-vc-x1R"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="seE-yS-KXB">
+                                                <rect key="frame" x="0.0" y="43" width="290" height="20.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rt4-sR-oAo">
+                                                <rect key="frame" x="0.0" y="65.5" width="290" height="16"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="60g-6n-Ilq" customClass="NCThinLineView" customModule="Neocom" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="83.5" width="290" height="1"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <color key="tintColor" red="0.14901960780000001" green="0.2156862745" blue="0.25098039220000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="cSn-y3-G5N"/>
+                                                </constraints>
+                                            </view>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Qrh-Zr-Lyx">
+                                                <rect key="frame" x="0.0" y="86.5" width="290" height="240"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" priority="750" constant="240" id="JIt-Sq-Q8b"/>
+                                                </constraints>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="cmp-JT-5vn" id="ku3-0l-dVY"/>
+                                                </connections>
+                                            </textView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="B7f-in-gZ4" secondAttribute="bottom" id="KmD-7C-2Wh"/>
+                                    <constraint firstItem="B7f-in-gZ4" firstAttribute="width" secondItem="KHb-XZ-fWv" secondAttribute="width" constant="-30" id="eHq-4E-ojg"/>
+                                    <constraint firstItem="B7f-in-gZ4" firstAttribute="top" secondItem="KHb-XZ-fWv" secondAttribute="top" constant="8" id="eNd-73-fEo"/>
+                                    <constraint firstItem="B7f-in-gZ4" firstAttribute="leading" secondItem="KHb-XZ-fWv" secondAttribute="leading" constant="15" id="h41-Dk-rnc"/>
+                                    <constraint firstAttribute="trailing" secondItem="B7f-in-gZ4" secondAttribute="trailing" constant="15" id="n3g-QD-mJZ"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="KHb-XZ-fWv" secondAttribute="trailing" id="1Gc-C6-xly"/>
+                            <constraint firstItem="KHb-XZ-fWv" firstAttribute="top" secondItem="ecd-f5-wZF" secondAttribute="top" id="DOh-Bh-KP3"/>
+                            <constraint firstItem="KHb-XZ-fWv" firstAttribute="leading" secondItem="ecd-f5-wZF" secondAttribute="leading" id="Q0h-aH-OXi"/>
+                            <constraint firstItem="kGA-4A-Xvd" firstAttribute="top" secondItem="KHb-XZ-fWv" secondAttribute="bottom" id="ih1-Sf-l3L"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Mail" id="LPF-et-Cdb">
+                        <barButtonItem key="rightBarButtonItem" title="Reply" id="qbv-k2-d5f">
+                            <connections>
+                                <action selector="onReply:" destination="ynZ-DU-hJK" id="vMK-3Y-6D1"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="dateLabel" destination="rt4-sR-oAo" id="Ps8-Qp-WYB"/>
+                        <outlet property="fromLabel" destination="LN4-kz-uo9" id="Hvy-9o-bhU"/>
+                        <outlet property="subjectLabel" destination="seE-yS-KXB" id="YCA-Ek-9ss"/>
+                        <outlet property="textView" destination="Qrh-Zr-Lyx" id="OoO-2C-5te"/>
+                        <outlet property="toLabel" destination="xHg-Zu-sNU" id="gSu-da-ekK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BZJ-H5-3o5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1108.125" y="947.53521126760563"/>
         </scene>
     </scenes>
     <resources>

@@ -72,10 +72,10 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 	private var observer: NCManagedObjectObserver?
 	
 	private func process(_ value: ESI.Clones.JumpClones, dataManager: NCDataManager, completionHandler: (() -> Void)?) {
-		var locations = [Int64]()
+		var locations = Set<Int64>()
 		for jumpClone in value.jumpClones {
 			guard let locationID = jumpClone.locationID else {continue}
-			locations.append(locationID)
+			locations.insert(locationID)
 		}
 		
 		dataManager.locations(ids: locations) { locations in

@@ -44,4 +44,10 @@ extension UIColor {
 			self.init(number: 0xF00000FF)
 		}
 	}
+	
+	var css:String {
+		var rgba = [CGFloat](repeating: 0, count: 4)
+		getRed(&rgba[0], green: &rgba[1], blue: &rgba[2], alpha: &rgba[3])
+		return String(format: "#%.2x%.2x%.2x", Int(rgba[0] * 255.0), Int(rgba[1] * 255.0), Int(rgba[2] * 255.0))
+	}
 }

@@ -93,7 +93,7 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 	private func process(_ value: [ESI.Market.Order], dataManager: NCDataManager, completionHandler: (() -> Void)?) {
 		let locations = Set(value.map {return $0.locationID})
 		
-		dataManager.locations(ids: locations.sorted()) { locations in
+		dataManager.locations(ids: locations) { locations in
 			var buy: [ESI.Market.Order] = []
 			var sell: [ESI.Market.Order] = []
 			for order in value {

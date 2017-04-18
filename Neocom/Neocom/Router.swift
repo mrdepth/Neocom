@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 enum RouteKind {
 	case push
@@ -363,7 +364,43 @@ enum Router {
 				destination.character = character
 			}
 		}
+	}
+	
+	enum Mail {
+		
+		class Body: Route {
+			let mail: ESI.Mail.Header
+			
+			init(mail: ESI.Mail.Header) {
+				self.mail = mail
+				super.init(kind: .push, identifier: "NCMailBodyViewController")
+			}
+			
+			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+				let destination = destination as! NCMailBodyViewController
+				destination.mail = mail
+			}
+		}
+		
+		class NewMessage: Route {
+			let recipients: [(id: Int64, name: String, type: ESI.Mail.Recipient.RecipientType)]?
+			let subject: String?
+			let body: NSAttributedString?
+			
+			init(recipients: [(id: Int64, name: String, type: ESI.Mail.Recipient.RecipientType)]? = nil, subject: String? = nil, body: NSAttributedString? = nil) {
+				self.recipients = recipients
+				self.subject = subject
+				self.body = body
+				super.init(kind: .adaptive, identifier: "NCNewMailViewController")
+			}
 
+			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+				let destination = destination as! NCNewMailViewController
+				destination.recipients = recipients ?? []
+				destination.subject = subject
+				destination.body = body
+			}
 
+		}
 	}
 }

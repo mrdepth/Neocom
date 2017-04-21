@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Contact" representedClassName="NCContact" syncable="YES" codeGenerationType="class">
         <attribute name="contactID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
+        <attribute name="lastUse" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="mailFrom" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail" inverseName="from" inverseEntity="Mail" syncable="YES"/>
@@ -78,7 +79,7 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="Contact" positionX="27" positionY="81" width="128" height="120"/>
+        <element name="Contact" positionX="27" positionY="81" width="128" height="135"/>
         <element name="Mail" positionX="18" positionY="72" width="128" height="195"/>
         <element name="MailBody" positionX="36" positionY="90" width="128" height="75"/>
         <element name="Price" positionX="9" positionY="36" width="128" height="75"/>

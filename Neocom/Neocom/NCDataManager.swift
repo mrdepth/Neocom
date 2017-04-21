@@ -426,8 +426,36 @@ class NCDataManager {
 		})
 	}
 
-	func searchNames(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false, completionHandler: @escaping (NCCachedResult<[String: [Int64: String]]>) -> Void) {
-		loadFromCache(forKey: "ESI.Search.SearchNamesResult.\(categories.hashValue).\(string.lowercased().hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+	func searchNames(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false, completionHandler: @escaping ([Int64: NCContact]) -> Void) {
+		self.search(string, categories: categories) { result in
+			switch result {
+			case let .success(value):
+				let searchResult = value.value
+				var ids = Set<Int>()
+				ids.formUnion(searchResult.agent ?? [])
+				ids.formUnion(searchResult.alliance ?? [])
+				ids.formUnion(searchResult.character ?? [])
+				ids.formUnion(searchResult.constellation ?? [])
+				ids.formUnion(searchResult.corporation ?? [])
+				ids.formUnion(searchResult.faction ?? [])
+				ids.formUnion(searchResult.inventorytype ?? [])
+				ids.formUnion(searchResult.region ?? [])
+				ids.formUnion(searchResult.solarsystem ?? [])
+				ids.formUnion(searchResult.station ?? [])
+				ids.formUnion(searchResult.wormhole ?? [])
+				
+				if ids.count > 0 {
+					self.contacts(ids: Set(ids.map{Int64($0)}), completionHandler: completionHandler)
+				}
+				else {
+					completionHandler([:])
+				}
+			case .failure:
+				completionHandler([:])
+			}
+		}
+
+/*		loadFromCache(forKey: "ESI.Search.SearchNamesResult.\(categories.hashValue).\(string.lowercased().hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			
 			self.search(string, categories: categories) { result in
 				switch result {
@@ -487,7 +515,7 @@ class NCDataManager {
 //			self.api.search.search(categories: categories, search: string, strict: strict) { result in
 //				completion(result, 3600.0 * 12)
 //			}
-		})
+		})*/
 	}
 
 	func sendMail(body: String, subject: String, recipients: [ESI.Mail.Recipient], completionHandler: @escaping (Result<Int>) -> Void) {
@@ -656,14 +684,19 @@ class NCDataManager {
 	
 	private static var invalidIDs = Set<Int64>()
 	
-	func contacts(ids: Set<Int64>, completionHandler: @escaping ([Int64: NSManagedObjectID]) -> Void) {
+	func contacts(ids: Set<Int64>, completionHandler: @escaping ([Int64: NCContact]) -> Void) {
 		let ids = ids.subtracting(NCDataManager.invalidIDs)
 		var contacts: [Int64: NCContact] = [:]
 		
 		func finish() {
 			DispatchQueue.main.async {
-				var result: [Int64: NSManagedObjectID] = [:]
-				contacts.forEach {result[$0.key] = $0.value.objectID}
+				let context = NCCache.sharedCache?.viewContext
+				
+				var result: [Int64: NCContact] = [:]
+				for (key, value) in contacts {
+					guard let object = (try? context?.existingObject(with: value.objectID)) as? NCContact else {continue}
+					result[key] = object
+				}
 				completionHandler(result)
 			}
 		}
@@ -736,7 +769,9 @@ class NCDataManager {
 								}()
 							contacts[contact.contactID] = contact
 						}
-						
+						if managedObjectContext.hasChanges {
+							try? managedObjectContext.save()
+						}
 						finish()
 					}
 				}

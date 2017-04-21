@@ -11,24 +11,20 @@ import EVEAPI
 
 class NCContactRow: TreeRow {
 	
-	let contactID: Int64
-	let name: String
-	let category: ESI.Search.SearchCategories
+	let contact: NCContact
 	let dataManager: NCDataManager
 	var image: UIImage?
 	
-	init(contactID: Int64, name: String, category: ESI.Search.SearchCategories, dataManager: NCDataManager) {
-		self.contactID = contactID
-		self.name = name
-		self.category = category
+	init(contact: NCContact, dataManager: NCDataManager) {
+		self.contact = contact
 		self.dataManager = dataManager
 		super.init(prototype: Prototype.NCDefaultTableViewCell.compact)
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
-		cell.object = contactID
-		cell.titleLabel?.text = name
+		cell.object = contact
+		cell.titleLabel?.text = contact.name
 		
 		if let image = image {
 			cell.iconView?.image = image
@@ -40,7 +36,7 @@ class NCContactRow: TreeRow {
 				switch result {
 				case let .success(value):
 					self.image = value.value
-					if (cell.object as? Int64) == self.contactID {
+					if (cell.object as? NCContact) == self.contact {
 						cell.iconView?.image = self.image
 					}
 				case .failure:
@@ -48,13 +44,13 @@ class NCContactRow: TreeRow {
 				}
 			}
 			
-			switch category {
+			switch contact.recipientType ?? .character {
 			case .alliance:
-				dataManager.image(allianceID: contactID, dimension: Int(cell.iconView!.bounds.width), completionHandler: completionHandler)
+				dataManager.image(allianceID: contact.contactID, dimension: Int(cell.iconView!.bounds.width), completionHandler: completionHandler)
 			case .corporation:
-				dataManager.image(corporationID: contactID, dimension: Int(cell.iconView!.bounds.width), completionHandler: completionHandler)
+				dataManager.image(corporationID: contact.contactID, dimension: Int(cell.iconView!.bounds.width), completionHandler: completionHandler)
 			case .character:
-				dataManager.image(characterID: contactID, dimension: Int(cell.iconView!.bounds.width), completionHandler: completionHandler)
+				dataManager.image(characterID: contact.contactID, dimension: Int(cell.iconView!.bounds.width), completionHandler: completionHandler)
 			default:
 				break
 			}
@@ -62,16 +58,16 @@ class NCContactRow: TreeRow {
 	}
 	
 	override var hashValue: Int {
-		return Int(contactID)
+		return contact.hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCContactRow)?.contactID == contactID
+		return (object as? NCContactRow)?.hashValue == hashValue
 	}
 }
 
 protocol NCContactsSearchResultViewControllerDelegate: NSObjectProtocol {
-	func contactsSearchResultsViewController(_ controller: NCContactsSearchResultViewController, didSelect contact: (contactID: Int64, name: String, category: ESI.Search.SearchCategories))
+	func contactsSearchResultsViewController(_ controller: NCContactsSearchResultViewController, didSelect contact: NCContact)
 }
 
 class NCContactsSearchResultViewController: UITableViewController, TreeControllerDelegate {
@@ -79,30 +75,43 @@ class NCContactsSearchResultViewController: UITableViewController, TreeControlle
 	@IBOutlet var treeController: TreeController!
 	weak var delegate: NCContactsSearchResultViewControllerDelegate?
 	
-	var contacts: [ESI.Search.SearchCategories: [Int64: String]] = [:] {
+//	var contacts: [ESI.Mail.Recipient.RecipientType: [Int64: NCContact]] = [:] {
+	var contacts: [NCContact] = [] {
 		didSet {
+			var names: [ESI.Mail.Recipient.RecipientType: [NCContact]] = [:]
+			
+			for contact in contacts {
+				guard let recipientType = contact.recipientType else {continue}
+				var array = names[recipientType] ?? []
+				array.append(contact)
+				names[recipientType] = array
+			}
+
+			
 			let dataManager = NCDataManager(account: NCAccount.current)
-			let titles = [ESI.Search.SearchCategories.alliance: NSLocalizedString("Alliances", comment: ""),
-			              ESI.Search.SearchCategories.corporation: NSLocalizedString("Corporations", comment: ""),
-			              ESI.Search.SearchCategories.character: NSLocalizedString("Characters", comment: "")]
-			let identifiers = [ESI.Search.SearchCategories.character: "0",
-			                   ESI.Search.SearchCategories.corporation: "1",
-			                   ESI.Search.SearchCategories.alliance: "2"]
+			let titles = [ESI.Mail.Recipient.RecipientType.alliance: NSLocalizedString("Alliances", comment: ""),
+			              ESI.Mail.Recipient.RecipientType.corporation: NSLocalizedString("Corporations", comment: ""),
+			              ESI.Mail.Recipient.RecipientType.character: NSLocalizedString("Characters", comment: "")]
+			let identifiers = [ESI.Mail.Recipient.RecipientType.character: "0",
+			                   ESI.Mail.Recipient.RecipientType.corporation: "1",
+			                   ESI.Mail.Recipient.RecipientType.alliance: "2"]
 			var sections = [DefaultTreeSection]()
-			for (key, value) in contacts {
-				let rows = value.map { NCContactRow(contactID: $0.key, name: $0.value, category: key, dataManager: dataManager) }.sorted { $0.0.name < $0.1.name }
+			for (key, value) in names {
+				let rows = value.map { NCContactRow(contact: $0, dataManager: dataManager) }.sorted { ($0.contact.name ?? "") < ($1.contact.name ?? "") }
 				let section = DefaultTreeSection(nodeIdentifier: identifiers[key], title: titles[key], children: rows)
 				sections.append(section)
 			}
 			sections.sort { ($0.0.nodeIdentifier ?? "Z") < ($0.1.nodeIdentifier ?? "Z") }
 			
-			if let root = treeController.content {
-				root.children = sections
-			}
-			else {
-				let root = TreeNode()
-				root.children = sections
-				treeController.content = root
+			UIView.performWithoutAnimation {
+				if let root = treeController.content {
+					root.children = sections
+				}
+				else {
+					let root = TreeNode()
+					root.children = sections
+					treeController.content = root
+				}
 			}
 		}
 	}
@@ -115,10 +124,12 @@ class NCContactsSearchResultViewController: UITableViewController, TreeControlle
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
+		tableView.backgroundColor = UIColor.cellBackground
+		tableView.separatorColor = UIColor.separator
 	}
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let node = node as? NCContactRow else {return}
-		delegate?.contactsSearchResultsViewController(self, didSelect: (contactID: node.contactID, name: node.name, category: node.category))
+		delegate?.contactsSearchResultsViewController(self, didSelect: node.contact)
 	}
 }

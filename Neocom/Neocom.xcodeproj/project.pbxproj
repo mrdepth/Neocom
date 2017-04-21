@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1205B8A11E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */; };
 		1217B3C91EA63EB5005A8157 /* NCMailBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */; };
+		1217B4B91EAA0DE1005A8157 /* UIAlertController+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */; };
 		121D10AC1E262C7700DD671B /* NCTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */; };
 		121D10AE1E262F8900DD671B /* NCTypePickerGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10AD1E262F8900DD671B /* NCTypePickerGroupsViewController.swift */; };
 		121D10B01E26345D00DD671B /* NSManagedObjectContext+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */; };
@@ -262,6 +263,7 @@
 /* Begin PBXFileReference section */
 		1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamagePatternEditTableViewCell.swift; sourceTree = "<group>"; };
 		1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailBodyViewController.swift; sourceTree = "<group>"; };
+		1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+NC.swift"; sourceTree = "<group>"; };
 		121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerViewController.swift; sourceTree = "<group>"; };
 		121D10AD1E262F8900DD671B /* NCTypePickerGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerGroupsViewController.swift; sourceTree = "<group>"; };
 		121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+NC.swift"; sourceTree = "<group>"; };
@@ -773,6 +775,7 @@
 				121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */,
 				125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */,
 				127BE38F1E5AFC2900FA7F9F /* Router.swift */,
+				1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1164,6 +1167,7 @@
 				1230A32A1DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift in Sources */,
 				12961DCD1E1D649A008A3F4D /* NCFittingBooster.mm in Sources */,
 				12BFC46E1E409AC2000ED8D6 /* NCThinLineView.swift in Sources */,
+				1217B4B91EAA0DE1005A8157 /* UIAlertController+NC.swift in Sources */,
 				122242461E5C3A0000269A01 /* NCPageViewController.swift in Sources */,
 				12961DBA1E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift in Sources */,
 				126157061E0095380041B817 /* NCProgressHandler.swift in Sources */,

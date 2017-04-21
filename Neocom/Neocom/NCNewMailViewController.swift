@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsSearchResultViewControllerDelegate {
 	
@@ -19,7 +20,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	@IBOutlet weak var heightConstraint: NSLayoutConstraint!
 	@IBOutlet var accessoryView: UIView!
 	
-	var recipients: [(id: Int64, name: String, type: ESI.Mail.Recipient.RecipientType)] = []
+	var recipients: [NCContact] = []
 	var subject: String?
 	var body: NSAttributedString?
 
@@ -45,6 +46,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		
 		toTextView.addSubview(label)
 		toTextView.textContainer.exclusionPaths = [UIBezierPath(rect: label.frame)]
+		toTextView.typingAttributes = [NSForegroundColorAttributeName: toTextView.textColor!, NSFontAttributeName: toTextView.font!]
 		
 		label = UILabel(frame: .zero)
 		label.attributedText = "Subject: " * [NSForegroundColorAttributeName: UIColor.lightText, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .subheadline)]
@@ -86,22 +88,33 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	
 	@IBAction func onSend(_ sender: Any) {
 		let recipients = self.recipients.flatMap { contact -> ESI.Mail.Recipient? in
+			contact.lastUse = Date() as NSDate
+			guard let recipientType = contact.recipientType else {return nil}
 			let recipient = ESI.Mail.Recipient()
-			recipient.recipientID = Int(contact.id)
-			recipient.recipientType = contact.type
+			recipient.recipientID = Int(contact.contactID)
+			recipient.recipientType = recipientType
 			return recipient
+		}
+		
+		let context = NCCache.sharedCache?.viewContext
+		if context?.hasChanges == true {
+			try? context?.save()
 		}
 		
 		dataManager?.sendMail(body: textView.text, subject: subjectTextView.text, recipients: recipients, completionHandler: { result in
 			switch result {
 			case .success:
-				break
+				self.dismiss(animated: true, completion: nil)
 			case let .failure(error):
-				break
-//				UIAlertController(
+				self.present(UIAlertController(error: error), animated: true, completion: nil)
 			}
 		})
 	}
+	
+	@IBAction func onCancel(_ sender: Any) {
+		self.dismiss(animated: true, completion: nil)
+	}
+
 	//MARK: - UITextViewDelegate
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -127,6 +140,8 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	
 	func textViewDidBeginEditing(_ textView: UITextView) {
 		if textView == toTextView {
+			recent = NCCache.sharedCache?.viewContext.fetch("Contact", limit: 100, sortedBy: [NSSortDescriptor(key: "lastUse", ascending: false)], where: "lastUse <> nil")
+			self.searchResultViewController?.contacts = recent ?? []
 			UIView.animate(withDuration: 0.15, animations: { 
 				self.searchResultViewController?.view.superview?.alpha = 1.0
 			})
@@ -155,7 +170,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 				textView.attributedText.enumerateAttributes(in: range, options: [], using: { (attributes, _, _) in
 //					guard let attachment = attributes[NSAttachmentAttributeName] as? NSTextAttachment else {return}
 					guard let recipientID = attributes["recipientID"] as? Int64 else {return}
-					guard let i = recipients.index(where: {$0.id == recipientID}) else {return}
+					guard let i = recipients.index(where: {$0.contactID == recipientID}) else {return}
 					recipients.remove(at: i)
 				})
 			}
@@ -170,11 +185,11 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	
 	//MARK: - NCContactsSearchResultViewControllerDelegate
 	
-	func contactsSearchResultsViewController(_ controller: NCContactsSearchResultViewController, didSelect contact: (contactID: Int64, name: String, category: ESI.Search.SearchCategories)) {
-		guard recipients.first(where: {$0.id == contact.contactID}) == nil else {return}
-		guard let type = ESI.Mail.Recipient.RecipientType(rawValue: contact.category.rawValue) else {return}
+	func contactsSearchResultsViewController(_ controller: NCContactsSearchResultViewController, didSelect contact: NCContact) {
 		
-		recipients.append((id: contact.contactID, name: contact.name, type: type))
+		guard !recipients.contains(contact) else {return}
+//		guard let type = contact.recipientType else {return}
+		recipients.append(contact)
 		
 		updateRecipients()
 		
@@ -210,15 +225,21 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		guard let account = NCAccount.current else {return nil}
 		return NCDataManager(account: account)
 	}()
+	
+	private var recent: [NCContact]?
 
 	private func search(_ string: String) {
 		let string = string.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-		guard let dataManager = dataManager, string.utf8.count >= 3 else {
-			searchResultViewController?.contacts = [:]
-			return
-		}
+		guard let dataManager = self.dataManager else {return}
 		
 		gate.perform {
+			guard string.utf8.count >= 3 else {
+				DispatchQueue.main.async {
+					self.searchResultViewController?.contacts = self.recent ?? []
+				}
+				return
+			}
+
 			let dispatchGroup = DispatchGroup()
 			
 			dispatchGroup.enter()
@@ -227,14 +248,9 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 				defer {dispatchGroup.leave()}
 				guard let strongSelf = self else {return}
 				
-				switch result {
-				case let .success(value):
-					var result: [ESI.Search.SearchCategories: [Int64: String]] = [:]
-					value.value.forEach {result[ESI.Search.SearchCategories(rawValue: $0.key) ?? .character] = $0.value}
-					strongSelf.searchResultViewController?.contacts = result
-				case .failure:
-					break
-				}
+				var names: [ESI.Mail.Recipient.RecipientType: [Int64: NCContact]] = [:]
+				
+				strongSelf.searchResultViewController?.contacts = result.map {$0.value}
 			}
 			
 			dispatchGroup.wait()
@@ -250,16 +266,16 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		
 		var s = NSAttributedString()
 		for contact in recipients {
-			let i = (contact.name + ", ") * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: textView.font!]
+			let i = ((contact.name ?? "") + ", ") * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: toTextView.font!]
 			let rect = i.boundingRect(with: .zero, options: [.usesLineFragmentOrigin], context: nil)
 			UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
 			i.draw(in: rect)
 			let image = UIGraphicsGetImageFromCurrentImageContext()
 			UIGraphicsEndImageContext()
 			
-			s = s + (NSAttributedString(image: image, font: toTextView.font!) * ["recipientID": contact.id])
+			s = s + (NSAttributedString(image: image, font: toTextView.font!) * ["recipientID": contact.contactID])
 		}
-		s = s * textView.typingAttributes
+		s = s * toTextView.typingAttributes
 		toTextView.attributedText = s
 	}
 }

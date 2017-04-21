@@ -45,24 +45,17 @@ class NCMailBodyViewController: UIViewController {
 		}
 		
 		if ids.count > 0 {
-			dataManager.contacts(ids: ids) { result in
-				guard let context = NCCache.sharedCache?.viewContext else {return}
+			dataManager.contacts(ids: ids) { contacts in
 
-				var contactsMap = [Int64: NCContact]()
-				for (key, objectID) in result {
-					guard let contact = (try? context.existingObject(with: objectID)) as? NCContact else {continue}
-					contactsMap[key] = contact
-				}
-				
-				if let from = mail.from, let contact = contactsMap[Int64(from)] {
+				if let from = mail.from, let contact = contacts[Int64(from)] {
 					self.fromLabel.text = contact.name
 				}
 				let to = mail.recipients?.flatMap { recipient -> String? in
-					guard let contact = contactsMap[Int64(recipient.recipientID)] else {return nil}
+					guard let contact = contacts[Int64(recipient.recipientID)] else {return nil}
 					return contact.name
 				}.joined(separator: ", ")
 				self.toLabel.text = to
-				self.contacts = contactsMap
+				self.contacts = contacts
 			}
 		}
 		
@@ -96,16 +89,15 @@ class NCMailBodyViewController: UIViewController {
 	
 	@IBAction func onReply(_ sender: Any) {
 		guard let account = NCAccount.current else {return}
-		let recipients: [(Int64, String, ESI.Mail.Recipient.RecipientType)]
+		let recipients: [NCContact]
 		
 		if account.characterID == Int64(mail?.from ?? 0) {
-			recipients = mail?.recipients?.flatMap { recipient -> (Int64, String, ESI.Mail.Recipient.RecipientType)? in
-				guard let name = self.contacts?[Int64(recipient.recipientID)]?.name else {return nil}
-				return (Int64(recipient.recipientID), name, recipient.recipientType)
+			recipients = mail?.recipients?.flatMap { recipient -> NCContact? in
+				return self.contacts?[Int64(recipient.recipientID)]
 			} ?? []
 		}
-		else if let from = mail?.from, let contact = contacts?[Int64(from)], let name = contact.name, let type = contact.recipientType {
-			recipients = [(contact.contactID, name, type)]
+		else if let from = mail?.from, let contact = contacts?[Int64(from)] {
+			recipients = [contact]
 		}
 		else {
 			recipients = []
@@ -117,6 +109,7 @@ class NCMailBodyViewController: UIViewController {
 		else {
 			s = nil
 		}
+		
 		Router.Mail.NewMessage(recipients: recipients, subject: "RE: \(mail?.subject ?? "")", body: s).perform(source: self, view: nil)
 	}
 }

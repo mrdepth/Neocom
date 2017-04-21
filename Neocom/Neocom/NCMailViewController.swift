@@ -79,17 +79,10 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 		isFetching = true
 		
 		
-		func process(headers: [ESI.Mail.Header], contacts: [Int64: NSManagedObjectID]) {
+		func process(headers: [ESI.Mail.Header], contacts: [Int64: NCContact]) {
 			defer{self.isFetching = false}
-			if headers.count > 0 {
-				guard let context = NCCache.sharedCache?.viewContext else {return}
-				
-				var contactsMap: [Int64: NCContact] = [:]
-				for (key, value) in contacts {
-					guard let obj = (try? context.existingObject(with: value)) as? NCContact else {continue}
-					contactsMap[key] = obj
-				}
 
+			if headers.count > 0 {
 				var inbox = self.inbox.children
 				var sent = self.sent.children
 				for header in headers {
@@ -107,16 +100,16 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 						case .corporation?:
 							folder = .corporation
 						case .mailingList?:
-							folder = .mailingList(contactsMap[Int64(recipient!.recipientID)]?.name)
+							folder = .mailingList(contacts[Int64(recipient!.recipientID)]?.name)
 						default:
 							folder = .unknown
 						}
 					}
 					if case .sent = folder {
-						sent.append(NCMailRow(mail: header, folder: folder, contacts: contactsMap))
+						sent.append(NCMailRow(mail: header, folder: folder, contacts: contacts))
 					}
 					else {
-						inbox.append(NCMailRow(mail: header, folder: folder, contacts: contactsMap))
+						inbox.append(NCMailRow(mail: header, folder: folder, contacts: contacts))
 					}
 				}
 				lastID = headers.flatMap{$0.mailID}.min() ?? 0

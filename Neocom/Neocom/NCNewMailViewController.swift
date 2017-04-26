@@ -19,11 +19,14 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	@IBOutlet weak var bottomConstraint: NSLayoutConstraint!
 	@IBOutlet weak var heightConstraint: NSLayoutConstraint!
 	@IBOutlet var accessoryView: UIView!
+	@IBOutlet weak var fromLabel: UILabel!
 	
-	var recipients: [NCContact] = []
+	var recipients: [Int64] = []
 	var subject: String?
 	var body: NSAttributedString?
+	var draft: NCMailDraft?
 
+	private var _recipients: [Int64: NCContact] = [:]
 	
 	private lazy var searchResultViewController: NCContactsSearchResultViewController? = {
 		let controller = self.childViewControllers.first as? NCContactsSearchResultViewController
@@ -34,6 +37,8 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		update()
+		
+		fromLabel.text = NCAccount.current?.characterName
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: .UIKeyboardWillChangeFrame, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: .UIKeyboardWillShow, object: nil)
@@ -60,7 +65,15 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 
 		subjectTextView.text = self.subject
 		textView.attributedText = body
-		updateRecipients()
+		
+		if recipients.count > 0 {
+			NCDataManager(account: NCAccount.current).contacts(ids: Set(recipients)) { result in
+				result.forEach {self._recipients[$0] = $1}
+				self.updateRecipients()
+			}
+		}
+		
+		
 	}
 	
 	deinit {
@@ -87,7 +100,8 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	}
 	
 	@IBAction func onSend(_ sender: Any) {
-		let recipients = self.recipients.flatMap { contact -> ESI.Mail.Recipient? in
+		let recipients = self.recipients.flatMap { id -> ESI.Mail.Recipient? in
+			guard let contact = self._recipients[id] else {return nil}
 			contact.lastUse = Date() as NSDate
 			guard let recipientType = contact.recipientType else {return nil}
 			let recipient = ESI.Mail.Recipient()
@@ -104,6 +118,12 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		dataManager?.sendMail(body: textView.text, subject: subjectTextView.text, recipients: recipients, completionHandler: { result in
 			switch result {
 			case .success:
+				if let draft = self.draft {
+					draft.managedObjectContext?.delete(draft)
+					if draft.managedObjectContext?.hasChanges == true {
+						try? draft.managedObjectContext?.save()
+					}
+				}
 				self.dismiss(animated: true, completion: nil)
 			case let .failure(error):
 				self.present(UIAlertController(error: error), animated: true, completion: nil)
@@ -112,7 +132,46 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	}
 	
 	@IBAction func onCancel(_ sender: Any) {
-		self.dismiss(animated: true, completion: nil)
+		if !textView.text.isEmpty {
+			let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Delete Draft", comment: ""), style: .destructive, handler: { _ in
+				if let draft = self.draft {
+					draft.managedObjectContext?.delete(draft)
+					if draft.managedObjectContext?.hasChanges == true {
+						try? draft.managedObjectContext?.save()
+					}
+				}
+				self.dismiss(animated: true, completion: nil)
+			}))
+			
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Save Draft", comment: ""), style: .default, handler: { _ in
+				defer {
+					self.dismiss(animated: true, completion: nil)
+				}
+				
+				guard let context = NCStorage.sharedStorage?.viewContext else {return}
+				
+				let draft = self.draft ?? {
+					let draft = NCMailDraft(entity: NSEntityDescription.entity(forEntityName: "MailDraft", in: context)!, insertInto: context)
+					return draft
+				}()
+				draft.to = self.recipients
+				draft.subject = self.subjectTextView.text
+				draft.body = self.textView.attributedText
+				draft.date = NSDate()
+				if context.hasChanges {
+					try? context.save()
+				}
+			}))
+			
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: { _ in
+				
+			}))
+			present(controller, animated: true, completion: nil)
+		}
+		else {
+			self.dismiss(animated: true, completion: nil)
+		}
 	}
 
 	//MARK: - UITextViewDelegate
@@ -170,8 +229,9 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 				textView.attributedText.enumerateAttributes(in: range, options: [], using: { (attributes, _, _) in
 //					guard let attachment = attributes[NSAttachmentAttributeName] as? NSTextAttachment else {return}
 					guard let recipientID = attributes["recipientID"] as? Int64 else {return}
-					guard let i = recipients.index(where: {$0.contactID == recipientID}) else {return}
+					guard let i = recipients.index(of: recipientID) else {return}
 					recipients.remove(at: i)
+					_recipients[recipientID] = nil
 				})
 			}
 		}
@@ -187,9 +247,10 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	
 	func contactsSearchResultsViewController(_ controller: NCContactsSearchResultViewController, didSelect contact: NCContact) {
 		
-		guard !recipients.contains(contact) else {return}
+		guard !recipients.contains(contact.contactID) else {return}
 //		guard let type = contact.recipientType else {return}
-		recipients.append(contact)
+		recipients.append(contact.contactID)
+		_recipients[contact.contactID] = contact
 		
 		updateRecipients()
 		
@@ -265,7 +326,8 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		toTextView.text = nil
 		
 		var s = NSAttributedString()
-		for contact in recipients {
+		for id in recipients {
+			guard let contact = _recipients[id] else {continue}
 			let i = ((contact.name ?? "") + ", ") * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: toTextView.font!]
 			let rect = i.boundingRect(with: .zero, options: [.usesLineFragmentOrigin], context: nil)
 			UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)

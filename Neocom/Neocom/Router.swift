@@ -383,22 +383,33 @@ enum Router {
 		}
 		
 		class NewMessage: Route {
-			let recipients: [NCContact]?
+			let recipients: [Int64]?
 			let subject: String?
 			let body: NSAttributedString?
+			let draft: NCMailDraft?
 			
-			init(recipients: [NCContact]? = nil, subject: String? = nil, body: NSAttributedString? = nil) {
+			init(recipients: [Int64]? = nil, subject: String? = nil, body: NSAttributedString? = nil) {
 				self.recipients = recipients
 				self.subject = subject
 				self.body = body
+				self.draft = nil
+				super.init(kind: .modal, identifier: "NCNewMailNavigationController")
+			}
+
+			init(draft: NCMailDraft) {
+				self.recipients = nil
+				self.subject = nil
+				self.body = nil
+				self.draft = draft
 				super.init(kind: .modal, identifier: "NCNewMailNavigationController")
 			}
 
 			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
 				let destination = (destination as! UINavigationController).topViewController as! NCNewMailViewController
-				destination.recipients = recipients ?? []
-				destination.subject = subject
-				destination.body = body
+				destination.recipients = draft?.to ?? recipients ?? []
+				destination.subject = draft?.subject ?? subject
+				destination.body = draft?.body ?? body
+				destination.draft = draft
 			}
 
 		}

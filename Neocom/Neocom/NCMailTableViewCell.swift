@@ -123,9 +123,11 @@ class NCMailRow: TreeRow {
 	let mail: ESI.Mail.Header
 	let recipient: NSAttributedString
 	let characterID: Int64
+	let cacheRecord: NCCacheRecord?
 	
-	init(mail: ESI.Mail.Header, folder: Folder, contacts: [Int64: NCContact]) {
+	init(mail: ESI.Mail.Header, folder: Folder, contacts: [Int64: NCContact], cacheRecord: NCCacheRecord?) {
 		self.mail = mail
+		self.cacheRecord = cacheRecord
 		characterID = Int64(mail.from!)
 
 		let recipient: String
@@ -146,6 +148,7 @@ class NCMailRow: TreeRow {
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCMailTableViewCell else {return}
+
 		cell.subjectLabel.text = mail.subject
 		cell.object = mail
 		if let date = mail.timestamp as Date? {
@@ -154,8 +157,12 @@ class NCMailRow: TreeRow {
 		else {
 			cell.dateLabel.text = nil
 		}
-		cell.recipientLabel.attributedText = recipient
+		cell.recipientLabel.attributedText = mail.isRead == true ? recipient * [NSForegroundColorAttributeName: UIColor.lightText] : recipient
+		cell.subjectLabel.textColor = mail.isRead == true ? UIColor.lightText : UIColor.white
+		
 		cell.iconView.image = image
+//		cell.recipientLabel.font = mail.isRead == true ? UIFont.systemFont(ofSize: cell.recipientLabel.font.pointSize) : UIFont.boldSystemFont(ofSize: cell.recipientLabel.font.pointSize)
+//		cell.subjectLabel.font = mail.isRead == true ? UIFont.systemFont(ofSize: cell.subjectLabel.font.pointSize) : UIFont.boldSystemFont(ofSize: cell.subjectLabel.font.pointSize)
 		
 		if image == nil {
 			NCDataManager().image(characterID: characterID, dimension: Int(cell.iconView.bounds.size.width)) { result in
@@ -181,4 +188,70 @@ class NCMailRow: TreeRow {
 		return (object as? NCMailRow)?.hashValue == hashValue
 	}
 
+}
+
+class NCDraftsNode: FetchedResultsNode<NCMailDraft> {
+	init?() {
+		guard let context = NCStorage.sharedStorage?.viewContext else {return nil}
+		let request = NSFetchRequest<NCMailDraft>(entityName: "MailDraft")
+		request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+		super.init(resultsController: controller, objectNode: NCDraftRow.self)
+	}
+}
+
+class NCDraftRow: FetchedResultsObjectNode<NCMailDraft>, TreeNodeRoutable {
+	
+	let route: Route?
+	let accessoryButtonRoute: Route? = nil
+
+	required init(object: NCMailDraft) {
+		route = Router.Mail.NewMessage(draft: object)
+		super.init(object: object)
+		cellIdentifier = Prototype.NCMailTableViewCell.default.reuseIdentifier
+	}
+	
+	private var recipient: String?
+	private var image: UIImage?
+
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCMailTableViewCell else {return}
+		cell.subjectLabel.textColor = .white
+
+		cell.subjectLabel.text = object.subject
+		cell.object = object
+		cell.recipientLabel.text = self.recipient
+		cell.iconView.image = nil
+		if recipient == nil, let to = object.to, !to.isEmpty {
+			NCDataManager(account: NCAccount.current).contacts(ids: Set(to)) { result in
+				let recipient = to.flatMap({result[$0]?.name}).joined(separator: ", ")
+				self.recipient = recipient
+				if (cell.object as? NCMailDraft) == self.object {
+					cell.recipientLabel.text = self.recipient
+				}
+				
+				if let (_, contact) = result.first(where: {$0.value.recipientType == .character || $0.value.recipientType == .corporation}) {
+					
+					func handler(result: NCCachedResult<UIImage>) {
+						switch result {
+						case let .success(value, _):
+							self.image = value
+						case .failure:
+							self.image = UIImage()
+						}
+						if (cell.object as? NCMailDraft) == self.object {
+							cell.iconView.image = self.image
+						}
+					}
+					
+					if contact.recipientType == .character {
+						NCDataManager().image(characterID: contact.contactID, dimension: Int(cell.iconView.bounds.size.width), completionHandler: handler)
+					}
+					else {
+						NCDataManager().image(corporationID: contact.contactID, dimension: Int(cell.iconView.bounds.size.width), completionHandler: handler)
+					}
+				}
+			}
+		}
+	}
 }

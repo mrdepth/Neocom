@@ -50,6 +50,12 @@
         <attribute name="data" optional="YES" attributeType="Transformable" customClassName="NCFittingLoadout" syncable="YES"/>
         <relationship name="loadout" maxCount="1" deletionRule="Nullify" destinationEntity="Loadout" inverseName="data" inverseEntity="Loadout" syncable="YES"/>
     </entity>
+    <entity name="MailDraft" representedClassName="NCMailDraft" syncable="YES" codeGenerationType="class">
+        <attribute name="body" optional="YES" attributeType="Transformable" customClassName="NSAttributedString" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="to" optional="YES" attributeType="Transformable" customClassName="[Int64]" syncable="YES"/>
+    </entity>
     <entity name="Scope" representedClassName="NCScope" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="scopes" inverseEntity="Account" syncable="YES"/>
@@ -104,6 +110,7 @@
         <memberEntity name="Fleet"/>
         <memberEntity name="Scope"/>
         <memberEntity name="SkillPlanSkill"/>
+        <memberEntity name="MailDraft"/>
     </configuration>
     <configuration name="Local">
         <memberEntity name="Setting"/>
@@ -124,5 +131,6 @@
         <element name="ShoppingList" positionX="45" positionY="90" width="128" height="75"/>
         <element name="SkillPlan" positionX="9" positionY="54" width="128" height="105"/>
         <element name="SkillPlanSkill" positionX="9" positionY="126" width="128" height="105"/>
+        <element name="MailDraft" positionX="18" positionY="135" width="128" height="105"/>
     </elements>
 </model>

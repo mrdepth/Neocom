@@ -8365,7 +8365,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="LAW-Pm-cCP">
-                                        <rect key="frame" x="15" y="0.0" width="290" height="314"/>
+                                        <rect key="frame" x="15" y="0.0" width="290" height="334"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="RcT-LG-3Sa">
                                                 <rect key="frame" x="0.0" y="0.0" width="290" height="32"/>
@@ -8380,8 +8380,25 @@
                                                     <outlet property="delegate" destination="cmp-JT-5vn" id="Ov4-V4-oXZ"/>
                                                 </connections>
                                             </textView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="1r2-JW-ygx">
+                                                <rect key="frame" x="0.0" y="34" width="290" height="18"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" text="From:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CJF-2P-gOZ">
+                                                        <rect key="frame" x="0.0" y="0.0" width="39.5" height="18"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I4G-zn-tSb">
+                                                        <rect key="frame" x="43.5" y="0.0" width="246.5" height="18"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JYp-To-CpI" customClass="NCThinLineView" customModule="Neocom" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="34" width="290" height="1"/>
+                                                <rect key="frame" x="0.0" y="54" width="290" height="1"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="tintColor" red="0.14901960780000001" green="0.2156862745" blue="0.25098039220000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
@@ -8389,7 +8406,7 @@
                                                 </constraints>
                                             </view>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="m4Z-fH-Fhj">
-                                                <rect key="frame" x="0.0" y="37" width="290" height="32"/>
+                                                <rect key="frame" x="0.0" y="57" width="290" height="32"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="32" id="Idh-xD-Qox"/>
@@ -8402,7 +8419,7 @@
                                                 </connections>
                                             </textView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KCD-KY-mrC" customClass="NCThinLineView" customModule="Neocom" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="71" width="290" height="1"/>
+                                                <rect key="frame" x="0.0" y="91" width="290" height="1"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="tintColor" red="0.14901960780000001" green="0.2156862745" blue="0.25098039220000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
@@ -8410,7 +8427,7 @@
                                                 </constraints>
                                             </view>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bfF-ft-GYG">
-                                                <rect key="frame" x="0.0" y="74" width="290" height="240"/>
+                                                <rect key="frame" x="0.0" y="94" width="290" height="240"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" priority="750" constant="240" id="WLJ-lZ-M53"/>
@@ -8438,7 +8455,7 @@
                                 </connections>
                             </scrollView>
                             <containerView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y4i-uS-If2">
-                                <rect key="frame" x="0.0" y="32" width="320" height="536"/>
+                                <rect key="frame" x="0.0" y="96" width="320" height="472"/>
                                 <connections>
                                     <segue destination="nVS-iD-4Jy" kind="embed" id="qic-kJ-9x8"/>
                                 </connections>
@@ -8481,6 +8498,7 @@
                     <connections>
                         <outlet property="accessoryView" destination="3zg-80-l7m" id="nGJ-wy-wnN"/>
                         <outlet property="bottomConstraint" destination="PUU-Ku-iNX" id="YpD-QW-LMO"/>
+                        <outlet property="fromLabel" destination="I4G-zn-tSb" id="lMy-pS-sX1"/>
                         <outlet property="heightConstraint" destination="WLJ-lZ-M53" id="FaY-a7-tkg"/>
                         <outlet property="scrollView" destination="9PM-Qh-HdK" id="dSB-Oa-IaL"/>
                         <outlet property="subjectTextView" destination="m4Z-fH-Fhj" id="ewN-iU-iND"/>
@@ -8648,6 +8666,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="segmentedControl" destination="ymL-60-KHm" id="DE1-s1-tgP"/>
                         <outlet property="treeController" destination="U7G-i2-P13" id="JwA-vK-k4I"/>
                     </connections>
                 </tableViewController>

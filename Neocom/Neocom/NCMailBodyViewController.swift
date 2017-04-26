@@ -104,12 +104,13 @@ class NCMailBodyViewController: UIViewController {
 		}
 		let s: NSAttributedString?
 		if let body = self.body {
-			s = "\n--------------------------------\n" * [NSForegroundColorAttributeName: UIColor.white] + body
+			let font = UIFont.preferredFont(forTextStyle: .body)
+			s = "\n\n" * [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: font] + ("--------------------------------\n" + body) * [NSForegroundColorAttributeName: UIColor.lightText, NSFontAttributeName: UIFont.italicSystemFont(ofSize: font.pointSize)]
 		}
 		else {
 			s = nil
 		}
 		
-		Router.Mail.NewMessage(recipients: recipients, subject: "RE: \(mail?.subject ?? "")", body: s).perform(source: self, view: nil)
+		Router.Mail.NewMessage(recipients: recipients.map{$0.contactID}, subject: "RE: \(mail?.subject ?? "")", body: s).perform(source: self, view: nil)
 	}
 }

@@ -549,6 +549,22 @@ class NCDataManager {
 			}
 		})
 	}
+	
+	func markRead(mail: ESI.Mail.Header, completionHandler: @escaping (Result<String>) -> Void) {
+		guard let mailID = mail.mailID else {
+			completionHandler(.failure(NCDataManagerError.internalError))
+			return
+		}
+		
+		let contents = ESI.Mail.UpdateContents()
+		contents.read = true
+		contents.labels = mail.labels
+		self.api.mail.updateMetadataAboutMail(characterID: Int(self.characterID), contents: contents, mailID: Int(mailID), completionBlock: completionHandler)
+	}
+	
+	func delete(mailID: Int64, completionHandler: @escaping (Result<String>) -> Void) {
+		self.api.mail.deleteMail(characterID: Int(self.characterID), mailID: Int(mailID), completionBlock: completionHandler)
+	}
 
 	/*func fetchMail(completionHandler: @escaping (Result<[NSManagedObjectID]>) -> Void) {
 		guard let cache = NCCache.sharedCache else {

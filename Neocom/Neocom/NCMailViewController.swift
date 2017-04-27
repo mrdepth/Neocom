@@ -13,9 +13,13 @@ import EVEAPI
 
 class NCMailViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
-	@IBOutlet var segmentedControl: UISegmentedControl!
 
-	
+	var folder: String = "" {
+		didSet {
+			updateTitle()
+		}
+	}
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -26,31 +30,29 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
-
-		treeController.content = inbox
-//		fetch(from: nil)
-		reload()
+		updateTitle()
 	}
 	
-	@IBAction func onChangeSegment(_ sender: UISegmentedControl) {
-		UIView.performWithoutAnimation {
-			switch sender.selectedSegmentIndex {
-			case 0:
-				treeController.content = inbox
-			case 1:
-				treeController.content = sent
-			case 2:
-				treeController.content = drafts
-			default:
-				break
-			}
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		updateBackground()
+	}
+	
+	var error: Error? {
+		didSet {
 			updateBackground()
 		}
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-			self.fetchIfNeeded()
-		}
 	}
 	
+	func updateBackground() {
+		if (treeController.content?.children.count ?? 0) > 0 {
+			tableView.backgroundView = nil
+		}
+		else {
+			tableView.backgroundView = NCTableViewBackgroundLabel(text: error == nil ? NSLocalizedString("No Messages", comment: "") : error!.localizedDescription)
+		}
+	}
+
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
@@ -71,7 +73,8 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 				if record.managedObjectContext?.hasChanges == true {
 					try? record.managedObjectContext?.save()
 				}
-				dataManager.markRead(mail: node.mail) { _ in
+				updateTitle()
+				NCDataManager(account: NCAccount.current).markRead(mail: node.mail) { _ in
 					
 				}
 			}
@@ -80,12 +83,13 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 	
 	func treeControllerDidUpdateContent(_ treeController: TreeController) {
 		updateBackground()
+		updateTitle()
 	}
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		if let node = node as? NCMailRow {
 			guard let mailID = node.mail.mailID else {return []}
-			let dataManager = self.dataManager
+			let dataManager = NCDataManager(account: NCAccount.current)
 			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { _ in
 				dataManager.delete(mailID: mailID) { [weak self] result in
 					switch result {
@@ -99,11 +103,8 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 						if record.managedObjectContext?.hasChanges == true {
 							try? record.managedObjectContext?.save()
 						}
-						if let i = self?.inbox.children.index(of: node) {
-							self?.inbox.children.remove(at: i)
-						}
-						if let i = self?.sent.children.index(of: node) {
-							self?.sent.children.remove(at: i)
+						if let i = self?.treeController.content?.children.index(of: node) {
+							self?.treeController.content?.children.remove(at: i)
 						}
 					case .failure:
 						break
@@ -125,26 +126,42 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 	}
 	
 	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		fetchIfNeeded()
+		(parent as? NCMailPageViewController)?.fetchIfNeeded()
 	}
 	
 	//MARK: - Private
 	
 	@objc private func refresh() {
-		guard !isFetching else {
+		guard let parent = parent as? NCMailPageViewController, !parent.isFetching else {
 			refreshControl?.endRefreshing()
 			return
 		}
-		let progress = NCProgressHandler(totalUnitCount: 1)
-		progress.progress.becomeCurrent(withPendingUnitCount: 1)
-		reload(cachePolicy: .reloadIgnoringLocalCacheData) {
+		parent.reload(cachePolicy: .reloadIgnoringLocalCacheData) {
 			self.refreshControl?.endRefreshing()
 		}
-		progress.progress.resignCurrent()
 	}
 
+	private func updateTitle() {
+		let i: Int
+		if let mails = treeController.content?.children as? [NCMailRow] {
+			i = mails.filter {$0.mail.isRead == false}.count
+		}
+		else if let drafts = treeController.content?.children as? [NCDraftRow] {
+			i = drafts.count
+		}
+		else {
+			i = 0
+		}
+
+		if i > 0 {
+			title = "\(folder) (\(i))"
+		}
+		else {
+			title = folder
+		}
+	}
 	
-	private lazy var dataManager: NCDataManager = NCDataManager(account: NCAccount.current)
+/*	private lazy var dataManager: NCDataManager = NCDataManager(account: NCAccount.current)
 	private var isEndReached = false
 	private var isFetching = false
 	private var inbox = TreeNode()
@@ -174,7 +191,6 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 	
 	private func fetch(from: Int64?, completionHandler: (() -> Void)? = nil) {
 		guard !isEndReached, !isFetching else {return}
-		guard segmentedControl.selectedSegmentIndex == 0 || segmentedControl.selectedSegmentIndex == 1 else {return}
 		let characterID = dataManager.characterID
 		isFetching = true
 		
@@ -269,19 +285,6 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 				completionHandler?()
 			}
 		}
-	}
+	}*/
 	
-	private func updateBackground() {
-		switch segmentedControl.selectedSegmentIndex {
-		case 0:
-			tableView.backgroundView = inbox.children.count == 0 ? NCTableViewBackgroundLabel(text: error == nil ? NSLocalizedString("No Messages", comment: "") : error!.localizedDescription) : nil
-		case 1:
-			tableView.backgroundView = sent.children.count == 0 ? NCTableViewBackgroundLabel(text: error == nil ? NSLocalizedString("No Messages", comment: "") : error!.localizedDescription) : nil
-		case 2:
-			tableView.backgroundView = (drafts?.children.count ?? 0) == 0 ? NCTableViewBackgroundLabel(text: error == nil ? NSLocalizedString("No Messages", comment: "") : error!.localizedDescription) : nil
-		default:
-			break
-		}
-
-	}
 }

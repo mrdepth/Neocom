@@ -14,6 +14,13 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	
 	var viewControllers: [UIViewController]? {
 		didSet {
+			for controller in oldValue ?? [] {
+				controller.removeObserver(self, forKeyPath: "title")
+			}
+			for controller in viewControllers ?? [] {
+				controller.addObserver(self, forKeyPath: "title", options: [], context: nil)
+			}
+			
 			pageControl.titles = viewControllers?.map({$0.title?.uppercased() ?? "-"}) ?? []
 			self.view.setNeedsLayout()
 			scrollView.contentOffset = .zero
@@ -36,13 +43,27 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 		view.addSubview(pageControl)
 		view.addSubview(scrollView)
 		pageControl.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor)
-		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[top]-0-[page]-0-[scrollView]-0-|", options: [], metrics: nil, views: ["top": topLayoutGuide, "page": pageControl, "scrollView": scrollView]))
+		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[top]-0-[page]-0-[scrollView]-0-[bottom]", options: [], metrics: nil, views: ["top": topLayoutGuide, "bottom": bottomLayoutGuide, "page": pageControl, "scrollView": scrollView]))
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[page]-0-|", options: [], metrics: nil, views: ["page": pageControl]))
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[scrollView]-0-|", options: [], metrics: nil, views: ["scrollView": scrollView]))
 		pageControl.scrollView = scrollView
 		scrollView.delegate = self
 		scrollView.isPagingEnabled = true
-		
+	}
+	
+	deinit {
+		for controller in viewControllers ?? [] {
+			controller.removeObserver(self, forKeyPath: "title")
+		}
+	}
+	
+	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+		if keyPath == "title" {
+			pageControl.titles = viewControllers?.map({$0.title?.uppercased() ?? "-"}) ?? []
+		}
+		else {
+			return super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+		}
 	}
 	
 	override func viewDidLayoutSubviews() {

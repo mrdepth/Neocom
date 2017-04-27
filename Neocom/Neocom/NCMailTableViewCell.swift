@@ -121,24 +121,37 @@ class NCMailRow: TreeRow {
 	}()
 	
 	let mail: ESI.Mail.Header
-	let recipient: NSAttributedString
+	let contacts: [Int64: NCContact]
+	let folder: Folder
+	
+	lazy var recipient: NSAttributedString = {
+		let recipient: String
+		if case .sent = self.folder {
+			recipient = self.mail.recipients?.flatMap({self.contacts[Int64($0.recipientID)]?.name}).joined(separator: ", ") ?? NSLocalizedString("Unknown", comment: "")
+			return NSAttributedString(string: recipient)
+		}
+		else {
+			recipient = self.contacts[Int64(self.mail.from!)]?.name ?? NSLocalizedString("Unknown", comment: "")
+			if case .mailingList = self.folder {
+				return "[\(self.folder.name)]" * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)] + " " + recipient
+			}
+			else {
+				return NSAttributedString(string: recipient)
+			}
+			
+		}
+	}()
+	
 	let characterID: Int64
 	let cacheRecord: NCCacheRecord?
 	
 	init(mail: ESI.Mail.Header, folder: Folder, contacts: [Int64: NCContact], cacheRecord: NCCacheRecord?) {
 		self.mail = mail
 		self.cacheRecord = cacheRecord
+		self.folder = folder
+		self.contacts = contacts
 		characterID = Int64(mail.from!)
 
-		let recipient: String
-		if case .sent = folder {
-			recipient = mail.recipients?.flatMap({contacts[Int64($0.recipientID)]?.name}).joined(separator: ", ") ?? NSLocalizedString("Unknown", comment: "")
-			self.recipient = NSAttributedString(string: recipient)
-		}
-		else {
-			recipient = contacts[Int64(mail.from!)]?.name ?? NSLocalizedString("Unknown", comment: "")
-			self.recipient = "[\(folder.name)]" * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)] + " " + recipient
-		}
 		
 //		self.recipient = "[\(folder.name)]" * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)] + " " + recipient
 		super.init(prototype: Prototype.NCMailTableViewCell.default, route: Router.Mail.Body(mail: mail))
@@ -222,6 +235,7 @@ class NCDraftRow: FetchedResultsObjectNode<NCMailDraft>, TreeNodeRoutable {
 		cell.object = object
 		cell.recipientLabel.text = self.recipient
 		cell.iconView.image = nil
+		cell.dateLabel.text = nil
 		if recipient == nil, let to = object.to, !to.isEmpty {
 			NCDataManager(account: NCAccount.current).contacts(ids: Set(to)) { result in
 				let recipient = to.flatMap({result[$0]?.name}).joined(separator: ", ")

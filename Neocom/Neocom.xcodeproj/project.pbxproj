@@ -95,6 +95,7 @@
 		1263C5091E64A7D0003D002D /* NCFittingFleetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1263C5081E64A7D0003D002D /* NCFittingFleetsViewController.swift */; };
 		1263C50D1E64BE9D003D002D /* NCDefaultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1263C50C1E64BE9D003D002D /* NCDefaultTableViewCell.xib */; };
 		1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */; };
+		126B29501EB1FEAF006562A4 /* NCMailPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */; };
 		127332E11E71D01D00DE46C9 /* TreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127332E01E71D01D00DE46C9 /* TreeController.swift */; };
 		127BE3901E5AFC2900FA7F9F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BE38F1E5AFC2900FA7F9F /* Router.swift */; };
 		127DE7D81E9513B4008D4873 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127DE7D71E9513B4008D4873 /* ChartView.swift */; };
@@ -350,6 +351,7 @@
 		1263C5081E64A7D0003D002D /* NCFittingFleetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingFleetsViewController.swift; sourceTree = "<group>"; };
 		1263C50C1E64BE9D003D002D /* NCDefaultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultTableViewCell.xib; sourceTree = "<group>"; };
 		1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCHeaderTableViewCell.xib; sourceTree = "<group>"; };
+		126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailPageViewController.swift; sourceTree = "<group>"; };
 		127332E01E71D01D00DE46C9 /* TreeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TreeController.swift; path = ../../ThirdParty/TreeController/TreeController/TreeController/TreeController.swift; sourceTree = "<group>"; };
 		127BE38F1E5AFC2900FA7F9F /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		127DE7D71E9513B4008D4873 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
@@ -639,6 +641,7 @@
 				1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */,
 				125CE1351E9FF0E7007B8B6B /* NCNewMailViewController.swift */,
 				125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */,
+				126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */,
 			);
 			name = Character;
 			sourceTree = "<group>";
@@ -1116,6 +1119,7 @@
 				12424E1B1E48C9F3002DFE08 /* NCFittingDronesViewController.swift in Sources */,
 				12961DD91E1D64D4008A3F4D /* NCFittingCharge.mm in Sources */,
 				12961DD31E1D64B8008A3F4D /* NCFittingShip.mm in Sources */,
+				126B29501EB1FEAF006562A4 /* NCMailPageViewController.swift in Sources */,
 				12DBEAE91E1E8FEC0088A486 /* NCFittingMenuViewController.swift in Sources */,
 				12B1B8351E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift in Sources */,
 				12AC8DB01DEF5B0500561A7A /* NCDatabase.xcdatamodeld in Sources */,

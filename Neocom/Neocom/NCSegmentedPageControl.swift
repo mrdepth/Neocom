@@ -10,6 +10,7 @@ import UIKit
 
 //@IBDesignable
 class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
+	
 	@IBInspectable var spacing: CGFloat = 15
 	@IBInspectable var segments: String? {
 		didSet {
@@ -19,16 +20,22 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 	
 	var titles: [String] = [] {
 		didSet {
+			var buttons = stackView.arrangedSubviews as? [UIButton] ?? []
+			
 			for title in titles {
-				let button = UIButton(frame: .zero)
-				button.translatesAutoresizingMaskIntoConstraints = false
-				//button.titleEdgeInsets = UIEdgeInsetsMake(0, spacing / 2.0, 0, spacing / 2.0)
+				let button = !buttons.isEmpty ? buttons.removeFirst() : {
+					let button = UIButton(frame: .zero)
+					button.translatesAutoresizingMaskIntoConstraints = false
+					button.setTitleColor(.white, for: .normal)
+					button.addTarget(self, action: #selector(onButton(_:)), for: .touchUpInside)
+					stackView.addArrangedSubview(button)
+					return button
+				}()
+				
 				button.setTitle(title, for: .normal)
 				button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-				button.setTitleColor(.white, for: .normal)
-				button.addTarget(self, action: #selector(onButton(_:)), for: .touchUpInside)
-				stackView.addArrangedSubview(button)
 			}
+			buttons.forEach {$0.removeFromSuperview()}
 			setNeedsLayout()
 		}
 	}

@@ -63,7 +63,7 @@ class NCFittingModuleDamageChartRow: TreeRow {
 		let targetSignature = Double(hullType?.signature ?? 0)
 //		cell.damageChartView.targetSignature = targetSignature
 		
-		let n = Double(round((treeController?.tableView.bounds.size.width ?? 320) / 5))
+		let n = Double(round((treeController?.tableView?.bounds.size.width ?? 320) / 5))
 		
 		guard n > 0 else {return}
 		guard let ship = ship else {return}

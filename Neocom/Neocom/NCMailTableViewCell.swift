@@ -231,7 +231,15 @@ class NCDraftRow: FetchedResultsObjectNode<NCMailDraft>, TreeNodeRoutable {
 		guard let cell = cell as? NCMailTableViewCell else {return}
 		cell.subjectLabel.textColor = .white
 
-		cell.subjectLabel.text = object.subject
+		if object.subject?.isEmpty == false {
+			cell.subjectLabel.text = object.subject
+		}
+		else if let s = object.body?.string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), !s.isEmpty {
+			cell.subjectLabel.text = s
+		}
+		else {
+			cell.subjectLabel.text = NSLocalizedString("No Subject", comment: "")
+		}
 		cell.object = object
 		cell.recipientLabel.text = self.recipient
 		cell.iconView.image = nil

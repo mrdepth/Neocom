@@ -58,6 +58,10 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 	private lazy var contentView: UIScrollView = {
 		let contentView = UIScrollView(frame: self.bounds)
 		contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+		contentView.delaysContentTouches = true
+		contentView.canCancelContentTouches = true
+		contentView.showsHorizontalScrollIndicator = false
+		contentView.showsVerticalScrollIndicator = false
 		self.addSubview(contentView)
 		return contentView
 	}()
@@ -87,10 +91,14 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
+		
+		var bounds = self.bounds
+		bounds.size.height -= 4
+		
 		contentView.frame = bounds
-		contentView.layoutIfNeeded()
 		guard stackView.arrangedSubviews.count > 0 else {return}
 		stackView.layoutIfNeeded()
+		contentView.layoutIfNeeded()
 		guard let scrollView = scrollView, scrollView.bounds.size.width > 0 else {return}
 		let p = scrollView.contentOffset.x / scrollView.bounds.size.width
 		
@@ -123,7 +131,9 @@ class NCSegmentedPageControl: UIControl, UIScrollViewDelegate {
 	}
 	
 	override var intrinsicContentSize: CGSize {
-		return contentView.contentSize
+		var size = self.contentView.contentSize
+		size.height += 4
+		return size
 	}
 	
 	@IBAction private func onButton(_ sender: UIButton) {

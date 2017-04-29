@@ -454,7 +454,7 @@ class NCAccountsViewController: UITableViewController, NSFetchedResultsControlle
     }
 
 	@IBAction func onAddAccount(_ sender: Any) {
-		let url = OAuth2Handler.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.all, state: "esi")
+		let url = OAuth2Handler.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.default, state: "esi")
 		if #available(iOS 10.0, *) {
 			UIApplication.shared.open(url, options: [:], completionHandler: nil)
 		} else {

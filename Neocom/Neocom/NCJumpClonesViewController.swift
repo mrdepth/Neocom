@@ -71,18 +71,13 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 	
 	private var observer: NCManagedObjectObserver?
 	
-	private func process(_ value: ESI.Clones.JumpClones, dataManager: NCDataManager, completionHandler: (() -> Void)?) {
-		var locations = Set<Int64>()
-		for jumpClone in value.jumpClones {
-			guard let locationID = jumpClone.locationID else {continue}
-			locations.insert(locationID)
-		}
+	private func process(_ value: EVE.Char.Clones, dataManager: NCDataManager, completionHandler: (() -> Void)?) {
+		let locations = Set<Int64>(value.jumpClones?.map{$0.locationID} ?? [])
 		
 		dataManager.locations(ids: locations) { locations in
 			
 			var sections = [NCTreeNode]()
-			
-			let t = 3600 * 24 + (value.lastJumpDate ?? .distantPast).timeIntervalSinceNow
+			let t = 3600 * 24 + (value.cloneJumpDate ?? .distantPast).timeIntervalSinceNow
 			sections.append(NCJumpCloneRow(cellIdentifier: "Cell",
 			                               title: NSLocalizedString("NEXT CLONE JUMP AVAILABILITY", comment: ""),
 			                               subtitle: String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: "")),
@@ -98,23 +93,24 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 			              NCDBAttributeID.charismaBonus:		NSLocalizedString("Charisma", comment: ""),
 			              ]
 			
-			for jumpClone in value.jumpClones {
+			for jumpClone in value.jumpClones ?? [] {
 				var rows = [NCJumpCloneRow]()
-				for case let implant in jumpClone.implants?.map({ invTypes?[$0]}) ?? [] {
-					guard let attributes = implant?.allAttributes else {continue}
+				let implants = value.jumpCloneImplants?.filter {$0.jumpCloneID == jumpClone.jumpCloneID} ?? []
+				for case let implant in implants.flatMap({ invTypes?[$0.typeID]}) {
+					let attributes = implant.allAttributes
 					for attributeID in attributeIDs {
 						if let bonus = attributes[attributeID.rawValue]?.value, bonus > 0 {
 							rows.append(NCJumpCloneRow(cellIdentifier: "Cell",
-							                           title: implant?.typeName,
+							                           title: implant.typeName,
 							                           subtitle: "\(titles[attributeID]!) +\(Int(bonus))",
-								image: implant?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image))
+								image: implant.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image))
 						}
 					}
 				}
 				if rows.count == 0 {
 					rows.append(NCJumpCloneRow(cellIdentifier: "PlaceholderCell", title: NSLocalizedString("NO IMPLANTS INSTALLED", comment: ""), subtitle: nil, image: nil))
 				}
-				sections.append(NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: nil, attributedTitle: jumpClone.locationID != nil ? locations[jumpClone.locationID!]?.displayName.uppercased() : nil, children: rows))
+				sections.append(NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: nil, attributedTitle: locations[jumpClone.locationID]?.displayName.uppercased(), children: rows))
 			}
 			
 			self.treeController.content = sections
@@ -134,7 +130,7 @@ class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegat
 				case let .success(value, cacheRecord):
 					if let cacheRecord = cacheRecord {
 						self.observer = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] _, _ in
-							guard let value = cacheRecord.data?.data as? ESI.Clones.JumpClones else {return}
+							guard let value = cacheRecord.data?.data as? EVE.Char.Clones else {return}
 							self?.process(value, dataManager: dataManager, completionHandler: nil)
 						}
 					}

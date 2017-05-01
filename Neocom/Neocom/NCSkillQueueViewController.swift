@@ -393,7 +393,7 @@ class NCSkillQueueViewController: UITableViewController {
 			})
 			
 			controller.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { (action) in
-				if textField?.text?.utf8.count ?? 0 > 0 && skillPlan.name != textField?.text {
+				if textField?.text?.characters.count ?? 0 > 0 && skillPlan.name != textField?.text {
 					skillPlan.name = textField?.text
 					if skillPlan.managedObjectContext?.hasChanges == true {
 						try? skillPlan.managedObjectContext?.save()

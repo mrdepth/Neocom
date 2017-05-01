@@ -58,13 +58,20 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
 		
-		if OAuth2Handler.handleOpenURL(url, clientID: ESClientID, secretKey: ESSecretKey, completionHandler: { (result) in
+		
+		
+		if OAuth2.handleOpenURL(url, clientID: ESClientID, secretKey: ESSecretKey, completionHandler: { (result) in
 			switch result {
 			case let .success(token):
-				guard let context = NCStorage.sharedStorage?.viewContext else {break};
-				let account = NCAccount(entity: NSEntityDescription.entity(forEntityName: "Account", in: context)!, insertInto: context)
+				guard let context = NCStorage.sharedStorage?.viewContext else {break}
+				
+				let account: NCAccount = context.fetch("Account", limit: 1, where: "characterID == %qi", token.characterID) ?? {
+					let account = NCAccount(entity: NSEntityDescription.entity(forEntityName: "Account", in: context)!, insertInto: context)
+					account.uuid = UUID().uuidString
+					return account
+				}()
 				account.token = token
-				account.uuid = UUID().uuidString
+				
 				if context.hasChanges {
 					try? context.save()
 				}

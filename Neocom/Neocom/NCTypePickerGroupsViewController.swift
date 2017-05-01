@@ -101,7 +101,7 @@ class NCTypePickerGroupsViewController: UITableViewController, UISearchResultsUp
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCTypePickerTypesViewController else {return}
-		if let text = searchController.searchBar.text, let category = group?.category, text.utf8.count > 1 {
+		if let text = searchController.searchBar.text, let category = group?.category, text.characters.count > 1 {
 			predicate = NSPredicate(format: "ANY dgmppItem.groups.category == %@ AND typeName CONTAINS[C] %@ AND published == YES", category, text)
 		}
 		else {

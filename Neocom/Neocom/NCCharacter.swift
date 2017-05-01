@@ -54,10 +54,11 @@ class NCCharacter {
 			let dataManager = NCDataManager(account: account)
 			var skillsResult: NCCachedResult<ESI.Skills.CharacterSkills>?
 			var skillQueueResult: NCCachedResult<[ESI.Skills.SkillQueueItem]>?
+			var clonesResult: NCCachedResult<EVE.Char.Clones>?
 			
 			let dispatchGroup = DispatchGroup()
 			
-			let progress = Progress(totalUnitCount: 2)
+			let progress = Progress(totalUnitCount: 3)
 			
 			progress.becomeCurrent(withPendingUnitCount: 1)
 			dispatchGroup.enter()
@@ -75,6 +76,15 @@ class NCCharacter {
 			}
 			progress.resignCurrent()
 			
+			progress.becomeCurrent(withPendingUnitCount: 1)
+			dispatchGroup.enter()
+			dataManager.clones { result in
+				clonesResult = result
+				dispatchGroup.leave()
+			}
+			progress.resignCurrent()
+
+			
 			dispatchGroup.notify(queue: .global(qos: .background)) {
 				autoreleasepool {
 					var result: NCResult<NCCharacter>?
@@ -88,6 +98,8 @@ class NCCharacter {
 					var skillsRecord: NCCacheRecord?
 					var skillQueue: [ESI.Skills.SkillQueueItem]?
 					var skillQueueRecord: NCCacheRecord?
+					var clones: EVE.Char.Clones?
+					var clonesRecord: NCCacheRecord?
 					
 					switch skillsResult {
 					case let .success(value, cacheRecord)?:
@@ -115,8 +127,21 @@ class NCCharacter {
 						return
 					}
 					
+					switch clonesResult {
+					case let .success(value, cacheRecord)?:
+						clones = value
+						clonesRecord = cacheRecord
+						break
+					case let .failure(error)?:
+						result = .failure(error)
+						return
+					default:
+						result = .failure(ESIError.internalError)
+						return
+					}
 					
-					let character = NCCharacter(attributes: nil, skills: skills!, skillQueue: skillQueue!)
+					
+					let character = NCCharacter(attributes: NCCharacterAttributes(clones: clones!), skills: skills!, skillQueue: skillQueue!)
 					result = .success(character)
 					
 					character.observer = NCManagedObjectObserver() {[weak character] (updated, deleted) in
@@ -127,6 +152,8 @@ class NCCharacter {
 							var skills: ESI.Skills.CharacterSkills?
 							var skillQueue: [ESI.Skills.SkillQueueItem]?
 							var skillsMap = [Int: NCSkill]()
+							var attributes: NCCharacterAttributes?
+							
 							synchronized(self) {
 								for object in updated {
 									if object.objectID == skillsRecord?.objectID {
@@ -134,6 +161,10 @@ class NCCharacter {
 									}
 									else if object.objectID == skillQueueRecord?.objectID {
 										skillQueue = ((try? managedObjectContext.existingObject(with: object.objectID)) as? NCCacheRecord)?.data?.data as? [ESI.Skills.SkillQueueItem]
+									}
+									else if object.objectID == clonesRecord?.objectID {
+										guard let clones = ((try? managedObjectContext.existingObject(with: object.objectID)) as? NCCacheRecord)?.data?.data as? EVE.Char.Clones else {continue}
+										attributes = NCCharacterAttributes(clones: clones)
 									}
 								}
 								
@@ -179,6 +210,7 @@ class NCCharacter {
 							DispatchQueue.main.async {
 								character.skillQueue = skillQueue ?? character.skillQueue
 								character.skills = skillsMap
+								character.attributes = attributes ?? character.attributes
 								NotificationCenter.default.post(name: .NCCharacterChanged, object: character)
 							}
 						}

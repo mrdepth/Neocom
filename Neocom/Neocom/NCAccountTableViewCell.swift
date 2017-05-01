@@ -30,3 +30,9 @@ class NCAccountTableViewCell: NCTableViewCell {
 		layer?.borderWidth = 1.0 / UIScreen.main.scale
 	}
 }
+
+extension Prototype {
+	enum NCAccountTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCAccountTableViewCell")
+	}
+}

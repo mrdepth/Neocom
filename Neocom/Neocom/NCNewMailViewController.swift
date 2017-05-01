@@ -294,7 +294,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		guard let dataManager = self.dataManager else {return}
 		
 		gate.perform {
-			guard string.utf8.count >= 3 else {
+			guard string.characters.count >= 3 else {
 				DispatchQueue.main.async {
 					self.searchResultViewController?.contacts = self.recent ?? []
 				}
@@ -308,8 +308,6 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 			dataManager.searchNames(string, categories: [.character, .corporation, .alliance], strict: false) { [weak self] result in
 				defer {dispatchGroup.leave()}
 				guard let strongSelf = self else {return}
-				
-				var names: [ESI.Mail.Recipient.RecipientType: [Int64: NCContact]] = [:]
 				
 				strongSelf.searchResultViewController?.contacts = result.map {$0.value}
 			}

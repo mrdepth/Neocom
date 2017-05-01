@@ -197,7 +197,7 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 	
 	func updateSearchResults(for searchController: UISearchController) {
 		guard let controller = searchController.searchResultsController as? NCRegionPickerViewController else {return}
-		if let text = searchController.searchBar.text, text.utf8.count > 2 {
+		if let text = searchController.searchBar.text, text.characters.count > 2 {
 			controller.searchString = text
 		}
 		else {

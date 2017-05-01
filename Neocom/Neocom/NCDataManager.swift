@@ -14,6 +14,25 @@ import Alamofire
 enum NCCachedResult<T> {
 	case success(value: T, cacheRecord: NCCacheRecord?)
 	case failure(Error)
+	
+	var value: T? {
+		switch self {
+		case let .success(value, record):
+			return record?.data?.data as? T ?? value
+		default:
+			return nil
+		}
+	}
+	
+	var error: Error? {
+		switch self {
+		case let .failure(error):
+			return error
+		default:
+			return nil
+		}
+	}
+	
 }
 
 enum NCResult<T> {
@@ -44,15 +63,30 @@ class NCDataManager {
 	let token: OAuth2Token?
 	let cachePolicy: URLRequest.CachePolicy
 	var observer: NCManagedObjectObserver?
-	lazy var api: ESI = {
+	
+	lazy var retrier: OAuth2Retrier? = {
+		guard let token = self.token else {return nil}
+		return OAuth2Retrier(token: token, clientID: ESClientID, secretKey: ESSecretKey)
+	}()
+	
+	lazy var esi: ESI = {
 		if let token = self.token {
-			return ESI(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility, cachePolicy: self.cachePolicy)
+			return ESI(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility, cachePolicy: self.cachePolicy, retrier: self.retrier)
 		}
 		else {
 			return ESI(cachePolicy: self.cachePolicy)
 		}
 	}()
-	
+
+	lazy var eve: EVE = {
+		if let token = self.token {
+			return EVE(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility, cachePolicy: self.cachePolicy, retrier: self.retrier)
+		}
+		else {
+			return EVE(cachePolicy: self.cachePolicy)
+		}
+	}()
+
 	var characterID: Int64 {
 		return token?.characterID ?? 0
 	}
@@ -77,11 +111,20 @@ class NCDataManager {
 			NotificationCenter.default.removeObserver(observer)
 		}
 	}
+
+	func accountStatus(completionHandler: @escaping (NCCachedResult<EVE.Account.AccountStatus>) -> Void) {
+		loadFromCache(forKey: "EVE.Account.AccountStatus", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.eve.account.accountStatus { result in
+				completion(result, 3600.0)
+			}
+		})
+	}
+
 	
 	func character(characterID: Int64? = nil, completionHandler: @escaping (NCCachedResult<ESI.Character.Information>) -> Void) {
 		let id = Int(characterID ?? self.characterID)
 		loadFromCache(forKey: "ESI.Character.Information.\(id)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.character.getCharactersPublicInformation(characterID: id) { result in
+			self.esi.character.getCharactersPublicInformation(characterID: id) { result in
 				completion(result, 3600.0)
 			}
 		})
@@ -89,7 +132,7 @@ class NCDataManager {
 	
 	func corporation(corporationID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Corporation.Information>) -> Void) {
 		loadFromCache(forKey: "ESI.Corporation.Information.\(corporationID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.corporation.getCorporationInformation(corporationID: Int(corporationID)) { result in
+			self.esi.corporation.getCorporationInformation(corporationID: Int(corporationID)) { result in
 				completion(result, 3600.0)
 			}
 		})
@@ -97,7 +140,7 @@ class NCDataManager {
 
 	func alliance(allianceID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Alliance.Information>) -> Void) {
 		loadFromCache(forKey: "ESI.Alliance.Information.\(allianceID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.alliance.getAllianceInformation(allianceID: Int(allianceID)) { result in
+			self.esi.alliance.getAllianceInformation(allianceID: Int(allianceID)) { result in
 				completion(result, 3600.0)
 			}
 		})
@@ -105,7 +148,7 @@ class NCDataManager {
 
 	func skillQueue(completionHandler: @escaping (NCCachedResult<[ESI.Skills.SkillQueueItem]>) -> Void) {
 		loadFromCache(forKey: "ESI.Skills.SkillQueueItem", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.skills.getCharactersSkillQueue(characterID: Int(self.characterID)) { result in
+			self.esi.skills.getCharactersSkillQueue(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0)
 			}
 		})
@@ -113,7 +156,7 @@ class NCDataManager {
 	
 	func skills(completionHandler: @escaping (NCCachedResult<ESI.Skills.CharacterSkills>) -> Void) {
 		loadFromCache(forKey: "ESI.Skills.CharacterSkills", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.skills.getCharacterSkills(characterID: Int(self.characterID)) { result in
+			self.esi.skills.getCharacterSkills(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0)
 			}
 		})
@@ -122,7 +165,7 @@ class NCDataManager {
 	
 	func wallets(completionHandler: @escaping (NCCachedResult<[ESI.Wallet.Balance]>) -> Void) {
 		loadFromCache(forKey: "ESI.Wallet.Balance", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.wallet.listWalletsAndBalances(characterID: Int(self.characterID)) { result in
+			self.esi.wallet.listWalletsAndBalances(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0)
 			}
 		})
@@ -130,7 +173,7 @@ class NCDataManager {
 	
 	func characterLocation(completionHandler: @escaping (NCCachedResult<ESI.Location.CharacterLocation>) -> Void) {
 		loadFromCache(forKey: "ESI.Location.CharacterLocation", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.location.getCharacterLocation(characterID: Int(self.characterID)) { result in
+			self.esi.location.getCharacterLocation(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0)
 			}
 		})
@@ -138,19 +181,31 @@ class NCDataManager {
 
 	func characterShip(completionHandler: @escaping (NCCachedResult<ESI.Location.CharacterShip>) -> Void) {
 		loadFromCache(forKey: "ESI.Location.CharacterShip", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.location.getCurrentShip(characterID: Int(self.characterID)) { result in
+			self.esi.location.getCurrentShip(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0)
 			}
 		})
 	}
 	
-	func clones(completionHandler: @escaping (NCCachedResult<ESI.Clones.JumpClones>) -> Void) {
-		loadFromCache(forKey: "ESI.Clones.JumpClones", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.clones.getClones(characterID: Int(self.characterID)) { result in
+//	func clones(completionHandler: @escaping (NCCachedResult<ESI.Clones.JumpClones>) -> Void) {
+//		loadFromCache(forKey: "ESI.Clones.JumpClones", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+//			self.esi.clones.getClones(characterID: Int(self.characterID)) { result in
+//				completion(result, 3600.0)
+//			}
+//		})
+//	}
+	
+	func clones(completionHandler: @escaping (NCCachedResult<EVE.Char.Clones>) -> Void) {
+		loadFromCache(forKey: "EVE.Char.Clones", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.eve.char.clones { result in
 				completion(result, 3600.0)
 			}
+//			self.esi.clones.getClones(characterID: Int(self.characterID)) { result in
+//				completion(result, 3600.0)
+//			}
 		})
 	}
+
 	
 	func image(characterID: Int64, dimension: Int, completionHandler: @escaping (NCCachedResult<UIImage>) -> Void) {
 		loadFromCache(forKey: "image.character.\(characterID).\(dimension)", account: nil, cachePolicy: cachePolicy, completionHandler: { (result: NCCachedResult<Data>) in
@@ -166,7 +221,7 @@ class NCDataManager {
 				completionHandler(.failure(error))
 			}
 		}, elseLoad: { completion in
-			self.api.image(characterID: Int(characterID), dimension: dimension * Int(UIScreen.main.scale)) { result in
+			self.esi.image(characterID: Int(characterID), dimension: dimension * Int(UIScreen.main.scale)) { result in
 				completion(result, 3600.0 * 12)
 			}
 		})
@@ -186,7 +241,7 @@ class NCDataManager {
 				completionHandler(.failure(error))
 			}
 		}, elseLoad: { completion in
-			self.api.image(corporationID: Int(corporationID), dimension: dimension * Int(UIScreen.main.scale)) { result in
+			self.esi.image(corporationID: Int(corporationID), dimension: dimension * Int(UIScreen.main.scale)) { result in
 				completion(result, 3600.0 * 12)
 			}
 		})
@@ -206,7 +261,7 @@ class NCDataManager {
 				completionHandler(.failure(error))
 			}
 		}, elseLoad: { completion in
-			self.api.image(allianceID: Int(allianceID), dimension: dimension * Int(UIScreen.main.scale)) { result in
+			self.esi.image(allianceID: Int(allianceID), dimension: dimension * Int(UIScreen.main.scale)) { result in
 				completion(result, 3600.0 * 12)
 			}
 		})
@@ -226,7 +281,7 @@ class NCDataManager {
 				completionHandler(.failure(error))
 			}
 		}, elseLoad: { completion in
-			self.api.image(typeID: typeID, dimension: dimension * Int(UIScreen.main.scale)) { result in
+			self.esi.image(typeID: typeID, dimension: dimension * Int(UIScreen.main.scale)) { result in
 				completion(result, 3600.0 * 12)
 			}
 		})
@@ -310,7 +365,7 @@ class NCDataManager {
 	func universeNames(ids: Set<Int64>, completionHandler: @escaping (NCCachedResult<[ESI.Universe.Name]>) -> Void) {
 		let ids = ids.map{Int($0)}.sorted()
 		loadFromCache(forKey: "ESI.Universe.Name.\(ids.hashValue)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.universe.getNamesAndCategoriesForSetOfIDs(ids: ids) { result in
+			self.esi.universe.getNamesAndCategoriesForSetOfIDs(ids: ids) { result in
 				completion(result, 3600.0 * 24)
 			}
 		})
@@ -318,7 +373,7 @@ class NCDataManager {
 
 	func universeStructure(structureID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Universe.StructureInformation>) -> Void) {
 		loadFromCache(forKey: "ESI.Universe.StructureInformation.\(structureID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.universe.getStructureInformation(structureID: structureID) { result in
+			self.esi.universe.getStructureInformation(structureID: structureID) { result in
 				completion(result, 3600.0 * 24)
 			}
 		})
@@ -404,7 +459,7 @@ class NCDataManager {
 
 	func marketHistory(typeID: Int, regionID: Int, completionHandler: @escaping (NCCachedResult<[ESI.Market.History]>) -> Void) {
 		loadFromCache(forKey: "ESI.Market.History.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.market.listHistoricalMarketStatisticsInRegion(regionID: regionID, typeID: typeID) { result in
+			self.esi.market.listHistoricalMarketStatisticsInRegion(regionID: regionID, typeID: typeID) { result in
 				completion(result, 3600.0 * 12)
 			}
 		})
@@ -412,7 +467,7 @@ class NCDataManager {
 
 	func marketOrders(typeID: Int, regionID: Int, completionHandler: @escaping (NCCachedResult<[ESI.Market.Order]>) -> Void) {
 		loadFromCache(forKey: "ESI.Market.Order.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.market.listOrdersInRegion(orderType: .all, regionID: regionID, typeID: typeID) { result in
+			self.esi.market.listOrdersInRegion(orderType: .all, regionID: regionID, typeID: typeID) { result in
 				completion(result, 3600.0 * 12)
 			}
 		})
@@ -420,7 +475,7 @@ class NCDataManager {
 	
 	func search(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false, completionHandler: @escaping (NCCachedResult<ESI.Search.SearchResult>) -> Void) {
 		loadFromCache(forKey: "ESI.Search.SearchResult.\(categories.hashValue).\(string.lowercased().hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.search.search(categories: categories, search: string, strict: strict) { result in
+			self.esi.search.search(categories: categories, search: string, strict: strict) { result in
 				completion(result, 3600.0 * 12)
 			}
 		})
@@ -512,7 +567,7 @@ class NCDataManager {
 				}
 			}
 			
-//			self.api.search.search(categories: categories, search: string, strict: strict) { result in
+//			self.esi.search.search(categories: categories, search: string, strict: strict) { result in
 //				completion(result, 3600.0 * 12)
 //			}
 		})*/
@@ -523,12 +578,12 @@ class NCDataManager {
 		mail.body = body
 		mail.subject = subject
 		mail.recipients = recipients
-		self.api.mail.sendNewMail(characterID: Int(characterID), mail: mail, completionBlock: completionHandler)
+		self.esi.mail.sendNewMail(characterID: Int(characterID), mail: mail, completionBlock: completionHandler)
 	}
 	
 	func returnMailHeaders(lastMailID: Int64? = nil, completionHandler: @escaping (NCCachedResult<[ESI.Mail.Header]>) -> Void) {
 		loadFromCache(forKey: "ESI.Mail.Header.\(lastMailID ?? 0)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.mail.returnMailHeaders(characterID: Int(self.characterID), lastMailID: lastMailID != nil ? Int(lastMailID!) : nil) { result in
+			self.esi.mail.returnMailHeaders(characterID: Int(self.characterID), lastMailID: lastMailID != nil ? Int(lastMailID!) : nil) { result in
 				completion(result, 60)
 			}
 		})
@@ -536,7 +591,7 @@ class NCDataManager {
 
 	func returnMailBody(mailID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Mail.MailBody>) -> Void) {
 		loadFromCache(forKey: "ESI.Mail.MailBody.\(mailID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.mail.returnMail(characterID: Int(self.characterID), mailID: Int(mailID)) { result in
+			self.esi.mail.returnMail(characterID: Int(self.characterID), mailID: Int(mailID)) { result in
 				completion(result, 3600.0 * 48)
 			}
 		})
@@ -544,7 +599,7 @@ class NCDataManager {
 
 	func returnMailingLists(completionHandler: @escaping (NCCachedResult<[ESI.Mail.Subscription]>) -> Void) {
 		loadFromCache(forKey: "ESI.Mail.Subscription", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.mail.returnMailingListSubscriptions(characterID: Int(self.characterID)) { result in
+			self.esi.mail.returnMailingListSubscriptions(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0 * 12)
 			}
 		})
@@ -559,11 +614,11 @@ class NCDataManager {
 		let contents = ESI.Mail.UpdateContents()
 		contents.read = true
 		contents.labels = mail.labels
-		self.api.mail.updateMetadataAboutMail(characterID: Int(self.characterID), contents: contents, mailID: Int(mailID), completionBlock: completionHandler)
+		self.esi.mail.updateMetadataAboutMail(characterID: Int(self.characterID), contents: contents, mailID: Int(mailID), completionBlock: completionHandler)
 	}
 	
 	func delete(mailID: Int64, completionHandler: @escaping (Result<String>) -> Void) {
-		self.api.mail.deleteMail(characterID: Int(self.characterID), mailID: Int(mailID), completionBlock: completionHandler)
+		self.esi.mail.deleteMail(characterID: Int(self.characterID), mailID: Int(mailID), completionBlock: completionHandler)
 	}
 
 	/*func fetchMail(completionHandler: @escaping (Result<[NSManagedObjectID]>) -> Void) {
@@ -802,7 +857,7 @@ class NCDataManager {
 	
 	func marketPrices(completionHandler: @escaping (NCCachedResult<[ESI.Market.Price]>) -> Void) {
 		loadFromCache(forKey: "ESI.Market.Price", account: nil, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
-			self.api.market.listMarketPrices { result in
+			self.esi.market.listMarketPrices { result in
 				completion(result, 3600.0 * 12)
 			}
 		})

@@ -19,10 +19,16 @@ class NCCharacterAttributes {
 	init() {
 	}
 	
-	/*init(characterSheet: EVECharacterSheet) {
+	init(clones: EVE.Char.Clones) {
+		self.intelligence = clones.attributes.intelligence
+		self.memory = clones.attributes.memory
+		self.perception = clones.attributes.perception
+		self.willpower = clones.attributes.willpower
+		self.charisma = clones.attributes.charisma
+		
 		NCDatabase.sharedDatabase?.performTaskAndWait({ (managedObjectContext) in
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
-			for implant in characterSheet.implants {
+			for implant in clones.implants ?? [] {
 				if let attributes = invTypes[implant.typeID]?.allAttributes {
 					self.intelligence += Int(attributes[NCDBAttributeID.intelligenceBonus.rawValue]?.value ?? 0)
 					self.memory += Int(attributes[NCDBAttributeID.memoryBonus.rawValue]?.value ?? 0)
@@ -32,7 +38,7 @@ class NCCharacterAttributes {
 				}
 			}
 		})
-	}*/
+	}
 	
 	func skillpointsPerSecond(forSkill skill: NCSkill) -> Double {
 		return skillpointsPerSecond(primaryAttributeID: skill.primaryAttributeID, secondaryAttribute: skill.secondaryAttributeID)

@@ -96,8 +96,10 @@ class DefaultTreeRow: TreeRow {
 	dynamic var attributedTitle: NSAttributedString?
 	dynamic var subtitle: String?
 	dynamic var accessoryType: UITableViewCellAccessoryType
+	let nodeIdentifier: String?
 	
-	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.default, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
+	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.default, nodeIdentifier: String? = nil, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
+		self.nodeIdentifier = nodeIdentifier
 		self.image = image
 		self.title = title
 		self.attributedTitle = attributedTitle
@@ -120,6 +122,19 @@ class DefaultTreeRow: TreeRow {
 		cell.subtitleLabel?.text = subtitle
 		cell.accessoryType = accessoryType
 	}
+	
+	override var hashValue: Int {
+		return nodeIdentifier?.hash ?? super.hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? DefaultTreeRow)?.hashValue == hashValue
+	}
+	
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
+		return .reconfigure
+	}
+	
 }
 
 class NCActionRow: TreeRow {

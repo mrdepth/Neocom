@@ -9,7 +9,7 @@
 import Foundation
 
 @IBDesignable
-class NCTintImageView: UIImageView {
+class NCTintImageView: NCImageView {
 	override func awakeFromNib() {
 		let color = tintColor
 		tintColor = nil

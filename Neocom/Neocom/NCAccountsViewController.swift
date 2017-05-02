@@ -206,7 +206,7 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 			for wallet in value {
 				wealth += Double(wallet.balance ?? 0)
 			}
-			cell.wealthLabel.text = NCUnitFormatter.localizedString(from: wealth, unit: .none, style: .short)
+			cell.wealthLabel.text = NCUnitFormatter.localizedString(from: wealth / 100.0, unit: .none, style: .short)
 		}
 		else {
 			cell.wealthLabel.text = wallets?.error?.localizedDescription ?? " "
@@ -452,15 +452,14 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 	
 }
 
-class NCAccountsViewController: UITableViewController, TreeControllerDelegate, UIViewControllerTransitioningDelegate {
+class NCAccountsViewController: UITableViewController, TreeControllerDelegate, UIViewControllerTransitioningDelegate, NCRefreshable {
 	
 	@IBOutlet var treeController: TreeController!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		refreshControl = UIRefreshControl()
-		refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
+		registerRefreshable()
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
@@ -531,13 +530,7 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 		return isInteractive ? NCSlideDownInteractiveTransition(scrollView: self.tableView) : nil
 	}
 	
-	//MARK: - Private
-	
-	@objc private func refresh() {
-		reload(cachePolicy: .reloadIgnoringLocalCacheData) {
-			self.refreshControl?.endRefreshing()
-		}
-	}
+	//MARK: - NCRefreshable
 	
 	func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil ) {
 		let progress = NCProgressHandler(viewController: self, totalUnitCount: Int64(treeController.content?.children.count ?? 0))
@@ -556,10 +549,13 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 			progress.finish()
 			completionHandler?()
 		}
-//		self.dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
-//		isEndReached = false
-//		lastID = nil
-//		fetch(from: nil, completionHandler: completionHandler)
+		//		self.dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
+		//		isEndReached = false
+		//		lastID = nil
+		//		fetch(from: nil, completionHandler: completionHandler)
 	}
+	
+	//MARK: - Private
+	
 	
 }

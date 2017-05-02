@@ -59,6 +59,10 @@ extension Prototype {
 	enum NCDefaultTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCDefaultTableViewCell", bundle: nil), reuseIdentifier: "NCDefaultTableViewCell")
 		static let compact = Prototype(nib: UINib(nibName: "NCDefaultCompactTableViewCell", bundle: nil), reuseIdentifier: "NCDefaultCompactTableViewCell")
+		static let placeholder = Prototype(nib: UINib(nibName: "NCPlaceholderTableViewCell", bundle: nil), reuseIdentifier: "NCPlaceholderTableViewCell")
+		static let image = Prototype(nib: nil, reuseIdentifier: "NCImageTableViewCell")
+		static let attribute = Prototype(nib: UINib(nibName: "NCAttributeTableViewCell", bundle: nil), reuseIdentifier: "NCAttributeTableViewCell")
+		
 	}
 	
 	enum NCActionTableViewCell {

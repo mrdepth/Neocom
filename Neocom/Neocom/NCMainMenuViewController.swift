@@ -86,7 +86,7 @@ class NCMainMenuDetails: NSObject {
 					for wallet in wallets {
 						wealth += Double(wallet.balance ?? 0)
 					}
-					return NCUnitFormatter.localizedString(from: wealth, unit: .isk, style: .full)
+					return NCUnitFormatter.localizedString(from: wealth / 100.0, unit: .isk, style: .full)
 				}))
 			}
 			else {

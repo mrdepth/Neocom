@@ -326,6 +326,7 @@ class NCDataManager {
 			}
 		}
 		let dispatchGroup = DispatchGroup()
+		let lifeTime = NCExtendedLifeTime(self)
 		if missing.count > 0 {
 			dispatchGroup.enter()
 			self.universeNames(ids: missing) { result in
@@ -359,6 +360,7 @@ class NCDataManager {
 		
 		dispatchGroup.notify(queue: .main) {
 			completionHandler(locations)
+			lifeTime.finalize()
 		}
 	}
 	
@@ -381,6 +383,7 @@ class NCDataManager {
 
 	
 	func updateMarketPrices(completionHandler: ((_ isUpdated: Bool) -> Void)?) {
+		let lifeTime = NCExtendedLifeTime(self)
 		NCCache.sharedCache?.performBackgroundTask{ managedObjectContext in
 			let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: "ESMarketPrices", account: nil)))?.last
 			if record == nil || record!.isExpired {
@@ -404,22 +407,26 @@ class NCDataManager {
 							}
 							DispatchQueue.main.async {
 								completionHandler?(true)
+								lifeTime.finalize()
 							}
 						}
 					default:
 						completionHandler?(false)
+						lifeTime.finalize()
 					}
 				}
 			}
 			else {
 				DispatchQueue.main.async {
 					completionHandler?(false)
+					lifeTime.finalize()
 				}
 			}
 		}
 	}
 	
 	func prices(typeIDs: [Int], completionHandler: @escaping ([Int: Double]) -> Void) {
+		let lifeTime = NCExtendedLifeTime(self)
 		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
 			let request = NSFetchRequest<NCCachePrice>(entityName: "Price")
 			request.predicate = NSPredicate(format: "typeID in %@", typeIDs)
@@ -440,18 +447,21 @@ class NCDataManager {
 							}
 							DispatchQueue.main.async {
 								completionHandler(prices)
+								lifeTime.finalize()
 							}
 
 						}
 					}
 					else {
 						completionHandler(prices)
+						lifeTime.finalize()
 					}
 				}
 			}
 			else {
 				DispatchQueue.main.async {
 					completionHandler(prices)
+					lifeTime.finalize()
 				}
 			}
 		}
@@ -482,6 +492,7 @@ class NCDataManager {
 	}
 
 	func searchNames(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false, completionHandler: @escaping ([Int64: NCContact]) -> Void) {
+		let lifeTime = NCExtendedLifeTime(self)
 		self.search(string, categories: categories) { result in
 			switch result {
 			case let .success(value):
@@ -508,6 +519,7 @@ class NCDataManager {
 			case .failure:
 				completionHandler([:])
 			}
+			lifeTime.finalize()
 		}
 
 /*		loadFromCache(forKey: "ESI.Search.SearchNamesResult.\(categories.hashValue).\(string.lowercased().hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
@@ -877,6 +889,7 @@ class NCDataManager {
 		}
 		
 		let progress = Progress(totalUnitCount: 1)
+		let lifeTime = NCExtendedLifeTime(self)
 		
 		switch cachePolicy {
 		case .reloadIgnoringLocalCacheData:
@@ -888,15 +901,10 @@ class NCDataManager {
 						completionHandler(.success(value: value, cacheRecord: cacheRecord))
 					}
 				case let .failure(error):
-					/*switch error {
-					case ESError.forbidden:
-						break
-					default:
-						break
-					}*/
 					completionHandler(.failure(error))
 					break
 				}
+				lifeTime.finalize()
 			}
 			progress.resignCurrent()
 			
@@ -909,6 +917,7 @@ class NCDataManager {
 					if let object = object {
 						progress.completedUnitCount += 1
 						completionHandler(.success(value: object, cacheRecord: (try? NCCache.sharedCache?.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord))
+						lifeTime.finalize()
 					}
 					else {
 						progress.becomeCurrent(withPendingUnitCount: 1)
@@ -922,6 +931,7 @@ class NCDataManager {
 								completionHandler(.failure(error))
 								break
 							}
+							lifeTime.finalize()
 						}
 
 						progress.resignCurrent()
@@ -941,6 +951,7 @@ class NCDataManager {
 					else {
 						completionHandler(.failure(NCDataManagerError.noCacheData))
 					}
+					lifeTime.finalize()
 				}
 			}
 		default:
@@ -963,6 +974,7 @@ class NCDataManager {
 								default:
 									break
 								}
+								lifeTime.finalize()
 							}
 						}
 					}
@@ -980,12 +992,12 @@ class NCDataManager {
 								let _ = self
 								break
 							}
+							lifeTime.finalize()
 						}
 						progress.resignCurrent()
 					}
 				}
 			}
-			break
 		}
 	}
 	

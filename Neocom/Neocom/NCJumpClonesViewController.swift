@@ -2,146 +2,154 @@
 //  NCJumpClonesViewController.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 14.12.16.
-//  Copyright © 2016 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 02.05.17.
+//  Copyright © 2017 Artem Shimanski. All rights reserved.
 //
 
 import UIKit
 import EVEAPI
 
-class NCJumpCloneRow: NCTreeRow {
-	let title: String?
-	let subtitle: String?
-	let image: UIImage?
+class NCJumpClonesViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
 	
-	init(cellIdentifier: String, title: String?, subtitle: String?, image: UIImage?) {
-		self.title = title
-		self.subtitle = subtitle
-		self.image = image
-		super.init(cellIdentifier: cellIdentifier)
-	}
-	
-	override func configure(cell: UITableViewCell) {
-		let cell = cell as? NCDefaultTableViewCell
-		cell?.titleLabel?.text = title
-		cell?.subtitleLabel?.text = subtitle
-		cell?.imageView?.image = image
-	}
-}
-
-class NCJumpClonesViewController: UITableViewController, NCTreeControllerDelegate {
-	@IBOutlet weak var treeController: NCTreeController!
+	@IBOutlet var treeController: TreeController!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		registerRefreshable()
+		
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.attribute,
+		                    Prototype.NCDefaultTableViewCell.placeholder])
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.childrenKeyPath = "children"
-		refreshControl = UIRefreshControl()
-		refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
+		treeController.delegate = self
+		reload()
 	}
+
+	//MARK: - TreeControllerDelegate
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if treeController.content == nil {
-			reload()
+	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		if let row = node as? TreeNodeRoutable {
+			row.route?.perform(source: self, view: treeController.cell(for: node))
 		}
+		treeController.deselectCell(for: node, animated: true)
 	}
+
 	
-	//MARK: NCTreeControllerDelegate
-	
-	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
-		return (item as! NCTreeNode).cellIdentifier
-	}
-	
-	func treeController(_ treeController: NCTreeController, configureCell cell: UITableViewCell, withItem item: AnyObject) {
-		(item as! NCTreeNode).configure(cell: cell)
-	}
-	
-	//MARK: Private
-	
-	@objc private func refresh() {
-		let progress = NCProgressHandler(totalUnitCount: 1)
-		progress.progress.becomeCurrent(withPendingUnitCount: 1)
-		reload(cachePolicy: .reloadIgnoringLocalCacheData) {
-			self.refreshControl?.endRefreshing()
-		}
-		progress.progress.resignCurrent()
-	}
+	//MARK: - NCRefreshable
 	
 	private var observer: NCManagedObjectObserver?
+	private var clones: NCCachedResult<EVE.Char.Clones>?
+	private var locations: [Int64: NCLocation]?
 	
-	private func process(_ value: EVE.Char.Clones, dataManager: NCDataManager, completionHandler: (() -> Void)?) {
-		let locations = Set<Int64>(value.jumpClones?.map{$0.locationID} ?? [])
+	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
+		guard let account = NCAccount.current else {
+			completionHandler?()
+			return
+		}
+		title = account.characterName
 		
-		dataManager.locations(ids: locations) { locations in
-			
-			var sections = [NCTreeNode]()
-			let t = 3600 * 24 + (value.cloneJumpDate ?? .distantPast).timeIntervalSinceNow
-			sections.append(NCJumpCloneRow(cellIdentifier: "Cell",
-			                               title: NSLocalizedString("NEXT CLONE JUMP AVAILABILITY", comment: ""),
-			                               subtitle: String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: "")),
-			                               image: UIImage(named: "jumpclones")))
-			
-			let invTypes = NCDatabase.sharedDatabase?.invTypes
-			let attributeIDs = [NCDBAttributeID.intelligenceBonus, NCDBAttributeID.memoryBonus, NCDBAttributeID.perceptionBonus, NCDBAttributeID.willpowerBonus, NCDBAttributeID.charismaBonus]
-			
-			let titles = [NCDBAttributeID.intelligenceBonus:	NSLocalizedString("Intelligence", comment: ""),
-			              NCDBAttributeID.memoryBonus:			NSLocalizedString("Memory", comment: ""),
-			              NCDBAttributeID.perceptionBonus:		NSLocalizedString("Perception", comment: ""),
-			              NCDBAttributeID.willpowerBonus:		NSLocalizedString("Willpower", comment: ""),
-			              NCDBAttributeID.charismaBonus:		NSLocalizedString("Charisma", comment: ""),
-			              ]
-			
-			for jumpClone in value.jumpClones ?? [] {
-				var rows = [NCJumpCloneRow]()
-				let implants = value.jumpCloneImplants?.filter {$0.jumpCloneID == jumpClone.jumpCloneID} ?? []
-				for case let implant in implants.flatMap({ invTypes?[$0.typeID]}) {
-					let attributes = implant.allAttributes
-					for attributeID in attributeIDs {
-						if let bonus = attributes[attributeID.rawValue]?.value, bonus > 0 {
-							rows.append(NCJumpCloneRow(cellIdentifier: "Cell",
-							                           title: implant.typeName,
-							                           subtitle: "\(titles[attributeID]!) +\(Int(bonus))",
-								image: implant.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image))
+		let progress = Progress(totalUnitCount: 1)
+		
+		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
+		
+		progress.perform {
+			dataManager.clones { result in
+				self.clones = result
+				
+				switch result {
+				case let .success(value, record):
+					if let record = record {
+						self.observer = NCManagedObjectObserver(managedObject: record) { [weak self] _ in
+							if let value = result.value, let locations = value.jumpClones?.map ({$0.locationID}), !locations.isEmpty {
+								dataManager.locations(ids: Set(locations)) { result in
+									self?.locations = result
+									self?.reloadSections()
+								}
+							}
 						}
 					}
+					
+					if let locations = value.jumpClones?.map ({$0.locationID}), !locations.isEmpty {
+						dataManager.locations(ids: Set(locations)) { result in
+							self.locations = result
+							self.reloadSections()
+							completionHandler?()
+						}
+					}
+					else {
+						completionHandler?()
+					}
+
+				case .failure:
+					completionHandler?()
 				}
-				if rows.count == 0 {
-					rows.append(NCJumpCloneRow(cellIdentifier: "PlaceholderCell", title: NSLocalizedString("NO IMPLANTS INSTALLED", comment: ""), subtitle: nil, image: nil))
-				}
-				sections.append(NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: nil, attributedTitle: locations[jumpClone.locationID]?.displayName.uppercased(), children: rows))
+				
+				
 			}
-			
-			self.treeController.content = sections
-			self.tableView.backgroundView = nil
-			self.treeController.reloadData()
-			completionHandler?()
-			
 		}
 	}
 	
-	private func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil ) {
-		if let account = NCAccount.current {
-			let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
+	private func reloadSections() {
+		if let value = clones?.value {
+			tableView.backgroundView = nil
 			
-			dataManager.clones { result in
-				switch result {
-				case let .success(value, cacheRecord):
-					if let cacheRecord = cacheRecord {
-						self.observer = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] _, _ in
-							guard let value = cacheRecord.data?.data as? EVE.Char.Clones else {return}
-							self?.process(value, dataManager: dataManager, completionHandler: nil)
-						}
-					}
-					self.process(value, dataManager: dataManager, completionHandler: completionHandler)
-				case let .failure(error):
-					if self.treeController.content == nil {
-						self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
+			let t = 3600 * 24 + (value.cloneJumpDate ?? .distantPast).timeIntervalSinceNow
+			let s = String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: ""))
+			
+			var sections = [TreeNode]()
+			
+			sections.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+			               nodeIdentifier: "Jump",
+			               title: NSLocalizedString("Next Clone Jump Availability", comment: "").uppercased(),
+			               subtitle: s))
+
+			let invTypes = NCDatabase.sharedDatabase?.invTypes
+			for clone in value.jumpClones ?? [] {
+				
+				var rows = [TreeRow]()
+
+				let jumpCloneImplants = value.jumpCloneImplants?.filter {$0.jumpCloneID == clone.jumpCloneID}
+				let implants = jumpCloneImplants?.flatMap {invTypes?[$0.typeID]} ?? []
+				
+				let list = [(NCDBAttributeID.intelligenceBonus, NSLocalizedString("Intelligence", comment: "")),
+				            (NCDBAttributeID.memoryBonus, NSLocalizedString("Memory", comment: "")),
+				            (NCDBAttributeID.perceptionBonus, NSLocalizedString("Perception", comment: "")),
+				            (NCDBAttributeID.willpowerBonus, NSLocalizedString("Willpower", comment: "")),
+				            (NCDBAttributeID.charismaBonus, NSLocalizedString("Charisma", comment: ""))]
+				
+				for (attribute, name) in list {
+					if let implant = implants.first(where: {($0.allAttributes[attribute.rawValue]?.value ?? 0) > 0}) {
+						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+						                           nodeIdentifier: name,
+						                           image: implant.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image,
+						                           title: implant.typeName?.uppercased(),
+						                           subtitle: "\(name) +\(Int(implant.allAttributes[attribute.rawValue]!.value))",
+							accessoryType: .disclosureIndicator,
+							route: Router.Database.TypeInfo(implant)
+						))
 					}
 				}
+				
+				if rows.isEmpty {
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, nodeIdentifier: "NoImplants", title: NSLocalizedString("No Implants Installed", comment: "").uppercased()))
+				}
+				sections.append(DefaultTreeSection(nodeIdentifier: "\(clone.jumpCloneID)", attributedTitle: locations?[clone.locationID]?.displayName.uppercased(), children: rows))
 			}
 			
+			if treeController.content == nil {
+				let root = TreeNode()
+				root.children = sections
+				treeController.content = root
+			}
+			else {
+				treeController.content?.children = sections
+			}
+
+		}
+		else {
+			tableView.backgroundView = NCTableViewBackgroundLabel(text: clones?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 		}
 	}
 }

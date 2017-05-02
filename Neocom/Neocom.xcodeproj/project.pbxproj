@@ -97,6 +97,7 @@
 		1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */; };
 		126B29501EB1FEAF006562A4 /* NCMailPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */; };
 		127332E11E71D01D00DE46C9 /* TreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127332E01E71D01D00DE46C9 /* TreeController.swift */; };
+		1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */; };
 		127BE3901E5AFC2900FA7F9F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BE38F1E5AFC2900FA7F9F /* Router.swift */; };
 		127DE7D81E9513B4008D4873 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127DE7D71E9513B4008D4873 /* ChartView.swift */; };
 		1285FB331EB8DBFA0025331A /* NCImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285FB321EB8DBFA0025331A /* NCImageView.swift */; };
@@ -133,7 +134,6 @@
 		129C51A41E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129C51A31E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift */; };
 		129E60EE1E0152A900B56EB8 /* NCAutoHeightLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */; };
 		129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */; };
-		129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */; };
 		129E60F61E018BD400B56EB8 /* NCLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F51E018BD400B56EB8 /* NCLocation.swift */; };
 		129E60F81E0196AD00B56EB8 /* UIColor+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F71E0196AD00B56EB8 /* UIColor+NC.swift */; };
 		129E61021E0287F500B56EB8 /* NCSkillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61011E0287F500B56EB8 /* NCSkillTableViewCell.swift */; };
@@ -360,6 +360,7 @@
 		1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailPageViewController.swift; sourceTree = "<group>"; };
 		127332E01E71D01D00DE46C9 /* TreeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TreeController.swift; path = ../../ThirdParty/TreeController/TreeController/TreeController/TreeController.swift; sourceTree = "<group>"; };
+		1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
 		127BE38F1E5AFC2900FA7F9F /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		127DE7D71E9513B4008D4873 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		1285FB321EB8DBFA0025331A /* NCImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCImageView.swift; sourceTree = "<group>"; };
@@ -403,7 +404,6 @@
 		129C51A31E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingFleetMemberPickerViewController.swift; sourceTree = "<group>"; };
 		129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAutoHeightLabel.swift; sourceTree = "<group>"; };
 		129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTintImageView.swift; sourceTree = "<group>"; };
-		129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
 		129E60F51E018BD400B56EB8 /* NCLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocation.swift; sourceTree = "<group>"; };
 		129E60F71E0196AD00B56EB8 /* UIColor+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+NC.swift"; sourceTree = "<group>"; };
 		129E61011E0287F500B56EB8 /* NCSkillTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillTableViewCell.swift; sourceTree = "<group>"; };
@@ -651,7 +651,7 @@
 			isa = PBXGroup;
 			children = (
 				126157091E01D2250041B817 /* NCCharacterSheetViewController.swift */,
-				129E60F31E0186D500B56EB8 /* NCJumpClonesViewController.swift */,
+				1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */,
 				125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */,
 				1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */,
 				125CE1351E9FF0E7007B8B6B /* NCNewMailViewController.swift */,
@@ -1161,7 +1161,6 @@
 				129C51A41E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift in Sources */,
 				12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */,
 				125CE1361E9FF0E7007B8B6B /* NCNewMailViewController.swift in Sources */,
-				129E60F41E0186D500B56EB8 /* NCJumpClonesViewController.swift in Sources */,
 				12E9321E1E6B56D40033D71A /* NCFittingCharactersViewController.swift in Sources */,
 				127DE7D81E9513B4008D4873 /* ChartView.swift in Sources */,
 				1256BE4B1DF210C500A2A24B /* NCTimeIntervalFormatter.swift in Sources */,
@@ -1200,6 +1199,7 @@
 				12961DBA1E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift in Sources */,
 				126157061E0095380041B817 /* NCProgressHandler.swift in Sources */,
 				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
+				1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */,
 				12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */,
 				1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */,
 				129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */,

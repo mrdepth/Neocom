@@ -64,6 +64,12 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 		
 		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
 		let observer = NCManagedObjectObserver() { [weak self] (updated, deleted) in
+			if case let .success(_, record)? = self?.character,
+				let object = record,
+				updated?.contains(object) == true,
+				let value = self?.character?.value {
+				self?.reloadCharacterDetails(dataManager: dataManager, character: value, completionHandler: nil)
+			}
 			self?.update()
 		}
 		self.observer = observer
@@ -291,8 +297,7 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 		rows = []
 		
 		if let value = self.skills?.value {
-			let s = "\(NCUnitFormatter.localizedString(from: Double(value.totalSP ?? 0), unit: .skillPoints, style: .full)) (\(value.skills?.count ?? 0) \(NSLocalizedString("skills", comment: "")))"
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "SP", title: NSLocalizedString("Skill Points", comment: "").uppercased(), subtitle: s))
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "SP", title: "\(NCUnitFormatter.localizedString(from: Double(value.totalSP ?? 0), unit: .skillPoints, style: .full))".uppercased(), subtitle: "\(value.skills?.count ?? 0) \(NSLocalizedString("skills", comment: ""))"))
 		}
 		if let value = self.clones?.value {
 			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Respecs", title: NSLocalizedString("Bonus Remaps Available", comment: "").uppercased(), subtitle: "\(value.freeRespecs)"))
@@ -337,6 +342,7 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 			
 			if let value = value.implants {
 				rows = []
+				
 				let invTypes = NCDatabase.sharedDatabase?.invTypes
 				let implants = value.flatMap {invTypes?[$0.typeID]}
 				

@@ -382,7 +382,7 @@ class NCDataManager {
 	}
 
 	
-	func updateMarketPrices(completionHandler: ((_ isUpdated: Bool) -> Void)?) {
+	func updateMarketPrices(completionHandler: ((_ isUpdated: Bool) -> Void)? = nil) {
 		let lifeTime = NCExtendedLifeTime(self)
 		NCCache.sharedCache?.performBackgroundTask{ managedObjectContext in
 			let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: "ESMarketPrices", account: nil)))?.last
@@ -425,7 +425,7 @@ class NCDataManager {
 		}
 	}
 	
-	func prices(typeIDs: [Int], completionHandler: @escaping ([Int: Double]) -> Void) {
+	func prices(typeIDs: Set<Int>, completionHandler: @escaping ([Int: Double]) -> Void) {
 		let lifeTime = NCExtendedLifeTime(self)
 		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
 			let request = NSFetchRequest<NCCachePrice>(entityName: "Price")
@@ -633,140 +633,8 @@ class NCDataManager {
 		self.esi.mail.deleteMail(characterID: Int(self.characterID), mailID: Int(mailID), completionBlock: completionHandler)
 	}
 
-	/*func fetchMail(completionHandler: @escaping (Result<[NSManagedObjectID]>) -> Void) {
-		guard let cache = NCCache.sharedCache else {
-			completionHandler(.failure(NCDataManagerError.internalError))
-			return
-		}
-
-//		var headers: [ESI.Mail.Header] = []
-//		var contacts: [Int64: NSManagedObjectID] = [:]
-		let characterID = self.characterID
-
-		cache.performBackgroundTask { managedObjectContext in
-			let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: "ESI.Mail.Header.0", account: self.account)))?.first
-			let isExpired = record?.isExpired ?? true
-			
-			if isExpired {
-				let request = NSFetchRequest<NSDictionary>(entityName: "Mail")
-				request.predicate = NSPredicate(format: "characterID == %qi", characterID)
-				request.propertiesToFetch = [NSExpressionDescription(name: "mailID", resultType: .integer64AttributeType, expression: NSExpression(format: "max(mailID)"))]
-				request.resultType = .dictionaryResultType
-				let lastMailID = (try? managedObjectContext.fetch(request))?.first?["mailID"] as? Int64 ?? 0
-
-				func fetch(from: Int64?) {
-					
-					self.returnMailHeaders(lastMailID: from) { result in
-						switch result {
-						case let .success(value, _):
-							let headers = value
-							
-							var ids = [Int64]()
-							for mail in headers {
-								ids.append(contentsOf: mail.recipients?.flatMap {$0.recipientType != .mailingList ? Int64($0.recipientID) : nil} ?? [])
-								if let from = mail.from {
-									ids.append(Int64(from))
-								}
-							}
-							if ids.count > 0 {
-								self.contacts(ids: ids) { result in
-									process(headers: headers, contacts: result)
-								}
-							}
-							else {
-								process(headers: headers, contacts: [:])
-							}
-							
-							if let minMailID = headers.map ({$0.mailID ?? 0}).min(), value.count > 0 && minMailID > lastMailID {
-								fetch(from: minMailID)
-							}
-							
-						case let .failure(error):
-							completionHandler(.failure(error))
-						}
-					}
-				}
-				fetch(from: nil)
-				
-			}
-			else {
-				DispatchQueue.main.async {
-					completionHandler(.success([]))
-				}
-				
-			}
-		}
-		
-		func process(headers: [ESI.Mail.Header], contacts: [Int64: NSManagedObjectID]) {
-			cache.performBackgroundTask { managedObjectContext in
-				managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-				var newMails: [NCMail] = []
-				
-				for header in headers {
-					guard let mailID = header.mailID else {continue}
-					guard let from = header.from else {continue}
-					let labels = header.labels?.sorted(by: <) ?? []
-					let request = NSFetchRequest<NCMail>(entityName: "Mail")
-					let recipients = header.recipients?.flatMap {contacts[Int64($0.recipientID)]}.flatMap {(try? managedObjectContext.existingObject(with: $0)) as? NCContact}
-					let to = Set(recipients ?? [])
-					
-					
-					request.predicate = NSPredicate(format: "mailID == %qi", header.mailID ?? 0)
-					request.fetchLimit = 1
-					let mail = (try? managedObjectContext.fetch(request))?.first ?? {
-						let mail = NCMail(entity: NSEntityDescription.entity(forEntityName: "Mail", in: managedObjectContext)!, insertInto: managedObjectContext)
-						mail.characterID = characterID
-						mail.mailID = mailID
-						mail.labels = labels
-						mail.timestamp = header.timestamp as NSDate?
-						mail.subject = header.subject
-						
-						if characterID == Int64(header.from ?? 0) {
-							mail.folder = Int32(NCMail.Folder.sent.rawValue)
-						}
-						else if header.recipients?.first(where: {Int64($0.recipientID) == characterID}) != nil {
-							mail.folder = Int32(NCMail.Folder.inbox.rawValue)
-						}
-						else if header.recipients?.first(where: {$0.recipientType == .corporation}) != nil {
-							mail.folder = Int32(NCMail.Folder.corporation.rawValue)
-						}
-						else if header.recipients?.first(where: {$0.recipientType == .alliance}) != nil {
-							mail.folder = Int32(NCMail.Folder.alliance.rawValue)
-						}
-						else if header.recipients?.first(where: {$0.recipientType == .mailingList}) != nil {
-							mail.folder = Int32(NCMail.Folder.mailingList.rawValue)
-						}
-						else {
-							mail.folder = Int32(NCMail.Folder.unknown.rawValue)
-						}
-
-						
-						newMails.append(mail)
-						return mail
-					}()
-
-					if let fromID = contacts[Int64(from)], let contact = try? managedObjectContext.existingObject(with: fromID) as? NCContact, mail.from != contact {
-						mail.from = contact
-					}
-					mail.isRead = mail.isRead || (header.isRead ?? false)
-					if mail.to != to as NSSet {
-						mail.to = to as NSSet
-					}
-				}
-				
-				if (managedObjectContext.hasChanges) {
-					try? managedObjectContext.save()
-				}
-				
-				DispatchQueue.main.async {
-					completionHandler(.success(newMails.map{$0.objectID}))
-				}
-			}
-		}
-	}*/
 	
 	private static var invalidIDs = Set<Int64>()
-	
 	func contacts(ids: Set<Int64>, completionHandler: @escaping ([Int64: NCContact]) -> Void) {
 		let ids = ids.subtracting(NCDataManager.invalidIDs)
 		var contacts: [Int64: NCContact] = [:]
@@ -874,6 +742,55 @@ class NCDataManager {
 			}
 		})
 	}
+	
+	func assets(completionHandler: @escaping (NCCachedResult<[ESI.Assets.Asset]>) -> Void) {
+		loadFromCache(forKey: "ESI.Assets.Asset", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.assets.getCharacterAssets(characterID: Int(self.characterID)) { result in
+				completion(result, 3600.0 * 12)
+			}
+		})
+	}
+	
+	func blueprints(completionHandler: @escaping (NCCachedResult<EVE.Char.Blueprints>) -> Void) {
+		loadFromCache(forKey: "EVE.Char.Blueprints", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+			self.eve.char.blueprints { result in
+				completion(result, 3600.0 * 12)
+			}
+		})
+	}
+
+	func industryJobs(completionHandler: @escaping (NCCachedResult<EVE.Char.IndustryJobs>) -> Void) {
+		loadFromCache(forKey: "EVE.Char.IndustryJobs", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+			self.eve.char.industryJobs { result in
+				completion(result, 3600.0 * 12)
+			}
+		})
+	}
+
+	func marketOrders(completionHandler: @escaping (NCCachedResult<EVE.Char.MarketOrders>) -> Void) {
+		loadFromCache(forKey: "EVE.Char.MarketOrders", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+			self.eve.char.marketOrders { result in
+				completion(result, 3600.0 * 12)
+			}
+		})
+	}
+
+	func contracts(completionHandler: @escaping (NCCachedResult<EVE.Char.Contracts>) -> Void) {
+		loadFromCache(forKey: "EVE.Char.Contracts", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+			self.eve.char.contracts { result in
+				completion(result, 3600.0 * 12)
+			}
+		})
+	}
+
+	func contractItems(contractID: Int64, completionHandler: @escaping (NCCachedResult<EVE.Char.ContractItems>) -> Void) {
+		loadFromCache(forKey: "EVE.Char.ContractItems", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+			self.eve.char.contractItems(contractID: contractID) { result in
+				completion(result, 3600.0 * 12)
+			}
+		})
+	}
+
 
 	//MARK: Private
 	

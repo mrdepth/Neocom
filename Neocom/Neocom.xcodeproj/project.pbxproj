@@ -102,6 +102,7 @@
 		127DE7D81E9513B4008D4873 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127DE7D71E9513B4008D4873 /* ChartView.swift */; };
 		1285FB331EB8DBFA0025331A /* NCImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285FB321EB8DBFA0025331A /* NCImageView.swift */; };
 		1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1285FB341EB8DD350025331A /* NCAttributeTableViewCell.xib */; };
+		1285FB3A1EB9C5700025331A /* NCWealthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285FB391EB9C5700025331A /* NCWealthViewController.swift */; };
 		128AE8171E360FF1002E3A1E /* NCRangeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128AE8161E360FF1002E3A1E /* NCRangeFormatter.swift */; };
 		128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */; };
 		128E61421E0A707200C15EEB /* NCDamageTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128E61411E0A707200C15EEB /* NCDamageTypeTableViewCell.swift */; };
@@ -175,6 +176,9 @@
 		12D08F991E4DCCE30042B761 /* NCFittingActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */; };
 		12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */; };
 		12D1CFFB1E277E2400C31B61 /* NCSegmentedPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */; };
+		12D20E9F1EB9EB1400BEC926 /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */; };
+		12D20EA11EBA00B600BEC926 /* NCPieChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20EA01EBA00B600BEC926 /* NCPieChartTableViewCell.swift */; };
+		12D20EA31EBA011900BEC926 /* NCPieChartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D20EA21EBA011900BEC926 /* NCPieChartTableViewCell.xib */; };
 		12D364EC1E72DEFE000ED70B /* NCFittingFightersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D364EB1E72DEFE000ED70B /* NCFittingFightersViewController.swift */; };
 		12D390F51E840A2000B8A938 /* NCMiningYieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D390F41E840A2000B8A938 /* NCMiningYieldTableViewCell.swift */; };
 		12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */; };
@@ -365,6 +369,7 @@
 		127DE7D71E9513B4008D4873 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		1285FB321EB8DBFA0025331A /* NCImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCImageView.swift; sourceTree = "<group>"; };
 		1285FB341EB8DD350025331A /* NCAttributeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCAttributeTableViewCell.xib; sourceTree = "<group>"; };
+		1285FB391EB9C5700025331A /* NCWealthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCWealthViewController.swift; sourceTree = "<group>"; };
 		128AE8161E360FF1002E3A1E /* NCRangeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRangeFormatter.swift; sourceTree = "<group>"; };
 		128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCActionTableViewCell.xib; sourceTree = "<group>"; };
 		128E61411E0A707200C15EEB /* NCDamageTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamageTypeTableViewCell.swift; sourceTree = "<group>"; };
@@ -447,6 +452,9 @@
 		12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingActionsViewController.swift; sourceTree = "<group>"; };
 		12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRegionPickerViewController.swift; sourceTree = "<group>"; };
 		12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSegmentedPageControl.swift; sourceTree = "<group>"; };
+		12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
+		12D20EA01EBA00B600BEC926 /* NCPieChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCPieChartTableViewCell.swift; sourceTree = "<group>"; };
+		12D20EA21EBA011900BEC926 /* NCPieChartTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCPieChartTableViewCell.xib; sourceTree = "<group>"; };
 		12D364E81E7298C2000ED70B /* Neocom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Neocom.entitlements; sourceTree = "<group>"; };
 		12D364EB1E72DEFE000ED70B /* NCFittingFightersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingFightersViewController.swift; sourceTree = "<group>"; };
 		12D390F41E840A2000B8A938 /* NCMiningYieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMiningYieldTableViewCell.swift; sourceTree = "<group>"; };
@@ -618,6 +626,7 @@
 				12BFC46D1E409AC2000ED8D6 /* NCThinLineView.swift */,
 				12DE67201E715D46005CA44C /* NCSegmentedControl.swift */,
 				127DE7D71E9513B4008D4873 /* ChartView.swift */,
+				12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */,
 				1285FB321EB8DBFA0025331A /* NCImageView.swift */,
 			);
 			name = Views;
@@ -657,6 +666,7 @@
 				125CE1351E9FF0E7007B8B6B /* NCNewMailViewController.swift */,
 				125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */,
 				126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */,
+				1285FB391EB9C5700025331A /* NCWealthViewController.swift */,
 			);
 			name = Character;
 			sourceTree = "<group>";
@@ -703,6 +713,7 @@
 				124247BF1E6605AD002E0460 /* NCFleetMemberTableViewCell.swift */,
 				1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */,
 				125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */,
+				12D20EA01EBA00B600BEC926 /* NCPieChartTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -862,6 +873,7 @@
 				12D930EE1E656FCC00CBAE1C /* NCTextFieldTableViewCell.xib */,
 				12E9321B1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib */,
 				12E9321F1E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib */,
+				12D20EA21EBA011900BEC926 /* NCPieChartTableViewCell.xib */,
 			);
 			name = Prototypes;
 			sourceTree = "<group>";
@@ -1083,6 +1095,7 @@
 				12AC8D9E1DEF58A100561A7A /* LaunchScreen.storyboard in Resources */,
 				1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */,
 				12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */,
+				12D20EA31EBA011900BEC926 /* NCPieChartTableViewCell.xib in Resources */,
 				12D930EF1E656FCC00CBAE1C /* NCTextFieldTableViewCell.xib in Resources */,
 				1256BE5E1DF476C000A2A24B /* mainMenu.plist in Resources */,
 				128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */,
@@ -1132,6 +1145,7 @@
 				1230A32D1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift in Sources */,
 				129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */,
 				1256BE3B1DF1EFA600A2A24B /* NCSplitViewController.swift in Sources */,
+				1285FB3A1EB9C5700025331A /* NCWealthViewController.swift in Sources */,
 				1256BE5A1DF4742F00A2A24B /* NCTableViewCell.swift in Sources */,
 				126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */,
 				129B31781E5488AF00B9A88D /* NCFleetConfiguration.swift in Sources */,
@@ -1273,9 +1287,11 @@
 				12F8FF9F1E5DBC58008F79D5 /* NCFittingShipsViewController.swift in Sources */,
 				12B1B82F1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift in Sources */,
 				12E314BC1E165D5D000A926D /* UIView+NC.swift in Sources */,
+				12D20E9F1EB9EB1400BEC926 /* PieChartView.swift in Sources */,
 				12424E421E3651DC0078AB0F /* NCFittingEditorViewController.swift in Sources */,
 				129B31701E5439A100B9A88D /* NCTextFieldTableViewCell.swift in Sources */,
 				12DACE5B1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift in Sources */,
+				12D20EA11EBA00B600BEC926 /* NCPieChartTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

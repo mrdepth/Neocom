@@ -26,7 +26,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
 		
-		pieChartRow = NCPieChartRow()
+		pieChartRow = NCPieChartRow(formatter: NCUnitFormatter(unit: .isk, style: .short))
 		
 		let root = TreeNode()
 		root.children = [pieChartRow!]
@@ -325,7 +325,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 					
 					if balance > 0 {
 						if (strongSelf.walletsSegment?.value = balance) == nil {
-							strongSelf.walletsSegment = PieSegment(value: balance, formatter: NCUnitFormatter(unit: .isk, style: .short), color: .green, title: NSLocalizedString("Account", comment: ""))
+							strongSelf.walletsSegment = PieSegment(value: balance, color: .green, title: NSLocalizedString("Account", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.walletsSegment!)
 						}
 					}
@@ -335,7 +335,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 					
 					if implants > 0 {
 						if (strongSelf.implantsSegment?.value = implants) == nil {
-							strongSelf.implantsSegment = PieSegment(value: implants, formatter: NCUnitFormatter(unit: .isk, style: .short), color: UIColor(white: 0.9, alpha: 1.0), title: NSLocalizedString("Implants", comment: ""))
+							strongSelf.implantsSegment = PieSegment(value: implants, color: UIColor(white: 0.9, alpha: 1.0), title: NSLocalizedString("Implants", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.implantsSegment!)
 						}
 					}
@@ -345,7 +345,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 
 					if assets > 0 {
 						if (strongSelf.assetsSegment?.value = assets) == nil {
-							strongSelf.assetsSegment = PieSegment(value: assets, formatter: NCUnitFormatter(unit: .isk, style: .short), color: .cyan, title: NSLocalizedString("Assets", comment: ""))
+							strongSelf.assetsSegment = PieSegment(value: assets, color: .cyan, title: NSLocalizedString("Assets", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.assetsSegment!)
 						}
 					}
@@ -355,7 +355,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 
 					if blueprints > 0 {
 						if (strongSelf.blueprintsSegment?.value = blueprints) == nil {
-							strongSelf.blueprintsSegment = PieSegment(value: blueprints, formatter: NCUnitFormatter(unit: .isk, style: .short), color: UIColor(red: 0, green: 0.5, blue: 1.0, alpha: 1.0), title: NSLocalizedString("Blueprints", comment: ""))
+							strongSelf.blueprintsSegment = PieSegment(value: blueprints, color: UIColor(red: 0, green: 0.5, blue: 1.0, alpha: 1.0), title: NSLocalizedString("Blueprints", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.blueprintsSegment!)
 						}
 					}
@@ -365,7 +365,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 
 					if industryJobs > 0 {
 						if (strongSelf.industryJobsSegment?.value = industryJobs) == nil {
-							strongSelf.industryJobsSegment = PieSegment(value: industryJobs, formatter: NCUnitFormatter(unit: .isk, style: .short), color: .red, title: NSLocalizedString("Industry", comment: ""))
+							strongSelf.industryJobsSegment = PieSegment(value: industryJobs, color: .red, title: NSLocalizedString("Industry", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.industryJobsSegment!)
 						}
 					}
@@ -375,7 +375,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 
 					if orders > 0 {
 						if (strongSelf.marketOrdersSegment?.value = orders) == nil {
-							strongSelf.marketOrdersSegment = PieSegment(value: orders, formatter: NCUnitFormatter(unit: .isk, style: .short), color: .yellow, title: NSLocalizedString("Market", comment: ""))
+							strongSelf.marketOrdersSegment = PieSegment(value: orders, color: .yellow, title: NSLocalizedString("Market", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.marketOrdersSegment!)
 						}
 					}
@@ -385,7 +385,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 
 					if contractPrices > 0 {
 						if (strongSelf.contractsSegment?.value = contractPrices) == nil {
-							strongSelf.contractsSegment = PieSegment(value: contractPrices, formatter: NCUnitFormatter(unit: .isk, style: .short), color: .orange, title: NSLocalizedString("Contracts", comment: ""))
+							strongSelf.contractsSegment = PieSegment(value: contractPrices, color: .orange, title: NSLocalizedString("Contracts", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.contractsSegment!)
 						}
 					}

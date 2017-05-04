@@ -183,7 +183,12 @@ class NCUnitFormatter: Formatter {
 			s = numberFormatter2.string(from: NSNumber(value: value * sign))!
 		}
 		if !unitAbbreviation.isEmpty {
-			suffix = " \(suffix)\(unitAbbreviation)"
+			if useSIPrefix {
+				suffix = " \(suffix)\(unitAbbreviation)"
+			}
+			else {
+				suffix = "\(suffix) \(unitAbbreviation)"
+			}
 		}
 		s += suffix
 		return s;
@@ -192,13 +197,13 @@ class NCUnitFormatter: Formatter {
 	override func string(for obj: Any?) -> String? {
 		switch obj {
 		case let obj as Double:
-			return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: true)
+			return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: useSIPrefix)
 		case let obj as Float:
-			return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: true)
+			return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: useSIPrefix)
 		case let obj as Int:
-			return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: true)
+			return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: useSIPrefix)
 		case let obj as Int32:
-			return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: true)
+			return NCUnitFormatter.localizedString(from: obj, unit: unit, style: style, useSIPrefix: useSIPrefix)
 		default:
 			return nil
 		}

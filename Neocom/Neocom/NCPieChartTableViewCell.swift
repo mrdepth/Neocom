@@ -21,13 +21,16 @@ extension Prototype {
 class NCPieChartRow: TreeRow {
 	
 	private(set) var segments: [PieSegment] = []
+	let formatter: Formatter?
 	
-	init() {
+	init(formatter: Formatter?) {
+		self.formatter = formatter
 		super.init(prototype: Prototype.NCPieChartTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCPieChartTableViewCell else {return}
+		cell.pieChartView.formatter = formatter
 		cell.pieChartView.removeAllSegments()
 		segments.forEach {cell.pieChartView.add(segment: $0)}
 	}

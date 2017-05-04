@@ -13,7 +13,12 @@ fileprivate let halfSquare = (0.5 as CGFloat).squareRoot()
 class PieSegment {
 	var value: Double {
 		didSet {
-			chart?.didUpdateSegments()
+			if oldValue != value {
+				DispatchQueue.main.async {
+					self.chart?.didUpdateSegments()
+				}
+				
+			}
 		}
 	}
 	var color: UIColor
@@ -79,7 +84,7 @@ public class PieSegmentLayer: CALayer {
 	}
 	
 	fileprivate var title: NSAttributedString {
-		var s = formatter?.string(for: model().value) ?? "\(model().value)"
+		var s = model().formatter?.string(for: value) ?? "\(model().value)"
 		if let title = model().segment?.title {
 			s = "\(title)\n\(s)"
 		}
@@ -89,10 +94,11 @@ public class PieSegmentLayer: CALayer {
 	}
 	
 	fileprivate func titleFrame(at: CGFloat, size: CGSize) -> CGRect {
+		let t = CGFloat.pi * 2 * at
 		let r = bounds.size.width / 2
-		let r2 = r + insets * halfSquare - insets
-		let a = CGFloat.pi * 2 * at
-		return CGRect(x: r + r2 * cos(a) - size.width / 2, y: r + r2 * sin(a) - size.height / 2, width: size.width, height: size.height)
+//		let r2 = r + insets * halfSquare - insets
+		let r2 = r + insets / 2 - insets
+		return CGRect(x: r + r2 * cos(t) - size.width / 2, y: r + r2 * sin(t) - size.height / 2, width: size.width, height: size.height)
 	}
 	
 	override public func draw(in ctx: CGContext) {
@@ -115,6 +121,8 @@ public class PieSegmentLayer: CALayer {
 		rect.origin.x = b.origin.x + (b.size.width - rect.size.width) / 2
 		rect.origin.y = b.origin.y + (b.size.height - rect.size.height) / 2
 		
+//		UIColor.cyan.setFill()
+//		ctx.fill(rect)
 		s.draw(with: rect, options: [.usesLineFragmentOrigin], context: nil)
 		UIGraphicsPopContext()
 	}
@@ -149,7 +157,8 @@ public class PieTotalLayer: CALayer {
 	}
 	
 	fileprivate var title: NSAttributedString {
-		let s =  "\(NSLocalizedString("Total", comment: ""))\n\(formatter?.string(for: model().value) ?? "\(model().value)")"
+//		let s =  "\(NSLocalizedString("Total", comment: ""))\n\(formatter?.string(for: model().value) ?? "\(model().value)")"
+		let s =  "\(model().formatter?.string(for: value) ?? "\(model().value)")"
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.alignment = .center
 		return NSAttributedString(string: s, attributes: [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote),NSParagraphStyleAttributeName: paragraph])
@@ -205,6 +214,7 @@ class PieChartView: UIView {
 		segmentLayer.masksToBounds = false
 		segmentLayer.value = 0
 		segmentLayer.formatter = formatter
+		segmentLayer.insets = segmentLayers.first?.presentation()?.insets ?? segmentLayers.first?.insets ?? 0
 		
 		segmentLayer.start = segmentLayers.flatMap {$0.presentation()?.end}.last ?? segmentLayers.last?.end ?? 0
 		segmentLayer.end = segmentLayer.start
@@ -267,7 +277,7 @@ class PieChartView: UIView {
 		totalLayer?.value = sum
 		
 		let r = bounds.size.width / 2
-		let r2 = r + insets * halfSquare - insets
+		let r2 = r + insets / 2 - insets
 		
 		var locations = segmentLayers.map {($0.start + $0.end) / 2 - 0.25}
 

@@ -15,7 +15,7 @@ class PieSegment {
 		didSet {
 			if oldValue != value {
 				DispatchQueue.main.async {
-					self.chart?.didUpdateSegments()
+//					self.chart?.didUpdateSegments()
 				}
 				
 			}
@@ -55,7 +55,7 @@ public class PieSegmentLayer: CALayer {
 	override public func action(forKey event: String) -> CAAction? {
 		if event == "start" || event == "end" || event == "insets" || event == "titleLocation" || event == "value" {
 			let animation = CABasicAnimation(keyPath: event)
-			animation.fromValue = self.presentation()?.value(forKey: event)
+			animation.fromValue = self.presentation()?.value(forKey: event) ?? (self.animation(forKey: event) as? CABasicAnimation)?.fromValue ?? self.value(forKey: event)
 			animation.duration = 1.0
 			animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
 			return animation
@@ -65,18 +65,6 @@ public class PieSegmentLayer: CALayer {
 		}
 	}
 
-	@nonobjc func path() -> UIBezierPath {
-		let r = bounds.insetBy(dx: insets, dy: insets).size.width / 2
-		let from = (start - 0.25) * CGFloat.pi * 2
-		let to = (end - 0.25) * CGFloat.pi * 2
-		
-		let position = CGPoint(x: r, y: r)
-		let path = UIBezierPath(arcCenter: position, radius: r, startAngle: from, endAngle: to, clockwise: true)
-		path.addArc(withCenter: position, radius: r / 3, startAngle: to, endAngle: from, clockwise: false)
-		
-		return path
-	}
-	
 	fileprivate var preferredTitleSize: CGSize {
 		let s = title
 		let rect = s.boundingRect(with: self.superlayer!.bounds.size, options: [.usesLineFragmentOrigin], context: nil)
@@ -94,7 +82,7 @@ public class PieSegmentLayer: CALayer {
 	}
 	
 	fileprivate func titleFrame(at: CGFloat, size: CGSize) -> CGRect {
-		let t = CGFloat.pi * 2 * at
+		let t = CGFloat.pi * 2 * (at - 0.25)
 		let r = bounds.size.width / 2
 //		let r2 = r + insets * halfSquare - insets
 		let r2 = r + insets / 2 - insets
@@ -102,13 +90,34 @@ public class PieSegmentLayer: CALayer {
 	}
 	
 	override public func draw(in ctx: CGContext) {
-		let path = self.path()
 		
 		ctx.saveGState()
 		ctx.translateBy(x: insets, y: insets)
-		ctx.setFillColor(model().segment!.color.cgColor)
+		
+		let r = bounds.insetBy(dx: insets, dy: insets).size.width / 2
+		let from = (start - 0.25) * CGFloat.pi * 2
+		let to = (end - 0.25) * CGFloat.pi * 2
+		
+		let r0 = r / 2
+		let r1 = r0 + 16
+		let r2 = r - 4
+		let a: CGFloat = (to - from) * r0 > 1 ? 0.5 : 0
+		
+		
+		let position = CGPoint(x: r, y: r)
+		var path = UIBezierPath(arcCenter: position, radius: r2, startAngle: from + a / r2, endAngle: to - a / r2, clockwise: true)
+		path.addArc(withCenter: position, radius: r1, startAngle: to - a / r1, endAngle: from + a / r1, clockwise: false)
 		ctx.addPath(path.cgPath)
+		ctx.setFillColor(model().segment!.color.cgColor)
 		ctx.fillPath()
+
+		path = UIBezierPath(arcCenter: position, radius: r1 + 0.5, startAngle: from + a / r1, endAngle: to - a / r1, clockwise: true)
+		path.addArc(withCenter: position, radius: r0, startAngle: to - a / r0, endAngle: from + a / r0, clockwise: false)
+		ctx.addPath(path.cgPath)
+		ctx.setFillColor(model().segment!.color.withAlphaComponent(0.9).cgColor)
+		ctx.fillPath()
+
+		
 		ctx.restoreGState()
 		
 		let s = title
@@ -161,17 +170,18 @@ public class PieTotalLayer: CALayer {
 		let s =  "\(model().formatter?.string(for: value) ?? "\(model().value)")"
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.alignment = .center
-		return NSAttributedString(string: s, attributes: [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote),NSParagraphStyleAttributeName: paragraph])
+		return NSAttributedString(string: s, attributes: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .subheadline),NSParagraphStyleAttributeName: paragraph])
 	}
 
 	override public func draw(in ctx: CGContext) {
 		var bounds = self.bounds.insetBy(dx: insets, dy: insets)
-		let r = bounds.size.width / 3.0
+		let r = bounds.size.width / 4.0 + 1
 		bounds = bounds.insetBy(dx: r, dy: r)
 		
 		let path = UIBezierPath(ovalIn: bounds)
 		
-		ctx.setFillColor(UIColor.white.cgColor)
+//		ctx.setFillColor(UIColor(white: 1.0, alpha: 0.9).cgColor)
+		ctx.setFillColor(UIColor.separator.cgColor)
 		ctx.addPath(path.cgPath)
 		ctx.fillPath()
 
@@ -198,17 +208,22 @@ class PieChartView: UIView {
 	}
 	
 	func add(segment: PieSegment) {
+		CATransaction.begin()
+		CATransaction.setDisableActions(true)
 		if totalLayer == nil {
 			totalLayer = PieTotalLayer()
 			totalLayer?.needsDisplayOnBoundsChange = true
 			totalLayer?.frame = bounds
 			totalLayer?.value = 0
 			totalLayer?.formatter = formatter
+			totalLayer?.contentsScale = UIScreen.main.scale
+			totalLayer?.insets = 0
 			layer.addSublayer(totalLayer!)
 		}
 
 		segment.chart = self
 		let segmentLayer = PieSegmentLayer()
+		segmentLayer.contentsScale = UIScreen.main.scale
 		segmentLayer.segment = segment
 		segmentLayer.needsDisplayOnBoundsChange = true
 		segmentLayer.masksToBounds = false
@@ -224,11 +239,11 @@ class PieChartView: UIView {
 		
 		segmentLayers.append(segmentLayer)
 		layer.addSublayer(segmentLayer)
-		
 
-		DispatchQueue.main.async {
+		CATransaction.commit()
+//		DispatchQueue.main.async {
 			self.didUpdateSegments()
-		}
+//		}
 	}
 	
 	func remove(segment: PieSegment) {
@@ -279,7 +294,7 @@ class PieChartView: UIView {
 		let r = bounds.size.width / 2
 		let r2 = r + insets / 2 - insets
 		
-		var locations = segmentLayers.map {($0.start + $0.end) / 2 - 0.25}
+		var locations = segmentLayers.map {($0.start + $0.end) / 2}
 
 		for _ in 0..<10 {
 			guard sizes.count > 1 else {break}

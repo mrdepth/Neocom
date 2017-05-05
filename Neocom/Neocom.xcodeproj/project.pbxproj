@@ -179,6 +179,10 @@
 		12D20E9F1EB9EB1400BEC926 /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */; };
 		12D20EA11EBA00B600BEC926 /* NCPieChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20EA01EBA00B600BEC926 /* NCPieChartTableViewCell.swift */; };
 		12D20EA31EBA011900BEC926 /* NCPieChartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D20EA21EBA011900BEC926 /* NCPieChartTableViewCell.xib */; };
+		12D20EAE1EBC867E00BEC926 /* NCWealthAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20EAD1EBC867E00BEC926 /* NCWealthAssetsViewController.swift */; };
+		12D20EB01EBCB10E00BEC926 /* NCCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20EAF1EBCB10E00BEC926 /* NCCalendarViewController.swift */; };
+		12D20EB21EBCB68D00BEC926 /* NCEventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20EB11EBCB68D00BEC926 /* NCEventTableViewCell.swift */; };
+		12D20EB41EBCBD3C00BEC926 /* EVEAPI+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20EB31EBCBD3C00BEC926 /* EVEAPI+NC.swift */; };
 		12D364EC1E72DEFE000ED70B /* NCFittingFightersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D364EB1E72DEFE000ED70B /* NCFittingFightersViewController.swift */; };
 		12D390F51E840A2000B8A938 /* NCMiningYieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D390F41E840A2000B8A938 /* NCMiningYieldTableViewCell.swift */; };
 		12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */; };
@@ -455,6 +459,10 @@
 		12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
 		12D20EA01EBA00B600BEC926 /* NCPieChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCPieChartTableViewCell.swift; sourceTree = "<group>"; };
 		12D20EA21EBA011900BEC926 /* NCPieChartTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCPieChartTableViewCell.xib; sourceTree = "<group>"; };
+		12D20EAD1EBC867E00BEC926 /* NCWealthAssetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCWealthAssetsViewController.swift; sourceTree = "<group>"; };
+		12D20EAF1EBCB10E00BEC926 /* NCCalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCCalendarViewController.swift; sourceTree = "<group>"; };
+		12D20EB11EBCB68D00BEC926 /* NCEventTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCEventTableViewCell.swift; sourceTree = "<group>"; };
+		12D20EB31EBCBD3C00BEC926 /* EVEAPI+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EVEAPI+NC.swift"; sourceTree = "<group>"; };
 		12D364E81E7298C2000ED70B /* Neocom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Neocom.entitlements; sourceTree = "<group>"; };
 		12D364EB1E72DEFE000ED70B /* NCFittingFightersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingFightersViewController.swift; sourceTree = "<group>"; };
 		12D390F41E840A2000B8A938 /* NCMiningYieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMiningYieldTableViewCell.swift; sourceTree = "<group>"; };
@@ -667,6 +675,8 @@
 				125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */,
 				126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */,
 				1285FB391EB9C5700025331A /* NCWealthViewController.swift */,
+				12D20EAD1EBC867E00BEC926 /* NCWealthAssetsViewController.swift */,
+				12D20EAF1EBCB10E00BEC926 /* NCCalendarViewController.swift */,
 			);
 			name = Character;
 			sourceTree = "<group>";
@@ -714,6 +724,7 @@
 				1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */,
 				125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */,
 				12D20EA01EBA00B600BEC926 /* NCPieChartTableViewCell.swift */,
+				12D20EB11EBCB68D00BEC926 /* NCEventTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -808,6 +819,7 @@
 				1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */,
 				12DA88271EB86A3300FB1922 /* NCRefreshable.swift */,
 				12DA88291EB8707400FB1922 /* Progress+NC.swift */,
+				12D20EB31EBCBD3C00BEC926 /* EVEAPI+NC.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1136,6 +1148,7 @@
 				12B563FA1E51B24500F1BED0 /* NCFittingArea.mm in Sources */,
 				1230A3261DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift in Sources */,
 				1256BE391DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift in Sources */,
+				12D20EB21EBCB68D00BEC926 /* NCEventTableViewCell.swift in Sources */,
 				1293BC111E49F1F30099FD75 /* NCFittingDroneActionsViewController.swift in Sources */,
 				123AEFF51E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift in Sources */,
 				12E9321A1E6ACEC40033D71A /* NCFittingTargetsViewController.swift in Sources */,
@@ -1213,6 +1226,7 @@
 				12961DBA1E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift in Sources */,
 				126157061E0095380041B817 /* NCProgressHandler.swift in Sources */,
 				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
+				12D20EB41EBCBD3C00BEC926 /* EVEAPI+NC.swift in Sources */,
 				1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */,
 				12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */,
 				1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */,
@@ -1222,12 +1236,14 @@
 				12961DBF1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift in Sources */,
 				12AC8DB91DF012BA00561A7A /* NCTreeController.swift in Sources */,
 				1256BE531DF4725B00A2A24B /* NCMainMenuViewController.swift in Sources */,
+				12D20EAE1EBC867E00BEC926 /* NCWealthAssetsViewController.swift in Sources */,
 				12BFC45D1E3F7CD2000ED8D6 /* TreeRow.swift in Sources */,
 				127332E11E71D01D00DE46C9 /* TreeController.swift in Sources */,
 				12EFE7F61E40C840007BF69B /* NCSheetPresentationController.swift in Sources */,
 				1230A3331DFFE2CF00627D92 /* NSAttributedString+NC.swift in Sources */,
 				1205B8A11E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift in Sources */,
 				12D930F11E657EA400CBAE1C /* Prototype.swift in Sources */,
+				12D20EB01EBCB10E00BEC926 /* NCCalendarViewController.swift in Sources */,
 				12D08F991E4DCCE30042B761 /* NCFittingActionsViewController.swift in Sources */,
 				12DE67211E715D46005CA44C /* NCSegmentedControl.swift in Sources */,
 				12AC8DD21DF090A600561A7A /* NCCache.swift in Sources */,

@@ -385,7 +385,7 @@ class NCDataManager {
 	func updateMarketPrices(completionHandler: ((_ isUpdated: Bool) -> Void)? = nil) {
 		let lifeTime = NCExtendedLifeTime(self)
 		NCCache.sharedCache?.performBackgroundTask{ managedObjectContext in
-			let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: "ESMarketPrices", account: nil)))?.last
+			let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: "ESI.Market.Price", account: nil)))?.last
 			if record == nil || record!.isExpired {
 				self.marketPrices { result in
 					let _ = self

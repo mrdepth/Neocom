@@ -14,6 +14,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 	@IBOutlet var treeController: TreeController!
 	
 	private var pieChartRow: NCPieChartRow?
+	private var detailsSection: TreeNode?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -27,9 +28,10 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 		treeController.delegate = self
 		
 		pieChartRow = NCPieChartRow(formatter: NCUnitFormatter(unit: .isk, style: .short))
+		detailsSection = TreeNode()
 		
 		let root = TreeNode()
-		root.children = [pieChartRow!]
+		root.children = [pieChartRow!, detailsSection!]
 		treeController.content = root
 		
 		reload()
@@ -55,6 +57,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 	private var marketOrders: NCCachedResult<EVE.Char.MarketOrders>?
 	private var industryJobs: NCCachedResult<EVE.Char.IndustryJobs>?
 	private var contracts: NCCachedResult<EVE.Char.Contracts>?
+	private var prices: [Int: Double]?
 	
 	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
 		guard let account = NCAccount.current else {
@@ -67,6 +70,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 		
 		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
 		let observer = NCManagedObjectObserver() { [weak self] (updated, deleted) in
+			self?.update()
 		}
 		self.observer = observer
 		
@@ -79,12 +83,12 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 				case let .success(_, record):
 					if let record = record {
 						observer.add(managedObject: record)
+						self.update()
 					}
 				case .failure:
 					break
 				}
 				dispatchGroup.leave()
-				self.update()
 			}
 		}
 		
@@ -96,12 +100,12 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 				case let .success(_, record):
 					if let record = record {
 						observer.add(managedObject: record)
+						self.update()
 					}
 				case .failure:
 					break
 				}
 				dispatchGroup.leave()
-				self.update()
 			}
 		}
 		
@@ -113,12 +117,12 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 				case let .success(_, record):
 					if let record = record {
 						observer.add(managedObject: record)
+						self.update()
 					}
 				case .failure:
 					break
 				}
 				dispatchGroup.leave()
-				self.update()
 			}
 		}
 
@@ -147,12 +151,12 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 				case let .success(_, record):
 					if let record = record {
 						observer.add(managedObject: record)
+						self.update()
 					}
 				case .failure:
 					break
 				}
 				dispatchGroup.leave()
-				self.update()
 			}
 		}
 
@@ -164,12 +168,12 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 				case let .success(_, record):
 					if let record = record {
 						observer.add(managedObject: record)
+						self.update()
 					}
 				case .failure:
 					break
 				}
 				dispatchGroup.leave()
-				self.update()
 			}
 		}
 
@@ -181,12 +185,12 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 				case let .success(_, record):
 					if let record = record {
 						observer.add(managedObject: record)
+						self.update()
 					}
 				case .failure:
 					break
 				}
 				dispatchGroup.leave()
-				self.update()
 			}
 		}
 
@@ -206,6 +210,11 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 	private var contractsSegment: PieSegment?
 	
 	private func update() {
+		NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(reloadChart), object: nil)
+		perform(#selector(reloadChart), with: nil, afterDelay: 0)
+	}
+	
+	@objc private func reloadChart() {
 		guard let characterID = NCAccount.current?.characterID else {return}
 		let clones = self.clones?.value
 		let wallets = self.wallets?.value
@@ -235,7 +244,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 				if let value = assets {
 					for asset in value {
 						guard let type = invTypes[asset.typeID], type.group?.category?.categoryID != Int32(NCDBCategoryID.blueprint.rawValue) else {continue}
-						_ = (assetsIDs[asset.typeID]? += 1) ?? (assetsIDs[asset.typeID] = 1)
+						_ = (assetsIDs[asset.typeID]? += Int64(asset.quantity ?? 1)) ?? (assetsIDs[asset.typeID] = Int64(asset.quantity ?? 1))
 					}
 				}
 
@@ -322,12 +331,14 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 				let updateChart = {[weak self] in
 					defer {group.leave()}
 					guard let strongSelf = self else {return}
+					var rows: [DefaultTreeRow] = []
 					
 					if balance > 0 {
 						if (strongSelf.walletsSegment?.value = balance) == nil {
 							strongSelf.walletsSegment = PieSegment(value: balance, color: .green, title: NSLocalizedString("Account", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.walletsSegment!)
 						}
+						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Account", title: NSLocalizedString("Account", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: balance, unit: .isk, style: .full)))
 					}
 					else if let segment = strongSelf.walletsSegment {
 						strongSelf.pieChartRow?.remove(segment: segment)
@@ -338,6 +349,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 							strongSelf.implantsSegment = PieSegment(value: implants, color: UIColor(white: 0.9, alpha: 1.0), title: NSLocalizedString("Implants", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.implantsSegment!)
 						}
+						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Implants", title: NSLocalizedString("Implants", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: implants, unit: .isk, style: .full)))
 					}
 					else if let segment = strongSelf.implantsSegment {
 						strongSelf.pieChartRow?.remove(segment: segment)
@@ -348,6 +360,16 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 							strongSelf.assetsSegment = PieSegment(value: assets, color: .cyan, title: NSLocalizedString("Assets", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.assetsSegment!)
 						}
+						let route: Route? = {
+							guard let prices = strongSelf.prices, let assets = strongSelf.assets?.value else {return nil}
+							return Router.Wealth.Assets(assets: assets, prices: prices)
+						}()
+						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+						                           nodeIdentifier: "Assets",
+						                           title: NSLocalizedString("Assets", comment: "").uppercased(),
+						                           subtitle: NCUnitFormatter.localizedString(from: assets, unit: .isk, style: .full),
+						                           accessoryType: route == nil ? .none : .disclosureIndicator,
+						                           route: route))
 					}
 					else if let segment = strongSelf.assetsSegment {
 						strongSelf.pieChartRow?.remove(segment: segment)
@@ -358,6 +380,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 							strongSelf.blueprintsSegment = PieSegment(value: blueprints, color: UIColor(red: 0, green: 0.5, blue: 1.0, alpha: 1.0), title: NSLocalizedString("Blueprints", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.blueprintsSegment!)
 						}
+						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Blueprints", title: NSLocalizedString("Blueprints", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: blueprints, unit: .isk, style: .full)))
 					}
 					else if let segment = strongSelf.blueprintsSegment {
 						strongSelf.pieChartRow?.remove(segment: segment)
@@ -368,6 +391,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 							strongSelf.industryJobsSegment = PieSegment(value: industryJobs, color: .red, title: NSLocalizedString("Industry", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.industryJobsSegment!)
 						}
+						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Industry", title: NSLocalizedString("Industry", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: industryJobs, unit: .isk, style: .full)))
 					}
 					else if let segment = strongSelf.industryJobsSegment {
 						strongSelf.pieChartRow?.remove(segment: segment)
@@ -378,6 +402,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 							strongSelf.marketOrdersSegment = PieSegment(value: orders, color: .yellow, title: NSLocalizedString("Market", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.marketOrdersSegment!)
 						}
+						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Market", title: NSLocalizedString("Market", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: orders, unit: .isk, style: .full)))
 					}
 					else if let segment = strongSelf.marketOrdersSegment {
 						strongSelf.pieChartRow?.remove(segment: segment)
@@ -388,16 +413,18 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 							strongSelf.contractsSegment = PieSegment(value: contractPrices, color: .orange, title: NSLocalizedString("Contracts", comment: ""))
 							strongSelf.pieChartRow?.add(segment: strongSelf.contractsSegment!)
 						}
+						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Contracts", title: NSLocalizedString("Contracts", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: contractPrices, unit: .isk, style: .full)))
 					}
 					else if let segment = strongSelf.contractsSegment {
 						strongSelf.pieChartRow?.remove(segment: segment)
 					}
-
+					strongSelf.detailsSection?.children = rows
 					
 				}
 				
 				if typeIDs.count > 0 {
-					NCDataManager().prices(typeIDs: typeIDs) { result in
+					NCDataManager().prices(typeIDs: typeIDs) { [weak self] result in
+						self?.prices = result
 						implantsIDs.forEach({implants += (result[$0.key] ?? 0) * Double($0.value)})
 						assetsIDs.forEach({assets += (result[$0.key] ?? 0) * Double($0.value)})
 						ordersIDs.forEach({orders += (result[$0.key] ?? 0) * Double($0.value)})
@@ -421,7 +448,9 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 					}
 				}
 				else {
-					updateChart()
+					DispatchQueue.main.async {
+						updateChart()
+					}
 				}
 				
 			}

@@ -93,8 +93,6 @@ class NCMailRow: TreeRow {
 		self.contacts = contacts
 		characterID = Int64(mail.from!)
 
-		
-//		self.recipient = "[\(folder.name)]" * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)] + " " + recipient
 		super.init(prototype: Prototype.NCMailTableViewCell.default, route: Router.Mail.Body(mail: mail))
 	}
 	
@@ -115,8 +113,6 @@ class NCMailRow: TreeRow {
 		cell.subjectLabel.textColor = mail.isRead == true ? UIColor.lightText : UIColor.white
 		
 		cell.iconView.image = image
-//		cell.recipientLabel.font = mail.isRead == true ? UIFont.systemFont(ofSize: cell.recipientLabel.font.pointSize) : UIFont.boldSystemFont(ofSize: cell.recipientLabel.font.pointSize)
-//		cell.subjectLabel.font = mail.isRead == true ? UIFont.systemFont(ofSize: cell.subjectLabel.font.pointSize) : UIFont.boldSystemFont(ofSize: cell.subjectLabel.font.pointSize)
 		
 		if image == nil {
 			NCDataManager().image(characterID: characterID, dimension: Int(cell.iconView.bounds.size.width)) { result in

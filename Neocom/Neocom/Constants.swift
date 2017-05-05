@@ -91,10 +91,19 @@ enum NCDBUnitID: Int {
 enum NCDBCategoryID: Int {
 	case ship = 6
 	case module = 7
+	case charge = 8
 	case blueprint = 9
 	case skill = 16
 	case drone = 18
+	case subsystem = 32
 	case fighter = 87
+	
+	case asteroid = 25
+	case ancientRelic = 34
+	case material = 4
+	case planetaryResource = 42
+	case reaction = 24
+
 }
 
 enum NCDBRegionID: Int {

@@ -143,37 +143,37 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="OH5-ud-gSv" customClass="NCRoundedImageView" customModule="Neocom" customModuleProvider="target">
-                                        <rect key="frame" x="102" y="0.0" width="117" height="117.5"/>
+                                        <rect key="frame" x="109.5" y="0.0" width="102" height="102.5"/>
                                         <color key="backgroundColor" white="1" alpha="0.050000000000000003" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="OH5-ud-gSv" secondAttribute="height" id="dDo-lx-Xq4"/>
                                         </constraints>
                                     </imageView>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oVJ-WG-YA0">
-                                        <rect key="frame" x="0.0" y="172" width="320" height="32"/>
+                                        <rect key="frame" x="0.0" y="152" width="320" height="52"/>
                                         <subviews>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0gT-Fn-1dY">
-                                                <rect key="frame" x="0.0" y="0.0" width="18.5" height="32"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="18.5" height="52"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qHb-tS-MfO">
-                                                <rect key="frame" x="18.5" y="0.0" width="132" height="32"/>
+                                                <rect key="frame" x="18.5" y="0.0" width="132" height="52"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="CORPORATION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o3x-Fs-Jgo" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
-                                                        <rect key="frame" x="40" y="0.0" width="92" height="16"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="CORPORATION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o3x-Fs-Jgo" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
+                                                        <rect key="frame" x="40" y="0.0" width="92" height="36"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                         <color key="textColor" red="0.45490196078431372" green="0.61960784313725492" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" image="necrorise.png" translatesAutoresizingMaskIntoConstraints="NO" id="JHj-Ap-Kax">
-                                                        <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                                        <rect key="frame" x="0.0" y="10" width="32" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="32" id="28z-ky-ovN"/>
                                                             <constraint firstAttribute="height" constant="32" id="gNr-VR-wkr"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PMf-Zw-BIq" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
-                                                        <rect key="frame" x="40" y="16" width="92" height="16"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PMf-Zw-BIq" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
+                                                        <rect key="frame" x="40" y="36" width="92" height="16"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
@@ -193,29 +193,29 @@
                                                 </constraints>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YSx-jI-p67">
-                                                <rect key="frame" x="150.5" y="0.0" width="19" height="32"/>
+                                                <rect key="frame" x="150.5" y="0.0" width="19" height="52"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="15" id="sY1-7d-rEm"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gAt-zn-gHf">
-                                                <rect key="frame" x="169.5" y="0.0" width="132" height="32"/>
+                                                <rect key="frame" x="169.5" y="0.0" width="132" height="52"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="751" text="ALLIANCE" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57j-Vl-8bo" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="92" height="16"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="751" text="ALLIANCE" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57j-Vl-8bo" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="92" height="36"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                         <color key="textColor" red="0.45490196078431372" green="0.61960784313725492" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="MwE-ey-BLc" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="16" width="92" height="16"/>
+                                                        <rect key="frame" x="0.0" y="36" width="92" height="16"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" image="necrorise.png" translatesAutoresizingMaskIntoConstraints="NO" id="xzD-41-sRt">
-                                                        <rect key="frame" x="100" y="0.0" width="32" height="32"/>
+                                                        <rect key="frame" x="100" y="10" width="32" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="32" id="TIb-xt-wul"/>
                                                             <constraint firstAttribute="width" constant="32" id="fYY-N1-Xrg"/>
@@ -236,7 +236,7 @@
                                                 </constraints>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fEi-HC-YiI">
-                                                <rect key="frame" x="301.5" y="0.0" width="18.5" height="32"/>
+                                                <rect key="frame" x="301.5" y="0.0" width="18.5" height="52"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </view>
                                         </subviews>
@@ -277,7 +277,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Artem Valiant" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YI8-mz-cic" customClass="NCAutoHeightLabel" customModule="Neocom" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="125.5" width="290" height="38.5"/>
+                                        <rect key="frame" x="15" y="110.5" width="290" height="33.5"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="999" constant="21" id="ZhB-q6-9Ck"/>
                                         </constraints>
@@ -8489,9 +8489,9 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pa8-NI-xNf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2618" y="2463"/>
+            <point key="canvasLocation" x="-2618" y="2366"/>
         </scene>
-        <!--Wealth View Controller-->
+        <!--Wealth-->
         <scene sceneID="Yku-C4-JgX">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uFi-Jl-myO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -8510,13 +8510,130 @@
                             <outlet property="delegate" destination="hkb-SI-dCo" id="lV4-Yj-NEZ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Wgf-jh-ZuA"/>
+                    <navigationItem key="navigationItem" title="Wealth" id="Wgf-jh-ZuA"/>
                     <connections>
                         <outlet property="treeController" destination="hkb-SI-dCo" id="BRv-nj-BuL"/>
                     </connections>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="-1845" y="2461.2676056338028"/>
+            <point key="canvasLocation" x="-1843" y="2365"/>
+        </scene>
+        <!--Assets-->
+        <scene sceneID="Ryp-jq-aZi">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CtP-fA-ReB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="OXS-Rr-Qxe" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="EPr-tG-x9o" id="ZOv-mj-eQW"/>
+                    </connections>
+                </customObject>
+                <tableViewController storyboardIdentifier="NCWealthAssetsViewController" modalPresentationStyle="overCurrentContext" id="pmL-9M-JcG" customClass="NCWealthAssetsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="EPr-tG-x9o" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="OXS-Rr-Qxe" id="47h-pA-PKT"/>
+                            <outlet property="delegate" destination="OXS-Rr-Qxe" id="Cmy-Up-zyr"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Assets" id="nZj-WH-1Pa"/>
+                    <connections>
+                        <outlet property="treeController" destination="OXS-Rr-Qxe" id="4Qw-90-hMU"/>
+                    </connections>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="-1108" y="2364"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="JJb-jX-2kn">
+            <objects>
+                <navigationController useStoryboardIdentifierAsRestorationIdentifier="YES" id="F51-S5-Evq" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="SAG-iv-6fH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="grG-oq-Kci" kind="relationship" relationship="rootViewController" id="DzV-BK-7hF"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ynS-zO-Pmg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3647" y="3105"/>
+        </scene>
+        <!--Calendar-->
+        <scene sceneID="fX1-6W-Oqm">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bAG-nO-6Wk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="aO8-he-U0P" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="VVE-vE-BW9" id="Ali-zn-N4J"/>
+                    </connections>
+                </customObject>
+                <tableViewController storyboardIdentifier="NCCalendarViewController" modalPresentationStyle="overCurrentContext" id="grG-oq-Kci" customClass="NCCalendarViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="VVE-vE-BW9" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="JSK-4H-NRI" customClass="NCTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="55.5" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JSK-4H-NRI" id="2px-7V-Lnm">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="R5x-Cg-RLO">
+                                            <rect key="frame" x="15" y="4" width="272" height="35.5"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFp-5i-ssB">
+                                                    <rect key="frame" x="0.0" y="9" width="231" height="18"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="bJp-aX-A56">
+                                                    <rect key="frame" x="239" y="1" width="33" height="34"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="900" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uo2-kC-kXd">
+                                                            <rect key="frame" x="0.0" y="0.0" width="33" height="16"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="900" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mDC-Ph-IOh">
+                                                            <rect key="frame" x="0.0" y="18" width="33" height="16"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="R5x-Cg-RLO" firstAttribute="top" secondItem="2px-7V-Lnm" secondAttribute="top" constant="4" id="Jc7-jL-1to"/>
+                                        <constraint firstAttribute="bottom" secondItem="R5x-Cg-RLO" secondAttribute="bottom" constant="4" id="iiI-OX-mMs"/>
+                                        <constraint firstItem="R5x-Cg-RLO" firstAttribute="leading" secondItem="2px-7V-Lnm" secondAttribute="leading" constant="15" id="pID-cK-Jjs"/>
+                                        <constraint firstAttribute="trailing" secondItem="R5x-Cg-RLO" secondAttribute="trailing" id="vTb-cc-9S0"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="hkb-SI-dCo" id="FOL-4f-mG8"/>
+                            <outlet property="delegate" destination="hkb-SI-dCo" id="PJw-si-XvB"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Calendar" id="PHq-wr-5ES"/>
+                    <connections>
+                        <outlet property="treeController" destination="hkb-SI-dCo" id="cVG-R5-Icf"/>
+                    </connections>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="-2871" y="3104"/>
         </scene>
     </scenes>
     <resources>
@@ -8567,6 +8684,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="aqM-GB-MGS"/>
-        <segue reference="gkq-nf-oBK"/>
+        <segue reference="NgW-vJ-ZCI"/>
     </inferredMetricsTieBreakers>
 </document>

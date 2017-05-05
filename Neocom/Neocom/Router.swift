@@ -414,4 +414,24 @@ enum Router {
 
 		}
 	}
+	
+	enum Wealth {
+		
+		class Assets: Route {
+			let assets: [ESI.Assets.Asset]
+			let prices: [Int: Double]
+			
+			init(assets: [ESI.Assets.Asset], prices: [Int: Double]) {
+				self.assets = assets
+				self.prices = prices
+				super.init(kind: .push, identifier: "NCWealthAssetsViewController")
+			}
+			
+			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+				let destination = destination as! NCWealthAssetsViewController
+				destination.assets = assets
+				destination.prices = prices
+			}
+		}
+	}
 }

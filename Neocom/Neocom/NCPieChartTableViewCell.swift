@@ -32,7 +32,10 @@ class NCPieChartRow: TreeRow {
 		guard let cell = cell as? NCPieChartTableViewCell else {return}
 		cell.pieChartView.formatter = formatter
 		cell.pieChartView.removeAllSegments()
+		CATransaction.begin()
+		CATransaction.setDisableActions(true)
 		segments.forEach {cell.pieChartView.add(segment: $0)}
+		CATransaction.commit()
 	}
 	
 	func add(segment: PieSegment) {
@@ -45,6 +48,18 @@ class NCPieChartRow: TreeRow {
 			segments.remove(at: i)
 		}
 		(treeController?.cell(for: self) as? NCPieChartTableViewCell)?.pieChartView.remove(segment: segment)
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCPieChartRow)?.hashValue == hashValue
+	}
+	
+	override var hashValue: Int {
+		return Unmanaged.passUnretained(self).toOpaque().hashValue
+	}
+	
+	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
+		return .none
 	}
 
 }

@@ -1,15 +1,15 @@
 //
-//  NCJumpClonesViewController.swift
+//  NCAssetsViewController.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 02.05.17.
+//  Created by Artem Shimanski on 05.05.17.
 //  Copyright © 2017 Artem Shimanski. All rights reserved.
 //
 
 import UIKit
 import EVEAPI
 
-class NCJumpClonesViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
+class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
 	
 	@IBOutlet var treeController: TreeController!
 	
@@ -26,7 +26,7 @@ class NCJumpClonesViewController: UITableViewController, TreeControllerDelegate,
 		treeController.delegate = self
 		reload()
 	}
-
+	
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
@@ -35,12 +35,12 @@ class NCJumpClonesViewController: UITableViewController, TreeControllerDelegate,
 		}
 		treeController.deselectCell(for: node, animated: true)
 	}
-
+	
 	
 	//MARK: - NCRefreshable
 	
 	private var observer: NCManagedObjectObserver?
-	private var clones: NCCachedResult<EVE.Char.Clones>?
+	private var assets: NCCachedResult<[ESI.Assets.Asset]>?
 	private var locations: [Int64: NCLocation]?
 	
 	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
@@ -55,8 +55,8 @@ class NCJumpClonesViewController: UITableViewController, TreeControllerDelegate,
 		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
 		
 		progress.perform {
-			dataManager.clones { result in
-				self.clones = result
+			dataManager.assets { result in
+				self.assets = result
 				
 				switch result {
 				case let .success(_, record):
@@ -83,21 +83,56 @@ class NCJumpClonesViewController: UITableViewController, TreeControllerDelegate,
 	}
 	
 	private func reloadLocations(dataManager: NCDataManager, completionHandler: (() -> Void)?) {
-		guard let value = clones?.value, let locations = value.jumpClones?.map ({$0.locationID}), !locations.isEmpty else {
+		guard let value = assets?.value else {
+			completionHandler?()
+			return
+		}
+		var locationIDs = Set(value.map {$0.locationID})
+		let itemIDs = Set(value.map {$0.itemID})
+		locationIDs.subtract(itemIDs)
+		
+		guard !locationIDs.isEmpty else {
 			completionHandler?()
 			return
 		}
 		
-		dataManager.locations(ids: Set(locations)) { [weak self] result in
+		dataManager.locations(ids: locationIDs) { [weak self] result in
 			self?.locations = result
 			completionHandler?()
 		}
-
+		
 	}
 	
 	private func reloadSections() {
-		if let value = clones?.value {
+		if let value = assets?.value {
 			tableView.backgroundView = nil
+			let locations = self.locations ?? [:]
+			
+			NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
+				var items: [Int64: ESI.Assets.Asset] = [:]
+				var contents: [Int64: [ESI.Assets.Asset]]
+				
+				value.forEach {
+					_ = (contents[$0.locationID]?.append($0)) ?? (contents[$0.locationID] = [$0])
+					items[$0.itemID] = $0
+				}
+				
+				func row(asset: ESI.Assets.Asset) -> NCAssetRow {
+					return NCAssetRow(asset: asset, children: contents[asset.itemID]?.map {row(asset: $0)})
+				}
+				
+				var sections = [DefaultTreeSection]()
+				for locationID in Set(locations.keys).subtracting(Set(items.keys)) {
+					let rows = contents[locationID]?.map {row(asset: $0)}
+					let location = locations[locationID]
+					let title = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: ""))
+					let nodeIdentifier = location?.solarSystemName ?? "~"
+						
+					sections.append(DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title, children: rows))
+				}
+				sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
+				
+			}
 			
 			let t = 3600 * 24 + (value.cloneJumpDate ?? .distantPast).timeIntervalSinceNow
 			let s = String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: ""))
@@ -105,15 +140,15 @@ class NCJumpClonesViewController: UITableViewController, TreeControllerDelegate,
 			var sections = [TreeNode]()
 			
 			sections.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-			               nodeIdentifier: "Jump",
-			               title: NSLocalizedString("Next Clone Jump Availability", comment: "").uppercased(),
-			               subtitle: s))
-
+			                               nodeIdentifier: "Jump",
+			                               title: NSLocalizedString("Next Clone Jump Availability", comment: "").uppercased(),
+			                               subtitle: s))
+			
 			let invTypes = NCDatabase.sharedDatabase?.invTypes
 			for clone in value.jumpClones ?? [] {
 				
 				var rows = [TreeRow]()
-
+				
 				let jumpCloneImplants = value.jumpCloneImplants?.filter {$0.jumpCloneID == clone.jumpCloneID}
 				let implants = jumpCloneImplants?.flatMap {invTypes?[$0.typeID]} ?? []
 				
@@ -150,10 +185,10 @@ class NCJumpClonesViewController: UITableViewController, TreeControllerDelegate,
 			else {
 				treeController.content?.children = sections
 			}
-
+			
 		}
 		else {
-			tableView.backgroundView = NCTableViewBackgroundLabel(text: clones?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			tableView.backgroundView = NCTableViewBackgroundLabel(text: assets?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 		}
 	}
 }

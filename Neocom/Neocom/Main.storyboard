@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
@@ -8494,12 +8494,6 @@
         <!--Wealth-->
         <scene sceneID="Yku-C4-JgX">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uFi-Jl-myO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="hkb-SI-dCo" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="TzT-bD-mFX" id="0i0-42-UvX"/>
-                    </connections>
-                </customObject>
                 <tableViewController storyboardIdentifier="NCWealthViewController" modalPresentationStyle="overCurrentContext" id="qYb-Jq-lhJ" customClass="NCWealthViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="TzT-bD-mFX" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -8515,18 +8509,18 @@
                         <outlet property="treeController" destination="hkb-SI-dCo" id="BRv-nj-BuL"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uFi-Jl-myO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="hkb-SI-dCo" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="TzT-bD-mFX" id="0i0-42-UvX"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="-1843" y="2365"/>
         </scene>
         <!--Assets-->
         <scene sceneID="Ryp-jq-aZi">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CtP-fA-ReB" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="OXS-Rr-Qxe" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="EPr-tG-x9o" id="ZOv-mj-eQW"/>
-                    </connections>
-                </customObject>
                 <tableViewController storyboardIdentifier="NCWealthAssetsViewController" modalPresentationStyle="overCurrentContext" id="pmL-9M-JcG" customClass="NCWealthAssetsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="EPr-tG-x9o" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -8542,6 +8536,12 @@
                         <outlet property="treeController" destination="OXS-Rr-Qxe" id="4Qw-90-hMU"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CtP-fA-ReB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="OXS-Rr-Qxe" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="EPr-tG-x9o" id="ZOv-mj-eQW"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="-1108" y="2364"/>
         </scene>
@@ -8564,12 +8564,6 @@
         <!--Calendar-->
         <scene sceneID="fX1-6W-Oqm">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bAG-nO-6Wk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="aO8-he-U0P" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="VVE-vE-BW9" id="Ali-zn-N4J"/>
-                    </connections>
-                </customObject>
                 <tableViewController storyboardIdentifier="NCCalendarViewController" modalPresentationStyle="overCurrentContext" id="grG-oq-Kci" customClass="NCCalendarViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="VVE-vE-BW9" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -8632,8 +8626,115 @@
                         <outlet property="treeController" destination="hkb-SI-dCo" id="cVG-R5-Icf"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bAG-nO-6Wk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="aO8-he-U0P" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="VVE-vE-BW9" id="Ali-zn-N4J"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="-2871" y="3104"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="3SE-0r-b84">
+            <objects>
+                <navigationController useStoryboardIdentifierAsRestorationIdentifier="YES" id="nJm-D7-pXt" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="wXq-PJ-qbN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="KOq-V9-Xa7" kind="relationship" relationship="rootViewController" id="dEc-dd-hQl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RjQ-sx-T3p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3649" y="3851"/>
+        </scene>
+        <!--Assets-->
+        <scene sceneID="Ejv-xG-bMe">
+            <objects>
+                <tableViewController storyboardIdentifier="NCAssetsViewController" modalPresentationStyle="overCurrentContext" id="KOq-V9-Xa7" customClass="NCAssetsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="6gw-kq-BeB" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="NCAssetTableViewCell" id="rW2-yT-dnc" customClass="NCAssetTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="55.5" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rW2-yT-dnc" id="6GL-vZ-Nta">
+                                    <rect key="frame" x="0.0" y="0.0" width="273" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vmj-lJ-9bR">
+                                            <rect key="frame" x="8" y="4" width="265" height="35.5"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Qjr-ce-mvo">
+                                                    <rect key="frame" x="0.0" y="2" width="52" height="32"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="collapse" translatesAutoresizingMaskIntoConstraints="NO" id="TrY-Y7-1sf">
+                                                            <rect key="frame" x="0.0" y="8" width="16" height="16"/>
+                                                        </imageView>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="x7C-ix-AZB" customClass="NCImageView" customModule="Neocom" customModuleProvider="target">
+                                                            <rect key="frame" x="20" y="0.0" width="32" height="32"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="32" id="iGk-cx-nRp"/>
+                                                                <constraint firstAttribute="width" relation="lessThanOrEqual" secondItem="x7C-ix-AZB" secondAttribute="height" multiplier="1:1" id="zQ2-0L-57V"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                    </subviews>
+                                                </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="EfH-av-6yi">
+                                                    <rect key="frame" x="60" y="9" width="205" height="18"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Oyd-uG-cl7">
+                                                            <rect key="frame" x="0.0" y="0.0" width="205" height="18"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="vmj-lJ-9bR" secondAttribute="bottom" constant="4" id="525-mQ-Xrb"/>
+                                        <constraint firstItem="vmj-lJ-9bR" firstAttribute="leading" secondItem="6GL-vZ-Nta" secondAttribute="leading" constant="8" id="Xoo-CR-nbA"/>
+                                        <constraint firstItem="vmj-lJ-9bR" firstAttribute="top" secondItem="6GL-vZ-Nta" secondAttribute="top" constant="4" id="gB4-t2-PHq"/>
+                                        <constraint firstAttribute="trailing" secondItem="vmj-lJ-9bR" secondAttribute="trailing" priority="999" id="yn3-ug-9tF"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="vmj-lJ-9bR" secondAttribute="trailing" constant="15" id="u61-e9-Iz8"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="iconView" destination="x7C-ix-AZB" id="Vcv-65-J7k"/>
+                                    <outlet property="titleLabel" destination="Oyd-uG-cl7" id="pki-Xq-aby"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="WCD-ma-j7H" id="CIV-nt-MSc"/>
+                            <outlet property="delegate" destination="WCD-ma-j7H" id="Ca1-nw-ov6"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Assets" id="aai-ua-Djr"/>
+                    <connections>
+                        <outlet property="treeController" destination="WCD-ma-j7H" id="lyH-8g-YUW"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pXz-SE-n9W" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="WCD-ma-j7H" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="6gw-kq-BeB" id="WnB-1h-Ggp"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="-2873" y="3850"/>
         </scene>
     </scenes>
     <resources>
@@ -8647,6 +8748,7 @@
         <image name="calibration" width="32" height="32"/>
         <image name="capacitor" width="32" height="32"/>
         <image name="cargo" width="32" height="32"/>
+        <image name="collapse" width="16" height="16"/>
         <image name="cpu" width="32" height="32"/>
         <image name="damagePattern" width="32" height="32"/>
         <image name="dps" width="32" height="32"/>

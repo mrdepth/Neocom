@@ -100,6 +100,8 @@
 		1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */; };
 		127BE3901E5AFC2900FA7F9F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BE38F1E5AFC2900FA7F9F /* Router.swift */; };
 		127DE7D81E9513B4008D4873 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127DE7D71E9513B4008D4873 /* ChartView.swift */; };
+		128442151EBCEECB00D87992 /* NCAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128442141EBCEECB00D87992 /* NCAssetsViewController.swift */; };
+		128442171EBCF27700D87992 /* NCAssetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128442161EBCF27700D87992 /* NCAssetTableViewCell.swift */; };
 		1285FB331EB8DBFA0025331A /* NCImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285FB321EB8DBFA0025331A /* NCImageView.swift */; };
 		1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1285FB341EB8DD350025331A /* NCAttributeTableViewCell.xib */; };
 		1285FB3A1EB9C5700025331A /* NCWealthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285FB391EB9C5700025331A /* NCWealthViewController.swift */; };
@@ -371,6 +373,8 @@
 		1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
 		127BE38F1E5AFC2900FA7F9F /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		127DE7D71E9513B4008D4873 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		128442141EBCEECB00D87992 /* NCAssetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAssetsViewController.swift; sourceTree = "<group>"; };
+		128442161EBCF27700D87992 /* NCAssetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAssetTableViewCell.swift; sourceTree = "<group>"; };
 		1285FB321EB8DBFA0025331A /* NCImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCImageView.swift; sourceTree = "<group>"; };
 		1285FB341EB8DD350025331A /* NCAttributeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCAttributeTableViewCell.xib; sourceTree = "<group>"; };
 		1285FB391EB9C5700025331A /* NCWealthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCWealthViewController.swift; sourceTree = "<group>"; };
@@ -690,6 +694,14 @@
 			name = Skills;
 			sourceTree = "<group>";
 		};
+		128442131EBCEEB100D87992 /* Business */ = {
+			isa = PBXGroup;
+			children = (
+				128442141EBCEECB00D87992 /* NCAssetsViewController.swift */,
+			);
+			name = Business;
+			sourceTree = "<group>";
+		};
 		129E61001E0287CA00B56EB8 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -725,6 +737,7 @@
 				125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */,
 				12D20EA01EBA00B600BEC926 /* NCPieChartTableViewCell.swift */,
 				12D20EB11EBCB68D00BEC926 /* NCEventTableViewCell.swift */,
+				128442161EBCF27700D87992 /* NCAssetTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -760,6 +773,7 @@
 				1230A3361DFFE30400627D92 /* Database */,
 				126157081E01D2080041B817 /* Character */,
 				1261570B1E01D2E30041B817 /* Skills */,
+				128442131EBCEEB100D87992 /* Business */,
 				12DBEA311E1D36580088A486 /* Fitting */,
 				12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */,
 				12AC8D951DEF58A100561A7A /* ViewController.swift */,
@@ -872,8 +886,8 @@
 			children = (
 				1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */,
 				1263C50C1E64BE9D003D002D /* NCDefaultTableViewCell.xib */,
-				1285FB341EB8DD350025331A /* NCAttributeTableViewCell.xib */,
 				12D930F21E6584AF00CBAE1C /* NCDefaultCompactTableViewCell.xib */,
+				1285FB341EB8DD350025331A /* NCAttributeTableViewCell.xib */,
 				128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */,
 				12DA88251EB8696F00FB1922 /* NCPlaceholderTableViewCell.xib */,
 				12D930EA1E656EA300CBAE1C /* NCDamageTypeTableViewCell.xib */,
@@ -1195,6 +1209,7 @@
 				1256BE4D1DF4193000A2A24B /* NCUnitFormatter.swift in Sources */,
 				1230A3281DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift in Sources */,
 				121D10B01E26345D00DD671B /* NSManagedObjectContext+NC.swift in Sources */,
+				128442171EBCF27700D87992 /* NCAssetTableViewCell.swift in Sources */,
 				12AC8DCE1DF08D9B00561A7A /* NCCache.xcdatamodeld in Sources */,
 				1230A32F1DFFE2CF00627D92 /* NCTableView.m in Sources */,
 				124247C01E6605AD002E0460 /* NCFleetMemberTableViewCell.swift in Sources */,
@@ -1239,6 +1254,7 @@
 				12D20EAE1EBC867E00BEC926 /* NCWealthAssetsViewController.swift in Sources */,
 				12BFC45D1E3F7CD2000ED8D6 /* TreeRow.swift in Sources */,
 				127332E11E71D01D00DE46C9 /* TreeController.swift in Sources */,
+				128442151EBCEECB00D87992 /* NCAssetsViewController.swift in Sources */,
 				12EFE7F61E40C840007BF69B /* NCSheetPresentationController.swift in Sources */,
 				1230A3331DFFE2CF00627D92 /* NSAttributedString+NC.swift in Sources */,
 				1205B8A11E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift in Sources */,

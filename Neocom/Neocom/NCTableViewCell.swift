@@ -35,9 +35,9 @@ class NCDefaultTableViewCell: NCTableViewCell {
 	
 	var indentationConstraint: NSLayoutConstraint? {
 		get {
-			guard let iconView = self.iconView else {return nil}
-			return iconView.superview?.constraints.first {
-				return $0.firstItem === iconView && $0.secondItem === iconView.superview && $0.firstAttribute == .leading && $0.secondAttribute == .leading
+			guard let stackView = self.iconView?.superview else {return nil}
+			return stackView.superview?.constraints.first {
+				return $0.firstItem === stackView && $0.secondItem === stackView.superview && $0.firstAttribute == .leading && $0.secondAttribute == .leading
 			}
 		}
 	}

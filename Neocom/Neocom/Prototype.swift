@@ -21,3 +21,13 @@ extension UITableView {
 		}
 	}
 }
+
+
+extension UICollectionView {
+	
+	func register(_ prototypes: [Prototype]) {
+		for prototype in prototypes {
+			register(prototype.nib, forCellWithReuseIdentifier: prototype.reuseIdentifier)
+		}
+	}
+}

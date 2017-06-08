@@ -35,7 +35,7 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
     }
 	
 	func setExpanded(_ expanded: Bool, animated: Bool) {
-		expandIconView?.image = UIImage(named: expanded ? "collapse" : "expand")
+		expandIconView?.image = expanded ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
 	}
 	
 	var indentationConstraint: NSLayoutConstraint? {

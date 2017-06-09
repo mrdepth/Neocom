@@ -45,4 +45,28 @@ extension CGRect {
 		r.size.height = lerp(self.size.height, to.size.height, t)
 		return r
 	}
+    
+    func insetBy(_ insets: UIEdgeInsets) -> CGRect {
+        return UIEdgeInsetsInsetRect(self, insets)
+    }
+
+}
+
+
+extension CGSize {
+    func insetBy(_ insets: UIEdgeInsets) -> CGSize {
+        return CGSize(width: width - insets.left - insets.right, height: height - insets.top - insets.bottom)
+    }
+}
+
+extension CGPoint {
+    public func offsetBy(dx: CGFloat, dy: CGFloat) -> CGPoint {
+        return CGPoint(x: x + dx, y: y + dy)
+    }
+}
+
+extension UIEdgeInsets {
+    func inverted() -> UIEdgeInsets {
+        return UIEdgeInsets(top: -top, left: -left, bottom: -bottom, right: -right)
+    }
 }

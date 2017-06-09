@@ -53,7 +53,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 	private var clones: NCCachedResult<EVE.Char.Clones>?
 	private var wallets: NCCachedResult<[ESI.Wallet.Balance]>?
 	private var assets: NCCachedResult<[ESI.Assets.Asset]>?
-	private var blueprints: NCCachedResult<EVE.Char.Blueprints>?
+	private var blueprints: NCCachedResult<[ESI.Character.Blueprint]>?
 	private var marketOrders: NCCachedResult<EVE.Char.MarketOrders>?
 	private var industryJobs: NCCachedResult<EVE.Char.IndustryJobs>?
 	private var contracts: NCCachedResult<EVE.Char.Contracts>?
@@ -126,22 +126,22 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 			}
 		}
 
-//		progress.perform {
-//			dispatchGroup.enter()
-//			dataManager.blueprints { result in
-//				self.blueprints = result
-//				switch result {
-//				case let .success(_, record):
-//					if let record = record {
-//						observer.add(managedObject: record)
-//					}
-//				case .failure:
-//					break
-//				}
-//				dispatchGroup.leave()
-//				self.update()
-//			}
-//		}
+		progress.perform {
+			dispatchGroup.enter()
+			dataManager.blueprints { result in
+				self.blueprints = result
+				switch result {
+				case let .success(_, record):
+					if let record = record {
+						observer.add(managedObject: record)
+					}
+				case .failure:
+					break
+				}
+				dispatchGroup.leave()
+				self.update()
+			}
+		}
 
 		progress.perform {
 			dispatchGroup.enter()
@@ -251,7 +251,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 				var blueprintsIDs = [Int: (products: [Int: Int64], materials: [Int: Int64])]()
 
 				if let value = blueprints {
-					for blueprint in value.blueprints {
+					for blueprint in value {
 						guard let type = invTypes[blueprint.typeID] else {continue}
 						var (products, materials) = blueprintsIDs[blueprint.typeID] ?? ([:], [:])
 						if blueprint.runs > 0 {

@@ -746,23 +746,23 @@ class NCDataManager {
 	func assets(completionHandler: @escaping (NCCachedResult<[ESI.Assets.Asset]>) -> Void) {
 		loadFromCache(forKey: "ESI.Assets.Asset", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.assets.getCharacterAssets(characterID: Int(self.characterID)) { result in
-				completion(result, 3600.0 * 12)
+				completion(result, 3600.0 * 1)
 			}
 		})
 	}
 	
-	func blueprints(completionHandler: @escaping (NCCachedResult<EVE.Char.Blueprints>) -> Void) {
+	func blueprints(completionHandler: @escaping (NCCachedResult<[ESI.Character.Blueprint]>) -> Void) {
 		loadFromCache(forKey: "EVE.Char.Blueprints", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
-			self.eve.char.blueprints { result in
-				completion(result, 3600.0 * 12)
-			}
+            self.esi.character.getBlueprints(characterID: Int(self.characterID)) { result in
+                completion(result, 3600.0 * 1)
+            }
 		})
 	}
 
 	func industryJobs(completionHandler: @escaping (NCCachedResult<EVE.Char.IndustryJobs>) -> Void) {
 		loadFromCache(forKey: "EVE.Char.IndustryJobs", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
 			self.eve.char.industryJobs { result in
-				completion(result, 3600.0 * 12)
+				completion(result, 3600.0 * 1)
 			}
 		})
 	}
@@ -770,7 +770,7 @@ class NCDataManager {
 	func marketOrders(completionHandler: @escaping (NCCachedResult<EVE.Char.MarketOrders>) -> Void) {
 		loadFromCache(forKey: "EVE.Char.MarketOrders", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
 			self.eve.char.marketOrders { result in
-				completion(result, 3600.0 * 12)
+				completion(result, 3600.0 * 1)
 			}
 		})
 	}
@@ -778,7 +778,7 @@ class NCDataManager {
 	func contracts(completionHandler: @escaping (NCCachedResult<EVE.Char.Contracts>) -> Void) {
 		loadFromCache(forKey: "EVE.Char.Contracts", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
 			self.eve.char.contracts { result in
-				completion(result, 3600.0 * 12)
+				completion(result, 3600.0 * 1)
 			}
 		})
 	}

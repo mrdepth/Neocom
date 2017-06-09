@@ -21,10 +21,13 @@ class NCTableViewCell: UITableViewCell {
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		self.selectedBackgroundView = UIView(frame: self.bounds)
-		self.selectedBackgroundView?.backgroundColor = UIColor.separator
+//        backgroundView = UIView(frame: bounds)
+//        backgroundView?.backgroundColor = UIColor.cellBackground
+		selectedBackgroundView = UIView(frame: bounds)
+		selectedBackgroundView?.backgroundColor = UIColor.separator
 		tintColor = .caption
 	}
+    
 }
 
 class NCDefaultTableViewCell: NCTableViewCell {
@@ -32,6 +35,11 @@ class NCDefaultTableViewCell: NCTableViewCell {
 	@IBOutlet weak var iconView: UIImageView?
 	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var subtitleLabel: UILabel?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        indentationWidth = 32
+    }
 	
 	var indentationConstraint: NSLayoutConstraint? {
 		get {
@@ -45,9 +53,21 @@ class NCDefaultTableViewCell: NCTableViewCell {
 	override var indentationLevel: Int {
 		didSet {
 			let level = max(0, indentationLevel - 1)
-			self.indentationConstraint?.constant = CGFloat(15 + level * 10)
+            let indent = 15 + CGFloat(level) * indentationWidth
+			self.indentationConstraint?.constant = indent
+            self.separatorInset.left = indent
 		}
 	}
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+//        if let indent = self.indentationConstraint?.constant {
+//            let frame = contentView.bounds.insetBy(UIEdgeInsets(top: 0, left: indent - 15, bottom: 0, right: 0))
+//            backgroundView?.frame = frame
+//            selectedBackgroundView?.frame = frame
+//        }
+    }
+
 }
 
 class NCActionTableViewCell: NCTableViewCell {

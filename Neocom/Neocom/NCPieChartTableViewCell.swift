@@ -10,6 +10,11 @@ import UIKit
 
 class NCPieChartTableViewCell: NCTableViewCell {
 	@IBOutlet var pieChartView: PieChartView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        separatorInset = .zero
+    }
 }
 
 extension Prototype {

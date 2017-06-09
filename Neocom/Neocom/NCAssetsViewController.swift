@@ -156,9 +156,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					                  image: type?.icon?.image?.image,
 					                  attributedTitle: title,
 					                  subtitle: subtitle,
-					                  accessoryType: rows.count > 0 ? .detailButton : .none,
-					                  route: rows.count == 0 ? route : nil,
-					                  accessoryButtonRoute: rows.count > 0 ? route : nil)
+					                  route: route)
 					assetRow.children = rows
 					return assetRow
 				}

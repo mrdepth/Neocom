@@ -20,7 +20,8 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+
     }
 
 	override func prepareForReuse() {

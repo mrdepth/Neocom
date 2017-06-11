@@ -12,7 +12,7 @@ import EVEAPI
 class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
 	
 	@IBOutlet var treeController: TreeController!
-	
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -21,6 +21,9 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.default])
 		treeController.delegate = self
+		
+		setupSearchController()
+		
 		reload()
 	}
 	
@@ -184,6 +187,14 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					else {
 						self.treeController.content?.children = sections
 					}
+					self.searchResultsController?.items = items
+					self.searchResultsController?.contents = contents
+					self.searchResultsController?.locations = locations
+					self.searchResultsController?.typeIDs = typeIDs
+					if let searchController = self.searchController, searchController.isActive {
+						self.searchResultsController?.updateSearchResults(for: searchController)
+					}
+
 				}
 			}
 			
@@ -191,5 +202,21 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 		else {
 			tableView.backgroundView = NCTableViewBackgroundLabel(text: assets?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 		}
+	}
+	
+	private var searchController: UISearchController?
+	private var searchResultsController: NCAssetsSearchResultViewController?
+
+	private func setupSearchController() {
+		searchResultsController = self.storyboard?.instantiateViewController(withIdentifier: "NCAssetsSearchResultViewController") as? NCAssetsSearchResultViewController
+		searchController = UISearchController(searchResultsController: searchResultsController )
+		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
+		searchController?.searchResultsUpdater = searchResultsController
+		searchController?.searchBar.barStyle = UIBarStyle.black
+		searchController?.hidesNavigationBarDuringPresentation = false
+		tableView.backgroundView = UIView()
+		tableView.tableHeaderView = searchController?.searchBar
+		definesPresentationContext = true
+		
 	}
 }

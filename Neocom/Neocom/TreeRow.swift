@@ -58,10 +58,12 @@ class DefaultTreeSection: TreeSection {
 		if let cell = cell as? NCHeaderTableViewCell {
 			cell.object = self
 			if title != nil {
-				cell.binder.bind("titleLabel.text", toObject: self, withKeyPath: "title", transformer: nil)
+				cell.titleLabel?.text = title
+//				cell.binder.bind("titleLabel.text", toObject: self, withKeyPath: "title", transformer: nil)
 			}
 			else if attributedTitle != nil {
-				cell.binder.bind("titleLabel.attributedText", toObject: self, withKeyPath: "attributedTitle", transformer: nil)
+				cell.titleLabel?.attributedText = attributedTitle
+//				cell.binder.bind("titleLabel.attributedText", toObject: self, withKeyPath: "attributedTitle", transformer: nil)
 			}
 		}
 	}

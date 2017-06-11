@@ -8,25 +8,17 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 class NCAssetsSearchResultViewController: UITableViewController, TreeControllerDelegate, UISearchResultsUpdating {
     
     @IBOutlet var treeController: TreeController!
     
-    var typeIDs: Set<Int>?
-    
-    var assets: [ESI.Assets.Asset]? {
-        didSet {
-            if let typeIDs = assets?.map {$0.typeID} {
-                self.typeIDs = Set(typeIDs)
-            }
-            else {
-                self.typeIDs = nil
-            }
-        }
-    }
+	var items: [Int64: ESI.Assets.Asset]?
+	var typeIDs: Set<Int>?
     var locations: [Int64: NCLocation]?
-    
+    var contents: [Int64: [ESI.Assets.Asset]]?
+	
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,7 +48,8 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
     
     public func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text,
-            let assets = assets,
+            let items = items,
+			let contents = contents,
             var typeIDs = typeIDs,
             !text.isEmpty
              else {
@@ -65,25 +58,53 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
 
         
         let locations = self.locations ?? [:]
-        
+		
         gate.perform {
             NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
-                var items: [Int64: ESI.Assets.Asset] = [:]
-                var contents: [Int64: [ESI.Assets.Asset]] = [:]
-                var typeIDs = Set<Int>()
-                
-                assets.forEach {
-                    _ = (contents[$0.locationID]?.append($0)) ?? (contents[$0.locationID] = [$0])
-                    items[$0.itemID] = $0
-                    typeIDs.insert($0.typeID)
-                }
-                
+				
                 var types = [Int: NCDBInvType]()
-                if typeIDs.count > 0 {
-                    let result: [NCDBInvType]? = managedObjectContext.fetch("InvType", where: "typeID in %@", typeIDs)
-                    result?.forEach {types[Int($0.typeID)] = $0}
-                }
-                
+
+				var filtered: [ESI.Assets.Asset] = []
+				
+				if typeIDs.count > 0 {
+					let request = NSFetchRequest<NSDictionary>(entityName: "InvType")
+					request.predicate = NSPredicate(format: "typeID in %@ AND typeName CONTAINS [C] %@", typeIDs, text)
+					request.propertiesToFetch = [NSEntityDescription.entity(forEntityName: "InvType", in: managedObjectContext)!.propertiesByName["typeID"]!]
+					request.resultType = .dictionaryResultType
+					let result = Set((try? managedObjectContext.fetch(request))?.flatMap {$0["typeID"] as? Int} ?? [])
+					var array = Array(items.values.filter {result.contains($0.typeID)})
+					var array2 = array
+					filtered.append(contentsOf: array)
+					
+					while !array.isEmpty {
+						array = array.flatMap {items[$0.locationID]}
+						filtered.append(contentsOf: array)
+					}
+
+					while !array2.isEmpty {
+						array2 = Array(array2.flatMap {contents[$0.itemID]}.joined())
+						filtered.append(contentsOf: array2)
+					}
+
+					
+				}
+				
+				var items: [Int64: ESI.Assets.Asset] = [:]
+				var filteredContents: [Int64: [ESI.Assets.Asset]] = [:]
+				var typeIDs = Set<Int>()
+				
+				filtered.forEach {
+					_ = (filteredContents[$0.locationID]?.append($0)) ?? (filteredContents[$0.locationID] = [$0])
+					items[$0.itemID] = $0
+					typeIDs.insert($0.typeID)
+				}
+
+
+				if typeIDs.count > 0 {
+					let result: [NCDBInvType]? = managedObjectContext.fetch("InvType", where: "typeID in %@", typeIDs)
+					result?.forEach {types[Int($0.typeID)] = $0}
+				}
+
                 func row(asset: ESI.Assets.Asset) -> DefaultTreeRow {
                     let type = types[asset.typeID]
                     let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
@@ -94,7 +115,7 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
                     else {
                         title = NSAttributedString(string: typeName)
                     }
-                    var rows = contents[asset.itemID]?.map {row(asset: $0)} ?? []
+                    var rows = filteredContents[asset.itemID]?.map {row(asset: $0)} ?? []
                     rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
                     
                     let subtitle = rows.count > 0 ? NCUnitFormatter.localizedString(from: rows.count, unit: .none, style: .full) + " " + NSLocalizedString("items", comment: "") : nil
@@ -119,7 +140,7 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
                 
                 var sections = [DefaultTreeSection]()
                 for locationID in Set(locations.keys).subtracting(Set(items.keys)) {
-                    guard var rows = contents[locationID]?.map ({row(asset: $0)}) else {continue}
+                    guard var rows = filteredContents[locationID]?.map ({row(asset: $0)}) else {continue}
                     
                     rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
                     
@@ -146,155 +167,5 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
         }
         
 
-    }
-    
-    //MARK: - NCRefreshable
-    
-    private var observer: NCManagedObjectObserver?
-    
-    func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
-        guard let account = NCAccount.current else {
-            completionHandler?()
-            return
-        }
-        title = account.characterName
-        
-        let progress = Progress(totalUnitCount: 1)
-        
-        let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
-        
-        progress.perform {
-            dataManager.assets { result in
-                self.assets = result
-                
-                switch result {
-                case let .success(_, record):
-                    if let record = record {
-                        self.observer = NCManagedObjectObserver(managedObject: record) { [weak self] _ in
-                            self?.reloadLocations(dataManager: dataManager) {
-                                self?.reloadSections()
-                                completionHandler?()
-                            }
-                        }
-                    }
-                    
-                    self.reloadLocations(dataManager: dataManager) {
-                        self.reloadSections()
-                        completionHandler?()
-                    }
-                case .failure:
-                    completionHandler?()
-                }
-                
-                
-            }
-        }
-    }
-    
-    private func reloadLocations(dataManager: NCDataManager, completionHandler: (() -> Void)?) {
-        guard let value = assets?.value else {
-            completionHandler?()
-            return
-        }
-        var locationIDs = Set(value.map {$0.locationID})
-        let itemIDs = Set(value.map {$0.itemID})
-        locationIDs.subtract(itemIDs)
-        
-        guard !locationIDs.isEmpty else {
-            completionHandler?()
-            return
-        }
-        
-        dataManager.locations(ids: locationIDs) { [weak self] result in
-            self?.locations = result
-            completionHandler?()
-        }
-    }
-    
-    private func reloadSections() {
-        if let value = assets?.value {
-            tableView.backgroundView = nil
-            let locations = self.locations ?? [:]
-            
-            NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
-                var items: [Int64: ESI.Assets.Asset] = [:]
-                var contents: [Int64: [ESI.Assets.Asset]] = [:]
-                var typeIDs = Set<Int>()
-                
-                value.forEach {
-                    _ = (contents[$0.locationID]?.append($0)) ?? (contents[$0.locationID] = [$0])
-                    items[$0.itemID] = $0
-                    typeIDs.insert($0.typeID)
-                }
-                
-                var types = [Int: NCDBInvType]()
-                if typeIDs.count > 0 {
-                    let result: [NCDBInvType]? = managedObjectContext.fetch("InvType", where: "typeID in %@", typeIDs)
-                    result?.forEach {types[Int($0.typeID)] = $0}
-                }
-                
-                func row(asset: ESI.Assets.Asset) -> DefaultTreeRow {
-                    let type = types[asset.typeID]
-                    let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
-                    let title: NSAttributedString
-                    if let qty = asset.quantity, qty > 1 {
-                        title = typeName + (" x" + NCUnitFormatter.localizedString(from: qty, unit: .none, style: .full)) * [NSForegroundColorAttributeName: UIColor.caption]
-                    }
-                    else {
-                        title = NSAttributedString(string: typeName)
-                    }
-                    var rows = contents[asset.itemID]?.map {row(asset: $0)} ?? []
-                    rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
-                    
-                    let subtitle = rows.count > 0 ? NCUnitFormatter.localizedString(from: rows.count, unit: .none, style: .full) + " " + NSLocalizedString("items", comment: "") : nil
-                    
-                    let route: Route?
-                    if let typeID = type?.typeID {
-                        route = Router.Database.TypeInfo(Int(typeID))
-                    }
-                    else {
-                        route = nil
-                    }
-                    
-                    let assetRow = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.default,
-                                                  nodeIdentifier: "\(asset.itemID)",
-                        image: type?.icon?.image?.image,
-                        attributedTitle: title,
-                        subtitle: subtitle,
-                        route: route)
-                    assetRow.children = rows
-                    return assetRow
-                }
-                
-                var sections = [DefaultTreeSection]()
-                for locationID in Set(locations.keys).subtracting(Set(items.keys)) {
-                    guard var rows = contents[locationID]?.map ({row(asset: $0)}) else {continue}
-                    
-                    rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
-                    
-                    let location = locations[locationID]
-                    let title = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: ""))
-                    let nodeIdentifier = location?.solarSystemName ?? "~"
-                    
-                    sections.append(DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title, children: rows))
-                }
-                sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
-                
-                DispatchQueue.main.async {
-                    if self.treeController.content == nil {
-                        let root = TreeNode()
-                        root.children = sections
-                        self.treeController.content = root
-                    }
-                    else {
-                        self.treeController.content?.children = sections
-                    }
-                }
-            }
-            
-        }
-        else {
-            tableView.backgroundView = NCTableViewBackgroundLabel(text: assets?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-        }
     }
 }

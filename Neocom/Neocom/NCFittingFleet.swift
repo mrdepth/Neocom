@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import EVEAPI
 
 class NCFittingFleet {
 	var pilots = [(NCFittingCharacter, NSManagedObjectID?)]()
@@ -47,6 +48,45 @@ class NCFittingFleet {
 		active = pilots.first?.0
 		self.engine = engine
 	}
+    
+    init(asset: ESI.Assets.Asset, contents: [Int64: [ESI.Assets.Asset]], engine: NCFittingEngine) {
+        self.engine = engine
+        
+        let gang = engine.gang
+        let pilot = gang.addPilot()
+        let ship = NCFittingShip(typeID: asset.typeID)
+        pilot.ship = ship
+        pilots.append((pilot, nil))
+        active = pilot
+
+        var cargo = Set<Int>()
+        var requiresAmmo = [NCFittingModule]()
+        
+        contents[asset.itemID]?.forEach {
+            switch $0.locationFlag {
+            case .droneBay:
+                for _ in 0..<($0.quantity ?? 1) {
+                    ship.addDrone(typeID: $0.typeID)
+                }
+            case .cargo:
+                cargo.insert($0.typeID)
+            default:
+                if let module = ship.addModule(typeID: $0.typeID), !module.chargeGroups.isEmpty {
+                    requiresAmmo.append(module)
+                }
+            }
+        }
+        
+        for module in requiresAmmo {
+            for typeID in cargo {
+                module.charge = NCFittingCharge(typeID: typeID)
+                if module.charge != nil {
+                    break
+                }
+            }
+        }
+
+    }
 	
 	func append(loadout: NCLoadout, engine: NCFittingEngine) {
 		guard let data = loadout.data?.data else {return}

@@ -116,7 +116,7 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 		configureCharacter(cell: cell)
 		configureSkillQueue(cell: cell)
 		configureCorporation(cell: cell)
-		configureAccountStatus(cell: cell)
+//		configureAccountStatus(cell: cell)
 	}
 	
 	func configureCharacter(cell: NCAccountTableViewCell) {
@@ -262,7 +262,7 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 		}
 	}
 	
-	func configureAccountStatus(cell: NCAccountTableViewCell) {
+	/*func configureAccountStatus(cell: NCAccountTableViewCell) {
 		if let value = accountStatus?.value, let paidUntil = value.paidUntil {
 			let t = paidUntil.timeIntervalSinceNow
 			let s: String = t > 0 ?
@@ -273,7 +273,7 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 		else {
 			cell.subscriptionLabel.text = accountStatus?.error?.localizedDescription ?? " "
 		}
-	}
+	}*/
 	
 	private var observer: NCManagedObjectObserver?
 	private var isLoading: Bool = false
@@ -311,9 +311,9 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 			if case let .success(_, record)? = strongSelf.image, updated?.contains(record!) == true {
 				strongSelf.configureImage(cell: cell)
 			}
-			if case let .success(_, record)? = strongSelf.accountStatus, updated?.contains(record!) == true {
-				strongSelf.configureAccountStatus(cell: cell)
-			}
+//			if case let .success(_, record)? = strongSelf.accountStatus, updated?.contains(record!) == true {
+//				strongSelf.configureAccountStatus(cell: cell)
+//			}
 		}
 		
 		let dataManager = NCDataManager(account: object, cachePolicy: cachePolicy)
@@ -430,7 +430,7 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 		}
 		progress?.progress.resignCurrent()
 
-		progress?.progress.becomeCurrent(withPendingUnitCount: 1)
+		/*progress?.progress.becomeCurrent(withPendingUnitCount: 1)
 		dispatchGroup.enter()
 		dataManager.accountStatus { result in
 			self.accountStatus = result
@@ -440,7 +440,7 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 				self.configureAccountStatus(cell: cell)
 			}
 		}
-		progress?.progress.resignCurrent()
+		progress?.progress.resignCurrent()*/
 
 		dispatchGroup.notify(queue: .main) {
 			progress?.finish()

@@ -14,6 +14,18 @@ protocol TreeNodeRoutable {
 	var accessoryButtonRoute: Route? {get}
 }
 
+public enum NCTableViewCellAccessoryType {
+    
+    
+    case none
+    case disclosureIndicator
+    case detailDisclosureButton
+    case checkmark
+    case detailButton
+    case button(UIImage)
+}
+
+
 class TreeRow: TreeNode, TreeNodeRoutable {
 	var route: Route?
 	var accessoryButtonRoute: Route?
@@ -93,14 +105,14 @@ class DefaultTreeSection: TreeSection {
 }
 
 class DefaultTreeRow: TreeRow {
-	dynamic var image: UIImage?
-	dynamic var title: String?
-	dynamic var attributedTitle: NSAttributedString?
-	dynamic var subtitle: String?
-	dynamic var accessoryType: UITableViewCellAccessoryType
+	var image: UIImage?
+	var title: String?
+	var attributedTitle: NSAttributedString?
+	var subtitle: String?
+	var accessoryType: NCTableViewCellAccessoryType
 	let nodeIdentifier: String?
 	
-	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.default, nodeIdentifier: String? = nil, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
+	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.default, nodeIdentifier: String? = nil, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: NCTableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
 		self.nodeIdentifier = nodeIdentifier
 		self.image = image
 		self.title = title
@@ -110,6 +122,8 @@ class DefaultTreeRow: TreeRow {
 
 		super.init(prototype: prototype, route: route, accessoryButtonRoute: accessoryButtonRoute, object: object)
 	}
+    
+    private var buttonHandler: NCActionHandler?
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
@@ -122,7 +136,29 @@ class DefaultTreeRow: TreeRow {
 			cell.titleLabel?.text = title
 		}
 		cell.subtitleLabel?.text = subtitle
-		cell.accessoryType = accessoryType
+        cell.accessoryView = nil
+        switch accessoryType {
+        case .checkmark:
+            cell.accessoryType = .checkmark
+        case .detailButton:
+            cell.accessoryType = .detailButton
+        case .detailDisclosureButton:
+            cell.accessoryType = .detailDisclosureButton
+        case .disclosureIndicator:
+            cell.accessoryType = .disclosureIndicator
+        case .none:
+            cell.accessoryType = .none
+        case let .button(image):
+            let button = UIButton(type: .system)
+            button.setImage(image, for: .normal)
+            button.sizeToFit()
+            buttonHandler = NCActionHandler(button, for: .touchUpInside) { [weak self] _ in
+                guard let strongSelf = self else {return}
+                guard let treeController = strongSelf.treeController else {return}
+                treeController.delegate?.treeController?(treeController, accessoryButtonTappedWithNode: strongSelf)
+            }
+            cell.accessoryView = button
+        }
 	}
 	
 	override var hashValue: Int {

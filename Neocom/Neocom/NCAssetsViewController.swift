@@ -16,6 +16,9 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+        tableView.estimatedRowHeight = tableView.rowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
+
 		registerRefreshable()
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
@@ -37,8 +40,40 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		if let row = node as? TreeNodeRoutable {
-			row.accessoryButtonRoute?.perform(source: self, view: treeController.cell(for: node))
+		if let row = node as? DefaultTreeRow, let asset = row.object as? ESI.Assets.Asset {
+            var contents: [Int64: [ESI.Assets.Asset]] = [:]
+            
+            func extractContents(from row: DefaultTreeRow?) {
+                guard let asset = row?.object as? ESI.Assets.Asset else {return}
+                var array: [ESI.Assets.Asset] = []
+                row?.children.forEach {
+                    guard let item = $0 as? DefaultTreeRow, let asset = item.object as? ESI.Assets.Asset else {return}
+                    array.append(asset)
+                    extractContents(from: item)
+                }
+                contents[asset.itemID] = array
+            }
+            
+            extractContents(from: row)
+            
+            let engine = NCFittingEngine()
+            engine.perform {
+                let fleet = NCFittingFleet(asset: asset, contents: contents, engine: engine)
+                DispatchQueue.main.async {
+                    if let account = NCAccount.current {
+                        fleet.active?.setSkills(from: account) { [weak self]  _ in
+                            guard let strongSelf = self else {return}
+                            Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
+                        }
+                    }
+                    else {
+                        fleet.active?.setSkills(level: 5) { [weak self] _ in
+                            guard let strongSelf = self else {return}
+                            Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
+                        }
+                    }
+                }
+            }
 		}
 	}
 	
@@ -153,13 +188,16 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					else {
 						route = nil
 					}
+                    let hasLoadout = type?.group?.category?.categoryID == Int32(NCDBCategoryID.ship.rawValue) && !rows.isEmpty
 					
 					let assetRow = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.default,
 					                  nodeIdentifier: "\(asset.itemID)",
 					                  image: type?.icon?.image?.image,
 					                  attributedTitle: title,
 					                  subtitle: subtitle,
-					                  route: route)
+					                  accessoryType: hasLoadout ? .detailButton : .none,
+					                  route: route,
+					                  object: asset)
 					assetRow.children = rows
 					return assetRow
 				}
@@ -177,8 +215,39 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					sections.append(DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title, children: rows))
 				}
 				sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
+
+                /*func copy(row: DefaultTreeRow) -> DefaultTreeRow {
+                    let other = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.default,
+                        nodeIdentifier: row.nodeIdentifier,
+                        image: row.image,
+                        title: row.title,
+                        attributedTitle: row.attributedTitle,
+                        subtitle: row.subtitle,
+                        accessoryType: row.accessoryType,
+                        route: row.route,
+                        accessoryButtonRoute: row.accessoryButtonRoute,
+                        object: row.object)
+                    other.children = row.children.flatMap {
+                        guard let row = $0 as? DefaultTreeRow else {return nil}
+                        return copy(row: row)
+                    }
+                    return other
+                }
+
+                func copy(section: DefaultTreeSection) -> DefaultTreeSection {
+                    let other = DefaultTreeSection(nodeIdentifier: section.nodeIdentifier, attributedTitle: section.attributedTitle)
+                    other.children = section.children.flatMap {
+                        guard let row = $0 as? DefaultTreeRow else {return nil}
+                        return copy(row: row)
+                    }
+                    return other
+                }
+                
+                let copySections = sections.map {copy(section: $0)}*/
+                
 				
 				DispatchQueue.main.async {
+                    
 					if self.treeController.content == nil {
 						let root = TreeNode()
 						root.children = sections
@@ -191,6 +260,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					self.searchResultsController?.contents = contents
 					self.searchResultsController?.locations = locations
 					self.searchResultsController?.typeIDs = typeIDs
+//                    self.searchResultsController?.sections = copySections
 					if let searchController = self.searchController, searchController.isActive {
 						self.searchResultsController?.updateSearchResults(for: searchController)
 					}

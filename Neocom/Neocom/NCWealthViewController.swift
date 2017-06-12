@@ -255,7 +255,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 						guard let type = invTypes[blueprint.typeID] else {continue}
 						var (products, materials) = blueprintsIDs[blueprint.typeID] ?? ([:], [:])
 						if blueprint.runs > 0 {
-							if let manufacturing = type.blueprintType?.activities?.first (where: {($0 as? NCDBIndActivity)?.activity?.activityID == 0}) as? NCDBIndActivity {
+							if let manufacturing = type.blueprintType?.activities?.first (where: {($0 as? NCDBIndActivity)?.activity?.activityID == 1}) as? NCDBIndActivity {
 								for material in manufacturing.requiredMaterials?.allObjects as? [NCDBIndRequiredMaterial] ?? [] {
 									guard let typeID = material.materialType?.typeID else {continue}
 									
@@ -438,7 +438,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 							}
 							for material in value.materials {
 								guard let price = result[material.key] else {continue blueprintsIDs}
-								sum += price * Double(material.value)
+								sum -= price * Double(material.value)
 							}
 							blueprints += sum
 						}

@@ -1871,10 +1871,6 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="kpF-MD-yeT" id="n1m-FJ-QUq"/>
-                            <outlet property="delegate" destination="kpF-MD-yeT" id="LpG-nc-gc5"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Skill Queue" id="Y9w-NW-zjw">
                         <barButtonItem key="backBarButtonItem" title="Back" id="4W8-WC-yaO"/>
@@ -1885,7 +1881,7 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QMH-7R-F0l" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="kpF-MD-yeT" customClass="NCTreeController" customModule="Neocom" customModuleProvider="target">
+                <customObject id="kpF-MD-yeT" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
                     <connections>
                         <outlet property="delegate" destination="mN5-NM-lcw" id="8Rr-U9-Qho"/>
                         <outlet property="tableView" destination="GGd-bF-5ed" id="g9r-eB-9Bc"/>

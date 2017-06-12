@@ -60,7 +60,14 @@ class Route: Hashable {
 				presentedViewController = destination
 			}
 			else {
-				source.navigationController?.pushViewController(destination, animated: true)
+                if source.parent is UISearchController {
+                    source.presentingViewController?.navigationController?.pushViewController(destination, animated: true)
+                }
+                else {
+                    source.navigationController?.pushViewController(destination, animated: true)
+//                    ((source as? UINavigationController) ?? source.navigationController)?.pushViewController(destination, animated: true)
+                }
+
 			}
 			
 		case .sheet:

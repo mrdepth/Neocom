@@ -21,7 +21,7 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
     override func awakeFromNib() {
         super.awakeFromNib()
         separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-
+		tintColor = .caption
     }
 
 	override func prepareForReuse() {
@@ -57,9 +57,17 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
 
 }
 
+class NCActionHeaderTableViewCell: NCHeaderTableViewCell {
+	@IBOutlet weak var button: UIButton?
+}
+
 extension Prototype {
 	enum NCHeaderTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCHeaderTableViewCell")
+		static let action = Prototype(nib: UINib(nibName: "NCActionHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCActionHeaderTableViewCell")
+	}
+	enum NCActionHeaderTableViewCell {
+		static let `default` = Prototype(nib: UINib(nibName: "NCActionHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCActionHeaderTableViewCell")
 	}
 }
 

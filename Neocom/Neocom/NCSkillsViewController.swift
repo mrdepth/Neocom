@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import EVEAPI
 
-
+/*
 fileprivate class NCSkillRow: NCTreeRow {
 	let skill: NCSkill
 	init(skill: NCSkill) {
@@ -49,8 +49,9 @@ fileprivate class NCSkillRow: NCTreeRow {
 		}
 	}
 }
+*/
 
-fileprivate class NCSkillSection: NCTreeSection {
+/*fileprivate class NCSkillSection: NCTreeSection {
 	let group: NCDBInvGroup
 	init(group: NCDBInvGroup, children: [NCSkillRow], skillPoints: Int64) {
 		self.group = group
@@ -59,11 +60,11 @@ fileprivate class NCSkillSection: NCTreeSection {
 		//let title = String(format: NSLocalizedString("%@ (%@)", comment: ""), group.groupName?.uppercased() ?? "", NCUnitFormatter.localizedString(from: Double(sp), unit: .skillPoints, style: .full))
 		super.init(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: String(group.groupID), title: title, children: children)
 	}
-}
+}*/
 
 
-class NCSkillsViewController: UITableViewController, NCTreeControllerDelegate {
-	@IBOutlet weak var treeController: NCTreeController!
+class NCSkillsViewController: UITableViewController {
+	/*@IBOutlet weak var treeController: NCTreeController!
 	@IBOutlet weak var segmentedControl: UISegmentedControl!
 	
 	override func viewDidLoad() {
@@ -240,5 +241,5 @@ class NCSkillsViewController: UITableViewController, NCTreeControllerDelegate {
 			progress.progress.resignCurrent()
 		}
 	}
-	
+	*/
 }

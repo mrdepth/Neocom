@@ -112,13 +112,13 @@ class NCDataManager {
 		}
 	}
 
-	func accountStatus(completionHandler: @escaping (NCCachedResult<EVE.Account.AccountStatus>) -> Void) {
+	/*func accountStatus(completionHandler: @escaping (NCCachedResult<EVE.Account.AccountStatus>) -> Void) {
 		loadFromCache(forKey: "EVE.Account.AccountStatus", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.eve.account.accountStatus { result in
 				completion(result, 3600.0)
 			}
 		})
-	}
+	}*/
 
 	
 	func character(characterID: Int64? = nil, completionHandler: @escaping (NCCachedResult<ESI.Character.Information>) -> Void) {
@@ -736,7 +736,7 @@ class NCDataManager {
 	
 	
 	func marketPrices(completionHandler: @escaping (NCCachedResult<[ESI.Market.Price]>) -> Void) {
-		loadFromCache(forKey: "ESI.Market.Price", account: nil, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "ESI.Market.Price", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.market.listMarketPrices { result in
 				completion(result, 3600.0 * 12)
 			}
@@ -744,7 +744,7 @@ class NCDataManager {
 	}
 	
 	func assets(completionHandler: @escaping (NCCachedResult<[ESI.Assets.Asset]>) -> Void) {
-		loadFromCache(forKey: "ESI.Assets.Asset", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "ESI.Assets.Asset", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.assets.getCharacterAssets(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0 * 1)
 			}
@@ -752,7 +752,7 @@ class NCDataManager {
 	}
 	
 	func blueprints(completionHandler: @escaping (NCCachedResult<[ESI.Character.Blueprint]>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.Blueprints", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "EVE.Char.Blueprints", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
             self.esi.character.getBlueprints(characterID: Int(self.characterID)) { result in
                 completion(result, 3600.0 * 1)
             }
@@ -760,7 +760,7 @@ class NCDataManager {
 	}
 
 	func industryJobs(completionHandler: @escaping (NCCachedResult<EVE.Char.IndustryJobs>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.IndustryJobs", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "EVE.Char.IndustryJobs", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.eve.char.industryJobs { result in
 				completion(result, 3600.0 * 1)
 			}
@@ -768,7 +768,7 @@ class NCDataManager {
 	}
 
 	func marketOrders(completionHandler: @escaping (NCCachedResult<EVE.Char.MarketOrders>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.MarketOrders", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "EVE.Char.MarketOrders", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.eve.char.marketOrders { result in
 				completion(result, 3600.0 * 1)
 			}
@@ -776,7 +776,7 @@ class NCDataManager {
 	}
 
 	func contracts(completionHandler: @escaping (NCCachedResult<EVE.Char.Contracts>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.Contracts", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "EVE.Char.Contracts", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.eve.char.contracts { result in
 				completion(result, 3600.0 * 1)
 			}
@@ -784,7 +784,7 @@ class NCDataManager {
 	}
 
 	func contractItems(contractID: Int64, completionHandler: @escaping (NCCachedResult<EVE.Char.ContractItems>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.ContractItems", account: account, cachePolicy: .reloadIgnoringLocalCacheData, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "EVE.Char.ContractItems", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.eve.char.contractItems(contractID: contractID) { result in
 				completion(result, 3600.0 * 12)
 			}

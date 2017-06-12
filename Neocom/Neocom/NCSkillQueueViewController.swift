@@ -351,7 +351,9 @@ fileprivate class NCSkillPlansSection: FetchedResultsNode<NCSkillPlan> {
 		request.predicate = NSPredicate(format: "account == %@", account)
 		request.sortDescriptors = [NSSortDescriptor(key: "active", ascending: false), NSSortDescriptor(key: "name", ascending: true)]
 		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: account.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
-		
+		let expr = (request.predicate as! NSComparisonPredicate).rightExpression
+		let v = expr.constantValue
+		try? results.performFetch()
 		super.init(resultsController: results, sectionNode: nil, objectNode: NCSkillPlanRow.self)
 		cellIdentifier = Prototype.NCActionHeaderTableViewCell.default.reuseIdentifier
 	}
@@ -494,10 +496,13 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
 
 			let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 			controller.addAction(UIAlertAction(title: NSLocalizedString("Add Skill Plan", comment: ""), style: .default, handler: { _ in
+				if account.skillPlans?.count ?? 0 > 0 {
+					account.activeSkillPlan?.active = false
+				}
+
 				let skillPlan = NCSkillPlan(entity: NSEntityDescription.entity(forEntityName: "SkillPlan", in: managedObjectContext)!, insertInto: managedObjectContext)
 				skillPlan.name = NSLocalizedString("Unnamed", comment: "")
 				skillPlan.account = account
-				account.activeSkillPlan?.active = false
 				skillPlan.active = true
 				if account.managedObjectContext?.hasChanges == true {
 					try? account.managedObjectContext?.save()

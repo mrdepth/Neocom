@@ -71,6 +71,24 @@ extension Prototype {
 	}
 }
 
+class NCActionTreeSection: DefaultTreeSection {
+	
+	override init(prototype: Prototype = Prototype.NCActionHeaderTableViewCell.default, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
+		super.init(prototype: prototype, nodeIdentifier: nodeIdentifier, title: title, attributedTitle: attributedTitle, children: children)
+	}
+	
+	var handler: NCActionHandler?
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		guard let cell = cell as? NCActionHeaderTableViewCell else {return}
+		handler = NCActionHandler(cell.button!, for: .touchUpInside) { [weak self] _ in
+			guard let strongSelf = self else {return}
+			guard let controller = strongSelf.treeController else {return}
+			controller.delegate?.treeController?(controller, accessoryButtonTappedWithNode: strongSelf)
+		}
+	}
+}
+
 class NCSkillsHeaderTableViewCell: NCHeaderTableViewCell {
 	var trainingQueue: NCTrainingQueue?
 	var character: NCCharacter?

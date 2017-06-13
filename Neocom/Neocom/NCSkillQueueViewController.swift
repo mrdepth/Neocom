@@ -351,9 +351,6 @@ fileprivate class NCSkillPlansSection: FetchedResultsNode<NCSkillPlan> {
 		request.predicate = NSPredicate(format: "account == %@", account)
 		request.sortDescriptors = [NSSortDescriptor(key: "active", ascending: false), NSSortDescriptor(key: "name", ascending: true)]
 		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: account.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
-		let expr = (request.predicate as! NSComparisonPredicate).rightExpression
-		let v = expr.constantValue
-		try? results.performFetch()
 		super.init(resultsController: results, sectionNode: nil, objectNode: NCSkillPlanRow.self)
 		cellIdentifier = Prototype.NCActionHeaderTableViewCell.default.reuseIdentifier
 	}

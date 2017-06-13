@@ -9,74 +9,64 @@
 import UIKit
 import CoreData
 
-class NCDatabaseGroupsViewController: UITableViewController, UISearchResultsUpdating {
-	private var results: NSFetchedResultsController<NCDBInvGroup>?
-	private var searchController: UISearchController?
+class NCDatabaseGroupRow: FetchedResultsObjectNode<NCDBInvGroup> {
+	
+	required init(object: NCDBInvGroup) {
+		super.init(object: object)
+		cellIdentifier = Prototype.NCDefaultTableViewCell.compact.reuseIdentifier
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.text = object.groupName
+		cell.iconView?.image = object.icon?.image?.image ?? NCDBEveIcon.defaultGroup.image?.image
+		cell.accessoryType = .disclosureIndicator
+	}
+}
+
+class NCDatabaseGroupsViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
+	@IBOutlet var treeController: TreeController!
 	var category: NCDBInvCategory?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
+		
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.compact])
+		treeController.delegate = self
+
 		setupSearchController()
 		title = category?.categoryName
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if results == nil {
+		if treeController.content == nil {
 			let request = NSFetchRequest<NCDBInvGroup>(entityName: "InvGroup")
 			request.sortDescriptors = [NSSortDescriptor(key: "published", ascending: false), NSSortDescriptor(key: "groupName", ascending: true)]
 			request.predicate = NSPredicate(format: "category == %@ AND types.@count > 0", category!)
 			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: "published", cacheName: nil)
-			try? results.performFetch()
-			self.results = results
-			tableView.reloadData()
+			
+			treeController.content = FetchedResultsNode(resultsController: results, sectionNode: NCDatabasePublishingSectionNode<NCDBInvGroup>.self, objectNode: NCDatabaseGroupRow.self)
+
 		}
 	}
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			results = nil
+			treeController.content = nil
 		}
 	}
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "NCDatabaseTypesViewController" {
-			let controller = segue.destination as? NCDatabaseTypesViewController
-			let group = (sender as! NCDefaultTableViewCell).object as! NCDBInvGroup
-			controller?.predicate = NSPredicate(format: "group = %@", group)
-			controller?.title = group.groupName
-		}
-	}
+	//MARK: - TreeControllerDelegate
 	
-	//MARK: UITableViewDataSource
-	
-	override func numberOfSections(in tableView: UITableView) -> Int {
-		return results?.sections?.count ?? 0
+	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		guard let row = node as? NCDatabaseGroupRow else {return}
+		Router.Database.Types(group: row.object).perform(source: self, view: treeController.cell(for: node))
 	}
-	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return results?.sections?[section].numberOfObjects ?? 0
-	}
-	
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCDefaultTableViewCell
-		let object = results?.object(at: indexPath)
-		cell.object = object
-		cell.titleLabel?.text = object?.groupName
-		cell.iconView?.image = object?.icon?.image?.image ?? NCDBEveIcon.defaultGroup.image?.image
-		return cell
-	}
-	
-	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		if let name = self.results?.sections?[section].name, name == "0" {
-			return NSLocalizedString("Unpublished", comment: "")
-		}
-		else {
-			return nil
-		}
-	}
+
 	
 	//MARK: UISearchResultsUpdating
 	
@@ -94,7 +84,9 @@ class NCDatabaseGroupsViewController: UITableViewController, UISearchResultsUpda
 	}
 	
 	//MARK: Private
-	
+
+	private var searchController: UISearchController?
+
 	private func setupSearchController() {
 		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
 		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default

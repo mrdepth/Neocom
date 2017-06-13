@@ -68,13 +68,6 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 		}
 	}
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "NCDatabaseCertificateInfoViewController" {
-			let controller = segue.destination as? NCDatabaseCertificateInfoViewController
-			controller?.certificate = (sender as? NCDefaultTableViewCell)?.object as? NCDBCertCertificate
-		}
-	}
-	
 	//MARK: UITableViewDataSource
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {

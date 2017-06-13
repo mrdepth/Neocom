@@ -11,3 +11,9 @@ import UIKit
 class NCMarketHistoryTableViewCell: NCTableViewCell {
 	@IBOutlet weak var marketHistoryView: NCMarketHistoryView!
 }
+
+extension Prototype {
+	enum NCMarketHistoryTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCMarketHistoryTableViewCell")
+	}
+}

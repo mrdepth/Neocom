@@ -489,6 +489,12 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
 	
 	//MARK: TreeControllerDelegate
 	
+	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		if let route = (node as? TreeNodeRoutable)?.route {
+			route.perform(source: self, view: treeController.cell(for: node))
+		}
+	}
+	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		switch node {
 		case is NCSkillPlansSection:

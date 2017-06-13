@@ -50,23 +50,25 @@ class NCDefaultTableViewCell: NCTableViewCell {
 		}
 	}
 	
-	override var indentationLevel: Int {
+	override var indentationWidth: CGFloat {
 		didSet {
-			let level = max(0, indentationLevel - 1)
-            let indent = 15 + CGFloat(level) * indentationWidth
-			self.indentationConstraint?.constant = indent
-            self.separatorInset.left = indent
+			updateIndent()
 		}
 	}
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-//        if let indent = self.indentationConstraint?.constant {
-//            let frame = contentView.bounds.insetBy(UIEdgeInsets(top: 0, left: indent - 15, bottom: 0, right: 0))
-//            backgroundView?.frame = frame
-//            selectedBackgroundView?.frame = frame
-//        }
-    }
+	
+	override var indentationLevel: Int {
+		didSet {
+			updateIndent()
+		}
+	}
+	
+	private func updateIndent() {
+		let level = max(0, indentationLevel - 1)
+		let indent = 15 + CGFloat(level) * indentationWidth
+		self.indentationConstraint?.constant = indent
+		self.separatorInset.left = indent
+	}
+	
 
 }
 

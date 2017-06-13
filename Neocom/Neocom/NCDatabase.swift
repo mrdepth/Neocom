@@ -58,6 +58,14 @@ class NCDatabase {
 	private(set) lazy var invTypes: NCFetchedCollection<NCDBInvType> = {
 		return NCDBInvType.invTypes(managedObjectContext: self.viewContext)
 	}()
+
+	private(set) lazy var invCategories: NCFetchedCollection<NCDBInvCategory> = {
+		return NCDBInvCategory.invCategories(managedObjectContext: self.viewContext)
+	}()
+
+	private(set) lazy var invGroups: NCFetchedCollection<NCDBInvGroup> = {
+		return NCDBInvGroup.invGroups(managedObjectContext: self.viewContext)
+	}()
 	
 	private(set) lazy var eveIcons: NCFetchedCollection<NCDBEveIcon> = {
 		return NCDBEveIcon.eveIcons(managedObjectContext: self.viewContext)
@@ -105,6 +113,12 @@ extension NCDBInvType {
 extension NCDBInvGroup {
 	class func invGroups(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBInvGroup> {
 		return NCFetchedCollection<NCDBInvGroup>(entityName: "InvGroup", predicateFormat: "groupID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+}
+
+extension NCDBInvCategory {
+	class func invCategories(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBInvCategory> {
+		return NCFetchedCollection<NCDBInvCategory>(entityName: "InvCategory", predicateFormat: "categoryID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }
 

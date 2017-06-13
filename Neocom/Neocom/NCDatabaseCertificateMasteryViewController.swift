@@ -37,8 +37,8 @@ class NCDatabaseCertificateSection: NCTreeSection {
 	}
 }
 
-class NCDatabaseCertificateMasteryViewController: UITableViewController, NCTreeControllerDelegate {
-	var type: NCDBInvType?
+class NCDatabaseCertificateMasteryViewController: UITableViewController, TreeControllerDelegate {
+	/*var type: NCDBInvType?
 	var level: NCDBCertMasteryLevel?
 	
 	private var results: [NCTreeSection]?
@@ -165,5 +165,5 @@ class NCDatabaseCertificateMasteryViewController: UITableViewController, NCTreeC
 	
 	func treeController(_ treeController: NCTreeController, didCollapseCell cell: UITableViewCell, withItem item: AnyObject) {
 		(item as? NCTreeSection)?.expanded = false
-	}
+	}*/
 }

@@ -9,8 +9,34 @@
 import UIKit
 import CoreData
 
-class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdating {
-	private var results: NSFetchedResultsController<NSDictionary>?
+class NCDatabaseTypeRow: FetchedResultsObjectNode<NSDictionary> {
+	
+	required init(object: NSDictionary) {
+		super.init(object: object)
+		cellIdentifier = Prototype.NCDefaultTableViewCell.compact.reuseIdentifier
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.text = object["typeName"] as? String
+		let icon: NCDBEveIcon?
+		
+		if let objectID = object["icon"] as? NSManagedObjectID, let img = try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: objectID) as? NCDBEveIcon {
+			icon = img
+		}
+		else {
+			icon = nil
+		}
+		
+		cell.iconView?.image = icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+		cell.accessoryType = .disclosureIndicator
+	}
+}
+
+
+class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
+	@IBOutlet var treeController: TreeController!
+	
 	private var searchController: UISearchController?
 	private let gate = NCGate()
 	var predicate: NSPredicate?
@@ -19,15 +45,20 @@ class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdat
 		super.viewDidLoad()
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
+		
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.compact])
+		treeController.delegate = self
+
+		
 		if navigationController != nil {
 			setupSearchController()
 		}
-		//title = category?.categoryName
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if results == nil {
+		if treeController.content == nil {
 			reloadData()
 		}
 	}
@@ -58,8 +89,8 @@ class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdat
 				try? results.performFetch()
 				
 				DispatchQueue.main.async {
-					self.results = results
-					self.tableView.reloadData()
+					self.treeController.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NSDictionary>.self, objectNode: NCDatabaseTypeRow.self)
+					
 					self.tableView.backgroundView = (results.fetchedObjects?.count ?? 0) == 0 ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
 				}
 			})
@@ -68,64 +99,17 @@ class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdat
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			results = nil
+			treeController.content = nil
 		}
 	}
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "NCDatabaseTypeInfoViewController" {
-			let controller = segue.destination as? NCDatabaseTypeInfoViewController
-			let object = (sender as! NCDefaultTableViewCell).object as! NSDictionary
-			controller?.type = NCDatabase.sharedDatabase?.invTypes[object["typeID"] as! Int]
-		}
+	//MARK: - TreeControllerDelegate
+	
+	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		guard let row = node as? NCDatabaseTypeRow else {return}
+		guard let typeID = row.object["typeID"] as? Int else {return}
+		Router.Database.TypeInfo(typeID).perform(source: self, view: treeController.cell(for: node))
 	}
-	
-	//MARK: UITableViewDataSource
-	
-	override func numberOfSections(in tableView: UITableView) -> Int {
-		return results?.sections?.count ?? 0
-	}
-	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return results?.sections?[section].numberOfObjects ?? 0
-	}
-	
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCDefaultTableViewCell
-		let object = results?.object(at: indexPath)
-		cell.object = object
-		cell.titleLabel?.text = object?["typeName"] as? String
-		let icon: NCDBEveIcon?
-		
-		if let objectID = object?["icon"] as? NSManagedObjectID, let img = try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: objectID) as? NCDBEveIcon {
-			icon = img
-		}
-		else {
-			icon = nil
-		}
-		
-		cell.iconView?.image = icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
-		return cell
-	}
-	
-	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		return self.results?.sections?[section].name
-	}
-	
-	//MARK: UITableViewDelegate
-	
-	/*override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if let object = results?.object(at: indexPath) {
-			let controller = self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypeInfoViewController") as! NCDatabaseTypeInfoViewController
-			controller.type = NCDatabase.sharedDatabase?.invTypes[object["typeID"] as! Int]
-			if searchController == nil {
-				presentingViewController?.show(controller, sender: self)
-			}
-			else {
-				show(controller, sender: self)
-			}
-		}
-	}*/
 	
 	//MARK: UISearchResultsUpdating
 	

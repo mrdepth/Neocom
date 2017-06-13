@@ -9,17 +9,23 @@
 import UIKit
 import CoreData
 
-class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerDelegate, UIViewControllerPreviewingDelegate {
+class NCDatabaseTypeInfoViewController: UITableViewController, TreeControllerDelegate, UIViewControllerPreviewingDelegate {
 	var type: NCDBInvType?
 	var headerViewController: NCDatabaseTypeInfoHeaderViewController?
 	
-	@IBOutlet var treeController: NCTreeController!
+	@IBOutlet var treeController: TreeController!
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.childrenKeyPath = "children"
+
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCActionHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.attribute,
+		                    Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCDamageTypeTableViewCell.compact])
 		treeController.delegate = self
+		
 		registerForPreviewing(with: self, sourceView: tableView)
 		
 		if let type = type {
@@ -36,8 +42,9 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 			self.headerViewController = headerViewController
 			
 			NCDatabaseTypeInfo.typeInfo(type: type) { result in
-				self.treeController.content = result
-				self.treeController.reloadData()
+				let node = TreeNode()
+				node.children = result
+				self.treeController.content = node
 			}
 			NCDataManager().image(typeID: Int(type.typeID), dimension: 512) { result in
 				switch result {
@@ -133,7 +140,7 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 				try? account.managedObjectContext?.save()
 			}
 
-			self.treeController.reloadData()
+//			self.treeController.reloadData()
 		})
 
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
@@ -141,26 +148,11 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 		
 	}
 	
-	// MARK: NCTreeControllerDelegate
+	// MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
-		return (item as! NCTreeNode).cellIdentifier
-	}
-	
-	func treeController(_ treeController: NCTreeController, configureCell cell: UITableViewCell, withItem item: AnyObject) {
-		(item as! NCTreeNode).configure(cell: cell)
-	}
-	
-	func treeController(_ treeController: NCTreeController, isItemExpandable item: AnyObject) -> Bool {
-		return (item as! NCTreeNode).canExpand
-	}
-	
-	func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) {
-		if let controller = targetController(forItem: item) {
-			self.show(controller, sender: cell)
-		}
-		else {
-			treeController.deselectItem(item, animated: true)
+	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		if let route = (node as? TreeNodeRoutable)?.route {
+			route.perform(source: self, view: treeController.cell(for: node))
 		}
 	}
 	
@@ -168,7 +160,7 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 	
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = tableView.indexPathForRow(at: location) else {return nil}
-		guard let item = treeController.item(forIndexPath: indexPath) else {return nil}
+		guard let item = treeController.node(for: indexPath) else {return nil}
 		return targetController(forItem: item)
 	}
 	
@@ -181,41 +173,41 @@ class NCDatabaseTypeInfoViewController: UITableViewController, NCTreeControllerD
 	@objc private func didChangeMarketRegion(_ note: Notification) {
 		if let type = type {
 			NCDatabaseTypeInfo.typeInfo(type: type) { result in
-				self.treeController.content = result
-				self.treeController.reloadData()
+				self.treeController.content?.children = result
 			}
 		}
 	}
 	
 	func targetController(forItem item: AnyObject) -> UIViewController? {
-		let segue = (item as? NCDatabaseTypeInfoRow)?.segue
-		switch (item, segue) {
-		case (is NCDatabaseTypeMarketRow, _), (_, "NCDatabaseMarketInfoViewController"?):
-			let controller = self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseMarketInfoViewController") as! NCDatabaseMarketInfoViewController
-			controller.type = type
-			return controller
-		case (is NCDatabaseTypeSkillRow, _), (_, "NCDatabaseTypeInfoViewController"?):
-			let controller = self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseTypeInfoViewController") as! NCDatabaseTypeInfoViewController
-			let object = item.object as! NSManagedObjectID
-			controller.type = try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object) as! NCDBInvType
-			return controller
-		case (_, "NCDatabaseTypesViewController"?):
-			let controller = self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController") as! NCDatabaseTypesViewController
-			let object = item.object as! NSManagedObjectID
-			let group = try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object) as! NCDBInvGroup
-				controller.predicate = NSPredicate(format: "group = %@", group!)
-			controller.title = group!.groupName
-			return controller
-		case (_, "NCDatabaseCertificateMasteryViewController"?):
-			let controller = self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseCertificateMasteryViewController") as! NCDatabaseCertificateMasteryViewController
-			let object = item.object as! NSManagedObjectID
-			let level = try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object) as! NCDBCertMasteryLevel
-			controller.type = type
-			controller.level = level
-			return controller
-		default:
-			return nil
-		}
+		return (item as? TreeNodeRoutable)?.route?.instantiateViewController()
+//		let segue = (item as? NCDatabaseTypeInfoRow)?.segue
+//		switch (item, segue) {
+//		case (is NCDatabaseTypeMarketRow, _), (_, "NCDatabaseMarketInfoViewController"?):
+//			let controller = self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseMarketInfoViewController") as! NCDatabaseMarketInfoViewController
+//			controller.type = type
+//			return controller
+//		case (is NCDatabaseTypeSkillRow, _), (_, "NCDatabaseTypeInfoViewController"?):
+//			let controller = self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseTypeInfoViewController") as! NCDatabaseTypeInfoViewController
+//			let object = item.object as! NSManagedObjectID
+//			controller.type = try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object) as! NCDBInvType
+//			return controller
+//		case (_, "NCDatabaseTypesViewController"?):
+//			let controller = self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController") as! NCDatabaseTypesViewController
+//			let object = item.object as! NSManagedObjectID
+//			let group = try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object) as! NCDBInvGroup
+//				controller.predicate = NSPredicate(format: "group = %@", group!)
+//			controller.title = group!.groupName
+//			return controller
+//		case (_, "NCDatabaseCertificateMasteryViewController"?):
+//			let controller = self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseCertificateMasteryViewController") as! NCDatabaseCertificateMasteryViewController
+//			let object = item.object as! NSManagedObjectID
+//			let level = try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object) as! NCDBCertMasteryLevel
+//			controller.type = type
+//			controller.level = level
+//			return controller
+//		default:
+//			return nil
+//		}
 	}
 	
 }

@@ -67,10 +67,10 @@ class NCDatabaseCertMasterySection: NCTreeSection {
 	}
 }
 
-class NCDatabaseCertificateInfoViewController: UITableViewController, NCTreeControllerDelegate {
-	var certificate: NCDBCertCertificate?
+class NCDatabaseCertificateInfoViewController: UITableViewController, TreeControllerDelegate {
+	/*var certificate: NCDBCertCertificate?
 	var headerViewController: NCDatabaseCertificateInfoHeaderViewController?
-	private var results: [[NCTreeSection]]?
+	private var results: [[TreeSection]]?
 	
 	@IBOutlet var treeController: NCTreeController!
 	@IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -113,7 +113,7 @@ class NCDatabaseCertificateInfoViewController: UITableViewController, NCTreeCont
 
 				NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 					let certificate = try! managedObjectContext.existingObject(with: certificate.objectID) as! NCDBCertCertificate
-					var masteries = [NCTreeSection]()
+					var masteries = [TreeSection]()
 					for mastery in (certificate.masteries?.sortedArray(using: [NSSortDescriptor(key: "level.level", ascending: true)]) as? [NCDBCertMastery]) ?? [] {
 						var rows = [NCDatabaseTypeSkillRow]()
 						for skill in mastery.skills?.sortedArray(using: [NSSortDescriptor(key: "type.typeName", ascending: true)]) as? [NCDBCertSkill] ?? [] {
@@ -124,7 +124,7 @@ class NCDatabaseCertificateInfoViewController: UITableViewController, NCTreeCont
 						trainingQueue.add(mastery: mastery)
 						let title = NSLocalizedString("Level", comment: "").uppercased() + " \(String(romanNumber: Int(mastery.level!.level + 1)))"
 						let section = NCDatabaseSkillsSection(nodeIdentifier: nil, title: title, trainingQueue: trainingQueue, character: character, children: rows)
-						section.expanded = section.trainingTime > 0
+						section.isExpanded = section.trainingTime > 0
 						masteries.append(section)
 					}
 					progress.progress.completedUnitCount += 1
@@ -241,5 +241,5 @@ class NCDatabaseCertificateInfoViewController: UITableViewController, NCTreeCont
 	
 	func treeController(_ treeController: NCTreeController, didCollapseCell cell: UITableViewCell, withItem item: AnyObject) {
 		(item as? NCTreeSection)?.expanded = false
-	}
+	}*/
 }

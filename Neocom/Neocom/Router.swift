@@ -32,13 +32,18 @@ class Route: Hashable {
 		self.viewController = viewController
 	}
 	
+	func instantiateViewController() -> UIViewController {
+		let controller =  viewController ?? (storyboard ?? UIStoryboard(name: "Main", bundle: nil))!.instantiateViewController(withIdentifier: identifier!)
+		prepareForSegue(destination: controller)
+		return controller
+	}
+	
 	func perform(source: UIViewController, view: UIView? = nil) {
 		guard let kind = kind else {return}
 
-		let destination: UIViewController! = viewController ?? (storyboard ?? UIStoryboard(name: "Main", bundle: nil))?.instantiateViewController(withIdentifier: identifier!)
+		let destination = instantiateViewController()
 		presentedViewController = destination
 		
-		prepareForSegue(source: source, destination: destination)
 		
 		switch kind {
 		case .push:
@@ -97,7 +102,7 @@ class Route: Hashable {
 		//}
 	}
 	
-	func prepareForSegue(source: UIViewController, destination: UIViewController) {
+	func prepareForSegue(destination: UIViewController) {
 	}
 	
 	var hashValue: Int {
@@ -149,7 +154,7 @@ enum Router {
 				self.init(type: nil, typeID: nil, objectID: objectID, kind: kind)
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCDatabaseTypeInfoViewController
 				if let type = type {
 					destination.type = type
@@ -163,6 +168,65 @@ enum Router {
 			}
 		}
 		
+		class Groups: Route {
+			let category: NCDBInvCategory?
+			let categoryID: Int?
+			let objectID: NSManagedObjectID?
+			
+			private init(category: NCDBInvCategory?, categoryID: Int?, objectID: NSManagedObjectID?, kind: RouteKind) {
+				self.category = category
+				self.categoryID = categoryID
+				self.objectID = objectID
+				super.init(kind: kind, identifier: "NCDatabaseGroupsViewController")
+			}
+			
+			convenience init(_ category: NCDBInvCategory, kind: RouteKind = .adaptive) {
+				self.init(category: category, categoryID: nil, objectID: nil, kind: kind)
+			}
+			
+			convenience init(_ categoryID: Int, kind: RouteKind = .adaptive) {
+				self.init(category: nil, categoryID: categoryID, objectID: nil, kind: kind)
+			}
+			
+			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .adaptive) {
+				self.init(category: nil, categoryID: nil, objectID: objectID, kind: kind)
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCDatabaseGroupsViewController
+				if let category = category {
+					destination.category = category
+				}
+				else if let categoryID = categoryID {
+					destination.category = NCDatabase.sharedDatabase?.invCategories[categoryID]
+				}
+				else if let objectID = objectID {
+					destination.category = (try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: objectID)) as? NCDBInvCategory
+				}
+			}
+		}
+
+		class Types: Route {
+			let predicate: NSPredicate
+			let title: String?
+			
+			private init(predicate: NSPredicate, title: String?) {
+				self.predicate = predicate
+				self.title = title
+				super.init(kind: .push, identifier: "NCDatabaseTypesViewController")
+			}
+			
+			convenience init(group: NCDBInvGroup) {
+				self.init(predicate: NSPredicate(format: "group = %@", group), title: group.groupName)
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCDatabaseTypesViewController
+				destination.predicate = predicate
+				destination.title = title
+			}
+		}
+
 		class TypePicker: Route {
 			let category: NCDBDgmppItemCategory
 			let completionHandler: (NCTypePickerViewController, NCDBInvType) -> Void
@@ -173,13 +237,52 @@ enum Router {
 				super.init(kind: .modal, identifier: "NCTypePickerViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCTypePickerViewController
 				destination.category = category
 				destination.completionHandler = completionHandler
 			}
 
 		}
+		
+		class MarketInfo: Route {
+			let type: NCDBInvType?
+			let typeID: Int?
+			let objectID: NSManagedObjectID?
+			
+			private init(type: NCDBInvType?, typeID: Int?, objectID: NSManagedObjectID?, kind: RouteKind) {
+				self.type = type
+				self.typeID = typeID
+				self.objectID = objectID
+				super.init(kind: kind, identifier: "NCDatabaseMarketInfoViewController")
+			}
+			
+			convenience init(_ type: NCDBInvType, kind: RouteKind = .adaptive) {
+				self.init(type: type, typeID: nil, objectID: nil, kind: kind)
+			}
+			
+			convenience init(_ typeID: Int, kind: RouteKind = .adaptive) {
+				self.init(type: nil, typeID: typeID, objectID: nil, kind: kind)
+			}
+			
+			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .adaptive) {
+				self.init(type: nil, typeID: nil, objectID: objectID, kind: kind)
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCDatabaseMarketInfoViewController
+				if let type = type {
+					destination.type = type
+				}
+				else if let typeID = typeID {
+					destination.type = NCDatabase.sharedDatabase?.invTypes[typeID]
+				}
+				else if let objectID = objectID {
+					destination.type = (try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: objectID)) as? NCDBInvType
+				}
+			}
+		}
+
 	}
 	
 	enum Fitting {
@@ -194,7 +297,7 @@ enum Router {
 				super.init(kind: .push, identifier: "NCFittingEditorViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCFittingEditorViewController
 				destination.fleet = fleet
 				destination.engine = engine
@@ -213,7 +316,7 @@ enum Router {
 				super.init(kind: .adaptive, identifier: "NCFittingAmmoViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCFittingAmmoViewController
 				destination.category = category
 				destination.modules = modules
@@ -231,7 +334,7 @@ enum Router {
 				super.init(kind: .adaptive, identifier: "NCFittingAmmoDamageChartViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCFittingAmmoDamageChartViewController
 				destination.category = category
 				destination.modules = modules
@@ -246,7 +349,7 @@ enum Router {
 				super.init(kind: .adaptive, identifier: "NCFittingAreaEffectsViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				(destination as! NCFittingAreaEffectsViewController).completionHandler = completionHandler
 			}
 		}
@@ -259,7 +362,7 @@ enum Router {
 				super.init(kind: .adaptive, identifier: "NCFittingDamagePatternsViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				(destination as! NCFittingDamagePatternsViewController).completionHandler = completionHandler
 			}
 		}
@@ -274,7 +377,7 @@ enum Router {
 				super.init(kind: .adaptive, identifier: "NCFittingVariationsViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCFittingVariationsViewController
 				destination.type = type
 				destination.completionHandler = completionHandler
@@ -289,7 +392,7 @@ enum Router {
 				super.init(kind: .sheet, identifier: "NCFittingModuleActionsViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				(destination as! NCFittingModuleActionsViewController).modules = modules
 			}
 		}
@@ -302,7 +405,7 @@ enum Router {
 				super.init(kind: .sheet, identifier: "NCFittingDroneActionsViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				(destination as! NCFittingDroneActionsViewController).drones = drones
 			}
 		}
@@ -317,7 +420,7 @@ enum Router {
 				super.init(kind: .adaptive, identifier: "NCFittingFleetMemberPickerViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCFittingFleetMemberPickerViewController
 				destination.fleet = fleet
 				destination.completionHandler = completionHandler
@@ -334,7 +437,7 @@ enum Router {
 				super.init(kind: .adaptive, identifier: "NCFittingTargetsViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCFittingTargetsViewController
 				destination.modules = modules
 				destination.completionHandler = completionHandler
@@ -351,7 +454,7 @@ enum Router {
 				super.init(kind: .adaptive, identifier: "NCFittingCharactersViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCFittingCharactersViewController
 				destination.pilot = pilot
 				destination.completionHandler = completionHandler
@@ -366,7 +469,7 @@ enum Router {
 				super.init(kind: kind, identifier: "NCFittingCharacterEditorViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCFittingCharacterEditorViewController
 				destination.character = character
 			}
@@ -383,7 +486,7 @@ enum Router {
 				super.init(kind: .push, identifier: "NCMailBodyViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCMailBodyViewController
 				destination.mail = mail
 			}
@@ -411,7 +514,7 @@ enum Router {
 				super.init(kind: .modal, identifier: "NCNewMailNavigationController")
 			}
 
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = (destination as! UINavigationController).topViewController as! NCNewMailViewController
 				destination.recipients = draft?.to ?? recipients ?? []
 				destination.subject = draft?.subject ?? subject
@@ -434,7 +537,7 @@ enum Router {
 				super.init(kind: .push, identifier: "NCWealthAssetsViewController")
 			}
 			
-			override func prepareForSegue(source: UIViewController, destination: UIViewController) {
+			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCWealthAssetsViewController
 				destination.assets = assets
 				destination.prices = prices

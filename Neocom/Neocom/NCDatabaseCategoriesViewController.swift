@@ -9,72 +9,73 @@
 import UIKit
 import CoreData
 
-class NCDatabaseCategoriesViewController: UITableViewController, UISearchResultsUpdating {
-	private var results: NSFetchedResultsController<NCDBInvCategory>?
-	private var searchController: UISearchController?
+
+class NCDatabaseCategoryRow: FetchedResultsObjectNode<NCDBInvCategory> {
 	
+	required init(object: NCDBInvCategory) {
+		super.init(object: object)
+		cellIdentifier = Prototype.NCDefaultTableViewCell.compact.reuseIdentifier
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.text = object.categoryName
+		cell.iconView?.image = object.icon?.image?.image ?? NCDBEveIcon.defaultCategory.image?.image
+		cell.accessoryType = .disclosureIndicator
+	}
+}
+
+class NCDatabasePublishingSectionNode<ResultType: NSFetchRequestResult>: NCDefaultFetchedResultsSectionNode<ResultType> {
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCHeaderTableViewCell else {return}
+		cell.titleLabel?.text =  (section.name == "0" ? NSLocalizedString("Unpublished", comment: "") : NSLocalizedString("Published", comment: "")).uppercased()
+	}
+}
+
+class NCDatabaseCategoriesViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
+	
+	@IBOutlet var treeController: TreeController!
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
+		
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.compact])
+		treeController.delegate = self
+
 		setupSearchController()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if results == nil {
+		if treeController.content == nil {
 			let request = NSFetchRequest<NCDBInvCategory>(entityName: "InvCategory")
 			request.sortDescriptors = [NSSortDescriptor(key: "published", ascending: false), NSSortDescriptor(key: "categoryName", ascending: true)]
 			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: "published", cacheName: nil)
-			try? results.performFetch()
-			self.results = results
-			tableView.reloadData()
+			
+			treeController.content = FetchedResultsNode(resultsController: results, sectionNode: NCDatabasePublishingSectionNode<NCDBInvCategory>.self, objectNode: NCDatabaseCategoryRow.self)
 		}
 	}
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			results = nil
+			treeController.content = nil
 		}
 	}
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "NCDatabaseGroupsViewController" {
-			let controller = segue.destination as? NCDatabaseGroupsViewController
-			controller?.category = (sender as? NCDefaultTableViewCell)?.object as? NCDBInvCategory
-		}
-	}
+	//MARK: - TreeControllerDelegate
 	
-	//MARK: UITableViewDataSource
-	
-	override func numberOfSections(in tableView: UITableView) -> Int {
-		return results?.sections?.count ?? 0
-	}
-	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return results?.sections?[section].numberOfObjects ?? 0
-	}
-	
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCDefaultTableViewCell
-		let object = results?.object(at: indexPath)
-		cell.object = object
-		cell.titleLabel?.text = object?.categoryName
-		cell.iconView?.image = object?.icon?.image?.image ?? NCDBEveIcon.defaultCategory.image?.image
-		return cell
-	}
-	
-	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		if let name = self.results?.sections?[section].name, name == "0" {
-			return NSLocalizedString("Unpublished", comment: "")
-		}
-		else {
-			return nil
-		}
+	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		guard let row = node as? NCDatabaseCategoryRow else {return}
+		Router.Database.Groups(row.object).perform(source: self, view: treeController.cell(for: node))
 	}
 	
 	//MARK: UISearchResultsUpdating
 	
+	private var searchController: UISearchController?
+
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCDatabaseTypesViewController else {return}

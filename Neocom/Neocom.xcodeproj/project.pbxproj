@@ -10,6 +10,8 @@
 		1205B8A11E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */; };
 		1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */; };
 		1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */; };
+		1211A4791EF1843D00364744 /* NCSkillsContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1211A4781EF1843D00364744 /* NCSkillsContentViewController.swift */; };
+		1211A47B1EF18BA700364744 /* NCSkillCompactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A47A1EF18BA700364744 /* NCSkillCompactTableViewCell.xib */; };
 		1217B3C91EA63EB5005A8157 /* NCMailBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */; };
 		1217B4B91EAA0DE1005A8157 /* UIAlertController+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */; };
 		121D10AC1E262C7700DD671B /* NCTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */; };
@@ -284,6 +286,8 @@
 		1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamagePatternEditTableViewCell.swift; sourceTree = "<group>"; };
 		1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCSkillTableViewCell.xib; sourceTree = "<group>"; };
 		1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCActionHeaderTableViewCell.xib; sourceTree = "<group>"; };
+		1211A4781EF1843D00364744 /* NCSkillsContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillsContentViewController.swift; sourceTree = "<group>"; };
+		1211A47A1EF18BA700364744 /* NCSkillCompactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCSkillCompactTableViewCell.xib; sourceTree = "<group>"; };
 		1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailBodyViewController.swift; sourceTree = "<group>"; };
 		1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+NC.swift"; sourceTree = "<group>"; };
 		121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerViewController.swift; sourceTree = "<group>"; };
@@ -696,6 +700,7 @@
 			children = (
 				1261570C1E01D2F70041B817 /* NCSkillQueueViewController.swift */,
 				129E61051E0291FD00B56EB8 /* NCSkillsViewController.swift */,
+				1211A4781EF1843D00364744 /* NCSkillsContentViewController.swift */,
 			);
 			name = Skills;
 			sourceTree = "<group>";
@@ -909,6 +914,7 @@
 				12E9321F1E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib */,
 				12D20EA21EBA011900BEC926 /* NCPieChartTableViewCell.xib */,
 				1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */,
+				1211A47A1EF18BA700364744 /* NCSkillCompactTableViewCell.xib */,
 			);
 			name = Prototypes;
 			sourceTree = "<group>";
@@ -1138,6 +1144,7 @@
 				128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */,
 				12E9321C1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib in Resources */,
 				12DA88261EB8696F00FB1922 /* NCPlaceholderTableViewCell.xib in Resources */,
+				1211A47B1EF18BA700364744 /* NCSkillCompactTableViewCell.xib in Resources */,
 				12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */,
 				1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */,
 				1256BECA1DF4770A00A2A24B /* memory.png in Resources */,
@@ -1287,6 +1294,7 @@
 				129B316C1E534B7300B9A88D /* NCFittingDamagePatternsViewController.swift in Sources */,
 				1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */,
 				1263C5091E64A7D0003D002D /* NCFittingFleetsViewController.swift in Sources */,
+				1211A4791EF1843D00364744 /* NCSkillsContentViewController.swift in Sources */,
 				1230A3301DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift in Sources */,
 				1293BC1A1E4B4E7C0099FD75 /* NCFirepowerTableViewCell.swift in Sources */,
 				12AC8DC61DF0894400561A7A /* NCDataManager.swift in Sources */,

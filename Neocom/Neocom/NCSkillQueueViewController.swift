@@ -386,7 +386,6 @@ fileprivate class NCSkillPlanRow: FetchedResultsObjectNode<NCSkillPlan> {
 		
 		let invTypes = NCDatabase.sharedDatabase?.invTypes
 		
-		
 		self.skillPlanSkills.resultsController.fetchedObjects?.forEach { item in
 			guard let type = invTypes?[Int(item.typeID)] else {return}
 			let level = Int(item.level)
@@ -394,7 +393,6 @@ fileprivate class NCSkillPlanRow: FetchedResultsObjectNode<NCSkillPlan> {
 //			let skill = NCTrainingSkill(type: type, skill: character.skills[Int(item.typeID)], level: Int(item.level))
 			guard let skill = NCTrainingSkill(type: type, skill: character.skills[Int(item.typeID)], level: level, trainedLevel: level-1) else {return}
 			trainingQueue.skills.append(skill)
-//				trainingQueue.add(skill: type, level: Int(skill.level))
 		}
 		return trainingQueue
 	}()
@@ -460,6 +458,7 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
 			Prototype.NCActionHeaderTableViewCell.default,
 			Prototype.NCActionTableViewCell.default,
 			Prototype.NCDefaultTableViewCell.default,
+			Prototype.NCSkillTableViewCell.default
 			]
 		)
 		
@@ -760,7 +759,7 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
                 case let .success(character):
                     self.character = character
 					let skillBrowser = NCActionRow(title: NSLocalizedString("SKILL BROWSER", comment: ""),
-					                               route: nil)
+					                               route: Router.Character.Skills())
                     var sections: [TreeNode] = [skillBrowser]
                     
                     let skillQueue = NCSkillQueueSection(character: character)

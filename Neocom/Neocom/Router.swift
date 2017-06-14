@@ -285,6 +285,17 @@ enum Router {
 
 	}
 	
+	enum Character {
+		
+		class Skills: Route {
+
+			init() {
+				super.init(kind: .push, identifier: "NCSkillsViewController")
+			}
+			
+		}
+	}
+	
 	enum Fitting {
 		
 		class Editor: Route {

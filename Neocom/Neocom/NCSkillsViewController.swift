@@ -51,93 +51,52 @@ fileprivate class NCSkillRow: NCTreeRow {
 }
 */
 
-/*fileprivate class NCSkillSection: NCTreeSection {
+fileprivate class NCSkillSection: DefaultTreeSection {
 	let group: NCDBInvGroup
 	init(group: NCDBInvGroup, children: [NCSkillRow], skillPoints: Int64) {
 		self.group = group
 		//let title = "\(group.groupName?.uppercased() ?? "") (\(children.count))"
 		let title = "\(group.groupName?.uppercased() ?? "") (\(NCUnitFormatter.localizedString(from: Double(skillPoints), unit: .skillPoints, style: .full)))"
 		//let title = String(format: NSLocalizedString("%@ (%@)", comment: ""), group.groupName?.uppercased() ?? "", NCUnitFormatter.localizedString(from: Double(sp), unit: .skillPoints, style: .full))
-		super.init(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: String(group.groupID), title: title, children: children)
+		super.init(nodeIdentifier: String(group.groupID), title: title, children: children)
+		isExpanded = false
 	}
-}*/
+}
 
 
-class NCSkillsViewController: UITableViewController {
-	/*@IBOutlet weak var treeController: NCTreeController!
-	@IBOutlet weak var segmentedControl: UISegmentedControl!
-	
+class NCSkillsViewController: NCPageViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		treeController.childrenKeyPath = "children"
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		refreshControl = UIRefreshControl()
-		refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
+		
+		let controller1 = storyboard!.instantiateViewController(withIdentifier: "NCSkillsContentViewController") as! NCSkillsContentViewController
+		let controller2 = storyboard!.instantiateViewController(withIdentifier: "NCSkillsContentViewController") as! NCSkillsContentViewController
+		let controller3 = storyboard!.instantiateViewController(withIdentifier: "NCSkillsContentViewController") as! NCSkillsContentViewController
+		controller1.title = NSLocalizedString("My", comment: "")
+		controller2.title = NSLocalizedString("Can Train", comment: "")
+		controller3.title = NSLocalizedString("All", comment: "")
+		viewControllers = [controller1, controller2, controller3]
 	}
 	
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if treeController.content == nil {
+		if sections == nil {
 			reload()
 		}
 	}
 	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		if let context = NCStorage.sharedStorage?.viewContext, context.hasChanges {
-			try? context.save()
-		}
-		
-	}
-	
-	@IBAction func onChangeSegment(_ sender: Any) {
-		self.treeController.content = self.sections?[self.segmentedControl.selectedSegmentIndex]
-		self.treeController.reloadData()
-	}
-	
-	//MARK: NCTreeControllerDelegate
-	
-	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
-		return (item as! NCTreeNode).cellIdentifier
-	}
-	
-	func treeController(_ treeController: NCTreeController, configureCell cell: UITableViewCell, withItem item: AnyObject) {
-		(item as! NCTreeNode).configure(cell: cell)
-	}
-	
-	func treeController(_ treeController: NCTreeController, isItemExpanded item: AnyObject) -> Bool {
-		guard let node = (item as? NCTreeNode)?.nodeIdentifier else {return false}
-		let setting = NCSetting.setting(key: "NCSkillsViewController.\(node)")
-		return setting?.value as? Bool ?? false
-	}
-	
-	func treeController(_ treeController: NCTreeController, didExpandCell cell: UITableViewCell, withItem item: AnyObject) {
-		guard let node = (item as? NCTreeNode)?.nodeIdentifier else {return}
-		let setting = NCSetting.setting(key: "NCSkillsViewController.\(node)")
-		setting?.value = true as NSNumber
-	}
-	
-	func treeController(_ treeController: NCTreeController, didCollapseCell cell: UITableViewCell, withItem item: AnyObject) {
-		guard let node = (item as? NCTreeNode)?.nodeIdentifier else {return}
-		let setting = NCSetting.setting(key: "NCSkillsViewController.\(node)")
-		setting?.value = false as NSNumber
-	}
+
 	
 	//MARK: Private
 	
-	@objc private func refresh() {
-		let progress = NCProgressHandler(totalUnitCount: 1)
-		progress.progress.becomeCurrent(withPendingUnitCount: 1)
-		reload(cachePolicy: .reloadIgnoringLocalCacheData) {
-			self.refreshControl?.endRefreshing()
-		}
-		progress.progress.resignCurrent()
-	}
-	
 	private var observer: NCManagedObjectObserver?
-	private var sections: [[NCSkillSection]]?
+	private var sections: [[NCSkillSection]]? {
+		didSet {
+			viewControllers?.enumerated().forEach {
+				($0.element as? NCSkillsContentViewController)?.content = sections?[$0.offset]
+			}
+		}
+	}
 	
 	private func process(_ value: ESI.Skills.CharacterSkills, dataManager: NCDataManager, completionHandler: (() -> Void)?) {
 		let progress = Progress(totalUnitCount: 1)
@@ -174,15 +133,15 @@ class NCSkillsViewController: UITableViewController {
 							group = type.group
 						}
 						
-						allRows.append(NCSkillRow(skill: skill))
+						allRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill))
 						if let level = level {
-							myRows.append(NCSkillRow(skill: skill))
+							myRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill))
 							if level < 5 {
-								canTrainRows.append(NCSkillRow(skill: skill))
+								canTrainRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill))
 							}
 						}
 						else {
-							canTrainRows.append(NCSkillRow(skill: skill))
+							canTrainRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill))
 						}
 					}
 				}
@@ -203,9 +162,10 @@ class NCSkillsViewController: UITableViewController {
 			
 			DispatchQueue.main.async {
 				self.sections = [mySections, canTrainSections, allSections]
-				self.treeController.content = self.sections?[self.segmentedControl.selectedSegmentIndex]
-				self.treeController.reloadData()
-				self.tableView.backgroundView = nil
+				(self.viewControllers as? [NCSkillsContentViewController])?.forEach {
+					$0.tableView.backgroundView = nil
+				}
+
 				completionHandler?()
 			}
 		}
@@ -233,13 +193,15 @@ class NCSkillsViewController: UITableViewController {
 					}
 					progress.progress.resignCurrent()
 				case let .failure(error):
-					if self.treeController.content == nil {
-						self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
+					(self.viewControllers as? [NCSkillsContentViewController])?.forEach {
+						if $0.content == nil {
+							$0.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
+						}
 					}
 				}
 			}
 			progress.progress.resignCurrent()
 		}
 	}
-	*/
+	
 }

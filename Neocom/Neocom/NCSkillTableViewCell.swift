@@ -21,14 +21,15 @@ class NCSkillTableViewCell: NCTableViewCell {
 extension Prototype {
     enum NCSkillTableViewCell {
         static let `default` = Prototype(nib: UINib(nibName: "NCSkillTableViewCell", bundle: nil), reuseIdentifier: "NCSkillTableViewCell")
+		static let compact = Prototype(nib: UINib(nibName: "NCSkillCompactTableViewCell", bundle: nil), reuseIdentifier: "NCSkillCompactTableViewCell")
     }
 }
 
 class NCSkillRow: TreeRow {
     let skill: NCSkill
-    init(skill: NCSkill) {
+    init(prototype: Prototype = Prototype.NCSkillTableViewCell.default, skill: NCSkill) {
         self.skill = skill
-		super.init(prototype: Prototype.NCSkillTableViewCell.default, route: Router.Database.TypeInfo(skill.typeID))
+		super.init(prototype: prototype, route: Router.Database.TypeInfo(skill.typeID))
     }
     
     lazy var image: UIImage? = {
@@ -44,7 +45,7 @@ class NCSkillRow: TreeRow {
             
         }
         else {
-            cell.levelLabel?.text = nil
+            cell.levelLabel?.text = NSLocalizedString("N/A", comment: "")
         }
         
         let level = (skill.level ?? 0)

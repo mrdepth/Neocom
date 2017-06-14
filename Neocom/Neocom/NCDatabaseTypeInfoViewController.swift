@@ -125,6 +125,7 @@ class NCDatabaseTypeInfoViewController: UITableViewController, TreeControllerDel
 			route.perform(source: self, view: treeController.cell(for: node))
 		}
 		else if let row = node as? NCDatabaseTrainingSkillRow {
+			guard NCAccount.current != nil else {return}
 			guard let skill = row.skill else {return}
 			guard let type = NCDatabase.sharedDatabase?.invTypes[skill.skill.typeID] else {return}
 			

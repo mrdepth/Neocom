@@ -44,25 +44,22 @@ fileprivate class NCSkillQueueRow: NCSkillRow {
 
 
 
-fileprivate class NCSkillPlanSkillRow: FetchedResultsObjectNode<NCSkillPlanSkill> {
+fileprivate class NCSkillPlanSkillRow: FetchedResultsObjectNode<NCSkillPlanSkill>, TreeNodeRoutable {
 	var skill: NCTrainingSkill?
 	var character: NCCharacter?
+	
+	var route: Route?
+	var accessoryButtonRoute: Route?
 	
 	required init(object: NCSkillPlanSkill) {
 		super.init(object: object)
 		cellIdentifier = Prototype.NCSkillTableViewCell.default.reuseIdentifier
+		route = Router.Database.TypeInfo(Int(object.typeID))
 	}
-	
-//	init(skill: NCTrainingSkill?, character: NCCharacter, object: NCSkillPlanSkill) {
-//		self.skill = skill
-//		self.character = character
-//		super.init(prototype: Prototype.NCSkillTableViewCell.default, route: Router.Database.TypeInfo(Int(object.typeID)), object: object)
-//	}
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCSkillTableViewCell else {return}
-		guard let character = character else {return}
-		if let skill = skill {
+		if let character = character, let skill = skill {
 			cell.titleLabel?.text = "\(skill.skill.typeName) (x\(skill.skill.rank))"
 			cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:min(skill.level, 5))
 			let a = NCUnitFormatter.localizedString(from: Double(skill.skill.skillPoints), unit: .none, style: .full)
@@ -253,43 +250,118 @@ fileprivate class NCSKillPlanSkillsNode: FetchedResultsNode<NCSkillPlanSkill> {
 
 		super.init(resultsController: results, sectionNode: nil, objectNode: NCSkillPlanSkillRow.self)
 	}
+	
+	override func loadChildren() {
+		super.loadChildren()
+		updateChildren()
+	}
+	
+	override func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+		super.controller(controller, didChange: anObject, at: indexPath, for: type, newIndexPath: newIndexPath)
+		guard let parent = parent as? NCSkillPlanRow else {return}
+		
+		let trainingQueue = parent.trainingQueue
+		
+		switch type {
+		case .insert:
+			let item = anObject as! NCSkillPlanSkill
+			let invTypes = NCDatabase.sharedDatabase?.invTypes
+			if let type = invTypes?[Int(item.typeID)] {
+				trainingQueue.add(skill: type, level: Int(item.level))
+			}
+		case .delete:
+			let item = anObject as! NCSkillPlanSkill
+			let typeID = Int(item.typeID)
+			let level = Int(item.level)
+			if let i = trainingQueue.skills.index(where: {return $0.skill.typeID == typeID && $0.level == level}) {
+				trainingQueue.skills.remove(at: i)
+			}
+		default:
+			break
+		}
+	}
+	
+	override func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		treeController?.beginUpdates()
+		super.controllerWillChangeContent(controller)
+	}
+	
+	override func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		super.controllerDidChangeContent(controller)
+		updateChildren()
+		if let parent = parent as? NCSkillPlanRow {
+			parent.trainingTime = nil
+			treeController?.reloadCells(for: [parent], with: .none)
+		}
+
+		treeController?.endUpdates()
+	}
+	
+	private func updateChildren() {
+		guard let parent = parent as? NCSkillPlanRow else {return}
+		let character = parent.character
+		let trainingQueue = parent.trainingQueue
+		
+		var skills: [Int: [Int:NCTrainingSkill]] = [:]
+		
+		trainingQueue.skills.forEach {
+			_ = (skills[$0.skill.typeID]?[$0.level] = $0) ?? (skills[$0.skill.typeID] = [$0.level: $0])
+		}
+		
+		children.forEach {
+			guard let row = $0 as? NCSkillPlanSkillRow else {return}
+			row.skill = skills[Int(row.object.typeID)]?[Int(row.object.level)]
+			row.character = character
+		}
+	}
 }
 
 fileprivate class NCSkillPlanRow: FetchedResultsObjectNode<NCSkillPlan> {
 	
 	required init(object: NCSkillPlan) {
 		super.init(object: object)
-		cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
+		cellIdentifier = Prototype.NCActionHeaderTableViewCell.default.reuseIdentifier
+		isExpanded = object.active
 	}
 	
-	var character: NCCharacter {
-		return NCCharacter()
-	}
+	lazy var character: NCCharacter = {
+		return (self.parent as? NCSkillPlansSection)?.character ?? NCCharacter()
+	}()
 	
-	var _title: NSAttributedString?
+	fileprivate var trainingTime: String?
 	
-	var title: NSAttributedString? {
-		if _title == nil {
-			let title = NSMutableAttributedString()
-			if let name = object.name?.uppercased() {
-				title.append(NSAttributedString(string: "\(name): ", attributes: object.active ? [NSForegroundColorAttributeName: UIColor.caption] : nil))
-			}
-			let skils = skillPlanSkills.resultsController.fetchedObjects
-			let s = skils?.isEmpty ?? true ? NSLocalizedString("Empty", comment: "") :
-				String(format: NSLocalizedString("%@ (%d skills)", comment: ""), NCTimeIntervalFormatter.localizedString(from: trainingQueue.trainingTime(characterAttributes: character.attributes), precision: .seconds), skils?.count ?? 0)
-			title.append(NSAttributedString(string: s))
-			_title = title
+	var title: String {
+		if trainingTime == nil {
+			trainingTime = NCTimeIntervalFormatter.localizedString(from: trainingQueue.trainingTime(characterAttributes: character.attributes), precision: .seconds)
 		}
-		return _title
+		
+		var title = ""
+		if let name = object.name?.uppercased() {
+			title = "\(name): "
+		}
+		let skils = skillPlanSkills.resultsController.fetchedObjects
+		let s = skils?.isEmpty == false ? String(format: NSLocalizedString("%@ (%d skills)", comment: ""), trainingTime!, skils!.count)
+			: NSLocalizedString("Empty", comment: "")
+			
+		return title + s
 	}
+	
+	var handler: NCActionHandler?
 	
 	override func configure(cell: UITableViewCell) {
-		guard let cell = cell as? NCHeaderTableViewCell else {return}
-		cell.titleLabel?.attributedText = title
+		guard let cell = cell as? NCActionHeaderTableViewCell else {return}
+		cell.titleLabel?.text = title
+		cell.titleLabel?.textColor = object.active ? .caption : .lightText
+		handler = NCActionHandler(cell.button!, for: .touchUpInside) { [weak self] _ in
+			guard let strongSelf = self else {return}
+			guard let controller = strongSelf.treeController else {return}
+			controller.delegate?.treeController?(controller, accessoryButtonTappedWithNode: strongSelf)
+		}
 	}
 	
 	lazy var skillPlanSkills: NCSKillPlanSkillsNode = {
 		let node = NCSKillPlanSkillsNode(skillPlan: self.object, character: self.character)
+		try? node.resultsController.performFetch()
 		return node
 	}()
 	
@@ -301,11 +373,12 @@ fileprivate class NCSkillPlanRow: FetchedResultsObjectNode<NCSkillPlan> {
 		
 		
 		self.skillPlanSkills.resultsController.fetchedObjects?.forEach { item in
-			let type = invTypes?[Int(item.typeID)]
-			let skill = NCTrainingSkill(type: type, skill: character.skills[Int(item.typeID)], level: Int(item.level))
-			if let skill = skill, let type = type {
-				trainingQueue.add(skill: type, level: Int(skill.level))
-			}
+			guard let type = invTypes?[Int(item.typeID)] else {return}
+			let level = Int(item.level)
+//			let skill = NCTrainingSkill(type: type, skill: character.skills[Int(item.typeID)], level: Int(item.level))
+			guard let skill = NCTrainingSkill(type: type, skill: character.skills[Int(item.typeID)], level: level, trainedLevel: level-1) else {return}
+			trainingQueue.skills.append(skill)
+//				trainingQueue.add(skill: type, level: Int(skill.level))
 		}
 		return trainingQueue
 	}()
@@ -316,24 +389,6 @@ fileprivate class NCSkillPlanRow: FetchedResultsObjectNode<NCSkillPlan> {
 		defer {
 			children = [node]
 			super.loadChildren()
-		}
-		
-		let character = self.character
-		let trainingQueue = self.trainingQueue
-		
-		guard trainingQueue.skills.count == node.children.count else {return}
-		
-		var skills: [Int: [Int:NCTrainingSkill]] = [:]
-		
-		trainingQueue.skills.forEach {
-			_ = (skills[$0.skill.typeID]?[$0.level] = $0) ?? (skills[$0.skill.typeID] = [$0.level: $0])
-		}
-		
-		node.children.forEach {
-			guard let row = $0 as? NCSkillPlanSkillRow else {return}
-			row.skill = skills[Int(row.object.typeID)]?[Int(row.object.level)]
-			row.character = character
-			
 		}
 	}
 }
@@ -360,6 +415,7 @@ fileprivate class NCSkillPlansSection: FetchedResultsNode<NCSkillPlan> {
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCActionHeaderTableViewCell else {return}
 		cell.titleLabel?.text = NSLocalizedString("Skill Plans", comment: "").uppercased()
+		cell.titleLabel?.textColor = .lightText
 		
 		buttonHandler = NCActionHandler(cell.button!, for: .touchUpInside) { [weak self] _ in
 			guard let strongSelf = self else {return}
@@ -499,8 +555,8 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
 
 			let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 			controller.addAction(UIAlertAction(title: NSLocalizedString("Add Skill Plan", comment: ""), style: .default, handler: { _ in
-				if account.skillPlans?.count ?? 0 > 0 {
-					account.activeSkillPlan?.active = false
+				account.skillPlans?.forEach {
+					($0 as? NCSkillPlan)?.active = false
 				}
 
 				let skillPlan = NCSkillPlan(entity: NSEntityDescription.entity(forEntityName: "SkillPlan", in: managedObjectContext)!, insertInto: managedObjectContext)
@@ -514,8 +570,79 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
 			
 			controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
 			self.present(controller, animated: true, completion: nil)
-
 			
+		case let row as NCSkillPlanRow:
+			let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+			let skillPlan = row.object
+
+			if (skillPlan.skills?.count ?? 0) > 0 {
+				controller.addAction(UIAlertAction(title: NSLocalizedString("Clear", comment: ""), style: .default, handler: { _ in
+					skillPlan.skills?.forEach {
+						guard let skill = $0 as? NCSkillPlanSkill else {return}
+						skill.managedObjectContext?.delete(skill)
+						skill.skillPlan = nil
+					}
+					
+					if skillPlan.managedObjectContext?.hasChanges == true {
+						try? skillPlan.managedObjectContext?.save()
+					}
+				}))
+			}
+			
+			if !skillPlan.active {
+				controller.addAction(UIAlertAction(title: NSLocalizedString("Make Active", comment: ""), style: .default, handler: { _ in
+					skillPlan.account?.skillPlans?.forEach {
+						($0 as? NCSkillPlan)?.active = false
+					}
+					skillPlan.active = true
+					if skillPlan.managedObjectContext?.hasChanges == true {
+						try? skillPlan.managedObjectContext?.save()
+					}
+				}))
+			}
+			
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { (action) in
+				let controller = UIAlertController(title: NSLocalizedString("Rename", comment: ""), message: nil, preferredStyle: .alert)
+				
+				var textField: UITextField?
+				
+				controller.addTextField(configurationHandler: {
+					textField = $0
+					textField?.text = skillPlan.name
+					textField?.clearButtonMode = .always
+				})
+				
+				controller.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { (action) in
+					if textField?.text?.characters.count ?? 0 > 0 && skillPlan.name != textField?.text {
+						skillPlan.name = textField?.text
+						if skillPlan.managedObjectContext?.hasChanges == true {
+							try? skillPlan.managedObjectContext?.save()
+						}
+					}
+				}))
+				
+				controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+				
+				self.present(controller, animated: true, completion: nil)
+			}))
+			
+			if (skillPlan.account?.skillPlans?.count ?? 0) > 1 {
+				controller.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive, handler: { _ in
+					
+					if skillPlan.active {
+						if let item = (skillPlan.account?.skillPlans?.sortedArray(using: [NSSortDescriptor(key: "name", ascending: true)]) as? [NCSkillPlan])?.first(where: { $0 !== skillPlan }) {
+							item.active = true
+						}
+					}
+					skillPlan.managedObjectContext?.delete(skillPlan)
+					if skillPlan.managedObjectContext?.hasChanges == true {
+						try? skillPlan.managedObjectContext?.save()
+					}
+				}))
+			}
+			
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+			self.present(controller, animated: true, completion: nil)
 		default:
 			break
 		}
@@ -529,6 +656,12 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
 			
 			let remove = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (_, _) in
 				let context = skillPlan.managedObjectContext
+				if skillPlan.active {
+					if let item = (skillPlan.account?.skillPlans?.sortedArray(using: [NSSortDescriptor(key: "name", ascending: true)]) as? [NCSkillPlan])?.first(where: { $0 !== skillPlan }) {
+						item.active = true
+					}
+				}
+
 				context?.delete(skillPlan)
 				if context?.hasChanges == true {
 					try? context?.save()

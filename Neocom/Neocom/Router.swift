@@ -283,6 +283,34 @@ enum Router {
 			}
 		}
 
+		class Certificates: Route {
+			let group: NCDBInvGroup
+			
+			init(group: NCDBInvGroup) {
+				self.group = group
+				super.init(kind: .push, identifier: "NCDatabaseCertificatesViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCDatabaseCertificatesViewController
+				destination.group = group
+			}
+		}
+		
+		class CertificateInfo: Route {
+			let certificate: NCDBCertCertificate
+			
+			init(certificate: NCDBCertCertificate) {
+				self.certificate = certificate
+				super.init(kind: .push, identifier: "NCDatabaseCertificateInfoViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCDatabaseCertificateInfoViewController
+				destination.certificate = certificate
+			}
+		}
+		
 	}
 	
 	enum Character {

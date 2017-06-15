@@ -2105,55 +2105,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="vAP-iP-GkD" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="320" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vAP-iP-GkD" id="h3O-xc-r5N">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="40.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4yT-oO-rAD">
-                                            <rect key="frame" x="15" y="4" width="32" height="32"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="32" id="7ER-Rp-Yxp"/>
-                                                <constraint firstAttribute="width" constant="32" id="cMG-Qx-jtE"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Sgs-6l-t86">
-                                            <rect key="frame" x="55" y="11" width="232" height="18"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="Sgs-6l-t86" firstAttribute="leading" secondItem="4yT-oO-rAD" secondAttribute="trailing" constant="8" id="Ag6-Li-rcQ"/>
-                                        <constraint firstAttribute="trailing" secondItem="Sgs-6l-t86" secondAttribute="trailing" id="FwX-y6-KyS"/>
-                                        <constraint firstItem="Sgs-6l-t86" firstAttribute="centerY" secondItem="h3O-xc-r5N" secondAttribute="centerY" id="L2N-eW-unA"/>
-                                        <constraint firstItem="4yT-oO-rAD" firstAttribute="leading" secondItem="h3O-xc-r5N" secondAttribute="leading" constant="15" id="OsF-hd-D8S"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Sgs-6l-t86" secondAttribute="bottom" constant="2" id="ese-eL-amW"/>
-                                        <constraint firstAttribute="bottom" secondItem="4yT-oO-rAD" secondAttribute="bottom" priority="999" constant="4" id="hAx-vd-7Mw"/>
-                                        <constraint firstItem="Sgs-6l-t86" firstAttribute="top" relation="greaterThanOrEqual" secondItem="h3O-xc-r5N" secondAttribute="top" constant="2" id="ptb-Vc-hLB"/>
-                                        <constraint firstItem="4yT-oO-rAD" firstAttribute="top" secondItem="h3O-xc-r5N" secondAttribute="top" constant="4" id="qYC-JI-iU2"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="iconView" destination="4yT-oO-rAD" id="JQi-Yh-RLQ"/>
-                                    <outlet property="titleLabel" destination="Sgs-6l-t86" id="2lD-CW-wUB"/>
-                                    <segue destination="Rfw-2F-uzL" kind="show" identifier="NCDatabaseCertificatesViewController" id="nf9-WI-xvg"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="AOk-Zh-3cB" id="Uei-VS-KLc"/>
-                            <outlet property="delegate" destination="AOk-Zh-3cB" id="PqE-Wu-HJb"/>
+                            <outlet property="dataSource" destination="RpM-SA-tzz" id="jab-jk-iZH"/>
+                            <outlet property="delegate" destination="RpM-SA-tzz" id="jAz-6z-RMC"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Groups" id="csf-Ba-Nu4"/>
+                    <connections>
+                        <outlet property="treeController" destination="RpM-SA-tzz" id="Y8K-tS-qN3"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KeO-GQ-k8E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="RpM-SA-tzz" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="PPb-tP-a8E" id="WCm-No-5JM"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="2946" y="1775"/>
         </scene>
@@ -2181,84 +2148,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="r2T-rh-fNE" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="320" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="r2T-rh-fNE" id="UP4-KD-ple">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vcp-vi-UBx">
-                                            <rect key="frame" x="15" y="4" width="32" height="32"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="32" id="EfL-An-AYC"/>
-                                                <constraint firstAttribute="height" priority="999" constant="32" id="XU4-g0-HGR"/>
-                                            </constraints>
-                                        </imageView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xlf-oD-wui">
-                                            <rect key="frame" x="55" y="4" width="250" height="32"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="VBV-ce-CsT">
-                                                    <rect key="frame" x="0.0" y="0.0" width="250" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
-                                                    <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k7U-J6-aO7">
-                                                    <rect key="frame" x="0.0" y="16" width="250" height="16"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="k7U-J6-aO7" secondAttribute="bottom" id="4eC-Kg-c5L"/>
-                                                <constraint firstItem="k7U-J6-aO7" firstAttribute="leading" secondItem="Xlf-oD-wui" secondAttribute="leading" id="5S1-sM-CRg"/>
-                                                <constraint firstItem="VBV-ce-CsT" firstAttribute="leading" secondItem="Xlf-oD-wui" secondAttribute="leading" id="6dG-X9-pq2"/>
-                                                <constraint firstItem="k7U-J6-aO7" firstAttribute="top" secondItem="VBV-ce-CsT" secondAttribute="bottom" id="BKt-WC-FeJ"/>
-                                                <constraint firstAttribute="trailing" secondItem="k7U-J6-aO7" secondAttribute="trailing" id="QfY-iA-yvI"/>
-                                                <constraint firstAttribute="trailing" secondItem="VBV-ce-CsT" secondAttribute="trailing" id="ief-GW-syH"/>
-                                                <constraint firstItem="VBV-ce-CsT" firstAttribute="top" secondItem="Xlf-oD-wui" secondAttribute="top" id="vrm-hd-7Pe"/>
-                                            </constraints>
-                                        </view>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="Xlf-oD-wui" secondAttribute="bottom" priority="250" constant="4" id="1uN-H7-3xi"/>
-                                        <constraint firstItem="vcp-vi-UBx" firstAttribute="leading" secondItem="UP4-KD-ple" secondAttribute="leading" constant="15" id="5bm-oF-Ca5"/>
-                                        <constraint firstAttribute="trailing" secondItem="Xlf-oD-wui" secondAttribute="trailing" constant="15" id="SW9-Gs-aQG"/>
-                                        <constraint firstItem="Xlf-oD-wui" firstAttribute="top" secondItem="UP4-KD-ple" secondAttribute="top" priority="250" constant="4" id="WvK-dj-k4h"/>
-                                        <constraint firstItem="Xlf-oD-wui" firstAttribute="centerY" secondItem="UP4-KD-ple" secondAttribute="centerY" id="Xwh-Mc-pZ7"/>
-                                        <constraint firstItem="vcp-vi-UBx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="UP4-KD-ple" secondAttribute="top" constant="4" id="tJ2-ta-f2z"/>
-                                        <constraint firstItem="Xlf-oD-wui" firstAttribute="leading" secondItem="vcp-vi-UBx" secondAttribute="trailing" constant="8" id="x4b-Hr-cJ6"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="vcp-vi-UBx" secondAttribute="bottom" constant="4" id="yV0-o9-72p"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="iconView" destination="vcp-vi-UBx" id="Ozb-Bg-DbU"/>
-                                    <outlet property="subtitleLabel" destination="k7U-J6-aO7" id="hYH-4u-VC9"/>
-                                    <outlet property="titleLabel" destination="VBV-ce-CsT" id="kD5-yM-KC8"/>
-                                    <segue destination="919-jM-IW7" kind="show" identifier="NCDatabaseCertificateInfoViewController" id="08t-Ab-84I"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="Rfw-2F-uzL" id="EGq-RS-Kna"/>
-                            <outlet property="delegate" destination="Rfw-2F-uzL" id="RzN-mD-rGf"/>
+                            <outlet property="dataSource" destination="YIW-s9-80z" id="NKS-NK-tFd"/>
+                            <outlet property="delegate" destination="YIW-s9-80z" id="u9T-ib-7UV"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Certificates" id="dk6-vo-Wzd"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="treeController" destination="YIW-s9-80z" id="hhf-6H-SnH"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XlJ-Ai-mm7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="YIW-s9-80z" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="iVc-ma-tto" id="qdX-OT-GuX"/>
+                    </connections>
+                </customObject>
             </objects>
-            <point key="canvasLocation" x="3653" y="1775"/>
+            <point key="canvasLocation" x="3611" y="1775"/>
         </scene>
         <!--Database Certificate Info View Controller-->
         <scene sceneID="Bb6-qG-RE3">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseCertificateInfoViewController" id="919-jM-IW7" customClass="NCDatabaseCertificateInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="919-jM-IW7" customClass="NCDatabaseCertificateInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="I8P-pr-chS" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2428,6 +2341,7 @@
                             </connections>
                         </segmentedControl>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="segmentedControl" destination="gqs-EM-8zj" id="ChQ-IJ-eGD"/>
                         <outlet property="treeController" destination="94c-v0-1u1" id="jnp-ir-ACn"/>
@@ -2440,12 +2354,12 @@
                     </connections>
                 </customObject>
             </objects>
-            <point key="canvasLocation" x="4371" y="1775"/>
+            <point key="canvasLocation" x="4890" y="1775"/>
         </scene>
         <!--Database Certificate Info Header View Controller-->
         <scene sceneID="6JI-Bp-V2g">
             <objects>
-                <viewController storyboardIdentifier="NCDatabaseCertificateInfoHeaderViewController" id="wFo-NA-ht0" customClass="NCDatabaseCertificateInfoHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCDatabaseCertificateInfoHeaderViewController" automaticallyAdjustsScrollViewInsets="NO" id="wFo-NA-ht0" customClass="NCDatabaseCertificateInfoHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YiG-Bf-oUm"/>
                         <viewControllerLayoutGuide type="bottom" id="gBk-UY-h4g"/>
@@ -2511,126 +2425,16 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vgm-M6-s0H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5057" y="1775"/>
+            <point key="canvasLocation" x="5567" y="1775"/>
         </scene>
-        <!--Database Certificate Mastery View Controller-->
+        <!--Database Type Mastery View Controller-->
         <scene sceneID="GvI-Zs-TpL">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseCertificateMasteryViewController" id="eI9-Lf-Pgf" customClass="NCDatabaseCertificateMasteryViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseTypeMasteryViewController" id="eI9-Lf-Pgf" customClass="NCDatabaseTypeMasteryViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="4Qd-k3-8Jt" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="Dvd-Iv-sAA" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="320" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dvd-Iv-sAA" id="NyR-ed-lSu">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wLU-wE-IO0">
-                                            <rect key="frame" x="15" y="4" width="32" height="32"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" priority="999" constant="32" id="n49-bM-biV"/>
-                                                <constraint firstAttribute="width" constant="32" id="whq-3i-Lvy"/>
-                                            </constraints>
-                                        </imageView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aLM-gs-e8x">
-                                            <rect key="frame" x="55" y="4" width="250" height="32"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="kgM-C4-XWV">
-                                                    <rect key="frame" x="0.0" y="0.0" width="250" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ta-vi-ec8">
-                                                    <rect key="frame" x="0.0" y="16" width="250" height="16"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstItem="3ta-vi-ec8" firstAttribute="leading" secondItem="aLM-gs-e8x" secondAttribute="leading" id="ELV-7e-sW2"/>
-                                                <constraint firstItem="kgM-C4-XWV" firstAttribute="top" secondItem="aLM-gs-e8x" secondAttribute="top" id="LlE-56-Qnk"/>
-                                                <constraint firstAttribute="trailing" secondItem="kgM-C4-XWV" secondAttribute="trailing" id="OQ5-VU-Swc"/>
-                                                <constraint firstItem="kgM-C4-XWV" firstAttribute="leading" secondItem="aLM-gs-e8x" secondAttribute="leading" id="bPd-aH-uic"/>
-                                                <constraint firstItem="3ta-vi-ec8" firstAttribute="top" secondItem="kgM-C4-XWV" secondAttribute="bottom" id="kYa-zR-v5N"/>
-                                                <constraint firstAttribute="trailing" secondItem="3ta-vi-ec8" secondAttribute="trailing" id="rKj-S4-yPs"/>
-                                                <constraint firstAttribute="bottom" secondItem="3ta-vi-ec8" secondAttribute="bottom" id="sx1-hI-HZP"/>
-                                            </constraints>
-                                        </view>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="aLM-gs-e8x" firstAttribute="centerY" secondItem="NyR-ed-lSu" secondAttribute="centerY" id="7nG-jn-B6K"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wLU-wE-IO0" secondAttribute="bottom" constant="4" id="FJE-7C-acB"/>
-                                        <constraint firstItem="wLU-wE-IO0" firstAttribute="leading" secondItem="NyR-ed-lSu" secondAttribute="leading" constant="15" id="S82-sQ-z9z"/>
-                                        <constraint firstItem="aLM-gs-e8x" firstAttribute="leading" secondItem="wLU-wE-IO0" secondAttribute="trailing" constant="8" id="U8g-dc-epv"/>
-                                        <constraint firstAttribute="bottom" secondItem="aLM-gs-e8x" secondAttribute="bottom" priority="250" constant="4" id="YcD-iL-d8p"/>
-                                        <constraint firstAttribute="trailing" secondItem="aLM-gs-e8x" secondAttribute="trailing" constant="15" id="ezf-Jl-2cd"/>
-                                        <constraint firstItem="wLU-wE-IO0" firstAttribute="top" relation="greaterThanOrEqual" secondItem="NyR-ed-lSu" secondAttribute="top" constant="4" id="g0m-GE-bOl"/>
-                                        <constraint firstItem="aLM-gs-e8x" firstAttribute="top" secondItem="NyR-ed-lSu" secondAttribute="top" priority="250" constant="4" id="ppZ-iH-nfp"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="iconView" destination="wLU-wE-IO0" id="6Do-g3-pPd"/>
-                                    <outlet property="subtitleLabel" destination="3ta-vi-ec8" id="Gcl-ZZ-7iJ"/>
-                                    <outlet property="titleLabel" destination="kgM-C4-XWV" id="bJd-z4-E86"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCSkillsHeaderTableViewCell" rowHeight="40" id="Ji2-jB-Yty" customClass="NCSkillsHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="96.5" width="320" height="40"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ji2-jB-Yty" id="afd-dK-DHB">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dgS-2c-Rtb">
-                                            <rect key="frame" x="32" y="15" width="226" height="16"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="abz-6d-slQ">
-                                            <rect key="frame" x="8" y="15" width="16" height="16"/>
-                                            <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dh8-FB-CDn">
-                                            <rect key="frame" x="266" y="9" width="39" height="28"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <state key="normal" title="TRAIN">
-                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="onTrain:" destination="919-jM-IW7" eventType="touchUpInside" id="8ha-9C-46b"/>
-                                                <action selector="onTrain:" destination="JbH-Km-dUZ" eventType="touchUpInside" id="bdF-5J-x9Y"/>
-                                                <action selector="onTrain:" destination="eI9-Lf-Pgf" eventType="touchUpInside" id="xdz-Sh-wpG"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="dgS-2c-Rtb" firstAttribute="centerY" secondItem="abz-6d-slQ" secondAttribute="centerY" id="0fr-ax-7Af"/>
-                                        <constraint firstItem="abz-6d-slQ" firstAttribute="leading" secondItem="afd-dK-DHB" secondAttribute="leading" constant="8" id="CnJ-9j-cpn"/>
-                                        <constraint firstItem="dgS-2c-Rtb" firstAttribute="leading" secondItem="abz-6d-slQ" secondAttribute="trailing" constant="8" id="D5b-VY-6Pi"/>
-                                        <constraint firstAttribute="bottom" secondItem="dgS-2c-Rtb" secondAttribute="bottom" constant="8" id="Gsr-aR-PoF"/>
-                                        <constraint firstItem="Dh8-FB-CDn" firstAttribute="leading" secondItem="dgS-2c-Rtb" secondAttribute="trailing" constant="8" id="R6P-TZ-aAe"/>
-                                        <constraint firstAttribute="trailing" secondItem="Dh8-FB-CDn" secondAttribute="trailing" constant="15" id="YMM-af-gxH"/>
-                                        <constraint firstItem="dgS-2c-Rtb" firstAttribute="top" secondItem="afd-dK-DHB" secondAttribute="top" constant="15" id="Zl6-iS-4N5"/>
-                                        <constraint firstItem="Dh8-FB-CDn" firstAttribute="centerY" secondItem="dgS-2c-Rtb" secondAttribute="centerY" id="qgv-ac-nsG"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="expandIconView" destination="abz-6d-slQ" id="8mU-FZ-i3n"/>
-                                    <outlet property="titleLabel" destination="dgS-2c-Rtb" id="ptS-Ch-qNp"/>
-                                    <outlet property="trainButton" destination="Dh8-FB-CDn" id="Kkh-BV-BBW"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="eIG-7w-IfS" id="b6N-jN-7Az"/>
                             <outlet property="delegate" destination="eIG-7w-IfS" id="YsZ-MX-yp0"/>
@@ -2645,7 +2449,7 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ynp-V2-aX1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="eIG-7w-IfS" customClass="NCTreeController" customModule="Neocom" customModuleProvider="target">
+                <customObject id="eIG-7w-IfS" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
                     <connections>
                         <outlet property="tableView" destination="4Qd-k3-8Jt" id="2H6-2P-KL4"/>
                     </connections>
@@ -7821,6 +7625,78 @@
             </objects>
             <point key="canvasLocation" x="1952" y="2365"/>
         </scene>
+        <!--Certificate-->
+        <scene sceneID="S7x-e6-7fe">
+            <objects>
+                <viewController storyboardIdentifier="NCDatabaseCertificateInfoViewController" title="Certificate" automaticallyAdjustsScrollViewInsets="NO" id="lvo-Uh-sWI" customClass="NCDatabaseCertificateInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="B2s-gj-Rtb"/>
+                        <viewControllerLayoutGuide type="bottom" id="bPd-mX-pcV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Iy4-7x-Sv6" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ayN-ek-8bJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4269" y="1775"/>
+        </scene>
+        <!--Mastery-->
+        <scene sceneID="9Wf-Yc-tih">
+            <objects>
+                <tableViewController storyboardIdentifier="NCDatabaseCertificateMasteryViewController" title="Mastery" automaticallyAdjustsScrollViewInsets="NO" id="1R4-X3-y9J" customClass="NCDatabaseCertificateMasteryViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="onC-ve-zMp" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="d6I-ON-xl4" id="n6p-tH-gnT"/>
+                            <outlet property="delegate" destination="d6I-ON-xl4" id="ZvU-wX-moU"/>
+                        </connections>
+                    </tableView>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="treeController" destination="d6I-ON-xl4" id="EZg-Kf-hsJ"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LAv-fv-tbr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="d6I-ON-xl4" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="onC-ve-zMp" id="WaC-uE-aFx"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="4268" y="2445"/>
+        </scene>
+        <!--Required for-->
+        <scene sceneID="mBH-7o-RMA">
+            <objects>
+                <tableViewController storyboardIdentifier="NCDatabaseCertificateRequirementsViewController" title="Required for" automaticallyAdjustsScrollViewInsets="NO" id="hOO-aV-s6s" customClass="NCDatabaseCertificateRequirementsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="QM9-1I-TdC" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="a5Q-4U-13M" id="ZFF-Fc-MnV"/>
+                            <outlet property="delegate" destination="a5Q-4U-13M" id="rSX-ro-7lP"/>
+                        </connections>
+                    </tableView>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="treeController" destination="a5Q-4U-13M" id="z67-8X-GrT"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VBU-q9-3pC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="a5Q-4U-13M" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="QM9-1I-TdC" id="j61-nV-Y6v"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="4890" y="2444"/>
+        </scene>
     </scenes>
     <resources>
         <image name="actionsItem" width="24" height="24"/>
@@ -7867,6 +7743,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="B28-Sl-QBx"/>
-        <segue reference="aqM-GB-MGS"/>
+        <segue reference="cLd-bF-zDW"/>
     </inferredMetricsTieBreakers>
 </document>

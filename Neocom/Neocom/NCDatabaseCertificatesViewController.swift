@@ -9,35 +9,97 @@
 import UIKit
 import CoreData
 
-fileprivate class NCDatabaseCertificateRow: NSObject {
-	dynamic var subtitle: String?
-	dynamic var image: UIImage?
-	dynamic var certificate: NCDBCertCertificate?
+fileprivate class NCDatabaseCertificateRow: FetchedResultsObjectNode<NCDBCertCertificate> {
+	var character: NCCharacter?
+	var image: UIImage?
+	var subtitle: String?
+	
+	required init(object: NCDBCertCertificate) {
+		super.init(object: object)
+		cellIdentifier = Prototype.NCDefaultTableViewCell.default.reuseIdentifier
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		
+		cell.object = object
+		cell.titleLabel?.text = object.certificateName
+		cell.accessoryType = .disclosureIndicator
+
+		if let subtitle = subtitle {
+			cell.iconView?.image = image
+			cell.subtitleLabel?.text = subtitle
+		}
+		else  {
+			cell.iconView?.image = NCDatabase.sharedDatabase?.eveIcons[NCDBEveIcon.File.certificateUnclaimed.rawValue]?.image?.image
+			cell.subtitleLabel?.text = nil
+			
+			if let character = character {
+				NCDatabase.sharedDatabase?.performBackgroundTask{ managedObjectContext in
+					let certificate = (try! managedObjectContext.existingObject(with: self.object.objectID)) as! NCDBCertCertificate
+					let trainingQueue = NCTrainingQueue(character: character)
+					var level: NCDBCertMasteryLevel?
+					for mastery in (certificate.masteries?.sortedArray(using: [NSSortDescriptor(key: "level.level", ascending: true)]) as? [NCDBCertMastery]) ?? [] {
+						trainingQueue.add(mastery: mastery)
+						if !trainingQueue.skills.isEmpty {
+							break
+						}
+						level = mastery.level
+					}
+					let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
+					let subtitle: String
+					let image: UIImage?
+					
+					if trainingTime > 0 {
+						subtitle = String(format: NSLocalizedString("%@ to level %d", comment: ""), NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds), (level?.level ?? -1) + 2)
+					}
+					else {
+						subtitle = ""
+					}
+					image = level?.icon?.image?.image ?? NCDBEveIcon.eveIcons(managedObjectContext: managedObjectContext)[NCDBEveIcon.File.certificateUnclaimed.rawValue]?.image?.image
+					
+					DispatchQueue.main.async {
+						self.image = image
+						self.subtitle = subtitle
+
+						if (cell.object as? NCDBCertCertificate) == self.object {
+							cell.iconView?.image = image
+							cell.subtitleLabel?.text = subtitle
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
-class NCDatabaseCertificatesViewController: UITableViewController {
+class NCDatabaseCertificatesViewController: UITableViewController, TreeControllerDelegate {
+	@IBOutlet var treeController: TreeController!
+
 	var group: NCDBInvGroup?
-	private var results: NSFetchedResultsController<NCDBCertCertificate>?
-	private var character: NCCharacter?
-	private var rows: [IndexPath: NCDatabaseCertificateRow]?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
+		
+		tableView.register([Prototype.NCDefaultTableViewCell.default])
+
+		
 		title = group?.groupName
+		treeController.delegate = self
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if let group = group, results == nil {
+		if let group = group, treeController.content == nil {
 			let request = NSFetchRequest<NCDBCertCertificate>(entityName: "CertCertificate")
 			request.predicate = NSPredicate(format: "group == %@", group)
 			request.sortDescriptors = [NSSortDescriptor(key: "certificateName", ascending: true)]
+			
 			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-			try? results.performFetch()
-			self.results = results
-			self.tableView.reloadData()
+
+			treeController.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDatabaseCertificateRow.self)
 
 			
 			let progress = NCProgressHandler(totalUnitCount: 1)
@@ -50,13 +112,12 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 				default:
 					character = NCCharacter()
 				}
-
-				self.rows = [:]
-				self.character = character
-				if let indexPaths = self.tableView.indexPathsForVisibleRows {
-					self.tableView.reloadRows(at: indexPaths, with: .none)
+				
+				self.treeController.content?.children.forEach {
+					($0 as? NCDatabaseCertificateRow)?.character = character
 				}
 				progress.finish()
+				self.tableView.reloadData()
 			}
 			progress.progress.resignCurrent()
 		}
@@ -64,73 +125,15 @@ class NCDatabaseCertificatesViewController: UITableViewController {
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			results = nil
+			treeController.content = nil
 		}
 	}
 	
-	//MARK: UITableViewDataSource
 	
-	override func numberOfSections(in tableView: UITableView) -> Int {
-		return results?.sections?.count ?? 0
+	//MARK: - TreeControllerDelegate
+	
+	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		guard let row = node as? NCDatabaseCertificateRow else {return}
+		Router.Database.CertificateInfo(certificate: row.object).perform(source: self, view: treeController.cell(for: node))
 	}
-	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return results?.sections?[section].numberOfObjects ?? 0
-	}
-	
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCDefaultTableViewCell
-		let object = results?.object(at: indexPath)
-
-		cell.object = object
-		cell.titleLabel?.text = object?.certificateName
-		cell.iconView?.image = nil
-		cell.subtitleLabel?.text = nil
-		
-		guard let character = character else {
-			cell.iconView?.image = NCDatabase.sharedDatabase?.eveIcons[NCDBEveIcon.File.certificateUnclaimed.rawValue]?.image?.image
-			return cell
-		}
-		
-		var row = rows?[indexPath]
-		if row == nil {
-			row = NCDatabaseCertificateRow()
-			row?.image = NCDatabase.sharedDatabase?.eveIcons[NCDBEveIcon.File.certificateUnclaimed.rawValue]?.image?.image
-			rows?[indexPath] = row
-			
-			NCDatabase.sharedDatabase?.performBackgroundTask{ managedObjectContext in
-				let certificate = (try! managedObjectContext.existingObject(with: object!.objectID)) as! NCDBCertCertificate
-				let trainingQueue = NCTrainingQueue(character: character)
-				var level: NCDBCertMasteryLevel?
-				for mastery in (certificate.masteries?.sortedArray(using: [NSSortDescriptor(key: "level.level", ascending: true)]) as? [NCDBCertMastery]) ?? [] {
-					trainingQueue.add(mastery: mastery)
-					if !trainingQueue.skills.isEmpty {
-						break
-					}
-					level = mastery.level
-				}
-				let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
-				let subtitle: String
-				let image: UIImage?
-				
-				if trainingTime > 0 {
-					subtitle = String(format: NSLocalizedString("%@ to level %d", comment: ""), NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds), (level?.level ?? -1) + 2)
-				}
-				else {
-					subtitle = ""
-				}
-				image = level?.icon?.image?.image ?? NCDBEveIcon.eveIcons(managedObjectContext: managedObjectContext)[NCDBEveIcon.File.certificateUnclaimed.rawValue]?.image?.image
-				
-				DispatchQueue.main.async {
-					row?.image = image
-					row?.subtitle = subtitle
-				}
-			}
-		}
-
-		cell.binder.bind("subtitleLabel.text", toObject: row!, withKeyPath: "subtitle", transformer: nil)
-		cell.binder.bind("iconView.image", toObject: row!, withKeyPath: "image", transformer: nil)
-		return cell
-	}
-	
 }

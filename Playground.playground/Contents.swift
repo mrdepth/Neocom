@@ -22,18 +22,22 @@ extension Array where Element == TreeNode {
 		var updated = [(Int, Int)]()
 		var moved = [(Int, Int)]()
 		
-		for (i, v) in from.enumerated().reversed() {
+		var n = 0
+		for (i, v) in from.enumerated() {
 			if let j = to.index(of: v) {
-				if i == j {
+				if i - n == j {
 					updated.append((i, j))
 				}
 				else {
 					moved.append((i, j))
+					arr.remove(at: i - n)
+					n += 1
 				}
-				arr.remove(at: i)
 			}
 			else {
 				removed.insert(i)
+				arr.remove(at: i - n)
+				n += 1
 			}
 		}
 		
@@ -43,10 +47,12 @@ extension Array where Element == TreeNode {
 			}
 		}
 		
-		print("\(removed.map{$0})")
-		print("\(inserted.map{$0})")
-		print("\(moved.map{$0})")
-		print("\(updated.map{$0})")
+		print("\(arr)")
+		
+		print("removed: \(removed.map{from[$0]})")
+		print("inserted: \(inserted.map{to[$0]})")
+		print("moved: \(moved.map{$0})")
+		print("updated: \(updated.map{$0})")
 
 		if !removed.isEmpty {
 			removed.reversed().forEach {handler($0, nil, .delete)}
@@ -105,12 +111,15 @@ extension Array where Element == TreeNode {
 	}
 }
 
-let from = [0,1,3,2]
-let to = [2,4,1,0]
+let from = [0,1,2]
+let to = [1,3,0]
+
+print("from: \(from)")
+print("to: \(to)")
 
 var a = from
 
 to.changes(from: from) { (old, new, type) in
-	print ("\(type): \(old) \(new)")
+//	print ("\(type): \(old) \(new)")
 	
 }

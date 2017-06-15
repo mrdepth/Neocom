@@ -56,7 +56,7 @@ fileprivate class NCSkillSection: DefaultTreeSection {
 	init(group: NCDBInvGroup, children: [NCSkillRow], skillPoints: Int64) {
 		self.group = group
 		//let title = "\(group.groupName?.uppercased() ?? "") (\(children.count))"
-		let title = "\(group.groupName?.uppercased() ?? "") (\(NCUnitFormatter.localizedString(from: Double(skillPoints), unit: .skillPoints, style: .full)))"
+		let title = "\(group.groupName?.uppercased() ?? "") (\(NCUnitFormatter.localizedString(from: children.count, unit: .none, style: .full)) \(NSLocalizedString("SKILLS", comment: "")), \(NCUnitFormatter.localizedString(from: Double(skillPoints), unit: .skillPoints, style: .short)))"
 		//let title = String(format: NSLocalizedString("%@ (%@)", comment: ""), group.groupName?.uppercased() ?? "", NCUnitFormatter.localizedString(from: Double(sp), unit: .skillPoints, style: .full))
 		super.init(nodeIdentifier: String(group.groupID), title: title, children: children)
 		isExpanded = false
@@ -146,15 +146,21 @@ class NCSkillsViewController: NCPageViewController {
 					}
 				}
 				if let group = group {
-					var sp = 0 as Int64
-					allRows.forEach { sp += Int64($0.skill.skillPoints) }
+					var mySP = 0 as Int64
+					var totalSP = 0 as Int64
+					allRows.forEach {
+						mySP += Int64($0.skill.skillPoints)
+						for i in 1...5 {
+							totalSP += Int64($0.skill.skillPoints(at: i))
+						}
+					}
 
-					allSections.append(NCSkillSection(group: group, children: allRows, skillPoints: sp))
+					allSections.append(NCSkillSection(group: group, children: allRows, skillPoints: totalSP))
 					if myRows.count > 0 {
-						mySections.append(NCSkillSection(group: group, children: myRows, skillPoints: sp))
+						mySections.append(NCSkillSection(group: group, children: myRows, skillPoints: mySP))
 					}
 					if canTrainRows.count > 0 {
-						canTrainSections.append(NCSkillSection(group: group, children: canTrainRows, skillPoints: sp))
+						canTrainSections.append(NCSkillSection(group: group, children: canTrainRows, skillPoints: totalSP - mySP))
 					}
 				}
 				sectionsProgress.completedUnitCount += 1

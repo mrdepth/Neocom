@@ -17,6 +17,7 @@ class NCDatabaseCertificateInfoHeaderViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		self.view.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
 		titleLabel.text = certificate?.certificateName
 		textView.attributedText = certificate?.certificateDescription?.text?.withFont(textView.font!, textColor: textView.textColor!)
 		imageView.image = NCDBEveIcon.icon(file: NCDBEveIcon.File.certificateUnclaimed.rawValue)?.image?.image

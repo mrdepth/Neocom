@@ -308,11 +308,26 @@ fileprivate class NCSKillPlanSkillsNode: FetchedResultsNode<NCSkillPlanSkill> {
 			_ = (skills[$0.skill.typeID]?[$0.level] = $0) ?? (skills[$0.skill.typeID] = [$0.level: $0])
 		}
 		
+		var missing = [NCSkillPlanSkill]()
 		children.forEach {
 			guard let row = $0 as? NCSkillPlanSkillRow else {return}
-			row.skill = skills[Int(row.object.typeID)]?[Int(row.object.level)]
-			row.character = character
+			if let skill = skills[Int(row.object.typeID)]?[Int(row.object.level)] {
+				row.skill = skill
+				row.character = character
+			}
+			else {
+				missing.append(row.object)
+			}
 		}
+		if !missing.isEmpty {
+			missing.forEach {
+				$0.managedObjectContext?.delete($0)
+			}
+			if resultsController.managedObjectContext.hasChanges {
+				try? resultsController.managedObjectContext.save()
+			}
+		}
+		
 	}
 }
 
@@ -375,6 +390,7 @@ fileprivate class NCSkillPlanRow: FetchedResultsObjectNode<NCSkillPlan> {
 		self.skillPlanSkills.resultsController.fetchedObjects?.forEach { item in
 			guard let type = invTypes?[Int(item.typeID)] else {return}
 			let level = Int(item.level)
+			guard character.skills[Int(item.typeID)]?.level ?? 0 < level else {return}
 //			let skill = NCTrainingSkill(type: type, skill: character.skills[Int(item.typeID)], level: Int(item.level))
 			guard let skill = NCTrainingSkill(type: type, skill: character.skills[Int(item.typeID)], level: level, trainedLevel: level-1) else {return}
 			trainingQueue.skills.append(skill)

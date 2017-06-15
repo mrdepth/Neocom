@@ -13,26 +13,35 @@ class NCTextFieldTableViewCell: NCTableViewCell {
 
 }
 
-class NCActionHandler: NSObject {
-	private let handler: (UIControl) -> Void
+class NCActionHandler {
+	private let handler: NCOpaqueHandler
 	private let control: UIControl
 	private let controlEvents: UIControlEvents
 	
+	class NCOpaqueHandler: NSObject {
+		let handler: (UIControl) -> Void
+		
+		init(_ handler: @escaping(UIControl) -> Void) {
+			self.handler = handler
+		}
+		
+		func handle(_ sender: UIControl) {
+			handler(sender)
+		}
+
+	}
+	
 	init(_ control: UIControl, for controlEvents: UIControlEvents, handler: @escaping(UIControl) -> Void) {
+		self.handler = NCOpaqueHandler(handler)
 		self.control = control
 		self.controlEvents = controlEvents
-		self.handler = handler
-		super.init()
-		control.addTarget(self, action: #selector(handle(_:)), for: controlEvents)
+		control.addTarget(self.handler, action: #selector(NCOpaqueHandler.handle(_:)), for: controlEvents)
 	}
 	
 	deinit {
-		control.removeTarget(self, action: #selector(handle(_:)), for: controlEvents)
+		control.removeTarget(self.handler, action: #selector(NCOpaqueHandler.handle(_:)), for: controlEvents)
 	}
 	
-	func handle(_ sender: UIControl) {
-		handler(sender)
-	}
 }
 
 class NCTextFieldRow: TreeRow {

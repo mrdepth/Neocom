@@ -21,7 +21,7 @@ class NCDatabaseCertificateMasteryViewController: UITableViewController, TreeCon
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		
-		tableView.register([Prototype.NCDefaultTableViewCell.attribute,
+		tableView.register([Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCActionHeaderTableViewCell.default,
 		                    ])
 

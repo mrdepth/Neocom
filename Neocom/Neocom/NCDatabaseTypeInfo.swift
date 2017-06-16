@@ -87,7 +87,8 @@ class NCDatabaseTypeInfoRow: DefaultTreeRow {
 		if image == nil {
 			image = attributeType.icon?.image?.image
 		}
-		self.init(prototype: subtitle?.isEmpty == false ? Prototype.NCDefaultTableViewCell.attribute : Prototype.NCDefaultTableViewCell.compact,
+		self.init(prototype: Prototype.NCDefaultTableViewCell.attribute,
+		          //subtitle?.isEmpty == false ? Prototype.NCDefaultTableViewCell.attribute : Prototype.NCDefaultTableViewCell.compact,
 		           nodeIdentifier: attribute.attributeType?.attributeName,
 		           image: image,
 		           title: title?.uppercased(),
@@ -95,6 +96,14 @@ class NCDatabaseTypeInfoRow: DefaultTreeRow {
 		           accessoryType: route != nil ? .disclosureIndicator : .none,
 		           route: route,
 		           object: object)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.textColor = .caption
+		cell.subtitleLabel?.textColor = .white
+		cell.iconView?.tintColor = .white
 	}
 	
 }
@@ -126,7 +135,7 @@ class NCDatabaseTypeSkillRow: DefaultTreeRow {
 			image = #imageLiteral(resourceName: "skillRequirementNotInjected")
 		}
 		let subtitle = trainingTime > 0 ? NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
-		super.init(prototype: Prototype.NCDefaultTableViewCell.attribute,
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default,
 		          image: image,
 		          attributedTitle: title,
 		          subtitle: subtitle,
@@ -716,7 +725,7 @@ struct NCDatabaseTypeInfo {
 			                                title: title,
 			                                subtitle: subtitle,
 			                                accessoryType: .disclosureIndicator,
-			                                route: nil)
+			                                route: Router.Database.TypeMastery(typeObjectID: type.objectID, masteryLevelObjectID: level.objectID))
 			rows.append(row)
 		}
 		

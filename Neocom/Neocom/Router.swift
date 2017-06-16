@@ -311,6 +311,24 @@ enum Router {
 			}
 		}
 		
+		class TypeMastery: Route {
+			let typeObjectID: NSManagedObjectID
+			let masteryLevelObjectID: NSManagedObjectID
+			
+			init(typeObjectID: NSManagedObjectID, masteryLevelObjectID: NSManagedObjectID) {
+				self.typeObjectID = typeObjectID
+				self.masteryLevelObjectID = masteryLevelObjectID
+				super.init(kind: .push, identifier: "NCDatabaseTypeMasteryViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCDatabaseTypeMasteryViewController
+				let context = NCDatabase.sharedDatabase?.viewContext
+				destination.type = (try? context?.existingObject(with: typeObjectID)) as? NCDBInvType
+				destination.level = (try? context?.existingObject(with: masteryLevelObjectID)) as? NCDBCertMasteryLevel
+			}
+		}
+
 	}
 	
 	enum Character {

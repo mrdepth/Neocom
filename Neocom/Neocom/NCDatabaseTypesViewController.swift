@@ -31,6 +31,10 @@ class NCDatabaseTypeRow: FetchedResultsObjectNode<NSDictionary> {
 		cell.iconView?.image = icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		cell.accessoryType = .disclosureIndicator
 	}
+	
+	override var hashValue: Int {
+		return object["typeID"] as? Int ?? 0
+	}
 }
 
 

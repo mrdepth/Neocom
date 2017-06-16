@@ -11,6 +11,7 @@ import UIKit
 import UIKit
 import CoreData
 
+/*
 class NCDatabaseCertificateSection: NCTreeSection {
 	let trainingQueue: NCTrainingQueue
 	let trainingTime: TimeInterval
@@ -36,6 +37,7 @@ class NCDatabaseCertificateSection: NCTreeSection {
 		cell.character = character
 	}
 }
+*/
 
 class NCDatabaseTypeMasteryViewController: UITableViewController, TreeControllerDelegate {
 	var type: NCDBInvType?
@@ -47,6 +49,9 @@ class NCDatabaseTypeMasteryViewController: UITableViewController, TreeController
 		super.viewDidLoad()
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
+		
+		tableView.register([Prototype.NCActionHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.default])
 		
 		treeController.delegate = self
 		title = NSLocalizedString("Level", comment: "") + " \(String(romanNumber: Int((level?.level ?? 0) + 1)))"
@@ -76,7 +81,7 @@ class NCDatabaseTypeMasteryViewController: UITableViewController, TreeController
 					request.predicate = NSPredicate(format: "level == %@ AND certificate.types CONTAINS %@", level, type)
 					request.sortDescriptors = [NSSortDescriptor(key: "certificate.certificateName", ascending: true)]
 					
-					var certificates = [NCTreeSection]()
+					var certificates = [TreeSection]()
 					for mastery in (try? managedObjectContext.fetch(request)) ?? [] {
 						
 						var rows = [NCDatabaseTypeSkillRow]()
@@ -88,16 +93,17 @@ class NCDatabaseTypeMasteryViewController: UITableViewController, TreeController
 						trainingQueue.add(mastery: mastery)
 						let title = mastery.certificate!.certificateName!.uppercased()
 						let section = NCDatabaseSkillsSection(nodeIdentifier: nil, title: title, trainingQueue: trainingQueue, character: character, children: rows)
-						section.expanded = section.trainingTime > 0
+						section.isExpanded = section.trainingTime > 0
 						certificates.append(section)
 					}
 					progress.progress.completedUnitCount += 1
 					
 					DispatchQueue.main.async {
-						self.results = certificates
-						self.treeController.content = certificates
-						self.treeController.reloadData()
+						let node = TreeNode()
+						node.children = certificates
+						self.treeController.content = node
 						progress.finish()
+						
 					}
 				}
 			}
@@ -105,64 +111,41 @@ class NCDatabaseTypeMasteryViewController: UITableViewController, TreeController
 		}
 	}
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "NCDatabaseTypeInfoViewController" {
-			let controller = segue.destination as? NCDatabaseTypeInfoViewController
-			let object = (sender as! NCDefaultTableViewCell).object as! NSManagedObjectID
-			controller?.type = (try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: object)) as? NCDBInvType
+	// MARK: - TreeControllerDelegate
+	
+	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		treeController.deselectCell(for: node, animated: true)
+		if let route = (node as? TreeNodeRoutable)?.route {
+			route.perform(source: self, view: treeController.cell(for: node))
 		}
 	}
 	
-	@IBAction func onTrain(_ sender: UIButton) {
-		func find(_ view: UIView?) -> UITableViewCell? {
-			guard let cell = view as? UITableViewCell else {
-				return find(view?.superview)
-			}
-			return cell
+	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+		if let item = node as? NCDatabaseSkillsSection {
+			performTraining(trainingQueue: item.trainingQueue, character: item.character)
 		}
-		guard let account = NCAccount.current,
-			let cell = sender.ancestor(of: NCSkillsHeaderTableViewCell.self),
-			let trainingQueue = cell.trainingQueue,
-			let character = cell.character else {
-				return
-		}
-		let message = String(format: NSLocalizedString("Training time: %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: trainingQueue.trainingTime(characterAttributes: character.attributes), precision: .seconds))
-		let controller = UIAlertController(title: NSLocalizedString("Add to skill plan?", comment: ""), message: message, preferredStyle: .alert)
+	}
+	
+	// MARK: Private
+	
+	private func performTraining(trainingQueue: NCTrainingQueue, character: NCCharacter) {
+		guard let account = NCAccount.current else {return}
 		
-		controller.addAction(UIAlertAction(title: NSLocalizedString("Add", comment: ""), style: .default) { action in
+		let message = String(format: NSLocalizedString("Total Training Time: %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: trainingQueue.trainingTime(characterAttributes: character.attributes), precision: .seconds))
+		
+		let controller = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Add to Skill Plan", comment: ""), style: .default) { [weak self] _ in
 			account.activeSkillPlan?.add(trainingQueue: trainingQueue)
 			
 			if account.managedObjectContext?.hasChanges == true {
 				try? account.managedObjectContext?.save()
+				self?.tableView.reloadData()
 			}
-
-			self.treeController.reloadData()
 		})
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
 		present(controller, animated: true)
-		
 	}
 	
-	// MARK: NCTreeControllerDelegate
-	
-	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
-		return (item as! NCTreeNode).cellIdentifier
-	}
-	
-	func treeController(_ treeController: NCTreeController, configureCell cell: UITableViewCell, withItem item: AnyObject) {
-		(item as! NCTreeNode).configure(cell: cell)
-	}
-	
-	func treeController(_ treeController: NCTreeController, isItemExpanded item: AnyObject) -> Bool {
-		return (item as? NCTreeSection)?.expanded ?? true
-	}
-	
-	func treeController(_ treeController: NCTreeController, didExpandCell cell: UITableViewCell, withItem item: AnyObject) {
-		(item as? NCTreeSection)?.expanded = true
-	}
-	
-	func treeController(_ treeController: NCTreeController, didCollapseCell cell: UITableViewCell, withItem item: AnyObject) {
-		(item as? NCTreeSection)?.expanded = false
-	}
 }

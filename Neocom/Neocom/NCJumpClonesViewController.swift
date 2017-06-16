@@ -126,7 +126,7 @@ class NCJumpClonesViewController: UITableViewController, TreeControllerDelegate,
 				for (attribute, name) in list {
 					if let implant = implants.first(where: {($0.allAttributes[attribute.rawValue]?.value ?? 0) > 0}) {
 						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                           nodeIdentifier: name,
+						                           nodeIdentifier: "\(name)\(clone.jumpCloneID)",
 						                           image: implant.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image,
 						                           title: implant.typeName?.uppercased(),
 						                           subtitle: "\(name) +\(Int(implant.allAttributes[attribute.rawValue]!.value))",
@@ -137,7 +137,7 @@ class NCJumpClonesViewController: UITableViewController, TreeControllerDelegate,
 				}
 				
 				if rows.isEmpty {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, nodeIdentifier: "NoImplants", title: NSLocalizedString("No Implants Installed", comment: "").uppercased()))
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, nodeIdentifier: "NoImplants\(clone.jumpCloneID)", title: NSLocalizedString("No Implants Installed", comment: "").uppercased()))
 				}
 				sections.append(DefaultTreeSection(nodeIdentifier: "\(clone.jumpCloneID)", attributedTitle: locations?[clone.locationID]?.displayName.uppercased(), children: rows))
 			}

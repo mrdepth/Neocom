@@ -9,16 +9,18 @@
 import UIKit
 import EVEAPI
 
-class NCDatabaseMarketInfoRow: NCTreeRow {
+class NCDatabaseMarketInfoRow: TreeRow {
 	let price: String
 	let location: NSAttributedString
 	let quantity: String
+	let order: ESI.Market.Order
 	
 	init(order: ESI.Market.Order, location: NCLocation?) {
+		self.order = order
 		self.price = NCUnitFormatter.localizedString(from: order.price, unit: .isk, style: .full)
 		self.location = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown location", comment: ""))
 		self.quantity = NCUnitFormatter.localizedString(from: Double(order.volumeRemain), unit: .none, style: .full)
-		super.init(cellIdentifier: "Cell")
+		super.init(prototype: Prototype.NCMarketInfoTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -27,20 +29,31 @@ class NCDatabaseMarketInfoRow: NCTreeRow {
 		cell.locationLabel.attributedText = location
 		cell.quantityLabel.text = quantity
 	}
+	
+	override var hashValue: Int {
+		return order.hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCDatabaseMarketInfoRow)?.hashValue == hashValue
+	}
 }
 
-class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControllerDelegate {
+class NCDatabaseMarketInfoViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
 	var type: NCDBInvType?
-	@IBOutlet weak var treeController: NCTreeController!
+	
+	@IBOutlet weak var treeController: TreeController!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.childrenKeyPath = "children"
+		
+		tableView.register([Prototype.NCHeaderTableViewCell.default])
+		
 		treeController.delegate = self
-		refreshControl = UIRefreshControl()
-		refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
+		
+		registerRefreshable()
 		
 		let regionID = UserDefaults.standard.object(forKey: UserDefaults.Key.NCMarketRegion) as? Int ?? NCDBRegionID.theForge.rawValue
 		if let region = NCDatabase.sharedDatabase?.mapRegions[regionID] {
@@ -62,22 +75,66 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 		navigationItem.rightBarButtonItem?.title = region.regionName
 		UserDefaults.standard.set(Int(region.regionID), forKey: UserDefaults.Key.NCMarketRegion)
 		treeController.content = nil
-		treeController.reloadData()
 		reload()
+		
 		NotificationCenter.default.post(name: .NCMarketRegionChanged, object: region)
 	}
 	
-	//MARK: NCTreeControllerDelegate
+	//MARK: - NCRefreshable
+	private var observer: NCManagedObjectObserver?
+	private var orders: NCCachedResult<[ESI.Market.Order]>?
+	private var locations: [Int64: NCLocation]?
+
 	
-	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
-		return (item as! NCTreeNode).cellIdentifier
-	}
-	
-	func treeController(_ treeController: NCTreeController, configureCell cell: UITableViewCell, withItem item: AnyObject) {
-		(item as! NCTreeNode).configure(cell: cell)
+	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
+		let dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
+		let regionID = UserDefaults.standard.object(forKey: UserDefaults.Key.NCMarketRegion) as? Int ?? NCDBRegionID.theForge.rawValue
+		let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
+		
+		progress.progress.becomeCurrent(withPendingUnitCount: 1)
+		dataManager.marketOrders(typeID: Int(type!.typeID), regionID: regionID) { result in
+			self.orders = result
+			
+			switch result {
+			case let .success(_, record):
+				if let record = record {
+					self.observer = NCManagedObjectObserver(managedObject: record) { [weak self] _ in
+						self?.reloadLocations(dataManager: dataManager) {
+							self?.reloadSections()
+							completionHandler?()
+						}
+					}
+				}
+				
+				progress.progress.becomeCurrent(withPendingUnitCount: 1)
+				self.reloadLocations(dataManager: dataManager) {
+					self.reloadSections()
+					completionHandler?()
+					progress.finish()
+				}
+				progress.progress.resignCurrent()
+			case .failure:
+				completionHandler?()
+				progress.finish()
+			}
+			
+		}
+		progress.progress.resignCurrent()
 	}
 	
 	//MARK: Private
+	
+	private func reloadLocations(dataManager: NCDataManager, completionHandler: (() -> Void)?) {
+		guard let locationIDs = orders?.value?.map ({$0.locationID}), !locationIDs.isEmpty else {
+			completionHandler?()
+			return
+		}
+		dataManager.locations(ids: Set(locationIDs)) { [weak self] result in
+			self?.locations = result
+			completionHandler?()
+		}
+		
+	}
 	
 	@objc private func refresh() {
 		let progress = NCProgressHandler(totalUnitCount: 1)
@@ -88,12 +145,10 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 		progress.progress.resignCurrent()
 	}
 	
-	private var observer: NCManagedObjectObserver?
-	
-	private func process(_ value: [ESI.Market.Order], dataManager: NCDataManager, completionHandler: (() -> Void)?) {
-		let locations = Set(value.map {return $0.locationID})
-		
-		dataManager.locations(ids: locations) { locations in
+	private func reloadSections() {
+		if let value = orders?.value {
+			let locations = self.locations ?? [:]
+			
 			var buy: [ESI.Market.Order] = []
 			var sell: [ESI.Market.Order] = []
 			for order in value {
@@ -109,50 +164,31 @@ class NCDatabaseMarketInfoViewController: UITableViewController, NCTreeControlle
 			
 			let sellRows = sell.map { return NCDatabaseMarketInfoRow(order: $0, location: locations[$0.locationID])}
 			let buyRows = buy.map { return NCDatabaseMarketInfoRow(order: $0, location: locations[$0.locationID])}
-			let sections = [NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Sellers", title: NSLocalizedString("SELLERS", comment: ""), attributedTitle: nil, children: sellRows),
-			                NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "Buyers", title: NSLocalizedString("BUYERS", comment: ""), attributedTitle: nil, children: buyRows)]
+			let sections = [DefaultTreeSection(nodeIdentifier: "Sellers",
+			                                   title: NSLocalizedString("Sellers", comment: "").uppercased(),
+			                                   children: sellRows),
+			                DefaultTreeSection(nodeIdentifier: "Buyers",
+			                                   title: NSLocalizedString("Buyers", comment: "").uppercased(),
+			                                   children: buyRows)]
 			if sellRows.isEmpty && buyRows.isEmpty {
 				self.tableView.backgroundView = NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
 			}
 			else {
-				self.treeController.content = sections
+				if self.treeController.content == nil {
+					let root = TreeNode()
+					root.children = sections
+					self.treeController.content = root
+				}
+				else {
+					self.treeController.content?.children = sections
+				}
 				self.tableView.backgroundView = nil
-				self.treeController.reloadData()
 			}
-			completionHandler?()
 
+		}
+		else {
+			tableView.backgroundView = NCTableViewBackgroundLabel(text: orders?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 		}
 	}
 	
-	private func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil ) {
-		let dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
-		let regionID = UserDefaults.standard.object(forKey: UserDefaults.Key.NCMarketRegion) as? Int ?? NCDBRegionID.theForge.rawValue
-		let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
-		
-		progress.progress.becomeCurrent(withPendingUnitCount: 1)
-		dataManager.marketOrders(typeID: Int(type!.typeID), regionID: regionID) { result in
-			switch result {
-			case let .success(value, cacheRecord):
-				if let cacheRecord = cacheRecord {
-					self.observer = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] _, _ in
-						guard let value = cacheRecord.data?.data as? [ESI.Market.Order] else {return}
-						self?.process(value, dataManager: dataManager, completionHandler: nil)
-					}
-				}
-				progress.progress.becomeCurrent(withPendingUnitCount: 1)
-				self.process(value, dataManager: dataManager) {
-					progress.finish()
-					completionHandler?()
-				}
-				progress.progress.resignCurrent()
-			case let .failure(error):
-				if self.treeController.content == nil {
-					self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
-				}
-				progress.finish()
-				completionHandler?()
-			}
-		}
-		progress.progress.resignCurrent()
-	}
 }

@@ -1852,7 +1852,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="BYw-Fk-Ip9" customClass="NCMarketInfoTableViewCell" customModule="Neocom" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCMarketInfoTableViewCell" id="BYw-Fk-Ip9" customClass="NCMarketInfoTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="55.5" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BYw-Fk-Ip9" id="Ek4-md-WlC">
@@ -1923,39 +1923,6 @@
                                     <outlet property="quantityLabel" destination="nv8-14-ERz" id="K6v-v7-CU6"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCHeaderTableViewCell" rowHeight="40" id="bJ0-tN-Xfx" customClass="NCHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="96.5" width="320" height="40"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bJ0-tN-Xfx" id="DSQ-AR-Kee">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0WH-pe-FOH">
-                                            <rect key="frame" x="32" y="15" width="273" height="16"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="n32-Yi-6gN">
-                                            <rect key="frame" x="8" y="15" width="16" height="16"/>
-                                            <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="0WH-pe-FOH" firstAttribute="centerY" secondItem="n32-Yi-6gN" secondAttribute="centerY" id="D4o-SD-JJq"/>
-                                        <constraint firstItem="0WH-pe-FOH" firstAttribute="top" secondItem="DSQ-AR-Kee" secondAttribute="top" constant="15" id="GxC-WP-gf0"/>
-                                        <constraint firstAttribute="trailing" secondItem="0WH-pe-FOH" secondAttribute="trailing" constant="15" id="LyM-mS-9eK"/>
-                                        <constraint firstAttribute="bottom" secondItem="0WH-pe-FOH" secondAttribute="bottom" constant="8" id="nTJ-3s-ai4"/>
-                                        <constraint firstItem="0WH-pe-FOH" firstAttribute="leading" secondItem="n32-Yi-6gN" secondAttribute="trailing" constant="8" id="uJB-uE-xLC"/>
-                                        <constraint firstItem="n32-Yi-6gN" firstAttribute="leading" secondItem="DSQ-AR-Kee" secondAttribute="leading" constant="8" id="zDg-Wg-0GB"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="expandIconView" destination="n32-Yi-6gN" id="Gwa-QL-SBB"/>
-                                    <outlet property="titleLabel" destination="0WH-pe-FOH" id="bKT-It-IBd"/>
-                                </connections>
-                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="0W7-Gu-8Mk" id="H6k-6I-lYR"/>
@@ -1975,7 +1942,7 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ebc-SY-hPW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="0W7-Gu-8Mk" customClass="NCTreeController" customModule="Neocom" customModuleProvider="target">
+                <customObject id="0W7-Gu-8Mk" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
                     <connections>
                         <outlet property="tableView" destination="EFq-Kw-LLo" id="Fnj-eG-Lqp"/>
                     </connections>
@@ -1991,91 +1958,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="JnZ-TH-8LK" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="320" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JnZ-TH-8LK" id="V2r-Re-G7U">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5O5-u6-tuS">
-                                            <rect key="frame" x="15" y="4" width="290" height="32"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TRB-GI-0JQ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="290" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jaz-JE-hXE">
-                                                    <rect key="frame" x="0.0" y="16" width="290" height="16"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="jaz-JE-hXE" secondAttribute="trailing" id="0Sf-0f-CDD"/>
-                                                <constraint firstItem="TRB-GI-0JQ" firstAttribute="leading" secondItem="5O5-u6-tuS" secondAttribute="leading" id="6aP-Rs-3q0"/>
-                                                <constraint firstItem="TRB-GI-0JQ" firstAttribute="top" secondItem="5O5-u6-tuS" secondAttribute="top" id="D2v-ws-OVn"/>
-                                                <constraint firstItem="jaz-JE-hXE" firstAttribute="top" secondItem="TRB-GI-0JQ" secondAttribute="bottom" id="Oid-Mb-5C5"/>
-                                                <constraint firstAttribute="bottom" secondItem="jaz-JE-hXE" secondAttribute="bottom" id="WHV-To-EYk"/>
-                                                <constraint firstItem="jaz-JE-hXE" firstAttribute="leading" secondItem="5O5-u6-tuS" secondAttribute="leading" id="dLQ-Xl-ari"/>
-                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24" id="hlF-xO-LvK"/>
-                                                <constraint firstAttribute="trailing" secondItem="TRB-GI-0JQ" secondAttribute="trailing" id="j4P-2j-zPO"/>
-                                            </constraints>
-                                        </view>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="5O5-u6-tuS" firstAttribute="leading" secondItem="V2r-Re-G7U" secondAttribute="leading" constant="15" id="Da0-gl-FdD"/>
-                                        <constraint firstAttribute="bottom" secondItem="5O5-u6-tuS" secondAttribute="bottom" priority="999" constant="4" id="LeN-sK-svS"/>
-                                        <constraint firstItem="5O5-u6-tuS" firstAttribute="centerY" secondItem="V2r-Re-G7U" secondAttribute="centerY" id="YZz-b9-dF3"/>
-                                        <constraint firstAttribute="trailing" secondItem="5O5-u6-tuS" secondAttribute="trailing" constant="15" id="bl8-DN-5O1"/>
-                                        <constraint firstItem="5O5-u6-tuS" firstAttribute="top" secondItem="V2r-Re-G7U" secondAttribute="top" constant="4" id="cPX-3A-Vc4"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="subtitleLabel" destination="jaz-JE-hXE" id="jKl-0W-OTd"/>
-                                    <outlet property="titleLabel" destination="TRB-GI-0JQ" id="NZr-pJ-qQI"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCHeaderTableViewCell" rowHeight="40" id="oHO-Tx-KjN" customClass="NCHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="96.5" width="320" height="40"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oHO-Tx-KjN" id="Ghn-oy-1Xq">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNQ-lK-Qee">
-                                            <rect key="frame" x="32" y="15" width="273" height="16"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="7Fm-QC-JFU">
-                                            <rect key="frame" x="8" y="15" width="16" height="16"/>
-                                            <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="tNQ-lK-Qee" secondAttribute="trailing" constant="15" id="Dqk-gi-OMi"/>
-                                        <constraint firstAttribute="bottom" secondItem="tNQ-lK-Qee" secondAttribute="bottom" constant="8" id="WtI-zf-nGV"/>
-                                        <constraint firstItem="tNQ-lK-Qee" firstAttribute="centerY" secondItem="7Fm-QC-JFU" secondAttribute="centerY" id="k81-nt-f5K"/>
-                                        <constraint firstItem="tNQ-lK-Qee" firstAttribute="leading" secondItem="7Fm-QC-JFU" secondAttribute="trailing" constant="8" id="q7F-uG-1e1"/>
-                                        <constraint firstItem="7Fm-QC-JFU" firstAttribute="leading" secondItem="Ghn-oy-1Xq" secondAttribute="leading" constant="8" id="rtE-FX-I0w"/>
-                                        <constraint firstItem="tNQ-lK-Qee" firstAttribute="top" secondItem="Ghn-oy-1Xq" secondAttribute="top" constant="15" id="w8Z-SI-Zpi"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="expandIconView" destination="7Fm-QC-JFU" id="D0q-dg-pcE"/>
-                                    <outlet property="titleLabel" destination="tNQ-lK-Qee" id="89E-8u-BZb"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="7JW-KO-ycD" id="GbF-3P-SdR"/>
                             <outlet property="delegate" destination="7JW-KO-ycD" id="oZ7-Dw-KUJ"/>
@@ -2089,7 +1971,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bze-VB-5OF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Glk-75-Bzl" userLabel="Exit" sceneMemberID="exit"/>
-                <customObject id="7JW-KO-ycD" customClass="NCTreeController" customModule="Neocom" customModuleProvider="target">
+                <customObject id="7JW-KO-ycD" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
                     <connections>
                         <outlet property="tableView" destination="Beh-Tr-yCi" id="MKu-Nc-LlG"/>
                     </connections>

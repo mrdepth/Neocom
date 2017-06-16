@@ -264,7 +264,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					if let searchController = self.searchController, searchController.isActive {
 						self.searchResultsController?.updateSearchResults(for: searchController)
 					}
-
+					self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
 				}
 			}
 			

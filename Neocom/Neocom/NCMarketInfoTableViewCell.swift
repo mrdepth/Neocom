@@ -14,3 +14,9 @@ class NCMarketInfoTableViewCell: NCTableViewCell {
 	@IBOutlet weak var quantityLabel: UILabel!
 
 }
+
+extension Prototype {
+	enum NCMarketInfoTableViewCell {
+		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCMarketInfoTableViewCell")
+	}
+}

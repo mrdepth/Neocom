@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCRegionPickerRow: NCTreeRow {
+class NCRegionPickerRow: TreeRow {
 	let regionID: NSManagedObjectID?
 	let solarSystemID: NSManagedObjectID?
 	let selected: Bool
@@ -29,13 +29,13 @@ class NCRegionPickerRow: NCTreeRow {
 		self.regionID = regionID
 		self.solarSystemID = nil
 		self.selected = selected
-		super.init(cellIdentifier: "Cell")
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default)
 	}
 	init(solarSystemID: NSManagedObjectID, selected: Bool) {
 		self.regionID = nil
 		self.solarSystemID = solarSystemID
 		self.selected = selected
-		super.init(cellIdentifier: "Cell")
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -57,14 +57,14 @@ class NCRegionPickerRow: NCTreeRow {
 	}
 }
 
-class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdating, NCTreeControllerDelegate {
+class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
 	private var results: NSFetchedResultsController<NCDBMapRegion>?
 	private var searchController: UISearchController?
 	var region: NCDBMapRegion?
 	var searchString: String?
 	
 	private let gate = NCGate()
-	@IBOutlet weak var treeController: NCTreeController!
+	@IBOutlet weak var treeController: TreeController!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -73,7 +73,10 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.childrenKeyPath = "children"
+		
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.default])
+		
 		treeController.delegate = self
 
 		if navigationController != nil {
@@ -92,7 +95,7 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 		let selection = region?.objectID
 		gate.perform {
 			NCDatabase.sharedDatabase?.performTaskAndWait({ (managedObjectContext) in
-				var sections = [NCTreeSection]()
+				var sections = [TreeSection]()
 				var knownSpace = [NCRegionPickerRow]()
 				var whSpace = [NCRegionPickerRow]()
 				if let searchString = self.searchString {
@@ -127,7 +130,7 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 					let request = NSFetchRequest<NSManagedObjectID>(entityName: "MapRegion")
 					request.resultType = .managedObjectIDResultType
 					request.sortDescriptors = [NSSortDescriptor(key: "regionName", ascending: true)]
-					request.predicate = NSPredicate(format: "regionID < %d, ", NCDBRegionID.whSpace.rawValue)
+					request.predicate = NSPredicate(format: "regionID < %d", NCDBRegionID.whSpace.rawValue)
 					if let results = try? managedObjectContext.fetch(request) {
 						knownSpace.append(contentsOf: results.map {return NCRegionPickerRow(regionID: $0, selected: $0 == selection)})
 					}
@@ -137,15 +140,22 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 					}
 				}
 				if knownSpace.count > 0 {
-					sections.append(NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "KnownSpace", title: NSLocalizedString("KNOWN SPACE", comment: ""), children: knownSpace))
+					sections.append(DefaultTreeSection(nodeIdentifier: "KnownSpace", title: NSLocalizedString("Known Space", comment: "").uppercased(), children: knownSpace))
 				}
 				if whSpace.count > 0 {
-					sections.append(NCTreeSection(cellIdentifier: "NCHeaderTableViewCell", nodeIdentifier: "WHSpace", title: NSLocalizedString("WH SPACE", comment: ""), children: whSpace))
+					sections.append(DefaultTreeSection(nodeIdentifier: "WHSpace", title: NSLocalizedString("WH Space", comment: "").uppercased(), children: whSpace))
 				}
 				
 				DispatchQueue.main.async {
-					self.treeController.content = sections
-					self.treeController.reloadData()
+					if self.treeController.content == nil {
+						let root = TreeNode()
+						root.children = sections
+						self.treeController.content = root
+					}
+					else {
+						self.treeController.content?.children = sections
+					}
+
 					self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
 				}
 			})
@@ -166,18 +176,10 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 	}
 	
 	
-	//MARK: NCTreeControllerDelegate
+	//MARK: TreeControllerDelegate
 	
-	func treeController(_ treeController: NCTreeController, cellIdentifierForItem item: AnyObject) -> String {
-		return (item as! NCTreeNode).cellIdentifier
-	}
-	
-	func treeController(_ treeController: NCTreeController, configureCell cell: UITableViewCell, withItem item: AnyObject) {
-		(item as! NCTreeNode).configure(cell: cell)
-	}
-	
-	func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) {
-		guard let item = item as? NCRegionPickerRow else {return}
+	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		guard let item = node as? NCRegionPickerRow else {return}
 		
 		if let region = item.region ?? item.solarSystem?.constellation?.region {
 			if let parent = presentingViewController as? NCRegionPickerViewController {

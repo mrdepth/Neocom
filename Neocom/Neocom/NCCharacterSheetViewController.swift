@@ -291,7 +291,7 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 			value.forEach {balance += Double($0.balance ?? 0)}
 			
 			let row = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Balance", title: NSLocalizedString("Balance", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: balance / 100.0, unit: .isk, style: .full))
-			sections.append(DefaultTreeSection(nodeIdentifier: "Bio", title: NSLocalizedString("Account", comment: "").uppercased(), children: [row]))
+			sections.append(DefaultTreeSection(nodeIdentifier: "Account", title: NSLocalizedString("Account", comment: "").uppercased(), children: [row]))
 		}
 		
 		rows = []
@@ -319,7 +319,7 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 						s = DateFormatter.localizedString(from: date, dateStyle: .short, timeStyle: .none)
 					}
 
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Respecs", title: NSLocalizedString("Neural Remap Available", comment: "").uppercased(), subtitle: s))
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "RespecDate", title: NSLocalizedString("Neural Remap Available", comment: "").uppercased(), subtitle: s))
 				}
 			}
 		}
@@ -355,7 +355,7 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 				for (attribute, name) in list {
 					if let implant = implants.first(where: {($0.allAttributes[attribute.rawValue]?.value ?? 0) > 0}) {
 						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                           nodeIdentifier: name,
+						                           nodeIdentifier: "\(name)Enhancer",
 						                           image: implant.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image,
 						                           title: implant.typeName?.uppercased(),
 						                           subtitle: "\(name) +\(Int(implant.allAttributes[attribute.rawValue]!.value))",

@@ -15,7 +15,7 @@
 @property (nonatomic, nullable) NCFittingCharacter* wingBooster;
 @property (nonatomic, nullable) NCFittingCharacter* squadBooster;
 
-- (nonnull NCFittingCharacter*) addPilot;
+- (nullable NCFittingCharacter*) addPilot;
 - (void) removePilot:(nonnull NCFittingCharacter*) character;
 
 @end

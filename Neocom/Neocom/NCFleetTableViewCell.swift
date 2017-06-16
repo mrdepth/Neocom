@@ -27,25 +27,31 @@ class NCFleetRow: FetchedResultsObjectNode<NCFleet> {
 	
 	required init(object: NCFleet) {
 		super.init(object: object)
-		cellIdentifier = Prototype.NCFleetTableViewCell.default.reuseIdentifier
+//		cellIdentifier = Prototype.NCFleetTableViewCell.default.reuseIdentifier
+		cellIdentifier = Prototype.NCDefaultTableViewCell.default.reuseIdentifier
 	}
 	
-	lazy var loadouts: [(String?, String?, UIImage?)] = {
-		var loadouts = [(String?, String?, UIImage?)]()
+	var loadouts: [String] {
+		var loadouts = [String]()
 
 		let invTypes = NCDatabase.sharedDatabase?.invTypes
 		
 		for loadout in self.object.loadouts?.array as? [NCLoadout] ?? [] {
 			let type = invTypes?[Int(loadout.typeID)]
-			loadouts.append((loadout.name, type?.typeName, type?.icon?.image?.image))
+			loadouts.append(type?.typeName ?? NSLocalizedString("Unknown", comment: ""))
 		}
 		
 		return loadouts
-	}()
+	}
 	
 	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.text = object.name
+		let loadouts = self.loadouts
+		cell.subtitleLabel?.text = loadouts.isEmpty ? NSLocalizedString("Empty", comment: "") : loadouts.map {$0}.joined(separator: ",")
+		cell.accessoryType = .disclosureIndicator
 		
-		guard let cell = cell as? NCFleetTableViewCell else {return}
+		/*guard let cell = cell as? NCFleetTableViewCell else {return}
 		
 		cell.titleLabel.text = object.name
 		
@@ -77,7 +83,7 @@ class NCFleetRow: FetchedResultsObjectNode<NCFleet> {
 			(cell.shipNamesStackView.arrangedSubviews[i] as! UILabel).text = name
 			let typeNameLabel = cell.typeNamesStackView.arrangedSubviews[i] as! UILabel
 			typeNameLabel.attributedText = NSAttributedString(image: image ?? NCDBEveIcon.defaultType.image?.image, font: typeNameLabel.font) + " " + (typeName ?? "")
-		}
+		}*/
 	}
 	
 }

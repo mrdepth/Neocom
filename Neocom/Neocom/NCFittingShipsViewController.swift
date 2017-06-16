@@ -28,6 +28,7 @@ class NCLoadoutRow: TreeRow {
 		cell.titleLabel?.text = typeName
 		cell.subtitleLabel?.text = loadoutName
 		cell.iconView?.image = image
+		cell.accessoryType = .disclosureIndicator
 	}
 	
 	override var hashValue: Int {

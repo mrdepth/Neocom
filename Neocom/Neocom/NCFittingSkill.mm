@@ -14,7 +14,7 @@
 - (NSInteger) level {
 	NCVerifyFittingContext(self.engine);
 	auto skill = std::dynamic_pointer_cast<dgmpp::Skill>(self.item);
-	return skill->getSkillLevel();
+	return skill ? skill->getSkillLevel() : 0;
 }
 
 @end

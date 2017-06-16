@@ -13,7 +13,7 @@
 
 - (NSInteger) slot {
 	auto booster = std::dynamic_pointer_cast<dgmpp::Booster>(self.item);
-	return booster->getSlot();
+	return booster ? booster->getSlot() : 0;
 }
 
 @end

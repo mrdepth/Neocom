@@ -13,7 +13,7 @@
 
 - (NSInteger) slot {
 	auto implant = std::dynamic_pointer_cast<dgmpp::Implant>(self.item);
-	return implant->getSlot();
+	return implant ? implant->getSlot() : 0;
 }
 
 @end

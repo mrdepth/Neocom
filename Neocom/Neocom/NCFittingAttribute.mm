@@ -10,7 +10,7 @@
 #import "NCFittingProtected.h"
 
 @implementation NCFittingAttribute {
-	std::shared_ptr<dgmpp::Attribute> _attribute;
+	std::weak_ptr<dgmpp::Attribute> _attribute;
 	__weak NCFittingEngine* _engine;
 }
 
@@ -22,34 +22,46 @@
 	return self;
 }
 
-- (nonnull NCFittingItem*) owner {
-	return [NCFittingItem item:_attribute->getOwner() withEngine:_engine];
+- (std::shared_ptr<dgmpp::Attribute>) attribute {
+	return _attribute.lock();
+}
+
+
+- (nullable NCFittingItem*) owner {
+	std::shared_ptr<dgmpp::Attribute> attribute = self.attribute;
+	return attribute ? [NCFittingItem item:attribute->getOwner() withEngine:_engine] : nil;
 }
 
 - (NSInteger) attributeID {
-	return _attribute->getAttributeID();
+	std::shared_ptr<dgmpp::Attribute> attribute = self.attribute;
+	return attribute ? attribute->getAttributeID() : 0;
 }
 
 - (nonnull NSString*) attributeName {
-	return [NSString stringWithCString:_attribute->getAttributeName() ?: "" encoding:NSUTF8StringEncoding];
+	std::shared_ptr<dgmpp::Attribute> attribute = self.attribute;
+	return attribute ? [NSString stringWithCString:attribute->getAttributeName() ?: "" encoding:NSUTF8StringEncoding] : @"";
 }
 
 - (double) value {
 	NCVerifyFittingContext(_engine);
-	return _attribute->getValue();
+	std::shared_ptr<dgmpp::Attribute> attribute = self.attribute;
+	return attribute ? attribute->getValue() : 0;
 }
 
 - (double) initialValue {
 	NCVerifyFittingContext(_engine);
-	return _attribute->getInitialValue();
+	std::shared_ptr<dgmpp::Attribute> attribute = self.attribute;
+	return attribute ? attribute->getInitialValue() : 0;
 }
 
 - (BOOL) isStackable {
-	return _attribute->isStackable();
+	std::shared_ptr<dgmpp::Attribute> attribute = self.attribute;
+	return attribute ? attribute->isStackable() : NO;
 }
 
 - (BOOL) highIsGood {
-	return _attribute->highIsGood();
+	std::shared_ptr<dgmpp::Attribute> attribute = self.attribute;
+	return attribute ? attribute->highIsGood() : NO;
 }
 
 

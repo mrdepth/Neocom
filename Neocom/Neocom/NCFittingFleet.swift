@@ -42,10 +42,11 @@ class NCFittingFleet {
 	
 	init(typeID: Int, engine: NCFittingEngine) {
 		let gang = engine.gang
-		let pilot = gang.addPilot()
-		pilot.ship = NCFittingShip(typeID: typeID)
-		pilots.append((pilot, nil))
-		active = pilots.first?.0
+		if let pilot = gang.addPilot() {
+			pilot.ship = NCFittingShip(typeID: typeID)
+			pilots.append((pilot, nil))
+			active = pilots.first?.0
+		}
 		self.engine = engine
 	}
     
@@ -53,63 +54,70 @@ class NCFittingFleet {
         self.engine = engine
         
         let gang = engine.gang
-        let pilot = gang.addPilot()
-        let ship = NCFittingShip(typeID: asset.typeID)
-        pilot.ship = ship
-        pilots.append((pilot, nil))
-        active = pilot
+		if let pilot = gang.addPilot() {
+			let ship = NCFittingShip(typeID: asset.typeID)
+			pilot.ship = ship
+			pilots.append((pilot, nil))
+			active = pilot
+			
+			var cargo = Set<Int>()
+			var requiresAmmo = [NCFittingModule]()
+			
+			contents[asset.itemID]?.forEach {
+				switch $0.locationFlag {
+				case .droneBay:
+					for _ in 0..<($0.quantity ?? 1) {
+						ship.addDrone(typeID: $0.typeID)
+					}
+				case .cargo:
+					cargo.insert($0.typeID)
+				default:
+					if let module = ship.addModule(typeID: $0.typeID), !module.chargeGroups.isEmpty {
+						requiresAmmo.append(module)
+					}
+				}
+			}
+			
+			for module in requiresAmmo {
+				for typeID in cargo {
+					module.charge = NCFittingCharge(typeID: typeID)
+					if module.charge != nil {
+						break
+					}
+				}
+			}
+		}
 
-        var cargo = Set<Int>()
-        var requiresAmmo = [NCFittingModule]()
-        
-        contents[asset.itemID]?.forEach {
-            switch $0.locationFlag {
-            case .droneBay:
-                for _ in 0..<($0.quantity ?? 1) {
-                    ship.addDrone(typeID: $0.typeID)
-                }
-            case .cargo:
-                cargo.insert($0.typeID)
-            default:
-                if let module = ship.addModule(typeID: $0.typeID), !module.chargeGroups.isEmpty {
-                    requiresAmmo.append(module)
-                }
-            }
-        }
-        
-        for module in requiresAmmo {
-            for typeID in cargo {
-                module.charge = NCFittingCharge(typeID: typeID)
-                if module.charge != nil {
-                    break
-                }
-            }
-        }
 
     }
 	
 	func append(loadout: NCLoadout, engine: NCFittingEngine) {
 		guard let data = loadout.data?.data else {return}
 		let gang = engine.gang
-		let pilot = gang.addPilot()
+
+		if let pilot = gang.addPilot() {
 		
-		pilot.ship = NCFittingShip(typeID: Int(loadout.typeID))
-		pilot.ship?.name = loadout.name ?? ""
-		pilot.loadout = data
-		pilot.identifier = loadout.uuid
-		pilots.append((pilot, loadout.objectID))
-		
-		if active == nil {
-			active = pilot
+			pilot.ship = NCFittingShip(typeID: Int(loadout.typeID))
+			pilot.ship?.name = loadout.name ?? ""
+			pilot.loadout = data
+			pilot.identifier = loadout.uuid
+			pilots.append((pilot, loadout.objectID))
+			
+			if active == nil {
+				active = pilot
+			}
 		}
 	}
 	
 	func append(typeID: Int, engine: NCFittingEngine) {
 		let gang = engine.gang
-		let pilot = gang.addPilot()
-		pilot.ship = NCFittingShip(typeID: typeID)
-		pilots.append((pilot, nil))
-		active = pilots.first?.0
+		
+		
+		if let pilot = gang.addPilot() {
+			pilot.ship = NCFittingShip(typeID: typeID)
+			pilots.append((pilot, nil))
+			active = pilots.first?.0
+		}
 	}
 	
 	func remove(pilot: NCFittingCharacter) {

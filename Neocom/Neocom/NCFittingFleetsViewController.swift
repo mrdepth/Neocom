@@ -18,6 +18,9 @@ class NCFittingFleetsViewController: UITableViewController, TreeControllerDelega
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
+		
+		tableView.register([Prototype.NCDefaultTableViewCell.default])
+		
 		treeController.delegate = self
 		
 		guard let context = NCStorage.sharedStorage?.viewContext else {return}
@@ -78,31 +81,4 @@ class NCFittingFleetsViewController: UITableViewController, TreeControllerDelega
 		tableView.backgroundView = (treeController.content?.children.count ?? 0) > 0 ? nil : NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
 	}
 	
-	//MARK: - Private
-	
-	private func reload() {
-		var sections = [TreeNode]()
-		
-		
-		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
-			guard let strongSelf = self else {return}
-			strongSelf.dismiss(animated: true)
-			
-			let engine = NCFittingEngine()
-			let typeID = Int(type.typeID)
-			engine.perform {
-				let fleet = NCFittingFleet(typeID: typeID, engine: engine)
-				DispatchQueue.main.async {
-					Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
-				}
-			}
-			
-		})))
-		
-		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator))
-		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
-		
-		sections.append(NCLoadoutsSection(categoryID: .ship))
-		self.treeController.content?.children = sections
-	}
 }

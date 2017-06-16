@@ -10,7 +10,7 @@
 
 @class NCFittingItem;
 @interface NCFittingAttribute : NSObject
-@property (readonly, nonnull) NCFittingItem* owner;
+@property (readonly, nullable) NCFittingItem* owner;
 @property (readonly) NSInteger attributeID;
 @property (readonly, nonnull) NSString* attributeName;
 @property (readonly) double value;

@@ -10,7 +10,7 @@
 #import "NCFittingProtected.h"
 
 @implementation NCFittingSkills {
-	std::shared_ptr<dgmpp::Character> _character;
+	std::weak_ptr<dgmpp::Character> _character;
 	__weak NCFittingEngine* _engine;
 }
 
@@ -22,45 +22,67 @@
 	return self;
 }
 
+- (std::shared_ptr<dgmpp::Character>) character {
+	return _character.lock();
+}
+
+
 - (nullable NCFittingSkill*) objectAtIndexedSubscript:(NSInteger) typeID {
 	NCVerifyFittingContext(_engine);
-	auto skill = _character->getSkill(static_cast<dgmpp::TypeID>(typeID));
-	return skill ? (NCFittingSkill*) [NCFittingItem item:skill withEngine:_engine] : nil;
+	std::shared_ptr<dgmpp::Character> character = self.character;
+	if (character) {
+		auto skill = character->getSkill(static_cast<dgmpp::TypeID>(typeID));
+		return skill ? (NCFittingSkill*) [NCFittingItem item:skill withEngine:_engine] : nil;
+	}
+	else {
+		return nil;
+	}
 }
 
 - (NSArray<NCFittingSkill*>*) all {
 	NCVerifyFittingContext(_engine);
 	NSMutableArray* skills = [NSMutableArray new];
-	for (const auto& skill: _character->getSkills()) {
-		[skills addObject:[NCFittingItem item:skill.second withEngine:_engine]];
+	std::shared_ptr<dgmpp::Character> character = self.character;
+	if (character) {
+		for (const auto& skill: character->getSkills()) {
+			[skills addObject:[NCFittingItem item:skill.second withEngine:_engine]];
+		}
 	}
 	return skills;
 }
 
 - (NSUInteger) count {
-	return _character->getSkills().size();
+	std::shared_ptr<dgmpp::Character> character = self.character;
+	return character ? character->getSkills().size() : 0;
 }
 
 - (void) setAllSkillsLevel: (NSInteger) level {
 	NCVerifyFittingContext(_engine);
-	_character->setAllSkillsLevel(static_cast<int>(level));
-	[_engine updateWithItem: [NCFittingItem item:_character withEngine:_engine]];
+	std::shared_ptr<dgmpp::Character> character = self.character;
+	if (character) {
+		character->setAllSkillsLevel(static_cast<int>(level));
+		[_engine updateWithItem: [NCFittingItem item:character withEngine:_engine]];
+	}
 }
 
 - (void) setLevels: (nonnull NSDictionary<NSNumber*, NSNumber*>*) skillLevels {
 	NCVerifyFittingContext(_engine);
-	__block std::map<dgmpp::TypeID, int> levels;
-	[skillLevels enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSNumber * _Nonnull obj, BOOL * _Nonnull stop) {
-		levels[key.intValue] = obj.intValue;
-	}];
-	_character->setSkillLevels(levels);
-	[_engine updateWithItem: [NCFittingItem item:_character withEngine:_engine]];
+
+	std::shared_ptr<dgmpp::Character> character = self.character;
+	if (character) {
+		__block std::map<dgmpp::TypeID, int> levels;
+		[skillLevels enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSNumber * _Nonnull obj, BOOL * _Nonnull stop) {
+			levels[key.intValue] = obj.intValue;
+		}];
+		character->setSkillLevels(levels);
+		[_engine updateWithItem: [NCFittingItem item:character withEngine:_engine]];
+	}
 }
 
 @end
 
 @implementation NCFittingImplants {
-	std::shared_ptr<dgmpp::Character> _character;
+	std::weak_ptr<dgmpp::Character> _character;
 	__weak NCFittingEngine* _engine;
 }
 
@@ -72,29 +94,48 @@
 	return self;
 }
 
-- (nullable NCFittingImplant*) objectAtIndexedSubscript:(NSInteger) slot {
-	NCVerifyFittingContext(_engine);
-	auto implant = _character->getImplant(static_cast<int>(slot));
-	return implant ? (NCFittingImplant*) [NCFittingItem item:implant withEngine:_engine] : nil;
+- (std::shared_ptr<dgmpp::Character>) character {
+	return _character.lock();
 }
 
-- (NSArray<NCFittingSkill*>*) all {
+- (nullable NCFittingImplant*) objectAtIndexedSubscript:(NSInteger) slot {
 	NCVerifyFittingContext(_engine);
-	NSMutableArray* implants = [NSMutableArray new];
-	for (const auto& implant: _character->getImplants()) {
-		[implants addObject:[NCFittingItem item:implant withEngine:_engine]];
+	
+	std::shared_ptr<dgmpp::Character> character = self.character;
+	if (character) {
+		auto implant = character->getImplant(static_cast<int>(slot));
+		return implant ? (NCFittingImplant*) [NCFittingItem item:implant withEngine:_engine] : nil;
 	}
-	return implants;
+	else {
+		return nil;
+	}
+}
+
+- (nonnull NSArray<NCFittingSkill*>*) all {
+	NCVerifyFittingContext(_engine);
+	
+	std::shared_ptr<dgmpp::Character> character = self.character;
+	if (character) {
+		NSMutableArray* implants = [NSMutableArray new];
+		for (const auto& implant: character->getImplants()) {
+			[implants addObject:[NCFittingItem item:implant withEngine:_engine]];
+		}
+		return implants;
+	}
+	else {
+		return @[];
+	}
 }
 
 - (NSUInteger) count {
-	return _character->getImplants().size();
+	std::shared_ptr<dgmpp::Character> character = self.character;
+	return character ? character->getImplants().size() : 0;
 }
 
 @end
 
 @implementation NCFittingBoosters {
-	std::shared_ptr<dgmpp::Character> _character;
+	std::weak_ptr<dgmpp::Character> _character;
 	__weak NCFittingEngine* _engine;
 }
 
@@ -106,23 +147,42 @@
 	return self;
 }
 
+- (std::shared_ptr<dgmpp::Character>) character {
+	return _character.lock();
+}
+
 - (nullable NCFittingBooster*) objectAtIndexedSubscript:(NSInteger) slot {
 	NCVerifyFittingContext(_engine);
-	auto booster = _character->getBooster(static_cast<int>(slot));
-	return booster ? (NCFittingBooster*) [NCFittingItem item:booster withEngine:_engine] : nil;
+	
+	std::shared_ptr<dgmpp::Character> character = self.character;
+	if (character) {
+		auto booster = character->getBooster(static_cast<int>(slot));
+		return booster ? (NCFittingBooster*) [NCFittingItem item:booster withEngine:_engine] : nil;
+	}
+	else {
+		return nil;
+	}
 }
 
 - (NSArray<NCFittingSkill*>*) all {
 	NCVerifyFittingContext(_engine);
-	NSMutableArray* boosters = [NSMutableArray new];
-	for (const auto& booster: _character->getBoosters()) {
-		[boosters addObject:[NCFittingItem item:booster withEngine:_engine]];
+	
+	std::shared_ptr<dgmpp::Character> character = self.character;
+	if (character) {
+		NSMutableArray* boosters = [NSMutableArray new];
+		for (const auto& booster: character->getBoosters()) {
+			[boosters addObject:[NCFittingItem item:booster withEngine:_engine]];
+		}
+		return boosters;
 	}
-	return boosters;
+	else {
+		return @[];
+	}
 }
 
 - (NSUInteger) count {
-	return _character->getBoosters().size();
+	std::shared_ptr<dgmpp::Character> character = self.character;
+	return character ? character->getBoosters().size() : 0;
 }
 
 
@@ -142,17 +202,24 @@
 - (nullable NCFittingImplant*) addImplantWithTypeID:(NSInteger) typeID forced:(BOOL) forced {
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-	auto implant = character->addImplant(static_cast<dgmpp::TypeID>(typeID), forced);
-	[self.engine updateWithItem: self];
-	return implant ? (NCFittingImplant*) [NCFittingItem item:implant withEngine:self.engine] : nil;
+	if (character) {
+		auto implant = character->addImplant(static_cast<dgmpp::TypeID>(typeID), forced);
+		[self.engine updateWithItem: self];
+		return implant ? (NCFittingImplant*) [NCFittingItem item:implant withEngine:self.engine] : nil;
+	}
+	else {
+		return nil;
+	}
 }
 
 - (void) removeImplant:(nonnull NCFittingImplant*) implant {
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-	auto i = std::dynamic_pointer_cast<dgmpp::Implant>(implant.item);
-	character->removeImplant(i);
-	[self.engine updateWithItem: self];
+	if (character) {
+		auto i = std::dynamic_pointer_cast<dgmpp::Implant>(implant.item);
+		character->removeImplant(i);
+		[self.engine updateWithItem: self];
+	}
 }
 
 - (nullable NCFittingBooster*) addBoosterWithTypeID:(NSInteger) typeID {
@@ -163,40 +230,51 @@
 - (nullable NCFittingBooster*) addBoosterWithTypeID:(NSInteger) typeID forced:(BOOL) forced {
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-	auto booster = character->addBooster(static_cast<dgmpp::TypeID>(typeID), forced);
-	[self.engine updateWithItem: self];
-	return booster ? (NCFittingBooster*) [NCFittingItem item:booster withEngine:self.engine] : nil;
+	if (character) {
+		auto booster = character->addBooster(static_cast<dgmpp::TypeID>(typeID), forced);
+		[self.engine updateWithItem: self];
+		return booster ? (NCFittingBooster*) [NCFittingItem item:booster withEngine:self.engine] : nil;
+	}
+	else {
+		return nil;
+	}
 }
 
 - (void) removeBooster:(nonnull NCFittingBooster*) booster {
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-	auto b = std::dynamic_pointer_cast<dgmpp::Booster>(booster.item);
-	character->removeBooster(b);
-	[self.engine updateWithItem: self];
+	if (character) {
+		auto b = std::dynamic_pointer_cast<dgmpp::Booster>(booster.item);
+		character->removeBooster(b);
+		[self.engine updateWithItem: self];
+	}
 }
 
 - (nullable NCFittingShip*) ship {
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-	return character->getShip() ? (NCFittingShip*) [NCFittingItem item:character->getShip() withEngine:self.engine] : nil;
+	return character ? (character->getShip() ? (NCFittingShip*) [NCFittingItem item:character->getShip() withEngine:self.engine] : nil) : nil;
 }
 
 - (void) setShip:(NCFittingShip *)ship {
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-	auto oldShip = character->getShip();
-	if (oldShip)
-		[self.engine assignIdentifier:nil forItem:[NCFittingItem item: oldShip withEngine:self.engine]];
-	ship.item = character->setShip(static_cast<dgmpp::TypeID>(ship.typeID));
-	[self.engine updateWithItem: self];
+	if (character) {
+		auto oldShip = character->getShip();
+		if (oldShip)
+			[self.engine assignIdentifier:nil forItem:[NCFittingItem item: oldShip withEngine:self.engine]];
+		ship.item = character->setShip(static_cast<dgmpp::TypeID>(ship.typeID));
+		[self.engine updateWithItem: self];
+	}
 }
 
 - (nonnull NCFittingSkills*) skills {
 	NCVerifyFittingContext(self.engine);
 	if (!_skills) {
 		auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-		_skills = [[NCFittingSkills alloc] initWithCharacter: character engine:self.engine];
+		if (character) {
+			_skills = [[NCFittingSkills alloc] initWithCharacter: character engine:self.engine];
+		}
 	}
 	return _skills;
 }
@@ -205,7 +283,9 @@
 	NCVerifyFittingContext(self.engine);
 	if (!_implants) {
 		auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-		_implants = [[NCFittingImplants alloc] initWithCharacter: character engine:self.engine];
+		if (character) {
+			_implants = [[NCFittingImplants alloc] initWithCharacter: character engine:self.engine];
+		}
 	}
 	return _implants;
 }
@@ -214,7 +294,9 @@
 	NCVerifyFittingContext(self.engine);
 	if (!_boosters) {
 		auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-		_boosters = [[NCFittingBoosters alloc] initWithCharacter: character engine:self.engine];
+		if (character) {
+			_boosters = [[NCFittingBoosters alloc] initWithCharacter: character engine:self.engine];
+		}
 	}
 	return _boosters;
 }
@@ -222,60 +304,69 @@
 - (double) droneControlDistance {
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-	return character->getDroneControlDistance();
+	return character ? character->getDroneControlDistance() : 0;
 }
 
 - (nonnull NSString*) characterName {
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-	return [NSString stringWithCString:character->getCharacterName() ?: "" encoding:NSUTF8StringEncoding];
+	return character ? [NSString stringWithCString:character->getCharacterName() ?: "" encoding:NSUTF8StringEncoding] : @"";
 }
 
 - (void) setCharacterName:(NSString *)characterName {
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-	character->setCharacterName(characterName.UTF8String);
-	[self.engine updateWithItem: self];
+	if (character) {
+		character->setCharacterName(characterName.UTF8String);
+		[self.engine updateWithItem: self];
+	}
 }
 
 - (NCFittingGangBooster) booster {
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-	auto gang = std::dynamic_pointer_cast<dgmpp::Gang>(character->getOwner());
-	if (gang->getSquadBooster() == character)
-		return NCFittingGangBoosterSquad;
-	else if (gang->getWingBooster() == character)
-		return NCFittingGangBoosterWing;
-	else if (gang->getFleetBooster() == character)
-		return NCFittingGangBoosterFleet;
-	else
+	if (character) {
+		auto gang = std::dynamic_pointer_cast<dgmpp::Gang>(character->getOwner());
+		if (gang->getSquadBooster() == character)
+			return NCFittingGangBoosterSquad;
+		else if (gang->getWingBooster() == character)
+			return NCFittingGangBoosterWing;
+		else if (gang->getFleetBooster() == character)
+			return NCFittingGangBoosterFleet;
+		else
+			return NCFittingGangBoosterNone;
+	}
+	else {
 		return NCFittingGangBoosterNone;
+	}
 }
 
 - (void) setBooster:(NCFittingGangBooster)booster {
 	NCVerifyFittingContext(self.engine);
 	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
-	auto gang = std::dynamic_pointer_cast<dgmpp::Gang>(character->getOwner());
-	switch (booster) {
-		case NCFittingGangBoosterSquad:
-			gang->setSquadBooster(character);
-			break;
-		case NCFittingGangBoosterWing:
-			gang->setWingBooster(character);
-			break;
-		case NCFittingGangBoosterFleet:
-			gang->setFleetBooster(character);
-			break;
-		default:
-			if (gang->getSquadBooster() == character)
-				gang->setSquadBooster(nullptr);
-			else if (gang->getWingBooster() == character)
-				gang->setWingBooster(nullptr);
-			else if (gang->getFleetBooster() == character)
-				gang->setFleetBooster(nullptr);
+	if (character) {
+		auto gang = std::dynamic_pointer_cast<dgmpp::Gang>(character->getOwner());
+		switch (booster) {
+			case NCFittingGangBoosterSquad:
+				gang->setSquadBooster(character);
+				break;
+			case NCFittingGangBoosterWing:
+				gang->setWingBooster(character);
+				break;
+			case NCFittingGangBoosterFleet:
+				gang->setFleetBooster(character);
+				break;
+			default:
+				if (gang->getSquadBooster() == character)
+					gang->setSquadBooster(nullptr);
+				else if (gang->getWingBooster() == character)
+					gang->setWingBooster(nullptr);
+				else if (gang->getFleetBooster() == character)
+					gang->setFleetBooster(nullptr);
+		}
+		
+		[self.engine updateWithItem: self];
 	}
-	
-	[self.engine updateWithItem: self];
 }
 
 @end

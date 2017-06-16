@@ -19,7 +19,7 @@
 #import "NCFittingCharge.h"
 
 @implementation NCFittingAttributes {
-	std::shared_ptr<dgmpp::Item> _item;
+	std::weak_ptr<dgmpp::Item> _item;
 	__weak NCFittingEngine* _engine;
 }
 
@@ -31,16 +31,27 @@
 	return self;
 }
 
+- (std::shared_ptr<dgmpp::Item>) item {
+	return _item.lock();
+}
+
 - (nullable NCFittingAttribute*) objectAtIndexedSubscript:(NSInteger) attributeID {
 	NCVerifyFittingContext(_engine);
-	auto attribute = _item->getAttribute(static_cast<dgmpp::TypeID>(attributeID));
-	return attribute ? [[NCFittingAttribute alloc] initWithAttribute:attribute engine:_engine] : nil;
+	std::shared_ptr<dgmpp::Item> item = self.item;
+	if (item) {
+		auto attribute = item->getAttribute(static_cast<dgmpp::TypeID>(attributeID));
+		return attribute ? [[NCFittingAttribute alloc] initWithAttribute:attribute engine:_engine] : nil;
+	}
+	else {
+		return nil;
+	}
 }
 
 @end
 
 @implementation NCFittingItem {
 	NCFittingAttributes* _attributes;
+	std::weak_ptr<dgmpp::Item> _item;
 }
 
 - (nonnull instancetype) initWithItem:(std::shared_ptr<dgmpp::Item> const&) item engine:(nonnull NCFittingEngine*) engine {
@@ -49,6 +60,14 @@
 		_engine = engine;
 	}
 	return self;
+}
+
+- (std::shared_ptr<dgmpp::Item>) item {
+	return _item.lock();
+}
+
+- (void) setItem:(std::shared_ptr<dgmpp::Item>)item {
+	_item = item;
 }
 
 + (nonnull instancetype) item:(std::shared_ptr<dgmpp::Item> const&) item withEngine:(nonnull NCFittingEngine*) engine {
@@ -87,33 +106,42 @@
 }
 
 - (NSInteger) typeID {
-	return _item->getTypeID();
+	std::shared_ptr<dgmpp::Item> item = self.item;
+	return item ? item->getTypeID() : 0;
 }
 
 - (nonnull NSString*) typeName {
-	return [NSString stringWithCString:_item->getTypeName() ?: "" encoding:NSUTF8StringEncoding];
+	std::shared_ptr<dgmpp::Item> item = self.item;
+	return item ? [NSString stringWithCString:item->getTypeName() ?: "" encoding:NSUTF8StringEncoding] : @"";
 }
 
 - (nonnull NSString*) groupName {
-	return [NSString stringWithCString:_item->getGroupName() ?: "" encoding:NSUTF8StringEncoding];
+	std::shared_ptr<dgmpp::Item> item = self.item;
+	return item ? [NSString stringWithCString:item->getGroupName() ?: "" encoding:NSUTF8StringEncoding] : @"";
 }
 
 - (NSInteger) groupID {
-	return _item->getGroupID();
+	std::shared_ptr<dgmpp::Item> item = self.item;
+	return item ? item->getGroupID() : 0;
 }
 
 - (NSInteger) categoryID {
-	return _item->getCategoryID();
+	std::shared_ptr<dgmpp::Item> item = self.item;
+	return item ? item->getCategoryID() : 0;
 }
 
 - (nullable NCFittingItem*) owner {
-	return _item->getOwner() ? [NCFittingItem item:_item->getOwner() withEngine:_engine] : nil;
+	std::shared_ptr<dgmpp::Item> item = self.item;
+	return item ? (item->getOwner() ? [NCFittingItem item:item->getOwner() withEngine:_engine] : nil) : nil;
 }
 
 - (nonnull NCFittingAttributes*) attributes {
 	NCVerifyFittingContext(self.engine);
 	if (!_attributes) {
-		_attributes = [[NCFittingAttributes alloc] initWithItem: _item engine:_engine];
+		std::shared_ptr<dgmpp::Item> item = self.item;
+		if (item) {
+			_attributes = [[NCFittingAttributes alloc] initWithItem: item engine:_engine];
+		}
 	}
 	return _attributes;
 }
@@ -123,11 +151,13 @@
 }
 
 - (NSUInteger) hash {
-	return (intptr_t) _item.get();
+	std::shared_ptr<dgmpp::Item> item = self.item;
+	return (intptr_t) item.get();
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone {
-	return [[NCFittingItem allocWithZone:zone] initWithItem:_item engine:_engine];
+	std::shared_ptr<dgmpp::Item> item = self.item;
+	return item ? [[NCFittingItem allocWithZone:zone] initWithItem:item engine:_engine] : nil;
 }
 
 @end

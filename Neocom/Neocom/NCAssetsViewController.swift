@@ -115,6 +115,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 						completionHandler?()
 					}
 				case .failure:
+					self.reloadSections()
 					completionHandler?()
 				}
 				

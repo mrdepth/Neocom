@@ -54,8 +54,8 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 	private var wallets: NCCachedResult<[ESI.Wallet.Balance]>?
 	private var assets: NCCachedResult<[ESI.Assets.Asset]>?
 	private var blueprints: NCCachedResult<[ESI.Character.Blueprint]>?
-	private var marketOrders: NCCachedResult<EVE.Char.MarketOrders>?
-	private var industryJobs: NCCachedResult<EVE.Char.IndustryJobs>?
+	private var marketOrders: NCCachedResult<[ESI.Market.CharacterOrder]>?
+	private var industryJobs: NCCachedResult<[ESI.Industry.Job]>?
 	private var contracts: NCCachedResult<EVE.Char.Contracts>?
 	private var prices: [Int: Double]?
 	
@@ -279,17 +279,17 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 					}
 				}
 				
-				var ordersIDs = [Int: Int64]()
+				var ordersIDs = [Int: Int]()
 				var orderBids: Double = 0
 				
 				if let value = marketOrders {
-					for order in value.orders {
-						guard order.orderState == .open else {continue}
-						if order.bid {
-							orderBids += order.price * Double(order.volRemaining)
+					for order in value {
+						guard order.state == .open else {continue}
+						if order.isBuyOrder {
+							orderBids += Double(order.price) * Double(order.volumeRemain)
 						}
 						else {
-							_ = (ordersIDs[order.typeID]? += order.volRemaining) ?? (ordersIDs[order.typeID] = order.volRemaining)
+							_ = (ordersIDs[order.typeID]? += order.volumeRemain) ?? (ordersIDs[order.typeID] = order.volumeRemain)
 						}
 					}
 				}
@@ -297,9 +297,10 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 				var industryJobsIDs = [Int: Int64]()
 				
 				if let value = industryJobs {
-					for job in value.jobs {
+					for job in value {
+						guard let productTypeID = job.productTypeID, productTypeID != job.blueprintTypeID else {continue}
 						guard job.status == .active || job.status == .paused else {continue}
-						_ = (industryJobsIDs[job.productTypeID]? += Int64(job.runs)) ?? (industryJobsIDs[job.productTypeID] = Int64(job.runs))
+						_ = (industryJobsIDs[productTypeID]? += Int64(job.runs)) ?? (industryJobsIDs[productTypeID] = Int64(job.runs))
 					}
 				}
 

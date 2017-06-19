@@ -229,7 +229,7 @@
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
-			<string>NCIndustryJobsViewController</string>
+			<string>NCIndustryViewController</string>
 			<key>title</key>
 			<string>Industry Jobs</string>
 			<key>image</key>

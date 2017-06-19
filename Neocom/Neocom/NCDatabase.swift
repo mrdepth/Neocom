@@ -95,6 +95,10 @@ class NCDatabase {
 		return NCDBChrRace.chrRaces(managedObjectContext: self.viewContext)
 	}()
 
+	private(set) lazy var ramActivities: NCFetchedCollection<NCDBRamActivity> = {
+		return NCDBRamActivity.ramActivities(managedObjectContext: self.viewContext)
+	}()
+
 }
 
 extension NCDBInvType {
@@ -206,5 +210,11 @@ extension NCDBInvMetaGroup {
 extension NCDBChrRace {
 	class func chrRaces(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBChrRace> {
 		return NCFetchedCollection<NCDBChrRace>(entityName: "ChrRace", predicateFormat: "raceID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+}
+
+extension NCDBRamActivity {
+	class func ramActivities(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBRamActivity> {
+		return NCFetchedCollection<NCDBRamActivity>(entityName: "RamActivity", predicateFormat: "activityID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }

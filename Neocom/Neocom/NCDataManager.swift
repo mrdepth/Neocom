@@ -759,17 +759,33 @@ class NCDataManager {
 		})
 	}
 
-	func industryJobs(completionHandler: @escaping (NCCachedResult<EVE.Char.IndustryJobs>) -> Void) {
+	func industryJobs(completionHandler: @escaping (NCCachedResult<[ESI.Industry.Job]>) -> Void) {
 		loadFromCache(forKey: "EVE.Char.IndustryJobs", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.eve.char.industryJobs { result in
+			self.esi.industry.listCharacterIndustryJobs(characterID: Int(self.characterID), includeCompleted: true) { result in
 				completion(result, 3600.0 * 1)
 			}
 		})
 	}
 
-	func marketOrders(completionHandler: @escaping (NCCachedResult<EVE.Char.MarketOrders>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.MarketOrders", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.eve.char.marketOrders { result in
+	func marketOrders(completionHandler: @escaping (NCCachedResult<[ESI.Market.CharacterOrder]>) -> Void) {
+		loadFromCache(forKey: "ESI.Market.CharacterOrder", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.market.listOrdersFromCharacter(characterID: Int(self.characterID)) { result in
+				completion(result, 3600.0 * 1)
+			}
+		})
+	}
+
+	func walletJournal(completionHandler: @escaping (NCCachedResult<EVE.Char.WalletJournal>) -> Void) {
+		loadFromCache(forKey: "EVE.Char.WalletJournal", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.eve.char.walletJournal { result in
+				completion(result, 3600.0 * 1)
+			}
+		})
+	}
+
+	func walletTransactions(completionHandler: @escaping (NCCachedResult<EVE.Char.WalletTransactions>) -> Void) {
+		loadFromCache(forKey: "EVE.Char.WalletTransactions", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.eve.char.walletTransactions { result in
 				completion(result, 3600.0 * 1)
 			}
 		})

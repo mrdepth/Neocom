@@ -48,7 +48,6 @@ class NCJumpClonesViewController: UITableViewController, TreeControllerDelegate,
 			completionHandler?()
 			return
 		}
-		title = account.characterName
 		
 		let progress = Progress(totalUnitCount: 1)
 		

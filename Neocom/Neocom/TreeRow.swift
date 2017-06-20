@@ -109,15 +109,17 @@ class DefaultTreeRow: TreeRow {
 	var title: String?
 	var attributedTitle: NSAttributedString?
 	var subtitle: String?
+	var attributedSubtitle: NSAttributedString?
 	var accessoryType: NCTableViewCellAccessoryType
 	let nodeIdentifier: String?
 	
-	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.default, nodeIdentifier: String? = nil, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: NCTableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
+	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.default, nodeIdentifier: String? = nil, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, attributedSubtitle: NSAttributedString? = nil, accessoryType: NCTableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
 		self.nodeIdentifier = nodeIdentifier
 		self.image = image
 		self.title = title
 		self.attributedTitle = attributedTitle
 		self.subtitle = subtitle
+		self.attributedSubtitle = attributedSubtitle
 		self.accessoryType = accessoryType
 
 		super.init(prototype: prototype, route: route, accessoryButtonRoute: accessoryButtonRoute, object: object)
@@ -135,7 +137,12 @@ class DefaultTreeRow: TreeRow {
 		else {
 			cell.titleLabel?.text = title
 		}
-		cell.subtitleLabel?.text = subtitle
+		if let attributedSubtitle = attributedSubtitle {
+			cell.subtitleLabel?.attributedText = attributedSubtitle
+		}
+		else {
+			cell.subtitleLabel?.text = subtitle
+		}
         cell.accessoryView = nil
         switch accessoryType {
         case .checkmark:

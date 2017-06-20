@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1205B8A11E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */; };
+		120F4C591EF9A044003C92E9 /* NCContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */; };
+		120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */; };
 		1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */; };
 		1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */; };
 		1211A4791EF1843D00364744 /* NCSkillsContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1211A4781EF1843D00364744 /* NCSkillsContentViewController.swift */; };
@@ -295,6 +297,8 @@
 
 /* Begin PBXFileReference section */
 		1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamagePatternEditTableViewCell.swift; sourceTree = "<group>"; };
+		120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractInfoViewController.swift; sourceTree = "<group>"; };
+		120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultNoImageTableViewCell.xib; sourceTree = "<group>"; };
 		1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCSkillTableViewCell.xib; sourceTree = "<group>"; };
 		1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCActionHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		1211A4781EF1843D00364744 /* NCSkillsContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillsContentViewController.swift; sourceTree = "<group>"; };
@@ -740,6 +744,7 @@
 				12D39D071EF91CA80077BD17 /* NCWalletJournalViewController.swift */,
 				12D39D0F1EF936980077BD17 /* NCWalletTransactionsViewController.swift */,
 				12D39D151EF969DA0077BD17 /* NCContractsViewController.swift */,
+				120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */,
 			);
 			name = Business;
 			sourceTree = "<group>";
@@ -934,6 +939,7 @@
 				1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */,
 				1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */,
 				1263C50C1E64BE9D003D002D /* NCDefaultTableViewCell.xib */,
+				120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */,
 				12D930F21E6584AF00CBAE1C /* NCDefaultCompactTableViewCell.xib */,
 				1285FB341EB8DD350025331A /* NCAttributeTableViewCell.xib */,
 				128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */,
@@ -1180,6 +1186,7 @@
 				12E9321C1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib in Resources */,
 				12DA88261EB8696F00FB1922 /* NCPlaceholderTableViewCell.xib in Resources */,
 				1211A47B1EF18BA700364744 /* NCSkillCompactTableViewCell.xib in Resources */,
+				120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */,
 				12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */,
 				1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */,
 				1256BECA1DF4770A00A2A24B /* memory.png in Resources */,
@@ -1292,6 +1299,7 @@
 				128AE8171E360FF1002E3A1E /* NCRangeFormatter.swift in Sources */,
 				1217B3C91EA63EB5005A8157 /* NCMailBodyViewController.swift in Sources */,
 				125AB8111E41DEE600B8A2A8 /* NCChargeTableViewCell.swift in Sources */,
+				120F4C591EF9A044003C92E9 /* NCContractInfoViewController.swift in Sources */,
 				1243DC1F1E0BDE1700F00B9A /* NCMarketHistoryView.swift in Sources */,
 				1230A32A1DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift in Sources */,
 				12961DCD1E1D649A008A3F4D /* NCFittingBooster.mm in Sources */,

@@ -34,7 +34,7 @@ extension NCAccount {
 				return $0.name!
 			} ?? []
 			
-			let token = OAuth2Token(accessToken: accessToken ?? "", refreshToken: refreshToken ?? "", tokenType: tokenType ?? "", scopes: scopes, characterID: characterID, characterName: characterName ?? "", realm: realm!)
+			let token = OAuth2Token(accessToken: accessToken ?? "", refreshToken: refreshToken ?? "", tokenType: tokenType ?? "", scopes: scopes, characterID: characterID, characterName: characterName ?? "", realm: realm ?? "")
 			token.expiresOn = expiresOn! as Date
 			return token
 		}

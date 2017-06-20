@@ -15,10 +15,10 @@ class NCContactRow: TreeRow {
 	let dataManager: NCDataManager
 	var image: UIImage?
 	
-	init(contact: NCContact, dataManager: NCDataManager) {
+	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.compact, contact: NCContact, dataManager: NCDataManager) {
 		self.contact = contact
 		self.dataManager = dataManager
-		super.init(prototype: Prototype.NCDefaultTableViewCell.compact)
+		super.init(prototype: prototype)
 	}
 	
 	override func configure(cell: UITableViewCell) {

@@ -601,4 +601,21 @@ enum Router {
 			}
 		}
 	}
+	
+	enum Contract {
+		
+		class Info: Route {
+			let contract: ESI.Contracts.Contract
+			
+			init(contract: ESI.Contracts.Contract) {
+				self.contract = contract
+				super.init(kind: .push, identifier: "NCContractInfoViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCContractInfoViewController
+				destination.contract = contract
+			}
+		}
+	}
 }

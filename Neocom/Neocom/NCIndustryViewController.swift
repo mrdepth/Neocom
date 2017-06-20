@@ -46,7 +46,6 @@ class NCIndustryViewController: UITableViewController, TreeControllerDelegate, N
 			completionHandler?()
 			return
 		}
-		title = account.characterName
 		
 		let progress = Progress(totalUnitCount: 1)
 		

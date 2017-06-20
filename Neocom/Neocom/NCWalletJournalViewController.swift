@@ -48,7 +48,6 @@ class NCWalletJournalViewController: UITableViewController, TreeControllerDelega
 			completionHandler?()
 			return
 		}
-		title = account.characterName
 		
 		let progress = Progress(totalUnitCount: 2)
 		

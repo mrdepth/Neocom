@@ -810,7 +810,12 @@ class NCDataManager {
 	func contractItems(contractID: Int64, completionHandler: @escaping (NCCachedResult<[ESI.Contracts.Item]>) -> Void) {
 		loadFromCache(forKey: "ESI.Contracts.Item.\(contractID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.contracts.getContractItems(characterID: Int(self.characterID), contractID: Int(contractID)) { result in
-				completion(result, 3600.0 * 24)
+				if let error = result.error as? AFError, error.responseCode == 404 {
+					completion(.success([]), 3600.0 * 24)
+				}
+				else {
+					completion(result, 3600.0 * 24)
+				}
 			}
 		})
 	}
@@ -818,7 +823,12 @@ class NCDataManager {
 	func contractBids(contractID: Int64, completionHandler: @escaping (NCCachedResult<[ESI.Contracts.Bid]>) -> Void) {
 		loadFromCache(forKey: "ESI.Contracts.Bid.\(contractID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.contracts.getContractBids(characterID: Int(self.characterID), contractID: Int(contractID)) { result in
-				completion(result, 3600.0 * 24)
+				if let error = result.error as? AFError, error.responseCode == 404 {
+					completion(.success([]), 3600.0 * 24)
+				}
+				else {
+					completion(result, 3600.0 * 24)
+				}
 			}
 		})
 	}

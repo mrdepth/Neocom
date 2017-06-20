@@ -48,7 +48,6 @@ class NCWalletTransactionsViewController: UITableViewController, TreeControllerD
 			completionHandler?()
 			return
 		}
-		title = account.characterName
 		
 		let progress = Progress(totalUnitCount: 1)
 		

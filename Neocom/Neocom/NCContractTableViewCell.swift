@@ -39,37 +39,15 @@ class NCContractRow: TreeRow {
 			return date.addingTimeInterval(TimeInterval(duration) * 24 * 3600)
 		}() ?? contract.dateExpired
 		
-		super.init(prototype: Prototype.NCContractTableViewCell.default, route: nil)
+		super.init(prototype: Prototype.NCContractTableViewCell.default, route: Router.Contract.Info(contract: contract))
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCContractTableViewCell else {return}
 		
-		let type: String
-		switch contract.type {
-		case .auction:
-			type = NSLocalizedString("Auction", comment: "")
-		case .courier:
-			type = NSLocalizedString("Courier", comment: "")
-		case .itemExchange:
-			type = NSLocalizedString("Item Exchange", comment: "")
-		case .loan:
-			type = NSLocalizedString("Loan", comment: "")
-		case .unknown:
-			type = NSLocalizedString("Unknown", comment: "")
-		}
+		let type = contract.type.title
 		
-		let availability: String
-		switch contract.availability {
-		case .alliance:
-			availability = NSLocalizedString("Alliance", comment: "")
-		case .corporation:
-			availability = NSLocalizedString("Corporation", comment: "")
-		case .personal:
-			availability = NSLocalizedString("Personal", comment: "")
-		case .public:
-			availability = NSLocalizedString("Public", comment: "")
-		}
+		let availability = contract.availability.title
 		
 		let color = contract.status == .outstanding || contract.status == .inProgress ? UIColor.white : UIColor.lightText
 		
@@ -77,24 +55,11 @@ class NCContractRow: TreeRow {
 		cell.locationLabel.attributedText = location?.displayName ?? NSLocalizedString("Unknown", comment: "") * [:]
 		
 		switch contract.status {
-		case .outstanding:
+		case .outstanding, .inProgress:
 			let t = contract.dateExpired.timeIntervalSinceNow
-			cell.stateLabel.attributedText = NSLocalizedString("Outstanding", comment: "") * [NSForegroundColorAttributeName: color] + " " + NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes) * [NSForegroundColorAttributeName: UIColor.lightText]
-		case .inProgress:
-			let t = contract.dateExpired.timeIntervalSinceNow
-			cell.stateLabel.attributedText = NSLocalizedString("In Progress", comment: "") * [NSForegroundColorAttributeName: color] + " " + NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes) * [NSForegroundColorAttributeName: UIColor.lightText]
-		case .cancelled:
-			cell.stateLabel.attributedText = "\(NSLocalizedString("Cancelled", comment: "")) \(DateFormatter.localizedString(from: endDate, dateStyle: .medium, timeStyle: .medium))" * [NSForegroundColorAttributeName: UIColor.lightText]
-		case .deleted:
-			cell.stateLabel.attributedText = "\(NSLocalizedString("Deleted", comment: "")) \(DateFormatter.localizedString(from: endDate, dateStyle: .medium, timeStyle: .medium))" * [NSForegroundColorAttributeName: UIColor.lightText]
-		case .failed:
-			cell.stateLabel.attributedText = "\(NSLocalizedString("Failed", comment: "")) \(DateFormatter.localizedString(from: endDate, dateStyle: .medium, timeStyle: .medium))" * [NSForegroundColorAttributeName: UIColor.lightText]
-		case .finished, .finishedContractor, .finishedIssuer:
-			cell.stateLabel.attributedText = "\(NSLocalizedString("Finished", comment: "")) \(DateFormatter.localizedString(from: endDate, dateStyle: .medium, timeStyle: .medium))" * [NSForegroundColorAttributeName: UIColor.lightText]
-		case .rejected:
-			cell.stateLabel.attributedText = "\(NSLocalizedString("Rejected", comment: "")) \(DateFormatter.localizedString(from: endDate, dateStyle: .medium, timeStyle: .medium))" * [NSForegroundColorAttributeName: UIColor.lightText]
-		case .reversed:
-			cell.stateLabel.attributedText = "\(NSLocalizedString("Reversed", comment: "")) \(DateFormatter.localizedString(from: endDate, dateStyle: .medium, timeStyle: .medium))" * [NSForegroundColorAttributeName: UIColor.lightText]
+			cell.stateLabel.attributedText = contract.status.title * [NSForegroundColorAttributeName: color] + " " + NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes) * [NSForegroundColorAttributeName: UIColor.lightText]
+		default:
+			cell.stateLabel.attributedText = "\(contract.status.title) \(DateFormatter.localizedString(from: endDate, dateStyle: .medium, timeStyle: .medium))" * [NSForegroundColorAttributeName: UIColor.lightText]
 		}
 		
 		if contract.issuerID == Int(characterID) {
@@ -103,22 +68,6 @@ class NCContractRow: TreeRow {
 		else if let issuer = contacts?[Int64(contract.issuerID)]?.name {
 			cell.dateLabel.text = "\(DateFormatter.localizedString(from: contract.dateIssued, dateStyle: .medium, timeStyle: .medium)) \(NSLocalizedString("by", comment: "")) \(issuer)"
 		}
-		
-		/*cell.titleLabel.text = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
-		cell.subtitleLabel.attributedText = location?.displayName ?? NSLocalizedString("Unknown Location", comment: "") * [NSForegroundColorAttributeName: UIColor.lightText]
-		cell.iconView.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
-		
-		cell.priceLabel.text = NCUnitFormatter.localizedString(from: transaction.price, unit: .isk, style: .full)
-		cell.qtyLabel.text = NCUnitFormatter.localizedString(from: Double(transaction.quantity), unit: .none, style: .full)
-		cell.dateLabel.text = DateFormatter.localizedString(from: transaction.transactionDateTime, dateStyle: .medium, timeStyle: .medium)
-		
-		
-		var s = "\(transaction.transactionType == .buy ? "-" : "")\(NCUnitFormatter.localizedString(from: transaction.price * Double(transaction.quantity), unit: .isk, style: .full))" * [NSForegroundColorAttributeName: transaction.transactionType == .buy ? UIColor.red : UIColor.green]
-		if !transaction.clientName.isEmpty {
-			s = s + " \(transaction.transactionType == .buy ? NSLocalizedString("to", comment: "") : NSLocalizedString("from", comment: "")) \(transaction.clientName)"
-		}
-		
-		cell.amountLabel.attributedText = s*/
 	}
 	
 	override var hashValue: Int {

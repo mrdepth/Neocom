@@ -48,7 +48,6 @@ class NCMarketOrdersViewController: UITableViewController, TreeControllerDelegat
 			completionHandler?()
 			return
 		}
-		title = account.characterName
 		
 		let progress = Progress(totalUnitCount: 1)
 		

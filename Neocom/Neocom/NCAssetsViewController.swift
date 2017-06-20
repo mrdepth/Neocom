@@ -89,7 +89,6 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 			completionHandler?()
 			return
 		}
-		title = account.characterName
 		
 		let progress = Progress(totalUnitCount: 1)
 		

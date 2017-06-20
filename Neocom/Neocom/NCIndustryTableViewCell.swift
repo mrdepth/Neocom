@@ -15,6 +15,8 @@ class NCIndustryTableViewCell: NCTableViewCell {
 	@IBOutlet weak var subtitleLabel: UILabel!
 	@IBOutlet weak var stateLabel: UILabel!
 	@IBOutlet weak var progressView: UIProgressView!
+	@IBOutlet weak var jobRunsLabel: UILabel!
+	@IBOutlet weak var runsPerCopyLabel: UILabel!
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -58,60 +60,37 @@ class NCIndustryRow: TreeRow {
 		
 		let activity = self.activity?.activityName ?? NSLocalizedString("Unknown Activity", comment: "")
 		let t = job.endDate.timeIntervalSinceNow
-
+		
+		let s: String
 		switch job.status {
 		case .active:
 			cell.progressView.progress = 1.0 - Float(t / TimeInterval(job.duration))
-			cell.stateLabel.text = "\(activity): \(NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes)) (\(Int(cell.progressView.progress * 100))%)"
+			s = "\(NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes)) (\(Int(cell.progressView.progress * 100))%)"
 		case .cancelled:
-			cell.stateLabel.text = "\(activity): \(NSLocalizedString("cancelled", comment: "")) \(DateFormatter.localizedString(from: job.endDate, dateStyle: .short, timeStyle: .short))"
+			s = "\(NSLocalizedString("cancelled", comment: "")) \(DateFormatter.localizedString(from: job.endDate, dateStyle: .short, timeStyle: .short))"
 			cell.progressView.progress = 0
 		case .delivered:
-			cell.stateLabel.text = "\(activity): \(NSLocalizedString("delivered", comment: "")) \(DateFormatter.localizedString(from: job.endDate, dateStyle: .short, timeStyle: .short))"
+			s = "\(NSLocalizedString("delivered", comment: "")) \(DateFormatter.localizedString(from: job.endDate, dateStyle: .short, timeStyle: .short))"
 			cell.progressView.progress = 1
 		case .paused:
-			cell.stateLabel.text = "\(activity): \(NSLocalizedString("paused", comment: "")) \(DateFormatter.localizedString(from: job.endDate, dateStyle: .short, timeStyle: .short))"
+			s = "\(NSLocalizedString("paused", comment: "")) \(DateFormatter.localizedString(from: job.endDate, dateStyle: .short, timeStyle: .short))"
 			cell.progressView.progress = 0
 		case .ready:
-			cell.stateLabel.text = "\(activity): \(NSLocalizedString("ready", comment: "")) \(DateFormatter.localizedString(from: job.endDate, dateStyle: .short, timeStyle: .short))"
+			s = "\(NSLocalizedString("ready", comment: "")) \(DateFormatter.localizedString(from: job.endDate, dateStyle: .short, timeStyle: .short))"
 			cell.progressView.progress = 1
 		case .reverted:
-			cell.stateLabel.text = "\(activity): \(NSLocalizedString("reverted", comment: "")) \(DateFormatter.localizedString(from: job.endDate, dateStyle: .short, timeStyle: .short))"
+			s = "\(NSLocalizedString("reverted", comment: "")) \(DateFormatter.localizedString(from: job.endDate, dateStyle: .short, timeStyle: .short))"
 			cell.progressView.progress = 0
 		}
+		cell.stateLabel.attributedText = "\(activity)" * [NSForegroundColorAttributeName: UIColor.white] + s * [NSForegroundColorAttributeName: UIColor.lightText]
 		
-/*		cell.priceLabel.text = NCUnitFormatter.localizedString(from: order.price, unit: .isk, style: .full)
-		cell.qtyLabel.text = NCUnitFormatter.localizedString(from: order.volumeRemain, unit: .none, style: .full) + "/" + NCUnitFormatter.localizedString(from: order.volumeTotal, unit: .none, style: .full)
-		cell.issuedLabel.text = DateFormatter.localizedString(from: order.issued, dateStyle: .medium, timeStyle: .medium)
+		cell.jobRunsLabel.text = NCUnitFormatter.localizedString(from: job.runs, unit: .none, style: .full)
+		cell.runsPerCopyLabel.text = NCUnitFormatter.localizedString(from: job.licensedRuns ?? 0, unit: .none, style: .full)
 		
-		let color = order.state == .open ? UIColor.white : UIColor.lightText
+		let color = job.status == .active || job.status == .ready ? UIColor.white : UIColor.lightText
 		cell.titleLabel.textColor = color
-		cell.priceLabel.textColor = color
-		cell.qtyLabel.textColor = color
-		cell.issuedLabel.textColor = color
-		cell.timeLeftLabel.textColor = color
-		
-		switch order.state {
-		case .open:
-			cell.stateLabel.text = NSLocalizedString("Open", comment: "")
-			let t = expired.timeIntervalSinceNow
-			cell.timeLeftLabel.text =  String(format: NSLocalizedString("Expired in %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes))
-		case .cancelled:
-			cell.stateLabel.text = NSLocalizedString("Cancelled", comment: "")
-			cell.timeLeftLabel.text = DateFormatter.localizedString(from: expired, dateStyle: .medium, timeStyle: .medium)
-		case .characterDeleted:
-			cell.stateLabel.text = NSLocalizedString("Deleted", comment: "")
-			cell.timeLeftLabel.text = DateFormatter.localizedString(from: expired, dateStyle: .medium, timeStyle: .medium)
-		case .closed:
-			cell.stateLabel.text = NSLocalizedString("Closed", comment: "")
-			cell.timeLeftLabel.text = DateFormatter.localizedString(from: expired, dateStyle: .medium, timeStyle: .medium)
-		case .expired:
-			cell.stateLabel.text = NSLocalizedString("Expired", comment: "")
-			cell.timeLeftLabel.text = DateFormatter.localizedString(from: expired, dateStyle: .medium, timeStyle: .medium)
-		case .pending:
-			cell.stateLabel.text = NSLocalizedString("Pending", comment: "")
-			cell.timeLeftLabel.text = " "
-		}*/
+		cell.jobRunsLabel.textColor = color
+		cell.runsPerCopyLabel.textColor = color
 	}
 	
 	override var hashValue: Int {

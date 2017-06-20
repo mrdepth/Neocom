@@ -197,6 +197,12 @@
 		12D39D021EF7DBFA0077BD17 /* NCMarketOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39D011EF7DBFA0077BD17 /* NCMarketOrdersViewController.swift */; };
 		12D39D041EF8046F0077BD17 /* NCIndustryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39D031EF8046F0077BD17 /* NCIndustryViewController.swift */; };
 		12D39D061EF805270077BD17 /* NCIndustryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39D051EF805270077BD17 /* NCIndustryTableViewCell.swift */; };
+		12D39D081EF91CA80077BD17 /* NCWalletJournalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39D071EF91CA80077BD17 /* NCWalletJournalViewController.swift */; };
+		12D39D0A1EF921810077BD17 /* NCWalletJournalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39D091EF921810077BD17 /* NCWalletJournalTableViewCell.swift */; };
+		12D39D0E1EF936520077BD17 /* NCWalletTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39D0D1EF936520077BD17 /* NCWalletTransactionTableViewCell.swift */; };
+		12D39D101EF936980077BD17 /* NCWalletTransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39D0F1EF936980077BD17 /* NCWalletTransactionsViewController.swift */; };
+		12D39D141EF969210077BD17 /* NCContractTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39D131EF969210077BD17 /* NCContractTableViewCell.swift */; };
+		12D39D161EF969DA0077BD17 /* NCContractsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39D151EF969DA0077BD17 /* NCContractsViewController.swift */; };
 		12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */; };
 		12D930E51E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E41E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib */; };
 		12D930E71E656B0C00CBAE1C /* NCChargeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E61E656B0C00CBAE1C /* NCChargeTableViewCell.xib */; };
@@ -491,6 +497,12 @@
 		12D39D011EF7DBFA0077BD17 /* NCMarketOrdersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketOrdersViewController.swift; sourceTree = "<group>"; };
 		12D39D031EF8046F0077BD17 /* NCIndustryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCIndustryViewController.swift; sourceTree = "<group>"; };
 		12D39D051EF805270077BD17 /* NCIndustryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCIndustryTableViewCell.swift; sourceTree = "<group>"; };
+		12D39D071EF91CA80077BD17 /* NCWalletJournalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCWalletJournalViewController.swift; sourceTree = "<group>"; };
+		12D39D091EF921810077BD17 /* NCWalletJournalTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCWalletJournalTableViewCell.swift; sourceTree = "<group>"; };
+		12D39D0D1EF936520077BD17 /* NCWalletTransactionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCWalletTransactionTableViewCell.swift; sourceTree = "<group>"; };
+		12D39D0F1EF936980077BD17 /* NCWalletTransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCWalletTransactionsViewController.swift; sourceTree = "<group>"; };
+		12D39D131EF969210077BD17 /* NCContractTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractTableViewCell.swift; sourceTree = "<group>"; };
+		12D39D151EF969DA0077BD17 /* NCContractsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractsViewController.swift; sourceTree = "<group>"; };
 		12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingModuleTableViewCell.xib; sourceTree = "<group>"; };
 		12D930E41E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingModuleStateTableViewCell.xib; sourceTree = "<group>"; };
 		12D930E61E656B0C00CBAE1C /* NCChargeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCChargeTableViewCell.xib; sourceTree = "<group>"; };
@@ -725,6 +737,9 @@
 				1262961C1EEAE50900796B27 /* NCAssetsSearchResultViewController.swift */,
 				12D39D011EF7DBFA0077BD17 /* NCMarketOrdersViewController.swift */,
 				12D39D031EF8046F0077BD17 /* NCIndustryViewController.swift */,
+				12D39D071EF91CA80077BD17 /* NCWalletJournalViewController.swift */,
+				12D39D0F1EF936980077BD17 /* NCWalletTransactionsViewController.swift */,
+				12D39D151EF969DA0077BD17 /* NCContractsViewController.swift */,
 			);
 			name = Business;
 			sourceTree = "<group>";
@@ -767,6 +782,9 @@
 				128442161EBCF27700D87992 /* NCAssetTableViewCell.swift */,
 				12D39CFF1EF7DB040077BD17 /* NCMarketOrderTableViewCell.swift */,
 				12D39D051EF805270077BD17 /* NCIndustryTableViewCell.swift */,
+				12D39D091EF921810077BD17 /* NCWalletJournalTableViewCell.swift */,
+				12D39D0D1EF936520077BD17 /* NCWalletTransactionTableViewCell.swift */,
+				12D39D131EF969210077BD17 /* NCContractTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1198,6 +1216,7 @@
 				125CE13E1EA12DCB007B8B6B /* NCMailTableViewCell.swift in Sources */,
 				1230A3321DFFE2CF00627D92 /* NCTreeNode.swift in Sources */,
 				12B563FA1E51B24500F1BED0 /* NCFittingArea.mm in Sources */,
+				12D39D0E1EF936520077BD17 /* NCWalletTransactionTableViewCell.swift in Sources */,
 				1230A3261DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift in Sources */,
 				1256BE391DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift in Sources */,
 				12D39D021EF7DBFA0077BD17 /* NCMarketOrdersViewController.swift in Sources */,
@@ -1218,6 +1237,7 @@
 				129B31781E5488AF00B9A88D /* NCFleetConfiguration.swift in Sources */,
 				1256BE3D1DF1F01D00A2A24B /* NCNavigationController.swift in Sources */,
 				121D10B51E265D5A00DD671B /* NCFittingLoadout.swift in Sources */,
+				12D39D081EF91CA80077BD17 /* NCWalletJournalViewController.swift in Sources */,
 				12961DB81E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift in Sources */,
 				12424E1B1E48C9F3002DFE08 /* NCFittingDronesViewController.swift in Sources */,
 				12961DD91E1D64D4008A3F4D /* NCFittingCharge.mm in Sources */,
@@ -1292,6 +1312,7 @@
 				12AC8DB91DF012BA00561A7A /* NCTreeController.swift in Sources */,
 				1256BE531DF4725B00A2A24B /* NCMainMenuViewController.swift in Sources */,
 				12D20EAE1EBC867E00BEC926 /* NCWealthAssetsViewController.swift in Sources */,
+				12D39D0A1EF921810077BD17 /* NCWalletJournalTableViewCell.swift in Sources */,
 				12BFC45D1E3F7CD2000ED8D6 /* TreeRow.swift in Sources */,
 				127332E11E71D01D00DE46C9 /* TreeController.swift in Sources */,
 				128442151EBCEECB00D87992 /* NCAssetsViewController.swift in Sources */,
@@ -1310,6 +1331,7 @@
 				125AB80F1E41D9F500B8A2A8 /* UIViewController+NC.swift in Sources */,
 				12DBEAC11E1D48A80088A486 /* NCFittingGang.mm in Sources */,
 				12D364EC1E72DEFE000ED70B /* NCFittingFightersViewController.swift in Sources */,
+				12D39D161EF969DA0077BD17 /* NCContractsViewController.swift in Sources */,
 				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
 				12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */,
 				129B316C1E534B7300B9A88D /* NCFittingDamagePatternsViewController.swift in Sources */,
@@ -1347,7 +1369,9 @@
 				1256BE5C1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift in Sources */,
 				12AC8DB61DEF6A3200561A7A /* NCDBImageValueTransformer.swift in Sources */,
 				1230A3341DFFE2CF00627D92 /* NSExpressionDescription+NC.swift in Sources */,
+				12D39D141EF969210077BD17 /* NCContractTableViewCell.swift in Sources */,
 				12EA6B401E850BF300C571DF /* NCLoadoutActivityItem.swift in Sources */,
+				12D39D101EF936980077BD17 /* NCWalletTransactionsViewController.swift in Sources */,
 				129E61061E0291FD00B56EB8 /* NCSkillsViewController.swift in Sources */,
 				129E61021E0287F500B56EB8 /* NCSkillTableViewCell.swift in Sources */,
 				1256BF2E1DF48AA800A2A24B /* NCBackgroundView.swift in Sources */,

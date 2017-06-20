@@ -61,23 +61,23 @@ class NCMarketOrderRow: TreeRow {
 		
 		switch order.state {
 		case .open:
-			cell.stateLabel.text = NSLocalizedString("Open", comment: "")
+			cell.stateLabel.text = NSLocalizedString("Open", comment: "") + ":"
 			let t = expired.timeIntervalSinceNow
 			cell.timeLeftLabel.text =  String(format: NSLocalizedString("Expired in %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes))
 		case .cancelled:
-			cell.stateLabel.text = NSLocalizedString("Cancelled", comment: "")
+			cell.stateLabel.text = NSLocalizedString("Cancelled", comment: "") + ":"
 			cell.timeLeftLabel.text = DateFormatter.localizedString(from: expired, dateStyle: .medium, timeStyle: .medium)
 		case .characterDeleted:
-			cell.stateLabel.text = NSLocalizedString("Deleted", comment: "")
+			cell.stateLabel.text = NSLocalizedString("Deleted", comment: "") + ":"
 			cell.timeLeftLabel.text = DateFormatter.localizedString(from: expired, dateStyle: .medium, timeStyle: .medium)
 		case .closed:
-			cell.stateLabel.text = NSLocalizedString("Closed", comment: "")
+			cell.stateLabel.text = NSLocalizedString("Closed", comment: "") + ":"
 			cell.timeLeftLabel.text = DateFormatter.localizedString(from: expired, dateStyle: .medium, timeStyle: .medium)
 		case .expired:
-			cell.stateLabel.text = NSLocalizedString("Expired", comment: "")
+			cell.stateLabel.text = NSLocalizedString("Expired", comment: "") + ":"
 			cell.timeLeftLabel.text = DateFormatter.localizedString(from: expired, dateStyle: .medium, timeStyle: .medium)
 		case .pending:
-			cell.stateLabel.text = NSLocalizedString("Pending", comment: "")
+			cell.stateLabel.text = NSLocalizedString("Pending", comment: "") + ":"
 			cell.timeLeftLabel.text = " "
 		}
 	}

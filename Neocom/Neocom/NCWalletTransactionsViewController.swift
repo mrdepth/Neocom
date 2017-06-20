@@ -1,15 +1,15 @@
 //
-//  NCMarketOrdersViewController.swift
+//  NCWalletTransactionsViewController.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 19.06.17.
+//  Created by Artem Shimanski on 20.06.17.
 //  Copyright © 2017 Artem Shimanski. All rights reserved.
 //
 
 import UIKit
 import EVEAPI
 
-class NCMarketOrdersViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
+class NCWalletTransactionsViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
 	
 	@IBOutlet var treeController: TreeController!
 	
@@ -20,7 +20,7 @@ class NCMarketOrdersViewController: UITableViewController, TreeControllerDelegat
 		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default])
-		
+
 		registerRefreshable()
 		
 		treeController.delegate = self
@@ -40,7 +40,7 @@ class NCMarketOrdersViewController: UITableViewController, TreeControllerDelegat
 	//MARK: - NCRefreshable
 	
 	private var observer: NCManagedObjectObserver?
-	private var orders: NCCachedResult<[ESI.Market.CharacterOrder]>?
+	private var walletTransactions: NCCachedResult<EVE.Char.WalletTransactions>?
 	private var locations: [Int64: NCLocation]?
 	
 	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
@@ -55,8 +55,8 @@ class NCMarketOrdersViewController: UITableViewController, TreeControllerDelegat
 		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
 		
 		progress.perform {
-			dataManager.marketOrders { result in
-				self.orders = result
+			dataManager.walletTransactions { result in
+				self.walletTransactions = result
 				
 				switch result {
 				case let .success(_, record):
@@ -83,11 +83,11 @@ class NCMarketOrdersViewController: UITableViewController, TreeControllerDelegat
 	}
 	
 	private func reloadLocations(dataManager: NCDataManager, completionHandler: (() -> Void)?) {
-		guard let value = orders?.value else {
+		guard let value = walletTransactions?.value else {
 			completionHandler?()
 			return
 		}
-		let locationIDs = Set(value.map {$0.locationID})
+		let locationIDs = Set(value.transactions.map {Int64($0.stationID)})
 		
 		guard !locationIDs.isEmpty else {
 			completionHandler?()
@@ -101,34 +101,45 @@ class NCMarketOrdersViewController: UITableViewController, TreeControllerDelegat
 	}
 	
 	private func reloadSections() {
-		if let value = orders?.value {
+		if let value = walletTransactions?.value {
 			tableView.backgroundView = nil
 			let locations = self.locations ?? [:]
 			
 			NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 				
-				let open = value.filter {$0.state == .open}
+				let dateFormatter = DateFormatter()
+				dateFormatter.dateStyle = .medium
+				dateFormatter.timeStyle = .none
+				dateFormatter.doesRelativeDateFormatting = true
 				
-				var buy = open.filter {$0.isBuyOrder}.map {NCMarketOrderRow(order: $0, location: locations[$0.locationID])}
-				var sell = open.filter {!$0.isBuyOrder}.map {NCMarketOrderRow(order: $0, location: locations[$0.locationID])}
-				var closed = value.filter {$0.state != .open}.map {NCMarketOrderRow(order: $0, location: locations[$0.locationID])}
+				let transactions = value.transactions.sorted {$0.transactionDateTime > $1.transactionDateTime}
+				let calendar = Calendar(identifier: .gregorian)
 				
-				buy.sort {$0.expired < $1.expired}
-				sell.sort {$0.expired < $1.expired}
-				closed.sort {$0.expired > $1.expired}
+				var date = calendar.date(from: calendar.dateComponents([.day, .month, .year], from: Date())) ?? Date()
 				
 				var sections = [TreeNode]()
 				
-				if !sell.isEmpty {
-					sections.append(DefaultTreeSection(nodeIdentifier: "Sell", title: NSLocalizedString("Sell", comment: "").uppercased(), children: sell))
-				}
-				if !buy.isEmpty {
-					sections.append(DefaultTreeSection(nodeIdentifier: "Buy", title: NSLocalizedString("Buy", comment: "").uppercased(), children: buy))
-				}
-				if !closed.isEmpty {
-					sections.append(DefaultTreeSection(nodeIdentifier: "Closed", title: NSLocalizedString("Closed", comment: "").uppercased(), children: closed))
+				var rows = [NCWalletTransactionRow]()
+				for transaction in transactions {
+					let row = NCWalletTransactionRow(transaction: transaction, location: locations[Int64(transaction.stationID)])
+					if transaction.transactionDateTime > date {
+						rows.append(row)
+					}
+					else {
+						if !rows.isEmpty {
+							let title = dateFormatter.string(from: date)
+							sections.append(DefaultTreeSection(nodeIdentifier: title, title: title.uppercased(), children: rows))
+						}
+						date = calendar.date(from: calendar.dateComponents([.day, .month, .year], from: transaction.transactionDateTime)) ?? Date()
+						rows = [row]
+					}
 				}
 				
+				if !rows.isEmpty {
+					let title = dateFormatter.string(from: date)
+					sections.append(DefaultTreeSection(nodeIdentifier: title, title: title.uppercased(), children: rows))
+				}
+
 				
 				DispatchQueue.main.async {
 					
@@ -146,7 +157,7 @@ class NCMarketOrdersViewController: UITableViewController, TreeControllerDelegat
 			
 		}
 		else {
-			tableView.backgroundView = NCTableViewBackgroundLabel(text: orders?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			tableView.backgroundView = NCTableViewBackgroundLabel(text: walletTransactions?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 		}
 	}
 	

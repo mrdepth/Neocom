@@ -62,7 +62,6 @@ class NCIndustryViewController: UITableViewController, TreeControllerDelegate, N
 						self.observer = NCManagedObjectObserver(managedObject: record) { [weak self] _ in
 							self?.reloadLocations(dataManager: dataManager) {
 								self?.reloadSections()
-								completionHandler?()
 							}
 						}
 					}

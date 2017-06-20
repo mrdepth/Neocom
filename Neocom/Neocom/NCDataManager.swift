@@ -791,18 +791,34 @@ class NCDataManager {
 		})
 	}
 
-	func contracts(completionHandler: @escaping (NCCachedResult<EVE.Char.Contracts>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.Contracts", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.eve.char.contracts { result in
+	func refTypes(completionHandler: @escaping (NCCachedResult<EVE.Eve.RefTypes>) -> Void) {
+		loadFromCache(forKey: "EVE.Eve.RefTypes", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.eve.eve.refTypes { result in
+				completion(result, 3600.0 * 24 * 7)
+			}
+		})
+	}
+
+	func contracts(completionHandler: @escaping (NCCachedResult<[ESI.Contracts.Contract]>) -> Void) {
+		loadFromCache(forKey: "ESI.Contracts.Contract", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.contracts.getContracts(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0 * 1)
 			}
 		})
 	}
 
-	func contractItems(contractID: Int64, completionHandler: @escaping (NCCachedResult<EVE.Char.ContractItems>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.ContractItems", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.eve.char.contractItems(contractID: contractID) { result in
-				completion(result, 3600.0 * 12)
+	func contractItems(contractID: Int64, completionHandler: @escaping (NCCachedResult<[ESI.Contracts.Item]>) -> Void) {
+		loadFromCache(forKey: "ESI.Contracts.Item.\(contractID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.contracts.getContractItems(characterID: Int(self.characterID), contractID: Int(contractID)) { result in
+				completion(result, 3600.0 * 24)
+			}
+		})
+	}
+
+	func contractBids(contractID: Int64, completionHandler: @escaping (NCCachedResult<[ESI.Contracts.Bid]>) -> Void) {
+		loadFromCache(forKey: "ESI.Contracts.Bid.\(contractID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.contracts.getContractBids(characterID: Int(self.characterID), contractID: Int(contractID)) { result in
+				completion(result, 3600.0 * 24)
 			}
 		})
 	}

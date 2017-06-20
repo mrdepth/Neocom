@@ -105,7 +105,6 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 						self.observer = NCManagedObjectObserver(managedObject: record) { [weak self] _ in
 							self?.reloadLocations(dataManager: dataManager) {
 								self?.reloadSections()
-								completionHandler?()
 							}
 						}
 					}

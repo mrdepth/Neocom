@@ -56,7 +56,7 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 	private var blueprints: NCCachedResult<[ESI.Character.Blueprint]>?
 	private var marketOrders: NCCachedResult<[ESI.Market.CharacterOrder]>?
 	private var industryJobs: NCCachedResult<[ESI.Industry.Job]>?
-	private var contracts: NCCachedResult<EVE.Char.Contracts>?
+	private var contracts: NCCachedResult<[ESI.Contracts.Contract]>?
 	private var prices: [Int: Double]?
 	
 	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
@@ -306,9 +306,9 @@ class NCWealthViewController: UITableViewController, TreeControllerDelegate, NCR
 
 				var contractPrices: Double = 0
 				if let value = contracts {
-					for contract in value.contractList {
-						guard contract.issuerID == characterID, contract.status == .inProgress || contract.status == .outstanding else {continue}
-						contractPrices += contract.price
+					for contract in value {
+						guard contract.issuerID == Int(characterID), contract.status == .inProgress || contract.status == .outstanding else {continue}
+						contractPrices += Double(contract.price ?? 0)
 					}
 				}
 				

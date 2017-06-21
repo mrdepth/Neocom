@@ -12,7 +12,7 @@ import EVEAPI
 class NCContractContactRow: NCContactRow {
 	let title: String
 	
-	init(title: String , contact: NCContact, dataManager: NCDataManager) {
+	init(title: String , contact: NCContact?, dataManager: NCDataManager) {
 		self.title = title
 		super.init(prototype: Prototype.NCDefaultTableViewCell.default, contact: contact, dataManager: dataManager)
 	}
@@ -21,7 +21,7 @@ class NCContractContactRow: NCContactRow {
 		super.configure(cell: cell)
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
 		cell.titleLabel?.text = title
-		cell.subtitleLabel?.text = contact.name
+		cell.subtitleLabel?.text = contact?.name
 		cell.accessoryType = .none
 	}
 }
@@ -52,6 +52,22 @@ class NCContractItem: TreeRow {
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCContractItem)?.hashValue == hashValue
+	}
+}
+
+class NCContractBidRow: NCContactRow {
+	let bid: ESI.Contracts.Bid
+	init(bid: ESI.Contracts.Bid , contact: NCContact?, dataManager: NCDataManager) {
+		self.bid = bid
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default, contact: contact, dataManager: dataManager)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.text = NCUnitFormatter.localizedString(from: bid.amount, unit: .isk, style: .full)
+		cell.subtitleLabel?.text = contact?.name
+		cell.accessoryType = .none
 	}
 }
 
@@ -189,6 +205,13 @@ class NCContractInfoViewController: UITableViewController, TreeControllerDelegat
 			                           nodeIdentifier: "Type",
 			                           title: NSLocalizedString("Type", comment: ""),
 			                           subtitle: contract.type.title))
+			
+			if let description = contract.title, !description.isEmpty {
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+				                           nodeIdentifier: "Description",
+				                           title: NSLocalizedString("Description", comment: ""),
+				                           subtitle: description))
+			}
 
 			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
 			                           nodeIdentifier: "Availability",
@@ -282,6 +305,13 @@ class NCContractInfoViewController: UITableViewController, TreeControllerDelegat
 					                                   title: NSLocalizedString("Buyer Will Pay", comment: "").uppercased(),
 					                                   children: pay))
 				}
+			}
+			
+			if let bids = bids?.value, !bids.isEmpty {
+				let rows = bids.sorted {$0.amount > $1.amount}.map {NCContractBidRow(bid: $0, contact: contacts?[Int64($0.bidderID)], dataManager: dataManager)}
+				sections.append(DefaultTreeSection(nodeIdentifier: "Bids",
+				                                   title: NSLocalizedString("Bids", comment: "").uppercased(),
+				                                   children: rows))
 			}
 			
 			if self.treeController.content == nil {

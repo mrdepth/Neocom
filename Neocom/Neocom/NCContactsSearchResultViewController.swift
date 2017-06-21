@@ -11,11 +11,11 @@ import EVEAPI
 
 class NCContactRow: TreeRow {
 	
-	let contact: NCContact
+	let contact: NCContact?
 	let dataManager: NCDataManager
 	var image: UIImage?
 	
-	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.compact, contact: NCContact, dataManager: NCDataManager) {
+	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.compact, contact: NCContact?, dataManager: NCDataManager) {
 		self.contact = contact
 		self.dataManager = dataManager
 		super.init(prototype: prototype)
@@ -24,13 +24,15 @@ class NCContactRow: TreeRow {
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
 		cell.object = contact
-		cell.titleLabel?.text = contact.name
+		cell.titleLabel?.text = contact?.name ?? NSLocalizedString("Unknown", comment: "")
 		
 		if let image = image {
 			cell.iconView?.image = image
 		}
 		else {
 			cell.iconView?.image = nil
+			
+			guard let contact = self.contact else {return}
 			
 			let completionHandler = { (result: NCCachedResult<UIImage>) -> Void in
 				switch result {
@@ -58,7 +60,7 @@ class NCContactRow: TreeRow {
 	}
 	
 	override var hashValue: Int {
-		return contact.hashValue
+		return contact?.hashValue ?? super.hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
@@ -97,7 +99,7 @@ class NCContactsSearchResultViewController: UITableViewController, TreeControlle
 			                   ESI.Mail.Recipient.RecipientType.alliance: "2"]
 			var sections = [DefaultTreeSection]()
 			for (key, value) in names {
-				let rows = value.map { NCContactRow(contact: $0, dataManager: dataManager) }.sorted { ($0.contact.name ?? "") < ($1.contact.name ?? "") }
+				let rows = value.map { NCContactRow(contact: $0, dataManager: dataManager) }.sorted { ($0.contact?.name ?? "") < ($1.contact?.name ?? "") }
 				let section = DefaultTreeSection(nodeIdentifier: identifiers[key], title: titles[key], children: rows)
 				sections.append(section)
 			}
@@ -129,7 +131,7 @@ class NCContactsSearchResultViewController: UITableViewController, TreeControlle
 	}
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		guard let node = node as? NCContactRow else {return}
-		delegate?.contactsSearchResultsViewController(self, didSelect: node.contact)
+		guard let node = node as? NCContactRow, let contact = node.contact else {return}
+		delegate?.contactsSearchResultsViewController(self, didSelect: contact)
 	}
 }

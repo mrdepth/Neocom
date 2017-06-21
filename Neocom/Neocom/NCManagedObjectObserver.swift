@@ -20,18 +20,25 @@ class NCManagedObjectObserver {
 		self.handler = handler
 		self.objects = Set(managedObjects ?? [])
 		
-		observer = NotificationCenter.default.addNotificationObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: .main) { [weak self] (note) in
+		observer = NotificationCenter.default.addNotificationObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: nil /*.main*/) { [weak self] (note) in
 			guard let strongSelf = self else {return}
 			
+			let updates: Set<NSManagedObjectID>? = {
+				guard let set = note.userInfo?[NSUpdatedObjectsKey] else {return nil}
+				return set as? Set<NSManagedObjectID> ?? Set((set as? Set<NSManagedObject>)?.map {$0.objectID} ?? [])
+			}()
 			
-			let updates = (note.userInfo?[NSUpdatedObjectsKey] as? Set<NSObject>)
 			let updated = strongSelf.objects.filter { (object) -> Bool in
-				return updates?.contains(object) == true || updates?.contains(object.objectID) == true
+				return updates?.contains(object.objectID) == true
 			}
+			
+			let deletes: Set<NSManagedObjectID>? = {
+				guard let set = note.userInfo?[NSDeletedObjectsKey] else {return nil}
+				return set as? Set<NSManagedObjectID> ?? Set((set as? Set<NSManagedObject>)?.map {$0.objectID} ?? [])
+			}()
 
-			let deletes = (note.userInfo?[NSDeletedObjectsKey] as? Set<NSObject>)
 			let deleted = strongSelf.objects.filter { (object) -> Bool in
-				return deletes?.contains(object) == true || deletes?.contains(object.objectID) == true
+				return deletes?.contains(object.objectID) == true
 			}
 
 //			let updated = Set((note.userInfo?[NSUpdatedObjectsKey] as? Set<NSObject>)?.flatMap{ ($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID} ?? []).intersection(objects)
@@ -39,7 +46,7 @@ class NCManagedObjectObserver {
 			
 			//let updated = (note.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObjectID>)?.intersection(strongSelf.objectIDs)
 			//let deleted = (note.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObjectID>)?.intersection(strongSelf.objectIDs)
-			if updated.count > 0 || deleted.count > 0 {
+			if !updated.isEmpty || !deleted.isEmpty {
 				DispatchQueue.main.async {
 					strongSelf.handler(Set(updated), Set(deleted))
 				}

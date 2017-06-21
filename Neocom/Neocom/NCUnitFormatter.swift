@@ -24,11 +24,12 @@ class NCUnitFormatter: Formatter {
 		case cubicMeter
 		case meterPerSecond
 		case auPerSecond
+		case hpPerSecond
 		case custom(String, Bool)
 		
 		var useSIPrefix: Bool {
 			switch self {
-			case .isk, .skillPoints, .meter, .millimeter, .meterPerSecond, .auPerSecond:
+			case .isk, .skillPoints, .meter, .millimeter, .meterPerSecond, .auPerSecond, .hpPerSecond:
 				return false
 			case .gigaJoule, .gigaJoulePerSecond, .megaWatts, .teraflops, .kilogram, .megaBitsPerSecond, .cubicMeter:
 				return true
@@ -67,6 +68,8 @@ class NCUnitFormatter: Formatter {
 				return NSLocalizedString("m/s", comment: "meterPerSecond")
 			case .auPerSecond:
 				return NSLocalizedString("AU/s", comment: "auPerSecond")
+			case .hpPerSecond:
+				return NSLocalizedString("HP/s", comment: "hpPerSecond")
 			case let .custom(string, _):
 				return string
 

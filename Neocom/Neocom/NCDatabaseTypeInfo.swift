@@ -699,8 +699,9 @@ struct NCDatabaseTypeInfo {
 				}
 				var rows = [TreeNode]()
 
-				
-				switch NCDBAttributeCategoryID(rawValue: Int(attributeCategory.categoryID)) {
+
+				let category = NCDBAttributeCategoryID(rawValue: Int(attributeCategory.categoryID))
+				switch category {
 				case .turrets?:
 					if let speed = attributes[NCDBAttributeID.speed.rawValue] {
 						let damageMultiplier = attributes[NCDBAttributeID.damageMultiplier.rawValue]?.value ?? 1
@@ -857,6 +858,59 @@ struct NCDatabaseTypeInfo {
 					if let resistanceRow = resistanceRow {
 						rows.append(resistanceRow)
 					}
+					
+					if category == .shield {
+						if let capacity = attributes[NCDBAttributeID.shieldCapacity.rawValue]?.value,
+							let rechargeRate = attributes[NCDBAttributeID.shieldRechargeRate.rawValue]?.value,
+							rechargeRate > 0 && capacity > 0 {
+							let passive = 10.0 / (rechargeRate / 1000.0) * 0.5 * (1 - 0.5) * capacity
+							
+							rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+							                                  nodeIdentifier: "ShieldRecharge",
+							                                  image: #imageLiteral(resourceName: "shieldRecharge"),
+							                                  title: NSLocalizedString("Passive Recharge Rate", comment: "").uppercased(),
+							                                  subtitle: NCUnitFormatter.localizedString(from: passive, unit: .hpPerSecond, style: .full)))
+
+						}
+						
+						if let amount = attributes[NCDBAttributeID.entityShieldBoostAmount.rawValue]?.value,
+							let duration = attributes[NCDBAttributeID.entityShieldBoostDuration.rawValue]?.value,
+							duration > 0 && amount > 0 {
+							let chance = attributes[NCDBAttributeID.entityShieldBoostDelayChance.rawValue]?.value ??
+								attributes[NCDBAttributeID.entityShieldBoostDelayChanceSmall.rawValue]?.value ??
+								attributes[NCDBAttributeID.entityShieldBoostDelayChanceMedium.rawValue]?.value ??
+								attributes[NCDBAttributeID.entityShieldBoostDelayChanceLarge.rawValue]?.value ?? 0
+							
+							let repair = amount / (duration * (1 + chance) / 1000.0)
+							
+							rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+							                                  nodeIdentifier: "ShieldBooster",
+							                                  image: #imageLiteral(resourceName: "shieldBooster"),
+							                                  title: NSLocalizedString("Repair Rate", comment: "").uppercased(),
+							                                  subtitle: NCUnitFormatter.localizedString(from: repair, unit: .hpPerSecond, style: .full)))
+
+						}
+					}
+					else if category == .armor {
+						if let amount = attributes[NCDBAttributeID.entityArmorRepairAmount.rawValue]?.value,
+							let duration = attributes[NCDBAttributeID.entityArmorRepairDuration.rawValue]?.value,
+							duration > 0 && amount > 0 {
+							let chance = attributes[NCDBAttributeID.entityArmorRepairDelayChance.rawValue]?.value ??
+								attributes[NCDBAttributeID.entityArmorRepairDelayChanceSmall.rawValue]?.value ??
+								attributes[NCDBAttributeID.entityArmorRepairDelayChanceMedium.rawValue]?.value ??
+								attributes[NCDBAttributeID.entityArmorRepairDelayChanceLarge.rawValue]?.value ?? 0
+							
+							let repair = amount / (duration * (1 + chance) / 1000.0)
+							
+							rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+							                                  nodeIdentifier: "ArmorRepair",
+							                                  image: #imageLiteral(resourceName: "armorRepairer"),
+							                                  title: NSLocalizedString("Repair Rate", comment: "").uppercased(),
+							                                  subtitle: NCUnitFormatter.localizedString(from: repair, unit: .hpPerSecond, style: .full)))
+							
+						}
+					}
+					
 				}
 				
 				

@@ -922,7 +922,7 @@
 		
 		NCDBDgmTypeAttribute* armorHPAttribute = type.attributesDictionary[@(265)];
 		NCDBDgmTypeAttribute* hpAttribute = type.attributesDictionary[@(9)];
-		NCDBDgmTypeAttribute* shieldCapacityAttribute = type.attributesDictionary[@(263)];
+		NCDBDgmTypeAttribute* shieldCapacarcityAttribute = type.attributesDictionary[@(263)];
 		NCDBDgmTypeAttribute* shieldRechargeRate = type.attributesDictionary[@(479)];
 		
 		NCDBDgmTypeAttribute* optimalAttribute = type.attributesDictionary[@(54)];

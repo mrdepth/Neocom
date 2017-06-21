@@ -74,6 +74,22 @@ enum NCDBAttributeID: Int {
 	case missileDamageMultiplier = 212
 	case missileEntityVelocityMultiplier = 645
 	case missileEntityFlightTimeMultiplier = 646
+	case shieldRechargeRate = 479
+	case shieldCapacity = 263
+	
+	case entityShieldBoostDuration = 636
+	case entityShieldBoostAmount = 637
+	case entityArmorRepairDuration = 630
+	case entityArmorRepairAmount = 631
+	
+	case entityShieldBoostDelayChance = 639
+	case entityShieldBoostDelayChanceSmall = 1006
+	case entityShieldBoostDelayChanceMedium = 1007
+	case entityShieldBoostDelayChanceLarge = 1008
+	case entityArmorRepairDelayChance = 638
+	case entityArmorRepairDelayChanceSmall = 1009
+	case entityArmorRepairDelayChanceMedium = 1010
+	case entityArmorRepairDelayChanceLarge = 1011
 }
 
 enum NCDBAttributeCategoryID: Int {

@@ -38,7 +38,7 @@ class NCDefaultTableViewCell: NCTableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        indentationWidth = 32
+        indentationWidth = 16
     }
 	
 	var indentationConstraint: NSLayoutConstraint? {

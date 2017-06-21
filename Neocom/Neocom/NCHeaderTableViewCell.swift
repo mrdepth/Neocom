@@ -22,6 +22,7 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
         super.awakeFromNib()
         separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 		tintColor = .caption
+		indentationWidth = 16
     }
 
 	override func prepareForReuse() {
@@ -41,20 +42,31 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
 	
 	var indentationConstraint: NSLayoutConstraint? {
 		get {
-			guard let expandIconView = self.expandIconView else {return nil}
-			return expandIconView.superview?.constraints.first {
-				return $0.firstItem === expandIconView && $0.secondItem === expandIconView.superview && $0.firstAttribute == .leading && $0.secondAttribute == .leading
+			guard let stackView = self.expandIconView?.superview else {return nil}
+			return stackView.superview?.constraints.first {
+				return $0.firstItem === stackView && $0.secondItem === stackView.superview && $0.firstAttribute == .leading && $0.secondAttribute == .leading
 			}
+		}
+	}
+	
+	override var indentationWidth: CGFloat {
+		didSet {
+			updateIndent()
 		}
 	}
 	
 	override var indentationLevel: Int {
 		didSet {
-			//let level = max(0, indentationLevel - 1)
-			self.indentationConstraint?.constant = CGFloat(8 + indentationLevel * 10)
+			updateIndent()
 		}
 	}
-
+	
+	private func updateIndent() {
+		let level = max(0, indentationLevel)
+		let indent = 8 + CGFloat(level) * indentationWidth
+		self.indentationConstraint?.constant = indent
+		self.separatorInset.left = indent
+	}
 }
 
 class NCActionHeaderTableViewCell: NCHeaderTableViewCell {

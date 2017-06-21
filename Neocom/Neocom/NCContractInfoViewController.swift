@@ -14,7 +14,7 @@ class NCContractContactRow: NCContactRow {
 	
 	init(title: String , contact: NCContact?, dataManager: NCDataManager) {
 		self.title = title
-		super.init(prototype: Prototype.NCDefaultTableViewCell.default, contact: contact, dataManager: dataManager)
+		super.init(prototype: Prototype.NCContactTableViewCell.default, contact: contact, dataManager: dataManager)
 	}
 
 	override func configure(cell: UITableViewCell) {
@@ -35,7 +35,7 @@ class NCContractItem: TreeRow {
 	
 	init(item: ESI.Contracts.Item) {
 		self.item = item
-		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: Router.Database.TypeInfo(item.typeID))
+		super.init(prototype: Prototype.NCContactTableViewCell.default, route: Router.Database.TypeInfo(item.typeID))
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -59,7 +59,7 @@ class NCContractBidRow: NCContactRow {
 	let bid: ESI.Contracts.Bid
 	init(bid: ESI.Contracts.Bid , contact: NCContact?, dataManager: NCDataManager) {
 		self.bid = bid
-		super.init(prototype: Prototype.NCDefaultTableViewCell.default, contact: contact, dataManager: dataManager)
+		super.init(prototype: Prototype.NCContactTableViewCell.default, contact: contact, dataManager: dataManager)
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -85,6 +85,7 @@ class NCContractInfoViewController: UITableViewController, TreeControllerDelegat
 		
 		tableView.register([Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.noImage,
+		                    Prototype.NCContactTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.default])
 		
 		registerRefreshable()

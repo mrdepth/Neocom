@@ -206,6 +206,20 @@ enum Router {
 			}
 		}
 
+		class MarketGroups: Route {
+			let parentGroup: NCDBInvMarketGroup?
+			
+			init(parentGroup: NCDBInvMarketGroup?) {
+				self.parentGroup = parentGroup
+				super.init(kind: .push, identifier: "NCMarketGroupsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCMarketGroupsViewController
+				destination.parentGroup = parentGroup
+			}
+		}
+		
 		class Types: Route {
 			let predicate: NSPredicate
 			let title: String?
@@ -219,7 +233,11 @@ enum Router {
 			convenience init(group: NCDBInvGroup) {
 				self.init(predicate: NSPredicate(format: "group = %@", group), title: group.groupName)
 			}
-			
+
+			convenience init(marketGroup: NCDBInvMarketGroup) {
+				self.init(predicate: NSPredicate(format: "marketGroup = %@", marketGroup), title: marketGroup.marketGroupName)
+			}
+
 			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCDatabaseTypesViewController
 				destination.predicate = predicate

@@ -82,7 +82,7 @@ class NCIndustryRow: TreeRow {
 			s = "\(NSLocalizedString("reverted", comment: "")) \(DateFormatter.localizedString(from: job.endDate, dateStyle: .short, timeStyle: .short))"
 			cell.progressView.progress = 0
 		}
-		cell.stateLabel.attributedText = "\(activity)" * [NSForegroundColorAttributeName: UIColor.white] + s * [NSForegroundColorAttributeName: UIColor.lightText]
+		cell.stateLabel.attributedText = "\(activity): " * [NSForegroundColorAttributeName: UIColor.white] + s * [NSForegroundColorAttributeName: UIColor.lightText]
 		
 		cell.jobRunsLabel.text = NCUnitFormatter.localizedString(from: job.runs, unit: .none, style: .full)
 		cell.runsPerCopyLabel.text = NCUnitFormatter.localizedString(from: job.licensedRuns ?? 0, unit: .none, style: .full)

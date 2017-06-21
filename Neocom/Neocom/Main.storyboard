@@ -128,6 +128,7 @@
                         <segue destination="RAB-Dd-4IL" kind="showDetail" identifier="NCWalletTransactionsViewController" id="QKl-vd-cJt"/>
                         <segue destination="Rd3-J1-zIo" kind="showDetail" identifier="NCContractsViewController" id="9HH-Ho-xdq"/>
                         <segue destination="F51-S5-Evq" kind="showDetail" identifier="NCCalendarViewController" id="EZL-1G-WSb"/>
+                        <segue destination="ZNJ-Wm-Liw" kind="showDetail" identifier="NCMarketGroupsViewController" action="showViewController:sender:" id="e7P-hN-CXt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mhh-2D-7TI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -8461,6 +8462,49 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="urm-70-4sm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1843" y="3105"/>
+        </scene>
+        <!--Market-->
+        <scene sceneID="ZmO-ck-iak">
+            <objects>
+                <tableViewController storyboardIdentifier="NCMarketGroupsViewController" id="a4h-ZX-hpz" customClass="NCMarketGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="4yN-6s-vZD" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="fbm-mG-0cT" id="ewV-EM-itg"/>
+                            <outlet property="delegate" destination="fbm-mG-0cT" id="JKH-2M-BwE"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Market" id="qjP-ew-rty"/>
+                    <connections>
+                        <outlet property="treeController" destination="fbm-mG-0cT" id="Tnz-GO-bcp"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0L9-CL-vx1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="fbm-mG-0cT" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="4yN-6s-vZD" id="zuh-Rt-M3M"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="5081" y="245"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="S8k-11-rYc">
+            <objects>
+                <navigationController id="ZNJ-Wm-Liw" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Geb-PJ-LuS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="a4h-ZX-hpz" kind="relationship" relationship="rootViewController" id="WsD-zQ-Ed3"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WHg-N2-ewv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4371" y="246"/>
         </scene>
     </scenes>
     <resources>

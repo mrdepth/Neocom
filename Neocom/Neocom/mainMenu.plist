@@ -113,7 +113,7 @@
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
-			<string>NCDatabaseMarketViewController</string>
+			<string>NCMarketGroupsViewController</string>
 			<key>title</key>
 			<string>Market</string>
 			<key>image</key>

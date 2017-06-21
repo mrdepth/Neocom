@@ -9,6 +9,14 @@
 import UIKit
 import EVEAPI
 
+class NCAssetRow: DefaultTreeRow {
+	
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		cell.indentationWidth = 32
+	}
+}
+
 class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
 	
 	@IBOutlet var treeController: TreeController!
@@ -189,7 +197,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					}
                     let hasLoadout = type?.group?.category?.categoryID == Int32(NCDBCategoryID.ship.rawValue) && !rows.isEmpty
 					
-					let assetRow = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.default,
+					let assetRow = NCAssetRow(prototype: Prototype.NCDefaultTableViewCell.default,
 					                  nodeIdentifier: "\(asset.itemID)",
 					                  image: type?.icon?.image?.image,
 					                  attributedTitle: title,

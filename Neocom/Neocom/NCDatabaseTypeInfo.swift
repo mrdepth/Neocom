@@ -614,7 +614,7 @@ struct NCDatabaseTypeInfo {
 				guard let blueprintType = type.blueprintType else {return}
 				for activity in blueprintType.activities?.sortedArray(using: [NSSortDescriptor(key: "activity.activityID", ascending: true)]) as? [NCDBIndActivity] ?? [] {
 					var rows = [TreeNode]()
-					let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+					let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
 					                                title: NSLocalizedString("TIME", comment: ""),
 					                                subtitle: NCTimeIntervalFormatter.localizedString(from: TimeInterval(activity.time), precision: .seconds))
 					rows.append(row)
@@ -695,7 +695,7 @@ struct NCDatabaseTypeInfo {
 		
 		let trainingQueue = NCTrainingQueue(character: character)
 		trainingQueue.addRequiredSkills(for: activity)
-		return NCDatabaseSkillsSection(nodeIdentifier: nil, title: NSLocalizedString("Required Skills", comment: "").uppercased(), trainingQueue: trainingQueue, character: character, children: rows)
+		return !rows.isEmpty ? NCDatabaseSkillsSection(nodeIdentifier: nil, title: NSLocalizedString("Required Skills", comment: "").uppercased(), trainingQueue: trainingQueue, character: character, children: rows) : nil
 	}
 	
 	static func masteries(type: NCDBInvType, character: NCCharacter) -> TreeSection? {

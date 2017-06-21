@@ -24,6 +24,7 @@ class NCDatabaseTypeInfoViewController: UITableViewController, TreeControllerDel
 		                    Prototype.NCDefaultTableViewCell.attribute,
 		                    Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCDefaultTableViewCell.noImage,
 		                    Prototype.NCDamageTypeTableViewCell.compact])
 		treeController.delegate = self
 		

@@ -60,6 +60,20 @@ enum NCDBAttributeID: Int {
 	case thermalDamage = 118
 	
 	case signatureRadius = 552
+	
+	case missileLaunchDuration = 506
+	case entityMissileTypeID = 507
+	case maxVelocity = 37
+	case speed = 51
+	case maxRange = 54
+	case falloff = 158
+	case trackingSpeed = 160
+	case damageMultiplier = 64
+	case agility = 70
+	case explosionDelay = 281
+	case missileDamageMultiplier = 212
+	case missileEntityVelocityMultiplier = 645
+	case missileEntityFlightTimeMultiplier = 646
 }
 
 enum NCDBAttributeCategoryID: Int {
@@ -70,6 +84,8 @@ enum NCDBAttributeCategoryID: Int {
 	case structure = 4
 	case requiredSkills = 8
 	case null = 9
+	case turrets = 29
+	case missile = 30
 }
 
 enum NCDBUnitID: Int {
@@ -103,6 +119,7 @@ enum NCDBCategoryID: Int {
 	case material = 4
 	case planetaryResource = 42
 	case reaction = 24
+	case entity = 11
 
 }
 
@@ -128,6 +145,10 @@ enum NCDBDgmppItemCategoryID: Int {
 	case service
 	case structureDrone
 	case structureRig
+}
+
+enum NCDBEffectID: Int {
+	case missileLaunchingForEntity = 569
 }
 
 extension NCDBEveIcon {

@@ -121,7 +121,7 @@
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
-			<string>NCDatabaseNPCViewController</string>
+			<string>NCNPCViewController</string>
 			<key>title</key>
 			<string>NPC</string>
 			<key>image</key>

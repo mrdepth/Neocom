@@ -220,6 +220,20 @@ enum Router {
 			}
 		}
 		
+		class NpcGroups: Route {
+			let parentGroup: NCDBNpcGroup?
+			
+			init(parentGroup: NCDBNpcGroup?) {
+				self.parentGroup = parentGroup
+				super.init(kind: .push, identifier: "NCNPCViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCNPCViewController
+				destination.parentGroup = parentGroup
+			}
+		}
+		
 		class Types: Route {
 			let predicate: NSPredicate
 			let title: String?
@@ -236,6 +250,10 @@ enum Router {
 
 			convenience init(marketGroup: NCDBInvMarketGroup) {
 				self.init(predicate: NSPredicate(format: "marketGroup = %@", marketGroup), title: marketGroup.marketGroupName)
+			}
+
+			convenience init(npcGroup: NCDBNpcGroup) {
+				self.init(predicate: NSPredicate(format: "group = %@", npcGroup.group!), title: npcGroup.npcGroupName)
 			}
 
 			override func prepareForSegue(destination: UIViewController) {

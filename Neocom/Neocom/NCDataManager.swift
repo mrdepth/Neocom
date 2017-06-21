@@ -617,6 +617,23 @@ class NCDataManager {
 		})
 	}
 	
+	func calendarEvents(completionHandler: @escaping (NCCachedResult<[ESI.Calendar.Summary]>) -> Void) {
+		loadFromCache(forKey: "ESI.Calendar.Summary", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.calendar.listCalendarEventSummaries(characterID: Int(self.characterID)) { result in
+				completion(result, 3600.0 * 1)
+			}
+		})
+	}
+
+	func calendarEventDetails(eventID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Calendar.Event>) -> Void) {
+		loadFromCache(forKey: "ESI.Calendar.Event.\(eventID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.calendar.getAnEvent(characterID: Int(self.characterID), eventID: Int(eventID)) { result in
+				completion(result, 3600.0 * 48)
+			}
+		})
+	}
+
+	
 	func markRead(mail: ESI.Mail.Header, completionHandler: @escaping (Result<String>) -> Void) {
 		guard let mailID = mail.mailID else {
 			completionHandler(.failure(NCDataManagerError.internalError))

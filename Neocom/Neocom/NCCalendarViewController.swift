@@ -16,14 +16,15 @@ class NCCalendarViewController: UITableViewController, TreeControllerDelegate, N
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		registerRefreshable()
-		
-		tableView.register([Prototype.NCHeaderTableViewCell.default,
-		                    Prototype.NCDefaultTableViewCell.attribute,
-		                    Prototype.NCDefaultTableViewCell.placeholder])
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
+		
+		tableView.register([Prototype.NCHeaderTableViewCell.default])
+		
+		registerRefreshable()
+		
 		treeController.delegate = self
+		
 		reload()
 	}
 	
@@ -36,11 +37,10 @@ class NCCalendarViewController: UITableViewController, TreeControllerDelegate, N
 		treeController.deselectCell(for: node, animated: true)
 	}
 	
-	
 	//MARK: - NCRefreshable
 	
 	private var observer: NCManagedObjectObserver?
-	private var clones: NCCachedResult<EVE.Char.Clones>?
+	private var events: NCCachedResult<[ESI.Calendar.Summary]>?
 	private var locations: [Int64: NCLocation]?
 	
 	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
@@ -54,101 +54,90 @@ class NCCalendarViewController: UITableViewController, TreeControllerDelegate, N
 		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
 		
 		progress.perform {
-			dataManager.clones { result in
-				self.clones = result
+			dataManager.calendarEvents { result in
+				self.events = result
 				
 				switch result {
-				case let .success(value, record):
+				case let .success(_, record):
 					if let record = record {
 						self.observer = NCManagedObjectObserver(managedObject: record) { [weak self] _ in
-							if let value = result.value, let locations = value.jumpClones?.map ({$0.locationID}), !locations.isEmpty {
-								dataManager.locations(ids: Set(locations)) { result in
-									self?.locations = result
-									self?.reloadSections()
-								}
-							}
+							self?.reloadSections()
 						}
-					}
-					
-					if let locations = value.jumpClones?.map ({$0.locationID}), !locations.isEmpty {
-						dataManager.locations(ids: Set(locations)) { result in
-							self.locations = result
-							self.reloadSections()
-							completionHandler?()
-						}
-					}
-					else {
-						completionHandler?()
 					}
 					
 				case .failure:
-					completionHandler?()
+					break
 				}
 				
-				
+				self.reloadSections()
+				completionHandler?()
+
 			}
 		}
 	}
 	
 	private func reloadSections() {
-		if let value = clones?.value {
+		if let value = events?.value {
 			tableView.backgroundView = nil
 			
-			let t = 3600 * 24 + (value.cloneJumpDate ?? .distantPast).timeIntervalSinceNow
-			let s = String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: ""))
-			
-			var sections = [TreeNode]()
-			
-			sections.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-			                               nodeIdentifier: "Jump",
-			                               title: NSLocalizedString("Next Clone Jump Availability", comment: "").uppercased(),
-			                               subtitle: s))
-			
-			let invTypes = NCDatabase.sharedDatabase?.invTypes
-			for clone in value.jumpClones ?? [] {
-				
-				var rows = [TreeRow]()
-				
-				let jumpCloneImplants = value.jumpCloneImplants?.filter {$0.jumpCloneID == clone.jumpCloneID}
-				let implants = jumpCloneImplants?.flatMap {invTypes?[$0.typeID]} ?? []
-				
-				let list = [(NCDBAttributeID.intelligenceBonus, NSLocalizedString("Intelligence", comment: "")),
-				            (NCDBAttributeID.memoryBonus, NSLocalizedString("Memory", comment: "")),
-				            (NCDBAttributeID.perceptionBonus, NSLocalizedString("Perception", comment: "")),
-				            (NCDBAttributeID.willpowerBonus, NSLocalizedString("Willpower", comment: "")),
-				            (NCDBAttributeID.charismaBonus, NSLocalizedString("Charisma", comment: ""))]
-				
-				for (attribute, name) in list {
-					if let implant = implants.first(where: {($0.allAttributes[attribute.rawValue]?.value ?? 0) > 0}) {
-						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                           nodeIdentifier: name,
-						                           image: implant.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image,
-						                           title: implant.typeName?.uppercased(),
-						                           subtitle: "\(name) +\(Int(implant.allAttributes[attribute.rawValue]!.value))",
-							accessoryType: .disclosureIndicator,
-							route: Router.Database.TypeInfo(implant)
-						))
+			DispatchQueue.global(qos: .background).async {
+				autoreleasepool {
+					let dateFormatter = DateFormatter()
+					dateFormatter.dateStyle = .medium
+					dateFormatter.timeStyle = .none
+					dateFormatter.doesRelativeDateFormatting = true
+					
+					let currentDate = Date()
+					let events = value.filter {$0.eventDate != nil && $0.eventDate! >= currentDate}.sorted {$0.eventDate! > $1.eventDate!}
+					
+					let calendar = Calendar(identifier: .gregorian)
+					var date = calendar.date(from: calendar.dateComponents([.day, .month, .year], from: events.first?.eventDate ?? Date())) ?? Date()
+					
+					var sections = [TreeNode]()
+					
+					var rows = [NCEventRow]()
+					for event in events {
+						let row = NCEventRow(event: event)
+						if event.eventDate! > date {
+							rows.append(row)
+						}
+						else {
+							if !rows.isEmpty {
+								let title = dateFormatter.string(from: date)
+								sections.append(DefaultTreeSection(nodeIdentifier: title, title: title.uppercased(), children: rows.reversed()))
+							}
+							date = calendar.date(from: calendar.dateComponents([.day, .month, .year], from: event.eventDate!)) ?? Date()
+							rows = [row]
+						}
 					}
+					
+					if !rows.isEmpty {
+						let title = dateFormatter.string(from: date)
+						sections.append(DefaultTreeSection(nodeIdentifier: title, title: title.uppercased(), children: rows.reversed()))
+					}
+					sections.reverse()
+					
+					DispatchQueue.main.async {
+						
+						if self.treeController.content == nil {
+							let root = TreeNode()
+							root.children = sections
+							self.treeController.content = root
+						}
+						else {
+							self.treeController.content?.children = sections
+						}
+						self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
+					}
+
 				}
-				
-				if rows.isEmpty {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, nodeIdentifier: "NoImplants", title: NSLocalizedString("No Implants Installed", comment: "").uppercased()))
-				}
-				sections.append(DefaultTreeSection(nodeIdentifier: "\(clone.jumpCloneID)", attributedTitle: locations?[clone.locationID]?.displayName.uppercased(), children: rows))
 			}
 			
-			if treeController.content == nil {
-				let root = TreeNode()
-				root.children = sections
-				treeController.content = root
-			}
-			else {
-				treeController.content?.children = sections
-			}
 			
 		}
 		else {
-			tableView.backgroundView = NCTableViewBackgroundLabel(text: clones?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			tableView.backgroundView = NCTableViewBackgroundLabel(text: events?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 		}
 	}
+	
 }

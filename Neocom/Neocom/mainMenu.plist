@@ -67,9 +67,9 @@
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
-			<string>NCCalendarEventsViewController</string>
+			<string>NCCalendarViewController</string>
 			<key>title</key>
-			<string>Calendar Events</string>
+			<string>Calendar</string>
 			<key>image</key>
 			<string>calendar</string>
 			<key>scopes</key>

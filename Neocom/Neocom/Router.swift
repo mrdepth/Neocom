@@ -618,4 +618,21 @@ enum Router {
 			}
 		}
 	}
+	
+	enum Calendar {
+		
+		class Event: Route {
+			let event: ESI.Calendar.Summary
+			
+			init(event: ESI.Calendar.Summary) {
+				self.event = event
+				super.init(kind: .push, identifier: "NCEventViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCEventViewController
+				destination.event = event
+			}
+		}
+	}
 }

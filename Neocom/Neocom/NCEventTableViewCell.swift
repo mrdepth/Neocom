@@ -28,7 +28,7 @@ class NCEventRow: TreeRow {
 	
 	init(event: ESI.Calendar.Summary) {
 		self.event = event
-		super.init(prototype: Prototype.NCEventTableViewCell.default)
+		super.init(prototype: Prototype.NCEventTableViewCell.default, route: Router.Calendar.Event(event: event))
 	}
 	
 	override func configure(cell: UITableViewCell) {

@@ -133,16 +133,16 @@ class NCContractsViewController: UITableViewController, TreeControllerDelegate, 
 			completionHandler?()
 			return
 		}
-		var contractIDs = Set(value.flatMap {$0.issuerID > 0 ? Int64($0.issuerID) : nil})
-		contractIDs.formUnion(Set(value.flatMap {$0.acceptorID > 0 ? Int64($0.acceptorID) : nil}))
-		contractIDs.formUnion(Set(value.flatMap {$0.assigneeID > 0 ?Int64($0.assigneeID) : nil}))
+		var contactIDs = Set(value.flatMap {$0.issuerID > 0 ? Int64($0.issuerID) : nil})
+		contactIDs.formUnion(Set(value.flatMap {$0.acceptorID > 0 ? Int64($0.acceptorID) : nil}))
+		contactIDs.formUnion(Set(value.flatMap {$0.assigneeID > 0 ?Int64($0.assigneeID) : nil}))
 		
-		guard !contractIDs.isEmpty else {
+		guard !contactIDs.isEmpty else {
 			completionHandler?()
 			return
 		}
 		
-		dataManager.contacts(ids: contractIDs) { [weak self] result in
+		dataManager.contacts(ids: contactIDs) { [weak self] result in
 			self?.contacts = result
 			completionHandler?()
 		}

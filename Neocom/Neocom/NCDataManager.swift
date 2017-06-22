@@ -851,6 +851,14 @@ class NCDataManager {
 	}
 
 
+	func incursions(completionHandler: @escaping (NCCachedResult<[ESI.Incursions.Incursion]>) -> Void) {
+		loadFromCache(forKey: "ESI.Incursions.Incursion", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.incursions.listIncursions { result in
+				completion(result, 600)
+			}
+		})
+	}
+	
 	//MARK: Private
 	
 	private func loadFromCache<T> (forKey key: String,

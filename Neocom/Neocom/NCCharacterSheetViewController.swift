@@ -297,7 +297,10 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 		rows = []
 		
 		if let value = self.skills?.value {
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "SP", title: "\(NCUnitFormatter.localizedString(from: Double(value.totalSP ?? 0), unit: .skillPoints, style: .full))".uppercased(), subtitle: "\(value.skills?.count ?? 0) \(NSLocalizedString("skills", comment: ""))"))
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+			                           nodeIdentifier: "SP",
+			                           title: "\(value.skills?.count ?? 0) \(NSLocalizedString("skills", comment: ""))".uppercased(),
+			                           subtitle: "\(NCUnitFormatter.localizedString(from: Double(value.totalSP ?? 0), unit: .skillPoints, style: .full))"))
 		}
 		if let value = self.clones?.value {
 			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Respecs", title: NSLocalizedString("Bonus Remaps Available", comment: "").uppercased(), subtitle: "\(value.freeRespecs)"))

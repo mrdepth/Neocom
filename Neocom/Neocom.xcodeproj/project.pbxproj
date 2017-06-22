@@ -235,6 +235,8 @@
 		12DBEAC11E1D48A80088A486 /* NCFittingGang.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DBEAC01E1D48A80088A486 /* NCFittingGang.mm */; };
 		12DBEAC41E1D49C70088A486 /* NCFittingCharacter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DBEAC31E1D49C70088A486 /* NCFittingCharacter.mm */; };
 		12DBEAE91E1E8FEC0088A486 /* NCFittingMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */; };
+		12DC567D1EFBE8520088F45E /* NCIncursionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DC567C1EFBE8520088F45E /* NCIncursionsViewController.swift */; };
+		12DC567F1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DC567E1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift */; };
 		12DE67211E715D46005CA44C /* NCSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE67201E715D46005CA44C /* NCSegmentedControl.swift */; };
 		12E2674D1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */; };
 		12E2674F1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */; };
@@ -550,6 +552,8 @@
 		12DBEAC31E1D49C70088A486 /* NCFittingCharacter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCharacter.mm; sourceTree = "<group>"; };
 		12DBEAE71E1E6DF50088A486 /* NCFittingTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCFittingTypes.h; sourceTree = "<group>"; };
 		12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingMenuViewController.swift; sourceTree = "<group>"; };
+		12DC567C1EFBE8520088F45E /* NCIncursionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCIncursionsViewController.swift; sourceTree = "<group>"; };
+		12DC567E1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCIncursionTableViewCell.swift; sourceTree = "<group>"; };
 		12DE67201E715D46005CA44C /* NCSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSegmentedControl.swift; sourceTree = "<group>"; };
 		12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateGroupsViewController.swift; sourceTree = "<group>"; };
 		12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificatesViewController.swift; sourceTree = "<group>"; };
@@ -610,6 +614,7 @@
 				12C37D291EFA866C0070F055 /* NCMarketGroupsViewController.swift */,
 				12C37D331EFAAA290070F055 /* NCNPCViewController.swift */,
 				12C37D361EFBA4C80070F055 /* NCWHViewController.swift */,
+				12DC567C1EFBE8520088F45E /* NCIncursionsViewController.swift */,
 				12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */,
 				12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */,
 				12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */,
@@ -807,6 +812,7 @@
 				12D39D0D1EF936520077BD17 /* NCWalletTransactionTableViewCell.swift */,
 				12D39D131EF969210077BD17 /* NCContractTableViewCell.swift */,
 				12C37D2D1EFA9CEE0070F055 /* NCContactTableViewCell.swift */,
+				12DC567E1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -843,7 +849,6 @@
 				126157081E01D2080041B817 /* Character */,
 				1261570B1E01D2E30041B817 /* Skills */,
 				128442131EBCEEB100D87992 /* Business */,
-				12DBEA311E1D36580088A486 /* Fitting */,
 				12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */,
 				12AC8D951DEF58A100561A7A /* ViewController.swift */,
 				12AC8DBB1DF01BF100561A7A /* Test.h */,
@@ -879,6 +884,7 @@
 				12EFE7F41E40C833007BF69B /* PresentationControllers */,
 				12EFE7F71E40C864007BF69B /* Segues */,
 				12EA6B3E1E850BB300C571DF /* Activity */,
+				12DBEA311E1D36580088A486 /* Fitting */,
 				1256BE471DF1F3B100A2A24B /* Constants.swift */,
 				1230A3111DFFE2CF00627D92 /* Math.swift */,
 				1230A3191DFFE2CF00627D92 /* NCGate.swift */,
@@ -1356,6 +1362,7 @@
 				12D08F991E4DCCE30042B761 /* NCFittingActionsViewController.swift in Sources */,
 				12DE67211E715D46005CA44C /* NCSegmentedControl.swift in Sources */,
 				12AC8DD21DF090A600561A7A /* NCCache.swift in Sources */,
+				12DC567D1EFBE8520088F45E /* NCIncursionsViewController.swift in Sources */,
 				12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */,
 				12961DD61E1D64C9008A3F4D /* NCFittingModule.mm in Sources */,
 				122B55611EB73E3500E46536 /* NCAccountsViewController.swift in Sources */,
@@ -1388,6 +1395,7 @@
 				12E2674F1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift in Sources */,
 				1230A3241DFFE2CF00627D92 /* Math.swift in Sources */,
 				1261570A1E01D2250041B817 /* NCCharacterSheetViewController.swift in Sources */,
+				12DC567F1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift in Sources */,
 				1291194B1E3918CC00870428 /* NCFittingModulesViewController.swift in Sources */,
 				1285FB331EB8DBFA0025331A /* NCImageView.swift in Sources */,
 				12424E171E486ACD002DFE08 /* NCFittingVariationsViewController.swift in Sources */,

@@ -75,6 +75,10 @@ class NCDatabase {
 		return NCDBMapSolarSystem.mapSolarSystems(managedObjectContext: self.viewContext)
 	}()
 
+	private(set) lazy var mapConstellations: NCFetchedCollection<NCDBMapConstellation> = {
+		return NCDBMapConstellation.mapConstellations(managedObjectContext: self.viewContext)
+	}()
+
 	private(set) lazy var mapRegions: NCFetchedCollection<NCDBMapRegion> = {
 		return NCDBMapRegion.mapRegions(managedObjectContext: self.viewContext)
 	}()
@@ -165,6 +169,13 @@ extension NCDBMapSolarSystem {
 		return NCFetchedCollection<NCDBMapSolarSystem>(entityName: "MapSolarSystem", predicateFormat: "solarSystemID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }
+
+extension NCDBMapConstellation {
+	class func mapConstellations(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBMapConstellation> {
+		return NCFetchedCollection<NCDBMapConstellation>(entityName: "MapConstellation", predicateFormat: "constellationID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+}
+
 
 extension NCDBMapRegion {
 	class func mapRegions(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBMapRegion> {

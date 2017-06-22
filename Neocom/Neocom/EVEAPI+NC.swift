@@ -92,3 +92,17 @@ extension ESI.Contracts.Contract.Status {
 	}
 
 }
+
+extension ESI.Incursions.Incursion.State {
+	var title: String {
+		switch self {
+		case .established:
+			return NSLocalizedString("Established", comment: "")
+		case .mobilizing:
+			return NSLocalizedString("Mobilizing", comment: "")
+		case .withdrawing:
+			return NSLocalizedString("Withdrawing", comment: "")
+		}
+	}
+	
+}

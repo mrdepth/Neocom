@@ -93,3 +93,12 @@ typedef struct {
 	double signature;
 	double range;
 } NCFittingHostileTarget;
+
+typedef NS_ENUM(NSInteger, NCFittingCommodityTier) {
+	NCFittingCommodityTierUnknown = -1,
+	NCFittingCommodityTierRaw = 0,
+	NCFittingCommodityTierTier1,
+	NCFittingCommodityTierTier2,
+	NCFittingCommodityTierTier3,
+	NCFittingCommodityTierTier4
+};

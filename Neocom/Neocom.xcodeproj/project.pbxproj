@@ -237,6 +237,20 @@
 		12DBEAE91E1E8FEC0088A486 /* NCFittingMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */; };
 		12DC567D1EFBE8520088F45E /* NCIncursionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DC567C1EFBE8520088F45E /* NCIncursionsViewController.swift */; };
 		12DC567F1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DC567E1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift */; };
+		12DC56851EFC09DC0088F45E /* NCFittingPlanet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC56841EFC09DC0088F45E /* NCFittingPlanet.mm */; };
+		12DC56881EFC0A040088F45E /* NCFittingFacility.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC56871EFC0A040088F45E /* NCFittingFacility.mm */; };
+		12DC568B1EFC0A150088F45E /* NCFittingRoute.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC568A1EFC0A150088F45E /* NCFittingRoute.mm */; };
+		12DC568E1EFC0A230088F45E /* NCFittingCommodity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC568D1EFC0A230088F45E /* NCFittingCommodity.mm */; };
+		12DC56911EFC0A400088F45E /* NCFittingCommandCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC56901EFC0A400088F45E /* NCFittingCommandCenter.mm */; };
+		12DC56941EFC0A4E0088F45E /* NCFittingStorageFacility.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC56931EFC0A4E0088F45E /* NCFittingStorageFacility.mm */; };
+		12DC56971EFC0A620088F45E /* NCFittingExtractorControlUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC56961EFC0A620088F45E /* NCFittingExtractorControlUnit.mm */; };
+		12DC569A1EFC0A740088F45E /* NCFittingIndustryFacility.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC56991EFC0A740088F45E /* NCFittingIndustryFacility.mm */; };
+		12DC569D1EFC0A8A0088F45E /* NCFittingSpaceport.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC569C1EFC0A8A0088F45E /* NCFittingSpaceport.mm */; };
+		12DC56A01EFC0A9E0088F45E /* NCFittingSchematic.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC569F1EFC0A9E0088F45E /* NCFittingSchematic.mm */; };
+		12DC56A31EFC0ADC0088F45E /* NCFittingCycle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC56A21EFC0ADC0088F45E /* NCFittingCycle.mm */; };
+		12DC56A61EFC0AED0088F45E /* NCFittingProductionCycle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC56A51EFC0AED0088F45E /* NCFittingProductionCycle.mm */; };
+		12DC56A91EFC0AFD0088F45E /* NCFittingState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC56A81EFC0AFD0088F45E /* NCFittingState.mm */; };
+		12DC56AC1EFC0B0F0088F45E /* NCFittingProductionState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DC56AB1EFC0B0F0088F45E /* NCFittingProductionState.mm */; };
 		12DE67211E715D46005CA44C /* NCSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE67201E715D46005CA44C /* NCSegmentedControl.swift */; };
 		12E2674D1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */; };
 		12E2674F1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */; };
@@ -554,6 +568,34 @@
 		12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingMenuViewController.swift; sourceTree = "<group>"; };
 		12DC567C1EFBE8520088F45E /* NCIncursionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCIncursionsViewController.swift; sourceTree = "<group>"; };
 		12DC567E1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCIncursionTableViewCell.swift; sourceTree = "<group>"; };
+		12DC56831EFC09DC0088F45E /* NCFittingPlanet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPlanet.h; sourceTree = "<group>"; };
+		12DC56841EFC09DC0088F45E /* NCFittingPlanet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingPlanet.mm; sourceTree = "<group>"; };
+		12DC56861EFC0A040088F45E /* NCFittingFacility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingFacility.h; sourceTree = "<group>"; };
+		12DC56871EFC0A040088F45E /* NCFittingFacility.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingFacility.mm; sourceTree = "<group>"; };
+		12DC56891EFC0A150088F45E /* NCFittingRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingRoute.h; sourceTree = "<group>"; };
+		12DC568A1EFC0A150088F45E /* NCFittingRoute.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingRoute.mm; sourceTree = "<group>"; };
+		12DC568C1EFC0A230088F45E /* NCFittingCommodity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCommodity.h; sourceTree = "<group>"; };
+		12DC568D1EFC0A230088F45E /* NCFittingCommodity.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCommodity.mm; sourceTree = "<group>"; };
+		12DC568F1EFC0A400088F45E /* NCFittingCommandCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCommandCenter.h; sourceTree = "<group>"; };
+		12DC56901EFC0A400088F45E /* NCFittingCommandCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCommandCenter.mm; sourceTree = "<group>"; };
+		12DC56921EFC0A4E0088F45E /* NCFittingStorageFacility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingStorageFacility.h; sourceTree = "<group>"; };
+		12DC56931EFC0A4E0088F45E /* NCFittingStorageFacility.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingStorageFacility.mm; sourceTree = "<group>"; };
+		12DC56951EFC0A620088F45E /* NCFittingExtractorControlUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingExtractorControlUnit.h; sourceTree = "<group>"; };
+		12DC56961EFC0A620088F45E /* NCFittingExtractorControlUnit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingExtractorControlUnit.mm; sourceTree = "<group>"; };
+		12DC56981EFC0A740088F45E /* NCFittingIndustryFacility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingIndustryFacility.h; sourceTree = "<group>"; };
+		12DC56991EFC0A740088F45E /* NCFittingIndustryFacility.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingIndustryFacility.mm; sourceTree = "<group>"; };
+		12DC569B1EFC0A8A0088F45E /* NCFittingSpaceport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSpaceport.h; sourceTree = "<group>"; };
+		12DC569C1EFC0A8A0088F45E /* NCFittingSpaceport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSpaceport.mm; sourceTree = "<group>"; };
+		12DC569E1EFC0A9E0088F45E /* NCFittingSchematic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSchematic.h; sourceTree = "<group>"; };
+		12DC569F1EFC0A9E0088F45E /* NCFittingSchematic.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSchematic.mm; sourceTree = "<group>"; };
+		12DC56A11EFC0ADC0088F45E /* NCFittingCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCycle.h; sourceTree = "<group>"; };
+		12DC56A21EFC0ADC0088F45E /* NCFittingCycle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCycle.mm; sourceTree = "<group>"; };
+		12DC56A41EFC0AED0088F45E /* NCFittingProductionCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingProductionCycle.h; sourceTree = "<group>"; };
+		12DC56A51EFC0AED0088F45E /* NCFittingProductionCycle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingProductionCycle.mm; sourceTree = "<group>"; };
+		12DC56A71EFC0AFD0088F45E /* NCFittingState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingState.h; sourceTree = "<group>"; };
+		12DC56A81EFC0AFD0088F45E /* NCFittingState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingState.mm; sourceTree = "<group>"; };
+		12DC56AA1EFC0B0F0088F45E /* NCFittingProductionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingProductionState.h; sourceTree = "<group>"; };
+		12DC56AB1EFC0B0F0088F45E /* NCFittingProductionState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingProductionState.mm; sourceTree = "<group>"; };
 		12DE67201E715D46005CA44C /* NCSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSegmentedControl.swift; sourceTree = "<group>"; };
 		12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateGroupsViewController.swift; sourceTree = "<group>"; };
 		12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificatesViewController.swift; sourceTree = "<group>"; };
@@ -1019,9 +1061,64 @@
 		12DBEA321E1D36D40088A486 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
+				12DC56821EFC09AC0088F45E /* Ship */,
+				12DC56811EFC099A0088F45E /* PlanetaryInteraction */,
 				12DBEABE1E1D42420088A486 /* NCFittingProtected.h */,
 				12DBEAB51E1D3BD80088A486 /* NCFittingEngine.h */,
 				12DBEAB61E1D3BD80088A486 /* NCFittingEngine.mm */,
+				12DBEAE71E1E6DF50088A486 /* NCFittingTypes.h */,
+			);
+			name = Engine;
+			sourceTree = "<group>";
+		};
+		12DBEAAF1E1D3B860088A486 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				122DB9AE1E806DB000E8E2C4 /* libz.tbd */,
+				122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */,
+				12DBEAB01E1D3B860088A486 /* libsqlite3.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		12DC56811EFC099A0088F45E /* PlanetaryInteraction */ = {
+			isa = PBXGroup;
+			children = (
+				12DC56831EFC09DC0088F45E /* NCFittingPlanet.h */,
+				12DC56841EFC09DC0088F45E /* NCFittingPlanet.mm */,
+				12DC56861EFC0A040088F45E /* NCFittingFacility.h */,
+				12DC56871EFC0A040088F45E /* NCFittingFacility.mm */,
+				12DC56891EFC0A150088F45E /* NCFittingRoute.h */,
+				12DC568A1EFC0A150088F45E /* NCFittingRoute.mm */,
+				12DC568C1EFC0A230088F45E /* NCFittingCommodity.h */,
+				12DC568D1EFC0A230088F45E /* NCFittingCommodity.mm */,
+				12DC568F1EFC0A400088F45E /* NCFittingCommandCenter.h */,
+				12DC56901EFC0A400088F45E /* NCFittingCommandCenter.mm */,
+				12DC56921EFC0A4E0088F45E /* NCFittingStorageFacility.h */,
+				12DC56931EFC0A4E0088F45E /* NCFittingStorageFacility.mm */,
+				12DC56951EFC0A620088F45E /* NCFittingExtractorControlUnit.h */,
+				12DC56961EFC0A620088F45E /* NCFittingExtractorControlUnit.mm */,
+				12DC56981EFC0A740088F45E /* NCFittingIndustryFacility.h */,
+				12DC56991EFC0A740088F45E /* NCFittingIndustryFacility.mm */,
+				12DC569B1EFC0A8A0088F45E /* NCFittingSpaceport.h */,
+				12DC569C1EFC0A8A0088F45E /* NCFittingSpaceport.mm */,
+				12DC569E1EFC0A9E0088F45E /* NCFittingSchematic.h */,
+				12DC569F1EFC0A9E0088F45E /* NCFittingSchematic.mm */,
+				12DC56A11EFC0ADC0088F45E /* NCFittingCycle.h */,
+				12DC56A21EFC0ADC0088F45E /* NCFittingCycle.mm */,
+				12DC56A41EFC0AED0088F45E /* NCFittingProductionCycle.h */,
+				12DC56A51EFC0AED0088F45E /* NCFittingProductionCycle.mm */,
+				12DC56A71EFC0AFD0088F45E /* NCFittingState.h */,
+				12DC56A81EFC0AFD0088F45E /* NCFittingState.mm */,
+				12DC56AA1EFC0B0F0088F45E /* NCFittingProductionState.h */,
+				12DC56AB1EFC0B0F0088F45E /* NCFittingProductionState.mm */,
+			);
+			name = PlanetaryInteraction;
+			sourceTree = "<group>";
+		};
+		12DC56821EFC09AC0088F45E /* Ship */ = {
+			isa = PBXGroup;
+			children = (
 				12DBEAB81E1D3F3D0088A486 /* NCFittingItem.h */,
 				12DBEAB91E1D3F3D0088A486 /* NCFittingItem.mm */,
 				12DBEABF1E1D48A80088A486 /* NCFittingGang.h */,
@@ -1046,19 +1143,8 @@
 				12DBEABC1E1D40280088A486 /* NCFittingAttribute.mm */,
 				12B563F81E51B24500F1BED0 /* NCFittingArea.h */,
 				12B563F91E51B24500F1BED0 /* NCFittingArea.mm */,
-				12DBEAE71E1E6DF50088A486 /* NCFittingTypes.h */,
 			);
-			name = Engine;
-			sourceTree = "<group>";
-		};
-		12DBEAAF1E1D3B860088A486 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				122DB9AE1E806DB000E8E2C4 /* libz.tbd */,
-				122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */,
-				12DBEAB01E1D3B860088A486 /* libsqlite3.tbd */,
-			);
-			name = Frameworks;
+			name = Ship;
 			sourceTree = "<group>";
 		};
 		12E745521E830922004AA646 /* Products */ = {
@@ -1272,11 +1358,13 @@
 				129B31781E5488AF00B9A88D /* NCFleetConfiguration.swift in Sources */,
 				1256BE3D1DF1F01D00A2A24B /* NCNavigationController.swift in Sources */,
 				121D10B51E265D5A00DD671B /* NCFittingLoadout.swift in Sources */,
+				12DC56A01EFC0A9E0088F45E /* NCFittingSchematic.mm in Sources */,
 				12D39D081EF91CA80077BD17 /* NCWalletJournalViewController.swift in Sources */,
 				12961DB81E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift in Sources */,
 				12424E1B1E48C9F3002DFE08 /* NCFittingDronesViewController.swift in Sources */,
 				12961DD91E1D64D4008A3F4D /* NCFittingCharge.mm in Sources */,
 				12961DD31E1D64B8008A3F4D /* NCFittingShip.mm in Sources */,
+				12DC56A31EFC0ADC0088F45E /* NCFittingCycle.mm in Sources */,
 				126B29501EB1FEAF006562A4 /* NCMailPageViewController.swift in Sources */,
 				12DBEAE91E1E8FEC0088A486 /* NCFittingMenuViewController.swift in Sources */,
 				12B1B8351E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift in Sources */,
@@ -1296,9 +1384,11 @@
 				122FFDF51E4B7D630066D45E /* NCFittingStatsViewController.swift in Sources */,
 				1230A32C1DFFE2CF00627D92 /* NCGate.swift in Sources */,
 				129C51A41E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift in Sources */,
+				12DC56A91EFC0AFD0088F45E /* NCFittingState.mm in Sources */,
 				12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */,
 				125CE1361E9FF0E7007B8B6B /* NCNewMailViewController.swift in Sources */,
 				12E9321E1E6B56D40033D71A /* NCFittingCharactersViewController.swift in Sources */,
+				12DC56881EFC0A040088F45E /* NCFittingFacility.mm in Sources */,
 				127DE7D81E9513B4008D4873 /* ChartView.swift in Sources */,
 				12C37D341EFAAA290070F055 /* NCNPCViewController.swift in Sources */,
 				1256BE4B1DF210C500A2A24B /* NCTimeIntervalFormatter.swift in Sources */,
@@ -1311,6 +1401,7 @@
 				124247C01E6605AD002E0460 /* NCFleetMemberTableViewCell.swift in Sources */,
 				1230A32E1DFFE2CF00627D92 /* NCLabel.swift in Sources */,
 				12DA882A1EB8707400FB1922 /* Progress+NC.swift in Sources */,
+				12DC568E1EFC0A230088F45E /* NCFittingCommodity.mm in Sources */,
 				1256BE441DF1F09900A2A24B /* NCSkill.swift in Sources */,
 				129E60EE1E0152A900B56EB8 /* NCAutoHeightLabel.swift in Sources */,
 				12D930F61E65A77300CBAE1C /* NCFleetTableViewCell.swift in Sources */,
@@ -1332,6 +1423,7 @@
 				1243DC1F1E0BDE1700F00B9A /* NCMarketHistoryView.swift in Sources */,
 				1230A32A1DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift in Sources */,
 				12961DCD1E1D649A008A3F4D /* NCFittingBooster.mm in Sources */,
+				12DC56851EFC09DC0088F45E /* NCFittingPlanet.mm in Sources */,
 				12BFC46E1E409AC2000ED8D6 /* NCThinLineView.swift in Sources */,
 				1217B4B91EAA0DE1005A8157 /* UIAlertController+NC.swift in Sources */,
 				122242461E5C3A0000269A01 /* NCPageViewController.swift in Sources */,
@@ -1341,6 +1433,7 @@
 				12D20EB41EBCBD3C00BEC926 /* EVEAPI+NC.swift in Sources */,
 				1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */,
 				12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */,
+				12DC56911EFC0A400088F45E /* NCFittingCommandCenter.mm in Sources */,
 				1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */,
 				129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */,
 				12961DDC1E1D64E4008A3F4D /* NCFittingDrone.mm in Sources */,
@@ -1373,6 +1466,8 @@
 				12D39D161EF969DA0077BD17 /* NCContractsViewController.swift in Sources */,
 				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
 				12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */,
+				12DC56971EFC0A620088F45E /* NCFittingExtractorControlUnit.mm in Sources */,
+				12DC56A61EFC0AED0088F45E /* NCFittingProductionCycle.mm in Sources */,
 				129B316C1E534B7300B9A88D /* NCFittingDamagePatternsViewController.swift in Sources */,
 				1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */,
 				1263C5091E64A7D0003D002D /* NCFittingFleetsViewController.swift in Sources */,
@@ -1382,6 +1477,7 @@
 				12AC8DC61DF0894400561A7A /* NCDataManager.swift in Sources */,
 				12961DD01E1D64A6008A3F4D /* NCFittingImplant.mm in Sources */,
 				12FC3CC81E13F4A400B7744E /* NCDatabaseTypeMasteryViewController.swift in Sources */,
+				12DC568B1EFC0A150088F45E /* NCFittingRoute.mm in Sources */,
 				1293BC221E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift in Sources */,
 				12424E191E489C16002DFE08 /* NCFittingSlotHeaderTableViewCell.swift in Sources */,
 				12DBEAC41E1D49C70088A486 /* NCFittingCharacter.mm in Sources */,
@@ -1398,6 +1494,7 @@
 				12DC567F1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift in Sources */,
 				1291194B1E3918CC00870428 /* NCFittingModulesViewController.swift in Sources */,
 				1285FB331EB8DBFA0025331A /* NCImageView.swift in Sources */,
+				12DC56941EFC0A4E0088F45E /* NCFittingStorageFacility.mm in Sources */,
 				12424E171E486ACD002DFE08 /* NCFittingVariationsViewController.swift in Sources */,
 				1230A3271DFFE2CF00627D92 /* NCDatabaseGroupsViewController.swift in Sources */,
 				1293BC131E4A0F6E0099FD75 /* NCCountTableViewCell.swift in Sources */,
@@ -1414,6 +1511,7 @@
 				12EA6B401E850BF300C571DF /* NCLoadoutActivityItem.swift in Sources */,
 				12D39D101EF936980077BD17 /* NCWalletTransactionsViewController.swift in Sources */,
 				129E61061E0291FD00B56EB8 /* NCSkillsViewController.swift in Sources */,
+				12DC56AC1EFC0B0F0088F45E /* NCFittingProductionState.mm in Sources */,
 				129E61021E0287F500B56EB8 /* NCSkillTableViewCell.swift in Sources */,
 				1256BF2E1DF48AA800A2A24B /* NCBackgroundView.swift in Sources */,
 				121D10AE1E262F8900DD671B /* NCTypePickerGroupsViewController.swift in Sources */,
@@ -1421,6 +1519,7 @@
 				12AC8DB41DEF642600561A7A /* NCFetchedCollection.swift in Sources */,
 				1230A32B1DFFE2CF00627D92 /* NCDatabaseTypesViewController.swift in Sources */,
 				1224AF621E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift in Sources */,
+				12DC569D1EFC0A8A0088F45E /* NCFittingSpaceport.mm in Sources */,
 				12D390F51E840A2000B8A938 /* NCMiningYieldTableViewCell.swift in Sources */,
 				12AC8DE21DF0B5F200561A7A /* Dark.clr in Sources */,
 				1230A3291DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift in Sources */,
@@ -1432,6 +1531,7 @@
 				129B31701E5439A100B9A88D /* NCTextFieldTableViewCell.swift in Sources */,
 				12DACE5B1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift in Sources */,
 				12D20EA11EBA00B600BEC926 /* NCPieChartTableViewCell.swift in Sources */,
+				12DC569A1EFC0A740088F45E /* NCFittingIndustryFacility.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

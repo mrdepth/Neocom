@@ -23,6 +23,8 @@
 #import "NCFittingCharge.h"
 #import "NCFittingDrone.h"
 
+#import "NCFittingPlanet.h"
+
 #if DEBUG
 #define NCVerifyFittingContext(engine) ([engine verifyContext])
 #else
@@ -41,14 +43,19 @@
 - (nonnull instancetype) initWithAttribute:(std::shared_ptr<dgmpp::Attribute> const&) attribute engine:(nonnull NCFittingEngine*) engine;
 @end
 
-@interface NCFittingShip()
-@end
-
 @interface NCFittingEngine()
 - (void) updateWithItem:(nullable NCFittingItem*) item;
 #if DEBUG
 - (void) verifyContext;
 #endif
+@end
+
+
+@interface NCFittingPlanet()
+@property (nonatomic, assign) std::shared_ptr<dgmpp::Planet> planet;
+
+- (nonnull instancetype) initWithPlanet:(std::shared_ptr<dgmpp::Planet> const&) planet engine:(nonnull NCFittingEngine*) engine;
+
 @end
 
 

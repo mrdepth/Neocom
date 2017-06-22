@@ -129,7 +129,7 @@
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
-			<string>NCDatabaseWHViewController</string>
+			<string>NCWHViewController</string>
 			<key>title</key>
 			<string>Wormholes</string>
 			<key>image</key>

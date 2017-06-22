@@ -172,10 +172,7 @@ class NCFittingModuleSection: TreeSection {
 		self.grouped = grouped
 		super.init(prototype: Prototype.NCFittingSlotHeaderTableViewCell.default)
 		self.children = children
-	}
-	
-	override var isExpandable: Bool {
-		return false
+		isExpandable = false
 	}
 	
 	override func configure(cell: UITableViewCell) {

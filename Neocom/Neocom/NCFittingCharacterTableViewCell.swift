@@ -94,6 +94,7 @@ class NCCustomCharactersSection: FetchedResultsNode<NCFitCharacter> {
 		try? controller.performFetch()
 		super.init(resultsController: controller, objectNode: NCCustomCharacterRow.self)
 		cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
+		isExpandable = true
 	}
 	
 	
@@ -107,10 +108,6 @@ class NCCustomCharactersSection: FetchedResultsNode<NCFitCharacter> {
 	override func loadChildren() {
 		super.loadChildren()
 		children.append(NCActionRow(title: NSLocalizedString("Add Character", comment: "").uppercased()))
-	}
-	
-	override var isExpandable: Bool {
-		return true
 	}
 	
 	override var hashValue: Int {
@@ -172,6 +169,7 @@ class NCAccountCharactersSection: FetchedResultsNode<NCAccount> {
 		try? controller.performFetch()
 		super.init(resultsController: controller, objectNode: NCAccountCharacterRow.self)
 		cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
+		isExpandable = true
 	}
 	
 	
@@ -182,10 +180,6 @@ class NCAccountCharactersSection: FetchedResultsNode<NCAccount> {
 		}
 	}
 	
-	override var isExpandable: Bool {
-		return true
-	}
-
 	override var hashValue: Int {
 		return #line
 	}

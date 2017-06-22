@@ -30,26 +30,21 @@ class TreeRow: TreeNode, TreeNodeRoutable {
 	var route: Route?
 	var accessoryButtonRoute: Route?
 	var object: Any?
-	override var isExpandable: Bool {
-		return false
-	}
 	
 	init(prototype: Prototype, route: Route? = nil, accessoryButtonRoute: Route? = nil, object: Any? = nil) {
 		self.route = route
 		self.accessoryButtonRoute = accessoryButtonRoute
 		self.object = object
 		super.init(cellIdentifier: prototype.reuseIdentifier)
+		isExpandable = false
 	}
 	
 }
 
 class TreeSection: TreeNode {
-	override var isExpandable: Bool {
-		return true
-	}
-	
 	init(prototype: Prototype? = nil) {
 		super.init(cellIdentifier: prototype?.reuseIdentifier)
+		isExpandable = true
 	}
 }
 
@@ -221,6 +216,7 @@ class NCDefaultFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fetc
 	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
 		super.init(section: section, objectNode: objectNode)
 		self.cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
+		isExpandable = true
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -228,9 +224,6 @@ class NCDefaultFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fetc
 		cell.titleLabel?.text = section.name.uppercased()
 	}
 	
-	override var isExpandable: Bool {
-		return true
-	}
 }
 
 class NCMetaGroupFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: FetchedResultsSectionNode<ResultType> {
@@ -244,6 +237,7 @@ class NCMetaGroupFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fe
 		metaGroupID = Int(section.name)
 		super.init(section: section, objectNode: objectNode)
 		self.cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
+		isExpandable = true
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -251,9 +245,6 @@ class NCMetaGroupFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fe
 		cell.titleLabel?.text = metaGroup?.metaGroupName?.uppercased()
 	}
 	
-	override var isExpandable: Bool {
-		return true
-	}
 }
 
 class NCTypeInfoNode: FetchedResultsObjectNode<NCDBInvType> {

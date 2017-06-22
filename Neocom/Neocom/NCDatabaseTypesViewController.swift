@@ -9,9 +9,15 @@
 import UIKit
 import CoreData
 
-class NCDatabaseTypeRow: FetchedResultsObjectNode<NSDictionary> {
+class NCDatabaseTypeRow: FetchedResultsObjectNode<NSDictionary>, TreeNodeRoutable {
 	
+	var route: Route?
+	var accessoryButtonRoute: Route?
+
 	required init(object: NSDictionary) {
+		if let typeID = object["typeID"] as? Int {
+			route = Router.Database.TypeInfo(typeID)
+		}
 		super.init(object: object)
 		cellIdentifier = Prototype.NCDefaultTableViewCell.compact.reuseIdentifier
 	}

@@ -187,6 +187,7 @@
 		12C37D2E1EFA9CEE0070F055 /* NCContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C37D2D1EFA9CEE0070F055 /* NCContactTableViewCell.swift */; };
 		12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C37D2F1EFA9D070070F055 /* NCContactCompactTableViewCell.xib */; };
 		12C37D341EFAAA290070F055 /* NCNPCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C37D331EFAAA290070F055 /* NCNPCViewController.swift */; };
+		12C37D371EFBA4C80070F055 /* NCWHViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C37D361EFBA4C80070F055 /* NCWHViewController.swift */; };
 		12C44CFA1E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */; };
 		12C44D001E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */; };
 		12D08F991E4DCCE30042B761 /* NCFittingActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */; };
@@ -493,6 +494,7 @@
 		12C37D2D1EFA9CEE0070F055 /* NCContactTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContactTableViewCell.swift; sourceTree = "<group>"; };
 		12C37D2F1EFA9D070070F055 /* NCContactCompactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCContactCompactTableViewCell.xib; sourceTree = "<group>"; };
 		12C37D331EFAAA290070F055 /* NCNPCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCNPCViewController.swift; sourceTree = "<group>"; };
+		12C37D361EFBA4C80070F055 /* NCWHViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCWHViewController.swift; sourceTree = "<group>"; };
 		12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleInfoTableViewCell.swift; sourceTree = "<group>"; };
 		12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleDamageChartTableViewCell.swift; sourceTree = "<group>"; };
 		12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingActionsViewController.swift; sourceTree = "<group>"; };
@@ -607,6 +609,7 @@
 				12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */,
 				12C37D291EFA866C0070F055 /* NCMarketGroupsViewController.swift */,
 				12C37D331EFAAA290070F055 /* NCNPCViewController.swift */,
+				12C37D361EFBA4C80070F055 /* NCWHViewController.swift */,
 				12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */,
 				12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */,
 				12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */,
@@ -1335,6 +1338,7 @@
 				1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */,
 				129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */,
 				12961DDC1E1D64E4008A3F4D /* NCFittingDrone.mm in Sources */,
+				12C37D371EFBA4C80070F055 /* NCWHViewController.swift in Sources */,
 				125CE13C1EA1275C007B8B6B /* NCMailViewController.swift in Sources */,
 				12961DBF1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift in Sources */,
 				12AC8DB91DF012BA00561A7A /* NCTreeController.swift in Sources */,

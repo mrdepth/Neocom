@@ -64,6 +64,7 @@ class NCCustomDamagePatternsSection: FetchedResultsNode<NCDamagePattern> {
 		try? controller.performFetch()
 		super.init(resultsController: controller, objectNode: NCCustomDamagePatternRow.self)
 		cellIdentifier = "NCHeaderTableViewCell"
+		isExpandable = true
 	}
 	
 	
@@ -77,10 +78,6 @@ class NCCustomDamagePatternsSection: FetchedResultsNode<NCDamagePattern> {
 	override func loadChildren() {
 		super.loadChildren()
 		children.append(NCAddDamagePatternRow())
-	}
-	
-	override var isExpandable: Bool {
-		return true
 	}
 	
 	override var hashValue: Int {

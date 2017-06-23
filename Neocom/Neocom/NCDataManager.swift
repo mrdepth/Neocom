@@ -875,6 +875,22 @@ class NCDataManager {
 		})
 	}
 
+	func killmails(maxKillID: Int64? = nil, completionHandler: @escaping (NCCachedResult<[ESI.Killmails.Recent]>) -> Void) {
+		loadFromCache(forKey: "ESI.Killmails.Recent.\(maxKillID ?? 0)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.killmails.listKillsAndLosses(characterID: Int(self.characterID), maxKillID: maxKillID != nil ? Int(maxKillID!) : nil) { result in
+				completion(result, 60 * 2)
+			}
+		})
+	}
+	
+	func killmailInfo(killmailHash: String, killmailID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Killmails.Killmail>) -> Void) {
+		loadFromCache(forKey: "ESI.KillMails.Killmail.\(killmailID).\(killmailHash)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.killmails.getSingleKillmail(killmailHash: killmailHash, killmailID: Int(killmailID)) { result in
+				completion(result, 3600.0 * 48)
+			}
+		})
+	}
+
 	
 	//MARK: Private
 	

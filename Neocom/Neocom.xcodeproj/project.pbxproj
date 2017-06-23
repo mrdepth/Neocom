@@ -57,6 +57,8 @@
 		12424E3E1E3642430078AB0F /* NCFittingFleet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E3D1E3642430078AB0F /* NCFittingFleet.swift */; };
 		12424E421E3651DC0078AB0F /* NCFittingEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E411E3651DC0078AB0F /* NCFittingEditorViewController.swift */; };
 		1243DC1F1E0BDE1700F00B9A /* NCMarketHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */; };
+		12498B041EFD63D800FEEE36 /* NCKillmailsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12498B031EFD63D800FEEE36 /* NCKillmailsPageViewController.swift */; };
+		12498B061EFD680200FEEE36 /* NCKillmailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */; };
 		1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE331DF1C38200A2A24B /* NCStorage.swift */; };
 		1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */; };
 		1256BE391DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */; };
@@ -373,6 +375,8 @@
 		12424E3D1E3642430078AB0F /* NCFittingFleet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingFleet.swift; sourceTree = "<group>"; };
 		12424E411E3651DC0078AB0F /* NCFittingEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingEditorViewController.swift; sourceTree = "<group>"; };
 		1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketHistoryView.swift; sourceTree = "<group>"; };
+		12498B031EFD63D800FEEE36 /* NCKillmailsPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailsPageViewController.swift; sourceTree = "<group>"; };
+		12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailTableViewCell.swift; sourceTree = "<group>"; };
 		1256BE331DF1C38200A2A24B /* NCStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorage.swift; sourceTree = "<group>"; };
 		1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorageExtensions.swift; sourceTree = "<group>"; };
 		1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBannerNavigationViewController.swift; sourceTree = "<group>"; };
@@ -851,6 +855,7 @@
 			isa = PBXGroup;
 			children = (
 				12851D7F1EFD3D5300C8DD42 /* NCKillmailsViewController.swift */,
+				12498B031EFD63D800FEEE36 /* NCKillmailsPageViewController.swift */,
 			);
 			name = KillLog;
 			sourceTree = "<group>";
@@ -897,6 +902,7 @@
 				12D39D131EF969210077BD17 /* NCContractTableViewCell.swift */,
 				12C37D2D1EFA9CEE0070F055 /* NCContactTableViewCell.swift */,
 				12DC567E1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift */,
+				12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1405,6 +1411,7 @@
 				1256BE481DF1F3B100A2A24B /* Constants.swift in Sources */,
 				121D10B21E263E3700DD671B /* NCTypePickerTypesViewController.swift in Sources */,
 				122FFDF51E4B7D630066D45E /* NCFittingStatsViewController.swift in Sources */,
+				12498B041EFD63D800FEEE36 /* NCKillmailsPageViewController.swift in Sources */,
 				1230A32C1DFFE2CF00627D92 /* NCGate.swift in Sources */,
 				129C51A41E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift in Sources */,
 				12DC56A91EFC0AFD0088F45E /* NCFittingState.mm in Sources */,
@@ -1488,6 +1495,7 @@
 				12DBEAC11E1D48A80088A486 /* NCFittingGang.mm in Sources */,
 				12D364EC1E72DEFE000ED70B /* NCFittingFightersViewController.swift in Sources */,
 				12D39D161EF969DA0077BD17 /* NCContractsViewController.swift in Sources */,
+				12498B061EFD680200FEEE36 /* NCKillmailTableViewCell.swift in Sources */,
 				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
 				12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */,
 				12DC56971EFC0A620088F45E /* NCFittingExtractorControlUnit.mm in Sources */,

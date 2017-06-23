@@ -248,9 +248,9 @@
 				try {
 					auto facility = planet->findFacility(pin.pinID);
 					if (!facility) {
-						facility = planet->addFacility(pin.typeID, pin.pinID);
+						gfacility = planet->addFacility(pin.typeID, pin.pinID);
 						switch (facility->getGroupID()) {
-							case dgmpp::ExtractorControlUnit::GROUP_ID: {
+							case dgmpp::ExtractorControlUnit::GROUP_ID: {
 								auto ecu = std::dynamic_pointer_cast<dgmpp::ExtractorControlUnit>(facility);
 								ecu->setLaunchTime([pin.lastLaunchTime timeIntervalSinceReferenceDate]);
 								ecu->setInstallTime([pin.installTime timeIntervalSinceReferenceDate]);
@@ -261,7 +261,7 @@
 							}
 							case dgmpp::IndustryFacility::GROUP_ID: {
 								auto factory = std::dynamic_pointer_cast<dgmpp::IndustryFacility>(facility);
-								factory->setLaunchTime([pin.lastLaunchTime timeIntervalSinceReferenceDate]);
+								factory.->setLaunchTime([pin.lastLaunchTime timeIntervalSinceReferenceDate]);
 								factory->setSchematic(pin.schematicID);
 								break;
 							}

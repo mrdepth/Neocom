@@ -50,7 +50,8 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 - (void) setArea:(NCFittingArea*)area {
 	NCVerifyFittingContext(self);
 	NCFittingArea* old = (NCFittingArea*) [NCFittingItem item:_engine->getArea() withEngine:self];
-	_engine->setArea(static_cast<dgmpp::TypeID>(area.typeID));
+	area.item = _engine->setArea(static_cast<dgmpp::TypeID>(area.typeID));
+	area.engine = self;
 	[self updateWithItem:area ?: old];
 }
 
@@ -147,6 +148,18 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 		}
 	}
 	_engine->commitUpdates();
+}
+
+- (nullable NCFittingPlanet*) planet {
+	NCVerifyFittingContext(self);
+	return _engine->getPlanet() ? [[NCFittingPlanet alloc] initWithPlanet:_engine->getPlanet() engine:self] : nil;
+}
+
+- (void) setPlanet:(NCFittingPlanet *)planet {
+	NCVerifyFittingContext(self);
+	planet.planet = _engine->setPlanet(static_cast<dgmpp::TypeID>(planet.typeID));
+	planet.engine = self;
+
 }
 
 @end

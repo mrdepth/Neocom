@@ -264,6 +264,7 @@
 		if (oldShip)
 			[self.engine assignIdentifier:nil forItem:[NCFittingItem item: oldShip withEngine:self.engine]];
 		ship.item = character->setShip(static_cast<dgmpp::TypeID>(ship.typeID));
+		ship.engine = self.engine;
 		[self.engine updateWithItem: self];
 	}
 }

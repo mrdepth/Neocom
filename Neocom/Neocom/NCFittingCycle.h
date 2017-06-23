@@ -8,8 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+@class NCFittingEngine;
+
 @interface NCFittingCycle : NSObject
 @property (readonly) NSTimeInterval launchTime;
 @property (readonly) NSTimeInterval cycleTime;
+@property (nonatomic, weak, nullable) NCFittingEngine* engine;
+
+- (nonnull instancetype) init NS_SWIFT_UNAVAILABLE("");
 
 @end

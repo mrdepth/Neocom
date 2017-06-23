@@ -73,6 +73,7 @@
 	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
 	if (module) {
 		charge.item = module->setCharge(static_cast<dgmpp::TypeID>(charge.typeID));
+		charge.engine = self.engine;
 		[self.engine updateWithItem: self];
 	}
 }

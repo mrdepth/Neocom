@@ -70,7 +70,7 @@
 	_item = item;
 }
 
-+ (nonnull instancetype) item:(std::shared_ptr<dgmpp::Item> const&) item withEngine:(nonnull NCFittingEngine*) engine {
++ (nullable instancetype) item:(std::shared_ptr<dgmpp::Item> const&) item withEngine:(nonnull NCFittingEngine*) engine {
 	if (!item)
 		return nil;
 	

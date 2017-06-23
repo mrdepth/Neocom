@@ -83,11 +83,13 @@ class NCMailPageViewController: NCPageViewController {
 	
 	private func fetch(from: Int64?, completionHandler: (() -> Void)? = nil) {
 		guard !isEndReached, !isFetching else {return}
+		let dataManager = self.dataManager
 		let characterID = dataManager.characterID
 		isFetching = true
 		
 		let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 		progress.progress.becomeCurrent(withPendingUnitCount: 1)
+		
 
 		func process(headers: [ESI.Mail.Header], contacts: [Int64: NCContact], cacheRecord: NCCacheRecord?) {
 			
@@ -107,23 +109,23 @@ class NCMailPageViewController: NCPageViewController {
 							let folder: NCMailRow.Folder
 							if characterID == Int64(header.from ?? 0) {
 								folder = .sent
-								sent[mailID] = NCMailRow(mail: header, folder: folder, contacts: contacts, cacheRecord: cacheRecord)
+								sent[mailID] = NCMailRow(mail: header, folder: folder, contacts: contacts, cacheRecord: cacheRecord, dataManager: dataManager)
 							}
 							else {
 								let recipient = header.recipients?.first
 								switch recipient?.recipientType {
 								case .alliance?:
 									folder = .alliance
-									alliance[mailID] = NCMailRow(mail: header, folder: folder, contacts: contacts, cacheRecord: cacheRecord)
+									alliance[mailID] = NCMailRow(mail: header, folder: folder, contacts: contacts, cacheRecord: cacheRecord, dataManager: dataManager)
 								case .character?:
 									folder = .inbox
-									inbox[mailID] = NCMailRow(mail: header, folder: folder, contacts: contacts, cacheRecord: cacheRecord)
+									inbox[mailID] = NCMailRow(mail: header, folder: folder, contacts: contacts, cacheRecord: cacheRecord, dataManager: dataManager)
 								case .corporation?:
 									folder = .corporation
-									corporation[mailID] = NCMailRow(mail: header, folder: folder, contacts: contacts, cacheRecord: cacheRecord)
+									corporation[mailID] = NCMailRow(mail: header, folder: folder, contacts: contacts, cacheRecord: cacheRecord, dataManager: dataManager)
 								case .mailingList?:
 									folder = .mailingList(contacts[Int64(recipient!.recipientID)]?.name)
-									inbox[mailID] = NCMailRow(mail: header, folder: folder, contacts: contacts, cacheRecord: cacheRecord)
+									inbox[mailID] = NCMailRow(mail: header, folder: folder, contacts: contacts, cacheRecord: cacheRecord, dataManager: dataManager)
 								default:
 									folder = .unknown
 								}

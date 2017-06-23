@@ -19,12 +19,30 @@
 #import "NCFittingAttribute.h"
 #import "NCFittingArea.h"
 
+#import "NCFittingPlanet.h"
+#import "NCFittingFacility.h"
+#import "NCFittingRoute.h"
+#import "NCFittingCommodity.h"
+#import "NCFittingCommandCenter.h"
+#import "NCFittingStorageFacility.h"
+#import "NCFittingExtractorControlUnit.h"
+#import "NCFittingIndustryFacility.h"
+#import "NCFittingSpaceport.h"
+#import "NCFittingSchematic.h"
+#import "NCFittingCycle.h"
+#import "NCFittingProductionCycle.h"
+#import "NCFittingState.h"
+#import "NCFittingProductionState.h"
+
+
 extern _Nonnull NSNotificationName const NCFittingEngineDidUpdateNotification;
 
 @interface NCFittingEngine : NSObject
 @property (readonly, nonnull) NCFittingGang* gang;
 @property (nonatomic, strong, nullable) NCFittingArea* area;
 @property (nonatomic, assign) BOOL factorReload;
+
+@property (strong, nullable) NCFittingPlanet* planet;
 
 - (nonnull instancetype) init NS_DESIGNATED_INITIALIZER;
 - (void) performBlock:(nonnull void(^)()) block;

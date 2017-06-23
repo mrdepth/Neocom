@@ -24,6 +24,19 @@
 #import "NCFittingDrone.h"
 
 #import "NCFittingPlanet.h"
+#import "NCFittingFacility.h"
+#import "NCFittingRoute.h"
+#import "NCFittingCommodity.h"
+#import "NCFittingCommandCenter.h"
+#import "NCFittingStorageFacility.h"
+#import "NCFittingExtractorControlUnit.h"
+#import "NCFittingIndustryFacility.h"
+#import "NCFittingSpaceport.h"
+#import "NCFittingSchematic.h"
+#import "NCFittingCycle.h"
+#import "NCFittingProductionCycle.h"
+#import "NCFittingState.h"
+#import "NCFittingProductionState.h"
 
 #if DEBUG
 #define NCVerifyFittingContext(engine) ([engine verifyContext])
@@ -35,7 +48,7 @@
 @property (nonatomic, assign) std::shared_ptr<dgmpp::Item> item;
 
 //- (nonnull instancetype) initWithItem:(std::shared_ptr<dgmpp::Item> const&) item engine:(nonnull NCFittingEngine*) engine;
-+ (nonnull instancetype) item:(std::shared_ptr<dgmpp::Item> const&) item withEngine:(nonnull NCFittingEngine*) engine;
++ (nullable instancetype) item:(std::shared_ptr<dgmpp::Item> const&) item withEngine:(nonnull NCFittingEngine*) engine;
 
 @end
 
@@ -53,10 +66,37 @@
 
 @interface NCFittingPlanet()
 @property (nonatomic, assign) std::shared_ptr<dgmpp::Planet> planet;
-
 - (nonnull instancetype) initWithPlanet:(std::shared_ptr<dgmpp::Planet> const&) planet engine:(nonnull NCFittingEngine*) engine;
-
 @end
 
+@interface NCFittingFacility()
+@property (nonatomic, assign) std::shared_ptr<dgmpp::Facility> facility;
++ (nullable instancetype) facility:(std::shared_ptr<dgmpp::Facility> const&) facility withEngine:(nonnull NCFittingEngine*) engine;
+@end
+
+@interface NCFittingRoute()
+@property (nonatomic, assign) std::shared_ptr<const dgmpp::Route> route;
+- (nonnull instancetype) initWithRoute:(std::shared_ptr<const dgmpp::Route> const&) route engine:(nonnull NCFittingEngine*) engine;
+@end
+
+@interface NCFittingCommodity()
+@property (nonatomic, assign) std::shared_ptr<dgmpp::Commodity> commodity;
+- (nonnull instancetype) initWithCommodity:(dgmpp::Commodity) commodity engine:(nonnull NCFittingEngine*) engine;
+@end
+
+@interface NCFittingSchematic()
+@property (nonatomic, assign) std::shared_ptr<dgmpp::Schematic> schematic;
+- (nonnull instancetype) initWithSchematic:(std::shared_ptr<dgmpp::Schematic> const&) schematic engine:(nonnull NCFittingEngine*) engine;
+@end
+
+@interface NCFittingCycle()
+@property (nonatomic, assign) std::shared_ptr<dgmpp::Cycle> cycle;
++ (nullable instancetype) cycle:(std::shared_ptr<dgmpp::Cycle> const&) cycle withEngine:(nonnull NCFittingEngine*) engine;
+@end
+
+@interface NCFittingState()
+@property (nonatomic, assign) std::shared_ptr<dgmpp::State> state;
++ (nullable instancetype) state:(std::shared_ptr<dgmpp::State> const&) state withEngine:(nonnull NCFittingEngine*) engine;
+@end
 
 #endif /* NCFittingProtected_h */

@@ -85,12 +85,14 @@ class NCMailRow: TreeRow {
 	
 	let characterID: Int64
 	let cacheRecord: NCCacheRecord?
+	let dataManager: NCDataManager
 	
-	init(mail: ESI.Mail.Header, folder: Folder, contacts: [Int64: NCContact], cacheRecord: NCCacheRecord?) {
+	init(mail: ESI.Mail.Header, folder: Folder, contacts: [Int64: NCContact], cacheRecord: NCCacheRecord?, dataManager: NCDataManager) {
 		self.mail = mail
 		self.cacheRecord = cacheRecord
 		self.folder = folder
 		self.contacts = contacts
+		self.dataManager = dataManager
 		characterID = Int64(mail.from!)
 
 		super.init(prototype: Prototype.NCMailTableViewCell.default, route: Router.Mail.Body(mail: mail))
@@ -115,7 +117,7 @@ class NCMailRow: TreeRow {
 		cell.iconView.image = image
 		
 		if image == nil {
-			NCDataManager().image(characterID: characterID, dimension: Int(cell.iconView.bounds.size.width)) { result in
+			dataManager.image(characterID: characterID, dimension: Int(cell.iconView.bounds.size.width)) { result in
 				switch result {
 				case let .success(value, _):
 					self.image = value

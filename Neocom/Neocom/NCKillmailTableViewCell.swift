@@ -11,19 +11,10 @@ import EVEAPI
 
 class NCKillmailTableViewCell: NCTableViewCell {
 	@IBOutlet weak var iconView: UIImageView!
-	@IBOutlet weak var bossImageView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
-	@IBOutlet weak var locationLabel: UILabel!
-	@IBOutlet weak var stateLabel: UILabel!
-	@IBOutlet weak var progressLabel: UILabel!
-	@IBOutlet weak var progressView: UIProgressView!
+	@IBOutlet weak var subtitleLabel: UILabel!
+	@IBOutlet weak var dateLabel: UILabel!
 	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		let layer = self.progressView.superview?.layer;
-		layer?.borderColor = UIColor(number: 0x3d5866ff).cgColor
-		layer?.borderWidth = 1.0 / UIScreen.main.scale
-	}
 }
 
 extension Prototype {
@@ -36,16 +27,66 @@ class NCKillmailRow: TreeRow {
 	
 	let killmail: ESI.Killmails.Killmail
 	let dataManager: NCDataManager
+	let characterID: Int64
 	
-	init(killmail: ESI.Killmails.Killmail, dataManager: NCDataManager) {
+	lazy var type: NCDBInvType? = {
+		return NCDatabase.sharedDatabase?.invTypes[self.killmail.victim.shipTypeID]
+	}()
+	
+	init(killmail: ESI.Killmails.Killmail, characterID: Int64, dataManager: NCDataManager) {
 		self.killmail = killmail
+		self.characterID = characterID
 		self.dataManager = dataManager
 		super.init(prototype: Prototype.NCKillmailTableViewCell.default)
 	}
 	
+	var contactName: String?
+	lazy var date: String = {
+		return DateFormatter.localizedString(from: self.killmail.killmailTime, dateStyle: .none, timeStyle: .medium)
+	}()
+	
 	override func configure(cell: UITableViewCell) {
 		
-		guard let cell = cell as? NCIncursionTableViewCell else {return}
+		guard let cell = cell as? NCKillmailTableViewCell else {return}
+		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+		cell.titleLabel?.text = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
+		cell.object = killmail
+		cell.dateLabel.text = date
+		
+		if contactName == nil {
+			cell.subtitleLabel?.text = " "
+			
+			let contactID = killmail.victim.characterID != Int(characterID) ? killmail.victim.characterID
+				: {
+					guard let attacker = killmail.attackers.first (where: {$0.finalBlow}) ?? killmail.attackers.first else {return nil}
+					return attacker.characterID ?? attacker.corporationID ?? attacker.allianceID ?? attacker.factionID
+					
+				}()
+			if let contactID = contactID {
+				if let faction = NCDatabase.sharedDatabase?.chrFactions[contactID]?.factionName {
+					contactName = faction
+					cell.subtitleLabel?.text = contactName
+				}
+				else {
+					dataManager.contacts(ids: Set([Int64(contactID)])) { result in
+						let contact = result[Int64(contactID)]
+						if contact == nil {
+							print("\(contactID)")
+						}
+						self.contactName = contact?.name ?? NSLocalizedString("Unknown", comment: "")
+						if (cell.object as? ESI.Killmails.Killmail) == self.killmail {
+							cell.subtitleLabel?.text = self.contactName
+						}
+					}
+				}
+			}
+			else {
+				contactName = NSLocalizedString("Unknown", comment: "")
+			}
+		}
+		else {
+			cell.subtitleLabel?.text = contactName
+		}
 	}
 	
 	override var hashValue: Int {

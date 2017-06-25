@@ -9,6 +9,30 @@
 import UIKit
 import EVEAPI
 
+class NCDateSection: TreeSection {
+	let date: Date
+	let doesRelativeDateFormatting: Bool
+	init(date: Date, doesRelativeDateFormatting: Bool = true) {
+		self.date = date
+		self.doesRelativeDateFormatting = doesRelativeDateFormatting
+		super.init(prototype: Prototype.NCHeaderTableViewCell.default)
+	}
+	
+	lazy var title: String = {
+		let formatter = DateFormatter()
+		formatter.doesRelativeDateFormatting = self.doesRelativeDateFormatting
+		formatter.timeStyle = .none
+		formatter.dateStyle = .medium
+		return formatter.string(from: self.date)
+	}()
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCHeaderTableViewCell else {return}
+		cell.titleLabel?.text = self.title
+	}
+}
+
+
 class NCKillmailsPageViewController: NCPageViewController {
 	
 	var killsViewController: NCKillmailsViewController?
@@ -18,7 +42,9 @@ class NCKillmailsPageViewController: NCPageViewController {
 		super.viewDidLoad()
 
 		killsViewController = storyboard!.instantiateViewController(withIdentifier: "NCKillmailsViewController") as? NCKillmailsViewController
+		killsViewController?.title = NSLocalizedString("Kills", comment: "")
 		lossesViewController = storyboard!.instantiateViewController(withIdentifier: "NCKillmailsViewController") as? NCKillmailsViewController
+		lossesViewController?.title = NSLocalizedString("Losses", comment: "")
 		
 		viewControllers = [killsViewController!, lossesViewController!]
 		
@@ -32,7 +58,7 @@ class NCKillmailsPageViewController: NCPageViewController {
 	private(set) var isFetching = false
 	
 	func fetchIfNeeded() {
-		guard let tableView = (currentPage as? NCMailViewController)?.tableView else {return}
+		guard let tableView = (currentPage as? NCKillmailsViewController)?.tableView else {return}
 		if let lastID = lastID, tableView.contentOffset.y > tableView.contentSize.height - tableView.bounds.size.height * 2 {
 			fetch(from: lastID)
 		}
@@ -56,8 +82,8 @@ class NCKillmailsPageViewController: NCPageViewController {
 	private var isEndReached = false
 	private var lastID: Int64?
 	
-	private var kills: [NCKillmailRow] = []
-	private var losses: [NCKillmailRow] = []
+	private let kills = TreeNode()
+	private let losses = TreeNode()
 	
 	private func fetch(from: Int64?, completionHandler: (() -> Void)? = nil) {
 		guard !isEndReached, !isFetching else {return}
@@ -90,20 +116,28 @@ class NCKillmailsPageViewController: NCPageViewController {
 							let killmail = queue.removeFirst()
 							dataManager.killmailInfo(killmailHash: killmail.killmailHash, killmailID: Int64(killmail.killmailID)) { result in
 								if let value = result.value {
-
-									if value.victim.characterID == characterID {
-										UIView.performWithoutAnimation {
-											self.losses.append(NCKillmailRow(killmail: value, dataManager: dataManager))
-											self.lossesViewController?.treeController.content?.children = self.losses
-											self.lossesViewController?.error = nil
+									UIView.performWithoutAnimation {
+										let isLoss = value.victim.characterID == characterID
+										
+										let node = isLoss ? self.losses : self.kills
+										let row = NCKillmailRow(killmail: value, characterID: Int64(characterID), dataManager: dataManager)
+										
+										if let section = node.children.last as? NCDateSection, section.date < value.killmailTime {
+											section.children.append(row)
 										}
-									}
-									else {
-										UIView.performWithoutAnimation {
-											self.kills.append(NCKillmailRow(killmail: value, dataManager: dataManager))
-											self.killsViewController?.treeController.content?.children = self.kills
-											self.killsViewController?.error = nil
+										else {
+											let calendar = Calendar(identifier: .gregorian)
+											let components = calendar.dateComponents([.year, .month, .day], from: value.killmailTime)
+											let date = calendar.date(from: components) ?? value.killmailTime
+											let section = NCDateSection(date: date)
+											section.children = [row]
+											node.children.append(section)
 										}
+										
+										self.lossesViewController?.error = nil
+										self.killsViewController?.error = nil
+										self.killsViewController?.treeController.content = self.kills
+										self.lossesViewController?.treeController.content = self.losses
 									}
 								}
 								partial.completedUnitCount += 1
@@ -111,6 +145,7 @@ class NCKillmailsPageViewController: NCPageViewController {
 							}
 						}
 					}
+					
 					pop()
 				}
 				else {

@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 import EVEAPI
 
-
 class NCKillmailsViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
 	
@@ -20,7 +19,10 @@ class NCKillmailsViewController: UITableViewController, TreeControllerDelegate {
 		refreshControl = UIRefreshControl()
 		refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
 		
-		tableView.register([Prototype.NCHeaderTableViewCell.default])
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.default
+		                    ])
+		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self

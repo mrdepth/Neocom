@@ -155,7 +155,7 @@
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
-			<string>NCKillMailsViewController</string>
+			<string>NCKillmailsPageViewController</string>
 			<key>title</key>
 			<string>Kill Reports</string>
 			<key>image</key>

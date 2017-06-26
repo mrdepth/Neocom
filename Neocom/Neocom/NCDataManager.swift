@@ -86,6 +86,10 @@ class NCDataManager {
 			return EVE(cachePolicy: self.cachePolicy)
 		}
 	}()
+	
+	lazy var zKillboard: ZKillboard = {
+		return ZKillboard(cachePolicy: self.cachePolicy)
+	}()
 
 	var characterID: Int64 {
 		return token?.characterID ?? 0
@@ -887,6 +891,15 @@ class NCDataManager {
 		loadFromCache(forKey: "ESI.KillMails.Killmail.\(killmailID).\(killmailHash)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.killmails.getSingleKillmail(killmailHash: killmailHash, killmailID: Int(killmailID)) { result in
 				completion(result, 3600.0 * 48)
+			}
+		})
+	}
+	
+	func zKillmails(filter: [ZKillboard.Filter], page: Int, completionHandler: @escaping (NCCachedResult<[ZKillboard.Killmail]>) -> Void) {
+		let key = filter.map{$0.value}.sorted().joined(separator: "/")
+		loadFromCache(forKey: "ZKillboard.Killmail.\(key)/\(page)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.zKillboard.kills(filter: filter, page: page) { result in
+				completion(result, 600)
 			}
 		})
 	}

@@ -409,10 +409,29 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 	}
 	
 	@IBAction func onFitting(_ sender: Any) {
+		guard let killmail = self.killmail else {return}
+		
 		UIApplication.shared.beginIgnoringInteractionEvents()
 		let engine = NCFittingEngine()
 		engine.perform {
 			
+			let fleet = NCFittingFleet(killmail: killmail, engine: engine)
+			DispatchQueue.main.async {
+				UIApplication.shared.endIgnoringInteractionEvents()
+				if let account = NCAccount.current {
+					fleet.active?.setSkills(from: account) { [weak self]  _ in
+						guard let strongSelf = self else {return}
+						Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
+					}
+				}
+				else {
+					fleet.active?.setSkills(level: 5) { [weak self] _ in
+						guard let strongSelf = self else {return}
+						Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
+					}
+				}
+			}
+
 		}
 	}
 

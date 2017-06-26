@@ -44,7 +44,7 @@ class NCKillmailsViewController: UITableViewController, TreeControllerDelegate {
 			tableView.backgroundView = nil
 		}
 		else {
-			tableView.backgroundView = NCTableViewBackgroundLabel(text: error == nil ? NSLocalizedString("No Messages", comment: "") : error!.localizedDescription)
+			tableView.backgroundView = NCTableViewBackgroundLabel(text: error == nil ? NSLocalizedString("No Results", comment: "") : error!.localizedDescription)
 		}
 	}
 	

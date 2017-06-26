@@ -65,7 +65,7 @@ class NCFittingFleet {
 			
 			contents[asset.itemID]?.forEach {
 				switch $0.locationFlag {
-				case .droneBay:
+				case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:
 					for _ in 0..<($0.quantity ?? 1) {
 						ship.addDrone(typeID: $0.typeID)
 					}
@@ -90,6 +90,51 @@ class NCFittingFleet {
 
 
     }
+	
+	init(killmail: ESI.Killmails.Killmail, engine: NCFittingEngine) {
+		self.engine = engine
+		
+		let gang = engine.gang
+		if let pilot = gang.addPilot() {
+			let ship = NCFittingShip(typeID: killmail.victim.shipTypeID)
+			pilot.ship = ship
+			pilots.append((pilot, nil))
+			active = pilot
+			
+			var cargo = Set<Int>()
+			var requiresAmmo = [NCFittingModule]()
+			
+			killmail.victim.items?.forEach {
+				let qty = Int(($0.quantityDropped ?? 0) + ($0.quantityDestroyed ?? 0))
+				switch ESI.Assets.Asset.Flag($0.flag) {
+				case .droneBay?, .fighterBay?, .fighterTube0?, .fighterTube1?, .fighterTube2?, .fighterTube3?, .fighterTube4?:
+					for _ in 0..<min(qty, 1) {
+						ship.addDrone(typeID: $0.itemTypeID)
+					}
+				case .cargo?:
+					cargo.insert($0.itemTypeID)
+				default:
+					for _ in 0..<min(qty, 1) {
+						if let module = ship.addModule(typeID: $0.itemTypeID), !module.chargeGroups.isEmpty {
+							requiresAmmo.append(module)
+						}
+					}
+				}
+			}
+			
+			for module in requiresAmmo {
+				for typeID in cargo {
+					module.charge = NCFittingCharge(typeID: typeID)
+					if module.charge != nil {
+						break
+					}
+				}
+			}
+		}
+		
+		
+	}
+
 	
 	func append(loadout: NCLoadout, engine: NCFittingEngine) {
 		guard let data = loadout.data?.data else {return}

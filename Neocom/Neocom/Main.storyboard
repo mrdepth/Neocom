@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
@@ -6796,7 +6796,7 @@
             <objects>
                 <tableViewController modalPresentationStyle="overCurrentContext" id="nVS-iD-4Jy" customClass="NCContactsSearchResultViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="6F0-0W-H3N">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="536"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="472"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -8884,6 +8884,40 @@
                 </customObject>
             </objects>
             <point key="canvasLocation" x="-2651" y="-342"/>
+        </scene>
+        <!--Kill Report-->
+        <scene sceneID="KHy-y7-V8x">
+            <objects>
+                <tableViewController storyboardIdentifier="NCKillmailInfoViewController" title="Kill Report" modalPresentationStyle="overCurrentContext" id="Ov3-Zh-1tg" customClass="NCKillmailInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="1Tv-Jb-YqV" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="CEE-NL-Zub" id="uhx-bk-sie"/>
+                            <outlet property="delegate" destination="CEE-NL-Zub" id="etP-ua-cGO"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Kill Report" id="65h-Uw-gqF">
+                        <barButtonItem key="rightBarButtonItem" title="Fitting" id="8Fj-Wt-54m">
+                            <connections>
+                                <action selector="onFitting:" destination="Ov3-Zh-1tg" id="3DQ-5A-kaM"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="treeController" destination="CEE-NL-Zub" id="xW8-Q4-Bd6"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZKT-cL-EfJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="CEE-NL-Zub" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="1Tv-Jb-YqV" id="vdg-DN-Ufu"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="-1909" y="-490"/>
         </scene>
     </scenes>
     <resources>

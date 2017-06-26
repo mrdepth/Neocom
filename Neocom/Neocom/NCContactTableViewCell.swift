@@ -39,7 +39,7 @@ class NCContactRow: TreeRow {
 			cell.iconView?.image = image
 		}
 		else {
-			cell.iconView?.image = nil
+			cell.iconView?.image = UIImage()
 			
 			guard let contact = self.contact else {return}
 			

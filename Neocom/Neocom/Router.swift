@@ -671,4 +671,21 @@ enum Router {
 			}
 		}
 	}
+	
+	enum KillReports {
+		
+		class Info: Route {
+			let killmail: ESI.Killmails.Killmail
+			
+			init(killmail: ESI.Killmails.Killmail) {
+				self.killmail = killmail
+				super.init(kind: .push, identifier: "NCKillmailInfoViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCKillmailInfoViewController
+				destination.killmail = killmail
+			}
+		}
+	}
 }

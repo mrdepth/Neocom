@@ -483,7 +483,7 @@ class NCDataManager {
 		})
 	}
 	
-	func search(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false, completionHandler: @escaping (NCCachedResult<ESI.Search.SearchResult>) -> Void) {
+	func search(_ string: String, categories: [ESI.Search.Categories], strict: Bool = false, completionHandler: @escaping (NCCachedResult<ESI.Search.SearchResult>) -> Void) {
 		loadFromCache(forKey: "ESI.Search.SearchResult.\(categories.hashValue).\(string.lowercased().hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.search.search(categories: categories, search: string, strict: strict) { result in
 				completion(result, 3600.0 * 12)
@@ -491,7 +491,7 @@ class NCDataManager {
 		})
 	}
 
-	func searchNames(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false, completionHandler: @escaping ([Int64: NCContact]) -> Void) {
+	func searchNames(_ string: String, categories: [ESI.Search.Categories], strict: Bool = false, completionHandler: @escaping ([Int64: NCContact]) -> Void) {
 		let lifeTime = NCExtendedLifeTime(self)
 		self.search(string, categories: categories) { result in
 			switch result {
@@ -654,17 +654,23 @@ class NCDataManager {
 	private static var invalidIDs = Set<Int64>()
 	func contacts(ids: Set<Int64>, completionHandler: @escaping ([Int64: NCContact]) -> Void) {
 		let ids = ids.subtracting(NCDataManager.invalidIDs)
-		var contacts: [Int64: NCContact] = [:]
+		var contacts: Set<Int64> = Set()
 		
 		func finish() {
 			DispatchQueue.main.async {
-				let context = NCCache.sharedCache?.viewContext
+				guard let context = NCCache.sharedCache?.viewContext else {
+					completionHandler([:])
+					return
+				}
+				
+				let request = NSFetchRequest<NCContact>(entityName: "Contact")
+				request.predicate = NSPredicate(format: "contactID in %@", ids)
 				
 				var result: [Int64: NCContact] = [:]
-				for (key, value) in contacts {
-					guard let object = (try? context?.existingObject(with: value.objectID)) as? NCContact else {continue}
-					result[key] = object
+				(try? context.fetch(request))?.forEach {
+					result[$0.contactID] = $0
 				}
+
 				completionHandler(result)
 			}
 		}
@@ -672,15 +678,14 @@ class NCDataManager {
 		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
 			
 //			let ids = ids.sorted()
-			let request = NSFetchRequest<NCContact>(entityName: "Contact")
+			let request = NSFetchRequest<NSDictionary>(entityName: "Contact")
 			request.predicate = NSPredicate(format: "contactID in %@", ids)
+			request.resultType = .dictionaryResultType
+			request.propertiesToFetch = [NSEntityDescription.entity(forEntityName: "Contact", in: managedObjectContext)!.propertiesByName["contactID"]!]
 			
+			contacts = Set((try? managedObjectContext.fetch(request))?.flatMap {$0["contactID"] as? Int64} ?? [])
 			
-			for contact in (try? managedObjectContext.fetch(request)) ?? [] {
-				contacts[contact.contactID] = contact
-			}
-
-			var missing = Set(ids.filter {return contacts[$0] == nil})
+			var missing = ids.subtracting(contacts)
 			
 			if !missing.isEmpty {
 				var mailingLists: [ESI.Mail.Subscription] = []
@@ -720,25 +725,20 @@ class NCDataManager {
 					NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
 						managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 						
-						let request = NSFetchRequest<NCContact>(entityName: "Contact")
-						
 						var result = names.map{($0.id, $0.name, $0.category.rawValue)}
 						result.append(contentsOf: mailingLists.map {($0.mailingListID, $0.name, ESI.Mail.Recipient.RecipientType.mailingList.rawValue)})
 						
-						
 						for name in result {
-							request.predicate = NSPredicate(format: "contactID == %qi", name.0)
-							let contact = (try? managedObjectContext.fetch(request))?.first ?? {
-								let contact = NCContact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: managedObjectContext)!, insertInto: managedObjectContext)
-								contact.contactID = Int64(name.0)
-								contact.name = name.1
-								contact.type = name.2
-								return contact
-								}()
-							contacts[contact.contactID] = contact
+							let contact = NCContact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: managedObjectContext)!, insertInto: managedObjectContext)
+							contact.contactID = Int64(name.0)
+							contact.name = name.1
+							contact.type = name.2
+							
+							contacts.insert(contact.contactID)
+//							contacts[contact.contactID] = contact
 						}
 						if managedObjectContext.hasChanges {
-							try? managedObjectContext.save()
+							try! managedObjectContext.save()
 						}
 						finish()
 					}

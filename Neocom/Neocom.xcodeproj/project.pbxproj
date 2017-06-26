@@ -195,6 +195,7 @@
 		12C37D371EFBA4C80070F055 /* NCWHViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C37D361EFBA4C80070F055 /* NCWHViewController.swift */; };
 		12C44CFA1E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */; };
 		12C44D001E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */; };
+		12CFDACB1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDACA1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib */; };
 		12D08F991E4DCCE30042B761 /* NCFittingActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */; };
 		12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */; };
 		12D1CFFB1E277E2400C31B61 /* NCSegmentedPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */; };
@@ -523,6 +524,7 @@
 		12C37D361EFBA4C80070F055 /* NCWHViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCWHViewController.swift; sourceTree = "<group>"; };
 		12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleInfoTableViewCell.swift; sourceTree = "<group>"; };
 		12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleDamageChartTableViewCell.swift; sourceTree = "<group>"; };
+		12CFDACA1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCImageHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingActionsViewController.swift; sourceTree = "<group>"; };
 		12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRegionPickerViewController.swift; sourceTree = "<group>"; };
 		12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSegmentedPageControl.swift; sourceTree = "<group>"; };
@@ -1055,6 +1057,7 @@
 			isa = PBXGroup;
 			children = (
 				1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */,
+				12CFDACA1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib */,
 				1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */,
 				1263C50C1E64BE9D003D002D /* NCDefaultTableViewCell.xib */,
 				12C37D2B1EFA9CDC0070F055 /* NCContactTableViewCell.xib */,
@@ -1314,6 +1317,7 @@
 				126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */,
 				126157001E008AF60041B817 /* dgm.sqlite in Resources */,
 				1256BECB1DF4770A00A2A24B /* perception.png in Resources */,
+				12CFDACB1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib in Resources */,
 				1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */,
 				1256BEC91DF4770A00A2A24B /* intelligence.png in Resources */,
 				1256BECC1DF4770A00A2A24B /* willpower.png in Resources */,

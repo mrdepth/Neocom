@@ -37,13 +37,22 @@ class NCKillmailRow: TreeRow {
 		self.killmail = killmail
 		self.characterID = characterID
 		self.dataManager = dataManager
-		super.init(prototype: Prototype.NCKillmailTableViewCell.default)
+		super.init(prototype: Prototype.NCKillmailTableViewCell.default, route: Router.KillReports.Info(killmail: killmail))
 	}
 	
 	var contactName: String?
 	lazy var date: String = {
 		return DateFormatter.localizedString(from: self.killmail.killmailTime, dateStyle: .none, timeStyle: .medium)
 	}()
+	
+	var subtitle: String {
+		if let contactName = self.contactName {
+			return contactName + ", " + String(format: NSLocalizedString("%@ involved", comment: ""), NCUnitFormatter.localizedString(from: killmail.attackers.count, unit: .none, style: .full))
+		}
+		else {
+			return String(format: NSLocalizedString("%@ involved", comment: ""), NCUnitFormatter.localizedString(from: killmail.attackers.count, unit: .none, style: .full))
+		}
+	}
 	
 	override func configure(cell: UITableViewCell) {
 		
@@ -54,7 +63,7 @@ class NCKillmailRow: TreeRow {
 		cell.dateLabel.text = date
 		
 		if contactName == nil {
-			cell.subtitleLabel?.text = " "
+			cell.subtitleLabel?.text = subtitle
 			
 			let contactID = killmail.victim.characterID != Int(characterID) ? killmail.victim.characterID
 				: {
@@ -65,17 +74,17 @@ class NCKillmailRow: TreeRow {
 			if let contactID = contactID {
 				if let faction = NCDatabase.sharedDatabase?.chrFactions[contactID]?.factionName {
 					contactName = faction
-					cell.subtitleLabel?.text = contactName
+					cell.subtitleLabel?.text = subtitle
 				}
 				else {
 					dataManager.contacts(ids: Set([Int64(contactID)])) { result in
 						let contact = result[Int64(contactID)]
-						if contact == nil {
-							print("\(contactID)")
+						if contact?.name == nil {
+							print ("\(contactID)")
 						}
 						self.contactName = contact?.name ?? NSLocalizedString("Unknown", comment: "")
 						if (cell.object as? ESI.Killmails.Killmail) == self.killmail {
-							cell.subtitleLabel?.text = self.contactName
+							cell.subtitleLabel?.text = self.subtitle
 						}
 					}
 				}
@@ -85,7 +94,7 @@ class NCKillmailRow: TreeRow {
 			}
 		}
 		else {
-			cell.subtitleLabel?.text = contactName
+			cell.subtitleLabel?.text = subtitle
 		}
 	}
 	

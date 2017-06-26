@@ -42,7 +42,7 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
 	
 	var indentationConstraint: NSLayoutConstraint? {
 		get {
-			guard let stackView = self.expandIconView?.superview else {return nil}
+			guard let stackView = self.titleLabel?.superview else {return nil}
 			return stackView.superview?.constraints.first {
 				return $0.firstItem === stackView && $0.secondItem === stackView.superview && $0.firstAttribute == .leading && $0.secondAttribute == .leading
 			}
@@ -77,6 +77,7 @@ extension Prototype {
 	enum NCHeaderTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCHeaderTableViewCell")
 		static let action = Prototype(nib: UINib(nibName: "NCActionHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCActionHeaderTableViewCell")
+		static let image = Prototype(nib: UINib(nibName: "NCImageHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCImageHeaderTableViewCell")
 	}
 	enum NCActionHeaderTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCActionHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCActionHeaderTableViewCell")

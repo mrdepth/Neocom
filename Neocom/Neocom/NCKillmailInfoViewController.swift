@@ -9,11 +9,206 @@
 import UIKit
 import EVEAPI
 
-class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
+class NCKillmailItemRow: TreeRow {
+	let typeID: Int
+	let quantityDropped: Int64
+	let quantityDestroyed: Int64
+	let flag: ESI.Assets.Asset.Flag?
+	let itemID: Int
+	
+	@nonobjc init(item: ESI.Killmails.Killmail.Victim.Item) {
+		typeID = item.itemTypeID
+		quantityDropped = item.quantityDropped ?? 0
+		quantityDestroyed = item.quantityDestroyed ?? 0
+		flag = ESI.Assets.Asset.Flag(item.flag)
+		itemID = item.hashValue
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: Router.Database.TypeInfo(item.itemTypeID))
+		children = item.items?.map{NCKillmailItemRow(item: $0)} ?? []
+	}
+
+	@nonobjc init(item: ESI.Killmails.Killmail.Victim.Item.Item) {
+		typeID = item.itemTypeID
+		quantityDropped = item.quantityDropped ?? 0
+		quantityDestroyed = item.quantityDestroyed ?? 0
+		flag = ESI.Assets.Asset.Flag(item.flag)
+		itemID = item.hashValue
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: Router.Database.TypeInfo(item.itemTypeID))
+	}
+	
+	lazy var type: NCDBInvType? = {
+		return NCDatabase.sharedDatabase?.invTypes[self.typeID]
+	}()
+
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.text = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
+		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+		cell.accessoryType = .disclosureIndicator
+		
+		cell.backgroundColor = quantityDropped > 0 ? UIColor.separator : UIColor.cellBackground
+		
+		switch (quantityDropped, quantityDestroyed) {
+		case let (dropped, destroyed) where dropped > 0 && destroyed > 0:
+			cell.subtitleLabel?.text = String(format: NSLocalizedString("Dropped: %@   Destroyed: %@", comment: ""), NCUnitFormatter.localizedString(from: Double(dropped), unit: .none, style: .full), NCUnitFormatter.localizedString(from: Double(destroyed), unit: .none, style: .full))
+		case let (dropped, destroyed) where dropped > 0 && destroyed == 0:
+			cell.subtitleLabel?.text = String(format: NSLocalizedString("Dropped: %@", comment: ""), NCUnitFormatter.localizedString(from: Double(dropped), unit: .none, style: .full))
+		case let (dropped, destroyed) where dropped == 0 && destroyed > 0:
+			cell.subtitleLabel?.text = String(format: NSLocalizedString("Destroyed: %@", comment: ""), NCUnitFormatter.localizedString(from: Double(destroyed), unit: .none, style: .full))
+		default:
+			cell.subtitleLabel?.text = " "
+		}
+	}
+	
+	override var hashValue: Int {
+		return itemID
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCKillmailItemRow)?.hashValue == hashValue
+	}
+}
+
+class NCKillmailItemSection: TreeSection {
+	let title: String
+	let image: UIImage
+	
+	init(title: String, image: UIImage, rows: [NCKillmailItemRow]) {
+		self.title = title
+		self.image = image
+		super.init(prototype: Prototype.NCHeaderTableViewCell.image)
+		children = rows
+		isExpandable = false
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCHeaderTableViewCell else {return}
+		cell.titleLabel?.text = title
+		cell.iconView?.image = image
+	}
+	
+	override var hashValue: Int {
+		return title.hash
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCKillmailItemSection)?.hashValue == hashValue
+	}
+}
+
+class NCKillmailVictimRow: NCContactRow {
+	let character: NCContact?
+	let corporation: NCContact?
+	let alliance: NCContact?
+	
+	init(character: NCContact?, corporation: NCContact?, alliance: NCContact?, dataManager: NCDataManager) {
+		self.character = character
+		self.corporation = corporation
+		self.alliance = alliance
+		super.init(prototype: Prototype.NCContactTableViewCell.default, contact: character ?? corporation ?? alliance, dataManager: dataManager)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		guard let cell = cell as? NCContactTableViewCell else {return}
+		switch (corporation?.name, alliance?.name) {
+		case let (a?, b?):
+			cell.subtitleLabel?.text = "\(a) / \(b)"
+		case let (a?, nil):
+			cell.subtitleLabel?.text = a
+		case let (nil, b):
+			cell.subtitleLabel?.text = b
+		default:
+			cell.subtitleLabel = nil
+		}
+		cell.accessoryType = .none
+	}
+}
+
+class NCKillmailAttackerRow: NCContactRow {
+	let attacker: ESI.Killmails.Killmail.Attacker
+	let character: NCContact?
+	let corporation: NCContact?
+	let alliance: NCContact?
+	
+	init(attacker: ESI.Killmails.Killmail.Attacker, character: NCContact?, corporation: NCContact?, alliance: NCContact?, dataManager: NCDataManager) {
+		self.attacker = attacker
+		self.character = character
+		self.corporation = corporation
+		self.alliance = alliance
+		let contact = character ?? corporation ?? alliance
+		super.init(prototype: contact == nil ? Prototype.NCDefaultTableViewCell.default : Prototype.NCContactTableViewCell.default, contact: contact, dataManager: dataManager)
+		
+		if let shipTypeID = attacker.shipTypeID {
+			route = Router.Database.TypeInfo(shipTypeID)
+		}
+	}
+	
+	lazy var faction: NCDBChrFaction? = {
+		guard let factionID = self.attacker.factionID else {return nil}
+		return NCDatabase.sharedDatabase?.chrFactions[factionID]
+	}()
+	
+	lazy var shipType: NCDBInvType? = {
+		guard let shipTypeID = self.attacker.shipTypeID else {return nil}
+		return NCDatabase.sharedDatabase?.invTypes[shipTypeID]
+	}()
+
+	lazy var weaponType: NCDBInvType? = {
+		guard let weaponTypeID = self.attacker.weaponTypeID else {return nil}
+		return NCDatabase.sharedDatabase?.invTypes[weaponTypeID]
+	}()
+
+	lazy var subtitle: String = {
+		var s = ""
+		switch (self.corporation?.name, self.alliance?.name) {
+		case let (a?, b?):
+			s = "\(a) / \(b)\n"
+		case let (a?, nil):
+			s = a + "\n"
+		case let (nil, b?):
+			s = b + "\n"
+		default:
+			break
+		}
+		
+		if let ship = self.shipType?.typeName {
+			if let weapon = self.weaponType?.typeName {
+				s += String(format: NSLocalizedString("%@ with %@", comment: ""), ship, weapon) + "\n"
+			}
+			else {
+				s += ship + "\n"
+			}
+		}
+		s += String(format: NSLocalizedString("%@ damage done", comment: ""), NCUnitFormatter.localizedString(from: self.attacker.damageDone, unit: .none, style: .full))
+//		if self.attacker.finalBlow {
+//			s += " (\(NSLocalizedString("final blow", comment: "")))"
+//		}
+		return s
+	}()
+	
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		guard let cell = cell as? NCContactTableViewCell else {return}
+		if contact == nil, let faction = self.faction {
+			cell.titleLabel?.text = faction.factionName
+//			cell.iconView?.image = faction.icon?.image?.image
+			cell.iconView?.image = shipType?.icon?.image?.image
+		}
+		cell.subtitleLabel?.text = subtitle
+		cell.accessoryType = route != nil ? .disclosureIndicator : .none
+		
+		if attacker.finalBlow {
+			cell.titleLabel?.attributedText = (cell.titleLabel?.text ?? "") + " [\(NSLocalizedString("final blow", comment: ""))]" * [NSForegroundColorAttributeName: UIColor.caption]
+		}
+	}
+}
+
+
+class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegate {
 	
 	@IBOutlet var treeController: TreeController!
 	
-	var contract: ESI.Contracts.Contract?
+	var killmail: ESI.Killmails.Killmail?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -24,14 +219,203 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 		tableView.register([Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.noImage,
 		                    Prototype.NCContactTableViewCell.default,
+		                    Prototype.NCHeaderTableViewCell.image,
 		                    Prototype.NCHeaderTableViewCell.default])
-		
-		registerRefreshable()
 		
 		treeController.delegate = self
 		
-		reload()
+		guard let killmail = killmail else {return}
+		
+		let dataManager = NCDataManager(account: NCAccount.current)
+		
+		let progress = NCProgressHandler(viewController: self, totalUnitCount: 3)
+		progress.progress.perform {
+			NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
+				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
+
+//				func shipTitle(_ type: NCDBInvType?) -> NSAttributedString {
+//					guard let typeName = type?.typeName, let groupName = type?.group?.groupName else {return NSLocalizedString("Unknown Type", comment: "") * [NSForegroundColorAttributeName: UIColor.white]}
+//					return typeName * [NSForegroundColorAttributeName: UIColor.white] + " (\(groupName))" * [NSForegroundColorAttributeName: UIColor.lightText]
+//				}
+
+				var sections = [TreeNode]()
+				
+				var rows = [TreeNode]()
+				let ship = invTypes[killmail.victim.shipTypeID]
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.default,
+				                           nodeIdentifier: "VictimShip", image: ship?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image,
+				                           title: ship?.typeName ?? NSLocalizedString("Unknown Type", comment: ""), //shipTitle(ship),
+				                           subtitle: NSLocalizedString("Damage taken:", comment: "") + " " + NCUnitFormatter.localizedString(from: killmail.victim.damageTaken, unit: .none, style: .full),
+				                           accessoryType: ship != nil ? .disclosureIndicator : .none,
+				                           route: ship != nil ? Router.Database.TypeInfo(ship!.objectID) : nil))
+
+				let location: NSAttributedString? = {
+					guard let solarSystem = NCDBMapSolarSystem.mapSolarSystems(managedObjectContext: managedObjectContext)[killmail.solarSystemID] else {return nil}
+					guard let region = solarSystem.constellation?.region?.regionName else {return nil}
+					return NCLocation(solarSystem).displayName + " / " + region
+				}()
+
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+				                           nodeIdentifier: "Location",
+				                           attributedTitle: location ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: "")),
+				                           subtitle: DateFormatter.localizedString(from: killmail.killmailTime, dateStyle: .medium, timeStyle: .medium)))
+				
+				if let items = killmail.victim.items?.map ({return NCKillmailItemRow(item: $0)}) {
+					var hi = [NCKillmailItemRow]()
+					var med = [NCKillmailItemRow]()
+					var low = [NCKillmailItemRow]()
+					var rig = [NCKillmailItemRow]()
+					var subsystem = [NCKillmailItemRow]()
+					var drone = [NCKillmailItemRow]()
+					var cargo = [NCKillmailItemRow]()
+					
+					items.forEach {
+						switch $0.flag {
+						case .hiSlot0?, .hiSlot1?, .hiSlot2?, .hiSlot3?, .hiSlot4?, .hiSlot5?, .hiSlot6?, .hiSlot7?:
+							hi.append($0)
+						case .medSlot0?, .medSlot1?, .medSlot2?, .medSlot3?, .medSlot4?, .medSlot5?, .medSlot6?, .medSlot7?:
+							med.append($0)
+						case .loSlot0?, .loSlot1?, .loSlot2?, .loSlot3?, .loSlot4?, .loSlot5?, .loSlot6?, .loSlot7?:
+							low.append($0)
+						case .rigSlot0?, .rigSlot1?, .rigSlot2?, .rigSlot3?, .rigSlot4?, .rigSlot5?, .rigSlot6?, .rigSlot7?:
+							rig.append($0)
+						case .subSystemSlot0?, .subSystemSlot1?, .subSystemSlot2?, .subSystemSlot3?, .subSystemSlot4?, .subSystemSlot5?, .subSystemSlot6?, .subSystemSlot7?:
+							subsystem.append($0)
+						case .droneBay?, .fighterBay?, .fighterTube0?, .fighterTube1?, .fighterTube2?, .fighterTube3?, .fighterTube4?:
+							drone.append($0)
+						default:
+							cargo.append($0)
+						}
+					}
+					
+					var sections = [TreeNode]()
+					
+					if !hi.isEmpty {
+						sections.append(NCKillmailItemSection(title: NSLocalizedString("Hi Slot", comment: "").uppercased(), image: #imageLiteral(resourceName: "slotHigh"), rows: hi))
+					}
+					if !med.isEmpty {
+						sections.append(NCKillmailItemSection(title: NSLocalizedString("Med Slot", comment: "").uppercased(), image: #imageLiteral(resourceName: "slotMed"), rows: med))
+					}
+					if !low.isEmpty {
+						sections.append(NCKillmailItemSection(title: NSLocalizedString("Low Slot", comment: "").uppercased(), image: #imageLiteral(resourceName: "slotLow"), rows: low))
+					}
+					if !rig.isEmpty {
+						sections.append(NCKillmailItemSection(title: NSLocalizedString("Rig Slot", comment: "").uppercased(), image: #imageLiteral(resourceName: "slotRig"), rows: rig))
+					}
+					if !subsystem.isEmpty {
+						sections.append(NCKillmailItemSection(title: NSLocalizedString("Subsystem Slot", comment: "").uppercased(), image: #imageLiteral(resourceName: "slotSubsystem"), rows: subsystem))
+					}
+					if !drone.isEmpty {
+						sections.append(NCKillmailItemSection(title: NSLocalizedString("Drones", comment: "").uppercased(), image: #imageLiteral(resourceName: "drone"), rows: drone))
+					}
+					if !cargo.isEmpty {
+						sections.append(NCKillmailItemSection(title: NSLocalizedString("Cargo", comment: "").uppercased(), image: #imageLiteral(resourceName: "cargoBay"), rows: cargo))
+					}
+					
+					if !sections.isEmpty {
+						rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default, nodeIdentifier: "VictimItems", title: NSLocalizedString("Items", comment: "").uppercased(), children: sections))
+					}
+				}
+				
+				let victimSection = DefaultTreeSection(nodeIdentifier: "Victim", title: NSLocalizedString("Victim", comment: "").uppercased(), children: rows)
+				sections.append(victimSection)
+				
+				var ids = Set<Int64>()
+				
+				ids.formUnion([killmail.victim.characterID, killmail.victim.corporationID, killmail.victim.allianceID].flatMap{$0}.map{Int64($0)})
+				ids.formUnion(killmail.attackers.map { [$0.characterID, $0.corporationID, $0.allianceID].flatMap{$0}.map{Int64($0)}}.joined())
+				
+				let dispatchGroup = DispatchGroup()
+				
+				var contacts: [Int64: NCContact]?
+				
+				progress.progress.perform {
+					if !ids.isEmpty {
+						dispatchGroup.enter()
+						dataManager.contacts(ids: ids) { result in
+							contacts = result
+							
+							dispatchGroup.leave()
+						}
+					}
+				}
+				
+				var typeIDs = [Int: Int64]()
+				typeIDs[killmail.victim.shipTypeID] = (typeIDs[killmail.victim.shipTypeID] ?? 0) + 1
+				killmail.victim.items?.forEach {
+					typeIDs[$0.itemTypeID] = (typeIDs[$0.itemTypeID] ?? 0) + ($0.quantityDropped ?? 0) + ($0.quantityDestroyed ?? 0)
+					$0.items?.forEach {
+						typeIDs[$0.itemTypeID] = (typeIDs[$0.itemTypeID] ?? 0) + ($0.quantityDropped ?? 0) + ($0.quantityDestroyed ?? 0)
+					}
+				}
+				
+				var cost: Double = 0
+				
+				progress.progress.perform {
+					if !typeIDs.isEmpty {
+						dispatchGroup.enter()
+						dataManager.prices(typeIDs: Set(typeIDs.keys)) { result in
+							typeIDs.forEach {
+								cost += Double((result[$0.key] ?? 0)) * Double($0.value)
+							}
+							
+							dispatchGroup.leave()
+						}
+					}
+				}
+				
+				dispatchGroup.notify(queue: .main) {
+					victimSection.children.insert(NCKillmailVictimRow(character: contacts?[Int64(killmail.victim.characterID ?? 0)],
+					                                                  corporation: contacts?[Int64(killmail.victim.corporationID ?? 0)],
+					                                                  alliance: contacts?[Int64(killmail.victim.allianceID ?? 0)], dataManager: dataManager), at: 0)
+					if cost > 0 {
+						victimSection.title = victimSection.title! + " (\(NCUnitFormatter.localizedString(from: cost, unit: .isk, style: .full)))"
+					}
+					
+					
+					let attackers = killmail.attackers.sorted { (a, b) -> Bool in
+						if a.finalBlow && !b.finalBlow {
+							return true
+						}
+						else if !a.finalBlow && b.finalBlow {
+							return false
+						}
+						else {
+							return a.damageDone > b.damageDone
+						}
+						}.map {NCKillmailAttackerRow(attacker: $0,
+						                             character: contacts?[Int64($0.characterID ?? 0)],
+						                             corporation: contacts?[Int64($0.corporationID ?? 0)],
+						                             alliance: contacts?[Int64($0.allianceID ?? 0)],
+						                             dataManager: dataManager)}
+					
+					if !attackers.isEmpty {
+						sections.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default,
+						                                                           nodeIdentifier: "Attackers", title: NSLocalizedString("Attackers", comment: "").uppercased(),
+						                                                           children: attackers))
+					}
+					
+					let node = TreeNode()
+					node.children = sections
+					self.treeController.content = node
+				}
+				
+			}
+		}
+		
+		
+		
+//		guard let
 	}
+	
+	@IBAction func onFitting(_ sender: Any) {
+		UIApplication.shared.beginIgnoringInteractionEvents()
+		let engine = NCFittingEngine()
+		engine.perform {
+			
+		}
+	}
+
 	
 	//MARK: - TreeControllerDelegate
 	
@@ -40,233 +424,6 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 			row.route?.perform(source: self, view: treeController.cell(for: node))
 		}
 		treeController.deselectCell(for: node, animated: true)
-	}
-	
-	//MARK: - NCRefreshable
-	
-	private var observer: NCManagedObjectObserver?
-	private var items: NCCachedResult<[ESI.Contracts.Item]>?
-	private var bids: NCCachedResult<[ESI.Contracts.Bid]>?
-	private var locations: [Int64: NCLocation]?
-	private var contacts: [Int64: NCContact]?
-	
-	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
-		guard let account = NCAccount.current, let contract = contract else {
-			completionHandler?()
-			return
-		}
-		
-		let progress = Progress(totalUnitCount: 4)
-		
-		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
-		
-		let dispatchGroup = DispatchGroup()
-		
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.contractItems(contractID: Int64(contract.contractID)) { result in
-				self.items = result
-				dispatchGroup.leave()
-			}
-		}
-		
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.contractBids(contractID: Int64(contract.contractID)) { result in
-				self.bids = result
-				
-				progress.perform {
-					var contactIDs = Set<Int64>()
-					if contract.acceptorID > 0 {
-						contactIDs.insert(Int64(contract.acceptorID))
-					}
-					if contract.assigneeID > 0 {
-						contactIDs.insert(Int64(contract.assigneeID))
-					}
-					if contract.issuerID > 0 {
-						contactIDs.insert(Int64(contract.issuerID))
-					}
-					
-					if let bids = result.value {
-						contactIDs.formUnion(bids.map{Int64($0.bidderID)})
-					}
-					
-					if !contactIDs.isEmpty {
-						dispatchGroup.enter()
-						dataManager.contacts(ids: contactIDs) { result in
-							self.contacts = result
-							dispatchGroup.leave()
-						}
-					}
-				}
-				
-				
-				dispatchGroup.leave()
-			}
-		}
-		
-		progress.perform {
-			var locationIDs = Set<Int64>()
-			if let locationID = contract.startLocationID {
-				locationIDs.insert(locationID)
-			}
-			if let locationID = contract.endLocationID {
-				locationIDs.insert(locationID)
-			}
-			
-			if !locationIDs.isEmpty {
-				dispatchGroup.enter()
-				dataManager.locations(ids: locationIDs) { result in
-					self.locations = result
-					dispatchGroup.leave()
-				}
-			}
-		}
-		
-		dispatchGroup.notify(queue: .main) {
-			self.reloadSections()
-			completionHandler?()
-		}
-	}
-	
-	private func reloadSections() {
-		if let contract = self.contract {
-			tableView.backgroundView = nil
-			let locations = self.locations ?? [:]
-			let contacts = self.contacts
-			
-			let dataManager = NCDataManager(account: NCAccount.current)
-			
-			var sections = [TreeNode]()
-			var rows = [TreeNode]()
-			
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-			                           nodeIdentifier: "Type",
-			                           title: NSLocalizedString("Type", comment: ""),
-			                           subtitle: contract.type.title))
-			
-			if let description = contract.title, !description.isEmpty {
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-				                           nodeIdentifier: "Description",
-				                           title: NSLocalizedString("Description", comment: ""),
-				                           subtitle: description))
-			}
-			
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-			                           nodeIdentifier: "Availability",
-			                           title: NSLocalizedString("Availability", comment: ""),
-			                           subtitle: contract.availability.title))
-			
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-			                           nodeIdentifier: "Status",
-			                           title: NSLocalizedString("Status", comment: ""),
-			                           subtitle: contract.status.title))
-			
-			if let contact = contacts?[Int64(contract.issuerID)] {
-				rows.append(NCContractContactRow(title: NSLocalizedString("From", comment: ""), contact: contact, dataManager: dataManager))
-			}
-			if let contact = contacts?[Int64(contract.assigneeID)] {
-				rows.append(NCContractContactRow(title: NSLocalizedString("To", comment: ""), contact: contact, dataManager: dataManager))
-			}
-			if let contact = contacts?[Int64(contract.acceptorID)] {
-				rows.append(NCContractContactRow(title: NSLocalizedString("Acceptor", comment: ""), contact: contact, dataManager: dataManager))
-			}
-			
-			
-			if let fromID = contract.startLocationID, let toID = contract.endLocationID, fromID != toID, let from = locations[fromID], let to = locations[toID] {
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-				                           nodeIdentifier: "StartLocation",
-				                           title: NSLocalizedString("Start Location", comment: ""),
-				                           attributedSubtitle: from.displayName))
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-				                           nodeIdentifier: "EndLocation",
-				                           title: NSLocalizedString("End Location", comment: ""),
-				                           attributedSubtitle: to.displayName))
-			}
-			else if let locationID = contract.startLocationID, let location = locations[locationID] {
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-				                           nodeIdentifier: "Location",
-				                           title: NSLocalizedString("Location", comment: ""),
-				                           attributedSubtitle: location.displayName))
-			}
-			
-			if let price = contract.price, price > 0 {
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-				                           nodeIdentifier: "Price",
-				                           title: NSLocalizedString("Buyer Will Pay", comment: ""),
-				                           subtitle: NCUnitFormatter.localizedString(from: price, unit: .isk, style: .full)))
-			}
-			
-			if let reward = contract.reward, reward > 0 {
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-				                           nodeIdentifier: "Reward",
-				                           title: NSLocalizedString("Buyer Will Get", comment: ""),
-				                           subtitle: NCUnitFormatter.localizedString(from: reward, unit: .isk, style: .full)))
-			}
-			
-			
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-			                           nodeIdentifier: "Issued",
-			                           title: NSLocalizedString("Date Issued", comment: ""),
-			                           subtitle: DateFormatter.localizedString(from: contract.dateIssued, dateStyle: .medium, timeStyle: .medium)))
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-			                           nodeIdentifier: "Expired",
-			                           title: NSLocalizedString("Date Expired", comment: ""),
-			                           subtitle: DateFormatter.localizedString(from: contract.dateExpired, dateStyle: .medium, timeStyle: .medium)))
-			
-			if let date = contract.dateAccepted {
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-				                           nodeIdentifier: "Accepted",
-				                           title: NSLocalizedString("Date Accepted", comment: ""),
-				                           subtitle: DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .medium)))
-			}
-			if let date = contract.dateCompleted {
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-				                           nodeIdentifier: "Completed",
-				                           title: NSLocalizedString("Date Completed", comment: ""),
-				                           subtitle: DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .medium)))
-			}
-			
-			sections.append(DefaultTreeSection(nodeIdentifier: "Info",
-			                                   title: NSLocalizedString("Info", comment: "").uppercased(),
-			                                   children: rows))
-			
-			if let items = items?.value, !items.isEmpty {
-				let get = items.filter {$0.isIncluded}.map ({NCContractItem(item: $0)})
-				let pay = items.filter {!$0.isIncluded}.map ({NCContractItem(item: $0)})
-				if !get.isEmpty {
-					sections.append(DefaultTreeSection(nodeIdentifier: "BuyerWillGet",
-					                                   title: NSLocalizedString("Buyer Will Get", comment: "").uppercased(),
-					                                   children: get))
-				}
-				if !pay.isEmpty {
-					sections.append(DefaultTreeSection(nodeIdentifier: "BuyerWillPay",
-					                                   title: NSLocalizedString("Buyer Will Pay", comment: "").uppercased(),
-					                                   children: pay))
-				}
-			}
-			
-			if let bids = bids?.value, !bids.isEmpty {
-				let rows = bids.sorted {$0.amount > $1.amount}.map {NCContractBidRow(bid: $0, contact: contacts?[Int64($0.bidderID)], dataManager: dataManager)}
-				sections.append(DefaultTreeSection(nodeIdentifier: "Bids",
-				                                   title: NSLocalizedString("Bids", comment: "").uppercased(),
-				                                   children: rows))
-			}
-			
-			if self.treeController.content == nil {
-				let root = TreeNode()
-				root.children = sections
-				self.treeController.content = root
-			}
-			else {
-				self.treeController.content?.children = sections
-			}
-			
-			
-		}
-		else {
-			tableView.backgroundView = NCTableViewBackgroundLabel(text: (items?.error ?? bids?.error)?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-		}
 	}
 	
 }

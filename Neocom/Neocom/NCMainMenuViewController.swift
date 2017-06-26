@@ -380,7 +380,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	}
 	
 	private func loadMenu() {
-		let currentScopes = Set<String>((NCAccount.current?.scopes as? Set<NCScope>)?.map { return $0.name!} ?? [])
+		let currentScopes = Set<String>((NCAccount.current?.scopes as? Set<NCScope>)?.flatMap { return $0.name} ?? [])
 		
 		let mainMenu = NSArray.init(contentsOf: Bundle.main.url(forResource: "mainMenu", withExtension: "plist")!) as! [[[String: Any]]]
 		var sections = [[[String: Any]]]()

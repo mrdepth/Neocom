@@ -27,7 +27,7 @@ class NCTableViewCell: UITableViewCell {
 		selectedBackgroundView?.backgroundColor = UIColor.separator
 		tintColor = .caption
 	}
-    
+	
 }
 
 class NCDefaultTableViewCell: NCTableViewCell {

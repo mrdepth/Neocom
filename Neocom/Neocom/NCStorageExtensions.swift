@@ -30,8 +30,8 @@ extension NCAccount {
 
 	var token: OAuth2Token {
 		get {
-			let scopes = (self.scopes as? Set<NCScope>)?.map {
-				return $0.name!
+			let scopes = (self.scopes as? Set<NCScope>)?.flatMap {
+				return $0.name
 			} ?? []
 			
 			let token = OAuth2Token(accessToken: accessToken ?? "", refreshToken: refreshToken ?? "", tokenType: tokenType ?? "", scopes: scopes, characterID: characterID, characterName: characterName ?? "", realm: realm ?? "")

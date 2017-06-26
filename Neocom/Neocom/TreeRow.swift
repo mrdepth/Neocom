@@ -50,8 +50,8 @@ class TreeSection: TreeNode {
 
 class DefaultTreeSection: TreeSection {
 	let nodeIdentifier: String?
-	dynamic var title: String?
-	dynamic var attributedTitle: NSAttributedString?
+	var title: String?
+	var attributedTitle: NSAttributedString?
 
 	init(prototype: Prototype = Prototype.NCHeaderTableViewCell.default, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
 		self.title = title
@@ -161,6 +161,7 @@ class DefaultTreeRow: TreeRow {
             }
             cell.accessoryView = button
         }
+		cell.backgroundColor = .cellBackground
 	}
 	
 	override var hashValue: Int {

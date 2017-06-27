@@ -33,9 +33,9 @@ class NCContactsSearchResultViewController: UITableViewController, TreeControlle
 
 			
 			let dataManager = NCDataManager(account: NCAccount.current)
-			let titles = [ESI.Mail.Recipient.RecipientType.alliance: NSLocalizedString("Alliances", comment: ""),
-			              ESI.Mail.Recipient.RecipientType.corporation: NSLocalizedString("Corporations", comment: ""),
-			              ESI.Mail.Recipient.RecipientType.character: NSLocalizedString("Characters", comment: "")]
+			let titles = [ESI.Mail.Recipient.RecipientType.alliance: NSLocalizedString("Alliances", comment: "").uppercased(),
+			              ESI.Mail.Recipient.RecipientType.corporation: NSLocalizedString("Corporations", comment: "").uppercased(),
+			              ESI.Mail.Recipient.RecipientType.character: NSLocalizedString("Characters", comment: "").uppercased()]
 			let identifiers = [ESI.Mail.Recipient.RecipientType.character: "0",
 			                   ESI.Mail.Recipient.RecipientType.corporation: "1",
 			                   ESI.Mail.Recipient.RecipientType.alliance: "2"]
@@ -70,6 +70,44 @@ class NCContactsSearchResultViewController: UITableViewController, TreeControlle
 		treeController.delegate = self
 		tableView.backgroundColor = UIColor.cellBackground
 		tableView.separatorColor = UIColor.separator
+		contacts = recent ?? []
+	}
+	
+	private lazy var recent: [NCContact]? = {
+		return NCCache.sharedCache?.viewContext.fetch("Contact", limit: 100, sortedBy: [NSSortDescriptor(key: "lastUse", ascending: false)], where: "lastUse <> nil")
+	}()
+	private lazy var gate = NCGate()
+	private lazy var dataManager: NCDataManager? = {
+		guard let account = NCAccount.current else {return nil}
+		return NCDataManager(account: account)
+	}()
+
+	
+	func update(searchString: String) {
+		let string = searchString.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+		guard let dataManager = self.dataManager else {return}
+		
+		gate.perform {
+			guard string.characters.count >= 3 else {
+				DispatchQueue.main.async {
+					self.contacts = self.recent ?? []
+				}
+				return
+			}
+			
+			let dispatchGroup = DispatchGroup()
+			
+			dispatchGroup.enter()
+			
+			dataManager.searchNames(string, categories: [.character, .corporation, .alliance], strict: false) { [weak self] result in
+				defer {dispatchGroup.leave()}
+				guard let strongSelf = self else {return}
+				
+				strongSelf.contacts = result.map {$0.value}
+			}
+			
+			dispatchGroup.wait()
+		}
 	}
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {

@@ -25,6 +25,12 @@ public enum NCTableViewCellAccessoryType {
     case button(UIImage)
 }
 
+class RootNode: TreeNode {
+	init(_ children: [TreeNode] = []) {
+		super.init()
+		self.children = children
+	}
+}
 
 class TreeRow: TreeNode, TreeNodeRoutable {
 	var route: Route?

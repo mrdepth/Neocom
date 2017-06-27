@@ -167,9 +167,9 @@
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
-			<string>NCZKillBoardViewController</string>
+			<string>NCZKillboardViewController</string>
 			<key>title</key>
-			<string>zKillBoard Reports</string>
+			<string>zKillboard Reports</string>
 			<key>image</key>
 			<string>killrights</string>
 		</dict>

@@ -199,9 +199,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	
 	func textViewDidBeginEditing(_ textView: UITextView) {
 		if textView == toTextView {
-			recent = NCCache.sharedCache?.viewContext.fetch("Contact", limit: 100, sortedBy: [NSSortDescriptor(key: "lastUse", ascending: false)], where: "lastUse <> nil")
-			self.searchResultViewController?.contacts = recent ?? []
-			UIView.animate(withDuration: 0.15, animations: { 
+			UIView.animate(withDuration: 0.15, animations: {
 				self.searchResultViewController?.view.superview?.alpha = 1.0
 			})
 		}
@@ -280,41 +278,15 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		bottomConstraint.constant = max(view.bounds.maxY - finalFrame.minY, 0)
 		view.layoutIfNeeded()
 	}
+	
+	private func search(_ string: String) {
+		searchResultViewController?.update(searchString: string)
+	}
 
-	private lazy var gate = NCGate()
 	private lazy var dataManager: NCDataManager? = {
 		guard let account = NCAccount.current else {return nil}
 		return NCDataManager(account: account)
 	}()
-	
-	private var recent: [NCContact]?
-
-	private func search(_ string: String) {
-		let string = string.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-		guard let dataManager = self.dataManager else {return}
-		
-		gate.perform {
-			guard string.characters.count >= 3 else {
-				DispatchQueue.main.async {
-					self.searchResultViewController?.contacts = self.recent ?? []
-				}
-				return
-			}
-
-			let dispatchGroup = DispatchGroup()
-			
-			dispatchGroup.enter()
-			
-			dataManager.searchNames(string, categories: [.character, .corporation, .alliance], strict: false) { [weak self] result in
-				defer {dispatchGroup.leave()}
-				guard let strongSelf = self else {return}
-				
-				strongSelf.searchResultViewController?.contacts = result.map {$0.value}
-			}
-			
-			dispatchGroup.wait()
-		}
-	}
 	
 	private func update() {
 		navigationItem.rightBarButtonItem?.isEnabled = recipients.count > 0 && !textView.text.isEmpty

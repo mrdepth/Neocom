@@ -13,7 +13,8 @@ import EVEAPI
 enum RouteKind {
 	case push
 	case modal
-	case adaptive
+	case adaptivePush
+	case adaptiveModal
 	case sheet
 }
 
@@ -56,7 +57,7 @@ class Route: Hashable {
 		case .modal:
 			source.present(destination, animated: true, completion: nil)
 			
-		case .adaptive:
+		case .adaptivePush:
 			let presentedController = source.navigationController ?? source.parent?.navigationController ?? source.parent ?? source
 			if presentedController.modalPresentationStyle == .custom && presentedController.presentationController is NCSheetPresentationController {
 				let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
@@ -74,6 +75,12 @@ class Route: Hashable {
                 }
 
 			}
+		case .adaptiveModal:
+			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
+			destination.modalPresentationStyle = .custom
+			destination.topViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
+			presentedViewController = destination
+			source.present(destination, animated: true, completion: nil)
 			
 		case .sheet:
 			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
@@ -142,15 +149,15 @@ enum Router {
 				super.init(kind: kind, identifier: "NCDatabaseTypeInfoViewController")
 			}
 			
-			convenience init(_ type: NCDBInvType, kind: RouteKind = .adaptive) {
+			convenience init(_ type: NCDBInvType, kind: RouteKind = .adaptivePush) {
 				self.init(type: type, typeID: nil, objectID: nil, kind: kind)
 			}
 			
-			convenience init(_ typeID: Int, kind: RouteKind = .adaptive) {
+			convenience init(_ typeID: Int, kind: RouteKind = .adaptivePush) {
 				self.init(type: nil, typeID: typeID, objectID: nil, kind: kind)
 			}
 			
-			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .adaptive) {
+			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .adaptivePush) {
 				self.init(type: nil, typeID: nil, objectID: objectID, kind: kind)
 			}
 			
@@ -180,15 +187,15 @@ enum Router {
 				super.init(kind: kind, identifier: "NCDatabaseGroupsViewController")
 			}
 			
-			convenience init(_ category: NCDBInvCategory, kind: RouteKind = .adaptive) {
+			convenience init(_ category: NCDBInvCategory, kind: RouteKind = .adaptivePush) {
 				self.init(category: category, categoryID: nil, objectID: nil, kind: kind)
 			}
 			
-			convenience init(_ categoryID: Int, kind: RouteKind = .adaptive) {
+			convenience init(_ categoryID: Int, kind: RouteKind = .adaptivePush) {
 				self.init(category: nil, categoryID: categoryID, objectID: nil, kind: kind)
 			}
 			
-			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .adaptive) {
+			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .adaptivePush) {
 				self.init(category: nil, categoryID: nil, objectID: objectID, kind: kind)
 			}
 			
@@ -293,15 +300,15 @@ enum Router {
 				super.init(kind: kind, identifier: "NCDatabaseMarketInfoViewController")
 			}
 			
-			convenience init(_ type: NCDBInvType, kind: RouteKind = .adaptive) {
+			convenience init(_ type: NCDBInvType, kind: RouteKind = .adaptivePush) {
 				self.init(type: type, typeID: nil, objectID: nil, kind: kind)
 			}
 			
-			convenience init(_ typeID: Int, kind: RouteKind = .adaptive) {
+			convenience init(_ typeID: Int, kind: RouteKind = .adaptivePush) {
 				self.init(type: nil, typeID: typeID, objectID: nil, kind: kind)
 			}
 			
-			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .adaptive) {
+			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .adaptivePush) {
 				self.init(type: nil, typeID: nil, objectID: objectID, kind: kind)
 			}
 			
@@ -406,7 +413,7 @@ enum Router {
 				self.category = category
 				self.completionHandler = completionHandler
 				self.modules = modules
-				super.init(kind: .adaptive, identifier: "NCFittingAmmoViewController")
+				super.init(kind: .adaptivePush, identifier: "NCFittingAmmoViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -424,7 +431,7 @@ enum Router {
 			init(category: NCDBDgmppItemCategory, modules: [NCFittingModule]) {
 				self.category = category
 				self.modules = modules
-				super.init(kind: .adaptive, identifier: "NCFittingAmmoDamageChartViewController")
+				super.init(kind: .adaptivePush, identifier: "NCFittingAmmoDamageChartViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -439,7 +446,7 @@ enum Router {
 			
 			init(completionHandler: @escaping (NCFittingAreaEffectsViewController, NCDBInvType?) -> Void) {
 				self.completionHandler = completionHandler
-				super.init(kind: .adaptive, identifier: "NCFittingAreaEffectsViewController")
+				super.init(kind: .adaptivePush, identifier: "NCFittingAreaEffectsViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -452,7 +459,7 @@ enum Router {
 			
 			init(completionHandler: @escaping (NCFittingDamagePatternsViewController, NCFittingDamage) -> Void) {
 				self.completionHandler = completionHandler
-				super.init(kind: .adaptive, identifier: "NCFittingDamagePatternsViewController")
+				super.init(kind: .adaptivePush, identifier: "NCFittingDamagePatternsViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -467,7 +474,7 @@ enum Router {
 			init(type: NCDBInvType, completionHandler: @escaping (NCFittingVariationsViewController, NCDBInvType) -> Void) {
 				self.type = type
 				self.completionHandler = completionHandler
-				super.init(kind: .adaptive, identifier: "NCFittingVariationsViewController")
+				super.init(kind: .adaptivePush, identifier: "NCFittingVariationsViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -510,7 +517,7 @@ enum Router {
 			init(fleet: NCFittingFleet, completionHandler: @escaping (NCFittingFleetMemberPickerViewController) -> Void) {
 				self.fleet = fleet
 				self.completionHandler = completionHandler
-				super.init(kind: .adaptive, identifier: "NCFittingFleetMemberPickerViewController")
+				super.init(kind: .adaptivePush, identifier: "NCFittingFleetMemberPickerViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -527,7 +534,7 @@ enum Router {
 			init(modules: [NCFittingModule], completionHandler: @escaping (NCFittingTargetsViewController, NCFittingShip?) -> Void) {
 				self.modules = modules
 				self.completionHandler = completionHandler
-				super.init(kind: .adaptive, identifier: "NCFittingTargetsViewController")
+				super.init(kind: .adaptivePush, identifier: "NCFittingTargetsViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -544,7 +551,7 @@ enum Router {
 			init(pilot: NCFittingCharacter, completionHandler: @escaping (NCFittingCharactersViewController, URL) -> Void) {
 				self.pilot = pilot
 				self.completionHandler = completionHandler
-				super.init(kind: .adaptive, identifier: "NCFittingCharactersViewController")
+				super.init(kind: .adaptivePush, identifier: "NCFittingCharactersViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -557,7 +564,7 @@ enum Router {
 		class CharacterEditor: Route {
 			let character: NCFitCharacter
 			
-			init(character: NCFitCharacter, kind: RouteKind = .adaptive) {
+			init(character: NCFitCharacter, kind: RouteKind = .adaptivePush) {
 				self.character = character
 				super.init(kind: kind, identifier: "NCFittingCharacterEditorViewController")
 			}
@@ -687,5 +694,70 @@ enum Router {
 				destination.killmail = killmail
 			}
 		}
+		
+		class SearchContact: Route {
+			let delegate: NCContactsSearchResultViewControllerDelegate
+			
+			init(delegate: NCContactsSearchResultViewControllerDelegate) {
+				self.delegate = delegate
+				super.init(kind: .adaptiveModal, identifier: "NCZKillboardContactsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCZKillboardContactsViewController
+				destination.delegate = delegate
+			}
+		}
+		
+		class TypePicker: Route {
+			let completionHandler: (NCZKillboardTypePickerViewController, Any) -> Void
+			
+			init(completionHandler: @escaping (NCZKillboardTypePickerViewController, Any) -> Void) {
+				self.completionHandler = completionHandler
+				super.init(kind: .modal, identifier: "NCZKillboardTypePickerViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCZKillboardTypePickerViewController
+				destination.completionHandler = completionHandler
+			}
+			
+		}
+
+		class Groups: Route {
+			let category: NCDBInvCategory
+			
+			init(category: NCDBInvCategory) {
+				self.category = category
+				super.init(kind: .push, identifier: "NCZKillboardGroupsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCZKillboardGroupsViewController
+				destination.category = category
+			}
+		}
+		
+		class Types: Route {
+			let predicate: NSPredicate
+			let title: String?
+			
+			private init(predicate: NSPredicate, title: String?) {
+				self.predicate = predicate
+				self.title = title
+				super.init(kind: .push, identifier: "NCZKillboardTypesViewController")
+			}
+			
+			convenience init(group: NCDBInvGroup) {
+				self.init(predicate: NSPredicate(format: "group == %@ AND published == TRUE", group), title: group.groupName)
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCZKillboardTypesViewController
+				destination.predicate = predicate
+				destination.title = title
+			}
+		}
+
 	}
 }

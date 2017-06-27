@@ -129,6 +129,7 @@ enum NCDBCategoryID: Int {
 	case drone = 18
 	case subsystem = 32
 	case fighter = 87
+	case structure = 65
 	
 	case asteroid = 25
 	case ancientRelic = 34

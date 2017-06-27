@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCTypePickerViewController: UINavigationController {
+class NCTypePickerViewController: NCNavigationController {
 	private var isChanged: Bool = true
 	var category: NCDBDgmppItemCategory? {
 		didSet {

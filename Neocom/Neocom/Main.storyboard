@@ -133,6 +133,7 @@
                         <segue destination="Hgu-RE-HLL" kind="showDetail" identifier="NCWHViewController" id="Lxt-cx-0eh"/>
                         <segue destination="jVD-nP-XNi" kind="showDetail" identifier="NCIncursionsViewController" id="Nau-sd-tju"/>
                         <segue destination="NtP-4P-YWk" kind="showDetail" identifier="NCKillmailsPageViewController" id="K8e-wL-wwN"/>
+                        <segue destination="73j-Qb-bbS" kind="showDetail" identifier="NCZKillboardViewController" id="z3u-B5-LdG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mhh-2D-7TI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -8918,6 +8919,184 @@
                 </customObject>
             </objects>
             <point key="canvasLocation" x="-1909" y="-490"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="xac-HT-RiQ">
+            <objects>
+                <navigationController id="73j-Qb-bbS" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="yXM-J4-BLr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="2ry-of-S6F" kind="relationship" relationship="rootViewController" id="iA3-oN-uva"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ATw-aX-IkT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4163" y="-1353"/>
+        </scene>
+        <!--Killboard View Controller-->
+        <scene sceneID="yFm-oq-tIK">
+            <objects>
+                <tableViewController storyboardIdentifier="NCZKillboardViewController" modalPresentationStyle="overCurrentContext" id="2ry-of-S6F" customClass="NCZKillboardViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="DVv-I0-nmm" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="fdr-O5-8LU" id="wc3-4T-y6u"/>
+                            <outlet property="delegate" destination="fdr-O5-8LU" id="Yet-bC-5wf"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="gkn-Un-sbR"/>
+                    <connections>
+                        <outlet property="treeController" destination="fdr-O5-8LU" id="sMi-6T-ur4"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CLc-ZT-bZu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="fdr-O5-8LU" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="DVv-I0-nmm" id="N9R-AC-tKv"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="-3379" y="-1353"/>
+        </scene>
+        <!--Pilots-->
+        <scene sceneID="yj9-Z0-1KB">
+            <objects>
+                <tableViewController storyboardIdentifier="NCZKillboardContactsViewController" modalPresentationStyle="overCurrentContext" id="gEe-m0-b6X" customClass="NCZKillboardContactsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="y0J-S2-Fet" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="QPi-Ec-IrA">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="gEe-m0-b6X" id="TZp-Fn-X7w"/>
+                            </connections>
+                        </searchBar>
+                        <connections>
+                            <outlet property="dataSource" destination="KTv-xK-EZc" id="TZX-Hy-3m1"/>
+                            <outlet property="delegate" destination="KTv-xK-EZc" id="TnW-HS-u4p"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Pilots" id="U0N-pT-7vS"/>
+                    <connections>
+                        <outlet property="searchBar" destination="QPi-Ec-IrA" id="gcN-GH-d3I"/>
+                        <outlet property="treeController" destination="KTv-xK-EZc" id="rsy-fr-lEg"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wZA-jC-aDV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="KTv-xK-EZc" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="y0J-S2-Fet" id="u6Z-eR-pAH"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="-2618" y="-1353"/>
+        </scene>
+        <!--Categories-->
+        <scene sceneID="oA1-rz-52h">
+            <objects>
+                <tableViewController storyboardIdentifier="NCZKillboardCategoriesViewController" modalPresentationStyle="overCurrentContext" id="h63-Yi-Sn5" customClass="NCZKillboardCategoriesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="7vm-cV-zdb" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="dDU-4X-bDl" id="SS6-hJ-B3e"/>
+                            <outlet property="delegate" destination="dDU-4X-bDl" id="zVF-jM-vhZ"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Categories" id="qqe-Au-nmP"/>
+                    <connections>
+                        <outlet property="treeController" destination="dDU-4X-bDl" id="59G-m2-ph1"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fBu-mN-btQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="dDU-4X-bDl" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="7vm-cV-zdb" id="A7r-hP-B6Z"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="-964" y="-1353"/>
+        </scene>
+        <!--Groups-->
+        <scene sceneID="mtg-fQ-dcv">
+            <objects>
+                <tableViewController storyboardIdentifier="NCZKillboardGroupsViewController" modalPresentationStyle="overCurrentContext" id="6JA-Bv-egK" customClass="NCZKillboardGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="baA-mQ-Z88" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="H97-yK-dLJ" id="4Zg-LT-db2"/>
+                            <outlet property="delegate" destination="H97-yK-dLJ" id="xrJ-Jk-oMy"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Groups" id="kr5-i3-Vsb"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="treeController" destination="H97-yK-dLJ" id="vNN-kl-Na0"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Tdu-yZ-H3W" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="H97-yK-dLJ" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="baA-mQ-Z88" id="hMH-N5-c52"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="-231" y="-1353"/>
+        </scene>
+        <!--Killboard Type Picker View Controller-->
+        <scene sceneID="6bX-et-oJa">
+            <objects>
+                <navigationController storyboardIdentifier="NCZKillboardTypePickerViewController" id="bE8-f4-U6o" customClass="NCZKillboardTypePickerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="1sh-eT-ylv">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="h63-Yi-Sn5" kind="relationship" relationship="rootViewController" id="YMv-GQ-9kF"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="L6A-tk-mKs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1650" y="-1353"/>
+        </scene>
+        <!--Types-->
+        <scene sceneID="ZC7-b9-bXd">
+            <objects>
+                <tableViewController storyboardIdentifier="NCZKillboardTypesViewController" modalPresentationStyle="overCurrentContext" id="P9D-PH-O91" customClass="NCZKillboardTypesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="JIV-lO-Dts" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="5Xz-ol-8sp" id="m18-gc-9u4"/>
+                            <outlet property="delegate" destination="5Xz-ol-8sp" id="aCc-dg-2WB"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Types" id="4Ax-kT-JTq"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="treeController" destination="5Xz-ol-8sp" id="6wz-0V-UEo"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="amO-me-ELI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="5Xz-ol-8sp" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="JIV-lO-Dts" id="BhY-HW-Vbd"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="486" y="-1353"/>
         </scene>
     </scenes>
     <resources>

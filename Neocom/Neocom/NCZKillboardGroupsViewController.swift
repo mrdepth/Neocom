@@ -10,9 +10,25 @@ import UIKit
 import CoreData
 
 class NCZKillboardGroupRow: NCDatabaseGroupRow {
+	
+	var handler: NCActionHandler?
+	
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		
+		let button = UIButton(type: .system)
+		button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .subheadline)
+		button.setTitle(NSLocalizedString("Select", comment: "").uppercased(), for: .normal)
+		button.sizeToFit()
+		self.handler = NCActionHandler(button, for: .touchUpInside) { [weak self] _ in
+			guard let strongSelf = self else {return}
+			guard let controller = strongSelf.treeController else {return}
+			controller.delegate?.treeController?(controller, accessoryButtonTappedWithNode: strongSelf)
+		}
+		
+		cell.accessoryView = button
+
 	}
 }
 
@@ -60,6 +76,12 @@ class NCZKillboardGroupsViewController: UITableViewController, UISearchResultsUp
 		Router.KillReports.Types(group: row.object).perform(source: self, view: treeController.cell(for: node))
 	}
 	
+	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+		guard let row = node as? NCDatabaseGroupRow else {return}
+		guard let picker = (navigationController as? NCZKillboardTypePickerViewController) ?? presentingViewController?.navigationController as? NCZKillboardTypePickerViewController else {return}
+		picker.completionHandler(picker, row.object)
+
+	}
 	
 	//MARK: UISearchResultsUpdating
 	

@@ -212,8 +212,7 @@ class NCActionRow: TreeRow {
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCActionRow)?.hashValue == hashValue
-	}
-	
+	}	
 }
 
 

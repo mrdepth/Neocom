@@ -73,6 +73,8 @@ class NCKillmailsPageViewController: NCPageViewController {
 		self.dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
 		isEndReached = false
 		lastID = nil
+		kills = TreeNode()
+		losses = TreeNode()
 		fetch(from: nil, completionHandler: completionHandler)
 	}
 	
@@ -82,8 +84,8 @@ class NCKillmailsPageViewController: NCPageViewController {
 	private var isEndReached = false
 	private var lastID: Int64?
 	
-	private let kills = TreeNode()
-	private let losses = TreeNode()
+	private var kills = TreeNode()
+	private var losses = TreeNode()
 	
 	private func fetch(from: Int64?, completionHandler: (() -> Void)? = nil) {
 		guard !isEndReached, !isFetching else {return}

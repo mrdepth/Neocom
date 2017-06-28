@@ -78,6 +78,7 @@ extension Prototype {
 		static let `default` = Prototype(nib: UINib(nibName: "NCHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCHeaderTableViewCell")
 		static let action = Prototype(nib: UINib(nibName: "NCActionHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCActionHeaderTableViewCell")
 		static let image = Prototype(nib: UINib(nibName: "NCImageHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCImageHeaderTableViewCell")
+		static let empty = Prototype(nib: UINib(nibName: "NCEmptyHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCEmptyHeaderTableViewCell")
 	}
 	enum NCActionHeaderTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCActionHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCActionHeaderTableViewCell")

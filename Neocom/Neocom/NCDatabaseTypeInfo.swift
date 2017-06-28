@@ -673,6 +673,7 @@ struct NCDatabaseTypeInfo {
 	}
 	
 	static func npcInfo(type: NCDBInvType, completionHandler: @escaping ([TreeSection]) -> Void) {
+		
 		NCDatabase.sharedDatabase?.performBackgroundTask({ (managedObjectContext) in
 			var sections = [TreeSection]()
 			
@@ -883,10 +884,10 @@ struct NCDatabaseTypeInfo {
 						if let amount = attributes[NCDBAttributeID.entityShieldBoostAmount.rawValue]?.value,
 							let duration = attributes[NCDBAttributeID.entityShieldBoostDuration.rawValue]?.value,
 							duration > 0 && amount > 0 {
-							let chance = attributes[NCDBAttributeID.entityShieldBoostDelayChance.rawValue]?.value ??
-								attributes[NCDBAttributeID.entityShieldBoostDelayChanceSmall.rawValue]?.value ??
-								attributes[NCDBAttributeID.entityShieldBoostDelayChanceMedium.rawValue]?.value ??
-								attributes[NCDBAttributeID.entityShieldBoostDelayChanceLarge.rawValue]?.value ?? 0
+							let chance = (attributes[NCDBAttributeID.entityShieldBoostDelayChance.rawValue] ??
+								attributes[NCDBAttributeID.entityShieldBoostDelayChanceSmall.rawValue] ??
+								attributes[NCDBAttributeID.entityShieldBoostDelayChanceMedium.rawValue] ??
+								attributes[NCDBAttributeID.entityShieldBoostDelayChanceLarge.rawValue])?.value ?? 0
 							
 							let repair = amount / (duration * (1 + chance) / 1000.0)
 							
@@ -902,10 +903,10 @@ struct NCDatabaseTypeInfo {
 						if let amount = attributes[NCDBAttributeID.entityArmorRepairAmount.rawValue]?.value,
 							let duration = attributes[NCDBAttributeID.entityArmorRepairDuration.rawValue]?.value,
 							duration > 0 && amount > 0 {
-							let chance = attributes[NCDBAttributeID.entityArmorRepairDelayChance.rawValue]?.value ??
-								attributes[NCDBAttributeID.entityArmorRepairDelayChanceSmall.rawValue]?.value ??
-								attributes[NCDBAttributeID.entityArmorRepairDelayChanceMedium.rawValue]?.value ??
-								attributes[NCDBAttributeID.entityArmorRepairDelayChanceLarge.rawValue]?.value ?? 0
+							let chance = (attributes[NCDBAttributeID.entityArmorRepairDelayChance.rawValue] ??
+								attributes[NCDBAttributeID.entityArmorRepairDelayChanceSmall.rawValue] ??
+								attributes[NCDBAttributeID.entityArmorRepairDelayChanceMedium.rawValue] ??
+								attributes[NCDBAttributeID.entityArmorRepairDelayChanceLarge.rawValue])?.value ?? 0
 							
 							let repair = amount / (duration * (1 + chance) / 1000.0)
 							
@@ -1014,250 +1015,6 @@ struct NCDatabaseTypeInfo {
 				
 			}
 			
-			/*
-			let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
-			request.predicate = NSPredicate(format: "type == %@ AND attributeType.published == TRUE", type)
-			request.sortDescriptors = [NSSortDescriptor(key: "attributeType.attributeCategory.categoryID", ascending: true), NSSortDescriptor(key: "attributeType.attributeID", ascending: true)]
-			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: "attributeType.attributeCategory.categoryID", cacheName: nil)
-			guard let _ = try? results.performFetch() else {return}
-			guard results.sections != nil else {return}
-			
-			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
-			let attributes = type.allAttributes
-			
-			for section in results.sections! {
-				guard let attributeCategory = (section.objects?.first as? NCDBDgmTypeAttribute)?.attributeType?.attributeCategory else {continue}
-				
-				let sectionTitle: String
-				if Int(attributeCategory.categoryID) == NCDBAttributeCategoryID.null.rawValue {
-					sectionTitle = NSLocalizedString("Other", comment: "")
-				}
-				else {
-					sectionTitle = attributeCategory.categoryName ?? NSLocalizedString("Other", comment: "")
-				}
-				var rows = [TreeNode]()
-				
-				
-				let category = NCDBAttributeCategoryID(rawValue: Int(attributeCategory.categoryID))
-				switch category {
-				case .turrets?:
-					if let speed = attributes[NCDBAttributeID.speed.rawValue] {
-						let damageMultiplier = attributes[NCDBAttributeID.damageMultiplier.rawValue]?.value ?? 1
-						let maxRange = attributes[NCDBAttributeID.maxRange.rawValue]?.value ?? 0
-						let falloff = attributes[NCDBAttributeID.falloff.rawValue]?.value ?? 0
-						let trackingSpeed = attributes[NCDBAttributeID.trackingSpeed.rawValue]?.value ?? 0
-						let duration = speed.value / 1000
-						
-						let em = attributes[NCDBAttributeID.emDamage.rawValue]?.value ?? 0
-						let explosive = attributes[NCDBAttributeID.explosiveDamage.rawValue]?.value ?? 0
-						let kinetic = attributes[NCDBAttributeID.kineticDamage.rawValue]?.value ?? 0
-						let thermal = attributes[NCDBAttributeID.thermalDamage.rawValue]?.value ?? 0
-						let total = (em + explosive + kinetic + thermal) * damageMultiplier
-						
-						let interval = duration > 0 ? duration : 1
-						let dps = total / interval
-						
-						let damageRow = NCDatabaseTypeDamageRow()
-						damageRow.em = em * damageMultiplier
-						damageRow.explosive = explosive * damageMultiplier
-						damageRow.kinetic = kinetic * damageMultiplier
-						damageRow.thermal = thermal * damageMultiplier
-						rows.append(damageRow)
-						
-						rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                                  nodeIdentifier: "TurretDamage",
-						                                  image: #imageLiteral(resourceName: "turrets"),
-						                                  title: NSLocalizedString("Damage per Second", comment: "").uppercased(),
-						                                  subtitle: NCUnitFormatter.localizedString(from: dps, unit: .none, style: .full)))
-						
-						rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                                  nodeIdentifier: "TurretRoF",
-						                                  image: #imageLiteral(resourceName: "rateOfFire"),
-						                                  title: NSLocalizedString("Rate of Fire", comment: "").uppercased(),
-						                                  subtitle: NCTimeIntervalFormatter.localizedString(from: TimeInterval(duration), precision: .seconds)))
-						
-						rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                                  nodeIdentifier: "TurretOptimal",
-						                                  image: #imageLiteral(resourceName: "targetingRange"),
-						                                  title: NSLocalizedString("Optimal Range", comment: "").uppercased(),
-						                                  subtitle: NCUnitFormatter.localizedString(from: maxRange, unit: .meter, style: .full)))
-						
-						rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                                  nodeIdentifier: "TurretFalloff",
-						                                  image: #imageLiteral(resourceName: "falloff"),
-						                                  title: NSLocalizedString("Falloff", comment: "").uppercased(),
-						                                  subtitle: NCUnitFormatter.localizedString(from: falloff, unit: .meter, style: .full)))
-						
-						
-					}
-				case .missile?:
-					
-					if let attribute = attributes[NCDBAttributeID.entityMissileTypeID.rawValue],
-						let missile = invTypes[Int(attribute.value)] {
-						rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                                  nodeIdentifier: attribute.attributeType?.attributeName,
-						                                  image: missile.icon?.image?.image,
-						                                  title: NSLocalizedString("Missile", comment: "").uppercased(),
-						                                  subtitle: missile.typeName,
-						                                  accessoryType: .disclosureIndicator,
-						                                  route: Router.Database.TypeInfo(missile.objectID),
-						                                  object: attribute))
-						
-						let duration = (attributes[NCDBAttributeID.missileLaunchDuration.rawValue]?.value ?? 1000) / 1000
-						let damageMultiplier = attributes[NCDBAttributeID.missileDamageMultiplier.rawValue]?.value ?? 1
-						let velocityMultiplier = attributes[NCDBAttributeID.missileEntityVelocityMultiplier.rawValue]?.value ?? 1
-						let flightTimeMultiplier = attributes[NCDBAttributeID.missileEntityFlightTimeMultiplier.rawValue]?.value ?? 1
-						
-						let missileAttributes = missile.allAttributes
-						
-						let em = missileAttributes[NCDBAttributeID.emDamage.rawValue]?.value ?? 0
-						let explosive = missileAttributes[NCDBAttributeID.explosiveDamage.rawValue]?.value ?? 0
-						let kinetic = missileAttributes[NCDBAttributeID.kineticDamage.rawValue]?.value ?? 0
-						let thermal = missileAttributes[NCDBAttributeID.thermalDamage.rawValue]?.value ?? 0
-						let total = (em + explosive + kinetic + thermal) * damageMultiplier
-						
-						let damageRow = NCDatabaseTypeDamageRow()
-						damageRow.em = em * damageMultiplier
-						damageRow.explosive = explosive * damageMultiplier
-						damageRow.kinetic = kinetic * damageMultiplier
-						damageRow.thermal = thermal * damageMultiplier
-						rows.append(damageRow)
-						
-						
-						let velocity = (missileAttributes[NCDBAttributeID.maxVelocity.rawValue]?.value ?? 0) * velocityMultiplier
-						let flightTime = (missileAttributes[NCDBAttributeID.explosionDelay.rawValue]?.value ?? 1) * flightTimeMultiplier / 1000
-						let agility = missileAttributes[NCDBAttributeID.agility.rawValue]?.value ?? 0
-						let mass = missile.mass
-						
-						let accelTime = min(flightTime, mass * agility / 1000000.0)
-						let duringAcceleration = velocity / 2 * accelTime
-						let fullSpeed = velocity * (flightTime - accelTime)
-						let optimal = duringAcceleration + fullSpeed;
-						
-						let interval = duration > 0 ? duration : 1
-						let dps = total / interval
-						
-						rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                                  nodeIdentifier: "MissileDamage",
-						                                  image: #imageLiteral(resourceName: "launchers"),
-						                                  title: NSLocalizedString("Damage per Second", comment: "").uppercased(),
-						                                  subtitle: NCUnitFormatter.localizedString(from: dps, unit: .none, style: .full)))
-						
-						rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                                  nodeIdentifier: "MissileRoF",
-						                                  image: #imageLiteral(resourceName: "rateOfFire"),
-						                                  title: NSLocalizedString("Rate of Fire", comment: "").uppercased(),
-						                                  subtitle: NCTimeIntervalFormatter.localizedString(from: TimeInterval(duration), precision: .seconds)))
-						
-						rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                                  nodeIdentifier: "MissileOptimal",
-						                                  image: #imageLiteral(resourceName: "targetingRange"),
-						                                  title: NSLocalizedString("Optimal Range", comment: "").uppercased(),
-						                                  subtitle: NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full)))
-						
-						
-						
-						
-					}
-				default:
-					var resistanceRow: NCDatabaseTypeResistanceRow?
-					
-					func resistance() -> NCDatabaseTypeResistanceRow? {
-						if resistanceRow == nil {
-							resistanceRow = NCDatabaseTypeResistanceRow()
-						}
-						return resistanceRow
-					}
-					
-					for attribute in (section.objects as? [NCDBDgmTypeAttribute]) ?? [] {
-						switch NCDBAttributeID(rawValue: Int(attribute.attributeType!.attributeID)) ?? NCDBAttributeID.none {
-						case .emDamageResonance, .armorEmDamageResonance, .shieldEmDamageResonance,
-						     .hullEmDamageResonance, .passiveArmorEmDamageResonance, .passiveShieldEmDamageResonance:
-							guard let row = resistance() else {continue}
-							row.em = max(row.em, 1 - attribute.value)
-						case .thermalDamageResonance, .armorThermalDamageResonance, .shieldThermalDamageResonance,
-						     .hullThermalDamageResonance, .passiveArmorThermalDamageResonance, .passiveShieldThermalDamageResonance:
-							guard let row = resistance() else {continue}
-							row.thermal = max(row.thermal, 1 - attribute.value)
-						case .kineticDamageResonance, .armorKineticDamageResonance, .shieldKineticDamageResonance,
-						     .hullKineticDamageResonance, .passiveArmorKineticDamageResonance, .passiveShieldKineticDamageResonance:
-							guard let row = resistance() else {continue}
-							row.kinetic = max(row.kinetic, 1 - attribute.value)
-						case .explosiveDamageResonance, .armorExplosiveDamageResonance, .shieldExplosiveDamageResonance,
-						     .hullExplosiveDamageResonance, .passiveArmorExplosiveDamageResonance, .passiveShieldExplosiveDamageResonance:
-							guard let row = resistance() else {continue}
-							row.explosive = max(row.explosive, 1 - attribute.value)
-						default:
-							guard let row = NCDatabaseTypeInfoRow(attribute: attribute) else {continue}
-							rows.append(row)
-						}
-					}
-					
-					if let resistanceRow = resistanceRow {
-						rows.append(resistanceRow)
-					}
-					
-					if category == .shield {
-						if let capacity = attributes[NCDBAttributeID.shieldCapacity.rawValue]?.value,
-							let rechargeRate = attributes[NCDBAttributeID.shieldRechargeRate.rawValue]?.value,
-							rechargeRate > 0 && capacity > 0 {
-							let passive = 10.0 / (rechargeRate / 1000.0) * 0.5 * (1 - 0.5) * capacity
-							
-							rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-							                                  nodeIdentifier: "ShieldRecharge",
-							                                  image: #imageLiteral(resourceName: "shieldRecharge"),
-							                                  title: NSLocalizedString("Passive Recharge Rate", comment: "").uppercased(),
-							                                  subtitle: NCUnitFormatter.localizedString(from: passive, unit: .hpPerSecond, style: .full)))
-							
-						}
-						
-						if let amount = attributes[NCDBAttributeID.entityShieldBoostAmount.rawValue]?.value,
-							let duration = attributes[NCDBAttributeID.entityShieldBoostDuration.rawValue]?.value,
-							duration > 0 && amount > 0 {
-							let chance = attributes[NCDBAttributeID.entityShieldBoostDelayChance.rawValue]?.value ??
-								attributes[NCDBAttributeID.entityShieldBoostDelayChanceSmall.rawValue]?.value ??
-								attributes[NCDBAttributeID.entityShieldBoostDelayChanceMedium.rawValue]?.value ??
-								attributes[NCDBAttributeID.entityShieldBoostDelayChanceLarge.rawValue]?.value ?? 0
-							
-							let repair = amount / (duration * (1 + chance) / 1000.0)
-							
-							rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-							                                  nodeIdentifier: "ShieldBooster",
-							                                  image: #imageLiteral(resourceName: "shieldBooster"),
-							                                  title: NSLocalizedString("Repair Rate", comment: "").uppercased(),
-							                                  subtitle: NCUnitFormatter.localizedString(from: repair, unit: .hpPerSecond, style: .full)))
-							
-						}
-					}
-					else if category == .armor {
-						if let amount = attributes[NCDBAttributeID.entityArmorRepairAmount.rawValue]?.value,
-							let duration = attributes[NCDBAttributeID.entityArmorRepairDuration.rawValue]?.value,
-							duration > 0 && amount > 0 {
-							let chance = attributes[NCDBAttributeID.entityArmorRepairDelayChance.rawValue]?.value ??
-								attributes[NCDBAttributeID.entityArmorRepairDelayChanceSmall.rawValue]?.value ??
-								attributes[NCDBAttributeID.entityArmorRepairDelayChanceMedium.rawValue]?.value ??
-								attributes[NCDBAttributeID.entityArmorRepairDelayChanceLarge.rawValue]?.value ?? 0
-							
-							let repair = amount / (duration * (1 + chance) / 1000.0)
-							
-							rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-							                                  nodeIdentifier: "ArmorRepair",
-							                                  image: #imageLiteral(resourceName: "armorRepairer"),
-							                                  title: NSLocalizedString("Repair Rate", comment: "").uppercased(),
-							                                  subtitle: NCUnitFormatter.localizedString(from: repair, unit: .hpPerSecond, style: .full)))
-							
-						}
-					}
-					
-				}
-				
-				
-				
-				if rows.count > 0 {
-					sections.append(DefaultTreeSection(nodeIdentifier: String(attributeCategory.categoryID), title: sectionTitle.uppercased(), children: rows))
-				}
-			}
-*/
 		})
 	}
 	

@@ -20,7 +20,7 @@ class NCKillmailsViewController: UITableViewController, TreeControllerDelegate {
 		refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
-		                    Prototype.NCDefaultTableViewCell.default
+		                    Prototype.NCKillmailTableViewCell.default
 		                    ])
 		
 		tableView.estimatedRowHeight = tableView.rowHeight

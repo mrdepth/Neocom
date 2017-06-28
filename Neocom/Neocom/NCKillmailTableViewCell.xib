@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="NCKillmailTableViewCell" rowHeight="44" id="V6Y-Fe-BY8" customClass="NCKillmailTableViewCell" customModule="Neocom" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="V6Y-Fe-BY8" id="MBk-K8-rOy">
+                <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Ssh-TM-gPx">
+                        <rect key="frame" x="15" y="4" width="272" height="35.5"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="msV-Y8-xnN">
+                                <rect key="frame" x="0.0" y="2" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="D21-ee-eZY"/>
+                                    <constraint firstAttribute="width" constant="32" id="RnR-HA-7Iu"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tv8-Tu-z6c">
+                                <rect key="frame" x="40" y="0.0" width="232" height="35.5"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EYg-7Z-Ojj">
+                                        <rect key="frame" x="0.0" y="0.0" width="232" height="35.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jlP-SB-673">
+                                                <rect key="frame" x="0.0" y="0.0" width="37.5" height="35.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAf-Ng-Pqu">
+                                                <rect key="frame" x="199" y="0.0" width="33" height="35.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="jlP-SB-673" firstAttribute="top" secondItem="EYg-7Z-Ojj" secondAttribute="top" id="6Ue-dm-uUE"/>
+                                            <constraint firstAttribute="trailing" secondItem="oAf-Ng-Pqu" secondAttribute="trailing" id="Q1S-28-8Qr"/>
+                                            <constraint firstAttribute="bottom" secondItem="jlP-SB-673" secondAttribute="bottom" id="SWH-I1-g1a"/>
+                                            <constraint firstItem="oAf-Ng-Pqu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jlP-SB-673" secondAttribute="trailing" constant="15" id="bdi-zY-0ZE"/>
+                                            <constraint firstAttribute="bottom" secondItem="oAf-Ng-Pqu" secondAttribute="bottom" id="jBO-2u-L0X"/>
+                                            <constraint firstItem="jlP-SB-673" firstAttribute="leading" secondItem="EYg-7Z-Ojj" secondAttribute="leading" id="rEP-bT-iUW"/>
+                                            <constraint firstItem="oAf-Ng-Pqu" firstAttribute="top" secondItem="EYg-7Z-Ojj" secondAttribute="top" id="wfG-xM-bal"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J8L-Uc-Gos">
+                                        <rect key="frame" x="0.0" y="35.5" width="232" height="0.0"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Ssh-TM-gPx" secondAttribute="bottom" constant="4" id="1p3-ti-K7d"/>
+                    <constraint firstItem="Ssh-TM-gPx" firstAttribute="top" secondItem="MBk-K8-rOy" secondAttribute="top" constant="4" id="C3L-TG-ZFZ"/>
+                    <constraint firstAttribute="trailing" secondItem="Ssh-TM-gPx" secondAttribute="trailing" id="GnR-tO-xgY"/>
+                    <constraint firstItem="Ssh-TM-gPx" firstAttribute="leading" secondItem="MBk-K8-rOy" secondAttribute="leading" constant="15" id="jlM-Kz-4Aj"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="dateLabel" destination="oAf-Ng-Pqu" id="kEh-UK-Q1l"/>
+                <outlet property="iconView" destination="msV-Y8-xnN" id="qvd-dt-86L"/>
+                <outlet property="subtitleLabel" destination="J8L-Uc-Gos" id="Ilo-Ky-gPI"/>
+                <outlet property="titleLabel" destination="jlP-SB-673" id="rrk-ji-aIR"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

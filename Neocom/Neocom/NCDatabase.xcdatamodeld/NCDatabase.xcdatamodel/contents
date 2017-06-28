@@ -291,6 +291,7 @@
     <entity name="MapConstellation" representedClassName="NCDBMapConstellation" syncable="YES" codeGenerationType="class">
         <attribute name="constellationID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="constellationName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="constellation" inverseEntity="MapDenormalize" syncable="YES"/>
         <relationship name="faction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="constellations" inverseEntity="ChrFaction" syncable="YES"/>
         <relationship name="region" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapRegion" inverseName="constellations" inverseEntity="MapRegion" syncable="YES"/>
@@ -308,6 +309,8 @@
     <entity name="MapRegion" representedClassName="NCDBMapRegion" syncable="YES" codeGenerationType="class">
         <attribute name="regionID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="regionName" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="securityClass" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="constellations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="region" inverseEntity="MapConstellation" syncable="YES"/>
         <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="region" inverseEntity="MapDenormalize" syncable="YES"/>
         <relationship name="faction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="regions" inverseEntity="ChrFaction" syncable="YES"/>
@@ -415,9 +418,9 @@
         <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="105"/>
         <element name="InvType" positionX="-396" positionY="85" width="128" height="585"/>
         <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="90"/>
-        <element name="MapConstellation" positionX="81" positionY="225" width="128" height="30"/>
+        <element name="MapConstellation" positionX="81" positionY="225" width="128" height="150"/>
         <element name="MapDenormalize" positionX="90" positionY="234" width="128" height="150"/>
-        <element name="MapRegion" positionX="99" positionY="243" width="128" height="120"/>
+        <element name="MapRegion" positionX="99" positionY="243" width="128" height="150"/>
         <element name="MapSolarSystem" positionX="108" positionY="252" width="128" height="30"/>
         <element name="NpcGroup" positionX="117" positionY="261" width="128" height="120"/>
         <element name="RamActivity" positionX="63" positionY="207" width="128" height="135"/>

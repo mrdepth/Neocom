@@ -759,5 +759,48 @@ enum Router {
 			}
 		}
 
+		class RegionPicker: Route {
+			let completionHandler: (NCZKillboardRegionPickerViewController, Any) -> Void
+			
+			init(completionHandler: @escaping (NCZKillboardRegionPickerViewController, Any) -> Void) {
+				self.completionHandler = completionHandler
+				super.init(kind: .modal, identifier: "NCZKillboardRegionPickerViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCZKillboardRegionPickerViewController
+				destination.completionHandler = completionHandler
+			}
+			
+		}
+
+		class SolarSystems: Route {
+			let region: NCDBMapRegion
+			
+			init(region: NCDBMapRegion) {
+				self.region = region
+				super.init(kind: .push, identifier: "NCZKillboardSolarSystemsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCZKillboardSolarSystemsViewController
+				destination.region = region
+			}
+		}
+		
+		class ZKillboardReports: Route {
+			let filter: [ZKillboard.Filter]
+			
+			init(filter: [ZKillboard.Filter]) {
+				self.filter = filter
+				super.init(kind: .push, identifier: "NCZKillboardKillmailsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCZKillboardKillmailsViewController
+				destination.filter = filter
+			}
+		}
+
 	}
 }

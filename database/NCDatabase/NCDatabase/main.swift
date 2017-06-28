@@ -36,6 +36,9 @@ enum NCDBDgmppItemCategoryID: Int32 {
 	case structureRig
 }
 
+enum NCDBRegionID: Int {
+	case whSpace = 11000000
+}
 
 ValueTransformer.setValueTransformer(NCDBImageValueTransformer(), forName: NSValueTransformerName("NCDBImageValueTransformer"))
 
@@ -741,6 +744,38 @@ try! database.exec("SELECT * FROM mapSolarSystems") { row in
 	solarSystem.constellation = mapConstellations[row["constellationID"] as! NSNumber]
 	solarSystem.faction = row["factionID"] != nil ? chrFactions[row["factionID"] as! NSNumber] : nil
 	mapSolarSystems[solarSystem.solarSystemID as NSNumber] = solarSystem
+}
+
+mapConstellations.values.forEach {
+	guard let array = ($0.solarSystems?.allObjects as? [NCDBMapSolarSystem]), !array.isEmpty else {
+		$0.security = 0
+		return
+	}
+	$0.security = array.map {$0.security}.reduce(0, +) / Float(array.count)
+	
+}
+
+mapRegions.values.forEach {
+	if let array = ($0.constellations?.allObjects as? [NCDBMapConstellation])?.map ({return $0.solarSystems?.allObjects as? [NCDBMapSolarSystem] ?? []}).joined(), !array.isEmpty  {
+		$0.security = array.map {$0.security}.reduce(0, +) / Float(array.count)
+	}
+	else {
+		$0.security = 0
+	}
+	
+	if $0.regionID >= Int32(NCDBRegionID.whSpace.rawValue) {
+		$0.securityClass = -1
+	}
+	else {
+		switch $0.security {
+		case 0.5...1:
+			$0.securityClass = 1
+		case -1...0:
+			$0.securityClass = 0
+		default:
+			$0.securityClass = 0.5
+		}
+	}
 }
 
 // MARK: mapDenormalize

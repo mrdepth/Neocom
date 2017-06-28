@@ -91,12 +91,12 @@ class NCFittingFleet {
 
     }
 	
-	init(killmail: ESI.Killmails.Killmail, engine: NCFittingEngine) {
+	init(killmail: NCKillmail, engine: NCFittingEngine) {
 		self.engine = engine
 		
 		let gang = engine.gang
 		if let pilot = gang.addPilot() {
-			let ship = NCFittingShip(typeID: killmail.victim.shipTypeID)
+			let ship = NCFittingShip(typeID: killmail.getVictim().shipTypeID)
 			pilot.ship = ship
 			pilots.append((pilot, nil))
 			active = pilot
@@ -104,7 +104,7 @@ class NCFittingFleet {
 			var cargo = Set<Int>()
 			var requiresAmmo = [NCFittingModule]()
 			
-			killmail.victim.items?.forEach {
+			killmail.getItems()?.forEach {
 				let qty = Int(($0.quantityDropped ?? 0) + ($0.quantityDestroyed ?? 0))
 				switch ESI.Assets.Asset.Flag($0.flag) {
 				case .droneBay?, .fighterBay?, .fighterTube0?, .fighterTube1?, .fighterTube2?, .fighterTube3?, .fighterTube4?:

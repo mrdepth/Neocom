@@ -682,9 +682,9 @@ enum Router {
 	enum KillReports {
 		
 		class Info: Route {
-			let killmail: ESI.Killmails.Killmail
+			let killmail: NCKillmail
 			
-			init(killmail: ESI.Killmails.Killmail) {
+			init(killmail: NCKillmail) {
 				self.killmail = killmail
 				super.init(kind: .push, identifier: "NCKillmailInfoViewController")
 			}
@@ -799,6 +799,20 @@ enum Router {
 			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCZKillboardKillmailsViewController
 				destination.filter = filter
+			}
+		}
+
+		class ContactReports: Route {
+			let contact: NCContact
+			
+			init(contact: NCContact) {
+				self.contact = contact
+				super.init(kind: .push, identifier: "NCZKillboardContactViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCZKillboardContactViewController
+				destination.contact = contact
 			}
 		}
 

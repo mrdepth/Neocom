@@ -48,7 +48,7 @@ class NCKillmailRow: TreeRow {
 		self.zKillmail = killmail
 		self.characterID = nil
 		self.dataManager = dataManager
-		super.init(prototype: Prototype.NCKillmailTableViewCell.default)//, route: Router.KillReports.Info(killmail: killmail))
+		super.init(prototype: Prototype.NCKillmailTableViewCell.default, route: Router.KillReports.Info(killmail: killmail))
 	}
 
 	var contactName: String?

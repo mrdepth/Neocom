@@ -51,10 +51,6 @@ class NCKillmailsPageViewController: NCPageViewController {
 		fetch(from: nil)
 	}
 	
-	@IBAction func onCompose(_ sender: Any) {
-		Router.Mail.NewMessage().perform(source: self)
-	}
-	
 	private(set) var isFetching = false
 	
 	func fetchIfNeeded() {

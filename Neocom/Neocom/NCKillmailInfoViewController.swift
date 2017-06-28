@@ -14,25 +14,15 @@ class NCKillmailItemRow: TreeRow {
 	let quantityDropped: Int64
 	let quantityDestroyed: Int64
 	let flag: ESI.Assets.Asset.Flag?
-	let itemID: Int
 	
-	@nonobjc init(item: ESI.Killmails.Killmail.Victim.Item) {
+	init(item: NCItem) {
 		typeID = item.itemTypeID
 		quantityDropped = item.quantityDropped ?? 0
 		quantityDestroyed = item.quantityDestroyed ?? 0
 		flag = ESI.Assets.Asset.Flag(item.flag)
-		itemID = item.hashValue
-		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: Router.Database.TypeInfo(item.itemTypeID))
-		children = item.items?.map{NCKillmailItemRow(item: $0)} ?? []
-	}
 
-	@nonobjc init(item: ESI.Killmails.Killmail.Victim.Item.Item) {
-		typeID = item.itemTypeID
-		quantityDropped = item.quantityDropped ?? 0
-		quantityDestroyed = item.quantityDestroyed ?? 0
-		flag = ESI.Assets.Asset.Flag(item.flag)
-		itemID = item.hashValue
 		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: Router.Database.TypeInfo(item.itemTypeID))
+		children = item.getItems()?.map{NCKillmailItemRow(item: $0)} ?? []
 	}
 	
 	lazy var type: NCDBInvType? = {
@@ -57,14 +47,6 @@ class NCKillmailItemRow: TreeRow {
 		default:
 			cell.subtitleLabel?.text = " "
 		}
-	}
-	
-	override var hashValue: Int {
-		return itemID
-	}
-	
-	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCKillmailItemRow)?.hashValue == hashValue
 	}
 }
 
@@ -104,7 +86,11 @@ class NCKillmailVictimRow: NCContactRow {
 		self.character = character
 		self.corporation = corporation
 		self.alliance = alliance
-		super.init(prototype: Prototype.NCContactTableViewCell.default, contact: character ?? corporation ?? alliance, dataManager: dataManager)
+		let contact = character ?? corporation ?? alliance
+		super.init(prototype: Prototype.NCContactTableViewCell.default, contact: contact, dataManager: dataManager)
+		if let contact = contact {
+			route = Router.KillReports.ContactReports(contact: contact)
+		}
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -120,17 +106,17 @@ class NCKillmailVictimRow: NCContactRow {
 		default:
 			cell.subtitleLabel = nil
 		}
-		cell.accessoryType = .none
+		cell.accessoryType = .disclosureIndicator
 	}
 }
 
 class NCKillmailAttackerRow: NCContactRow {
-	let attacker: ESI.Killmails.Killmail.Attacker
+	let attacker: NCAttacker
 	let character: NCContact?
 	let corporation: NCContact?
 	let alliance: NCContact?
 	
-	init(attacker: ESI.Killmails.Killmail.Attacker, character: NCContact?, corporation: NCContact?, alliance: NCContact?, dataManager: NCDataManager) {
+	init(attacker: NCAttacker, character: NCContact?, corporation: NCContact?, alliance: NCContact?, dataManager: NCDataManager) {
 		self.attacker = attacker
 		self.character = character
 		self.corporation = corporation
@@ -138,8 +124,8 @@ class NCKillmailAttackerRow: NCContactRow {
 		let contact = character ?? corporation ?? alliance
 		super.init(prototype: contact == nil ? Prototype.NCDefaultTableViewCell.default : Prototype.NCContactTableViewCell.default, contact: contact, dataManager: dataManager)
 		
-		if let shipTypeID = attacker.shipTypeID {
-			route = Router.Database.TypeInfo(shipTypeID)
+		if let contact = contact {
+			route = Router.KillReports.ContactReports(contact: contact)
 		}
 	}
 	
@@ -208,7 +194,7 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 	
 	@IBOutlet var treeController: TreeController!
 	
-	var killmail: ESI.Killmails.Killmail?
+	var killmail: NCKillmail?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -233,19 +219,15 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 			NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 
-//				func shipTitle(_ type: NCDBInvType?) -> NSAttributedString {
-//					guard let typeName = type?.typeName, let groupName = type?.group?.groupName else {return NSLocalizedString("Unknown Type", comment: "") * [NSForegroundColorAttributeName: UIColor.white]}
-//					return typeName * [NSForegroundColorAttributeName: UIColor.white] + " (\(groupName))" * [NSForegroundColorAttributeName: UIColor.lightText]
-//				}
-
 				var sections = [TreeNode]()
 				
 				var rows = [TreeNode]()
-				let ship = invTypes[killmail.victim.shipTypeID]
+				let victim = killmail.getVictim()
+				let ship = invTypes[victim.shipTypeID]
 				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.default,
 				                           nodeIdentifier: "VictimShip", image: ship?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image,
 				                           title: ship?.typeName ?? NSLocalizedString("Unknown Type", comment: ""), //shipTitle(ship),
-				                           subtitle: NSLocalizedString("Damage taken:", comment: "") + " " + NCUnitFormatter.localizedString(from: killmail.victim.damageTaken, unit: .none, style: .full),
+				                           subtitle: NSLocalizedString("Damage taken:", comment: "") + " " + NCUnitFormatter.localizedString(from: victim.damageTaken, unit: .none, style: .full),
 				                           accessoryType: ship != nil ? .disclosureIndicator : .none,
 				                           route: ship != nil ? Router.Database.TypeInfo(ship!.objectID) : nil))
 
@@ -260,7 +242,7 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 				                           attributedTitle: location ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: "")),
 				                           subtitle: DateFormatter.localizedString(from: killmail.killmailTime, dateStyle: .medium, timeStyle: .medium)))
 				
-				if let items = killmail.victim.items?.map ({return NCKillmailItemRow(item: $0)}) {
+				if let items = killmail.getItems()?.map ({return NCKillmailItemRow(item: $0)}) {
 					var hi = [NCKillmailItemRow]()
 					var med = [NCKillmailItemRow]()
 					var low = [NCKillmailItemRow]()
@@ -322,8 +304,10 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 				
 				var ids = Set<Int64>()
 				
-				ids.formUnion([killmail.victim.characterID, killmail.victim.corporationID, killmail.victim.allianceID].flatMap{$0}.map{Int64($0)})
-				ids.formUnion(killmail.attackers.map { [$0.characterID, $0.corporationID, $0.allianceID].flatMap{$0}.map{Int64($0)}}.joined())
+				ids.formUnion([victim.characterID, victim.corporationID, victim.allianceID].flatMap{$0}.map{Int64($0)})
+				ids.formUnion(killmail.getAttackers().map { [$0.characterID, $0.corporationID, $0.allianceID].flatMap{$0}.map{Int64($0)}}.joined())
+				
+				ids.remove(0)
 				
 				let dispatchGroup = DispatchGroup()
 				
@@ -341,10 +325,10 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 				}
 				
 				var typeIDs = [Int: Int64]()
-				typeIDs[killmail.victim.shipTypeID] = (typeIDs[killmail.victim.shipTypeID] ?? 0) + 1
-				killmail.victim.items?.forEach {
+				typeIDs[victim.shipTypeID] = (typeIDs[victim.shipTypeID] ?? 0) + 1
+				killmail.getItems()?.forEach {
 					typeIDs[$0.itemTypeID] = (typeIDs[$0.itemTypeID] ?? 0) + ($0.quantityDropped ?? 0) + ($0.quantityDestroyed ?? 0)
-					$0.items?.forEach {
+					$0.getItems()?.forEach {
 						typeIDs[$0.itemTypeID] = (typeIDs[$0.itemTypeID] ?? 0) + ($0.quantityDropped ?? 0) + ($0.quantityDestroyed ?? 0)
 					}
 				}
@@ -365,15 +349,15 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 				}
 				
 				dispatchGroup.notify(queue: .main) {
-					victimSection.children.insert(NCKillmailVictimRow(character: contacts?[Int64(killmail.victim.characterID ?? 0)],
-					                                                  corporation: contacts?[Int64(killmail.victim.corporationID ?? 0)],
-					                                                  alliance: contacts?[Int64(killmail.victim.allianceID ?? 0)], dataManager: dataManager), at: 0)
+					victimSection.children.insert(NCKillmailVictimRow(character: contacts?[Int64(victim.characterID ?? 0)],
+					                                                  corporation: contacts?[Int64(victim.corporationID ?? 0)],
+					                                                  alliance: contacts?[Int64(victim.allianceID ?? 0)], dataManager: dataManager), at: 0)
 					if cost > 0 {
 						victimSection.title = victimSection.title! + " (\(NCUnitFormatter.localizedString(from: cost, unit: .isk, style: .full)))"
 					}
 					
 					
-					let attackers = killmail.attackers.sorted { (a, b) -> Bool in
+					let attackers = killmail.getAttackers().sorted { (a, b) -> Bool in
 						if a.finalBlow && !b.finalBlow {
 							return true
 						}

@@ -80,7 +80,7 @@ class NCProgressHandler: NSObject {
 				progressView.leadingAnchor.constraint(equalTo: container.leadingAnchor).isActive = true
 				progressView.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 1.0).isActive = true
 				
-				if let navigationBar = viewController?.navigationController?.navigationController?.navigationBar ?? viewController?.navigationController?.navigationBar {
+				if let navigationBar = viewController?.navigationController?.navigationController?.navigationBar ?? viewController?.navigationController?.navigationBar ?? viewController?.parent?.navigationController?.navigationBar {
 					progressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor).isActive = true
 					navigationBar.superview?.layoutIfNeeded()
 				}

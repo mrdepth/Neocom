@@ -426,3 +426,103 @@ extension ESI.Assets.Asset.Flag {
 		}
 	}
 }
+
+protocol NCAttacker: class {
+	
+	var characterID: Int? {get}
+	var corporationID: Int? {get}
+	var allianceID: Int? {get}
+	var factionID: Int? {get}
+	var securityStatus: Float {get}
+	var damageDone: Int {get}
+	var finalBlow: Bool {get}
+	var shipTypeID: Int? {get}
+	var weaponTypeID: Int? {get}
+}
+
+protocol NCVictim: class {
+	var characterID: Int? {get}
+	var corporationID: Int? {get}
+	var allianceID: Int? {get}
+	var factionID: Int? {get}
+	var damageTaken: Int {get}
+	var shipTypeID: Int {get}
+}
+
+protocol NCItem: class {
+	var flag: Int {get}
+	var itemTypeID: Int {get}
+	var quantityDestroyed: Int64? {get}
+	var quantityDropped: Int64? {get}
+	var singleton: Int {get}
+	
+	func getItems() -> [NCItem]?
+}
+
+protocol NCKillmail: class {
+	func getAttackers() -> [NCAttacker]
+	var killmailID: Int {get}
+	var killmailTime: Date {get}
+	var moonID: Int? {get}
+	var solarSystemID: Int {get}
+	func getVictim() -> NCVictim
+	func getItems() -> [NCItem]?
+}
+
+extension ESI.Killmails.Killmail.Victim: NCVictim {
+}
+
+extension ZKillboard.Killmail.Victim: NCVictim {
+}
+
+extension ESI.Killmails.Killmail.Attacker: NCAttacker {
+}
+
+extension ZKillboard.Killmail.Attacker: NCAttacker {
+}
+
+extension ESI.Killmails.Killmail.Victim.Item: NCItem {
+	func getItems() -> [NCItem]? {
+		return items
+	}
+}
+
+extension ESI.Killmails.Killmail.Victim.Item.Item: NCItem {
+	func getItems() -> [NCItem]? {
+		return nil
+	}
+}
+
+extension ZKillboard.Killmail.Item: NCItem {
+	func getItems() -> [NCItem]? {
+		return nil
+	}
+}
+
+extension ESI.Killmails.Killmail: NCKillmail {
+	func getAttackers() -> [NCAttacker] {
+		return attackers
+	}
+	
+	func getVictim() -> NCVictim {
+		return victim
+	}
+	
+	func getItems() -> [NCItem]? {
+		return victim.items
+	}
+}
+
+extension ZKillboard.Killmail: NCKillmail {
+	func getAttackers() -> [NCAttacker] {
+		return attackers
+	}
+	
+	func getVictim() -> NCVictim {
+		return victim
+	}
+	
+	func getItems() -> [NCItem]? {
+		return items
+	}
+}

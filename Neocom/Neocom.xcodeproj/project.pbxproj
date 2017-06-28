@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1203E87F1F043A86009ADF8D /* NCZKillboardContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203E87E1F043A86009ADF8D /* NCZKillboardContactViewController.swift */; };
 		1205B8A11E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */; };
 		120F4C591EF9A044003C92E9 /* NCContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */; };
 		120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */; };
@@ -210,8 +211,6 @@
 		12CFDAE81F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDAE71F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib */; };
 		12CFDAEA1F03EE4300CC0762 /* NCZKillboardKillmailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDAE91F03EE4300CC0762 /* NCZKillboardKillmailsViewController.swift */; };
 		12CFDAEC1F03F8F700CC0762 /* NCKillmailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDAEB1F03F8F700CC0762 /* NCKillmailTableViewCell.xib */; };
-		12CFDAEE1F03FE2000CC0762 /* NCZKillboardPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDAED1F03FE2000CC0762 /* NCZKillboardPageViewController.swift */; };
-		12CFDAF41F03FEAA00CC0762 /* NCZKillboardPersonalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDAF31F03FEAA00CC0762 /* NCZKillboardPersonalViewController.swift */; };
 		12D08F991E4DCCE30042B761 /* NCFittingActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */; };
 		12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */; };
 		12D1CFFB1E277E2400C31B61 /* NCSegmentedPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */; };
@@ -341,6 +340,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1203E87E1F043A86009ADF8D /* NCZKillboardContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardContactViewController.swift; sourceTree = "<group>"; };
 		1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamagePatternEditTableViewCell.swift; sourceTree = "<group>"; };
 		120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractInfoViewController.swift; sourceTree = "<group>"; };
 		120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultNoImageTableViewCell.xib; sourceTree = "<group>"; };
@@ -555,8 +555,6 @@
 		12CFDAE71F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCEmptyHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		12CFDAE91F03EE4300CC0762 /* NCZKillboardKillmailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardKillmailsViewController.swift; sourceTree = "<group>"; };
 		12CFDAEB1F03F8F700CC0762 /* NCKillmailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCKillmailTableViewCell.xib; sourceTree = "<group>"; };
-		12CFDAED1F03FE2000CC0762 /* NCZKillboardPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardPageViewController.swift; sourceTree = "<group>"; };
-		12CFDAF31F03FEAA00CC0762 /* NCZKillboardPersonalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardPersonalViewController.swift; sourceTree = "<group>"; };
 		12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingActionsViewController.swift; sourceTree = "<group>"; };
 		12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRegionPickerViewController.swift; sourceTree = "<group>"; };
 		12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSegmentedPageControl.swift; sourceTree = "<group>"; };
@@ -904,8 +902,7 @@
 				12CFDADF1F038DA300CC0762 /* NCZKillboardSolarSystemsViewController.swift */,
 				12CFDAE11F038DBE00CC0762 /* NCZKillboardRegionsSearchResultsViewController.swift */,
 				12CFDAE91F03EE4300CC0762 /* NCZKillboardKillmailsViewController.swift */,
-				12CFDAED1F03FE2000CC0762 /* NCZKillboardPageViewController.swift */,
-				12CFDAF31F03FEAA00CC0762 /* NCZKillboardPersonalViewController.swift */,
+				1203E87E1F043A86009ADF8D /* NCZKillboardContactViewController.swift */,
 			);
 			name = KillReports;
 			sourceTree = "<group>";
@@ -1455,8 +1452,8 @@
 				12DC56A31EFC0ADC0088F45E /* NCFittingCycle.mm in Sources */,
 				126B29501EB1FEAF006562A4 /* NCMailPageViewController.swift in Sources */,
 				12DBEAE91E1E8FEC0088A486 /* NCFittingMenuViewController.swift in Sources */,
-				12CFDAF41F03FEAA00CC0762 /* NCZKillboardPersonalViewController.swift in Sources */,
 				12B1B8351E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift in Sources */,
+				1203E87F1F043A86009ADF8D /* NCZKillboardContactViewController.swift in Sources */,
 				12D39D041EF8046F0077BD17 /* NCIndustryViewController.swift in Sources */,
 				12AC8DB01DEF5B0500561A7A /* NCDatabase.xcdatamodeld in Sources */,
 				12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */,
@@ -1526,7 +1523,6 @@
 				126157061E0095380041B817 /* NCProgressHandler.swift in Sources */,
 				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
 				12D20EB41EBCBD3C00BEC926 /* EVEAPI+NC.swift in Sources */,
-				12CFDAEE1F03FE2000CC0762 /* NCZKillboardPageViewController.swift in Sources */,
 				12CFDAE21F038DBE00CC0762 /* NCZKillboardRegionsSearchResultsViewController.swift in Sources */,
 				1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */,
 				12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */,

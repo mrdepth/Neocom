@@ -39,6 +39,14 @@ class NCZKillboardKillmailsViewController: UITableViewController, TreeController
 		fetchIfNeeded()
 	}
 	
+	//MARK: - TreeControllerDelegate
+	
+	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		if let route = (node as? TreeNodeRoutable)?.route {
+			route.perform(source: self, view: treeController.cell(for: node))
+		}
+	}
+	
 	//MARK: NCRefreshable
 	
 

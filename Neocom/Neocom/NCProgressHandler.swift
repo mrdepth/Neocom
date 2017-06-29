@@ -66,6 +66,11 @@ class NCProgressHandler: NSObject {
 				return progressView
 			}
 			else {
+				var viewController = self.viewController
+				while viewController?.parent?.isKind(of: UINavigationController.self) == false {
+					viewController = viewController?.parent
+				}
+				
 				guard let container = viewController?.view ?? view else {return nil}
 				guard container.window != nil else {return nil}
 				
@@ -80,8 +85,12 @@ class NCProgressHandler: NSObject {
 				progressView.leadingAnchor.constraint(equalTo: container.leadingAnchor).isActive = true
 				progressView.widthAnchor.constraint(equalTo: container.widthAnchor, multiplier: 1.0).isActive = true
 				
-				if let navigationBar = viewController?.navigationController?.navigationController?.navigationBar ?? viewController?.navigationController?.navigationBar ?? viewController?.parent?.navigationController?.navigationBar {
-					progressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor).isActive = true
+				if let navigationBar = viewController?.navigationController?.navigationController?.navigationBar ?? viewController?.navigationController?.navigationBar {
+					let c = progressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor)
+					c.priority = UILayoutPriorityDefaultLow
+					c.isActive = true
+					progressView.topAnchor.constraint(greaterThanOrEqualTo: viewController!.view.topAnchor).isActive = true
+					
 					navigationBar.superview?.layoutIfNeeded()
 				}
 				else {

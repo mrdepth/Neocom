@@ -28,7 +28,7 @@ class NCDateSection: TreeSection {
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCHeaderTableViewCell else {return}
-		cell.titleLabel?.text = self.title
+		cell.titleLabel?.text = self.title.uppercased()
 	}
 }
 

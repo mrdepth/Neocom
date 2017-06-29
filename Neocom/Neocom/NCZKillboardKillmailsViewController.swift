@@ -16,6 +16,8 @@ class NCZKillboardKillmailsViewController: UITableViewController, TreeController
 	
 	var filter: [ZKillboard.Filter]?
 	
+	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -28,11 +30,13 @@ class NCZKillboardKillmailsViewController: UITableViewController, TreeController
 		treeController.delegate = self
 		
 		registerRefreshable()
-		reload()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		if treeController.content == nil {
+			reload()
+		}
 	}
 	
 	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -62,12 +66,28 @@ class NCZKillboardKillmailsViewController: UITableViewController, TreeController
 	private lazy var dataManager: NCDataManager = NCDataManager(account: NCAccount.current)
 	private var page: Int?
 	private var isEndReached = false
-	private var isFetching = false
+	private var isFetching = false {
+		didSet {
+			if isFetching {
+				activityIndicator.startAnimating()
+			}
+			else {
+				activityIndicator.stopAnimating()
+			}
+		}
+	}
 	private var kills = TreeNode()
 	
 	private func fetchIfNeeded() {
 		if let page = page, tableView.contentOffset.y > tableView.contentSize.height - tableView.bounds.size.height * 2 {
-			fetch(page: page)
+			guard !isEndReached, !isFetching else {return}
+
+			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
+			progress.progress.perform {
+				fetch(page: page) {
+					progress.finish()
+				}
+			}
 		}
 	}
 
@@ -78,51 +98,60 @@ class NCZKillboardKillmailsViewController: UITableViewController, TreeController
 		let dataManager = self.dataManager
 		isFetching = true
 
-		let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
+		let progress = Progress(totalUnitCount: 1)
 		
 		func process(killmails: [ZKillboard.Killmail]) {
 			if !killmails.isEmpty {
-				let node = self.kills
-				var kills = self.kills.children
+				var kills = self.kills.children.map { i -> NCDateSection in
+					let section = NCDateSection(date: (i as! NCDateSection).date)
+					section.children = i.children
+					return section
+				}
 				
-				for killmail in killmails {
-					let row = NCKillmailRow(killmail: killmail, dataManager: dataManager)
-					
-					if let section = node.children.last as? NCDateSection, section.date < killmail.killmailTime {
-						section.children.append(row)
-					}
-					else {
-						let calendar = Calendar(identifier: .gregorian)
-						let components = calendar.dateComponents([.year, .month, .day], from: killmail.killmailTime)
-						let date = calendar.date(from: components) ?? killmail.killmailTime
-						let section = NCDateSection(date: date)
-						section.children = [row]
-						kills.append(section)
+				DispatchQueue.global(qos: .background).async {
+					autoreleasepool {
+						for killmail in killmails {
+							let row = NCKillmailRow(killmail: killmail, dataManager: dataManager)
+							
+							if let section = kills.last, section.date < killmail.killmailTime {
+								section.children.append(row)
+							}
+							else {
+								let calendar = Calendar(identifier: .gregorian)
+								let components = calendar.dateComponents([.year, .month, .day], from: killmail.killmailTime)
+								let date = calendar.date(from: components) ?? killmail.killmailTime
+								let section = NCDateSection(date: date)
+								section.children = [row]
+								kills.append(section)
+							}
+						}
+						DispatchQueue.main.async {
+							UIView.performWithoutAnimation {
+								self.kills.children = kills
+								self.treeController.content = self.kills
+							}
+							
+							self.page = (self.page ?? 1) + 1
+							
+							self.isFetching = false
+							self.fetchIfNeeded()
+							completionHandler?()
+							self.tableView.backgroundView = self.kills.children.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
+						}
 					}
 				}
-				UIView.performWithoutAnimation {
-					self.kills.children = kills
-					self.treeController.content = self.kills
-				}
-
-				self.page = (self.page ?? 1) + 1
 				
-				self.isFetching = false
-				self.fetchIfNeeded()
-				completionHandler?()
-				progress.finish()
 				
 			}
 			else {
 				self.isFetching = false
 				self.isEndReached = true
 				completionHandler?()
-				progress.finish()
+				self.tableView.backgroundView = self.kills.children.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
 			}
-			self.tableView.backgroundView = self.kills.children.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
 		}
 		
-		progress.progress.perform {
+		progress.perform {
 			dataManager.zKillmails(filter: filter, page: page ?? 1) { result in
 				switch result {
 				case let .success(value, _):
@@ -132,7 +161,6 @@ class NCZKillboardKillmailsViewController: UITableViewController, TreeController
 					self.isFetching = false
 					self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
 					completionHandler?()
-					progress.finish()
 				}
 			}
 		}

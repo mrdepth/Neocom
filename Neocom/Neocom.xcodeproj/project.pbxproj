@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1203E87F1F043A86009ADF8D /* NCZKillboardContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203E87E1F043A86009ADF8D /* NCZKillboardContactViewController.swift */; };
+		1203E87F1F043A86009ADF8D /* NCZKillboardSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203E87E1F043A86009ADF8D /* NCZKillboardSummaryViewController.swift */; };
 		1205B8A11E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */; };
 		120F4C591EF9A044003C92E9 /* NCContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */; };
 		120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */; };
@@ -340,7 +340,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1203E87E1F043A86009ADF8D /* NCZKillboardContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardContactViewController.swift; sourceTree = "<group>"; };
+		1203E87E1F043A86009ADF8D /* NCZKillboardSummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardSummaryViewController.swift; sourceTree = "<group>"; };
 		1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamagePatternEditTableViewCell.swift; sourceTree = "<group>"; };
 		120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractInfoViewController.swift; sourceTree = "<group>"; };
 		120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultNoImageTableViewCell.xib; sourceTree = "<group>"; };
@@ -902,7 +902,7 @@
 				12CFDADF1F038DA300CC0762 /* NCZKillboardSolarSystemsViewController.swift */,
 				12CFDAE11F038DBE00CC0762 /* NCZKillboardRegionsSearchResultsViewController.swift */,
 				12CFDAE91F03EE4300CC0762 /* NCZKillboardKillmailsViewController.swift */,
-				1203E87E1F043A86009ADF8D /* NCZKillboardContactViewController.swift */,
+				1203E87E1F043A86009ADF8D /* NCZKillboardSummaryViewController.swift */,
 			);
 			name = KillReports;
 			sourceTree = "<group>";
@@ -1453,7 +1453,7 @@
 				126B29501EB1FEAF006562A4 /* NCMailPageViewController.swift in Sources */,
 				12DBEAE91E1E8FEC0088A486 /* NCFittingMenuViewController.swift in Sources */,
 				12B1B8351E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift in Sources */,
-				1203E87F1F043A86009ADF8D /* NCZKillboardContactViewController.swift in Sources */,
+				1203E87F1F043A86009ADF8D /* NCZKillboardSummaryViewController.swift in Sources */,
 				12D39D041EF8046F0077BD17 /* NCIndustryViewController.swift in Sources */,
 				12AC8DB01DEF5B0500561A7A /* NCDatabase.xcdatamodeld in Sources */,
 				12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */,

@@ -238,7 +238,25 @@ class NCZKillboardViewController: UITableViewController, TreeControllerDelegate,
 	
 	private func update() {
 		guard let actionsSection = actionsSection else {return}
-		if filter.isEmpty {
+		let hasRegion = filter.contains {
+			switch $0 {
+			case .regionID:
+				return true
+			default:
+				return false
+			}
+		}
+
+		let hasDate = filter.contains {
+			switch $0 {
+			case .startTime, .endTime:
+				return true
+			default:
+				return false
+			}
+		}
+
+		if filter.isEmpty || (hasRegion && hasDate) {
 			if treeController.content?.children.last == actionsSection {
 				_ = treeController.content?.children.removeLast()
 			}

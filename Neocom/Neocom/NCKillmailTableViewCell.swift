@@ -72,7 +72,7 @@ class NCKillmailRow: TreeRow {
 		guard let cell = cell as? NCKillmailTableViewCell else {return}
 		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		cell.titleLabel?.text = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
-		cell.object = killmail
+		cell.object = killmail ?? zKillmail
 		cell.dateLabel.text = date
 		
 		if contactName == nil {
@@ -81,15 +81,17 @@ class NCKillmailRow: TreeRow {
 			let contactID: Int?
 			
 			if let killmail = killmail, let characterID = characterID {
-				contactID = killmail.victim.characterID != Int(characterID) ? killmail.victim.characterID
+				let id = killmail.victim.characterID != Int(characterID) ? killmail.victim.characterID
 					: {
 						guard let attacker = killmail.attackers.first (where: {$0.finalBlow}) ?? killmail.attackers.first else {return nil}
 						return attacker.characterID ?? attacker.corporationID ?? attacker.allianceID ?? attacker.factionID
 						
 					}()
+				contactID = id == 0 ? nil : id
 			}
 			else {
-				contactID = zKillmail?.victim.characterID
+				let id = zKillmail?.victim.characterID
+				contactID = id == 0 ? nil : id
 			}
 			
 			if let contactID = contactID {
@@ -100,11 +102,8 @@ class NCKillmailRow: TreeRow {
 				else {
 					dataManager.contacts(ids: Set([Int64(contactID)])) { result in
 						let contact = result[Int64(contactID)]
-						if contact?.name == nil {
-							print ("\(contactID)")
-						}
 						self.contactName = contact?.name ?? NSLocalizedString("Unknown", comment: "")
-						if (cell.object as? ESI.Killmails.Killmail) == self.killmail {
+						if (cell.object as? NCKillmail) === (self.killmail ?? self.zKillmail) {
 							cell.subtitleLabel?.text = self.subtitle
 						}
 					}

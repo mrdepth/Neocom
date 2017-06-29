@@ -41,7 +41,7 @@ class NCContactsSearchResultViewController: UITableViewController, TreeControlle
 			                   ESI.Mail.Recipient.RecipientType.alliance: "2"]
 			var sections = [DefaultTreeSection]()
 			for (key, value) in names {
-				let rows = value.map { NCContactRow(contact: $0, dataManager: dataManager) }.sorted { ($0.contact?.name ?? "") < ($1.contact?.name ?? "") }
+				let rows = value.map { NCContactRow(contact: $0, dataManager: dataManager) }/*.sorted { ($0.contact?.name ?? "") < ($1.contact?.name ?? "") }*/
 				let section = DefaultTreeSection(nodeIdentifier: identifiers[key], title: titles[key], children: rows)
 				sections.append(section)
 			}
@@ -103,7 +103,7 @@ class NCContactsSearchResultViewController: UITableViewController, TreeControlle
 				defer {dispatchGroup.leave()}
 				guard let strongSelf = self else {return}
 				
-				strongSelf.contacts = result.map {$0.value}
+				strongSelf.contacts = result.values.sorted { ($0.name ?? "") < ($1.name ?? "") }
 			}
 			
 			dispatchGroup.wait()

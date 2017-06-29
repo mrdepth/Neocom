@@ -240,7 +240,10 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
 				                           nodeIdentifier: "Location",
 				                           attributedTitle: location ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: "")),
-				                           subtitle: DateFormatter.localizedString(from: killmail.killmailTime, dateStyle: .medium, timeStyle: .medium)))
+				                           subtitle: DateFormatter.localizedString(from: killmail.killmailTime, dateStyle: .medium, timeStyle: .medium),
+				                           accessoryType: .disclosureIndicator,
+				                           route: Router.KillReports.RelatedKills(killmail: killmail)))
+				                           //route: Router.KillReports.SolarSystemReports(solarSystemID: killmail.solarSystemID)))
 				
 				if let items = killmail.getItems()?.map ({return NCKillmailItemRow(item: $0)}) {
 					var hi = [NCKillmailItemRow]()

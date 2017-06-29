@@ -807,12 +807,26 @@ enum Router {
 			
 			init(contact: NCContact) {
 				self.contact = contact
-				super.init(kind: .push, identifier: "NCZKillboardContactViewController")
+				super.init(kind: .push, identifier: "NCZKillboardSummaryViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
-				let destination = destination as! NCZKillboardContactViewController
+				let destination = destination as! NCZKillboardSummaryViewController
 				destination.contact = contact
+			}
+		}
+
+		class RelatedKills: Route {
+			let filter: [ZKillboard.Filter]
+			
+			init(killmail: NCKillmail) {
+				filter = [.solarSystemID([killmail.solarSystemID]), .startTime(killmail.killmailTime.addingTimeInterval(-3600)), .endTime(killmail.killmailTime.addingTimeInterval(3600))]
+				super.init(kind: .push, identifier: "NCZKillboardKillmailsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCZKillboardKillmailsViewController
+				destination.filter = filter
 			}
 		}
 

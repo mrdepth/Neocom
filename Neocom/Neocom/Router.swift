@@ -18,15 +18,15 @@ enum RouteKind {
 	case sheet
 }
 
-class Route: Hashable {
+class Route/*: Hashable*/ {
 	let kind: RouteKind?
 	let identifier: String?
 	let storyboard: UIStoryboard?
-	let viewController: UIViewController?
+	let viewController: () -> UIViewController?
 	
 	private weak var presentedViewController: UIViewController?
 	
-	init(kind: RouteKind? = nil, storyboard: UIStoryboard? = nil,  identifier: String? = nil, viewController: UIViewController? = nil) {
+	init(kind: RouteKind? = nil, storyboard: UIStoryboard? = nil,  identifier: String? = nil, viewController: @escaping @autoclosure () -> UIViewController? = nil) {
 		self.kind = kind
 		self.storyboard = storyboard
 		self.identifier = identifier
@@ -34,7 +34,7 @@ class Route: Hashable {
 	}
 	
 	func instantiateViewController() -> UIViewController {
-		let controller =  viewController ?? (storyboard ?? UIStoryboard(name: "Main", bundle: nil))!.instantiateViewController(withIdentifier: identifier!)
+		let controller =  viewController() ?? (storyboard ?? UIStoryboard(name: "Main", bundle: nil))!.instantiateViewController(withIdentifier: identifier!)
 		prepareForSegue(destination: controller)
 		return controller
 	}
@@ -112,13 +112,14 @@ class Route: Hashable {
 	func prepareForSegue(destination: UIViewController) {
 	}
 	
-	var hashValue: Int {
+/*	var hashValue: Int {
+		
 		return (kind?.hashValue ?? 0) ^ (viewController?.hashValue ?? ((identifier?.hashValue ?? 0) ^ (storyboard?.hashValue ?? 0)))
 	}
 	
 	static func == (lhs: Route, rhs: Route) -> Bool {
 		return lhs.kind == rhs.kind && lhs.identifier == rhs.identifier && lhs.storyboard == rhs.storyboard && lhs.viewController == rhs.viewController
-	}
+	}*/
 }
 
 enum Router {
@@ -847,6 +848,19 @@ enum Router {
 				let destination = destination as! NCFeedChannelViewController
 				destination.url = url
 				destination.title = title
+			}
+		}
+		
+		class Item: Route {
+			let item: EVEAPI.RSS.Item
+			init(item: EVEAPI.RSS.Item) {
+				self.item = item
+				super.init(kind: .push, viewController: NCFeedItemViewController())
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCFeedItemViewController
+				destination.item = item
 			}
 		}
 	}

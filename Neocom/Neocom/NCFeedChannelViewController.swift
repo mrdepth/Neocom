@@ -46,7 +46,7 @@ class NCFeedChannelViewController: UITableViewController, TreeControllerDelegate
 	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
 		guard let url = url else {return}
 		
-		let progress = Progress(totalUnitCount: 1)
+		let progress = Progress(totalUnitCount: 2)
 		
 		let dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
 		
@@ -64,15 +64,18 @@ class NCFeedChannelViewController: UITableViewController, TreeControllerDelegate
 				case .failure:
 					break
 				}
-				self.reloadSections()
-				completionHandler?()
+				progress.perform {
+					self.reloadSections() {
+						completionHandler?()
+					}
+				}
 			}
 		}
 	}
 	
-	private func reloadSections() {
+	private func reloadSections(completionHandler: (() -> Void)? = nil) {
 		if let value = rss?.value {
-			
+			let progress = Progress(totalUnitCount: Int64(value.items?.count ?? 0))
 			DispatchQueue.global(qos: .background).async {
 				autoreleasepool {
 					let dateFormatter = DateFormatter()
@@ -90,6 +93,7 @@ class NCFeedChannelViewController: UITableViewController, TreeControllerDelegate
 					let items = value.items?.sorted {($0.updated ?? Date()) > ($1.updated ?? Date())}
 					
 					for item in items ?? [] {
+						progress.completedUnitCount += 1
 						let row = NCFeedItemRow(item: item)
 						let updated = item.updated ?? Date()
 						if updated > date {
@@ -121,6 +125,7 @@ class NCFeedChannelViewController: UITableViewController, TreeControllerDelegate
 							self.treeController.content?.children = sections
 						}
 						self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
+						completionHandler?()
 					}
 					
 				}
@@ -129,6 +134,7 @@ class NCFeedChannelViewController: UITableViewController, TreeControllerDelegate
 		}
 		else {
 			tableView.backgroundView = NCTableViewBackgroundLabel(text: rss?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			completionHandler?()
 		}
 	}
 	

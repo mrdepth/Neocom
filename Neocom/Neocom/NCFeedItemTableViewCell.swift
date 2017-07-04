@@ -25,10 +25,24 @@ extension Prototype {
 class NCFeedItemRow: TreeRow {
 	
 	let item: RSS.Item
-	
+	let subtitle: String?
+
 	init(item: RSS.Item) {
 		self.item = item
-		super.init(prototype: Prototype.NCFeedItemTableViewCell.default, route: nil)
+		
+		if let data = self.item.summary?.data(using: .utf8),
+			let string =  try? NSAttributedString(data: data,
+			                                      options: [NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue],
+			                                      documentAttributes: nil).string {
+			subtitle = String(string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).characters.prefix(256))
+		}
+		else {
+			subtitle = nil
+		}
+
+		
+		
+		super.init(prototype: Prototype.NCFeedItemTableViewCell.default, route: Router.RSS.Item(item: item))
 	}
 	
 	var contactName: String?
@@ -37,17 +51,6 @@ class NCFeedItemRow: TreeRow {
 		return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .medium)
 	}()
 	
-	lazy var subtitle: String? = {
-		guard let data = self.item.summary?.data(using: .utf8) else {return nil}
-		guard let string =  try? NSAttributedString(data: data,
-		                               options: [NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType,
-		                                         NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue],
-		                               documentAttributes: nil).string
-			else {
-				return nil
-		}
-		return String(string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).characters.prefix(256))
-	}()
 	
 	override func configure(cell: UITableViewCell) {
 		

@@ -44,7 +44,7 @@ class NCEventViewController: UIViewController {
 			case let .success(value, _):
 				let font = self.textView.font ?? UIFont.preferredFont(forTextStyle: .footnote)
 				let html = "<body style=\"color:white;font-size: \(font.pointSize);font-family: '\(font.familyName)';\">\(value.text)</body>"
-				let s = try? NSAttributedString(data: (html).data(using: .utf8) ?? Data(),
+				let s = try? NSAttributedString(data: html.data(using: .utf8) ?? Data(),
 				                                options: [NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType,
 				                                          NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue,
 				                                          NSDefaultAttributesDocumentAttribute: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)]],

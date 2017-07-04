@@ -829,6 +829,25 @@ enum Router {
 				destination.filter = filter
 			}
 		}
-
+	}
+	
+	enum RSS {
+		
+		class Channel: Route {
+			let url: URL
+			let title: String
+			
+			init(url: URL, title: String) {
+				self.url = url
+				self.title = title
+				super.init(kind: .push, identifier: "NCFeedChannelViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCFeedChannelViewController
+				destination.url = url
+				destination.title = title
+			}
+		}
 	}
 }

@@ -271,7 +271,7 @@
 	<array>
 		<dict>
 			<key>segueIdentifier</key>
-			<string>NCRSSViewController</string>
+			<string>NCFeedsViewController</string>
 			<key>title</key>
 			<string>News</string>
 			<key>image</key>

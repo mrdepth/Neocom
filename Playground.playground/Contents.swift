@@ -2,7 +2,8 @@
 
 import UIKit
 
-let formatter = DateFormatter()
-formatter.dateFormat = "yyyy-MM-dd-HH00"
+let format = DateFormatter()
 
-formatter.string(from: Date())
+format.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
+
+format.date(from: "2017-07-03T16:54:57Z")

@@ -1,0 +1,74 @@
+{
+	"folders": [
+    {
+				"title": "EVE News",
+				"feeds": [
+        {
+						  "title": "EVE Online News",
+						  "url": "https://newsfeed.eveonline.com/en-US/44/articles/page/1/20",
+						  "link": "eveonline.com"
+        },
+        {
+						  "title": "Game World news",
+						  "url": "https://newsfeed.eveonline.com/en-US/42/articles/page/1/20",
+						  "link": "eveonline.com"
+        },
+        {
+						  "title": "Interstellar Correspondents",
+						  "url": "https://newsfeed.eveonline.com/en-US/100/articles/page/1/20",
+						  "link": "eveonline.com"
+        },
+        {
+						  "title": "Press Releases",
+						  "url": "https://newsfeed.eveonline.com/en-US/43/articles/page/1/20",
+						  "link": "eveonline.com"
+        }
+						  ]
+    },
+    {
+				"title": "Dev Corner",
+				"feeds": [
+        {
+						  "title": "Dev Blogs",
+						  "url": "https://newsfeed.eveonline.com/en-US/2/articles/page/1/20",
+						  "link": "eveonline.com"
+        },
+        {
+						  "title": "Patch Notes",
+						  "url": "https://newsfeed.eveonline.com/en-US/15/articles/page/1/5",
+						  "link": "eveonline.com"
+        }
+						  ]
+    },
+    {
+				"title": "Partner's Feeds",
+				"feeds": [
+        {
+						  "title": "reddit.com/r/eve",
+						  "url": "https://www.reddit.com/r/eve/.rss",
+						  "link": "reddit.com/r/eve"
+        },
+        {
+						  "title": "Eve News24",
+						  "url": "https://evenews24.com/feed/",
+						  "link": "evenews24.com"
+        },
+        {
+						  "title": "Eve Online Polska",
+						  "url": "http://www.eveonlinepolska.pl/feeds/posts/default?alt=rss",
+						  "link": "eveonlinepolska.pl"
+        },
+        {
+						  "title": "EVE Podcasts",
+						  "url": "https://feeds.feedburner.com/EvePodcastsList?format=xml",
+						  "link": "evepodcasts.com"
+        },
+        {
+						  "title": "EVE-RU | Лента новостей ",
+						  "url": "http://eve-ru.com/rss/indexfeed",
+						  "link": "eve-ru.com"
+        }
+						  ]
+    }
+				]
+}

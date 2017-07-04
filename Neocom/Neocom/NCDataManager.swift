@@ -903,6 +903,14 @@ class NCDataManager {
 			}
 		})
 	}
+	
+	func rss(url: URL, completionHandler: @escaping (NCCachedResult<RSS.Feed>) -> Void) {
+		loadFromCache(forKey: "RSS.Feed.\(url.absoluteString)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			Alamofire.request(url, method: .get).validate().responseRSS { (response: DataResponse<RSS.Feed>) in
+				completion(response.result, 600)
+			}
+		})
+	}
 
 	
 	//MARK: Private

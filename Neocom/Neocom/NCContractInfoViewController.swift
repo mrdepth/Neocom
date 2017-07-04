@@ -35,7 +35,7 @@ class NCContractItem: TreeRow {
 	
 	init(item: ESI.Contracts.Item) {
 		self.item = item
-		super.init(prototype: Prototype.NCContactTableViewCell.default, route: Router.Database.TypeInfo(item.typeID))
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: Router.Database.TypeInfo(item.typeID))
 	}
 	
 	override func configure(cell: UITableViewCell) {

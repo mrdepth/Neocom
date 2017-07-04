@@ -14,6 +14,8 @@
 		1203E88C1F093B7E009ADF8D /* NCFeedItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203E88B1F093B7E009ADF8D /* NCFeedItemViewController.swift */; };
 		1203E88F1F0A8048009ADF8D /* NCFeedItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203E88E1F0A8048009ADF8D /* NCFeedItemTableViewCell.swift */; };
 		1205B8A11E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */; };
+		120A59E81F0BFCB20053F94B /* NCShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A59E71F0BFCB20053F94B /* NCShoppingListViewController.swift */; };
+		120A59EC1F0CAFEF0053F94B /* NCShoppingListAdditionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A59EB1F0CAFEF0053F94B /* NCShoppingListAdditionViewController.swift */; };
 		120F4C591EF9A044003C92E9 /* NCContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */; };
 		120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */; };
 		1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */; };
@@ -353,6 +355,8 @@
 		1203E88B1F093B7E009ADF8D /* NCFeedItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFeedItemViewController.swift; sourceTree = "<group>"; };
 		1203E88E1F0A8048009ADF8D /* NCFeedItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFeedItemTableViewCell.swift; sourceTree = "<group>"; };
 		1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamagePatternEditTableViewCell.swift; sourceTree = "<group>"; };
+		120A59E71F0BFCB20053F94B /* NCShoppingListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCShoppingListViewController.swift; sourceTree = "<group>"; };
+		120A59EB1F0CAFEF0053F94B /* NCShoppingListAdditionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCShoppingListAdditionViewController.swift; sourceTree = "<group>"; };
 		120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractInfoViewController.swift; sourceTree = "<group>"; };
 		120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultNoImageTableViewCell.xib; sourceTree = "<group>"; };
 		1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCSkillTableViewCell.xib; sourceTree = "<group>"; };
@@ -873,6 +877,8 @@
 				12D39D151EF969DA0077BD17 /* NCContractsViewController.swift */,
 				120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */,
 				12851D7B1EFD1ADE00C8DD42 /* NCPlanetaryViewController.swift */,
+				120A59E71F0BFCB20053F94B /* NCShoppingListViewController.swift */,
+				120A59EB1F0CAFEF0053F94B /* NCShoppingListAdditionViewController.swift */,
 			);
 			name = Business;
 			sourceTree = "<group>";
@@ -1574,6 +1580,7 @@
 				12D930F11E657EA400CBAE1C /* Prototype.swift in Sources */,
 				12D20EB01EBCB10E00BEC926 /* NCCalendarViewController.swift in Sources */,
 				12D08F991E4DCCE30042B761 /* NCFittingActionsViewController.swift in Sources */,
+				120A59E81F0BFCB20053F94B /* NCShoppingListViewController.swift in Sources */,
 				12DE67211E715D46005CA44C /* NCSegmentedControl.swift in Sources */,
 				12AC8DD21DF090A600561A7A /* NCCache.swift in Sources */,
 				12DC567D1EFBE8520088F45E /* NCIncursionsViewController.swift in Sources */,
@@ -1659,6 +1666,7 @@
 				12D20E9F1EB9EB1400BEC926 /* PieChartView.swift in Sources */,
 				12424E421E3651DC0078AB0F /* NCFittingEditorViewController.swift in Sources */,
 				129B31701E5439A100B9A88D /* NCTextFieldTableViewCell.swift in Sources */,
+				120A59EC1F0CAFEF0053F94B /* NCShoppingListAdditionViewController.swift in Sources */,
 				12DACE5B1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift in Sources */,
 				12D20EA11EBA00B600BEC926 /* NCPieChartTableViewCell.swift in Sources */,
 				12DC569A1EFC0A740088F45E /* NCFittingIndustryFacility.mm in Sources */,

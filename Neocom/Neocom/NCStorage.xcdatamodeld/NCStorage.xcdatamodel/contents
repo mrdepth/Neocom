@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName="NCAccount" syncable="YES" codeGenerationType="class">
         <attribute name="accessToken" attributeType="String" syncable="YES"/>
         <attribute name="characterID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -64,24 +64,21 @@
         <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
-    <entity name="ShoppingGroup" representedClassName="NCShoppingGroup" syncable="YES" codeGenerationType="class">
-        <attribute name="iconFile" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="immutable" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="shoppingItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ShoppingItem" inverseName="shoppingGroup" inverseEntity="ShoppingItem" syncable="YES"/>
-        <relationship name="shoppingList" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingList" inverseName="shoppingGroups" inverseEntity="ShoppingList" syncable="YES"/>
-    </entity>
     <entity name="ShoppingItem" representedClassName="NCShoppingItem" syncable="YES" codeGenerationType="class">
         <attribute name="finished" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="flag" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="quantity" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="typeID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="shoppingGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingGroup" inverseName="shoppingItems" inverseEntity="ShoppingGroup" syncable="YES"/>
+        <relationship name="contents" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ShoppingItem" inverseName="parent" inverseEntity="ShoppingItem" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingItem" inverseName="contents" inverseEntity="ShoppingItem" syncable="YES"/>
+        <relationship name="shoppingList" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingList" inverseName="shoppingItems" inverseEntity="ShoppingList" syncable="YES"/>
     </entity>
     <entity name="ShoppingList" representedClassName="NCShoppingList" syncable="YES" codeGenerationType="class">
+        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="shoppingGroups" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ShoppingGroup" inverseName="shoppingList" inverseEntity="ShoppingGroup" syncable="YES"/>
+        <relationship name="shoppingItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ShoppingItem" inverseName="shoppingList" inverseEntity="ShoppingItem" syncable="YES"/>
     </entity>
     <entity name="SkillPlan" representedClassName="NCSkillPlan" syncable="YES" codeGenerationType="class">
         <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -103,7 +100,6 @@
         <memberEntity name="ImplantSet"/>
         <memberEntity name="Loadout"/>
         <memberEntity name="LoadoutData"/>
-        <memberEntity name="ShoppingGroup"/>
         <memberEntity name="ShoppingItem"/>
         <memberEntity name="ShoppingList"/>
         <memberEntity name="SkillPlan"/>
@@ -124,13 +120,12 @@
         <element name="ImplantSet" positionX="54" positionY="99" width="128" height="75"/>
         <element name="Loadout" positionX="0" positionY="45" width="128" height="135"/>
         <element name="LoadoutData" positionX="9" positionY="54" width="128" height="75"/>
+        <element name="MailDraft" positionX="18" positionY="135" width="128" height="105"/>
         <element name="Scope" positionX="9" positionY="126" width="128" height="75"/>
         <element name="Setting" positionX="18" positionY="63" width="128" height="75"/>
-        <element name="ShoppingGroup" positionX="27" positionY="72" width="128" height="150"/>
-        <element name="ShoppingItem" positionX="-18" positionY="27" width="128" height="105"/>
-        <element name="ShoppingList" positionX="45" positionY="90" width="128" height="75"/>
+        <element name="ShoppingItem" positionX="-18" positionY="27" width="128" height="180"/>
+        <element name="ShoppingList" positionX="45" positionY="90" width="128" height="90"/>
         <element name="SkillPlan" positionX="9" positionY="54" width="128" height="105"/>
         <element name="SkillPlanSkill" positionX="9" positionY="126" width="128" height="105"/>
-        <element name="MailDraft" positionX="18" positionY="135" width="128" height="105"/>
     </elements>
 </model>

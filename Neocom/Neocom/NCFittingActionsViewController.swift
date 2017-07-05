@@ -180,7 +180,27 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		}
 		dismiss(animated: true, completion: nil)
 	}
+
+	@IBAction func onShare(_ sender: Any) {
+		performShare()
+	}
 	
+	@IBAction func onSkills(_ sender: Any) {
+	}
+
+	@IBAction func onShoppingList(_ sender: Any) {
+		guard let fleet = fleet else {return}
+		guard let pilot = fleet.active else {return}
+		UIApplication.shared.beginIgnoringInteractionEvents()
+		pilot.engine?.perform {
+			guard let shoppingItem = pilot.shoppingItem else {return}
+			DispatchQueue.main.async {
+				UIApplication.shared.endIgnoringInteractionEvents()
+				Router.ShoppingList.Add(items: [shoppingItem]).perform(source: self)
+			}
+		}
+	}
+
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
@@ -304,11 +324,11 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 			sections.append(DefaultTreeSection(nodeIdentifier: "DamagePattern", title: NSLocalizedString("Damage Pattern", comment: "").uppercased(), children: [NCFittingDamagePatternRow(damagePattern: damagePattern, route: damagePatternsRoute)]))
 
 			
-			let shareAction = NCActionRow(prototype: Prototype.NCActionTableViewCell.default, title: NSLocalizedString("Share", comment: "").uppercased(), route: Router.Custom ({ [weak self] (controller, view) in
-				self?.performShare()
-			}))
-			
-			sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [shareAction]))
+//			let shareAction = NCActionRow(prototype: Prototype.NCActionTableViewCell.default, title: NSLocalizedString("Share", comment: "").uppercased(), route: Router.Custom ({ [weak self] (controller, view) in
+//				self?.performShare()
+//			}))
+//			
+//			sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [shareAction]))
 		}
 		
 		if treeController.content == nil {

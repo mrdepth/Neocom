@@ -56,10 +56,12 @@ class TreeSection: TreeNode {
 
 class DefaultTreeSection: TreeSection {
 	let nodeIdentifier: String?
+	let image: UIImage?
 	var title: String?
 	var attributedTitle: NSAttributedString?
 
-	init(prototype: Prototype = Prototype.NCHeaderTableViewCell.default, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
+	init(prototype: Prototype = Prototype.NCHeaderTableViewCell.default, nodeIdentifier: String? = nil, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
+		self.image = image
 		self.title = title
 		self.attributedTitle = attributedTitle
 		self.nodeIdentifier = nodeIdentifier
@@ -78,6 +80,7 @@ class DefaultTreeSection: TreeSection {
 				cell.titleLabel?.attributedText = attributedTitle
 //				cell.binder.bind("titleLabel.attributedText", toObject: self, withKeyPath: "attributedTitle", transformer: nil)
 			}
+			cell.iconView?.image = image
 		}
 	}
 	

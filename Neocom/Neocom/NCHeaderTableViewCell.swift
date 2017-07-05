@@ -87,8 +87,8 @@ extension Prototype {
 
 class NCActionTreeSection: DefaultTreeSection {
 	
-	override init(prototype: Prototype = Prototype.NCActionHeaderTableViewCell.default, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
-		super.init(prototype: prototype, nodeIdentifier: nodeIdentifier, title: title, attributedTitle: attributedTitle, children: children)
+	override init(prototype: Prototype = Prototype.NCActionHeaderTableViewCell.default, nodeIdentifier: String? = nil, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
+		super.init(prototype: prototype, nodeIdentifier: nodeIdentifier, image: image, title: title, attributedTitle: attributedTitle, children: children)
 	}
 	
 	var handler: NCActionHandler?

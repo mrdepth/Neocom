@@ -131,3 +131,57 @@ class NCStorage: NSObject {
 		}
 	}
 }
+
+enum NCShoppingItemFlag: Int32 {
+	case hiSlot
+	case medSlot
+	case lowSlot
+	case rigSlot
+	case subsystemSlot
+	case service
+	case drone
+	case cargo
+	
+	var image: UIImage? {
+		switch self {
+		case .hiSlot:
+			return NCFittingModuleSlot.hi.image
+		case .medSlot:
+			return NCFittingModuleSlot.med.image
+		case .lowSlot:
+			return NCFittingModuleSlot.low.image
+		case .rigSlot:
+			return NCFittingModuleSlot.rig.image
+		case .subsystemSlot:
+			return NCFittingModuleSlot.subsystem.image
+		case .service:
+			return NCFittingModuleSlot.service.image
+		case .drone:
+			return #imageLiteral(resourceName: "drone")
+		case .cargo:
+			return #imageLiteral(resourceName: "cargoBay")
+		}
+	}
+	
+	var title: String? {
+		switch self {
+		case .hiSlot:
+			return NCFittingModuleSlot.hi.title
+		case .medSlot:
+			return NCFittingModuleSlot.med.title
+		case .lowSlot:
+			return NCFittingModuleSlot.low.title
+		case .rigSlot:
+			return NCFittingModuleSlot.rig.title
+		case .subsystemSlot:
+			return NCFittingModuleSlot.subsystem.title
+		case .service:
+			return NCFittingModuleSlot.service.title
+		case .drone:
+			return NSLocalizedString("Drones", comment: "")
+		case .cargo:
+			return NSLocalizedString("Cargo", comment: "")
+		}
+	}
+	
+}

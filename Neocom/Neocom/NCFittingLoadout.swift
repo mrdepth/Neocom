@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreData
+import EVEAPI
 
 class NCFittingLoadoutItem: NSObject, NSCoding {
 	let typeID: Int
@@ -52,7 +54,7 @@ class NCFittingLoadoutModule: NCFittingLoadoutItem {
 	init(module: NCFittingModule) {
 		state = module.preferredState
 		if let charge = module.charge {
-			self.charge = NCFittingLoadoutItem(item: charge)
+			self.charge = NCFittingLoadoutItem(item: charge, count: max(module.charges, 1))
 		}
 		else {
 			self.charge = nil
@@ -581,4 +583,74 @@ extension NCFittingCharacter {
 			}
 		}
 	}
+	
+	var shoppingItem: NCShoppingItem? {
+		guard let context = NCStorage.sharedStorage?.viewContext else {return nil}
+		guard let ship = self.ship else {return nil}
+		let loadout = self.loadout
+		let shipItem = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
+		shipItem.typeID = Int32(ship.typeID)
+		shipItem.quantity = 1
+		shipItem.identifier = identifier
+		shipItem.name = ship.name
+		
+		var cargo = [Int: Int]()
+		loadout.modules?.forEach { (slot, modules) in
+			let flag: NCShoppingItemFlag
+			switch slot {
+			case .hi:
+				flag = .hiSlot
+			case .med:
+				flag = .medSlot
+			case .low:
+				flag = .lowSlot
+			case .rig:
+				flag = .rigSlot
+			case .subsystem:
+				flag = .subsystemSlot
+			case .service:
+				flag = .service
+			default:
+				return
+			}
+			var items = [Int: Int]()
+			modules.forEach {
+				items[$0.typeID] = (items[$0.typeID] ?? 0) + max($0.count, 1)
+				if let charge = $0.charge {
+					cargo[charge.typeID] = (cargo[charge.typeID] ?? 0) + max(charge.count, 1)
+				}
+			}
+			items.forEach { i in
+				let item = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
+				item.flag = flag.rawValue
+				item.typeID = Int32(i.key)
+				item.quantity = Int32(i.value)
+				shipItem.addToContents(item)
+			}
+		}
+		
+		var drones = [Int: Int]()
+		loadout.drones?.forEach {
+			drones[$0.typeID] = (drones[$0.typeID] ?? 0) + $0.count
+		}
+		
+		drones.forEach { i in
+			let item = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
+			item.flag = NCShoppingItemFlag.drone.rawValue
+			item.typeID = Int32(i.key)
+			item.quantity = Int32(i.value)
+			shipItem.addToContents(item)
+		}
+
+		cargo.forEach { i in
+			let item = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
+			item.flag = NCShoppingItemFlag.cargo.rawValue
+			item.typeID = Int32(i.key)
+			item.quantity = Int32(i.value)
+			shipItem.addToContents(item)
+		}
+
+		return shipItem
+	}
+
 }

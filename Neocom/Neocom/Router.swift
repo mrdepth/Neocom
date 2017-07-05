@@ -864,4 +864,20 @@ enum Router {
 			}
 		}
 	}
+	
+	enum ShoppingList {
+		
+		class Add: Route {
+			let items: [NCShoppingItem]
+			init(items: [NCShoppingItem]) {
+				self.items = items
+				super.init(kind: .adaptiveModal, identifier: "NCShoppingListAdditionViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCShoppingListAdditionViewController
+				destination.items = items
+			}
+		}
+	}
 }

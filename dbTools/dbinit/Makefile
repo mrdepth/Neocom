@@ -56,8 +56,8 @@ evedb.sqlite: createTables.sql Types eveIcons.sql npc.sql
 	$(T)/dbpatch $(T)/evedb.sqlite
 
 
-NCDatabase.sqlite: evedb.sqlite Icons Types
-	./NCDatabase -out ./NCDatabase.sqlite -sde ${T}/evedb.sqlite -icons ${T}/Icons -types ${T}/Types -factions ./input/Factions -expansion "${EXPANSION}"
+NCDatabase.sqlite: evedb.sqlite Icons Types NCDatabase
+	${T}/NCDatabase -out ./NCDatabase.sqlite -sde ${T}/evedb.sqlite -icons ${T}/Icons -types ${T}/Types -factions ./input/Factions -expansion "${EXPANSION}"
 
 tmp:
 	mkdir -p ${T}

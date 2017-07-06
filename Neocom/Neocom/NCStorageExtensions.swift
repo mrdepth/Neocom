@@ -154,3 +154,10 @@ extension NCFitCharacter {
 		return NCFetchedCollection<NCFitCharacter>(entityName: "FitCharacter", predicateFormat: "uuid == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }
+
+
+extension NCShoppingItem {
+	var totalQuantity: Int32 {
+		return quantity * (parent?.totalQuantity ?? 1)
+	}
+}

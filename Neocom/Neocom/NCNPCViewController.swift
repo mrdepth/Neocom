@@ -24,20 +24,17 @@ class NCNPCGroupRow: FetchedResultsObjectNode<NCDBNpcGroup> {
 	}
 }
 
-class NCNPCViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCNPCViewController: NCTreeViewController, NCSearchableViewController {
+
 	var parentGroup: NCDBNpcGroup?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		
+
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact])
-		treeController.delegate = self
-		
-		setupSearchController()
+
+		setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
 		title = parentGroup?.npcGroupName ?? NSLocalizedString("NPC", comment: "")
 	}
 	
@@ -69,7 +66,8 @@ class NCNPCViewController: UITableViewController, UISearchResultsUpdating, TreeC
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCNPCGroupRow else {return}
 		if row.object.group != nil {
 			Router.Database.Types(npcGroup: row.object).perform(source: self, view: treeController.cell(for: node))
@@ -82,6 +80,8 @@ class NCNPCViewController: UITableViewController, UISearchResultsUpdating, TreeC
 	
 	//MARK: UISearchResultsUpdating
 	
+	var searchController: UISearchController?
+
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCDatabaseTypesViewController else {return}
@@ -95,19 +95,4 @@ class NCNPCViewController: UITableViewController, UISearchResultsUpdating, TreeC
 		controller.reloadData()
 	}
 	
-	//MARK: Private
-	
-	private var searchController: UISearchController?
-	
-	private func setupSearchController() {
-		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
-		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
-		searchController?.searchResultsUpdater = self
-		searchController?.searchBar.barStyle = UIBarStyle.black
-		searchController?.hidesNavigationBarDuringPresentation = false
-		tableView.backgroundView = UIView()
-		tableView.tableHeaderView = searchController?.searchBar
-		definesPresentationContext = true
-		
-	}
 }

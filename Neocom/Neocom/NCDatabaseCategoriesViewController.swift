@@ -32,20 +32,15 @@ class NCDatabasePublishingSectionNode<ResultType: NSFetchRequestResult>: NCDefau
 	}
 }
 
-class NCDatabaseCategoriesViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
+class NCDatabaseCategoriesViewController: NCTreeViewController, NCSearchableViewController {
 	
-	@IBOutlet var treeController: TreeController!
-
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact])
-		treeController.delegate = self
 
-		setupSearchController()
+		setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -67,14 +62,16 @@ class NCDatabaseCategoriesViewController: UITableViewController, UISearchResults
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCDatabaseCategoryRow else {return}
 		Router.Database.Groups(row.object).perform(source: self, view: treeController.cell(for: node))
 	}
+
 	
-	//MARK: UISearchResultsUpdating
+	//MARK: NCSearchableViewController
 	
-	private var searchController: UISearchController?
+	var searchController: UISearchController?
 
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate

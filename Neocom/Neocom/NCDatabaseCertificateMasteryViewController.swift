@@ -10,22 +10,15 @@ import UIKit
 
 
 
-class NCDatabaseCertificateMasteryViewController: UITableViewController, TreeControllerDelegate {
+class NCDatabaseCertificateMasteryViewController: NCTreeViewController {
 	var certificate: NCDBCertCertificate?
 	var headerViewController: NCDatabaseCertificateInfoHeaderViewController?
 	
-	@IBOutlet var treeController: TreeController!
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		
 		tableView.register([Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCActionHeaderTableViewCell.default,
 		                    ])
-
-		treeController.delegate = self
 		
 		if let certificate = certificate {
 			let headerViewController = self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseCertificateInfoHeaderViewController") as! NCDatabaseCertificateInfoHeaderViewController
@@ -108,14 +101,8 @@ class NCDatabaseCertificateMasteryViewController: UITableViewController, TreeCon
 	
 	// MARK: TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		treeController.deselectCell(for: node, animated: true)
-		if let route = (node as? TreeNodeRoutable)?.route {
-			route.perform(source: self, view: treeController.cell(for: node))
-		}
-	}
-	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+		super.treeController(treeController, accessoryButtonTappedWithNode: node)
 		if let item = node as? NCDatabaseSkillsSection {
 			performTraining(trainingQueue: item.trainingQueue, character: item.character)
 		}

@@ -114,6 +114,7 @@
 		1263C50D1E64BE9D003D002D /* NCDefaultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1263C50C1E64BE9D003D002D /* NCDefaultTableViewCell.xib */; };
 		1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */; };
 		1263EE2C1F0E77FA005128E6 /* NCFittingRequiredSkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1263EE2B1F0E77FA005128E6 /* NCFittingRequiredSkillsViewController.swift */; };
+		1263EE311F0F8EE0005128E6 /* NCTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1263EE301F0F8EE0005128E6 /* NCTreeViewController.swift */; };
 		126B29501EB1FEAF006562A4 /* NCMailPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */; };
 		127332E11E71D01D00DE46C9 /* TreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127332E01E71D01D00DE46C9 /* TreeController.swift */; };
 		1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */; };
@@ -458,6 +459,7 @@
 		1263C50C1E64BE9D003D002D /* NCDefaultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultTableViewCell.xib; sourceTree = "<group>"; };
 		1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		1263EE2B1F0E77FA005128E6 /* NCFittingRequiredSkillsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingRequiredSkillsViewController.swift; sourceTree = "<group>"; };
+		1263EE301F0F8EE0005128E6 /* NCTreeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTreeViewController.swift; sourceTree = "<group>"; };
 		126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailPageViewController.swift; sourceTree = "<group>"; };
 		127332E01E71D01D00DE46C9 /* TreeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TreeController.swift; path = ../../ThirdParty/TreeController/TreeController/TreeController/TreeController.swift; sourceTree = "<group>"; };
 		1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
@@ -749,6 +751,7 @@
 				1256BE3A1DF1EFA600A2A24B /* NCSplitViewController.swift */,
 				1256BE3C1DF1F01D00A2A24B /* NCNavigationController.swift */,
 				122242451E5C3A0000269A01 /* NCPageViewController.swift */,
+				1263EE301F0F8EE0005128E6 /* NCTreeViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1597,6 +1600,7 @@
 				12D364EC1E72DEFE000ED70B /* NCFittingFightersViewController.swift in Sources */,
 				12D39D161EF969DA0077BD17 /* NCContractsViewController.swift in Sources */,
 				12498B061EFD680200FEEE36 /* NCKillmailTableViewCell.swift in Sources */,
+				1263EE311F0F8EE0005128E6 /* NCTreeViewController.swift in Sources */,
 				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
 				12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */,
 				12DC56971EFC0A620088F45E /* NCFittingExtractorControlUnit.mm in Sources */,

@@ -33,23 +33,19 @@ class NCWHGroupRow: FetchedResultsObjectNode<NCDBWhType> {
 	}
 }
 
-class NCWHViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCWHViewController: NCTreeViewController, NCSearchableViewController {
+
 	var isSearchResultsController = false
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact
 		                    ])
-		treeController.delegate = self
-		
 		if !isSearchResultsController {
-			setupSearchController()
+			setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCWHViewController"))
 		}
 	}
 	
@@ -68,7 +64,8 @@ class NCWHViewController: UITableViewController, UISearchResultsUpdating, TreeCo
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCWHGroupRow else {return}
 		guard let type = row.object.type else {return}
 		Router.Database.TypeInfo(type).perform(source: self, view: treeController.cell(for: node))
@@ -77,6 +74,8 @@ class NCWHViewController: UITableViewController, UISearchResultsUpdating, TreeCo
 	
 	//MARK: UISearchResultsUpdating
 	
+	var searchController: UISearchController?
+
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCWHViewController else {return}
@@ -92,7 +91,6 @@ class NCWHViewController: UITableViewController, UISearchResultsUpdating, TreeCo
 	
 	//MARK: Private
 	
-	private var searchController: UISearchController?
 	private var predicate: NSPredicate?
 	
 	private func reloadData() {
@@ -106,16 +104,4 @@ class NCWHViewController: UITableViewController, UISearchResultsUpdating, TreeCo
 		treeController.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBWhType>.self, objectNode: NCWHGroupRow.self)
 	}
 	
-	private func setupSearchController() {
-		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCWHViewController"))
-		(searchController?.searchResultsController as! NCWHViewController).isSearchResultsController = true
-		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
-		searchController?.searchResultsUpdater = self
-		searchController?.searchBar.barStyle = UIBarStyle.black
-		searchController?.hidesNavigationBarDuringPresentation = false
-		tableView.backgroundView = UIView()
-		tableView.tableHeaderView = searchController?.searchBar
-		definesPresentationContext = true
-		
-	}
 }

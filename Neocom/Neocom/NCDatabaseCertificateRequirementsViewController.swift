@@ -51,22 +51,15 @@ class NCDatabaseCertTypeRow: FetchedResultsObjectNode<NCDBInvType> {
 	
 }
 
-class NCDatabaseCertificateRequirementsViewController: UITableViewController, TreeControllerDelegate {
+class NCDatabaseCertificateRequirementsViewController: NCTreeViewController {
 	var certificate: NCDBCertCertificate?
-	
-	@IBOutlet var treeController: TreeController!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		tableView.register([Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.default,
 		                    ])
-		
-		treeController.delegate = self
-
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -106,8 +99,8 @@ class NCDatabaseCertificateRequirementsViewController: UITableViewController, Tr
 	
 	// MARK: TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		treeController.deselectCell(for: node, animated: true)
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCDatabaseCertTypeRow else {return}
 		Router.Database.TypeInfo(row.object).perform(source: self, view: treeController.cell(for: node))
 	}

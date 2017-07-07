@@ -57,30 +57,25 @@ class NCRegionPickerRow: TreeRow {
 	}
 }
 
-class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
+class NCRegionPickerViewController: NCTreeViewController, NCSearchableViewController {
 	private var results: NSFetchedResultsController<NCDBMapRegion>?
-	private var searchController: UISearchController?
+	
 	var region: NCDBMapRegion?
 	var searchString: String?
 	
 	private let gate = NCGate()
-	@IBOutlet weak var treeController: TreeController!
+
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let regionID = UserDefaults.standard.object(forKey: UserDefaults.Key.NCMarketRegion) as? Int ?? NCDBRegionID.theForge.rawValue
 		self.region = NCDatabase.sharedDatabase?.mapRegions[regionID]
 		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.default])
 		
-		treeController.delegate = self
-
 		if navigationController != nil {
-			setupSearchController()
+			setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCRegionPickerViewController"))
 		}
 	}
 	
@@ -178,7 +173,9 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 	
 	//MARK: TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let item = node as? NCRegionPickerRow else {return}
 		
 		if let region = item.region ?? item.solarSystem?.constellation?.region {
@@ -197,6 +194,8 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 	
 	//MARK: UISearchResultsUpdating
 	
+	var searchController: UISearchController?
+
 	func updateSearchResults(for searchController: UISearchController) {
 		guard let controller = searchController.searchResultsController as? NCRegionPickerViewController else {return}
 		if let text = searchController.searchBar.text, text.characters.count > 2 {
@@ -210,15 +209,4 @@ class NCRegionPickerViewController: UITableViewController, UISearchResultsUpdati
 	
 	//MARK: Private
 	
-	private func setupSearchController() {
-		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCRegionPickerViewController"))
-		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
-		searchController?.searchResultsUpdater = self
-		searchController?.searchBar.barStyle = UIBarStyle.black
-		searchController?.hidesNavigationBarDuringPresentation = false
-		tableView.backgroundView = UIView()
-		tableView.tableHeaderView = searchController?.searchBar
-		definesPresentationContext = true
-		
-	}
 }

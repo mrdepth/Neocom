@@ -24,20 +24,16 @@ class NCDatabaseGroupRow: FetchedResultsObjectNode<NCDBInvGroup> {
 	}
 }
 
-class NCDatabaseGroupsViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCDatabaseGroupsViewController: NCTreeViewController, NCSearchableViewController {
 	var category: NCDBInvCategory?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact])
-		treeController.delegate = self
 
-		setupSearchController()
+		setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
 		title = category?.categoryName
 	}
 	
@@ -62,14 +58,17 @@ class NCDatabaseGroupsViewController: UITableViewController, UISearchResultsUpda
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCDatabaseGroupRow else {return}
 		Router.Database.Types(group: row.object).perform(source: self, view: treeController.cell(for: node))
 	}
 
 	
-	//MARK: UISearchResultsUpdating
+	//MARK: NCSearchableViewController
 	
+	var searchController: UISearchController?
+
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCDatabaseTypesViewController else {return}
@@ -83,19 +82,4 @@ class NCDatabaseGroupsViewController: UITableViewController, UISearchResultsUpda
 		controller.reloadData()
 	}
 	
-	//MARK: Private
-
-	private var searchController: UISearchController?
-
-	private func setupSearchController() {
-		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
-		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
-		searchController?.searchResultsUpdater = self
-		searchController?.searchBar.barStyle = UIBarStyle.black
-		searchController?.hidesNavigationBarDuringPresentation = false
-		tableView.backgroundView = UIView()
-		tableView.tableHeaderView = searchController?.searchBar
-		definesPresentationContext = true
-		
-	}
 }

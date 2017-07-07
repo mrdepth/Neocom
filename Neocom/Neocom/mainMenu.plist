@@ -63,7 +63,11 @@
 			<key>detailsKeyPath</key>
 			<string>unreadMails</string>
 			<key>scopes</key>
-			<array/>
+			<array>
+				<string>esi-mail.read_mail.v1</string>
+				<string>esi-mail.send_mail.v1</string>
+				<string>esi-mail.organize_mail.v1</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -195,7 +199,9 @@
 			<key>image</key>
 			<string>marketdeliveries</string>
 			<key>scopes</key>
-			<array/>
+			<array>
+				<string>esi-markets.read_character_orders.v1</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -205,7 +211,9 @@
 			<key>image</key>
 			<string>contracts</string>
 			<key>scopes</key>
-			<array/>
+			<array>
+				<string>esi-contracts.read_character_contracts.v1</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -235,7 +243,9 @@
 			<key>image</key>
 			<string>industry</string>
 			<key>scopes</key>
-			<array/>
+			<array>
+				<string>esi-industry.read_character_jobs.v1</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -245,7 +255,9 @@
 			<key>image</key>
 			<string>station</string>
 			<key>scopes</key>
-			<array/>
+			<array>
+				<string>n/a</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -254,6 +266,10 @@
 			<string>Shopping List</string>
 			<key>image</key>
 			<string>note</string>
+			<key>scopes</key>
+			<array>
+				<string>n/a</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -265,6 +281,7 @@
 			<key>scopes</key>
 			<array>
 				<string>esi-planets.manage_planets.v1</string>
+				<string>n/a</string>
 			</array>
 		</dict>
 	</array>
@@ -284,6 +301,10 @@
 			<string>About</string>
 			<key>image</key>
 			<string>info</string>
+			<key>scopes</key>
+			<array>
+				<string>n/a</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -292,6 +313,10 @@
 			<string>Remove Ads</string>
 			<key>image</key>
 			<string>votes</string>
+			<key>scopes</key>
+			<array>
+				<string>n/a</string>
+			</array>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -300,6 +325,10 @@
 			<string>Settings</string>
 			<key>image</key>
 			<string>settings</string>
+			<key>scopes</key>
+			<array>
+				<string>n/a</string>
+			</array>
 		</dict>
 		<dict>
 			<key>url</key>
@@ -308,6 +337,10 @@
 			<string>Rate &amp; Review</string>
 			<key>image</key>
 			<string>achievements</string>
+			<key>scopes</key>
+			<array>
+				<string>n/a</string>
+			</array>
 		</dict>
 		<dict>
 			<key>url</key>
@@ -316,6 +349,10 @@
 			<string>Follow us on Facebook</string>
 			<key>image</key>
 			<string>facebook</string>
+			<key>scopes</key>
+			<array>
+				<string>n/a</string>
+			</array>
 		</dict>
 		<dict>
 			<key>url</key>
@@ -324,6 +361,10 @@
 			<string>Follow us on VK</string>
 			<key>image</key>
 			<string>vk</string>
+			<key>scopes</key>
+			<array>
+				<string>n/a</string>
+			</array>
 		</dict>
 	</array>
 </array>

@@ -990,23 +990,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="XVj-e2-ZdV" id="Doh-6G-Slp"/>
-                            <outlet property="delegate" destination="XVj-e2-ZdV" id="Fff-CF-s6F"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Categories" id="t3Q-fO-91o"/>
                     <connections>
-                        <outlet property="treeController" destination="XVj-e2-ZdV" id="SPg-Sk-vtR"/>
                         <segue destination="brt-UG-tok" kind="show" identifier="NCDatabaseGroupsViewController" id="k0E-1y-b1U"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qb5-WZ-q9P" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="XVj-e2-ZdV" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="sLS-i1-xgD" id="3Uu-mW-qNS"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="2946" y="1017"/>
         </scene>
@@ -1284,23 +1274,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="xkX-Mg-8pT" id="2hH-7x-KIp"/>
-                            <outlet property="delegate" destination="xkX-Mg-8pT" id="qh4-gu-2C9"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Groups" id="5ME-vf-93y"/>
                     <connections>
-                        <outlet property="treeController" destination="xkX-Mg-8pT" id="fPb-pA-fe1"/>
                         <segue destination="LaV-C9-qm4" kind="show" identifier="NCDatabaseTypesViewController" id="jud-aX-auD"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MGS-YB-0nf" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="xkX-Mg-8pT" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="eUr-eD-RWp" id="C9O-5h-dV1"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="3653" y="1019"/>
         </scene>
@@ -1312,22 +1292,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="nNm-5m-dZd" id="Tt1-1I-UOf"/>
-                            <outlet property="delegate" destination="nNm-5m-dZd" id="ZxU-8h-9UB"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Items" id="BFP-RP-877"/>
-                    <connections>
-                        <outlet property="treeController" destination="nNm-5m-dZd" id="cr8-rb-fFl"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xx8-Cl-tHx" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="nNm-5m-dZd" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="f9d-QU-03D" id="IoJ-wV-57Y"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="4371" y="1018"/>
         </scene>
@@ -1669,22 +1637,10 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="cKP-jj-sLH" id="jM7-gx-qJN"/>
-                            <outlet property="delegate" destination="cKP-jj-sLH" id="RHa-gK-lcL"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Type Info" id="NJI-qa-8Hn"/>
-                    <connections>
-                        <outlet property="treeController" destination="cKP-jj-sLH" id="vvi-gW-bfv"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rzx-Wn-Vps" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="cKP-jj-sLH" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="32e-ET-Vux" id="4QI-cx-Dw9"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="6416.25" y="1017.2535211267606"/>
         </scene>
@@ -1937,10 +1893,6 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="0W7-Gu-8Mk" id="H6k-6I-lYR"/>
-                            <outlet property="delegate" destination="0W7-Gu-8Mk" id="ojm-i9-8fW"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Orders" id="gGp-G0-k1o">
                         <barButtonItem key="rightBarButtonItem" title="Region" id="htT-W8-LsC">
@@ -1950,16 +1902,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="0W7-Gu-8Mk" id="jlE-eN-6Jg"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ebc-SY-hPW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="0W7-Gu-8Mk" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="EFq-Kw-LLo" id="Fnj-eG-Lqp"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="6418" y="1779"/>
         </scene>
@@ -1971,24 +1915,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="7JW-KO-ycD" id="GbF-3P-SdR"/>
-                            <outlet property="delegate" destination="7JW-KO-ycD" id="oZ7-Dw-KUJ"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Regions" id="1uQ-dY-mM3"/>
                     <connections>
-                        <outlet property="treeController" destination="7JW-KO-ycD" id="xYk-ih-0ar"/>
                         <segue destination="Glk-75-Bzl" kind="unwind" identifier="Unwind" unwindAction="unwindFromRegionPickerWithSegue:" id="Dlh-ZP-hz5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bze-VB-5OF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Glk-75-Bzl" userLabel="Exit" sceneMemberID="exit"/>
-                <customObject id="7JW-KO-ycD" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="Beh-Tr-yCi" id="MKu-Nc-LlG"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="7125" y="1779"/>
         </scene>
@@ -2000,22 +1934,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="RpM-SA-tzz" id="jab-jk-iZH"/>
-                            <outlet property="delegate" destination="RpM-SA-tzz" id="jAz-6z-RMC"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Groups" id="csf-Ba-Nu4"/>
-                    <connections>
-                        <outlet property="treeController" destination="RpM-SA-tzz" id="Y8K-tS-qN3"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KeO-GQ-k8E" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="RpM-SA-tzz" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="PPb-tP-a8E" id="WCm-No-5JM"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="2946" y="1775"/>
         </scene>
@@ -2043,23 +1965,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="YIW-s9-80z" id="NKS-NK-tFd"/>
-                            <outlet property="delegate" destination="YIW-s9-80z" id="u9T-ib-7UV"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Certificates" id="dk6-vo-Wzd"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="YIW-s9-80z" id="hhf-6H-SnH"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XlJ-Ai-mm7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="YIW-s9-80z" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="iVc-ma-tto" id="qdX-OT-GuX"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="3611" y="1775"/>
         </scene>
@@ -2217,10 +2127,6 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="94c-v0-1u1" id="qCm-Qd-mCO"/>
-                            <outlet property="delegate" destination="94c-v0-1u1" id="cKy-pR-v6g"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="wYd-kd-iMU">
                         <nil key="title"/>
@@ -2239,15 +2145,9 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="segmentedControl" destination="gqs-EM-8zj" id="ChQ-IJ-eGD"/>
-                        <outlet property="treeController" destination="94c-v0-1u1" id="jnp-ir-ACn"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vH5-dB-UBd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="94c-v0-1u1" customClass="NCTreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="I8P-pr-chS" id="iM2-lb-mhu"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="4890" y="1775"/>
         </scene>
@@ -2330,25 +2230,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="eIG-7w-IfS" id="b6N-jN-7Az"/>
-                            <outlet property="delegate" destination="eIG-7w-IfS" id="YsZ-MX-yp0"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="YdR-ui-Kle">
                         <nil key="title"/>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="eIG-7w-IfS" id="o2y-EI-dYI"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ynp-V2-aX1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="eIG-7w-IfS" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="4Qd-k3-8Jt" id="2H6-2P-KL4"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="7800" y="1779"/>
         </scene>
@@ -6190,6 +6078,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Damage Patterns" id="8eP-OX-6zr"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="treeController" destination="7mE-bz-u97" id="vdx-FQ-UbL"/>
                     </connections>
@@ -8496,22 +8385,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="fbm-mG-0cT" id="ewV-EM-itg"/>
-                            <outlet property="delegate" destination="fbm-mG-0cT" id="JKH-2M-BwE"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Market" id="qjP-ew-rty"/>
-                    <connections>
-                        <outlet property="treeController" destination="fbm-mG-0cT" id="Tnz-GO-bcp"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0L9-CL-vx1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="fbm-mG-0cT" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="4yN-6s-vZD" id="zuh-Rt-M3M"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="5081" y="245"/>
         </scene>
@@ -8539,22 +8416,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="bFQ-Ic-BTv" id="XTg-PE-SUJ"/>
-                            <outlet property="delegate" destination="bFQ-Ic-BTv" id="wCg-hE-wcI"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="NPC" id="NgB-eI-MjG"/>
-                    <connections>
-                        <outlet property="treeController" destination="bFQ-Ic-BTv" id="rch-7A-4Pa"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ut0-BY-eD1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="bFQ-Ic-BTv" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="eeA-85-5oL" id="tDT-hL-86q"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="5079" y="-432"/>
         </scene>
@@ -8582,22 +8447,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="OQn-H0-uyA" id="eTy-em-3qF"/>
-                            <outlet property="delegate" destination="OQn-H0-uyA" id="Ab9-UV-Ozw"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Wormholes" id="0mw-J1-xEl"/>
-                    <connections>
-                        <outlet property="treeController" destination="OQn-H0-uyA" id="mIC-aV-7Nn"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9sd-eX-wrT" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="OQn-H0-uyA" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="MXE-wz-tOU" id="eH4-v8-1YU"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="6555" y="-432"/>
         </scene>
@@ -9447,6 +9300,34 @@
                 </customObject>
             </objects>
             <point key="canvasLocation" x="-5385" y="5328"/>
+        </scene>
+        <!--Required Skills-->
+        <scene sceneID="98I-G6-JYH">
+            <objects>
+                <tableViewController storyboardIdentifier="NCFittingRequiredSkillsViewController" id="dYO-aN-IGs" customClass="NCFittingRequiredSkillsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="xFV-bs-hLw" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="Ccg-1b-fxy" id="dGe-RD-UMd"/>
+                            <outlet property="delegate" destination="Ccg-1b-fxy" id="GoE-aF-mpc"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Required Skills" id="r60-vd-2Jc"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="treeController" destination="Ccg-1b-fxy" id="7tV-70-Amq"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7vJ-qf-ppj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="Ccg-1b-fxy" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="xFV-bs-hLw" id="ugd-9n-gGr"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="5115" y="5365"/>
         </scene>
     </scenes>
     <resources>

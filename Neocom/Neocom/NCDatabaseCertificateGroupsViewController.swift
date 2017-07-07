@@ -9,16 +9,11 @@
 import UIKit
 import CoreData
 
-class NCDatabaseCertificateGroupsViewController: UITableViewController, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCDatabaseCertificateGroupsViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		
 		tableView.register([Prototype.NCDefaultTableViewCell.compact])
-		treeController.delegate = self
 
 	}
 	
@@ -42,7 +37,8 @@ class NCDatabaseCertificateGroupsViewController: UITableViewController, TreeCont
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCDatabaseGroupRow else {return}
 		Router.Database.Certificates(group: row.object).perform(source: self, view: treeController.cell(for: node))
 	}

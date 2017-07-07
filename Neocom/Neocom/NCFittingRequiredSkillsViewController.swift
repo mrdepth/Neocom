@@ -16,7 +16,7 @@ class NCTrainingSkillRow: TreeRow {
 	init(skill: NCTrainingSkill, character: NCCharacter) {
 		self.skill = skill
 		self.character = character
-		super.init(prototype: Prototype.NCSkillTableViewCell.default)
+		super.init(prototype: Prototype.NCSkillTableViewCell.default, route: Router.Database.TypeInfo(skill.skill.typeID))
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -29,6 +29,7 @@ class NCTrainingSkillRow: TreeRow {
 		cell.spLabel?.text = "\(a) / \(b)"
 		let t = skill.trainingTime(characterAttributes: character.attributes)
 		cell.trainingTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes)
+		cell.progressView?.progress = 0
 		
 		let typeID = skill.skill.typeID
 		let level = skill.level
@@ -37,9 +38,7 @@ class NCTrainingSkillRow: TreeRow {
 			let skill = skill as! NCSkillPlanSkill
 			return Int(skill.typeID) == typeID && Int(skill.level) >= level
 		})
-		if item != nil {
-			cell.iconView?.image = #imageLiteral(resourceName: "skillRequirementQueued")
-		}
+		cell.iconView?.image = item != nil ? #imageLiteral(resourceName: "skillRequirementQueued") : nil
 	}
 }
 
@@ -59,7 +58,38 @@ class NCFittingRequiredSkillsViewController: UITableViewController, TreeControll
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
 		
+		if let skillPlan = NCAccount.current?.activeSkillPlan {
+			if let title = skillPlan.name {
+				self.title = title
+			}
+			navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Add", comment: ""), style: .done, target: self, action: #selector(onAdd(_:)))
+		}
+		
+		
 		reload()
+		
+	}
+	
+	func onAdd(_ sender: Any) {
+		guard let character = self.character, let trainingQueue = self.trainingQueue else {return}
+		guard let account = NCAccount.current else {return}
+		
+		let message = String(format: NSLocalizedString("Total Training Time: %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: trainingQueue.trainingTime(characterAttributes: character.attributes), precision: .seconds))
+		
+		let controller = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Add to Skill Plan", comment: ""), style: .default) { [weak self] _ in
+			account.activeSkillPlan?.add(trainingQueue: trainingQueue)
+			
+			if account.managedObjectContext?.hasChanges == true {
+				try? account.managedObjectContext?.save()
+				self?.dismiss(animated: true, completion: nil)
+			}
+		})
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+		present(controller, animated: true)
+
 		
 	}
 	
@@ -79,6 +109,9 @@ class NCFittingRequiredSkillsViewController: UITableViewController, TreeControll
 	}
 	
 	//MARK: - Private
+	
+	private var character: NCCharacter?
+	private var trainingQueue: NCTrainingQueue?
 	
 	private func reload() {
 		guard let ship = ship else {return}
@@ -115,13 +148,17 @@ class NCFittingRequiredSkillsViewController: UITableViewController, TreeControll
 						let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
 						
 						DispatchQueue.main.async {
+							self.character = character
+							self.trainingQueue = trainingQueue
 							if rows.isEmpty {
 								self.tableView.backgroundView = NCTableViewBackgroundLabel(text: NSLocalizedString("No Result", comment: ""))
+								self.navigationItem.rightBarButtonItem?.isEnabled = false
 							}
 							else {
 								let section = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default, title: NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds), children: rows)
 								section.isExpandable = false
 								self.treeController.content = RootNode([section])
+								self.navigationItem.rightBarButtonItem?.isEnabled = true
 							}
 							progress.finish()
 						}

@@ -10,6 +10,16 @@ import UIKit
 import CoreData
 import EVEAPI
 
+extension NCFittingEngine {
+	func sync<T>(execute block: @escaping () -> T) -> T {
+		var v: T?
+		performBlockAndWait {
+			v = block()
+		}
+		return v!
+	}
+}
+
 class NCFittingLoadoutItem: NSObject, NSCoding {
 	let typeID: Int
 	var count: Int

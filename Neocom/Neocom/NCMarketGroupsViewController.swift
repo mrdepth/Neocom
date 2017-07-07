@@ -24,20 +24,17 @@ class NCMarketGroupRow: FetchedResultsObjectNode<NCDBInvMarketGroup> {
 	}
 }
 
-class NCMarketGroupsViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCMarketGroupsViewController: NCTreeViewController, NCSearchableViewController {
+
 	var parentGroup: NCDBInvMarketGroup?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact])
-		treeController.delegate = self
 		
-		setupSearchController()
+		setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
 		title = parentGroup?.marketGroupName ?? NSLocalizedString("Market", comment: "")
 	}
 	
@@ -69,7 +66,8 @@ class NCMarketGroupsViewController: UITableViewController, UISearchResultsUpdati
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCMarketGroupRow else {return}
 		if (row.object.types?.count ?? 0) > 0 {
 			Router.Database.Types(marketGroup: row.object).perform(source: self, view: treeController.cell(for: node))
@@ -80,8 +78,10 @@ class NCMarketGroupsViewController: UITableViewController, UISearchResultsUpdati
 	}
 	
 	
-	//MARK: UISearchResultsUpdating
+	//MARK: - NCSearchableViewController
 	
+	var searchController: UISearchController?
+
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCDatabaseTypesViewController else {return}
@@ -95,19 +95,5 @@ class NCMarketGroupsViewController: UITableViewController, UISearchResultsUpdati
 		controller.reloadData()
 	}
 	
-	//MARK: Private
 	
-	private var searchController: UISearchController?
-	
-	private func setupSearchController() {
-		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
-		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
-		searchController?.searchResultsUpdater = self
-		searchController?.searchBar.barStyle = UIBarStyle.black
-		searchController?.hidesNavigationBarDuringPresentation = false
-		tableView.backgroundView = UIView()
-		tableView.tableHeaderView = searchController?.searchBar
-		definesPresentationContext = true
-		
-	}
 }

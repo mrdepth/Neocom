@@ -9,15 +9,12 @@
 import UIKit
 import CoreData
 
-class NCDatabaseTypeInfoViewController: UITableViewController, TreeControllerDelegate, UIViewControllerPreviewingDelegate {
+class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPreviewingDelegate {
 	var type: NCDBInvType?
 	var headerViewController: NCDatabaseTypeInfoHeaderViewController?
 	
-	@IBOutlet var treeController: TreeController!
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
 
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCActionHeaderTableViewCell.default,
@@ -26,7 +23,6 @@ class NCDatabaseTypeInfoViewController: UITableViewController, TreeControllerDel
 		                    Prototype.NCDefaultTableViewCell.compact,
 		                    Prototype.NCDefaultTableViewCell.noImage,
 		                    Prototype.NCDamageTypeTableViewCell.compact])
-		treeController.delegate = self
 		
 		registerForPreviewing(with: self, sourceView: tableView)
 		
@@ -121,12 +117,9 @@ class NCDatabaseTypeInfoViewController: UITableViewController, TreeControllerDel
 	
 	// MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		treeController.deselectCell(for: node, animated: true)
-		if let route = (node as? TreeNodeRoutable)?.route {
-			route.perform(source: self, view: treeController.cell(for: node))
-		}
-		else if let row = node as? NCDatabaseTrainingSkillRow {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
+		if let row = node as? NCDatabaseTrainingSkillRow {
 			guard NCAccount.current != nil else {return}
 			guard let skill = row.skill else {return}
 			guard let type = NCDatabase.sharedDatabase?.invTypes[skill.skill.typeID] else {return}
@@ -137,7 +130,8 @@ class NCDatabaseTypeInfoViewController: UITableViewController, TreeControllerDel
 		}
 	}
 	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+		super.treeController(treeController, accessoryButtonTappedWithNode: node)
 		if let item = node as? NCDatabaseSkillsSection {
 			performTraining(trainingQueue: item.trainingQueue, character: item.character)
 		}

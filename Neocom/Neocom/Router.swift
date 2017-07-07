@@ -575,6 +575,20 @@ enum Router {
 				destination.character = character
 			}
 		}
+		
+		class RequiredSkills: Route {
+			let ship: NCFittingShip
+			
+			init(for ship: NCFittingShip) {
+				self.ship = ship
+				super.init(kind: .adaptiveModal, identifier: "NCFittingRequiredSkillsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCFittingRequiredSkillsViewController
+				destination.ship = ship
+			}
+		}
 	}
 	
 	enum Mail {

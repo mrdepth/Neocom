@@ -39,19 +39,12 @@ class NCDatabaseMarketInfoRow: TreeRow {
 	}
 }
 
-class NCDatabaseMarketInfoViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
+class NCDatabaseMarketInfoViewController: NCTreeViewController, NCRefreshable {
 	var type: NCDBInvType?
-	
-	@IBOutlet weak var treeController: TreeController!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		
 		tableView.register([Prototype.NCHeaderTableViewCell.default])
-		
-		treeController.delegate = self
 		
 		registerRefreshable()
 		

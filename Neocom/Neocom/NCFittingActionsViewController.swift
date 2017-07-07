@@ -186,6 +186,8 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	}
 	
 	@IBAction func onSkills(_ sender: Any) {
+		guard let ship = fleet?.engine.sync(execute: {self.fleet?.active?.ship}) else {return}
+		Router.Fitting.RequiredSkills(for: ship).perform(source: self)
 	}
 
 	@IBAction func onShoppingList(_ sender: Any) {

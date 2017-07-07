@@ -44,25 +44,19 @@ class NCDatabaseTypeRow: FetchedResultsObjectNode<NSDictionary>, TreeNodeRoutabl
 }
 
 
-class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCDatabaseTypesViewController: NCTreeViewController, NCSearchableViewController {
 	
-	private var searchController: UISearchController?
 	private let gate = NCGate()
 	var predicate: NSPredicate?
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact])
-		treeController.delegate = self
-
 		
 		if navigationController != nil {
-			setupSearchController()
+			setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
 		}
 	}
 	
@@ -115,14 +109,16 @@ class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdat
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let row = node as? NCDatabaseTypeRow else {return}
 		guard let typeID = row.object["typeID"] as? Int else {return}
 		Router.Database.TypeInfo(typeID).perform(source: self, view: treeController.cell(for: node))
 	}
 	
-	//MARK: UISearchResultsUpdating
+	//MARK: NCSearchableViewController
 	
+	var searchController: UISearchController?
+
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCDatabaseTypesViewController else {return}
@@ -136,17 +132,4 @@ class NCDatabaseTypesViewController: UITableViewController, UISearchResultsUpdat
 		controller.reloadData()
 	}
 	
-	//MARK: Private
-	
-	private func setupSearchController() {
-		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
-		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
-		searchController?.searchResultsUpdater = self
-		searchController?.searchBar.barStyle = UIBarStyle.black
-		searchController?.hidesNavigationBarDuringPresentation = false
-		tableView.backgroundView = UIView()
-		tableView.tableHeaderView = searchController?.searchBar
-		definesPresentationContext = true
-		
-	}
 }

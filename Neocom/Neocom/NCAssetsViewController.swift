@@ -217,7 +217,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					
 					let location = locations[locationID]
 					let title = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: ""))
-					let nodeIdentifier = location?.solarSystemName ?? "~"
+					let nodeIdentifier = "\(locationID)"
 						
 					sections.append(DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title, children: rows))
 				}

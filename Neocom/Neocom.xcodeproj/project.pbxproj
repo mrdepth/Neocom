@@ -23,6 +23,8 @@
 		1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */; };
 		1211A4791EF1843D00364744 /* NCSkillsContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1211A4781EF1843D00364744 /* NCSkillsContentViewController.swift */; };
 		1211A47B1EF18BA700364744 /* NCSkillCompactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A47A1EF18BA700364744 /* NCSkillCompactTableViewCell.xib */; };
+		121314BF1F13881700DAFD12 /* NCMailAttachmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121314BE1F13881700DAFD12 /* NCMailAttachmentsViewController.swift */; };
+		121314C11F13A68B00DAFD12 /* NCMailAttachmentsShipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121314C01F13A68B00DAFD12 /* NCMailAttachmentsShipsViewController.swift */; };
 		1217B3C91EA63EB5005A8157 /* NCMailBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */; };
 		1217B4B91EAA0DE1005A8157 /* UIAlertController+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */; };
 		121D10AC1E262C7700DD671B /* NCTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */; };
@@ -367,6 +369,8 @@
 		1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCActionHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		1211A4781EF1843D00364744 /* NCSkillsContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillsContentViewController.swift; sourceTree = "<group>"; };
 		1211A47A1EF18BA700364744 /* NCSkillCompactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCSkillCompactTableViewCell.xib; sourceTree = "<group>"; };
+		121314BE1F13881700DAFD12 /* NCMailAttachmentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsViewController.swift; sourceTree = "<group>"; };
+		121314C01F13A68B00DAFD12 /* NCMailAttachmentsShipsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsShipsViewController.swift; sourceTree = "<group>"; };
 		1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailBodyViewController.swift; sourceTree = "<group>"; };
 		1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+NC.swift"; sourceTree = "<group>"; };
 		121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerViewController.swift; sourceTree = "<group>"; };
@@ -853,6 +857,8 @@
 				125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */,
 				1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */,
 				125CE1351E9FF0E7007B8B6B /* NCNewMailViewController.swift */,
+				121314BE1F13881700DAFD12 /* NCMailAttachmentsViewController.swift */,
+				121314C01F13A68B00DAFD12 /* NCMailAttachmentsShipsViewController.swift */,
 				125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */,
 				126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */,
 				1285FB391EB9C5700025331A /* NCWealthViewController.swift */,
@@ -1508,6 +1514,7 @@
 				129C51A11E605E6D0066F2E4 /* NCFittingFleetViewController.swift in Sources */,
 				12CFDADC1F038D6900CC0762 /* NCZKillboardRegionPickerViewController.swift in Sources */,
 				129B31691E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift in Sources */,
+				121314C11F13A68B00DAFD12 /* NCMailAttachmentsShipsViewController.swift in Sources */,
 				128E61421E0A707200C15EEB /* NCDamageTypeTableViewCell.swift in Sources */,
 				1293BC1E1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift in Sources */,
 				12AC8DC21DF0833B00561A7A /* NCBinder.swift in Sources */,
@@ -1579,6 +1586,7 @@
 				12961DDC1E1D64E4008A3F4D /* NCFittingDrone.mm in Sources */,
 				12C37D371EFBA4C80070F055 /* NCWHViewController.swift in Sources */,
 				125CE13C1EA1275C007B8B6B /* NCMailViewController.swift in Sources */,
+				121314BF1F13881700DAFD12 /* NCMailAttachmentsViewController.swift in Sources */,
 				12961DBF1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift in Sources */,
 				12AC8DB91DF012BA00561A7A /* NCTreeController.swift in Sources */,
 				1256BE531DF4725B00A2A24B /* NCMainMenuViewController.swift in Sources */,

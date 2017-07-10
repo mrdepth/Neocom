@@ -10,6 +10,7 @@ import UIKit
 import EVEAPI
 import CoreData
 
+
 class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsSearchResultViewControllerDelegate {
 	
 	@IBOutlet weak var scrollView: UIScrollView!
@@ -62,6 +63,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		subjectTextView.textContainer.exclusionPaths = [UIBezierPath(rect: label.frame)]
 		
 		textView.inputAccessoryView = accessoryView
+		textView.linkTextAttributes = [NSForegroundColorAttributeName: UIColor.caption]
 
 		subjectTextView.text = self.subject
 		textView.attributedText = body
@@ -100,6 +102,9 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	}
 	
 	@IBAction func onSend(_ sender: Any) {
+		guard let data = try? textView.attributedText.data(from: NSMakeRange(0, textView.attributedText.length), documentAttributes: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType]) else {return}
+		guard let html = String(data: data, encoding: .utf8) else {return}
+
 		let recipients = self.recipients.flatMap { id -> ESI.Mail.Recipient? in
 			guard let contact = self._recipients[id] else {return nil}
 			contact.lastUse = Date() as NSDate
@@ -115,7 +120,8 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 			try? context?.save()
 		}
 		
-		dataManager?.sendMail(body: textView.text, subject: subjectTextView.text, recipients: recipients, completionHandler: { result in
+		
+		dataManager?.sendMail(body: html, subject: subjectTextView.text, recipients: recipients, completionHandler: { result in
 			switch result {
 			case .success:
 				if let draft = self.draft {
@@ -172,6 +178,13 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		else {
 			self.dismiss(animated: true, completion: nil)
 		}
+	}
+	
+	@IBAction func onAttach(_ sender: Any) {
+		Router.Mail.Attachments { [weak self] (controller, value) in
+			controller.dismiss(animated: true, completion: nil)
+			self?.attach(value)
+		}.perform(source: self)
 	}
 
 	//MARK: - UITextViewDelegate
@@ -309,5 +322,20 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		}
 		s = s * toTextView.typingAttributes
 		toTextView.attributedText = s
+	}
+	
+	private func attach(_ attachment: Any) {
+		switch attachment {
+		case let loadout as NCLoadout:
+			guard let data = loadout.data?.data else {return}
+			let name = loadout.name?.isEmpty == false ? loadout.name! : NCDatabase.sharedDatabase?.invTypes[Int(loadout.typeID)]?.typeName ?? NSLocalizedString("Unknown", comment: "")
+			guard let url = (NCLoadoutRepresentation.dnaURL([(typeID: Int(loadout.typeID), data: data, name: name)]).value as? [URL])?.first else {return}
+			let s = name * [NSLinkAttributeName: url, NSFontAttributeName: textView.font!] + " " * textView.typingAttributes
+			textView.textStorage.replaceCharacters(in: textView.selectedRange, with: s)
+			textView.selectedRange = NSMakeRange(textView.selectedRange.location + s.length, 0)
+			break
+		default:
+			break
+		}
 	}
 }

@@ -15,7 +15,7 @@ class NCLoadoutRow: TreeRow {
 	let loadoutName: String
 	let image: UIImage?
 	let loadoutID: NSManagedObjectID
-	init(loadout: NCLoadout, type: NCDBInvType) {
+	required init(loadout: NCLoadout, type: NCDBInvType) {
 		typeName = type.typeName ?? ""
 		loadoutName = loadout.name ?? ""
 		image = type.icon?.image?.image
@@ -41,7 +41,7 @@ class NCLoadoutRow: TreeRow {
 	
 }
 
-class NCLoadoutsSection: TreeSection {
+class NCLoadoutsSection<T: NCLoadoutRow>: TreeSection {
 	let categoryID: NCDBDgmppItemCategoryID
 	let filter: NSPredicate?
 	private var observer: NotificationObserver?
@@ -87,7 +87,7 @@ class NCLoadoutsSection: TreeSection {
 						guard let name = type.group?.groupName else {continue}
 						let key = name
 						let section = groups[key]
-						let row = NCLoadoutRow(loadout: loadout, type: type)
+						let row = T(loadout: loadout, type: type)
 						if let section = section {
 							section.children.append(row)
 						}

@@ -636,7 +636,20 @@ enum Router {
 				destination.body = draft?.body ?? body
 				destination.draft = draft
 			}
-
+		}
+		
+		class Attachments: Route {
+			let completionHandler: (NCMailAttachmentsViewController, Any) -> Void
+			
+			init(completionHandler: @escaping (NCMailAttachmentsViewController, Any) -> Void) {
+				self.completionHandler = completionHandler
+				super.init(kind: .adaptiveModal, identifier: "NCMailAttachmentsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCMailAttachmentsViewController
+				destination.completionHandler = completionHandler
+			}
 		}
 	}
 	

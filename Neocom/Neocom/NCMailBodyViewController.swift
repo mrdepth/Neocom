@@ -28,6 +28,8 @@ class NCMailBodyViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		textView.linkTextAttributes = [NSForegroundColorAttributeName: UIColor.caption]
+		
 		guard let mail = self.mail, let account = NCAccount.current, let mailID = mail.mailID else {return}
 		
 		subjectLabel.text = mail.subject ?? " "

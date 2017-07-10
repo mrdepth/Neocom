@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
@@ -6850,6 +6850,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="accessoryView" destination="3zg-80-l7m" id="nGJ-wy-wnN"/>
                         <outlet property="bottomConstraint" destination="PUU-Ku-iNX" id="YpD-QW-LMO"/>
@@ -6873,6 +6874,9 @@
                             </constraints>
                             <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <state key="normal" image="attachment"/>
+                            <connections>
+                                <action selector="onAttach:" destination="cmp-JT-5vn" eventType="touchUpInside" id="upN-zD-T4g"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -9305,6 +9309,49 @@
             </objects>
             <point key="canvasLocation" x="5115" y="5365"/>
         </scene>
+        <!--Attach-->
+        <scene sceneID="UDj-4g-ViL">
+            <objects>
+                <viewController storyboardIdentifier="NCMailAttachmentsViewController" automaticallyAdjustsScrollViewInsets="NO" id="oEi-Zs-1gI" customClass="NCMailAttachmentsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HHy-48-5dI"/>
+                        <viewControllerLayoutGuide type="bottom" id="vQt-2h-jKb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hhP-Cl-6Pa" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Attach" id="boB-pF-uuU"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i80-Tg-PVO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4515" y="986"/>
+        </scene>
+        <!--Ships-->
+        <scene sceneID="MBN-5B-uFN">
+            <objects>
+                <tableViewController storyboardIdentifier="NCMailAttachmentsShipsViewController" title="Ships" modalPresentationStyle="overCurrentContext" id="E90-nF-wjx" customClass="NCMailAttachmentsShipsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="5yn-w4-DF1" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="U7G-i2-P13" id="O3F-W8-K4i"/>
+                            <outlet property="delegate" destination="U7G-i2-P13" id="8Ve-vX-gEB"/>
+                        </connections>
+                    </tableView>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="treeController" destination="U7G-i2-P13" id="XmW-Kx-ekP"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fHP-4C-czW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3814" y="987"/>
+        </scene>
     </scenes>
     <resources>
         <image name="actionsItem" width="24" height="24"/>
@@ -9351,7 +9398,7 @@
         <image name="warpSpeed" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cLd-bF-zDW"/>
         <segue reference="gkq-nf-oBK"/>
+        <segue reference="eUO-EC-Ai8"/>
     </inferredMetricsTieBreakers>
 </document>

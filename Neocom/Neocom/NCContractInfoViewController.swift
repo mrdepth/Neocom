@@ -219,10 +219,13 @@ class NCContractInfoViewController: UITableViewController, TreeControllerDelegat
 			                           title: NSLocalizedString("Availability", comment: ""),
 			                           subtitle: contract.availability.title))
 
+			let status = contract.currentStatus
+
+			
 			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
 			                           nodeIdentifier: "Status",
 			                           title: NSLocalizedString("Status", comment: ""),
-			                           subtitle: contract.status.title))
+			                           subtitle: status.title))
 			
 			if let contact = contacts?[Int64(contract.issuerID)] {
 				rows.append(NCContractContactRow(title: NSLocalizedString("From", comment: ""), contact: contact, dataManager: dataManager))
@@ -289,8 +292,8 @@ class NCContractInfoViewController: UITableViewController, TreeControllerDelegat
 				                           subtitle: DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .medium)))
 			}
 			
-			sections.append(DefaultTreeSection(nodeIdentifier: "Info",
-			                                   title: NSLocalizedString("Info", comment: "").uppercased(),
+			sections.append(DefaultTreeSection(nodeIdentifier: "Details",
+			                                   title: NSLocalizedString("Details", comment: "").uppercased(),
 			                                   children: rows))
 
 			if let items = items?.value, !items.isEmpty {

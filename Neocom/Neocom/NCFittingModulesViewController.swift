@@ -40,10 +40,9 @@ class NCFittingModuleRow: TreeRow {
 		super.init(prototype: module?.isDummy == true ? Prototype.NCDefaultTableViewCell.compact : Prototype.NCFittingModuleTableViewCell.default)
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		guard let from = node as? NCFittingModuleRow else {return .none}
+	override func update(from node: TreeNode) {
+		guard let from = node as? NCFittingModuleRow else {return}
 		subtitle = from.subtitle
-		return modules.first?.isDummy == false ? .reload : .none
 	}
 
 	var needsUpdate: Bool = true
@@ -74,7 +73,7 @@ class NCFittingModuleRow: TreeRow {
 			cell.subtitleLabel?.attributedText = subtitle
 			cell.targetIconView.image = hasTarget ? #imageLiteral(resourceName: "targets") : nil
 			
-			cell.subtitleLabel?.superview?.isHidden = subtitle == nil || subtitle?.length == 0
+//			cell.subtitleLabel?.superview?.isHidden = subtitle == nil || subtitle?.length == 0
 			
 			if needsUpdate {
 				let font = cell.subtitleLabel!.font!
@@ -106,7 +105,7 @@ class NCFittingModuleRow: TreeRow {
 							s = image + " \(NSLocalizedString("optimal + falloff", comment: "")): " + (NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full) + " + " + NCUnitFormatter.localizedString(from: falloff, unit: .meter, style: .full)) * attr
 						}
 						else {
-							s =  image + "\(NSLocalizedString("optimal", comment: "")): " + NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full) * attr
+							s =  image + " \(NSLocalizedString("optimal", comment: "")): " + NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full) * attr
 						}
 						string.appendLine(s)
 					}
@@ -141,9 +140,7 @@ class NCFittingModuleRow: TreeRow {
 					DispatchQueue.main.async {
 						self.needsUpdate = false
 						self.subtitle = string
-						guard let tableView = cell.tableView else {return}
-						guard let indexPath = tableView.indexPath(for: cell) else {return}
-						tableView.reloadRows(at: [indexPath], with: .fade)
+						self.treeController?.reloadCells(for: [self], with: .none)
 					}
 				}
 			}
@@ -191,10 +188,6 @@ class NCFittingModuleSection: TreeSection {
 		return (object as? NCFittingModuleSection)?.hashValue == hashValue
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		return (node as? NCFittingModuleSection)?.grouped != grouped ? .reload : .none
-	}
-
 }
 
 

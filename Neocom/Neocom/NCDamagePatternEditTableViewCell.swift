@@ -52,10 +52,6 @@ class NCDamagePatternEditRow: TreeRow, UIPickerViewDataSource, UIPickerViewDeleg
 		return (object as? NCDamagePatternEditRow)?.hashValue == hashValue
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		return .reconfigure
-	}
-	
 	//MARK: - UIPickerViewDataSource
 	
 	func numberOfComponents(in pickerView: UIPickerView) -> Int {

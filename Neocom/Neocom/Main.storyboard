@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
@@ -355,7 +355,7 @@
         <!--Navigation Controller-->
         <scene sceneID="epr-Wd-Vb2">
             <objects>
-                <navigationController modalPresentationStyle="currentContext" toolbarHidden="NO" id="b5B-xp-I0c" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController modalPresentationStyle="currentContext" id="b5B-xp-I0c" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="Mr6-lf-Jve">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -646,7 +646,7 @@
                                                     </subviews>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="dGZ-gc-ntN">
-                                                    <rect key="frame" x="0.0" y="50" width="195" height="68"/>
+                                                    <rect key="frame" x="0.0" y="66.5" width="195" height="51.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3eL-ub-25E">
                                                             <rect key="frame" x="0.0" y="0.0" width="195" height="14.5"/>
@@ -696,23 +696,6 @@
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="P0L-kU-vrG">
-                                                            <rect key="frame" x="0.0" y="53.5" width="195" height="14.5"/>
-                                                            <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="PAID UNTIL:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Xo7-Tx-4qS">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="70" height="14.5"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                    <color key="textColor" red="0.4549019608" green="0.61960784310000006" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="252" text="00.00.0000 (000 d)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SDU-va-n8a">
-                                                                    <rect key="frame" x="74" y="0.0" width="121" height="14.5"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                            </subviews>
-                                                        </stackView>
                                                     </subviews>
                                                 </stackView>
                                             </subviews>
@@ -747,7 +730,6 @@
                                     <outlet property="skillLabel" destination="vuO-gR-Gud" id="h5F-1R-4Cs"/>
                                     <outlet property="skillQueueLabel" destination="6a1-Ud-R5Y" id="GnT-uC-oOk"/>
                                     <outlet property="spLabel" destination="OS3-oP-ijJ" id="VwZ-lb-8nc"/>
-                                    <outlet property="subscriptionLabel" destination="SDU-va-n8a" id="lfn-UO-0GF"/>
                                     <outlet property="trainingProgressView" destination="QNo-uA-buc" id="kfO-fb-OFL"/>
                                     <outlet property="trainingTimeLabel" destination="rQx-eU-xQJ" id="8S0-35-Zmn"/>
                                     <outlet property="wealthLabel" destination="z0o-cD-OqW" id="Ejg-pF-4AS"/>
@@ -5914,19 +5896,13 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem image="skillsItem" id="6R4-07-D1m">
+                        <barButtonItem title="Skills" id="6R4-07-D1m">
                             <connections>
                                 <action selector="onSkills:" destination="rp9-Cr-qPz" id="Rep-Ye-2N0"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="C8z-Lh-Q38"/>
-                        <barButtonItem image="cart" id="aYi-pM-syg">
-                            <connections>
-                                <action selector="onShoppingList:" destination="rp9-Cr-qPz" id="md6-cr-3A9"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="PEV-N6-ge6"/>
-                        <barButtonItem systemItem="action" id="fvf-b4-YH0">
+                        <barButtonItem title="Share" id="fvf-b4-YH0">
                             <connections>
                                 <action selector="onShare:" destination="rp9-Cr-qPz" id="TqF-Ya-p8N"/>
                             </connections>
@@ -9340,7 +9316,6 @@
         <image name="calibration" width="32" height="32"/>
         <image name="capacitor" width="32" height="32"/>
         <image name="cargo" width="32" height="32"/>
-        <image name="cart" width="24" height="24"/>
         <image name="cpu" width="32" height="32"/>
         <image name="damagePattern" width="32" height="32"/>
         <image name="dps" width="32" height="32"/>
@@ -9367,7 +9342,6 @@
         <image name="shieldBooster" width="32" height="32"/>
         <image name="shieldRecharge" width="32" height="32"/>
         <image name="signature" width="32" height="32"/>
-        <image name="skillsItem" width="24" height="24"/>
         <image name="slotHigh" width="32" height="32"/>
         <image name="targetingRange" width="32" height="32"/>
         <image name="targets" width="32" height="32"/>
@@ -9377,7 +9351,7 @@
         <image name="warpSpeed" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="B28-Sl-QBx"/>
         <segue reference="cLd-bF-zDW"/>
+        <segue reference="gkq-nf-oBK"/>
     </inferredMetricsTieBreakers>
 </document>

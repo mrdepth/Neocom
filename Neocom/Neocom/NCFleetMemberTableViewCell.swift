@@ -105,11 +105,6 @@ class NCFleetMemberRow: TreeRow {
 
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		guard let from = node as? NCFleetMemberRow else {return .none}
-		return from.characterName != characterName ? .reload : .reconfigure
-	}
-	
 	override var hashValue: Int {
 		return [pilot.hashValue].hashValue
 	}

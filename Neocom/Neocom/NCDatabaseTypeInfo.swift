@@ -624,8 +624,9 @@ struct NCDatabaseTypeInfo {
 				guard let blueprintType = type.blueprintType else {return}
 				for activity in blueprintType.activities?.sortedArray(using: [NSSortDescriptor(key: "activity.activityID", ascending: true)]) as? [NCDBIndActivity] ?? [] {
 					var rows = [TreeNode]()
-					let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
-					                                title: NSLocalizedString("TIME", comment: ""),
+					let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.default,
+					                                image: #imageLiteral(resourceName: "skillRequirementQueued"),
+//					                                title: NSLocalizedString("TIME", comment: ""),
 					                                subtitle: NCTimeIntervalFormatter.localizedString(from: TimeInterval(activity.time), precision: .seconds))
 					rows.append(row)
 					

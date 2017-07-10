@@ -70,10 +70,6 @@ class NCTankRow: TreeRow {
 		}
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		return .reload
-	}
-
 	override var hashValue: Int {
 		return ship.hashValue
 	}

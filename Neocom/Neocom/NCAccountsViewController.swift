@@ -463,11 +463,17 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
+		
+		tableView.register([Prototype.NCActionTableViewCell.default,
+		                    Prototype.NCHeaderTableViewCell.empty])
+		
 		treeController.delegate = self
 		
 		guard let context = NCStorage.sharedStorage?.viewContext else {return}
 		
-		treeController.content = NCAccountsNode(context: context)
+		let row = NCActionRow(title: NSLocalizedString("ADD ACCOUNT", comment: ""))
+		let space = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty)
+		treeController.content = RootNode([NCAccountsNode(context: context), space, row])
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -503,10 +509,18 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		treeController.deselectCell(for: node, animated: true)
-		guard let node = node as? NCAccountRow else {return}
-		
-		NCAccount.current = node.object
-		dismiss(animated: true, completion: nil)
+		if node is NCActionRow {
+			let url = OAuth2.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.default, state: "esi")
+			if #available(iOS 10.0, *) {
+				UIApplication.shared.open(url, options: [:], completionHandler: nil)
+			} else {
+				UIApplication.shared.openURL(url)
+			}
+		}
+		else if let node = node as? NCAccountRow {
+			NCAccount.current = node.object
+			dismiss(animated: true, completion: nil)
+		}
 
 	}
 	

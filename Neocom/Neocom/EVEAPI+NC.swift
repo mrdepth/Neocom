@@ -93,6 +93,20 @@ extension ESI.Contracts.Contract.Status {
 
 }
 
+extension ESI.Contracts.Contract {
+	var currentStatus: ESI.Contracts.Contract.Status {
+		switch status {
+		case .outstanding, .inProgress:
+			return dateExpired < Date() ? .finished : status
+		default:
+			return status
+		}
+	}
+	var isOpen: Bool {
+		return dateExpired > Date() && (status == .outstanding || status == .inProgress)
+	}
+}
+
 extension ESI.Incursions.Incursion.State {
 	var title: String {
 		switch self {

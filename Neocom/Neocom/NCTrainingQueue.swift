@@ -65,14 +65,14 @@ class NCTrainingQueue {
 	}
 	
 	func add(skill type: NCDBInvType, level: Int) {
+		addRequiredSkills(for: type)
+
 		let typeID = Int(type.typeID)
 		let trainedSkill = trainedSkills[typeID]
 		let trainedLevel = trainedSkill?.level ?? 0
-		if trainedLevel >= level {
-			return
-		}
 		
-		addRequiredSkills(for: type)
+		guard trainedLevel < level else {return}
+
 		for level in (trainedLevel + 1)...level {
 			if skills.first(where: {return $0.skill.typeID == typeID && $0.level == level}) == nil {
 				guard let trainingSkill = NCTrainingSkill(type: type,

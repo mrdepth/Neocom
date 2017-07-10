@@ -63,8 +63,4 @@ class NCPieChartRow: TreeRow {
 		return Unmanaged.passUnretained(self).toOpaque().hashValue
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		return .none
-	}
-
 }

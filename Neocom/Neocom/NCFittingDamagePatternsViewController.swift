@@ -135,15 +135,13 @@ class NCCustomDamagePatternRow: FetchedResultsObjectNode<NCDamagePattern> {
 		}
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		
-		guard let from = node as? NCCustomDamagePatternRow else {return .none}
+	override func update(from node: TreeNode) {
+		guard let from = node as? NCCustomDamagePatternRow else {return}
 		let changed = from.changed
 		self.changed = false
 		editingContext = from.editingContext
 		editingObject = from.editingObject
 		isEditing = from.isEditing
-		return changed ? .reload : .none
 	}
 	
 	required init(object: NCDamagePattern) {

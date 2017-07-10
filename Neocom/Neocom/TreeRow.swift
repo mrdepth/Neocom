@@ -84,20 +84,6 @@ class DefaultTreeSection: TreeSection {
 		}
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		guard let node = node as? DefaultTreeSection else {return .none}
-		
-		if let title = self.title {
-			return title != node.title ? .reload : .none
-		}
-		else if let attributedTitle = self.attributedTitle {
-			return attributedTitle != self.attributedTitle ? .reload : .none
-		}
-		else {
-			return .none
-		}
-	}
-	
 	override var hashValue: Int {
 		return nodeIdentifier?.hashValue ?? super.hashValue
 	}
@@ -179,10 +165,6 @@ class DefaultTreeRow: TreeRow {
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? DefaultTreeRow)?.hashValue == hashValue
-	}
-	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		return .reconfigure
 	}
 	
 }

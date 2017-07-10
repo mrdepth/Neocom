@@ -156,8 +156,8 @@ class NCContractsViewController: UITableViewController, TreeControllerDelegate, 
 			let characterID = self.characterID ?? 0
 			
 			NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
-				var open = value.filter {$0.status == .outstanding || $0.status == .inProgress}.map {NCContractRow(contract: $0, characterID: characterID, contacts: contacts, location: $0.startLocationID != nil ? locations[$0.startLocationID!] : nil)}
-				var closed = value.filter {$0.status != .outstanding && $0.status != .inProgress}.map {NCContractRow(contract: $0, characterID: characterID, contacts: contacts, location: $0.startLocationID != nil ? locations[$0.startLocationID!] : nil)}
+				var open = value.filter {$0.isOpen}.map {NCContractRow(contract: $0, characterID: characterID, contacts: contacts, location: $0.startLocationID != nil ? locations[$0.startLocationID!] : nil)}
+				var closed = value.filter {!$0.isOpen}.map {NCContractRow(contract: $0, characterID: characterID, contacts: contacts, location: $0.startLocationID != nil ? locations[$0.startLocationID!] : nil)}
 				
 				open.sort {$0.contract.dateExpired < $1.contract.dateExpired}
 				closed.sort {$0.endDate > $1.endDate}

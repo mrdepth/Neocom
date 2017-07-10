@@ -124,10 +124,6 @@ class NCCustomCharacterRow: FetchedResultsObjectNode<NCFitCharacter>, TreeNodeRo
 	var accessoryButtonRoute: Route?
 	let url: URL?
 
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		return .reload
-	}
-	
 	convenience init(character: NCFitCharacter, route: Route? = nil) {
 		self.init(object: character)
 		self.route = route
@@ -194,10 +190,6 @@ class NCAccountCharacterRow: FetchedResultsObjectNode<NCAccount>, TreeNodeRoutab
 	var route: Route?
 	var accessoryButtonRoute: Route?
 	let url: URL?
-	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		return .reload
-	}
 	
 	convenience init(account: NCAccount, route: Route? = nil) {
 		self.init(object: account)

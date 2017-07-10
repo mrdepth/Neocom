@@ -245,10 +245,6 @@ class NCFittingModuleDamageChartRow: TreeRow {
 		}*/
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		return .reconfigure
-	}
-
 	override var hashValue: Int {
 		return module.hashValue
 	}

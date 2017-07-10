@@ -2,8 +2,10 @@
 
 import UIKit
 
-let format = DateFormatter()
+var a = [1,1,0,0,0,0,1,1,1]
 
-format.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
-
-format.date(from: "2017-07-03T16:54:57Z")
+let b = a.partition { (i) -> Bool in
+	return i == 1
+}
+a
+b

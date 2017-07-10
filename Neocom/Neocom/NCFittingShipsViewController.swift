@@ -39,9 +39,6 @@ class NCLoadoutRow: TreeRow {
 		return (object as? NCLoadoutRow)?.hashValue == hashValue
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		return .reconfigure
-	}
 }
 
 class NCLoadoutsSection: TreeSection {

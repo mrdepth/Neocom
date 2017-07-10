@@ -49,17 +49,20 @@ class NCContractRow: TreeRow {
 		
 		let availability = contract.availability.title
 		
-		let color = contract.status == .outstanding || contract.status == .inProgress ? UIColor.white : UIColor.lightText
+		let t = contract.dateExpired.timeIntervalSinceNow
+		
+		let status = contract.currentStatus
+		
+		let color = status == .outstanding || status == .inProgress ? UIColor.white : UIColor.lightText
 		
 		cell.titleLabel.attributedText = type * [NSForegroundColorAttributeName: color] + " [\(availability)]" * [NSForegroundColorAttributeName: UIColor.caption]
 		cell.locationLabel.attributedText = location?.displayName ?? NSLocalizedString("Unknown", comment: "") * [:]
 		
-		switch contract.status {
+		switch status {
 		case .outstanding, .inProgress:
-			let t = contract.dateExpired.timeIntervalSinceNow
-			cell.stateLabel.attributedText = contract.status.title * [NSForegroundColorAttributeName: color] + " " + NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes) * [NSForegroundColorAttributeName: UIColor.lightText]
+			cell.stateLabel.attributedText = status.title * [NSForegroundColorAttributeName: color] + " " + NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes) * [NSForegroundColorAttributeName: UIColor.lightText]
 		default:
-			cell.stateLabel.attributedText = "\(contract.status.title) \(DateFormatter.localizedString(from: endDate, dateStyle: .medium, timeStyle: .medium))" * [NSForegroundColorAttributeName: UIColor.lightText]
+			cell.stateLabel.attributedText = "\(status.title) \(DateFormatter.localizedString(from: endDate, dateStyle: .medium, timeStyle: .medium))" * [NSForegroundColorAttributeName: UIColor.lightText]
 		}
 		
 		if contract.issuerID == Int(characterID) {

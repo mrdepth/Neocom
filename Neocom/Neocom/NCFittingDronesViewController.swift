@@ -27,12 +27,6 @@ class NCFittingDroneRow: TreeRow {
 		super.init(prototype: Prototype.NCFittingDroneTableViewCell.default)
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		subtitle = (node as? NCFittingDroneRow)?.subtitle
-		return .reload
-	}
-
-	
 	var needsUpdate: Bool = true
 	var subtitle: NSAttributedString?
 	
@@ -87,9 +81,7 @@ class NCFittingDroneRow: TreeRow {
 				DispatchQueue.main.async {
 					self.needsUpdate = false
 					self.subtitle = string
-					guard let tableView = cell.tableView else {return}
-					guard let indexPath = tableView.indexPath(for: cell) else {return}
-					tableView.reloadRows(at: [indexPath], with: .fade)
+					self.treeController?.reloadCells(for: [self], with: .none)
 				}
 			}
 		}
@@ -138,11 +130,6 @@ class NCFittingDroneSection: TreeSection {
 		return (object as? NCFittingDroneSection)?.hashValue == hashValue
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		let from = node as? NCFittingDroneSection
-		return (used != from?.used || limit != from?.limit) ? .reload : .none
-	}
-
 }
 
 

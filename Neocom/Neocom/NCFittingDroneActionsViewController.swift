@@ -33,10 +33,6 @@ class NCFittingDroneInfoRow: NCChargeRow {
 		}
 	}
 	
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		return .reload
-	}
-	
 	override var hashValue: Int {
 		return type.hashValue
 	}
@@ -108,10 +104,6 @@ class NCFittingDroneCountRow: NCCountRow {
 		super.init(value: drones.count, range: Range(range))
 	}
 
-	override func transitionStyle(from node: TreeNode) -> TransitionStyle {
-		return .reload
-	}
-	
 	override var hashValue: Int {
 		return drones.first?.hashValue ?? 0
 	}

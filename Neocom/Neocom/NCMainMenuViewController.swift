@@ -302,6 +302,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	//MARK: UIScrollViewDelegate
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
 		let row = self.mainMenu[indexPath.section][indexPath.row]
 		if let segue = row["segueIdentifier"] as? String {
 			performSegue(withIdentifier: segue, sender: tableView.cellForRow(at: indexPath))

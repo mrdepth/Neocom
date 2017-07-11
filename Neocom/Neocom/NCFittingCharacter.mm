@@ -269,6 +269,26 @@
 	}
 }
 
+- (nullable NCFittingStructure*) structure {
+	NCVerifyFittingContext(self.engine);
+	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
+	return character ? (character->getStructure() ? (NCFittingStructure*) [NCFittingItem item:character->getStructure() withEngine:self.engine] : nil) : nil;
+}
+
+- (void) setStructure:(NCFittingStructure *)structure {
+	NCVerifyFittingContext(self.engine);
+	auto character = std::dynamic_pointer_cast<dgmpp::Character>(self.item);
+	if (character) {
+		auto oldStructure = character->getStructure();
+		if (oldStructure)
+			[self.engine assignIdentifier:nil forItem:[NCFittingItem item: oldStructure withEngine:self.engine]];
+		structure.item = character->setStructure(static_cast<dgmpp::TypeID>(structure.typeID));
+		structure.engine = self.engine;
+		[self.engine updateWithItem: self];
+	}
+}
+
+
 - (nonnull NCFittingSkills*) skills {
 	NCVerifyFittingContext(self.engine);
 	if (!_skills) {

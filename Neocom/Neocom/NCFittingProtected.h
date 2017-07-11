@@ -37,6 +37,7 @@
 #import "NCFittingProductionCycle.h"
 #import "NCFittingState.h"
 #import "NCFittingProductionState.h"
+#import "NCFittingStructure.h"
 
 #if DEBUG
 #define NCVerifyFittingContext(engine) ([engine verifyContext])

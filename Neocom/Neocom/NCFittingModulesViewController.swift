@@ -259,28 +259,34 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 		treeController.deselectCell(for: node, animated: true)
 		guard let item = node as? NCFittingModuleRow else {return}
 		guard let pilot = fleet?.active else {return}
+		guard let engine = self.engine else {return}
 		
 		//guard let ship = ship else {return}
 		guard let typePickerViewController = typePickerViewController else {return}
 		let socket = (node.parent as? NCFittingModuleSection)?.grouped == true ? -1 : node.parent?.children.index(of: item) ?? -1
 		
+//		var rigSize: Int?
+//		self.engine?.performBlockAndWait {
+//			rigSize = pilot.ship?.rigSize ?? pilot.structure?.rigSize
+//		}
+		
+		let (rigSize, isStructure, shipTypeID) = engine.sync {
+			return (pilot.ship?.rigSize ?? pilot.structure?.rigSize, pilot.structure != nil, pilot.ship?.typeID ?? pilot.structure?.typeID)
+		}
+
 		let module = item.modules.first
 		if module?.isDummy == true {
 			let category: NCDBDgmppItemCategory?
 			switch item.slot {
 			case .hi:
-				category = NCDBDgmppItemCategory.category(categoryID: .hi, subcategory: NCDBCategoryID.module.rawValue)
+				category = NCDBDgmppItemCategory.category(categoryID: .hi, subcategory: isStructure ? NCDBCategoryID.structureModule.rawValue : NCDBCategoryID.module.rawValue)
 			case .med:
-				category = NCDBDgmppItemCategory.category(categoryID: .med, subcategory: NCDBCategoryID.module.rawValue)
+				category = NCDBDgmppItemCategory.category(categoryID: .med, subcategory: isStructure ? NCDBCategoryID.structureModule.rawValue : NCDBCategoryID.module.rawValue)
 			case .low:
-				category = NCDBDgmppItemCategory.category(categoryID: .low, subcategory: NCDBCategoryID.module.rawValue)
+				category = NCDBDgmppItemCategory.category(categoryID: .low, subcategory: isStructure ? NCDBCategoryID.structureModule.rawValue : NCDBCategoryID.module.rawValue)
 			case .rig:
-				var rigSize: Int?
-				self.engine?.performBlockAndWait {
-					rigSize = pilot.ship?.rigSize
-				}
-				guard rigSize != nil else {return}
-				category = NCDBDgmppItemCategory.category(categoryID: .rig, subcategory: rigSize!)
+				guard let rigSize = rigSize else {return}
+				category = NCDBDgmppItemCategory.category(categoryID: isStructure ? .structureRig : .rig, subcategory: rigSize)
 			case .subsystem:
 				var raceID: Int?
 				self.engine?.performBlockAndWait {
@@ -288,6 +294,11 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 				}
 				guard raceID != nil, let race = NCDatabase.sharedDatabase?.chrRaces[raceID!] else {return}
 				category = NCDBDgmppItemCategory.category(categoryID: .subsystem, subcategory: nil, race: race)
+			case .service:
+				category = NCDBDgmppItemCategory.category(categoryID: .service, subcategory: NCDBCategoryID.structureModule.rawValue)
+			case .mode:
+				guard let shipTypeID = shipTypeID else {return}
+				category = NCDBDgmppItemCategory.category(categoryID: .mode, subcategory: shipTypeID)
 			default:
 				return
 			}
@@ -295,7 +306,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 			typePickerViewController.completionHandler = { [weak typePickerViewController] (_, type) in
 				let typeID = Int(type.typeID)
 				self.engine?.perform {
-					guard let ship = pilot.ship else {return}
+					guard let ship = pilot.ship ?? pilot.structure else {return}
 					_ = ship.addModule(typeID: typeID, socket: socket)
 				}
 				typePickerViewController?.dismiss(animated: true)
@@ -324,7 +335,8 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 	
 	private func update() {
 		engine?.perform {
-			guard let ship = self.fleet?.active?.ship else {return}
+			guard let pilot = self.fleet?.active else {return}
+			guard let ship = pilot.ship ?? pilot.structure else {return}
 			let powerGrid = (ship.powerGridUsed, ship.totalPowerGrid)
 			let cpu = (ship.cpuUsed, ship.totalCPU)
 			let calibration = (ship.calibrationUsed, ship.totalCalibration)
@@ -351,7 +363,8 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 	private func reload() {
 		let grouping = self.grouping
 		engine?.perform {
-			guard let ship = self.fleet?.active?.ship else {return}
+			guard let pilot = self.fleet?.active else {return}
+			guard let ship = pilot.ship ?? pilot.structure else {return}
 			
 			var sections = [NCFittingModuleSection]()
 			for slot in [NCFittingModuleSlot.hi, NCFittingModuleSlot.med, NCFittingModuleSlot.low, NCFittingModuleSlot.rig, NCFittingModuleSlot.subsystem, NCFittingModuleSlot.service, NCFittingModuleSlot.mode] {

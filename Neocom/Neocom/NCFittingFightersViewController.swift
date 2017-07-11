@@ -69,6 +69,7 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 		else if node is NCActionRow {
 			guard let pilot = fleet?.active else {return}
 			guard let typePickerViewController = typePickerViewController else {return}
+			
 			let category = NCDBDgmppItemCategory.category(categoryID: .drone, subcategory:  NCDBCategoryID.fighter.rawValue)
 			
 			typePickerViewController.category = category
@@ -76,7 +77,7 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 				guard let engine = self.engine else {return}
 				let typeID = Int(type.typeID)
 				engine.perform {
-					guard let ship = pilot.ship else {return}
+					guard let ship = pilot.ship ?? pilot.structure else {return}
 //					let tag = (ship.drones.flatMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
 					let tag = -1
 					let identifier = UUID().uuidString
@@ -99,7 +100,8 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 	
 	private func update() {
 		engine?.perform {
-			guard let ship = self.fleet?.active?.ship else {return}
+			guard let pilot = self.fleet?.active else {return}
+			guard let ship = pilot.ship ?? pilot.structure else {return}
 			let droneBay = (ship.fighterHangarUsed, ship.totalFighterHangar)
 			let droneSquadron = (ship.fighterLaunchTubesUsed, ship.totalFighterLaunchTubes)
 			
@@ -114,7 +116,8 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 	
 	private func reload() {
 		engine?.perform {
-			guard let ship = self.fleet?.active?.ship else {return}
+			guard let pilot = self.fleet?.active else {return}
+			guard let ship = pilot.ship ?? pilot.structure else {return}
 			
 			/*var squadrons = [Int: [Int: [Bool: [NCFittingDrone]]]]()
 			for drone in ship.drones.filter({$0.squadron == .none} ) {

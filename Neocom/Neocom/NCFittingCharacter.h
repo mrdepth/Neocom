@@ -32,9 +32,10 @@
 - (nullable NCFittingBooster*) objectAtIndexedSubscript:(NSInteger) slot;
 @end
 
-@class NCFittingShip;
+@class NCFittingShip, NCFittingStructure;
 @interface NCFittingCharacter : NCFittingItem
 @property (nonatomic, nullable) NCFittingShip* ship;
+@property (nonatomic, nullable) NCFittingStructure* structure;
 @property (readonly, nonnull) NCFittingSkills* skills;
 @property (readonly, nonnull) NCFittingImplants* implants;
 @property (readonly, nonnull) NCFittingBoosters* boosters;

@@ -43,7 +43,17 @@ class NCFittingFleet {
 	init(typeID: Int, engine: NCFittingEngine) {
 		let gang = engine.gang
 		if let pilot = gang.addPilot() {
-			pilot.ship = NCFittingShip(typeID: typeID)
+			let categoryID = NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> NCDBDgmppItemCategoryID? in
+				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
+				guard let categoryID = (invTypes[typeID]?.dgmppItem?.groups?.anyObject() as? NCDBDgmppItemGroup)?.category?.category else {return nil}
+				return NCDBDgmppItemCategoryID(rawValue: Int(categoryID))
+			}
+			if categoryID == .structure {
+				pilot.structure = NCFittingStructure(typeID: typeID)
+			}
+			else {
+				pilot.ship = NCFittingShip(typeID: typeID)
+			}
 			pilots.append((pilot, nil))
 			active = pilots.first?.0
 		}

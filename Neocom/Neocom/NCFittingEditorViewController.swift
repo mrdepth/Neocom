@@ -40,18 +40,29 @@ class NCFittingEditorViewController: NCPageViewController {
 		
 		let pilot = fleet?.active
 		var useFighters = false
+		var isShip = true
 		engine?.performBlockAndWait {
-			guard let ship = pilot?.ship else {return}
-			useFighters = ship.totalFighterLaunchTubes > 0
+			if let ship = pilot?.ship {
+				useFighters = ship.totalFighterLaunchTubes > 0
+				isShip = true
+			}
+			else {
+				useFighters = true
+				isShip = false
+			}
 		}
 		
-		viewControllers = [
+		var controllers = [
 			storyboard!.instantiateViewController(withIdentifier: "NCFittingModulesViewController"),
-			storyboard!.instantiateViewController(withIdentifier: useFighters ? "NCFittingFightersViewController" : "NCFittingDronesViewController"),
-			storyboard!.instantiateViewController(withIdentifier: "NCFittingImplantsViewController"),
-			storyboard!.instantiateViewController(withIdentifier: "NCFittingFleetViewController"),
-			storyboard!.instantiateViewController(withIdentifier: "NCFittingStatsViewController"),
+			storyboard!.instantiateViewController(withIdentifier: useFighters ? "NCFittingFightersViewController" : "NCFittingDronesViewController")
 		]
+		
+		if isShip {
+			controllers.append(storyboard!.instantiateViewController(withIdentifier: "NCFittingImplantsViewController"))
+			controllers.append(storyboard!.instantiateViewController(withIdentifier: "NCFittingFleetViewController"))
+		}
+		controllers.append(storyboard!.instantiateViewController(withIdentifier: "NCFittingStatsViewController"))
+		viewControllers = controllers
 		
 		updateTitle()
 		
@@ -76,7 +87,7 @@ class NCFittingEditorViewController: NCPageViewController {
 							character.identifier = UUID().uuidString
 						}
 						
-						guard let ship = character.ship else {continue}
+						guard let ship = character.ship ?? character.structure else {continue}
 						if let objectID = objectID, let loadout = (try? managedObjectContext.existingObject(with: objectID)) as? NCLoadout {
 							loadout.uuid = character.identifier
 							loadout.name = ship.name
@@ -159,7 +170,7 @@ class NCFittingEditorViewController: NCPageViewController {
 		var typeName: String = ""
 		
 		engine?.performBlockAndWait {
-			guard let ship = pilot?.ship else {return}
+			guard let ship = pilot?.ship ?? pilot?.structure else {return}
 			shipName = ship.name
 			typeName = NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.typeName ?? ""
 		}

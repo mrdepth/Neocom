@@ -29,6 +29,7 @@ class NCFittingMiscTableViewCell: NCTableViewCell {
 extension Prototype {
 	enum NCFittingMiscTableViewCell {
 		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCFittingMiscTableViewCell")
+		static let structure = Prototype(nib: nil, reuseIdentifier: "NCFittingMiscStructureTableViewCell")
 	}
 }
 
@@ -39,6 +40,11 @@ class NCFittingMiscRow: TreeRow {
 	init(ship: NCFittingShip) {
 		self.ship = ship
 		super.init(prototype: Prototype.NCFittingMiscTableViewCell.default)
+	}
+	
+	init(structure: NCFittingStructure) {
+		self.ship = structure
+		super.init(prototype: Prototype.NCFittingMiscTableViewCell.structure)
 	}
 	
 	override func configure(cell: UITableViewCell) {

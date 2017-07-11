@@ -130,6 +130,7 @@ enum NCDBCategoryID: Int {
 	case subsystem = 32
 	case fighter = 87
 	case structure = 65
+	case structureModule = 66
 	
 	case asteroid = 25
 	case ancientRelic = 34

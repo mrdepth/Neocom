@@ -25,6 +25,8 @@
 		1211A47B1EF18BA700364744 /* NCSkillCompactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A47A1EF18BA700364744 /* NCSkillCompactTableViewCell.xib */; };
 		121314BF1F13881700DAFD12 /* NCMailAttachmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121314BE1F13881700DAFD12 /* NCMailAttachmentsViewController.swift */; };
 		121314C11F13A68B00DAFD12 /* NCMailAttachmentsShipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121314C01F13A68B00DAFD12 /* NCMailAttachmentsShipsViewController.swift */; };
+		121314C41F14B79700DAFD12 /* NCFittingStructuresViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121314C31F14B79700DAFD12 /* NCFittingStructuresViewController.swift */; };
+		121314C71F14BAB600DAFD12 /* NCFittingStructure.mm in Sources */ = {isa = PBXBuildFile; fileRef = 121314C61F14BAB600DAFD12 /* NCFittingStructure.mm */; };
 		1217B3C91EA63EB5005A8157 /* NCMailBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */; };
 		1217B4B91EAA0DE1005A8157 /* UIAlertController+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */; };
 		121D10AC1E262C7700DD671B /* NCTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */; };
@@ -371,6 +373,9 @@
 		1211A47A1EF18BA700364744 /* NCSkillCompactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCSkillCompactTableViewCell.xib; sourceTree = "<group>"; };
 		121314BE1F13881700DAFD12 /* NCMailAttachmentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsViewController.swift; sourceTree = "<group>"; };
 		121314C01F13A68B00DAFD12 /* NCMailAttachmentsShipsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsShipsViewController.swift; sourceTree = "<group>"; };
+		121314C31F14B79700DAFD12 /* NCFittingStructuresViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingStructuresViewController.swift; sourceTree = "<group>"; };
+		121314C51F14BAB600DAFD12 /* NCFittingStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingStructure.h; sourceTree = "<group>"; };
+		121314C61F14BAB600DAFD12 /* NCFittingStructure.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingStructure.mm; sourceTree = "<group>"; };
 		1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailBodyViewController.swift; sourceTree = "<group>"; };
 		1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+NC.swift"; sourceTree = "<group>"; };
 		121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerViewController.swift; sourceTree = "<group>"; };
@@ -902,6 +907,7 @@
 			children = (
 				12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */,
 				12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */,
+				121314C31F14B79700DAFD12 /* NCFittingStructuresViewController.swift */,
 				1263C5081E64A7D0003D002D /* NCFittingFleetsViewController.swift */,
 				12424E411E3651DC0078AB0F /* NCFittingEditorViewController.swift */,
 				1291194A1E3918CC00870428 /* NCFittingModulesViewController.swift */,
@@ -1192,6 +1198,8 @@
 				12DBEABE1E1D42420088A486 /* NCFittingProtected.h */,
 				12DBEAB51E1D3BD80088A486 /* NCFittingEngine.h */,
 				12DBEAB61E1D3BD80088A486 /* NCFittingEngine.mm */,
+				121314C51F14BAB600DAFD12 /* NCFittingStructure.h */,
+				121314C61F14BAB600DAFD12 /* NCFittingStructure.mm */,
 				12DBEAE71E1E6DF50088A486 /* NCFittingTypes.h */,
 			);
 			name = Engine;
@@ -1498,6 +1506,7 @@
 				12D39D081EF91CA80077BD17 /* NCWalletJournalViewController.swift in Sources */,
 				12961DB81E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift in Sources */,
 				12424E1B1E48C9F3002DFE08 /* NCFittingDronesViewController.swift in Sources */,
+				121314C71F14BAB600DAFD12 /* NCFittingStructure.mm in Sources */,
 				12961DD91E1D64D4008A3F4D /* NCFittingCharge.mm in Sources */,
 				12961DD31E1D64B8008A3F4D /* NCFittingShip.mm in Sources */,
 				12DC56A31EFC0ADC0088F45E /* NCFittingCycle.mm in Sources */,
@@ -1657,6 +1666,7 @@
 				1293BC131E4A0F6E0099FD75 /* NCCountTableViewCell.swift in Sources */,
 				12961DCA1E1D6486008A3F4D /* NCFittingSkill.mm in Sources */,
 				121D10AC1E262C7700DD671B /* NCTypePickerViewController.swift in Sources */,
+				121314C41F14B79700DAFD12 /* NCFittingStructuresViewController.swift in Sources */,
 				12D39D061EF805270077BD17 /* NCIndustryTableViewCell.swift in Sources */,
 				1293BC161E4B1FC60099FD75 /* NCResistancesTableViewCell.swift in Sources */,
 				1256BE401DF1F06D00A2A24B /* NCCharacter.swift in Sources */,

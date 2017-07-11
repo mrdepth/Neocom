@@ -78,6 +78,8 @@
 		return [[NCFittingGang alloc] initWithItem:item engine:engine];
 	else if (std::dynamic_pointer_cast<dgmpp::Character>(item) != nullptr)
 		return [[NCFittingCharacter alloc] initWithItem:item engine:engine];
+	else if (std::dynamic_pointer_cast<dgmpp::Structure>(item) != nullptr)
+		return [[NCFittingStructure alloc] initWithItem:item engine:engine];
 	else if (std::dynamic_pointer_cast<dgmpp::Ship>(item) != nullptr)
 		return [[NCFittingShip alloc] initWithItem:item engine:engine];
 	else if (std::dynamic_pointer_cast<dgmpp::Skill>(item) != nullptr)

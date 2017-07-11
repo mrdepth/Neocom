@@ -33,6 +33,7 @@
 #import "NCFittingProductionCycle.h"
 #import "NCFittingState.h"
 #import "NCFittingProductionState.h"
+#import "NCFittingStructure.h"
 
 
 extern _Nonnull NSNotificationName const NCFittingEngineDidUpdateNotification;

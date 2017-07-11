@@ -365,6 +365,7 @@ extension NCFittingCharacter {
 	
 	var loadout: NCFittingLoadout {
 		get {
+			let ship = self.ship ?? self.structure
 			let loadout = NCFittingLoadout()
 			loadout.implants = implants.all.map({NCFittingLoadoutItem(item: $0)})
 			loadout.boosters = boosters.all.map({NCFittingLoadoutItem(item: $0)})
@@ -394,7 +395,7 @@ extension NCFittingCharacter {
 			return loadout
 		}
 		set {
-			let ship = self.ship!
+			let ship = (self.ship ?? self.structure)!
 			for implant in newValue.implants ?? [] {
 				addImplant(typeID: implant.typeID)
 			}
@@ -596,7 +597,7 @@ extension NCFittingCharacter {
 	
 	var shoppingItem: NCShoppingItem? {
 		guard let context = NCStorage.sharedStorage?.viewContext else {return nil}
-		guard let ship = self.ship else {return nil}
+		guard let ship = self.ship ?? self.structure else {return nil}
 		let loadout = self.loadout
 		let shipItem = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
 		shipItem.typeID = Int32(ship.typeID)
@@ -661,6 +662,17 @@ extension NCFittingCharacter {
 		}
 
 		return shipItem
+	}
+
+}
+
+extension NCFittingStructure {
+	@nonobjc var supportedModuleCategories: [Int] {
+		return __supportedModuleCategories.map{$0.intValue}
+	}
+	
+	@nonobjc var supportedDroneCategories: [Int] {
+		return __supportedDroneCategories.map{$0.intValue}
 	}
 
 }

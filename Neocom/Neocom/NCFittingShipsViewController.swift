@@ -198,7 +198,9 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 			guard let strongSelf = self else {return}
 			strongSelf.dismiss(animated: true)
 			
-			let engine = NCFittingEngine()
+			Router.Fitting.Editor(typeID: Int(type.typeID)).perform(source: strongSelf)
+			
+			/*let engine = NCFittingEngine()
 			let typeID = Int(type.typeID)
 			engine.perform {
 				let fleet = NCFittingFleet(typeID: typeID, engine: engine)
@@ -216,7 +218,7 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 						}
 					}
 				}
-			}
+			}*/
 
 		})))
 		

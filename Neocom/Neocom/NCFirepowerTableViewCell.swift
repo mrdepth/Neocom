@@ -59,7 +59,7 @@ class NCFirepowerRow: TreeRow {
 					cell.volleyView.totalLabel.text = formatter.string(for: volley.total)
 					
 					func fill(label: NCDamageTypeLabel, value: Double, total: Double) {
-						label.progress = Float(value/total)
+						label.progress = fabs(total) > Double.leastNormalMagnitude ? Float(value/total) : 0
 						label.text = formatter.string(for: value)
 					}
 					

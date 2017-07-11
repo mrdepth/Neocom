@@ -389,12 +389,19 @@ enum Router {
 	enum Fitting {
 		
 		class Editor: Route {
-			let fleet: NCFittingFleet
-			let engine: NCFittingEngine
+			var fleet: NCFittingFleet?
+			var engine: NCFittingEngine?
+			let typeID: Int?
 			
 			init(fleet: NCFittingFleet, engine: NCFittingEngine) {
 				self.fleet = fleet
 				self.engine = engine
+				self.typeID = nil
+				super.init(kind: .push, identifier: "NCFittingEditorViewController")
+			}
+			
+			init(typeID: Int) {
+				self.typeID = typeID
 				super.init(kind: .push, identifier: "NCFittingEditorViewController")
 			}
 			
@@ -402,6 +409,40 @@ enum Router {
 				let destination = destination as! NCFittingEditorViewController
 				destination.fleet = fleet
 				destination.engine = engine
+			}
+			
+			override func perform(source: UIViewController, view: UIView? = nil) {
+				if let typeID = typeID {
+					let progress = NCProgressHandler(viewController: source, totalUnitCount: 1)
+					let engine = NCFittingEngine()
+					engine.perform {
+						let fleet = NCFittingFleet(typeID: typeID, engine: engine)
+						
+						DispatchQueue.main.async {
+							if let account = NCAccount.current {
+								fleet.active?.setSkills(from: account) {  _ in
+									self.fleet = fleet
+									self.engine = engine
+									super.perform(source: source, view: view)
+									progress.finish()
+								}
+							}
+							else {
+								fleet.active?.setSkills(level: 5) { _ in
+									self.fleet = fleet
+									self.engine = engine
+									super.perform(source: source, view: view)
+									progress.finish()
+								}
+							}
+						}
+					}
+
+					
+				}
+				else {
+					super.perform(source: source)
+				}
 			}
 		}
 		

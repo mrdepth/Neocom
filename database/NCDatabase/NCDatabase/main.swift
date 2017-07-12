@@ -1289,12 +1289,8 @@ do {
 		let hullType = NCDBDgmppHullType(context: context)
 		hullType.hullTypeName = marketGroup.marketGroupName
 
-		let array = types(marketGroup)
-		var signature = 0 as Double
-		for type in array {
-			type.hullType = hullType
-			signature += Double(type.getAttribute(552)!.value)
-		}
+		let array = types(marketGroup).flatMap {$0.getAttribute(552)?.value}.map{ Double($0) }
+		var signature = array.reduce(0, +)
 		signature /= Double(array.count)
 		signature = ceil(signature / 5) * 5
 		

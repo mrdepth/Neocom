@@ -10,18 +10,12 @@ import UIKit
 import CoreData
 
 
-class NCFittingFleetsViewController: UITableViewController, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCFittingFleetsViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		
 		tableView.register([Prototype.NCDefaultTableViewCell.default])
-		
-		treeController.delegate = self
 		
 		guard let context = NCStorage.sharedStorage?.viewContext else {return}
 		

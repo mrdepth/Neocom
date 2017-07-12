@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
@@ -6374,21 +6374,9 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="jDZ-MO-Xoh" id="e6Q-An-5dM"/>
-                            <outlet property="delegate" destination="jDZ-MO-Xoh" id="3Ck-ev-eVC"/>
-                        </connections>
                     </tableView>
-                    <connections>
-                        <outlet property="treeController" destination="jDZ-MO-Xoh" id="daJ-gb-451"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uGR-ih-bHA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="jDZ-MO-Xoh" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="78f-OO-ZBQ" id="wOg-9z-3fL"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="605.625" y="3817.605633802817"/>
         </scene>

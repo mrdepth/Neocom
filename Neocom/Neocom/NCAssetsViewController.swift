@@ -63,8 +63,10 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
             }
             
             extractContents(from: row)
-            
-            let engine = NCFittingEngine()
+			
+			Router.Fitting.Editor(asset: asset, contents: contents).perform(source: self, view: treeController.cell(for: node))
+			
+            /*let engine = NCFittingEngine()
             engine.perform {
                 let fleet = NCFittingFleet(asset: asset, contents: contents, engine: engine)
                 DispatchQueue.main.async {
@@ -81,7 +83,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
                         }
                     }
                 }
-            }
+            }*/
 		}
 	}
 	

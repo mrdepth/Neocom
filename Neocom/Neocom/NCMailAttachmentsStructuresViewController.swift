@@ -1,24 +1,14 @@
 //
-//  NCMailAttachmentsShipsViewController.swift
+//  NCMailAttachmentsStructuresViewController.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 10.07.17.
+//  Created by Artem Shimanski on 12.07.17.
 //  Copyright © 2017 Artem Shimanski. All rights reserved.
 //
 
 import UIKit
 
-class NCAttachmentLoadoutRow: NCLoadoutRow {
-	
-	override func configure(cell: UITableViewCell) {
-		super.configure(cell: cell)
-		cell.accessoryType = .detailButton
-		accessoryButtonRoute = route
-		route = nil
-	}
-}
-
-class NCMailAttachmentsShipsViewController: NCTreeViewController {
+class NCMailAttachmentsStructuresViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -35,7 +25,7 @@ class NCMailAttachmentsShipsViewController: NCTreeViewController {
 		super.viewWillAppear(animated)
 		
 		if treeController.content == nil {
-			self.treeController.content = RootNode([NCLoadoutsSection<NCAttachmentLoadoutRow>(categoryID: .ship)])
+			self.treeController.content = RootNode([NCLoadoutsSection<NCAttachmentLoadoutRow>(categoryID: .structure)])
 		}
 	}
 	

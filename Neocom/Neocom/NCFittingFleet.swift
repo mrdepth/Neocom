@@ -22,6 +22,10 @@ class NCFittingFleet {
 	var fleetID: NSManagedObjectID?
 	let engine: NCFittingEngine
 	
+	init(engine: NCFittingEngine) {
+		self.engine = engine
+	}
+	
 	init(fleet: NCFleet, engine: NCFittingEngine) {
 		self.fleetID = fleet.objectID
 		self.engine = engine
@@ -42,20 +46,9 @@ class NCFittingFleet {
 	
 	init(typeID: Int, engine: NCFittingEngine) {
 		let gang = engine.gang
-		if let pilot = gang.addPilot() {
-			let categoryID = NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> NCDBDgmppItemCategoryID? in
-				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
-				guard let categoryID = (invTypes[typeID]?.dgmppItem?.groups?.anyObject() as? NCDBDgmppItemGroup)?.category?.category else {return nil}
-				return NCDBDgmppItemCategoryID(rawValue: Int(categoryID))
-			}
-			if categoryID == .structure {
-				pilot.structure = NCFittingStructure(typeID: typeID)
-			}
-			else {
-				pilot.ship = NCFittingShip(typeID: typeID)
-			}
+		if let pilot = gang.addPilot(typeID: typeID) {
 			pilots.append((pilot, nil))
-			active = pilots.first?.0
+			active = pilot
 		}
 		self.engine = engine
 	}
@@ -64,9 +57,8 @@ class NCFittingFleet {
         self.engine = engine
         
         let gang = engine.gang
-		if let pilot = gang.addPilot() {
-			let ship = NCFittingShip(typeID: asset.typeID)
-			pilot.ship = ship
+		if let pilot = gang.addPilot(typeID: asset.typeID) {
+			guard let ship = pilot.ship ?? pilot.structure else {return}
 			pilots.append((pilot, nil))
 			active = pilot
 			
@@ -105,9 +97,8 @@ class NCFittingFleet {
 		self.engine = engine
 		
 		let gang = engine.gang
-		if let pilot = gang.addPilot() {
-			let ship = NCFittingShip(typeID: killmail.getVictim().shipTypeID)
-			pilot.ship = ship
+		if let pilot = gang.addPilot(typeID: killmail.getVictim().shipTypeID) {
+			guard let ship = pilot.ship ?? pilot.structure else {return}
 			pilots.append((pilot, nil))
 			active = pilot
 			
@@ -150,10 +141,9 @@ class NCFittingFleet {
 		guard let data = loadout.data?.data else {return}
 		let gang = engine.gang
 
-		if let pilot = gang.addPilot() {
-		
-			pilot.ship = NCFittingShip(typeID: Int(loadout.typeID))
-			pilot.ship?.name = loadout.name ?? ""
+		if let pilot = gang.addPilot(typeID: Int(loadout.typeID)) {
+			let ship = pilot.ship ?? pilot.structure
+			ship?.name = loadout.name ?? ""
 			pilot.loadout = data
 			pilot.identifier = loadout.uuid
 			pilots.append((pilot, loadout.objectID))
@@ -168,10 +158,11 @@ class NCFittingFleet {
 		let gang = engine.gang
 		
 		
-		if let pilot = gang.addPilot() {
-			pilot.ship = NCFittingShip(typeID: typeID)
+		if let pilot = gang.addPilot(typeID: typeID) {
 			pilots.append((pilot, nil))
-			active = pilots.first?.0
+			if active == nil {
+				active = pilot
+			}
 		}
 	}
 	
@@ -257,4 +248,22 @@ class NCFittingFleet {
 		}
 	}
 
+}
+
+fileprivate extension NCFittingGang {
+	func addPilot(typeID: Int) -> NCFittingCharacter?  {
+		guard let pilot = addPilot() else {return nil}
+		let categoryID = NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> NCDBDgmppItemCategoryID? in
+			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
+			guard let categoryID = (invTypes[typeID]?.dgmppItem?.groups?.anyObject() as? NCDBDgmppItemGroup)?.category?.category else {return nil}
+			return NCDBDgmppItemCategoryID(rawValue: Int(categoryID))
+		}
+		if categoryID == .structure {
+			pilot.structure = NCFittingStructure(typeID: typeID)
+		}
+		else {
+			pilot.ship = NCFittingShip(typeID: typeID)
+		}
+		return pilot
+	}
 }

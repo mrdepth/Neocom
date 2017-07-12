@@ -143,6 +143,7 @@
 		1293BC1C1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */; };
 		1293BC1E1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293BC1D1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift */; };
 		1293BC221E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293BC211E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift */; };
+		1294AB321F161A15002B9BA8 /* NCMailAttachmentsStructuresViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1294AB311F161A15002B9BA8 /* NCMailAttachmentsStructuresViewController.swift */; };
 		12961DB81E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */; };
 		12961DBA1E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */; };
 		12961DBD1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DBC1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift */; };
@@ -494,6 +495,7 @@
 		1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingMiscTableViewCell.swift; sourceTree = "<group>"; };
 		1293BC1D1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingResourcesTableViewCell.swift; sourceTree = "<group>"; };
 		1293BC211E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingCapacitorTableViewCell.swift; sourceTree = "<group>"; };
+		1294AB311F161A15002B9BA8 /* NCMailAttachmentsStructuresViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsStructuresViewController.swift; sourceTree = "<group>"; };
 		12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseMarketInfoViewController.swift; sourceTree = "<group>"; };
 		12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketInfoTableViewCell.swift; sourceTree = "<group>"; };
 		12961DBC1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateInfoViewController.swift; sourceTree = "<group>"; };
@@ -864,6 +866,7 @@
 				125CE1351E9FF0E7007B8B6B /* NCNewMailViewController.swift */,
 				121314BE1F13881700DAFD12 /* NCMailAttachmentsViewController.swift */,
 				121314C01F13A68B00DAFD12 /* NCMailAttachmentsShipsViewController.swift */,
+				1294AB311F161A15002B9BA8 /* NCMailAttachmentsStructuresViewController.swift */,
 				125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */,
 				126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */,
 				1285FB391EB9C5700025331A /* NCWealthViewController.swift */,
@@ -1537,6 +1540,7 @@
 				12DC56A91EFC0AFD0088F45E /* NCFittingState.mm in Sources */,
 				12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */,
 				12CFDAE01F038DA300CC0762 /* NCZKillboardSolarSystemsViewController.swift in Sources */,
+				1294AB321F161A15002B9BA8 /* NCMailAttachmentsStructuresViewController.swift in Sources */,
 				125CE1361E9FF0E7007B8B6B /* NCNewMailViewController.swift in Sources */,
 				12E9321E1E6B56D40033D71A /* NCFittingCharactersViewController.swift in Sources */,
 				12DC56881EFC0A040088F45E /* NCFittingFacility.mm in Sources */,

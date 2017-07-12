@@ -20,7 +20,7 @@ class NCLoadoutRow: TreeRow {
 		loadoutName = loadout.name ?? ""
 		image = type.icon?.image?.image
 		loadoutID = loadout.objectID
-		super.init(prototype: Prototype.NCDefaultTableViewCell.default)
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: Router.Fitting.Editor(loadoutID: loadout.objectID))
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -141,37 +141,6 @@ class NCFittingShipsViewController: UITableViewController, TreeControllerDelegat
 	}
 	
 	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-
-		if let node = node as? NCLoadoutRow {
-			NCStorage.sharedStorage?.performBackgroundTask({ (managedObjectContext) in
-				guard let loadout = (try? managedObjectContext.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
-				let engine = NCFittingEngine()
-				engine.performBlockAndWait {
-					let fleet = NCFittingFleet(loadouts: [loadout], engine: engine)
-					DispatchQueue.main.async {
-						if let account = NCAccount.current {
-							fleet.active?.setSkills(from: account) { [weak self]  _ in
-								guard let strongSelf = self else {return}
-								Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
-							}
-						}
-						else {
-							fleet.active?.setSkills(level: 5) { [weak self] _ in
-								guard let strongSelf = self else {return}
-								Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
-							}
-						}
-					}
-
-				}
-			})
-		}
-		else if let route = (node as? TreeRow)?.route {
-			route.perform(source: self, view: treeController.cell(for: node))
-		}
-	}
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let node = node as? NCLoadoutRow else {return nil}

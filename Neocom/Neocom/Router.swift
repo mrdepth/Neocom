@@ -392,56 +392,109 @@ enum Router {
 			var fleet: NCFittingFleet?
 			var engine: NCFittingEngine?
 			let typeID: Int?
+			let loadoutID: NSManagedObjectID?
+			let fleetID: NSManagedObjectID?
+			let asset: ESI.Assets.Asset?
+			let contents: [Int64: [ESI.Assets.Asset]]?
+			let killmail: NCKillmail?
 			
-			init(fleet: NCFittingFleet, engine: NCFittingEngine) {
-				self.fleet = fleet
-				self.engine = engine
-				self.typeID = nil
-				super.init(kind: .push, identifier: "NCFittingEditorViewController")
-			}
-			
-			init(typeID: Int) {
+			private init(typeID: Int?, loadoutID: NSManagedObjectID?, fleetID: NSManagedObjectID?, asset: ESI.Assets.Asset?, contents: [Int64: [ESI.Assets.Asset]]?, killmail: NCKillmail?) {
 				self.typeID = typeID
+				self.loadoutID = loadoutID
+				self.fleetID = fleetID
+				self.asset = asset
+				self.contents = contents
+				self.killmail = killmail
 				super.init(kind: .push, identifier: "NCFittingEditorViewController")
 			}
 			
+//			convenience init(fleet: NCFittingFleet, engine: NCFittingEngine) {
+//				self.init(typeID: nil, loadoutID: nil)
+//				self.fleet = fleet
+//				self.engine = engine
+//			}
+			
+			convenience init(typeID: Int) {
+				self.init(typeID: typeID, loadoutID: nil, fleetID: nil, asset: nil, contents: nil, killmail: nil)
+			}
+			
+			convenience init(loadoutID: NSManagedObjectID) {
+				self.init(typeID: nil, loadoutID: loadoutID, fleetID: nil, asset: nil, contents: nil, killmail: nil)
+			}
+
+			convenience init(fleetID: NSManagedObjectID) {
+				self.init(typeID: nil, loadoutID: nil, fleetID: fleetID, asset: nil, contents: nil, killmail: nil)
+			}
+
+			convenience init(asset: ESI.Assets.Asset, contents: [Int64: [ESI.Assets.Asset]]) {
+				self.init(typeID: nil, loadoutID: nil, fleetID: nil, asset: asset, contents: contents, killmail: nil)
+			}
+
+			convenience init(killmail: NCKillmail) {
+				self.init(typeID: nil, loadoutID: nil, fleetID: nil, asset: nil, contents: nil, killmail: killmail)
+			}
+
 			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCFittingEditorViewController
 				destination.fleet = fleet
 				destination.engine = engine
+				fleet = nil
+				engine = nil
 			}
 			
 			override func perform(source: UIViewController, view: UIView? = nil) {
-				if let typeID = typeID {
-					let progress = NCProgressHandler(viewController: source, totalUnitCount: 1)
-					let engine = NCFittingEngine()
-					engine.perform {
-						let fleet = NCFittingFleet(typeID: typeID, engine: engine)
-						
-						DispatchQueue.main.async {
-							if let account = NCAccount.current {
-								fleet.active?.setSkills(from: account) {  _ in
-									self.fleet = fleet
-									self.engine = engine
-									super.perform(source: source, view: view)
-									progress.finish()
-								}
+				let progress = NCProgressHandler(viewController: source, totalUnitCount: 1)
+				let engine = NCFittingEngine()
+				UIApplication.shared.beginIgnoringInteractionEvents()
+				engine.perform {
+					var fleet: NCFittingFleet?
+					if let typeID = self.typeID {
+						fleet = NCFittingFleet(typeID: typeID, engine: engine)
+					}
+					else if let loadoutID = self.loadoutID {
+						NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
+							guard let loadout = (try? managedObjectContext.existingObject(with: loadoutID)) as? NCLoadout else {return}
+							fleet = NCFittingFleet(loadouts: [loadout], engine: engine)
+						}
+					}
+					else if let fleetID = self.fleetID {
+						NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
+							guard let fleetObject = (try? managedObjectContext.existingObject(with: fleetID)) as? NCFleet else {return}
+							fleet = NCFittingFleet(fleet: fleetObject, engine: engine)
+						}
+					}
+					else if let asset = self.asset, let contents = self.contents {
+						fleet = NCFittingFleet(asset: asset, contents: contents, engine: engine)
+					}
+					else if let killmail = self.killmail {
+						fleet = NCFittingFleet(killmail: killmail, engine: engine)
+					}
+					
+					DispatchQueue.main.async {
+						guard let fleet = fleet else {
+							progress.finish()
+							UIApplication.shared.endIgnoringInteractionEvents()
+							return
+						}
+						if let account = NCAccount.current {
+							fleet.active?.setSkills(from: account) {  _ in
+								self.fleet = fleet
+								self.engine = engine
+								super.perform(source: source, view: view)
+								progress.finish()
+								UIApplication.shared.endIgnoringInteractionEvents()
 							}
-							else {
-								fleet.active?.setSkills(level: 5) { _ in
-									self.fleet = fleet
-									self.engine = engine
-									super.perform(source: source, view: view)
-									progress.finish()
-								}
+						}
+						else {
+							fleet.active?.setSkills(level: 5) { _ in
+								self.fleet = fleet
+								self.engine = engine
+								super.perform(source: source, view: view)
+								progress.finish()
+								UIApplication.shared.endIgnoringInteractionEvents()
 							}
 						}
 					}
-
-					
-				}
-				else {
-					super.perform(source: source)
 				}
 			}
 		}

@@ -11,13 +11,15 @@ import UIKit
 class NCMailAttachmentsViewController: NCPageViewController {
 	
 	var shipsViewController: NCMailAttachmentsShipsViewController?
+	var structuresViewController: NCMailAttachmentsStructuresViewController?
 	
 	var completionHandler: ((NCMailAttachmentsViewController, Any) -> Void)?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		shipsViewController = storyboard!.instantiateViewController(withIdentifier: "NCMailAttachmentsShipsViewController") as? NCMailAttachmentsShipsViewController
+		structuresViewController = storyboard!.instantiateViewController(withIdentifier: "NCMailAttachmentsStructuresViewController") as? NCMailAttachmentsStructuresViewController
 		
-		viewControllers = [shipsViewController!]
+		viewControllers = [shipsViewController!, structuresViewController!]
 	}
 }

@@ -41,7 +41,8 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
     
     func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
         if let row = node as? DefaultTreeRow, let asset = row.object as? ESI.Assets.Asset, let contents = contents {
-            let engine = NCFittingEngine()
+			Router.Fitting.Editor(asset: asset, contents: contents).perform(source: self, view: treeController.cell(for: node))
+            /*let engine = NCFittingEngine()
             engine.perform {
                 let fleet = NCFittingFleet(asset: asset, contents: contents, engine: engine)
                 DispatchQueue.main.async {
@@ -58,7 +59,7 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
                         }
                     }
                 }
-            }
+            }*/
         }
     }
     

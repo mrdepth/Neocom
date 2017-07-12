@@ -436,7 +436,7 @@
             <objects>
                 <tableViewController id="xIe-Ri-8Ng" customClass="NCAPIKeyInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="PWN-Ec-uZB" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -9513,7 +9513,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i80-Tg-PVO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4515" y="986"/>
+            <point key="canvasLocation" x="-4761" y="987"/>
         </scene>
         <!--Ships-->
         <scene sceneID="MBN-5B-uFN">
@@ -9535,7 +9535,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fHP-4C-czW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3814" y="987"/>
+            <point key="canvasLocation" x="-4061" y="988"/>
         </scene>
         <!--Structures-->
         <scene sceneID="9aZ-LO-LMI">
@@ -9558,6 +9558,28 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jdd-CX-yNq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-139" y="3824"/>
+        </scene>
+        <!--Structures-->
+        <scene sceneID="pyi-aa-GRb">
+            <objects>
+                <tableViewController storyboardIdentifier="NCMailAttachmentsStructuresViewController" title="Structures" modalPresentationStyle="overCurrentContext" id="VOS-XD-J6J" customClass="NCMailAttachmentsStructuresViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="gMA-3e-nNf" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="U7G-i2-P13" id="Ecu-S9-MVY"/>
+                            <outlet property="delegate" destination="U7G-i2-P13" id="NFZ-Y9-Yfk"/>
+                        </connections>
+                    </tableView>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="treeController" destination="U7G-i2-P13" id="tUJ-15-RwY"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ldE-nq-p6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3381" y="987"/>
         </scene>
     </scenes>
     <resources>

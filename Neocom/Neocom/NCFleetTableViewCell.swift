@@ -23,12 +23,16 @@ extension Prototype {
 }
 
 
-class NCFleetRow: FetchedResultsObjectNode<NCFleet> {
+class NCFleetRow: FetchedResultsObjectNode<NCFleet>, TreeNodeRoutable {
+	
+	var route: Route?
+	var accessoryButtonRoute: Route?
 	
 	required init(object: NCFleet) {
 		super.init(object: object)
 //		cellIdentifier = Prototype.NCFleetTableViewCell.default.reuseIdentifier
 		cellIdentifier = Prototype.NCDefaultTableViewCell.default.reuseIdentifier
+		route = Router.Fitting.Editor(fleetID: object.objectID)
 	}
 	
 	var loadouts: [String] {

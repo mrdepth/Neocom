@@ -45,23 +45,7 @@ class NCFittingFleetsViewController: UITableViewController, TreeControllerDelega
 	}
 	
 	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		
-		if let node = node as? NCFleetRow {
-			NCStorage.sharedStorage?.performBackgroundTask({ (managedObjectContext) in
-				guard let fleet = (try? managedObjectContext.existingObject(with: node.object.objectID)) as? NCFleet else {return}
-				let engine = NCFittingEngine()
-				engine.performBlockAndWait {
-					let fleet = NCFittingFleet(fleet: fleet, engine: engine)
-					DispatchQueue.main.async {
-						Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: self)
-					}
-				}
-			})
-		}
-	}
-	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let node = node as? NCFleetRow else {return nil}
 		

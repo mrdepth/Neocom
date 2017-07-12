@@ -398,7 +398,9 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 	@IBAction func onFitting(_ sender: Any) {
 		guard let killmail = self.killmail else {return}
 		
-		UIApplication.shared.beginIgnoringInteractionEvents()
+		Router.Fitting.Editor(killmail: killmail).perform(source: self)
+		
+		/*UIApplication.shared.beginIgnoringInteractionEvents()
 		let engine = NCFittingEngine()
 		engine.perform {
 			
@@ -419,7 +421,7 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 				}
 			}
 
-		}
+		}*/
 	}
 
 	

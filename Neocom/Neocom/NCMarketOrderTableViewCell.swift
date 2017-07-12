@@ -63,7 +63,7 @@ class NCMarketOrderRow: TreeRow {
 		case .open:
 			cell.stateLabel.text = NSLocalizedString("Open", comment: "") + ":"
 			let t = expired.timeIntervalSinceNow
-			cell.timeLeftLabel.text =  String(format: NSLocalizedString("Expired in %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes))
+			cell.timeLeftLabel.text =  String(format: NSLocalizedString("Expires in %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes))
 		case .cancelled:
 			cell.stateLabel.text = NSLocalizedString("Cancelled", comment: "") + ":"
 			cell.timeLeftLabel.text = DateFormatter.localizedString(from: expired, dateStyle: .medium, timeStyle: .medium)

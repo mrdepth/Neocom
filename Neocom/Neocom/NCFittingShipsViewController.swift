@@ -114,16 +114,12 @@ class NCLoadoutsSection<T: NCLoadoutRow>: TreeSection {
 	}
 }
 
-class NCFittingShipsViewController: UITableViewController, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCFittingShipsViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		tableView.register([Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.default])
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
 	}
 	
 	override func didReceiveMemoryWarning() {

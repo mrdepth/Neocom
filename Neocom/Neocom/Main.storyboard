@@ -2231,21 +2231,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <connections>
-                            <outlet property="dataSource" destination="4Qj-mG-w8h" id="wWn-vJ-wdm"/>
-                            <outlet property="delegate" destination="4Qj-mG-w8h" id="H4j-5l-Flt"/>
-                        </connections>
                     </tableView>
-                    <connections>
-                        <outlet property="treeController" destination="4Qj-mG-w8h" id="ejS-Na-uru"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zmq-fG-3fz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="4Qj-mG-w8h" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="VMR-5Q-eCj" id="jkr-CM-JkJ"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="621" y="3075"/>
         </scene>
@@ -9546,14 +9534,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <connections>
-                            <outlet property="dataSource" destination="4Qj-mG-w8h" id="0iY-y5-vtC"/>
-                            <outlet property="delegate" destination="4Qj-mG-w8h" id="EhF-sr-x5V"/>
-                        </connections>
                     </tableView>
-                    <connections>
-                        <outlet property="treeController" destination="4Qj-mG-w8h" id="Xm9-e0-uc5"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jdd-CX-yNq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

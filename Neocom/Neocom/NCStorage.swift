@@ -132,7 +132,7 @@ class NCStorage: NSObject {
 	}
 }
 
-enum NCShoppingItemFlag: Int32 {
+enum NCItemFlag: Int32 {
 	case hiSlot
 	case medSlot
 	case lowSlot
@@ -141,6 +141,31 @@ enum NCShoppingItemFlag: Int32 {
 	case service
 	case drone
 	case cargo
+	case hangar
+	
+	init?(flag: ESI.Assets.Asset.Flag) {
+		switch flag {
+		case .hiSlot0, .hiSlot1, .hiSlot2, .hiSlot3, .hiSlot4, .hiSlot5, .hiSlot6, .hiSlot7:
+			self = .hiSlot
+		case .medSlot0, .medSlot1, .medSlot2, .medSlot3, .medSlot4, .medSlot5, .medSlot6, .medSlot7:
+			self = .medSlot
+		case .loSlot0, .loSlot1, .loSlot2, .loSlot3, .loSlot4, .loSlot5, .loSlot6, .loSlot7:
+			self = .lowSlot
+		case .rigSlot0, .rigSlot1, .rigSlot2, .rigSlot3, .rigSlot4, .rigSlot5, .rigSlot6, .rigSlot7:
+			self = .rigSlot
+		case .subSystemSlot0, .subSystemSlot1, .subSystemSlot2, .subSystemSlot3, .subSystemSlot4, .subSystemSlot5, .subSystemSlot6, .subSystemSlot7:
+			self = .subsystemSlot
+		case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:
+			self = .drone
+		case .hangar, .fleetHangar, .hangarAll, .shipHangar, .specializedLargeShipHold, .specializedIndustrialShipHold, .specializedMediumShipHold, .specializedShipHold, .specializedSmallShipHold :
+			self = .hangar
+		case .cargo, .corpseBay, .specializedAmmoHold, .specializedCommandCenterHold, .specializedFuelBay, .specializedGasHold, .specializedMaterialBay, .specializedMineralHold, .specializedOreHold, .specializedPlanetaryCommoditiesHold, .specializedSalvageHold:
+			self = .cargo
+		default:
+			return nil
+		}
+
+	}
 	
 	var image: UIImage? {
 		switch self {
@@ -160,6 +185,8 @@ enum NCShoppingItemFlag: Int32 {
 			return #imageLiteral(resourceName: "drone")
 		case .cargo:
 			return #imageLiteral(resourceName: "cargoBay")
+		case .hangar:
+			return #imageLiteral(resourceName: "ships")
 		}
 	}
 	
@@ -181,6 +208,8 @@ enum NCShoppingItemFlag: Int32 {
 			return NSLocalizedString("Drones", comment: "")
 		case .cargo:
 			return NSLocalizedString("Cargo", comment: "")
+		case .hangar:
+			return NSLocalizedString("Hangar", comment: "")
 		}
 	}
 	

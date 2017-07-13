@@ -27,6 +27,11 @@ class NCLocation {
 		self.init(station.solarSystem!)
 		stationID = Int(station.stationID)
 		stationName = station.stationName
+		if let solarSystem = station.solarSystem {
+			solarSystemName = solarSystem.solarSystemName
+			solarSystemID = Int(solarSystem.solarSystemID)
+			security = solarSystem.security
+		}
 	}
 	
 	convenience init(_ solarSystem: NCDBMapSolarSystem) {

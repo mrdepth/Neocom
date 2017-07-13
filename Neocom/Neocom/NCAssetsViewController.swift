@@ -11,9 +11,81 @@ import EVEAPI
 
 class NCAssetRow: DefaultTreeRow {
 	
+	init(asset: ESI.Assets.Asset, contents: [Int64: [ESI.Assets.Asset]], types: [Int: NCDBInvType]) {
+		let type = types[asset.typeID]
+		let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
+		let title: NSAttributedString
+		if let qty = asset.quantity, qty > 1 {
+			title = typeName + (" x" + NCUnitFormatter.localizedString(from: qty, unit: .none, style: .full)) * [NSForegroundColorAttributeName: UIColor.caption]
+		}
+		else {
+			title = NSAttributedString(string: typeName)
+		}
+		
+		var children: [TreeNode] = []
+		
+		let subtitle: String?
+		
+		if let nested = contents[asset.itemID], !contents.isEmpty {
+			var map: [NCItemFlag:[DefaultTreeRow]] = [:]
+			var rows = [DefaultTreeRow]()
+			
+			nested.forEach {
+				let assetRow = NCAssetRow(asset: $0, contents: contents, types: types)
+				if let flag = NCItemFlag(flag: $0.locationFlag) {
+					_ = (map[flag]?.append(assetRow)) ?? (map[flag] = [assetRow])
+				}
+				else {
+					rows.append(assetRow)
+				}
+			}
+			
+			rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
+			children = rows
+			
+			let sections = map.sorted {$0.key.rawValue < $1.key.rawValue}.map { i -> DefaultTreeSection in
+				let section = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.image,
+				                                 nodeIdentifier: "\(asset.itemID).\(i.key.rawValue)",
+					image: i.key.image,
+					title: i.key.title?.uppercased(),
+					children: i.value.sorted { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") })
+				section.isExpandable = false
+				return section
+			}
+			
+			children.append(contentsOf: sections as [TreeNode])
+			subtitle = !nested.isEmpty ? NCUnitFormatter.localizedString(from: nested.count, unit: .none, style: .full) + " " + NSLocalizedString("items", comment: "") : nil
+		}
+		else {
+			subtitle = nil
+		}
+		
+		
+		
+		let route: Route?
+		if let typeID = type?.typeID {
+			route = Router.Database.TypeInfo(Int(typeID))
+		}
+		else {
+			route = nil
+		}
+		let hasLoadout = type?.group?.category?.categoryID == Int32(NCDBCategoryID.ship.rawValue) && !children.isEmpty
+		
+		
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default,
+		           nodeIdentifier: "\(asset.itemID)",
+			image: type?.icon?.image?.image,
+			attributedTitle: title,
+			subtitle: subtitle,
+			accessoryType: hasLoadout ? .detailButton : .none,
+			route: route,
+			object: asset)
+		self.children = children
+	}
+	
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
-		cell.indentationWidth = 32
+		cell.indentationWidth = 16
 	}
 }
 
@@ -30,6 +102,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 		registerRefreshable()
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCHeaderTableViewCell.image,
 		                    Prototype.NCDefaultTableViewCell.default])
 		treeController.delegate = self
 		
@@ -119,12 +192,14 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					}
 					
 					self.reloadLocations(dataManager: dataManager) {
-						self.reloadSections()
-						completionHandler?()
+						self.reloadSections {
+							completionHandler?()
+						}
 					}
 				case .failure:
-					self.reloadSections()
-					completionHandler?()
+					self.reloadSections {
+						completionHandler?()
+					}
 				}
 				
 				
@@ -153,7 +228,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 		
 	}
 	
-	private func reloadSections() {
+	private func reloadSections(completionHandler: (() -> Void)? = nil) {
 		if let value = assets?.value {
 			tableView.backgroundView = nil
 			let locations = self.locations ?? [:]
@@ -175,7 +250,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					result?.forEach {types[Int($0.typeID)] = $0}
 				}
 				
-				func row(asset: ESI.Assets.Asset) -> DefaultTreeRow {
+				/*func row(asset: ESI.Assets.Asset) -> DefaultTreeRow {
 					let type = types[asset.typeID]
 					let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
 					let title: NSAttributedString
@@ -185,10 +260,46 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					else {
 						title = NSAttributedString(string: typeName)
 					}
-					var rows = contents[asset.itemID]?.map {row(asset: $0)} ?? []
-					rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
 					
-					let subtitle = rows.count > 0 ? NCUnitFormatter.localizedString(from: rows.count, unit: .none, style: .full) + " " + NSLocalizedString("items", comment: "") : nil
+					var children: [TreeNode] = []
+					
+					let subtitle: String?
+					
+					if let contents = contents[asset.itemID], !contents.isEmpty {
+						var map: [NCItemFlag:[DefaultTreeRow]] = [:]
+						var rows = [DefaultTreeRow]()
+						
+						contents.forEach {
+							let assetRow = row(asset: $0)
+							if let flag = NCItemFlag(flag: $0.locationFlag) {
+								_ = (map[flag]?.append(assetRow)) ?? (map[flag] = [assetRow])
+							}
+							else {
+								rows.append(assetRow)
+							}
+						}
+						
+						rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
+						children = rows
+						
+						let sections = map.sorted {$0.key.rawValue < $1.key.rawValue}.map { i -> DefaultTreeSection in
+							let section = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.image,
+							                          nodeIdentifier: "\(asset.itemID).\(i.key.rawValue)",
+								image: i.key.image,
+								title: i.key.title?.uppercased(),
+								children: i.value.sorted { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") })
+							section.isExpandable = false
+							return section
+						}
+						
+						children.append(contentsOf: sections as [TreeNode])
+						subtitle = !contents.isEmpty ? NCUnitFormatter.localizedString(from: contents.count, unit: .none, style: .full) + " " + NSLocalizedString("items", comment: "") : nil
+					}
+					else {
+						subtitle = nil
+					}
+					
+					
 
 					let route: Route?
 					if let typeID = type?.typeID {
@@ -197,7 +308,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					else {
 						route = nil
 					}
-                    let hasLoadout = type?.group?.category?.categoryID == Int32(NCDBCategoryID.ship.rawValue) && !rows.isEmpty
+                    let hasLoadout = type?.group?.category?.categoryID == Int32(NCDBCategoryID.ship.rawValue) && !children.isEmpty
 					
 					let assetRow = NCAssetRow(prototype: Prototype.NCDefaultTableViewCell.default,
 					                  nodeIdentifier: "\(asset.itemID)",
@@ -207,19 +318,20 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					                  accessoryType: hasLoadout ? .detailButton : .none,
 					                  route: route,
 					                  object: asset)
-					assetRow.children = rows
+					assetRow.children = children
 					return assetRow
 				}
+				*/
 				
 				var sections = [DefaultTreeSection]()
 				for locationID in Set(locations.keys).subtracting(Set(items.keys)) {
-					guard var rows = contents[locationID]?.map ({row(asset: $0)}) else {continue}
+					guard var rows = contents[locationID]?.map ({NCAssetRow(asset: $0, contents: contents, types: types)}) else {continue}
 					
 					rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
 					
 					let location = locations[locationID]
 					let title = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: ""))
-					let nodeIdentifier = "\(locationID)"
+					let nodeIdentifier = "\(location?.solarSystemName ?? "")\(locationID)"
 						
 					sections.append(DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title, children: rows))
 				}
@@ -274,12 +386,14 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 						self.searchResultsController?.updateSearchResults(for: searchController)
 					}
 					self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
+					completionHandler?()
 				}
 			}
 			
 		}
 		else {
 			tableView.backgroundView = NCTableViewBackgroundLabel(text: assets?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			completionHandler?()
 		}
 	}
 	

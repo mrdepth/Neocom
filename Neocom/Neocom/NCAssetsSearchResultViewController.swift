@@ -25,8 +25,9 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
 
-        tableView.register([Prototype.NCHeaderTableViewCell.default,
-                            Prototype.NCDefaultTableViewCell.default])
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCHeaderTableViewCell.image,
+		                    Prototype.NCDefaultTableViewCell.default])
         treeController.delegate = self
     }
     
@@ -130,7 +131,7 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
 					result?.forEach {types[Int($0.typeID)] = $0}
 				}
 
-                func row(asset: ESI.Assets.Asset) -> DefaultTreeRow {
+                /*func row(asset: ESI.Assets.Asset) -> DefaultTreeRow {
                     let type = types[asset.typeID]
                     let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
                     let title: NSAttributedString
@@ -165,11 +166,11 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
                         object: asset)
                     assetRow.children = rows
                     return assetRow
-                }
+                }*/
                 
                 var sections = [DefaultTreeSection]()
                 for locationID in Set(locations.keys).subtracting(Set(items.keys)) {
-                    guard var rows = filteredContents[locationID]?.map ({row(asset: $0)}) else {continue}
+                    guard var rows = filteredContents[locationID]?.map ({NCAssetRow(asset: $0, contents: filteredContents, types: types)}) else {continue}
                     
                     rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
                     

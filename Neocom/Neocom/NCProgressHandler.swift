@@ -106,6 +106,7 @@ class NCProgressHandler: NSObject {
 	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
 		if keyPath == "fractionCompleted" {
 			DispatchQueue.main.async {
+				guard self.timer != nil else {return}
 				if self.totalProgress.fractionCompleted >= 1 {
 					self.finish()
 				}

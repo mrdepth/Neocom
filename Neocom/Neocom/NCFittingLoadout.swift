@@ -607,7 +607,7 @@ extension NCFittingCharacter {
 		
 		var cargo = [Int: Int]()
 		loadout.modules?.forEach { (slot, modules) in
-			let flag: NCShoppingItemFlag
+			let flag: NCItemFlag
 			switch slot {
 			case .hi:
 				flag = .hiSlot
@@ -647,7 +647,7 @@ extension NCFittingCharacter {
 		
 		drones.forEach { i in
 			let item = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
-			item.flag = NCShoppingItemFlag.drone.rawValue
+			item.flag = NCItemFlag.drone.rawValue
 			item.typeID = Int32(i.key)
 			item.quantity = Int32(i.value)
 			shipItem.addToContents(item)
@@ -655,7 +655,7 @@ extension NCFittingCharacter {
 
 		cargo.forEach { i in
 			let item = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
-			item.flag = NCShoppingItemFlag.cargo.rawValue
+			item.flag = NCItemFlag.cargo.rawValue
 			item.typeID = Int32(i.key)
 			item.quantity = Int32(i.value)
 			shipItem.addToContents(item)

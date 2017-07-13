@@ -148,8 +148,28 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		treeController.deselectCell(for: node, animated: true)
-		if let item = node as? NCImplantRow {
-			if let slot = item.slot {
+		
+		if let item = (node as? NCImplantRow)?.implant ?? (node as? NCBoosterRow)?.booster {
+			let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { [weak self] _ in
+				guard let pilot = self?.fleet?.active else {return}
+				self?.engine?.perform {
+					if let implant = item as? NCFittingImplant {
+						pilot.removeImplant(implant)
+					}
+					else if let booster = item as? NCFittingBooster {
+						pilot.removeBooster(booster)
+					}
+				}
+			})
+			
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+			
+			present(controller, animated: true, completion: nil)
+
+		}
+		else if let row = node as? NCImplantRow {
+			if let slot = row.slot {
 				guard let pilot = fleet?.active else {return}
 				guard let typePickerViewController = typePickerViewController else {return}
 				let category = NCDBDgmppItemCategory.category(categoryID: .implant, subcategory: slot)
@@ -165,8 +185,8 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 				present(typePickerViewController, animated: true)
 			}
 		}
-		else if let item = node as? NCBoosterRow {
-			if let slot = item.slot {
+		else if let row = node as? NCBoosterRow {
+			if let slot = row.slot {
 				guard let pilot = fleet?.active else {return}
 				guard let typePickerViewController = typePickerViewController else {return}
 				let category = NCDBDgmppItemCategory.category(categoryID: .booster, subcategory: slot)

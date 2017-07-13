@@ -478,20 +478,24 @@ enum Router {
 						}
 						if let account = NCAccount.current {
 							fleet.active?.setSkills(from: account) {  _ in
-								self.fleet = fleet
-								self.engine = engine
-								super.perform(source: source, view: view)
-								progress.finish()
-								UIApplication.shared.endIgnoringInteractionEvents()
+								DispatchQueue.main.async {
+									self.fleet = fleet
+									self.engine = engine
+									super.perform(source: source, view: view)
+									progress.finish()
+									UIApplication.shared.endIgnoringInteractionEvents()
+								}
 							}
 						}
 						else {
 							fleet.active?.setSkills(level: 5) { _ in
-								self.fleet = fleet
-								self.engine = engine
-								super.perform(source: source, view: view)
-								progress.finish()
-								UIApplication.shared.endIgnoringInteractionEvents()
+								DispatchQueue.main.async {
+									self.fleet = fleet
+									self.engine = engine
+									super.perform(source: source, view: view)
+									progress.finish()
+									UIApplication.shared.endIgnoringInteractionEvents()
+								}
 							}
 						}
 					}

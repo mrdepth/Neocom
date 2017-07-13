@@ -279,16 +279,33 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCDefaultTableViewCell
 		let row = self.mainMenu[indexPath.section][indexPath.row]
+		
+		let isEnabled: Bool = {
+			guard let scopes = row["scopes"] as? [String] else {return true}
+			guard let currentScopes = currentScopes else {return false}
+			return Set(scopes).isSubset(of: currentScopes)
+		}()
+
+		
 		cell.titleLabel?.text = row["title"] as? String
-		if let detailsKeyPath = row["detailsKeyPath"] as? String, let mainMenuDetails = self.mainMenuDetails {
-			cell.binder.bind("subtitleLabel.text", toObject: mainMenuDetails, withKeyPath: detailsKeyPath, transformer: nil)
-		}
-		else {
-			cell.subtitleLabel?.text = nil
-		}
 		if let image = row["image"] as? String {
 			cell.iconView?.image = UIImage.init(named: image)
 		}
+		
+		if isEnabled {
+			if let detailsKeyPath = row["detailsKeyPath"] as? String, let mainMenuDetails = self.mainMenuDetails {
+				cell.binder.bind("subtitleLabel.text", toObject: mainMenuDetails, withKeyPath: detailsKeyPath, transformer: nil)
+			}
+			else {
+				cell.subtitleLabel?.text = nil
+			}
+			cell.titleLabel?.textColor = UIColor.white
+		}
+		else {
+			cell.titleLabel?.textColor = UIColor.lightText
+			cell.subtitleLabel?.text = NSLocalizedString("Please sign in again to unlock all features", comment: "")
+		}
+		
 		return cell
 	}
 	
@@ -304,8 +321,25 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		let row = self.mainMenu[indexPath.section][indexPath.row]
-		if let segue = row["segueIdentifier"] as? String {
-			performSegue(withIdentifier: segue, sender: tableView.cellForRow(at: indexPath))
+		
+		let isEnabled: Bool = {
+			guard let scopes = row["scopes"] as? [String] else {return true}
+			guard let currentScopes = currentScopes else {return false}
+			return Set(scopes).isSubset(of: currentScopes)
+		}()
+
+		if isEnabled {
+			if let segue = row["segueIdentifier"] as? String {
+				performSegue(withIdentifier: segue, sender: tableView.cellForRow(at: indexPath))
+			}
+		}
+		else {
+			let url = OAuth2.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.default, state: "esi")
+			if #available(iOS 10.0, *) {
+				UIApplication.shared.open(url, options: [:], completionHandler: nil)
+			} else {
+				UIApplication.shared.openURL(url)
+			}
 		}
 	}
 	
@@ -380,25 +414,36 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 		self.headerViewController = to;
 	}
 	
+	var currentScopes: Set<String>?
+	
 	private func loadMenu() {
-		let currentScopes = Set<String>((NCAccount.current?.scopes as? Set<NCScope>)?.flatMap { return $0.name} ?? [])
+		currentScopes = Set<String>((NCAccount.current?.scopes as? Set<NCScope>)?.flatMap { return $0.name} ?? [])
 		
 		let mainMenu = NSArray.init(contentsOf: Bundle.main.url(forResource: "mainMenu", withExtension: "plist")!) as! [[[String: Any]]]
-		var sections = [[[String: Any]]]()
-		for section in mainMenu {
-			let rows = section.filter({ (row) -> Bool in
-				if let scopes = row["scopes"] as? [String] {
-					return Set(scopes).isSubset(of: currentScopes)
+		
+		if currentScopes!.isEmpty {
+			var sections = [[[String: Any]]]()
+
+			for section in mainMenu {
+				let rows = section.filter { ($0["scopes"] as? [String] ?? []).isEmpty }
+				if !rows.isEmpty {
+					sections.append(rows)
 				}
-				else {
-					return true
-				}
-			})
-			if rows.count > 0 {
-				sections.append(rows)
 			}
+			self.mainMenu = sections
 		}
-		self.mainMenu = sections
+		else {
+			var sections = [[[String: Any]]]()
+			
+			for section in mainMenu {
+				let rows = section.filter { ($0["scopes"] as? [String])?.first != "n/a" }
+				if !rows.isEmpty {
+					sections.append(rows)
+				}
+			}
+			self.mainMenu = sections
+		}
+		
 		updateAccountInfo()
 	}
 	

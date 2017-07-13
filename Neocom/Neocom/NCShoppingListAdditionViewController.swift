@@ -16,11 +16,11 @@ class NCShoppingItemRow: FetchedResultsObjectNode<NCShoppingItem>, TreeNodeRouta
 		super.init(object: object)
 		cellIdentifier = Prototype.NCDefaultTableViewCell.default.reuseIdentifier
 		
-		var slots = [NCShoppingItemFlag: [NCShoppingItemRow]]()
+		var slots = [NCItemFlag: [NCShoppingItemRow]]()
 
 		object.contents?.forEach {
 			guard let item = $0 as? NCShoppingItem else {return}
-			let flag = NCShoppingItemFlag(rawValue: item.flag) ?? .cargo
+			let flag = NCItemFlag(rawValue: item.flag) ?? .cargo
 			let row = NCShoppingItemRow(object: item)
 			_ = (slots[flag]?.append(row)) ?? (slots[flag] = [row])
 		}

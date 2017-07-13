@@ -15,15 +15,25 @@ class NCFittingEditorViewController: NCPageViewController {
 	var engine: NCFittingEngine?
 	
 	private var observer: NotificationObserver?
-	private var isModified: Bool = false {
+	private(set) var isModified: Bool = false {
 		didSet {
 			guard oldValue != isModified else {return}
 			
 			if isModified {
-				navigationItem.setLeftBarButton(UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navigation item"), style: .plain, target: self, action: #selector(onBack(_:))), animated: true)
+				if navigationItem.leftBarButtonItem == nil {
+					navigationItem.setLeftBarButton(UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navigation item"), style: .plain, target: self, action: #selector(onBack(_:))), animated: true)
+					var items = navigationItem.rightBarButtonItems!
+					items.append(UIBarButtonItem(title: NSLocalizedString("Save", comment: "Navigation item"), style: .done, target: self, action: #selector(onSave(_:))))
+					navigationItem.setRightBarButtonItems(items, animated: true)
+				}
 			}
 			else {
-				
+				if navigationItem.leftBarButtonItem != nil {
+					navigationItem.leftBarButtonItem = nil
+					var items = navigationItem.rightBarButtonItems!
+					items.removeLast()
+					navigationItem.setRightBarButtonItems(items, animated: true)
+				}
 			}
 		}
 	}
@@ -73,10 +83,80 @@ class NCFittingEditorViewController: NCPageViewController {
 
 	}
 	
+	func save(completionHandler: (() -> Void)? = nil) {
+		guard let fleet = fleet, let engine = self.engine else {
+			completionHandler?()
+			return
+		}
+		
+		NCStorage.sharedStorage?.performBackgroundTask {managedObjectContext in
+			engine.performBlockAndWait {
+				var pilots = [String: NCLoadout] ()
+				for (character, objectID) in fleet.pilots {
+					
+					if character.identifier == nil {
+						character.identifier = UUID().uuidString
+					}
+					
+					guard let ship = character.ship ?? character.structure else {continue}
+					if let objectID = objectID, let loadout = (try? managedObjectContext.existingObject(with: objectID)) as? NCLoadout {
+						loadout.uuid = character.identifier
+						loadout.name = ship.name
+						loadout.data?.data = character.loadout
+						pilots[loadout.uuid!] = loadout
+					}
+					else {
+						let loadout = NCLoadout(entity: NSEntityDescription.entity(forEntityName: "Loadout", in: managedObjectContext)!, insertInto: managedObjectContext)
+						loadout.data = NCLoadoutData(entity: NSEntityDescription.entity(forEntityName: "LoadoutData", in: managedObjectContext)!, insertInto: managedObjectContext)
+						loadout.typeID = Int32(ship.typeID)
+						loadout.name = ship.name
+						loadout.data?.data = character.loadout
+						loadout.uuid = character.identifier
+						pilots[loadout.uuid!] = loadout
+					}
+				}
+				
+				var opaqueFleet: NCFleet?
+				
+				if fleet.pilots.count > 1 {
+					let object: NCFleet
+					if let fleetID = fleet.fleetID, let fleet = (try? managedObjectContext.existingObject(with: fleetID)) as? NCFleet {
+						if (fleet.loadouts?.count ?? 0) > 0 {
+							fleet.removeFromLoadouts(fleet.loadouts!)
+						}
+						object = fleet
+					}
+					else {
+						object = NCFleet(entity: NSEntityDescription.entity(forEntityName: "Fleet", in: managedObjectContext)!, insertInto: managedObjectContext)
+						object.name = NSLocalizedString("Fleet", comment: "")
+					}
+					
+					for (character, _) in fleet.pilots {
+						guard let pilot = pilots[character.identifier!] else {continue}
+						pilot.addToFleets(object)
+					}
+					object.configuration = fleet.configuration
+					opaqueFleet = object
+				}
+				
+				if managedObjectContext.hasChanges {
+					try? managedObjectContext.save()
+				}
+				
+				fleet.pilots = fleet.pilots.map {($0.0, pilots[$0.0.identifier!]?.objectID)}
+				fleet.fleetID = opaqueFleet?.objectID
+			}
+			DispatchQueue.main.async {
+				self.isModified = false
+				completionHandler?()
+			}
+		}
+	}
+	
 	@objc private func onBack(_ sender: Any) {
 		let controller = UIAlertController(title: nil, message: NSLocalizedString("Save Changes?", comment: ""), preferredStyle: .alert)
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Save and Exit", comment: ""), style: .default, handler: {[weak self] _ in
-			guard let fleet = self?.fleet else {return}
+			/*guard let fleet = self?.fleet else {return}
 			
 			NCStorage.sharedStorage?.performBackgroundTask {managedObjectContext in
 				self?.engine?.performBlockAndWait {
@@ -130,9 +210,12 @@ class NCFittingEditorViewController: NCPageViewController {
 //					try? managedObjectContext.save()
 //				}
 
+			}*/
+			
+			self?.save {
+				_ = self?.navigationController?.popViewController(animated: true)
 			}
 			
-			_ = self?.navigationController?.popViewController(animated: true)
 		}))
 
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Discard and Exit", comment: ""), style: .default, handler: {[weak self] _ in
@@ -145,6 +228,10 @@ class NCFittingEditorViewController: NCPageViewController {
 
 		present(controller, animated: true, completion: nil)
 
+	}
+	
+	@objc private func onSave(_ sender: Any) {
+		save()
 	}
 	
 	lazy var typePickerViewController: NCTypePickerViewController? = {

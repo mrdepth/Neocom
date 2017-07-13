@@ -28,14 +28,9 @@ class NCIncursionsViewController: NCTreeViewController, NCRefreshable {
 	private var contacts: [Int64: NCContact]?
 	
 	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
-		guard let account = NCAccount.current else {
-			completionHandler?()
-			return
-		}
-		
 		let progress = Progress(totalUnitCount: 1)
 		
-		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
+		let dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
 		
 		progress.perform {
 			dataManager.incursions { result in

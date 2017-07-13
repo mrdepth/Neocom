@@ -66,6 +66,7 @@
 			<array>
 				<string>esi-mail.read_mail.v1</string>
 				<string>esi-mail.send_mail.v1</string>
+				<string>esi-mail.organize_mail.v1</string>
 			</array>
 		</dict>
 		<dict>
@@ -279,8 +280,8 @@
 			<string>planets</string>
 			<key>scopes</key>
 			<array>
-				<string>esi-planets.manage_planets.v1</string>
 				<string>n/a</string>
+				<string>esi-planets.manage_planets.v1</string>
 			</array>
 		</dict>
 	</array>

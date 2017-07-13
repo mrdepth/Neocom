@@ -144,7 +144,7 @@ class NCTypePickerTypesViewController: UITableViewController, UISearchResultsUpd
 	
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
-		guard let controller = searchController.searchResultsController as? NCDatabaseTypesViewController else {return}
+		guard let controller = searchController.searchResultsController as? NCTypePickerTypesViewController else {return}
 		if let text = searchController.searchBar.text, let other = self.predicate, text.characters.count > 0 {
 			predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [other, NSPredicate(format: "typeName CONTAINS[C] %@", text)])
 		}
@@ -158,7 +158,7 @@ class NCTypePickerTypesViewController: UITableViewController, UISearchResultsUpd
 	//MARK: Private
 	
 	private func setupSearchController() {
-		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
+		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCTypePickerTypesViewController"))
 		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
 		searchController?.searchResultsUpdater = self
 		searchController?.searchBar.barStyle = UIBarStyle.black

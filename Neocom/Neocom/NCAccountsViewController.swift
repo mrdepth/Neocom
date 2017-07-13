@@ -471,7 +471,7 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 		
 		guard let context = NCStorage.sharedStorage?.viewContext else {return}
 		
-		let row = NCActionRow(title: NSLocalizedString("ADD ACCOUNT", comment: ""))
+		let row = NCActionRow(title: NSLocalizedString("SIGN IN", comment: ""))
 		let space = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty)
 		treeController.content = RootNode([NCAccountsNode(context: context), space, row])
 	}

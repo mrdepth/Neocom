@@ -345,28 +345,38 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 			
 			if let value = value.implants {
 				rows = []
-				
 				let invTypes = NCDatabase.sharedDatabase?.invTypes
-				let implants = value.flatMap {invTypes?[$0.typeID]}
-				
+
 				let list = [(NCDBAttributeID.intelligenceBonus, NSLocalizedString("Intelligence", comment: "")),
 				            (NCDBAttributeID.memoryBonus, NSLocalizedString("Memory", comment: "")),
 				            (NCDBAttributeID.perceptionBonus, NSLocalizedString("Perception", comment: "")),
 				            (NCDBAttributeID.willpowerBonus, NSLocalizedString("Willpower", comment: "")),
 				            (NCDBAttributeID.charismaBonus, NSLocalizedString("Charisma", comment: ""))]
-				            
-				for (attribute, name) in list {
-					if let implant = implants.first(where: {($0.allAttributes[attribute.rawValue]?.value ?? 0) > 0}) {
-						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                           nodeIdentifier: "\(name)Enhancer",
-						                           image: implant.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image,
-						                           title: implant.typeName?.uppercased(),
-						                           subtitle: "\(name) +\(Int(implant.allAttributes[attribute.rawValue]!.value))",
+
+				
+				let implants = value.flatMap { implant -> (NCDBInvType, Int)? in
+					guard let type = invTypes?[implant.typeID] else {return nil}
+					return (type, Int(type.allAttributes[NCDBAttributeID.implantness.rawValue]?.value ?? 100))
+					}.sorted {$0.1 < $1.1}
+				
+				rows = implants.map { (type, _) -> TreeRow in
+					if let enhancer = list.first(where: { (type.allAttributes[$0.0.rawValue]?.value ?? 0) > 0 }) {
+						return DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+						                      nodeIdentifier: "\(type.typeID)Enhancer",
+							image: type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image,
+							title: type.typeName?.uppercased(),
+							subtitle: "\(enhancer.1) +\(Int(type.allAttributes[enhancer.0.rawValue]!.value))",
 							accessoryType: .disclosureIndicator,
-							route: Router.Database.TypeInfo(implant)
-							))
+							route: Router.Database.TypeInfo(type))
 					}
-					
+					else {
+						return DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+						                      nodeIdentifier: "\(type.typeID)Enhancer",
+							image: type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image,
+							title: type.typeName?.uppercased(),
+							accessoryType: .disclosureIndicator,
+							route: Router.Database.TypeInfo(type))
+					}
 				}
 				
 				if rows.isEmpty {

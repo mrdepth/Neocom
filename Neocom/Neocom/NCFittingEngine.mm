@@ -73,15 +73,6 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 			});
 		}
 	});
-	/*[_operationQueue addOperationWithBlock:^{
-		block();
-		if (_updated) {
-			_updated = NO;
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[[NSNotificationCenter defaultCenter] postNotificationName:NCFittingEngineDidUpdateNotification object:self];
-			});
-		}
-	}];*/
 }
 
 - (void) performBlockAndWait:(nonnull void(^)()) block {
@@ -96,16 +87,6 @@ NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngin
 			});
 		}
 	});
-	/*[_operationQueue addOperationWithBlock:^{
-		block();
-		if (_updated) {
-			_updated = NO;
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[[NSNotificationCenter defaultCenter] postNotificationName:NCFittingEngineDidUpdateNotification object:self];
-			});
-		}
-	}];
-	[_operationQueue waitUntilAllOperationsAreFinished];*/
 }
 
 - (void) assignIdentifier:(nullable NSString*) identifier forItem:(nonnull NCFittingItem*) item {

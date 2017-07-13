@@ -39,21 +39,15 @@ class NCDatabaseCertificateSection: NCTreeSection {
 }
 */
 
-class NCDatabaseTypeMasteryViewController: UITableViewController, TreeControllerDelegate {
+class NCDatabaseTypeMasteryViewController: NCTreeViewController {
 	var type: NCDBInvType?
 	var level: NCDBCertMasteryLevel?
 	
-	@IBOutlet var treeController: TreeController!
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		
 		tableView.register([Prototype.NCActionHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.default])
 		
-		treeController.delegate = self
 		title = NSLocalizedString("Level", comment: "") + " \(String(romanNumber: Int((level?.level ?? 0) + 1)))"
 	}
 	
@@ -113,14 +107,8 @@ class NCDatabaseTypeMasteryViewController: UITableViewController, TreeController
 	
 	// MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		treeController.deselectCell(for: node, animated: true)
-		if let route = (node as? TreeNodeRoutable)?.route {
-			route.perform(source: self, view: treeController.cell(for: node))
-		}
-	}
-	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+		super.treeController(treeController, accessoryButtonTappedWithNode: node)
 		if let item = node as? NCDatabaseSkillsSection {
 			performTraining(trainingQueue: item.trainingQueue, character: item.character)
 		}

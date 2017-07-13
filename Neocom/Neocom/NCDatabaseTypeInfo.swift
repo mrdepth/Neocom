@@ -658,7 +658,7 @@ struct NCDatabaseTypeInfo {
 						materials.append(row)
 					}
 					if materials.count > 0 {
-						rows.append(DefaultTreeSection(nodeIdentifier: "Materials", title: NSLocalizedString("MATERIALS", comment: ""), children: materials))
+						rows.append(DefaultTreeSection(nodeIdentifier: "Materials\(activity.activity?.activityID ?? 0)", title: NSLocalizedString("MATERIALS", comment: ""), children: materials))
 					}
 					
 					if let skills = requiredSkills(activity: activity, character: character) {

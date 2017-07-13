@@ -54,12 +54,13 @@ extension NCAccount {
 			let toInsert: Set<String>
 			if let scopes = self.scopes as? Set<NCScope> {
 				let toDelete = scopes.filter {
-					return !newScopes.contains($0.name!)
+					guard let name = $0.name else {return true}
+					return !newScopes.contains(name)
 				}
 				for scope in toDelete {
 					managedObjectContext!.delete(scope)
 				}
-				toInsert = newScopes.symmetricDifference(scopes.map {return $0.name!})
+				toInsert = newScopes.symmetricDifference(scopes.flatMap {return $0.name})
 			}
 			else {
 				toInsert = newScopes

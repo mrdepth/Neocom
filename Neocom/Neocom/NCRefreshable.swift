@@ -43,12 +43,13 @@ extension NCRefreshable {
 		let progress = self is UIViewController ? NCProgressHandler(viewController: self as! UIViewController, totalUnitCount: 1) : nil
 		progress?.progress.becomeCurrent(withPendingUnitCount: 1)
 		self.reload(cachePolicy: cachePolicy) { [weak self] in
-			if let refreshControl = (self as? UITableViewController)?.refreshControl, refreshControl.isRefreshing {
+			guard let strongSelf = self else {return}
+			if let refreshControl = (strongSelf as? UITableViewController)?.refreshControl, refreshControl.isRefreshing {
 				refreshControl.endRefreshing()
 			}
 			
 			progress?.finish()
-			objc_setAssociatedObject(self, &LoadingHandle, false, .OBJC_ASSOCIATION_ASSIGN)
+			objc_setAssociatedObject(strongSelf, &LoadingHandle, false, .OBJC_ASSOCIATION_ASSIGN)
 		}
 		progress?.progress.resignCurrent()
 	}

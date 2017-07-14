@@ -133,7 +133,7 @@ class NCMailPageViewController: NCPageViewController {
 							lastID = lastID == nil ? mailID : min(mailID, lastID!)
 						}
 						
-						let pages = [inbox, corporation, alliance, sent].map {$0.values.sorted(by: {$0.mail.timestamp! > $1.mail.timestamp!})}
+						let pages = [inbox, corporation, alliance, sent].map {$0.values.sorted(by: {$0.mail.mailID! > $1.mail.mailID!})}
 						
 						DispatchQueue.main.async {
 							self.lastID = lastID

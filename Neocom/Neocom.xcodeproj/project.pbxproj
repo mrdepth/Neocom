@@ -292,6 +292,9 @@
 		12E2674F1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */; };
 		12E267C01E12A89F00A13442 /* NCAdaptiveSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E267BF1E12A89F00A13442 /* NCAdaptiveSegue.swift */; };
 		12E314BC1E165D5D000A926D /* UIView+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E314BB1E165D5D000A926D /* UIView+NC.swift */; };
+		12E6AE561F18F703001E829D /* NCKillmailAttackerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E6AE551F18F703001E829D /* NCKillmailAttackerTableViewCell.xib */; };
+		12E6AE581F18F992001E829D /* NCKillmailAttackerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E6AE571F18F992001E829D /* NCKillmailAttackerTableViewCell.swift */; };
+		12E6AE5A1F18FB3B001E829D /* NCKillmailAttackerNPCTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E6AE591F18FB3B001E829D /* NCKillmailAttackerNPCTableViewCell.xib */; };
 		12E9321A1E6ACEC40033D71A /* NCFittingTargetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E932191E6ACEC40033D71A /* NCFittingTargetsViewController.swift */; };
 		12E9321C1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E9321B1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib */; };
 		12E9321E1E6B56D40033D71A /* NCFittingCharactersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9321D1E6B56D40033D71A /* NCFittingCharactersViewController.swift */; };
@@ -675,6 +678,9 @@
 		12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificatesViewController.swift; sourceTree = "<group>"; };
 		12E267BF1E12A89F00A13442 /* NCAdaptiveSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAdaptiveSegue.swift; sourceTree = "<group>"; };
 		12E314BB1E165D5D000A926D /* UIView+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+NC.swift"; sourceTree = "<group>"; };
+		12E6AE551F18F703001E829D /* NCKillmailAttackerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCKillmailAttackerTableViewCell.xib; sourceTree = "<group>"; };
+		12E6AE571F18F992001E829D /* NCKillmailAttackerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailAttackerTableViewCell.swift; sourceTree = "<group>"; };
+		12E6AE591F18FB3B001E829D /* NCKillmailAttackerNPCTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCKillmailAttackerNPCTableViewCell.xib; sourceTree = "<group>"; };
 		12E745511E830922004AA646 /* clrconvert.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = clrconvert.xcodeproj; path = ../ThirdParty/clrconvert/clrconvert.xcodeproj; sourceTree = "<group>"; };
 		12E932191E6ACEC40033D71A /* NCFittingTargetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingTargetsViewController.swift; sourceTree = "<group>"; };
 		12E9321B1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFleetMemberTableViewCell.xib; sourceTree = "<group>"; };
@@ -1003,6 +1009,7 @@
 				12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */,
 				12CFDAE31F03D71F00CC0762 /* NCDatePickerTableViewCell.swift */,
 				1203E88E1F0A8048009ADF8D /* NCFeedItemTableViewCell.swift */,
+				12E6AE571F18F992001E829D /* NCKillmailAttackerTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1180,6 +1187,8 @@
 				1211A47A1EF18BA700364744 /* NCSkillCompactTableViewCell.xib */,
 				12CFDAE51F03D8E800CC0762 /* NCDatePickerTableViewCell.xib */,
 				12CFDAEB1F03F8F700CC0762 /* NCKillmailTableViewCell.xib */,
+				12E6AE551F18F703001E829D /* NCKillmailAttackerTableViewCell.xib */,
+				12E6AE591F18FB3B001E829D /* NCKillmailAttackerNPCTableViewCell.xib */,
 			);
 			name = Prototypes;
 			sourceTree = "<group>";
@@ -1418,6 +1427,7 @@
 				1256BE551DF4728800A2A24B /* Main.storyboard in Resources */,
 				1256BECE1DF4770A00A2A24B /* Fitting.xcassets in Resources */,
 				12D930ED1E656EAD00CBAE1C /* NCDamageTypeCompactTableViewCell.xib in Resources */,
+				12E6AE561F18F703001E829D /* NCKillmailAttackerTableViewCell.xib in Resources */,
 				1256BF2C1DF4770B00A2A24B /* UI.xcassets in Resources */,
 				1256BEC81DF4770A00A2A24B /* charisma.png in Resources */,
 				12D930E71E656B0C00CBAE1C /* NCChargeTableViewCell.xib in Resources */,
@@ -1444,6 +1454,7 @@
 				1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */,
 				1256BECA1DF4770A00A2A24B /* memory.png in Resources */,
 				12E932201E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib in Resources */,
+				12E6AE5A1F18FB3B001E829D /* NCKillmailAttackerNPCTableViewCell.xib in Resources */,
 				12D930EB1E656EA300CBAE1C /* NCDamageTypeTableViewCell.xib in Resources */,
 				12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */,
 				12D930F31E6584AF00CBAE1C /* NCDefaultCompactTableViewCell.xib in Resources */,
@@ -1577,6 +1588,7 @@
 				125AB8111E41DEE600B8A2A8 /* NCChargeTableViewCell.swift in Sources */,
 				120F4C591EF9A044003C92E9 /* NCContractInfoViewController.swift in Sources */,
 				1243DC1F1E0BDE1700F00B9A /* NCMarketHistoryView.swift in Sources */,
+				12E6AE581F18F992001E829D /* NCKillmailAttackerTableViewCell.swift in Sources */,
 				1230A32A1DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift in Sources */,
 				12961DCD1E1D649A008A3F4D /* NCFittingBooster.mm in Sources */,
 				12DC56851EFC09DC0088F45E /* NCFittingPlanet.mm in Sources */,

@@ -131,43 +131,6 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
 					result?.forEach {types[Int($0.typeID)] = $0}
 				}
 
-                /*func row(asset: ESI.Assets.Asset) -> DefaultTreeRow {
-                    let type = types[asset.typeID]
-                    let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
-                    let title: NSAttributedString
-                    if let qty = asset.quantity, qty > 1 {
-                        title = typeName + (" x" + NCUnitFormatter.localizedString(from: qty, unit: .none, style: .full)) * [NSForegroundColorAttributeName: UIColor.caption]
-                    }
-                    else {
-                        title = NSAttributedString(string: typeName)
-                    }
-                    var rows = filteredContents[asset.itemID]?.map {row(asset: $0)} ?? []
-                    rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
-                    
-                    let subtitle = rows.count > 0 ? NCUnitFormatter.localizedString(from: rows.count, unit: .none, style: .full) + " " + NSLocalizedString("items", comment: "") : nil
-                    
-                    let route: Route?
-                    if let typeID = type?.typeID {
-                        route = Router.Database.TypeInfo(Int(typeID))
-                    }
-                    else {
-                        route = nil
-                    }
-                    
-                    let hasLoadout = type?.group?.category?.categoryID == Int32(NCDBCategoryID.ship.rawValue) && !rows.isEmpty
-                    
-                    let assetRow = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.default,
-                                                  nodeIdentifier: "\(asset.itemID)",
-                        image: type?.icon?.image?.image,
-                        attributedTitle: title,
-                        subtitle: subtitle,
-                        accessoryType: hasLoadout ? .detailButton : .none,
-                        route: route,
-                        object: asset)
-                    assetRow.children = rows
-                    return assetRow
-                }*/
-                
                 var sections = [DefaultTreeSection]()
                 for locationID in Set(locations.keys).subtracting(Set(items.keys)) {
                     guard var rows = filteredContents[locationID]?.map ({NCAssetRow(asset: $0, contents: filteredContents, types: types)}) else {continue}
@@ -178,7 +141,7 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
                     let title = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: ""))
                     let nodeIdentifier = "\(locationID)"
                     
-                    sections.append(DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title, children: rows))
+                    sections.append(DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title.uppercased(), children: rows))
                 }
                 sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
                 

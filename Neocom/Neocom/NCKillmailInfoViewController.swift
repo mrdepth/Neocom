@@ -110,84 +110,6 @@ class NCKillmailVictimRow: NCContactRow {
 	}
 }
 
-class NCKillmailAttackerRow: NCContactRow {
-	let attacker: NCAttacker
-	let character: NCContact?
-	let corporation: NCContact?
-	let alliance: NCContact?
-	
-	init(attacker: NCAttacker, character: NCContact?, corporation: NCContact?, alliance: NCContact?, dataManager: NCDataManager) {
-		self.attacker = attacker
-		self.character = character
-		self.corporation = corporation
-		self.alliance = alliance
-		let contact = character ?? corporation ?? alliance
-		super.init(prototype: contact == nil ? Prototype.NCDefaultTableViewCell.default : Prototype.NCContactTableViewCell.default, contact: contact, dataManager: dataManager)
-		
-		if let contact = contact {
-			route = Router.KillReports.ContactReports(contact: contact)
-		}
-	}
-	
-	lazy var faction: NCDBChrFaction? = {
-		guard let factionID = self.attacker.factionID else {return nil}
-		return NCDatabase.sharedDatabase?.chrFactions[factionID]
-	}()
-	
-	lazy var shipType: NCDBInvType? = {
-		guard let shipTypeID = self.attacker.shipTypeID else {return nil}
-		return NCDatabase.sharedDatabase?.invTypes[shipTypeID]
-	}()
-
-	lazy var weaponType: NCDBInvType? = {
-		guard let weaponTypeID = self.attacker.weaponTypeID else {return nil}
-		return NCDatabase.sharedDatabase?.invTypes[weaponTypeID]
-	}()
-
-	lazy var subtitle: String = {
-		var s = ""
-		switch (self.corporation?.name, self.alliance?.name) {
-		case let (a?, b?):
-			s = "\(a) / \(b)\n"
-		case let (a?, nil):
-			s = a + "\n"
-		case let (nil, b?):
-			s = b + "\n"
-		default:
-			break
-		}
-		
-		if let ship = self.shipType?.typeName {
-			if let weapon = self.weaponType?.typeName {
-				s += String(format: NSLocalizedString("%@ with %@", comment: ""), ship, weapon) + "\n"
-			}
-			else {
-				s += ship + "\n"
-			}
-		}
-		s += String(format: NSLocalizedString("%@ damage done", comment: ""), NCUnitFormatter.localizedString(from: self.attacker.damageDone, unit: .none, style: .full))
-//		if self.attacker.finalBlow {
-//			s += " (\(NSLocalizedString("final blow", comment: "")))"
-//		}
-		return s
-	}()
-	
-	override func configure(cell: UITableViewCell) {
-		super.configure(cell: cell)
-		guard let cell = cell as? NCContactTableViewCell else {return}
-		if contact == nil, let faction = self.faction {
-			cell.titleLabel?.text = faction.factionName
-//			cell.iconView?.image = faction.icon?.image?.image
-			cell.iconView?.image = shipType?.icon?.image?.image
-		}
-		cell.subtitleLabel?.text = subtitle
-		cell.accessoryType = route != nil ? .disclosureIndicator : .none
-		
-		if attacker.finalBlow {
-			cell.titleLabel?.attributedText = (cell.titleLabel?.text ?? "") + " [\(NSLocalizedString("final blow", comment: ""))]" * [NSForegroundColorAttributeName: UIColor.caption]
-		}
-	}
-}
 
 
 class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegate {
@@ -206,6 +128,8 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 		                    Prototype.NCDefaultTableViewCell.noImage,
 		                    Prototype.NCContactTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.image,
+		                    Prototype.NCKillmailAttackerTableViewCell.default,
+		                    Prototype.NCKillmailAttackerTableViewCell.npc,
 		                    Prototype.NCHeaderTableViewCell.default])
 		
 		treeController.delegate = self
@@ -302,7 +226,7 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 					}
 				}
 				
-				let victimSection = DefaultTreeSection(nodeIdentifier: "Victim", title: NSLocalizedString("Victim", comment: "").uppercased(), children: rows)
+				let victimSection = DefaultTreeSection(nodeIdentifier: "Victim", attributedTitle: NSLocalizedString("Victim", comment: "").uppercased() * [:], children: rows)
 				sections.append(victimSection)
 				
 				var ids = Set<Int64>()
@@ -356,7 +280,7 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 					                                                  corporation: contacts?[Int64(victim.corporationID ?? 0)],
 					                                                  alliance: contacts?[Int64(victim.allianceID ?? 0)], dataManager: dataManager), at: 0)
 					if cost > 0 {
-						victimSection.title = victimSection.title! + " (\(NCUnitFormatter.localizedString(from: cost, unit: .isk, style: .full)))"
+						victimSection.attributedTitle = NSLocalizedString("Victim", comment: "").uppercased() + " (\((NCUnitFormatter.localizedString(from: cost, unit: .isk, style: .full))))" * [NSForegroundColorAttributeName: UIColor.white]
 					}
 					
 					

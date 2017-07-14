@@ -74,7 +74,20 @@ class NCLocation {
 			s.append(NSAttributedString(string: String(format: "%.1f ", security) , attributes: [NSForegroundColorAttributeName: UIColor(security: security)]))
 		}
 		if let stationName = stationName {
-			s.append(NSAttributedString(string: stationName))
+			if let solarSystemName = solarSystemName {
+				let r = (stationName as NSString).range(of: solarSystemName)
+				if r.length > 0  {
+					let title = NSMutableAttributedString(string: stationName)
+					title.addAttributes([NSForegroundColorAttributeName: UIColor.white], range: r)
+					s.append(title)
+				}
+				else {
+					s.append(NSAttributedString(string: stationName))
+				}
+			}
+			else {
+				s.append(NSAttributedString(string: stationName))
+			}
 		}
 		else if let solarSystemName = solarSystemName {
 			s.append(NSAttributedString(string: solarSystemName))

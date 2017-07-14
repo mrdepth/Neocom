@@ -69,14 +69,22 @@ class NCMailBodyViewController: UIViewController {
 			switch result {
 			case let .success(value, _):
 				let font = self.textView.font ?? UIFont.preferredFont(forTextStyle: .footnote)
-				let html = "<body style=\"color:white;font-size: \(font.pointSize);font-family: '\(font.familyName)';\">\(value.body ?? "")</body>"
-				let s = try? NSAttributedString(data: html.data(using: .utf8) ?? Data(),
+//				let html = "<body style=\"color:white;font-size: \(font.pointSize);font-family: '\(font.familyName)';\">\(value.body ?? "")</body>"
+				let html = value.body ?? ""
+				if let s = try? NSAttributedString(data: html.data(using: .utf8) ?? Data(),
 				                                options: [NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType,
 				                                          NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue,
 				                                          NSDefaultAttributesDocumentAttribute: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)]],
-				                                documentAttributes: nil)
-				self.textView.attributedText = s
-				self.body = s
+				                                documentAttributes: nil) {
+					let body = NSMutableAttributedString(attributedString: s)
+					s.enumerateAttributes(in: NSMakeRange(0, s.length), options: []) { (attributes, range, stop) in
+						attributes.keys.filter {$0 != NSLinkAttributeName}.forEach {
+							body.removeAttribute($0, range: range)
+						}
+					}
+					self.body = body * [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: font]
+					self.textView.attributedText = self.body
+				}
 			case let .failure(error):
 				self.textView.text = error.localizedDescription
 			}

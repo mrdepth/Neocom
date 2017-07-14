@@ -332,8 +332,10 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					let location = locations[locationID]
 					let title = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: ""))
 					let nodeIdentifier = "\(location?.solarSystemName ?? "")\(locationID)"
-						
-					sections.append(DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title, children: rows))
+					
+					let section = DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title.uppercased(), children: rows)
+					section.isExpanded = false
+					sections.append(section)
 				}
 				sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
 

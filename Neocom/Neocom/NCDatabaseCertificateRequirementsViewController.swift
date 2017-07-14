@@ -64,14 +64,14 @@ class NCDatabaseCertificateRequirementsViewController: NCTreeViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if let certificate = certificate, treeController.content == nil {
+		if let certificate = certificate, treeController?.content == nil {
 			
 			let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 			request.predicate = NSPredicate(format: "published = TRUE AND ANY certificates == %@", certificate)
 			request.sortDescriptors = [NSSortDescriptor(key: "group.groupName", ascending: true), NSSortDescriptor(key: "typeName", ascending: true)]
 			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: "group.groupName", cacheName: nil)
 			
-			treeController.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCDatabaseCertTypeRow.self)
+			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCDatabaseCertTypeRow.self)
 
 			
 			let progress = NCProgressHandler(totalUnitCount: 1)
@@ -85,7 +85,7 @@ class NCDatabaseCertificateRequirementsViewController: NCTreeViewController {
 					character = NCCharacter()
 				}
 				
-				self.treeController.content?.children.forEach {
+				self.treeController?.content?.children.forEach {
 					$0.children.forEach { row in
 						(row as? NCDatabaseCertTypeRow)?.character = character
 					}

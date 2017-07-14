@@ -130,8 +130,8 @@ class NCFittingShipsViewController: NCTreeViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if treeController.content == nil {
-			self.treeController.content = TreeNode()
+		if treeController?.content == nil {
+			self.treeController?.content = TreeNode()
 			reload()
 		}
 	}
@@ -191,6 +191,6 @@ class NCFittingShipsViewController: NCTreeViewController {
 		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
 		
 		sections.append(NCLoadoutsSection(categoryID: .ship))
-		self.treeController.content?.children = sections
+		self.treeController?.content?.children = sections
 	}
 }

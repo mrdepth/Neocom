@@ -83,13 +83,13 @@ class NCIncursionsViewController: NCTreeViewController, NCRefreshable {
 			
 			let rows = value.map {NCIncursionRow(incursion: $0, contact: contacts?[Int64($0.factionID)])}
 			
-			if self.treeController.content == nil {
+			if self.treeController?.content == nil {
 				let root = TreeNode()
 				root.children = rows
-				self.treeController.content = root
+				self.treeController?.content = root
 			}
 			else {
-				self.treeController.content?.children = rows
+				self.treeController?.content?.children = rows
 			}
 			self.tableView.backgroundView = rows.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
 

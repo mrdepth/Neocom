@@ -57,7 +57,7 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController, NCRefreshable {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if treeController.content == nil {
+		if treeController?.content == nil {
 			reload()
 		}
 	}
@@ -67,7 +67,7 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController, NCRefreshable {
 		guard let region = controller.region else {return}
 		navigationItem.rightBarButtonItem?.title = region.regionName
 		UserDefaults.standard.set(Int(region.regionID), forKey: UserDefaults.Key.NCMarketRegion)
-		treeController.content = nil
+		treeController?.content = nil
 		reload()
 		
 		NotificationCenter.default.post(name: .NCMarketRegionChanged, object: region)
@@ -167,13 +167,13 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController, NCRefreshable {
 				self.tableView.backgroundView = NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
 			}
 			else {
-				if self.treeController.content == nil {
+				if self.treeController?.content == nil {
 					let root = TreeNode()
 					root.children = sections
-					self.treeController.content = root
+					self.treeController?.content = root
 				}
 				else {
-					self.treeController.content?.children = sections
+					self.treeController?.content?.children = sections
 				}
 				self.tableView.backgroundView = nil
 			}

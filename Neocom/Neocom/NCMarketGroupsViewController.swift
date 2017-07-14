@@ -40,7 +40,7 @@ class NCMarketGroupsViewController: NCTreeViewController, NCSearchableViewContro
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if treeController.content == nil {
+		if treeController?.content == nil {
 			let request = NSFetchRequest<NCDBInvMarketGroup>(entityName: "InvMarketGroup")
 			request.sortDescriptors = [NSSortDescriptor(key: "marketGroupName", ascending: true)]
 			if let parent = parentGroup {
@@ -53,14 +53,14 @@ class NCMarketGroupsViewController: NCTreeViewController, NCSearchableViewContro
 			
 			try? results.performFetch()
 			
-			treeController.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCMarketGroupRow.self)
+			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCMarketGroupRow.self)
 			
 		}
 	}
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			treeController.content = nil
+			treeController?.content = nil
 		}
 	}
 	

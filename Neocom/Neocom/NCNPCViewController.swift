@@ -40,7 +40,7 @@ class NCNPCViewController: NCTreeViewController, NCSearchableViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if treeController.content == nil {
+		if treeController?.content == nil {
 			let request = NSFetchRequest<NCDBNpcGroup>(entityName: "NpcGroup")
 			request.sortDescriptors = [NSSortDescriptor(key: "npcGroupName", ascending: true)]
 			if let parent = parentGroup {
@@ -53,14 +53,14 @@ class NCNPCViewController: NCTreeViewController, NCSearchableViewController {
 			
 			try? results.performFetch()
 			
-			treeController.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCNPCGroupRow.self)
+			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCNPCGroupRow.self)
 			
 		}
 	}
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			treeController.content = nil
+			treeController?.content = nil
 		}
 	}
 	

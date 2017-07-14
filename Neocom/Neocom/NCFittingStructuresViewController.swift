@@ -26,8 +26,8 @@ class NCFittingStructuresViewController: NCTreeViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if treeController.content == nil {
-			self.treeController.content = TreeNode()
+		if treeController?.content == nil {
+			self.treeController?.content = TreeNode()
 			reload()
 		}
 	}
@@ -84,6 +84,6 @@ class NCFittingStructuresViewController: NCTreeViewController {
 		})))
 		
 		sections.append(NCLoadoutsSection(categoryID: .structure))
-		self.treeController.content?.children = sections
+		self.treeController?.content?.children = sections
 	}
 }

@@ -24,7 +24,7 @@ class NCFittingFleetsViewController: NCTreeViewController {
 		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
 		
 		let root = FetchedResultsNode(resultsController: controller, objectNode: NCFleetRow.self)
-		treeController.content = root
+		treeController?.content = root
 		
 	}
 	

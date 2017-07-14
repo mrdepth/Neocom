@@ -142,13 +142,13 @@ class NCRegionPickerViewController: NCTreeViewController, NCSearchableViewContro
 				}
 				
 				DispatchQueue.main.async {
-					if self.treeController.content == nil {
+					if self.treeController?.content == nil {
 						let root = TreeNode()
 						root.children = sections
-						self.treeController.content = root
+						self.treeController?.content = root
 					}
 					else {
-						self.treeController.content?.children = sections
+						self.treeController?.content?.children = sections
 					}
 
 					self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil

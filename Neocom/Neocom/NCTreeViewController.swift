@@ -28,7 +28,7 @@ extension NCSearchableViewController {
 }
 
 class NCTreeViewController: UITableViewController, TreeControllerDelegate {
-	var treeController: TreeController!
+	var treeController: TreeController?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -37,8 +37,8 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate {
 		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		treeController = TreeController()
-		treeController.delegate = self
-		treeController.tableView = tableView
+		treeController?.delegate = self
+		treeController?.tableView = tableView
 		
 		tableView.delegate = treeController
 		tableView.dataSource = treeController

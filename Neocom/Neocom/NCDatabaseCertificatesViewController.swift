@@ -85,14 +85,14 @@ class NCDatabaseCertificatesViewController: NCTreeViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if let group = group, treeController.content == nil {
+		if let group = group, treeController?.content == nil {
 			let request = NSFetchRequest<NCDBCertCertificate>(entityName: "CertCertificate")
 			request.predicate = NSPredicate(format: "group == %@", group)
 			request.sortDescriptors = [NSSortDescriptor(key: "certificateName", ascending: true)]
 			
 			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
 
-			treeController.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDatabaseCertificateRow.self)
+			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDatabaseCertificateRow.self)
 
 			
 			let progress = NCProgressHandler(totalUnitCount: 1)
@@ -106,7 +106,7 @@ class NCDatabaseCertificatesViewController: NCTreeViewController {
 					character = NCCharacter()
 				}
 				
-				self.treeController.content?.children.forEach {
+				self.treeController?.content?.children.forEach {
 					($0 as? NCDatabaseCertificateRow)?.character = character
 				}
 				progress.finish()
@@ -118,7 +118,7 @@ class NCDatabaseCertificatesViewController: NCTreeViewController {
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			treeController.content = nil
+			treeController?.content = nil
 		}
 	}
 	

@@ -34,8 +34,8 @@ class NCMailAttachmentsShipsViewController: NCTreeViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if treeController.content == nil {
-			self.treeController.content = RootNode([NCLoadoutsSection<NCAttachmentLoadoutRow>(categoryID: .ship)])
+		if treeController?.content == nil {
+			self.treeController?.content = RootNode([NCLoadoutsSection<NCAttachmentLoadoutRow>(categoryID: .ship)])
 		}
 	}
 	

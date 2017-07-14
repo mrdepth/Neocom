@@ -53,7 +53,7 @@ class NCDatabaseTypeMasteryViewController: NCTreeViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if let type = type, let level = level, treeController.content == nil {
+		if let type = type, let level = level, treeController?.content == nil {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
 			
 			
@@ -95,7 +95,7 @@ class NCDatabaseTypeMasteryViewController: NCTreeViewController {
 					DispatchQueue.main.async {
 						let node = TreeNode()
 						node.children = certificates
-						self.treeController.content = node
+						self.treeController?.content = node
 						progress.finish()
 						
 					}

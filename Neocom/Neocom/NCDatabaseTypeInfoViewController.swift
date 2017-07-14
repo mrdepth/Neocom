@@ -42,7 +42,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 			NCDatabaseTypeInfo.typeInfo(type: type) { result in
 				let node = TreeNode()
 				node.children = result
-				self.treeController.content = node
+				self.treeController?.content = node
 			}
 			NCDataManager().image(typeID: Int(type.typeID), dimension: 512) { result in
 				switch result {
@@ -141,7 +141,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 	
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = tableView.indexPathForRow(at: location) else {return nil}
-		guard let item = treeController.node(for: indexPath) else {return nil}
+		guard let item = treeController?.node(for: indexPath) else {return nil}
 		return targetController(forItem: item)
 	}
 	
@@ -174,7 +174,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 	@objc private func didChangeMarketRegion(_ note: Notification) {
 		if let type = type {
 			NCDatabaseTypeInfo.typeInfo(type: type) { result in
-				self.treeController.content?.children = result
+				self.treeController?.content?.children = result
 			}
 		}
 	}

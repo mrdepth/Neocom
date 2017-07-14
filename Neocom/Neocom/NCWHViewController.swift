@@ -51,14 +51,14 @@ class NCWHViewController: NCTreeViewController, NCSearchableViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if treeController.content == nil {
+		if treeController?.content == nil {
 			reloadData()
 		}
 	}
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			treeController.content = nil
+			treeController?.content = nil
 		}
 	}
 	
@@ -101,7 +101,7 @@ class NCWHViewController: NCTreeViewController, NCSearchableViewController {
 		
 		try? results.performFetch()
 		
-		treeController.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBWhType>.self, objectNode: NCWHGroupRow.self)
+		treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBWhType>.self, objectNode: NCWHGroupRow.self)
 	}
 	
 }

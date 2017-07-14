@@ -24,8 +24,8 @@ class NCMailAttachmentsStructuresViewController: NCTreeViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if treeController.content == nil {
-			self.treeController.content = RootNode([NCLoadoutsSection<NCAttachmentLoadoutRow>(categoryID: .structure)])
+		if treeController?.content == nil {
+			self.treeController?.content = RootNode([NCLoadoutsSection<NCAttachmentLoadoutRow>(categoryID: .structure)])
 		}
 	}
 	

@@ -36,7 +36,7 @@ class NCDatabaseCertificateMasteryViewController: NCTreeViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if let certificate = certificate, treeController.content == nil {
+		if let certificate = certificate, treeController?.content == nil {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount:2)
 			
 			progress.progress.becomeCurrent(withPendingUnitCount: 1)
@@ -68,13 +68,13 @@ class NCDatabaseCertificateMasteryViewController: NCTreeViewController {
 					progress.progress.completedUnitCount += 1
 					
 					DispatchQueue.main.async {
-						if self.treeController.content == nil {
+						if self.treeController?.content == nil {
 							let root = TreeNode()
 							root.children = masteries
-							self.treeController.content = root
+							self.treeController?.content = root
 						}
 						else {
-							self.treeController.content?.children = masteries
+							self.treeController?.content?.children = masteries
 						}
 						
 						self.tableView.backgroundView = masteries.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil

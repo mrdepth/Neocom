@@ -19,19 +19,19 @@ class NCDatabaseCertificateGroupsViewController: NCTreeViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if treeController.content == nil {
+		if treeController?.content == nil {
 			let request = NSFetchRequest<NCDBInvGroup>(entityName: "InvGroup")
 			request.predicate = NSPredicate(format: "certificates.@count > 0")
 			request.sortDescriptors = [NSSortDescriptor(key: "groupName", ascending: true)]
 			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
 			
-			treeController.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDatabaseGroupRow.self)
+			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDatabaseGroupRow.self)
 		}
 	}
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			treeController.content = nil
+			treeController?.content = nil
 		}
 	}
 	

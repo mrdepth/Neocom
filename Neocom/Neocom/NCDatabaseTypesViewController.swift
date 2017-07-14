@@ -62,7 +62,7 @@ class NCDatabaseTypesViewController: NCTreeViewController, NCSearchableViewContr
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if treeController.content == nil {
+		if treeController?.content == nil {
 			reloadData()
 		}
 	}
@@ -93,7 +93,7 @@ class NCDatabaseTypesViewController: NCTreeViewController, NCSearchableViewContr
 				try? results.performFetch()
 				
 				DispatchQueue.main.async {
-					self.treeController.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NSDictionary>.self, objectNode: NCDatabaseTypeRow.self)
+					self.treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NSDictionary>.self, objectNode: NCDatabaseTypeRow.self)
 					
 					self.tableView.backgroundView = (results.fetchedObjects?.count ?? 0) == 0 ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
 				}
@@ -103,7 +103,7 @@ class NCDatabaseTypesViewController: NCTreeViewController, NCSearchableViewContr
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			treeController.content = nil
+			treeController?.content = nil
 		}
 	}
 	

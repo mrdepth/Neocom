@@ -129,3 +129,29 @@ extension NSTextAttachment {
 		}
 	}
 }
+
+extension NSAttributedString {
+	var eveHTML: String {
+		var html: String = ""
+		enumerateAttributes(in: NSMakeRange(0, length), options: []) { (attributes, range, _) in
+			var s = attributedSubstring(from: range).string
+			s = s.replacingOccurrences(of: "\n", with: "<br>")
+			if let link = (attributes[NSLinkAttributeName] as? NSURL)?.absoluteString {
+				s = "<a href=\"\(link)\">\(s)</a>"
+			}
+			if let font = attributes[NSFontAttributeName] as? UIFont {
+				if font.fontDescriptor.symbolicTraits.contains(UIFontDescriptorSymbolicTraits.traitBold) {
+					s = "<b>\(s)</b>"
+				}
+//				if font.fontDescriptor.symbolicTraits.contains(UIFontDescriptorSymbolicTraits.traitItalic) {
+//					s = "<i>\(s)</i>"
+//				}
+			}
+			if let color = attributes[NSForegroundColorAttributeName] as? UIColor {
+				s = "<font color=\"\(color.css)ff\">\(s)</font>"
+			}
+			html.append(s)
+		}
+		return html
+	}
+}

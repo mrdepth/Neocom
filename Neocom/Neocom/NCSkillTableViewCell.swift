@@ -27,8 +27,11 @@ extension Prototype {
 
 class NCSkillRow: TreeRow {
     let skill: NCSkill
-    init(prototype: Prototype = Prototype.NCSkillTableViewCell.default, skill: NCSkill) {
+	let character: NCCharacter
+	
+	init(prototype: Prototype = Prototype.NCSkillTableViewCell.default, skill: NCSkill, character: NCCharacter) {
         self.skill = skill
+		self.character = character
 		super.init(prototype: prototype, route: Router.Database.TypeInfo(skill.typeID))
     }
     
@@ -36,9 +39,12 @@ class NCSkillRow: TreeRow {
         let typeID = Int32(self.skill.typeID)
         return NCAccount.current?.activeSkillPlan?.skills?.first(where: { ($0 as? NCSkillPlanSkill)?.typeID == typeID }) != nil ? #imageLiteral(resourceName: "skillRequirementQueued") : nil
     }()
+	
+	var trainingTime: String?
     
     override func configure(cell: UITableViewCell) {
         guard let cell = cell as? NCSkillTableViewCell else {return}
+		cell.object = skill
         cell.titleLabel?.text = "\(skill.typeName) (x\(skill.rank))"
         if let level = skill.level {
             cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)
@@ -47,18 +53,37 @@ class NCSkillRow: TreeRow {
         else {
             cell.levelLabel?.text = NSLocalizedString("N/A", comment: "")
         }
+		
+		if let trainingTime = trainingTime {
+			cell.trainingTimeLabel?.text = trainingTime
+		}
+		else {
+			let level = (skill.level ?? 0)
+			if level < 5 {
+				cell.trainingTimeLabel?.text = " "
+				NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
+					let trainingQueue = NCTrainingQueue(character: self.character)
+					if let type = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)[self.skill.typeID] {
+						trainingQueue.add(skill: type, level: level + 1)
+					}
+					let t = trainingQueue.trainingTime(characterAttributes: self.character.attributes)
+					let s = String(format: NSLocalizedString("%@ ", comment: ""),
+					               NCTimeIntervalFormatter.localizedString(from: t, precision: .seconds))
+					DispatchQueue.main.async {
+						self.trainingTime = s
+						if cell.object as? NCSkill === self.skill {
+							cell.trainingTimeLabel?.text = s
+						}
+					}
+				}
+			}
+			else {
+				trainingTime = NSLocalizedString("COMPLETED", comment: "")
+				cell.trainingTimeLabel?.text = trainingTime
+			}
+		}
         
-        let level = (skill.level ?? 0)
-        if level < 5 {
-            cell.trainingTimeLabel?.text = String(format: NSLocalizedString("%@ ", comment: ""),
-                                                  //String(romanNumber:level + 1),
-                NCTimeIntervalFormatter.localizedString(from: skill.trainingTimeToLevelUp(characterAttributes: NCCharacterAttributes()), precision: .seconds))
-            
-        }
-        else {
-            cell.trainingTimeLabel?.text = NSLocalizedString("COMPLETED", comment: "")
-        }
-        
+		
         cell.iconView?.image = image
     }
     

@@ -102,8 +102,9 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	}
 	
 	@IBAction func onSend(_ sender: Any) {
-		guard let data = try? textView.attributedText.data(from: NSMakeRange(0, textView.attributedText.length), documentAttributes: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType]) else {return}
-		guard let html = String(data: data, encoding: .utf8) else {return}
+//		guard let data = try? textView.attributedText.data(from: NSMakeRange(0, textView.attributedText.length), documentAttributes: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType]) else {return}
+//		guard let html = String(data: data, encoding: .utf8) else {return}
+		let html = textView.attributedText.eveHTML
 
 		let recipients = self.recipients.flatMap { id -> ESI.Mail.Recipient? in
 			guard let contact = self._recipients[id] else {return nil}

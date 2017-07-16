@@ -26,7 +26,7 @@ fileprivate class NCSkillQueueRow: NCSkillRow {
 		let b = NCUnitFormatter.localizedString(from: Double(skill.skillPoints(at: 1 + (skill.level ?? 0))), unit: .skillPoints, style: .full)
 		cell.spLabel?.text = "\(a) / \(b)"
 		if let from = skill.trainingStartDate, let to = skill.trainingEndDate {
-			cell.trainingTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: max(to.timeIntervalSince(from), 0), precision: .minutes)
+			cell.trainingTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: max(to.timeIntervalSince(max(from, Date())), 0), precision: .minutes)
 		}
 		else {
 			cell.trainingTimeLabel?.text = nil
@@ -95,7 +95,7 @@ fileprivate class NCSkillQueueSection: DefaultTreeSection {
 				guard let finishDate = item.finishDate, finishDate > date else {return nil}
 				guard let type = invTypes?[item.skillID] else {return nil}
 				guard let skill = NCSkill(type: type, skill: item) else {return nil}
-				return NCSkillQueueRow(skill: skill)
+				return NCSkillQueueRow(skill: skill, character: character)
 			}
 		}
 

@@ -100,81 +100,93 @@ class NCSkillsViewController: NCPageViewController {
 	
 	private func process(_ value: ESI.Skills.CharacterSkills, dataManager: NCDataManager, completionHandler: (() -> Void)?) {
 		let progress = Progress(totalUnitCount: 1)
-		NCDatabase.sharedDatabase?.performBackgroundTask{ managedObjectContext in
-			let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
-			request.predicate = NSPredicate(format: "published == TRUE AND group.category.categoryID == %d", NCDBCategoryID.skill.rawValue)
+		NCCharacter.load(account: NCAccount.current) { result in
+			let character: NCCharacter
+			switch result {
+			case let .success(value):
+				character = value
+			case .failure:
+				character = NCCharacter()
+			}
 			
-			request.sortDescriptors = [NSSortDescriptor(key: "group.groupName", ascending: true), NSSortDescriptor(key: "typeName", ascending: true)]
-			let result = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: "group.groupName", cacheName: nil)
-			try! result.performFetch()
-			
-			var map: [Int: ESI.Skills.CharacterSkills.Skill] = [:]
-			value.skills?.forEach {map[$0.skillID ?? 0] = $0}
-			
-			var allSections = [NCSkillSection]()
-			var mySections = [NCSkillSection]()
-			var canTrainSections = [NCSkillSection]()
-			
-			progress.becomeCurrent(withPendingUnitCount: 1)
-			let sectionsProgress = Progress(totalUnitCount: Int64(result.sections!.count))
-			progress.resignCurrent()
-
-			for section in result.sections! {
-				var allRows = [NCSkillRow]()
-				var myRows = [NCSkillRow]()
-				var canTrainRows = [NCSkillRow]()
+			NCDatabase.sharedDatabase?.performBackgroundTask{ managedObjectContext in
+				let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
+				request.predicate = NSPredicate(format: "published == TRUE AND group.category.categoryID == %d", NCDBCategoryID.skill.rawValue)
 				
-				var group: NCDBInvGroup?
-				for type in section.objects as? [NCDBInvType] ?? [] {
-					let level = map[Int(type.typeID)]?.currentSkillLevel
+				request.sortDescriptors = [NSSortDescriptor(key: "group.groupName", ascending: true), NSSortDescriptor(key: "typeName", ascending: true)]
+				let result = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: "group.groupName", cacheName: nil)
+				try! result.performFetch()
+				
+				var map: [Int: ESI.Skills.CharacterSkills.Skill] = [:]
+				value.skills?.forEach {map[$0.skillID ?? 0] = $0}
+				
+				var allSections = [NCSkillSection]()
+				var mySections = [NCSkillSection]()
+				var canTrainSections = [NCSkillSection]()
+				
+				progress.becomeCurrent(withPendingUnitCount: 1)
+				let sectionsProgress = Progress(totalUnitCount: Int64(result.sections!.count))
+				progress.resignCurrent()
+				
+				for section in result.sections! {
+					var allRows = [NCSkillRow]()
+					var myRows = [NCSkillRow]()
+					var canTrainRows = [NCSkillRow]()
 					
-					if let skill = NCSkill(type: type, level: level) {
-						if group == nil {
-							group = type.group
-						}
+					var group: NCDBInvGroup?
+					for type in section.objects as? [NCDBInvType] ?? [] {
+						let level = map[Int(type.typeID)]?.currentSkillLevel
 						
-						allRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill))
-						if let level = level {
-							myRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill))
-							if level < 5 {
-								canTrainRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill))
+						if let skill = NCSkill(type: type, level: level) {
+							if group == nil {
+								group = type.group
+							}
+							
+							allRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill, character: character))
+							if let level = level {
+								myRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill, character: character))
+								if level < 5 {
+									canTrainRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill, character: character))
+								}
+							}
+							else {
+								canTrainRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill, character: character))
 							}
 						}
-						else {
-							canTrainRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill))
+					}
+					if let group = group {
+						var mySP = 0 as Int64
+						var totalSP = 0 as Int64
+						allRows.forEach {
+							mySP += Int64($0.skill.skillPoints)
+							for i in 1...5 {
+								totalSP += Int64($0.skill.skillPoints(at: i))
+							}
+						}
+						
+						allSections.append(NCSkillSection(group: group, children: allRows, skillPoints: totalSP))
+						if myRows.count > 0 {
+							mySections.append(NCSkillSection(group: group, children: myRows, skillPoints: mySP))
+						}
+						if canTrainRows.count > 0 {
+							canTrainSections.append(NCSkillSection(group: group, children: canTrainRows, skillPoints: totalSP - mySP))
 						}
 					}
+					sectionsProgress.completedUnitCount += 1
 				}
-				if let group = group {
-					var mySP = 0 as Int64
-					var totalSP = 0 as Int64
-					allRows.forEach {
-						mySP += Int64($0.skill.skillPoints)
-						for i in 1...5 {
-							totalSP += Int64($0.skill.skillPoints(at: i))
-						}
+				
+				DispatchQueue.main.async {
+					self.sections = [mySections, canTrainSections, allSections]
+					(self.viewControllers as? [NCSkillsContentViewController])?.forEach {
+						$0.tableView.backgroundView = nil
 					}
-
-					allSections.append(NCSkillSection(group: group, children: allRows, skillPoints: totalSP))
-					if myRows.count > 0 {
-						mySections.append(NCSkillSection(group: group, children: myRows, skillPoints: mySP))
-					}
-					if canTrainRows.count > 0 {
-						canTrainSections.append(NCSkillSection(group: group, children: canTrainRows, skillPoints: totalSP - mySP))
-					}
+					
+					completionHandler?()
 				}
-				sectionsProgress.completedUnitCount += 1
 			}
-			
-			DispatchQueue.main.async {
-				self.sections = [mySections, canTrainSections, allSections]
-				(self.viewControllers as? [NCSkillsContentViewController])?.forEach {
-					$0.tableView.backgroundView = nil
-				}
 
-				completionHandler?()
-			}
 		}
+		
 	}
 	
 	private func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil ) {

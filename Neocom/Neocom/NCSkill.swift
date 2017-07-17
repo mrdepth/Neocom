@@ -110,6 +110,10 @@ class NCSkill: Hashable {
 	func trainingTimeToLevelUp(characterAttributes: NCCharacterAttributes) -> TimeInterval {
 		return trainingTime(to: 1 + (self.level ?? 0), characterAttributes: characterAttributes)
 	}
+	
+	var skillPointsToLevelUp: Int {
+		return skillPoints(at: 1 + (self.level ?? 0)) - self.skillPoints
+	}
 
 	//MARK: Hashable
 	

@@ -47,6 +47,12 @@ class NCCharacter {
 		self.skillQueue = skillQueue ?? []
 	}
 	
+	init(attributes: NCCharacterAttributes, skills: [Int: NCSkill], skillQueue: [ESI.Skills.SkillQueueItem]) {
+		self.attributes = attributes
+		self.skills = skills
+		self.skillQueue = skillQueue
+	}
+	
 	var observer: NCManagedObjectObserver?
 	
 	class func load(account: NCAccount?, completionHandler: @escaping(NCResult<NCCharacter>) -> Void) {
@@ -224,6 +230,6 @@ class NCCharacter {
 		else {
 			completionHandler(.success(NCCharacter()))
 		}
-
 	}
+	
 }

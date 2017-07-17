@@ -70,6 +70,8 @@
 		12424E3E1E3642430078AB0F /* NCFittingFleet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E3D1E3642430078AB0F /* NCFittingFleet.swift */; };
 		12424E421E3651DC0078AB0F /* NCFittingEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12424E411E3651DC0078AB0F /* NCFittingEditorViewController.swift */; };
 		1243DC1F1E0BDE1700F00B9A /* NCMarketHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */; };
+		1248DB381F1C9D40009625EC /* NCMailDraftsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1248DB371F1C9D40009625EC /* NCMailDraftsViewController.swift */; };
+		1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248DB391F1C9DE9009625EC /* NCMailTableViewCell.xib */; };
 		12498B041EFD63D800FEEE36 /* NCKillmailsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12498B031EFD63D800FEEE36 /* NCKillmailsPageViewController.swift */; };
 		12498B061EFD680200FEEE36 /* NCKillmailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */; };
 		1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE331DF1C38200A2A24B /* NCStorage.swift */; };
@@ -425,6 +427,8 @@
 		12424E3D1E3642430078AB0F /* NCFittingFleet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingFleet.swift; sourceTree = "<group>"; };
 		12424E411E3651DC0078AB0F /* NCFittingEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingEditorViewController.swift; sourceTree = "<group>"; };
 		1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketHistoryView.swift; sourceTree = "<group>"; };
+		1248DB371F1C9D40009625EC /* NCMailDraftsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailDraftsViewController.swift; sourceTree = "<group>"; };
+		1248DB391F1C9DE9009625EC /* NCMailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCMailTableViewCell.xib; sourceTree = "<group>"; };
 		12498B031EFD63D800FEEE36 /* NCKillmailsPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailsPageViewController.swift; sourceTree = "<group>"; };
 		12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailTableViewCell.swift; sourceTree = "<group>"; };
 		1256BE331DF1C38200A2A24B /* NCStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorage.swift; sourceTree = "<group>"; };
@@ -868,6 +872,7 @@
 				126157091E01D2250041B817 /* NCCharacterSheetViewController.swift */,
 				1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */,
 				125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */,
+				1248DB371F1C9D40009625EC /* NCMailDraftsViewController.swift */,
 				126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */,
 				1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */,
 				125CE1351E9FF0E7007B8B6B /* NCNewMailViewController.swift */,
@@ -968,48 +973,48 @@
 			isa = PBXGroup;
 			children = (
 				12D930F41E658E8400CBAE1C /* Prototypes */,
-				1230A31C1DFFE2CF00627D92 /* NCTableView.h */,
-				1230A31D1DFFE2CF00627D92 /* NCTableView.m */,
-				1230A31F1DFFE2CF00627D92 /* NCHeaderTableViewCell.swift */,
-				1256BE591DF4742F00A2A24B /* NCTableViewCell.swift */,
-				129E61011E0287F500B56EB8 /* NCSkillTableViewCell.swift */,
 				1230A3391E001D7300627D92 /* NCAccountTableViewCell.swift */,
+				125AB8101E41DEE600B8A2A8 /* NCChargeTableViewCell.swift */,
+				12C37D2D1EFA9CEE0070F055 /* NCContactTableViewCell.swift */,
+				12D39D131EF969210077BD17 /* NCContractTableViewCell.swift */,
+				1293BC121E4A0F6E0099FD75 /* NCCountTableViewCell.swift */,
+				1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */,
 				128E61411E0A707200C15EEB /* NCDamageTypeTableViewCell.swift */,
+				12CFDAE31F03D71F00CC0762 /* NCDatePickerTableViewCell.swift */,
+				12D20EB11EBCB68D00BEC926 /* NCEventTableViewCell.swift */,
+				1203E88E1F0A8048009ADF8D /* NCFeedItemTableViewCell.swift */,
+				1293BC191E4B4E7C0099FD75 /* NCFirepowerTableViewCell.swift */,
+				1293BC211E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift */,
+				12B563FB1E51E0A200F1BED0 /* NCFittingCharacterTableViewCell.swift */,
+				1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */,
+				12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */,
+				12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */,
+				123AEFF41E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift */,
+				1293BC1D1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift */,
+				12424E181E489C16002DFE08 /* NCFittingSlotHeaderTableViewCell.swift */,
+				124247BF1E6605AD002E0460 /* NCFleetMemberTableViewCell.swift */,
+				12D930F51E65A77300CBAE1C /* NCFleetTableViewCell.swift */,
+				1230A31F1DFFE2CF00627D92 /* NCHeaderTableViewCell.swift */,
+				12DC567E1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift */,
+				12D39D051EF805270077BD17 /* NCIndustryTableViewCell.swift */,
+				12E6AE571F18F992001E829D /* NCKillmailAttackerTableViewCell.swift */,
+				12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */,
+				125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */,
 				12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */,
 				12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */,
-				123AEFF41E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift */,
-				12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */,
-				125AB8101E41DEE600B8A2A8 /* NCChargeTableViewCell.swift */,
-				12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */,
-				12424E181E489C16002DFE08 /* NCFittingSlotHeaderTableViewCell.swift */,
-				1293BC121E4A0F6E0099FD75 /* NCCountTableViewCell.swift */,
-				1293BC1D1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift */,
-				1293BC151E4B1FC60099FD75 /* NCResistancesTableViewCell.swift */,
-				1293BC171E4B44420099FD75 /* NCTankTableViewCell.swift */,
-				1293BC191E4B4E7C0099FD75 /* NCFirepowerTableViewCell.swift */,
-				12D390F41E840A2000B8A938 /* NCMiningYieldTableViewCell.swift */,
-				1293BC211E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift */,
-				1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */,
-				12B563FB1E51E0A200F1BED0 /* NCFittingCharacterTableViewCell.swift */,
-				129B316F1E5439A100B9A88D /* NCTextFieldTableViewCell.swift */,
-				1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */,
-				12D930F51E65A77300CBAE1C /* NCFleetTableViewCell.swift */,
-				124247BF1E6605AD002E0460 /* NCFleetMemberTableViewCell.swift */,
-				1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */,
-				125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */,
-				12D20EA01EBA00B600BEC926 /* NCPieChartTableViewCell.swift */,
-				12D20EB11EBCB68D00BEC926 /* NCEventTableViewCell.swift */,
 				12D39CFF1EF7DB040077BD17 /* NCMarketOrderTableViewCell.swift */,
-				12D39D051EF805270077BD17 /* NCIndustryTableViewCell.swift */,
+				12D390F41E840A2000B8A938 /* NCMiningYieldTableViewCell.swift */,
+				12D20EA01EBA00B600BEC926 /* NCPieChartTableViewCell.swift */,
+				1293BC151E4B1FC60099FD75 /* NCResistancesTableViewCell.swift */,
+				1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */,
+				129E61011E0287F500B56EB8 /* NCSkillTableViewCell.swift */,
+				1230A31C1DFFE2CF00627D92 /* NCTableView.h */,
+				1230A31D1DFFE2CF00627D92 /* NCTableView.m */,
+				1256BE591DF4742F00A2A24B /* NCTableViewCell.swift */,
+				1293BC171E4B44420099FD75 /* NCTankTableViewCell.swift */,
+				129B316F1E5439A100B9A88D /* NCTextFieldTableViewCell.swift */,
 				12D39D091EF921810077BD17 /* NCWalletJournalTableViewCell.swift */,
 				12D39D0D1EF936520077BD17 /* NCWalletTransactionTableViewCell.swift */,
-				12D39D131EF969210077BD17 /* NCContractTableViewCell.swift */,
-				12C37D2D1EFA9CEE0070F055 /* NCContactTableViewCell.swift */,
-				12DC567E1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift */,
-				12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */,
-				12CFDAE31F03D71F00CC0762 /* NCDatePickerTableViewCell.swift */,
-				1203E88E1F0A8048009ADF8D /* NCFeedItemTableViewCell.swift */,
-				12E6AE571F18F992001E829D /* NCKillmailAttackerTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1189,6 +1194,7 @@
 				12CFDAEB1F03F8F700CC0762 /* NCKillmailTableViewCell.xib */,
 				12E6AE551F18F703001E829D /* NCKillmailAttackerTableViewCell.xib */,
 				12E6AE591F18FB3B001E829D /* NCKillmailAttackerNPCTableViewCell.xib */,
+				1248DB391F1C9DE9009625EC /* NCMailTableViewCell.xib */,
 			);
 			name = Prototypes;
 			sourceTree = "<group>";
@@ -1438,6 +1444,7 @@
 				1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */,
 				1256BEC91DF4770A00A2A24B /* intelligence.png in Resources */,
 				1256BECC1DF4770A00A2A24B /* willpower.png in Resources */,
+				1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */,
 				12AC8D9E1DEF58A100561A7A /* LaunchScreen.storyboard in Resources */,
 				1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */,
 				1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */,
@@ -1488,6 +1495,7 @@
 				12C37D281EFA7E9B0070F055 /* NCEventViewController.swift in Sources */,
 				12424E3E1E3642430078AB0F /* NCFittingFleet.swift in Sources */,
 				125CE1381E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift in Sources */,
+				1248DB381F1C9D40009625EC /* NCMailDraftsViewController.swift in Sources */,
 				12C44D001E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift in Sources */,
 				1220710E1EF2C6E1007D86CE /* NCDatabaseCertificateRequirementsViewController.swift in Sources */,
 				1256BE501DF465BC00A2A24B /* NCSlideDownAnimationController.swift in Sources */,

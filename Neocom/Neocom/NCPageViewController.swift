@@ -27,9 +27,17 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 			
 			currentPage = viewControllers?.first
 			if let currentPage = currentPage {
+				let isVisible = isViewLoaded && view.window != nil
 				addChild(viewController: currentPage)
 				scrollView.addSubview(currentPage.view)
-				currentPage.didMove(toParentViewController: self)
+				if isVisible {
+					currentPage.beginAppearanceTransition(true, animated: false)
+					currentPage.didMove(toParentViewController: self)
+					currentPage.endAppearanceTransition()
+				}
+				else {
+					currentPage.didMove(toParentViewController: self)
+				}
 			}
 		}
 	}

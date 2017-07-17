@@ -13,6 +13,8 @@ var RefreshHandle = "refreshHandler"
 var LoadingHandle = "isLoading"
 
 @objc protocol NCRefreshable {
+	weak var tableView: UITableView! {get}
+	var refreshControl: UIRefreshControl? {get set}
 	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)? )
 }
 
@@ -21,7 +23,7 @@ extension NCRefreshable {
 	func registerRefreshable() {
 		let refreshControl = UIRefreshControl()
 
-		(self as? UITableViewController)?.refreshControl = refreshControl
+		self.refreshControl = refreshControl
 		
 		let handler = NCActionHandler(refreshControl, for: .valueChanged) { [weak self] _ in
 			self?.reload(cachePolicy: .reloadIgnoringLocalCacheData)
@@ -35,7 +37,7 @@ extension NCRefreshable {
 
 	private func reload(cachePolicy: URLRequest.CachePolicy) {
 		if objc_getAssociatedObject(self, &LoadingHandle) as? Bool == true {
-			(self as? UITableViewController)?.refreshControl?.endRefreshing()
+			self.refreshControl?.endRefreshing()
 			return
 		}
 		
@@ -44,7 +46,7 @@ extension NCRefreshable {
 		progress?.progress.becomeCurrent(withPendingUnitCount: 1)
 		self.reload(cachePolicy: cachePolicy) { [weak self] in
 			guard let strongSelf = self else {return}
-			if let refreshControl = (strongSelf as? UITableViewController)?.refreshControl, refreshControl.isRefreshing {
+			if let refreshControl = strongSelf.refreshControl, refreshControl.isRefreshing {
 				refreshControl.endRefreshing()
 			}
 			

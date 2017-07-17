@@ -111,11 +111,7 @@ class NCTrainingQueue {
 	}
 	
 	func trainingTime(characterAttributes: NCCharacterAttributes) -> TimeInterval{
-		var trainingTime: TimeInterval = 0
-		for skill in skills {
-			trainingTime += skill.trainingTime(characterAttributes: characterAttributes)
-		}
-		return trainingTime
+		return skills.map {$0.trainingTime(characterAttributes: characterAttributes)}.reduce(0, +)
 	}
 
 }

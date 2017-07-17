@@ -335,7 +335,9 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 				route = Router.Database.TypeInfo(type)
 			}
 			
-			sections.append(NCFittingModuleInfoRow(module: module, type: type, count: modules.count, route: route))
+			sections.append(DefaultTreeSection(nodeIdentifier: "Variations",
+			                                   title: NSLocalizedString("Variations", comment: "").uppercased(),
+			                                   children: [NCFittingModuleInfoRow(module: module, type: type, count: modules.count, route: route)]))
 			
 			
 			let chargeGroups = module.chargeGroups

@@ -18,7 +18,8 @@ class NCTypePickerViewController: NCNavigationController {
 				guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return}
 				if (group.items?.count ?? 0) > 0 {
 					guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerContainerViewContrller") as? NCTypePickerContainerViewContrller else {return}
-					controller.predicate = NSPredicate(format: "dgmppItem.groups CONTAINS %@ AND published == YES", group)
+//					controller.predicate = NSPredicate(format: "dgmppItem.groups CONTAINS %@ AND published == YES", group)
+					controller.predicate = NSPredicate(format: "dgmppItem.groups CONTAINS %@", group)
 					controller.title = group.groupName
 					viewControllers = [controller]
 					

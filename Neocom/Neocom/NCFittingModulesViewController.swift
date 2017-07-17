@@ -36,7 +36,7 @@ class NCFittingModuleRow: TreeRow {
 		self.state = module?.state ?? .unknown
 		self.isEnabled = module?.isEnabled ?? true
 		self.hasTarget = module?.target != nil
-		self.hasStates = slot != .rig && slot != .service && slot != .subsystem
+		self.hasStates = slot != .rig && slot != .service && slot != .subsystem && slot != .mode
 		super.init(prototype: module?.isDummy == true ? Prototype.NCDefaultTableViewCell.compact : Prototype.NCFittingModuleTableViewCell.default)
 	}
 	

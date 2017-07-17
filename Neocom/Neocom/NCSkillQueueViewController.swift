@@ -42,8 +42,6 @@ fileprivate class NCSkillQueueRow: NCSkillRow {
 	}
 }
 
-
-
 fileprivate class NCSkillPlanSkillRow: FetchedResultsObjectNode<NCSkillPlanSkill>, TreeNodeRoutable {
 	var skill: NCTrainingSkill?
 	var character: NCCharacter?
@@ -124,121 +122,6 @@ fileprivate class NCSkillQueueSection: DefaultTreeSection {
 
 	}
 }
-/*
-fileprivate class NCSkillPlanSection: FetchedResultsSectionNode<NCSkillPlan> {
-	let results: NSFetchedResultsController<NCSkillPlan>
-	let character: NCCharacter
-	let trainingQueue: NCTrainingQueue
-	
-	var observer: NCManagedObjectObserver?
-	
-	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<NCSkillPlanSkill>.Type) {
-		super.init(section: section, objectNode: objectNode)
-		cellIdentifier = Prototype.NCDefaultTableViewCell.default.reuseIdentifier
-	}
-	
-	/*init(skillPlan: NCSkillPlan, character: NCCharacter) {
-		self.character = character
-		let request = NSFetchRequest<NCSkillPlanSkill>(entityName: "SkillPlanSkill")
-		request.predicate = NSPredicate(format: "skillPlan == %@", skillPlan)
-		request.sortDescriptors = [NSSortDescriptor(key: "position", ascending: true)]
-		results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: skillPlan.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
-		try? results.performFetch()
-
-		let trainingQueue = NCTrainingQueue(character: character)
-		
-		let invTypes = NCDatabase.sharedDatabase?.invTypes
-		let children = results.fetchedObjects?.map { (item) -> NCSkillPlanRow in
-			let type = invTypes?[Int(item.typeID)]
-			let skill = NCTrainingSkill(type: type, skill: character.skills[Int(item.typeID)], level: Int(item.level))
-			if let skill = skill, let type = type {
-				trainingQueue.add(skill: type, level: Int(skill.level))
-			}
-			return NCSkillPlanRow(skill: skill, character: character, object: item)
-		}
-		
-		self.trainingQueue = trainingQueue
-		super.init(cellIdentifier: "NCSkillPlanHeaderTableViewCell", nodeIdentifier: "SkillPlan", children: children ?? [], object: skillPlan)
-		updateTitle()
-		results.delegate = self
-		
-		observer = NCManagedObjectObserver(managedObject: skillPlan, handler: {[weak self] (updated, deleted) in
-			if updated?.contains(skillPlan) == true {
-				self?.updateTitle()
-			}
-		})
-	}*/
-	
-	func updateTitle() {
-		let skillPlan = object as? NCSkillPlan
-		
-		let title = NSMutableAttributedString()
-		if let name = skillPlan?.name?.uppercased() {
-			title.append(NSAttributedString(string: "\(name): ", attributes: skillPlan?.active == true ? [NSForegroundColorAttributeName: UIColor.caption] : nil))
-		}
-		let s = children?.count == 0 ? NSLocalizedString("Empty", comment: "") :
-			String(format: NSLocalizedString("%@ (%d skills)", comment: ""), NCTimeIntervalFormatter.localizedString(from: trainingQueue.trainingTime(characterAttributes: character.attributes), precision: .seconds), children?.count ?? 0)
-		title.append(NSAttributedString(string: s))
-		self.attributedTitle = title
-	}
-	
-	//MARK: NSFetchedResultsControllerDelegate
-	
-	var insert: [(Int, NCSkillPlanRow)]?
-	var delete: [Int]?
-	
-	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		insert = []
-		delete = []
-	}
-	
-	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		delete?.sort(by: >)
-		insert?.sort(by: { (a, b) -> Bool in
-			a.0 < b.0
-		})
-		let array = self.mutableArrayValue(forKey: "children")
-		for i in delete ?? [] {
-			array.removeObject(at: i)
-		}
-		for (i, obj) in insert ?? [] {
-			array.insert(obj, at: i)
-		}
-		insert = nil
-		delete = nil
-	}
-	
-	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-		switch type {
-		case .insert:
-			let item = anObject as! NCSkillPlanSkill
-			let invTypes = NCDatabase.sharedDatabase?.invTypes
-			let type = invTypes?[Int(item.typeID)]
-			let skill = NCTrainingSkill(type: type, skill: character.skills[Int(item.typeID)], level: Int(item.level))
-
-			if let skill = skill, let type = type {
-				trainingQueue.add(skill: type, level: Int(skill.level))
-			}
-
-			insert?.append((newIndexPath!.row, NCSkillPlanRow(skill: skill, character: character, object: item)))
-		case .delete:
-			let item = anObject as! NCSkillPlanSkill
-			let typeID = Int(item.typeID)
-			let level = Int(item.level)
-			if let skill = trainingQueue.skills.first(where: {return $0.skill.typeID == typeID && $0.level == level}) {
-				trainingQueue.remove(skill: skill)
-			}
-			delete?.append(indexPath!.row)
-		case .move:
-			let obj = children?[indexPath!.row]
-			delete?.append(indexPath!.row)
-			insert?.append((newIndexPath!.row, obj as! NCSkillPlanRow))
-		case .update:
-			break
-		}
-	}
-}
-*/
 
 fileprivate class NCSKillPlanSkillsNode: FetchedResultsNode<NCSkillPlanSkill> {
 	
@@ -407,7 +290,6 @@ fileprivate class NCSkillPlanRow: FetchedResultsObjectNode<NCSkillPlan> {
 	}
 }
 
-
 fileprivate class NCSkillPlansSection: FetchedResultsNode<NCSkillPlan> {
 	let character: NCCharacter
 	let account: NCAccount
@@ -441,6 +323,99 @@ fileprivate class NCSkillPlansSection: FetchedResultsNode<NCSkillPlan> {
 
 }
 
+fileprivate class NCOptimalCharacterAttributesSection: DefaultTreeSection {
+	let account: NCAccount
+	let character: NCCharacter
+	
+	var skillPlanObserver: NCManagedObjectObserver?
+	var skillPlan: NCSkillPlan? {
+		didSet {
+			guard skillPlan != oldValue else {return}
+			
+			skillPlanObserver = nil
+			guard let skillPlan = skillPlan else {return}
+			skillPlanObserver = NCManagedObjectObserver(managedObject: skillPlan) { [weak self] _ in
+				self?.reload()
+			}
+		}
+	}
+	
+	init(account: NCAccount, character: NCCharacter) {
+		self.account = account
+		self.character = character
+		self.skillPlan = account.activeSkillPlan
+		super.init(nodeIdentifier: "OptimalCharacterAttributes", title: NSLocalizedString("Current/Optimal", comment: "").uppercased(),children: nil)
+		reload()
+	}
+	
+	func reload() {
+		skillPlan = account.activeSkillPlan
+		guard let objectID = skillPlan?.objectID else {return}
+
+		let character = self.character
+
+		NCStorage.sharedStorage?.performBackgroundTask { managedObjectContext in
+			guard let skillPlan = (try? managedObjectContext.existingObject(with: objectID)) as? NCSkillPlan else {return}
+			
+			let request = NSFetchRequest<NCSkillPlanSkill>(entityName: "SkillPlanSkill")
+			request.predicate = NSPredicate(format: "skillPlan == %@", skillPlan)
+			request.sortDescriptors = [NSSortDescriptor(key: "position", ascending: true)]
+			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: skillPlan.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
+			try? results.performFetch()
+			
+			let trainingQueue = NCTrainingQueue(character: character)
+			
+			NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
+				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
+				
+				results.fetchedObjects?.forEach { item in
+					guard let type = invTypes[Int(item.typeID)] else {return}
+					let level = Int(item.level)
+					guard character.skills[Int(item.typeID)]?.level ?? 0 < level else {return}
+					guard let skill = NCTrainingSkill(type: type, skill: character.skills[Int(item.typeID)], level: level, trainedLevel: level-1) else {return}
+					trainingQueue.skills.append(skill)
+				}
+				
+				character.skillQueue.forEach { item in
+					guard let type = invTypes[item.skillID] else {return}
+					let level = item.finishedLevel
+					trainingQueue.add(skill: type, level: level)
+				}
+				
+				let optimal = NCCharacterAttributes.optimal(for: trainingQueue)
+				optimal?.augmentations = character.attributes.augmentations
+
+				let current = character.attributes
+
+				let t0 = trainingQueue.trainingTime(characterAttributes: current)
+				let t1 = optimal != nil ? trainingQueue.trainingTime(characterAttributes: optimal!) : nil
+				
+				DispatchQueue.main.async {
+					if let t1 = t1, let optimal = optimal {
+						var rows = [("Intelligence", NSLocalizedString("Intelligence", comment: ""), #imageLiteral(resourceName: "intelligence"), current.intelligence, optimal.intelligence),
+						            ("Memory", NSLocalizedString("Memory", comment: ""), #imageLiteral(resourceName: "memory"), current.memory, optimal.memory),
+						            ("Perception", NSLocalizedString("Perception", comment: ""), #imageLiteral(resourceName: "perception"), current.perception, optimal.perception),
+						            ("Willpower", NSLocalizedString("Willpower", comment: ""), #imageLiteral(resourceName: "willpower"), current.willpower, optimal.willpower),
+						            ("Charisma", NSLocalizedString("Charisma", comment: ""), #imageLiteral(resourceName: "charisma"), current.charisma, optimal.charisma)].map { i -> TreeRow in
+										return DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: i.0, image: i.2, title: i.1.uppercased(), subtitle: "\(i.3)/\(i.4) \(NSLocalizedString("points", comment: ""))")
+						}
+						let dt = t0 - t1
+						if dt > 0 {
+							rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, nodeIdentifier: "Better", title: String(format: NSLocalizedString("%@ better than current", comment: ""), NCTimeIntervalFormatter.localizedString(from: dt, precision: .seconds))))
+						}
+						self.children = rows
+					}
+					else {
+						self.children = []
+					}
+				}
+			}
+		}
+		
+
+	}
+}
+
 class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
 	@IBOutlet weak var treeController: TreeController!
 	var character: NCCharacter?
@@ -458,7 +433,9 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
 			Prototype.NCActionHeaderTableViewCell.default,
 			Prototype.NCActionTableViewCell.default,
 			Prototype.NCDefaultTableViewCell.default,
-			Prototype.NCSkillTableViewCell.default
+			Prototype.NCSkillTableViewCell.default,
+			Prototype.NCDefaultTableViewCell.attribute,
+			Prototype.NCDefaultTableViewCell.placeholder
 			]
 		)
 		
@@ -761,6 +738,12 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
 					let skillBrowser = NCActionRow(title: NSLocalizedString("SKILL BROWSER", comment: ""),
 					                               route: Router.Character.Skills())
                     var sections: [TreeNode] = [skillBrowser]
+					
+					let attributes = DefaultTreeSection(nodeIdentifier: "Attributes",
+					                                    title: NSLocalizedString("Attributes", comment: "").uppercased(),
+					                                    children: [NCOptimalCharacterAttributesSection(account: account, character: character)])
+					attributes.isExpanded = false
+					sections.append(attributes)
                     
                     let skillQueue = NCSkillQueueSection(character: character)
                     sections.append(skillQueue)
@@ -788,11 +771,4 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
         }
     }
     
-	//MARK: Private
-	
-	@objc private func refresh() {
-		reload(cachePolicy: .reloadIgnoringLocalCacheData) {
-			self.refreshControl?.endRefreshing()
-		}
-	}
 }

@@ -11,11 +11,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="NCKillmailAttackerTableViewCell" rowHeight="84" id="oZF-OV-o8h" customClass="NCKillmailAttackerTableViewCell" customModule="Neocom" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="NCKillmailAttackerTableViewCell" id="oZF-OV-o8h" customClass="NCKillmailAttackerTableViewCell" customModule="Neocom" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oZF-OV-o8h" id="wyt-sF-Rs8">
-                <rect key="frame" x="0.0" y="0.0" width="286" height="83.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="287" height="83.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="g85-Cn-o07">
@@ -43,11 +43,11 @@
                                         <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="O8j-At-5rv">
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="O8j-At-5rv">
                                         <rect key="frame" x="0.0" y="34" width="200" height="34"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="V6C-tC-A9b" customClass="NCImageView" customModule="Neocom" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                                <rect key="frame" x="0.0" y="1" width="32" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="32" id="cdZ-Ld-6QB"/>
                                                     <constraint firstAttribute="width" secondItem="V6C-tC-A9b" secondAttribute="height" multiplier="1:1" id="zaC-2K-U1c"/>

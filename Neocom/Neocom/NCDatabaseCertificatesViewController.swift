@@ -61,11 +61,12 @@ fileprivate class NCDatabaseCertificateRow: FetchedResultsObjectNode<NCDBCertCer
 					DispatchQueue.main.async {
 						self.image = image
 						self.subtitle = subtitle
+						self.treeController?.reloadCells(for: [self])
 
-						if (cell.object as? NCDBCertCertificate) == self.object {
-							cell.iconView?.image = image
-							cell.subtitleLabel?.text = subtitle
-						}
+//						if (cell.object as? NCDBCertCertificate) == self.object {
+//							cell.iconView?.image = image
+//							cell.subtitleLabel?.text = subtitle
+//						}
 					}
 				}
 			}

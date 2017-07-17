@@ -20,7 +20,7 @@ class NCMailTableViewCell: NCTableViewCell {
 
 extension Prototype {
 	enum NCMailTableViewCell {
-		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCMailTableViewCell")
+		static let `default` = Prototype(nib: UINib(nibName: "NCMailTableViewCell", bundle: nil), reuseIdentifier: "NCMailTableViewCell")
 	}
 }
 
@@ -63,7 +63,7 @@ class NCMailRow: TreeRow {
 	
 	let mail: ESI.Mail.Header
 	let contacts: [Int64: NCContact]
-	let label: ESI.Mail.Label
+	let label: ESI.Mail.MailLabelsAndUnreadCounts.Label
 	
 	lazy var recipient: NSAttributedString = {
 		let recipient: String
@@ -86,7 +86,7 @@ class NCMailRow: TreeRow {
 	let cacheRecord: NCCacheRecord?
 	let dataManager: NCDataManager
 	
-	init(mail: ESI.Mail.Header, label: ESI.Mail.Label, contacts: [Int64: NCContact], cacheRecord: NCCacheRecord?, dataManager: NCDataManager) {
+	init(mail: ESI.Mail.Header, label: ESI.Mail.MailLabelsAndUnreadCounts.Label, contacts: [Int64: NCContact], cacheRecord: NCCacheRecord?, dataManager: NCDataManager) {
 		self.mail = mail
 		self.cacheRecord = cacheRecord
 		self.label = label

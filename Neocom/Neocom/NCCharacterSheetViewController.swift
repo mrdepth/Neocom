@@ -9,6 +9,19 @@
 import UIKit
 import EVEAPI
 
+class NCCharacterAttributesSection: DefaultTreeSection {
+	
+	init(attributes: NCCharacterAttributes, nodeIdentifier: String? = nil, title: String? = nil) {
+		var rows = [TreeNode]()
+		rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Intelligence", image: #imageLiteral(resourceName: "intelligence"), title: NSLocalizedString("Intelligence", comment: "").uppercased(), subtitle: "\(attributes.intelligence) \(NSLocalizedString("points", comment: ""))"))
+		rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Memory", image: #imageLiteral(resourceName: "memory"), title: NSLocalizedString("Memory", comment: "").uppercased(), subtitle: "\(attributes.memory) \(NSLocalizedString("points", comment: ""))"))
+		rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Perception", image: #imageLiteral(resourceName: "perception"), title: NSLocalizedString("Perception", comment: "").uppercased(), subtitle: "\(attributes.perception) \(NSLocalizedString("points", comment: ""))"))
+		rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Willpower", image: #imageLiteral(resourceName: "willpower"), title: NSLocalizedString("Willpower", comment: "").uppercased(), subtitle: "\(attributes.willpower) \(NSLocalizedString("points", comment: ""))"))
+		rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Charisma", image: #imageLiteral(resourceName: "charisma"), title: NSLocalizedString("Charisma", comment: "").uppercased(), subtitle: "\(attributes.charisma) \(NSLocalizedString("points", comment: ""))"))
+		super.init(nodeIdentifier: nodeIdentifier, title: title, children: rows)
+	}
+}
+
 class NCCharacterSheetViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
 	
 	@IBOutlet var treeController: TreeController!
@@ -334,14 +347,8 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 		if let value = self.clones?.value {
 			rows = []
 			let attributes = NCCharacterAttributes(clones: value)
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Intelligence", image: #imageLiteral(resourceName: "intelligence"), title: NSLocalizedString("Intelligence", comment: "").uppercased(), subtitle: "\(attributes.intelligence) \(NSLocalizedString("points", comment: ""))"))
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Memory", image: #imageLiteral(resourceName: "memory"), title: NSLocalizedString("Memory", comment: "").uppercased(), subtitle: "\(attributes.memory) \(NSLocalizedString("points", comment: ""))"))
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Perception", image: #imageLiteral(resourceName: "perception"), title: NSLocalizedString("Perception", comment: "").uppercased(), subtitle: "\(attributes.perception) \(NSLocalizedString("points", comment: ""))"))
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Willpower", image: #imageLiteral(resourceName: "willpower"), title: NSLocalizedString("Willpower", comment: "").uppercased(), subtitle: "\(attributes.willpower) \(NSLocalizedString("points", comment: ""))"))
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Charisma", image: #imageLiteral(resourceName: "charisma"), title: NSLocalizedString("Charisma", comment: "").uppercased(), subtitle: "\(attributes.charisma) \(NSLocalizedString("points", comment: ""))"))
-			sections.append(DefaultTreeSection(nodeIdentifier: "Attributes", title: NSLocalizedString("Attributes", comment: "").uppercased(), children: rows))
 			
-			
+			sections.append(NCCharacterAttributesSection(attributes: attributes, nodeIdentifier: "Attributes", title: NSLocalizedString("Attributes", comment: "").uppercased()))
 			
 			if let value = value.implants {
 				rows = []

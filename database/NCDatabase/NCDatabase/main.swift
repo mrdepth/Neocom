@@ -1288,8 +1288,11 @@ do {
 		let marketGroup = marketGroup as! NCDBInvMarketGroup
 		let hullType = NCDBDgmppHullType(context: context)
 		hullType.hullTypeName = marketGroup.marketGroupName
-
-		let array = types(marketGroup).flatMap {$0.getAttribute(552)?.value}.map{ Double($0) }
+		
+		let ships = Set(types(marketGroup))
+		hullType.addToTypes(ships as NSSet)
+		
+		let array = ships.flatMap {$0.getAttribute(552)?.value}.map{ Double($0) }
 		var signature = array.reduce(0, +)
 		signature /= Double(array.count)
 		signature = ceil(signature / 5) * 5

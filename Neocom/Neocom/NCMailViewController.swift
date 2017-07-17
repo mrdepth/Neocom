@@ -11,8 +11,19 @@ import CoreData
 import EVEAPI
 
 
-class NCMailViewController: UITableViewController, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCMailViewController: NCTreeViewController, NCRefreshable {
+	
+	var label: ESI.Mail.MailLabelsAndUnreadCounts.Label? {
+		didSet {
+			guard let label = label else {return}
+			if let unreadCount = label.unreadCount, unreadCount > 0 {
+				title = "\(label.name ?? "") (\(unreadCount))"
+			}
+			else {
+				title = label.name
+			}
+		}
+	}
 
 	var folder: String = "" {
 		didSet {
@@ -23,42 +34,34 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		refreshControl = UIRefreshControl()
-		refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
-
 		tableView.register([Prototype.NCHeaderTableViewCell.default])
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
-		updateTitle()
+		registerRefreshable()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		updateBackground()
+//		updateBackground()
 	}
 	
 	var error: Error? {
 		didSet {
-			updateBackground()
+//			updateBackground()
 		}
 	}
 	
-	func updateBackground() {
+	/*func updateBackground() {
 		if (treeController.content?.children.count ?? 0) > 0 {
 			tableView.backgroundView = nil
 		}
 		else {
 			tableView.backgroundView = NCTableViewBackgroundLabel(text: error == nil ? NSLocalizedString("No Messages", comment: "") : error!.localizedDescription)
 		}
-	}
+	}*/
 
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		if let route = (node as? TreeNodeRoutable)?.route {
-			route.perform(source: self, view: treeController.cell(for: node))
-		}
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		if let node = node as? NCMailRow {
 			if node.mail.isRead == false {
 				node.mail.isRead = true
@@ -82,16 +85,19 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 	}
 	
 	func treeControllerDidUpdateContent(_ treeController: TreeController) {
-		updateBackground()
-		updateTitle()
+//		updateBackground()
+//		updateTitle()
 	}
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		if let node = node as? NCMailRow {
 			guard let mailID = node.mail.mailID else {return []}
 			let dataManager = NCDataManager(account: NCAccount.current)
-			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { _ in
-				dataManager.delete(mailID: mailID) { [weak self] result in
+			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self] _ in
+				self?.tableView.isUserInteractionEnabled = false
+				dataManager.delete(mailID: mailID) { result in
+					self?.tableView.isUserInteractionEnabled = true
+					
 					switch result {
 					case .success:
 						guard let record = node.cacheRecord else {return}
@@ -103,8 +109,11 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 						if record.managedObjectContext?.hasChanges == true {
 							try? record.managedObjectContext?.save()
 						}
-						if let i = self?.treeController.content?.children.index(of: node) {
-							self?.treeController.content?.children.remove(at: i)
+						if let parent = node.parent, let i = parent.children.index(of: node) {
+							parent.children.remove(at: i)
+							if parent.children.isEmpty, let root = parent.parent, let i = root.children.index(of: parent) {
+								root.children.remove(at: i)
+							}
 						}
 					case .failure:
 						break
@@ -129,6 +138,131 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 		(parent as? NCMailPageViewController)?.fetchIfNeeded()
 	}
 	
+	//MARK: NCRefreshable
+	
+	private lazy var dataManager: NCDataManager = NCDataManager(account: NCAccount.current)
+	private var isEndReached = false
+	private var isFetching = false
+	private var lastID: Int64?
+	private var mails = TreeNode()
+
+	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
+		lastID = nil
+		isEndReached = false
+		mails = TreeNode()
+		self.dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
+		fetch(from: nil, completionHandler: completionHandler)
+	}
+	
+	private func fetch(from: Int64?, completionHandler: (() -> Void)? = nil) {
+		guard let label = label else {return}
+		guard let labelID = label.labelID else {return}
+		guard !isEndReached, !isFetching else {return}
+		let dataManager = self.dataManager
+		isFetching = true
+		
+		let progress = Progress(totalUnitCount: 1)
+		
+		func process(headers: [ESI.Mail.Header], contacts: [Int64: NCContact], cacheRecord: NCCacheRecord?) {
+			if !headers.isEmpty {
+				var mails = self.mails.children.map { i -> NCDateSection in
+					let section = NCDateSection(date: (i as! NCDateSection).date)
+					section.children = i.children
+					return section
+				}
+				
+				DispatchQueue.global(qos: .background).async {
+					autoreleasepool {
+						let calendar = Calendar(identifier: .gregorian)
+						headers.filter {$0.mailID != nil && $0.timestamp != nil}.sorted{$0.mailID! > $1.mailID!}.forEach {
+							 header in
+							let row = NCMailRow(mail: header, label: label, contacts: contacts, cacheRecord: cacheRecord, dataManager: dataManager)
+							
+						}
+						for header in headers {
+							let row = NCKillmailRow(killmail: killmail, dataManager: dataManager)
+							
+							if let section = kills.last, section.date < killmail.killmailTime {
+								section.children.append(row)
+							}
+							else {
+								
+								let components = calendar.dateComponents([.year, .month, .day], from: killmail.killmailTime)
+								let date = calendar.date(from: components) ?? killmail.killmailTime
+								let section = NCDateSection(date: date)
+								section.children = [row]
+								kills.append(section)
+							}
+						}
+						DispatchQueue.main.async {
+							UIView.performWithoutAnimation {
+								self.kills.children = kills
+								self.treeController.content = self.kills
+							}
+							
+							self.page = (self.page ?? 1) + 1
+							
+							self.isFetching = false
+							self.fetchIfNeeded()
+							completionHandler?()
+							self.tableView.backgroundView = self.kills.children.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
+						}
+					}
+				}
+				
+				
+			}
+			else {
+				self.isFetching = false
+				self.isEndReached = true
+				completionHandler?()
+				self.tableView.backgroundView = self.kills.children.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
+			}
+		}
+		
+		progress.perform {
+			dataManager.returnMailHeaders(lastMailID: from, labels: [Int64(labelID)]) { result in
+				switch result {
+				case let .success(value, cacheRecord):
+					var ids = Set<Int64>()
+					for mail in value {
+						ids.formUnion(mail.recipients?.flatMap {Int64($0.recipientID)} ?? [])
+						if let from = mail.from {
+							ids.insert(Int64(from))
+						}
+					}
+					if ids.count > 0 {
+						self.dataManager.contacts(ids: ids) { result in
+							process(headers: value, contacts: result, cacheRecord: cacheRecord)
+						}
+					}
+					else {
+						process(headers: value, contacts: [:], cacheRecord: cacheRecord)
+					}
+				case let .failure(error):
+					self.isEndReached = true
+					self.isFetching = false
+					self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
+					completionHandler?()
+				}
+			}
+		}
+	}
+	
+	private func fetchIfNeeded() {
+		if let lastID = lastID, tableView.contentOffset.y > tableView.contentSize.height - tableView.bounds.size.height * 2 {
+			guard !isEndReached, !isFetching else {return}
+			
+			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
+			progress.progress.perform {
+				fetch(from: lastID) {
+					progress.finish()
+				}
+			}
+		}
+	}
+
+	
 	//MARK: - Private
 	
 	@objc private func refresh() {
@@ -141,7 +275,7 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 		}
 	}
 
-	private func updateTitle() {
+	/*private func updateTitle() {
 		let i: Int
 		if let mails = treeController.content?.children as? [NCMailRow] {
 			i = mails.filter {$0.mail.isRead == false}.count
@@ -159,7 +293,7 @@ class NCMailViewController: UITableViewController, TreeControllerDelegate {
 		else {
 			title = folder
 		}
-	}
+	}*/
 	
 /*	private lazy var dataManager: NCDataManager = NCDataManager(account: NCAccount.current)
 	private var isEndReached = false

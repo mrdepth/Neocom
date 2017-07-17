@@ -27,7 +27,7 @@ extension Prototype {
 
 class NCMailRow: TreeRow {
 	
-	enum Folder {
+	/*enum Folder {
 		case inbox
 		case corporation
 		case alliance
@@ -51,7 +51,7 @@ class NCMailRow: TreeRow {
 				return NSLocalizedString("Unknown", comment: "")
 			}
 		}
-	}
+	}*/
 	
 	static let dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
@@ -63,23 +63,22 @@ class NCMailRow: TreeRow {
 	
 	let mail: ESI.Mail.Header
 	let contacts: [Int64: NCContact]
-	let folder: Folder
+	let label: ESI.Mail.Label
 	
 	lazy var recipient: NSAttributedString = {
 		let recipient: String
-		if case .sent = self.folder {
+		if self.mail.from == Int(self.dataManager.characterID) {
 			recipient = self.mail.recipients?.flatMap({self.contacts[Int64($0.recipientID)]?.name}).joined(separator: ", ") ?? NSLocalizedString("Unknown", comment: "")
 			return NSAttributedString(string: recipient)
 		}
 		else {
 			recipient = self.contacts[Int64(self.mail.from!)]?.name ?? NSLocalizedString("Unknown", comment: "")
-			if case .mailingList = self.folder {
-				return "[\(self.folder.name)]" * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)] + " " + recipient
-			}
-			else {
+//			if case .mailingList = self.folder {
+//				return "[\(self.folder.name)]" * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)] + " " + recipient
+//			}
+//			else {
 				return NSAttributedString(string: recipient)
-			}
-			
+//			}
 		}
 	}()
 	
@@ -87,10 +86,10 @@ class NCMailRow: TreeRow {
 	let cacheRecord: NCCacheRecord?
 	let dataManager: NCDataManager
 	
-	init(mail: ESI.Mail.Header, folder: Folder, contacts: [Int64: NCContact], cacheRecord: NCCacheRecord?, dataManager: NCDataManager) {
+	init(mail: ESI.Mail.Header, label: ESI.Mail.Label, contacts: [Int64: NCContact], cacheRecord: NCCacheRecord?, dataManager: NCDataManager) {
 		self.mail = mail
 		self.cacheRecord = cacheRecord
-		self.folder = folder
+		self.label = label
 		self.contacts = contacts
 		self.dataManager = dataManager
 		characterID = Int64(mail.from!)

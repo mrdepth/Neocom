@@ -110,6 +110,8 @@ class NCZKillboardKillmailsViewController: UITableViewController, TreeController
 				
 				DispatchQueue.global(qos: .background).async {
 					autoreleasepool {
+						let calendar = Calendar(identifier: .gregorian)
+						
 						for killmail in killmails {
 							let row = NCKillmailRow(killmail: killmail, dataManager: dataManager)
 							
@@ -117,7 +119,7 @@ class NCZKillboardKillmailsViewController: UITableViewController, TreeController
 								section.children.append(row)
 							}
 							else {
-								let calendar = Calendar(identifier: .gregorian)
+								
 								let components = calendar.dateComponents([.year, .month, .day], from: killmail.killmailTime)
 								let date = calendar.date(from: components) ?? killmail.killmailTime
 								let section = NCDateSection(date: date)

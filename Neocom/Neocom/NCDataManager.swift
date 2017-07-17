@@ -597,9 +597,10 @@ class NCDataManager {
 		self.esi.mail.sendNewMail(characterID: Int(characterID), mail: mail, completionBlock: completionHandler)
 	}
 	
-	func returnMailHeaders(lastMailID: Int64? = nil, completionHandler: @escaping (NCCachedResult<[ESI.Mail.Header]>) -> Void) {
-		loadFromCache(forKey: "ESI.Mail.Header.\(lastMailID ?? 0)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.esi.mail.returnMailHeaders(characterID: Int(self.characterID), lastMailID: lastMailID != nil ? Int(lastMailID!) : nil) { result in
+	func returnMailHeaders(lastMailID: Int64? = nil, labels: [Int64], completionHandler: @escaping (NCCachedResult<[ESI.Mail.Header]>) -> Void) {
+		let labels = labels.sorted()
+		loadFromCache(forKey: "ESI.Mail.Header.\(labels.hashValue).\(lastMailID ?? 0)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.mail.returnMailHeaders(characterID: Int(self.characterID), labels: labels, lastMailID: lastMailID != nil ? Int(lastMailID!) : nil) { result in
 				completion(result, 60)
 			}
 		})
@@ -617,6 +618,14 @@ class NCDataManager {
 		loadFromCache(forKey: "ESI.Mail.Subscription", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.mail.returnMailingListSubscriptions(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0 * 12)
+			}
+		})
+	}
+	
+	func mailLabels(completionHandler: @escaping (NCCachedResult<ESI.Mail.MailLabelsAndUnreadCounts>) -> Void) {
+		loadFromCache(forKey: "ESI.Mail.Subscription", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.mail.getMailLabelsAndUnreadCounts(characterID: Int(self.characterID)) { result in
+				completion(result, 60*10)
 			}
 		})
 	}

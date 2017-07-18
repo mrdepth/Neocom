@@ -136,6 +136,7 @@ class NCCustomDamagePatternRow: FetchedResultsObjectNode<NCDamagePattern> {
 	}
 	
 	override func update(from node: TreeNode) {
+		super.update(from: node)
 		guard let from = node as? NCCustomDamagePatternRow else {return}
 		let changed = from.changed
 		self.changed = false

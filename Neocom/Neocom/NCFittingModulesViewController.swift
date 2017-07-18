@@ -41,6 +41,7 @@ class NCFittingModuleRow: TreeRow {
 	}
 	
 	override func update(from node: TreeNode) {
+		super.update(from: node)
 		guard let from = node as? NCFittingModuleRow else {return}
 		subtitle = from.subtitle
 	}

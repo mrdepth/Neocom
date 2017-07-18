@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
@@ -1430,7 +1430,7 @@
             </objects>
             <point key="canvasLocation" x="-109" y="1676"/>
         </scene>
-        <!--Delegate-->
+        <!--Skill Queue-->
         <scene sceneID="mns-Nf-1Ib">
             <objects>
                 <tableViewController storyboardIdentifier="NCSkillQueueViewController" id="mN5-NM-lcw" customClass="NCSkillQueueViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
@@ -1442,17 +1442,8 @@
                     <navigationItem key="navigationItem" title="Skill Queue" id="Y9w-NW-zjw">
                         <barButtonItem key="backBarButtonItem" title="Back" id="4W8-WC-yaO"/>
                     </navigationItem>
-                    <connections>
-                        <outlet property="treeController" destination="kpF-MD-yeT" id="Nzv-4i-FcA"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QMH-7R-F0l" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="kpF-MD-yeT" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="delegate" destination="mN5-NM-lcw" id="8Rr-U9-Qho"/>
-                        <outlet property="tableView" destination="GGd-bF-5ed" id="g9r-eB-9Bc"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="605.625" y="2364.0845070422533"/>
         </scene>

@@ -244,13 +244,13 @@ fileprivate class NCSkillPlanRow: FetchedResultsObjectNode<NCSkillPlan> {
 		return title + s
 	}
 	
-	var handler: NCActionHandler?
+//	var handler: NCActionHandler?
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCActionHeaderTableViewCell else {return}
 		cell.titleLabel?.text = title
 		cell.titleLabel?.textColor = object.active ? .caption : .lightText
-		handler = NCActionHandler(cell.button!, for: .touchUpInside) { [weak self] _ in
+		cell.handler = NCActionHandler(cell.button!, for: .touchUpInside) { [weak self] _ in
 			guard let strongSelf = self else {return}
 			guard let controller = strongSelf.treeController else {return}
 			controller.delegate?.treeController?(controller, accessoryButtonTappedWithNode: strongSelf)
@@ -343,8 +343,8 @@ fileprivate class NCOptimalCharacterAttributesSection: DefaultTreeSection {
 	init(account: NCAccount, character: NCCharacter) {
 		self.account = account
 		self.character = character
-		self.skillPlan = account.activeSkillPlan
-		super.init(nodeIdentifier: "OptimalCharacterAttributes", title: NSLocalizedString("Current/Optimal", comment: "").uppercased(),children: nil)
+//		self.skillPlan = account.activeSkillPlan
+		super.init(nodeIdentifier: "OptimalCharacterAttributes", title: NSLocalizedString("Attributes (current/optimal)", comment: "").uppercased(),children: nil)
 		reload()
 	}
 	
@@ -388,26 +388,22 @@ fileprivate class NCOptimalCharacterAttributesSection: DefaultTreeSection {
 				let current = character.attributes
 
 				let t0 = trainingQueue.trainingTime(characterAttributes: current)
-				let t1 = optimal != nil ? trainingQueue.trainingTime(characterAttributes: optimal!) : nil
+				let t1 = optimal != nil ? trainingQueue.trainingTime(characterAttributes: optimal!) : t0
 				
 				DispatchQueue.main.async {
-					if let t1 = t1, let optimal = optimal {
-						var rows = [("Intelligence", NSLocalizedString("Intelligence", comment: ""), #imageLiteral(resourceName: "intelligence"), current.intelligence, optimal.intelligence),
-						            ("Memory", NSLocalizedString("Memory", comment: ""), #imageLiteral(resourceName: "memory"), current.memory, optimal.memory),
-						            ("Perception", NSLocalizedString("Perception", comment: ""), #imageLiteral(resourceName: "perception"), current.perception, optimal.perception),
-						            ("Willpower", NSLocalizedString("Willpower", comment: ""), #imageLiteral(resourceName: "willpower"), current.willpower, optimal.willpower),
-						            ("Charisma", NSLocalizedString("Charisma", comment: ""), #imageLiteral(resourceName: "charisma"), current.charisma, optimal.charisma)].map { i -> TreeRow in
-										return DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: i.0, image: i.2, title: i.1.uppercased(), subtitle: "\(i.3)/\(i.4) \(NSLocalizedString("points", comment: ""))")
-						}
-						let dt = t0 - t1
-						if dt > 0 {
-							rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, nodeIdentifier: "Better", title: String(format: NSLocalizedString("%@ better than current", comment: ""), NCTimeIntervalFormatter.localizedString(from: dt, precision: .seconds))))
-						}
-						self.children = rows
+					let optimal = optimal ?? current
+					var rows = [("Intelligence", NSLocalizedString("Intelligence", comment: ""), #imageLiteral(resourceName: "intelligence"), current.intelligence, optimal.intelligence),
+					            ("Memory", NSLocalizedString("Memory", comment: ""), #imageLiteral(resourceName: "memory"), current.memory, optimal.memory),
+					            ("Perception", NSLocalizedString("Perception", comment: ""), #imageLiteral(resourceName: "perception"), current.perception, optimal.perception),
+					            ("Willpower", NSLocalizedString("Willpower", comment: ""), #imageLiteral(resourceName: "willpower"), current.willpower, optimal.willpower),
+					            ("Charisma", NSLocalizedString("Charisma", comment: ""), #imageLiteral(resourceName: "charisma"), current.charisma, optimal.charisma)].map { i -> TreeRow in
+									return DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: i.0, image: i.2, title: i.1.uppercased(), subtitle: "\(i.3)/\(i.4) \(NSLocalizedString("points", comment: ""))")
 					}
-					else {
-						self.children = []
+					let dt = t0 - t1
+					if dt > 0 {
+						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, nodeIdentifier: "Better", title: String(format: NSLocalizedString("%@ better than current", comment: ""), NCTimeIntervalFormatter.localizedString(from: dt, precision: .seconds))))
 					}
+					self.children = rows
 				}
 			}
 		}
@@ -416,17 +412,11 @@ fileprivate class NCOptimalCharacterAttributesSection: DefaultTreeSection {
 	}
 }
 
-class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
-	@IBOutlet weak var treeController: TreeController!
+class NCSkillQueueViewController: NCTreeViewController, NCRefreshable {
 	var character: NCCharacter?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		
-		tableView.delegate = treeController
-		tableView.dataSource = treeController
 		
 		tableView.register([
 			Prototype.NCHeaderTableViewCell.default,
@@ -445,7 +435,7 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if treeController.content == nil {
+		if treeController?.content == nil {
 			reload()
 		}
 	}
@@ -534,13 +524,15 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
 	
 	//MARK: TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		if let route = (node as? TreeNodeRoutable)?.route {
 			route.perform(source: self, view: treeController.cell(for: node))
 		}
 	}
 	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+		super.treeController(treeController, accessoryButtonTappedWithNode: node)
 		switch node {
 		case is NCSkillPlansSection:
 			guard let account = NCAccount.current, let managedObjectContext = account.managedObjectContext else {return}
@@ -739,9 +731,8 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
 					                               route: Router.Character.Skills())
                     var sections: [TreeNode] = [skillBrowser]
 					
-					let attributes = DefaultTreeSection(nodeIdentifier: "Attributes",
-					                                    title: NSLocalizedString("Attributes", comment: "").uppercased(),
-					                                    children: [NCOptimalCharacterAttributesSection(account: account, character: character)])
+					let attributes = NCOptimalCharacterAttributesSection(account: account, character: character)
+					
 					attributes.isExpanded = false
 					sections.append(attributes)
                     
@@ -749,16 +740,16 @@ class NCSkillQueueViewController: UITableViewController, TreeControllerDelegate,
                     sections.append(skillQueue)
                     sections.append(NCSkillPlansSection(account: account, character: character))
 					
-					if self.treeController.content == nil {
+					if self.treeController?.content == nil {
 						let root = TreeNode()
 						root.children = sections
-						self.treeController.content = root
+						self.treeController?.content = root
 					}
 					else {
-						self.treeController.content?.children = sections
+						self.treeController?.content?.children = sections
 					}
                 case let .failure(error):
-                    if self.treeController.content == nil {
+                    if self.treeController?.content == nil {
                         self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
                     }
                 }

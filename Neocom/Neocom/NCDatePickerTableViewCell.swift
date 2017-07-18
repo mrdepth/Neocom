@@ -11,6 +11,8 @@ import UIKit
 class NCDatePickerTableViewCell: NCTableViewCell {
 	@IBOutlet weak var datePicker: UIDatePicker!
 	
+	var actionHandler: NCActionHandler?
+	
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		datePicker.setValue(UIColor.white, forKeyPath: "textColor")

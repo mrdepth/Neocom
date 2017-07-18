@@ -71,6 +71,8 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
 
 class NCActionHeaderTableViewCell: NCHeaderTableViewCell {
 	@IBOutlet weak var button: UIButton?
+	
+	var handler: NCActionHandler?
 }
 
 extension Prototype {

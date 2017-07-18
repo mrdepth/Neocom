@@ -59,6 +59,7 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 	private var alliance: NCCachedResult<ESI.Alliance.Information>?
 	private var clones: NCCachedResult<EVE.Char.Clones>?
 	private var skills: NCCachedResult<ESI.Skills.CharacterSkills>?
+	private var skillQueue: NCCachedResult<[ESI.Skills.SkillQueueItem]>?
 	private var wallets: NCCachedResult<[ESI.Wallet.Balance]>?
 	private var characterImage: NCCachedResult<UIImage>?
 	private var corporationImage: NCCachedResult<UIImage>?
@@ -73,7 +74,7 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 		title = account.characterName
 		
 		let dispatchGroup = DispatchGroup()
-		let progress = Progress(totalUnitCount: 6)
+		let progress = Progress(totalUnitCount: 7)
 		
 		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
 		let observer = NCManagedObjectObserver() { [weak self] (updated, deleted) in
@@ -133,6 +134,23 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 			dispatchGroup.enter()
 			dataManager.skills { result in
 				self.skills = result
+				switch result {
+				case let .success(_, record):
+					if let record = record {
+						observer.add(managedObject: record)
+					}
+				case .failure:
+					break
+				}
+				dispatchGroup.leave()
+				self.update()
+			}
+		}
+
+		progress.perform {
+			dispatchGroup.enter()
+			dataManager.skillQueue { result in
+				self.skillQueue = result
 				switch result {
 				case let .success(_, record):
 					if let record = record {
@@ -309,12 +327,15 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 		
 		rows = []
 		
-		if let value = self.skills?.value {
+		if let clones = self.clones?.value, let skills = self.skills?.value, let skillQueue = self.skillQueue?.value {
+			let character = NCCharacter(attributes: NCCharacterAttributes(clones: clones), skills: skills, skillQueue: skillQueue)
+			let sp = character.skills.map{$0.value.skillPoints}.reduce(0, +)
 			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
 			                           nodeIdentifier: "SP",
-			                           title: "\(value.skills?.count ?? 0) \(NSLocalizedString("skills", comment: ""))".uppercased(),
-			                           subtitle: "\(NCUnitFormatter.localizedString(from: Double(value.totalSP ?? 0), unit: .skillPoints, style: .full))"))
+			                           title: "\(skills.skills?.count ?? 0) \(NSLocalizedString("skills", comment: ""))".uppercased(),
+			                           subtitle: "\(NCUnitFormatter.localizedString(from: Double(sp), unit: .skillPoints, style: .full))"))
 		}
+		
 		if let value = self.clones?.value {
 			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Respecs", title: NSLocalizedString("Bonus Remaps Available", comment: "").uppercased(), subtitle: "\(value.freeRespecs)"))
 			if let value = value.lastRespecDate {

@@ -42,11 +42,11 @@
 	return module ? static_cast<NCFittingModuleState>(module->getPreferredState()) : NCFittingModuleStateUnknown;
 }
 
-- (void) setPreferredState:(NCFittingModuleState)preferredState {
+- (void) setState:(NCFittingModuleState)state {
 	NCVerifyFittingContext(self.engine);
 	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
 	if (module) {
-		module->setPreferredState(static_cast<dgmpp::Module::State>(preferredState));
+		module->setState(static_cast<dgmpp::Module::State>(state));
 		[self.engine updateWithItem: self];
 	}
 }

@@ -186,7 +186,7 @@ class NCFittingPriceModulesRow: NCFittingPriceRow {
 	init(ship: NCFittingShip) {
 		self.ship = ship
 		var typeIDs = [Int: Int]()
-		ship.modules.forEach {
+		ship.modules.filter{!$0.isDummy}.forEach {
 			typeIDs[$0.typeID] = (typeIDs[$0.typeID] ?? 0) + 1
 		}
 		self.typeIDs = typeIDs

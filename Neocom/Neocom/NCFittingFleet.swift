@@ -208,9 +208,6 @@ class NCFittingFleet {
 			}
 			configuration.pilots = pilots
 			configuration.links = links
-			configuration.squadBooster = engine.gang.squadBooster?.identifier
-			configuration.fleetBooster = engine.gang.fleetBooster?.identifier
-			configuration.wingBooster = engine.gang.wingBooster?.identifier
 			return configuration
 		}
 		set {
@@ -234,16 +231,6 @@ class NCFittingFleet {
 					guard let identifier = drone.identifier, let link = configuration.links?[identifier] else {continue}
 					drone.target = pilotsMap[link]?.ship
 				}
-			}
-			let gang = self.engine.gang
-			if let fleetBooster = configuration.fleetBooster {
-				gang.fleetBooster = pilotsMap[fleetBooster]
-			}
-			if let squadBooster = configuration.squadBooster {
-				gang.squadBooster = pilotsMap[squadBooster]
-			}
-			if let wingBooster = configuration.wingBooster {
-				gang.wingBooster = pilotsMap[wingBooster]
 			}
 		}
 	}

@@ -14,8 +14,8 @@
 @property (readonly) NCFittingModuleSlot slot;
 @property (readonly) NCFittingModuleHardpoint hardpoint;
 @property (readonly) NSInteger socket;
-@property (readonly) NCFittingModuleState state;
-@property (nonatomic, assign) NCFittingModuleState preferredState;
+@property (nonatomic, assign) NCFittingModuleState state;
+@property (readonly) NCFittingModuleState preferredState;
 @property (readonly) BOOL isDummy;
 - (BOOL) canHaveState:(NCFittingModuleState) state;
 

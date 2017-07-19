@@ -11,9 +11,6 @@
 @class NCFittingCharacter;
 @interface NCFittingGang : NCFittingItem
 @property (readonly, nonnull) NSArray<NCFittingCharacter*>* pilots;
-@property (nonatomic, nullable) NCFittingCharacter* fleetBooster;
-@property (nonatomic, nullable) NCFittingCharacter* wingBooster;
-@property (nonatomic, nullable) NCFittingCharacter* squadBooster;
 
 - (nullable NCFittingCharacter*) addPilot;
 - (void) removePilot:(nonnull NCFittingCharacter*) character;

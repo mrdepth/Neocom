@@ -304,21 +304,6 @@ extension NCFittingFighterSquadron {
 	}
 }
 
-extension NCFittingGangBooster {
-	var title: String? {
-		switch self {
-		case .none:
-			return NSLocalizedString("None", comment: "")
-		case .squad:
-			return NSLocalizedString("Squad", comment: "")
-		case .wing:
-			return NSLocalizedString("Wing", comment: "")
-		case .fleet:
-			return NSLocalizedString("Fleet", comment: "")
-		}
-	}
-}
-
 extension NCFittingAccuracy {
 	var color: UIColor {
 		switch self {
@@ -416,7 +401,7 @@ extension NCFittingCharacter {
 					for _ in 0..<module.count {
 						guard let m = ship.addModule(typeID: module.typeID, socket: module.socket) else {break}
 						m.identifier = identifier
-						m.preferredState = module.state
+						m.state = module.state
 						if let charge = module.charge {
 							m.charge = NCFittingCharge(typeID: charge.typeID)
 						}

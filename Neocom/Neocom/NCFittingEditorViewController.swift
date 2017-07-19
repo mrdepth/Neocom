@@ -15,28 +15,33 @@ class NCFittingEditorViewController: NCPageViewController {
 	var engine: NCFittingEngine?
 	
 	private var observer: NotificationObserver?
-	private(set) var isModified: Bool = false {
+	var isModified: Bool = false {
 		didSet {
-			guard oldValue != isModified else {return}
-			
 			if isModified {
 				if navigationItem.leftBarButtonItem == nil {
 					navigationItem.setLeftBarButton(UIBarButtonItem(title: NSLocalizedString("Back", comment: "Navigation item"), style: .plain, target: self, action: #selector(onBack(_:))), animated: true)
-					var items = navigationItem.rightBarButtonItems!
-					items.append(UIBarButtonItem(title: NSLocalizedString("Save", comment: "Navigation item"), style: .done, target: self, action: #selector(onSave(_:))))
+				}
+				if navigationItem.rightBarButtonItems?.count == 1 {
+					var items = [navigationItem.rightBarButtonItem!]
+					items.append(self.saveButtonItem)
 					navigationItem.setRightBarButtonItems(items, animated: true)
 				}
 			}
 			else {
 				if navigationItem.leftBarButtonItem != nil {
 					navigationItem.leftBarButtonItem = nil
-					var items = navigationItem.rightBarButtonItems!
-					items.removeLast()
+				}
+				if navigationItem.rightBarButtonItems?.count == 2 {
+					let items = [navigationItem.rightBarButtonItem!]
 					navigationItem.setRightBarButtonItems(items, animated: true)
 				}
 			}
 		}
 	}
+	
+	lazy private var saveButtonItem: UIBarButtonItem = {
+		return UIBarButtonItem(title: NSLocalizedString("Save", comment: "Navigation item"), style: .done, target: self, action: #selector(onSave(_:)))
+	}()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -76,11 +81,22 @@ class NCFittingEditorViewController: NCPageViewController {
 		
 		updateTitle()
 		
-		observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
-			self?.isModified = true
-			self?.updateTitle()
-		}
 
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		if observer == nil {
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+				self?.isModified = true
+				self?.updateTitle()
+			}
+		}
+		if fleet?.pilots.first(where: {$0.1 == nil}) != nil {
+			var items = [navigationItem.rightBarButtonItem!]
+			items.append(self.saveButtonItem)
+			navigationItem.setRightBarButtonItems(items, animated: true)
+		}
 	}
 	
 	func save(completionHandler: (() -> Void)? = nil) {

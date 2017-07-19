@@ -56,13 +56,6 @@ typedef NS_ENUM(NSInteger, NCFittingAccuracy) {
 	NCFittingAccuracyGood
 };
 
-typedef NS_ENUM(NSInteger, NCFittingGangBooster) {
-	NCFittingGangBoosterNone = 0,
-	NCFittingGangBoosterSquad,
-	NCFittingGangBoosterWing,
-	NCFittingGangBoosterFleet
-};
-
 typedef struct {
 	double em;
 	double thermal;

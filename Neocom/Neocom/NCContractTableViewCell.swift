@@ -55,7 +55,12 @@ class NCContractRow: TreeRow {
 		
 		let color = status == .outstanding || status == .inProgress ? UIColor.white : UIColor.lightText
 		
-		cell.titleLabel.attributedText = type * [NSForegroundColorAttributeName: color] + " [\(availability)]" * [NSForegroundColorAttributeName: UIColor.caption]
+		if status == .outstanding || status == .inProgress {
+			cell.titleLabel.attributedText = type * [NSForegroundColorAttributeName: color] + " [\(availability)]" * [NSForegroundColorAttributeName: UIColor.caption]
+		}
+		else {
+			cell.titleLabel.attributedText = "\(type) [\(availability)]" * [NSForegroundColorAttributeName: color]
+		}
 		cell.locationLabel.attributedText = location?.displayName ?? NSLocalizedString("Unknown", comment: "") * [:]
 		
 		switch status {

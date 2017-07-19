@@ -121,22 +121,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		if let row = node as? DefaultTreeRow, let asset = row.object as? ESI.Assets.Asset {
-            var contents: [Int64: [ESI.Assets.Asset]] = [:]
-            
-            func extractContents(from row: DefaultTreeRow?) {
-                guard let asset = row?.object as? ESI.Assets.Asset else {return}
-                var array: [ESI.Assets.Asset] = []
-                row?.children.forEach {
-                    guard let item = $0 as? DefaultTreeRow, let asset = item.object as? ESI.Assets.Asset else {return}
-                    array.append(asset)
-                    extractContents(from: item)
-                }
-                contents[asset.itemID] = array
-            }
-            
-            extractContents(from: row)
-			
+		if let row = node as? DefaultTreeRow, let asset = row.object as? ESI.Assets.Asset, let contents = contents {
 			Router.Fitting.Editor(asset: asset, contents: contents).perform(source: self, view: treeController.cell(for: node))
 			
             /*let engine = NCFittingEngine()
@@ -166,6 +151,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 	private var observer: NCManagedObjectObserver?
 	private var assets: NCCachedResult<[ESI.Assets.Asset]>?
 	private var locations: [Int64: NCLocation]?
+	var contents: [Int64: [ESI.Assets.Asset]]?
 	
 	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
 		guard let account = NCAccount.current else {
@@ -250,79 +236,6 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					result?.forEach {types[Int($0.typeID)] = $0}
 				}
 				
-				/*func row(asset: ESI.Assets.Asset) -> DefaultTreeRow {
-					let type = types[asset.typeID]
-					let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
-					let title: NSAttributedString
-					if let qty = asset.quantity, qty > 1 {
-						title = typeName + (" x" + NCUnitFormatter.localizedString(from: qty, unit: .none, style: .full)) * [NSForegroundColorAttributeName: UIColor.caption]
-					}
-					else {
-						title = NSAttributedString(string: typeName)
-					}
-					
-					var children: [TreeNode] = []
-					
-					let subtitle: String?
-					
-					if let contents = contents[asset.itemID], !contents.isEmpty {
-						var map: [NCItemFlag:[DefaultTreeRow]] = [:]
-						var rows = [DefaultTreeRow]()
-						
-						contents.forEach {
-							let assetRow = row(asset: $0)
-							if let flag = NCItemFlag(flag: $0.locationFlag) {
-								_ = (map[flag]?.append(assetRow)) ?? (map[flag] = [assetRow])
-							}
-							else {
-								rows.append(assetRow)
-							}
-						}
-						
-						rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
-						children = rows
-						
-						let sections = map.sorted {$0.key.rawValue < $1.key.rawValue}.map { i -> DefaultTreeSection in
-							let section = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.image,
-							                          nodeIdentifier: "\(asset.itemID).\(i.key.rawValue)",
-								image: i.key.image,
-								title: i.key.title?.uppercased(),
-								children: i.value.sorted { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") })
-							section.isExpandable = false
-							return section
-						}
-						
-						children.append(contentsOf: sections as [TreeNode])
-						subtitle = !contents.isEmpty ? NCUnitFormatter.localizedString(from: contents.count, unit: .none, style: .full) + " " + NSLocalizedString("items", comment: "") : nil
-					}
-					else {
-						subtitle = nil
-					}
-					
-					
-
-					let route: Route?
-					if let typeID = type?.typeID {
-						route = Router.Database.TypeInfo(Int(typeID))
-					}
-					else {
-						route = nil
-					}
-                    let hasLoadout = type?.group?.category?.categoryID == Int32(NCDBCategoryID.ship.rawValue) && !children.isEmpty
-					
-					let assetRow = NCAssetRow(prototype: Prototype.NCDefaultTableViewCell.default,
-					                  nodeIdentifier: "\(asset.itemID)",
-					                  image: type?.icon?.image?.image,
-					                  attributedTitle: title,
-					                  subtitle: subtitle,
-					                  accessoryType: hasLoadout ? .detailButton : .none,
-					                  route: route,
-					                  object: asset)
-					assetRow.children = children
-					return assetRow
-				}
-				*/
-				
 				var sections = [DefaultTreeSection]()
 				for locationID in Set(locations.keys).subtracting(Set(items.keys)) {
 					guard var rows = contents[locationID]?.map ({NCAssetRow(asset: $0, contents: contents, types: types)}) else {continue}
@@ -339,36 +252,6 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 				}
 				sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
 
-                /*func copy(row: DefaultTreeRow) -> DefaultTreeRow {
-                    let other = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.default,
-                        nodeIdentifier: row.nodeIdentifier,
-                        image: row.image,
-                        title: row.title,
-                        attributedTitle: row.attributedTitle,
-                        subtitle: row.subtitle,
-                        accessoryType: row.accessoryType,
-                        route: row.route,
-                        accessoryButtonRoute: row.accessoryButtonRoute,
-                        object: row.object)
-                    other.children = row.children.flatMap {
-                        guard let row = $0 as? DefaultTreeRow else {return nil}
-                        return copy(row: row)
-                    }
-                    return other
-                }
-
-                func copy(section: DefaultTreeSection) -> DefaultTreeSection {
-                    let other = DefaultTreeSection(nodeIdentifier: section.nodeIdentifier, attributedTitle: section.attributedTitle)
-                    other.children = section.children.flatMap {
-                        guard let row = $0 as? DefaultTreeRow else {return nil}
-                        return copy(row: row)
-                    }
-                    return other
-                }
-                
-                let copySections = sections.map {copy(section: $0)}*/
-                
-				
 				DispatchQueue.main.async {
                     
 					if self.treeController.content == nil {
@@ -379,6 +262,7 @@ class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCR
 					else {
 						self.treeController.content?.children = sections
 					}
+					self.contents = contents
 					self.searchResultsController?.items = items
 					self.searchResultsController?.contents = contents
 					self.searchResultsController?.locations = locations

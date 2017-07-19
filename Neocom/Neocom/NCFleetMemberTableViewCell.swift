@@ -31,7 +31,6 @@ class NCFleetMemberRow: TreeRow {
 	
 	let pilot: NCFittingCharacter
 	let ship: NCFittingShip
-	let booster: NCFittingGangBooster
 	
 	let shipName: String
 	let characterName: String
@@ -43,7 +42,6 @@ class NCFleetMemberRow: TreeRow {
 		self.pilot = pilot
 		self.ship = pilot.ship!
 		self.shipName = ship.name
-		self.booster = pilot.booster
 		
 		let url = pilot.url ?? NCFittingCharacter.url(level: 0)
 		let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -73,12 +71,7 @@ class NCFleetMemberRow: TreeRow {
 		guard let type = type else {return}
 		
 		cell.object = self
-		if booster == .none {
-			cell.typeNameLabel?.text = type.typeName
-		}
-		else {
-			cell.typeNameLabel?.text = "\(type.typeName ?? "") (\(booster.title ?? "") \(NSLocalizedString("Booster", comment: "[Squad/Wing/Fleet] Booster")))"
-		}
+		cell.typeNameLabel?.text = type.typeName
 		cell.shipNameLabel?.text = shipName
 		cell.typeImageView?.image = type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		cell.characterNameLabel.text = characterName

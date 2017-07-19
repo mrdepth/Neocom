@@ -42,7 +42,7 @@ class NCFittingModuleStateRow: TreeRow {
 			guard let state = self?.states[sender.selectedSegmentIndex] else {return}
 			module.engine?.perform {
 				for module in self?.modules ?? [] {
-					module.preferredState = state
+					module.state = state
 				}
 			}
 

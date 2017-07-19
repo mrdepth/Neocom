@@ -107,6 +107,18 @@ extension ESI.Contracts.Contract {
 	}
 }
 
+extension ESI.Industry.Job {
+	var currentStatus: ESI.Industry.Job.Status {
+		switch status {
+		case .active:
+			return endDate < Date() ? .ready : status
+		default:
+			return status
+		}
+	}
+}
+
+
 extension ESI.Incursions.Incursion.State {
 	var title: String {
 		switch self {

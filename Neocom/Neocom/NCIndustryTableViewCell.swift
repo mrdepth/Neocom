@@ -61,8 +61,10 @@ class NCIndustryRow: TreeRow {
 		let activity = self.activity?.activityName ?? NSLocalizedString("Unknown Activity", comment: "")
 		let t = job.endDate.timeIntervalSinceNow
 		
+		let status = job.currentStatus
+		
 		let s: String
-		switch job.status {
+		switch status {
 		case .active:
 			cell.progressView.progress = 1.0 - Float(t / TimeInterval(job.duration))
 			s = "\(NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes)) (\(Int(cell.progressView.progress * 100))%)"
@@ -87,7 +89,7 @@ class NCIndustryRow: TreeRow {
 		cell.jobRunsLabel.text = NCUnitFormatter.localizedString(from: job.runs, unit: .none, style: .full)
 		cell.runsPerCopyLabel.text = NCUnitFormatter.localizedString(from: job.licensedRuns ?? 0, unit: .none, style: .full)
 		
-		let color = job.status == .active || job.status == .ready ? UIColor.white : UIColor.lightText
+		let color = status == .active || status == .ready ? UIColor.white : UIColor.lightText
 		cell.titleLabel.textColor = color
 		cell.jobRunsLabel.textColor = color
 		cell.runsPerCopyLabel.textColor = color

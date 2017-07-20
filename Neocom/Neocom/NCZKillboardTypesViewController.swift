@@ -10,9 +10,11 @@ import UIKit
 import CoreData
 
 class NCZKillboardTypeRow: NCDatabaseTypeRow {
+
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
 		cell.accessoryType = .detailButton
+		
 	}
 }
 

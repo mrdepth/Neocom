@@ -9,8 +9,7 @@
 import UIKit
 import CoreData
 
-class NCFittingCharacterEditorViewController: UITableViewController, TreeControllerDelegate, UITextFieldDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCFittingCharacterEditorViewController: NCTreeViewController, UITextFieldDelegate {
 	
 	var character: NCFitCharacter?
 	var skills: [Int:Int]?
@@ -25,8 +24,6 @@ class NCFittingCharacterEditorViewController: UITableViewController, TreeControl
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		self.skills = character?.skills ?? [:]
 		let name = character?.name
@@ -66,7 +63,7 @@ class NCFittingCharacterEditorViewController: UITableViewController, TreeControl
 
 			
 			DispatchQueue.main.async {
-				self.treeController.content = root
+				self.treeController?.content = root
 			}
 			
 		}
@@ -77,7 +74,7 @@ class NCFittingCharacterEditorViewController: UITableViewController, TreeControl
 	override func viewWillDisappear(_ animated: Bool) {
 		view.endEditing(true)
 		super.viewWillDisappear(animated)
-		for section in self.treeController.content?.children.last?.children ?? [] {
+		for section in self.treeController?.content?.children.last?.children ?? [] {
 			for row in section.children {
 				guard let row = row as? NCSkillEditRow else {continue}
 				skills?[row.typeID] = row.level
@@ -106,6 +103,4 @@ class NCFittingCharacterEditorViewController: UITableViewController, TreeControl
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-	}
 }

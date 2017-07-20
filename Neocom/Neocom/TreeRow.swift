@@ -218,6 +218,15 @@ class NCDefaultFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fetc
 	
 }
 
+class NCDefaultFetchedResultsSectionCollapsedNode<ResultType: NSFetchRequestResult>: NCDefaultFetchedResultsSectionNode<ResultType> {
+	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
+		super.init(section: section, objectNode: objectNode)
+		self.cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
+		isExpandable = true
+		isExpanded = false
+	}
+}
+
 class NCMetaGroupFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: FetchedResultsSectionNode<ResultType> {
 	let metaGroupID: Int?
 	lazy var metaGroup: NCDBInvMetaGroup? = {

@@ -89,14 +89,19 @@ class NCMailBodyViewController: UIViewController {
 				self.textView.text = error.localizedDescription
 			}
 			
-			let size = self.textView.sizeThatFits(CGSize(width: self.textView.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
-			let heightConstraint = self.textView.constraints.first {$0.firstAttribute == .height && ($0.firstItem as? UITextView) == self.textView}
-			heightConstraint?.constant = max(size.height.rounded(.up), 32)
-
+			self.updateConstraints(self.textView)
 		}
 	}
 	
-	
+	private var textViewWidth: CGFloat?
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		if textViewWidth != textView.frame.width {
+			textViewWidth = textView.frame.width
+			updateConstraints(textView)
+		}
+	}
+
 	@IBAction func onReply(_ sender: Any) {
 		guard let account = NCAccount.current else {return}
 		let recipients: [NCContact]
@@ -123,4 +128,14 @@ class NCMailBodyViewController: UIViewController {
 		
 		Router.Mail.NewMessage(recipients: recipients.map{$0.contactID}, subject: "RE: \(mail?.subject ?? "")", body: s).perform(source: self, view: nil)
 	}
+	
+	private func updateConstraints(_ textView: UITextView) {
+		textView.setContentOffset(.zero, animated: false)
+		let size = textView.sizeThatFits(CGSize(width: textView.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
+		let heightConstraint = textView.constraints.first {$0.firstAttribute == .height && ($0.firstItem as? UITextView) == textView}
+		heightConstraint?.constant = max(size.height.rounded(.up), 32)
+		self.view.layoutIfNeeded()
+		textView.layoutIfNeeded()
+	}
+
 }

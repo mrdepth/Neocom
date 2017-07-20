@@ -418,8 +418,8 @@ struct NCDatabaseTypeInfo {
 			
 			dataManager.marketHistory(typeID: typeID, regionID: regionID) { result in
 				switch result {
-				case let .success(_, cacheRecord):
-					if let cacheRecord = cacheRecord {
+				case let .success(value, cacheRecord):
+					if let cacheRecord = cacheRecord, !value.isEmpty {
 						let row = NCDatabaseTypeMarketRow(history: cacheRecord, typeID: typeID)
 						marketSection?.mutableArrayValue(forKey: "children").add(row)
 					}
@@ -508,7 +508,10 @@ struct NCDatabaseTypeInfo {
 					guard let attributeCategory = (section.objects?.first as? NCDBDgmTypeAttribute)?.attributeType?.attributeCategory else {continue}
 					
 					if attributeCategory.categoryID == Int32(NCDBAttributeCategoryID.requiredSkills.rawValue) {
-						sections.append(requiredSkills(type: type, character: character))
+						if let section = requiredSkills(type: type, character: character) {
+							sections.append(section)
+						}
+						
 					}
 					else {
 						let sectionTitle: String
@@ -925,7 +928,12 @@ struct NCDatabaseTypeInfo {
 				
 				
 				if rows.count > 0 {
-					sections.append(DefaultTreeSection(nodeIdentifier: String(attributeCategory.categoryID), title: sectionTitle.uppercased(), children: rows))
+					if category == .entityRewards {
+						sections.insert(DefaultTreeSection(nodeIdentifier: String(attributeCategory.categoryID), title: sectionTitle.uppercased(), children: rows), at: 0)
+					}
+					else {
+						sections.append(DefaultTreeSection(nodeIdentifier: String(attributeCategory.categoryID), title: sectionTitle.uppercased(), children: rows))
+					}
 				}
 			}
 		})
@@ -1000,7 +1008,7 @@ struct NCDatabaseTypeInfo {
 					row.isExpandable = true
 					row.isExpanded = false
 					
-					row.children = [FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NSDictionary>.self, objectNode: NCDatabaseTypeRow.self)]
+					row.children = [FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionCollapsedNode<NSDictionary>.self, objectNode: NCDatabaseTypeRow.self)]
 				}
 				
 				rows.append(row)
@@ -1030,13 +1038,14 @@ struct NCDatabaseTypeInfo {
 	}
 
 	
-	static func requiredSkills(type: NCDBInvType, character: NCCharacter) -> NCDatabaseSkillsSection {
+	static func requiredSkills(type: NCDBInvType, character: NCCharacter) -> NCDatabaseSkillsSection? {
 		var rows = [TreeNode]()
 		for requiredSkill in type.requiredSkills?.array as? [NCDBInvTypeRequiredSkill] ?? [] {
 			guard let type = requiredSkill.skillType else {continue}
 			let row = NCDatabaseTypeSkillRow(skill: requiredSkill, character: character, children: subskills(skill: type, character: character))
 			rows.append(row)
 		}
+		guard !rows.isEmpty else {return nil}
 		let trainingQueue = NCTrainingQueue(character: character)
 		trainingQueue.addRequiredSkills(for: type)
 		return NCDatabaseSkillsSection(nodeIdentifier: String(NCDBAttributeCategoryID.requiredSkills.rawValue), title: NSLocalizedString("Required Skills", comment: "").uppercased(), trainingQueue: trainingQueue, character: character, children: rows)

@@ -287,6 +287,18 @@
 	return module ? module->getMiningYield() : 0;
 }
 
+- (BOOL) isAssistance {
+	NCVerifyFittingContext(self.engine);
+	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
+	return module ? module->isAssistance() : NO;
+}
+
+- (BOOL) isOffensive {
+	NCVerifyFittingContext(self.engine);
+	auto module = std::dynamic_pointer_cast<dgmpp::Module>(self.item);
+	return module ? module->isOffensive() : NO;
+}
+
 - (double) angularVelocityWithTargetSignature:(double) targetSignature {
 	return [self angularVelocityWithTargetSignature:targetSignature hitChance:0.75];
 }

@@ -30,7 +30,7 @@ class NCTypePickerContainerViewContrller: NCPageViewController {
 		}
 		else {
 			let controller = storyboard!.instantiateViewController(withIdentifier: "NCTypePickerGroupsViewController") as! NCTypePickerGroupsViewController
-			controller.group = group
+			controller.parentGroup = group
 			viewControllers = [
 				controller,
 				storyboard!.instantiateViewController(withIdentifier: "NCTypePickerRecentViewController"),

@@ -289,6 +289,41 @@ enum Router {
 
 		}
 		
+		class TypePickerGroups: Route {
+			let parentGroup: NCDBDgmppItemGroup?
+			
+			init(parentGroup: NCDBDgmppItemGroup?) {
+				self.parentGroup = parentGroup
+				super.init(kind: .push, identifier: "NCTypePickerGroupsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCTypePickerGroupsViewController
+				destination.parentGroup = parentGroup
+			}
+		}
+		
+		class TypePickerTypes: Route {
+			let predicate: NSPredicate
+			let title: String?
+			
+			private init(predicate: NSPredicate, title: String?) {
+				self.predicate = predicate
+				self.title = title
+				super.init(kind: .push, identifier: "NCTypePickerTypesViewController")
+			}
+			
+			convenience init(group: NCDBDgmppItemGroup) {
+				self.init(predicate: NSPredicate(format: "dgmppItem.groups CONTAINS %@", group), title: group.groupName)
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCTypePickerTypesViewController
+				destination.predicate = predicate
+				destination.title = title
+			}
+		}
+		
 		class MarketInfo: Route {
 			let type: NCDBInvType?
 			let typeID: Int?

@@ -82,16 +82,15 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		NotificationCenter.default.removeObserver(self)
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		updateConstraints(textView)
-		updateConstraints(toTextView)
-		updateConstraints(subjectTextView)
-	}
-	
+	private var textViewWidth: CGFloat?
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-//		updateConstraints(textView)
+		if textViewWidth != textView.frame.width {
+			textViewWidth = textView.frame.width
+			updateConstraints(textView)
+			updateConstraints(toTextView)
+			updateConstraints(subjectTextView)
+		}
 	}
 	
 	@IBAction func onTap(_ sender: UITapGestureRecognizer) {

@@ -85,6 +85,7 @@ extension Prototype {
 		static let image = Prototype(nib: nil, reuseIdentifier: "NCImageTableViewCell")
 		static let noImage = Prototype(nib: UINib(nibName: "NCDefaultNoImageTableViewCell", bundle: nil), reuseIdentifier: "NCDefaultNoImageTableViewCell")
 		static let attribute = Prototype(nib: UINib(nibName: "NCAttributeTableViewCell", bundle: nil), reuseIdentifier: "NCAttributeTableViewCell")
+		static let attributeNoImage = Prototype(nib: UINib(nibName: "NCAttributeNoImageTableViewCell", bundle: nil), reuseIdentifier: "NCAttributeNoImageTableViewCell")
 		
 	}
 	

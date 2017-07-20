@@ -29,6 +29,7 @@ class NCFittingFuelRow: TreeRow {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
 		cell.titleLabel?.text = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
 		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+		cell.accessoryType = .none
 		
 		guard let engine = self.structure.engine else {return}
 
@@ -144,11 +145,13 @@ class NCFittingPriceTypeRow: NCFittingPriceRow {
 	init(typeID: Int, quantity: Int) {
 		self.typeID = typeID
 		self.quantity = quantity
-		super.init(prototype: Prototype.NCDefaultTableViewCell.default)
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: Router.Database.TypeInfo(typeID))
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.accessoryType = .disclosureIndicator
+		
 		let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
 		if quantity > 1 {
 			cell.titleLabel?.attributedText = typeName + " x\(NCUnitFormatter.localizedString(from: quantity, unit: .none, style: .full))" * [NSForegroundColorAttributeName: UIColor.caption]
@@ -201,6 +204,7 @@ class NCFittingPriceModulesRow: NCFittingPriceRow {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
 		cell.titleLabel?.text = NSLocalizedString("Modules", comment: "")
 		cell.iconView?.image = #imageLiteral(resourceName: "priceFitting")
+		cell.accessoryType = .none
 		
 		var cost: Double = 0
 		if let prices = prices {
@@ -243,6 +247,7 @@ class NCFittingPriceDronesRow: NCFittingPriceRow {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
 		cell.titleLabel?.text = NSLocalizedString("Drones", comment: "")
 		cell.iconView?.image = #imageLiteral(resourceName: "drone")
+		cell.accessoryType = .none
 		
 		var cost: Double = 0
 		if let prices = prices {
@@ -280,6 +285,7 @@ class NCFittingPriceImplantsRow: NCFittingPriceRow {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
 		cell.titleLabel?.text = NSLocalizedString("Implants", comment: "")
 		cell.iconView?.image = #imageLiteral(resourceName: "implant")
+		cell.accessoryType = .none
 		
 		var cost: Double = 0
 		if let prices = prices {
@@ -301,8 +307,7 @@ class NCFittingPriceImplantsRow: NCFittingPriceRow {
 }
 
 
-class NCFittingStatsViewController: UITableViewController, TreeControllerDelegate {
-	@IBOutlet weak var treeController: TreeController!
+class NCFittingStatsViewController: NCTreeViewController {
 
 	var engine: NCFittingEngine? {
 		return (parent as? NCFittingEditorViewController)?.engine
@@ -321,16 +326,13 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 		                    Prototype.NCDefaultTableViewCell.default])
 
 		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if self.treeController.content == nil {
-			self.treeController.content = TreeNode()
+		if self.treeController?.content == nil {
+			self.treeController?.content = TreeNode()
 			reload()
 		}
 		
@@ -347,14 +349,6 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 		engine.perform {
 			engine.factorReload = factor
 		}
-	}
-	
-	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		treeController.deselectCell(for: node, animated: true)
-		guard let route = (node as? TreeNodeRoutable)?.route else {return}
-		route.perform(source: self, view: treeController.cell(for: node))
 	}
 	
 	//MARK: - Private
@@ -388,7 +382,7 @@ class NCFittingStatsViewController: UITableViewController, TreeControllerDelegat
 			typeIDs.insert(ship.typeID)
 
 			DispatchQueue.main.async {
-				self.treeController.content?.children = sections
+				self.treeController?.content?.children = sections
 				NCDataManager(account: NCAccount.current).prices(typeIDs: typeIDs) { result in
 					pricesSection.prices = result
 				}

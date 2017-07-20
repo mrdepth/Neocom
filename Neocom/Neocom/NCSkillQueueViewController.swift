@@ -524,13 +524,6 @@ class NCSkillQueueViewController: NCTreeViewController, NCRefreshable {
 	
 	//MARK: TreeControllerDelegate
 	
-	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		super.treeController(treeController, didSelectCellWithNode: node)
-		if let route = (node as? TreeNodeRoutable)?.route {
-			route.perform(source: self, view: treeController.cell(for: node))
-		}
-	}
-	
 	override func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		super.treeController(treeController, accessoryButtonTappedWithNode: node)
 		switch node {

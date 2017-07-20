@@ -52,6 +52,7 @@ class NCAmmoNode: FetchedResultsObjectNode<NCDBInvType> {
 			cell.titleLabel?.text = object.typeName
 			cell.iconView?.image = object.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 			cell.object = object
+			cell.accessoryType = .detailButton
 		}
 	}
 }
@@ -108,9 +109,16 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 		
 		let root = TreeNode()
 		
-		let route = Router.Fitting.AmmoDamageChart(category: category, modules: modules ?? [])
+		try? ammo.resultsController.performFetch()
+		let dealsDamage = ammo.resultsController.fetchedObjects?.first?.dgmppItem?.damage != nil
 		
-		root.children = [NCActionRow(title: NSLocalizedString("Compare", comment: ""), route: route), ammo]
+		if dealsDamage {
+			let route = Router.Fitting.AmmoDamageChart(category: category, modules: modules ?? [])
+			root.children = [NCActionRow(title: NSLocalizedString("Compare", comment: ""), route: route), ammo]
+		}
+		else {
+			root.children = [ammo]
+		}
 
 		treeController.content = root
 	}

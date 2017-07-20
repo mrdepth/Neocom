@@ -47,6 +47,8 @@
 @property (readonly) double lifeTime;
 @property (readonly) BOOL isEnabled;
 @property (readonly) double miningYield;
+@property (readonly) BOOL isAssistance;
+@property (readonly) BOOL isOffensive;
 
 - (double) angularVelocityWithTargetSignature:(double) targetSignature NS_SWIFT_NAME(angularVelocity(targetSignature:));
 - (double) angularVelocityWithTargetSignature:(double) targetSignature hitChance:(double) hitChance NS_SWIFT_NAME(angularVelocity(targetSignature:hitChance:));

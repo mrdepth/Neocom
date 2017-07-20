@@ -9,8 +9,7 @@
 import UIKit
 import CoreData
 
-class NCFittingCharactersViewController: UITableViewController, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCFittingCharactersViewController: NCTreeViewController {
 	var pilot: NCFittingCharacter?
 	var completionHandler: ((NCFittingCharactersViewController, URL) -> Void)!
 	
@@ -32,10 +31,6 @@ class NCFittingCharactersViewController: UITableViewController, TreeControllerDe
 		                    Prototype.NCActionTableViewCell.default
 		                    ])
 		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
-
 		var sections = [TreeNode]()
 
 		if let context = managedObjectContext {
@@ -50,7 +45,7 @@ class NCFittingCharactersViewController: UITableViewController, TreeControllerDe
 
 		let root = TreeNode()
 		root.children = sections
-		self.treeController.content = root
+		self.treeController?.content = root
 
 	}
 	
@@ -65,7 +60,8 @@ class NCFittingCharactersViewController: UITableViewController, TreeControllerDe
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		if node is NCActionRow {
 			guard let context = managedObjectContext else {return}
 			let character = NCFitCharacter(entity: NSEntityDescription.entity(forEntityName: "FitCharacter", in: context)!, insertInto: context)

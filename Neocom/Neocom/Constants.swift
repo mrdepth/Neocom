@@ -104,6 +104,7 @@ enum NCDBAttributeCategoryID: Int {
 	case null = 9
 	case turrets = 29
 	case missile = 30
+	case entityRewards = 32
 }
 
 enum NCDBUnitID: Int {

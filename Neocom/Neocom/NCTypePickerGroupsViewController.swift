@@ -9,36 +9,51 @@
 import UIKit
 import CoreData
 
-class NCTypePickerGroupsViewController: UITableViewController, UISearchResultsUpdating {
-	private var results: NSFetchedResultsController<NCDBDgmppItemGroup>?
-	private var searchController: UISearchController?
-	var group: NCDBDgmppItemGroup?
+class NCDgmppItemGroupRow: FetchedResultsObjectNode<NCDBDgmppItemGroup> {
+	required init(object: NCDBDgmppItemGroup) {
+		super.init(object: object)
+		cellIdentifier = Prototype.NCDefaultTableViewCell.compact.reuseIdentifier
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.text = object.groupName
+		cell.iconView?.image = object.icon?.image?.image ?? NCDBEveIcon.defaultGroup.image?.image
+		cell.accessoryType = .disclosureIndicator
+	}
+}
+
+class NCTypePickerGroupsViewController: NCTreeViewController, NCSearchableViewController {
+	var parentGroup: NCDBDgmppItemGroup?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		setupSearchController()
+
+		setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCTypePickerTypesViewController"))
+
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.compact])
+		title = parentGroup?.groupName
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		//title = group?.groupName
-		if results == nil {
-			guard let group = group else {return}
+		if treeController?.content == nil {
+			guard let parentGroup = parentGroup else {return}
 			let request = NSFetchRequest<NCDBDgmppItemGroup>(entityName: "DgmppItemGroup")
 			request.sortDescriptors = [NSSortDescriptor(key: "groupName", ascending: true)]
-			request.predicate = NSPredicate(format: "parentGroup == %@", group)
+			request.predicate = NSPredicate(format: "parentGroup == %@", parentGroup)
 			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-			try? results.performFetch()
-			self.results = results
-			tableView.reloadData()
+			
+			
+			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDgmppItemGroupRow.self)
 		}
 	}
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			results = nil
+			treeController?.content = nil
 		}
 	}
 	
@@ -51,57 +66,35 @@ class NCTypePickerGroupsViewController: UITableViewController, UISearchResultsUp
 		}
 	}
 	
-	//MARK: UITableViewDataSource
+	//MARK: - TreeControllerDelegate
 	
-	override func numberOfSections(in tableView: UITableView) -> Int {
-		return results?.sections?.count ?? 0
-	}
-	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return results?.sections?[section].numberOfObjects ?? 0
-	}
-	
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCDefaultTableViewCell
-		let object = results?.object(at: indexPath)
-		cell.object = object
-		cell.titleLabel?.text = object?.groupName
-		cell.iconView?.image = object?.icon?.image?.image ?? NCDBEveIcon.defaultGroup.image?.image
-		return cell
-	}
-	
-	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		if let name = self.results?.sections?[section].name, name == "0" {
-			return NSLocalizedString("Unpublished", comment: "")
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
+		guard let row = node as? NCDgmppItemGroupRow else {return}
+		if row.object.subGroups?.count ?? 0 > 0 {
+			Router.Database.TypePickerGroups(parentGroup: row.object).perform(source: self, view: treeController.cell(for: node))
+			
+//			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerContainerViewContrller") as? NCTypePickerContainerViewContrller else {return}
+//			controller.group = row.object
+//			show(controller, sender: tableView.cellForRow(at: indexPath))
 		}
 		else {
-			return nil
+			Router.Database.TypePickerTypes(group: row.object).perform(source: self, view: treeController.cell(for: node))
+//			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerContainerViewContrller") as? NCTypePickerContainerViewContrller else {return}
+//			controller.predicate = NSPredicate(format: "dgmppItem.groups CONTAINS %@", row.object)
+//			controller.title = row.object.groupName
+//			show(controller, sender: tableView.cellForRow(at: indexPath))
 		}
 	}
+
+	//MARK: - NCSearchableViewController
 	
-	//MARK: UITableViewDelegate
-	
-	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		guard let object = results?.object(at: indexPath) else {return}
-		if object.subGroups?.count ?? 0 > 0 {
-			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerContainerViewContrller") as? NCTypePickerContainerViewContrller else {return}
-			controller.group = object
-			show(controller, sender: tableView.cellForRow(at: indexPath))
-		}
-		else {
-			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerContainerViewContrller") as? NCTypePickerContainerViewContrller else {return}
-			controller.predicate = NSPredicate(format: "dgmppItem.groups CONTAINS %@", object)
-			controller.title = object.groupName
-			show(controller, sender: tableView.cellForRow(at: indexPath))
-		}
-	}
-	
-	//MARK: UISearchResultsUpdating
+	var searchController: UISearchController?
 	
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCTypePickerTypesViewController else {return}
-		if let text = searchController.searchBar.text, let category = group?.category, text.characters.count > 1 {
+		if let text = searchController.searchBar.text, let category = parentGroup?.category, text.characters.count > 1 {
 			predicate = NSPredicate(format: "ANY dgmppItem.groups.category == %@ AND typeName CONTAINS[C] %@ AND published == YES", category, text)
 		}
 		else {
@@ -110,18 +103,5 @@ class NCTypePickerGroupsViewController: UITableViewController, UISearchResultsUp
 		controller.predicate = predicate
 		controller.reloadData()
 	}
-	
-	//MARK: Private
-	
-	private func setupSearchController() {
-		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCTypePickerTypesViewController"))
-		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
-		searchController?.searchResultsUpdater = self
-		searchController?.searchBar.barStyle = UIBarStyle.black
-		searchController?.hidesNavigationBarDuringPresentation = false
-		tableView.backgroundView = UIView()
-		tableView.tableHeaderView = searchController?.searchBar
-		definesPresentationContext = true
-		
-	}
+
 }

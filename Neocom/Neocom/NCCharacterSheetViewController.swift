@@ -33,6 +33,7 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.attribute,
+		                    Prototype.NCDefaultTableViewCell.attributeNoImage,
 		                    Prototype.NCDefaultTableViewCell.placeholder])
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
@@ -64,6 +65,8 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 	private var characterImage: NCCachedResult<UIImage>?
 	private var corporationImage: NCCachedResult<UIImage>?
 	private var allianceImage: NCCachedResult<UIImage>?
+	private var characterShip: NCCachedResult<ESI.Location.CharacterShip>?
+	private var characterLocation: NCCachedResult<ESI.Location.CharacterLocation>?
 	
 	
 	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
@@ -74,7 +77,7 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 		title = account.characterName
 		
 		let dispatchGroup = DispatchGroup()
-		let progress = Progress(totalUnitCount: 7)
+		let progress = Progress(totalUnitCount: 9)
 		
 		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
 		let observer = NCManagedObjectObserver() { [weak self] (updated, deleted) in
@@ -198,6 +201,41 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 			}
 		}
 		
+		progress.perform {
+			dispatchGroup.enter()
+			dataManager.characterLocation { result in
+				self.characterLocation = result
+				switch result {
+				case let .success(_, record):
+					if let record = record {
+						observer.add(managedObject: record)
+					}
+				case .failure:
+					break
+				}
+				dispatchGroup.leave()
+				self.update()
+			}
+		}
+
+		progress.perform {
+			dispatchGroup.enter()
+			dataManager.characterShip { result in
+				self.characterShip = result
+				switch result {
+				case let .success(_, record):
+					if let record = record {
+						observer.add(managedObject: record)
+					}
+				case .failure:
+					break
+				}
+				dispatchGroup.leave()
+				self.update()
+			}
+		}
+
+		
 		dispatchGroup.notify(queue: .main) {
 			completionHandler?()
 		}
@@ -310,9 +348,17 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 		}
 		
 		if let value = self.clones?.value {
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "DoB", title: NSLocalizedString("Date of Birth", comment: "").uppercased(), subtitle: DateFormatter.localizedString(from: value.dateOfBirth, dateStyle: .short, timeStyle: .none)))
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Bloodline", title: NSLocalizedString("Bloodline", comment: "").uppercased(), subtitle: "\(value.race) / \(value.bloodLine) / \(value.ancestry)"))
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "DoB", title: NSLocalizedString("Date of Birth", comment: "").uppercased(), subtitle: DateFormatter.localizedString(from: value.dateOfBirth, dateStyle: .short, timeStyle: .none)))
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Bloodline", title: NSLocalizedString("Bloodline", comment: "").uppercased(), subtitle: "\(value.race) / \(value.bloodLine) / \(value.ancestry)"))
 		}
+		
+		if let ship = self.characterShip?.value, let location = self.characterLocation?.value {
+			if let type = NCDatabase.sharedDatabase?.invTypes[ship.shipTypeID], let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[location.solarSystemID] {
+				let location = NCLocation(solarSystem)
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Ship", image: type.icon?.image?.image, title: type.typeName?.uppercased(), attributedSubtitle: location.displayName, accessoryType: .disclosureIndicator,route: Router.Database.TypeInfo(type)))
+			}
+		}
+		
 		if rows.count > 0 {
 			sections.append(DefaultTreeSection(nodeIdentifier: "Bio", title: NSLocalizedString("Bio", comment: "").uppercased(), children: rows))
 		}
@@ -321,7 +367,7 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 			var balance = 0.0
 			value.forEach {balance += Double($0.balance ?? 0)}
 			
-			let row = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Balance", title: NSLocalizedString("Balance", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: balance / 100.0, unit: .isk, style: .full))
+			let row = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Balance", title: NSLocalizedString("Balance", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: balance / 100.0, unit: .isk, style: .full))
 			sections.append(DefaultTreeSection(nodeIdentifier: "Account", title: NSLocalizedString("Account", comment: "").uppercased(), children: [row]))
 		}
 		
@@ -330,14 +376,14 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 		if let clones = self.clones?.value, let skills = self.skills?.value, let skillQueue = self.skillQueue?.value {
 			let character = NCCharacter(attributes: NCCharacterAttributes(clones: clones), skills: skills, skillQueue: skillQueue)
 			let sp = character.skills.map{$0.value.skillPoints}.reduce(0, +)
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 			                           nodeIdentifier: "SP",
 			                           title: "\(skills.skills?.count ?? 0) \(NSLocalizedString("skills", comment: ""))".uppercased(),
 			                           subtitle: "\(NCUnitFormatter.localizedString(from: Double(sp), unit: .skillPoints, style: .full))"))
 		}
 		
 		if let value = self.clones?.value {
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Respecs", title: NSLocalizedString("Bonus Remaps Available", comment: "").uppercased(), subtitle: "\(value.freeRespecs)"))
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Respecs", title: NSLocalizedString("Bonus Remaps Available", comment: "").uppercased(), subtitle: "\(value.freeRespecs)"))
 			if let value = value.lastRespecDate {
 				let calendar = Calendar(identifier: .gregorian)
 				var components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second, .timeZone], from: value)
@@ -356,7 +402,7 @@ class NCCharacterSheetViewController: UITableViewController, TreeControllerDeleg
 						s = DateFormatter.localizedString(from: date, dateStyle: .short, timeStyle: .none)
 					}
 
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "RespecDate", title: NSLocalizedString("Neural Remap Available", comment: "").uppercased(), subtitle: s))
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "RespecDate", title: NSLocalizedString("Neural Remap Available", comment: "").uppercased(), subtitle: s))
 				}
 			}
 		}

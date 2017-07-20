@@ -8,41 +8,20 @@
 
 import UIKit
 
+
 class NCTextFieldTableViewCell: NCTableViewCell {
 	@IBOutlet weak var textField: UITextField!
-
+	@IBOutlet weak var doneButton: UIButton?
+	
+	var handlers: [UIControlEvents: NCActionHandler] = [:]
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		handlers = [:]
+	}
 }
 
-class NCActionHandler {
-	private let handler: NCOpaqueHandler
-	private let control: UIControl
-	private let controlEvents: UIControlEvents
-	
-	class NCOpaqueHandler: NSObject {
-		let handler: (UIControl) -> Void
-		
-		init(_ handler: @escaping(UIControl) -> Void) {
-			self.handler = handler
-		}
-		
-		func handle(_ sender: UIControl) {
-			handler(sender)
-		}
 
-	}
-	
-	init(_ control: UIControl, for controlEvents: UIControlEvents, handler: @escaping(UIControl) -> Void) {
-		self.handler = NCOpaqueHandler(handler)
-		self.control = control
-		self.controlEvents = controlEvents
-		control.addTarget(self.handler, action: #selector(NCOpaqueHandler.handle(_:)), for: controlEvents)
-	}
-	
-	deinit {
-		control.removeTarget(self.handler, action: #selector(NCOpaqueHandler.handle(_:)), for: controlEvents)
-	}
-	
-}
 
 class NCTextFieldRow: TreeRow {
 	var text: String?
@@ -54,16 +33,30 @@ class NCTextFieldRow: TreeRow {
 		super.init(prototype: prototype)
 	}
 	
-	private var handler: NCActionHandler?
-	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCTextFieldTableViewCell else {return}
 		cell.textField.text = text
 		let textField = cell.textField
-		handler = NCActionHandler(cell.textField, for: .editingChanged, handler: { [weak self] _ in
+		
+		cell.doneButton?.alpha = 0.0
+		
+		cell.handlers[.editingChanged] = NCActionHandler(cell.textField, for: [.editingChanged], handler: { [weak self] _ in
 			self?.text = textField?.text
 		})
-		
+
+		cell.handlers[.editingDidBegin] = NCActionHandler(cell.textField, for: [.editingDidBegin], handler: { [weak cell] _ in
+			UIView.animate(withDuration: 0.25) {
+				cell?.doneButton?.alpha = 1.0
+			}
+		})
+
+		cell.handlers[.editingDidEnd] = NCActionHandler(cell.textField, for: [.editingDidEnd], handler: { [weak cell] _ in
+			UIView.animate(withDuration: 0.25) {
+				cell?.doneButton?.alpha = 0.0
+			}
+		})
+
+
 		if let placeholder = placeholder {
 			cell.textField.attributedPlaceholder = placeholder * [NSForegroundColorAttributeName: UIColor.lightGray]
 		}

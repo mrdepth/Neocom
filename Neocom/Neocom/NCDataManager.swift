@@ -474,7 +474,12 @@ class NCDataManager {
 	func marketHistory(typeID: Int, regionID: Int, completionHandler: @escaping (NCCachedResult<[ESI.Market.History]>) -> Void) {
 		loadFromCache(forKey: "ESI.Market.History.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.market.listHistoricalMarketStatisticsInRegion(regionID: regionID, typeID: typeID) { result in
-				completion(result, 3600.0 * 12)
+				if result.value?.isEmpty == true {
+					completion(result, 60)
+				}
+				else {
+					completion(result, 3600.0 * 12)
+				}
 			}
 		})
 	}

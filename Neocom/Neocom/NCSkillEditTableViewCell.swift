@@ -21,11 +21,16 @@ extension Prototype {
 	}
 }
 
-class NCSkillEditRow: FetchedResultsObjectNode<NSDictionary> {
+class NCSkillEditRow: FetchedResultsObjectNode<NSDictionary>, TreeNodeRoutable {
 	var level: Int = 0
 	let typeID: Int
+	
+	var route: Route?
+	var accessoryButtonRoute: Route?
+	
 	required init(object: NSDictionary) {
 		typeID = (object["typeID"] as! NSNumber).intValue
+		accessoryButtonRoute = Router.Database.TypeInfo(typeID)
 		super.init(object: object)
 		cellIdentifier = Prototype.NCSkillEditTableViewCell.default.reuseIdentifier
 	}

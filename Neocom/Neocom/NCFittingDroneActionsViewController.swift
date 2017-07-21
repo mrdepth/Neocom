@@ -13,9 +13,9 @@ import CloudData
 class NCFittingDroneInfoRow: NCChargeRow {
 	let count: Int
 	
-	init(type: NCDBInvType, count: Int, route: Route? = nil) {
+	init(type: NCDBInvType, drone: NCFittingDrone, count: Int, route: Route? = nil) {
 		self.count = count
-		super.init(type: type, route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
+		super.init(type: type, route: route, accessoryButtonRoute: Router.Database.TypeInfo(drone))
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -236,11 +236,13 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 				}
 			}
 			else {
-				route = Router.Database.TypeInfo(type)
+				route = Router.Database.TypeInfo(drone)
 			}
 			
-			sections.append(NCFittingDroneInfoRow(type: type, count: drones.count, route: route))
-			
+			sections.append(DefaultTreeSection(nodeIdentifier: "Variations",
+			                                   title: NSLocalizedString("Variations", comment: "").uppercased(),
+			                                   children: [NCFittingDroneInfoRow(type: type, drone: drone, count: drones.count, route: route)]))
+
 			let handler = {[weak self] (_ count: Int, _ node: NCFittingDroneCountRow) in
 				guard let strongSelf = self else {return}
 				guard var drones = strongSelf.drones else {return}

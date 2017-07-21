@@ -1,28 +1,16 @@
 //
-//  NCTypePickerTypesViewController.swift
+//  NCNPCPickerTypesViewController.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 11.01.17.
+//  Created by Artem Shimanski on 21.07.17.
 //  Copyright © 2017 Artem Shimanski. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-class NCDatabaseTypePickerRow: NCDatabaseTypeRow<NSDictionary> {
-	required init(object: NSDictionary) {
-		super.init(object: object)
-		if let typeID = object["typeID"] as? Int {
-			accessoryButtonRoute = Router.Database.TypeInfo(typeID)
-		}
-	}
-	override func configure(cell: UITableViewCell) {
-		super.configure(cell: cell)
-		cell.accessoryType = .detailButton
-	}
-}
-
-class NCTypePickerTypesViewController: NCTreeViewController, NCSearchableViewController {
+class NCNPCPickerTypesViewController: NCTreeViewController, NCSearchableViewController {
+	
 	private let gate = NCGate()
 	var predicate: NSPredicate?
 	
@@ -37,7 +25,7 @@ class NCTypePickerTypesViewController: NCTreeViewController, NCSearchableViewCon
 		                    ])
 		
 		if navigationController != nil {
-			setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCTypePickerTypesViewController"))
+			setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCZKillboardTypesViewController"))
 		}
 	}
 	
@@ -68,51 +56,32 @@ class NCTypePickerTypesViewController: NCTreeViewController, NCSearchableViewCon
 		}
 	}
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "NCDatabaseTypeInfoViewController" {
-			let controller = segue.destination as? NCDatabaseTypeInfoViewController
-			let object = (sender as! NCDefaultTableViewCell).object as! NSDictionary
-			controller?.type = NCDatabase.sharedDatabase?.invTypes[object["typeID"] as! Int]
-		}
-	}
-	
 	//MARK: - TreeControllerDelegate
 	
 	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		super.treeController(treeController, didSelectCellWithNode: node)
-
-		guard let typePickerController =  (presentingViewController?.navigationController as? NCTypePickerViewController) ??
-			navigationController as? NCTypePickerViewController else {return}
 		guard let row = node as? NCDatabaseTypePickerRow else {return}
 		guard let typeID = row.object["typeID"] as? Int else {return}
 		guard let type = NCDatabase.sharedDatabase?.invTypes[typeID] else {return}
-		guard let context = NCCache.sharedCache?.viewContext else {return}
-
-		guard let category = typePickerController.category else {return}
-		var recent: NCCacheTypePickerRecent? = context.fetch("TypePickerRecent", where: "category == %d AND subcategory == %d AND raceID == %d AND typeID == %d", category.category, category.subcategory, category.race?.raceID ?? 0, type.typeID)
-		if recent == nil {
-			recent = NCCacheTypePickerRecent(entity: NSEntityDescription.entity(forEntityName: "TypePickerRecent", in: context)!, insertInto: context)
-			recent?.category = category.category
-			recent?.subcategory = category.subcategory
-			recent?.raceID = category.race?.raceID ?? 0
-			recent?.typeID = type.typeID
-		}
-		recent?.date = Date() as NSDate
-		if context.hasChanges {
-			try? context.save()
-		}
-		typePickerController.completionHandler(typePickerController, type)
+		guard let picker = (navigationController as? NCNPCPickerViewController) ?? presentingViewController?.navigationController as? NCNPCPickerViewController else {return}
+		picker.completionHandler(picker, type)
 	}
-
 	
-	//MARK: UISearchResultsUpdating
+	override func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+		super.treeController(treeController, accessoryButtonTappedWithNode: node)
+		guard let row = node as? NCDatabaseTypePickerRow else {return}
+		guard let typeID = row.object["typeID"] as? Int else {return}
+		Router.Database.TypeInfo(typeID).perform(source: self, view: treeController.cell(for: node))
+	}
+	
+	//MARK: NCSearchableViewController
 	
 	var searchController: UISearchController?
-
+	
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
-		guard let controller = searchController.searchResultsController as? NCTypePickerTypesViewController else {return}
-		if let text = searchController.searchBar.text, let other = self.predicate, text.characters.count > 0 {
+		guard let controller = searchController.searchResultsController as? NCDatabaseTypesViewController else {return}
+		if let text = searchController.searchBar.text, let other = self.predicate, text.characters.count > 2 {
 			predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [other, NSPredicate(format: "typeName CONTAINS[C] %@", text)])
 		}
 		else {

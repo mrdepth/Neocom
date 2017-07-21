@@ -131,14 +131,13 @@ class NCCustomDamagePatternRow: FetchedResultsObjectNode<NCDamagePattern> {
 				children = []
 				try? editingContext.save()
 			}
-			//self.cellIdentifier = isEditing ? "NCDamagePatternEditTableViewCell" : "NCDamageTypeTableViewCell"
 		}
 	}
 	
 	override func update(from node: TreeNode) {
 		super.update(from: node)
 		guard let from = node as? NCCustomDamagePatternRow else {return}
-		let changed = from.changed
+//		let changed = from.changed
 		self.changed = false
 		editingContext = from.editingContext
 		editingObject = from.editingObject
@@ -148,6 +147,7 @@ class NCCustomDamagePatternRow: FetchedResultsObjectNode<NCDamagePattern> {
 	required init(object: NCDamagePattern) {
 		super.init(object: object)
 		self.cellIdentifier = Prototype.NCDamageTypeTableViewCell.default.reuseIdentifier
+		isExpandable = false
 	}
 	
 	private var handler: NCActionHandler?
@@ -181,8 +181,8 @@ class NCCustomDamagePatternRow: FetchedResultsObjectNode<NCDamagePattern> {
 }
 
 
-class NCFittingDamagePatternsViewController: UITableViewController, TreeControllerDelegate, UITextFieldDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCFittingDamagePatternsViewController: NCTreeViewController, UITextFieldDelegate {
+
 	var category: NCDBDgmppItemCategory?
 	var completionHandler: ((NCFittingDamagePatternsViewController, NCFittingDamage) -> Void)!
 	
@@ -201,16 +201,15 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		                    Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.default])
 		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
-		
 		navigationItem.rightBarButtonItem = editButtonItem
 		
 		var sections = [TreeNode]()
 		
 		
-		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "criminal"), title: NSLocalizedString("Select NPC Type", comment: ""), accessoryType: .disclosureIndicator))
+		sections.append(NCActionRow(title: NSLocalizedString("Select NPC Type", comment: ""), attributedTitle: nil, route: Router.Database.NPCPicker { [weak self] (controller, type) in
+			controller.dismiss(animated: true, completion: nil)
+			self?.select(npc: type)
+		}))
 		
 		if let managedObjectContext = self.managedObjectContext {
 			sections.append(NCCustomDamagePatternsSection(managedObjectContext: managedObjectContext))
@@ -222,7 +221,7 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		
 		let root = TreeNode()
 		root.children = sections
-		self.treeController.content = root
+		self.treeController?.content = root
 		
 	}
 	
@@ -232,34 +231,19 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 			try? managedObjectContext?.save()
 			try? managedObjectContext?.parent?.save()
 		}
-		/*guard isEditing != editing else {return}
-		super.setEditing(editing, animated: animated)
-		guard let i = treeController.rootNode?.children?.index(where: {$0 is NCCustomDamagePatternsSection}) else {return}
-		if editing {
-			treeController.rootNode?.children?.insert(NCAddDamagePatternRow(), at: i + 1)
-		}
-		else {
-			let section = treeController.rootNode?.children?.first(where: {$0 is NCCustomDamagePatternsSection})
-			if let editingNode = section?.children?.first(where: {($0 as? NCCustomDamagePatternRow)?.isEditing == true}) as? NCCustomDamagePatternRow {
-				editingNode.isEditing = false
-			}
-			try? managedObjectContext?.save()
-			try? managedObjectContext?.parent?.save()
-			treeController.rootNode?.children?.remove(at: i + 1)
-		}*/
 	}
 	
 	@IBAction func onDone(_ sender: UIButton) {
 		guard let cell = sender.ancestor(of: UITableViewCell.self) else {return}
-		guard let node = treeController.node(for: cell) as? NCCustomDamagePatternRow else {return}
+		guard let node = treeController?.node(for: cell) as? NCCustomDamagePatternRow else {return}
 		node.isEditing = false
-		treeController.reloadCells(for: [node])
+		treeController?.reloadCells(for: [node])
 	}
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		treeController.deselectCell(for: node, animated: true)
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		if isEditing {
 			switch node {
 			case let node as NCCustomDamagePatternRow:
@@ -296,6 +280,8 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 				                                  explosive: Double(node.object.explosive)))
 			case let node as NCFittingDamagePatternInfoRow:
 				completionHandler(self, node.damagePattern)
+			case is NCAddDamagePatternRow:
+				addDamagePattern()
 			default:
 				break
 			}
@@ -317,7 +303,8 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		switch node {
 		case let node as NCCustomDamagePatternRow:
 			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { _ in
-				self.treeController(self.treeController, commit: .delete, forNode: node)
+				guard let controller = self.treeController else {return}
+				self.treeController(controller, commit: .delete, forNode: node)
 			})]
 		case let node as NCFittingDamagePatternInfoRow:
 			return [UITableViewRowAction(style: .normal, title: NSLocalizedString("Duplicate", comment: ""), handler: { _ in
@@ -370,6 +357,51 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 	
 	//MARK: - Private
 	
+	private func select(npc: NCDBInvType) {
+		let attributes = npc.allAttributes
+		
+		let turrets: (Float, Float, Float, Float) = {
+			let damage = (attributes[NCDBAttributeID.emDamage.rawValue]?.value ?? 0,
+			              attributes[NCDBAttributeID.thermalDamage.rawValue]?.value ?? 0,
+			              attributes[NCDBAttributeID.kineticDamage.rawValue]?.value ?? 0,
+			              attributes[NCDBAttributeID.explosiveDamage.rawValue]?.value ?? 0)
+			
+			let multiplier = attributes[NCDBAttributeID.damageMultiplier.rawValue]?.value ?? 1
+			let rof = (attributes[NCDBAttributeID.speed.rawValue]?.value ?? 1000) / 1000
+			return (damage.0 * multiplier / rof, damage.1 * multiplier / rof, damage.2 * multiplier / rof, damage.3 * multiplier / rof)
+		}()
+		
+		let launchers: (Float, Float, Float, Float) = {
+			guard let missileID = attributes[NCDBAttributeID.entityMissileTypeID.rawValue]?.value, let missile = NCDatabase.sharedDatabase?.invTypes[Int(missileID)] else {return (0,0,0,0)}
+			let attributes = missile.allAttributes
+			let damage = (attributes[NCDBAttributeID.emDamage.rawValue]?.value ?? 0,
+			              attributes[NCDBAttributeID.thermalDamage.rawValue]?.value ?? 0,
+			              attributes[NCDBAttributeID.kineticDamage.rawValue]?.value ?? 0,
+			              attributes[NCDBAttributeID.explosiveDamage.rawValue]?.value ?? 0)
+			
+			let multiplier = attributes[NCDBAttributeID.missileDamageMultiplier.rawValue]?.value ?? 1
+			let rof = (attributes[NCDBAttributeID.missileLaunchDuration.rawValue]?.value ?? 1000) / 1000
+			guard rof > 0 else {return (0,0,0,0)}
+			return (damage.0 * multiplier / rof, damage.1 * multiplier / rof, damage.2 * multiplier / rof, damage.3 * multiplier / rof)
+		}()
+		
+		let dps = (turrets.0 + launchers.0, turrets.1 + launchers.1, turrets.2 + launchers.2, turrets.3 + launchers.3)
+		let totalDPS = dps.0 + dps.1 + dps.2 + dps.3
+		
+		if totalDPS > 0 {
+			completionHandler(self, NCFittingDamage(em: Double(dps.0 / totalDPS),
+			                                        thermal: Double(dps.1 / totalDPS),
+			                                        kinetic: Double(dps.2 / totalDPS),
+			                                        explosive: Double(dps.3 / totalDPS)))
+		}
+		else {
+			completionHandler(self, NCFittingDamage(em: Double(0.25),
+			                                        thermal: Double(0.25),
+			                                        kinetic: Double(0.25),
+			                                        explosive: Double(0.25)))
+		}
+	}
+	
 	private func addDamagePattern(damagePattern: NCFittingDamage = NCFittingDamage.omni, name: String = NSLocalizedString("Unnamed", comment: "")) {
 		guard let managedObjectContext = self.managedObjectContext else {return}
 		
@@ -381,19 +413,19 @@ class NCFittingDamagePatternsViewController: UITableViewController, TreeControll
 		pattern.name = name
 		try? managedObjectContext.save()
 		
-		let section = treeController.content?.children.first(where: {$0 is NCCustomDamagePatternsSection})
+		let section = treeController?.content?.children.first(where: {$0 is NCCustomDamagePatternsSection})
 		if section?.isExpanded == false {
 			section?.isExpanded = true
 		}
 		
 		if let node = section?.children.first(where: {($0 as? NCCustomDamagePatternRow)?.object == pattern}) as? NCCustomDamagePatternRow {
 			node.isEditing = true
-			treeController.reloadCells(for: [node])
-			if let indexPath = treeController.indexPath(for: node) {
+			treeController?.reloadCells(for: [node])
+			if let indexPath = treeController?.indexPath(for: node) {
 				tableView.scrollToRow(at: indexPath, at: .top, animated: true)
 			}
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-				if let cell = self.treeController.cell(for: node) as? NCTextFieldTableViewCell {
+				if let cell = self.treeController?.cell(for: node) as? NCTextFieldTableViewCell {
 					cell.textField.becomeFirstResponder()
 				}
 			}

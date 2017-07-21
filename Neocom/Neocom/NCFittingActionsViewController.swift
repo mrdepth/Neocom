@@ -215,7 +215,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 			let title = pilot.ship?.name
 			sections.append(NCLoadoutNameRow(text: title?.isEmpty == false ? title : nil, placeholder: NSLocalizedString("Ship Name", comment: "")))
 			if let ship = pilot.ship, let type = invTypes?[ship.typeID] {
-				let row = NCTypeInfoRow(type: type, accessoryType: .detailButton, route: Router.Database.TypeInfo(type), accessoryButtonRoute: Router.Database.TypeInfo(type))
+				let row = NCTypeInfoRow(type: type, accessoryType: .detailButton, route: Router.Database.TypeInfo(ship), accessoryButtonRoute: Router.Database.TypeInfo(ship))
 				sections.append(DefaultTreeSection(nodeIdentifier: "Ship", title: NSLocalizedString("Ship", comment: "").uppercased(), children: [row]))
 			}
 			

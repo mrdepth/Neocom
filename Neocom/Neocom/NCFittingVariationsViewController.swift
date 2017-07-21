@@ -9,6 +9,13 @@
 import UIKit
 import CoreData
 
+class NCDBVariationRow: NCDatabaseTypeRow<NCDBInvType> {
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		cell.accessoryType = .detailButton
+	}
+}
+
 class NCFittingVariationsViewController: UITableViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
 	var type: NCDBInvType?
@@ -17,6 +24,13 @@ class NCFittingVariationsViewController: UITableViewController, TreeControllerDe
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCModuleTableViewCell.default,
+		                    Prototype.NCShipTableViewCell.default,
+		                    Prototype.NCChargeTableViewCell.default,
+		                    ])
+
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
@@ -35,19 +49,19 @@ class NCFittingVariationsViewController: UITableViewController, TreeControllerDe
 		guard let context = NCDatabase.sharedDatabase?.viewContext else {return}
 		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "metaGroup.metaGroupID", cacheName: nil)
 		
-		let root = FetchedResultsNode(resultsController: controller, sectionNode: NCMetaGroupFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCTypeInfoNode.self)
+		let root = FetchedResultsNode(resultsController: controller, sectionNode: NCMetaGroupFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCDBVariationRow.self)
 		treeController.content = root
 	}
 
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		guard let node = node as? NCTypeInfoNode else {return}
+		guard let node = node as? NCDBVariationRow else {return}
 		completionHandler(self, node.object)
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		guard let node = node as? NCTypeInfoNode else {return}
+		guard let node = node as? NCDBVariationRow else {return}
 		Router.Database.TypeInfo(node.object).perform(source: self, view: treeController.cell(for: node))
 	}
 	

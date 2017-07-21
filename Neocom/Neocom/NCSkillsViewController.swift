@@ -53,11 +53,21 @@ fileprivate class NCSkillRow: NCTreeRow {
 
 fileprivate class NCSkillSection: DefaultTreeSection {
 	let group: NCDBInvGroup
-	init(group: NCDBInvGroup, children: [NCSkillRow], skillPoints: Int64) {
+	init(group: NCDBInvGroup, children: [NCSkillRow], skillPoints: Int64?) {
 		self.group = group
-		//let title = "\(group.groupName?.uppercased() ?? "") (\(children.count))"
-		let title = "\(group.groupName?.uppercased() ?? "") (\(NCUnitFormatter.localizedString(from: children.count, unit: .none, style: .full)) \(NSLocalizedString("SKILLS", comment: "")), \(NCUnitFormatter.localizedString(from: Double(skillPoints), unit: .skillPoints, style: .short)))"
-		//let title = String(format: NSLocalizedString("%@ (%@)", comment: ""), group.groupName?.uppercased() ?? "", NCUnitFormatter.localizedString(from: Double(sp), unit: .skillPoints, style: .full))
+		let groupName = group.groupName?.uppercased() ?? ""
+		let skills = NCUnitFormatter.localizedString(from: children.count, unit: .none, style: .full)
+		
+		let title: String
+		
+		if let skillPoints = skillPoints {
+			let sp = NCUnitFormatter.localizedString(from: Double(skillPoints), unit: .skillPoints, style: .short)
+			title = "\(groupName) (\(skills) \(NSLocalizedString("SKILLS", comment: "")), \(sp)))"
+		}
+		else {
+			title = "\(groupName) (\(skills) \(NSLocalizedString("SKILLS", comment: "")))"
+		}
+		
 		super.init(nodeIdentifier: String(group.groupID), title: title, children: children)
 		isExpanded = false
 	}
@@ -68,13 +78,16 @@ class NCSkillsViewController: NCPageViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		let controller1 = storyboard!.instantiateViewController(withIdentifier: "NCSkillsContentViewController") as! NCSkillsContentViewController
-		let controller2 = storyboard!.instantiateViewController(withIdentifier: "NCSkillsContentViewController") as! NCSkillsContentViewController
-		let controller3 = storyboard!.instantiateViewController(withIdentifier: "NCSkillsContentViewController") as! NCSkillsContentViewController
-		controller1.title = NSLocalizedString("My", comment: "")
-		controller2.title = NSLocalizedString("Can Train", comment: "")
-		controller3.title = NSLocalizedString("All", comment: "")
-		viewControllers = [controller1, controller2, controller3]
+		
+		viewControllers = [NSLocalizedString("My", comment: ""),
+		                   NSLocalizedString("Can Train", comment: ""),
+		                   NSLocalizedString("Not Known", comment: ""),
+		                   NSLocalizedString("All", comment: "")].map { title in
+							let controller = storyboard!.instantiateViewController(withIdentifier: "NCSkillsContentViewController") as! NCSkillsContentViewController
+							controller.title = title
+							return controller
+		}
+
 	}
 	
 	
@@ -123,6 +136,7 @@ class NCSkillsViewController: NCPageViewController {
 				var allSections = [NCSkillSection]()
 				var mySections = [NCSkillSection]()
 				var canTrainSections = [NCSkillSection]()
+				var notKnownSections = [NCSkillSection]()
 				
 				progress.becomeCurrent(withPendingUnitCount: 1)
 				let sectionsProgress = Progress(totalUnitCount: Int64(result.sections!.count))
@@ -132,6 +146,7 @@ class NCSkillsViewController: NCPageViewController {
 					var allRows = [NCSkillRow]()
 					var myRows = [NCSkillRow]()
 					var canTrainRows = [NCSkillRow]()
+					var notKnownRows = [NCSkillRow]()
 					
 					var group: NCDBInvGroup?
 					for type in section.objects as? [NCDBInvType] ?? [] {
@@ -151,6 +166,7 @@ class NCSkillsViewController: NCPageViewController {
 							}
 							else {
 								canTrainRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill, character: character))
+								notKnownRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill, character: character))
 							}
 						}
 					}
@@ -165,18 +181,21 @@ class NCSkillsViewController: NCPageViewController {
 						}
 						
 						allSections.append(NCSkillSection(group: group, children: allRows, skillPoints: totalSP))
-						if myRows.count > 0 {
+						if !myRows.isEmpty {
 							mySections.append(NCSkillSection(group: group, children: myRows, skillPoints: mySP))
 						}
-						if canTrainRows.count > 0 {
+						if !canTrainRows.isEmpty {
 							canTrainSections.append(NCSkillSection(group: group, children: canTrainRows, skillPoints: totalSP - mySP))
+						}
+						if !notKnownRows.isEmpty {
+							notKnownSections.append(NCSkillSection(group: group, children: notKnownRows, skillPoints: nil))
 						}
 					}
 					sectionsProgress.completedUnitCount += 1
 				}
 				
 				DispatchQueue.main.async {
-					self.sections = [mySections, canTrainSections, allSections]
+					self.sections = [mySections, canTrainSections, notKnownSections, allSections]
 					(self.viewControllers as? [NCSkillsContentViewController])?.forEach {
 						$0.tableView.backgroundView = nil
 					}

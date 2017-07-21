@@ -139,31 +139,39 @@ enum Router {
 	enum Database {
 		
 		class TypeInfo: Route {
-			let type: NCDBInvType?
-			let typeID: Int?
-			let objectID: NSManagedObjectID?
+			var type: NCDBInvType?
+			var typeID: Int?
+			var objectID: NSManagedObjectID?
+			var fittingItem: NCFittingItem?
+			var attributeValues: [Int: Float]?
 			
-			private init(type: NCDBInvType?, typeID: Int?, objectID: NSManagedObjectID?, kind: RouteKind) {
+			private init(type: NCDBInvType?, typeID: Int?, objectID: NSManagedObjectID?, fittingItem: NCFittingItem?, kind: RouteKind) {
 				self.type = type
 				self.typeID = typeID
 				self.objectID = objectID
+				self.fittingItem = fittingItem
 				super.init(kind: kind, identifier: "NCDatabaseTypeInfoViewController")
 			}
 			
 			convenience init(_ type: NCDBInvType, kind: RouteKind = .adaptivePush) {
-				self.init(type: type, typeID: nil, objectID: nil, kind: kind)
+				self.init(type: type, typeID: nil, objectID: nil, fittingItem: nil, kind: kind)
 			}
 			
 			convenience init(_ typeID: Int, kind: RouteKind = .adaptivePush) {
-				self.init(type: nil, typeID: typeID, objectID: nil, kind: kind)
+				self.init(type: nil, typeID: typeID, objectID: nil, fittingItem: nil, kind: kind)
 			}
 			
 			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .adaptivePush) {
-				self.init(type: nil, typeID: nil, objectID: objectID, kind: kind)
+				self.init(type: nil, typeID: nil, objectID: objectID, fittingItem: nil, kind: kind)
 			}
-			
+
+			convenience init(_ fittingItem: NCFittingItem, kind: RouteKind = .adaptivePush) {
+				self.init(type: nil, typeID: nil, objectID: nil, fittingItem: fittingItem, kind: kind)
+			}
+
 			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCDatabaseTypeInfoViewController
+				destination.attributeValues = attributeValues
 				if let type = type {
 					destination.type = type
 				}
@@ -172,6 +180,34 @@ enum Router {
 				}
 				else if let objectID = objectID {
 					destination.type = (try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: objectID)) as? NCDBInvType
+				}
+			}
+			
+			override func perform(source: UIViewController, view: UIView?) {
+				if let fittingItem = fittingItem {
+					NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
+						let typeID = fittingItem.typeID
+						var attributes = [Int: Float]()
+						fittingItem.engine?.performBlockAndWait {
+							guard let type = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)[typeID] else {return}
+							let itemAttributes = fittingItem.attributes
+							type.attributes?.forEach {
+								guard let attribute = $0 as? NCDBDgmTypeAttribute else {return}
+								guard let attributeType = attribute.attributeType else {return}
+								if let value = itemAttributes[Int(attributeType.attributeID)]?.value {
+									attributes[Int(attributeType.attributeID)] = Float(value)
+								}
+							}
+						}
+						DispatchQueue.main.async {
+							self.attributeValues = attributes
+							self.typeID = typeID
+							super.perform(source: source, view: view)
+						}
+					}
+				}
+				else {
+					super.perform(source: source, view: view)
 				}
 			}
 		}
@@ -408,6 +444,56 @@ enum Router {
 			}
 		}
 
+		class NPCPicker: Route {
+			let completionHandler: (NCNPCPickerViewController, NCDBInvType) -> Void
+			
+			init(completionHandler: @escaping (NCNPCPickerViewController, NCDBInvType) -> Void) {
+				self.completionHandler = completionHandler
+				super.init(kind: .modal, identifier: "NCNPCPickerViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCNPCPickerViewController
+				destination.completionHandler = completionHandler
+			}
+			
+		}
+
+		
+		class NPCPickerGroups: Route {
+			let parentGroup: NCDBNpcGroup?
+			
+			init(parentGroup: NCDBNpcGroup?) {
+				self.parentGroup = parentGroup
+				super.init(kind: .push, identifier: "NCNPCPickerGroupsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCNPCPickerGroupsViewController
+				destination.parentGroup = parentGroup
+			}
+		}
+		
+		class NPCPickerTypes: Route {
+			let predicate: NSPredicate
+			let title: String?
+			
+			private init(predicate: NSPredicate, title: String?) {
+				self.predicate = predicate
+				self.title = title
+				super.init(kind: .push, identifier: "NCNPCPickerTypesViewController")
+			}
+			
+			convenience init(npcGroup: NCDBNpcGroup) {
+				self.init(predicate: NSPredicate(format: "group = %@", npcGroup.group!), title: npcGroup.npcGroupName)
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCNPCPickerTypesViewController
+				destination.predicate = predicate
+				destination.title = title
+			}
+		}
 	}
 	
 	enum Character {

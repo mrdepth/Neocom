@@ -12,7 +12,7 @@ import EVEAPI
 
 class NCDatabaseTypeInfoRow: DefaultTreeRow {
 	
-	convenience init?(attribute: NCDBDgmTypeAttribute) {
+	convenience init?(attribute: NCDBDgmTypeAttribute, value: Float?) {
 		func toString(_ value: Float, _ unit: String?) -> String {
 			var s = NCUnitFormatter.localizedString(from: Double(value), unit: .none, style: .full)
 			if let unit = unit {
@@ -22,6 +22,8 @@ class NCDatabaseTypeInfoRow: DefaultTreeRow {
 		}
 		guard let attributeType = attribute.attributeType else {return nil}
 		
+		let value = value ?? attribute.value
+		
 		var title: String?
 		var subtitle: String?
 		var image: UIImage?
@@ -30,23 +32,23 @@ class NCDatabaseTypeInfoRow: DefaultTreeRow {
 
 		switch NCDBUnitID(rawValue: Int(attributeType.unit?.unitID ?? 0)) ?? NCDBUnitID.none {
 		case .attributeID:
-			guard let attributeType = NCDBDgmAttributeType.dgmAttributeTypes(managedObjectContext: attribute.managedObjectContext!)[Int(attribute.value)] else {break}
+			guard let attributeType = NCDBDgmAttributeType.dgmAttributeTypes(managedObjectContext: attribute.managedObjectContext!)[Int(value)] else {break}
 			subtitle = attributeType.displayName ?? attributeType.attributeName
 			
 		case .groupID:
-			guard let group = NCDBInvGroup.invGroups(managedObjectContext: attribute.managedObjectContext!)[Int(attribute.value)] else {break}
+			guard let group = NCDBInvGroup.invGroups(managedObjectContext: attribute.managedObjectContext!)[Int(value)] else {break}
 			image = attributeType.icon?.image?.image ?? group.icon?.image?.image
 			subtitle = group.groupName
 			object = group.objectID
 			route = Router.Database.Types(group: group)
 		case .typeID:
-			guard let type = NCDBInvType.invTypes(managedObjectContext: attribute.managedObjectContext!)[Int(attribute.value)] else {break}
+			guard let type = NCDBInvType.invTypes(managedObjectContext: attribute.managedObjectContext!)[Int(value)] else {break}
 			image = type.icon?.image?.image ?? attributeType.icon?.image?.image
 			subtitle = type.typeName
 			object = type.objectID
 			route = Router.Database.TypeInfo(type.objectID)
 		case .sizeClass:
-			switch Int(attribute.value) {
+			switch Int(value) {
 			case 1:
 				subtitle = NSLocalizedString("Small", comment: "")
 			case 2:
@@ -57,20 +59,20 @@ class NCDatabaseTypeInfoRow: DefaultTreeRow {
 				subtitle = NSLocalizedString("X-Large", comment: "")
 			}
 		case .bonus:
-			subtitle = "+" + NCUnitFormatter.localizedString(from: Double(attribute.value), unit: .none, style: .full)
+			subtitle = "+" + NCUnitFormatter.localizedString(from: Double(value), unit: .none, style: .full)
 			image = attributeType.icon?.image?.image
 		case .boolean:
-			subtitle = Int(attribute.value) == 0 ? NSLocalizedString("No", comment: "") : NSLocalizedString("Yes", comment: "")
+			subtitle = Int(value) == 0 ? NSLocalizedString("No", comment: "") : NSLocalizedString("Yes", comment: "")
 		case .inverseAbsolutePercent, .inversedModifierPercent:
-			subtitle = toString((1.0 - attribute.value) * 100.0, attributeType.unit?.displayName)
+			subtitle = toString((1.0 - value) * 100.0, attributeType.unit?.displayName)
 		case .modifierPercent:
-			subtitle = toString((attribute.value - 1.0) * 100.0, attributeType.unit?.displayName)
+			subtitle = toString((value - 1.0) * 100.0, attributeType.unit?.displayName)
 		case .absolutePercent:
-			subtitle = toString(attribute.value * 100.0, attributeType.unit?.displayName)
+			subtitle = toString(value * 100.0, attributeType.unit?.displayName)
 		case .milliseconds:
-			subtitle = toString(attribute.value / 1000.0, attributeType.unit?.displayName)
+			subtitle = toString(value / 1000.0, attributeType.unit?.displayName)
 		default:
-			subtitle = toString(attribute.value, attributeType.unit?.displayName)
+			subtitle = toString(value, attributeType.unit?.displayName)
 		}
 		
 		if title == nil {
@@ -406,7 +408,7 @@ class NCDatabaseSkillsSection: NCActionTreeSection {
 
 struct NCDatabaseTypeInfo {
 	
-	static func typeInfo(type: NCDBInvType, completionHandler: @escaping ([TreeNode]) -> Void) {
+	static func typeInfo(type: NCDBInvType, attributeValues: [Int: Float]?, completionHandler: @escaping ([TreeNode]) -> Void) {
 
 		var marketSection: DefaultTreeSection?
 		if type.marketGroup != nil {
@@ -455,7 +457,7 @@ struct NCDatabaseTypeInfo {
 				}
 			}
 			else {
-				itemInfo(type: type) { result in
+				itemInfo(type: type, attributeValues: attributeValues) { result in
 					var sections = result
 					if let marketSection = marketSection {
 						sections.insert(marketSection, at: 0)
@@ -467,7 +469,7 @@ struct NCDatabaseTypeInfo {
 
 	}
 	
-	static func itemInfo(type: NCDBInvType, completionHandler: @escaping ([TreeSection]) -> Void) {
+	static func itemInfo(type: NCDBInvType, attributeValues: [Int: Float]?, completionHandler: @escaping ([TreeSection]) -> Void) {
 		
 		NCCharacter.load(account: NCAccount.current) { result in
 			let character: NCCharacter
@@ -545,43 +547,44 @@ struct NCDatabaseTypeInfo {
 						
 						
 						for attribute in (section.objects as? [NCDBDgmTypeAttribute]) ?? [] {
+							let value = attributeValues?[Int(attribute.attributeType!.attributeID)] ?? attribute.value
 							switch NCDBAttributeID(rawValue: Int(attribute.attributeType!.attributeID)) ?? NCDBAttributeID.none {
 							case .emDamageResonance, .armorEmDamageResonance, .shieldEmDamageResonance,
 							     .hullEmDamageResonance, .passiveArmorEmDamageResonance, .passiveShieldEmDamageResonance:
 								guard let row = resistance() else {continue}
-								row.em = max(row.em, 1 - attribute.value)
+								row.em = max(row.em, 1 - value)
 							case .thermalDamageResonance, .armorThermalDamageResonance, .shieldThermalDamageResonance,
 							     .hullThermalDamageResonance, .passiveArmorThermalDamageResonance, .passiveShieldThermalDamageResonance:
 								guard let row = resistance() else {continue}
-								row.thermal = max(row.thermal, 1 - attribute.value)
+								row.thermal = max(row.thermal, 1 - value)
 							case .kineticDamageResonance, .armorKineticDamageResonance, .shieldKineticDamageResonance,
 							     .hullKineticDamageResonance, .passiveArmorKineticDamageResonance, .passiveShieldKineticDamageResonance:
 								guard let row = resistance() else {continue}
-								row.kinetic = max(row.kinetic, 1 - attribute.value)
+								row.kinetic = max(row.kinetic, 1 - value)
 							case .explosiveDamageResonance, .armorExplosiveDamageResonance, .shieldExplosiveDamageResonance,
 							     .hullExplosiveDamageResonance, .passiveArmorExplosiveDamageResonance, .passiveShieldExplosiveDamageResonance:
 								guard let row = resistance() else {continue}
-								row.explosive = max(row.explosive, 1 - attribute.value)
+								row.explosive = max(row.explosive, 1 - value)
 							case .emDamage:
-								damage()?.em = attribute.value
+								damage()?.em = value
 							case .thermalDamage:
-								damage()?.thermal = attribute.value
+								damage()?.thermal = value
 							case .kineticDamage:
-								damage()?.kinetic = attribute.value
+								damage()?.kinetic = value
 							case .explosiveDamage:
-								damage()?.explosive = attribute.value
+								damage()?.explosive = value
 
 							case .warpSpeedMultiplier:
 								guard let attributeType = attribute.attributeType else {continue}
-								let baseWarpSpeed = type.allAttributes[NCDBAttributeID.baseWarpSpeed.rawValue]?.value ?? 1.0
-								var s = NCUnitFormatter.localizedString(from: Double(attribute.value * baseWarpSpeed), unit: .none, style: .full)
+								let baseWarpSpeed =  attributeValues?[NCDBAttributeID.baseWarpSpeed.rawValue] ?? type.allAttributes[NCDBAttributeID.baseWarpSpeed.rawValue]?.value ?? 1.0
+								var s = NCUnitFormatter.localizedString(from: Double(value * baseWarpSpeed), unit: .none, style: .full)
 								s += " " + NSLocalizedString("AU/sec", comment: "")
 								rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
 								                                  image: attributeType.icon?.image?.image,
 								                                  title: NSLocalizedString("Warp Speed", comment: ""),
 								                                  subtitle: s))
 							default:
-								guard let row = NCDatabaseTypeInfoRow(attribute: attribute) else {continue}
+								guard let row = NCDatabaseTypeInfoRow(attribute: attribute, value: value) else {continue}
 								rows.append(row)
 							}
 						}
@@ -862,7 +865,7 @@ struct NCDatabaseTypeInfo {
 							guard let row = resistance() else {continue}
 							row.explosive = max(row.explosive, 1 - attribute.value)
 						default:
-							guard let row = NCDatabaseTypeInfoRow(attribute: attribute) else {continue}
+							guard let row = NCDatabaseTypeInfoRow(attribute: attribute, value: nil) else {continue}
 							rows.append(row)
 						}
 					}
@@ -1008,7 +1011,7 @@ struct NCDatabaseTypeInfo {
 					row.isExpandable = true
 					row.isExpanded = false
 					
-					row.children = [FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionCollapsedNode<NSDictionary>.self, objectNode: NCDatabaseTypeRow.self)]
+					row.children = [FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionCollapsedNode<NSDictionary>.self, objectNode: NCDatabaseTypeRow<NSDictionary>.self)]
 				}
 				
 				rows.append(row)

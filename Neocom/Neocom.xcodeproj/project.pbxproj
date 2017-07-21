@@ -39,6 +39,9 @@
 		122242461E5C3A0000269A01 /* NCPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122242451E5C3A0000269A01 /* NCPageViewController.swift */; };
 		1224AF621E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224AF611E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift */; };
 		1224AF641E6D92240043F96C /* NCSkillEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */; };
+		1226D9611F223A4C0049FA0C /* NCNPCPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9601F223A4C0049FA0C /* NCNPCPickerViewController.swift */; };
+		1226D9631F223A690049FA0C /* NCNPCPickerGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9621F223A690049FA0C /* NCNPCPickerGroupsViewController.swift */; };
+		1226D9651F223A740049FA0C /* NCNPCPickerTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9641F223A740049FA0C /* NCNPCPickerTypesViewController.swift */; };
 		1227B81E1E096A4F00C816A0 /* NCDamageTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */; };
 		122B55611EB73E3500E46536 /* NCAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122B55601EB73E3500E46536 /* NCAccountsViewController.swift */; };
 		122DB9AB1E804DF200E8E2C4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */; };
@@ -400,6 +403,9 @@
 		122242451E5C3A0000269A01 /* NCPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCPageViewController.swift; sourceTree = "<group>"; };
 		1224AF611E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingCharacterEditorViewController.swift; sourceTree = "<group>"; };
 		1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillEditTableViewCell.swift; sourceTree = "<group>"; };
+		1226D9601F223A4C0049FA0C /* NCNPCPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCNPCPickerViewController.swift; sourceTree = "<group>"; };
+		1226D9621F223A690049FA0C /* NCNPCPickerGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCNPCPickerGroupsViewController.swift; sourceTree = "<group>"; };
+		1226D9641F223A740049FA0C /* NCNPCPickerTypesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCNPCPickerTypesViewController.swift; sourceTree = "<group>"; };
 		1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamageTypeLabel.swift; sourceTree = "<group>"; };
 		122B55601EB73E3500E46536 /* NCAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsViewController.swift; sourceTree = "<group>"; };
 		122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -776,6 +782,9 @@
 				121D10AD1E262F8900DD671B /* NCTypePickerGroupsViewController.swift */,
 				121D10B11E263E3700DD671B /* NCTypePickerTypesViewController.swift */,
 				12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */,
+				1226D9601F223A4C0049FA0C /* NCNPCPickerViewController.swift */,
+				1226D9621F223A690049FA0C /* NCNPCPickerGroupsViewController.swift */,
+				1226D9641F223A740049FA0C /* NCNPCPickerTypesViewController.swift */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1505,6 +1514,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1220710C1EF2C6B8007D86CE /* NCDatabaseCertificateMasteryViewController.swift in Sources */,
+				1226D9611F223A4C0049FA0C /* NCNPCPickerViewController.swift in Sources */,
 				12851D7C1EFD1ADE00C8DD42 /* NCPlanetaryViewController.swift in Sources */,
 				1227B81E1E096A4F00C816A0 /* NCDamageTypeLabel.swift in Sources */,
 				1262961D1EEAE50900796B27 /* NCAssetsSearchResultViewController.swift in Sources */,
@@ -1536,6 +1546,7 @@
 				12CFDACE1F023BDD00CC0762 /* NCZKillboardViewController.swift in Sources */,
 				12D39D001EF7DB040077BD17 /* NCMarketOrderTableViewCell.swift in Sources */,
 				12DBEABD1E1D40280088A486 /* NCFittingAttribute.mm in Sources */,
+				1226D9631F223A690049FA0C /* NCNPCPickerGroupsViewController.swift in Sources */,
 				1230A32D1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift in Sources */,
 				129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */,
 				1256BE3B1DF1EFA600A2A24B /* NCSplitViewController.swift in Sources */,
@@ -1741,6 +1752,7 @@
 				12D390F51E840A2000B8A938 /* NCMiningYieldTableViewCell.swift in Sources */,
 				12AC8DE21DF0B5F200561A7A /* Dark.clr in Sources */,
 				1230A3291DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift in Sources */,
+				1226D9651F223A740049FA0C /* NCNPCPickerTypesViewController.swift in Sources */,
 				12F8FF9F1E5DBC58008F79D5 /* NCFittingShipsViewController.swift in Sources */,
 				12B1B82F1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift in Sources */,
 				12E314BC1E165D5D000A926D /* UIView+NC.swift in Sources */,

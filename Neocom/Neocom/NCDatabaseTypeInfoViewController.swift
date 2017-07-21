@@ -11,6 +11,8 @@ import CoreData
 
 class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPreviewingDelegate {
 	var type: NCDBInvType?
+	var attributeValues: [Int: Float]?
+	
 	var headerViewController: NCDatabaseTypeInfoHeaderViewController?
 	
 	override func viewDidLoad() {
@@ -39,7 +41,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 			addChildViewController(headerViewController)
 			self.headerViewController = headerViewController
 			
-			NCDatabaseTypeInfo.typeInfo(type: type) { result in
+			NCDatabaseTypeInfo.typeInfo(type: type, attributeValues: attributeValues) { result in
 				let node = TreeNode()
 				node.children = result
 				self.treeController?.content = node
@@ -173,7 +175,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 	
 	@objc private func didChangeMarketRegion(_ note: Notification) {
 		if let type = type {
-			NCDatabaseTypeInfo.typeInfo(type: type) { result in
+			NCDatabaseTypeInfo.typeInfo(type: type, attributeValues: attributeValues) { result in
 				self.treeController?.content?.children = result
 			}
 		}

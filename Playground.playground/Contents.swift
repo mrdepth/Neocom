@@ -2,19 +2,45 @@
 
 import UIKit
 
-struct S: OptionSet, Hashable {
-	var rawValue: Int
+class InvType<T> {
 	
-	static let attr1 = S(rawValue: 1 << 0)
-	static let attr2 = S(rawValue: 1 << 0)
+	let object: T
 	
-	var hashValue: Int {
-		return rawValue
+	required init(_ object: T) {
+		self.object = object
+	}
+	
+	func prototype() -> String? {
+		return nil
 	}
 }
 
-var m: [S: Int] = [:]
+extension InvType where T == NSDictionary {
+	
+	func prototype() -> String? {
+		return "NSDictionary"
+	}
+}
 
-m[[.attr1, .attr2]] = 3
+class A<T> {
+	typealias TT = T
+	let v: InvType<T>
+	required init(obj: T) {
+		let v = InvType<TT>(obj)
+		print("\(v.prototype())")
+		print("\(v)")
+		self.v = v
+	}
+}
 
-m[[.attr2, .attr1]]
+let t = A<NSDictionary>.self
+
+let a = t.init(obj: NSDictionary())
+
+let v = InvType<NSDictionary>(NSDictionary())
+print("\(v.prototype())")
+
+print("\(a.v)")
+print("\(v)")
+a.v.prototype() ?? ""
+v.prototype() ?? ""

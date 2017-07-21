@@ -9,6 +9,43 @@
 import UIKit
 import CoreData
 
+fileprivate class InvType<T> {
+	
+	let object: T
+	
+	init(_ object: T) {
+		self.object = object
+	}
+	
+	func requirements() -> NCDBDgmppItemRequirements? {
+		return nil
+	}
+	
+	func shipResources() -> NCDBDgmppItemShipResources? {
+		return nil
+	}
+	
+	func damage() -> NCDBDgmppItemDamage? {
+		return nil
+	}
+	
+	func icon() -> NCDBEveIcon? {
+		return nil
+	}
+	
+	func typeName() -> String? {
+		return nil
+	}
+	
+	func typeID() -> Int? {
+		return nil
+	}
+	
+	func prototype() -> Prototype? {
+		return nil
+	}
+}
+
 class NCDatabaseTypesSection: FetchedResultsNode<NSDictionary> {
 	init(managedObjectContext: NSManagedObjectContext, predicate: NSPredicate?, sectionNode: FetchedResultsSectionNode<NSDictionary>.Type? = nil, objectNode: FetchedResultsObjectNode<NSDictionary>.Type) {
 		let request = NSFetchRequest<NSDictionary>(entityName: "InvType")
@@ -42,58 +79,101 @@ class NCDatabaseTypesSection: FetchedResultsNode<NSDictionary> {
 
 }
 
-class NCDatabaseTypeRow: FetchedResultsObjectNode<NSDictionary>, TreeNodeRoutable {
+class NCDatabaseTypeRow<ResultType: NSFetchRequestResult>: FetchedResultsObjectNode<ResultType>, TreeNodeRoutable {
 	
 	var route: Route?
 	var accessoryButtonRoute: Route?
 	
 	lazy var requirements: NCDBDgmppItemRequirements? = {
-		guard let context = NCDatabase.sharedDatabase?.viewContext else {return nil}
-		guard let objectID = self.object["requirements"] as? NSManagedObjectID else {return nil}
-		return (try? context.existingObject(with: objectID)) as? NCDBDgmppItemRequirements
+		if let object = self.object as? NSDictionary {
+			guard let context = NCDatabase.sharedDatabase?.viewContext else {return nil}
+			guard let objectID = object["requirements"] as? NSManagedObjectID else {return nil}
+			return (try? context.existingObject(with: objectID)) as? NCDBDgmppItemRequirements
+		}
+		else if let object = self.object as? NCDBInvType {
+			return object.dgmppItem?.requirements
+		}
+		else {
+			return nil
+		}
 	}()
 
 	lazy var shipResources: NCDBDgmppItemShipResources? = {
-		guard let context = NCDatabase.sharedDatabase?.viewContext else {return nil}
-		guard let objectID = self.object["shipResources"] as? NSManagedObjectID else {return nil}
-		return (try? context.existingObject(with: objectID)) as? NCDBDgmppItemShipResources
+		if let object = self.object as? NSDictionary {
+			guard let context = NCDatabase.sharedDatabase?.viewContext else {return nil}
+			guard let objectID = object["shipResources"] as? NSManagedObjectID else {return nil}
+			return (try? context.existingObject(with: objectID)) as? NCDBDgmppItemShipResources
+		}
+		else if let object = self.object as? NCDBInvType {
+			return object.dgmppItem?.shipResources
+		}
+		else {
+			return nil
+		}
 	}()
 
 	lazy var damage: NCDBDgmppItemDamage? = {
-		guard let context = NCDatabase.sharedDatabase?.viewContext else {return nil}
-		guard let objectID = self.object["damage"] as? NSManagedObjectID else {return nil}
-		return (try? context.existingObject(with: objectID)) as? NCDBDgmppItemDamage
-	}()
-
-	required init(object: NSDictionary) {
-		super.init(object: object)
-		if object["requirements"] != nil {
-			cellIdentifier = Prototype.NCModuleTableViewCell.default.reuseIdentifier
+		if let object = self.object as? NSDictionary {
+			guard let context = NCDatabase.sharedDatabase?.viewContext else {return nil}
+			guard let objectID = object["damage"] as? NSManagedObjectID else {return nil}
+			return (try? context.existingObject(with: objectID)) as? NCDBDgmppItemDamage
 		}
-		else if object["shipResources"] != nil {
-			cellIdentifier = Prototype.NCShipTableViewCell.default.reuseIdentifier
-		}
-		else if object["damage"] != nil {
-			cellIdentifier = Prototype.NCChargeTableViewCell.default.reuseIdentifier
+		else if let object = self.object as? NCDBInvType {
+			return object.dgmppItem?.damage
 		}
 		else {
-			cellIdentifier = Prototype.NCDefaultTableViewCell.compact.reuseIdentifier
+			return nil
+		}
+	}()
+	
+	lazy var icon: NCDBEveIcon? = {
+		if let object = self.object as? NSDictionary {
+			guard let context = NCDatabase.sharedDatabase?.viewContext else {return nil}
+			guard let objectID = object["icon"] as? NSManagedObjectID else {return nil}
+			return (try? context.existingObject(with: objectID)) as? NCDBEveIcon
+		}
+		else if let object = self.object as? NCDBInvType {
+			return object.icon
+		}
+		else {
+			return nil
+		}
+	}()
+
+	required init(object: ResultType) {
+		super.init(object: object)
+		cellIdentifier = Prototype.NCDefaultTableViewCell.compact.reuseIdentifier
+		
+		if let object = self.object as? NSDictionary {
+			if object["requirements"] != nil {
+				cellIdentifier = Prototype.NCModuleTableViewCell.default.reuseIdentifier
+			}
+			else if object["shipResources"] != nil {
+				cellIdentifier = Prototype.NCShipTableViewCell.default.reuseIdentifier
+			}
+			else if object["damage"] != nil {
+				cellIdentifier = Prototype.NCChargeTableViewCell.default.reuseIdentifier
+			}
+		}
+		else if let object = self.object as? NCDBInvType {
+			if object.dgmppItem?.requirements != nil {
+				cellIdentifier = Prototype.NCModuleTableViewCell.default.reuseIdentifier
+			}
+			else if object.dgmppItem?.shipResources != nil {
+				cellIdentifier = Prototype.NCShipTableViewCell.default.reuseIdentifier
+			}
+			else if object.dgmppItem?.damage != nil {
+				cellIdentifier = Prototype.NCChargeTableViewCell.default.reuseIdentifier
+			}
 		}
 	}
 	
 	override func configure(cell: UITableViewCell) {
-		let icon: NCDBEveIcon?
-		
-		if let objectID = object["icon"] as? NSManagedObjectID, let img = try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: objectID) as? NCDBEveIcon {
-			icon = img
-		}
-		else {
-			icon = nil
-		}
+		let typeName = (object as? NSDictionary)?["typeName"] as? String ?? (object as? NCDBInvType)?.typeName
 
 		if let requirements = requirements {
 			guard let cell = cell as? NCModuleTableViewCell else {return}
-			cell.titleLabel?.text = object["typeName"] as? String
+			cell.titleLabel?.text = typeName
 			cell.iconView?.image = icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 			cell.accessoryType = .disclosureIndicator
 			cell.cpuLabel.text = NCUnitFormatter.localizedString(from: requirements.cpu, unit: .teraflops, style: .full)
@@ -101,7 +181,7 @@ class NCDatabaseTypeRow: FetchedResultsObjectNode<NSDictionary>, TreeNodeRoutabl
 		}
 		else if let shipResources = shipResources {
 			guard let cell = cell as? NCShipTableViewCell else {return}
-			cell.titleLabel?.text = object["typeName"] as? String
+			cell.titleLabel?.text = typeName
 			cell.iconView?.image = icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 			cell.accessoryType = .disclosureIndicator
 			cell.hiSlotsLabel.text = "\(shipResources.hiSlots)"
@@ -113,7 +193,7 @@ class NCDatabaseTypeRow: FetchedResultsObjectNode<NSDictionary>, TreeNodeRoutabl
 		}
 		else if let damage = damage {
 			guard let cell = cell as? NCChargeTableViewCell else {return}
-			cell.titleLabel?.text = object["typeName"] as? String
+			cell.titleLabel?.text = typeName
 			cell.iconView?.image = icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 			cell.accessoryType = .disclosureIndicator
 			
@@ -136,14 +216,14 @@ class NCDatabaseTypeRow: FetchedResultsObjectNode<NSDictionary>, TreeNodeRoutabl
 		}
 		else {
 			guard let cell = cell as? NCDefaultTableViewCell else {return}
-			cell.titleLabel?.text = object["typeName"] as? String
+			cell.titleLabel?.text = typeName
 			cell.iconView?.image = icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 			cell.accessoryType = .disclosureIndicator
 		}
 	}
 	
 	override var hashValue: Int {
-		return object["typeID"] as? Int ?? 0
+		return (object as? NSDictionary)?["typeID"] as? Int ?? Int((object as? NCDBInvType)?.typeID ?? 0)
 	}
 }
 
@@ -178,7 +258,7 @@ class NCDatabaseTypesViewController: NCTreeViewController, NCSearchableViewContr
 	func reloadData() {
 		gate.perform {
 			NCDatabase.sharedDatabase?.performTaskAndWait({ (managedObjectContext) in
-				let section = NCDatabaseTypesSection(managedObjectContext: managedObjectContext, predicate: self.predicate, sectionNode: NCDefaultFetchedResultsSectionNode<NSDictionary>.self, objectNode: NCDatabaseTypeRow.self)
+				let section = NCDatabaseTypesSection(managedObjectContext: managedObjectContext, predicate: self.predicate, sectionNode: NCDefaultFetchedResultsSectionNode<NSDictionary>.self, objectNode: NCDatabaseTypeRow<NSDictionary>.self)
 				try? section.resultsController.performFetch()
 				
 				DispatchQueue.main.async {
@@ -199,7 +279,7 @@ class NCDatabaseTypesViewController: NCTreeViewController, NCSearchableViewContr
 	
 	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		super.treeController(treeController, didSelectCellWithNode: node)
-		guard let row = node as? NCDatabaseTypeRow else {return}
+		guard let row = node as? NCDatabaseTypeRow<NSDictionary> else {return}
 		guard let typeID = row.object["typeID"] as? Int else {return}
 		Router.Database.TypeInfo(typeID).perform(source: self, view: treeController.cell(for: node))
 	}

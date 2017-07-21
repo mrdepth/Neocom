@@ -17,6 +17,13 @@ class NCTypePickerRecentViewController: UITableViewController, NSFetchedResultsC
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		tableView.register([Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCModuleTableViewCell.default,
+		                    Prototype.NCShipTableViewCell.default,
+		                    Prototype.NCChargeTableViewCell.default,
+		                    ])
+
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 	}
@@ -68,11 +75,12 @@ class NCTypePickerRecentViewController: UITableViewController, NSFetchedResultsC
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! NCDefaultTableViewCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: Prototype.NCDefaultTableViewCell.compact.reuseIdentifier, for: indexPath) as! NCDefaultTableViewCell
 		
 		cell.object = nil
 		cell.titleLabel?.text = NSLocalizedString("Unknown", comment: "")
 		cell.iconView?.image = nil
+		cell.accessoryType = .detailButton
 		if let recent = results?.object(at: indexPath) {
 			if let type = invTypes?[Int(recent.typeID)] {
 				cell.object = type
@@ -94,18 +102,10 @@ class NCTypePickerRecentViewController: UITableViewController, NSFetchedResultsC
 		return cell
 	}
 	
-	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		if let name = self.results?.sections?[section].name, name == "0" {
-			return NSLocalizedString("Unpublished", comment: "")
-		}
-		else {
-			return nil
-		}
-	}
-	
 	//MARK: UITableViewDelegate
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
 		guard let typePickerController = navigationController as? NCTypePickerViewController else {return}
 		guard let recent = results?.object(at: indexPath) else {return}
 		guard let type = invTypes?[Int(recent.typeID)] else {return}
@@ -116,6 +116,12 @@ class NCTypePickerRecentViewController: UITableViewController, NSFetchedResultsC
 			try? context.save()
 		}
 		typePickerController.completionHandler(typePickerController, type)
+	}
+	
+	override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+		guard let recent = results?.object(at: indexPath) else {return}
+		guard let type = invTypes?[Int(recent.typeID)] else {return}
+		Router.Database.TypeInfo(type).perform(source: self, view: tableView.cellForRow(at: indexPath))
 	}
 	
 	// MARK: - NSFetchedResultsControllerDelegate

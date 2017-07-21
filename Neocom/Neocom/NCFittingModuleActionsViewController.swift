@@ -89,10 +89,10 @@ class NCFittingModuleInfoRow: TreeRow {
 		self.type = type
 		
 		if cpu != 0 || powerGrid != 0 || capacitor != 0 {
-			super.init(prototype: Prototype.NCFittingModuleInfoTableViewCell.default, route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
+			super.init(prototype: Prototype.NCFittingModuleInfoTableViewCell.default, route: route, accessoryButtonRoute: Router.Database.TypeInfo(module))
 		}
 		else {
-			super.init(prototype: Prototype.NCDefaultTableViewCell.compact, route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
+			super.init(prototype: Prototype.NCDefaultTableViewCell.compact, route: route, accessoryButtonRoute: Router.Database.TypeInfo(module))
 		}
 	}
 	
@@ -332,7 +332,7 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 				}
 			}
 			else {
-				route = Router.Database.TypeInfo(type)
+				route = Router.Database.TypeInfo(module)
 			}
 			
 			sections.append(DefaultTreeSection(nodeIdentifier: "Variations",

@@ -113,7 +113,7 @@ class NCZKillboardKillmailsViewController: UITableViewController, TreeController
 						let calendar = Calendar(identifier: .gregorian)
 						
 						for killmail in killmails {
-							let row = NCKillmailRow(killmail: killmail, dataManager: dataManager)
+							let row = NCKillmailRow(killmail: killmail, characterID: nil, dataManager: dataManager)
 							
 							if let section = kills.last, section.date < killmail.killmailTime {
 								section.children.append(row)

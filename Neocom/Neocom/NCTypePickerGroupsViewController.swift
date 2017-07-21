@@ -73,17 +73,9 @@ class NCTypePickerGroupsViewController: NCTreeViewController, NCSearchableViewCo
 		guard let row = node as? NCDgmppItemGroupRow else {return}
 		if row.object.subGroups?.count ?? 0 > 0 {
 			Router.Database.TypePickerGroups(parentGroup: row.object).perform(source: self, view: treeController.cell(for: node))
-			
-//			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerContainerViewContrller") as? NCTypePickerContainerViewContrller else {return}
-//			controller.group = row.object
-//			show(controller, sender: tableView.cellForRow(at: indexPath))
 		}
 		else {
 			Router.Database.TypePickerTypes(group: row.object).perform(source: self, view: treeController.cell(for: node))
-//			guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerContainerViewContrller") as? NCTypePickerContainerViewContrller else {return}
-//			controller.predicate = NSPredicate(format: "dgmppItem.groups CONTAINS %@", row.object)
-//			controller.title = row.object.groupName
-//			show(controller, sender: tableView.cellForRow(at: indexPath))
 		}
 	}
 

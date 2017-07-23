@@ -92,7 +92,7 @@
 						auto character = controller.controller.fit.pilot;
 						if (character) {
 							[controller.controller.engine performBlock:^{
-								auto spaceStructure = character->getSpaceStructure();
+								auto spaceStructure = character->getStructure();
 								int usedTurretHardpoints = spaceStructure->getUsedHardpoints(dgmpp::Module::HARDPOINT_TURRET);
 								int totalTurretHardpoints = spaceStructure->getNumberOfHardpoints(dgmpp::Module::HARDPOINT_TURRET);
 								int usedMissileHardpoints = spaceStructure->getUsedHardpoints(dgmpp::Module::HARDPOINT_LAUNCHER);
@@ -149,7 +149,7 @@
 						auto character = controller.controller.fit.pilot;
 						if (character) {
 							[controller.controller.engine performBlock:^{
-								auto spaceStructure = character->getSpaceStructure();
+								auto spaceStructure = character->getStructure();
 								float totalPG = spaceStructure->getTotalPowerGrid();
 								float usedPG = spaceStructure->getPowerGridUsed();
 								float totalCPU = spaceStructure->getTotalCpu();
@@ -223,7 +223,7 @@
 							auto character = controller.controller.fit.pilot;
 							if (character) {
 								[controller.controller.engine performBlock:^{
-									auto spaceStructure = character->getSpaceStructure();
+									auto spaceStructure = character->getStructure();
 									NSMutableArray* values = [NSMutableArray new];
 									NSMutableArray* texts = [NSMutableArray new];
 									
@@ -273,7 +273,7 @@
 						auto character = controller.controller.fit.pilot;
 						if (character) {
 							[controller.controller.engine performBlock:^{
-								auto spaceStructure = character->getSpaceStructure();
+								auto spaceStructure = character->getStructure();
 								auto effectiveHitPoints = spaceStructure->getEffectiveHitPoints();
 								float ehp = effectiveHitPoints.shield + effectiveHitPoints.armor + effectiveHitPoints.hull;
 								
@@ -309,7 +309,7 @@
 						auto character = controller.controller.fit.pilot;
 						if (character) {
 							[controller.controller.engine performBlock:^{
-								auto spaceStructure = character->getSpaceStructure();
+								auto spaceStructure = character->getStructure();
 								float capCapacity = spaceStructure->getCapCapacity();
 								bool capStable = spaceStructure->isCapStable();
 								float capState = capStable ? spaceStructure->getCapStableLevel() * 100.0 : spaceStructure->getCapLastsTime();
@@ -361,7 +361,7 @@
 						auto character = controller.controller.fit.pilot;
 						if (character) {
 							[controller.controller.engine performBlock:^{
-								auto spaceStructure = character->getSpaceStructure();
+								auto spaceStructure = character->getStructure();
 								auto rtank = spaceStructure->getTank();
 								auto ertank = spaceStructure->getEffectiveTank();
 								
@@ -394,7 +394,7 @@
 						auto character = controller.controller.fit.pilot;
 						if (character) {
 							[controller.controller.engine performBlock:^{
-								auto spaceStructure = character->getSpaceStructure();
+								auto spaceStructure = character->getStructure();
 								auto stank = spaceStructure->getSustainableTank();
 								auto estank = spaceStructure->getEffectiveSustainableTank();
 								
@@ -433,7 +433,7 @@
 						auto character = controller.controller.fit.pilot;
 						if (character) {
 							[controller.controller.engine performBlock:^{
-								auto spaceStructure = character->getSpaceStructure();
+								auto spaceStructure = character->getStructure();
 								float weaponDPS = spaceStructure->getWeaponDps();
 								float droneDPS = spaceStructure->getDroneDps();
 								float volleyDamage = spaceStructure->getWeaponVolley() + spaceStructure->getDroneVolley();
@@ -471,7 +471,7 @@
 						auto character = controller.controller.fit.pilot;
 						if (character) {
 							[controller.controller.engine performBlock:^{
-								auto spaceStructure = character->getSpaceStructure();
+								auto spaceStructure = character->getStructure();
 								NSMutableArray* values = [NSMutableArray new];
 								NSMutableArray* texts = [NSMutableArray new];
 								
@@ -527,7 +527,7 @@
 						auto character = controller.controller.fit.pilot;
 						if (character) {
 							[controller.controller.engine performBlock:^{
-								auto spaceStructure = character->getSpaceStructure();
+								auto spaceStructure = character->getStructure();
 								int targets = spaceStructure->getMaxTargets();
 								float targetRange = spaceStructure->getMaxTargetRange() / 1000.0;
 								float scanRes = spaceStructure->getScanResolution();
@@ -605,7 +605,7 @@
 						auto character = controller.controller.fit.pilot;
 						if (character) {
 							[controller.controller.engine performBlock:^{
-								auto structure = character->getSpaceStructure();
+								auto structure = character->getStructure();
 								dgmpp::TypeID fuelBlockTyppeID = structure->getFuelBlockTypeID();
 								float cycleFuelNeed = structure->getCycleFuelNeed();
 								float cycleTime = structure->getCycleTime();
@@ -651,7 +651,7 @@
 						auto character = controller.controller.fit.pilot;
 						if (character) {
 							[controller.controller.engine performBlock:^{
-								auto structure = character->getSpaceStructure();
+								auto structure = character->getStructure();
 								NSMutableDictionary* types = [NSMutableDictionary new];
 								NSMutableSet* drones = [NSMutableSet set];
 								__block int32_t structureTypeID;

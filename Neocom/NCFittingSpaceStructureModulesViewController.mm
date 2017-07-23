@@ -123,15 +123,14 @@
 					oldRows[@((uintptr_t) row.module.get())] = row;
 			
 			
-			auto spaceStructure = pilot->getSpaceStructure();
+			auto spaceStructure = pilot->getStructure();
 			
 			dgmpp::Module::Slot slots[] = {dgmpp::Module::SLOT_MODE, dgmpp::Module::SLOT_HI, dgmpp::Module::SLOT_MED, dgmpp::Module::SLOT_LOW, dgmpp::Module::SLOT_RIG, dgmpp::Module::SLOT_SERVICE};
 			int n = sizeof(slots) / sizeof(dgmpp::Module::Slot);
 			
 			for (int i = 0; i < n; i++) {
 				int numberOfSlots = spaceStructure->getNumberOfSlots(slots[i]);
-				dgmpp::ModulesList modules;
-				spaceStructure->getModules(slots[i], std::inserter(modules, modules.end()));
+				dgmpp::ModulesList modules = spaceStructure->getModules(slots[i]);
 				if (numberOfSlots > 0 || modules.size() > 0) {
 					NCFittingSpaceStructureModulesViewControllerSection* section = [NCFittingSpaceStructureModulesViewControllerSection new];
 					section.slot = slots[i];
@@ -180,7 +179,7 @@
 			NCFittingSpaceStructureModulesViewControllerSection* section = self.sections[indexPath.section];
 			NCFittingSpaceStructureModulesViewControllerRow* row = section.rows[indexPath.row];
 			[self.controller.engine performBlockAndWait:^{
-				auto spaceStructure = self.controller.fit.pilot->getSpaceStructure();
+				auto spaceStructure = self.controller.fit.pilot->getStructure();
 				auto module = row.module;
 				
 				dgmpp::Module::State state = module->getState();
@@ -188,28 +187,28 @@
 				if (state != dgmpp::Module::STATE_OFFLINE && module->canHaveState(dgmpp::Module::STATE_OFFLINE))
 					[controller addAction:[UIAlertAction actionWithTitle:ActionButtonOffline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 						[self.controller.engine performBlockAndWait:^{
-							module->setPreferredState(dgmpp::Module::STATE_OFFLINE);
+							module->setState(dgmpp::Module::STATE_OFFLINE);
 						}];
 						[self.controller reload];
 					}]];
 				if (state != dgmpp::Module::STATE_ONLINE && module->canHaveState(dgmpp::Module::STATE_ONLINE))
 					[controller addAction:[UIAlertAction actionWithTitle:state > dgmpp::Module::STATE_ONLINE ? ActionButtonDeactivate : ActionButtonOnline style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 						[self.controller.engine performBlockAndWait:^{
-							module->setPreferredState(dgmpp::Module::STATE_ONLINE);
+							module->setState(dgmpp::Module::STATE_ONLINE);
 						}];
 						[self.controller reload];
 					}]];
 				if (state != dgmpp::Module::STATE_ACTIVE && module->canHaveState(dgmpp::Module::STATE_ACTIVE))
 					[controller addAction:[UIAlertAction actionWithTitle:state < dgmpp::Module::STATE_ACTIVE ? ActionButtonActivate : ActionButtonOverheatOff style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 						[self.controller.engine performBlockAndWait:^{
-							module->setPreferredState(dgmpp::Module::STATE_ACTIVE);
+							module->setState(dgmpp::Module::STATE_ACTIVE);
 						}];
 						[self.controller reload];
 					}]];
 				if (state != dgmpp::Module::STATE_OVERLOADED && module->canHaveState(dgmpp::Module::STATE_OVERLOADED))
 					[controller addAction:[UIAlertAction actionWithTitle:ActionButtonOverheatOn style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 						[self.controller.engine performBlockAndWait:^{
-							module->setPreferredState(dgmpp::Module::STATE_OVERLOADED);
+							module->setState(dgmpp::Module::STATE_OVERLOADED);
 						}];
 						[self.controller reload];
 					}]];
@@ -315,7 +314,7 @@
 				title = NSLocalizedString(@"Rigs", nil);
 				__block int32_t size = 0;
 				[self.controller.engine performBlockAndWait:^{
-					auto spaceStructure = self.controller.fit.pilot->getSpaceStructure();
+					auto spaceStructure = self.controller.fit.pilot->getStructure();
 					size = spaceStructure->getAttribute(1547)->getValue();
 				}];
 				
@@ -338,7 +337,7 @@
 													completionHandler:^(NCDBInvType *type) {
 														int32_t typeID = type.typeID;
 														[self.controller.engine performBlockAndWait:^{
-															auto spaceStructure = self.controller.fit.pilot->getSpaceStructure();
+															auto spaceStructure = self.controller.fit.pilot->getStructure();
 															spaceStructure->addModule(typeID);
 														}];
 														[self.controller reload];
@@ -427,7 +426,7 @@
 		row.isUpToDate = YES;
 		[self.controller.engine performBlock:^{
 			NCFittingSpaceStructureModulesViewControllerRow* newRow = [NCFittingSpaceStructureModulesViewControllerRow new];
-			auto spaceStructure = self.controller.fit.pilot->getSpaceStructure();
+			auto spaceStructure = self.controller.fit.pilot->getStructure();
 			auto module = row.module;
 			NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:module->getTypeID()];
 			newRow.typeName = type.typeName;
@@ -522,7 +521,7 @@
 	NSMutableArray* actions = [NSMutableArray new];
 	
 	[self.controller.engine performBlockAndWait:^{
-		auto spaceStructure = self.controller.fit.pilot->getSpaceStructure();
+		auto spaceStructure = self.controller.fit.pilot->getStructure();
 		auto module = row.module;
 		NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:row.module->getTypeID()];
 		
@@ -542,7 +541,7 @@
 		void (^setState)(dgmpp::ModulesList, dgmpp::Module::State) = ^(dgmpp::ModulesList modules, dgmpp::Module::State state) {
 			[self.controller.engine performBlockAndWait:^{
 				for (const auto& module: modules)
-					module->setPreferredState(state);
+					module->setState(state);
 			}];
 			[self.controller reload];
 		};

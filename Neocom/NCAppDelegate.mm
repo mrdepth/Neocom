@@ -187,7 +187,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 		};
 		
 		if (cloudToken) {
-			if (![[NSUserDefaults standardUserDefaults] valueForKeyPath:NCSettingsUseCloudKey]) {
+			if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUseCloudKey]) {
 				[self askToUseCloudWithCompletionHandler:initStorage];
 			}
 			else
@@ -325,7 +325,7 @@ void uncaughtExceptionHandler(NSException* exception) {
 		
 		BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey];
 		
-		BOOL needsAsk = ![[NSUserDefaults standardUserDefaults] valueForKeyPath:NCSettingsUseCloudKey];
+		BOOL needsAsk = ![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUseCloudKey];
 		BOOL tokenChanged = currentCloudToken != lastCloudToken && ![currentCloudToken isEqual:lastCloudToken];
 		BOOL settingsChanged = (storage.storageType == NCStorageTypeCloud && !useCloud)  || (storage.storageType == NCStorageTypeLocal && (useCloud && currentCloudToken));
 		
@@ -812,9 +812,9 @@ void uncaughtExceptionHandler(NSException* exception) {
 
 - (void) setupDefaultSettings {
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-	if (![defaults valueForKeyPath:NCSettingsSkillQueueNotificationTimeKey])
+	if (![defaults valueForKey:NCSettingsSkillQueueNotificationTimeKey])
 		[defaults setInteger:NCNotificationsManagerSkillQueueNotificationTimeAll forKey:NCSettingsSkillQueueNotificationTimeKey];
-	if (![defaults valueForKeyPath:NCSettingsMarketPricesMonitorKey])
+	if (![defaults valueForKey:NCSettingsMarketPricesMonitorKey])
 		[defaults setInteger:NCMarketPricesMonitorNone forKey:NCSettingsMarketPricesMonitorKey];
 }
 

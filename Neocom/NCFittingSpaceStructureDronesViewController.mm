@@ -99,7 +99,7 @@
 					[oldDrones addObject:row];
 			
 			
-			auto structure = self.controller.fit.pilot->getSpaceStructure();
+			auto structure = self.controller.fit.pilot->getStructure();
 			
 			NCFittingSpaceStructureDronesViewControllerRow* (^findRow)(std::shared_ptr<dgmpp::Drone>&, NSArray*, BOOL) = ^(std::shared_ptr<dgmpp::Drone>& drone, NSArray* rows, BOOL requireFreeSpace) {
 				BOOL active = drone->isActive();
@@ -254,7 +254,7 @@
 		
 		__block dgmpp::TypeID categoryID = 0;
 		[self.controller.engine performBlockAndWait:^{
-			auto structure = self.controller.fit.pilot->getSpaceStructure();
+			auto structure = self.controller.fit.pilot->getStructure();
 			if (structure->getTotalFighterHangar() > 0)
 				categoryID = dgmpp::FIGHTER_CATEGORY_ID;
 			else
@@ -269,7 +269,7 @@
 													completionHandler:^(NCDBInvType *type) {
 														dgmpp::TypeID typeID = type.typeID;
 														[self.controller.engine performBlockAndWait:^{
-															auto structure = self.controller.fit.pilot->getSpaceStructure();
+															auto structure = self.controller.fit.pilot->getStructure();
 															
 															self.controller.engine.engine->beginUpdates();
 															auto drone = structure->addDrone(typeID);
@@ -328,7 +328,7 @@
 				auto drone = row.drones.front();
 				int optimal = (int) drone->getMaxRange();
 				int falloff = (int) drone->getFalloff();
-				float trackingSpeed = drone->getTrackingSpeed();
+//				float trackingSpeed = drone->getTrackingSpeed();
 				
 				NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];
 				if (section.squadron == dgmpp::Drone::FIGHTER_SQUADRON_NONE)
@@ -341,8 +341,8 @@
 					NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
 					if (falloff > 0)
 						s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-					if (trackingSpeed > 0)
-						s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+//					if (trackingSpeed > 0)
+//						s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
 					newRow.optimalText = s;
 				}
 				else
@@ -374,7 +374,7 @@
 	NSMutableArray* actions = [NSMutableArray new];
 	
 	[self.controller.engine performBlockAndWait:^{
-		auto structure = self.controller.fit.pilot->getSpaceStructure();
+		auto structure = self.controller.fit.pilot->getStructure();
 		auto drone = row.drones.front();
 		auto drones = row.drones;
 		NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];

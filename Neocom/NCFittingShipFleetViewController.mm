@@ -74,14 +74,14 @@
 	}
 	else {
 		NCShipFit* fit = self.controller.fits[indexPath.row];
-		__block NSString *booster = nil;
+//		__block NSString *booster = nil;
 		__block NSString* characterName = nil;
 		[self.controller.engine performBlockAndWait:^{
 			auto gang = self.controller.engine.engine->getGang();
 			if (!fit || !fit.pilot || !gang)
 				return;
 			
-			auto fleetBooster = gang->getFleetBooster();
+		/*	auto fleetBooster = gang->getFleetBooster();
 			auto wingBooster = gang->getWingBooster();
 			auto squadBooster = gang->getSquadBooster();
 			
@@ -92,12 +92,12 @@
 			else if (fit.pilot == squadBooster)
 				booster = NSLocalizedString(@" (Squad Booster)", nil);
 			else
-				booster = @"";
+				booster = @"";*/
 			characterName = [NSString stringWithCString:fit.pilot->getCharacterName() encoding:NSUTF8StringEncoding];
 		}];
 		
 		NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:fit.typeID];
-		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %@%@", type.typeName, characterName, booster];
+		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %@", type.typeName, characterName];
 		cell.subtitleLabel.text = fit.loadoutName;
 		cell.iconView.image = type.icon ? type.icon.image.image : self.defaultTypeImage;
 		if (self.controller.fit == fit)
@@ -154,7 +154,7 @@
 			}]];
 		}
 		
-		NSMutableArray* boosterActions = [NSMutableArray new];
+		/*NSMutableArray* boosterActions = [NSMutableArray new];
 		bool isBooster = false;
 		
 		if (gang->getFleetBooster() != character)
@@ -215,7 +215,7 @@
 				[controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
 				[self.controller presentViewController:controller animated:YES completion:nil];
 			}]];
-		}
+		}*/
 	}];
 	
 	UIAlertController* controller = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];

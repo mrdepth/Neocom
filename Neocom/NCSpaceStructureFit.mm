@@ -143,7 +143,7 @@
 		[self.engine performBlockAndWait:^{
 			if (!self.pilot)
 				return;
-			auto spaceStructure = self.pilot->getSpaceStructure();
+			auto spaceStructure = self.pilot->getStructure();
 			if (!spaceStructure)
 				return;
 

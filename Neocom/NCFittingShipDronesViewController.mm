@@ -328,7 +328,7 @@
 				auto drone = row.drones.front();
 				int optimal = (int) drone->getMaxRange();
 				int falloff = (int) drone->getFalloff();
-				float trackingSpeed = drone->getTrackingSpeed();
+//				float trackingSpeed = drone->getTrackingSpeed();
 				
 				NCDBInvType* type = [self.controller.engine.databaseManagedObjectContext invTypeWithTypeID:drone->getTypeID()];
 				if (section.squadron == dgmpp::Drone::FIGHTER_SQUADRON_NONE)
@@ -341,8 +341,8 @@
 					NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
 					if (falloff > 0)
 						s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-					if (trackingSpeed > 0)
-						s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+//					if (trackingSpeed > 0)
+//						s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
 					newRow.optimalText = s;
 				}
 				else

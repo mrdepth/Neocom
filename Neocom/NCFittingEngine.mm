@@ -131,7 +131,7 @@
 				for (NCLoadoutDataShipModule* item in [loadoutData valueForKey:key]) {
 					auto module = ship->addModule(item.typeID, true);
 					if (module) {
-						module->setPreferredState(item.state);
+						module->setState(item.state);
 						if (item.chargeID)
 							module->setCharge(item.chargeID);
 					}
@@ -210,7 +210,7 @@
 		NSAssert(fit.pilot == nullptr, @"NCSpaceStructureFit already loaded");
 		auto pilot = self.engine->getGang()->addPilot();
 		fit.pilot = pilot;
-		auto spaceStructure = pilot->setSpaceStructure(static_cast<dgmpp::TypeID>(fit.typeID));
+		auto spaceStructure = pilot->setStructure(static_cast<dgmpp::TypeID>(fit.typeID));
 		
 		if (spaceStructure) {
 			self.engine->beginUpdates();
@@ -218,7 +218,7 @@
 				for (NCLoadoutDataSpaceStructureModule* item in [loadoutData valueForKey:key]) {
 					auto module = spaceStructure->addModule(item.typeID, true);
 					if (module) {
-						module->setPreferredState(item.state);
+						module->setState(item.state);
 						if (item.chargeID)
 							module->setCharge(item.chargeID);
 					}

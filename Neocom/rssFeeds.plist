@@ -75,6 +75,12 @@
 				<key>url</key>
 				<string>http://themittani.com/feeds/all/rss.xml</string>
 			</dict>
+			<dict>
+				<key>title</key>
+				<string>Eve Online Polska</string>
+				<key>url</key>
+				<string>http://www.eveonlinepolska.pl/feeds/posts/default?alt=rss</string>
+			</dict>
 		</array>
 	</dict>
 	<dict>

@@ -375,7 +375,7 @@
 		int maxActiveDrones;
 		int activeDrones;
 		
-		auto spaceStructure = self.fit.pilot->getSpaceStructure();
+		auto spaceStructure = self.fit.pilot->getStructure();
 		
 		totalPG = spaceStructure->getTotalPowerGrid();
 		usedPG = spaceStructure->getPowerGridUsed();
@@ -448,7 +448,7 @@
 		
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonShowStructureInfo style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 			[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
-									  sender:@{@"sender": sender, @"object": [NCFittingEngineItemPointer pointerWithItem:self.fit.pilot->getSpaceStructure()]}];
+									  sender:@{@"sender": sender, @"object": [NCFittingEngineItemPointer pointerWithItem:self.fit.pilot->getStructure()]}];
 		}]];
 		
 		[actions addObject:[UIAlertAction actionWithTitle:ActionButtonSetName style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -502,7 +502,7 @@
 					__block std::set<dgmpp::TypeID> typeIDs;
 					[self.engine performBlockAndWait:^{
 						auto character = self.fit.pilot;
-						auto spaceStructure = character->getSpaceStructure();
+						auto spaceStructure = character->getStructure();
 						typeIDs.insert(spaceStructure->getTypeID());
 						
 						for (const auto& module: spaceStructure->getModules()) {
@@ -567,7 +567,7 @@
 			};
 			
 			[self.engine performBlockAndWait:^{
-				auto spaceStructure = character->getSpaceStructure();
+				auto spaceStructure = character->getStructure();
 				addItem(spaceStructure, 1);
 				
 				for (const auto& module: spaceStructure->getModules()) {
@@ -707,7 +707,7 @@
 		
 		//		self.damagePattern = sourceViewController.selectedDamagePattern;
 		[self.engine performBlockAndWait:^{
-			auto spaceStructure = self.fit.pilot->getSpaceStructure();
+			auto spaceStructure = self.fit.pilot->getStructure();
 			if (spaceStructure)
 				spaceStructure->setDamagePattern(damagePattern);
 		}];
@@ -730,7 +730,7 @@
 - (IBAction) unwindFromTypeVariations:(UIStoryboardSegue*) segue {
 	NCFittingTypeVariationsViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedType) {
-		auto spaceStructure = self.fit.pilot->getSpaceStructure();
+		auto spaceStructure = self.fit.pilot->getStructure();
 		dgmpp::TypeID typeID = sourceViewController.selectedType.typeID;
 		
 		[self.engine performBlockAndWait:^{

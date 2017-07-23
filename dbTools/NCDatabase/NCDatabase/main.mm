@@ -1543,8 +1543,7 @@ void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database)
 	
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"DgmppItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_SPACE_STRUCTURE;
-	process(@[@"invTypes.marketGroupID = invMarketGroups.marketGroupID",
-			  @"invMarketGroups.parentGroupID = 2199"], category, @"Structures");
+	process(@[@"invTypes.groupID IN (1404, 1657)"], category, @"Structures");
 
 	[database execSQLRequest:@"SELECT typeID FROM dgmTypeAttributes WHERE attributeID=10000"
 				 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {

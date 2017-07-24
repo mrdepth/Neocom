@@ -327,7 +327,12 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 				controller.addAction(UIAlertAction(title: NSLocalizedString("Link", comment: ""), style: .default, handler: { _ in
 					share(representation: .httpURL([(typeID: typeID, data: loadout, name: name)]))
 				}))
-				
+
+				controller.addAction(UIAlertAction(title: NSLocalizedString("Copy", comment: ""), style: .default, handler: { _ in
+					guard let value = (NCLoadoutRepresentation.eft([(typeID: typeID, data: loadout, name: name)]).value as? [String])?.first else {return}
+					UIPasteboard.general.string = value
+				}))
+
 				controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
 				
 				strongSelf.present(controller, animated: true, completion: nil)

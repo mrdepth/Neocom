@@ -16,6 +16,7 @@ class NCSkillTableViewCell: NCTableViewCell {
 	@IBOutlet weak var trainingTimeLabel: UILabel?
 	@IBOutlet weak var progressView: UIProgressView?
 
+	@IBOutlet weak var skillLevelView: NCSkillLevelView?
 }
 
 extension Prototype {
@@ -47,11 +48,15 @@ class NCSkillRow: TreeRow {
 		cell.object = skill
         cell.titleLabel?.text = "\(skill.typeName) (x\(skill.rank))"
         if let level = skill.level {
-            cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)
-            
+//            cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)
+			cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)
+            cell.skillLevelView?.level = level
+			cell.skillLevelView?.isActive = skill.isActive
         }
         else {
             cell.levelLabel?.text = NSLocalizedString("N/A", comment: "")
+			cell.skillLevelView?.level = 0
+			cell.skillLevelView?.isActive = false
         }
 		
 		if let trainingTime = trainingTime {

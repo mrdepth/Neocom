@@ -114,6 +114,19 @@ class NCSkill: Hashable {
 	var skillPointsToLevelUp: Int {
 		return skillPoints(at: 1 + (self.level ?? 0)) - self.skillPoints
 	}
+	
+	var isActive: Bool {
+		let date = Date()
+		if let trainingStartDate = trainingStartDate,
+			let trainingEndDate = trainingEndDate,
+			let level = level,
+			trainingEndDate > date && trainingStartDate < date {
+			return true
+		}
+		else {
+			return false
+		}
+	}
 
 	//MARK: Hashable
 	

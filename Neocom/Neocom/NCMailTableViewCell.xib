@@ -28,37 +28,27 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="87r-7Z-lgC">
-                                <rect key="frame" x="40" y="0.0" width="232" height="35.5"/>
+                                <rect key="frame" x="40" y="1" width="232" height="34"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j7o-WI-nBh">
-                                        <rect key="frame" x="0.0" y="0.0" width="232" height="35.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="wYq-kQ-AX0">
+                                        <rect key="frame" x="0.0" y="0.0" width="232" height="18"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dmi-CI-Bve">
-                                                <rect key="frame" x="0.0" y="0.0" width="37.5" height="35.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="37.5" height="18"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OOA-Ed-0d4">
-                                                <rect key="frame" x="199" y="0.0" width="33" height="35.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OOA-Ed-0d4">
+                                                <rect key="frame" x="41.5" y="0.0" width="190.5" height="18"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="Dmi-CI-Bve" firstAttribute="leading" secondItem="j7o-WI-nBh" secondAttribute="leading" id="9mf-vp-5HE"/>
-                                            <constraint firstAttribute="bottom" secondItem="OOA-Ed-0d4" secondAttribute="bottom" id="bcm-st-Bsb"/>
-                                            <constraint firstAttribute="bottom" secondItem="Dmi-CI-Bve" secondAttribute="bottom" id="dN5-3X-601"/>
-                                            <constraint firstItem="OOA-Ed-0d4" firstAttribute="top" secondItem="j7o-WI-nBh" secondAttribute="top" id="dQV-P5-fmh"/>
-                                            <constraint firstAttribute="trailing" secondItem="OOA-Ed-0d4" secondAttribute="trailing" id="fax-jj-Q5Q"/>
-                                            <constraint firstItem="OOA-Ed-0d4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Dmi-CI-Bve" secondAttribute="trailing" constant="15" id="fuj-OT-E8D"/>
-                                            <constraint firstItem="Dmi-CI-Bve" firstAttribute="top" secondItem="j7o-WI-nBh" secondAttribute="top" id="t9a-xl-YC2"/>
-                                        </constraints>
-                                    </view>
+                                    </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lH4-Un-Fxx">
-                                        <rect key="frame" x="0.0" y="35.5" width="232" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="18" width="232" height="16"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>

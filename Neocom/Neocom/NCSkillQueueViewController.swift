@@ -19,7 +19,12 @@ fileprivate class NCSkillQueueRow: NCSkillRow {
 		
 		cell.iconView?.image = nil
 		cell.titleLabel?.text = "\(skill.typeName) (x\(skill.rank))"
-		cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:min(1 + (skill.level ?? 0), 5))
+		let level = min(1 + (skill.level ?? 0), 5)
+//		cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:min(1 + (skill.level ?? 0), 5))
+		cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)
+		cell.skillLevelView?.level = level
+		cell.skillLevelView?.isActive = skill.isActive
+		
 		cell.progressView?.progress = skill.trainingProgress
 		
 		let a = NCUnitFormatter.localizedString(from: Double(skill.skillPoints), unit: .none, style: .full)
@@ -59,7 +64,13 @@ fileprivate class NCSkillPlanSkillRow: FetchedResultsObjectNode<NCSkillPlanSkill
 		guard let cell = cell as? NCSkillTableViewCell else {return}
 		if let character = character, let skill = skill {
 			cell.titleLabel?.text = "\(skill.skill.typeName) (x\(skill.skill.rank))"
-			cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:min(skill.level, 5))
+			
+			let level = min(skill.level, 5)
+//			cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:min(skill.level, 5))
+			cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)
+			cell.skillLevelView?.level = level
+			cell.skillLevelView?.isActive = skill.skill.isActive
+			
 			let a = NCUnitFormatter.localizedString(from: Double(skill.skill.skillPoints), unit: .none, style: .full)
 			let b = NCUnitFormatter.localizedString(from: Double(skill.skill.skillPoints(at: skill.level)), unit: .skillPoints, style: .full)
 			cell.spLabel?.text = "\(a) / \(b)"
@@ -71,6 +82,8 @@ fileprivate class NCSkillPlanSkillRow: FetchedResultsObjectNode<NCSkillPlanSkill
 			cell.levelLabel?.text = nil
 			cell.trainingTimeLabel?.text = " "
 			cell.spLabel?.text = " "
+			cell.skillLevelView?.level = 0
+			cell.skillLevelView?.isActive = false
 		}
 		cell.iconView?.image = #imageLiteral(resourceName: "skillRequirementQueued")
 		

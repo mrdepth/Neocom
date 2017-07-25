@@ -17,33 +17,43 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="41.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="zgd-SD-5Ey">
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="zgd-SD-5Ey">
                         <rect key="frame" x="15" y="4" width="290" height="34"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" placeholderIntrinsicWidth="32" placeholderIntrinsicHeight="32" image="skillRequirementQueued" translatesAutoresizingMaskIntoConstraints="NO" id="Klu-k9-izg" customClass="NCTintImageView" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="1" width="32" height="32"/>
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="iSD-5X-8AO">
-                                <rect key="frame" x="32" y="2" width="258" height="30.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="iSD-5X-8AO">
+                                <rect key="frame" x="36" y="2" width="254" height="30.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RBG-Am-1rd">
-                                        <rect key="frame" x="0.0" y="0.0" width="211" height="30.5"/>
+                                        <rect key="frame" x="0.0" y="7" width="161" height="16"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="u1d-0W-EDa">
-                                        <rect key="frame" x="219" y="0.0" width="39" height="30.5"/>
+                                        <rect key="frame" x="165" y="0.0" width="89" height="30.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="900" horizontalCompressionResistancePriority="901" text="LABEL" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="b2b-p5-Hzz">
-                                                <rect key="frame" x="0.0" y="0.0" width="39" height="16"/>
-                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
-                                                <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="900" horizontalCompressionResistancePriority="901" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4wO-vv-aFn">
-                                                <rect key="frame" x="0.0" y="16" width="39" height="14.5"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="rqg-pe-zwh">
+                                                <rect key="frame" x="0.0" y="0.0" width="89" height="16"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="900" horizontalCompressionResistancePriority="901" text="LABEL" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="b2b-p5-Hzz">
+                                                        <rect key="frame" x="0.0" y="0.0" width="39" height="16"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" horizontalHuggingPriority="1000" placeholderIntrinsicWidth="46" placeholderIntrinsicHeight="7" translatesAutoresizingMaskIntoConstraints="NO" id="Xt4-ac-xlh" customClass="NCSkillLevelView" customModule="Neocom" customModuleProvider="target">
+                                                        <rect key="frame" x="43" y="4.5" width="46" height="7"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <color key="tintColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                    </view>
+                                                </subviews>
+                                            </stackView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="901" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4wO-vv-aFn">
+                                                <rect key="frame" x="0.0" y="16" width="89" height="14.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                 <nil key="highlightedColor"/>
@@ -66,6 +76,7 @@
             <connections>
                 <outlet property="iconView" destination="Klu-k9-izg" id="gVw-U3-xkf"/>
                 <outlet property="levelLabel" destination="b2b-p5-Hzz" id="VTJ-z6-K3Z"/>
+                <outlet property="skillLevelView" destination="Xt4-ac-xlh" id="TOy-OG-CAW"/>
                 <outlet property="titleLabel" destination="RBG-Am-1rd" id="5cp-5E-1PE"/>
                 <outlet property="trainingTimeLabel" destination="4wO-vv-aFn" id="94d-CX-fuh"/>
             </connections>

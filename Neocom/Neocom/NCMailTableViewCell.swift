@@ -55,9 +55,9 @@ class NCMailRow: TreeRow {
 	
 	static let dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
-		dateFormatter.dateStyle = .short
+		dateFormatter.dateStyle = .none
 		dateFormatter.timeStyle = .short
-		dateFormatter.doesRelativeDateFormatting = true
+//		dateFormatter.doesRelativeDateFormatting = true
 		return dateFormatter
 	}()
 	
@@ -65,20 +65,12 @@ class NCMailRow: TreeRow {
 	let contacts: [Int64: NCContact]
 	let label: ESI.Mail.MailLabelsAndUnreadCounts.Label
 	
-	lazy var recipient: NSAttributedString = {
-		let recipient: String
+	lazy var recipient: String = {
 		if self.mail.from == Int(self.dataManager.characterID) {
-			recipient = self.mail.recipients?.flatMap({self.contacts[Int64($0.recipientID)]?.name}).joined(separator: ", ") ?? NSLocalizedString("Unknown", comment: "")
-			return NSAttributedString(string: recipient)
+			return self.mail.recipients?.flatMap({self.contacts[Int64($0.recipientID)]?.name}).joined(separator: ", ") ?? NSLocalizedString("Unknown", comment: "")
 		}
 		else {
-			recipient = self.contacts[Int64(self.mail.from!)]?.name ?? NSLocalizedString("Unknown", comment: "")
-//			if case .mailingList = self.folder {
-//				return "[\(self.folder.name)]" * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)] + " " + recipient
-//			}
-//			else {
-				return NSAttributedString(string: recipient)
-//			}
+			return self.contacts[Int64(self.mail.from!)]?.name ?? NSLocalizedString("Unknown", comment: "")
 		}
 	}()
 	
@@ -102,7 +94,6 @@ class NCMailRow: TreeRow {
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCMailTableViewCell else {return}
 
-		cell.subjectLabel.text = mail.subject
 		cell.object = mail
 		if let date = mail.timestamp as Date? {
 			cell.dateLabel.text = NCMailRow.dateFormatter.string(from: date)
@@ -110,8 +101,10 @@ class NCMailRow: TreeRow {
 		else {
 			cell.dateLabel.text = nil
 		}
-		cell.recipientLabel.attributedText = mail.isRead == true ? recipient * [NSForegroundColorAttributeName: UIColor.lightText] : recipient
-		cell.subjectLabel.textColor = mail.isRead == true ? UIColor.lightText : UIColor.white
+		cell.recipientLabel.text = recipient
+		cell.recipientLabel.textColor = mail.isRead == true ? .lightText : .white
+		cell.subjectLabel.text = mail.subject
+		cell.subjectLabel.textColor = cell.recipientLabel.textColor
 		
 		cell.iconView.image = image
 		

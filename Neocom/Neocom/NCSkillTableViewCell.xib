@@ -32,24 +32,29 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="FRa-3x-AAd">
                                 <rect key="frame" x="32" y="2" width="258" height="30.5"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="iSD-5X-8AO">
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="iSD-5X-8AO">
                                         <rect key="frame" x="0.0" y="0.0" width="258" height="16"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RBG-Am-1rd">
-                                                <rect key="frame" x="0.0" y="0.0" width="211" height="16"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="165" height="16"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="751" text="LABEL" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="b2b-p5-Hzz">
-                                                <rect key="frame" x="219" y="0.0" width="39" height="16"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="901" text="LABEL" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="vOG-Gf-G6s">
+                                                <rect key="frame" x="169" y="0.0" width="39" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
-                                                <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" placeholderIntrinsicWidth="46" placeholderIntrinsicHeight="7" translatesAutoresizingMaskIntoConstraints="NO" id="XLu-TE-c9Z" customClass="NCSkillLevelView" customModule="Neocom" customModuleProvider="target">
+                                                <rect key="frame" x="212" y="4.5" width="46" height="7"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <color key="tintColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            </view>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1qg-nh-lTW">
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1qg-nh-lTW">
                                         <rect key="frame" x="0.0" y="16" width="258" height="14.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GkD-1F-sIa">
@@ -89,8 +94,9 @@
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="iconView" destination="Klu-k9-izg" id="gVw-U3-xkf"/>
-                <outlet property="levelLabel" destination="b2b-p5-Hzz" id="VTJ-z6-K3Z"/>
+                <outlet property="levelLabel" destination="vOG-Gf-G6s" id="4V0-mM-hDA"/>
                 <outlet property="progressView" destination="yO0-TK-09H" id="PH9-dJ-TtC"/>
+                <outlet property="skillLevelView" destination="XLu-TE-c9Z" id="EeW-uf-4Ai"/>
                 <outlet property="spLabel" destination="GkD-1F-sIa" id="wxQ-wu-KnQ"/>
                 <outlet property="titleLabel" destination="RBG-Am-1rd" id="5cp-5E-1PE"/>
                 <outlet property="trainingTimeLabel" destination="4wO-vv-aFn" id="94d-CX-fuh"/>

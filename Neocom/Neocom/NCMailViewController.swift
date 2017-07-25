@@ -72,10 +72,9 @@ class NCMailViewController: NCTreeViewController, NCRefreshable {
 		guard let mailID = node.mail.mailID else {return nil}
 		let header = node.mail
 		
-		let dataManager = NCDataManager(account: NCAccount.current)
 		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self] _ in
 			self?.tableView.isUserInteractionEnabled = false
-			dataManager.delete(mailID: mailID) { result in
+			self?.dataManager.delete(mailID: mailID) { result in
 				self?.tableView.isUserInteractionEnabled = true
 				
 				switch result {

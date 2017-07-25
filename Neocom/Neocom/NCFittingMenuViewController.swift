@@ -14,7 +14,9 @@ class NCFittingMenuViewController: NCPageViewController {
 		super.viewDidLoad()
 		viewControllers = [storyboard!.instantiateViewController(withIdentifier: "NCFittingShipsViewController"),
 		                   storyboard!.instantiateViewController(withIdentifier: "NCFittingStructuresViewController"),
-		                   storyboard!.instantiateViewController(withIdentifier: "NCFittingFleetsViewController")]
+		                   storyboard!.instantiateViewController(withIdentifier: "NCFittingFleetsViewController"),
+		                   storyboard!.instantiateViewController(withIdentifier: "NCFittingInGameFittingsViewController")
+		]
 		navigationItem.rightBarButtonItem = editButtonItem
 	}
 	

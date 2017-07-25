@@ -83,7 +83,6 @@ class NCLoadoutsSection<T: NCLoadoutRow>: TreeSection {
 				for loadout in loadouts {
 					guard let type = invTypes[Int(loadout.typeID)] else {continue}
 					if type.dgmppItem?.groups?.first(where: {($0 as? NCDBDgmppItemGroup)?.category?.category == categoryID}) != nil {
-						//guard let groupID = type.group?.groupID else {continue}
 						guard let name = type.group?.groupName else {continue}
 						let key = name
 						let section = groups[key]
@@ -164,26 +163,6 @@ class NCFittingShipsViewController: NCTreeViewController {
 			strongSelf.dismiss(animated: true)
 			
 			Router.Fitting.Editor(typeID: Int(type.typeID)).perform(source: strongSelf)
-			
-			/*let engine = NCFittingEngine()
-			let typeID = Int(type.typeID)
-			engine.perform {
-				let fleet = NCFittingFleet(typeID: typeID, engine: engine)
-				DispatchQueue.main.async {
-					if let account = NCAccount.current {
-						fleet.active?.setSkills(from: account) { [weak self]  _ in
-							guard let strongSelf = self else {return}
-							Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
-						}
-					}
-					else {
-						fleet.active?.setSkills(level: 5) { [weak self] _ in
-							guard let strongSelf = self else {return}
-							Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
-						}
-					}
-				}
-			}*/
 
 		})))
 		

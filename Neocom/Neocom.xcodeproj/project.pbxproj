@@ -37,6 +37,7 @@
 		1220710C1EF2C6B8007D86CE /* NCDatabaseCertificateMasteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1220710B1EF2C6B8007D86CE /* NCDatabaseCertificateMasteryViewController.swift */; };
 		1220710E1EF2C6E1007D86CE /* NCDatabaseCertificateRequirementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1220710D1EF2C6E1007D86CE /* NCDatabaseCertificateRequirementsViewController.swift */; };
 		122242461E5C3A0000269A01 /* NCPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122242451E5C3A0000269A01 /* NCPageViewController.swift */; };
+		12236C1B1F27974400A1A27D /* NCFittingInGameFittingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12236C1A1F27974400A1A27D /* NCFittingInGameFittingsViewController.swift */; };
 		1224AF621E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224AF611E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift */; };
 		1224AF641E6D92240043F96C /* NCSkillEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */; };
 		1226D9611F223A4C0049FA0C /* NCNPCPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9601F223A4C0049FA0C /* NCNPCPickerViewController.swift */; };
@@ -402,6 +403,7 @@
 		1220710B1EF2C6B8007D86CE /* NCDatabaseCertificateMasteryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateMasteryViewController.swift; sourceTree = "<group>"; };
 		1220710D1EF2C6E1007D86CE /* NCDatabaseCertificateRequirementsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateRequirementsViewController.swift; sourceTree = "<group>"; };
 		122242451E5C3A0000269A01 /* NCPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCPageViewController.swift; sourceTree = "<group>"; };
+		12236C1A1F27974400A1A27D /* NCFittingInGameFittingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingInGameFittingsViewController.swift; sourceTree = "<group>"; };
 		1224AF611E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingCharacterEditorViewController.swift; sourceTree = "<group>"; };
 		1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillEditTableViewCell.swift; sourceTree = "<group>"; };
 		1226D9601F223A4C0049FA0C /* NCNPCPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCNPCPickerViewController.swift; sourceTree = "<group>"; };
@@ -947,6 +949,7 @@
 				12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */,
 				121314C31F14B79700DAFD12 /* NCFittingStructuresViewController.swift */,
 				1263C5081E64A7D0003D002D /* NCFittingFleetsViewController.swift */,
+				12236C1A1F27974400A1A27D /* NCFittingInGameFittingsViewController.swift */,
 				12424E411E3651DC0078AB0F /* NCFittingEditorViewController.swift */,
 				1291194A1E3918CC00870428 /* NCFittingModulesViewController.swift */,
 				12424E1A1E48C9F3002DFE08 /* NCFittingDronesViewController.swift */,
@@ -1700,6 +1703,7 @@
 				1230A3301DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift in Sources */,
 				1293BC1A1E4B4E7C0099FD75 /* NCFirepowerTableViewCell.swift in Sources */,
 				12AC8DC61DF0894400561A7A /* NCDataManager.swift in Sources */,
+				12236C1B1F27974400A1A27D /* NCFittingInGameFittingsViewController.swift in Sources */,
 				12961DD01E1D64A6008A3F4D /* NCFittingImplant.mm in Sources */,
 				12FC3CC81E13F4A400B7744E /* NCDatabaseTypeMasteryViewController.swift in Sources */,
 				12DC568B1EFC0A150088F45E /* NCFittingRoute.mm in Sources */,

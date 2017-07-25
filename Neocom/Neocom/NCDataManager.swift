@@ -902,7 +902,7 @@ class NCDataManager {
 	}
 	
 	func killmailInfo(killmailHash: String, killmailID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Killmails.Killmail>) -> Void) {
-		loadFromCache(forKey: "ESI.KillMails.Killmail.\(killmailID).\(killmailHash)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "ESI.KillMails.Killmail.\(killmailID).\(killmailHash)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.killmails.getSingleKillmail(killmailHash: killmailHash, killmailID: Int(killmailID)) { result in
 				completion(result, 3600.0 * 48)
 			}
@@ -926,6 +926,22 @@ class NCDataManager {
 		})
 	}
 
+	
+	func fittings(completionHandler: @escaping (NCCachedResult<[ESI.Fittings.Fitting]>) -> Void) {
+		loadFromCache(forKey: "ESI.Fittings.Fitting", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.fittings.getFittings(characterID: Int(self.characterID)) { result in
+				completion(result, 300)
+			}
+		})
+	}
+	
+	func deleteFitting(fittingID: Int, completionHandler: @escaping (Result<String>) -> Void) {
+		self.esi.fittings.deleteFitting(characterID: Int(self.characterID), fittingID: fittingID, completionBlock: completionHandler)
+	}
+	
+	func createFitting(fitting: ESI.Fittings.MutableFitting, completionHandler: @escaping (Result<ESI.Fittings.CreateFittingResult>) -> Void) {
+		self.esi.fittings.createFitting(characterID: Int(self.characterID), fitting: fitting, completionBlock: completionHandler)
+	}
 	
 	//MARK: Private
 	

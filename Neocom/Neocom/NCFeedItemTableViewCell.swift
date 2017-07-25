@@ -26,19 +26,37 @@ class NCFeedItemRow: TreeRow {
 	
 	let item: RSS.Item
 	let subtitle: String?
+	
+	private static let tagRegexp = try! NSRegularExpression(pattern: "<.*?>", options: [])
 
 	init(item: RSS.Item) {
 		self.item = item
 		
-		if let data = self.item.summary?.data(using: .utf8),
-			let string =  try? NSAttributedString(data: data,
+		if let summary = (self.item.summary as NSString?)?.mutableCopy() as? NSMutableString {
+			NCFeedItemRow.tagRegexp.replaceMatches(in: summary, options: [], range: NSMakeRange(0, summary.length), withTemplate: "")
+			if let data = (summary as String).data(using: .utf8),
+				let string =  try? NSAttributedString(data: data,
 			                                      options: [NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue],
 			                                      documentAttributes: nil).string {
-			subtitle = String(string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).characters.prefix(256))
+				subtitle = String(string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).characters.prefix(256))
+			}
+			else {
+				subtitle = nil
+			}
 		}
 		else {
 			subtitle = nil
 		}
+//		
+//		if let data = self.item.summary?.data(using: .utf8),
+//			let string =  try? NSAttributedString(data: data,
+//			                                      options: [NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue],
+//			                                      documentAttributes: nil).string {
+//			subtitle = String(string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).characters.prefix(256))
+//		}
+//		else {
+//			subtitle = nil
+//		}
 
 		
 		

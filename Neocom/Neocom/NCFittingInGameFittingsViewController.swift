@@ -21,7 +21,7 @@ class NCInGameFittingRow: TreeRow {
 		loadoutName = fitting.name
 		image = type.icon?.image?.image
 		self.fitting = fitting
-		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: nil)
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: Router.Fitting.Editor(fitting: fitting))
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -61,7 +61,55 @@ class NCFittingInGameFittingsViewController: NCTreeViewController, NCRefreshable
 			reload()
 		}
 	}
+	
+	//MARK: - TreeControllerDelegate
 
+	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
+		guard let node = node as? NCInGameFittingRow else {return nil}
+		
+		let fitting = node.fitting
+		
+		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self] _ in
+			guard let strongSelf = self else {return}
+			guard let account = NCAccount.current else {return}
+			strongSelf.tableView.isUserInteractionEnabled = false
+			guard let cell = strongSelf.treeController?.cell(for: node) else {return}
+
+			let dataManager = NCDataManager(account: account)
+			
+			let progress = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
+			progress.progress.perform {
+				dataManager.deleteFitting(fittingID: fitting.fittingID) { result in
+					
+					strongSelf.tableView.isUserInteractionEnabled = true
+					
+					switch result {
+					case .success:
+						guard let record = strongSelf.fittings?.cacheRecord else {return}
+						guard var fittings = record.data?.data as? [ESI.Fittings.Fitting] else {return}
+						guard let i = fittings.index(where: {$0.fittingID == fitting.fittingID}) else {return}
+						fittings.remove(at: i)
+						
+						
+						record.data?.data = fittings as NSArray
+						if record.managedObjectContext?.hasChanges == true {
+							try? record.managedObjectContext?.save()
+						}
+						if let parent = node.parent, let i = parent.children.index(of: node) {
+							parent.children.remove(at: i)
+							if parent.children.isEmpty, let root = parent.parent, let i = root.children.index(of: parent) {
+								root.children.remove(at: i)
+							}
+						}
+					case let .failure(error):
+						strongSelf.present(UIAlertController(error: error), animated: true, completion: nil)
+					}
+					progress.finish()
+				}
+			}
+		})]
+	}
+	
 	//MARK: - NCRefreshable
 	
 	private var observer: NCManagedObjectObserver?
@@ -94,6 +142,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController, NCRefreshable
 				}
 				progress.perform {
 					self.reloadSections()
+					completionHandler?()
 				}
 			}
 		}

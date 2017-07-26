@@ -24,6 +24,15 @@ enum NCCachedResult<T> {
 		}
 	}
 	
+	var cacheRecord: NCCacheRecord? {
+		switch self {
+		case let .success(_, record):
+			return record
+		default:
+			return nil
+		}
+	}
+	
 	var error: Error? {
 		switch self {
 		case let .failure(error):

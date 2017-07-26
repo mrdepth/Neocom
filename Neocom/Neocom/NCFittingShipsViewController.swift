@@ -167,7 +167,6 @@ class NCFittingShipsViewController: NCTreeViewController {
 		})))
 		
 		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator))
-		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "eveOnlineLogin"), title: NSLocalizedString("Browse Ingame Fits", comment: ""), accessoryType: .disclosureIndicator))
 		
 		sections.append(NCLoadoutsSection(categoryID: .ship))
 		self.treeController?.content?.children = sections

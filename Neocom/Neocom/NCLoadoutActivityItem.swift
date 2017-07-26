@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EVEAPI
 
 enum NCLoadoutRepresentation {
 	case dna([(typeID: Int, data: NCFittingLoadout, name: String)])
@@ -15,6 +16,7 @@ enum NCLoadoutRepresentation {
 	case httpURL([(typeID: Int, data: NCFittingLoadout, name: String)])
 	case eft([(typeID: Int, data: NCFittingLoadout, name: String)])
 	case esi([(typeID: Int, data: NCFittingLoadout, name: String)])
+	case inGame([(typeID: Int, data: NCFittingLoadout, name: String)])
 	
 	var value: Any {
 		switch self {
@@ -28,6 +30,8 @@ enum NCLoadoutRepresentation {
 			return loadouts.flatMap{URL(string: "http://neocom.by/api/fitting?dna=" + dnaRepresentation($0))}
 		case let .eft(loadouts):
 			return loadouts.map{eftRepresentation($0)}
+		case let .inGame(loadouts):
+			return loadouts.map{inGameRepresentation($0)}
 		default:
 			break
 		}
@@ -127,6 +131,77 @@ enum NCLoadoutRepresentation {
 		}
 		return eft
 	}
+	
+	private func inGameRepresentation(_ loadout: (typeID: Int, data: NCFittingLoadout, name: String)) -> ESI.Fittings.MutableFitting {
+		let fitting = ESI.Fittings.MutableFitting()
+		fitting.shipTypeID = loadout.typeID
+		
+		NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
+			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
+			
+			let modules = loadout.data.modules?.map { i -> FlattenBidirectionalCollection<[[ESI.Fittings.Item]]> in
+				let flags: [ESI.Assets.Asset.Flag]
+				switch i.key {
+				case .hi:
+					flags = [.hiSlot0, .hiSlot1, .hiSlot2, .hiSlot3, .hiSlot4, .hiSlot5, .hiSlot6, .hiSlot7]
+				case .med:
+					flags = [.medSlot0, .medSlot1, .medSlot2, .medSlot3, .medSlot4, .medSlot5, .medSlot6, .medSlot7]
+				case .low:
+					flags = [.loSlot0, .loSlot1, .loSlot2, .loSlot3, .loSlot4, .loSlot5, .loSlot6, .loSlot7]
+				case .rig:
+					flags = [.rigSlot0, .rigSlot1, .rigSlot2, .rigSlot3, .rigSlot4, .rigSlot5, .rigSlot6, .rigSlot7]
+				case .subsystem:
+					flags = [.subSystemSlot0, .subSystemSlot1, .subSystemSlot2, .subSystemSlot3, .subSystemSlot4, .subSystemSlot5, .subSystemSlot6, .subSystemSlot7]
+				case .service:
+					flags = [.structureServiceSlot0, .structureServiceSlot1, .structureServiceSlot2, .structureServiceSlot3, .structureServiceSlot4, .structureServiceSlot5, .structureServiceSlot6, .structureServiceSlot7]
+				default:
+					flags = [.cargo]
+				}
+				var slot = 0
+				let items = i.value.map { j -> [ESI.Fittings.Item] in
+					var items: [ESI.Fittings.Item] = []
+					for _ in 0..<j.count {
+						let item = ESI.Fittings.Item()
+						item.quantity = 1
+						item.typeID = j.typeID
+						item.flag = flags[min(slot, flags.count - 1)].intValue
+						slot += 1
+						items.append(item)
+					}
+					return items
+					}.joined()
+				return items
+				}.joined()
+			
+			let drones = loadout.data.drones?.flatMap { i -> ESI.Fittings.Item? in
+				guard let type = invTypes[i.typeID] else {return nil}
+				guard let categoryID = type.group?.category?.categoryID, let category = NCDBCategoryID(rawValue: Int(categoryID)) else {return nil}
+				
+				let item = ESI.Fittings.Item()
+				item.quantity = i.count
+				item.typeID = i.typeID
+				
+				item.flag = category == .fighter ? ESI.Assets.Asset.Flag.fighterBay.intValue : ESI.Assets.Asset.Flag.droneBay.intValue
+				return item
+				}
+			
+			var items: [ESI.Fittings.Item] = []
+			if let modules = modules {
+				items.append(contentsOf: modules)
+			}
+			if let drones = drones {
+				items.append(contentsOf: drones)
+			}
+			
+			fitting.items = items
+
+		}
+		fitting.name = loadout.name.isEmpty ? NSLocalizedString("Unnamed", comment: "") : loadout.name
+		fitting.localizedDescription = NSLocalizedString("Created with Neocom on iOS", comment: "")
+
+		return fitting
+	}
+
 }
 
 class NCLoadoutActivityItem: UIActivityItemProvider {

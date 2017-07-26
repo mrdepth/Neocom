@@ -48,6 +48,7 @@ class NCProgressHandler: NSObject {
 		activityIndicatorView?.translatesAutoresizingMaskIntoConstraints = true
 		activityIndicatorView?.autoresizingMask = [.flexibleBottomMargin, .flexibleTopMargin, .flexibleLeftMargin, .flexibleRightMargin]
 		view.addSubview(activityIndicatorView!)
+		activityIndicatorView?.startAnimating()
 		activityIndicatorView?.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
 //		activityIndicatorView?.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 //		activityIndicatorView?.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true

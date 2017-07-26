@@ -73,38 +73,46 @@ class NCMailViewController: NCTreeViewController, NCRefreshable {
 		let header = node.mail
 		
 		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self] _ in
+			guard let cell = self?.treeController?.cell(for: node) else {return}
 			self?.tableView.isUserInteractionEnabled = false
-			self?.dataManager.delete(mailID: mailID) { result in
-				self?.tableView.isUserInteractionEnabled = true
-				
-				switch result {
-				case .success:
-					guard let record = node.cacheRecord else {return}
-					guard var headers = record.data?.data as? [ESI.Mail.Header] else {return}
-					guard let i = headers.index(where: {$0.mailID == node.mail.mailID}) else {return}
-					headers.remove(at: i)
 
-					guard let strongSelf = self else {return}
+			
+			let progress = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
+			progress.progress.perform {
 
-					if header.isRead == false, let unread = strongSelf.label?.unreadCount, unread > 0 {
-						strongSelf.label = strongSelf.label?.copy() as? ESI.Mail.MailLabelsAndUnreadCounts.Label
-						strongSelf.label?.unreadCount = unread - 1
-						strongSelf.updateTitle()
-						(strongSelf.parent as? NCMailPageViewController)?.saveUnreadCount()
-					}
+				self?.dataManager.delete(mailID: mailID) { result in
+					self?.tableView.isUserInteractionEnabled = true
 					
-					record.data?.data = headers as NSArray
-					if record.managedObjectContext?.hasChanges == true {
-						try? record.managedObjectContext?.save()
-					}
-					if let parent = node.parent, let i = parent.children.index(of: node) {
-						parent.children.remove(at: i)
-						if parent.children.isEmpty, let root = parent.parent, let i = root.children.index(of: parent) {
-							root.children.remove(at: i)
+					switch result {
+					case .success:
+						guard let record = node.cacheRecord else {return}
+						guard var headers = record.data?.data as? [ESI.Mail.Header] else {return}
+						guard let i = headers.index(where: {$0.mailID == node.mail.mailID}) else {return}
+						headers.remove(at: i)
+						
+						guard let strongSelf = self else {return}
+						
+						if header.isRead == false, let unread = strongSelf.label?.unreadCount, unread > 0 {
+							strongSelf.label = strongSelf.label?.copy() as? ESI.Mail.MailLabelsAndUnreadCounts.Label
+							strongSelf.label?.unreadCount = unread - 1
+							strongSelf.updateTitle()
+							(strongSelf.parent as? NCMailPageViewController)?.saveUnreadCount()
 						}
+						
+						record.data?.data = headers as NSArray
+						if record.managedObjectContext?.hasChanges == true {
+							try? record.managedObjectContext?.save()
+						}
+						if let parent = node.parent, let i = parent.children.index(of: node) {
+							parent.children.remove(at: i)
+							if parent.children.isEmpty, let root = parent.parent, let i = root.children.index(of: parent) {
+								root.children.remove(at: i)
+							}
+						}
+					case .failure:
+						break
 					}
-				case .failure:
-					break
+					progress.finish()
 				}
 			}
 		})]

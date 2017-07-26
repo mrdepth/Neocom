@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudData
+import EVEAPI
 
 /*class NCFittingTypeRow: TreeRow {
 	let type: NCDBInvType
@@ -196,7 +197,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		guard let pilot = fleet?.active else {return}
 		let text = sender.text
 		pilot.engine?.perform {
-			pilot.ship?.name = text ?? ""
+			(pilot.ship ?? pilot.structure)?.name = text ?? ""
 		}
 	}
 	
@@ -212,9 +213,9 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		let invTypes = NCDatabase.sharedDatabase?.invTypes
 
 		engine.performBlockAndWait {
-			let title = pilot.ship?.name
+			let title = (pilot.ship ?? pilot.structure)?.name
 			sections.append(NCLoadoutNameRow(text: title?.isEmpty == false ? title : nil, placeholder: NSLocalizedString("Ship Name", comment: "")))
-			if let ship = pilot.ship, let type = invTypes?[ship.typeID] {
+			if let ship = pilot.ship ?? pilot.structure, let type = invTypes?[ship.typeID] {
 				let row = NCTypeInfoRow(type: type, accessoryType: .detailButton, route: Router.Database.TypeInfo(ship), accessoryButtonRoute: Router.Database.TypeInfo(ship))
 				sections.append(DefaultTreeSection(nodeIdentifier: "Ship", title: NSLocalizedString("Ship", comment: "").uppercased(), children: [row]))
 			}
@@ -295,7 +296,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		guard let pilot = fleet?.active else {return}
 		
 		pilot.engine?.perform {
-			guard let ship = pilot.ship else {return}
+			guard let ship = pilot.ship ?? pilot.structure else {return}
 			let typeID = ship.typeID
 			let name = ship.name
 			let loadout = pilot.loadout
@@ -332,6 +333,27 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 					guard let value = (NCLoadoutRepresentation.eft([(typeID: typeID, data: loadout, name: name)]).value as? [String])?.first else {return}
 					UIPasteboard.general.string = value
 				}))
+				
+				if let account = NCAccount.current {
+					controller.addAction(UIAlertAction(title: NSLocalizedString("Save In-Game", comment: ""), style: .default, handler: { _ in
+						guard let strongSelf = self else {return}
+						guard let value = (NCLoadoutRepresentation.inGame([(typeID: typeID, data: loadout, name: name)]).value as? [ESI.Fittings.MutableFitting])?.first else {return}
+						let dataManager = NCDataManager(account: account)
+						let progress = NCProgressHandler(viewController: strongSelf, totalUnitCount: 1)
+						progress.progress.perform {
+							dataManager.createFitting(fitting: value) { result in
+								switch result {
+								case let .failure(error):
+									strongSelf.present(UIAlertController(error: error), animated: true, completion: nil)
+								default:
+									break
+								}
+								progress.finish()
+							}
+						}
+					}))
+				}
+
 
 				controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
 				

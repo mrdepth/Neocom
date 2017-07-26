@@ -598,6 +598,24 @@ extension ESI.Assets.Asset.Flag {
 			return 162
 		case .fighterTube4:
 			return 163
+		case .structureServiceSlot0:
+			return 164
+		case .structureServiceSlot1:
+			return 165
+		case .structureServiceSlot2:
+			return 166
+		case .structureServiceSlot3:
+			return 167
+		case .structureServiceSlot4:
+			return 168
+		case .structureServiceSlot5:
+			return 169
+		case .structureServiceSlot6:
+			return 169
+		case .structureServiceSlot7:
+			return 171
+		case .structureFuel:
+			return 172
 		case .deliveries:
 			return 173
 		case .autoFit, .corpseBay, .hangarAll, .module:

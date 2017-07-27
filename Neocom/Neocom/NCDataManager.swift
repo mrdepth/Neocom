@@ -299,19 +299,33 @@ class NCDataManager {
 			}
 		})
 	}
+	
+	private var cachedLocations: [Int64: NCLocation]?
 
 	func locations(ids: Set<Int64>, completionHandler: @escaping ([Int64: NCLocation]) -> Void) {
+		guard !ids.isEmpty else {
+			completionHandler([:])
+			return
+		}
+		
 		var locations = [Int64: NCLocation]()
 		var missing = Set<Int64>()
 		var structures = Set<Int64>()
 		
+		var cachedLocations = self.cachedLocations ?? [:]
+		
 		for id in ids {
-			if id > Int64(Int32.max) {
+			if let location = cachedLocations[id] {
+				locations[id] = location
+			}
+			else if id > Int64(Int32.max) {
 				structures.insert(id)
 			}
 			else if (66000000 < id && id < 66014933) { //staStations
 				if let station = NCDatabase.sharedDatabase?.staStations[Int(id) - 6000001] {
-					locations[id] = NCLocation(station)
+					let location = NCLocation(station)
+					locations[id] = location
+					cachedLocations[id] = location
 				}
 				else {
 					missing.insert(id)
@@ -319,7 +333,9 @@ class NCDataManager {
 			}
 			else if (60000000 < id && id < 61000000) { //staStations
 				if let station = NCDatabase.sharedDatabase?.staStations[Int(id)] {
-					locations[id] = NCLocation(station)
+					let location = NCLocation(station)
+					locations[id] = location
+					cachedLocations[id] = location
 				}
 				else {
 					missing.insert(id)
@@ -328,7 +344,9 @@ class NCDataManager {
 			else if let int = Int(exactly: id) { //mapDenormalize
 				
 				if let mapDenormalize = NCDatabase.sharedDatabase?.mapDenormalize[int] {
-					locations[id] = NCLocation(mapDenormalize)
+					let location = NCLocation(mapDenormalize)
+					locations[id] = location
+					cachedLocations[id] = location
 				}
 				else {
 					missing.insert(id)
@@ -349,6 +367,7 @@ class NCDataManager {
 					for name in value {
 						if let location = NCLocation(name) {
 							locations[Int64(name.id)] = location
+							cachedLocations[Int64(name.id)] = location
 						}
 					}
 				case .failure:
@@ -363,7 +382,9 @@ class NCDataManager {
 				let _ = self
 				switch result {
 				case let .success(value, _):
-					locations[id] = NCLocation(value)
+					let location = NCLocation(value)
+					locations[id] = location
+					cachedLocations[id] = location
 				case .failure:
 					break
 				}
@@ -372,6 +393,7 @@ class NCDataManager {
 		}
 		
 		dispatchGroup.notify(queue: .main) {
+			self.cachedLocations = cachedLocations
 			completionHandler(locations)
 			lifeTime.finalize()
 		}
@@ -679,6 +701,7 @@ class NCDataManager {
 
 	
 	private static var invalidIDs = Set<Int64>()
+	
 	func contacts(ids: Set<Int64>, completionHandler: @escaping ([Int64: NCContact]) -> Void) {
 		let ids = ids.subtracting(NCDataManager.invalidIDs)
 		var contacts: Set<Int64> = Set()

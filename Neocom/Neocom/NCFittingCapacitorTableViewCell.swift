@@ -65,7 +65,7 @@ class NCFittingCapacitorRow: TreeRow {
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCFittingResourcesRow)?.hashValue == hashValue
+		return (object as? NCFittingCapacitorRow)?.hashValue == hashValue
 	}
 	
 }

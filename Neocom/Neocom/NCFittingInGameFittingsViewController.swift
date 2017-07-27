@@ -41,27 +41,17 @@ class NCInGameFittingRow: TreeRow {
 	}
 }
 
-class NCFittingInGameFittingsViewController: NCTreeViewController, NCRefreshable {
-	
+class NCFittingInGameFittingsViewController: NCTreeViewController {
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+		needsReloadOnAccountChange = true
 		tableView.register([Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.default])
 
-		registerRefreshable()
 		
 	}
 
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		if treeController?.content == nil {
-			self.treeController?.content = TreeNode()
-			reload()
-		}
-	}
-	
 	//MARK: - TreeControllerDelegate
 
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
@@ -110,51 +100,33 @@ class NCFittingInGameFittingsViewController: NCTreeViewController, NCRefreshable
 		})]
 	}
 	
-	//MARK: - NCRefreshable
-	
-	private var observer: NCManagedObjectObserver?
 	private var fittings: NCCachedResult<[ESI.Fittings.Fitting]>?
 	
-	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
-		guard let account = NCAccount.current else {
-			completionHandler?()
-			return
-		}
-		
-		let progress = Progress(totalUnitCount: 2)
-		
-		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
-		
-		progress.perform {
+	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+
+		Progress(totalUnitCount: 1).perform {
 
 			dataManager.fittings { result in
 				self.fittings = result
-				
-				switch result {
-				case let .success(_, record):
-					if let record = record {
-						self.observer = NCManagedObjectObserver(managedObject: record) { [weak self] _ in
-							self?.reloadSections()
-						}
-					}
-				case .failure:
-					break
+				if let cacheRecord = result.cacheRecord {
+					completionHandler([cacheRecord])
 				}
-				progress.perform {
-					self.reloadSections()
-					completionHandler?()
+				else {
+					completionHandler([])
 				}
 			}
 		}
 	}
 	
-	private func reloadSections() {
+	override func updateContent(completionHandler: @escaping () -> Void) {
 		if let value = fittings?.value {
 			tableView.backgroundView = nil
 			
+			let progress = Progress(totalUnitCount: 1)
+			
 			NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 				var groups = [String: DefaultTreeSection]()
-
+				
 				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 				for fitting in value {
 					guard let type = invTypes[Int(fitting.shipTypeID)] else {continue}
@@ -171,7 +143,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController, NCRefreshable
 						groups[key] = section
 					}
 				}
-
+				
 				var sections = [TreeNode]()
 				for (_, group) in groups.sorted(by: { $0.key < $1.key}) {
 					group.children = (group.children as? [NCInGameFittingRow])?.sorted(by: { (a, b) -> Bool in
@@ -179,7 +151,9 @@ class NCFittingInGameFittingsViewController: NCTreeViewController, NCRefreshable
 					}) ?? []
 					sections.append(group)
 				}
-
+				
+				progress.completedUnitCount += 1
+				
 				DispatchQueue.main.async {
 					
 					if self.treeController?.content == nil {
@@ -189,13 +163,14 @@ class NCFittingInGameFittingsViewController: NCTreeViewController, NCRefreshable
 						self.treeController?.content?.children = sections
 					}
 					self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
+					completionHandler()
 				}
 			}
 			
 		}
 		else {
 			tableView.backgroundView = NCTableViewBackgroundLabel(text: fittings?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			completionHandler()
 		}
 	}
-	
 }

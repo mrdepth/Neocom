@@ -425,11 +425,11 @@ fileprivate class NCOptimalCharacterAttributesSection: DefaultTreeSection {
 	}
 }
 
-class NCSkillQueueViewController: NCTreeViewController, NCRefreshable {
-	var character: NCCharacter?
+class NCSkillQueueViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		needsReloadOnAccountChange = true
 		
 		tableView.register([
 			Prototype.NCHeaderTableViewCell.default,
@@ -441,17 +441,8 @@ class NCSkillQueueViewController: NCTreeViewController, NCRefreshable {
 			Prototype.NCDefaultTableViewCell.placeholder
 			]
 		)
-		
-        registerRefreshable()
 	}
 	
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if treeController?.content == nil {
-			reload()
-		}
-	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
@@ -681,15 +672,6 @@ class NCSkillQueueViewController: NCTreeViewController, NCRefreshable {
 		}
 	}
 	
-//	func treeController(_ treeController: NCTreeController, canEditChild child:Int, ofItem item: AnyObject?) -> Bool {
-//		if item is NCSkillPlanSection || (item as? NCTreeSection)?.children?[child] is NCSkillPlanSection {
-//			return true
-//		}
-//		else {
-//			return false
-//		}
-//	}
-	
 	func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) -> Void {
 		switch (item as? NCDefaultTreeRow)?.segue {
 		case "NCSkillsViewController"?:
@@ -698,74 +680,71 @@ class NCSkillQueueViewController: NCTreeViewController, NCRefreshable {
 			break
 		}
 	}
-	
-/*	func treeController(_ treeController: NCTreeController, isItemExpanded item: AnyObject) -> Bool {
-		if let node = item as? NCSkillPlanSection {
-			return (node.object as? NCSkillPlan)?.active == true
-		}
-		else {
-			guard let node = (item as? NCTreeNode)?.nodeIdentifier else {return false}
-			let setting = NCSetting.setting(key: "NCSkillQueueViewController.\(node)")
-			return setting?.value as? Bool ?? true
-		}
-	}
-	
-	func treeController(_ treeController: NCTreeController, didExpandCell cell: UITableViewCell, withItem item: AnyObject) {
-		guard let node = (item as? NCTreeNode)?.nodeIdentifier else {return}
-		let setting = NCSetting.setting(key: "NCSkillQueueViewController.\(node)")
-		setting?.value = true as NSNumber
-	}
-	
-	func treeController(_ treeController: NCTreeController, didCollapseCell cell: UITableViewCell, withItem item: AnyObject) {
-		guard let node = (item as? NCTreeNode)?.nodeIdentifier else {return}
-		let setting = NCSetting.setting(key: "NCSkillQueueViewController.\(node)")
-		setting?.value = false as NSNumber
-	}*/
 
     //MARK: - NCRefreshable
 	
-    func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
+	var characterObserver: NotificationObserver?
+	
+	private var character: NCCharacter? {
+		didSet {
+			characterObserver = nil
+			if let character = character {
+				characterObserver = NotificationCenter.default.addNotificationObserver(forName: .NCCharacterChanged, object: character, queue: nil) { [weak self] _ in
+					self?.updateContent {
+					}
+				}
+			}
+		}
+	}
+	
+	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
         if let account = NCAccount.current {
-            let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
-            progress.progress.becomeCurrent(withPendingUnitCount: 1)
-            
             NCCharacter.load(account: account) { result in
                 switch result {
                 case let .success(character):
                     self.character = character
-					let skillBrowser = NCActionRow(title: NSLocalizedString("SKILL BROWSER", comment: ""),
-					                               route: Router.Character.Skills())
-                    var sections: [TreeNode] = [skillBrowser]
-					
-					let attributes = NCOptimalCharacterAttributesSection(account: account, character: character)
-					
-					attributes.isExpanded = false
-					sections.append(attributes)
-                    
-                    let skillQueue = NCSkillQueueSection(character: character)
-                    sections.append(skillQueue)
-                    sections.append(NCSkillPlansSection(account: account, character: character))
-					
-					if self.treeController?.content == nil {
-						let root = TreeNode()
-						root.children = sections
-						self.treeController?.content = root
-					}
-					else {
-						self.treeController?.content?.children = sections
-					}
+
+					completionHandler([])
+
                 case let .failure(error):
                     if self.treeController?.content == nil {
                         self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
                     }
+					completionHandler([])
+
                 }
-                completionHandler?()
             }
-            progress.progress.resignCurrent()
         }
         else {
-            completionHandler?()
+            completionHandler([])
         }
     }
-    
+	
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		guard let account = NCAccount.current, let character = character else {
+			completionHandler()
+			return
+		}
+		let skillBrowser = NCActionRow(title: NSLocalizedString("SKILL BROWSER", comment: ""),
+		                               route: Router.Character.Skills())
+		var sections: [TreeNode] = [skillBrowser]
+		
+		let attributes = NCOptimalCharacterAttributesSection(account: account, character: character)
+		
+		attributes.isExpanded = false
+		sections.append(attributes)
+		
+		let skillQueue = NCSkillQueueSection(character: character)
+		sections.append(skillQueue)
+		sections.append(NCSkillPlansSection(account: account, character: character))
+		
+		if treeController?.content == nil {
+			treeController?.content = RootNode(sections)
+		}
+		else {
+			treeController?.content?.children = sections
+		}
+		completionHandler()
+	}
+	
 }

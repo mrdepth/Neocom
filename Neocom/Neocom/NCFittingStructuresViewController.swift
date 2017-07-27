@@ -23,15 +23,6 @@ class NCFittingStructuresViewController: NCTreeViewController {
 		// Dispose of any resources that can be recreated.
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		if treeController?.content == nil {
-			self.treeController?.content = TreeNode()
-			reload()
-		}
-	}
-	
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
@@ -49,11 +40,8 @@ class NCFittingStructuresViewController: NCTreeViewController {
 		return [deleteAction]
 	}
 	
-	//MARK: - Private
-	
-	private func reload() {
+	override func updateContent(completionHandler: @escaping () -> Void) {
 		var sections = [TreeNode]()
-		
 		
 		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "station"), title: NSLocalizedString("New Structure Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .structure)!, completionHandler: {[weak self] (controller, type) in
 			guard let strongSelf = self else {return}
@@ -64,6 +52,7 @@ class NCFittingStructuresViewController: NCTreeViewController {
 		})))
 		
 		sections.append(NCLoadoutsSection(categoryID: .structure))
-		self.treeController?.content?.children = sections
+		self.treeController?.content = RootNode(sections)
+		completionHandler()
 	}
 }

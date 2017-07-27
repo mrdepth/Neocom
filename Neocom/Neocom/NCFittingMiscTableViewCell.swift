@@ -91,7 +91,7 @@ class NCFittingMiscRow: TreeRow {
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCFittingResourcesRow)?.hashValue == hashValue
+		return (object as? NCFittingMiscRow)?.hashValue == hashValue
 	}
 	
 }

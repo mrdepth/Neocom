@@ -10,8 +10,15 @@ import Foundation
 
 extension Progress {
 	func perform(pendingUnitCount: Int64 = 1, block: () -> Void) {
-		becomeCurrent(withPendingUnitCount: pendingUnitCount)
-		block()
-		resignCurrent()
+		if Progress.current() == self {
+			resignCurrent()
+			becomeCurrent(withPendingUnitCount: pendingUnitCount)
+			block()
+		}
+		else {
+			becomeCurrent(withPendingUnitCount: pendingUnitCount)
+			block()
+			resignCurrent()
+		}
 	}
 }

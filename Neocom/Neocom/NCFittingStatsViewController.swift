@@ -63,7 +63,11 @@ class NCFittingPriceSection: TreeSection {
 	
 	var prices: [Int: Double]? {
 		didSet {
-			(self.children as? [NCFittingPriceRow])?.forEach {$0.prices = prices}
+			if let treeController = treeController {
+				(self.children as? [NCFittingPriceRow])?.forEach {$0.prices = prices}
+				treeController.reloadCells(for: [self], with: .none)
+			}
+
 		}
 	}
 	
@@ -123,14 +127,26 @@ class NCFittingPriceSection: TreeSection {
 		return (object as? NCFittingPriceSection)?.hashValue == hashValue
 	}
 
+	override func update(from node: TreeNode) {
+		prices = (node as? NCFittingPriceSection)?.prices
+		super.update(from: node)
+	}
+
 }
 
 class NCFittingPriceRow: TreeRow {
 	var prices: [Int: Double]? {
 		didSet {
-			treeController?.reloadCells(for: [self], with: .none)
-			(self.children as? [NCFittingPriceRow])?.forEach {$0.prices = prices}
+			if let treeController = treeController {
+				treeController.reloadCells(for: [self], with: .none)
+				(self.children as? [NCFittingPriceRow])?.forEach {$0.prices = prices}
+			}
 		}
+	}
+	
+	override func update(from node: TreeNode) {
+		prices = (node as? NCFittingPriceRow)?.prices
+		super.update(from: node)
 	}
 }
 
@@ -331,14 +347,9 @@ class NCFittingStatsViewController: NCTreeViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if self.treeController?.content == nil {
-			self.treeController?.content = TreeNode()
-			reload()
-		}
-		
 		if observer == nil {
 			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
-				self?.reload()
+				self?.updateContent {}
 			}
 		}
 	}
@@ -353,7 +364,10 @@ class NCFittingStatsViewController: NCTreeViewController {
 	
 	//MARK: - Private
 	
-	private func reload() {
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		if self.treeController?.content == nil {
+			self.treeController?.content = TreeNode()
+		}
 		engine?.perform {
 			guard let pilot = self.fleet?.active else {return}
 			guard let ship = pilot.ship ?? pilot.structure else {return}
@@ -386,6 +400,7 @@ class NCFittingStatsViewController: NCTreeViewController {
 				NCDataManager(account: NCAccount.current).prices(typeIDs: typeIDs) { result in
 					pricesSection.prices = result
 				}
+				completionHandler()
 			}
 		}
 	}

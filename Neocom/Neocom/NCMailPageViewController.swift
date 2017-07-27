@@ -8,13 +8,21 @@
 
 import UIKit
 import EVEAPI
+import CloudData
 
 class NCMailPageViewController: NCPageViewController {
+	
+	private var accountChangeObserver: NotificationObserver?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		navigationItem.rightBarButtonItem = editButtonItem
 		reload()
+		
+		accountChangeObserver = NotificationCenter.default.addNotificationObserver(forName: .NCCurrentAccountChanged, object: nil, queue: nil) { [weak self] _ in
+			self?.reload()
+		}
+
 	}
 	
 	private var errorLabel: UILabel? {
@@ -77,5 +85,5 @@ class NCMailPageViewController: NCPageViewController {
 			break
 		}
 	}
-
+	
 }

@@ -126,15 +126,6 @@ class NCFittingShipsViewController: NCTreeViewController {
 		// Dispose of any resources that can be recreated.
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		if treeController?.content == nil {
-			self.treeController?.content = TreeNode()
-			reload()
-		}
-	}
-	
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
@@ -152,23 +143,22 @@ class NCFittingShipsViewController: NCTreeViewController {
 		return [deleteAction]
 	}
 	
-	//MARK: - Private
-	
-	private func reload() {
+	override func updateContent(completionHandler: @escaping () -> Void) {
 		var sections = [TreeNode]()
-	
 		
 		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
 			guard let strongSelf = self else {return}
 			strongSelf.dismiss(animated: true)
 			
 			Router.Fitting.Editor(typeID: Int(type.typeID)).perform(source: strongSelf)
-
+			
 		})))
 		
 		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator))
 		
 		sections.append(NCLoadoutsSection(categoryID: .ship))
-		self.treeController?.content?.children = sections
+		self.treeController?.content = RootNode(sections)
+		completionHandler()
 	}
+	
 }

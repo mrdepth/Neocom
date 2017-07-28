@@ -9,74 +9,30 @@
 import UIKit
 import EVEAPI
 
-class NCCalendarViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
-	
-	@IBOutlet var treeController: TreeController!
+class NCCalendarViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		
+		needsReloadOnAccountChange = true
 		tableView.register([Prototype.NCHeaderTableViewCell.default])
 		
-		registerRefreshable()
-		
-		treeController.delegate = self
-		
-		reload()
 	}
 	
-	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		if let row = node as? TreeNodeRoutable {
-			row.route?.perform(source: self, view: treeController.cell(for: node))
-		}
-		treeController.deselectCell(for: node, animated: true)
-	}
-	
-	//MARK: - NCRefreshable
-	
-	private var observer: NCManagedObjectObserver?
-	private var events: NCCachedResult<[ESI.Calendar.Summary]>?
-	private var locations: [Int64: NCLocation]?
-	
-	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
-		guard let account = NCAccount.current else {
-			completionHandler?()
-			return
-		}
-		
-		let progress = Progress(totalUnitCount: 1)
-		
-		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
-		
-		progress.perform {
-			dataManager.calendarEvents { result in
-				self.events = result
-				
-				switch result {
-				case let .success(_, record):
-					if let record = record {
-						self.observer = NCManagedObjectObserver(managedObject: record) { [weak self] _ in
-							self?.reloadSections()
-						}
-					}
-					
-				case .failure:
-					break
-				}
-				
-				self.reloadSections()
-				completionHandler?()
-
+	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+		dataManager.calendarEvents { result in
+			self.events = result
+			
+			if let cacheRecord = result.cacheRecord {
+				completionHandler([cacheRecord])
 			}
+			else {
+				completionHandler([])
+			}
+			
 		}
 	}
 	
-	private func reloadSections() {
+	override func updateContent(completionHandler: @escaping () -> Void) {
 		if let value = events?.value {
 			tableView.backgroundView = nil
 			
@@ -119,17 +75,16 @@ class NCCalendarViewController: UITableViewController, TreeControllerDelegate, N
 					
 					DispatchQueue.main.async {
 						
-						if self.treeController.content == nil {
-							let root = TreeNode()
-							root.children = sections
-							self.treeController.content = root
+						if self.treeController?.content == nil {
+							self.treeController?.content = RootNode(sections)
 						}
 						else {
-							self.treeController.content?.children = sections
+							self.treeController?.content?.children = sections
 						}
 						self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
+						completionHandler()
 					}
-
+					
 				}
 			}
 			
@@ -137,7 +92,12 @@ class NCCalendarViewController: UITableViewController, TreeControllerDelegate, N
 		}
 		else {
 			tableView.backgroundView = NCTableViewBackgroundLabel(text: events?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			completionHandler()
 		}
 	}
+	
+	//MARK: - NCRefreshable
+	
+	private var events: NCCachedResult<[ESI.Calendar.Summary]>?
 	
 }

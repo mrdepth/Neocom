@@ -146,7 +146,6 @@ class NCMailViewController: NCTreeViewController {
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
-		completionHandler()
 		mails = TreeNode()
 		update(result: result, completionHandler: completionHandler)
 	}

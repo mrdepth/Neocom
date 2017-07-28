@@ -10,9 +10,7 @@ import UIKit
 import EVEAPI
 import CoreData
 
-class NCAssetsSearchResultViewController: UITableViewController, TreeControllerDelegate, UISearchResultsUpdating {
-    
-    @IBOutlet var treeController: TreeController!
+class NCAssetsSearchResultViewController: NCTreeViewController, UISearchResultsUpdating {
     
 	var items: [Int64: ESI.Assets.Asset]?
 	var typeIDs: Set<Int>?
@@ -22,46 +20,9 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
-
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.image,
 		                    Prototype.NCDefaultTableViewCell.default])
-        treeController.delegate = self
-    }
-    
-    //MARK: - TreeControllerDelegate
-    
-    func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-        if let row = node as? TreeNodeRoutable {
-            row.route?.perform(source: self, view: treeController.cell(for: node))
-        }
-        treeController.deselectCell(for: node, animated: true)
-    }
-    
-    func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-        if let row = node as? DefaultTreeRow, let asset = row.object as? ESI.Assets.Asset, let contents = contents {
-			Router.Fitting.Editor(asset: asset, contents: contents).perform(source: self, view: treeController.cell(for: node))
-            /*let engine = NCFittingEngine()
-            engine.perform {
-                let fleet = NCFittingFleet(asset: asset, contents: contents, engine: engine)
-                DispatchQueue.main.async {
-                    if let account = NCAccount.current {
-                        fleet.active?.setSkills(from: account) { [weak self]  _ in
-                            guard let strongSelf = self else {return}
-                            Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
-                        }
-                    }
-                    else {
-                        fleet.active?.setSkills(level: 5) { [weak self] _ in
-                            guard let strongSelf = self else {return}
-                            Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
-                        }
-                    }
-                }
-            }*/
-        }
     }
     
     //MARK: - UISearchResultsUpdating
@@ -72,7 +33,7 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
         guard let text = searchController.searchBar.text,
             let items = items,
 			let contents = contents,
-            var typeIDs = typeIDs,
+            let typeIDs = typeIDs,
             !text.isEmpty
              else {
                 return
@@ -146,13 +107,11 @@ class NCAssetsSearchResultViewController: UITableViewController, TreeControllerD
                 sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
                 
                 DispatchQueue.main.async {
-                    if self.treeController.content == nil {
-                        let root = TreeNode()
-                        root.children = sections
-                        self.treeController.content = root
+                    if self.treeController?.content == nil {
+                        self.treeController?.content = RootNode(sections)
                     }
                     else {
-                        self.treeController.content?.children = sections
+                        self.treeController?.content?.children = sections
                     }
                     self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
                 }

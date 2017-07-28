@@ -197,7 +197,8 @@ class NCFittingFleet {
 		}
 	}
 	
-	func append(typeID: Int, engine: NCFittingEngine) {
+	@discardableResult
+	func append(typeID: Int, engine: NCFittingEngine) -> NCFittingCharacter? {
 		let gang = engine.gang
 		
 		
@@ -206,6 +207,10 @@ class NCFittingFleet {
 			if active == nil {
 				active = pilot
 			}
+			return pilot
+		}
+		else {
+			return nil
 		}
 	}
 	

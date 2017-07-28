@@ -31,12 +31,9 @@ class NCMailAttachmentsShipsViewController: NCTreeViewController {
 		// Dispose of any resources that can be recreated.
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		if treeController?.content == nil {
-			self.treeController?.content = RootNode([NCLoadoutsSection<NCAttachmentLoadoutRow>(categoryID: .ship)])
-		}
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		treeController?.content = RootNode([NCLoadoutsSection<NCAttachmentLoadoutRow>(categoryID: .ship)])
+		completionHandler()
 	}
 	
 	//MARK: - TreeControllerDelegate

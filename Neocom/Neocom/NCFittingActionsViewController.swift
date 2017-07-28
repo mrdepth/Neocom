@@ -155,6 +155,63 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		}
 	}
 
+	@IBAction func onDuplicate(_ sender: Any) {
+		guard let fleet = fleet else {return}
+		guard let pilot = fleet.active else {return}
+		guard let engine = pilot.engine else {return}
+		
+		engine.perform {
+			guard let ship = pilot.ship else {return}
+			
+			guard let copy = fleet.append(typeID: ship.typeID, engine: engine) else {return}
+			if let url = pilot.url {
+				copy.setSkills(from: url)
+			}
+			let copyShip = NCFittingShip(typeID: ship.typeID)
+			copy.ship = copyShip
+			
+			var name = ship.name
+			if let r = name.range(of: "Copy", options: [String.CompareOptions.backwards]) {
+				if name.endIndex == r.upperBound {
+					name += " 1"
+				}
+				else if let n = Int(name.substring(from: name.index(after: r.upperBound))) {
+					name.replaceSubrange(r.upperBound..<name.endIndex, with: " \(n + 1)")
+				}
+				else {
+					name += " " + NSLocalizedString("Copy", comment: "")
+				}
+			}
+			else if name.isEmpty {
+				name = NSLocalizedString("Copy", comment: "")
+			}
+			else {
+				name += " " + NSLocalizedString("Copy", comment: "")
+			}
+			
+			copyShip.name = name
+			
+			ship.modules.forEach {
+				guard let module = copyShip.addModule(typeID: $0.typeID, forced: true, socket: $0.socket) else {return}
+				if let charge = $0.charge {
+					module.charge = NCFittingCharge(typeID: charge.typeID)
+				}
+				module.state = $0.preferredState
+			}
+			ship.drones.forEach {
+				guard let drone = copyShip.addDrone(typeID: $0.typeID, squadronTag: $0.squadronTag) else {return}
+				drone.isActive = $0.isActive
+			}
+			pilot.implants.all.forEach {
+				copy.addImplant(typeID: $0.typeID)
+			}
+			pilot.boosters.all.forEach {
+				copy.addBooster(typeID: $0.typeID)
+			}
+			fleet.active = copy
+		}
+	}
+
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
@@ -352,6 +409,17 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 							}
 						}
 					}))
+					
+					controller.addAction(UIAlertAction(title: NSLocalizedString("EVE Mail", comment: ""), style: .default, handler: { _ in
+						guard let strongSelf = self else {return}
+						guard let url = (NCLoadoutRepresentation.dnaURL([(typeID: typeID, data: loadout, name: name)]).value as? [URL])?.first else {return}
+						let name = !name.isEmpty ? name : NCDatabase.sharedDatabase?.invTypes[typeID]?.typeName ?? NSLocalizedString("Unknown", comment: "")
+
+						let font = UIFont.preferredFont(forTextStyle: .body)
+						let s = name * [NSLinkAttributeName: url, NSFontAttributeName: font] + " " * [NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor.white]
+						Router.Mail.NewMessage(recipients: nil, subject: nil, body: s).perform(source: strongSelf)
+					}))
+
 				}
 
 

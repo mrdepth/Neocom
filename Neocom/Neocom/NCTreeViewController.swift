@@ -98,16 +98,26 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate {
 	}
 	
 	private var managedObjectsObserver: NCManagedObjectObserver?
+	lazy var updateGate = NCGate()
 	
 	@objc private func delayedUpdate() {
 		let date = Date()
 		expireDate = managedObjectsObserver?.objects.flatMap {($0 as? NCCacheRecord)?.expireDate as Date?}.filter {$0 > date}.min()
 		let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
-		progress.progress.perform {
-			updateContent {
-				progress.finish()
+		updateGate.perform {
+			let group = DispatchGroup()
+			group.enter()
+			DispatchQueue.main.async {
+				progress.progress.perform {
+					self.updateContent {
+						progress.finish()
+						group.leave()
+					}
+				}
 			}
+			group.wait()
 		}
+
 	}
 	
 	var expireDate: Date?

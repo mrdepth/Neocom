@@ -69,22 +69,19 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController {
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
 		let regionID = UserDefaults.standard.object(forKey: UserDefaults.Key.NCMarketRegion) as? Int ?? NCDBRegionID.theForge.rawValue
 		
-		let progress = Progress(totalUnitCount: 1)
-		progress.perform {
-			dataManager.marketOrders(typeID: Int(type!.typeID), regionID: regionID) { result in
-				self.orders = result
-				
-				switch result {
-				case let .success(_, record):
-					if let record = record {
-						completionHandler([record])
-					}
-					else {
-						completionHandler([])
-					}
-				case .failure:
+		dataManager.marketOrders(typeID: Int(type!.typeID), regionID: regionID) { result in
+			self.orders = result
+			
+			switch result {
+			case let .success(_, record):
+				if let record = record {
+					completionHandler([record])
+				}
+				else {
 					completionHandler([])
 				}
+			case .failure:
+				completionHandler([])
 			}
 		}
 		
@@ -130,12 +127,13 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController {
 					}
 					self.tableView.backgroundView = nil
 				}
+				completionHandler()
 			}
 		}
 		else {
 			self.tableView.backgroundView = NCTableViewBackgroundLabel(text: self.orders?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			completionHandler()
 		}
-		completionHandler()
 	}
 	
 }

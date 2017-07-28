@@ -189,15 +189,9 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 
 	//MARK: - UITextViewDelegate
 	
-	func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		print("\(scrollView.contentOffset)")
-	}
-	
-	
 	func textViewDidChange(_ textView: UITextView) {
 		updateConstraints(textView)
 
-		//textView.layoutIfNeeded()
 		if textView == toTextView {
 			scrollView.setContentOffset(CGPoint(x: 0, y: -scrollView.contentInset.top), animated: true)
 			search(toTextView.text ?? "")
@@ -333,7 +327,8 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 			let s = name * [NSLinkAttributeName: url, NSFontAttributeName: textView.font!] + " " * textView.typingAttributes
 			textView.textStorage.replaceCharacters(in: textView.selectedRange, with: s)
 			textView.selectedRange = NSMakeRange(textView.selectedRange.location + s.length, 0)
-			break
+			updateConstraints(textView)
+			update()
 		default:
 			break
 		}

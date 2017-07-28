@@ -9,10 +9,8 @@
 import UIKit
 import EVEAPI
 
-class NCWealthAssetsViewController: UITableViewController, TreeControllerDelegate {
+class NCWealthAssetsViewController: NCTreeViewController {
 	
-	@IBOutlet var treeController: TreeController!
-
 	var assets: [ESI.Assets.Asset]?
 	var prices: [Int: Double]?
 	
@@ -24,34 +22,16 @@ class NCWealthAssetsViewController: UITableViewController, TreeControllerDelegat
 		
 		tableView.register([Prototype.NCDefaultTableViewCell.attribute,
 		                    Prototype.NCPieChartTableViewCell.default])
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
 		
+		
+	}
+	
+	override func updateContent(completionHandler: @escaping () -> Void) {
 		pieChartRow = NCPieChartRow(formatter: NCUnitFormatter(unit: .isk, style: .short))
 		detailsSection = TreeNode()
-		
-		let root = TreeNode()
-		root.children = [pieChartRow!, detailsSection!]
-		treeController.content = root
-		
-		reload()
-	}
-	
-	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		if let row = node as? TreeNodeRoutable {
-			row.route?.perform(source: self, view: treeController.cell(for: node))
-		}
-		treeController.deselectCell(for: node, animated: true)
-	}
-	
-	
-	//MARK: - Private
-	
-	private func reload() {
 
+		treeController?.content = RootNode([pieChartRow!, detailsSection!])
+		
 		NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 			var ships = 0.0
@@ -87,7 +67,7 @@ class NCWealthAssetsViewController: UITableViewController, TreeControllerDelegat
 					(drones, NSLocalizedString("Drones", comment: ""), UIColor.red),
 					(materials, NSLocalizedString("Materials", comment: ""), UIColor.yellow),
 					(other, NSLocalizedString("Other", comment: ""), UIColor(white: 0.9, alpha: 1.0))
-					]
+				]
 				for (value, title, color) in list {
 					if value > 0 {
 						let segment = PieSegment(value: value, color: color, title: title)
@@ -95,10 +75,14 @@ class NCWealthAssetsViewController: UITableViewController, TreeControllerDelegat
 						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: title, title: title.uppercased(), subtitle: NCUnitFormatter.localizedString(from: value, unit: .isk, style: .full)))
 					}
 				}
-
+				
 				self.detailsSection?.children = rows
+				completionHandler()
 			}
 		}
 	}
+	
+	
+	//MARK: - Private
 	
 }

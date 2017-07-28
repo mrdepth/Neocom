@@ -79,6 +79,7 @@ class NCAssetRow: DefaultTreeRow {
 			subtitle: subtitle,
 			accessoryType: hasLoadout ? .detailButton : .none,
 			route: route,
+			accessoryButtonRoute: hasLoadout ? Router.Fitting.Editor(asset: asset, contents: contents) : nil,
 			object: asset)
 		self.children = children
 	}
@@ -89,213 +90,115 @@ class NCAssetRow: DefaultTreeRow {
 	}
 }
 
-class NCAssetsViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
+class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 	
-	@IBOutlet var treeController: TreeController!
-
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-        tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
-
-		registerRefreshable()
-		
+		needsReloadOnAccountChange = true
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.image,
 		                    Prototype.NCDefaultTableViewCell.default])
-		treeController.delegate = self
 		
-		setupSearchController()
+		setupSearchController(searchResultsController: storyboard!.instantiateViewController(withIdentifier: "NCAssetsSearchResultViewController") as! NCAssetsSearchResultViewController)
 		
-		reload()
 	}
 	
-	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		if let row = node as? TreeNodeRoutable {
-			row.route?.perform(source: self, view: treeController.cell(for: node))
-		}
-		treeController.deselectCell(for: node, animated: true)
-	}
-	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		if let row = node as? DefaultTreeRow, let asset = row.object as? ESI.Assets.Asset, let contents = contents {
-			Router.Fitting.Editor(asset: asset, contents: contents).perform(source: self, view: treeController.cell(for: node))
-			
-            /*let engine = NCFittingEngine()
-            engine.perform {
-                let fleet = NCFittingFleet(asset: asset, contents: contents, engine: engine)
-                DispatchQueue.main.async {
-                    if let account = NCAccount.current {
-                        fleet.active?.setSkills(from: account) { [weak self]  _ in
-                            guard let strongSelf = self else {return}
-                            Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
-                        }
-                    }
-                    else {
-                        fleet.active?.setSkills(level: 5) { [weak self] _ in
-                            guard let strongSelf = self else {return}
-                            Router.Fitting.Editor(fleet: fleet, engine: engine).perform(source: strongSelf)
-                        }
-                    }
-                }
-            }*/
-		}
-	}
-	
-	
-	//MARK: - NCRefreshable
-	
-	private var observer: NCManagedObjectObserver?
-	private var assets: NCCachedResult<[ESI.Assets.Asset]>?
-	private var locations: [Int64: NCLocation]?
-	var contents: [Int64: [ESI.Assets.Asset]]?
-	
-	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
-		guard let account = NCAccount.current else {
-			completionHandler?()
-			return
-		}
-		
-		let progress = Progress(totalUnitCount: 1)
-		
-		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
-		
-		progress.perform {
-			dataManager.assets { result in
-				self.assets = result
-				
-				switch result {
-				case let .success(_, record):
-					if let record = record {
-						self.observer = NCManagedObjectObserver(managedObject: record) { [weak self] _ in
-							self?.reloadLocations(dataManager: dataManager) {
-								self?.reloadSections()
-							}
-						}
-					}
-					
-					self.reloadLocations(dataManager: dataManager) {
-						self.reloadSections {
-							completionHandler?()
-						}
-					}
-				case .failure:
-					self.reloadSections {
-						completionHandler?()
-					}
-				}
-				
-				
+	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+		dataManager.assets { result in
+			self.assets = result
+			if let cacheRecord = result.cacheRecord {
+				completionHandler([cacheRecord])
+			}
+			else {
+				completionHandler([])
 			}
 		}
 	}
 	
-	private func reloadLocations(dataManager: NCDataManager, completionHandler: (() -> Void)?) {
-		guard let value = assets?.value else {
-			completionHandler?()
-			return
-		}
-		var locationIDs = Set(value.map {$0.locationID})
-		let itemIDs = Set(value.map {$0.itemID})
-		locationIDs.subtract(itemIDs)
-		
-		guard !locationIDs.isEmpty else {
-			completionHandler?()
-			return
-		}
-		
-		dataManager.locations(ids: locationIDs) { [weak self] result in
-			self?.locations = result
-			completionHandler?()
-		}
-		
-	}
-	
-	private func reloadSections(completionHandler: (() -> Void)? = nil) {
+	override func updateContent(completionHandler: @escaping () -> Void) {
 		if let value = assets?.value {
 			tableView.backgroundView = nil
-			let locations = self.locations ?? [:]
 			
-			NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
-				var items: [Int64: ESI.Assets.Asset] = [:]
-				var contents: [Int64: [ESI.Assets.Asset]] = [:]
-				var typeIDs = Set<Int>()
-				
-				value.forEach {
-					_ = (contents[$0.locationID]?.append($0)) ?? (contents[$0.locationID] = [$0])
-					items[$0.itemID] = $0
-					typeIDs.insert($0.typeID)
-				}
-				
-				var types = [Int: NCDBInvType]()
-				if typeIDs.count > 0 {
-					let result: [NCDBInvType]? = managedObjectContext.fetch("InvType", where: "typeID in %@", typeIDs)
-					result?.forEach {types[Int($0.typeID)] = $0}
-				}
-				
-				var sections = [DefaultTreeSection]()
-				for locationID in Set(locations.keys).subtracting(Set(items.keys)) {
-					guard var rows = contents[locationID]?.map ({NCAssetRow(asset: $0, contents: contents, types: types)}) else {continue}
+			var locationIDs = Set(value.map {$0.locationID})
+			let itemIDs = Set(value.map {$0.itemID})
+			locationIDs.subtract(itemIDs)
+			
+			dataManager.locations(ids: locationIDs) { locations in
+				NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
+					var items: [Int64: ESI.Assets.Asset] = [:]
+					var contents: [Int64: [ESI.Assets.Asset]] = [:]
+					var typeIDs = Set<Int>()
 					
-					rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
+					value.forEach {
+						_ = (contents[$0.locationID]?.append($0)) ?? (contents[$0.locationID] = [$0])
+						items[$0.itemID] = $0
+						typeIDs.insert($0.typeID)
+					}
 					
-					let location = locations[locationID]
-					let title = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: ""))
-					let nodeIdentifier = "\(location?.solarSystemName ?? "")\(locationID)"
+					var types = [Int: NCDBInvType]()
+					if typeIDs.count > 0 {
+						let result: [NCDBInvType]? = managedObjectContext.fetch("InvType", where: "typeID in %@", typeIDs)
+						result?.forEach {types[Int($0.typeID)] = $0}
+					}
 					
-					let section = DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title.uppercased(), children: rows)
-					section.isExpanded = false
-					sections.append(section)
-				}
-				sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
+					var sections = [DefaultTreeSection]()
+					for locationID in Set(locations.keys).subtracting(Set(items.keys)) {
+						guard var rows = contents[locationID]?.map ({NCAssetRow(asset: $0, contents: contents, types: types)}) else {continue}
+						
+						rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
+						
+						let location = locations[locationID]
+						let title = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: ""))
+						let nodeIdentifier = "\(location?.solarSystemName ?? "")\(locationID)"
+						
+						let section = DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title.uppercased(), children: rows)
+						section.isExpanded = false
+						sections.append(section)
+					}
+					sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
+					
+					DispatchQueue.main.async {
+						
+						if self.treeController?.content == nil {
+							self.treeController?.content = RootNode(sections)
+						}
+						else {
+							self.treeController?.content?.children = sections
+						}
+						
+						
+						self.contents = contents
+						if let searchController = self.searchController, let searchResultsController = searchController.searchResultsController as? NCAssetsSearchResultViewController {
+							searchResultsController.items = items
+							searchResultsController.contents = contents
+							searchResultsController.locations = locations
+							searchResultsController.typeIDs = typeIDs
+							if searchController.isActive {
+								searchResultsController.updateSearchResults(for: searchController)
+							}
+						}
 
-				DispatchQueue.main.async {
-                    
-					if self.treeController.content == nil {
-						let root = TreeNode()
-						root.children = sections
-						self.treeController.content = root
+						self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
+						completionHandler()
 					}
-					else {
-						self.treeController.content?.children = sections
-					}
-					self.contents = contents
-					self.searchResultsController?.items = items
-					self.searchResultsController?.contents = contents
-					self.searchResultsController?.locations = locations
-					self.searchResultsController?.typeIDs = typeIDs
-//                    self.searchResultsController?.sections = copySections
-					if let searchController = self.searchController, searchController.isActive {
-						self.searchResultsController?.updateSearchResults(for: searchController)
-					}
-					self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-					completionHandler?()
 				}
 			}
-			
 		}
 		else {
 			tableView.backgroundView = NCTableViewBackgroundLabel(text: assets?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-			completionHandler?()
+			completionHandler()
 		}
 	}
 	
-	private var searchController: UISearchController?
-	private var searchResultsController: NCAssetsSearchResultViewController?
-
-	private func setupSearchController() {
-		searchResultsController = self.storyboard?.instantiateViewController(withIdentifier: "NCAssetsSearchResultViewController") as? NCAssetsSearchResultViewController
-		searchController = UISearchController(searchResultsController: searchResultsController )
-		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
-		searchController?.searchResultsUpdater = searchResultsController
-		searchController?.searchBar.barStyle = UIBarStyle.black
-		searchController?.hidesNavigationBarDuringPresentation = false
-		tableView.backgroundView = UIView()
-		tableView.tableHeaderView = searchController?.searchBar
-		definesPresentationContext = true
-		
+	private var assets: NCCachedResult<[ESI.Assets.Asset]>?
+	var contents: [Int64: [ESI.Assets.Asset]]?
+	
+	//MARK: - NCSearchableViewController
+	var searchController: UISearchController?
+	
+	func updateSearchResults(for searchController: UISearchController) {
+		(searchController.searchResultsController as? NCAssetsSearchResultViewController)?.updateSearchResults(for: searchController)
 	}
+	
+
 }

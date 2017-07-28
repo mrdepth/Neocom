@@ -9,71 +9,36 @@
 import UIKit
 import EVEAPI
 
-class NCFeedChannelViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
+class NCFeedChannelViewController: NCTreeViewController {
 	
-	@IBOutlet var treeController: TreeController!
 	var url: URL?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		
 		tableView.register([Prototype.NCHeaderTableViewCell.default])
 		
-		registerRefreshable()
-		
-		treeController.delegate = self
-		
-		reload()
 	}
 	
-	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		if let row = node as? TreeNodeRoutable {
-			row.route?.perform(source: self, view: treeController.cell(for: node))
+	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+		guard let url = url else {
+			completionHandler([])
+			return
 		}
-		treeController.deselectCell(for: node, animated: true)
-	}
-	
-	//MARK: - NCRefreshable
-	
-	private var observer: NCManagedObjectObserver?
-	private var rss: NCCachedResult<RSS.Feed>?
-	
-	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
-		guard let url = url else {return}
 		
-		let progress = Progress(totalUnitCount: 2)
-		
-		let dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
-		
-		progress.perform {
-			dataManager.rss(url: url) { result in
-				self.rss = result
-				
-				switch result {
-				case let .success(_, record):
-					if let record = record {
-						self.observer = NCManagedObjectObserver(managedObject: record) { [weak self] _ in
-							self?.reloadSections()
-						}
-					}
-				case .failure:
-					break
-				}
-				progress.perform {
-					self.reloadSections() {
-						completionHandler?()
-					}
-				}
+		dataManager.rss(url: url) { result in
+			self.rss = result
+			
+			if let cacheRecord = result.cacheRecord {
+				completionHandler([cacheRecord])
+			}
+			else {
+				completionHandler([])
 			}
 		}
 	}
 	
-	private func reloadSections(completionHandler: (() -> Void)? = nil) {
+	override func updateContent(completionHandler: @escaping () -> Void) {
 		if let value = rss?.value {
 			let progress = Progress(totalUnitCount: Int64(value.items?.count ?? 0))
 			DispatchQueue.global(qos: .background).async {
@@ -116,16 +81,14 @@ class NCFeedChannelViewController: UITableViewController, TreeControllerDelegate
 					
 					DispatchQueue.main.async {
 						
-						if self.treeController.content == nil {
-							let root = TreeNode()
-							root.children = sections
-							self.treeController.content = root
+						if self.treeController?.content == nil {
+							self.treeController?.content = RootNode(sections)
 						}
 						else {
-							self.treeController.content?.children = sections
+							self.treeController?.content?.children = sections
 						}
 						self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-						completionHandler?()
+						completionHandler()
 					}
 					
 				}
@@ -134,8 +97,10 @@ class NCFeedChannelViewController: UITableViewController, TreeControllerDelegate
 		}
 		else {
 			tableView.backgroundView = NCTableViewBackgroundLabel(text: rss?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-			completionHandler?()
+			completionHandler()
 		}
 	}
+	
+	private var rss: NCCachedResult<RSS.Feed>?
 	
 }

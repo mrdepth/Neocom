@@ -365,10 +365,15 @@ class NCFittingStatsViewController: NCTreeViewController {
 	//MARK: - Private
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
+		guard let engine = engine else {
+			completionHandler()
+			return
+		}
+		
 		if self.treeController?.content == nil {
 			self.treeController?.content = TreeNode()
 		}
-		engine?.perform {
+		engine.perform {
 			guard let pilot = self.fleet?.active else {return}
 			guard let ship = pilot.ship ?? pilot.structure else {return}
 			var sections = [TreeNode]()

@@ -19,16 +19,10 @@ class NCMailDraftsViewController: NCTreeViewController {
 		tableView.register([Prototype.NCMailTableViewCell.default])
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if treeController?.content == nil {
-			treeController?.content = NCDraftsNode()
-			updateBackground()
-		}
-	}
-	
-	private func updateBackground() {
-		tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: NSLocalizedString("No Messages", comment: ""))
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		treeController?.content = NCDraftsNode()
+		updateBackground()
+		completionHandler()
 	}
 	
 	//MARK: - TreeControllerDelegate
@@ -46,5 +40,9 @@ class NCMailDraftsViewController: NCTreeViewController {
 			}
 		})]
 	}
-	
+
+	private func updateBackground() {
+		tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: NSLocalizedString("No Messages", comment: ""))
+	}
+
 }

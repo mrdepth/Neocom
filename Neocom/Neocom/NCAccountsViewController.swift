@@ -15,7 +15,7 @@ class NCAccountsNode: FetchedResultsNode<NCAccount> {
 	init(context: NSManagedObjectContext) {
 		
 		let request = NSFetchRequest<NCAccount>(entityName: "Account")
-		request.sortDescriptors = [NSSortDescriptor(key: "characterName", ascending: true)]
+		request.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true), NSSortDescriptor(key: "characterName", ascending: true)]
 		
 		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
 		super.init(resultsController: results, objectNode: NCAccountRow.self)
@@ -26,6 +26,7 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 	
 	required init(object: NCAccount) {
 		super.init(object: object)
+		canMove = true
 		cellIdentifier = Prototype.NCAccountTableViewCell.default.reuseIdentifier
 	}
 	
@@ -459,6 +460,8 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		navigationItem.rightBarButtonItem = editButtonItem
+		
 		registerRefreshable()
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
@@ -480,6 +483,14 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 		super.viewDidAppear(animated)
 		navigationController?.transitioningDelegate = self
 	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		guard let context = NCStorage.sharedStorage?.viewContext else {return}
+		if context.hasChanges {
+			try? context.save()
+		}
+	}
 
 	
 	@IBAction func onAddAccount(_ sender: Any) {
@@ -493,6 +504,16 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 	
 	@IBAction func onClose(_ sender: Any) {
 		dismiss(animated: true, completion: nil)
+	}
+	
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		if !editing {
+			guard let context = NCStorage.sharedStorage?.viewContext else {return}
+			if context.hasChanges {
+				try? context.save()
+			}
+		}
 	}
 	
 	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -531,6 +552,16 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 			account.managedObjectContext?.delete(account)
 			try? account.managedObjectContext?.save()
 		})]
+	}
+	
+	func treeController(_ treeController: TreeController, didMoveNode node: TreeNode, at: Int, to: Int) {
+		var order: Int32 = 0
+		(node.parent?.children as? [NCAccountRow])?.forEach {
+			if $0.object.order != order {
+				$0.object.order = order
+			}
+			order += 1
+		}
 	}
 	
 	// MARK: UIViewControllerTransitioningDelegate

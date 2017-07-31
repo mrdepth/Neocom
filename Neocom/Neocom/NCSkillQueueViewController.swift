@@ -558,8 +558,7 @@ class NCSkillQueueViewController: NCTreeViewController {
 
 			if (skillPlan.skills?.count ?? 0) > 0 {
 				controller.addAction(UIAlertAction(title: NSLocalizedString("Clear", comment: ""), style: .default, handler: { _ in
-					skillPlan.skills?.forEach {
-						guard let skill = $0 as? NCSkillPlanSkill else {return}
+					(skillPlan.skills?.allObjects as? [NCSkillPlanSkill])?.forEach { skill in
 						skill.managedObjectContext?.delete(skill)
 						skill.skillPlan = nil
 					}

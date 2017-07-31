@@ -58,8 +58,18 @@ extension Dictionary {
 	}
 }
 
+extension OAuth2Token {
+	var identifier: String {
+		return "\(self.characterID).\(self.refreshToken)"
+	}
+}
+
 
 typealias NCLoaderCompletion<T> = (_ result: Result<T>, _ cacheTime: TimeInterval) -> Void
+
+
+fileprivate var tokens: NSMapTable<NSString, OAuth2Token> = NSMapTable.strongToWeakObjects()
+fileprivate var retriers: NSMapTable<NSString, OAuth2Retrier> = NSMapTable.strongToWeakObjects()
 
 
 class NCDataManager {
@@ -75,7 +85,16 @@ class NCDataManager {
 	
 	lazy var retrier: OAuth2Retrier? = {
 		guard let token = self.token else {return nil}
-		return OAuth2Retrier(token: token, clientID: ESClientID, secretKey: ESSecretKey)
+		
+		let key = token.identifier as NSString
+		if let cached = retriers.object(forKey: key) {
+			return cached
+		}
+		else {
+			let retrier = OAuth2Retrier(token: token, clientID: ESClientID, secretKey: ESSecretKey)
+			retriers.setObject(retrier, forKey: key)
+			return retrier
+		}
 	}()
 	
 	lazy var esi: ESI = {
@@ -111,7 +130,15 @@ class NCDataManager {
 				self?.token = acc.token
 			}*/
 			self.account = String(acc.characterID)
-			self.token = acc.token
+			let token = acc.token
+			let key = token.identifier as NSString
+			if let cached = tokens.object(forKey: key) {
+				self.token = cached
+			}
+			else {
+				tokens.setObject(token, forKey: key)
+				self.token = token
+			}
 		}
 		else {
 			self.account = nil

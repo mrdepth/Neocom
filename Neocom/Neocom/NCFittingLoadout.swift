@@ -490,7 +490,9 @@ extension NCFittingCharacter {
 					self.setSkills(from: account, completionHandler: completionHandler)
 				}
 				else {
-					completionHandler?(false)
+					DispatchQueue.main.async {
+						completionHandler?(false)
+					}
 				}
 
 			}
@@ -502,7 +504,9 @@ extension NCFittingCharacter {
 					self.setSkills(from: character, completionHandler: completionHandler)
 				}
 				else {
-					completionHandler?(false)
+					DispatchQueue.main.async {
+						completionHandler?(false)
+					}
 				}
 				
 			}
@@ -511,14 +515,18 @@ extension NCFittingCharacter {
 			setSkills(level: level, completionHandler: completionHandler)
 		}
 		else {
-			completionHandler?(false)
+			DispatchQueue.main.async {
+				completionHandler?(false)
+			}
 		}
 	}
 
 	
 	@nonobjc func setSkills(from account: NCAccount, completionHandler: ((Bool) -> Void)? = nil) {
 		guard let engine = engine else {
-			completionHandler?(false)
+			DispatchQueue.main.async {
+				completionHandler?(false)
+			}
 			return
 		}
 		
@@ -550,7 +558,9 @@ extension NCFittingCharacter {
 	
 	@nonobjc func setSkills(from character: NCFitCharacter, completionHandler: ((Bool) -> Void)? = nil) {
 		guard let engine = engine else {
-			completionHandler?(false)
+			DispatchQueue.main.async {
+				completionHandler?(false)
+			}
 			return
 		}
 		let url = NCFittingCharacter.url(character: character)
@@ -567,7 +577,9 @@ extension NCFittingCharacter {
 	
 	@nonobjc func setSkills(level: Int, completionHandler: ((Bool) -> Void)? = nil) {
 		guard let engine = engine else {
-			completionHandler?(false)
+			DispatchQueue.main.async {
+				completionHandler?(false)
+			}
 			return
 		}
 		let url = NCFittingCharacter.url(level: level)

@@ -51,6 +51,10 @@ class NCKillmailsPageViewController: NCPageViewController {
 		fetch(from: nil)
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+	}
+	
 	private(set) var isFetching = false
 	
 	func fetchIfNeeded() {

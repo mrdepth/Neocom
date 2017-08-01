@@ -29,10 +29,13 @@ extension NCSearchableViewController {
 }
 
 class NCTreeViewController: UITableViewController, TreeControllerDelegate {
-	var treeController: TreeController?
-	
 	
 	private var accountChangeObserver: NotificationObserver?
+	private var becomeActiveObserver: NotificationObserver?
+	private var refreshHandler: NCActionHandler?
+
+	var treeController: TreeController?
+
 	var needsReloadOnAccountChange: Bool = false {
 		didSet {
 			accountChangeObserver = nil
@@ -44,8 +47,7 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate {
 		}
 	}
 	
-	private var becomeActiveObserver: NotificationObserver?
-	
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		tableView.backgroundColor = UIColor.background
@@ -80,7 +82,6 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate {
 		}
 	}
 	
-	private var refreshHandler: NCActionHandler?
 	
 	func reload() {
 		self.reload(cachePolicy: .useProtocolCachePolicy)
@@ -98,7 +99,7 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate {
 	}
 	
 	private var managedObjectsObserver: NCManagedObjectObserver?
-	lazy var updateGate = NCGate()
+	private lazy var updateGate = NCGate()
 	
 	@objc private func delayedUpdate() {
 		let date = Date()
@@ -120,7 +121,7 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate {
 
 	}
 	
-	var expireDate: Date?
+	private var expireDate: Date?
 	
 	@nonobjc private func reload(cachePolicy: URLRequest.CachePolicy) {
 		guard !isLoading else {return}

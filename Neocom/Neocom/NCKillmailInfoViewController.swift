@@ -147,13 +147,6 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 				
 				var rows = [TreeNode]()
 				let victim = killmail.getVictim()
-				let ship = invTypes[victim.shipTypeID]
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.default,
-				                           nodeIdentifier: "VictimShip", image: ship?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image,
-				                           title: ship?.typeName ?? NSLocalizedString("Unknown Type", comment: ""), //shipTitle(ship),
-				                           subtitle: NSLocalizedString("Damage taken:", comment: "") + " " + NCUnitFormatter.localizedString(from: victim.damageTaken, unit: .none, style: .full),
-				                           accessoryType: ship != nil ? .disclosureIndicator : .none,
-				                           route: ship != nil ? Router.Database.TypeInfo(ship!.objectID) : nil))
 
 				let location: NSAttributedString? = {
 					guard let solarSystem = NCDBMapSolarSystem.mapSolarSystems(managedObjectContext: managedObjectContext)[killmail.solarSystemID] else {return nil}
@@ -168,7 +161,17 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 				                           accessoryType: .disclosureIndicator,
 				                           route: Router.KillReports.RelatedKills(killmail: killmail)))
 				                           //route: Router.KillReports.SolarSystemReports(solarSystemID: killmail.solarSystemID)))
+
+				let ship = invTypes[victim.shipTypeID]
+				let shipRow = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.default,
+				                             nodeIdentifier: "VictimShip", image: ship?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image,
+				                             title: ship?.typeName ?? NSLocalizedString("Unknown Type", comment: ""), //shipTitle(ship),
+					subtitle: NSLocalizedString("Damage taken:", comment: "") + " " + NCUnitFormatter.localizedString(from: victim.damageTaken, unit: .none, style: .full),
+					accessoryType: ship != nil ? .disclosureIndicator : .none,
+					route: ship != nil ? Router.Database.TypeInfo(ship!.objectID) : nil)
 				
+				rows.append(shipRow)
+
 				if let items = killmail.getItems()?.map ({return NCKillmailItemRow(item: $0)}) {
 					var hi = [NCKillmailItemRow]()
 					var med = [NCKillmailItemRow]()
@@ -222,7 +225,7 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 					}
 					
 					if !sections.isEmpty {
-						rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default, nodeIdentifier: "VictimItems", title: NSLocalizedString("Items", comment: "").uppercased(), children: sections))
+						shipRow.children = sections
 					}
 				}
 				

@@ -14,6 +14,8 @@ class NCTableViewCell: UITableViewCell {
 		return NCBinder(target: self)
 	}()
 	
+	var accessoryButtonHandler: NCActionHandler?
+	
 	override func prepareForReuse() {
 		binder.unbindAll()
 		super.prepareForReuse()

@@ -10,22 +10,17 @@ import UIKit
 import CoreData
 import EVEAPI
 
-class NCKillmailsViewController: UITableViewController, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCKillmailsViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		refreshControl = UIRefreshControl()
 		refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCKillmailTableViewCell.default
 		                    ])
 		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -40,7 +35,7 @@ class NCKillmailsViewController: UITableViewController, TreeControllerDelegate {
 	}
 	
 	func updateBackground() {
-		if (treeController.content?.children.count ?? 0) > 0 {
+		if (treeController?.content?.children.count ?? 0) > 0 {
 			tableView.backgroundView = nil
 		}
 		else {
@@ -49,12 +44,6 @@ class NCKillmailsViewController: UITableViewController, TreeControllerDelegate {
 	}
 	
 	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		if let route = (node as? TreeNodeRoutable)?.route {
-			route.perform(source: self, view: treeController.cell(for: node))
-		}
-	}
 	
 	func treeControllerDidUpdateContent(_ treeController: TreeController) {
 		updateBackground()
@@ -71,9 +60,7 @@ class NCKillmailsViewController: UITableViewController, TreeControllerDelegate {
 			refreshControl?.endRefreshing()
 			return
 		}
-		parent.reload(cachePolicy: .reloadIgnoringLocalCacheData) {
-			self.refreshControl?.endRefreshing()
-		}
+		parent.reload(cachePolicy: .reloadIgnoringLocalCacheData)
 	}
 	
 }

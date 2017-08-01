@@ -19,6 +19,8 @@
 		120A59EF1F10ABEC0053F94B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120A59EE1F10ABEC0053F94B /* StoreKit.framework */; };
 		120F4C591EF9A044003C92E9 /* NCContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */; };
 		120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */; };
+		120F62F21F30CDAA0019F5BB /* NCDatabaseTypeVariationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120F62F11F30CDAA0019F5BB /* NCDatabaseTypeVariationsViewController.swift */; };
+		120F62F41F30D2990019F5BB /* NCDatabaseTypeRequiredForViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120F62F31F30D2990019F5BB /* NCDatabaseTypeRequiredForViewController.swift */; };
 		1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */; };
 		1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */; };
 		1211A4791EF1843D00364744 /* NCSkillsContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1211A4781EF1843D00364744 /* NCSkillsContentViewController.swift */; };
@@ -133,6 +135,10 @@
 		1263EE2C1F0E77FA005128E6 /* NCFittingRequiredSkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1263EE2B1F0E77FA005128E6 /* NCFittingRequiredSkillsViewController.swift */; };
 		1263EE311F0F8EE0005128E6 /* NCTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1263EE301F0F8EE0005128E6 /* NCTreeViewController.swift */; };
 		126B29501EB1FEAF006562A4 /* NCMailPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */; };
+		126C9D471F30A69A0071E792 /* NCLocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C9D461F30A69A0071E792 /* NCLocationPickerViewController.swift */; };
+		126C9D491F30A6CD0071E792 /* NCRegionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C9D481F30A6CD0071E792 /* NCRegionsViewController.swift */; };
+		126C9D4B1F30A8580071E792 /* NCSolarSystemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C9D4A1F30A8580071E792 /* NCSolarSystemsViewController.swift */; };
+		126C9D4D1F30A9270071E792 /* NCLocationSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C9D4C1F30A9270071E792 /* NCLocationSearchResultsViewController.swift */; };
 		127332E11E71D01D00DE46C9 /* TreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127332E01E71D01D00DE46C9 /* TreeController.swift */; };
 		1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */; };
 		127BE3901E5AFC2900FA7F9F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BE38F1E5AFC2900FA7F9F /* Router.swift */; };
@@ -229,17 +235,12 @@
 		12CFDAD41F02997200CC0762 /* NCZKillboardGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDAD31F02997200CC0762 /* NCZKillboardGroupsViewController.swift */; };
 		12CFDAD61F02998000CC0762 /* NCZKillboardTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDAD51F02998000CC0762 /* NCZKillboardTypesViewController.swift */; };
 		12CFDAD81F029B8200CC0762 /* NCZKillboardTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDAD71F029B8200CC0762 /* NCZKillboardTypePickerViewController.swift */; };
-		12CFDADC1F038D6900CC0762 /* NCZKillboardRegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDADB1F038D6900CC0762 /* NCZKillboardRegionPickerViewController.swift */; };
-		12CFDADE1F038D8C00CC0762 /* NCZKillboardRegionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDADD1F038D8C00CC0762 /* NCZKillboardRegionsViewController.swift */; };
-		12CFDAE01F038DA300CC0762 /* NCZKillboardSolarSystemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDADF1F038DA300CC0762 /* NCZKillboardSolarSystemsViewController.swift */; };
-		12CFDAE21F038DBE00CC0762 /* NCZKillboardRegionsSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDAE11F038DBE00CC0762 /* NCZKillboardRegionsSearchResultsViewController.swift */; };
 		12CFDAE41F03D71F00CC0762 /* NCDatePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDAE31F03D71F00CC0762 /* NCDatePickerTableViewCell.swift */; };
 		12CFDAE61F03D8E800CC0762 /* NCDatePickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDAE51F03D8E800CC0762 /* NCDatePickerTableViewCell.xib */; };
 		12CFDAE81F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDAE71F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib */; };
 		12CFDAEA1F03EE4300CC0762 /* NCZKillboardKillmailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDAE91F03EE4300CC0762 /* NCZKillboardKillmailsViewController.swift */; };
 		12CFDAEC1F03F8F700CC0762 /* NCKillmailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDAEB1F03F8F700CC0762 /* NCKillmailTableViewCell.xib */; };
 		12D08F991E4DCCE30042B761 /* NCFittingActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */; };
-		12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */; };
 		12D1CFFB1E277E2400C31B61 /* NCSegmentedPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */; };
 		12D20E9F1EB9EB1400BEC926 /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */; };
 		12D20EA11EBA00B600BEC926 /* NCPieChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20EA01EBA00B600BEC926 /* NCPieChartTableViewCell.swift */; };
@@ -384,6 +385,8 @@
 		120A59EE1F10ABEC0053F94B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractInfoViewController.swift; sourceTree = "<group>"; };
 		120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultNoImageTableViewCell.xib; sourceTree = "<group>"; };
+		120F62F11F30CDAA0019F5BB /* NCDatabaseTypeVariationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseTypeVariationsViewController.swift; sourceTree = "<group>"; };
+		120F62F31F30D2990019F5BB /* NCDatabaseTypeRequiredForViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseTypeRequiredForViewController.swift; sourceTree = "<group>"; };
 		1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCSkillTableViewCell.xib; sourceTree = "<group>"; };
 		1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCActionHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		1211A4781EF1843D00364744 /* NCSkillsContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillsContentViewController.swift; sourceTree = "<group>"; };
@@ -501,6 +504,10 @@
 		1263EE2B1F0E77FA005128E6 /* NCFittingRequiredSkillsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingRequiredSkillsViewController.swift; sourceTree = "<group>"; };
 		1263EE301F0F8EE0005128E6 /* NCTreeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTreeViewController.swift; sourceTree = "<group>"; };
 		126B294F1EB1FEAF006562A4 /* NCMailPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailPageViewController.swift; sourceTree = "<group>"; };
+		126C9D461F30A69A0071E792 /* NCLocationPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocationPickerViewController.swift; sourceTree = "<group>"; };
+		126C9D481F30A6CD0071E792 /* NCRegionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRegionsViewController.swift; sourceTree = "<group>"; };
+		126C9D4A1F30A8580071E792 /* NCSolarSystemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSolarSystemsViewController.swift; sourceTree = "<group>"; };
+		126C9D4C1F30A9270071E792 /* NCLocationSearchResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocationSearchResultsViewController.swift; sourceTree = "<group>"; };
 		127332E01E71D01D00DE46C9 /* TreeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TreeController.swift; path = ../../ThirdParty/TreeController/TreeController/TreeController/TreeController.swift; sourceTree = "<group>"; };
 		1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
 		127BE38F1E5AFC2900FA7F9F /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -606,17 +613,12 @@
 		12CFDAD31F02997200CC0762 /* NCZKillboardGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardGroupsViewController.swift; sourceTree = "<group>"; };
 		12CFDAD51F02998000CC0762 /* NCZKillboardTypesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardTypesViewController.swift; sourceTree = "<group>"; };
 		12CFDAD71F029B8200CC0762 /* NCZKillboardTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardTypePickerViewController.swift; sourceTree = "<group>"; };
-		12CFDADB1F038D6900CC0762 /* NCZKillboardRegionPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardRegionPickerViewController.swift; sourceTree = "<group>"; };
-		12CFDADD1F038D8C00CC0762 /* NCZKillboardRegionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardRegionsViewController.swift; sourceTree = "<group>"; };
-		12CFDADF1F038DA300CC0762 /* NCZKillboardSolarSystemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardSolarSystemsViewController.swift; sourceTree = "<group>"; };
-		12CFDAE11F038DBE00CC0762 /* NCZKillboardRegionsSearchResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardRegionsSearchResultsViewController.swift; sourceTree = "<group>"; };
 		12CFDAE31F03D71F00CC0762 /* NCDatePickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatePickerTableViewCell.swift; sourceTree = "<group>"; };
 		12CFDAE51F03D8E800CC0762 /* NCDatePickerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDatePickerTableViewCell.xib; sourceTree = "<group>"; };
 		12CFDAE71F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCEmptyHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		12CFDAE91F03EE4300CC0762 /* NCZKillboardKillmailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardKillmailsViewController.swift; sourceTree = "<group>"; };
 		12CFDAEB1F03F8F700CC0762 /* NCKillmailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCKillmailTableViewCell.xib; sourceTree = "<group>"; };
 		12D08F981E4DCCE30042B761 /* NCFittingActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingActionsViewController.swift; sourceTree = "<group>"; };
-		12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRegionPickerViewController.swift; sourceTree = "<group>"; };
 		12D1CFFA1E277E2300C31B61 /* NCSegmentedPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSegmentedPageControl.swift; sourceTree = "<group>"; };
 		12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
 		12D20EA01EBA00B600BEC926 /* NCPieChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCPieChartTableViewCell.swift; sourceTree = "<group>"; };
@@ -769,12 +771,13 @@
 				1230A3171DFFE2CF00627D92 /* NCDatabaseTypeInfoViewController.swift */,
 				1230A3151DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift */,
 				12FC3CC71E13F4A400B7744E /* NCDatabaseTypeMasteryViewController.swift */,
+				120F62F11F30CDAA0019F5BB /* NCDatabaseTypeVariationsViewController.swift */,
+				120F62F31F30D2990019F5BB /* NCDatabaseTypeRequiredForViewController.swift */,
 				12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */,
 				12C37D291EFA866C0070F055 /* NCMarketGroupsViewController.swift */,
 				12C37D331EFAAA290070F055 /* NCNPCViewController.swift */,
 				12C37D361EFBA4C80070F055 /* NCWHViewController.swift */,
 				12DC567C1EFBE8520088F45E /* NCIncursionsViewController.swift */,
-				12D13DD41E110F2600EA1B51 /* NCRegionPickerViewController.swift */,
 				12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */,
 				12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */,
 				12961DBC1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift */,
@@ -789,6 +792,10 @@
 				1226D9601F223A4C0049FA0C /* NCNPCPickerViewController.swift */,
 				1226D9621F223A690049FA0C /* NCNPCPickerGroupsViewController.swift */,
 				1226D9641F223A740049FA0C /* NCNPCPickerTypesViewController.swift */,
+				126C9D461F30A69A0071E792 /* NCLocationPickerViewController.swift */,
+				126C9D481F30A6CD0071E792 /* NCRegionsViewController.swift */,
+				126C9D4A1F30A8580071E792 /* NCSolarSystemsViewController.swift */,
+				126C9D4C1F30A9270071E792 /* NCLocationSearchResultsViewController.swift */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -986,10 +993,6 @@
 				12CFDAD11F02995500CC0762 /* NCZKillboardCategoriesViewController.swift */,
 				12CFDAD31F02997200CC0762 /* NCZKillboardGroupsViewController.swift */,
 				12CFDAD51F02998000CC0762 /* NCZKillboardTypesViewController.swift */,
-				12CFDADB1F038D6900CC0762 /* NCZKillboardRegionPickerViewController.swift */,
-				12CFDADD1F038D8C00CC0762 /* NCZKillboardRegionsViewController.swift */,
-				12CFDADF1F038DA300CC0762 /* NCZKillboardSolarSystemsViewController.swift */,
-				12CFDAE11F038DBE00CC0762 /* NCZKillboardRegionsSearchResultsViewController.swift */,
 				12CFDAE91F03EE4300CC0762 /* NCZKillboardKillmailsViewController.swift */,
 				1203E87E1F043A86009ADF8D /* NCZKillboardSummaryViewController.swift */,
 			);
@@ -1520,6 +1523,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1220710C1EF2C6B8007D86CE /* NCDatabaseCertificateMasteryViewController.swift in Sources */,
+				120F62F41F30D2990019F5BB /* NCDatabaseTypeRequiredForViewController.swift in Sources */,
 				1226D9611F223A4C0049FA0C /* NCNPCPickerViewController.swift in Sources */,
 				12851D7C1EFD1ADE00C8DD42 /* NCPlanetaryViewController.swift in Sources */,
 				1227B81E1E096A4F00C816A0 /* NCDamageTypeLabel.swift in Sources */,
@@ -1581,10 +1585,8 @@
 				12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */,
 				12E2674D1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift in Sources */,
 				1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */,
-				12CFDADE1F038D8C00CC0762 /* NCZKillboardRegionsViewController.swift in Sources */,
 				12406A051F20F95D00A4DAE7 /* NCModuleTableViewCell.swift in Sources */,
 				129C51A11E605E6D0066F2E4 /* NCFittingFleetViewController.swift in Sources */,
-				12CFDADC1F038D6900CC0762 /* NCZKillboardRegionPickerViewController.swift in Sources */,
 				129B31691E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift in Sources */,
 				121314C11F13A68B00DAFD12 /* NCMailAttachmentsShipsViewController.swift in Sources */,
 				128E61421E0A707200C15EEB /* NCDamageTypeTableViewCell.swift in Sources */,
@@ -1598,13 +1600,13 @@
 				1230A32C1DFFE2CF00627D92 /* NCGate.swift in Sources */,
 				129C51A41E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift in Sources */,
 				12DC56A91EFC0AFD0088F45E /* NCFittingState.mm in Sources */,
-				12D13DD51E110F2600EA1B51 /* NCRegionPickerViewController.swift in Sources */,
-				12CFDAE01F038DA300CC0762 /* NCZKillboardSolarSystemsViewController.swift in Sources */,
+				126C9D491F30A6CD0071E792 /* NCRegionsViewController.swift in Sources */,
 				1294AB321F161A15002B9BA8 /* NCMailAttachmentsStructuresViewController.swift in Sources */,
 				125CE1361E9FF0E7007B8B6B /* NCNewMailViewController.swift in Sources */,
 				12E9321E1E6B56D40033D71A /* NCFittingCharactersViewController.swift in Sources */,
 				12DC56881EFC0A040088F45E /* NCFittingFacility.mm in Sources */,
 				127DE7D81E9513B4008D4873 /* ChartView.swift in Sources */,
+				126C9D4D1F30A9270071E792 /* NCLocationSearchResultsViewController.swift in Sources */,
 				12C37D341EFAAA290070F055 /* NCNPCViewController.swift in Sources */,
 				1256BE4B1DF210C500A2A24B /* NCTimeIntervalFormatter.swift in Sources */,
 				12EFE7EC1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift in Sources */,
@@ -1650,7 +1652,6 @@
 				126157061E0095380041B817 /* NCProgressHandler.swift in Sources */,
 				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
 				12D20EB41EBCBD3C00BEC926 /* EVEAPI+NC.swift in Sources */,
-				12CFDAE21F038DBE00CC0762 /* NCZKillboardRegionsSearchResultsViewController.swift in Sources */,
 				1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */,
 				12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */,
 				12DC56911EFC0A400088F45E /* NCFittingCommandCenter.mm in Sources */,
@@ -1676,6 +1677,7 @@
 				12D930F11E657EA400CBAE1C /* Prototype.swift in Sources */,
 				12D20EB01EBCB10E00BEC926 /* NCCalendarViewController.swift in Sources */,
 				12D08F991E4DCCE30042B761 /* NCFittingActionsViewController.swift in Sources */,
+				120F62F21F30CDAA0019F5BB /* NCDatabaseTypeVariationsViewController.swift in Sources */,
 				120A59E81F0BFCB20053F94B /* NCShoppingListViewController.swift in Sources */,
 				12DE67211E715D46005CA44C /* NCSegmentedControl.swift in Sources */,
 				12AC8DD21DF090A600561A7A /* NCCache.swift in Sources */,
@@ -1749,6 +1751,7 @@
 				129E61061E0291FD00B56EB8 /* NCSkillsViewController.swift in Sources */,
 				12DC56AC1EFC0B0F0088F45E /* NCFittingProductionState.mm in Sources */,
 				129E61021E0287F500B56EB8 /* NCSkillTableViewCell.swift in Sources */,
+				126C9D4B1F30A8580071E792 /* NCSolarSystemsViewController.swift in Sources */,
 				1256BF2E1DF48AA800A2A24B /* NCBackgroundView.swift in Sources */,
 				121D10AE1E262F8900DD671B /* NCTypePickerGroupsViewController.swift in Sources */,
 				12CFDAD01F026C3F00CC0762 /* NCZKillboardContactsViewController.swift in Sources */,
@@ -1759,6 +1762,7 @@
 				12DC569D1EFC0A8A0088F45E /* NCFittingSpaceport.mm in Sources */,
 				12D390F51E840A2000B8A938 /* NCMiningYieldTableViewCell.swift in Sources */,
 				12AC8DE21DF0B5F200561A7A /* Dark.clr in Sources */,
+				126C9D471F30A69A0071E792 /* NCLocationPickerViewController.swift in Sources */,
 				1230A3291DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift in Sources */,
 				1226D9651F223A740049FA0C /* NCNPCPickerTypesViewController.swift in Sources */,
 				12F8FF9F1E5DBC58008F79D5 /* NCFittingShipsViewController.swift in Sources */,

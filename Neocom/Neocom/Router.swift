@@ -443,6 +443,34 @@ enum Router {
 				destination.level = (try? context?.existingObject(with: masteryLevelObjectID)) as? NCDBCertMasteryLevel
 			}
 		}
+		
+		class Variations: Route {
+			let typeObjectID: NSManagedObjectID
+			
+			init(typeObjectID: NSManagedObjectID) {
+				self.typeObjectID = typeObjectID
+				super.init(kind: .adaptivePush, identifier: "NCDatabaseTypeVariationsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCDatabaseTypeVariationsViewController
+				destination.type = (try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: typeObjectID)) as? NCDBInvType
+			}
+		}
+		
+		class RequiredFor: Route {
+			let typeObjectID: NSManagedObjectID
+			
+			init(typeObjectID: NSManagedObjectID) {
+				self.typeObjectID = typeObjectID
+				super.init(kind: .adaptivePush, identifier: "NCDatabaseTypeRequiredForViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCDatabaseTypeRequiredForViewController
+				destination.type = (try? NCDatabase.sharedDatabase?.viewContext.existingObject(with: typeObjectID)) as? NCDBInvType
+			}
+		}
 
 		class NPCPicker: Route {
 			let completionHandler: (NCNPCPickerViewController, NCDBInvType) -> Void
@@ -494,6 +522,39 @@ enum Router {
 				destination.title = title
 			}
 		}
+		
+		class LocationPicker: Route {
+			let completionHandler: (NCLocationPickerViewController, Any) -> Void
+			let mode: [NCLocationPickerViewController.Mode]
+			
+			init(mode: [NCLocationPickerViewController.Mode], completionHandler: @escaping (NCLocationPickerViewController, Any) -> Void) {
+				self.completionHandler = completionHandler
+				self.mode = mode
+				super.init(kind: .modal, identifier: "NCLocationPickerViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCLocationPickerViewController
+				destination.completionHandler = completionHandler
+				destination.mode = mode
+			}
+			
+		}
+		
+		class SolarSystems: Route {
+			let region: NCDBMapRegion
+			
+			init(region: NCDBMapRegion) {
+				self.region = region
+				super.init(kind: .push, identifier: "NCSolarSystemsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCSolarSystemsViewController
+				destination.region = region
+			}
+		}
+
 	}
 	
 	enum Character {
@@ -1011,35 +1072,6 @@ enum Router {
 			}
 		}
 
-		class RegionPicker: Route {
-			let completionHandler: (NCZKillboardRegionPickerViewController, Any) -> Void
-			
-			init(completionHandler: @escaping (NCZKillboardRegionPickerViewController, Any) -> Void) {
-				self.completionHandler = completionHandler
-				super.init(kind: .modal, identifier: "NCZKillboardRegionPickerViewController")
-			}
-			
-			override func prepareForSegue(destination: UIViewController) {
-				let destination = destination as! NCZKillboardRegionPickerViewController
-				destination.completionHandler = completionHandler
-			}
-			
-		}
-
-		class SolarSystems: Route {
-			let region: NCDBMapRegion
-			
-			init(region: NCDBMapRegion) {
-				self.region = region
-				super.init(kind: .push, identifier: "NCZKillboardSolarSystemsViewController")
-			}
-			
-			override func prepareForSegue(destination: UIViewController) {
-				let destination = destination as! NCZKillboardSolarSystemsViewController
-				destination.region = region
-			}
-		}
-		
 		class ZKillboardReports: Route {
 			let filter: [ZKillboard.Filter]
 			

@@ -134,14 +134,8 @@ class NCMailViewController: NCTreeViewController {
 		lastID = nil
 		isEndReached = false
 		mails = nil
-		self.dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
 		fetch(from: nil) { result in
-			if let record = result.cacheRecord {
-				completionHandler([record])
-			}
-			else {
-				completionHandler([])
-			}
+			completionHandler([result.cacheRecord].flatMap {$0})
 		}
 	}
 	
@@ -153,6 +147,7 @@ class NCMailViewController: NCTreeViewController {
 	private func update(result: NCCachedResult<[ESI.Mail.Header]>?, completionHandler: @escaping () -> Void) {
 		guard let mails = mails else {
 			completionHandler()
+			self.isFetching = false
 			return
 		}
 		
@@ -243,19 +238,13 @@ class NCMailViewController: NCTreeViewController {
 		guard let label = label else {return}
 		guard let labelID = label.labelID else {return}
 		guard !isEndReached, !isFetching else {return}
-		let dataManager = self.dataManager
 		isFetching = true
 		
-		let progress = Progress(totalUnitCount: 1)
-		isFetching = true
-		progress.perform {
-			dataManager.returnMailHeaders(lastMailID: from, labels: [Int64(labelID)]) { result in
-				self.result = result
-				self.isFetching = false
-				
-				self.update(result: result) {
-					completionHandler?(result)
-				}
+		dataManager.returnMailHeaders(lastMailID: from, labels: [Int64(labelID)]) { result in
+			self.result = result
+			
+			self.update(result: result) {
+				completionHandler?(result)
 			}
 		}
 	}

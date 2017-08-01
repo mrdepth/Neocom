@@ -19,12 +19,7 @@ class NCIndustryViewController: NCTreeViewController {
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
 		dataManager.industryJobs { result in
 			self.jobs = result
-			if let cacheRecord = result.cacheRecord {
-				completionHandler([cacheRecord])
-			}
-			else {
-				completionHandler([])
-			}
+			completionHandler([result.cacheRecord].flatMap {$0})
 		}
 	}
 	

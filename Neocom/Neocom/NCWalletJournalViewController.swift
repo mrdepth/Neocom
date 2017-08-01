@@ -39,12 +39,7 @@ class NCWalletJournalViewController: NCTreeViewController {
 		}
 		
 		dispatchGroup.notify(queue: .main) {
-			if let cacheRecord = self.walletJournal?.cacheRecord {
-				completionHandler([cacheRecord])
-			}
-			else {
-				completionHandler([])
-			}
+			completionHandler([self.walletJournal?.cacheRecord].flatMap {$0})
 		}
 	}
 	

@@ -21,14 +21,7 @@ class NCCalendarViewController: NCTreeViewController {
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
 		dataManager.calendarEvents { result in
 			self.events = result
-			
-			if let cacheRecord = result.cacheRecord {
-				completionHandler([cacheRecord])
-			}
-			else {
-				completionHandler([])
-			}
-			
+			completionHandler([result.cacheRecord].flatMap {$0})
 		}
 	}
 	

@@ -26,12 +26,7 @@ class NCJumpClonesViewController: NCTreeViewController {
 		
 		dataManager.clones { result in
 			self.clones = result
-			if let cacheRecord = result.cacheRecord {
-				completionHandler([cacheRecord])
-			}
-			else {
-				completionHandler([])
-			}
+			completionHandler([result.cacheRecord].flatMap {$0})
 		}
 	}
 	

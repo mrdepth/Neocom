@@ -31,12 +31,7 @@ class NCIncursionsViewController: NCTreeViewController {
 		progress.perform {
 			dataManager.incursions { result in
 				self.incursions = result
-				if let record = result.cacheRecord {
-					completionHandler([record])
-				}
-				else {
-					completionHandler([])
-				}
+				completionHandler([result.cacheRecord].flatMap {$0})
 			}
 		}
 	}

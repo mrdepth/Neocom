@@ -3,20 +3,17 @@
 import UIKit
 import PlaygroundSupport
 
-class A: NSObject {
-	deinit {
-		print("~A")
-	}
+var work = DispatchWorkItem {
+	print("A")
 }
 
-var m: NSMapTable<NSString, A>? = NSMapTable.strongToWeakObjects()
-autoreleasepool {
-	do {
-		let a = A()
-		m?.setObject(a, forKey: "12")
-		//	a = nil
-		print("\(m!.object(forKey: "12"))")
-	}
+DispatchQueue.main.async(execute: work)
+//work.cancel()
+
+work = DispatchWorkItem {
+	print("B")
 }
-print("\(m!.object(forKey: "12"))")
-print("exit")
+
+DispatchQueue.main.async(execute: work)
+
+PlaygroundPage.current.needsIndefiniteExecution = true

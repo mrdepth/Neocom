@@ -18,17 +18,13 @@ class NCContractsViewController: NCTreeViewController {
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
 		dataManager.contracts { result in
 			self.contracts = result
-			if let cacheRecord = result.cacheRecord {
-				completionHandler([cacheRecord])
-			}
-			else {
-				completionHandler([])
-			}
+			completionHandler([result.cacheRecord].flatMap {$0})
 		}
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let value = contracts?.value {
+		if let contracts = contracts?.value {
+			let value = Set(contracts)
 			tableView.backgroundView = nil
 			
 			var locationIDs = Set(value.flatMap {$0.startLocationID})

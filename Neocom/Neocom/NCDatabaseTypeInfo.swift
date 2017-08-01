@@ -90,7 +90,6 @@ class NCDatabaseTypeInfoRow: DefaultTreeRow {
 			image = attributeType.icon?.image?.image
 		}
 		self.init(prototype: Prototype.NCDefaultTableViewCell.attribute,
-		          //subtitle?.isEmpty == false ? Prototype.NCDefaultTableViewCell.attribute : Prototype.NCDefaultTableViewCell.compact,
 		           nodeIdentifier: attribute.attributeType?.attributeName,
 		           image: image,
 		           title: title?.uppercased(),
@@ -497,6 +496,28 @@ struct NCDatabaseTypeInfo {
 				
 				if let mastery = NCDatabaseTypeInfo.masteries(type: type, character: character) {
 					sections.append(mastery)
+				}
+				
+				if type.parentType != nil || (type.variations?.count ?? 0) > 0 {
+					let n = (type.variations?.count ?? type.parentType?.variations?.count ?? 0) + 1
+					let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+					                                nodeIdentifier: "Variations",
+					                                title: String(format: NSLocalizedString("%d types", comment: ""), n).uppercased(),
+					                                accessoryType: .disclosureIndicator,
+					                                route: Router.Database.Variations(typeObjectID: type.objectID))
+					let section = DefaultTreeSection(nodeIdentifier: "VariationsSection", title: NSLocalizedString("Variations", comment: "").uppercased(), children: [row])
+					sections.append(section)
+				}
+				else if (type.requiredForSkill?.count ?? 0) > 0 {
+					let n = type.requiredForSkill!.count
+					
+					let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+					                                nodeIdentifier: "RequiredFor",
+					                                title: String(format: NSLocalizedString("%d types", comment: ""), n).uppercased(),
+					                                accessoryType: .disclosureIndicator,
+					                                route: Router.Database.RequiredFor(typeObjectID: type.objectID))
+					let section = DefaultTreeSection(nodeIdentifier: "RequiredForSection", title: NSLocalizedString("Required for", comment: "").uppercased(), children: [row])
+					sections.append(section)
 				}
 				
 				let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")

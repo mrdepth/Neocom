@@ -108,12 +108,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 
 			dataManager.fittings { result in
 				self.fittings = result
-				if let cacheRecord = result.cacheRecord {
-					completionHandler([cacheRecord])
-				}
-				else {
-					completionHandler([])
-				}
+				completionHandler([result.cacheRecord].flatMap {$0})
 			}
 		}
 	}

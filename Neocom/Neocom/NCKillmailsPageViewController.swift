@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import CloudData
 
 class NCDateSection: TreeSection {
 	let date: Date
@@ -33,13 +34,17 @@ class NCDateSection: TreeSection {
 }
 
 
-class NCKillmailsPageViewController: NCPageViewController {
+class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 	
 	var killsViewController: NCKillmailsViewController?
 	var lossesViewController: NCKillmailsViewController?
 	
+	var accountChangeObserver: NotificationObserver?
+	var becomeActiveObserver: NotificationObserver?
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		needsReloadOnAccountChange = true
 
 		killsViewController = storyboard!.instantiateViewController(withIdentifier: "NCKillmailsViewController") as? NCKillmailsViewController
 		killsViewController?.title = NSLocalizedString("Kills", comment: "")
@@ -48,11 +53,15 @@ class NCKillmailsPageViewController: NCPageViewController {
 		
 		viewControllers = [killsViewController!, lossesViewController!]
 		
-		fetch(from: nil)
+		becomeActiveObserver = NotificationCenter.default.addNotificationObserver(forName: .UIApplicationDidBecomeActive, object: nil, queue: nil) { [weak self] _ in
+			self?.reloadIfNeeded()
+		}
+
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		reloadIfNeeded()
 	}
 	
 	private(set) var isFetching = false
@@ -60,119 +69,165 @@ class NCKillmailsPageViewController: NCPageViewController {
 	func fetchIfNeeded() {
 		guard let tableView = (currentPage as? NCKillmailsViewController)?.tableView else {return}
 		if let lastID = lastID, tableView.contentOffset.y > tableView.contentSize.height - tableView.bounds.size.height * 2 {
-			fetch(from: lastID)
-		}
-		
-	}
-	
-	func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil ) {
-		guard let account = NCAccount.current else {
-			completionHandler?()
-			return
-		}
-		self.dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
-		isEndReached = false
-		lastID = nil
-		kills = TreeNode()
-		losses = TreeNode()
-		fetch(from: nil, completionHandler: completionHandler)
-	}
-	
-	//MARK: - Private
-	
-	private lazy var dataManager: NCDataManager = NCDataManager(account: NCAccount.current)
-	private var isEndReached = false
-	private var lastID: Int64?
-	
-	private var kills = TreeNode()
-	private var losses = TreeNode()
-	
-	private func fetch(from: Int64?, completionHandler: (() -> Void)? = nil) {
-		guard !isEndReached, !isFetching else {return}
-		let dataManager = self.dataManager
-		let characterID = Int(dataManager.characterID)
-		isFetching = true
-		
-		let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
-		
-		
-		func process(killmails: [ESI.Killmails.Recent]) {
-			
+			guard !isEndReached, !isFetching else {return}
+
+			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 			progress.progress.perform {
-				let partial = Progress(totalUnitCount: Int64(killmails.count))
-				
-				if !killmails.isEmpty {
-					var queue = killmails
-					
-					func pop() {
-						if queue.isEmpty {
-							if let lastID = killmails.map({$0.killmailID}).min() {
-								self.lastID = Int64(lastID)
-							}
-							self.isFetching = false
-							self.fetchIfNeeded()
-							completionHandler?()
-							progress.finish()
-						}
-						else {
-							let killmail = queue.removeFirst()
-							dataManager.killmailInfo(killmailHash: killmail.killmailHash, killmailID: Int64(killmail.killmailID)) { result in
-								if let value = result.value {
-									UIView.performWithoutAnimation {
-										let isLoss = value.victim.characterID == characterID
-										
-										let node = isLoss ? self.losses : self.kills
-										let row = NCKillmailRow(killmail: value, characterID: Int64(characterID), dataManager: dataManager)
-										
-										if let section = node.children.last as? NCDateSection, section.date < value.killmailTime {
-											section.children.append(row)
-										}
-										else {
-											let calendar = Calendar(identifier: .gregorian)
-											let components = calendar.dateComponents([.year, .month, .day], from: value.killmailTime)
-											let date = calendar.date(from: components) ?? value.killmailTime
-											let section = NCDateSection(date: date)
-											section.children = [row]
-											node.children.append(section)
-										}
-										
-										self.lossesViewController?.error = nil
-										self.killsViewController?.error = nil
-										self.killsViewController?.treeController.content = self.kills
-										self.lossesViewController?.treeController.content = self.losses
-									}
-								}
-								partial.completedUnitCount += 1
-								pop()
-							}
-						}
-					}
-					
-					pop()
-				}
-				else {
-					self.isFetching = false
-					self.isEndReached = true
-					completionHandler?()
+				fetch(from: lastID) { _ in
 					progress.finish()
 				}
 			}
 		}
 		
-		progress.progress.perform {
-			dataManager.killmails(maxKillID: from) { result in
-				switch result {
-				case let .success(value, _):
-					process(killmails: value)
-				case let .failure(error):
-					self.isEndReached = true
-					self.isFetching = false
-					for controller in [self.killsViewController, self.lossesViewController] {
-						controller?.error = error
-					}
-					completionHandler?()
-					progress.finish()
+	}
+	
+	//MAKR: - NCAPIController
+	
+
+	var needsReloadOnAccountChange: Bool = false {
+		didSet {
+			accountChangeObserver = nil
+			if needsReloadOnAccountChange {
+				accountChangeObserver = NotificationCenter.default.addNotificationObserver(forName: .NCCurrentAccountChanged, object: nil, queue: nil) { [weak self] _ in
+					self?.reload()
 				}
+			}
+		}
+	}
+	
+	var isLoading: Bool = false
+	lazy var dataManager: NCDataManager = NCDataManager(account: NCAccount.current)
+	
+	func updateContent(completionHandler: @escaping () -> Void) {
+		kills = TreeNode()
+		losses = TreeNode()
+		update(result: result, completionHandler: completionHandler)
+	}
+	
+	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void ) {
+		lastID = nil
+		isEndReached = false
+		kills = nil
+		losses = nil
+		self.dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
+		fetch(from: nil) { result in
+			completionHandler([result.cacheRecord].flatMap {$0})
+		}
+	}
+	
+	func didStartLoading() {
+	}
+	
+	func didFailLoading(error: Error) {
+		lossesViewController?.error = error
+		killsViewController?.error = error
+		viewControllers?.flatMap {($0 as? UITableViewController)?.refreshControl}.filter {$0.isRefreshing}.forEach {
+			$0.endRefreshing()
+		}
+	}
+	
+	func didFinishLoading() {
+		viewControllers?.flatMap {($0 as? UITableViewController)?.refreshControl}.filter {$0.isRefreshing}.forEach {
+			$0.endRefreshing()
+		}
+	}
+	
+	var managedObjectsObserver: NCManagedObjectObserver?
+	lazy var updateGate = NCGate()
+	var updateWork: DispatchWorkItem?
+	var expireDate: Date?
+	
+	
+	//MARK: - Private
+	
+	func reloadIfNeeded() {
+		if result == nil || (expireDate ?? Date.distantFuture) < Date() {
+			reload()
+		}
+	}
+	
+	private var isEndReached = false
+	private var lastID: Int64?
+	
+	private var kills: TreeNode?
+	private var losses: TreeNode?
+	private var result: NCCachedResult<[ESI.Killmails.Recent]>?
+	
+	private func update(result: NCCachedResult<[ESI.Killmails.Recent]>?, completionHandler: @escaping () -> Void) {
+		guard let kills = kills, let losses = losses else {
+			isFetching = false
+			completionHandler()
+			return
+		}
+		
+		
+		if let killmails = result?.value, !killmails.isEmpty {
+			let partial = Progress(totalUnitCount: Int64(killmails.count))
+
+			var queue = killmails
+			let dataManager = self.dataManager
+			let characterID = Int(dataManager.characterID)
+			
+			func pop() {
+				if queue.isEmpty {
+					if let lastID = killmails.map({$0.killmailID}).min() {
+						self.lastID = Int64(lastID)
+					}
+					self.isFetching = false
+					self.fetchIfNeeded()
+					completionHandler()
+				}
+				else {
+					let killmail = queue.removeFirst()
+					dataManager.killmailInfo(killmailHash: killmail.killmailHash, killmailID: Int64(killmail.killmailID)) { result in
+						if let value = result.value {
+							UIView.performWithoutAnimation {
+								let isLoss = value.victim.characterID == characterID
+								
+								let node = isLoss ? losses : kills
+								let row = NCKillmailRow(killmail: value, characterID: Int64(characterID), dataManager: dataManager)
+								
+								if let section = node.children.last as? NCDateSection, section.date < value.killmailTime {
+									section.children.append(row)
+								}
+								else {
+									let calendar = Calendar(identifier: .gregorian)
+									let components = calendar.dateComponents([.year, .month, .day], from: value.killmailTime)
+									let date = calendar.date(from: components) ?? value.killmailTime
+									let section = NCDateSection(date: date)
+									section.children = [row]
+									node.children.append(section)
+								}
+								
+								self.lossesViewController?.error = nil
+								self.killsViewController?.error = nil
+								self.killsViewController?.treeController?.content = kills
+								self.lossesViewController?.treeController?.content = losses
+							}
+						}
+						partial.completedUnitCount += 1
+						pop()
+					}
+				}
+			}
+			
+			pop()
+		}
+		else {
+			self.isFetching = false
+			self.isEndReached = true
+			completionHandler()
+		}
+	}
+	
+	private func fetch(from: Int64?, completionHandler: ((NCCachedResult<[ESI.Killmails.Recent]>) -> Void)? = nil) {
+		guard !isEndReached, !isFetching else {return}
+		isFetching = true
+		
+		dataManager.killmails(maxKillID: from) { result in
+			self.result = result
+			self.update(result: result) {
+				completionHandler?(result)
 			}
 		}
 	}

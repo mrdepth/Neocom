@@ -248,23 +248,6 @@ class NCMetaGroupFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fe
 	
 }
 
-class NCTypeInfoNode: FetchedResultsObjectNode<NCDBInvType> {
-	var segue: String?
-	var accessoryButtonSegue: String?
-	
-	required init(object: NCDBInvType) {
-		super.init(object: object)
-		self.cellIdentifier = Prototype.NCDefaultTableViewCell.default.reuseIdentifier
-	}
-	
-	override func configure(cell: UITableViewCell) {
-		if let cell = cell as? NCDefaultTableViewCell {
-			cell.titleLabel?.text = object.typeName
-			cell.iconView?.image = object.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
-			cell.object = object
-		}
-	}
-}
 
 class NCTypeInfoRow: TreeRow {
 	let managedObjectContext: NSManagedObjectContext?

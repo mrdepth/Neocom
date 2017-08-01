@@ -21,6 +21,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCActionHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.attribute,
+		                    Prototype.NCDefaultTableViewCell.attributeNoImage,
 		                    Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact,
 		                    Prototype.NCDefaultTableViewCell.noImage,

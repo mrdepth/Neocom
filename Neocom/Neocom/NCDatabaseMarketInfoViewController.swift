@@ -53,15 +53,19 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController {
 
 	}
 	
-	@IBAction func unwindFromRegionPicker(segue: UIStoryboardSegue) {
-		guard let controller = segue.source as? NCRegionPickerViewController else {return}
-		guard let region = controller.region else {return}
-		navigationItem.rightBarButtonItem?.title = region.regionName
-		UserDefaults.standard.set(Int(region.regionID), forKey: UserDefaults.Key.NCMarketRegion)
-		treeController?.content = nil
-		reload()
+	@IBAction func onRegions(_ sender: Any) {
+		Router.Database.LocationPicker(mode: [.regions]) { [weak self] (controller, result) in
+			controller.dismiss(animated: true, completion: nil)
+			guard let region = result as? NCDBMapRegion else {return}
+			self?.navigationItem.rightBarButtonItem?.title = region.regionName
+			UserDefaults.standard.set(Int(region.regionID), forKey: UserDefaults.Key.NCMarketRegion)
+			self?.treeController?.content = nil
+			self?.reload()
+			
+			NotificationCenter.default.post(name: .NCMarketRegionChanged, object: region)
+		}.perform(source: self)
 		
-		NotificationCenter.default.post(name: .NCMarketRegionChanged, object: region)
+
 	}
 	
 	private var orders: NCCachedResult<[ESI.Market.Order]>?
@@ -71,18 +75,7 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController {
 		
 		dataManager.marketOrders(typeID: Int(type!.typeID), regionID: regionID) { result in
 			self.orders = result
-			
-			switch result {
-			case let .success(_, record):
-				if let record = record {
-					completionHandler([record])
-				}
-				else {
-					completionHandler([])
-				}
-			case .failure:
-				completionHandler([])
-			}
+			completionHandler([result.cacheRecord].flatMap {$0})
 		}
 		
 	}

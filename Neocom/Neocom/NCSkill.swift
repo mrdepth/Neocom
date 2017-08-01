@@ -119,7 +119,6 @@ class NCSkill: Hashable {
 		let date = Date()
 		if let trainingStartDate = trainingStartDate,
 			let trainingEndDate = trainingEndDate,
-			let level = level,
 			trainingEndDate > date && trainingStartDate < date {
 			return true
 		}

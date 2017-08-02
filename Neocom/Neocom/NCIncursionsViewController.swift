@@ -72,7 +72,7 @@ class NCIncursionsViewController: NCTreeViewController {
 			}
 		}
 		else {
-			tableView.backgroundView = NCTableViewBackgroundLabel(text: incursions?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: incursions?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 			completionHandler()
 		}
 	}

@@ -300,6 +300,9 @@ class NCCharacterSheetViewController: NCTreeViewController {
 		else {
 			treeController?.content?.children = sections
 		}
+		
+		tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
+		
 		completionHandler()
 	}
 	

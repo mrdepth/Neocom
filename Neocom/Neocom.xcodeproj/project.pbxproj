@@ -261,6 +261,10 @@
 		12D39D101EF936980077BD17 /* NCWalletTransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39D0F1EF936980077BD17 /* NCWalletTransactionsViewController.swift */; };
 		12D39D141EF969210077BD17 /* NCContractTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39D131EF969210077BD17 /* NCContractTableViewCell.swift */; };
 		12D39D161EF969DA0077BD17 /* NCContractsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D39D151EF969DA0077BD17 /* NCContractsViewController.swift */; };
+		12D404471F31C010007F1715 /* NCSwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D404461F31C010007F1715 /* NCSwitchTableViewCell.xib */; };
+		12D404491F31C0AF007F1715 /* NCSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D404481F31C0AF007F1715 /* NCSwitchTableViewCell.swift */; };
+		12D4044C1F32222A007F1715 /* NCLocationPickerContainerViewContrller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D4044B1F32222A007F1715 /* NCLocationPickerContainerViewContrller.swift */; };
+		12D4044E1F32226E007F1715 /* NCLocationPickerRecentViewContrller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D4044D1F32226E007F1715 /* NCLocationPickerRecentViewContrller.swift */; };
 		12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */; };
 		12D930E51E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E41E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib */; };
 		12D930E71E656B0C00CBAE1C /* NCChargeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E61E656B0C00CBAE1C /* NCChargeTableViewCell.xib */; };
@@ -640,6 +644,10 @@
 		12D39D0F1EF936980077BD17 /* NCWalletTransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCWalletTransactionsViewController.swift; sourceTree = "<group>"; };
 		12D39D131EF969210077BD17 /* NCContractTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractTableViewCell.swift; sourceTree = "<group>"; };
 		12D39D151EF969DA0077BD17 /* NCContractsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractsViewController.swift; sourceTree = "<group>"; };
+		12D404461F31C010007F1715 /* NCSwitchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCSwitchTableViewCell.xib; sourceTree = "<group>"; };
+		12D404481F31C0AF007F1715 /* NCSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSwitchTableViewCell.swift; sourceTree = "<group>"; };
+		12D4044B1F32222A007F1715 /* NCLocationPickerContainerViewContrller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocationPickerContainerViewContrller.swift; sourceTree = "<group>"; };
+		12D4044D1F32226E007F1715 /* NCLocationPickerRecentViewContrller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocationPickerRecentViewContrller.swift; sourceTree = "<group>"; };
 		12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingModuleTableViewCell.xib; sourceTree = "<group>"; };
 		12D930E41E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingModuleStateTableViewCell.xib; sourceTree = "<group>"; };
 		12D930E61E656B0C00CBAE1C /* NCChargeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCChargeTableViewCell.xib; sourceTree = "<group>"; };
@@ -793,6 +801,8 @@
 				1226D9621F223A690049FA0C /* NCNPCPickerGroupsViewController.swift */,
 				1226D9641F223A740049FA0C /* NCNPCPickerTypesViewController.swift */,
 				126C9D461F30A69A0071E792 /* NCLocationPickerViewController.swift */,
+				12D4044B1F32222A007F1715 /* NCLocationPickerContainerViewContrller.swift */,
+				12D4044D1F32226E007F1715 /* NCLocationPickerRecentViewContrller.swift */,
 				126C9D481F30A6CD0071E792 /* NCRegionsViewController.swift */,
 				126C9D4A1F30A8580071E792 /* NCSolarSystemsViewController.swift */,
 				126C9D4C1F30A9270071E792 /* NCLocationSearchResultsViewController.swift */,
@@ -1047,6 +1057,7 @@
 				12D39D0D1EF936520077BD17 /* NCWalletTransactionTableViewCell.swift */,
 				12406A041F20F95D00A4DAE7 /* NCModuleTableViewCell.swift */,
 				12406A061F20F9E400A4DAE7 /* NCShipTableViewCell.swift */,
+				12D404481F31C0AF007F1715 /* NCSwitchTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1231,6 +1242,7 @@
 				12D930EE1E656FCC00CBAE1C /* NCTextFieldTableViewCell.xib */,
 				12406A001F20F49500A4DAE7 /* NCModuleTableViewCell.xib */,
 				12406A021F20F4B800A4DAE7 /* NCShipTableViewCell.xib */,
+				12D404461F31C010007F1715 /* NCSwitchTableViewCell.xib */,
 			);
 			name = Prototypes;
 			sourceTree = "<group>";
@@ -1511,6 +1523,7 @@
 				1256BF2B1DF4770B00A2A24B /* MainMenu.xcassets in Resources */,
 				12CFDAEC1F03F8F700CC0762 /* NCKillmailTableViewCell.xib in Resources */,
 				12CFDAE61F03D8E800CC0762 /* NCDatePickerTableViewCell.xib in Resources */,
+				12D404471F31C010007F1715 /* NCSwitchTableViewCell.xib in Resources */,
 				12C37D2C1EFA9CDC0070F055 /* NCContactTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1615,6 +1628,7 @@
 				121D10B01E26345D00DD671B /* NSManagedObjectContext+NC.swift in Sources */,
 				12AC8DCE1DF08D9B00561A7A /* NCCache.xcdatamodeld in Sources */,
 				1230A32F1DFFE2CF00627D92 /* NCTableView.m in Sources */,
+				12D4044E1F32226E007F1715 /* NCLocationPickerRecentViewContrller.swift in Sources */,
 				124247C01E6605AD002E0460 /* NCFleetMemberTableViewCell.swift in Sources */,
 				1230A32E1DFFE2CF00627D92 /* NCLabel.swift in Sources */,
 				12DA882A1EB8707400FB1922 /* Progress+NC.swift in Sources */,
@@ -1720,6 +1734,8 @@
 				1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */,
 				12DA88331EB8C93A00FB1922 /* NCExtendedLifeTime.swift in Sources */,
 				12DBEABA1E1D3F3D0088A486 /* NCFittingItem.mm in Sources */,
+				12D404491F31C0AF007F1715 /* NCSwitchTableViewCell.swift in Sources */,
+				12D4044C1F32222A007F1715 /* NCLocationPickerContainerViewContrller.swift in Sources */,
 				1224AF641E6D92240043F96C /* NCSkillEditTableViewCell.swift in Sources */,
 				12E2674F1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift in Sources */,
 				1203E88F1F0A8048009ADF8D /* NCFeedItemTableViewCell.swift in Sources */,

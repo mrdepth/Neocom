@@ -59,7 +59,7 @@ class NCIndustryViewController: NCTreeViewController {
 			
 		}
 		else {
-			tableView.backgroundView = NCTableViewBackgroundLabel(text: jobs?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: jobs?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 			completionHandler()
 		}
 	}

@@ -148,6 +148,19 @@
 	return _attributes;
 }
 
+- (nonnull NSArray<NCFittingItem*>*) affectors {
+	NCVerifyFittingContext(self.engine);
+	std::shared_ptr<dgmpp::Item> item = self.item;
+	NSMutableArray* affectors = [NSMutableArray new];
+	NCFittingEngine* engine = self.engine;
+	if (item) {
+		for (const auto& i: item->getAffectors()) {
+			[affectors addObject:[NCFittingItem item:i withEngine:engine]];
+		}
+	}
+	return affectors;
+}
+
 - (BOOL) isEqual:(id)object {
 	return self.hash == [object hash];
 }

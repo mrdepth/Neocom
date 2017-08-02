@@ -22,7 +22,9 @@ class NCMailAttachmentsStructuresViewController: NCTreeViewController {
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
-		treeController?.content = RootNode([NCLoadoutsSection<NCAttachmentLoadoutRow>(categoryID: .structure)])
+		treeController?.content = NCLoadoutsSection<NCAttachmentLoadoutRow>(categoryID: .structure)
+		
+		tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
 		completionHandler()
 	}
 

@@ -84,7 +84,7 @@ class NCCalendarViewController: NCTreeViewController {
 			
 		}
 		else {
-			tableView.backgroundView = NCTableViewBackgroundLabel(text: events?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: events?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 			completionHandler()
 		}
 	}

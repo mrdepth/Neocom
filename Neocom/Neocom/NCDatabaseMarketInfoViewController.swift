@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 class NCDatabaseMarketInfoRow: TreeRow {
 	let price: String
@@ -62,6 +63,21 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController {
 			self?.treeController?.content = nil
 			self?.reload()
 			
+			if let context = NCCache.sharedCache?.viewContext {
+				let location: NCCacheLocationPickerRecent = context.fetch("LocationPickerRecent", where: "locationID == %d", region.regionID) ?? {
+					let location = NCCacheLocationPickerRecent(entity: NSEntityDescription.entity(forEntityName: "LocationPickerRecent", in: context)!, insertInto: context)
+					location.locationID = region.regionID
+					location.locationType = NCCacheLocationPickerRecent.LocationType.region.rawValue
+					return location
+					}()
+				location.date = Date() as NSDate
+				
+				if context.hasChanges {
+					try? context.save()
+				}
+			}
+			
+			
 			NotificationCenter.default.post(name: .NCMarketRegionChanged, object: region)
 		}.perform(source: self)
 		
@@ -111,9 +127,7 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController {
 				}
 				else {
 					if self.treeController?.content == nil {
-						let root = TreeNode()
-						root.children = sections
-						self.treeController?.content = root
+						self.treeController?.content = RootNode(sections)
 					}
 					else {
 						self.treeController?.content?.children = sections
@@ -124,7 +138,7 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController {
 			}
 		}
 		else {
-			self.tableView.backgroundView = NCTableViewBackgroundLabel(text: self.orders?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			self.tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: self.orders?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 			completionHandler()
 		}
 	}

@@ -24,10 +24,10 @@ class NCContactRow: TreeRow {
 	let dataManager: NCDataManager
 	var image: UIImage?
 	
-	init(prototype: Prototype = Prototype.NCContactTableViewCell.compact, contact: NCContact?, dataManager: NCDataManager) {
+	init(prototype: Prototype = Prototype.NCContactTableViewCell.compact, contact: NCContact?, dataManager: NCDataManager, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
 		self.contact = contact
 		self.dataManager = dataManager
-		super.init(prototype: prototype)
+		super.init(prototype: prototype, route: route, accessoryButtonRoute: accessoryButtonRoute)
 	}
 	
 	override func configure(cell: UITableViewCell) {

@@ -151,7 +151,14 @@ extension NCContact {
 	}
 }
 
-extension NCMail {
+extension NCCacheLocationPickerRecent {
+	enum LocationType: Int32 {
+		case region = 0
+		case solarSystem = 1
+	}
+}
+
+/*extension NCMail {
 	enum Folder: Int {
 		case inbox
 		case corporation
@@ -177,27 +184,6 @@ extension NCMail {
 			}
 		}
 	}
-	
-	/*var folder: Int {
-		if characterID == from?.contactID {
-			return Folder.sent.rawValue
-		}
-		else if to?.first(where: {($0 as? NCContact)?.contactID == self.characterID}) != nil {
-			return Folder.inbox.rawValue
-		}
-		else if to?.first(where: {($0 as? NCContact)?.contactType == .corporation}) != nil {
-			return Folder.corporation.rawValue
-		}
-		else if to?.first(where: {($0 as? NCContact)?.contactType == .alliance}) != nil {
-			return Folder.alliance.rawValue
-		}
-		else if to?.first(where: {($0 as? NCContact)?.contactType == .mailingList}) != nil {
-			return Folder.mailingList.rawValue
-		}
-		else {
-			return Folder.inbox.rawValue
-		}
-	}*/
-	
 }
 
+*/

@@ -11,17 +11,16 @@ import EVEAPI
 import CoreData
 
 fileprivate protocol NCZKillboardFilterRow: class {
-	var handler: NCActionHandler? {get set}
 }
 
 extension NCZKillboardFilterRow {
 	
-	func configureAccessoryButton(for cell: UITableViewCell) {
+	func configureAccessoryButton(for cell: NCTableViewCell) {
 		let button = UIButton(type: .system)
 		button.setImage(#imageLiteral(resourceName: "clear"), for: .normal)
 		button.sizeToFit()
 		button.tintColor = UIColor(white: 0.7, alpha: 0.5)
-		self.handler = NCActionHandler(button, for: .touchUpInside) { [weak self] _ in
+		cell.accessoryButtonHandler = NCActionHandler(button, for: .touchUpInside) { [weak self] _ in
 			guard let strongSelf = self as? TreeNode else {return}
 			guard let controller = strongSelf.treeController else {return}
 			controller.delegate?.treeController?(controller, accessoryButtonTappedWithNode: strongSelf)
@@ -32,8 +31,6 @@ extension NCZKillboardFilterRow {
 }
 
 fileprivate class NCZKillboardContactRow: NCContactRow, NCZKillboardFilterRow {
-	
-	var handler: NCActionHandler?
 	
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
@@ -51,8 +48,6 @@ fileprivate class NCZKillboardShipRow: TreeRow, NCZKillboardFilterRow {
 		super.init(prototype: Prototype.NCDefaultTableViewCell.compact, route: route)
 	}
 	
-	var handler: NCActionHandler?
-
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
 		if let group = ship as? NCDBInvGroup {
@@ -84,8 +79,6 @@ fileprivate class NCZKillboardLocationRow: TreeRow, NCZKillboardFilterRow {
 		self.location = location
 		super.init(prototype: Prototype.NCDefaultTableViewCell.noImage, route: route)
 	}
-	
-	var handler: NCActionHandler?
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
@@ -129,8 +122,6 @@ fileprivate class NCZKillboardDateRow: TreeRow, NCZKillboardFilterRow {
 		super.init(prototype: Prototype.NCActionTableViewCell.default)
 	}
 	
-	var handler: NCActionHandler?
-	
 	override func configure(cell: UITableViewCell) {
 		if let date = date {
 			guard let cell = cell as? NCDefaultTableViewCell else {return}
@@ -151,6 +142,11 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 	
 	private var defaultRows: [TreeNode]?
 	private var actionsSection: TreeNode?
+	private var moreSection: TreeNode?
+	private var moreRows: [TreeNode]?
+	
+	private var killsRow: TreeNode?
+	private var lossesRow: TreeNode?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -161,12 +157,14 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 		                    Prototype.NCActionTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.noImage,
 		                    Prototype.NCDatePickerTableViewCell.default,
+		                    Prototype.NCSwitchTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.empty])
 		
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
-		let rows = [
+		
+		var rows: [TreeNode] = [
 			NCActionRow(title: NSLocalizedString("Select Pilot", comment: "").uppercased(), route: Router.KillReports.SearchContact(delegate: self)),
 			NCActionRow(title: NSLocalizedString("Select Ship", comment: "").uppercased(), route: Router.KillReports.TypePicker { [weak self] (controller, result) in
 				self?.select(ship: result as! NSManagedObject)
@@ -183,42 +181,76 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 		defaultRows = rows
 		
 		let kills = Router.Custom { [weak self] (controller, view) in
-			guard let strongSelf = self else {return}
-			var filter = strongSelf.filter
-			filter.append(.kills)
-			
-			if let contact = (strongSelf.treeController?.content?.children[0] as? NCZKillboardContactRow)?.contact {
-				contact.lastUse = Date() as NSDate
-				if contact.managedObjectContext?.hasChanges == true {
-					try? contact.managedObjectContext?.save()
-				}
-			}
-			
-			Router.KillReports.ZKillboardReports(filter: filter).perform(source: controller, view: view)
+			self?.showReports(.kills, from: view)
 		}
 		
 		let losses = Router.Custom { [weak self] (controller, view) in
-			guard let strongSelf = self else {return}
-			var filter = strongSelf.filter
-			filter.append(.losses)
-			
-			if let contact = (strongSelf.treeController?.content?.children[0] as? NCZKillboardContactRow)?.contact {
-				contact.lastUse = Date() as NSDate
-				if contact.managedObjectContext?.hasChanges == true {
-					try? contact.managedObjectContext?.save()
-				}
-			}
-			
-			Router.KillReports.ZKillboardReports(filter: filter).perform(source: controller, view: view)
+			self?.showReports(.losses, from: view)
 		}
 		
+
+		self.moreRows = [NCSwitchRow(title: NSLocalizedString("Solo", comment: "").uppercased(), value: false, handler: { [weak self] _ in
+			self?.update()
+		}),
+		                 NCSwitchRow(title: NSLocalizedString("W-Space", comment: "").uppercased(), value: false, handler: { [weak self] _ in
+							self?.update()
+						})]
+		
+		moreSection = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, nodeIdentifier: "More",
+		                                 children: moreRows)
+		
+		rows.append(moreSection!)
+
+		killsRow = NCActionRow(title: NSLocalizedString("Search Kills", comment: "").uppercased(), route: kills)
+		lossesRow = NCActionRow(title: NSLocalizedString("Search Losses", comment: "").uppercased(), route: losses)
 		
 		actionsSection = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, nodeIdentifier: "Actions",
-		                                    children: [NCActionRow(title: NSLocalizedString("Search Kills", comment: "").uppercased(), route: kills),
-		                                               NCActionRow(title: NSLocalizedString("Search Losses", comment: "").uppercased(), route: losses)])
+		                                    children: /*[NCActionRow(title: NSLocalizedString("Search Kills", comment: "").uppercased(), route: kills),
+		                                               NCActionRow(title: NSLocalizedString("Search Losses", comment: "").uppercased(), route: losses)]*/ nil)
+		rows.append(actionsSection!)
 		
 		treeController?.content = RootNode(rows)
 		completionHandler()
+	}
+	
+	private func showReports(_ type: ZKillboard.Filter, from: UIView?) {
+		var filter = self.filter
+		filter.append(type)
+		
+		
+		if let contact = (treeController?.content?.children[0] as? NCZKillboardContactRow)?.contact {
+			contact.lastUse = Date() as NSDate
+			if contact.managedObjectContext?.hasChanges == true {
+				try? contact.managedObjectContext?.save()
+			}
+		}
+		
+		if let location = (treeController?.content?.children[2] as? NCZKillboardLocationRow)?.location, let context = NCCache.sharedCache?.viewContext {
+			if let solarSystem = location as? NCDBMapSolarSystem {
+				let location: NCCacheLocationPickerRecent = context.fetch("LocationPickerRecent", where: "locationID == %d", solarSystem.solarSystemID) ?? {
+					let location = NCCacheLocationPickerRecent(entity: NSEntityDescription.entity(forEntityName: "LocationPickerRecent", in: context)!, insertInto: context)
+					location.locationID = solarSystem.solarSystemID
+					location.locationType = NCCacheLocationPickerRecent.LocationType.solarSystem.rawValue
+					return location
+				}()
+				location.date = Date() as NSDate
+			}
+			else if let region = location as? NCDBMapRegion {
+				let location: NCCacheLocationPickerRecent = context.fetch("LocationPickerRecent", where: "locationID == %d", region.regionID) ?? {
+					let location = NCCacheLocationPickerRecent(entity: NSEntityDescription.entity(forEntityName: "LocationPickerRecent", in: context)!, insertInto: context)
+					location.locationID = region.regionID
+					location.locationType = NCCacheLocationPickerRecent.LocationType.region.rawValue
+					return location
+					}()
+				location.date = Date() as NSDate
+			}
+			
+			if context.hasChanges {
+				try? context.save()
+			}
+		}
+		
+		Router.KillReports.ZKillboardReports(filter: filter).perform(source: self, view: view)
 	}
 	
 	private func select(ship: NSManagedObject) {
@@ -235,13 +267,16 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 	
 	private func update() {
 		guard let actionsSection = actionsSection else {return}
+		let filter = self.filter
+		
 		let hasRegion = filter.contains {
-			switch $0 {
-			case .regionID:
-				return true
-			default:
-				return false
-			}
+			guard case .regionID = $0 else {return false}
+			return true
+		}
+		
+		let hasLocation = hasRegion || filter.contains {
+			guard case .solarSystemID = $0 else {return false}
+			return true
 		}
 
 		let hasDate = filter.contains {
@@ -252,21 +287,32 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 				return false
 			}
 		}
-
-		if filter.isEmpty || (hasRegion && hasDate) {
-			if treeController?.content?.children.last == actionsSection {
-				_ = treeController?.content?.children.removeLast()
-			}
+		
+		let wSpace = filter.contains {
+			guard case .wSpace = $0 else {return false}
+			return true
+		}
+		
+		if hasLocation && moreSection?.children.count == 2 {
+			moreSection?.children.removeLast()
+		}
+		else if !hasLocation && moreSection?.children.count == 1, let row = moreRows?.last {
+			moreSection?.children.append(row)
+		}
+		
+		if wSpace && filter.count == 1 {
+			actionsSection.children = [lossesRow!]
+		}
+		else if filter.isEmpty || (hasRegion && hasDate) {
+			actionsSection.children = []
 		}
 		else {
-			if treeController?.content?.children.last != actionsSection {
-				treeController?.content?.children.append(actionsSection)
-			}
+			actionsSection.children = [killsRow!, lossesRow!]
 		}
 	}
 	
 	private var filter: [ZKillboard.Filter] {
-		return treeController?.content?.children.flatMap { node -> ZKillboard.Filter? in
+		var filter = treeController?.content?.children.flatMap { node -> ZKillboard.Filter? in
 			switch node {
 			case let node as NCZKillboardContactRow:
 				guard let contact = node.contact else {break}
@@ -302,6 +348,15 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 			}
 			return nil
 		} ?? []
+		
+		if (moreSection?.children.first as? NCSwitchRow)?.value == true {
+			filter.append(.solo)
+		}
+		if moreSection?.children.count == 2 && (moreSection?.children[1] as? NCSwitchRow)?.value == true {
+			filter.append(.wSpace)
+		}
+		
+		return filter
 	}
 
 	//MARK: - TreeControllerDelegate

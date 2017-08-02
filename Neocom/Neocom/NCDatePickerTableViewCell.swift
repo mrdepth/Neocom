@@ -38,14 +38,12 @@ class NCDatePickerRow: TreeRow {
 		super.init(prototype: Prototype.NCDatePickerTableViewCell.default)
 	}
 	
-	private var actionHandler: NCActionHandler?
-	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDatePickerTableViewCell else {return}
 		cell.datePicker.minimumDate = range.lowerBound
 		cell.datePicker.maximumDate = range.upperBound
 		cell.datePicker.date = value
-		self.actionHandler = NCActionHandler(cell.datePicker, for: .valueChanged) { [weak self] control in
+		cell.actionHandler = NCActionHandler(cell.datePicker, for: .valueChanged) { [weak self] control in
 			guard let strongSelf = self else {return}
 			let picker = control as! UIDatePicker
 			strongSelf.value = picker.date

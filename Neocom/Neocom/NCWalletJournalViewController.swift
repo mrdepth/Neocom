@@ -104,7 +104,7 @@ class NCWalletJournalViewController: NCTreeViewController {
 			
 		}
 		else {
-			tableView.backgroundView = NCTableViewBackgroundLabel(text: walletJournal?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: walletJournal?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 			completionHandler()
 		}
 	}

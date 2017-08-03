@@ -203,9 +203,9 @@ class NCDataManager {
 	}
 	
 	
-	func wallets(completionHandler: @escaping (NCCachedResult<[ESI.Wallet.Balance]>) -> Void) {
-		loadFromCache(forKey: "ESI.Wallet.Balance", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.esi.wallet.listWalletsAndBalances(characterID: Int(self.characterID)) { result in
+	func walletBalance(completionHandler: @escaping (NCCachedResult<Float>) -> Void) {
+		loadFromCache(forKey: "ESI.WalletBalance", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.wallet.getCharactersWalletBalance(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0)
 			}
 		})
@@ -235,14 +235,27 @@ class NCDataManager {
 //		})
 //	}
 	
-	func clones(completionHandler: @escaping (NCCachedResult<EVE.Char.Clones>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.Clones", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.eve.char.clones { result in
+	func clones(completionHandler: @escaping (NCCachedResult<ESI.Clones.JumpClones>) -> Void) {
+		loadFromCache(forKey: "ESI.Clones.JumpClones", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.clones.getClones(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0)
 			}
-//			self.esi.clones.getClones(characterID: Int(self.characterID)) { result in
-//				completion(result, 3600.0)
-//			}
+		})
+	}
+
+	func implants(completionHandler: @escaping (NCCachedResult<[Int]>) -> Void) {
+		loadFromCache(forKey: "ESI.Clones.ActiveImplants", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.clones.getActiveImplants(characterID: Int(self.characterID)) { result in
+				completion(result, 3600.0)
+			}
+		})
+	}
+
+	func attributes(completionHandler: @escaping (NCCachedResult<ESI.Skills.CharacterAttributes>) -> Void) {
+		loadFromCache(forKey: "ESI.Skills.CharacterAttributes", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.skills.getCharacterAttributes(characterID: Int(self.characterID)) { result in
+				completion(result, 3600.0)
+			}
 		})
 	}
 

@@ -265,6 +265,8 @@
 		12D404491F31C0AF007F1715 /* NCSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D404481F31C0AF007F1715 /* NCSwitchTableViewCell.swift */; };
 		12D4044C1F32222A007F1715 /* NCLocationPickerContainerViewContrller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D4044B1F32222A007F1715 /* NCLocationPickerContainerViewContrller.swift */; };
 		12D4044E1F32226E007F1715 /* NCLocationPickerRecentViewContrller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D4044D1F32226E007F1715 /* NCLocationPickerRecentViewContrller.swift */; };
+		12D404511F331BCB007F1715 /* NCMarketQuickbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D404501F331BCB007F1715 /* NCMarketQuickbarViewController.swift */; };
+		12D404531F331BDE007F1715 /* NCMarketPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D404521F331BDE007F1715 /* NCMarketPageViewController.swift */; };
 		12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */; };
 		12D930E51E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E41E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib */; };
 		12D930E71E656B0C00CBAE1C /* NCChargeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E61E656B0C00CBAE1C /* NCChargeTableViewCell.xib */; };
@@ -648,6 +650,8 @@
 		12D404481F31C0AF007F1715 /* NCSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		12D4044B1F32222A007F1715 /* NCLocationPickerContainerViewContrller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocationPickerContainerViewContrller.swift; sourceTree = "<group>"; };
 		12D4044D1F32226E007F1715 /* NCLocationPickerRecentViewContrller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocationPickerRecentViewContrller.swift; sourceTree = "<group>"; };
+		12D404501F331BCB007F1715 /* NCMarketQuickbarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketQuickbarViewController.swift; sourceTree = "<group>"; };
+		12D404521F331BDE007F1715 /* NCMarketPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketPageViewController.swift; sourceTree = "<group>"; };
 		12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingModuleTableViewCell.xib; sourceTree = "<group>"; };
 		12D930E41E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingModuleStateTableViewCell.xib; sourceTree = "<group>"; };
 		12D930E61E656B0C00CBAE1C /* NCChargeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCChargeTableViewCell.xib; sourceTree = "<group>"; };
@@ -783,6 +787,8 @@
 				120F62F31F30D2990019F5BB /* NCDatabaseTypeRequiredForViewController.swift */,
 				12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */,
 				12C37D291EFA866C0070F055 /* NCMarketGroupsViewController.swift */,
+				12D404501F331BCB007F1715 /* NCMarketQuickbarViewController.swift */,
+				12D404521F331BDE007F1715 /* NCMarketPageViewController.swift */,
 				12C37D331EFAAA290070F055 /* NCNPCViewController.swift */,
 				12C37D361EFBA4C80070F055 /* NCWHViewController.swift */,
 				12DC567C1EFBE8520088F45E /* NCIncursionsViewController.swift */,
@@ -1569,6 +1575,7 @@
 				12CFDACE1F023BDD00CC0762 /* NCZKillboardViewController.swift in Sources */,
 				12D39D001EF7DB040077BD17 /* NCMarketOrderTableViewCell.swift in Sources */,
 				12DBEABD1E1D40280088A486 /* NCFittingAttribute.mm in Sources */,
+				12D404531F331BDE007F1715 /* NCMarketPageViewController.swift in Sources */,
 				1226D9631F223A690049FA0C /* NCNPCPickerGroupsViewController.swift in Sources */,
 				1230A32D1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift in Sources */,
 				129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */,
@@ -1672,6 +1679,7 @@
 				12A2374B1EFFB39900BE7404 /* NCKillmailInfoViewController.swift in Sources */,
 				1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */,
 				129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */,
+				12D404511F331BCB007F1715 /* NCMarketQuickbarViewController.swift in Sources */,
 				12961DDC1E1D64E4008A3F4D /* NCFittingDrone.mm in Sources */,
 				12C37D371EFBA4C80070F055 /* NCWHViewController.swift in Sources */,
 				125CE13C1EA1275C007B8B6B /* NCMailViewController.swift in Sources */,

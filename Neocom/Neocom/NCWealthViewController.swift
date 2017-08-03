@@ -38,7 +38,8 @@ class NCWealthViewController: NCTreeViewController {
 		}
 		
 		let clones = self.clones?.value
-		let wallets = self.wallets?.value
+		let activeImplants = self.implants?.value
+		let walletBalance = self.walletBalance?.value
 		let assets = self.assets?.value
 		let blueprints = self.blueprints?.value
 		let marketOrders = self.marketOrders?.value
@@ -53,8 +54,14 @@ class NCWealthViewController: NCTreeViewController {
 			var implantsIDs = [Int: Int64]()
 			
 			if let value = clones {
-				value.implants?.forEach {_ = (implantsIDs[$0.typeID]? += 1) ?? (implantsIDs[$0.typeID] = 1) }
-				value.jumpCloneImplants?.forEach {_ = (implantsIDs[$0.typeID]? += 1) ?? (implantsIDs[$0.typeID] = 1) }
+				value.jumpClones.forEach {
+					$0.implants?.forEach {
+						_ = (implantsIDs[$0]? += 1) ?? (implantsIDs[$0] = 1)
+					}
+				}
+			}
+			activeImplants?.forEach {
+				_ = (implantsIDs[$0]? += 1) ?? (implantsIDs[$0] = 1)
 			}
 			
 			var assetsIDs = [Int: Int64]()
@@ -77,7 +84,7 @@ class NCWealthViewController: NCTreeViewController {
 							for material in manufacturing.requiredMaterials?.allObjects as? [NCDBIndRequiredMaterial] ?? [] {
 								guard let typeID = material.materialType?.typeID else {continue}
 								
-								let count = Int64((Double(material.quantity) * (1.0 - Double(blueprint.materialEfficiency) / 100.0) * 0.85).rounded(.up)) * Int64(blueprint.runs)
+								let count = Int64((Double(material.quantity) * (1.0 - Double(blueprint.materialEfficiency)) * 0.85).rounded(.up)) * Int64(blueprint.runs)
 								_ = (materials[Int(typeID)]? += count) ?? (materials[Int(typeID)] = count)
 							}
 							
@@ -131,7 +138,7 @@ class NCWealthViewController: NCTreeViewController {
 			}
 			
 			var balance: Double = 0
-			wallets?.forEach {balance += Double($0.balance ?? 0) / 100}
+			balance += Double(walletBalance ?? 0)
 			
 			var typeIDs = Set<Int>()
 			typeIDs.formUnion(implantsIDs.keys)
@@ -279,8 +286,9 @@ class NCWealthViewController: NCTreeViewController {
 	
 	//MARK: - NCRefreshable
 	
-	private var clones: NCCachedResult<EVE.Char.Clones>?
-	private var wallets: NCCachedResult<[ESI.Wallet.Balance]>?
+	private var clones: NCCachedResult<ESI.Clones.JumpClones>?
+	private var implants: NCCachedResult<[Int]>?
+	private var walletBalance: NCCachedResult<Float>?
 	private var assets: NCCachedResult<[ESI.Assets.Asset]>?
 	private var blueprints: NCCachedResult<[ESI.Character.Blueprint]>?
 	private var marketOrders: NCCachedResult<[ESI.Market.CharacterOrder]>?
@@ -291,7 +299,7 @@ class NCWealthViewController: NCTreeViewController {
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
 		
 		let dispatchGroup = DispatchGroup()
-		let progress = Progress(totalUnitCount: 6)
+		let progress = Progress(totalUnitCount: 7)
 		
 		progress.perform {
 			dispatchGroup.enter()
@@ -301,11 +309,20 @@ class NCWealthViewController: NCTreeViewController {
 				dispatchGroup.leave()
 			}
 		}
-		
+
 		progress.perform {
 			dispatchGroup.enter()
-			dataManager.wallets { result in
-				self.wallets = result
+			dataManager.implants { result in
+				self.implants = result
+				self.update()
+				dispatchGroup.leave()
+			}
+		}
+
+		progress.perform {
+			dispatchGroup.enter()
+			dataManager.walletBalance { result in
+				self.walletBalance = result
 				self.update()
 				dispatchGroup.leave()
 			}
@@ -358,7 +375,8 @@ class NCWealthViewController: NCTreeViewController {
 
 		dispatchGroup.notify(queue: .main) {
 			let records = [self.clones?.cacheRecord,
-			               self.wallets?.cacheRecord,
+			               self.implants?.cacheRecord,
+			               self.walletBalance?.cacheRecord,
 			               self.assets?.cacheRecord,
 			               self.blueprints?.cacheRecord,
 			               self.marketOrders?.cacheRecord,

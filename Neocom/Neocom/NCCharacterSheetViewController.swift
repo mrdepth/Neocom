@@ -39,10 +39,12 @@ class NCCharacterSheetViewController: NCTreeViewController {
 	private var character: NCCachedResult<ESI.Character.Information>?
 	private var corporation: NCCachedResult<ESI.Corporation.Information>?
 	private var alliance: NCCachedResult<ESI.Alliance.Information>?
-	private var clones: NCCachedResult<EVE.Char.Clones>?
+	private var clones: NCCachedResult<ESI.Clones.JumpClones>?
+	private var attributes: NCCachedResult<ESI.Skills.CharacterAttributes>?
+	private var implants: NCCachedResult<[Int]>?
 	private var skills: NCCachedResult<ESI.Skills.CharacterSkills>?
 	private var skillQueue: NCCachedResult<[ESI.Skills.SkillQueueItem]>?
-	private var wallets: NCCachedResult<[ESI.Wallet.Balance]>?
+	private var walletBalance: NCCachedResult<Float>?
 	private var characterImage: NCCachedResult<UIImage>?
 	private var corporationImage: NCCachedResult<UIImage>?
 	private var allianceImage: NCCachedResult<UIImage>?
@@ -59,7 +61,7 @@ class NCCharacterSheetViewController: NCTreeViewController {
 		title = account.characterName
 		
 		let dispatchGroup = DispatchGroup()
-		let progress = Progress(totalUnitCount: 9)
+		let progress = Progress(totalUnitCount: 11)
 		
 		progress.perform {
 			dispatchGroup.enter()
@@ -93,6 +95,24 @@ class NCCharacterSheetViewController: NCTreeViewController {
 
 		progress.perform {
 			dispatchGroup.enter()
+			dataManager.attributes { result in
+				self.attributes = result
+				dispatchGroup.leave()
+				self.update()
+			}
+		}
+
+		progress.perform {
+			dispatchGroup.enter()
+			dataManager.implants { result in
+				self.implants = result
+				dispatchGroup.leave()
+				self.update()
+			}
+		}
+
+		progress.perform {
+			dispatchGroup.enter()
 			dataManager.skills { result in
 				self.skills = result
 				dispatchGroup.leave()
@@ -111,8 +131,8 @@ class NCCharacterSheetViewController: NCTreeViewController {
 		
 		progress.perform {
 			dispatchGroup.enter()
-			dataManager.wallets { result in
-				self.wallets = result
+			dataManager.walletBalance { result in
+				self.walletBalance = result
 				dispatchGroup.leave()
 				self.update()
 			}
@@ -152,9 +172,11 @@ class NCCharacterSheetViewController: NCTreeViewController {
 			               self.corporation?.cacheRecord,
 			               self.alliance?.cacheRecord,
 			               self.clones?.cacheRecord,
+			               self.attributes?.cacheRecord,
+			               self.implants?.cacheRecord,
 			               self.skills?.cacheRecord,
 			               self.skillQueue?.cacheRecord,
-			               self.wallets?.cacheRecord,
+			               self.walletBalance?.cacheRecord,
 			               self.characterImage?.cacheRecord,
 			               self.corporationImage?.cacheRecord,
 			               self.allianceImage?.cacheRecord,
@@ -181,9 +203,17 @@ class NCCharacterSheetViewController: NCTreeViewController {
 			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Alliance", image: self.allianceImage?.value, title: NSLocalizedString("Alliance", comment: "").uppercased(), subtitle: value.allianceName))
 		}
 		
+		if let value = self.character?.value {
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "DoB", title: NSLocalizedString("Date of Birth", comment: "").uppercased(), subtitle: DateFormatter.localizedString(from: value.birthday, dateStyle: .short, timeStyle: .none)))
+			if let race = NCDatabase.sharedDatabase?.chrRaces[value.raceID]?.raceName,
+				let bloodline = NCDatabase.sharedDatabase?.chrBloodlines[value.bloodlineID]?.bloodlineName,
+				let ancestryID = value.ancestryID,
+				let ancestry = NCDatabase.sharedDatabase?.chrAncestries[ancestryID]?.ancestryName {
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Bloodline", title: NSLocalizedString("Bloodline", comment: "").uppercased(), subtitle: "\(race) / \(bloodline) / \(ancestry)"))
+			}
+		}
+		
 		if let value = self.clones?.value {
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "DoB", title: NSLocalizedString("Date of Birth", comment: "").uppercased(), subtitle: DateFormatter.localizedString(from: value.dateOfBirth, dateStyle: .short, timeStyle: .none)))
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Bloodline", title: NSLocalizedString("Bloodline", comment: "").uppercased(), subtitle: "\(value.race) / \(value.bloodLine) / \(value.ancestry)"))
 		}
 		
 		if let ship = self.characterShip?.value, let location = self.characterLocation?.value {
@@ -197,18 +227,17 @@ class NCCharacterSheetViewController: NCTreeViewController {
 			sections.append(DefaultTreeSection(nodeIdentifier: "Bio", title: NSLocalizedString("Bio", comment: "").uppercased(), children: rows))
 		}
 		
-		if let value = self.wallets?.value {
-			var balance = 0.0
-			value.forEach {balance += Double($0.balance ?? 0)}
+		if let value = self.walletBalance?.value {
+			let balance = Double(value)
 			
-			let row = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Balance", title: NSLocalizedString("Balance", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: balance / 100.0, unit: .isk, style: .full))
+			let row = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Balance", title: NSLocalizedString("Balance", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: balance, unit: .isk, style: .full))
 			sections.append(DefaultTreeSection(nodeIdentifier: "Account", title: NSLocalizedString("Account", comment: "").uppercased(), children: [row]))
 		}
 		
 		rows = []
 		
-		if let clones = self.clones?.value, let skills = self.skills?.value, let skillQueue = self.skillQueue?.value {
-			let character = NCCharacter(attributes: NCCharacterAttributes(clones: clones), skills: skills, skillQueue: skillQueue)
+		if let attributes = self.attributes?.value, let implants = self.implants?.value, let skills = self.skills?.value, let skillQueue = self.skillQueue?.value {
+			let character = NCCharacter(attributes: NCCharacterAttributes(attributes: attributes, implants: implants), skills: skills, skillQueue: skillQueue)
 			let sp = character.skills.map{$0.value.skillPoints}.reduce(0, +)
 			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 			                           nodeIdentifier: "SP",
@@ -216,9 +245,9 @@ class NCCharacterSheetViewController: NCTreeViewController {
 			                           subtitle: "\(NCUnitFormatter.localizedString(from: Double(sp), unit: .skillPoints, style: .full))"))
 		}
 		
-		if let value = self.clones?.value {
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Respecs", title: NSLocalizedString("Bonus Remaps Available", comment: "").uppercased(), subtitle: "\(value.freeRespecs)"))
-			if let value = value.lastRespecDate {
+		if let value = self.attributes?.value {
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Respecs", title: NSLocalizedString("Bonus Remaps Available", comment: "").uppercased(), subtitle: "\(value.bonusRemaps ?? 0)"))
+			if let value = value.lastRemapDate {
 				let calendar = Calendar(identifier: .gregorian)
 				var components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second, .timeZone], from: value)
 				components.year? += 1
@@ -245,13 +274,13 @@ class NCCharacterSheetViewController: NCTreeViewController {
 			sections.append(DefaultTreeSection(nodeIdentifier: "Skills", title: NSLocalizedString("Skills", comment: "").uppercased(), children: rows))
 		}
 		
-		if let value = self.clones?.value {
+		if let attributes = self.attributes?.value, let implants = self.implants?.value {
 			rows = []
-			let attributes = NCCharacterAttributes(clones: value)
+			let attributes = NCCharacterAttributes(attributes: attributes, implants: implants)
 			
 			sections.append(NCCharacterAttributesSection(attributes: attributes, nodeIdentifier: "Attributes", title: NSLocalizedString("Attributes", comment: "").uppercased()))
 			
-			if let value = value.implants {
+			if !implants.isEmpty {
 				rows = []
 				let invTypes = NCDatabase.sharedDatabase?.invTypes
 				
@@ -262,8 +291,8 @@ class NCCharacterSheetViewController: NCTreeViewController {
 				            (NCDBAttributeID.charismaBonus, NSLocalizedString("Charisma", comment: ""))]
 				
 				
-				let implants = value.flatMap { implant -> (NCDBInvType, Int)? in
-					guard let type = invTypes?[implant.typeID] else {return nil}
+				let implants = implants.flatMap { implant -> (NCDBInvType, Int)? in
+					guard let type = invTypes?[implant] else {return nil}
 					return (type, Int(type.allAttributes[NCDBAttributeID.implantness.rawValue]?.value ?? 100))
 					}.sorted {$0.1 < $1.1}
 				

@@ -20,6 +20,7 @@
 				<string>esi-skills.read_skills.v1</string>
 				<string>esi-location.read_location.v1</string>
 				<string>esi-location.read_ship_type.v1</string>
+				<string>esi-clones.read_implants.v1</string>
 			</array>
 		</dict>
 		<dict>
@@ -36,6 +37,7 @@
 			<key>scopes</key>
 			<array>
 				<string>esi-clones.read_clones.v1</string>
+				<string>esi-clones.read_implants.v1</string>
 			</array>
 		</dict>
 		<dict>
@@ -51,6 +53,7 @@
 			<array>
 				<string>esi-skills.read_skillqueue.v1</string>
 				<string>esi-skills.read_skills.v1</string>
+				<string>esi-clones.read_implants.v1</string>
 			</array>
 		</dict>
 		<dict>

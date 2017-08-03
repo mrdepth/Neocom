@@ -128,13 +128,13 @@
                         <segue destination="RAB-Dd-4IL" kind="showDetail" identifier="NCWalletTransactionsViewController" id="QKl-vd-cJt"/>
                         <segue destination="Rd3-J1-zIo" kind="showDetail" identifier="NCContractsViewController" id="9HH-Ho-xdq"/>
                         <segue destination="F51-S5-Evq" kind="showDetail" identifier="NCCalendarViewController" id="EZL-1G-WSb"/>
-                        <segue destination="ZNJ-Wm-Liw" kind="showDetail" identifier="NCMarketGroupsViewController" action="showViewController:sender:" id="e7P-hN-CXt"/>
                         <segue destination="NQd-xE-dAT" kind="showDetail" identifier="NCNPCViewController" id="41N-kp-QG2"/>
                         <segue destination="Hgu-RE-HLL" kind="showDetail" identifier="NCWHViewController" id="Lxt-cx-0eh"/>
                         <segue destination="jVD-nP-XNi" kind="showDetail" identifier="NCIncursionsViewController" id="Nau-sd-tju"/>
                         <segue destination="NtP-4P-YWk" kind="showDetail" identifier="NCKillmailsPageViewController" id="K8e-wL-wwN"/>
                         <segue destination="73j-Qb-bbS" kind="showDetail" identifier="NCZKillboardViewController" id="z3u-B5-LdG"/>
                         <segue destination="i4p-bm-rfW" kind="showDetail" identifier="NCFeedsViewController" id="fab-1a-irV"/>
+                        <segue destination="ZNJ-Wm-Liw" kind="showDetail" identifier="NCMarketGroupsViewController" id="avj-w8-6QA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mhh-2D-7TI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -436,7 +436,7 @@
             <objects>
                 <tableViewController id="xIe-Ri-8Ng" customClass="NCAPIKeyInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="PWN-Ec-uZB" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -8046,7 +8046,7 @@
             </objects>
             <point key="canvasLocation" x="-1843" y="3105"/>
         </scene>
-        <!--Market-->
+        <!--Market Groups View Controller-->
         <scene sceneID="ZmO-ck-iak">
             <objects>
                 <tableViewController storyboardIdentifier="NCMarketGroupsViewController" id="a4h-ZX-hpz" customClass="NCMarketGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
@@ -8055,11 +8055,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Market" id="qjP-ew-rty"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0L9-CL-vx1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5081" y="245"/>
+            <point key="canvasLocation" x="5846" y="245"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="S8k-11-rYc">
@@ -8070,7 +8069,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="a4h-ZX-hpz" kind="relationship" relationship="rootViewController" id="WsD-zQ-Ed3"/>
+                        <segue destination="LSb-nK-frq" kind="relationship" relationship="rootViewController" id="5rE-KQ-Mh6"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WHg-N2-ewv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -8273,7 +8272,7 @@
                     </connections>
                 </customObject>
             </objects>
-            <point key="canvasLocation" x="6555" y="244"/>
+            <point key="canvasLocation" x="7967" y="245"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8z2-Ko-b78">
@@ -8289,7 +8288,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lcE-rP-rqs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5846" y="244"/>
+            <point key="canvasLocation" x="7256" y="245"/>
         </scene>
         <!--Kill Log-->
         <scene sceneID="LGO-Uy-lsd">
@@ -8552,38 +8551,19 @@
             </objects>
             <point key="canvasLocation" x="486" y="-1353"/>
         </scene>
-        <!--Regions-->
+        <!--Browse-->
         <scene sceneID="0ha-pm-Q8z">
             <objects>
-                <tableViewController storyboardIdentifier="NCRegionsViewController" modalPresentationStyle="overCurrentContext" id="Ygn-eQ-iDq" customClass="NCRegionsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCRegionsViewController" title="Browse" modalPresentationStyle="overCurrentContext" id="Ygn-eQ-iDq" customClass="NCRegionsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="b3u-sR-WmP" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="vAQ-ph-b67" id="3US-b3-r4p"/>
-                            <outlet property="delegate" destination="vAQ-ph-b67" id="JBb-ZU-oSc"/>
-                        </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Regions" id="KML-RF-vJv">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="nCW-pV-Hii">
-                            <connections>
-                                <action selector="dismissAnimated:" destination="Ygn-eQ-iDq" id="3ZC-UP-d0W"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="treeController" destination="vAQ-ph-b67" id="ju5-pV-Rjn"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="00u-zt-6rN" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="vAQ-ph-b67" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="b3u-sR-WmP" id="taa-Jn-qem"/>
-                    </connections>
-                </customObject>
             </objects>
-            <point key="canvasLocation" x="-966" y="-2019"/>
+            <point key="canvasLocation" x="-1723" y="-2048"/>
         </scene>
         <!--Location Picker View Controller-->
         <scene sceneID="zQY-Pp-1HH">
@@ -8594,12 +8574,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="Ygn-eQ-iDq" kind="relationship" relationship="rootViewController" id="XcE-Fg-ybX"/>
+                        <segue destination="FyY-ao-0PM" kind="relationship" relationship="rootViewController" id="Rl2-oL-aeb"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oiI-cS-bKA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1650" y="-2019"/>
+            <point key="canvasLocation" x="-3186" y="-2048"/>
         </scene>
         <!--Solar Systems-->
         <scene sceneID="Wed-Ze-TlM">
@@ -9148,6 +9128,79 @@
             </objects>
             <point key="canvasLocation" x="9186" y="1779"/>
         </scene>
+        <!--Regions-->
+        <scene sceneID="Ztj-tm-23t">
+            <objects>
+                <viewController storyboardIdentifier="NCLocationPickerContainerViewContrller" automaticallyAdjustsScrollViewInsets="NO" id="FyY-ao-0PM" customClass="NCLocationPickerContainerViewContrller" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7E5-ez-EpE"/>
+                        <viewControllerLayoutGuide type="bottom" id="b7T-vT-4FI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="iwV-hk-JCD" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Regions" id="70d-83-YeS">
+                        <barButtonItem key="leftBarButtonItem" title="Close" id="nCW-pV-Hii">
+                            <connections>
+                                <action selector="dismissAnimated:" destination="FyY-ao-0PM" id="Oud-Ha-KRV"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="23e-KV-ZsO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2419" y="-2048"/>
+        </scene>
+        <!--Recent-->
+        <scene sceneID="WS0-je-iEC">
+            <objects>
+                <tableViewController storyboardIdentifier="NCLocationPickerRecentViewContrller" title="Recent" modalPresentationStyle="overCurrentContext" id="2BS-p4-i5w" customClass="NCLocationPickerRecentViewContrller" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="Vzx-5Y-YAg" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2yh-z5-L85" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1061" y="-2048"/>
+        </scene>
+        <!--Market-->
+        <scene sceneID="fjL-h6-ehQ">
+            <objects>
+                <viewController storyboardIdentifier="NCMarketPageViewController" automaticallyAdjustsScrollViewInsets="NO" id="LSb-nK-frq" customClass="NCMarketPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ljb-Rg-ZUY"/>
+                        <viewControllerLayoutGuide type="bottom" id="DFp-2c-bUL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xiM-zo-UHJ" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Market" id="1s1-Kx-xYJ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="z4L-TI-EoO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5115" y="244"/>
+        </scene>
+        <!--Quickbar-->
+        <scene sceneID="niG-pL-CAh">
+            <objects>
+                <tableViewController storyboardIdentifier="NCMarketQuickbarViewController" title="Quickbar" id="0Qy-eA-xl2" customClass="NCMarketQuickbarViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="gbO-8t-qxD" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="azV-Yz-Hyh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6555" y="245"/>
+        </scene>
     </scenes>
     <resources>
         <image name="actionsItem" width="24" height="24"/>
@@ -9194,7 +9247,7 @@
         <image name="warpSpeed" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gkq-nf-oBK"/>
+        <segue reference="B28-Sl-QBx"/>
         <segue reference="cLd-bF-zDW"/>
     </inferredMetricsTieBreakers>
 </document>

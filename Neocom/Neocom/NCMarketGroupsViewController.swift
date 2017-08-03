@@ -35,7 +35,7 @@ class NCMarketGroupsViewController: NCTreeViewController, NCSearchableViewContro
 		                    Prototype.NCDefaultTableViewCell.compact])
 		
 		setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
-		title = parentGroup?.marketGroupName ?? NSLocalizedString("Market", comment: "")
+		title = parentGroup?.marketGroupName ?? NSLocalizedString("Browse", comment: "")
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

@@ -99,6 +99,14 @@ class NCDatabase {
 		return NCDBChrRace.chrRaces(managedObjectContext: self.viewContext)
 	}()
 
+	private(set) lazy var chrBloodlines: NCFetchedCollection<NCDBChrBloodline> = {
+		return NCDBChrBloodline.chrBloodlines(managedObjectContext: self.viewContext)
+	}()
+
+	private(set) lazy var chrAncestries: NCFetchedCollection<NCDBChrAncestry> = {
+		return NCDBChrAncestry.chrAncestries(managedObjectContext: self.viewContext)
+	}()
+
 	private(set) lazy var chrFactions: NCFetchedCollection<NCDBChrFaction> = {
 		return NCDBChrFaction.chrFactions(managedObjectContext: self.viewContext)
 	}()
@@ -225,6 +233,18 @@ extension NCDBInvMetaGroup {
 extension NCDBChrRace {
 	class func chrRaces(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBChrRace> {
 		return NCFetchedCollection<NCDBChrRace>(entityName: "ChrRace", predicateFormat: "raceID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+}
+
+extension NCDBChrBloodline {
+	class func chrBloodlines(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBChrBloodline> {
+		return NCFetchedCollection<NCDBChrBloodline>(entityName: "ChrBloodline", predicateFormat: "bloodlineID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+	}
+}
+
+extension NCDBChrAncestry {
+	class func chrAncestries(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBChrAncestry> {
+		return NCFetchedCollection<NCDBChrAncestry>(entityName: "ChrAncestry", predicateFormat: "ancestryID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }
 

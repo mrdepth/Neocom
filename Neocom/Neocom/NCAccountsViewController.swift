@@ -54,9 +54,9 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 		}
 	}
 	
-	var wallets: NCCachedResult<[ESI.Wallet.Balance]>? {
+	var walletBalance: NCCachedResult<Float>? {
 		didSet {
-			if case let .success(_, record)? = wallets, let object = record {
+			if case let .success(_, record)? = walletBalance, let object = record {
 				observer?.add(managedObject: object)
 			}
 		}
@@ -202,15 +202,12 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 	}
 	
 	func configureWallets(cell: NCAccountTableViewCell) {
-		if let value = wallets?.value {
-			var wealth = 0.0
-			for wallet in value {
-				wealth += Double(wallet.balance ?? 0)
-			}
-			cell.wealthLabel.text = NCUnitFormatter.localizedString(from: wealth / 100.0, unit: .none, style: .short)
+		if let value = walletBalance?.value {
+			let wealth = Double(value)
+			cell.wealthLabel.text = NCUnitFormatter.localizedString(from: wealth, unit: .none, style: .short)
 		}
 		else {
-			cell.wealthLabel.text = wallets?.error?.localizedDescription ?? " "
+			cell.wealthLabel.text = walletBalance?.error?.localizedDescription ?? " "
 		}
 	}
 	
@@ -297,7 +294,7 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 			if case let .success(_, record)? = strongSelf.skillQueue, updated?.contains(record!) == true {
 				strongSelf.configureSkillQueue(cell: cell)
 			}
-			if case let .success(_, record)? = strongSelf.wallets, updated?.contains(record!) == true {
+			if case let .success(_, record)? = strongSelf.walletBalance, updated?.contains(record!) == true {
 				strongSelf.configureWallets(cell: cell)
 			}
 			if case let .success(_, record)? = strongSelf.skills, updated?.contains(record!) == true {
@@ -384,8 +381,8 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 
 		progress?.progress.becomeCurrent(withPendingUnitCount: 1)
 		dispatchGroup.enter()
-		dataManager.wallets { result in
-			self.wallets = result
+		dataManager.walletBalance { result in
+			self.walletBalance = result
 			dispatchGroup.leave()
 			
 			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {

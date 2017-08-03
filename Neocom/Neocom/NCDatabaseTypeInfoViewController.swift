@@ -79,12 +79,50 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 				}
 			}
 			
+			if marketQuickItem == nil {
+				navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "favoritesOff"), style: .plain, target: self, action: #selector(onFavorites(_:)))
+			}
+			else {
+				navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "favoritesOn"), style: .plain, target: self, action: #selector(onFavorites(_:)))
+			}
 		}
 		else {
 			title = NSLocalizedString("Unknown", comment: "")
 		}
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(didChangeMarketRegion(_:)), name: .NCMarketRegionChanged, object: nil)
+	}
+	
+	var marketQuickItem: NCMarketQuickItem? {
+		guard let typeID = self.type?.typeID else {return nil}
+		return NCStorage.sharedStorage?.viewContext.fetch("MarketQuickItem", where: "typeID == %d", typeID)
+	}
+	
+	@IBAction func onFavorites(_ sender: Any) {
+		if let marketQuickItem = self.marketQuickItem {
+			navigationItem.setRightBarButton(UIBarButtonItem(image: #imageLiteral(resourceName: "favoritesOff"), style: .plain, target: self, action: #selector(onFavorites(_:))), animated: true)
+			marketQuickItem.managedObjectContext?.delete(marketQuickItem)
+			if marketQuickItem.managedObjectContext?.hasChanges == true {
+//				marketQuickItem.managedObjectContext?.processPendingChanges()
+				try? marketQuickItem.managedObjectContext?.save()
+			}
+		}
+		else if let context = NCStorage.sharedStorage?.viewContext, let type = self.type {
+			navigationItem.setRightBarButton(UIBarButtonItem(image: #imageLiteral(resourceName: "favoritesOn"), style: .plain, target: self, action: #selector(onFavorites(_:))), animated: true)
+			let marketQuickItem = NCMarketQuickItem(entity: NSEntityDescription.entity(forEntityName: "MarketQuickItem", in: context)!, insertInto: context)
+			marketQuickItem.typeID = type.typeID
+			if context.hasChanges {
+//				context.processPendingChanges()
+//				try? context.save()
+				do {
+					try context.save()
+				}
+				catch {
+					print("\(error)")
+				}
+
+			}
+		}
 	}
 	
 	deinit {

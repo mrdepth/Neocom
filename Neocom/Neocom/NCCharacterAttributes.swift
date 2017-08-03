@@ -37,6 +37,43 @@ class NCCharacterAttributes {
 	init() {
 	}
 	
+	init(attributes: ESI.Skills.CharacterAttributes, implants: [Int]?) {
+		self.intelligence = attributes.intelligence
+		self.memory = attributes.memory
+		self.perception = attributes.perception
+		self.willpower = attributes.willpower
+		self.charisma = attributes.charisma
+		
+		var augmentations = Augmentations()
+		
+		if let implants = implants {
+			NCDatabase.sharedDatabase?.performTaskAndWait({ (managedObjectContext) in
+				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
+				for implant in implants {
+					if let attributes = invTypes[implant]?.allAttributes {
+						if let value = attributes[NCDBAttributeID.intelligenceBonus.rawValue]?.value, value > 0 {
+							augmentations.intelligence += Int(value)
+						}
+						if let value = attributes[NCDBAttributeID.memoryBonus.rawValue]?.value, value > 0 {
+							augmentations.memory += Int(value)
+						}
+						if let value = attributes[NCDBAttributeID.perceptionBonus.rawValue]?.value, value > 0 {
+							augmentations.perception += Int(value)
+						}
+						if let value = attributes[NCDBAttributeID.willpowerBonus.rawValue]?.value, value > 0 {
+							augmentations.willpower += Int(value)
+						}
+						if let value = attributes[NCDBAttributeID.charismaBonus.rawValue]?.value, value > 0 {
+							augmentations.charisma += Int(value)
+						}
+					}
+				}
+			})
+		}
+		
+		self.augmentations = augmentations
+	}
+	
 	init(clones: EVE.Char.Clones) {
 		self.intelligence = clones.attributes.intelligence
 		self.memory = clones.attributes.memory

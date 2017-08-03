@@ -618,7 +618,7 @@ extension ESI.Assets.Asset.Flag {
 			return 172
 		case .deliveries:
 			return 173
-		case .autoFit, .corpseBay, .hangarAll, .module:
+		case .autoFit, .corpseBay, .hangarAll, .module, .subSystemBay:
 			return 0
 		}
 	}

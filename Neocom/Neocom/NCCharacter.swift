@@ -60,36 +60,44 @@ class NCCharacter {
 			let dataManager = NCDataManager(account: account)
 			var skillsResult: NCCachedResult<ESI.Skills.CharacterSkills>?
 			var skillQueueResult: NCCachedResult<[ESI.Skills.SkillQueueItem]>?
-			var clonesResult: NCCachedResult<EVE.Char.Clones>?
+			var attributesResult: NCCachedResult<ESI.Skills.CharacterAttributes>?
+			var implantsResult: NCCachedResult<[Int]>?
 			
 			let dispatchGroup = DispatchGroup()
 			
-			let progress = Progress(totalUnitCount: 3)
+			let progress = Progress(totalUnitCount: 4)
 			
-			progress.becomeCurrent(withPendingUnitCount: 1)
-			dispatchGroup.enter()
-			dataManager.skills { result in
-				skillsResult = result
-				dispatchGroup.leave()
+			progress.perform {
+				dispatchGroup.enter()
+				dataManager.skills { result in
+					skillsResult = result
+					dispatchGroup.leave()
+				}
 			}
-			progress.resignCurrent()
 			
-			progress.becomeCurrent(withPendingUnitCount: 1)
-			dispatchGroup.enter()
-			dataManager.skillQueue { result in
-				skillQueueResult = result
-				dispatchGroup.leave()
+			progress.perform {
+				dispatchGroup.enter()
+				dataManager.skillQueue { result in
+					skillQueueResult = result
+					dispatchGroup.leave()
+				}
 			}
-			progress.resignCurrent()
 			
-			progress.becomeCurrent(withPendingUnitCount: 1)
-			dispatchGroup.enter()
-			dataManager.clones { result in
-				clonesResult = result
-				dispatchGroup.leave()
+			progress.perform {
+				dispatchGroup.enter()
+				dataManager.attributes { result in
+					attributesResult = result
+					dispatchGroup.leave()
+				}
 			}
-			progress.resignCurrent()
 
+			progress.perform {
+				dispatchGroup.enter()
+				dataManager.implants { result in
+					implantsResult = result
+					dispatchGroup.leave()
+				}
+			}
 			
 			dispatchGroup.notify(queue: .global(qos: .background)) {
 				autoreleasepool {
@@ -104,8 +112,10 @@ class NCCharacter {
 					var skillsRecord: NCCacheRecord?
 					var skillQueue: [ESI.Skills.SkillQueueItem]?
 					var skillQueueRecord: NCCacheRecord?
-					var clones: EVE.Char.Clones?
-					var clonesRecord: NCCacheRecord?
+					var attributes: ESI.Skills.CharacterAttributes?
+					var attributesRecord: NCCacheRecord?
+					var implants: [Int]?
+					var implantsRecord: NCCacheRecord?
 					
 					switch skillsResult {
 					case let .success(value, cacheRecord)?:
@@ -133,10 +143,10 @@ class NCCharacter {
 						return
 					}
 					
-					switch clonesResult {
+					switch attributesResult {
 					case let .success(value, cacheRecord)?:
-						clones = value
-						clonesRecord = cacheRecord
+						attributes = value
+						attributesRecord = cacheRecord
 						break
 					case let .failure(error)?:
 						result = .failure(error)
@@ -146,8 +156,20 @@ class NCCharacter {
 						return
 					}
 					
+					switch implantsResult {
+					case let .success(value, cacheRecord)?:
+						implants = value
+						implantsRecord = cacheRecord
+						break
+					case let .failure(error)?:
+						result = .failure(error)
+						return
+					default:
+						result = .failure(ESIError.internalError)
+						return
+					}
 					
-					let character = NCCharacter(attributes: NCCharacterAttributes(clones: clones!), skills: skills!, skillQueue: skillQueue!)
+					let character = NCCharacter(attributes: NCCharacterAttributes(attributes: attributes!, implants: implants), skills: skills!, skillQueue: skillQueue!)
 					result = .success(character)
 					
 					character.observer = NCManagedObjectObserver() {[weak character] (updated, deleted) in
@@ -168,9 +190,10 @@ class NCCharacter {
 									else if object.objectID == skillQueueRecord?.objectID {
 										skillQueue = ((try? managedObjectContext.existingObject(with: object.objectID)) as? NCCacheRecord)?.data?.data as? [ESI.Skills.SkillQueueItem]
 									}
-									else if object.objectID == clonesRecord?.objectID {
-										guard let clones = ((try? managedObjectContext.existingObject(with: object.objectID)) as? NCCacheRecord)?.data?.data as? EVE.Char.Clones else {continue}
-										attributes = NCCharacterAttributes(clones: clones)
+									else if object.objectID == attributesRecord?.objectID || object.objectID == implantsRecord?.objectID {
+										guard let attr = ((try? managedObjectContext.existingObject(with: attributesRecord!.objectID)) as? NCCacheRecord)?.data?.data as? ESI.Skills.CharacterAttributes else {continue}
+										guard let implants = ((try? managedObjectContext.existingObject(with: implantsRecord!.objectID)) as? NCCacheRecord)?.data?.data as? [Int] else {continue}
+										attributes = NCCharacterAttributes(attributes: attr, implants: implants)
 									}
 								}
 								

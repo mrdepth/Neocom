@@ -11,7 +11,7 @@ import CoreData
 import CloudData
 
 class NCManagedObjectObserver {
-	typealias Handler =  (_ updated: Set<NSManagedObject>?, _ deleted:Set<NSManagedObject>?) -> Void
+	typealias Handler = (_ updated: Set<NSManagedObject>?, _ deleted:Set<NSManagedObject>?) -> Void
 	let handler: Handler
 	var objects = Set<NSManagedObject>()
 	var observer: NotificationObserver?
@@ -22,6 +22,9 @@ class NCManagedObjectObserver {
 		
 		observer = NotificationCenter.default.addNotificationObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: nil /*.main*/) { [weak self] (note) in
 			guard let strongSelf = self else {return}
+			guard let context = note.object as? NSManagedObjectContext,
+				let managedObjectContext = strongSelf.objects.first?.managedObjectContext,
+				managedObjectContext == context || managedObjectContext.persistentStoreCoordinator == context.persistentStoreCoordinator else {return}
 			
 			let updates: Set<NSManagedObjectID>? = {
 				guard let set = note.userInfo?[NSUpdatedObjectsKey] else {return nil}
@@ -58,10 +61,6 @@ class NCManagedObjectObserver {
 		self.init(managedObjects: [managedObject], handler: handler)
 	}
 	
-	deinit {
-		NotificationCenter.default.removeObserver(observer!)
-	}
-
 	func add(managedObject: NSManagedObject) {
 		objects.insert(managedObject)
 	}
@@ -70,4 +69,40 @@ class NCManagedObjectObserver {
 		objects.remove(managedObject)
 	}
 	
+}
+
+class NCEntityObserver {
+	typealias Handler = () -> Void
+	let handler: Handler
+	let entities: Set<NSEntityDescription>
+	var observer: NotificationObserver?
+	let managedObjectContext: NSManagedObjectContext
+	
+	init (entities: [NSEntityDescription], managedObjectContext: NSManagedObjectContext, handler: @escaping Handler) {
+		self.handler = handler
+		self.entities = Set(entities)
+		self.managedObjectContext = managedObjectContext
+		
+		observer = NotificationCenter.default.addNotificationObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: nil /*.main*/) { [weak self] (note) in
+			guard let strongSelf = self else {return}
+			guard let context = note.object as? NSManagedObjectContext, strongSelf.managedObjectContext == context || strongSelf.managedObjectContext.persistentStoreCoordinator == context.persistentStoreCoordinator else {return}
+			
+			let updates: Set<NSEntityDescription> = Set((note.userInfo?[NSUpdatedObjectsKey] as? NSSet)?.flatMap {(($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID)?.entity} ?? [])
+			let deletes: Set<NSEntityDescription> = Set((note.userInfo?[NSDeletedObjectsKey] as? NSSet)?.flatMap {(($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID)?.entity} ?? [])
+			let inserts: Set<NSEntityDescription> = Set((note.userInfo?[NSInsertedObjectsKey] as? NSSet)?.flatMap {(($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID)?.entity} ?? [])
+			
+			let set = updates.union(deletes).union(inserts)
+
+			if !set.union(entities).isEmpty {
+				DispatchQueue.main.async {
+					strongSelf.handler()
+				}
+			}
+		}
+	}
+	
+	convenience init (entity: NSEntityDescription, managedObjectContext: NSManagedObjectContext, handler: @escaping Handler) {
+		self.init(entities: [entity], managedObjectContext: managedObjectContext, handler: handler)
+	}
+
 }

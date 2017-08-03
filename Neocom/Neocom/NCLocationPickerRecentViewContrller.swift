@@ -9,157 +9,86 @@
 import UIKit
 import CoreData
 
-class NCLocationPickerRecentViewContrller: UITableViewController, NSFetchedResultsControllerDelegate {
-	private var results: NSFetchedResultsController<NCCacheTypePickerRecent>?
-	private var searchController: UISearchController?
+class NCRecentLocationRow: FetchedResultsObjectNode<NCCacheLocationPickerRecent> {
+	required init(object: NCCacheLocationPickerRecent) {
+		super.init(object: object)
+		cellIdentifier = Prototype.NCDefaultTableViewCell.noImage.reuseIdentifier
+	}
 	
-	private lazy var invTypes = NCDatabase.sharedDatabase?.invTypes
+	lazy var title: NSAttributedString? = {
+		if let region = NCDatabase.sharedDatabase?.mapRegions[Int(self.object.locationID)]?.regionName {
+			return NSAttributedString(string: region)
+		}
+		else if let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[Int(self.object.locationID)] {
+			return NCLocation(solarSystem).displayName
+		}
+		else {
+			return nil
+		}
+	}()
+	
+	lazy var region: NCDBMapRegion? = {
+		guard NCCacheLocationPickerRecent.LocationType(rawValue: self.object.locationType) == .region else {return nil}
+		return NCDatabase.sharedDatabase?.mapRegions[Int(self.object.locationID)]
+	}()
+
+	lazy var solarSystem: NCDBMapSolarSystem? = {
+		guard NCCacheLocationPickerRecent.LocationType(rawValue: self.object.locationType) == .solarSystem else {return nil}
+		return NCDatabase.sharedDatabase?.mapSolarSystems[Int(self.object.locationID)]
+	}()
+
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.attributedText = title
+		cell.subtitleLabel?.text = solarSystem?.constellation?.region?.regionName
+	}
+}
+
+class NCLocationPickerRecentViewContrller: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		tableView.register([Prototype.NCDefaultTableViewCell.compact,
-		                    Prototype.NCModuleTableViewCell.default,
-		                    Prototype.NCShipTableViewCell.default,
-		                    Prototype.NCChargeTableViewCell.default,
-		                    ])
+		tableView.register([Prototype.NCDefaultTableViewCell.noImage,
+		                    Prototype.NCHeaderTableViewCell.default])
+	}
+	
+	var mode: [NCLocationPickerViewController.Mode] {
+		return (navigationController as? NCLocationPickerViewController)?.mode ?? []
+	}
+	
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		defer {
+			completionHandler()
+		}
 		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if results == nil {
-			guard let typePickerController = navigationController as? NCTypePickerViewController else {return}
-			guard let category = typePickerController.category else {return}
-			guard let context = NCCache.sharedCache?.viewContext else {return}
-			
-			
-			let request = NSFetchRequest<NCCacheLocationPickerRecent>(entityName: "LocationPickerRecent")
-			request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-			request.predicate = NSPredicate(format: "category == %d AND subcategory == %d AND raceID == %d", category.category, category.subcategory, category.race?.raceID ?? 0)
-			request.fetchBatchSize = 30
-			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-			results.delegate = self
-			try? results.performFetch()
-//			self.results = results
-			
-			tableView.backgroundView = (results.fetchedObjects?.count ?? 0) == 0 ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-			tableView.reloadData()
-		}
-	}
-	
-	override func didReceiveMemoryWarning() {
-		if !isViewLoaded || view.window == nil {
-			results = nil
-		}
-	}
-	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "NCDatabaseTypeInfoViewController" {
-			let controller = segue.destination as? NCDatabaseTypeInfoViewController
-			let object = (sender as! NCDefaultTableViewCell).object as! NCDBInvType
-			controller?.type = object
-		}
-	}
-	
-	//MARK: UITableViewDataSource
-	
-	override func numberOfSections(in tableView: UITableView) -> Int {
-		return results?.sections?.count ?? 0
-	}
-	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return results?.sections?[section].numberOfObjects ?? 0
-	}
-	
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: Prototype.NCDefaultTableViewCell.compact.reuseIdentifier, for: indexPath) as! NCDefaultTableViewCell
+		guard let context = NCCache.sharedCache?.viewContext else {return}
 		
-		cell.object = nil
-		cell.titleLabel?.text = NSLocalizedString("Unknown", comment: "")
-		cell.iconView?.image = nil
-		cell.accessoryType = .detailButton
-		if let recent = results?.object(at: indexPath) {
-			if let type = invTypes?[Int(recent.typeID)] {
-				cell.object = type
-				cell.titleLabel?.text = type.typeName
-				cell.iconView?.image = type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+		let request = NSFetchRequest<NCCacheLocationPickerRecent>(entityName: "LocationPickerRecent")
+
+		if mode != NCLocationPickerViewController.Mode.all {
+			if mode.contains(.regions) {
+				request.predicate = NSPredicate(format: "locationType == %d", NCCacheLocationPickerRecent.LocationType.region.rawValue)
 			}
-			else {
-				DispatchQueue.main.async {
-					guard let context = recent.managedObjectContext else {return}
-					context.delete(recent)
-					if context.hasChanges {
-						try? context.save()
-					}
-				}
+			else if mode.contains(.solarSystems) {
+				request.predicate = NSPredicate(format: "locationType == %d", NCCacheLocationPickerRecent.LocationType.solarSystem.rawValue)
 			}
 		}
+		request.sortDescriptors = [NSSortDescriptor(key: "locationType", ascending: true), NSSortDescriptor(key: "date", ascending: false)]
 		
+		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "locationTypeDisplayName", cacheName: nil)
 		
-		return cell
-	}
-	
-	//MARK: UITableViewDelegate
-	
-	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		tableView.deselectRow(at: indexPath, animated: true)
-		guard let typePickerController = navigationController as? NCTypePickerViewController else {return}
-		guard let recent = results?.object(at: indexPath) else {return}
-		guard let type = invTypes?[Int(recent.typeID)] else {return}
-		guard let context = recent.managedObjectContext else {return}
+		treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCCacheLocationPickerRecent>.self, objectNode: NCRecentLocationRow.self)
 		
-		recent.date = Date() as NSDate
-		if context.hasChanges {
-			try? context.save()
-		}
-		typePickerController.completionHandler(typePickerController, type)
 	}
 	
-	override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-		guard let recent = results?.object(at: indexPath) else {return}
-		guard let type = invTypes?[Int(recent.typeID)] else {return}
-		Router.Database.TypeInfo(type).perform(source: self, view: tableView.cellForRow(at: indexPath))
+	//MARK: - TreeControllerDelegate
+	
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
+		guard let row = node as? NCRecentLocationRow else {return}
+		guard let location = row.region ?? row.solarSystem else {return}
+		guard let picker = navigationController as? NCLocationPickerViewController else {return}
+		picker.completionHandler(picker, location)
 	}
-	
-	// MARK: - NSFetchedResultsControllerDelegate
-	
-	public func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-		switch type {
-		case .delete:
-			tableView.deleteRows(at: [indexPath!], with: .bottom)
-		case .insert:
-			tableView.insertRows(at: [newIndexPath!], with: .bottom)
-		case .move:
-			tableView.moveRow(at: indexPath!, to: newIndexPath!)
-		case .update:
-			tableView.reloadRows(at: [newIndexPath!], with: .fade)
-		}
-	}
-	
-	
-	public func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-		switch type {
-		case .delete:
-			tableView.deleteSections(IndexSet(integer: sectionIndex), with: .bottom)
-		case .insert:
-			tableView.insertSections(IndexSet(integer: sectionIndex), with: .bottom)
-		default:
-			break
-		}
-	}
-	
-	
-	public func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		tableView.beginUpdates()
-	}
-	
-	
-	public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		tableView.endUpdates()
-	}
-	
-	
 }

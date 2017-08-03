@@ -156,7 +156,19 @@ extension NCCacheLocationPickerRecent {
 		case region = 0
 		case solarSystem = 1
 	}
+	
+	var locationTypeDisplayName: String? {
+		switch LocationType(rawValue: self.locationType) {
+		case .region?:
+			return NSLocalizedString("Regions", comment: "")
+		case .solarSystem?:
+			return NSLocalizedString("Solar Systems", comment: "")
+		default:
+			return nil
+		}
+	}
 }
+
 
 /*extension NCMail {
 	enum Folder: Int {

@@ -77,16 +77,13 @@ class NCMainMenuDetails: NSObject {
 		}
 	}
 	
-	var walletsRecord: NCCacheRecord? {
+	var walletBalanceRecord: NCCacheRecord? {
 		didSet {
-			if let walletsRecord = walletsRecord {
+			if let walletsRecord = walletBalanceRecord {
 				self.binder.bind("balance", toObject: walletsRecord.data!, withKeyPath: "data", transformer: NCValueTransformer(handler: { value in
-					guard let wallets = value as? [ESI.Wallet.Balance] else {return nil}
-					var wealth = 0.0
-					for wallet in wallets {
-						wealth += Double(wallet.balance ?? 0)
-					}
-					return NCUnitFormatter.localizedString(from: wealth / 100.0, unit: .isk, style: .full)
+					guard let walletBalance = value as? Float else {return nil}
+					let wealth = Double(walletBalance)
+					return NCUnitFormatter.localizedString(from: wealth, unit: .isk, style: .full)
 				}))
 			}
 			else {
@@ -480,10 +477,10 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 				}
 			}
 			
-			dataManager.wallets { result in
+			dataManager.walletBalance { result in
 				switch result {
 				case let .success(_, cacheRecord):
-					mainMenuDetails.walletsRecord = cacheRecord
+					mainMenuDetails.walletBalanceRecord = cacheRecord
 				default:
 					break
 				}

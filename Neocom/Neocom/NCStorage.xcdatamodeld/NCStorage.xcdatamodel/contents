@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName="NCAccount" syncable="YES" codeGenerationType="class">
         <attribute name="accessToken" attributeType="String" syncable="YES"/>
         <attribute name="characterID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -56,6 +56,14 @@
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="to" optional="YES" attributeType="Transformable" customClassName="[Int64]" syncable="YES"/>
     </entity>
+    <entity name="MarketQuickItem" representedClassName="NCMarketQuickItem" syncable="YES" codeGenerationType="class">
+        <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="typeID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="Scope" representedClassName="NCScope" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="scopes" inverseEntity="Account" syncable="YES"/>
@@ -107,6 +115,7 @@
         <memberEntity name="Scope"/>
         <memberEntity name="SkillPlanSkill"/>
         <memberEntity name="MailDraft"/>
+        <memberEntity name="MarketQuickItem"/>
     </configuration>
     <configuration name="Local">
         <memberEntity name="Setting"/>
@@ -127,5 +136,6 @@
         <element name="ShoppingList" positionX="45" positionY="90" width="128" height="90"/>
         <element name="SkillPlan" positionX="9" positionY="54" width="128" height="105"/>
         <element name="SkillPlanSkill" positionX="9" positionY="126" width="128" height="105"/>
+        <element name="MarketQuickItem" positionX="27" positionY="144" width="128" height="60"/>
     </elements>
 </model>

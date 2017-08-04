@@ -58,7 +58,7 @@ class NCAmmoNode: FetchedResultsObjectNode<NCDBInvType> {
 }
 
 class NCAmmoSection: FetchedResultsNode<NCDBInvType> {
-	init?(category: NCDBDgmppItemCategory) {
+	init?(category: NCDBDgmppItemCategory, objectNode: FetchedResultsObjectNode<NCDBInvType>.Type) {
 		guard let context = NCDatabase.sharedDatabase?.viewContext else {return nil}
 		guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return nil}
 	
@@ -72,7 +72,7 @@ class NCAmmoSection: FetchedResultsNode<NCDBInvType> {
 		
 		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "metaGroup.metaGroupID", cacheName: nil)
 		
-		super.init(resultsController: controller, sectionNode: NCMetaGroupFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCAmmoNode.self)
+		super.init(resultsController: controller, sectionNode: NCMetaGroupFetchedResultsSectionNode<NCDBInvType>.self, objectNode: objectNode)
 	}
 }
 
@@ -105,7 +105,7 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 		guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return}
 		title = group.groupName
 		
-		guard let ammo = NCAmmoSection(category: category) else {return}
+		guard let ammo = NCAmmoSection(category: category, objectNode: NCAmmoNode.self) else {return}
 		
 		let root = TreeNode()
 		

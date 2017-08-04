@@ -23,6 +23,7 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
         separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 		tintColor = .caption
 		indentationWidth = 16
+		selectionStyle = .none
     }
 
 	override func prepareForReuse() {

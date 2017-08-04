@@ -267,6 +267,9 @@
 		12D4044E1F32226E007F1715 /* NCLocationPickerRecentViewContrller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D4044D1F32226E007F1715 /* NCLocationPickerRecentViewContrller.swift */; };
 		12D404511F331BCB007F1715 /* NCMarketQuickbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D404501F331BCB007F1715 /* NCMarketQuickbarViewController.swift */; };
 		12D404531F331BDE007F1715 /* NCMarketPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D404521F331BDE007F1715 /* NCMarketPageViewController.swift */; };
+		12D404561F3460BE007F1715 /* NCAccountTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D404551F3460BE007F1715 /* NCAccountTableViewCell.xib */; };
+		12D404581F34BA70007F1715 /* NCAccountsFoldersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D404571F34BA70007F1715 /* NCAccountsFoldersViewController.swift */; };
+		12D4045A1F34BAD6007F1715 /* NCAccountsFolderPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D404591F34BAD6007F1715 /* NCAccountsFolderPickerViewController.swift */; };
 		12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */; };
 		12D930E51E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E41E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib */; };
 		12D930E71E656B0C00CBAE1C /* NCChargeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E61E656B0C00CBAE1C /* NCChargeTableViewCell.xib */; };
@@ -652,6 +655,9 @@
 		12D4044D1F32226E007F1715 /* NCLocationPickerRecentViewContrller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocationPickerRecentViewContrller.swift; sourceTree = "<group>"; };
 		12D404501F331BCB007F1715 /* NCMarketQuickbarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketQuickbarViewController.swift; sourceTree = "<group>"; };
 		12D404521F331BDE007F1715 /* NCMarketPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketPageViewController.swift; sourceTree = "<group>"; };
+		12D404551F3460BE007F1715 /* NCAccountTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCAccountTableViewCell.xib; sourceTree = "<group>"; };
+		12D404571F34BA70007F1715 /* NCAccountsFoldersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsFoldersViewController.swift; sourceTree = "<group>"; };
+		12D404591F34BAD6007F1715 /* NCAccountsFolderPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsFolderPickerViewController.swift; sourceTree = "<group>"; };
 		12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingModuleTableViewCell.xib; sourceTree = "<group>"; };
 		12D930E41E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingModuleStateTableViewCell.xib; sourceTree = "<group>"; };
 		12D930E61E656B0C00CBAE1C /* NCChargeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCChargeTableViewCell.xib; sourceTree = "<group>"; };
@@ -864,6 +870,8 @@
 				1256BE521DF4725B00A2A24B /* NCMainMenuViewController.swift */,
 				1256BE5B1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift */,
 				122B55601EB73E3500E46536 /* NCAccountsViewController.swift */,
+				12D404571F34BA70007F1715 /* NCAccountsFoldersViewController.swift */,
+				12D404591F34BAD6007F1715 /* NCAccountsFolderPickerViewController.swift */,
 			);
 			name = MainMenu;
 			sourceTree = "<group>";
@@ -1216,6 +1224,7 @@
 		12D930F41E658E8400CBAE1C /* Prototypes */ = {
 			isa = PBXGroup;
 			children = (
+				12D404551F3460BE007F1715 /* NCAccountTableViewCell.xib */,
 				1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */,
 				128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */,
 				1285FB341EB8DD350025331A /* NCAttributeTableViewCell.xib */,
@@ -1491,6 +1500,7 @@
 				12E6AE561F18F703001E829D /* NCKillmailAttackerTableViewCell.xib in Resources */,
 				12406A031F20F4B800A4DAE7 /* NCShipTableViewCell.xib in Resources */,
 				1256BF2C1DF4770B00A2A24B /* UI.xcassets in Resources */,
+				12D404561F3460BE007F1715 /* NCAccountTableViewCell.xib in Resources */,
 				1256BEC81DF4770A00A2A24B /* charisma.png in Resources */,
 				12D930E71E656B0C00CBAE1C /* NCChargeTableViewCell.xib in Resources */,
 				126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */,
@@ -1727,6 +1737,7 @@
 				1230A3301DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift in Sources */,
 				1293BC1A1E4B4E7C0099FD75 /* NCFirepowerTableViewCell.swift in Sources */,
 				12AC8DC61DF0894400561A7A /* NCDataManager.swift in Sources */,
+				12D404581F34BA70007F1715 /* NCAccountsFoldersViewController.swift in Sources */,
 				12236C1B1F27974400A1A27D /* NCFittingInGameFittingsViewController.swift in Sources */,
 				12961DD01E1D64A6008A3F4D /* NCFittingImplant.mm in Sources */,
 				12FC3CC81E13F4A400B7744E /* NCDatabaseTypeMasteryViewController.swift in Sources */,
@@ -1763,6 +1774,7 @@
 				12D39D061EF805270077BD17 /* NCIndustryTableViewCell.swift in Sources */,
 				1293BC161E4B1FC60099FD75 /* NCResistancesTableViewCell.swift in Sources */,
 				1256BE401DF1F06D00A2A24B /* NCCharacter.swift in Sources */,
+				12D4045A1F34BAD6007F1715 /* NCAccountsFolderPickerViewController.swift in Sources */,
 				12CFDAD81F029B8200CC0762 /* NCZKillboardTypePickerViewController.swift in Sources */,
 				1261570F1E01D3410041B817 /* NCManagedObjectObserver.swift in Sources */,
 				1256BE5C1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift in Sources */,

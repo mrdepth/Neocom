@@ -1163,4 +1163,22 @@ enum Router {
 			}
 		}
 	}
+	
+	enum Account {
+		class AccountsFolderPicker: Route {
+			let completionHandler: (NCAccountsFolderPickerViewController, NCAccountsFolder) -> Void
+			
+			init(completionHandler: @escaping (NCAccountsFolderPickerViewController, NCAccountsFolder) -> Void) {
+				self.completionHandler = completionHandler
+				super.init(kind: .modal, identifier: "NCAccountsFolderPickerViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCAccountsFolderPickerViewController
+				destination.completionHandler = completionHandler
+			}
+			
+		}
+
+	}
 }

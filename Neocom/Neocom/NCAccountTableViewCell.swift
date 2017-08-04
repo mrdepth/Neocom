@@ -33,6 +33,6 @@ class NCAccountTableViewCell: NCTableViewCell {
 
 extension Prototype {
 	enum NCAccountTableViewCell {
-		static let `default` = Prototype(nib: nil, reuseIdentifier: "NCAccountTableViewCell")
+		static let `default` = Prototype(nib: UINib(nibName: "NCAccountTableViewCell", bundle: nil), reuseIdentifier: "NCAccountTableViewCell")
 	}
 }

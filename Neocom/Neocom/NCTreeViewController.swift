@@ -118,7 +118,12 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 		if let route = (node as? TreeNodeRoutable)?.route {
 			route.perform(source: self, view: treeController.cell(for: node))
 		}
-		treeController.deselectCell(for: node, animated: true)
+		if (!isEditing && !tableView.allowsMultipleSelection) || (isEditing && !tableView.allowsMultipleSelectionDuringEditing) {
+			treeController.deselectCell(for: node, animated: true)
+		}
+	}
+	
+	func treeController(_ treeController: TreeController, didDeselectCellWithNode node: TreeNode) {
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {

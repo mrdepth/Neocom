@@ -10,8 +10,13 @@
         <attribute name="refreshToken" attributeType="String" syncable="YES"/>
         <attribute name="tokenType" attributeType="String" syncable="YES"/>
         <attribute name="uuid" attributeType="String" syncable="YES"/>
+        <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AccountsFolder" inverseName="accounts" inverseEntity="AccountsFolder" syncable="YES"/>
         <relationship name="scopes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Scope" inverseName="account" inverseEntity="Scope" syncable="YES"/>
         <relationship name="skillPlans" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SkillPlan" inverseName="account" inverseEntity="SkillPlan" syncable="YES"/>
+    </entity>
+    <entity name="AccountsFolder" representedClassName="NCAccountsFolder" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="accounts" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="folder" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="DamagePattern" representedClassName="NCDamagePattern" syncable="YES" codeGenerationType="class">
         <attribute name="em" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -116,12 +121,13 @@
         <memberEntity name="SkillPlanSkill"/>
         <memberEntity name="MailDraft"/>
         <memberEntity name="MarketQuickItem"/>
+        <memberEntity name="AccountsFolder"/>
     </configuration>
     <configuration name="Local">
         <memberEntity name="Setting"/>
     </configuration>
     <elements>
-        <element name="Account" positionX="18" positionY="63" width="128" height="210"/>
+        <element name="Account" positionX="18" positionY="63" width="128" height="225"/>
         <element name="DamagePattern" positionX="45" positionY="90" width="128" height="120"/>
         <element name="DronesSet" positionX="9" positionY="54" width="128" height="75"/>
         <element name="FitCharacter" positionX="36" positionY="81" width="128" height="90"/>
@@ -130,12 +136,13 @@
         <element name="Loadout" positionX="0" positionY="45" width="128" height="135"/>
         <element name="LoadoutData" positionX="9" positionY="54" width="128" height="75"/>
         <element name="MailDraft" positionX="18" positionY="135" width="128" height="105"/>
+        <element name="MarketQuickItem" positionX="27" positionY="144" width="128" height="60"/>
         <element name="Scope" positionX="9" positionY="126" width="128" height="75"/>
         <element name="Setting" positionX="18" positionY="63" width="128" height="75"/>
         <element name="ShoppingItem" positionX="-18" positionY="27" width="128" height="180"/>
         <element name="ShoppingList" positionX="45" positionY="90" width="128" height="90"/>
         <element name="SkillPlan" positionX="9" positionY="54" width="128" height="105"/>
         <element name="SkillPlanSkill" positionX="9" positionY="126" width="128" height="105"/>
-        <element name="MarketQuickItem" positionX="27" positionY="144" width="128" height="60"/>
+        <element name="AccountsFolder" positionX="36" positionY="153" width="128" height="75"/>
     </elements>
 </model>

@@ -34,6 +34,15 @@ class AmmoDamageChart: LineChart {
 	}
 }
 
+class NCAmmoDamageChartNode: NCAmmoNode {
+	var isSelected: Bool = false
+	
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		cell.backgroundColor = isSelected ? UIColor.separator : UIColor.cellBackground
+	}
+}
+
 class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDelegate {
 	@IBOutlet var treeController: TreeController!
 	@IBOutlet weak var tableView: UITableView!
@@ -87,7 +96,7 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 		guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return}
 		title = group.groupName
 		
-		guard let ammo = NCAmmoSection(category: category) else {return}
+		guard let ammo = NCAmmoSection(category: category, objectNode: NCAmmoDamageChartNode.self) else {return}
 		
 		damageChartView.axes[.left] = DamageAxis()
 		damageChartView.axes[.bottom] = RangeAxis()
@@ -111,41 +120,46 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 	@IBAction func onClear(_ sender: Any) {
 		charges = []
 		reload()
+//		treeController.selectedNodes().forEach {treeController.deselectCell(for: $0, animated: true)}
 		for section in treeController.content?.children ?? [] {
 			for child in section.children {
-				child.isSelected = false
+				(child as? NCAmmoDamageChartNode)?.isSelected = false
 			}
 		}
+		tableView.reloadData()
 	}
 
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		guard let node = node as? NCAmmoNode else {return}
-		
-		if charges.count >= Limit {
-			treeController.deselectCell(for: node, animated: true)
+		guard let node = node as? NCAmmoDamageChartNode else {return}
+		if node.isSelected {
+			let typeID = Int(node.object.typeID)
+			if let i = charges.index(of: typeID) {
+				charges.remove(at: i)
+				reload()
+			}
+			node.isSelected = false
+			treeController.reloadCells(for: [node], with: .none)
 		}
 		else {
-			let typeID = Int(node.object.typeID)
-			charges.append(typeID)
-			
-			reload()
+			if charges.count < Limit {
+				let typeID = Int(node.object.typeID)
+				charges.append(typeID)
+				reload()
+				node.isSelected = true
+				treeController.reloadCells(for: [node], with: .none)
+			}
+			else {
+				treeController.deselectCell(for: node, animated: true)
+			}
 		}
 	}
 	
-	func treeController(_ treeController: TreeController, didDeselectCellWithNode node: TreeNode) {
+	/*func treeController(_ treeController: TreeController, didDeselectCellWithNode node: TreeNode) {
 		guard let node = node as? NCAmmoNode else {return}
 
-		let typeID = Int(node.object.typeID)
-		if let i = charges.index(of: typeID) {
-			charges.remove(at: i)
-			reload()
-		}
-		
-//		damageChartView.charges = charges
-		tableView.reloadRows(at: [], with: .fade)
-	}
+	}*/
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		guard let node = node as? NCAmmoNode else {return}

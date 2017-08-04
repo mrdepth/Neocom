@@ -15,10 +15,13 @@ class NCAccountsNode: FetchedResultsNode<NCAccount> {
 	init(context: NSManagedObjectContext) {
 		
 		let request = NSFetchRequest<NCAccount>(entityName: "Account")
-		request.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true), NSSortDescriptor(key: "characterName", ascending: true)]
 		
-		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-		super.init(resultsController: results, objectNode: NCAccountRow.self)
+		request.sortDescriptors = [NSSortDescriptor(key: "folder.name", ascending: true),
+		                           NSSortDescriptor(key: "order", ascending: true),
+		                           NSSortDescriptor(key: "characterName", ascending: true)]
+		
+		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "folder.name", cacheName: nil)
+		super.init(resultsController: results, sectionNode: NCAccountsFolderSection.self, objectNode: NCAccountRow.self)
 	}
 }
 
@@ -122,7 +125,12 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 	
 	func configureCharacter(cell: NCAccountTableViewCell) {
 		if let value = character?.value {
-			cell.characterNameLabel.text = value.name
+			if let scopes = object.scopes?.flatMap({($0 as? NCScope)?.name}), Set(ESI.Scope.default.map{$0.rawValue}) != Set(scopes) {
+				cell.characterNameLabel.attributedText = value.name + " (!)" * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .subheadline)]
+			}
+			else {
+				cell.characterNameLabel.text = value.name
+			}
 		}
 		else {
 			cell.characterNameLabel.text = character?.error?.localizedDescription ?? " "
@@ -450,6 +458,18 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 	
 }
 
+class NCAccountsFolderSection: FetchedResultsSectionNode<NCAccount> {
+	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<NCAccount>.Type) {
+		super.init(section: section, objectNode: objectNode)
+		cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCHeaderTableViewCell else {return}
+		cell.titleLabel?.text = section.name.isEmpty ? NSLocalizedString("Accounts", comment: "").uppercased() : section.name.uppercased()
+	}
+}
+
 class NCAccountsViewController: UITableViewController, TreeControllerDelegate, UIViewControllerTransitioningDelegate, NCRefreshable {
 	
 	@IBOutlet var treeController: TreeController!
@@ -465,6 +485,8 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		tableView.register([Prototype.NCActionTableViewCell.default,
+		                    Prototype.NCAccountTableViewCell.default,
+		                    Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.empty])
 		
 		treeController.delegate = self
@@ -490,13 +512,41 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 	}
 
 	
-	@IBAction func onAddAccount(_ sender: Any) {
-		let url = OAuth2.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.default, state: "esi")
-		if #available(iOS 10.0, *) {
-			UIApplication.shared.open(url, options: [:], completionHandler: nil)
-		} else {
-			UIApplication.shared.openURL(url)
-		}
+	@IBAction func onDelete(_ sender: Any) {
+		let selected = treeController.selectedNodes().flatMap {$0 as? NCAccountRow}
+		guard !selected.isEmpty else {return}
+		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		controller.addAction(UIAlertAction(title: String(format: NSLocalizedString("Delete %d Accounts", comment: ""), selected.count), style: .destructive) { [weak self] _ in
+			selected.forEach {
+				$0.object.managedObjectContext?.delete($0.object)
+			}
+			if let context = selected.first?.object.managedObjectContext, context.hasChanges {
+				try? context.save()
+			}
+			self?.updateTitle()
+		})
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+		
+		present(controller, animated: true, completion: nil)
+	}
+	
+	@IBAction func onMoveTo(_ sender: Any) {
+		let selected = treeController.selectedNodes().flatMap {$0 as? NCAccountRow}
+		guard !selected.isEmpty else {return}
+
+		Router.Account.AccountsFolderPicker { [weak self] (controller, folder) in
+			controller.dismiss(animated: true, completion: nil)
+			selected.forEach {
+				$0.object.folder = folder
+			}
+			
+			if let context = selected.first?.object.managedObjectContext, context.hasChanges {
+				try? context.save()
+			}
+			self?.updateTitle()
+
+		}.perform(source: self)
 	}
 	
 	@IBAction func onClose(_ sender: Any) {
@@ -511,6 +561,8 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 				try? context.save()
 			}
 		}
+		navigationController?.setToolbarHidden(!editing, animated: true)
+		updateTitle()
 	}
 	
 	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -526,28 +578,51 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 	// MARK: TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		treeController.deselectCell(for: node, animated: true)
-		if node is NCActionRow {
-			let url = OAuth2.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.default, state: "esi")
-			if #available(iOS 10.0, *) {
-				UIApplication.shared.open(url, options: [:], completionHandler: nil)
-			} else {
-				UIApplication.shared.openURL(url)
+		if isEditing {
+			if !(node is NCAccountRow) {
+				treeController.deselectCell(for: node, animated: true)
+			}
+			updateTitle()
+		}
+		else {
+			treeController.deselectCell(for: node, animated: true)
+			if node is NCActionRow {
+				let url = OAuth2.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.default, state: "esi")
+				if #available(iOS 10.0, *) {
+					UIApplication.shared.open(url, options: [:], completionHandler: nil)
+				} else {
+					UIApplication.shared.openURL(url)
+				}
+			}
+			else if let node = node as? NCAccountRow {
+				NCAccount.current = node.object
+				dismiss(animated: true, completion: nil)
 			}
 		}
-		else if let node = node as? NCAccountRow {
-			NCAccount.current = node.object
-			dismiss(animated: true, completion: nil)
+	}
+	
+	func treeController(_ treeController: TreeController, didDeselectCellWithNode node: TreeNode) {
+		if isEditing {
+			updateTitle()
 		}
-
+	}
+	
+	func treeController(_ treeController: TreeController, didCollapseCellWithNode node: TreeNode) {
+		updateTitle()
+		
+	}
+	
+	func treeController(_ treeController: TreeController, didExpandCellWithNode node: TreeNode) {
+		updateTitle()
 	}
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let node = node as? NCAccountRow else {return nil}
-		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { _ in
+		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self] _ in
 			let account = node.object
 			account.managedObjectContext?.delete(account)
 			try? account.managedObjectContext?.save()
+			self?.updateTitle()
 		})]
 	}
 	
@@ -599,5 +674,14 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 	
 	//MARK: - Private
 	
-	
+	private func updateTitle() {
+		if isEditing {
+			let n = treeController.selectedNodes().count
+			title = n > 0 ? String(format: NSLocalizedString("Selected %d Accounts", comment: ""), n) : NSLocalizedString("Accounts", comment: "")
+			toolbarItems?.forEach {$0.isEnabled = n > 0}
+		}
+		else {
+			title = NSLocalizedString("Accounts", comment: "")
+		}
+	}
 }

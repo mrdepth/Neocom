@@ -14,7 +14,7 @@ class NCSkill: Hashable {
 	let typeName: String
 	let primaryAttributeID: NCDBAttributeID
 	let secondaryAttributeID: NCDBAttributeID
-	let rank: Int
+	let rank: Float
 	let startSkillPoints: Int?
 	
 	var skillPoints: Int {
@@ -72,7 +72,7 @@ class NCSkill: Hashable {
 		self.typeName = typeName
 		self.primaryAttributeID = NCDBAttributeID(rawValue: Int(primaryAttributeID)) ?? .none
 		self.secondaryAttributeID = NCDBAttributeID(rawValue: Int(secondaryAttributeID)) ?? .none
-		self.rank = Int(rank)
+		self.rank = rank
 		self.level = level
 		self.startSkillPoints = startSkillPoints
 		self.trainingStartDate = trainingStartDate
@@ -83,9 +83,9 @@ class NCSkill: Hashable {
 		self.init(type: type, level: skill.finishedLevel - 1, startSkillPoints: skill.trainingStartSP, trainingStartDate: skill.startDate, trainingEndDate: skill.finishDate)
 	}
 	
-	class func rank(skillPoints: Int, level: Int) -> Int {
-		return Int(round(Double(skillPoints) / (pow(2.0, 2.5 * Double(level) - 2.5) * 250.0)));
-	}
+//	class func rank(skillPoints: Int, level: Int) -> Int {
+//		return Int(round(Double(skillPoints) / (pow(2.0, 2.5 * Double(level) - 2.5) * 250.0)));
+//	}
 	
 	func skillPoints(at level: Int) -> Int {
 		if (level == 0 || rank == 0) {

@@ -889,14 +889,17 @@ extension NCDBInvType {
 
 for (_, type) in invTypes {
 	for (skillID, level) in [(182, 277), (183, 278), (184, 279), (1285, 1286), (1289, 1287), (1290, 1288)] {
-		if let skillID = type.getAttribute(skillID),
+		guard let skillID = type.getAttribute(skillID),
 			let level = type.getAttribute(level),
-			let skill = invTypes[Int(skillID.value) as NSNumber] {
-			let requiredSkill = NCDBInvTypeRequiredSkill(context: context)
-			requiredSkill.type = type
-			requiredSkill.skillType = skill
-			requiredSkill.skillLevel = Int16(level.value)
-		}
+			let skill = invTypes[Int(skillID.value) as NSNumber],
+			skill !== type
+			else {continue}
+		
+		let requiredSkill = NCDBInvTypeRequiredSkill(context: context)
+		requiredSkill.type = type
+		requiredSkill.skillType = skill
+		requiredSkill.skillLevel = Int16(level.value)
+		
 	}
 }
 

@@ -11,6 +11,6 @@ import CoreData
 
 class NCAccountsFolderPickerViewController: NCNavigationController {
 	
-	var completionHandler: ((NCAccountsFolderPickerViewController, NCAccountsFolder) -> Void)!
+	var completionHandler: ((NCAccountsFolderPickerViewController, NCAccountsFolder?) -> Void)?
 	
 }

@@ -10,18 +10,57 @@ import UIKit
 import CoreData
 import EVEAPI
 
-class NCAccountsNode: FetchedResultsNode<NCAccount> {
+class NCAccountsNode: TreeNode {
+	let cachePolicy: URLRequest.CachePolicy
 	
-	init(context: NSManagedObjectContext) {
+	init(context: NSManagedObjectContext, cachePolicy: URLRequest.CachePolicy) {
+		self.cachePolicy = cachePolicy
+		super.init()
 		
+		let defaultAccounts: FetchedResultsNode<NCAccount> = {
+			let request = NSFetchRequest<NCAccount>(entityName: "Account")
+			request.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true),
+			                           NSSortDescriptor(key: "characterName", ascending: true)]
+			request.predicate = NSPredicate(format: "folder == nil", "")
+			
+			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+			return FetchedResultsNode(resultsController: results, objectNode: NCAccountRow.self)
+		}()
+
+		let folders: FetchedResultsNode<NCAccountsFolder> = {
+			let request = NSFetchRequest<NCAccountsFolder>(entityName: "AccountsFolder")
+			request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+			
+			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+			return FetchedResultsNode(resultsController: results, objectNode: NCAccountsFolderSection.self)
+		}()
+
+		children = [DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default, nodeIdentifier: "Default", title: NSLocalizedString("Default", comment: "").uppercased(), children: [defaultAccounts]), folders]
+		
+		
+	}
+}
+
+class NCAccountsFolderSection: FetchedResultsObjectNode<NCAccountsFolder> {
+	required init(object: NCAccountsFolder) {
+		super.init(object: object)
+		cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCHeaderTableViewCell else {return}
+		cell.titleLabel?.text = (object.name?.isEmpty == false ? object.name : NSLocalizedString("Unnmaed", comment: ""))?.uppercased()
+	}
+	
+	override func loadChildren() {
+		guard let context = object.managedObjectContext else {return}
 		let request = NSFetchRequest<NCAccount>(entityName: "Account")
-		
-		request.sortDescriptors = [NSSortDescriptor(key: "folder.name", ascending: true),
-		                           NSSortDescriptor(key: "order", ascending: true),
+		request.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true),
 		                           NSSortDescriptor(key: "characterName", ascending: true)]
+		request.predicate = NSPredicate(format: "folder == %@", object)
 		
-		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "folder.name", cacheName: nil)
-		super.init(resultsController: results, sectionNode: NCAccountsFolderSection.self, objectNode: NCAccountRow.self)
+		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+		children = [FetchedResultsNode(resultsController: results, objectNode: NCAccountRow.self)]
 	}
 }
 
@@ -33,78 +72,27 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 		cellIdentifier = Prototype.NCAccountTableViewCell.default.reuseIdentifier
 	}
 	
-	var character: NCCachedResult<ESI.Character.Information>? {
-		didSet {
-			if case let .success(_, record)? = character, let object = record {
-				observer?.add(managedObject: object)
-			}
+	var cachePolicy: URLRequest.CachePolicy {
+		var parent = self.parent
+		while parent != nil && !(parent is NCAccountsNode) {
+			parent = parent?.parent
 		}
+		return (parent as? NCAccountsNode)?.cachePolicy ?? .useProtocolCachePolicy
 	}
 	
-	var corporation: NCCachedResult<ESI.Corporation.Information>? {
-		didSet {
-			if case let .success(_, record)? = corporation, let object = record {
-				observer?.add(managedObject: object)
-			}
-		}
-	}
+	lazy var dataManager: NCDataManager = {
+		return NCDataManager(account: self.object, cachePolicy: self.cachePolicy)
+	}()
 	
-	var skillQueue: NCCachedResult<[ESI.Skills.SkillQueueItem]>? {
-		didSet {
-			if case let .success(_, record)? = skillQueue, let object = record {
-				observer?.add(managedObject: object)
-			}
-		}
-	}
-	
-	var walletBalance: NCCachedResult<Float>? {
-		didSet {
-			if case let .success(_, record)? = walletBalance, let object = record {
-				observer?.add(managedObject: object)
-			}
-		}
-	}
-	
-	var skills: NCCachedResult<ESI.Skills.CharacterSkills>? {
-		didSet {
-			if case let .success(_, record)? = skills, let object = record {
-				observer?.add(managedObject: object)
-			}
-		}
-	}
-	
-	var location: NCCachedResult<ESI.Location.CharacterLocation>? {
-		didSet {
-			if case let .success(_, record)? = location, let object = record {
-				observer?.add(managedObject: object)
-			}
-		}
-	}
-	
-	var ship: NCCachedResult<ESI.Location.CharacterShip>? {
-		didSet {
-			if case let .success(_, record)? = ship, let object = record {
-				observer?.add(managedObject: object)
-			}
-		}
-	}
-	
-	var image: NCCachedResult<UIImage>? {
-		didSet {
-			if case let .success(_, record)? = image, let object = record {
-				observer?.add(managedObject: object)
-			}
-		}
-	}
-	
-	var accountStatus: NCCachedResult<EVE.Account.AccountStatus>? {
-		didSet {
-			if case let .success(_, record)? = accountStatus, let object = record {
-				observer?.add(managedObject: object)
-			}
-		}
-	}
-	
+	var character: NCCachedResult<ESI.Character.Information>?
+	var corporation: NCCachedResult<ESI.Corporation.Information>?
+	var skillQueue: NCCachedResult<[ESI.Skills.SkillQueueItem]>?
+	var walletBalance: NCCachedResult<Float>?
+	var skills: NCCachedResult<ESI.Skills.CharacterSkills>?
+	var location: NCCachedResult<ESI.Location.CharacterLocation>?
+	var ship: NCCachedResult<ESI.Location.CharacterShip>?
+	var image: NCCachedResult<UIImage>?
+
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCAccountTableViewCell else {return}
 		
@@ -120,7 +108,6 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 		configureCharacter(cell: cell)
 		configureSkillQueue(cell: cell)
 		configureCorporation(cell: cell)
-//		configureAccountStatus(cell: cell)
 	}
 	
 	func configureCharacter(cell: NCAccountTableViewCell) {
@@ -268,27 +255,17 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 		}
 	}
 	
-	/*func configureAccountStatus(cell: NCAccountTableViewCell) {
-		if let value = accountStatus?.value, let paidUntil = value.paidUntil {
-			let t = paidUntil.timeIntervalSinceNow
-			let s: String = t > 0 ?
-				"\(DateFormatter.localizedString(from: paidUntil, dateStyle: .medium, timeStyle: .none)) (\(NCTimeIntervalFormatter.localizedString(from: t, precision: .days)))" :
-				NSLocalizedString("expired", comment: "")
-			cell.subscriptionLabel.text = s
-		}
-		else {
-			cell.subscriptionLabel.text = accountStatus?.error?.localizedDescription ?? " "
-		}
-	}*/
-	
 	private var observer: NCManagedObjectObserver?
 	private var isLoading: Bool = false
-	func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (()->Void)? = nil) {
+	
+	func reload(completionHandler: (()->Void)? = nil) {
 		guard !isLoading else {
 			completionHandler?()
 			return
 		}
 		
+		isLoading = true
+
 		observer = NCManagedObjectObserver() { [weak self] (updated, deleted) in
 			guard let strongSelf = self else {return}
 			guard let cell = strongSelf.treeController?.cell(for: strongSelf) as? NCAccountTableViewCell else {return}
@@ -317,12 +294,9 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 			if case let .success(_, record)? = strongSelf.image, updated?.contains(record!) == true {
 				strongSelf.configureImage(cell: cell)
 			}
-//			if case let .success(_, record)? = strongSelf.accountStatus, updated?.contains(record!) == true {
-//				strongSelf.configureAccountStatus(cell: cell)
-//			}
 		}
 		
-		let dataManager = NCDataManager(account: object, cachePolicy: cachePolicy)
+		let dataManager = self.dataManager
 		
 		let cell = treeController?.cell(for: self)
 		let progress = cell != nil ? NCProgressHandler(view: cell!, totalUnitCount: 4) : nil
@@ -331,18 +305,26 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 		progress?.progress.becomeCurrent(withPendingUnitCount: 1)
 		dispatchGroup.enter()
 		
-		isLoading = true
 		
 		dataManager.character { result in
 			self.character = result
 			
 			switch result {
-			case let .success(value, _):
+			case let .success(value, record):
+				if let record = record {
+					self.observer?.add(managedObject: record)
+				}
+				
 				progress?.progress.becomeCurrent(withPendingUnitCount: 1)
 				dispatchGroup.enter()
 				dataManager.corporation(corporationID: Int64(value.corporationID)) { result in
 					self.corporation = result
 					dispatchGroup.leave()
+					
+					if let record = result.cacheRecord {
+						self.observer?.add(managedObject: record)
+					}
+
 					
 					if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
 						self.configureCorporation(cell: cell)
@@ -369,6 +351,10 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 			self.skillQueue = result
 			dispatchGroup.leave()
 			
+			if let record = result.cacheRecord {
+				self.observer?.add(managedObject: record)
+			}
+
 			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
 				self.configureSkillQueue(cell: cell)
 			}
@@ -381,6 +367,10 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 			self.skills = result
 			dispatchGroup.leave()
 			
+			if let record = result.cacheRecord {
+				self.observer?.add(managedObject: record)
+			}
+
 			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
 				self.configureSkills(cell: cell)
 			}
@@ -393,6 +383,10 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 			self.walletBalance = result
 			dispatchGroup.leave()
 			
+			if let record = result.cacheRecord {
+				self.observer?.add(managedObject: record)
+			}
+
 			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
 				self.configureWallets(cell: cell)
 			}
@@ -406,6 +400,10 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 			self.location = result
 			dispatchGroup.leave()
 			
+			if let record = result.cacheRecord {
+				self.observer?.add(managedObject: record)
+			}
+
 			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
 				self.configureLocation(cell: cell)
 			}
@@ -418,6 +416,10 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 			self.ship = result
 			dispatchGroup.leave()
 			
+			if let record = result.cacheRecord {
+				self.observer?.add(managedObject: record)
+			}
+
 			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
 				self.configureLocation(cell: cell)
 			}
@@ -430,6 +432,10 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 			self.image = result
 			dispatchGroup.leave()
 			
+			if let record = result.cacheRecord {
+				self.observer?.add(managedObject: record)
+			}
+
 			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
 				self.configureImage(cell: cell)
 			}
@@ -458,44 +464,19 @@ class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
 	
 }
 
-class NCAccountsFolderSection: FetchedResultsSectionNode<NCAccount> {
-	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<NCAccount>.Type) {
-		super.init(section: section, objectNode: objectNode)
-		cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
-	}
-	
-	override func configure(cell: UITableViewCell) {
-		guard let cell = cell as? NCHeaderTableViewCell else {return}
-		cell.titleLabel?.text = section.name.isEmpty ? NSLocalizedString("Accounts", comment: "").uppercased() : section.name.uppercased()
-	}
-}
-
-class NCAccountsViewController: UITableViewController, TreeControllerDelegate, UIViewControllerTransitioningDelegate, NCRefreshable {
-	
-	@IBOutlet var treeController: TreeController!
+class NCAccountsViewController: NCTreeViewController, UIViewControllerTransitioningDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		navigationItem.rightBarButtonItem = editButtonItem
 		
-		registerRefreshable()
-		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		
 		tableView.register([Prototype.NCActionTableViewCell.default,
 		                    Prototype.NCAccountTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.empty])
 		
-		treeController.delegate = self
 		
-		guard let context = NCStorage.sharedStorage?.viewContext else {return}
-		
-		let row = NCActionRow(title: NSLocalizedString("SIGN IN", comment: ""))
-		let space = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty)
-		treeController.content = RootNode([NCAccountsNode(context: context), space, row])
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -513,7 +494,7 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 
 	
 	@IBAction func onDelete(_ sender: Any) {
-		let selected = treeController.selectedNodes().flatMap {$0 as? NCAccountRow}
+		guard let selected = treeController?.selectedNodes().flatMap ({$0 as? NCAccountRow}) else {return}
 		guard !selected.isEmpty else {return}
 		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		controller.addAction(UIAlertAction(title: String(format: NSLocalizedString("Delete %d Accounts", comment: ""), selected.count), style: .destructive) { [weak self] _ in
@@ -532,13 +513,28 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 	}
 	
 	@IBAction func onMoveTo(_ sender: Any) {
-		let selected = treeController.selectedNodes().flatMap {$0 as? NCAccountRow}
+		guard let selected = treeController?.selectedNodes().flatMap ({$0 as? NCAccountRow}) else {return}
 		guard !selected.isEmpty else {return}
 
 		Router.Account.AccountsFolderPicker { [weak self] (controller, folder) in
 			controller.dismiss(animated: true, completion: nil)
 			selected.forEach {
 				$0.object.folder = folder
+			}
+			
+			let account: NCAccount?
+			if let folder = folder {
+				account = folder.managedObjectContext?.fetch("Account", limit: 1, sortedBy: [NSSortDescriptor(key: "order", ascending: false)], where: "folder == %@", folder)
+			}
+			else {
+				account = selected.first?.object.managedObjectContext?.fetch("Account", limit: 1, sortedBy: [NSSortDescriptor(key: "order", ascending: false)], where: "folder == nil")
+			}
+			
+			var order = account != nil ? account!.order : 0
+			
+			selected.forEach {
+				$0.object.order = order
+				order += 1
 			}
 			
 			if let context = selected.first?.object.managedObjectContext, context.hasChanges {
@@ -548,6 +544,11 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 
 		}.perform(source: self)
 	}
+	
+	@IBAction func onFolders(_ sender: Any) {
+		Router.Account.Folders().perform(source: self)
+	}
+
 	
 	@IBAction func onClose(_ sender: Any) {
 		dismiss(animated: true, completion: nil)
@@ -575,9 +576,28 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 		}
 	}
 	
+	private var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
+	
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		defer {
+			completionHandler()
+		}
+		
+		guard let context = NCStorage.sharedStorage?.viewContext else {return}
+		let row = NCActionRow(title: NSLocalizedString("SIGN IN", comment: ""))
+		let space = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty)
+		treeController?.content = RootNode([NCAccountsNode(context: context, cachePolicy: cachePolicy), space, row])
+	}
+	
+	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+		self.cachePolicy = cachePolicy
+		completionHandler([])
+	}
+	
 	// MARK: TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		if isEditing {
 			if !(node is NCAccountRow) {
 				treeController.deselectCell(for: node, animated: true)
@@ -601,7 +621,8 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 		}
 	}
 	
-	func treeController(_ treeController: TreeController, didDeselectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didDeselectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didDeselectCellWithNode: node)
 		if isEditing {
 			updateTitle()
 		}
@@ -647,38 +668,14 @@ class NCAccountsViewController: UITableViewController, TreeControllerDelegate, U
 		return isInteractive ? NCSlideDownInteractiveTransition(scrollView: self.tableView) : nil
 	}
 	
-	//MARK: - NCRefreshable
-	
-	func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil ) {
-		let progress = NCProgressHandler(viewController: self, totalUnitCount: Int64(treeController.content?.children.count ?? 0))
-		let dispatchGroup = DispatchGroup()
-		
-		for row in treeController.content?.children as? [NCAccountRow] ?? [] {
-			dispatchGroup.enter()
-			progress.progress.becomeCurrent(withPendingUnitCount: 1)
-			row.reload(cachePolicy: cachePolicy) {
-				dispatchGroup.leave()
-			}
-			progress.progress.resignCurrent()
-		}
-		
-		dispatchGroup.notify(queue: .main) {
-			progress.finish()
-			completionHandler?()
-		}
-		//		self.dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
-		//		isEndReached = false
-		//		lastID = nil
-		//		fetch(from: nil, completionHandler: completionHandler)
-	}
-	
 	//MARK: - Private
 	
 	private func updateTitle() {
 		if isEditing {
-			let n = treeController.selectedNodes().count
+			let n = treeController?.selectedNodes().count ?? 0
 			title = n > 0 ? String(format: NSLocalizedString("Selected %d Accounts", comment: ""), n) : NSLocalizedString("Accounts", comment: "")
-			toolbarItems?.forEach {$0.isEnabled = n > 0}
+			toolbarItems?.first?.isEnabled = n > 0
+			toolbarItems?.last?.isEnabled = n > 0
 		}
 		else {
 			title = NSLocalizedString("Accounts", comment: "")

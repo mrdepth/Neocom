@@ -16,7 +16,7 @@
     </entity>
     <entity name="AccountsFolder" representedClassName="NCAccountsFolder" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="accounts" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="folder" inverseEntity="Account" syncable="YES"/>
+        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Account" inverseName="folder" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="DamagePattern" representedClassName="NCDamagePattern" syncable="YES" codeGenerationType="class">
         <attribute name="em" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -128,6 +128,7 @@
     </configuration>
     <elements>
         <element name="Account" positionX="18" positionY="63" width="128" height="225"/>
+        <element name="AccountsFolder" positionX="36" positionY="153" width="128" height="75"/>
         <element name="DamagePattern" positionX="45" positionY="90" width="128" height="120"/>
         <element name="DronesSet" positionX="9" positionY="54" width="128" height="75"/>
         <element name="FitCharacter" positionX="36" positionY="81" width="128" height="90"/>
@@ -143,6 +144,5 @@
         <element name="ShoppingList" positionX="45" positionY="90" width="128" height="90"/>
         <element name="SkillPlan" positionX="9" positionY="54" width="128" height="105"/>
         <element name="SkillPlanSkill" positionX="9" positionY="126" width="128" height="105"/>
-        <element name="AccountsFolder" positionX="36" positionY="153" width="128" height="75"/>
     </elements>
 </model>

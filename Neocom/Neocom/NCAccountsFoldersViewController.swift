@@ -23,6 +23,25 @@ class NCAccountsFolderRow: FetchedResultsObjectNode<NCAccountsFolder> {
 	}
 }
 
+class NCAccountsNoFolder: TreeRow {
+	init() {
+		super.init(prototype: Prototype.NCDefaultTableViewCell.noImage)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.text = NSLocalizedString("Default", comment: "")
+	}
+	
+	override var hashValue: Int {
+		return 0
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object is NCAccountsNoFolder)
+	}
+}
+
 class NCAccountsFoldersViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
@@ -67,59 +86,40 @@ class NCAccountsFoldersViewController: NCTreeViewController {
 			self.present(controller, animated: true, completion: nil)
 
 		}
+		else if node is NCAccountsNoFolder {
+			guard let picker = navigationController as? NCAccountsFolderPickerViewController else {return}
+			picker.completionHandler?(picker, nil)
+		}
 		else {
 			guard let row = node as? NCAccountsFolderRow else {return}
 			if isEditing {
-				let controller = UIAlertController(title: NSLocalizedString("Rename", comment: ""), message: nil, preferredStyle: .alert)
-				
-				var textField: UITextField?
-				
-				controller.addTextField(configurationHandler: {
-					textField = $0
-					textField?.text = row.object.name
-					textField?.clearButtonMode = .always
-				})
-				
-				controller.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { (action) in
-					if textField?.text?.characters.count ?? 0 > 0 && row.object.name != textField?.text {
-						row.object.name = textField?.text
-						if row.object.managedObjectContext?.hasChanges == true {
-							try? row.object.managedObjectContext?.save()
-						}
-					}
-				}))
-				
-				controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
-				
-				self.present(controller, animated: true, completion: nil)
+				performRename(folder: row.object)
 			}
 			else {
 				guard let picker = navigationController as? NCAccountsFolderPickerViewController else {return}
-				picker.completionHandler(picker, row.object)
+				picker.completionHandler?(picker, row.object)
 			}
 		}
 	}
 
-	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
-		guard let node = node as? NCLoadoutRow else {return nil}
-		
-		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { _ in
-			guard let context = NCStorage.sharedStorage?.viewContext else {return}
-			guard let loadout = (try? context.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
-			context.delete(loadout)
-			if context.hasChanges {
-				try? context.save()
-			}
-		}
-		
-		return [deleteAction]
+		guard let node = node as? NCAccountsFolderRow else {return nil}
+		let folder = node.object
+		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { _ in
+			folder.managedObjectContext?.delete(folder)
+			try? folder.managedObjectContext?.save()
+		}),
+		        UITableViewRowAction(style: .normal, title: NSLocalizedString("Rename", comment: ""), handler: { [weak self] _ in
+					self?.performRename(folder: folder)
+				})]
 	}
+	
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
 		guard let context = NCStorage.sharedStorage?.viewContext else {return}
 		
 		var sections = [TreeNode]()
+		sections.append(NCAccountsNoFolder())
 		
 		let request = NSFetchRequest<NCAccountsFolder>(entityName: "AccountsFolder")
 		request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
@@ -132,5 +132,30 @@ class NCAccountsFoldersViewController: NCTreeViewController {
 		sections.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, children: [row]))
 		self.treeController?.content = RootNode(sections)
 		completionHandler()
+	}
+	
+	private func performRename(folder: NCAccountsFolder) {
+		let controller = UIAlertController(title: NSLocalizedString("Rename", comment: ""), message: nil, preferredStyle: .alert)
+		
+		var textField: UITextField?
+		
+		controller.addTextField(configurationHandler: {
+			textField = $0
+			textField?.text = folder.name
+			textField?.clearButtonMode = .always
+		})
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { (action) in
+			if textField?.text?.characters.count ?? 0 > 0 && folder.name != textField?.text {
+				folder.name = textField?.text
+				if folder.managedObjectContext?.hasChanges == true {
+					try? folder.managedObjectContext?.save()
+				}
+			}
+		}))
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+		
+		self.present(controller, animated: true, completion: nil)
 	}
 }

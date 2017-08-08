@@ -374,9 +374,9 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 					share(representation: .eft([(typeID: typeID, data: loadout, name: name)]))
 				}))
 				
-				controller.addAction(UIAlertAction(title: NSLocalizedString("DNA", comment: ""), style: .default, handler: { _ in
-					share(representation: .dnaURL([(typeID: typeID, data: loadout, name: name)]))
-				}))
+//				controller.addAction(UIAlertAction(title: NSLocalizedString("DNA", comment: ""), style: .default, handler: { _ in
+//					share(representation: .dnaURL([(typeID: typeID, data: loadout, name: name)]))
+//				}))
 				
 				controller.addAction(UIAlertAction(title: NSLocalizedString("EVE XML", comment: ""), style: .default, handler: { _ in
 					share(representation: .xml([(typeID: typeID, data: loadout, name: name)]))

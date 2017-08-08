@@ -86,12 +86,13 @@ class NCStorage: NSObject {
 		}
 	}
 	
-	func performTaskAndWait(_ block: @escaping (NSManagedObjectContext) -> Void) {
+	func performTaskAndWait<T: Any>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
 		let context = NSManagedObjectContext(concurrencyType: Thread.isMainThread ? .mainQueueConcurrencyType : .privateQueueConcurrencyType)
 		context.persistentStoreCoordinator = persistentStoreCoordinator
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+		var v: T?
 		context.performAndWait {
-			block(context)
+			v = block(context)
 			if (context.hasChanges) {
 				do {
 					try context.save()
@@ -100,9 +101,11 @@ class NCStorage: NSObject {
 					print ("\(error)")
 				}
 			}
+
 		}
+		return v!
 	}
-	
+
 	private(set) lazy var accounts: NCFetchedCollection<NCAccount> = {
 		return NCAccount.accounts(managedObjectContext: self.viewContext)
 	}()

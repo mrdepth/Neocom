@@ -18,7 +18,7 @@ fileprivate class NCSkillQueueRow: NCSkillRow {
 		guard let cell = cell as? NCSkillTableViewCell else {return}
 		
 		cell.iconView?.image = nil
-		cell.titleLabel?.text = "\(skill.typeName) (x\(skill.rank))"
+		cell.titleLabel?.text = "\(skill.typeName) (x\(Int(skill.rank)))"
 		let level = min(1 + (skill.level ?? 0), 5)
 //		cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:min(1 + (skill.level ?? 0), 5))
 		cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)
@@ -63,7 +63,7 @@ fileprivate class NCSkillPlanSkillRow: FetchedResultsObjectNode<NCSkillPlanSkill
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCSkillTableViewCell else {return}
 		if let character = character, let skill = skill {
-			cell.titleLabel?.text = "\(skill.skill.typeName) (x\(skill.skill.rank))"
+			cell.titleLabel?.text = "\(skill.skill.typeName) (x\(Int(skill.skill.rank)))"
 			
 			let level = min(skill.level, 5)
 //			cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:min(skill.level, 5))

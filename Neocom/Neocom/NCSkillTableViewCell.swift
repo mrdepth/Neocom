@@ -46,7 +46,7 @@ class NCSkillRow: TreeRow {
     override func configure(cell: UITableViewCell) {
         guard let cell = cell as? NCSkillTableViewCell else {return}
 		cell.object = skill
-        cell.titleLabel?.text = "\(skill.typeName) (x\(skill.rank))"
+        cell.titleLabel?.text = "\(skill.typeName) (x\(Int(skill.rank)))"
         if let level = skill.level {
 //            cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)
 			cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)

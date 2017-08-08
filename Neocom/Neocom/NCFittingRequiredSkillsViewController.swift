@@ -22,7 +22,7 @@ class NCTrainingSkillRow: TreeRow {
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCSkillTableViewCell else {return}
 		
-		cell.titleLabel?.text = "\(skill.skill.typeName) (x\(skill.skill.rank))"
+		cell.titleLabel?.text = "\(skill.skill.typeName) (x\(Int(skill.skill.rank)))"
 		cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:min(skill.level, 5))
 		let a = NCUnitFormatter.localizedString(from: Double(skill.skill.skillPoints), unit: .none, style: .full)
 		let b = NCUnitFormatter.localizedString(from: Double(skill.skill.skillPoints(at: skill.level)), unit: .skillPoints, style: .full)

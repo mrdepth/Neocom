@@ -68,6 +68,10 @@
 		1230A3341DFFE2CF00627D92 /* NSExpressionDescription+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */; };
 		1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */; };
 		1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3391E001D7300627D92 /* NCAccountTableViewCell.swift */; };
+		1235F3D51F39B9F1000E0FD9 /* Swifter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1235F3D41F39B9F1000E0FD9 /* Swifter.framework */; };
+		1235F3D61F39B9F1000E0FD9 /* Swifter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1235F3D41F39B9F1000E0FD9 /* Swifter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1235F3D81F39BB37000E0FD9 /* NCFittingServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1235F3D71F39BB37000E0FD9 /* NCFittingServerViewController.swift */; };
+		1235F3DC1F39BC90000E0FD9 /* UIDevice+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1235F3DB1F39BC90000E0FD9 /* UIDevice+NC.swift */; };
 		123AEFF51E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AEFF41E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift */; };
 		124069FF1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124069FE1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib */; };
 		12406A011F20F49500A4DAE7 /* NCModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12406A001F20F49500A4DAE7 /* NCModuleTableViewCell.xib */; };
@@ -373,6 +377,7 @@
 				12B68F2A1E802958006462B7 /* CloudData.framework in Embed Frameworks */,
 				12AC8DA71DEF597400561A7A /* EVEAPI.framework in Embed Frameworks */,
 				12BC40A31DFF1EBB00657D40 /* Alamofire.framework in Embed Frameworks */,
+				1235F3D61F39B9F1000E0FD9 /* Swifter.framework in Embed Frameworks */,
 				12DBEAAE1E1D3B710088A486 /* Dgmpp.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -446,6 +451,9 @@
 		1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSExpressionDescription+NC.swift"; sourceTree = "<group>"; };
 		1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+NC.swift"; sourceTree = "<group>"; };
 		1230A3391E001D7300627D92 /* NCAccountTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountTableViewCell.swift; sourceTree = "<group>"; };
+		1235F3D41F39B9F1000E0FD9 /* Swifter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Swifter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1235F3D71F39BB37000E0FD9 /* NCFittingServerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingServerViewController.swift; sourceTree = "<group>"; };
+		1235F3DB1F39BC90000E0FD9 /* UIDevice+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+NC.swift"; sourceTree = "<group>"; };
 		123AEFF41E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleTableViewCell.swift; sourceTree = "<group>"; };
 		124069FE1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCAttributeNoImageTableViewCell.xib; sourceTree = "<group>"; };
 		12406A001F20F49500A4DAE7 /* NCModuleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCModuleTableViewCell.xib; sourceTree = "<group>"; };
@@ -747,6 +755,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */,
+				1235F3D51F39B9F1000E0FD9 /* Swifter.framework in Frameworks */,
 				120A59EF1F10ABEC0053F94B /* StoreKit.framework in Frameworks */,
 				122DB9AB1E804DF200E8E2C4 /* CloudKit.framework in Frameworks */,
 				12B68F291E802958006462B7 /* CloudData.framework in Frameworks */,
@@ -1001,6 +1010,7 @@
 				12E9321D1E6B56D40033D71A /* NCFittingCharactersViewController.swift */,
 				1224AF611E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift */,
 				1263EE2B1F0E77FA005128E6 /* NCFittingRequiredSkillsViewController.swift */,
+				1235F3D71F39BB37000E0FD9 /* NCFittingServerViewController.swift */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
@@ -1079,6 +1089,7 @@
 		12AC8D871DEF58A100561A7A = {
 			isa = PBXGroup;
 			children = (
+				1235F3D41F39B9F1000E0FD9 /* Swifter.framework */,
 				12B68F281E802958006462B7 /* CloudData.framework */,
 				12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */,
 				12BC40A11DFF1EBB00657D40 /* Alamofire.framework */,
@@ -1174,6 +1185,7 @@
 				1248DB601F2093D4009625EC /* NCActionHandler.swift */,
 				12DA88291EB8707400FB1922 /* Progress+NC.swift */,
 				12D20EB31EBCBD3C00BEC926 /* EVEAPI+NC.swift */,
+				1235F3DB1F39BC90000E0FD9 /* UIDevice+NC.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1717,6 +1729,7 @@
 				12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */,
 				12961DD61E1D64C9008A3F4D /* NCFittingModule.mm in Sources */,
 				12CFDAD41F02997200CC0762 /* NCZKillboardGroupsViewController.swift in Sources */,
+				1235F3D81F39BB37000E0FD9 /* NCFittingServerViewController.swift in Sources */,
 				122B55611EB73E3500E46536 /* NCAccountsViewController.swift in Sources */,
 				1230A3311DFFE2CF00627D92 /* NCHeaderTableViewCell.swift in Sources */,
 				125AB80F1E41D9F500B8A2A8 /* UIViewController+NC.swift in Sources */,
@@ -1754,6 +1767,7 @@
 				12DA88331EB8C93A00FB1922 /* NCExtendedLifeTime.swift in Sources */,
 				12DBEABA1E1D3F3D0088A486 /* NCFittingItem.mm in Sources */,
 				12D404491F31C0AF007F1715 /* NCSwitchTableViewCell.swift in Sources */,
+				1235F3DC1F39BC90000E0FD9 /* UIDevice+NC.swift in Sources */,
 				12D4044C1F32222A007F1715 /* NCLocationPickerContainerViewContrller.swift in Sources */,
 				1224AF641E6D92240043F96C /* NCSkillEditTableViewCell.swift in Sources */,
 				12E2674F1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift in Sources */,

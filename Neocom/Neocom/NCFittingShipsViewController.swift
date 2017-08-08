@@ -15,11 +15,14 @@ class NCLoadoutRow: TreeRow {
 	let loadoutName: String
 	let image: UIImage?
 	let loadoutID: NSManagedObjectID
+	let typeID: Int
+	
 	required init(loadout: NCLoadout, type: NCDBInvType) {
 		typeName = type.typeName ?? ""
 		loadoutName = loadout.name ?? ""
 		image = type.icon?.image?.image
 		loadoutID = loadout.objectID
+		typeID = Int(loadout.typeID)
 		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: Router.Fitting.Editor(loadoutID: loadout.objectID))
 	}
 	
@@ -42,11 +45,11 @@ class NCLoadoutRow: TreeRow {
 }
 
 class NCLoadoutsSection<T: NCLoadoutRow>: TreeSection {
-	let categoryID: NCDBDgmppItemCategoryID
+	let categoryID: NCDBDgmppItemCategoryID?
 	let filter: NSPredicate?
 	private var observer: NotificationObserver?
 	
-	init(categoryID: NCDBDgmppItemCategoryID, filter: NSPredicate? = nil) {
+	init(categoryID: NCDBDgmppItemCategoryID?, filter: NSPredicate? = nil) {
 		self.categoryID = categoryID
 		self.filter = filter
 		super.init()
@@ -60,7 +63,7 @@ class NCLoadoutsSection<T: NCLoadoutRow>: TreeSection {
 	}
 	
 	override var hashValue: Int {
-		return categoryID.hashValue
+		return categoryID?.hashValue ?? filter?.hash ?? super.hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
@@ -68,7 +71,7 @@ class NCLoadoutsSection<T: NCLoadoutRow>: TreeSection {
 	}
 	
 	private func reload() {
-		let categoryID = Int32(self.categoryID.rawValue)
+		let categoryID = self.categoryID != nil ? Int32(self.categoryID!.rawValue) : nil
 		
 		NCStorage.sharedStorage?.performBackgroundTask { managedObjectContext in
 			let request = NSFetchRequest<NCLoadout>(entityName: "Loadout")
@@ -82,7 +85,7 @@ class NCLoadoutsSection<T: NCLoadoutRow>: TreeSection {
 				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 				for loadout in loadouts {
 					guard let type = invTypes[Int(loadout.typeID)] else {continue}
-					if type.dgmppItem?.groups?.first(where: {($0 as? NCDBDgmppItemGroup)?.category?.category == categoryID}) != nil {
+					if categoryID == nil || type.dgmppItem?.groups?.first(where: {($0 as? NCDBDgmppItemGroup)?.category?.category == categoryID!}) != nil {
 						guard let name = type.group?.groupName else {continue}
 						let key = name
 						let section = groups[key]
@@ -154,7 +157,7 @@ class NCFittingShipsViewController: NCTreeViewController {
 			
 		})))
 		
-		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator))
+		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator, route: Router.Fitting.Server()))
 		
 		sections.append(NCLoadoutsSection(categoryID: .ship))
 		self.treeController?.content = RootNode(sections)

@@ -594,6 +594,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="480"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="fVA-w8-Fn3">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
                     <connections>
@@ -8926,6 +8927,40 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4CT-K4-JOf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-821" y="3824"/>
+        </scene>
+        <!--Fitting Server View Controller-->
+        <scene sceneID="vRd-Sb-Auf">
+            <objects>
+                <viewController storyboardIdentifier="NCFittingServerViewController" id="3cF-cU-dYs" customClass="NCFittingServerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Zm5-yi-fYq"/>
+                        <viewControllerLayoutGuide type="bottom" id="xgO-Cq-Vlj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Tvg-44-INA" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yoS-bh-Pr0">
+                                <rect key="frame" x="20" y="274" width="280" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="yoS-bh-Pr0" firstAttribute="centerY" secondItem="Tvg-44-INA" secondAttribute="centerY" id="9YF-HR-FoJ"/>
+                            <constraint firstItem="yoS-bh-Pr0" firstAttribute="centerX" secondItem="Tvg-44-INA" secondAttribute="centerX" id="Tdr-Hn-5UC"/>
+                            <constraint firstItem="yoS-bh-Pr0" firstAttribute="leading" secondItem="Tvg-44-INA" secondAttribute="leading" constant="20" id="dUe-6V-PMB"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="textLabel" destination="yoS-bh-Pr0" id="hsp-IU-PK2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eWw-ve-EjM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-817" y="4523"/>
         </scene>
         <!--Variations-->
         <scene sceneID="5P7-xs-zJA">

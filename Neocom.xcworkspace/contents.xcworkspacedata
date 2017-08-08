@@ -22,4 +22,7 @@
    <FileRef
       location = "group:ThirdParty/clrconvert/clrconvert.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:ThirdParty/swifter/XCode/Swifter.xcodeproj">
+   </FileRef>
 </Workspace>

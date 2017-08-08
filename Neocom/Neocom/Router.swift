@@ -874,6 +874,13 @@ enum Router {
 				destination.ship = ship
 			}
 		}
+		
+		class Server: Route {
+			
+			init() {
+				super.init(kind: .adaptiveModal, identifier: "NCFittingServerViewController")
+			}
+		}
 	}
 	
 	enum Mail {

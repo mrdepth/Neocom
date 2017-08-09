@@ -32,6 +32,13 @@ class NCFittingLoadoutItem: NSObject, NSCoding {
 		super.init()
 	}
 	
+	init(typeID: Int, count: Int, identifier: String?) {
+		self.typeID = typeID
+		self.count = count
+		self.identifier = identifier
+		super.init()
+	}
+	
 	required init?(coder aDecoder: NSCoder) {
 		typeID = aDecoder.decodeInteger(forKey: "typeID")
 		count = aDecoder.containsValue(forKey: "count") ? aDecoder.decodeInteger(forKey: "count") : 1
@@ -73,6 +80,13 @@ class NCFittingLoadoutModule: NCFittingLoadoutItem {
 		super.init(item: module)
 	}
 	
+	init(typeID: Int, count: Int, identifier: String?, state: NCFittingModuleState = .active, charge: NCFittingLoadoutItem? = nil, socket: Int = -1) {
+		self.state = state
+		self.charge = charge
+		self.socket = socket
+		super.init(typeID: typeID, count: count, identifier: identifier)
+	}
+	
 	required init?(coder aDecoder: NSCoder) {
 		state = NCFittingModuleState(rawValue: aDecoder.decodeInteger(forKey: "state")) ?? .unknown
 		charge = aDecoder.decodeObject(forKey: "charge") as? NCFittingLoadoutItem
@@ -95,6 +109,12 @@ class NCFittingLoadoutModule: NCFittingLoadoutItem {
 class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 	let isActive: Bool
 	let squadronTag: Int
+	
+	init(typeID: Int, count: Int, identifier: String?, isActive: Bool = true, squadronTag: Int = -1) {
+		self.isActive = isActive
+		self.squadronTag = squadronTag
+		super.init(typeID: typeID, count: count, identifier: identifier)
+	}
 	
 	init(drone: NCFittingDrone) {
 		self.isActive = drone.isActive
@@ -206,10 +226,55 @@ extension NCFittingModuleSlot {
 		case .subsystem:
 			return NSLocalizedString("Subsystem Slot", comment: "")
 		case .service:
-			return NSLocalizedString("Services", comment: "")
+			return NSLocalizedString("Service Slot", comment: "")
 		case .mode:
 			return NSLocalizedString("Tactical Mode", comment: "")
 		default:
+			return nil
+		}
+	}
+	
+	var name: String? {
+		switch self {
+		case .hi:
+			return "Hi Slot"
+		case .med:
+			return "Med Slot"
+		case .low:
+			return "Low Slot"
+		case .rig:
+			return "Rig Slot"
+		case .subsystem:
+			return "Subsystem Slot"
+		case .service:
+			return "Service Slot"
+		case .mode:
+			return "Tactical Mode"
+		default:
+			return nil
+		}
+	}
+	
+	init?(name: String) {
+		if name.range(of: "hi slot")?.lowerBound == name.startIndex {
+			self = .hi
+		}
+		else if name.range(of: "med slot")?.lowerBound == name.startIndex {
+			self = .med
+		}
+		else if name.range(of: "low slot")?.lowerBound == name.startIndex {
+			self = .low
+		}
+		else if name.range(of: "rig slot")?.lowerBound == name.startIndex {
+			self = .rig
+		}
+		else if name.range(of: "subsystem slot")?.lowerBound == name.startIndex {
+			self = .subsystem
+		}
+		else if name.range(of: "service slot")?.lowerBound == name.startIndex {
+			self = .service
+		}
+		else {
 			return nil
 		}
 	}

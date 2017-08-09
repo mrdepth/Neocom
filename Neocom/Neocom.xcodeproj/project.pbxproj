@@ -147,6 +147,10 @@
 		1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */; };
 		127BE3901E5AFC2900FA7F9F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BE38F1E5AFC2900FA7F9F /* Router.swift */; };
 		127DE7D81E9513B4008D4873 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127DE7D71E9513B4008D4873 /* ChartView.swift */; };
+		128130411F3B01230039D46B /* dropzone.css in Resources */ = {isa = PBXBuildFile; fileRef = 1281303E1F3B01230039D46B /* dropzone.css */; };
+		128130421F3B01230039D46B /* dropzone.js in Resources */ = {isa = PBXBuildFile; fileRef = 1281303F1F3B01230039D46B /* dropzone.js */; };
+		128130431F3B01230039D46B /* main.css in Resources */ = {isa = PBXBuildFile; fileRef = 128130401F3B01230039D46B /* main.css */; };
+		128130451F3B08600039D46B /* main.js in Resources */ = {isa = PBXBuildFile; fileRef = 128130441F3B08600039D46B /* main.js */; };
 		128442151EBCEECB00D87992 /* NCAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128442141EBCEECB00D87992 /* NCAssetsViewController.swift */; };
 		12851D7C1EFD1ADE00C8DD42 /* NCPlanetaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12851D7B1EFD1ADE00C8DD42 /* NCPlanetaryViewController.swift */; };
 		12851D801EFD3D5300C8DD42 /* NCKillmailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12851D7F1EFD3D5300C8DD42 /* NCKillmailsViewController.swift */; };
@@ -529,6 +533,10 @@
 		1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
 		127BE38F1E5AFC2900FA7F9F /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		127DE7D71E9513B4008D4873 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		1281303E1F3B01230039D46B /* dropzone.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = dropzone.css; sourceTree = "<group>"; };
+		1281303F1F3B01230039D46B /* dropzone.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = dropzone.js; sourceTree = "<group>"; };
+		128130401F3B01230039D46B /* main.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = main.css; sourceTree = "<group>"; };
+		128130441F3B08600039D46B /* main.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = main.js; sourceTree = "<group>"; };
 		128442141EBCEECB00D87992 /* NCAssetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAssetsViewController.swift; sourceTree = "<group>"; };
 		12851D7B1EFD1ADE00C8DD42 /* NCPlanetaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCPlanetaryViewController.swift; sourceTree = "<group>"; };
 		12851D7F1EFD3D5300C8DD42 /* NCKillmailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailsViewController.swift; sourceTree = "<group>"; };
@@ -1139,6 +1147,10 @@
 				12AC8DD51DF0AF6900561A7A /* Dark.clr */,
 				126156FE1E008AE00041B817 /* dgm.sqlite */,
 				126156FF1E008AE00041B817 /* NCDatabase.sqlite */,
+				1281303E1F3B01230039D46B /* dropzone.css */,
+				1281303F1F3B01230039D46B /* dropzone.js */,
+				128130441F3B08600039D46B /* main.js */,
+				128130401F3B01230039D46B /* main.css */,
 			);
 			path = Neocom;
 			sourceTree = "<group>";
@@ -1522,9 +1534,11 @@
 				1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */,
 				1256BEC91DF4770A00A2A24B /* intelligence.png in Resources */,
 				1256BECC1DF4770A00A2A24B /* willpower.png in Resources */,
+				128130411F3B01230039D46B /* dropzone.css in Resources */,
 				1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */,
 				12AC8D9E1DEF58A100561A7A /* LaunchScreen.storyboard in Resources */,
 				1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */,
+				128130451F3B08600039D46B /* main.js in Resources */,
 				1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */,
 				12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */,
 				12D20EA31EBA011900BEC926 /* NCPieChartTableViewCell.xib in Resources */,
@@ -1539,7 +1553,9 @@
 				1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */,
 				1256BECA1DF4770A00A2A24B /* memory.png in Resources */,
 				12E932201E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib in Resources */,
+				128130431F3B01230039D46B /* main.css in Resources */,
 				12E6AE5A1F18FB3B001E829D /* NCKillmailAttackerNPCTableViewCell.xib in Resources */,
+				128130421F3B01230039D46B /* dropzone.js in Resources */,
 				12D930EB1E656EA300CBAE1C /* NCDamageTypeTableViewCell.xib in Resources */,
 				124069FF1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib in Resources */,
 				12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */,

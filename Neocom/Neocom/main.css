@@ -1,0 +1,90 @@
+body {
+	width: 100%;
+	background-color: #141d21;
+	color:white;
+}
+table {
+	border-collapse: collapse;
+	background: #172126;
+	margin-left:auto;
+	margin-right:auto;
+}
+a {
+	color: #73a6bf;
+}
+tr:hover {
+	background-color: #263740;
+}
+tr {
+	border-bottom: 1px solid #263740;
+}
+td {
+	padding: 0.25em 0.5em 0.25em 0.5em;
+	white-space:nowrap;
+}
+th {
+	background-color: #141d21;
+	text-align: left;
+	padding-top: 16px;
+	padding-bottom: 4px;
+	color:#aaaaaa;
+	font-weight: normal;
+	font-size: 0.875em;
+}
+img{
+	position:absolute;
+	width: 100%;
+	height: 100%;
+	left:-50%;
+ right:-50%;
+ top:0;
+ margin:auto;
+}
+small{
+	color:#aaaaaa;
+}
+p{
+	margin: 0;
+}
+.imageClip {
+	width: 32px;
+	height: 32px;
+	border-radius: 8px;
+	position:relative;
+	overflow:hidden;
+	
+}
+section {
+	max-width: 720px;
+	margin: 2em auto 2em auto;
+}
+.footer {
+	text-align: right;
+	padding: 1em 0.5em 0 0
+}
+
+.dropzone {
+	border: 2px dashed #263740;
+	border-radius: 5px;
+	background: #172126;
+}
+.dropzone .dz-message {
+	font-weight: 400;
+	color: #aaaaaa;
+}
+
+.dropzone.dz-drag-hover {
+	border: 1px solid #73a6bf;
+}
+iframe {
+	border: 0;
+	width: 100%;
+}
+
+.note {
+	font-size: 0.8em;
+	font-weight: 200;
+	display: block;
+	margin-top: 1.4rem;
+	color: #aaaaaa;
+}

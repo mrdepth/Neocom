@@ -157,37 +157,37 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="OH5-ud-gSv" customClass="NCRoundedImageView" customModule="Neocom" customModuleProvider="target">
-                                        <rect key="frame" x="102" y="0.0" width="117" height="117.5"/>
+                                        <rect key="frame" x="109.5" y="0.0" width="102" height="102.5"/>
                                         <color key="backgroundColor" white="1" alpha="0.050000000000000003" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="OH5-ud-gSv" secondAttribute="height" id="dDo-lx-Xq4"/>
                                         </constraints>
                                     </imageView>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oVJ-WG-YA0">
-                                        <rect key="frame" x="0.0" y="172" width="320" height="32"/>
+                                        <rect key="frame" x="0.0" y="152" width="320" height="52"/>
                                         <subviews>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0gT-Fn-1dY">
-                                                <rect key="frame" x="0.0" y="0.0" width="18.5" height="32"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="18.5" height="52"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qHb-tS-MfO">
-                                                <rect key="frame" x="18.5" y="0.0" width="132" height="32"/>
+                                                <rect key="frame" x="18.5" y="0.0" width="132" height="52"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="CORPORATION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o3x-Fs-Jgo" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
-                                                        <rect key="frame" x="40" y="0.0" width="92" height="16"/>
+                                                        <rect key="frame" x="40" y="0.0" width="92" height="36"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                         <color key="textColor" red="0.45490196078431372" green="0.61960784313725492" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" image="necrorise.png" translatesAutoresizingMaskIntoConstraints="NO" id="JHj-Ap-Kax">
-                                                        <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                                        <rect key="frame" x="0.0" y="10" width="32" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="32" id="28z-ky-ovN"/>
                                                             <constraint firstAttribute="height" constant="32" id="gNr-VR-wkr"/>
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PMf-Zw-BIq" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
-                                                        <rect key="frame" x="40" y="16" width="92" height="16"/>
+                                                        <rect key="frame" x="40" y="36" width="92" height="16"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
@@ -207,29 +207,29 @@
                                                 </constraints>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YSx-jI-p67">
-                                                <rect key="frame" x="150.5" y="0.0" width="19" height="32"/>
+                                                <rect key="frame" x="150.5" y="0.0" width="19" height="52"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="15" id="sY1-7d-rEm"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gAt-zn-gHf">
-                                                <rect key="frame" x="169.5" y="0.0" width="132" height="32"/>
+                                                <rect key="frame" x="169.5" y="0.0" width="132" height="52"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="751" text="ALLIANCE" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57j-Vl-8bo" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="92" height="16"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="92" height="36"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                         <color key="textColor" red="0.45490196078431372" green="0.61960784313725492" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="MwE-ey-BLc" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="16" width="92" height="16"/>
+                                                        <rect key="frame" x="0.0" y="36" width="92" height="16"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" image="necrorise.png" translatesAutoresizingMaskIntoConstraints="NO" id="xzD-41-sRt">
-                                                        <rect key="frame" x="100" y="0.0" width="32" height="32"/>
+                                                        <rect key="frame" x="100" y="10" width="32" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="32" id="TIb-xt-wul"/>
                                                             <constraint firstAttribute="width" constant="32" id="fYY-N1-Xrg"/>
@@ -250,7 +250,7 @@
                                                 </constraints>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fEi-HC-YiI">
-                                                <rect key="frame" x="301.5" y="0.0" width="18.5" height="32"/>
+                                                <rect key="frame" x="301.5" y="0.0" width="18.5" height="52"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </view>
                                         </subviews>
@@ -291,7 +291,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Artem Valiant" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YI8-mz-cic" customClass="NCAutoHeightLabel" customModule="Neocom" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="125.5" width="290" height="38.5"/>
+                                        <rect key="frame" x="15" y="110.5" width="290" height="33.5"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="999" constant="21" id="ZhB-q6-9Ck"/>
                                         </constraints>
@@ -6389,7 +6389,7 @@
             <objects>
                 <tableViewController modalPresentationStyle="overCurrentContext" id="nVS-iD-4Jy" customClass="NCContactsSearchResultViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="6F0-0W-H3N">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="536"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="472"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>
@@ -6505,7 +6505,7 @@
                                 </connections>
                             </scrollView>
                             <containerView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y4i-uS-If2">
-                                <rect key="frame" x="0.0" y="32" width="320" height="536"/>
+                                <rect key="frame" x="0.0" y="96" width="320" height="472"/>
                                 <connections>
                                     <segue destination="nVS-iD-4Jy" kind="embed" id="qic-kJ-9x8"/>
                                 </connections>
@@ -8928,10 +8928,10 @@
             </objects>
             <point key="canvasLocation" x="-821" y="3824"/>
         </scene>
-        <!--Fitting Server View Controller-->
+        <!--HTTP Server-->
         <scene sceneID="vRd-Sb-Auf">
             <objects>
-                <viewController storyboardIdentifier="NCFittingServerViewController" id="3cF-cU-dYs" customClass="NCFittingServerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCFittingServerViewController" title="HTTP Server" id="3cF-cU-dYs" customClass="NCFittingServerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Zm5-yi-fYq"/>
                         <viewControllerLayoutGuide type="bottom" id="xgO-Cq-Vlj"/>
@@ -8940,7 +8940,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yoS-bh-Pr0">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yoS-bh-Pr0">
                                 <rect key="frame" x="20" y="274" width="280" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>

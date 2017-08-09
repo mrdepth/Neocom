@@ -57,4 +57,14 @@ extension UIDevice {
 		freeifaddrs(ifaddr)
 		return addresses
 	}
+	
+	class var hostName: String? {
+		var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+		if gethostname(&hostname, Int(NI_MAXHOST)) == 0 {
+			return String(cString: hostname)
+		}
+		else {
+			return nil
+		}
+	}
 }

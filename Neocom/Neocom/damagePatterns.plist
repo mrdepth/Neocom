@@ -16,6 +16,54 @@
 	</dict>
 	<dict>
 		<key>name</key>
+		<string>EM</string>
+		<key>em</key>
+		<integer>1</integer>
+		<key>thermal</key>
+		<integer>0</integer>
+		<key>kinetic</key>
+		<integer>0</integer>
+		<key>explosive</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Thermal</string>
+		<key>em</key>
+		<integer>0</integer>
+		<key>thermal</key>
+		<integer>1</integer>
+		<key>kinetic</key>
+		<integer>0</integer>
+		<key>explosive</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Kinetic</string>
+		<key>em</key>
+		<integer>0</integer>
+		<key>thermal</key>
+		<integer>0</integer>
+		<key>kinetic</key>
+		<integer>1</integer>
+		<key>explosive</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Explosive</string>
+		<key>em</key>
+		<integer>0</integer>
+		<key>thermal</key>
+		<integer>0</integer>
+		<key>kinetic</key>
+		<integer>0</integer>
+		<key>explosive</key>
+		<integer>1</integer>
+	</dict>
+	<dict>
+		<key>name</key>
 		<string>Angel Cartel</string>
 		<key>em</key>
 		<real>0.07000000000000001</real>

@@ -32,73 +32,139 @@ class NCFittingServerViewController: UIViewController {
 	lazy var server: HttpServer = {
 		let server = HttpServer()
 		
+		server["/dropzone.js"] = shareFile(Bundle.main.path(forResource: "dropzone", ofType: "js")!)
+		server["/dropzone.css"] = shareFile(Bundle.main.path(forResource: "dropzone", ofType: "css")!)
+		server["/main.css"] = shareFile(Bundle.main.path(forResource: "main", ofType: "css")!)
+		server["/main.js"] = shareFile(Bundle.main.path(forResource: "main", ofType: "js")!)
+		
+		server["/loadouts"] = scopes {
+			html {
+				head {
+					base {
+						Swifter.target = "_parent"
+					}
+					meta {
+						charset = "utf-8"
+					}
+					link {
+						rel = "stylesheet"
+						href = "./main.css"
+					}
+				}
+
+				body {
+					section {
+						h1 {
+							inner = NSLocalizedString("Neocom II", comment: "")
+						}
+						table(self.loadouts) { section in
+							thead {
+								th {
+									colspan = "4"
+									inner = section.title
+								}
+							}
+							tbody(section.rows) { row in
+								tr {
+									let uuid = row.uuid
+									td {
+										a {
+											href = "/loadout/\(uuid)/dna/"
+											div {
+												classs = "imageClip"
+												img {
+													src = "/image/\(row.typeID)"
+												}
+											}
+										}
+
+									}
+									td {
+										width = "100%"
+										a {
+											href = "/loadout/\(uuid)/dna/"
+											inner = "\(row.typeName)"
+										}
+
+										p {
+											small {
+												inner = "\(row.loadoutName ?? "")"
+											}
+										}
+										
+									}
+									td {
+										a {
+											href = "/loadout/\(uuid)/eft/\(row.fileName).cfg"
+											inner = "EFT"
+										}
+									}
+									td {
+										a {
+											href = "/loadout/\(uuid)/xml/\(row.fileName).xml"
+											inner = "XML"
+										}
+									}
+								}
+							}
+						}
+						div {
+							classs = "footer"
+							a {
+								href = "/loadout/all/xml/loadouts.xml"
+								inner = NSLocalizedString("DOWNLOAD ALL", comment: "")
+							}
+						}
+					}
+				}
+			}
+		}
+		
 		server["/"] = scopes {
 			html {
 				head {
 					meta {
 						charset = "utf-8"
 					}
-					style {
-						inner = "body {width: 100%;background-color: \(UIColor.background.css);color:white;}" +
-							"table {border-collapse: collapse;background: \(UIColor.cellBackground.css);width:600px;margin-left:auto;margin-right:auto;}" +
-							"a {color: \(UIColor.caption.css);}" +
-							"tr:hover {background-color: #263740;}" +
-							"tr {border-bottom: 1px solid #263740;}" +
-							"td {padding-left: 8px;padding-top: 4px;padding-bottom: 4px;white-space:nowrap;}" +
-							"th {background-color: #141d21;text-align: left;padding-top: 16px;padding-bottom: 4px;color:\(UIColor.lightGray.css);font-weight: normal;font-size: 0.875em;}" +
-							"div {width: 32px;height: 32px;border-radius: 8px;position:relative;overflow:hidden;}" +
-							"img{position:absolute;width: 100%;height: 100%;left:-50%; right:-50%; top:0;margin:auto;}" +
-							"small{color:\(UIColor.lightGray.css);}" +
-						"p{margin: 0;}"
+					script {
+						src = "./dropzone.js"
+					}
+					link {
+						rel = "stylesheet"
+						href = "./dropzone.css"
+					}
+					link {
+						rel = "stylesheet"
+						href = "./main.css"
 					}
 				}
 				body {
-					center {
-						h1 {
-							inner = NSLocalizedString("Neocom II", comment: "")
-						}
+					iframe {
+						idd = "content"
+						src = "./loadouts"
+						onload = "resizeIframe(this)"
 					}
-					table(self.loadouts) { section in
-						thead {
-							th {
-								colspan = "4"
-								inner = section.title
-							}
-						}
-						tbody(section.rows) { row in
-							tr {
-								let uuid = row.uuid
-								td {
-									div {
-										img {
-											src = "/image/\(row.typeID)"
-										}
-									}
-								}
-								td {
+					section {
+						div {
+							idd = "dropzone"
+							form {
+								idd = "formUpload"
+								action = "/upload"
+								classs = "dropzone needsclick"
+								div {
+									classs = "dz-message needsclick"
 									p {
-										inner = "\(row.typeName)"
+										inner = NSLocalizedString("Drop files here or click to upload loadouts.", comment: "")
 									}
-									p {
-										small {
-											inner = "\(row.loadoutName ?? "")"
-										}
-									}
-									
-								}
-								td {
-									a {
-										href = "/loadout/\(uuid)/eft/\(row.fileName).cfg"
-										inner = "EFT"
-									}
-								}
-								td {
-									a {
-										href = "/loadout/\(uuid)/xml/\(row.fileName).xml"
-										inner = "XML"
+									span {
+										classs = "note needsclick"
+										inner = "(EVE-XML and EFT formats are supported)"
 									}
 								}
 							}
+						}
+						script {
+							src = "./main.js"
 						}
 					}
 				}
@@ -126,6 +192,16 @@ class NCFittingServerViewController: UIViewController {
 			else {return .movedPermanently("/")}
 			
 			switch format {
+			case "dna":
+				let dna: String? = NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext -> String? in
+					guard let loadout: NCLoadout = managedObjectContext.fetch("Loadout", where: "uuid == %@", uuid) else {return nil}
+					guard let data = loadout.data?.data else {return nil}
+					return (NCLoadoutRepresentation.dna([(typeID: Int(loadout.typeID), data: data, name: loadout.name ?? "")]).value as? [String])?.first
+				}
+				
+				if let dna = dna {
+					return .movedPermanently("https://o.smium.org/loadout/dna/\(dna)")
+				}
 			case "eft":
 				let eft: String? = NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext -> String? in
 					guard let loadout: NCLoadout = managedObjectContext.fetch("Loadout", where: "uuid == %@", uuid) else {return nil}
@@ -134,19 +210,29 @@ class NCFittingServerViewController: UIViewController {
 				}
 				
 				if let eft = eft {
-					return HttpResponse.raw(200, "OK", ["Content-Type" : "application/octet-stream", "Content-Dispositio" : "attachment"], { w in
+					return .raw(200, "OK", ["Content-Type" : "application/octet-stream", "Content-Disposition" : "attachment"], { w in
 						try? w.write(eft.data(using: .utf8)!)
 					})
 				}
 			case "xml":
 				let xml: String? = NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext -> String? in
-					guard let loadout: NCLoadout = managedObjectContext.fetch("Loadout", where: "uuid == %@", uuid) else {return nil}
-					guard let data = loadout.data?.data else {return nil}
-					return NCLoadoutRepresentation.xml([(typeID: Int(loadout.typeID), data: data, name: loadout.name ?? "")]).value as? String
+					if uuid == "all" {
+						guard let loadouts: [NCLoadout] = managedObjectContext.fetch("Loadout") else {return nil}
+						let array = loadouts.flatMap { loadout -> (typeID: Int, data: NCFittingLoadout, name: String)? in
+							guard let data = loadout.data?.data else {return nil}
+							return (typeID: Int(loadout.typeID), data: data, name: loadout.name ?? "")
+						}
+						return NCLoadoutRepresentation.xml(array).value as? String
+					}
+					else {
+						guard let loadout: NCLoadout = managedObjectContext.fetch("Loadout", where: "uuid == %@", uuid) else {return nil}
+						guard let data = loadout.data?.data else {return nil}
+						return NCLoadoutRepresentation.xml([(typeID: Int(loadout.typeID), data: data, name: loadout.name ?? "")]).value as? String
+					}
 				}
 				
 				if let xml = xml {
-					return HttpResponse.raw(200, "OK", ["Content-Type" : "application/octet-stream", "Content-Dispositio" : "attachment"], { w in
+					return .raw(200, "OK", ["Content-Type" : "application/octet-stream", "Content-Disposition" : "attachment"], { w in
 						try? w.write(xml.data(using: .utf8)!)
 					})
 				}
@@ -155,12 +241,29 @@ class NCFittingServerViewController: UIViewController {
 			}
 			return .movedPermanently("/")
 		}
+
+		server.POST["/upload"] = { r in
+			guard let multipart = r.parseMultiPartFormData().first else {return .internalServerError}
+			let data = Data(bytes: multipart.body)
+			
+			if let loadouts = NCLoadoutRepresentation(value: data)?.loadouts {
+				NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
+					loadouts.forEach { i in
+						let loadout = NCLoadout(entity: NSEntityDescription.entity(forEntityName: "Loadout", in: managedObjectContext)!, insertInto: managedObjectContext)
+						loadout.data = NCLoadoutData(entity: NSEntityDescription.entity(forEntityName: "LoadoutData", in: managedObjectContext)!, insertInto: managedObjectContext)
+						loadout.typeID = Int32(i.typeID)
+						loadout.name = i.name
+						loadout.data?.data = i.data
+						loadout.uuid = UUID().uuidString
+					}
+				}
+				return HttpResponse.ok(.html(""))
+			}
+			return HttpResponse.ok(.html(""))
+		}
 		
 		return server
 	}()
-	
-//	let loadouts = NCLoadoutsSection(categoryID: nil)
-	var ipAddress: String = ""
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -171,12 +274,36 @@ class NCFittingServerViewController: UIViewController {
 		super.viewWillAppear(animated)
 		do {
 
-			try server.start(8080)
-			let urls = UIDevice.interfaceAddresses.filter{$0.family == .ipv4}.map{"http://\($0.address):8080"}
-			textLabel.text = urls.isEmpty ? NSLocalizedString("Unable to determine your IP Address", comment: "") : urls.joined(separator: "\n")
+			try server.start(80)
+			var urls = UIDevice.interfaceAddresses.filter{$0.family == .ipv4}.map{"http://\($0.address)/"}
+			if let hostName = UIDevice.hostName {
+				urls.insert("http://\(hostName.lowercased())/", at: 0)
+			}
+			if urls.isEmpty {
+				textLabel.text = NSLocalizedString("Unable to determine your IP Address", comment: "")
+			}
+			else {
+				textLabel.attributedText = NSLocalizedString("Open one of the following links", comment: "") + ":\n\n" + urls.joined(separator: "\n") * [NSForegroundColorAttributeName: UIColor.caption]
+			}
 		}
 		catch {
-			textLabel.text = error.localizedDescription
+			do {
+				try server.start(8080)
+				var urls = UIDevice.interfaceAddresses.filter{$0.family == .ipv4}.map{"http://\($0.address):8080/"}
+				if let hostName = UIDevice.hostName {
+					urls.insert("http://\(hostName.lowercased()):8080/", at: 0)
+				}
+
+				if urls.isEmpty {
+					textLabel.text = NSLocalizedString("Unable to determine your IP Address", comment: "")
+				}
+				else {
+					textLabel.attributedText = NSLocalizedString("Open one of the following links", comment: "") + ":\n\n" + urls.joined(separator: "\n") * [NSForegroundColorAttributeName: UIColor.caption]
+				}
+			}
+			catch {
+				textLabel.text = error.localizedDescription
+			}
 		}
 	}
 	
@@ -203,7 +330,7 @@ class NCFittingServerViewController: UIViewController {
 					                   loadoutName: loadout.name,
 					                   typeID: Int(type.typeID),
 					                   typeName: type.typeName ?? "",
-					                   fileName: "\(type.typeName ?? "") - \(loadout.name?.isEmpty == false ? loadout.name! : NSLocalizedString("Unnamed", comment: ""))"))
+					                   fileName: "\(type.typeName ?? "") - \(loadout.name?.isEmpty == false ? loadout.name! : type.typeName ?? "")"))
 					groups[key] = section
 				}
 			}

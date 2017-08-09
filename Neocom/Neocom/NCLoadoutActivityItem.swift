@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 enum NCLoadoutRepresentation {
 	case dna([(typeID: Int, data: NCFittingLoadout, name: String)])
@@ -38,8 +39,27 @@ enum NCLoadoutRepresentation {
 		return 1
 	}
 	
+	var loadouts: [(typeID: Int, data: NCFittingLoadout, name: String)] {
+		switch self {
+		case let .dna(value):
+			return value
+		case let .dnaURL(value):
+			return value
+		case let .xml(value):
+			return value
+		case let .httpURL(value):
+			return value
+		case let .eft(value):
+			return value
+		case let .esi(value):
+			return value
+		case let .inGame(value):
+			return value
+		}
+	}
+	
 	private func dnaRepresentation(_ loadout: (typeID: Int, data: NCFittingLoadout, name: String)) -> String {
-		let slots: [NCFittingModuleSlot] = [.subsystem, .hi, .med, .low, .rig]
+		let slots: [NCFittingModuleSlot] = [.subsystem, .hi, .med, .low, .rig, .service]
 		var arrays = [NSCountedSet]()
 		let charges = NSCountedSet()
 		let drones = NSCountedSet()
@@ -82,13 +102,13 @@ enum NCLoadoutRepresentation {
 		NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 			guard let type = invTypes[loadout.typeID]?.typeName else {return}
-			xml += "<fitting name=\"\(loadout.name)\">\n<description value=\"\(NSLocalizedString("Created with Neocom on iOS", comment: ""))\"/>\n<shipType value=\"\(type)\"/>\n"
+			xml += "<fitting name=\"\(loadout.name.isEmpty ? type : loadout.name)\">\n<description value=\"\(NSLocalizedString("Created with Neocom on iOS", comment: ""))\"/>\n<shipType value=\"\(type)\"/>\n"
 			
-			let slots: [NCFittingModuleSlot] = [.hi, .med, .low, .rig, .subsystem]
+			let slots: [NCFittingModuleSlot] = [.hi, .med, .low, .rig, .subsystem, .service]
 			for slot in slots {
 				for (i, module) in (loadout.data.modules?[slot] ?? []).enumerated() {
 					guard let type = invTypes[module.typeID]?.typeName else {continue}
-					guard let slot = slot.title?.lowercased() else {continue}
+					guard let slot = slot.name?.lowercased() else {continue}
 					xml += "<hardware slot=\"\(slot) \(i)\" type=\"\(type)\"/>\n"
 				}
 			}
@@ -108,7 +128,7 @@ enum NCLoadoutRepresentation {
 		NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 			guard let type = invTypes[loadout.typeID]?.typeName else {return}
-			eft += "[\(type), \(loadout.name)]\n"
+			eft += "[\(type), \(loadout.name.isEmpty ? type : loadout.name)]\n"
 			
 			let slots: [NCFittingModuleSlot] = [.hi, .med, .low, .rig, .subsystem]
 			for slot in slots {
@@ -136,7 +156,7 @@ enum NCLoadoutRepresentation {
 		let fitting = ESI.Fittings.MutableFitting()
 		fitting.shipTypeID = loadout.typeID
 		
-		NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
+		let shipName: String = NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> String? in
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 			
 			let modules = loadout.data.modules?.map { i -> FlattenBidirectionalCollection<[[ESI.Fittings.Item]]> in
@@ -194,14 +214,176 @@ enum NCLoadoutRepresentation {
 			}
 			
 			fitting.items = items
-
-		}
-		fitting.name = loadout.name.isEmpty ? NSLocalizedString("Unnamed", comment: "") : loadout.name
+			return invTypes[fitting.shipTypeID]?.typeName
+		} ?? ""
+		
+		fitting.name = loadout.name.isEmpty ? shipName.isEmpty ? NSLocalizedString("Unnamed", comment: "") : shipName : loadout.name
 		fitting.localizedDescription = NSLocalizedString("Created with Neocom on iOS", comment: "")
 
 		return fitting
 	}
 
+	init?(value: Any) {
+		if let data = value as? Data ?? (value as? String)?.data(using: .utf8) {
+			if let loadouts = NCLoadoutRepresentation.loadoutsFrom(xml: data) {
+				self = .xml(loadouts)
+				return
+			}
+			if let s = String(data: data, encoding: .utf8) {
+				if let loadout = NCLoadoutRepresentation.loadoutFrom(eft: s) {
+					self = .eft([loadout])
+					return
+				}
+			}
+		}
+		return nil
+	}
+	
+	private static func loadoutsFrom(xml: Data) -> [(typeID: Int, data: NCFittingLoadout, name: String)]? {
+		guard let object = (try? XMLParser.xmlObject(data: xml)) as? [String: Any] else {return nil}
+		guard let root = object["fittings"] as? [String: Any] else {return nil}
+		let fittings = root["fitting"] as? [[String: Any]] ?? [root["fitting"] as? [String: Any] ?? [:]]
+		guard !fittings.isEmpty else {return nil}
+		
+		return NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> [(typeID: Int, data: NCFittingLoadout, name: String)] in
+			return fittings.flatMap { fitting -> (typeID: Int, data: NCFittingLoadout, name: String)? in
+				let name = fitting["name"] as? String ?? ""
+				guard let typeName = (fitting["shipType"] as? [String: Any])?["value"] as? String else {return nil}
+				guard let shipType: NCDBInvType = managedObjectContext.fetch("InvType", where: "typeName == %@", typeName) else {return nil}
+				
+				let hardware = fitting["hardware"] as? [[String: Any]] ?? [fitting["hardware"] as? [String: Any] ?? [:]]
+			
+				var invTypes = [String: NCDBInvType]()
+				var modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()
+				var drones = [NCFittingLoadoutDrone]()
+				
+				for item in hardware {
+					guard let typeName = item["type"] as? String else {continue}
+					guard let slotName = (item["slot"] as? String)?.lowercased() else {continue}
+					guard let type: NCDBInvType = invTypes[typeName] ?? managedObjectContext.fetch("InvType", where: "typeName == %@", typeName) else {continue}
+					invTypes[typeName] = type
+
+					let qty = item["qty"] as? Int ?? 1
+					
+					
+					if slotName == "drone bay" || slotName == "fighter bay" {
+						drones.append(NCFittingLoadoutDrone(typeID: Int(type.typeID), count: qty, identifier: nil))
+					}
+					else if let slot = NCFittingModuleSlot(name: slotName) {
+						var array = modules[slot] ?? []
+						array.append(NCFittingLoadoutModule(typeID: Int(type.typeID), count: qty, identifier: nil))
+						modules[slot] = array
+					}
+					else {
+						continue
+					}
+				}
+				
+				let loadout = NCFittingLoadout()
+				loadout.modules = modules
+				loadout.drones = drones
+				
+				return (typeID: Int(shipType.typeID), data: loadout, name: name)
+			}
+		}
+	}
+	
+	private static func loadoutFrom(eft: String) -> (typeID: Int, data: NCFittingLoadout, name: String)? {
+		var lines = eft.components(separatedBy: CharacterSet.newlines).filter{!$0.isEmpty}
+		
+		guard let ship: (String, String?) = {
+			let s = lines.removeFirst().trimmingCharacters(in: CharacterSet(charactersIn: "[]"))
+			if let r = s.range(of: ",") {
+				return (s.substring(to: r.lowerBound).trimmingCharacters(in: CharacterSet.whitespaces), s.substring(from: r.upperBound).trimmingCharacters(in: CharacterSet.whitespaces))
+			}
+			else {
+				return (s.trimmingCharacters(in: CharacterSet.whitespaces), nil)
+			}
+		}()
+			else {return nil}
+
+		return NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> (typeID: Int, data: NCFittingLoadout, name: String)? in
+			guard let shipType: NCDBInvType = managedObjectContext.fetch("InvType", where: "typeName == %@", ship.0) else {return nil}
+
+			let regEx = try! NSRegularExpression(pattern: "(.*?)x(\\d+)$", options: [])
+
+			var invTypes = [String: NCDBInvType]()
+			var modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()
+			var drones = [NCFittingLoadoutDrone]()
+
+			lines.forEach { line in
+				let ns = line as NSString
+				
+				let qty: Int
+				let s: String
+				if let result = regEx.firstMatch(in: line, options: [], range: NSMakeRange(0, ns.length)) {
+					s = ns.substring(with: result.rangeAt(1))
+					qty = Int(ns.substring(with: result.rangeAt(2))) ?? 1
+				}
+				else {
+					s = line
+					qty = 1
+				}
+				
+				let module: (String, String?) = {
+					if let r = s.range(of: ",") {
+						return (s.substring(to: r.lowerBound).trimmingCharacters(in: CharacterSet.whitespaces), s.substring(from: r.upperBound).trimmingCharacters(in: CharacterSet.whitespaces))
+					}
+					else {
+						return (s.trimmingCharacters(in: CharacterSet.whitespaces), nil)
+					}
+				}()
+				
+				guard let type: NCDBInvType = invTypes[module.0] ?? managedObjectContext.fetch("InvType", where: "typeName == %@", module.0) else {return}
+				guard let categoryID = (type.dgmppItem?.groups?.anyObject() as? NCDBDgmppItemGroup)?.category?.category else {return}
+				guard let category = NCDBDgmppItemCategoryID(rawValue: Int(categoryID)) else {return}
+				invTypes[module.0] = type
+
+				switch category {
+				case .hi, .med, .low, .rig, .subsystem, .service, .structureRig:
+					let slot: NCFittingModuleSlot
+					switch category {
+					case .hi:
+						slot = .hi
+					case .med:
+						slot = .med
+					case .low:
+						slot = .low
+					case .rig:
+						slot = .rig
+					case .subsystem:
+						slot = .subsystem
+					case .service:
+						slot = .service
+					default:
+						slot = .rig
+					}
+					
+					let charge: NCFittingLoadoutItem? = {
+						guard let typeName = module.1 else {return nil}
+						guard let type: NCDBInvType = invTypes[typeName] ?? managedObjectContext.fetch("InvType", where: "typeName == %@", typeName) else {return nil}
+						invTypes[typeName] = type
+						return NCFittingLoadoutItem(typeID: Int(type.typeID), count: 1, identifier: nil)
+					}()
+					
+					var array = modules[slot] ?? []
+					array.append(NCFittingLoadoutModule(typeID: Int(type.typeID), count: qty, identifier: nil, charge: charge))
+					modules[slot] = array
+				case .drone, .structureDrone:
+					drones.append(NCFittingLoadoutDrone(typeID: Int(type.typeID), count: qty, identifier: nil))
+				default:
+					return
+				}
+			}
+
+			let loadout = NCFittingLoadout()
+			loadout.modules = modules
+			loadout.drones = drones
+			
+			return (typeID: Int(shipType.typeID), data: loadout, name: ship.1 ?? "")
+		}
+
+	}
 }
 
 class NCLoadoutActivityItem: UIActivityItemProvider {
@@ -235,7 +417,7 @@ class NCLoadoutActivityItem: UIActivityItemProvider {
 			else {
 				guard let loadout = loadouts.first else {break}
 				let typeName = NCDatabase.sharedDatabase?.invTypes[loadout.typeID]?.typeName ?? "\(loadout.typeID)"
-				let name = loadout.name.isEmpty ? "Unnamed" : loadout.name
+				let name = loadout.name.isEmpty ? typeName : loadout.name
 				
 				fileName = "\(typeName) - \(name).xml"
 			}

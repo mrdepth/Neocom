@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Account" representedClassName="NCAccount" syncable="YES" codeGenerationType="class">
+        <attribute name="accessToken" attributeType="String" syncable="YES"/>
+        <attribute name="characterID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="characterName" attributeType="String" syncable="YES"/>
+        <attribute name="expiresOn" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="realm" attributeType="String" syncable="YES"/>
+        <attribute name="refreshToken" attributeType="String" syncable="YES"/>
+        <attribute name="tokenType" attributeType="String" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" syncable="YES"/>
+        <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AccountsFolder" inverseName="accounts" inverseEntity="AccountsFolder" syncable="YES"/>
+        <relationship name="scopes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Scope" inverseName="account" inverseEntity="Scope" syncable="YES"/>
+        <relationship name="skillPlans" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SkillPlan" inverseName="account" inverseEntity="SkillPlan" syncable="YES"/>
+    </entity>
+    <entity name="AccountsFolder" representedClassName="NCAccountsFolder" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Account" inverseName="folder" inverseEntity="Account" syncable="YES"/>
+    </entity>
+    <entity name="DamagePattern" representedClassName="NCDamagePattern" syncable="YES" codeGenerationType="class">
+        <attribute name="em" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="explosive" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="kinetic" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thermal" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="DronesSet" representedClassName="NCDronesSet" syncable="YES" codeGenerationType="class">
+        <attribute name="data" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="FitCharacter" representedClassName="NCFitCharacter" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="skills" optional="YES" attributeType="Transformable" customClassName="Dictionary&lt;Int,Int&gt;" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Fleet" representedClassName="NCFleet" syncable="YES" codeGenerationType="class">
+        <attribute name="configuration" optional="YES" attributeType="Transformable" customClassName="NCFleetConfiguration" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="loadouts" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Loadout" inverseName="fleets" inverseEntity="Loadout" syncable="YES"/>
+    </entity>
+    <entity name="ImplantSet" representedClassName="NCImplantSet" syncable="YES" codeGenerationType="class">
+        <attribute name="data" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Loadout" representedClassName="NCLoadout" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="data" maxCount="1" deletionRule="Cascade" destinationEntity="LoadoutData" inverseName="loadout" inverseEntity="LoadoutData" syncable="YES"/>
+        <relationship name="fleets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Fleet" inverseName="loadouts" inverseEntity="Fleet" syncable="YES"/>
+    </entity>
+    <entity name="LoadoutData" representedClassName="NCLoadoutData" syncable="YES" codeGenerationType="class">
+        <attribute name="data" optional="YES" attributeType="Transformable" customClassName="NCFittingLoadout" syncable="YES"/>
+        <relationship name="loadout" maxCount="1" deletionRule="Nullify" destinationEntity="Loadout" inverseName="data" inverseEntity="Loadout" syncable="YES"/>
+    </entity>
+    <entity name="MailDraft" representedClassName="NCMailDraft" syncable="YES" codeGenerationType="class">
+        <attribute name="body" optional="YES" attributeType="Transformable" customClassName="NSAttributedString" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="to" optional="YES" attributeType="Transformable" customClassName="[Int64]" syncable="YES"/>
+    </entity>
+    <entity name="MarketQuickItem" representedClassName="NCMarketQuickItem" syncable="YES" codeGenerationType="class">
+        <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="typeID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Scope" representedClassName="NCScope" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="scopes" inverseEntity="Account" syncable="YES"/>
+    </entity>
+    <entity name="Setting" representedClassName="NCSetting" syncable="YES" codeGenerationType="class">
+        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Transformable" syncable="YES"/>
+    </entity>
+    <entity name="ShoppingItem" representedClassName="NCShoppingItem" syncable="YES" codeGenerationType="class">
+        <attribute name="finished" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="flag" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="quantity" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="typeID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="contents" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ShoppingItem" inverseName="parent" inverseEntity="ShoppingItem" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingItem" inverseName="contents" inverseEntity="ShoppingItem" syncable="YES"/>
+        <relationship name="shoppingList" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingList" inverseName="shoppingItems" inverseEntity="ShoppingList" syncable="YES"/>
+    </entity>
+    <entity name="ShoppingList" representedClassName="NCShoppingList" syncable="YES" codeGenerationType="class">
+        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="shoppingItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ShoppingItem" inverseName="shoppingList" inverseEntity="ShoppingItem" syncable="YES"/>
+    </entity>
+    <entity name="SkillPlan" representedClassName="NCSkillPlan" syncable="YES" codeGenerationType="class">
+        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="skillPlans" inverseEntity="Account" syncable="YES"/>
+        <relationship name="skills" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SkillPlanSkill" inverseName="skillPlan" inverseEntity="SkillPlanSkill" syncable="YES"/>
+    </entity>
+    <entity name="SkillPlanSkill" representedClassName="NCSkillPlanSkill" syncable="YES" codeGenerationType="class">
+        <attribute name="level" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="position" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="typeID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="skillPlan" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SkillPlan" inverseName="skills" inverseEntity="SkillPlan" syncable="YES"/>
+    </entity>
+    <configuration name="Cloud">
+        <memberEntity name="Account"/>
+        <memberEntity name="DamagePattern"/>
+        <memberEntity name="DronesSet"/>
+        <memberEntity name="FitCharacter"/>
+        <memberEntity name="ImplantSet"/>
+        <memberEntity name="Loadout"/>
+        <memberEntity name="LoadoutData"/>
+        <memberEntity name="ShoppingItem"/>
+        <memberEntity name="ShoppingList"/>
+        <memberEntity name="SkillPlan"/>
+        <memberEntity name="Fleet"/>
+        <memberEntity name="Scope"/>
+        <memberEntity name="SkillPlanSkill"/>
+        <memberEntity name="MailDraft"/>
+        <memberEntity name="MarketQuickItem"/>
+        <memberEntity name="AccountsFolder"/>
+    </configuration>
+    <configuration name="Local">
+        <memberEntity name="Setting"/>
+    </configuration>
+    <elements>
+        <element name="Account" positionX="18" positionY="63" width="128" height="225"/>
+        <element name="AccountsFolder" positionX="36" positionY="153" width="128" height="75"/>
+        <element name="DamagePattern" positionX="45" positionY="90" width="128" height="120"/>
+        <element name="DronesSet" positionX="9" positionY="54" width="128" height="75"/>
+        <element name="FitCharacter" positionX="36" positionY="81" width="128" height="90"/>
+        <element name="Fleet" positionX="9" positionY="126" width="128" height="90"/>
+        <element name="ImplantSet" positionX="54" positionY="99" width="128" height="75"/>
+        <element name="Loadout" positionX="0" positionY="45" width="128" height="135"/>
+        <element name="LoadoutData" positionX="9" positionY="54" width="128" height="75"/>
+        <element name="MailDraft" positionX="18" positionY="135" width="128" height="105"/>
+        <element name="MarketQuickItem" positionX="27" positionY="144" width="128" height="60"/>
+        <element name="Scope" positionX="9" positionY="126" width="128" height="75"/>
+        <element name="Setting" positionX="18" positionY="63" width="128" height="75"/>
+        <element name="ShoppingItem" positionX="-18" positionY="27" width="128" height="180"/>
+        <element name="ShoppingList" positionX="45" positionY="90" width="128" height="90"/>
+        <element name="SkillPlan" positionX="9" positionY="54" width="128" height="105"/>
+        <element name="SkillPlanSkill" positionX="9" positionY="126" width="128" height="105"/>
+    </elements>
+</model>

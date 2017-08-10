@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCSkillTableViewCell" id="fkI-Va-ef6" customClass="NCSkillTableViewCell" customModule="Neocom" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fkI-Va-ef6" id="TVz-uj-Ku4">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="41.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="249" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="yO0-TK-09H">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="42.5"/>
+                        <color key="progressTintColor" red="0.1215686275" green="0.17254901959999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </progressView>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="zgd-SD-5Ey">
+                        <rect key="frame" x="15" y="4" width="290" height="34"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" placeholderIntrinsicWidth="32" placeholderIntrinsicHeight="32" image="skillRequirementQueued" translatesAutoresizingMaskIntoConstraints="NO" id="Klu-k9-izg" customClass="NCTintImageView" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="1" width="32" height="32"/>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="FRa-3x-AAd">
+                                <rect key="frame" x="32" y="2" width="258" height="30.5"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="iSD-5X-8AO">
+                                        <rect key="frame" x="0.0" y="0.0" width="258" height="16"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RBG-Am-1rd">
+                                                <rect key="frame" x="0.0" y="0.0" width="165" height="16"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="901" text="LABEL" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="vOG-Gf-G6s">
+                                                <rect key="frame" x="169" y="0.0" width="39" height="16"/>
+                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
+                                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" placeholderIntrinsicWidth="46" placeholderIntrinsicHeight="7" translatesAutoresizingMaskIntoConstraints="NO" id="XLu-TE-c9Z" customClass="NCSkillLevelView" customModule="Neocom" customModuleProvider="target">
+                                                <rect key="frame" x="212" y="4.5" width="46" height="7"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <color key="tintColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            </view>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1qg-nh-lTW">
+                                        <rect key="frame" x="0.0" y="16" width="258" height="14.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GkD-1F-sIa">
+                                                <rect key="frame" x="0.0" y="0.0" width="219" height="14.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="751" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4wO-vv-aFn">
+                                                <rect key="frame" x="227" y="0.0" width="31" height="14.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="yO0-TK-09H" secondAttribute="trailing" id="6Qv-35-5PO"/>
+                    <constraint firstAttribute="bottom" secondItem="yO0-TK-09H" secondAttribute="bottom" id="GUB-cV-zr6"/>
+                    <constraint firstItem="yO0-TK-09H" firstAttribute="top" secondItem="TVz-uj-Ku4" secondAttribute="top" id="Jro-tZ-dh1"/>
+                    <constraint firstAttribute="trailing" secondItem="zgd-SD-5Ey" secondAttribute="trailing" constant="15" id="KyG-0w-hel"/>
+                    <constraint firstItem="yO0-TK-09H" firstAttribute="leading" secondItem="TVz-uj-Ku4" secondAttribute="leading" id="SK6-gS-Wrc"/>
+                    <constraint firstItem="zgd-SD-5Ey" firstAttribute="top" secondItem="TVz-uj-Ku4" secondAttribute="top" constant="4" id="SOf-1E-KZc"/>
+                    <constraint firstAttribute="trailing" secondItem="yO0-TK-09H" secondAttribute="trailing" id="XDO-4C-xCa"/>
+                    <constraint firstItem="yO0-TK-09H" firstAttribute="top" secondItem="TVz-uj-Ku4" secondAttribute="top" id="ZVE-zK-gLw"/>
+                    <constraint firstItem="zgd-SD-5Ey" firstAttribute="leading" secondItem="TVz-uj-Ku4" secondAttribute="leading" constant="15" id="eUe-KD-5a8"/>
+                    <constraint firstItem="yO0-TK-09H" firstAttribute="leading" secondItem="TVz-uj-Ku4" secondAttribute="leading" id="hH1-6f-bE0"/>
+                    <constraint firstAttribute="bottom" secondItem="yO0-TK-09H" secondAttribute="bottom" id="wsy-Gh-fm1"/>
+                    <constraint firstAttribute="bottom" secondItem="zgd-SD-5Ey" secondAttribute="bottom" constant="4" id="xkB-PQ-cz6"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="iconView" destination="Klu-k9-izg" id="gVw-U3-xkf"/>
+                <outlet property="levelLabel" destination="vOG-Gf-G6s" id="4V0-mM-hDA"/>
+                <outlet property="progressView" destination="yO0-TK-09H" id="PH9-dJ-TtC"/>
+                <outlet property="skillLevelView" destination="XLu-TE-c9Z" id="EeW-uf-4Ai"/>
+                <outlet property="spLabel" destination="GkD-1F-sIa" id="wxQ-wu-KnQ"/>
+                <outlet property="titleLabel" destination="RBG-Am-1rd" id="5cp-5E-1PE"/>
+                <outlet property="trainingTimeLabel" destination="4wO-vv-aFn" id="94d-CX-fuh"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="skillRequirementQueued" width="32" height="32"/>
+    </resources>
+</document>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCAttributeTableViewCell" id="ny8-Az-EXi" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ny8-Az-EXi" id="Dwc-ye-cyu">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="40.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="k9i-8I-VQU">
+                        <rect key="frame" x="15" y="4" width="290" height="32"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="E8e-2X-Dsd" customClass="NCImageView" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="3Vf-cp-Oqu"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" secondItem="E8e-2X-Dsd" secondAttribute="height" multiplier="1:1" id="p2F-dx-qD9"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="82E-Mo-1eT">
+                                <rect key="frame" x="40" y="0.0" width="250" height="32"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="IP2-Iu-8Bc">
+                                        <rect key="frame" x="0.0" y="0.0" width="250" height="16"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                                        <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xzy-JM-1Ng">
+                                        <rect key="frame" x="0.0" y="16" width="250" height="16"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="k9i-8I-VQU" firstAttribute="leading" secondItem="Dwc-ye-cyu" secondAttribute="leading" constant="15" id="KEc-2a-uqp"/>
+                    <constraint firstAttribute="trailing" secondItem="k9i-8I-VQU" secondAttribute="trailing" priority="999" id="LiV-q0-ZsG"/>
+                    <constraint firstAttribute="bottom" secondItem="k9i-8I-VQU" secondAttribute="bottom" constant="4" id="MMe-bx-hgz"/>
+                    <constraint firstItem="k9i-8I-VQU" firstAttribute="top" secondItem="Dwc-ye-cyu" secondAttribute="top" constant="4" id="jIo-Db-XFX"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="k9i-8I-VQU" secondAttribute="trailing" constant="15" id="D4i-mq-YmK"/>
+            </constraints>
+            <connections>
+                <outlet property="iconView" destination="E8e-2X-Dsd" id="Lx2-l0-N7Q"/>
+                <outlet property="subtitleLabel" destination="xzy-JM-1Ng" id="GNz-NH-ivt"/>
+                <outlet property="titleLabel" destination="IP2-Iu-8Bc" id="WVX-0Z-sRC"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

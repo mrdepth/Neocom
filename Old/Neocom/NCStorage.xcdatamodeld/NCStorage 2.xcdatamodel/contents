@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A320" minimumToolsVersion="Xcode 4.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="Account" representedClassName="NCAccount" syncable="YES">
+        <attribute name="characterID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="apiKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="APIKey" inverseName="accounts" inverseEntity="APIKey" syncable="YES"/>
+        <relationship name="mailBox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MailBox" inverseName="account" inverseEntity="MailBox" syncable="YES"/>
+        <relationship name="skillPlans" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SkillPlan" inverseName="account" inverseEntity="SkillPlan" syncable="YES"/>
+    </entity>
+    <entity name="APIKey" representedClassName="NCAPIKey" syncable="YES">
+        <attribute name="apiKeyInfo" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="EVEAPIKeyInfo" syncable="YES"/>
+        <attribute name="keyID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="vCode" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Account" inverseName="apiKey" inverseEntity="Account" syncable="YES"/>
+    </entity>
+    <entity name="DamagePattern" representedClassName="NCDamagePattern" syncable="YES">
+        <attribute name="em" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="explosive" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="kinetic" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thermal" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="DronesSet" representedClassName="NCDronesSet" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="FitCharacter" representedClassName="NCFitCharacter" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="skills" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+    </entity>
+    <entity name="ImplantSet" representedClassName="NCImplantSet" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Loadout" representedClassName="NCLoadout" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="data" maxCount="1" deletionRule="Cascade" destinationEntity="LoadoutData" inverseName="loadout" inverseEntity="LoadoutData" syncable="YES"/>
+    </entity>
+    <entity name="LoadoutData" representedClassName="NCLoadoutData" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+        <relationship name="loadout" maxCount="1" deletionRule="Nullify" destinationEntity="Loadout" inverseName="data" inverseEntity="Loadout" syncable="YES"/>
+    </entity>
+    <entity name="MailBox" representedClassName="NCMailBox" syncable="YES">
+        <attribute name="readedMessagesIDs" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="mailBox" inverseEntity="Account" syncable="YES"/>
+    </entity>
+    <entity name="Setting" representedClassName="NCSetting" syncable="YES">
+        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+    </entity>
+    <entity name="ShoppingGroup" representedClassName="NCShoppingGroup" syncable="YES">
+        <attribute name="iconFile" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="immutable" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="shoppingItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ShoppingItem" inverseName="shoppingGroup" inverseEntity="ShoppingItem" syncable="YES"/>
+        <relationship name="shoppingList" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingList" inverseName="shoppingGroups" inverseEntity="ShoppingList" syncable="YES"/>
+    </entity>
+    <entity name="ShoppingItem" representedClassName="NCShoppingItem" syncable="YES">
+        <attribute name="finished" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="quantity" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="typeID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="shoppingGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingGroup" inverseName="shoppingItems" inverseEntity="ShoppingGroup" syncable="YES"/>
+    </entity>
+    <entity name="ShoppingList" representedClassName="NCShoppingList" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="shoppingGroups" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ShoppingGroup" inverseName="shoppingList" inverseEntity="ShoppingGroup" syncable="YES"/>
+    </entity>
+    <entity name="SkillPlan" representedClassName="NCSkillPlan" syncable="YES">
+        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="skills" optional="YES" attributeType="Transformable" valueTransformerName="" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="skillPlans" inverseEntity="Account" syncable="YES"/>
+    </entity>
+    <configuration name="Cloud">
+        <memberEntity name="Account"/>
+        <memberEntity name="APIKey"/>
+        <memberEntity name="DamagePattern"/>
+        <memberEntity name="FitCharacter"/>
+        <memberEntity name="ImplantSet"/>
+        <memberEntity name="Loadout"/>
+        <memberEntity name="LoadoutData"/>
+        <memberEntity name="SkillPlan"/>
+        <memberEntity name="MailBox"/>
+        <memberEntity name="ShoppingItem"/>
+        <memberEntity name="ShoppingList"/>
+        <memberEntity name="ShoppingGroup"/>
+        <memberEntity name="DronesSet"/>
+    </configuration>
+    <configuration name="Local">
+        <memberEntity name="Setting"/>
+    </configuration>
+    <elements>
+        <element name="Account" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="APIKey" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="DamagePattern" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="DronesSet" positionX="27" positionY="99" width="128" height="75"/>
+        <element name="FitCharacter" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="ImplantSet" positionX="9" positionY="54" width="128" height="75"/>
+        <element name="Loadout" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="LoadoutData" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="MailBox" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="Setting" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="ShoppingGroup" positionX="27" positionY="72" width="128" height="150"/>
+        <element name="ShoppingItem" positionX="27" positionY="72" width="128" height="105"/>
+        <element name="ShoppingList" positionX="45" positionY="81" width="128" height="73"/>
+        <element name="SkillPlan" positionX="0" positionY="0" width="128" height="105"/>
+    </elements>
+</model>

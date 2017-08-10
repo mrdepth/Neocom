@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCEmptyHeaderTableViewCell" rowHeight="40" id="aGG-FD-ix6" customClass="NCHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="24"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aGG-FD-ix6" id="a3N-Pa-4RI">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="23.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QNE-kK-jnB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="23.5"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" priority="999" constant="24" id="QaU-CT-RFs"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="QNE-kK-jnB" firstAttribute="leading" secondItem="a3N-Pa-4RI" secondAttribute="leading" id="3Ph-iC-UvK"/>
+                    <constraint firstAttribute="trailing" secondItem="QNE-kK-jnB" secondAttribute="trailing" id="IUb-nP-Blp"/>
+                    <constraint firstAttribute="bottom" secondItem="QNE-kK-jnB" secondAttribute="bottom" id="P4f-lZ-FH4"/>
+                    <constraint firstItem="QNE-kK-jnB" firstAttribute="top" secondItem="a3N-Pa-4RI" secondAttribute="top" id="cHF-8Z-2lK"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+        </tableViewCell>
+    </objects>
+</document>

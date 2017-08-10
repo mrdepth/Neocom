@@ -115,11 +115,19 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 	//MARK: - TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		if let route = (node as? TreeNodeRoutable)?.route {
-			route.perform(source: self, view: treeController.cell(for: node))
-		}
 		if (!isEditing && !tableView.allowsMultipleSelection) || (isEditing && !tableView.allowsMultipleSelectionDuringEditing) {
 			treeController.deselectCell(for: node, animated: true)
+			if let route = (node as? TreeNodeRoutable)?.route {
+				route.perform(source: self, view: treeController.cell(for: node))
+			}
+		}
+		else {
+			if isEditing && (self as TreeControllerDelegate).treeController?(treeController, editActionsForNode: node) == nil {
+				treeController.deselectCell(for: node, animated: true)
+				if let route = (node as? TreeNodeRoutable)?.route {
+					route.perform(source: self, view: treeController.cell(for: node))
+				}
+			}
 		}
 	}
 	
@@ -131,6 +139,7 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 			route.perform(source: self, view: treeController.cell(for: node))
 		}
 	}
+	
 }
 
 protocol NCAPIController: class {

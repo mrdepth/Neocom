@@ -42,7 +42,11 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 		}
 	}
 	
-	var currentPage: UIViewController?
+	var currentPage: UIViewController? {
+		didSet {
+			setToolbarItems(currentPage?.toolbarItems, animated: true)
+		}
+	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -139,20 +143,41 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	}
 	
 	func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+		scrollViewDidEndScrolling()
+	}
+	
+	func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+		if !decelerate {
+			scrollViewDidEndScrolling()
+		}
+	}
+	
+	func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+		scrollViewDidEndScrolling()
+	}
+	
+	//MARK: - Private
+	
+	private func addChild(viewController: UIViewController) {
+		addChildViewController(viewController)
+		
+	}
+	
+	private func scrollViewDidEndScrolling() {
 		let copy = appearances
 		for appearance in copy {
 			let controller = appearance.controller
 			if controller.view.frame.intersects(scrollView.bounds) {
 				if !appearance.isAppearing {
 					controller.beginAppearanceTransition(true, animated: false)
-//					appearances.append(Appearance(true, controller: controller))
+					//					appearances.append(Appearance(true, controller: controller))
 				}
 				currentPage = controller
 			}
 			else {
 				if appearance.isAppearing {
 					controller.beginAppearanceTransition(false, animated: false)
-//					appearances.append(Appearance(false, controller: controller))
+					//					appearances.append(Appearance(false, controller: controller))
 				}
 				controller.view.removeFromSuperview()
 			}
@@ -163,19 +188,4 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 		pendingChildren = []
 		appearances = []
 	}
-	
-	func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-		if !decelerate {
-			scrollViewDidEndDecelerating(scrollView)
-		}
-	}
-	
-	//MARK: - Private
-	
-	private func addChild(viewController: UIViewController) {
-		addChildViewController(viewController)
-		
-	}
-	
-	
 }

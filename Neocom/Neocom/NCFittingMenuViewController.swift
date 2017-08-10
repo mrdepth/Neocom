@@ -25,5 +25,7 @@ class NCFittingMenuViewController: NCPageViewController {
 		for controller in viewControllers ?? [] {
 			controller.setEditing(editing, animated: animated)
 		}
+		navigationController?.setToolbarHidden(!editing, animated: animated)
 	}
+	
 }

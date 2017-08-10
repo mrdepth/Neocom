@@ -10,34 +10,10 @@ import UIKit
 import CoreData
 import CloudData
 
-class NCFittingStructuresViewController: NCTreeViewController {
+class NCFittingStructuresViewController: NCFittingLoadoutsViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.register([Prototype.NCDefaultTableViewCell.default,
-		                    Prototype.NCHeaderTableViewCell.default])
-	}
-	
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
-	}
-	
-	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
-		guard let node = node as? NCLoadoutRow else {return nil}
-		
-		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { _ in
-			guard let context = NCStorage.sharedStorage?.viewContext else {return}
-			guard let loadout = (try? context.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
-			context.delete(loadout)
-			if context.hasChanges {
-				try? context.save()
-			}
-		}
-		
-		return [deleteAction]
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
@@ -55,4 +31,5 @@ class NCFittingStructuresViewController: NCTreeViewController {
 		self.treeController?.content = RootNode(sections)
 		completionHandler()
 	}
+	
 }

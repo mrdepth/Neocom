@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import Alamofire
 
 class NCInGameFittingRow: TreeRow {
 	
@@ -52,44 +53,95 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 		
 	}
 
-	//MARK: - TreeControllerDelegate
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		updateToolbar()
+	}
+	
+	private var isDeleting: Bool = false
+	
+	@IBAction func onDelete(_ sender: Any) {
+		guard !isDeleting else {return}
+		guard var selected = treeController?.selectedNodes().flatMap ({$0 as? NCInGameFittingRow}) else {return}
+		guard !selected.isEmpty else {return}
+		
+		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		controller.addAction(UIAlertAction(title: String(format: NSLocalizedString("Delete %d Loadouts", comment: ""), selected.count), style: .destructive) { [weak self] _ in
+			guard let strongSelf = self else {return}
+			strongSelf.isDeleting = true
+			
+			let progress = NCProgressHandler(viewController: strongSelf, totalUnitCount: Int64(selected.count))
+			strongSelf.tableView.isUserInteractionEnabled = false
+			
+			func dequeue() {
+				if selected.isEmpty {
+					strongSelf.tableView.isUserInteractionEnabled = true
+					if let context = strongSelf.fittings?.cacheRecord?.managedObjectContext, context.hasChanges {
+						try? context.save()
+					}
+					strongSelf.updateToolbar()
+					strongSelf.isDeleting = false
+					progress.finish()
+				}
+				else {
+					progress.progress.perform {
+						strongSelf.deleteFitting(from: selected.removeFirst()) { _ in
+							dequeue()
+						}
+					}
+				}
+			}
+			dequeue()
 
+		})
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+		
+		present(controller, animated: true, completion: nil)
+	}
+	
+	//MARK: - TreeControllerDelegate
+	
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
+		updateToolbar()
+	}
+	
+	override func treeController(_ treeController: TreeController, didDeselectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didDeselectCellWithNode: node)
+		updateToolbar()
+	}
+	
+	func treeController(_ treeController: TreeController, didCollapseCellWithNode node: TreeNode) {
+		updateToolbar()
+	}
+	
+	func treeControllerDidUpdateContent(_ treeController: TreeController) {
+		updateToolbar()
+		tableView.backgroundView = treeController.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: fittings?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+	}
+	
+	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let node = node as? NCInGameFittingRow else {return nil}
 		
-		let fitting = node.fitting
-		
-		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self] _ in
+		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self, weak node] _ in
 			guard let strongSelf = self else {return}
-			guard let account = NCAccount.current else {return}
-			strongSelf.tableView.isUserInteractionEnabled = false
+			guard let node = node else {return}
 			guard let cell = strongSelf.treeController?.cell(for: node) else {return}
 
-			let dataManager = NCDataManager(account: account)
-			
+			strongSelf.tableView.isUserInteractionEnabled = false
+
 			let progress = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
 			progress.progress.perform {
-				dataManager.deleteFitting(fittingID: fitting.fittingID) { result in
-					
+				strongSelf.deleteFitting(from: node) { result in
+
 					strongSelf.tableView.isUserInteractionEnabled = true
 					
 					switch result {
 					case .success:
-						guard let record = strongSelf.fittings?.cacheRecord else {return}
-						guard var fittings = record.data?.data as? [ESI.Fittings.Fitting] else {return}
-						guard let i = fittings.index(where: {$0.fittingID == fitting.fittingID}) else {return}
-						fittings.remove(at: i)
-						
-						
-						record.data?.data = fittings as NSArray
-						if record.managedObjectContext?.hasChanges == true {
-							try? record.managedObjectContext?.save()
-						}
-						if let parent = node.parent, let i = parent.children.index(of: node) {
-							parent.children.remove(at: i)
-							if parent.children.isEmpty, let root = parent.parent, let i = root.children.index(of: parent) {
-								root.children.remove(at: i)
-							}
+						if let context = strongSelf.fittings?.cacheRecord?.managedObjectContext, context.hasChanges {
+							try? context.save()
 						}
 					case let .failure(error):
 						strongSelf.present(UIAlertController(error: error), animated: true, completion: nil)
@@ -168,4 +220,37 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 			completionHandler()
 		}
 	}
+	
+	private func deleteFitting(from node: NCInGameFittingRow, completionHandler: @escaping (Result<String>) -> Void) {
+		Progress(totalUnitCount: 1).perform {
+			dataManager.deleteFitting(fittingID: node.fitting.fittingID) { result in
+				switch result {
+				case .success:
+					guard let record = self.fittings?.cacheRecord else {return}
+					guard var fittings = record.data?.data as? [ESI.Fittings.Fitting] else {return}
+					guard let i = fittings.index(where: {$0.fittingID == node.fitting.fittingID}) else {return}
+					fittings.remove(at: i)
+					
+					
+					record.data?.data = fittings as NSArray
+					
+					if let parent = node.parent, let i = parent.children.index(of: node) {
+						parent.children.remove(at: i)
+						if parent.children.isEmpty, let root = parent.parent, let i = root.children.index(of: parent) {
+							root.children.remove(at: i)
+						}
+					}
+				case .failure:
+					break
+				}
+				completionHandler(result)
+
+			}
+		}
+	}
+	
+	private func updateToolbar() {
+		toolbarItems?.last?.isEnabled = treeController?.selectedNodes().isEmpty == false
+	}
+
 }

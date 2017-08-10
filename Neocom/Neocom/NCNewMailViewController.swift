@@ -64,6 +64,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		
 		textView.inputAccessoryView = accessoryView
 		textView.linkTextAttributes = [NSForegroundColorAttributeName: UIColor.caption]
+		textView.typingAttributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body), NSForegroundColorAttributeName: UIColor.white]
 
 		subjectTextView.text = self.subject
 		textView.attributedText = body
@@ -216,6 +217,12 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 			UIView.animate(withDuration: 0.15, animations: {
 				self.searchResultViewController?.view.superview?.alpha = 0.0
 			})
+		}
+	}
+	
+	func textViewDidChangeSelection(_ textView: UITextView) {
+		if textView == self.textView {
+			textView.typingAttributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body), NSForegroundColorAttributeName: UIColor.white]
 		}
 	}
 	

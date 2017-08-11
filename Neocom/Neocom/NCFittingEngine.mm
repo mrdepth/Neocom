@@ -13,7 +13,6 @@
 NSNotificationName const NCFittingEngineDidUpdateNotification = @"NCFittingEngineDidUpdateNotification";
 
 @interface NCFittingEngine() {
-	std::shared_ptr<dgmpp::Engine> _engine;
 	//NSOperationQueue* _operationQueue;
 	dispatch_queue_t _dispatchQueue;
 	NSThread* _context;

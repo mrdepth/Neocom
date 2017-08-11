@@ -66,111 +66,6 @@ class Chart: Hashable {
 	func update() {}
 }
 
-class LineChart: Chart {
-	var data: [(x: Double, y: Double)] = [] {
-		didSet {
-			needsUpdate = true
-		}
-	}
-	
-	var xRange: ClosedRange<Double> = 0...0 {
-		didSet {
-			needsUpdate = true
-		}
-	}
-	
-	var yRange: ClosedRange<Double> = 0...0 {
-		didSet {
-			needsUpdate = true
-		}
-	}
-	
-	var color: UIColor = .lightGray {
-		didSet {
-			layer.strokeColor = color.cgColor
-		}
-	}
-
-	private lazy var layer: CAShapeLayer = {
-		let layer = ChartShapeLayer()
-		layer.fillColor = nil
-		layer.strokeColor = self.color.cgColor
-		layer.transform = CATransform3DMakeAffineTransform(CGAffineTransform.init(scaleX: 1, y: -1))
-		return layer
-	}()
-	
-	override func present() {
-		guard let chartView = chartView else {return}
-		chartView.plot.addSublayer(layer)
-		layer.frame = chartView.plot.bounds
-		let p = path()
-		
-		layer.path = p.cgPath
-		
-		var transform = CGAffineTransform.identity
-		transform = transform.scaledBy(x: 1.0, y: 0.0)
-		p.apply(transform)
-		
-		let animation = CABasicAnimation(keyPath: "path")
-		animation.fromValue = p.cgPath
-		animation.duration = 0.25
-		layer.add(animation, forKey: nil)
-	}
-	
-	override func dismiss() {
-		let layer = self.layer
-		
-		guard let from = layer.path else {
-			layer.removeFromSuperlayer()
-			return
-		}
-		let to = UIBezierPath(cgPath: from)
-		var transform = CGAffineTransform.identity
-		transform = transform.scaledBy(x: 1.0, y: 0.0)
-		to.apply(transform)
-		
-		CATransaction.begin()
-		layer.path = to.cgPath
-		CATransaction.setCompletionBlock({
-			layer.removeFromSuperlayer()
-		})
-		CATransaction.commit()
-	}
-	
-	
-	override func update() {
-		guard let chartView = chartView else {return}
-		layer.frame = chartView.plot.bounds
-		layer.path = path().cgPath
-	}
-	
-	private func path() -> UIBezierPath {
-		let path = UIBezierPath()
-		var isStart = true
-		for p in data {
-			if isStart {
-				path.move(to: CGPoint(x: p.x, y: p.y))
-				isStart = false
-			}
-			else {
-				path.addLine(to: CGPoint(x: p.x, y: p.y))
-			}
-		}
-		
-		let size = layer.frame.size
-		var transform = CGAffineTransform.identity
-		let w = xRange.upperBound - xRange.lowerBound
-		if w > 0 {
-			transform = transform.scaledBy(x: size.width / CGFloat(w), y: size.height / CGFloat(yRange.upperBound - yRange.lowerBound))
-			transform = transform.translatedBy(x: -CGFloat(xRange.lowerBound), y: -CGFloat(yRange.lowerBound))
-			path.apply(transform)
-		}
-		
-		return path
-	}
-
-}
-
 class ChartAxis {
 	enum Location {
 		case top
@@ -447,4 +342,247 @@ class ChartView: UIView {
 
 		}
 	}
+}
+
+
+class LineChart: Chart {
+	var data: [(x: Double, y: Double)] = [] {
+		didSet {
+			needsUpdate = true
+		}
+	}
+	
+	var xRange: ClosedRange<Double> = 0...0 {
+		didSet {
+			needsUpdate = true
+		}
+	}
+	
+	var yRange: ClosedRange<Double> = 0...0 {
+		didSet {
+			needsUpdate = true
+		}
+	}
+	
+	var color: UIColor = .lightGray {
+		didSet {
+			layer.strokeColor = color.cgColor
+		}
+	}
+	
+	private lazy var layer: CAShapeLayer = {
+		let layer = ChartShapeLayer()
+		layer.fillColor = nil
+		layer.strokeColor = self.color.cgColor
+		layer.transform = CATransform3DMakeAffineTransform(CGAffineTransform.init(scaleX: 1, y: -1))
+		return layer
+	}()
+	
+	override func present() {
+		guard let chartView = chartView else {return}
+		chartView.plot.addSublayer(layer)
+		layer.frame = chartView.plot.bounds
+		let p = path()
+		
+		layer.path = p.cgPath
+		
+		var transform = CGAffineTransform.identity
+		transform = transform.scaledBy(x: 1.0, y: 0.0)
+		p.apply(transform)
+		
+		let animation = CABasicAnimation(keyPath: "path")
+		animation.fromValue = p.cgPath
+		animation.duration = 0.25
+		layer.add(animation, forKey: nil)
+	}
+	
+	override func dismiss() {
+		let layer = self.layer
+		
+		guard let from = layer.path else {
+			layer.removeFromSuperlayer()
+			return
+		}
+		let to = UIBezierPath(cgPath: from)
+		var transform = CGAffineTransform.identity
+		transform = transform.scaledBy(x: 1.0, y: 0.0)
+		to.apply(transform)
+		
+		CATransaction.begin()
+		layer.path = to.cgPath
+		CATransaction.setCompletionBlock({
+			layer.removeFromSuperlayer()
+		})
+		CATransaction.commit()
+	}
+	
+	
+	override func update() {
+		guard let chartView = chartView else {return}
+		layer.frame = chartView.plot.bounds
+		layer.path = path().cgPath
+	}
+	
+	private func path() -> UIBezierPath {
+		let path = UIBezierPath()
+		var isStart = true
+		for p in data {
+			if isStart {
+				path.move(to: CGPoint(x: p.x, y: p.y))
+				isStart = false
+			}
+			else {
+				path.addLine(to: CGPoint(x: p.x, y: p.y))
+			}
+		}
+		
+		let size = layer.frame.size
+		var transform = CGAffineTransform.identity
+		let w = xRange.upperBound - xRange.lowerBound
+		if w > 0 {
+			transform = transform.scaledBy(x: size.width / CGFloat(w), y: size.height / CGFloat(yRange.upperBound - yRange.lowerBound))
+			transform = transform.translatedBy(x: -CGFloat(xRange.lowerBound), y: -CGFloat(yRange.lowerBound))
+			path.apply(transform)
+		}
+		
+		return path
+	}
+	
+}
+
+class BarChart: Chart {
+	class Layer: CALayer {
+		
+		weak var barChart: BarChart?
+		
+		override func draw(in ctx: CGContext) {
+			guard let barChart = self.barChart else {return}
+			let n = barChart.data.count
+			guard n > 1 else {return}
+			
+			let size = bounds.size
+			let xRange = barChart.xRange
+			let yRange = barChart.yRange
+			
+			let color0 = UIColor.green.cgColor
+			let color1 = UIColor.red.cgColor
+			
+			let r = CGSize(width: CGFloat(xRange.upperBound - xRange.lowerBound), height: CGFloat(yRange.upperBound - yRange.lowerBound))
+			guard r.width > 0, r.height > 0 else {return}
+
+			ctx.saveGState()
+			ctx.setShouldAntialias(false)
+			
+			ctx.scaleBy(x: size.width / r.width, y: size.height / r.height)
+			ctx.translateBy(x: -CGFloat(xRange.lowerBound), y: -CGFloat(yRange.lowerBound))
+			
+			let minW = 6.0 / Double(size.width / r.width)
+			let inset = 1.0 / (size.width / r.width)
+
+			
+			var start = barChart.data[0]
+			var y: (Double, Double) = (0,0)
+			var w: Double = 0
+			
+			var prev = start
+			for i in barChart.data[1..<barChart.data.count] {
+				let dw = i.x - prev.x
+				prev = i
+				w += dw
+				y.0 += i.y * i.f * dw
+				y.1 += i.y * (1 - i.f) * dw
+				if w >= minW {
+					y.0 /= w
+					y.1 /= w
+					
+					if y.1 > 0 {
+						ctx.setFillColor(color1)
+						ctx.fill(CGRect(x: start.x, y: 0, width: w, height: y.1).insetBy(dx: inset, dy: 0))
+					}
+					if y.0 > 0 {
+						ctx.setFillColor(color0)
+						ctx.fill(CGRect(x: start.x, y: y.1, width: w, height: y.0).insetBy(dx: inset, dy: 0))
+					}
+					
+					start = i
+					w = 0
+					y = (0, 0)
+				}
+			}
+			
+			ctx.restoreGState()
+			
+		}
+	}
+	
+	var data: [(x: Double, y: Double, f: Double)] = [] {
+		didSet {
+			needsUpdate = true
+		}
+	}
+	
+	var xRange: ClosedRange<Double> = 0...0 {
+		didSet {
+			needsUpdate = true
+		}
+	}
+	
+	var yRange: ClosedRange<Double> = 0...0 {
+		didSet {
+			needsUpdate = true
+		}
+	}
+	
+	var color: UIColor = .lightGray {
+		didSet {
+		}
+	}
+	
+	private lazy var contentLayer: Layer = {
+		let layer = Layer()
+		layer.barChart = self
+		layer.needsDisplayOnBoundsChange = true
+		layer.transform = CATransform3DMakeAffineTransform(CGAffineTransform.init(scaleX: 1, y: -1))
+		return layer
+	}()
+	
+	private lazy var layer: CALayer = {
+		let layer = CALayer()
+		layer.needsDisplayOnBoundsChange = true
+		layer.anchorPoint = CGPoint(x: 0.5, y: 1)
+		layer.addSublayer(self.contentLayer)
+		return layer
+	}()
+	
+	override func present() {
+		guard let chartView = chartView else {return}
+		chartView.plot.addSublayer(layer)
+		layer.frame = chartView.plot.bounds
+		contentLayer.frame = layer.bounds
+		
+		let animation = CABasicAnimation(keyPath: "transform")
+		animation.fromValue = CATransform3DMakeAffineTransform(CGAffineTransform(scaleX: 1, y: 0))
+		animation.duration = 0.25
+		layer.add(animation, forKey: "transform")
+
+	}
+	
+	override func dismiss() {
+		let layer = self.layer
+		layer.removeFromSuperlayer()
+		
+		
+//		CATransaction.begin()
+//		CATransaction.setCompletionBlock({
+//		})
+//		CATransaction.commit()
+	}
+	
+	
+	override func update() {
+		guard let chartView = chartView else {return}
+		layer.frame = chartView.plot.bounds
+		contentLayer.frame = layer.bounds
+	}
+	
 }

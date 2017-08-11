@@ -9,6 +9,10 @@
 import UIKit
 import EVEAPI
 
+enum NCColonyError: Error {
+	case invalidLayout
+}
+
 class NCColonySection: TreeSection {
 	let colony: ESI.PlanetaryInteraction.Colony
 	let layout: NCCachedResult<ESI.PlanetaryInteraction.ColonyLayout>
@@ -41,14 +45,16 @@ class NCColonySection: TreeSection {
 			let planetTypeID = Int(self.planet?.type?.typeID ?? 0)
 			
 			engine.perform {
-				let planet = NCFittingPlanet(typeID: planetTypeID)
-				engine.planet = planet
 				
-				var lastUpdate: Date? = nil
-				
-				for pin in layout.pins {
-					let facility: NCFittingFacility? = planet.facility(identifier: pin.pinID) ?? {
-						let facility = planet.addFacility(typeID: pin.typeID, identifier: pin.pinID)
+				do {
+					let planet = NCFittingPlanet(typeID: planetTypeID)
+					engine.planet = planet
+					
+					
+					for pin in layout.pins {
+						guard planet.facility(identifier: pin.pinID) == nil,
+							let facility = planet.addFacility(typeID: pin.typeID, identifier: pin.pinID) else {throw NCColonyError.invalidLayout}
+						
 						switch facility {
 						case let ecu as NCFittingExtractorControlUnit:
 							ecu.launchTime = pin.lastCycleStart?.timeIntervalSinceReferenceDate ?? 0
@@ -62,21 +68,81 @@ class NCColonySection: TreeSection {
 						default:
 							break
 						}
-						return facility
-					}()
+					}
+					
+					for route in layout.routes {
+						guard let source = planet.facility(identifier: route.sourcePinID),
+							let destination = planet.facility(identifier: route.destinationPinID) else {throw NCColonyError.invalidLayout}
+
+						planet.addRoute(from: source, to: destination, commodity: NCFittingCommodity(contentType: route.contentTypeID, quantity: Int(route.quantity), engine: engine))
+					}
+					
+					let lastUpdate = colony.lastUpdate
+					planet.lastUpdate = lastUpdate.timeIntervalSinceReferenceDate
+					
+					planet.simulate()
+					
 					
 				}
+				catch {
+					DispatchQueue.main.async {
+						self.children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: error.localizedDescription)]
+					}
+				}
+
+
 			}
 		}
 		else if let error = layout.error {
 			self.children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: error.localizedDescription)]
 		}
 		else {
-			self.children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: NSLocalizedString("Colony Layout not Available", comment: ""))]
+			self.children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: NSLocalizedString("Colony Layout is Not Available", comment: ""))]
 		}
 		super.loadChildren()
 		
 	}
+}
+
+class NCExtractorControlUnitRow: TreeRow {
+	
+	let rangeX: ClosedRange<TimeInterval>
+	let rangeY: ClosedRange<Double>
+	let totalYield: Double
+	let totalWaste: Double
+	let states: [(x: Double, y: Double, f: Double)]
+	let waste: (x: Double, y: Double, f: Double)?
+	let current: (x: Double, y: Double, f: Double)?
+	
+	init(extractor: NCFittingExtractorControlUnit, currentTime: TimeInterval) {
+
+		let states = (extractor.states as? [NCFittingProductionState])?.flatMap { state -> (x: Double, y: Double, f: Double)? in
+			guard let cycle = state.currentCycle as? NCFittingProductionCycle else {return nil}
+			let yield = Double(cycle.yield.quantity)
+			let waste = Double(cycle.waste.quantity)
+			let launchTime = Double(state.timestamp)
+
+			let total = yield + waste
+			let f = total > 0 ? yield / total : 1
+			return (x: launchTime, y: total, f: f)
+		} ?? []
+		
+		if let from = states.first?.x, let to = states.last?.x {
+			rangeX = from...to
+		}
+		else {
+			rangeX = currentTime...currentTime
+		}
+		rangeY = 0...(states.lazy.map{$0.y}.max() ?? 0)
+		
+		self.states = states
+		current = states.first {$0.x > currentTime}
+		waste = states.first {$0.f < 1 && $0.x > currentTime}
+		(totalYield, totalWaste) = states.reduce((0, 0)) {($0.0 + $1.y * $1.f, $0.1 + $1.y * (1 - $1.f))}
+		
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default)
+	}
+	
 }
 
 class NCPlanetaryViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {

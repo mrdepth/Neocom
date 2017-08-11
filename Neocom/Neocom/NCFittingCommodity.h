@@ -22,5 +22,6 @@
 
 - (nonnull instancetype) init NS_SWIFT_UNAVAILABLE("");
 
+- (nonnull instancetype) initWithContentType:(NSInteger) typeID quantity: (NSInteger) quantity engine:(nonnull NCFittingEngine*) engine;
 
 @end

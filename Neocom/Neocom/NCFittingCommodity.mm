@@ -25,6 +25,16 @@
 	return self;
 }
 
+- (nonnull instancetype) initWithContentType:(NSInteger) typeID quantity: (NSInteger) quantity engine:(NCFittingEngine*) engine {
+	if (self = [self init]) {
+		
+		_commodity = std::make_shared<dgmpp::Commodity>(engine.engine, typeID, quantity);
+		_engine = engine;
+	}
+	return self;
+}
+
+
 - (NSInteger) typeID {
 	return _commodity->getTypeID();
 }

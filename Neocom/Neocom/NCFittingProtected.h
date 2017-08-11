@@ -58,6 +58,8 @@
 @end
 
 @interface NCFittingEngine()
+@property (nonatomic, assign) std::shared_ptr<dgmpp::Engine> engine;
+
 - (void) updateWithItem:(nullable NCFittingItem*) item;
 #if DEBUG
 - (void) verifyContext;

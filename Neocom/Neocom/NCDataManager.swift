@@ -967,7 +967,7 @@ class NCDataManager {
 
 	func killmails(maxKillID: Int64? = nil, completionHandler: @escaping (NCCachedResult<[ESI.Killmails.Recent]>) -> Void) {
 		loadFromCache(forKey: "ESI.Killmails.Recent.\(maxKillID ?? 0)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.esi.killmails.listKillsAndLosses(characterID: Int(self.characterID), maxKillID: maxKillID != nil ? Int(maxKillID!) : nil) { result in
+			self.esi.killmails.getCharacterKillsAndLosses(characterID: Int(self.characterID), maxKillID: maxKillID != nil ? Int(maxKillID!) : nil) { result in
 				completion(result, maxKillID == nil ? 60 * 2 : 3600 * 24)
 			}
 		})

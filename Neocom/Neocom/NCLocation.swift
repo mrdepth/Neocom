@@ -11,7 +11,7 @@ import EVEAPI
 
 class NCLocation {
 	private(set) var stationID: Int?
-	private(set) var stationName: String?
+	private(set) var itemName: String?
 	private(set) var stationTypeID: Int?
 	private(set) var solarSystemID: Int?
 	private(set) var solarSystemName: String?
@@ -26,7 +26,7 @@ class NCLocation {
 	convenience init(_ station: NCDBStaStation) {
 		self.init(station.solarSystem!)
 		stationID = Int(station.stationID)
-		stationName = station.stationName
+		itemName = station.stationName
 		if let solarSystem = station.solarSystem {
 			solarSystemName = solarSystem.solarSystemName
 			solarSystemID = Int(solarSystem.solarSystemID)
@@ -43,6 +43,9 @@ class NCLocation {
 	
 	convenience init(_ mapDenormalize: NCDBMapDenormalize) {
 		self.init(mapDenormalize.solarSystem!)
+		if mapDenormalize.itemID != mapDenormalize.solarSystem?.solarSystemID {
+			itemName = mapDenormalize.itemName
+		}
 	}
 
 	convenience init(_ structure: ESI.Universe.StructureInformation) {
@@ -52,14 +55,14 @@ class NCLocation {
 		else {
 			self.init()
 		}
-		self.stationName = structure.name
+		self.itemName = structure.name
 	}
 
 	init?(_ name: ESI.Universe.Name) {
 		switch name.category {
 		case .station:
 			self.stationID = name.id
-			self.stationName = name.name
+			self.itemName = name.name
 		case .solarSystem:
 			self.solarSystemID = name.id
 			self.solarSystemName = name.name
@@ -68,30 +71,30 @@ class NCLocation {
 		}
 	}
 
-	var displayName: NSAttributedString {
+	lazy var displayName: NSAttributedString = {
 		let s = NSMutableAttributedString()
 		if let security = self.security {
 			s.append(NSAttributedString(string: String(format: "%.1f ", security) , attributes: [NSForegroundColorAttributeName: UIColor(security: security)]))
 		}
-		if let stationName = stationName {
-			if let solarSystemName = solarSystemName {
-				let r = (stationName as NSString).range(of: solarSystemName)
+		if let itemName = self.itemName {
+			if let solarSystemName = self.solarSystemName {
+				let r = (itemName as NSString).range(of: solarSystemName)
 				if r.length > 0  {
-					let title = NSMutableAttributedString(string: stationName)
+					let title = NSMutableAttributedString(string: itemName)
 					title.addAttributes([NSForegroundColorAttributeName: UIColor.white], range: r)
 					s.append(title)
 				}
 				else {
-					s.append(NSAttributedString(string: stationName))
+					s.append(NSAttributedString(string: itemName))
 				}
 			}
 			else {
-				s.append(NSAttributedString(string: stationName))
+				s.append(NSAttributedString(string: itemName))
 			}
 		}
-		else if let solarSystemName = solarSystemName {
+		else if let solarSystemName = self.solarSystemName {
 			s.append(NSAttributedString(string: solarSystemName))
 		}
 		return s
-	}
+	}()
 }

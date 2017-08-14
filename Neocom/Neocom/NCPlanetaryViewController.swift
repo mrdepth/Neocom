@@ -60,7 +60,7 @@ class NCColonySection: TreeSection {
 							ecu.launchTime = pin.lastCycleStart?.timeIntervalSinceReferenceDate ?? 0
 							ecu.installTime = pin.installTime?.timeIntervalSinceReferenceDate ?? 0
 							ecu.expiryTime = pin.expiryTime?.timeIntervalSinceReferenceDate ?? 0
-							ecu.cycleTime = TimeInterval((pin.extractorDetails?.cycleTime ?? 0) * 60)
+							ecu.cycleTime = TimeInterval(pin.extractorDetails?.cycleTime ?? 0)
 							ecu.quantityPerCycle = pin.extractorDetails?.qtyPerCycle ?? 0
 						case let factory as NCFittingIndustryFacility:
 							factory.launchTime = pin.lastCycleStart?.timeIntervalSinceReferenceDate ?? 0
@@ -73,8 +73,8 @@ class NCColonySection: TreeSection {
 					for route in layout.routes {
 						guard let source = planet.facility(identifier: route.sourcePinID),
 							let destination = planet.facility(identifier: route.destinationPinID) else {throw NCColonyError.invalidLayout}
-
-						planet.addRoute(from: source, to: destination, commodity: NCFittingCommodity(contentType: route.contentTypeID, quantity: Int(route.quantity), engine: engine))
+						
+						planet.addRoute(from: source, to: destination, commodity: NCFittingCommodity(contentType: route.contentTypeID, quantity: Int(route.quantity), engine: engine), identifier: route.routeID)
 					}
 					
 					let lastUpdate = colony.lastUpdate
@@ -82,7 +82,22 @@ class NCColonySection: TreeSection {
 					
 					planet.simulate()
 					
-					
+					let currentTime = Date().timeIntervalSinceReferenceDate
+					var rows = planet.facilities.flatMap { i -> NCFacilityRow? in
+						switch i {
+						case let facility as NCFittingExtractorControlUnit:
+							return NCExtractorControlUnitRow(extractor: facility, currentTime: currentTime)
+						case let facility as NCFittingIndustryFacility:
+							return NCFactoryRow(factory: facility, currentTime: currentTime)
+						case let facility as NCFittingStorageFacility:
+							return NCStorageRow(storage: facility, currentTime: currentTime)
+						default:
+							return nil
+						}
+					}
+					DispatchQueue.main.async {
+						self.children = rows
+					}
 				}
 				catch {
 					DispatchQueue.main.async {
@@ -102,14 +117,42 @@ class NCColonySection: TreeSection {
 		super.loadChildren()
 		
 	}
+	
+	lazy var title: NSAttributedString? = {
+		let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[self.colony.solarSystemID]
+		let location = NCDatabase.sharedDatabase?.mapDenormalize[self.colony.planetID]?.itemName ?? solarSystem?.solarSystemName ?? NSLocalizedString("Unknown", comment: "")
+		if let solarSystem = solarSystem {
+			let security = solarSystem.security
+			return (String(format: "%.1f ", security) * [NSForegroundColorAttributeName: UIColor(security: security)] + location + " (\(self.colony.planetType.title))").uppercased()
+		}
+		else {
+			return (location + " (\(self.colony.planetType.title))").uppercased() * [:]
+		}
+	}()
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCHeaderTableViewCell else {return}
+		
+		cell.titleLabel?.attributedText = title
+	}
 }
 
 class NCFacilityRow: TreeRow {
 	let typeID: Int
 	
+	lazy var type: NCDBInvType? = {
+		return NCDatabase.sharedDatabase?.invTypes[self.typeID]
+	}()
+	
 	init(prototype: Prototype, facility: NCFittingFacility) {
 		typeID = facility.typeID
 		super.init(prototype: prototype)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.text = type?.typeName
+		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 	}
 }
 
@@ -150,10 +193,18 @@ class NCExtractorControlUnitRow: NCFacilityRow {
 		(totalYield, totalWaste) = states.reduce((0, 0)) {($0.0 + $1.y * $1.f, $0.1 + $1.y * (1 - $1.f))}
 		
 		super.init(prototype: Prototype.NCDefaultTableViewCell.default, facility: extractor)
+		let row = NCFacilityChartRow(data: states, xRange: rangeX, yRange: rangeY, currentTime: currentTime)
+		var children: [TreeNode] = [row]
+		children = [row, NCTypeInfoRow(typeID: extractor.output.typeID)]
+	
+		
+		self.children = children
 	}
 }
 
 class NCFactoryRow: NCFacilityRow {
+	let extrapolatedProductionTime: TimeInterval?
+	let extrapolatedIdleTime: TimeInterval?
 	init(factory: NCFittingIndustryFacility, currentTime: TimeInterval) {
 		let states = factory.states as? [NCFittingProductionState]
 		let lastState = states?.reversed().first {$0.currentCycle == nil}
@@ -161,127 +212,102 @@ class NCFactoryRow: NCFacilityRow {
 		let lastProductionState = states?.reversed().first {$0.currentCycle?.launchTime == $0.timestamp}
 		let currentState = states?.first {$0.timestamp > currentTime}
 		
+		let extrapolatedEfficiency = lastState?.efficiency
+		let duration: TimeInterval? = {
+			guard let currentState = currentState, let firstProductionState = firstProductionState else {return nil}
+			return currentState.timestamp - firstProductionState.timestamp
+		}()
+		let extrapolatedDuration: TimeInterval? = {
+			guard let lastState = lastState, let firstProductionState = firstProductionState else {return nil}
+			return lastState.timestamp - firstProductionState.timestamp
+		}()
+		let productionTime: TimeInterval? = {
+			guard let currentState = currentState, let duration = duration else {return nil}
+			return currentState.efficiency * duration
+		}()
+		(extrapolatedProductionTime, extrapolatedIdleTime) = {
+			guard let lastState = lastState, let extrapolatedDuration = extrapolatedDuration else {return (nil, nil)}
+			let extrapolatedProductionTime = lastState.efficiency * extrapolatedDuration
+			let extrapolatedIdleTime = extrapolatedDuration - extrapolatedProductionTime
+			return (extrapolatedProductionTime, extrapolatedIdleTime)
+		}()
+
 		super.init(prototype: Prototype.NCDefaultTableViewCell.default, facility: factory)
 	}
 }
 
-class NCPlanetaryViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {
-	
-	@IBOutlet var treeController: TreeController!
+class NCStorageRow: NCFacilityRow {
+	init(storage: NCFittingStorageFacility, currentTime: TimeInterval) {
+		let capacity = storage.capacity
+		
+		if capacity > 0 {
+			let states = storage.states.flatMap { state -> (BarChart.Item)? in
+				let total = state.volume / capacity
+				return BarChart.Item(x: state.timestamp, y: total, f: 1)
+				} ?? []
+			
+			let last = states.last
+			let current = states.first {$0.x > currentTime} ?? last
+
+		}
+		
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default, facility: storage)
+
+	}
+}
+
+class NCPlanetaryViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		needsReloadOnAccountChange = true
+		tableView.register([Prototype.NCDefaultTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCFacilityChartTableViewCell.default
+		                    ])
 		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		
-		registerRefreshable()
-		
-		treeController.delegate = self
-		
-		reload()
 	}
 	
-	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		if let row = node as? TreeNodeRoutable {
-			row.route?.perform(source: self, view: treeController.cell(for: node))
+	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+		dataManager.colonies { result in
+			self.colonies = result
+			completionHandler([result.cacheRecord].flatMap {$0})
 		}
-		treeController.deselectCell(for: node, animated: true)
 	}
 	
-	//MARK: - NCRefreshable
-	
-	private var observer: NCManagedObjectObserver?
-	private var colonies: NCCachedResult<[ESI.PlanetaryInteraction.Colony]>?
-	private var colonyLayouts: [Int: NCCachedResult<ESI.PlanetaryInteraction.ColonyLayout>]?
-	
-	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: (() -> Void)?) {
-		guard let account = NCAccount.current else {
-			completionHandler?()
-			return
-		}
-		
-		let progress = Progress(totalUnitCount: 2)
-		
-		let dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
-		
-		progress.perform {
-			dataManager.colonies { result in
-				self.colonies = result
-				
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		if let value = colonies?.value {
+			tableView.backgroundView = nil
+			
+			let progress = Progress(totalUnitCount: Int64(value.count))
+			let engine = NCFittingEngine()
+			var sections = [NCColonySection]()
+			let dispatchGroup = DispatchGroup()
+			
+			for colony in value {
 				progress.perform {
-					switch result {
-					case let .success(_, record):
-						if let record = record {
-							self.observer = NCManagedObjectObserver(managedObject: record) { [weak self] _ in
-								guard let strongSelf = self else {return}
-								strongSelf.reloadLayouts(dataManager: dataManager) {
-									strongSelf.reloadSections()
-								}
-							}
-						}
-						
-						self.reloadLayouts(dataManager: dataManager) {
-							self.reloadSections()
-							completionHandler?()
-						}
-					case .failure:
-						self.reloadSections()
-						completionHandler?()
+					dispatchGroup.enter()
+					dataManager.colonyLayout(planetID: colony.planetID) { result in
+						sections.append(NCColonySection(colony: colony, layout: result, engine: engine))
+						dispatchGroup.leave()
 					}
 				}
 			}
-		}
-	}
-	
-	private func reloadLayouts(dataManager: NCDataManager, completionHandler: (() -> Void)?) {
-		guard let value = colonies?.value else {
-			completionHandler?()
-			return
-		}
-		let progress = Progress(totalUnitCount: Int64(value.count))
-		
-		let dispatchGroup = DispatchGroup()
-		
-		var colonyLayouts: [Int: NCCachedResult<ESI.PlanetaryInteraction.ColonyLayout>] = [:]
-		
-		for colony in value {
-			progress.perform {
-				dispatchGroup.enter()
-				dataManager.colonyLayout(planetID: colony.planetID) { result in
-					colonyLayouts[colony.planetID] = result
-					dispatchGroup.leave()
-				}
-			}
-		}
-		
-		dispatchGroup.notify(queue: .main) {
-			self.colonyLayouts = colonyLayouts
-			completionHandler?()
-		}
-	}
-	
-	private func reloadSections() {
-		if let value = colonies?.value {
-			var sections = [TreeNode]()
 			
-			if self.treeController.content == nil {
-				let root = TreeNode()
-				root.children = sections
-				self.treeController.content = root
+			dispatchGroup.notify(queue: .main) {
+				self.treeController?.content = RootNode(sections)
+				completionHandler()
 			}
-			else {
-				self.treeController.content?.children = sections
-			}
-			self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-
 			
 		}
 		else {
-			tableView.backgroundView = NCTableViewBackgroundLabel(text: colonies?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: colonies?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			completionHandler()
 		}
 	}
+
+	private var colonies: NCCachedResult<[ESI.PlanetaryInteraction.Colony]>?
+
 	
 }

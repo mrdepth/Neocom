@@ -783,7 +783,7 @@ mapRegions.values.forEach {
 print ("mapDenormalize")
 var mapDenormalize = [NSNumber: NCDBMapDenormalize]()
 
-try! database.exec("SELECT * FROM mapDenormalize WHERE groupID IN (8, 15) AND itemID NOT IN (SELECT stationID FROM staStations)") { row in
+try! database.exec("SELECT * FROM mapDenormalize WHERE groupID IN (7, 8, 15) AND itemID NOT IN (SELECT stationID FROM staStations)") { row in
 	let denormalize = NCDBMapDenormalize(context: context)
 	denormalize.itemID = Int32(row["itemID"] as! NSNumber)
 	denormalize.itemName = row["itemName"] as? String

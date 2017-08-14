@@ -283,7 +283,6 @@
 			<string>planets</string>
 			<key>scopes</key>
 			<array>
-				<string>n/a</string>
 				<string>esi-planets.manage_planets.v1</string>
 			</array>
 		</dict>

@@ -120,7 +120,7 @@
 
 - (nullable NCFittingRoute*) addRouteFrom:(nonnull NCFittingFacility*) source to:(nonnull NCFittingFacility*) destination commodity:(nonnull NCFittingCommodity*) commodity {
 	NCVerifyFittingContext(self.engine);
-	return [self addRouteFrom:source to:destination commodity:commodity];
+	return [self addRouteFrom:source to:destination commodity:commodity identifier: 0];
 }
 
 - (void) removeRoute:(nonnull NCFittingRoute*) route {

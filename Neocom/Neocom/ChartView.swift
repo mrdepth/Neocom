@@ -164,6 +164,8 @@ class ChartView: UIView {
 		}
 		let plotFrame = UIEdgeInsetsInsetRect(bounds, plotFrameInsets)
 		
+		guard plotFrame.width > 0 && plotFrame.height > 0 else {return}
+		
 		if grid.path == nil {
 			grid.frame = plotFrame
 			let w = plotFrame.width / (plotFrame.width / 24).rounded(.down)
@@ -455,10 +457,18 @@ class BarChart: Chart {
 		
 		weak var barChart: BarChart?
 		
+//		var data: [Item]? {
+//			didSet {
+//				setNeedsDisplay()
+//			}
+//		}
+		
+		
 		override func draw(in ctx: CGContext) {
 			guard let barChart = self.barChart else {return}
-			let n = barChart.data.count
-			guard n > 1 else {return}
+//			guard let data = data else {return}
+			let data = barChart.data
+			guard !data.isEmpty else {return}
 			
 			let size = bounds.size
 			let xRange = barChart.xRange
@@ -476,16 +486,16 @@ class BarChart: Chart {
 			ctx.scaleBy(x: size.width / r.width, y: size.height / r.height)
 			ctx.translateBy(x: -CGFloat(xRange.lowerBound), y: -CGFloat(yRange.lowerBound))
 			
-			let minW = 6.0 / Double(size.width / r.width)
+			let minW = 4.0 / Double(size.width / r.width)
 			let inset = 1.0 / (size.width / r.width)
 
 			
-			var start = barChart.data[0]
+			var start = data[0]
 			var y: (Double, Double) = (0,0)
 			var w: Double = 0
 			
 			var prev = start
-			for i in barChart.data[1..<barChart.data.count] {
+			for i in data[1..<data.count] {
 				let dw = i.x - prev.x
 				prev = i
 				w += dw
@@ -589,6 +599,8 @@ class BarChart: Chart {
 		guard let chartView = chartView else {return}
 		layer.frame = chartView.plot.bounds
 		contentLayer.frame = layer.bounds
+//		contentLayer.data = data
+		contentLayer.setNeedsDisplay()
 	}
 	
 }

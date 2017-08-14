@@ -252,9 +252,14 @@ class NCMetaGroupFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fe
 class NCTypeInfoRow: TreeRow {
 	let managedObjectContext: NSManagedObjectContext?
 	let accessoryType: UITableViewCellAccessoryType
+	
 	lazy var type: NCDBInvType? = {
 		if let objectID = self.object as? NSManagedObjectID {
-			return (try? self.managedObjectContext?.existingObject(with: objectID)) as? NCDBInvType
+			return (try? (self.managedObjectContext ?? NCDatabase.sharedDatabase?.viewContext)?.existingObject(with: objectID)) as? NCDBInvType
+		}
+		else if let typeID = self.object as? Int {
+			guard let context = self.managedObjectContext ?? NCDatabase.sharedDatabase?.viewContext else {return nil}
+			return NCDBInvType.invTypes(managedObjectContext: context)[typeID]
 		}
 		else {
 			return (self.object as? NCDBInvType)
@@ -267,12 +272,18 @@ class NCTypeInfoRow: TreeRow {
 		super.init(prototype: Prototype.NCDefaultTableViewCell.compact, route: route, accessoryButtonRoute: accessoryButtonRoute, object: type)
 	}
 	
-	init(objectID: NSManagedObjectID, managedObjectContext: NSManagedObjectContext, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
+	init(objectID: NSManagedObjectID, managedObjectContext: NSManagedObjectContext? = nil, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
 		self.managedObjectContext = managedObjectContext
 		self.accessoryType = accessoryType
 		super.init(prototype: Prototype.NCDefaultTableViewCell.compact, route: route, accessoryButtonRoute: accessoryButtonRoute, object: objectID)
 	}
-	
+
+	init(typeID: Int, managedObjectContext: NSManagedObjectContext? = nil, accessoryType: UITableViewCellAccessoryType = .none, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
+		self.managedObjectContext = managedObjectContext
+		self.accessoryType = accessoryType
+		super.init(prototype: Prototype.NCDefaultTableViewCell.compact, route: route, accessoryButtonRoute: accessoryButtonRoute, object: typeID)
+	}
+
 	override func configure(cell: UITableViewCell) {
 		if let cell = cell as? NCDefaultTableViewCell {
 			cell.titleLabel?.text = type?.typeName

@@ -723,3 +723,26 @@ extension ZKillboard.Killmail: NCKillmail {
 		return items
 	}
 }
+
+extension ESI.PlanetaryInteraction.Colony.PlanetType {
+	var title: String {
+		switch self {
+		case .barren:
+			return NSLocalizedString("Barren", comment: "PlanetType")
+		case .gas:
+			return NSLocalizedString("Gas", comment: "PlanetType")
+		case .ice:
+			return NSLocalizedString("Ice", comment: "PlanetType")
+		case .lava:
+			return NSLocalizedString("Lava", comment: "PlanetType")
+		case .oceanic:
+			return NSLocalizedString("Oceanic", comment: "PlanetType")
+		case .plasma:
+			return NSLocalizedString("Plasma", comment: "PlanetType")
+		case .storm:
+			return NSLocalizedString("Storm", comment: "PlanetType")
+		case .temperate:
+			return NSLocalizedString("Temperate", comment: "PlanetType")
+		}
+	}
+}

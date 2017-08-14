@@ -104,19 +104,28 @@ class NCColonySection: TreeSection {
 	}
 }
 
-class NCExtractorControlUnitRow: TreeRow {
+class NCFacilityRow: TreeRow {
+	let typeID: Int
+	
+	init(prototype: Prototype, facility: NCFittingFacility) {
+		typeID = facility.typeID
+		super.init(prototype: prototype)
+	}
+}
+
+class NCExtractorControlUnitRow: NCFacilityRow {
 	
 	let rangeX: ClosedRange<TimeInterval>
 	let rangeY: ClosedRange<Double>
 	let totalYield: Double
 	let totalWaste: Double
-	let states: [(x: Double, y: Double, f: Double)]
-	let waste: (x: Double, y: Double, f: Double)?
-	let current: (x: Double, y: Double, f: Double)?
+	let states: [BarChart.Item]
+	let waste: BarChart.Item?
+	let current: BarChart.Item?
 	
 	init(extractor: NCFittingExtractorControlUnit, currentTime: TimeInterval) {
 
-		let states = (extractor.states as? [NCFittingProductionState])?.flatMap { state -> (x: Double, y: Double, f: Double)? in
+		let states = (extractor.states as? [NCFittingProductionState])?.flatMap { state -> (BarChart.Item)? in
 			guard let cycle = state.currentCycle as? NCFittingProductionCycle else {return nil}
 			let yield = Double(cycle.yield.quantity)
 			let waste = Double(cycle.waste.quantity)
@@ -124,7 +133,7 @@ class NCExtractorControlUnitRow: TreeRow {
 
 			let total = yield + waste
 			let f = total > 0 ? yield / total : 1
-			return (x: launchTime, y: total, f: f)
+			return BarChart.Item(x: launchTime, y: total, f: f)
 		} ?? []
 		
 		if let from = states.first?.x, let to = states.last?.x {
@@ -140,9 +149,20 @@ class NCExtractorControlUnitRow: TreeRow {
 		waste = states.first {$0.f < 1 && $0.x > currentTime}
 		(totalYield, totalWaste) = states.reduce((0, 0)) {($0.0 + $1.y * $1.f, $0.1 + $1.y * (1 - $1.f))}
 		
-		super.init(prototype: Prototype.NCDefaultTableViewCell.default)
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default, facility: extractor)
 	}
-	
+}
+
+class NCFactoryRow: NCFacilityRow {
+	init(factory: NCFittingIndustryFacility, currentTime: TimeInterval) {
+		let states = factory.states as? [NCFittingProductionState]
+		let lastState = states?.reversed().first {$0.currentCycle == nil}
+		let firstProductionState = states?.first {$0.currentCycle?.launchTime == $0.timestamp}
+		let lastProductionState = states?.reversed().first {$0.currentCycle?.launchTime == $0.timestamp}
+		let currentState = states?.first {$0.timestamp > currentTime}
+		
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default, facility: factory)
+	}
 }
 
 class NCPlanetaryViewController: UITableViewController, TreeControllerDelegate, NCRefreshable {

@@ -515,7 +515,13 @@ class BarChart: Chart {
 		}
 	}
 	
-	var data: [(x: Double, y: Double, f: Double)] = [] {
+	struct Item {
+		var x: Double
+		var y: Double
+		var f: Double
+	}
+	
+	var data: [Item] = [] {
 		didSet {
 			needsUpdate = true
 		}

@@ -134,6 +134,7 @@ class ChartView: UIView {
 		plot.frame = self.bounds
 		self.layer.addSublayer(plot)
 //		plot.backgroundColor = self.tintColor.withAlphaComponent(0.15).cgColor
+		plot.masksToBounds = true
 		return plot
 	}()
 
@@ -474,7 +475,7 @@ class BarChart: Chart {
 			let xRange = barChart.xRange
 			let yRange = barChart.yRange
 			
-			let color0 = UIColor.green.cgColor
+			let color0 = UIColor.caption.cgColor
 			let color1 = UIColor.red.cgColor
 			
 			let r = CGSize(width: CGFloat(xRange.upperBound - xRange.lowerBound), height: CGFloat(yRange.upperBound - yRange.lowerBound))

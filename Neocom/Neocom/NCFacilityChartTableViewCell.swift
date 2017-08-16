@@ -51,11 +51,11 @@ class NCFacilityChartRow: TreeRow {
 		line.data = [(x: currentTime, y: 0), (x: currentTime, y: 1)]
 		line.xRange = xRange
 		line.yRange = 0...1
-		line.color = UIColor.caption
+		line.color = UIColor.white
 		
 		if cell.chartView.charts.isEmpty {
-			cell.chartView.addChart(chart, animated: true)
-			cell.chartView.addChart(line, animated: true)
+			cell.chartView.addChart(chart, animated: false)
+			cell.chartView.addChart(line, animated: false)
 		}
 		
 		let t = expiryTime - currentTime

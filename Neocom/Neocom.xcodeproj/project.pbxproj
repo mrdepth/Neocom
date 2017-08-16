@@ -163,6 +163,8 @@
 		128C5F731F41AE170038FE7D /* NCFacilityChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C5F721F41AE170038FE7D /* NCFacilityChartTableViewCell.swift */; };
 		128C5F761F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F751F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib */; };
 		128C5F781F41EF5F0038FE7D /* NCExtractorDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C5F771F41EF5F0038FE7D /* NCExtractorDetailsTableViewCell.swift */; };
+		128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F821F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib */; };
+		128C5F851F4470660038FE7D /* NCFactoryDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C5F841F4470660038FE7D /* NCFactoryDetailsTableViewCell.swift */; };
 		128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */; };
 		128E61421E0A707200C15EEB /* NCDamageTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128E61411E0A707200C15EEB /* NCDamageTypeTableViewCell.swift */; };
 		1291194B1E3918CC00870428 /* NCFittingModulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291194A1E3918CC00870428 /* NCFittingModulesViewController.swift */; };
@@ -554,6 +556,8 @@
 		128C5F721F41AE170038FE7D /* NCFacilityChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFacilityChartTableViewCell.swift; sourceTree = "<group>"; };
 		128C5F751F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCExtractorDetailsTableViewCell.xib; sourceTree = "<group>"; };
 		128C5F771F41EF5F0038FE7D /* NCExtractorDetailsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCExtractorDetailsTableViewCell.swift; sourceTree = "<group>"; };
+		128C5F821F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFactoryDetailsTableViewCell.xib; sourceTree = "<group>"; };
+		128C5F841F4470660038FE7D /* NCFactoryDetailsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFactoryDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCActionTableViewCell.xib; sourceTree = "<group>"; };
 		128E61411E0A707200C15EEB /* NCDamageTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamageTypeTableViewCell.swift; sourceTree = "<group>"; };
 		1291194A1E3918CC00870428 /* NCFittingModulesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModulesViewController.swift; sourceTree = "<group>"; };
@@ -1103,6 +1107,7 @@
 				12D404481F31C0AF007F1715 /* NCSwitchTableViewCell.swift */,
 				128C5F721F41AE170038FE7D /* NCFacilityChartTableViewCell.swift */,
 				128C5F771F41EF5F0038FE7D /* NCExtractorDetailsTableViewCell.swift */,
+				128C5F841F4470660038FE7D /* NCFactoryDetailsTableViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1297,6 +1302,7 @@
 				12D404461F31C010007F1715 /* NCSwitchTableViewCell.xib */,
 				128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */,
 				128C5F751F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib */,
+				128C5F821F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib */,
 			);
 			name = Prototypes;
 			sourceTree = "<group>";
@@ -1577,6 +1583,7 @@
 				12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */,
 				12D930F31E6584AF00CBAE1C /* NCDefaultCompactTableViewCell.xib in Resources */,
 				12CFDAE81F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib in Resources */,
+				128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */,
 				1263C50D1E64BE9D003D002D /* NCDefaultTableViewCell.xib in Resources */,
 				128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */,
 				129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */,
@@ -1824,6 +1831,7 @@
 				1293BC161E4B1FC60099FD75 /* NCResistancesTableViewCell.swift in Sources */,
 				1256BE401DF1F06D00A2A24B /* NCCharacter.swift in Sources */,
 				12D4045A1F34BAD6007F1715 /* NCAccountsFolderPickerViewController.swift in Sources */,
+				128C5F851F4470660038FE7D /* NCFactoryDetailsTableViewCell.swift in Sources */,
 				12CFDAD81F029B8200CC0762 /* NCZKillboardTypePickerViewController.swift in Sources */,
 				1261570F1E01D3410041B817 /* NCManagedObjectObserver.swift in Sources */,
 				1256BE5C1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift in Sources */,

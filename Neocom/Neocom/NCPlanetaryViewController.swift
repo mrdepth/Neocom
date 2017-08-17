@@ -195,6 +195,38 @@ class NCFacilityRow: TreeRow {
 
 }
 
+class NCFacilityOutputRow: TreeRow {
+	let typeID: Int
+	let identifier: Int64
+
+	lazy var type: NCDBInvType? = {
+		return NCDatabase.sharedDatabase?.invTypes[self.typeID]
+	}()
+
+	init(typeID: Int, identifier: Int64) {
+		self.typeID = typeID
+		self.identifier = identifier
+		super.init(prototype: Prototype.NCDefaultTableViewCell.attribute, route: Router.Database.TypeInfo(typeID))
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.text = NSLocalizedString("Output", comment: "").uppercased()
+		cell.subtitleLabel?.text = type?.typeName
+		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+		cell.accessoryType = .disclosureIndicator
+	}
+	
+	override var hashValue: Int {
+		return [identifier, typeID].hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCFacilityOutputRow)?.hashValue == hashValue
+	}
+
+}
+
 class NCExtractorControlUnitRow: NCFacilityRow {
 
 	let wasteState: NCFittingProductionState?
@@ -236,7 +268,8 @@ class NCExtractorControlUnitRow: NCFacilityRow {
 		
 		if extractor.output.typeID > 0 {
 			self.children = [NCFacilityChartRow(data: states, xRange: xRange, yRange: yRange, currentTime: currentTime, expiryTime: extractor.expiryTime, identifier: extractor.identifier),
-			                 NCTypeInfoRow(typeID: extractor.output.typeID, accessoryType: .disclosureIndicator, route: Router.Database.TypeInfo(extractor.output.typeID)),
+			                 NCFacilityOutputRow(typeID: extractor.output.typeID, identifier: extractor.identifier),
+//			                 NCTypeInfoRow(typeID: extractor.output.typeID, accessoryType: .disclosureIndicator, route: Router.Database.TypeInfo(extractor.output.typeID)),
 			                 row,
 			                 DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty)
 			]
@@ -285,51 +318,56 @@ class NCFactoryRow: NCFacilityRow {
 
 		super.init(prototype: Prototype.NCDefaultTableViewCell.default, facility: factory)
 		
-		var children: [TreeNode] = [NCFactoryDetailsRow(factory: factory, currentTime: currentTime)]
-		
-		if factory.output.typeID > 0 {
-			let section = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default,
-			                                 nodeIdentifier: "\(factory.identifier).output",
-				title: NSLocalizedString("Output", comment: "").uppercased(),
-				children: [NCTypeInfoRow(typeID: factory.output.typeID, accessoryType: .disclosureIndicator, route: Router.Database.TypeInfo(factory.output.typeID))])
-			children.append(section)
-		}
 		
 		let states = factory.states as? [NCFittingProductionState]
 		let lastState = states?.reversed().first {$0.currentCycle == nil}
 		
-		if let lastState = lastState {
-			var ratio: [Int: Double] = [:]
-			
-			for input in factory.inputs {
-				guard let commodity = input.commodity else {continue}
-				guard let incomming = input.source?.incomming(with: commodity) else {continue}
-				ratio[incomming.typeID] = (ratio[incomming.typeID] ?? 0) + Double(incomming.quantity)
-			}
-
-			let p = ratio.filter{$0.value > 0}.map{1.0 / $0.value}.max() ?? 1
-			
-			for (key, value) in ratio {
-				ratio[key] = ((value * p) * 10).rounded() / 10
-			}
-			
-			let expiryTime = lastState.timestamp
-			let identifier = factory.identifier
-			let items = ratio.sorted(by: {$0.key < $1.key})
-			let rows = items.map {
-				NCFactoryInputRow(typeID: $0.key, identifier: identifier, currentTime: currentTime, expiryTime: expiryTime)
-			}
-			
-			let title = rows.count > 1
-				? NSLocalizedString("Inputs", comment: "") + " (\(items.map{$0.value == 0 ? "0" : $0.value == 1 ? "1" :  String(format: "%.1f", $0.value)}.joined(separator: ":")))"
-				: NSLocalizedString("Input", comment: "")
-			
-			let section = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default,
-			                                 nodeIdentifier: "\(factory.identifier).inputs",
-				title: title.uppercased(),
-				children: rows)
-			children.append(section)
+		var ratio: [Int: Double] = [:]
+		
+		for input in factory.inputs {
+			guard let commodity = input.commodity else {continue}
+			guard let incomming = input.source?.incomming(with: commodity) else {continue}
+			ratio[incomming.typeID] = (ratio[incomming.typeID] ?? 0) + Double(incomming.quantity)
 		}
+		
+		let p = ratio.filter{$0.value > 0}.map{1.0 / $0.value}.max() ?? 1
+		
+		for (key, value) in ratio {
+			ratio[key] = ((value * p) * 10).rounded() / 10
+		}
+		
+		let expiryTime = lastState?.timestamp ?? Date.distantPast.timeIntervalSinceReferenceDate
+		let identifier = factory.identifier
+		let items = ratio.sorted(by: {$0.key < $1.key})
+		let inputs = items.map {
+			NCFactoryInputRow(typeID: $0.key, identifier: identifier, currentTime: currentTime, expiryTime: expiryTime)
+		}
+		
+//		let title = rows.count > 1
+//			? NSLocalizedString("Inputs", comment: "") + " (\(items.map{$0.value == 0 ? "0" : $0.value == 1 ? "1" :  String(format: "%.1f", $0.value)}.joined(separator: ":")))"
+//			: NSLocalizedString("Input", comment: "")
+		
+		//			let section = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default,
+		//			                                 nodeIdentifier: "\(factory.identifier).inputs",
+		//				title: title.uppercased(),
+		//				children: rows)
+		//			let section = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, nodeIdentifier: "\(factory.identifier).inputs", title: title.uppercased())
+		//			children.append(section)
+		
+		var children: [TreeNode] = [NCFactoryDetailsRow(factory: factory, inputRatio: items.map{$0.value}, currentTime: currentTime)]
+		children.append(contentsOf: inputs as [TreeNode])
+		
+		if factory.output.typeID > 0 {
+			//			let section = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default,
+			//			                                 nodeIdentifier: "\(factory.identifier).output",
+			//				title: NSLocalizedString("Output", comment: "").uppercased(),
+			//				children: [NCTypeInfoRow(typeID: factory.output.typeID, accessoryType: .disclosureIndicator, route: Router.Database.TypeInfo(factory.output.typeID))])
+			//			let section = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, nodeIdentifier: "\(factory.identifier).output", title: NSLocalizedString("Output", comment: "").uppercased())
+			//			section.children = [NCTypeInfoRow(typeID: factory.output.typeID, accessoryType: .disclosureIndicator, route: Router.Database.TypeInfo(factory.output.typeID))]
+			//			children.append(section)
+			children.append(NCFacilityOutputRow(typeID: factory.output.typeID, identifier: factory.identifier))
+		}
+
 		if !children.isEmpty {
 			children.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty))
 		}
@@ -360,23 +398,24 @@ class NCFactoryInputRow: TreeRow {
 		self.currentTime = currentTime
 		self.expiryTime = expiryTime
 		
-		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: Router.Database.TypeInfo(typeID))
+		super.init(prototype: Prototype.NCDefaultTableViewCell.attribute, route: Router.Database.TypeInfo(typeID))
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
 		
-		cell.titleLabel?.text = type?.typeName
+		cell.titleLabel?.text = NSLocalizedString("Input", comment: "").uppercased()
 		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
+		
+		let typeName = type?.typeName ?? NSLocalizedString("Unknown", comment: "")
 
 		let shortage = expiryTime - currentTime
 		if shortage <= 0  {
-			cell.subtitleLabel?.text = NSLocalizedString("Depleted", comment: "")
-			cell.subtitleLabel?.textColor = .red
+			cell.subtitleLabel?.attributedText = typeName + " (\(NSLocalizedString("Depleted", comment: "")))" * [NSForegroundColorAttributeName: UIColor.red]
 		}
 		else {
-			cell.subtitleLabel?.text = String(format: NSLocalizedString("Shortage in %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: shortage, precision: .minutes))
-			cell.subtitleLabel?.textColor = .lightText
+			let s = String(format: NSLocalizedString("Shortage in %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: shortage, precision: .minutes))
+			cell.subtitleLabel?.attributedText = typeName + " (\(s))" * [NSForegroundColorAttributeName: UIColor.caption]
 		}
 		cell.accessoryType = .disclosureIndicator
 	}
@@ -509,6 +548,8 @@ class NCPlanetaryViewController: NCTreeViewController {
 		needsReloadOnAccountChange = true
 		tableView.register([Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact,
+							Prototype.NCDefaultTableViewCell.placeholder,
+							Prototype.NCDefaultTableViewCell.attribute,
 		                    Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCFacilityChartTableViewCell.default,
 		                    Prototype.NCExtractorDetailsTableViewCell.default,

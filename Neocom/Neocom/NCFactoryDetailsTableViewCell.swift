@@ -11,6 +11,8 @@ import UIKit
 class NCFactoryDetailsTableViewCell: NCTableViewCell {
 	@IBOutlet weak var efficiencyLabel: UILabel!
 	@IBOutlet weak var extrapolatedEfficiencyLabel: UILabel!
+	@IBOutlet weak var inputRatioLabel: UILabel!
+	@IBOutlet weak var inputRatioTitleLabel: UILabel!
 }
 
 extension Prototype {
@@ -31,9 +33,11 @@ class NCFactoryDetailsRow: TreeRow {
 	let extrapolatedEfficiency: Double?
 	
 	let identifier: Int64
+	let inputRatio: [Double]
 	
-	init(factory: NCFittingIndustryFacility, currentTime: TimeInterval) {
+	init(factory: NCFittingIndustryFacility, inputRatio: [Double], currentTime: TimeInterval) {
 		self.currentTime = currentTime
+		self.inputRatio = inputRatio
 		identifier = factory.identifier
 		
 		let states = factory.states as? [NCFittingProductionState]
@@ -81,6 +85,16 @@ class NCFactoryDetailsRow: TreeRow {
 		}
 		else {
 			cell.extrapolatedEfficiencyLabel.text = "0%"
+		}
+		
+		if inputRatio.count > 1 {
+			cell.inputRatioLabel.text = inputRatio.map{$0 == 0 ? "0" : $0 == 1 ? "1" :  String(format: "%.1f", $0)}.joined(separator: ":")
+			cell.inputRatioLabel.isHidden = false
+			cell.inputRatioTitleLabel.isHidden = false
+		}
+		else {
+			cell.inputRatioLabel.isHidden = true
+			cell.inputRatioTitleLabel.isHidden = true
 		}
 
 	}

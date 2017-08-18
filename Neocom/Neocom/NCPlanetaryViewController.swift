@@ -17,6 +17,7 @@ class NCColonySection: TreeSection {
 	let colony: ESI.PlanetaryInteraction.Colony
 	let layout: NCResult<ESI.PlanetaryInteraction.ColonyLayout>
 	let engine: NCFittingEngine
+	var isHalted: Bool = false
 	
 	lazy var planet: NCDBMapDenormalize? = {
 		return NCDatabase.sharedDatabase?.mapDenormalize[self.colony.planetID]
@@ -99,6 +100,9 @@ class NCColonySection: TreeSection {
 				rows.sort(by: {$0.sortDescriptor < $1.sortDescriptor})
 				
 				self.children = rows.map{DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, children: [$0])}
+				
+				isHalted = planet.facilities.lazy.flatMap{$0 as? NCFittingExtractorControlUnit}.first {$0.expiryTime < currentTime} != nil
+				isExpanded = isHalted
 			}
 			catch {
 				self.children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: error.localizedDescription)]
@@ -120,13 +124,16 @@ class NCColonySection: TreeSection {
 	lazy var title: NSAttributedString? = {
 		let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[self.colony.solarSystemID]
 		let location = NCDatabase.sharedDatabase?.mapDenormalize[self.colony.planetID]?.itemName ?? solarSystem?.solarSystemName ?? NSLocalizedString("Unknown", comment: "")
+		let title: NSAttributedString
+		
 		if let solarSystem = solarSystem {
 			let security = solarSystem.security
-			return (String(format: "%.1f ", security) * [NSForegroundColorAttributeName: UIColor(security: security)] + location + " (\(self.colony.planetType.title))").uppercased()
+			title = (String(format: "%.1f ", security) * [NSForegroundColorAttributeName: UIColor(security: security)] + location + " (\(self.colony.planetType.title))").uppercased()
 		}
 		else {
-			return (location + " (\(self.colony.planetType.title))").uppercased() * [:]
+			title = (location + " (\(self.colony.planetType.title))").uppercased() * [:]
 		}
+		return self.isHalted ? title + " [\(NSLocalizedString("halted", comment: "").uppercased())]" * [NSForegroundColorAttributeName: UIColor.red] : title
 	}()
 	
 	override func configure(cell: UITableViewCell) {

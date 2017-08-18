@@ -20,7 +20,6 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 		tintColor = .caption
 		indentationWidth = 16
 		selectionStyle = .none

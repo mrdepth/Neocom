@@ -11,10 +11,6 @@ import UIKit
 class NCPieChartTableViewCell: NCTableViewCell {
 	@IBOutlet var pieChartView: PieChartView!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        separatorInset = .zero
-    }
 }
 
 extension Prototype {
@@ -63,4 +59,7 @@ class NCPieChartRow: TreeRow {
 		return Unmanaged.passUnretained(self).toOpaque().hashValue
 	}
 	
+	override var separatorInset: UIEdgeInsets {
+		return .zero
+	}
 }

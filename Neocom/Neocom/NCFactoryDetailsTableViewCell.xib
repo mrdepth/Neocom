@@ -18,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="n6e-zq-ixZ">
-                        <rect key="frame" x="47" y="4" width="226" height="89.5"/>
+                        <rect key="frame" x="39" y="4" width="226" height="89.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="900" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="AVERAGED FACILITY PERFORMANCE:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fvc-4Y-Zfk">
                                 <rect key="frame" x="0.0" y="0.0" width="226" height="41.5"/>
@@ -82,8 +82,8 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="n6e-zq-ixZ" firstAttribute="top" secondItem="fg8-iK-aMd" secondAttribute="top" constant="4" id="7gO-sm-cYI"/>
-                    <constraint firstItem="n6e-zq-ixZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fg8-iK-aMd" secondAttribute="leading" constant="15" id="FKK-c9-uAf"/>
-                    <constraint firstItem="n6e-zq-ixZ" firstAttribute="centerX" secondItem="fg8-iK-aMd" secondAttribute="centerX" id="rsv-ac-ETe"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="n6e-zq-ixZ" secondAttribute="trailing" constant="15" id="D2S-QJ-UFv"/>
+                    <constraint firstItem="n6e-zq-ixZ" firstAttribute="leading" secondItem="fg8-iK-aMd" secondAttribute="leading" constant="39" id="FKK-c9-uAf"/>
                     <constraint firstAttribute="bottom" secondItem="n6e-zq-ixZ" secondAttribute="bottom" constant="4" id="sJ8-ON-jik"/>
                 </constraints>
             </tableViewCellContentView>

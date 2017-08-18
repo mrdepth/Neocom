@@ -43,7 +43,7 @@ class NCFacilityChartRow: TreeRow {
 		
 		let chart = cell.chartView.charts.first as? BarChart ?? BarChart()
 		let line = cell.chartView.charts.last as? LineChart ?? LineChart()
-
+		
 		chart.data = data
 		chart.xRange = xRange
 		chart.yRange = yRange

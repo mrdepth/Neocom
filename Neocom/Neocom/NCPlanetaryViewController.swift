@@ -15,120 +15,106 @@ enum NCColonyError: Error {
 
 class NCColonySection: TreeSection {
 	let colony: ESI.PlanetaryInteraction.Colony
-	let layout: NCCachedResult<ESI.PlanetaryInteraction.ColonyLayout>
+	let layout: NCResult<ESI.PlanetaryInteraction.ColonyLayout>
 	let engine: NCFittingEngine
 	
 	lazy var planet: NCDBMapDenormalize? = {
 		return NCDatabase.sharedDatabase?.mapDenormalize[self.colony.planetID]
 	}()
 	
-	init(colony: ESI.PlanetaryInteraction.Colony, layout: NCCachedResult<ESI.PlanetaryInteraction.ColonyLayout>, engine: NCFittingEngine) {
+	init(colony: ESI.PlanetaryInteraction.Colony, layout: NCResult<ESI.PlanetaryInteraction.ColonyLayout>, engine: NCFittingEngine) {
 		self.colony = colony
 		self.layout = layout
 		self.engine = engine
+		
 		super.init(prototype: Prototype.NCHeaderTableViewCell.default)
+		
+		switch layout {
+		case let .success(layout):
+			let planetTypeID: Int32 = NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
+				return NCDBInvType.invTypes(managedObjectContext: managedObjectContext)[self.colony.planetID]?.typeID
+			} ?? 0
+			
+			do {
+				let planet = NCFittingPlanet(typeID: Int(planetTypeID))
+				engine.planet = planet
+				
+				
+				for pin in layout.pins {
+					guard planet.facility(identifier: pin.pinID) == nil,
+						let facility = planet.addFacility(typeID: pin.typeID, identifier: pin.pinID) else {throw NCColonyError.invalidLayout}
+					
+					switch facility {
+					case let ecu as NCFittingExtractorControlUnit:
+						ecu.launchTime = pin.lastCycleStart?.timeIntervalSinceReferenceDate ?? 0
+						ecu.installTime = pin.installTime?.timeIntervalSinceReferenceDate ?? 0
+						ecu.expiryTime = pin.expiryTime?.timeIntervalSinceReferenceDate ?? 0
+						ecu.cycleTime = TimeInterval(pin.extractorDetails?.cycleTime ?? 0)
+						ecu.quantityPerCycle = pin.extractorDetails?.qtyPerCycle ?? 0
+					//							ecu.quantityPerCycle *= 2
+					case let factory as NCFittingIndustryFacility:
+						factory.launchTime = pin.lastCycleStart?.timeIntervalSinceReferenceDate ?? 0
+						if let schematicID = pin.schematicID {
+							factory.schematic = NCFittingSchematic(schematicID: schematicID)
+						}
+						
+					default:
+						break
+					}
+				}
+				
+				//					planet.facility(identifier: 1020196651494)?.addCommodity(typeID: 2267, quantity: 209063)
+				//					planet.facility(identifier: 1020196651494)?.addCommodity(typeID: 2396, quantity: 3060)
+				//					planet.facility(identifier: 1020196651502)?.addCommodity(typeID: 2288, quantity: 249)
+				//					planet.facility(identifier: 1020196651506)?.addCommodity(typeID: 2270, quantity: 2776)
+				//					planet.facility(identifier: 1020196651508)?.addCommodity(typeID: 2396, quantity: 40)
+				//					planet.facility(identifier: 1020196651514)?.addCommodity(typeID: 2329, quantity: 245)
+				
+				for route in layout.routes {
+					guard let source = planet.facility(identifier: route.sourcePinID),
+						let destination = planet.facility(identifier: route.destinationPinID) else {throw NCColonyError.invalidLayout}
+					
+					planet.addRoute(from: source, to: destination, commodity: NCFittingCommodity(contentType: route.contentTypeID, quantity: Int(route.quantity), engine: engine), identifier: route.routeID)
+				}
+				
+				let lastUpdate = colony.lastUpdate
+				planet.lastUpdate = lastUpdate.timeIntervalSinceReferenceDate
+				
+				planet.simulate()
+				
+				let currentTime = Date().timeIntervalSinceReferenceDate
+				var rows = planet.facilities.flatMap { i -> NCFacilityRow? in
+					switch i {
+					case let facility as NCFittingExtractorControlUnit:
+						return NCExtractorControlUnitRow(extractor: facility, currentTime: currentTime)
+					case let facility as NCFittingIndustryFacility:
+						return NCFactoryRow(factory: facility, currentTime: currentTime)
+					case let facility as NCFittingStorageFacility:
+						return NCStorageRow(storage: facility, currentTime: currentTime)
+					default:
+						return nil
+					}
+				}
+				
+				rows.sort(by: {$0.sortDescriptor < $1.sortDescriptor})
+				
+				self.children = rows.map{DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, children: [$0])}
+			}
+			catch {
+				self.children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: error.localizedDescription)]
+			}
+		case let .failure(error):
+			children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: error.localizedDescription)]
+		}
+
 	}
 	
 	override var hashValue: Int {
-		return colony.hashValue ^ (layout.value?.hashValue ?? 0)
+		return colony.planetID.hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCColonySection)?.hashValue == hashValue
-	}
-	
-	override func loadChildren() {
-		if let layout = layout.value {
-			self.children = []
-			let colony = self.colony
-			let engine = self.engine
-			let planetTypeID = Int(self.planet?.type?.typeID ?? 0)
-
-			engine.perform {
-				
-				do {
-					let planet = NCFittingPlanet(typeID: planetTypeID)
-					engine.planet = planet
-					
-					
-					for pin in layout.pins {
-						guard planet.facility(identifier: pin.pinID) == nil,
-							let facility = planet.addFacility(typeID: pin.typeID, identifier: pin.pinID) else {throw NCColonyError.invalidLayout}
-						
-						switch facility {
-						case let ecu as NCFittingExtractorControlUnit:
-							ecu.launchTime = pin.lastCycleStart?.timeIntervalSinceReferenceDate ?? 0
-							ecu.installTime = pin.installTime?.timeIntervalSinceReferenceDate ?? 0
-							ecu.expiryTime = pin.expiryTime?.timeIntervalSinceReferenceDate ?? 0
-							ecu.cycleTime = TimeInterval(pin.extractorDetails?.cycleTime ?? 0)
-							ecu.quantityPerCycle = pin.extractorDetails?.qtyPerCycle ?? 0
-//							ecu.quantityPerCycle *= 2
-						case let factory as NCFittingIndustryFacility:
-							factory.launchTime = pin.lastCycleStart?.timeIntervalSinceReferenceDate ?? 0
-							if let schematicID = pin.schematicID {
-								factory.schematic = NCFittingSchematic(schematicID: schematicID)
-							}
-							
-						default:
-							break
-						}
-					}
-					
-//					planet.facility(identifier: 1020196651494)?.addCommodity(typeID: 2267, quantity: 209063)
-//					planet.facility(identifier: 1020196651494)?.addCommodity(typeID: 2396, quantity: 3060)
-//					planet.facility(identifier: 1020196651502)?.addCommodity(typeID: 2288, quantity: 249)
-//					planet.facility(identifier: 1020196651506)?.addCommodity(typeID: 2270, quantity: 2776)
-//					planet.facility(identifier: 1020196651508)?.addCommodity(typeID: 2396, quantity: 40)
-//					planet.facility(identifier: 1020196651514)?.addCommodity(typeID: 2329, quantity: 245)
-					
-					for route in layout.routes {
-						guard let source = planet.facility(identifier: route.sourcePinID),
-							let destination = planet.facility(identifier: route.destinationPinID) else {throw NCColonyError.invalidLayout}
-						
-						planet.addRoute(from: source, to: destination, commodity: NCFittingCommodity(contentType: route.contentTypeID, quantity: Int(route.quantity), engine: engine), identifier: route.routeID)
-					}
-					
-					let lastUpdate = colony.lastUpdate
-					planet.lastUpdate = lastUpdate.timeIntervalSinceReferenceDate
-					
-					planet.simulate()
-					
-					let currentTime = Date().timeIntervalSinceReferenceDate
-					var rows = planet.facilities.flatMap { i -> NCFacilityRow? in
-						switch i {
-						case let facility as NCFittingExtractorControlUnit:
-							return NCExtractorControlUnitRow(extractor: facility, currentTime: currentTime)
-						case let facility as NCFittingIndustryFacility:
-							return NCFactoryRow(factory: facility, currentTime: currentTime)
-						case let facility as NCFittingStorageFacility:
-							return NCStorageRow(storage: facility, currentTime: currentTime)
-						default:
-							return nil
-						}
-					}
-					
-					rows.sort(by: {$0.sortDescriptor < $1.sortDescriptor})
-					DispatchQueue.main.async {
-						self.children = rows
-					}
-				}
-				catch {
-					DispatchQueue.main.async {
-						self.children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: error.localizedDescription)]
-					}
-				}
-
-
-			}
-		}
-		else if let error = layout.error {
-			self.children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: error.localizedDescription)]
-		}
-		else {
-			self.children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: NSLocalizedString("Colony Layout is Not Available", comment: ""))]
-		}
-		super.loadChildren()
-		
 	}
 	
 	lazy var title: NSAttributedString? = {
@@ -271,7 +257,7 @@ class NCExtractorControlUnitRow: NCFacilityRow {
 			                 NCFacilityOutputRow(typeID: extractor.output.typeID, identifier: extractor.identifier),
 //			                 NCTypeInfoRow(typeID: extractor.output.typeID, accessoryType: .disclosureIndicator, route: Router.Database.TypeInfo(extractor.output.typeID)),
 			                 row,
-			                 DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty)
+//			                 DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty)
 			]
 		}
 		
@@ -343,34 +329,15 @@ class NCFactoryRow: NCFacilityRow {
 			NCFactoryInputRow(typeID: $0.key, identifier: identifier, currentTime: currentTime, expiryTime: expiryTime)
 		}
 		
-//		let title = rows.count > 1
-//			? NSLocalizedString("Inputs", comment: "") + " (\(items.map{$0.value == 0 ? "0" : $0.value == 1 ? "1" :  String(format: "%.1f", $0.value)}.joined(separator: ":")))"
-//			: NSLocalizedString("Input", comment: "")
-		
-		//			let section = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default,
-		//			                                 nodeIdentifier: "\(factory.identifier).inputs",
-		//				title: title.uppercased(),
-		//				children: rows)
-		//			let section = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, nodeIdentifier: "\(factory.identifier).inputs", title: title.uppercased())
-		//			children.append(section)
-		
-		var children: [TreeNode] = [NCFactoryDetailsRow(factory: factory, inputRatio: items.map{$0.value}, currentTime: currentTime)]
+		var children: [TreeNode] = []
 		children.append(contentsOf: inputs as [TreeNode])
 		
 		if factory.output.typeID > 0 {
-			//			let section = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default,
-			//			                                 nodeIdentifier: "\(factory.identifier).output",
-			//				title: NSLocalizedString("Output", comment: "").uppercased(),
-			//				children: [NCTypeInfoRow(typeID: factory.output.typeID, accessoryType: .disclosureIndicator, route: Router.Database.TypeInfo(factory.output.typeID))])
-			//			let section = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, nodeIdentifier: "\(factory.identifier).output", title: NSLocalizedString("Output", comment: "").uppercased())
-			//			section.children = [NCTypeInfoRow(typeID: factory.output.typeID, accessoryType: .disclosureIndicator, route: Router.Database.TypeInfo(factory.output.typeID))]
-			//			children.append(section)
 			children.append(NCFacilityOutputRow(typeID: factory.output.typeID, identifier: factory.identifier))
 		}
+		
+		children.append(NCFactoryDetailsRow(factory: factory, inputRatio: items.map{$0.value}, currentTime: currentTime))
 
-		if !children.isEmpty {
-			children.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty))
-		}
 		self.children = children
 	}
 	
@@ -478,7 +445,7 @@ class NCStorageRow: NCFacilityRow {
 			
 			
 			
-			children.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty))
+//			children.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty))
 			
 			
 
@@ -579,8 +546,19 @@ class NCPlanetaryViewController: NCTreeViewController {
 				progress.perform {
 					dispatchGroup.enter()
 					dataManager.colonyLayout(planetID: colony.planetID) { result in
-						sections.append(NCColonySection(colony: colony, layout: result, engine: engine))
-						dispatchGroup.leave()
+						let layout: NCResult<ESI.PlanetaryInteraction.ColonyLayout>
+						
+						switch result {
+						case let .success(value, _):
+							layout = .success(value)
+						case let .failure(error):
+							layout = .failure(error)
+						}
+						
+						engine.perform {
+							sections.append(NCColonySection(colony: colony, layout: layout, engine: engine))
+							dispatchGroup.leave()
+						}
 					}
 				}
 			}

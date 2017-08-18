@@ -45,12 +45,25 @@ class TreeRow: TreeNode, TreeNodeRoutable {
 		isExpandable = false
 	}
 	
+	override var separatorInset: UIEdgeInsets {
+		if isLeaf && (children.isEmpty || !isExpanded) {
+			return sequence(first: self, next: {$0.parent}).first {!$0.isLeaf}?.separatorInset ?? .zero
+		}
+		else {
+			return UIEdgeInsets(top: 0, left: CGFloat(15 + indentationLevel * 8), bottom: 0, right: 0)
+		}
+	}
+	
 }
 
 class TreeSection: TreeNode {
 	init(prototype: Prototype? = nil) {
 		super.init(cellIdentifier: prototype?.reuseIdentifier)
 		isExpandable = true
+	}
+	
+	override var separatorInset: UIEdgeInsets {
+		return isLeaf && (children.isEmpty || !isExpanded) ? sequence(first: self, next: {$0.parent}).first {!$0.isLeaf}?.separatorInset ?? .zero : parent?.separatorInset ?? .zero
 	}
 }
 
@@ -114,7 +127,7 @@ class DefaultTreeRow: TreeRow {
 
 		super.init(prototype: prototype, route: route, accessoryButtonRoute: accessoryButtonRoute, object: object)
 	}
-    
+	
     private var buttonHandler: NCActionHandler?
 	
 	override func configure(cell: UITableViewCell) {

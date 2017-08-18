@@ -68,7 +68,7 @@ class NCDefaultTableViewCell: NCTableViewCell {
 		let level = max(0, indentationLevel - 1)
 		let indent = 15 + CGFloat(level) * indentationWidth
 		self.indentationConstraint?.constant = indent
-		self.separatorInset.left = indent
+//		self.separatorInset.left = indent
 	}
 	
 

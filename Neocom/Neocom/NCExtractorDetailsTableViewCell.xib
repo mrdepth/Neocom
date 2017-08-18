@@ -18,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1q1-IH-AUG">
-                        <rect key="frame" x="77.5" y="4" width="215" height="110.5"/>
+                        <rect key="frame" x="39" y="4" width="215" height="110.5"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="q28-Nc-0iS">
                                 <rect key="frame" x="0.0" y="0.0" width="165.5" height="110.5"/>
@@ -128,8 +128,8 @@
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1q1-IH-AUG" secondAttribute="trailing" constant="15" id="6Sy-02-ctF"/>
-                    <constraint firstItem="1q1-IH-AUG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fg8-iK-aMd" secondAttribute="leading" constant="15" id="8jS-Bk-Tzf"/>
+                    <constraint firstItem="1q1-IH-AUG" firstAttribute="leading" secondItem="fg8-iK-aMd" secondAttribute="leading" constant="39" id="8jS-Bk-Tzf"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1q1-IH-AUG" secondAttribute="trailing" constant="15" id="QoT-Yb-MFS"/>
                     <constraint firstItem="q28-Nc-0iS" firstAttribute="centerX" secondItem="fg8-iK-aMd" secondAttribute="centerX" priority="250" id="eVE-9d-4bp"/>
                     <constraint firstItem="1q1-IH-AUG" firstAttribute="top" secondItem="fg8-iK-aMd" secondAttribute="top" constant="4" id="qsH-sH-Kf5"/>
                     <constraint firstAttribute="bottom" secondItem="1q1-IH-AUG" secondAttribute="bottom" priority="999" constant="4" id="uqR-kf-OzS"/>

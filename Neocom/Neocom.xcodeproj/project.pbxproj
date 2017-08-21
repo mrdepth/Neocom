@@ -47,6 +47,11 @@
 		1226D9631F223A690049FA0C /* NCNPCPickerGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9621F223A690049FA0C /* NCNPCPickerGroupsViewController.swift */; };
 		1226D9651F223A740049FA0C /* NCNPCPickerTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9641F223A740049FA0C /* NCNPCPickerTypesViewController.swift */; };
 		1227B81E1E096A4F00C816A0 /* NCDamageTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */; };
+		122A7CA21F4B49D100537467 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA11F4B49D100537467 /* Database.storyboard */; };
+		122A7CA41F4B589200537467 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA31F4B589200537467 /* Character.storyboard */; };
+		122A7CA61F4B5DD800537467 /* Business.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA51F4B5DD800537467 /* Business.storyboard */; };
+		122A7CA81F4B601E00537467 /* KillReports.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA71F4B601E00537467 /* KillReports.storyboard */; };
+		122A7CAA1F4B617E00537467 /* Fitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA91F4B617E00537467 /* Fitting.storyboard */; };
 		122B55611EB73E3500E46536 /* NCAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122B55601EB73E3500E46536 /* NCAccountsViewController.swift */; };
 		122DB9AB1E804DF200E8E2C4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */; };
 		122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AE1E806DB000E8E2C4 /* libz.tbd */; };
@@ -442,6 +447,11 @@
 		1226D9621F223A690049FA0C /* NCNPCPickerGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCNPCPickerGroupsViewController.swift; sourceTree = "<group>"; };
 		1226D9641F223A740049FA0C /* NCNPCPickerTypesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCNPCPickerTypesViewController.swift; sourceTree = "<group>"; };
 		1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamageTypeLabel.swift; sourceTree = "<group>"; };
+		122A7CA11F4B49D100537467 /* Database.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Database.storyboard; sourceTree = "<group>"; };
+		122A7CA31F4B589200537467 /* Character.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Character.storyboard; sourceTree = "<group>"; };
+		122A7CA51F4B5DD800537467 /* Business.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Business.storyboard; sourceTree = "<group>"; };
+		122A7CA71F4B601E00537467 /* KillReports.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KillReports.storyboard; sourceTree = "<group>"; };
+		122A7CA91F4B617E00537467 /* Fitting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Fitting.storyboard; sourceTree = "<group>"; };
 		122B55601EB73E3500E46536 /* NCAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsViewController.swift; sourceTree = "<group>"; };
 		122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		122DB9AE1E806DB000E8E2C4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -1162,6 +1172,11 @@
 				1256BE5F1DF4770A00A2A24B /* Graphics */,
 				12AC8D9A1DEF58A100561A7A /* Assets.xcassets */,
 				1256BE541DF4728800A2A24B /* Main.storyboard */,
+				122A7CA11F4B49D100537467 /* Database.storyboard */,
+				122A7CA31F4B589200537467 /* Character.storyboard */,
+				122A7CA51F4B5DD800537467 /* Business.storyboard */,
+				122A7CA71F4B601E00537467 /* KillReports.storyboard */,
+				122A7CA91F4B617E00537467 /* Fitting.storyboard */,
 				12AC8D9C1DEF58A100561A7A /* LaunchScreen.storyboard */,
 				1256BE5D1DF476C000A2A24B /* mainMenu.plist */,
 				12AC8D9F1DEF58A100561A7A /* Info.plist */,
@@ -1197,6 +1212,7 @@
 				12EFE7F71E40C864007BF69B /* Segues */,
 				12EA6B3E1E850BB300C571DF /* Activity */,
 				12DBEA311E1D36580088A486 /* Fitting */,
+				127BE38F1E5AFC2900FA7F9F /* Router.swift */,
 				1256BE471DF1F3B100A2A24B /* Constants.swift */,
 				1230A3111DFFE2CF00627D92 /* Math.swift */,
 				1230A3191DFFE2CF00627D92 /* NCGate.swift */,
@@ -1216,7 +1232,6 @@
 				12E314BB1E165D5D000A926D /* UIView+NC.swift */,
 				121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */,
 				125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */,
-				127BE38F1E5AFC2900FA7F9F /* Router.swift */,
 				1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */,
 				12DA88271EB86A3300FB1922 /* NCRefreshable.swift */,
 				1248DB601F2093D4009625EC /* NCActionHandler.swift */,
@@ -1546,6 +1561,7 @@
 			files = (
 				1203E8851F09350A009ADF8D /* rssFeeds.json in Resources */,
 				12D930E51E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib in Resources */,
+				122A7CA81F4B601E00537467 /* KillReports.storyboard in Resources */,
 				1256BECD1DF4770A00A2A24B /* Attributes.xcassets in Resources */,
 				12406A011F20F49500A4DAE7 /* NCModuleTableViewCell.xib in Resources */,
 				1256BE551DF4728800A2A24B /* Main.storyboard in Resources */,
@@ -1562,6 +1578,7 @@
 				1256BECB1DF4770A00A2A24B /* perception.png in Resources */,
 				12CFDACB1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib in Resources */,
 				1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */,
+				122A7CA61F4B5DD800537467 /* Business.storyboard in Resources */,
 				1256BEC91DF4770A00A2A24B /* intelligence.png in Resources */,
 				1256BECC1DF4770A00A2A24B /* willpower.png in Resources */,
 				128130411F3B01230039D46B /* dropzone.css in Resources */,
@@ -1572,6 +1589,7 @@
 				128C5F761F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib in Resources */,
 				1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */,
 				12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */,
+				122A7CAA1F4B617E00537467 /* Fitting.storyboard in Resources */,
 				12D20EA31EBA011900BEC926 /* NCPieChartTableViewCell.xib in Resources */,
 				12D930EF1E656FCC00CBAE1C /* NCTextFieldTableViewCell.xib in Resources */,
 				1256BE5E1DF476C000A2A24B /* mainMenu.plist in Resources */,
@@ -1591,10 +1609,12 @@
 				124069FF1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib in Resources */,
 				12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */,
 				12D930F31E6584AF00CBAE1C /* NCDefaultCompactTableViewCell.xib in Resources */,
+				122A7CA21F4B49D100537467 /* Database.storyboard in Resources */,
 				12CFDAE81F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib in Resources */,
 				128C5F9A1F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib in Resources */,
 				128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */,
 				1263C50D1E64BE9D003D002D /* NCDefaultTableViewCell.xib in Resources */,
+				122A7CA41F4B589200537467 /* Character.storyboard in Resources */,
 				128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */,
 				129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */,
 				12D930E91E656B7E00CBAE1C /* NCChargeCompactTableViewCell.xib in Resources */,

@@ -63,7 +63,7 @@ class NCRegionsViewController: NCTreeViewController, NCSearchableViewController 
 		request.sortDescriptors = [NSSortDescriptor(key: "securityClass", ascending: false), NSSortDescriptor(key: "regionName", ascending: true)]
 		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: "securityClassDisplayName", cacheName: nil)
 		
-		if mode.contains(.regions) {
+		if mode.contains(.regions) && mode.contains(.solarSystems) {
 			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBMapRegion>.self, objectNode: NCRegionSelectionRow.self)
 		}
 		else {

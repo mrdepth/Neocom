@@ -14,7 +14,7 @@ class NCContractContactRow: NCContactRow {
 	
 	init(title: String , contact: NCContact?, dataManager: NCDataManager) {
 		self.title = title
-		super.init(prototype: Prototype.NCContactTableViewCell.default, contact: contact, dataManager: dataManager)
+		super.init(prototype: Prototype.NCContactTableViewCell.attribute, contact: contact, dataManager: dataManager)
 	}
 
 	override func configure(cell: UITableViewCell) {
@@ -79,7 +79,8 @@ class NCContractInfoViewController: NCTreeViewController {
 		super.viewDidLoad()
 		
 		tableView.register([Prototype.NCDefaultTableViewCell.default,
-		                    Prototype.NCDefaultTableViewCell.noImage,
+		                    Prototype.NCDefaultTableViewCell.attributeNoImage,
+		                    Prototype.NCContactTableViewCell.attribute,
 		                    Prototype.NCContactTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.default])
 	}
@@ -173,93 +174,93 @@ class NCContractInfoViewController: NCTreeViewController {
 				var sections = [TreeNode]()
 				var rows = [TreeNode]()
 				
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 				                           nodeIdentifier: "Type",
-				                           title: NSLocalizedString("Type", comment: ""),
+				                           title: NSLocalizedString("Type", comment: "").uppercased(),
 				                           subtitle: contract.type.title))
 				
 				if let description = contract.title, !description.isEmpty {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 					                           nodeIdentifier: "Description",
-					                           title: NSLocalizedString("Description", comment: ""),
+					                           title: NSLocalizedString("Description", comment: "").uppercased(),
 					                           subtitle: description))
 				}
 				
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 				                           nodeIdentifier: "Availability",
-				                           title: NSLocalizedString("Availability", comment: ""),
+				                           title: NSLocalizedString("Availability", comment: "").uppercased(),
 				                           subtitle: contract.availability.title))
 				
 				let status = contract.currentStatus
 				
 				
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 				                           nodeIdentifier: "Status",
-				                           title: NSLocalizedString("Status", comment: ""),
+				                           title: NSLocalizedString("Status", comment: "").uppercased(),
 				                           subtitle: status.title))
 				
 				if let contact = contacts[Int64(contract.issuerID)] {
-					rows.append(NCContractContactRow(title: NSLocalizedString("From", comment: ""), contact: contact, dataManager: self.dataManager))
+					rows.append(NCContractContactRow(title: NSLocalizedString("From", comment: "").uppercased(), contact: contact, dataManager: self.dataManager))
 				}
 				if let contact = contacts[Int64(contract.assigneeID)] {
-					rows.append(NCContractContactRow(title: NSLocalizedString("To", comment: ""), contact: contact, dataManager: self.dataManager))
+					rows.append(NCContractContactRow(title: NSLocalizedString("To", comment: "").uppercased(), contact: contact, dataManager: self.dataManager))
 				}
 				if let contact = contacts[Int64(contract.acceptorID)] {
-					rows.append(NCContractContactRow(title: NSLocalizedString("Acceptor", comment: ""), contact: contact, dataManager: self.dataManager))
+					rows.append(NCContractContactRow(title: NSLocalizedString("Acceptor", comment: "").uppercased(), contact: contact, dataManager: self.dataManager))
 				}
 				
 				
 				if let fromID = contract.startLocationID, let toID = contract.endLocationID, fromID != toID, let from = locations[fromID], let to = locations[toID] {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 					                           nodeIdentifier: "StartLocation",
-					                           title: NSLocalizedString("Start Location", comment: ""),
+					                           title: NSLocalizedString("Start Location", comment: "").uppercased(),
 					                           attributedSubtitle: from.displayName))
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 					                           nodeIdentifier: "EndLocation",
-					                           title: NSLocalizedString("End Location", comment: ""),
+					                           title: NSLocalizedString("End Location", comment: "").uppercased(),
 					                           attributedSubtitle: to.displayName))
 				}
 				else if let locationID = contract.startLocationID, let location = locations[locationID] {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 					                           nodeIdentifier: "Location",
-					                           title: NSLocalizedString("Location", comment: ""),
+					                           title: NSLocalizedString("Location", comment: "").uppercased(),
 					                           attributedSubtitle: location.displayName))
 				}
 				
 				if let price = contract.price, price > 0 {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 					                           nodeIdentifier: "Price",
-					                           title: NSLocalizedString("Buyer Will Pay", comment: ""),
+					                           title: NSLocalizedString("Buyer Will Pay", comment: "").uppercased(),
 					                           subtitle: NCUnitFormatter.localizedString(from: price, unit: .isk, style: .full)))
 				}
 				
 				if let reward = contract.reward, reward > 0 {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 					                           nodeIdentifier: "Reward",
-					                           title: NSLocalizedString("Buyer Will Get", comment: ""),
+					                           title: NSLocalizedString("Buyer Will Get", comment: "").uppercased(),
 					                           subtitle: NCUnitFormatter.localizedString(from: reward, unit: .isk, style: .full)))
 				}
 				
 				
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 				                           nodeIdentifier: "Issued",
-				                           title: NSLocalizedString("Date Issued", comment: ""),
+				                           title: NSLocalizedString("Date Issued", comment: "").uppercased(),
 				                           subtitle: DateFormatter.localizedString(from: contract.dateIssued, dateStyle: .medium, timeStyle: .medium)))
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 				                           nodeIdentifier: "Expired",
-				                           title: NSLocalizedString("Date Expired", comment: ""),
+				                           title: NSLocalizedString("Date Expired", comment: "").uppercased(),
 				                           subtitle: DateFormatter.localizedString(from: contract.dateExpired, dateStyle: .medium, timeStyle: .medium)))
 				
 				if let date = contract.dateAccepted {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 					                           nodeIdentifier: "Accepted",
-					                           title: NSLocalizedString("Date Accepted", comment: ""),
+					                           title: NSLocalizedString("Date Accepted", comment: "").uppercased(),
 					                           subtitle: DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .medium)))
 				}
 				if let date = contract.dateCompleted {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage,
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 					                           nodeIdentifier: "Completed",
-					                           title: NSLocalizedString("Date Completed", comment: ""),
+					                           title: NSLocalizedString("Date Completed", comment: "").uppercased(),
 					                           subtitle: DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .medium)))
 				}
 				

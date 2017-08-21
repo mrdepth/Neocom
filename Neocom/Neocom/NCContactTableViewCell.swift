@@ -15,6 +15,8 @@ extension Prototype {
 	enum NCContactTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCContactTableViewCell", bundle: nil), reuseIdentifier: "NCContactTableViewCell")
 		static let compact = Prototype(nib: UINib(nibName: "NCContactCompactTableViewCell", bundle: nil), reuseIdentifier: "NCContactCompactTableViewCell")
+		static let attribute = Prototype(nib: UINib(nibName: "NCContactAttributeTableViewCell", bundle: nil), reuseIdentifier: "NCContactAttributeTableViewCell")
+		
 	}
 }
 

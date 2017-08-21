@@ -23,7 +23,7 @@ extension Prototype {
 }
 
 
-class NCFleetRow: FetchedResultsObjectNode<NCFleet>, TreeNodeRoutable {
+class NCFleetRow: NCFetchedResultsObjectNode<NCFleet>, TreeNodeRoutable {
 	
 	var route: Route?
 	var accessoryButtonRoute: Route?

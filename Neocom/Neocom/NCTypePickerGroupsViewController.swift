@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCDgmppItemGroupRow: FetchedResultsObjectNode<NCDBDgmppItemGroup> {
+class NCDgmppItemGroupRow: NCFetchedResultsObjectNode<NCDBDgmppItemGroup> {
 	required init(object: NCDBDgmppItemGroup) {
 		super.init(object: object)
 		cellIdentifier = Prototype.NCDefaultTableViewCell.compact.reuseIdentifier

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCMarketGroupRow: FetchedResultsObjectNode<NCDBInvMarketGroup> {
+class NCMarketGroupRow: NCFetchedResultsObjectNode<NCDBInvMarketGroup> {
 	
 	required init(object: NCDBInvMarketGroup) {
 		super.init(object: object)

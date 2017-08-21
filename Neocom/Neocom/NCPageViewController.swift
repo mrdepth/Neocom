@@ -44,12 +44,17 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	
 	var currentPage: UIViewController? {
 		didSet {
+			guard toolbarItemsOverride == nil else {return}
 			setToolbarItems(currentPage?.toolbarItems, animated: true)
 		}
 	}
 	
+	private var toolbarItemsOverride: [UIBarButtonItem]?
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		self.toolbarItemsOverride = self.toolbarItems
+		
 		pageControl.translatesAutoresizingMaskIntoConstraints = false
 		scrollView.translatesAutoresizingMaskIntoConstraints = false
 		view.addSubview(pageControl)

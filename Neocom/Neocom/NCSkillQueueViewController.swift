@@ -47,7 +47,7 @@ fileprivate class NCSkillQueueRow: NCSkillRow {
 	}
 }
 
-fileprivate class NCSkillPlanSkillRow: FetchedResultsObjectNode<NCSkillPlanSkill>, TreeNodeRoutable {
+fileprivate class NCSkillPlanSkillRow: NCFetchedResultsObjectNode<NCSkillPlanSkill>, TreeNodeRoutable {
 	var skill: NCTrainingSkill?
 	var character: NCCharacter?
 	
@@ -118,7 +118,7 @@ fileprivate class NCSkillQueueSection: DefaultTreeSection {
 				                               NCTimeIntervalFormatter.localizedString(from: max(0, endDate.timeIntervalSinceNow), precision: .minutes), count)
 			}
 			else {
-				return NSLocalizedString("No skills in training", comment: "")
+				return NSLocalizedString("No skills in training", comment: "").uppercased()
 			}
 		}
 		
@@ -227,7 +227,7 @@ fileprivate class NCSKillPlanSkillsNode: FetchedResultsNode<NCSkillPlanSkill> {
 	}
 }
 
-fileprivate class NCSkillPlanRow: FetchedResultsObjectNode<NCSkillPlan> {
+fileprivate class NCSkillPlanRow: NCFetchedResultsObjectNode<NCSkillPlan> {
 	
 	required init(object: NCSkillPlan) {
 		super.init(object: object)
@@ -724,8 +724,9 @@ class NCSkillQueueViewController: NCTreeViewController {
 			completionHandler()
 			return
 		}
-		let skillBrowser = NCActionRow(title: NSLocalizedString("SKILL BROWSER", comment: ""),
-		                               route: Router.Character.Skills())
+		let skillBrowser = TreeSection(prototype: nil)
+		skillBrowser.children = [NCActionRow(title: NSLocalizedString("SKILL BROWSER", comment: ""),
+		                                    route: Router.Character.Skills())]
 		var sections: [TreeNode] = [skillBrowser]
 		
 		let attributes = NCOptimalCharacterAttributesSection(account: account, character: character)

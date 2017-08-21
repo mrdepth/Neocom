@@ -315,3 +315,15 @@ class NCTypeInfoRow: TreeRow {
 	}
 
 }
+
+class NCFetchedResultsObjectNode<ResultType: NSFetchRequestResult>: FetchedResultsObjectNode<ResultType> {
+	
+	override var separatorInset: UIEdgeInsets {
+		if isLeaf && (children.isEmpty || !isExpanded) {
+			return sequence(first: self, next: {$0.parent}).first {!$0.isLeaf}?.separatorInset ?? .zero
+		}
+		else {
+			return UIEdgeInsets(top: 0, left: CGFloat(15 + indentationLevel * 8), bottom: 0, right: 0)
+		}
+	}
+}

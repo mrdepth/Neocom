@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import CloudData
 
-class NCAccountsFolderRow: FetchedResultsObjectNode<NCAccountsFolder> {
+class NCAccountsFolderRow: NCFetchedResultsObjectNode<NCAccountsFolder> {
 	
 	required init(object: NCAccountsFolder) {
 		super.init(object: object)

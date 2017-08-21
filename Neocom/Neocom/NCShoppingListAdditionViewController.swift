@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NCShoppingItemRow: FetchedResultsObjectNode<NCShoppingItem>, TreeNodeRoutable {
+class NCShoppingItemRow: NCFetchedResultsObjectNode<NCShoppingItem>, TreeNodeRoutable {
 	var route: Route?
 	var accessoryButtonRoute: Route?
 	

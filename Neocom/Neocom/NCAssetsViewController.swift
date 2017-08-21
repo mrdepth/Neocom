@@ -77,7 +77,7 @@ class NCAssetRow: DefaultTreeRow {
 			image: type?.icon?.image?.image,
 			attributedTitle: title,
 			subtitle: subtitle,
-			accessoryType: hasLoadout ? .detailButton : .none,
+			accessoryType: hasLoadout ? .detailButton : .disclosureIndicator,
 			route: route,
 			accessoryButtonRoute: hasLoadout ? Router.Fitting.Editor(asset: asset, contents: contents) : nil,
 			object: asset)

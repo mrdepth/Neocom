@@ -47,7 +47,7 @@ fileprivate class InvType<T> {
 }
 
 class NCDatabaseTypesSection: FetchedResultsNode<NSDictionary> {
-	init(managedObjectContext: NSManagedObjectContext, predicate: NSPredicate?, sectionNode: FetchedResultsSectionNode<NSDictionary>.Type? = nil, objectNode: FetchedResultsObjectNode<NSDictionary>.Type) {
+	init(managedObjectContext: NSManagedObjectContext, predicate: NSPredicate?, sectionNode: FetchedResultsSectionNode<NSDictionary>.Type? = nil, objectNode: NCFetchedResultsObjectNode<NSDictionary>.Type) {
 		let request = NSFetchRequest<NSDictionary>(entityName: "InvType")
 		request.predicate = predicate ?? NSPredicate(value: false)
 		request.sortDescriptors = [
@@ -79,7 +79,7 @@ class NCDatabaseTypesSection: FetchedResultsNode<NSDictionary> {
 
 }
 
-class NCDatabaseTypeRow<ResultType: NSFetchRequestResult>: FetchedResultsObjectNode<ResultType>, TreeNodeRoutable {
+class NCDatabaseTypeRow<ResultType: NSFetchRequestResult>: NCFetchedResultsObjectNode<ResultType>, TreeNodeRoutable {
 	
 	var route: Route?
 	var accessoryButtonRoute: Route?

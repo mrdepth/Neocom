@@ -89,7 +89,7 @@ class NCCustomDamagePatternsSection: FetchedResultsNode<NCDamagePattern> {
 	}
 }
 
-class NCCustomDamagePatternRow: FetchedResultsObjectNode<NCDamagePattern> {
+class NCCustomDamagePatternRow: NCFetchedResultsObjectNode<NCDamagePattern> {
 
 	private lazy var editingContext: NSManagedObjectContext = {
 		let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)

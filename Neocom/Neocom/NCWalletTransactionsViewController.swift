@@ -70,10 +70,10 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 					DispatchQueue.main.async {
 						
 						if self.treeController?.content == nil {
-							self.treeController?.content = RootNode(rows)
+							self.treeController?.content = RootNode(sections)
 						}
 						else {
-							self.treeController?.content?.children = rows
+							self.treeController?.content?.children = sections
 						}
 						
 						self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil

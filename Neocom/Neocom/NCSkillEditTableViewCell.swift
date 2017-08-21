@@ -21,7 +21,7 @@ extension Prototype {
 	}
 }
 
-class NCSkillEditRow: FetchedResultsObjectNode<NSDictionary>, TreeNodeRoutable {
+class NCSkillEditRow: NCFetchedResultsObjectNode<NSDictionary>, TreeNodeRoutable {
 	var level: Int = 0
 	let typeID: Int
 	

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCRegionRow: FetchedResultsObjectNode<NCDBMapRegion> {
+class NCRegionRow: NCFetchedResultsObjectNode<NCDBMapRegion> {
 	
 	required init(object: NCDBMapRegion) {
 		super.init(object: object)

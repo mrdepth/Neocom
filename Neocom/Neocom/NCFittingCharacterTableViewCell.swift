@@ -119,7 +119,7 @@ class NCCustomCharactersSection: FetchedResultsNode<NCFitCharacter> {
 	}
 }
 
-class NCCustomCharacterRow: FetchedResultsObjectNode<NCFitCharacter>, TreeNodeRoutable {
+class NCCustomCharacterRow: NCFetchedResultsObjectNode<NCFitCharacter>, TreeNodeRoutable {
 	var route: Route?
 	var accessoryButtonRoute: Route?
 	let url: URL?
@@ -186,7 +186,7 @@ class NCAccountCharactersSection: FetchedResultsNode<NCAccount> {
 }
 
 
-class NCAccountCharacterRow: FetchedResultsObjectNode<NCAccount>, TreeNodeRoutable {
+class NCAccountCharacterRow: NCFetchedResultsObjectNode<NCAccount>, TreeNodeRoutable {
 	var route: Route?
 	var accessoryButtonRoute: Route?
 	let url: URL?

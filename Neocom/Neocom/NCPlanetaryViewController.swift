@@ -572,6 +572,7 @@ class NCPlanetaryViewController: NCTreeViewController {
 			
 			dispatchGroup.notify(queue: .main) {
 				self.treeController?.content = RootNode(sections)
+				self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: self.colonies?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 				completionHandler()
 			}
 			

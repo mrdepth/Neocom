@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCSolarSystemRow: FetchedResultsObjectNode<NCDBMapSolarSystem> {
+class NCSolarSystemRow: NCFetchedResultsObjectNode<NCDBMapSolarSystem> {
 	
 	lazy var title: NSAttributedString = {
 		return NCLocation(self.object).displayName

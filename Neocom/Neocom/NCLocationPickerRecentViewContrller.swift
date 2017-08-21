@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCRecentLocationRow: FetchedResultsObjectNode<NCCacheLocationPickerRecent> {
+class NCRecentLocationRow: NCFetchedResultsObjectNode<NCCacheLocationPickerRecent> {
 	required init(object: NCCacheLocationPickerRecent) {
 		super.init(object: object)
 		cellIdentifier = Prototype.NCDefaultTableViewCell.noImage.reuseIdentifier

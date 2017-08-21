@@ -875,6 +875,44 @@ enum Router {
 			}
 		}
 		
+		class ImplantSet: Route {
+			let character: NCFittingCharacter?
+			let mode: NCFittingImplantSetViewController.Mode
+			let completionHandler: ((NCFittingImplantSetViewController, NCImplantSet) -> Void)?
+			
+			private init(character: NCFittingCharacter?, mode: NCFittingImplantSetViewController.Mode, completionHandler: ((NCFittingImplantSetViewController, NCImplantSet) -> Void)?) {
+				self.character = character
+				self.mode = mode
+				self.completionHandler = completionHandler
+				super.init(kind: .adaptiveModal, identifier: "NCFittingImplantSetViewController")
+			}
+			
+			convenience init(save character: NCFittingCharacter?) {
+				self.init(character: character, mode: .save, completionHandler: nil)
+			}
+
+			convenience init(load completionHandler: @escaping (NCFittingImplantSetViewController, NCImplantSet) -> Void) {
+				self.init(character: nil, mode: .load, completionHandler: completionHandler)
+			}
+
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCFittingImplantSetViewController
+				destination.mode = mode
+				destination.completionHandler = completionHandler
+
+				if let character = character {
+					let result: (implants: [Int], boosters: [Int])? = character.engine?.sync {
+						return (character.implants.all.map{$0.typeID}, character.boosters.all.map{$0.typeID})
+					}
+					
+					let data = NCImplantSetData()
+					data.implantIDs = result?.implants ?? []
+					data.boosterIDs = result?.boosters ?? []
+					destination.implantSetData = data
+				}
+			}
+		}
+		
 		class Server: Route {
 			
 			init() {

@@ -41,7 +41,7 @@ class NCAccountsNode: TreeNode {
 	}
 }
 
-class NCAccountsFolderSection: FetchedResultsObjectNode<NCAccountsFolder> {
+class NCAccountsFolderSection: NCFetchedResultsObjectNode<NCAccountsFolder> {
 	required init(object: NCAccountsFolder) {
 		super.init(object: object)
 		cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
@@ -64,7 +64,7 @@ class NCAccountsFolderSection: FetchedResultsObjectNode<NCAccountsFolder> {
 	}
 }
 
-class NCAccountRow: FetchedResultsObjectNode<NCAccount> {
+class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 	
 	required init(object: NCAccount) {
 		super.init(object: object)

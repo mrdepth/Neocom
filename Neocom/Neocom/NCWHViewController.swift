@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCWHGroupRow: FetchedResultsObjectNode<NCDBWhType> {
+class NCWHGroupRow: NCFetchedResultsObjectNode<NCDBWhType> {
 	
 	required init(object: NCDBWhType) {
 		super.init(object: object)

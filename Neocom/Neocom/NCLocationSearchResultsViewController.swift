@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCSearchResultsSolarSystemRow: FetchedResultsObjectNode<NSManagedObjectID> {
+class NCSearchResultsSolarSystemRow: NCFetchedResultsObjectNode<NSManagedObjectID> {
 	
 	lazy var solarSystem: NCDBMapSolarSystem? = {
 		guard let context = NCDatabase.sharedDatabase?.viewContext else {return nil}
@@ -34,7 +34,7 @@ class NCSearchResultsSolarSystemRow: FetchedResultsObjectNode<NSManagedObjectID>
 	}
 }
 
-class NCSearchResultsRegionRow: FetchedResultsObjectNode<NSManagedObjectID> {
+class NCSearchResultsRegionRow: NCFetchedResultsObjectNode<NSManagedObjectID> {
 	
 	lazy var region: NCDBMapRegion? = {
 		guard let context = NCDatabase.sharedDatabase?.viewContext else {return nil}

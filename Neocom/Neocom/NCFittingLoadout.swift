@@ -20,10 +20,14 @@ extension NCFittingEngine {
 	}
 }
 
-class NCFittingLoadoutItem: NSObject, NSCoding {
+class NCFittingLoadoutItem: NSObject, NSSecureCoding {
 	let typeID: Int
 	var count: Int
 	let identifier: String?
+	
+	public static var supportsSecureCoding: Bool {
+		return true
+	}
 	
 	init(item: NCFittingItem, count: Int = 1) {
 		self.typeID = item.typeID
@@ -142,7 +146,7 @@ class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 }
 
 
-public class NCFittingLoadout: NSObject, NSCoding {
+public class NCFittingLoadout: NSObject, NSSecureCoding {
 	var modules: [NCFittingModuleSlot: [NCFittingLoadoutModule]]?
 	var drones: [NCFittingLoadoutDrone]?
 	var cargo: [NCFittingLoadoutItem]?
@@ -152,6 +156,11 @@ public class NCFittingLoadout: NSObject, NSCoding {
 	override init() {
 		super.init()
 	}
+	
+	public static var supportsSecureCoding: Bool {
+		return true
+	}
+
 	
 	public required init?(coder aDecoder: NSCoder) {
 		modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()

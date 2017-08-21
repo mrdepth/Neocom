@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 
-class NCDatabaseCategoryRow: FetchedResultsObjectNode<NCDBInvCategory> {
+class NCDatabaseCategoryRow: NCFetchedResultsObjectNode<NCDBInvCategory> {
 	
 	required init(object: NCDBInvCategory) {
 		super.init(object: object)

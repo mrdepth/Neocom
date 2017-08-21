@@ -165,6 +165,9 @@
 		128C5F781F41EF5F0038FE7D /* NCExtractorDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C5F771F41EF5F0038FE7D /* NCExtractorDetailsTableViewCell.swift */; };
 		128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F821F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib */; };
 		128C5F851F4470660038FE7D /* NCFactoryDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C5F841F4470660038FE7D /* NCFactoryDetailsTableViewCell.swift */; };
+		128C5F9A1F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F991F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib */; };
+		128C5F9E1F4AD7C60038FE7D /* NCImplantSetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C5F9D1F4AD7C60038FE7D /* NCImplantSetData.swift */; };
+		128C5FA01F4AE55C0038FE7D /* NCFittingImplantSetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C5F9F1F4AE55C0038FE7D /* NCFittingImplantSetViewController.swift */; };
 		128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */; };
 		128E61421E0A707200C15EEB /* NCDamageTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128E61411E0A707200C15EEB /* NCDamageTypeTableViewCell.swift */; };
 		1291194B1E3918CC00870428 /* NCFittingModulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291194A1E3918CC00870428 /* NCFittingModulesViewController.swift */; };
@@ -558,6 +561,9 @@
 		128C5F771F41EF5F0038FE7D /* NCExtractorDetailsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCExtractorDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		128C5F821F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFactoryDetailsTableViewCell.xib; sourceTree = "<group>"; };
 		128C5F841F4470660038FE7D /* NCFactoryDetailsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFactoryDetailsTableViewCell.swift; sourceTree = "<group>"; };
+		128C5F991F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCContactAttributeTableViewCell.xib; sourceTree = "<group>"; };
+		128C5F9D1F4AD7C60038FE7D /* NCImplantSetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCImplantSetData.swift; sourceTree = "<group>"; };
+		128C5F9F1F4AE55C0038FE7D /* NCFittingImplantSetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingImplantSetViewController.swift; sourceTree = "<group>"; };
 		128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCActionTableViewCell.xib; sourceTree = "<group>"; };
 		128E61411E0A707200C15EEB /* NCDamageTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamageTypeTableViewCell.swift; sourceTree = "<group>"; };
 		1291194A1E3918CC00870428 /* NCFittingModulesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModulesViewController.swift; sourceTree = "<group>"; };
@@ -1018,6 +1024,7 @@
 				12424E1A1E48C9F3002DFE08 /* NCFittingDronesViewController.swift */,
 				12D364EB1E72DEFE000ED70B /* NCFittingFightersViewController.swift */,
 				12DACE5A1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift */,
+				128C5F9F1F4AE55C0038FE7D /* NCFittingImplantSetViewController.swift */,
 				122FFDF41E4B7D630066D45E /* NCFittingStatsViewController.swift */,
 				12EFE7EB1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift */,
 				1293BC101E49F1F30099FD75 /* NCFittingDroneActionsViewController.swift */,
@@ -1275,6 +1282,7 @@
 				12D930E61E656B0C00CBAE1C /* NCChargeTableViewCell.xib */,
 				12C37D2F1EFA9D070070F055 /* NCContactCompactTableViewCell.xib */,
 				12C37D2B1EFA9CDC0070F055 /* NCContactTableViewCell.xib */,
+				128C5F991F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib */,
 				12D930EC1E656EAD00CBAE1C /* NCDamageTypeCompactTableViewCell.xib */,
 				12D930EA1E656EA300CBAE1C /* NCDamageTypeTableViewCell.xib */,
 				12CFDAE51F03D8E800CC0762 /* NCDatePickerTableViewCell.xib */,
@@ -1312,6 +1320,7 @@
 			children = (
 				12DBEA321E1D36D40088A486 /* Engine */,
 				121D10B31E265D4600DD671B /* Loadouts */,
+				128C5F9D1F4AD7C60038FE7D /* NCImplantSetData.swift */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
@@ -1583,6 +1592,7 @@
 				12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */,
 				12D930F31E6584AF00CBAE1C /* NCDefaultCompactTableViewCell.xib in Resources */,
 				12CFDAE81F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib in Resources */,
+				128C5F9A1F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib in Resources */,
 				128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */,
 				1263C50D1E64BE9D003D002D /* NCDefaultTableViewCell.xib in Resources */,
 				128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */,
@@ -1635,6 +1645,7 @@
 				123AEFF51E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift in Sources */,
 				12E9321A1E6ACEC40033D71A /* NCFittingTargetsViewController.swift in Sources */,
 				125AB8141E42033200B8A2A8 /* NCFittingAmmoViewController.swift in Sources */,
+				128C5FA01F4AE55C0038FE7D /* NCFittingImplantSetViewController.swift in Sources */,
 				12CFDACE1F023BDD00CC0762 /* NCZKillboardViewController.swift in Sources */,
 				12D39D001EF7DB040077BD17 /* NCMarketOrderTableViewCell.swift in Sources */,
 				12DBEABD1E1D40280088A486 /* NCFittingAttribute.mm in Sources */,
@@ -1735,6 +1746,7 @@
 				1203E88C1F093B7E009ADF8D /* NCFeedItemViewController.swift in Sources */,
 				12961DBA1E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift in Sources */,
 				126157061E0095380041B817 /* NCProgressHandler.swift in Sources */,
+				128C5F9E1F4AD7C60038FE7D /* NCImplantSetData.swift in Sources */,
 				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
 				12D20EB41EBCBD3C00BEC926 /* EVEAPI+NC.swift in Sources */,
 				1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */,

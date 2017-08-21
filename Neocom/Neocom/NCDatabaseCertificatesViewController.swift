@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-fileprivate class NCDatabaseCertificateRow: FetchedResultsObjectNode<NCDBCertCertificate> {
+fileprivate class NCDatabaseCertificateRow: NCFetchedResultsObjectNode<NCDBCertCertificate> {
 	var character: NCCharacter?
 	var image: UIImage?
 	var subtitle: String?

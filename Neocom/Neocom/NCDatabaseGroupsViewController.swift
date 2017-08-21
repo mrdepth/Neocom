@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCDatabaseGroupRow: FetchedResultsObjectNode<NCDBInvGroup> {
+class NCDatabaseGroupRow: NCFetchedResultsObjectNode<NCDBInvGroup> {
 	
 	required init(object: NCDBInvGroup) {
 		super.init(object: object)

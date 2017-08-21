@@ -144,7 +144,7 @@ class NCDraftsNode: FetchedResultsNode<NCMailDraft> {
 	}
 }
 
-class NCDraftRow: FetchedResultsObjectNode<NCMailDraft>, TreeNodeRoutable {
+class NCDraftRow: NCFetchedResultsObjectNode<NCMailDraft>, TreeNodeRoutable {
 	
 	let route: Route?
 	let accessoryButtonRoute: Route? = nil

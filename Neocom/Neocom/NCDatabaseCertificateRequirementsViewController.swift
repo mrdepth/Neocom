@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCDatabaseCertTypeRow: FetchedResultsObjectNode<NCDBInvType> {
+class NCDatabaseCertTypeRow: NCFetchedResultsObjectNode<NCDBInvType> {
 	var character: NCCharacter?
 	var subtitle: String?
 	

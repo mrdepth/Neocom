@@ -99,8 +99,7 @@ class NCBoosterRow: TreeRow {
 }
 
 
-class NCFittingImplantsViewController: UITableViewController, TreeControllerDelegate {
-	@IBOutlet weak var treeController: TreeController!
+class NCFittingImplantsViewController: NCTreeViewController {
 	
 	var engine: NCFittingEngine? {
 		return (parent as? NCFittingEditorViewController)?.engine
@@ -121,21 +120,14 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 		super.viewDidLoad()
 		
 		tableView.register([Prototype.NCDefaultTableViewCell.compact,
+		                    Prototype.NCActionTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.default
 			])
 
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
-		if self.treeController.content == nil {
-			self.treeController.content = TreeNode()
-			reload()
-		}
 		
 		if observer == nil {
 			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
@@ -144,10 +136,16 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 		}
 	}
 	
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		treeController?.content = TreeNode()
+		reload()
+		completionHandler()
+	}
+	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		treeController.deselectCell(for: node, animated: true)
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		
 		if let item = (node as? NCImplantRow)?.implant ?? (node as? NCBoosterRow)?.booster {
 			let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -204,12 +202,6 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 		}
 	}
 	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		guard let route = (node as? TreeRow)?.accessoryButtonRoute else {return}
-		
-		route.perform(source: self, view: treeController.cell(for: node))
-	}
-	
 	//MARK: - Private
 	
 	private func reload() {
@@ -230,12 +222,31 @@ class NCFittingImplantsViewController: UITableViewController, TreeControllerDele
 				guard (1...4).contains(booster.slot) else {continue}
 				boosters[booster.slot - 1] = NCBoosterRow(booster: booster)
 			}
+			
+			var actions = [TreeNode]()
+			actions.append(NCActionRow(title: NSLocalizedString("Load Implant Set", comment: "").uppercased(), route: Router.Fitting.ImplantSet(load: { [weak self] (controller, implantSet) in
+				controller.dismiss(animated: true, completion: nil)
+				guard let pilot = self?.fleet?.active else {return}
+				
+				let implantIDs = implantSet.data?.implantIDs
+				let boosterIDs = implantSet.data?.boosterIDs
+				
+				pilot.engine?.perform {
+					implantIDs?.forEach {pilot.addImplant(typeID: $0, forced: true)}
+					boosterIDs?.forEach {pilot.addBooster(typeID: $0, forced: true)}
+				}
+			})))
+			
+			if !pilot.implants.all.isEmpty || !pilot.boosters.all.isEmpty {
+				actions.append(NCActionRow(title: NSLocalizedString("Save Implant Set", comment: "").uppercased(), route: Router.Fitting.ImplantSet(save: pilot)))
+			}
+			sections.append(RootNode(actions))
 
 			sections.append(DefaultTreeSection(nodeIdentifier: "Implants", title: NSLocalizedString("Implants", comment: "").uppercased(), children: implants))
 			sections.append(DefaultTreeSection(nodeIdentifier: "Boosters", title: NSLocalizedString("Boosters", comment: "").uppercased(), children: boosters))
 			
 			DispatchQueue.main.async {
-				self.treeController.content?.children = sections
+				self.treeController?.content?.children = sections
 			}
 		}
 	}

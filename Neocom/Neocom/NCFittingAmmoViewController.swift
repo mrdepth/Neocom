@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCAmmoNode: FetchedResultsObjectNode<NCDBInvType> {
+class NCAmmoNode: NCFetchedResultsObjectNode<NCDBInvType> {
 	
 	required init(object: NCDBInvType) {
 		super.init(object: object)
@@ -58,7 +58,7 @@ class NCAmmoNode: FetchedResultsObjectNode<NCDBInvType> {
 }
 
 class NCAmmoSection: FetchedResultsNode<NCDBInvType> {
-	init?(category: NCDBDgmppItemCategory, objectNode: FetchedResultsObjectNode<NCDBInvType>.Type) {
+	init?(category: NCDBDgmppItemCategory, objectNode: NCFetchedResultsObjectNode<NCDBInvType>.Type) {
 		guard let context = NCDatabase.sharedDatabase?.viewContext else {return nil}
 		guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return nil}
 	

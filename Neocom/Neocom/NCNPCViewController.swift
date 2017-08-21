@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NCNPCGroupRow: FetchedResultsObjectNode<NCDBNpcGroup> {
+class NCNPCGroupRow: NCFetchedResultsObjectNode<NCDBNpcGroup> {
 	
 	required init(object: NCDBNpcGroup) {
 		super.init(object: object)

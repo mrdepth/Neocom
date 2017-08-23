@@ -131,7 +131,7 @@
 	if (ship) {
 		auto result = ship->replaceModule(std::dynamic_pointer_cast<dgmpp::Module>(module.item), static_cast<dgmpp::TypeID>(typeID));
 		NSString* identifier = [self.engine identifierForItem:module];
-		module = result ? (NCFittingModule*) [NCFittingItem item:result withEngine:self.engine] : nil;
+		NCFittingModule* module = result ? (NCFittingModule*) [NCFittingItem item:result withEngine:self.engine] : nil;
 		if (module) {
 			module.factorReload = self.engine.factorReload;
 			[self.engine assignIdentifier:identifier forItem:module];

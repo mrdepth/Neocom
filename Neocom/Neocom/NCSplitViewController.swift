@@ -9,10 +9,21 @@
 import UIKit
 
 
-class NCSplitViewController: UISplitViewController {
+class NCSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
+	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		delegate = self
+	}
+	
 	override public var preferredStatusBarStyle: UIStatusBarStyle {
 		get {
 			return self.viewControllers[0].preferredStatusBarStyle
 		}
+	}
+	
+	func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+		(primaryViewController as? UINavigationController)?.isNavigationBarHidden = false
+		return false
 	}
 }

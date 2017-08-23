@@ -567,6 +567,8 @@ class NCAccountsViewController: NCTreeViewController, UIViewControllerTransition
 	}
 	
 	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		guard !isEditing else {return}
+		
 		let bottom = max(scrollView.contentSize.height - scrollView.bounds.size.height, 0)
 		let y = scrollView.contentOffset.y - bottom
 		if (y > 40 && transitionCoordinator == nil && scrollView.isTracking) {

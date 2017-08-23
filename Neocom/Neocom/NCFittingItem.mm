@@ -137,7 +137,7 @@
 	return item ? (item->getOwner() ? [NCFittingItem item:item->getOwner() withEngine:_engine] : nil) : nil;
 }
 
-- (nonnull NCFittingAttributes*) attributes {
+- (nullable NCFittingAttributes*) attributes {
 	NCVerifyFittingContext(self.engine);
 	if (!_attributes) {
 		std::shared_ptr<dgmpp::Item> item = self.item;

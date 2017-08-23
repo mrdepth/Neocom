@@ -20,13 +20,12 @@ class NCSheetSegue: UIStoryboardSegue {
 	}
 }
 
-class NCSheetPresentationController: UIPresentationController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, UIGestureRecognizerDelegate {
+class NCSheetPresentationController: UIPresentationController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning {
 
 	private var dimmingView: UIView?
 	private var presentationWrappingView: UIView?
 	private var keyboardFrame: CGRect = .zero
-	private var panGestureRecognizer: UIPanGestureRecognizer?
-	private var interactiveTransition: UIPercentDrivenInteractiveTransition?
+	private var interactiveTransition: NCSlideDownDismissalInteractiveTransitioning?
 
 	override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
 		presentedViewController.modalPresentationStyle = .custom
@@ -42,13 +41,13 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 		guard let containerView = self.containerView else {return}
 		
 		do {
-			let presentationWrapperView = UIView(frame: frameOfPresentedViewInContainerView)
-			presentationWrapperView.layer.shadowOpacity = 0.44
-			presentationWrapperView.layer.shadowRadius = 13.0
-			presentationWrapperView.layer.shadowOffset = CGSize(width: 0, height: -6)
-			presentationWrappingView = presentationWrapperView
+			let presentationWrappingView = UIView(frame: frameOfPresentedViewInContainerView)
+			presentationWrappingView.layer.shadowOpacity = 0.44
+			presentationWrappingView.layer.shadowRadius = 13.0
+			presentationWrappingView.layer.shadowOffset = CGSize(width: 0, height: -6)
+			self.presentationWrappingView = presentationWrappingView
 			
-			let presentationRoundedCornerView = UIView(frame: UIEdgeInsetsInsetRect(presentationWrapperView.bounds, UIEdgeInsets(top: 0, left: 0, bottom: -cornerRadius * 2.0, right: 0)))
+			let presentationRoundedCornerView = UIView(frame: UIEdgeInsetsInsetRect(presentationWrappingView.bounds, UIEdgeInsets(top: 0, left: 0, bottom: -cornerRadius * 2.0, right: 0)))
 			presentationRoundedCornerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 			presentationRoundedCornerView.layer.cornerRadius = cornerRadius
 			presentationRoundedCornerView.layer.masksToBounds = true
@@ -62,14 +61,9 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 			presentedViewControllerWrapperView.addSubview(presentedViewControllerView)
 			
 			presentationRoundedCornerView.addSubview(presentedViewControllerWrapperView)
-			presentationWrapperView.addSubview(presentationRoundedCornerView)
+			presentationWrappingView.addSubview(presentationRoundedCornerView)
 			
-			
-			panGestureRecognizer?.view?.removeGestureRecognizer(panGestureRecognizer!)
-			let recognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
-			recognizer.delegate = self
-			presentationRoundedCornerView.addGestureRecognizer(recognizer)
-			panGestureRecognizer = recognizer
+			interactiveTransition = NCSlideDownDismissalInteractiveTransitioning(viewController: presentedViewController)
 		}
 		
 		do {
@@ -126,6 +120,8 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 		if (container === presentedViewController) {
 			var size = container.preferredContentSize
 			size.height = max(size.height, 44)
+			size.width = size.width.clamped(to: 0...min(UIScreen.main.bounds.width, UIScreen.main.bounds.height))
+//			size.width = min(size.width, min(UIScreen.main.bounds.width, UIScreen.main.bounds.height))
 			return size
 		}
 		else {
@@ -139,8 +135,9 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 		let presentedViewContentSize = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerViewBounds.size)
 		
 		var presentedViewControllerFrame = containerViewBounds
-		presentedViewControllerFrame.size.height = presentedViewContentSize.height
+		presentedViewControllerFrame.size = presentedViewContentSize
 		presentedViewControllerFrame.origin.y = containerViewBounds.maxY - presentedViewContentSize.height
+		presentedViewControllerFrame.origin.x = (containerViewBounds.maxX - presentedViewContentSize.width) / 2
 		
 		presentedViewControllerFrame.origin.y -= keyboardFrame.size.height;
 		if (presentedViewControllerFrame.origin.y <= 40) {
@@ -157,8 +154,10 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 		if let containerView = self.containerView {
 			dimmingView?.frame = containerView.bounds
 		}
-		presentationWrappingView?.frame = frameOfPresentedViewInContainerView
-
+		if let presentationWrappingView = presentationWrappingView {
+			presentationWrappingView.frame = frameOfPresentedViewInContainerView
+			super.presentedView?.frame = presentationWrappingView.bounds
+		}
 	}
 	
 	//MARK: - UIViewControllerAnimatedTransitioning
@@ -189,7 +188,7 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 		}
 		
 		if isPresenting {
-			toViewInitialFrame.origin = CGPoint(x: containerView.bounds.minX, y: containerView.bounds.maxY)
+			toViewInitialFrame.origin =  CGPoint(x: toViewFinalFrame.origin.x, y: containerView.bounds.maxY)
 			toViewInitialFrame.size = toViewFinalFrame.size
 			toView?.frame = toViewInitialFrame;
 		}
@@ -198,7 +197,7 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 		}
 		
 		let transitionDuration = self.transitionDuration(using: transitionContext)
-		UIView.animate(withDuration: transitionDuration, delay: 0, options: interactiveTransition == nil ? [.curveEaseOut] : [.curveLinear], animations: {
+		UIView.animate(withDuration: transitionDuration, delay: 0, options: interactiveTransition?.isInteractive == true ? [.curveLinear] : [.curveEaseOut], animations: {
 			if isPresenting {
 				toView?.frame = toViewFinalFrame
 			}
@@ -227,15 +226,10 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 	}
 	
 	func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-		return interactiveTransition
+		return interactiveTransition?.isInteractive == true ? interactiveTransition : nil
 	}
 	
 	//MARK: - Notifications
-	
-	@IBAction private func dimmingViewTapped(_ sender: UITapGestureRecognizer) {
-		presentingViewController.dismiss(animated: true, completion: nil)
-	}
-	
 	
 	@objc private func keyboardWillShow(_ note: Notification) {
 		
@@ -248,76 +242,18 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 	@objc private func keyboardWillChangeFrame(_ note: Notification) {
 		
 	}
-	
-	//MARK: - Gesture Recognizer
-	
-	private var tableView: UITableView?
-	
-	@objc private func onPan(_ recognizer: UIPanGestureRecognizer) {
-		switch recognizer.state {
-		case .began:
-			tableView = recognizer.view?.hitTest(recognizer.location(in: recognizer.view), with: nil)?.ancestor(of: UITableView.self)
-		case .changed:
-			//let tableView = self.tableView ?? recognizer.view?.hitTest(recognizer.location(in: recognizer.view), with: nil)?.ancestor(of: UITableView.self)
-			
-			let t = recognizer.translation(in: containerView!)
 
-			if fabs(t.x) > 10 && fabs(t.x) > t.y {
-				recognizer.isEnabled = false
-				recognizer.isEnabled = true
-			}
-			else if t.y > 0 {
-				if let interactiveTransition = interactiveTransition {
-					if let tableView = self.tableView {
-						var offset = tableView.contentOffset
-						offset.y = -tableView.contentInset.top
-						tableView.setContentOffset(offset, animated: false)
-						tableView.panGestureRecognizer.setTranslation(.zero, in: tableView)
-					}
-					
-					interactiveTransition.update(t.y / recognizer.view!.bounds.size.height)
-				}
-				else {
-					if let tableView = tableView, tableView.isTracking, tableView.contentOffset.y > -tableView.contentInset.top {
-						recognizer.setTranslation(.zero, in: containerView!)
-					}
-					else {
-						interactiveTransition = UIPercentDrivenInteractiveTransition()
-						interactiveTransition?.completionSpeed = 0.5
-						interactiveTransition?.completionCurve = .easeOut
-						
-						presentedViewController.dismiss(animated: true, completion: nil)
-					}
-				}
-			}
-			
-		case .ended:
-			let v = recognizer.velocity(in: recognizer.view)
-			let t = recognizer.translation(in: recognizer.view)
-			if v.y >= 0 && t.y > 40 {
-				interactiveTransition?.finish()
-			}
-			else {
-				interactiveTransition?.cancel()
-			}
-			interactiveTransition = nil
-			tableView = nil
-		case .cancelled:
-			interactiveTransition?.cancel()
-			interactiveTransition = nil
-			tableView = nil
-		default:
-			break
-		}
+	@IBAction private func dimmingViewTapped(_ sender: UITapGestureRecognizer) {
+		presentingViewController.dismiss(animated: true, completion: nil)
 	}
+
+}
+
+extension NCSheetPresentationController: UIAdaptivePresentationControllerDelegate {
 	
-	func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-		let hitTest = gestureRecognizer.view?.hitTest(gestureRecognizer.location(in: gestureRecognizer.view), with: nil)
-		return hitTest?.ancestor(of: UIPickerView.self) == nil //&& hitTest?.ancestor(of: UICollectionView.self) == nil
-	}
-	
-	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-		return true
+	func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+		return traitCollection.horizontalSizeClass == .compact ? .overFullScreen : .none
+//		return .overFullScreen
 	}
 	
 }

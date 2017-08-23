@@ -150,3 +150,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+
+extension NCAppDelegate: UISplitViewControllerDelegate {
+	
+}

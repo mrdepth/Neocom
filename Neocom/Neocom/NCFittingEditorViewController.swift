@@ -251,7 +251,11 @@ class NCFittingEditorViewController: NCPageViewController {
 	}
 	
 	lazy var typePickerViewController: NCTypePickerViewController? = {
-		return self.storyboard?.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController
+		guard let controller =  UIStoryboard.database.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController else {return nil}
+		NCSlideDownDismissalInteractiveTransitioning.add(to: controller)
+		
+		return controller
+//		return self.storyboard?.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController
 	}()
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

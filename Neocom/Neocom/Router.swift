@@ -10,6 +10,8 @@ import UIKit
 import CoreData
 import EVEAPI
 
+
+
 extension UIStoryboard {
 	static let main = UIStoryboard(name: "Main", bundle: nil)
 	static let database = UIStoryboard(name: "Database", bundle: nil)
@@ -64,12 +66,19 @@ class Route/*: Hashable*/ {
 				((source as? UINavigationController) ?? source.navigationController)?.pushViewController(destination, animated: true)
 			}
 		case .modal:
+			NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
+			
 			source.present(destination, animated: true, completion: nil)
 			
 		case .adaptivePush:
 			let presentedController = source.navigationController ?? source.parent?.navigationController ?? source.parent ?? source
-			if presentedController.modalPresentationStyle == .custom && presentedController.presentationController is NCSheetPresentationController {
+			if let presentationController = presentedController.presentationController as? NCSheetPresentationController, presentedController.modalPresentationStyle == .custom {
 				let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
+				destination.modalPresentationStyle = .pageSheet
+
+				destination.presentationController?.delegate = presentationController
+				NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
+				
 				source.present(destination, animated: true, completion: nil)
 				destination.topViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
 				presentedViewController = destination
@@ -80,7 +89,6 @@ class Route/*: Hashable*/ {
                 }
                 else {
                     source.navigationController?.pushViewController(destination, animated: true)
-//                    ((source as? UINavigationController) ?? source.navigationController)?.pushViewController(destination, animated: true)
                 }
 
 			}
@@ -88,15 +96,20 @@ class Route/*: Hashable*/ {
 			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
 			destination.modalPresentationStyle = .custom
 			destination.topViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
+
+			NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
+			
 			presentedViewController = destination
 			source.present(destination, animated: true, completion: nil)
 			
 		case .sheet:
 			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
 			destination.modalPresentationStyle = .custom
+			
 			presentedViewController = destination
 			
 			let presentationController = NCSheetPresentationController(presentedViewController: destination, presenting: source)
+			
 			withExtendedLifetime(presentationController) {
 				destination.transitioningDelegate = presentationController
 				source.present(destination, animated: true, completion: nil)
@@ -203,7 +216,7 @@ enum Router {
 							type.attributes?.forEach {
 								guard let attribute = $0 as? NCDBDgmTypeAttribute else {return}
 								guard let attributeType = attribute.attributeType else {return}
-								if let value = itemAttributes[Int(attributeType.attributeID)]?.value {
+								if let value = itemAttributes?[Int(attributeType.attributeID)]?.value {
 									attributes[Int(attributeType.attributeID)] = Float(value)
 								}
 							}

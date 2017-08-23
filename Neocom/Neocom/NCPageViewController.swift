@@ -101,6 +101,16 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 		}
 	}
 	
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
+		if let currentPage = currentPage, let i = viewControllers?.index(of: currentPage) {
+			coordinator.animate(alongsideTransition: { _ in
+				self.scrollView.contentOffset.x = CGFloat(i) * size.width
+			}, completion: nil)
+			
+		}
+	}
+	
 	//MARK: - UIScrollViewDelegate
 	
 	private class Appearance {

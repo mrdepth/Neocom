@@ -293,7 +293,9 @@ class NCFittingPriceImplantsRow: NCFittingPriceRow {
 		self.ship = ship
 		typeIDs = (ship.owner as? NCFittingCharacter)?.implants.all.map{$0.typeID} ?? []
 		super.init(prototype: Prototype.NCDefaultTableViewCell.default)
-		
+		isExpanded = false
+		isExpandable = true
+
 		children = typeIDs.map {NCFittingPriceTypeRow(typeID: $0, quantity: 1)}
 	}
 	
@@ -399,6 +401,7 @@ class NCFittingStatsViewController: NCTreeViewController {
 			var typeIDs = Set(ship.modules.map {[$0.typeID, $0.charge?.typeID]}.joined().flatMap{$0})
 			typeIDs.formUnion(Set(ship.drones.map{$0.typeID}))
 			typeIDs.insert(ship.typeID)
+			typeIDs.formUnion(Set(pilot.implants.all.map{$0.typeID}))
 
 			DispatchQueue.main.async {
 				self.treeController?.content?.children = sections

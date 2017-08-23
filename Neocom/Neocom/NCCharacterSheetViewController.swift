@@ -213,9 +213,6 @@ class NCCharacterSheetViewController: NCTreeViewController {
 			}
 		}
 		
-		if let value = self.clones?.value {
-		}
-		
 		if let ship = self.characterShip?.value, let location = self.characterLocation?.value {
 			if let type = NCDatabase.sharedDatabase?.invTypes[ship.shipTypeID], let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[location.solarSystemID] {
 				let location = NCLocation(solarSystem)

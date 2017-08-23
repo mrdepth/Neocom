@@ -72,7 +72,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 						from.removeFromParentViewController()
 						to.didMove(toParentViewController: self)
 					})
-
+					self.headerViewController = to
 					
 				default:
 					break
@@ -112,15 +112,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 			let marketQuickItem = NCMarketQuickItem(entity: NSEntityDescription.entity(forEntityName: "MarketQuickItem", in: context)!, insertInto: context)
 			marketQuickItem.typeID = type.typeID
 			if context.hasChanges {
-//				context.processPendingChanges()
-//				try? context.save()
-				do {
-					try context.save()
-				}
-				catch {
-					print("\(error)")
-				}
-
+				try? context.save()
 			}
 		}
 	}

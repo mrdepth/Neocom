@@ -25,7 +25,7 @@
 @property (readonly) NSInteger groupID;
 @property (readonly) NSInteger categoryID;
 @property (readonly, nullable) NCFittingItem* owner;
-@property (readonly, nonnull) NCFittingAttributes* attributes;
+@property (readonly, nullable) NCFittingAttributes* attributes;
 @property (nonatomic, weak, nullable) NCFittingEngine* engine;
 @property (readonly, nonnull) NSArray<NCFittingItem*>* affectors;
 

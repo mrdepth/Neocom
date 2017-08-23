@@ -9,5 +9,7 @@
 import UIKit
 
 class NCNavigationController: UINavigationController {
-	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+	}
 }

@@ -111,7 +111,7 @@ class NCFittingModuleRow: TreeRow {
 						string.appendLine(s)
 					}
 					
-					let signature = ship.attributes[NCDBAttributeID.signatureRadius.rawValue]?.initialValue ?? 0
+					let signature = ship.attributes?[NCDBAttributeID.signatureRadius.rawValue]?.initialValue ?? 0
 					let accuracy = module.accuracy(targetSignature: signature)
 
 					if accuracy != .none {

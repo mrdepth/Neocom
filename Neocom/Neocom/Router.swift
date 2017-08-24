@@ -27,6 +27,7 @@ enum RouteKind {
 	case adaptivePush
 	case adaptiveModal
 	case sheet
+	case popover
 }
 
 class Route/*: Hashable*/ {
@@ -50,7 +51,7 @@ class Route/*: Hashable*/ {
 		return controller
 	}
 	
-	func perform(source: UIViewController, view: UIView? = nil) {
+	func perform(source: UIViewController, sender: Any?) {
 		guard let kind = kind else {return}
 
 		let destination = instantiateViewController()
@@ -66,6 +67,7 @@ class Route/*: Hashable*/ {
 				((source as? UINavigationController) ?? source.navigationController)?.pushViewController(destination, animated: true)
 			}
 		case .modal:
+			destination.modalPresentationStyle = .pageSheet
 			NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
 			
 			source.present(destination, animated: true, completion: nil)
@@ -114,6 +116,20 @@ class Route/*: Hashable*/ {
 				destination.transitioningDelegate = presentationController
 				source.present(destination, animated: true, completion: nil)
 			}
+		case .popover:
+			destination.modalPresentationStyle = .popover
+			source.present(destination, animated: true, completion: nil)
+			NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
+			
+			let presentationController = destination.popoverPresentationController
+			presentationController?.permittedArrowDirections = .any
+			if let view = sender as? UIView {
+				presentationController?.sourceView = view
+				presentationController?.sourceRect = view.bounds
+			}
+			else if let item = sender as? UIBarButtonItem {
+				presentationController?.barButtonItem = item
+			}
 		}
 	}
 	
@@ -147,14 +163,14 @@ class Route/*: Hashable*/ {
 enum Router {
 	
 	class Custom: Route {
-		let handler: (UIViewController, UIView?) -> Void
-		init(_ handler: @escaping (UIViewController, UIView?) -> Void) {
+		let handler: (UIViewController, Any?) -> Void
+		init(_ handler: @escaping (UIViewController, Any?) -> Void) {
 			self.handler = handler
 			super.init()
 		}
 		
-		override func perform(source: UIViewController, view: UIView?) {
-			handler(source, view)
+		override func perform(source: UIViewController, sender: Any?) {
+			handler(source, sender)
 		}
 	}
 	
@@ -205,7 +221,7 @@ enum Router {
 				}
 			}
 			
-			override func perform(source: UIViewController, view: UIView?) {
+			override func perform(source: UIViewController, sender: Any?) {
 				if let fittingItem = fittingItem {
 					NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 						let typeID = fittingItem.typeID
@@ -224,12 +240,12 @@ enum Router {
 						DispatchQueue.main.async {
 							self.attributeValues = attributes
 							self.typeID = typeID
-							super.perform(source: source, view: view)
+							super.perform(source: source, sender: sender)
 						}
 					}
 				}
 				else {
-					super.perform(source: source, view: view)
+					super.perform(source: source, sender: sender)
 				}
 			}
 		}
@@ -330,13 +346,17 @@ enum Router {
 		}
 
 		class TypePicker: Route {
-			let category: NCDBDgmppItemCategory
-			let completionHandler: (NCTypePickerViewController, NCDBInvType) -> Void
+			var category: NCDBDgmppItemCategory?
+			var completionHandler: ((NCTypePickerViewController, NCDBInvType) -> Void)?
 			
-			init(category: NCDBDgmppItemCategory, completionHandler: @escaping (NCTypePickerViewController, NCDBInvType) -> Void) {
+			convenience init() {
+				self.init(category: nil, completionHandler: nil)
+			}
+			
+			init(category: NCDBDgmppItemCategory?, completionHandler: ((NCTypePickerViewController, NCDBInvType) -> Void)?) {
 				self.category = category
 				self.completionHandler = completionHandler
-				super.init(kind: .modal, storyboard: UIStoryboard.database, identifier: "NCTypePickerViewController")
+				super.init(kind: .popover, storyboard: UIStoryboard.database, identifier: "NCTypePickerViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -651,7 +671,7 @@ enum Router {
 				engine = nil
 			}
 			
-			override func perform(source: UIViewController, view: UIView? = nil) {
+			override func perform(source: UIViewController, sender: Any?) {
 				let progress = NCProgressHandler(viewController: source, totalUnitCount: 1)
 				let engine = NCFittingEngine()
 				UIApplication.shared.beginIgnoringInteractionEvents()
@@ -692,7 +712,7 @@ enum Router {
 							fleet.active?.setSkills(from: account) {  _ in
 								self.fleet = fleet
 								self.engine = engine
-								super.perform(source: source, view: view)
+								super.perform(source: source, sender: sender)
 								progress.finish()
 								UIApplication.shared.endIgnoringInteractionEvents()
 							}
@@ -701,7 +721,7 @@ enum Router {
 							fleet.active?.setSkills(level: 5) { _ in
 								self.fleet = fleet
 								self.engine = engine
-								super.perform(source: source, view: view)
+								super.perform(source: source, sender: sender)
 								progress.finish()
 								UIApplication.shared.endIgnoringInteractionEvents()
 							}

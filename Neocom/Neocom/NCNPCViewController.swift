@@ -70,10 +70,10 @@ class NCNPCViewController: NCTreeViewController, NCSearchableViewController {
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCNPCGroupRow else {return}
 		if row.object.group != nil {
-			Router.Database.Types(npcGroup: row.object).perform(source: self, view: treeController.cell(for: node))
+			Router.Database.Types(npcGroup: row.object).perform(source: self, sender: treeController.cell(for: node))
 		}
 		else {
-			Router.Database.NpcGroups(parentGroup: row.object).perform(source: self, view: treeController.cell(for: node))
+			Router.Database.NpcGroups(parentGroup: row.object).perform(source: self, sender: treeController.cell(for: node))
 		}
 	}
 	

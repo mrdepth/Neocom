@@ -40,7 +40,7 @@ class NCDatabaseCertificateGroupsViewController: NCTreeViewController {
 	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCDatabaseGroupRow else {return}
-		Router.Database.Certificates(group: row.object).perform(source: self, view: treeController.cell(for: node))
+		Router.Database.Certificates(group: row.object).perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 }

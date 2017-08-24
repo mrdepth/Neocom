@@ -185,7 +185,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		Router.Mail.Attachments { [weak self] (controller, value) in
 			controller.dismiss(animated: true, completion: nil)
 			self?.attach(value)
-		}.perform(source: self)
+		}.perform(source: self, sender: sender)
 	}
 
 	//MARK: - UITextViewDelegate

@@ -121,7 +121,7 @@ class NCTypePickerRecentViewController: UITableViewController, NSFetchedResultsC
 	override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 		guard let recent = results?.object(at: indexPath) else {return}
 		guard let type = invTypes?[Int(recent.typeID)] else {return}
-		Router.Database.TypeInfo(type).perform(source: self, view: tableView.cellForRow(at: indexPath))
+		Router.Database.TypeInfo(type).perform(source: self, sender: tableView.cellForRow(at: indexPath))
 	}
 	
 	// MARK: - NSFetchedResultsControllerDelegate

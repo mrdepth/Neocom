@@ -9,24 +9,12 @@
 import UIKit
 import CloudData
 
-class NCFittingFightersViewController: UIViewController, TreeControllerDelegate {
+class NCFittingFightersViewController: UIViewController, TreeControllerDelegate, NCFittingEditorPage {
 	@IBOutlet weak var treeController: TreeController!
 	@IBOutlet weak var tableView: UITableView!
 	
 	@IBOutlet weak var droneBayLabel: NCResourceLabel!
 	@IBOutlet weak var dronesCountLabel: UILabel!
-	
-	var engine: NCFittingEngine? {
-		return (parent as? NCFittingEditorViewController)?.engine
-	}
-	
-	var fleet: NCFittingFleet? {
-		return (parent as? NCFittingEditorViewController)?.fleet
-	}
-	
-	var typePickerViewController: NCTypePickerViewController? {
-		return (parent as? NCFittingEditorViewController)?.typePickerViewController
-	}
 	
 	private var observer: NotificationObserver?
 	
@@ -64,17 +52,17 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		treeController.deselectCell(for: node, animated: true)
 		if let node = node as? NCFittingDroneRow {
-			Router.Fitting.DroneActions(node.drones).perform(source: self, view: treeController.cell(for: node))
+			Router.Fitting.DroneActions(node.drones).perform(source: self, sender: treeController.cell(for: node))
 		}
 		else if node is NCActionRow {
 			guard let pilot = fleet?.active else {return}
 			guard let typePickerViewController = typePickerViewController else {return}
+			guard let engine = self.engine else {return}
 			
 			let category = NCDBDgmppItemCategory.category(categoryID: .drone, subcategory:  NCDBCategoryID.fighter.rawValue)
 			
 			typePickerViewController.category = category
-			typePickerViewController.completionHandler = { [weak typePickerViewController] (_, type) in
-				guard let engine = self.engine else {return}
+			typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
 				let typeID = Int(type.typeID)
 				engine.perform {
 					guard let ship = pilot.ship ?? pilot.structure else {return}
@@ -90,8 +78,12 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate 
 					}
 				}
 				typePickerViewController?.dismiss(animated: true)
+				if self?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
+					typePickerViewController?.dismiss(animated: true)
+				}
+
 			}
-			present(typePickerViewController, animated: true)
+			Route(kind: .popover, viewController: typePickerViewController).perform(source: self, sender: treeController.cell(for: node))
 			
 		}
 	}

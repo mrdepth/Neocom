@@ -325,7 +325,7 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 	@IBAction func onFitting(_ sender: Any) {
 		guard let killmail = self.killmail else {return}
 		
-		Router.Fitting.Editor(killmail: killmail).perform(source: self)
+		Router.Fitting.Editor(killmail: killmail).perform(source: self, sender: sender)
 		
 		/*UIApplication.shared.beginIgnoringInteractionEvents()
 		let engine = NCFittingEngine()
@@ -356,7 +356,7 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		if let row = node as? TreeNodeRoutable {
-			row.route?.perform(source: self, view: treeController.cell(for: node))
+			row.route?.perform(source: self, sender: treeController.cell(for: node))
 		}
 		treeController.deselectCell(for: node, animated: true)
 	}

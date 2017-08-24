@@ -64,7 +64,7 @@ class NCMarketQuickbarViewController: NCTreeViewController {
 	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCDatabaseTypeRow<NCDBInvType> else {return}
-		Router.Database.TypeInfo(row.object).perform(source: self, view: treeController.cell(for: node))
+		Router.Database.TypeInfo(row.object).perform(source: self, sender: treeController.cell(for: node))
 	}
 
 }

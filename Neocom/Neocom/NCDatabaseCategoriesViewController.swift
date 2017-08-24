@@ -65,7 +65,7 @@ class NCDatabaseCategoriesViewController: NCTreeViewController, NCSearchableView
 	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCDatabaseCategoryRow else {return}
-		Router.Database.Groups(row.object).perform(source: self, view: treeController.cell(for: node))
+		Router.Database.Groups(row.object).perform(source: self, sender: treeController.cell(for: node))
 	}
 
 	

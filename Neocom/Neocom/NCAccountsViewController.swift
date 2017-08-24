@@ -542,11 +542,11 @@ class NCAccountsViewController: NCTreeViewController, UIViewControllerTransition
 			}
 			self?.updateTitle()
 
-		}.perform(source: self)
+		}.perform(source: self, sender: sender)
 	}
 	
 	@IBAction func onFolders(_ sender: Any) {
-		Router.Account.Folders().perform(source: self)
+		Router.Account.Folders().perform(source: self, sender: sender)
 	}
 
 	

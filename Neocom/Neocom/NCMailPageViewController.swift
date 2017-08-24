@@ -64,7 +64,7 @@ class NCMailPageViewController: NCPageViewController {
 	}
 	
 	@IBAction func onCompose(_ sender: Any) {
-		Router.Mail.NewMessage().perform(source: self)
+		Router.Mail.NewMessage().perform(source: self, sender: sender)
 	}
 	
 	func saveUnreadCount() {

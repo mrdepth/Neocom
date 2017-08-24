@@ -50,7 +50,7 @@ class NCDatabaseTypeRequiredForViewController: NCTreeViewController {
 	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let node = node as? NCDatabaseTypeRow<NCDBInvType> else {return}
-		Router.Database.TypeInfo(node.object).perform(source: self, view: treeController.cell(for: node))
+		Router.Database.TypeInfo(node.object).perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 }

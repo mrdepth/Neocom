@@ -10,9 +10,11 @@ import UIKit
 import CoreData
 import CloudData
 
-class NCFittingEditorViewController: NCPageViewController {
+class NCFittingEditorViewController: UIViewController {
 	var fleet: NCFittingFleet?
 	var engine: NCFittingEngine?
+	
+	@IBOutlet weak var stackView: UIStackView!
 	
 	private var observer: NotificationObserver?
 	var isModified: Bool = false {
@@ -42,6 +44,12 @@ class NCFittingEditorViewController: NCPageViewController {
 	lazy private var saveButtonItem: UIBarButtonItem = {
 		return UIBarButtonItem(title: NSLocalizedString("Save", comment: "Navigation item"), style: .done, target: self, action: #selector(onSave(_:)))
 	}()
+	
+	var pageViewController: NCFittingEditorPageViewController? {
+		return childViewControllers.first {$0 is NCFittingEditorPageViewController} as? NCFittingEditorPageViewController
+	}
+	
+	var statsViewController: UIViewController?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -76,8 +84,19 @@ class NCFittingEditorViewController: NCPageViewController {
 			controllers.append(storyboard!.instantiateViewController(withIdentifier: "NCFittingImplantsViewController"))
 			controllers.append(storyboard!.instantiateViewController(withIdentifier: "NCFittingFleetViewController"))
 		}
-		controllers.append(storyboard!.instantiateViewController(withIdentifier: "NCFittingStatsViewController"))
-		viewControllers = controllers
+		
+		statsViewController = storyboard!.instantiateViewController(withIdentifier: "NCFittingStatsViewController")
+		if traitCollection.horizontalSizeClass == .compact || traitCollection.userInterfaceIdiom == .phone {
+			controllers.append(statsViewController!)
+		}
+		else {
+			addChildViewController(statsViewController!)
+			stackView.addArrangedSubview(statsViewController!.view)
+		}
+		
+//		viewControllers = controllers
+		
+		pageViewController?.viewControllers = controllers
 		
 		updateTitle()
 		
@@ -96,6 +115,41 @@ class NCFittingEditorViewController: NCPageViewController {
 			var items = [navigationItem.rightBarButtonItem!]
 			items.append(self.saveButtonItem)
 			navigationItem.setRightBarButtonItems(items, animated: true)
+		}
+	}
+
+//	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//		super.traitCollectionDidChange(previousTraitCollection)
+//	}
+//	
+	override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+		defer {super.willTransition(to: newCollection, with: coordinator)}
+		guard newCollection.horizontalSizeClass != traitCollection.horizontalSizeClass && newCollection.userInterfaceIdiom == .pad else {return}
+		guard let statsViewController = statsViewController else {return}
+
+		switch newCollection.horizontalSizeClass {
+		case .regular:
+			guard statsViewController.view.superview !== stackView else {return}
+			if pageViewController?.viewControllers?.last === statsViewController {
+				pageViewController?.viewControllers?.removeLast()
+			}
+			
+			statsViewController.willMove(toParentViewController: self)
+			statsViewController.removeFromParentViewController()
+			addChildViewController(statsViewController)
+			statsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+			stackView.addArrangedSubview(statsViewController.view)
+			statsViewController.didMove(toParentViewController: self)
+		default:
+			guard let pageViewController = pageViewController else {return}
+			guard statsViewController.view.superview === stackView else {return}
+			
+			statsViewController.willMove(toParentViewController: nil)
+			statsViewController.view.removeFromSuperview()
+			statsViewController.removeFromParentViewController()
+			statsViewController.didMove(toParentViewController: nil)
+
+			pageViewController.viewControllers?.append(statsViewController)
 		}
 	}
 	
@@ -172,62 +226,6 @@ class NCFittingEditorViewController: NCPageViewController {
 	@objc private func onBack(_ sender: Any) {
 		let controller = UIAlertController(title: nil, message: NSLocalizedString("Save Changes?", comment: ""), preferredStyle: .alert)
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Save and Exit", comment: ""), style: .default, handler: {[weak self] _ in
-			/*guard let fleet = self?.fleet else {return}
-			
-			NCStorage.sharedStorage?.performBackgroundTask {managedObjectContext in
-				self?.engine?.performBlockAndWait {
-					var pilots = [String: NCLoadout] ()
-					for (character, objectID) in fleet.pilots {
-						
-						if character.identifier == nil {
-							character.identifier = UUID().uuidString
-						}
-						
-						guard let ship = character.ship ?? character.structure else {continue}
-						if let objectID = objectID, let loadout = (try? managedObjectContext.existingObject(with: objectID)) as? NCLoadout {
-							loadout.uuid = character.identifier
-							loadout.name = ship.name
-							loadout.data?.data = character.loadout
-							pilots[loadout.uuid!] = loadout
-						}
-						else {
-							let loadout = NCLoadout(entity: NSEntityDescription.entity(forEntityName: "Loadout", in: managedObjectContext)!, insertInto: managedObjectContext)
-							loadout.data = NCLoadoutData(entity: NSEntityDescription.entity(forEntityName: "LoadoutData", in: managedObjectContext)!, insertInto: managedObjectContext)
-							loadout.typeID = Int32(ship.typeID)
-							loadout.name = ship.name
-							loadout.data?.data = character.loadout
-							loadout.uuid = character.identifier
-							pilots[loadout.uuid!] = loadout
-						}
-					}
-					
-					if fleet.pilots.count > 1 {
-						let object: NCFleet
-						if let fleetID = fleet.fleetID, let fleet = (try? managedObjectContext.existingObject(with: fleetID)) as? NCFleet {
-							if (fleet.loadouts?.count ?? 0) > 0 {
-								fleet.removeFromLoadouts(fleet.loadouts!)
-							}
-							object = fleet
-						}
-						else {
-							object = NCFleet(entity: NSEntityDescription.entity(forEntityName: "Fleet", in: managedObjectContext)!, insertInto: managedObjectContext)
-							object.name = NSLocalizedString("Fleet", comment: "")
-						}
-						
-						for (character, _) in fleet.pilots {
-							guard let pilot = pilots[character.identifier!] else {continue}
-							pilot.addToFleets(object)
-						}
-						object.configuration = fleet.configuration
-					}
-				}
-				
-//				if managedObjectContext.hasChanges {
-//					try? managedObjectContext.save()
-//				}
-
-			}*/
-			
 			self?.save {
 				_ = self?.navigationController?.popViewController(animated: true)
 			}
@@ -283,6 +281,31 @@ class NCFittingEditorViewController: NCPageViewController {
 		}
 		titleLabel.attributedText = typeName * [:] + (!shipName.isEmpty ? "\n" + shipName * [NSFontAttributeName:UIFont.preferredFont(forTextStyle: .footnote), NSForegroundColorAttributeName: UIColor.lightText] : "" * [:])
 		titleLabel.sizeToFit()
+	}
+
+}
+
+
+protocol NCFittingEditorPage {
+	
+}
+
+extension NCFittingEditorPage where Self: UIViewController {
+	
+	var editorViewController: NCFittingEditorViewController? {
+		return sequence(first: parent, next: {$0?.parent}).first {$0 is NCFittingEditorViewController} as? NCFittingEditorViewController
+	}
+	
+	var engine: NCFittingEngine? {
+		return editorViewController?.engine
+	}
+	
+	var fleet: NCFittingFleet? {
+		return editorViewController?.fleet
+	}
+	
+	var typePickerViewController: NCTypePickerViewController? {
+		return editorViewController?.typePickerViewController
 	}
 
 }

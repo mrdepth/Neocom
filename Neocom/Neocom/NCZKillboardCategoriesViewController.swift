@@ -46,7 +46,7 @@ class NCZKillboardCategoriesViewController: UITableViewController, UISearchResul
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let row = node as? NCDatabaseCategoryRow else {return}
-		Router.KillReports.Groups(category: row.object).perform(source: self, view: treeController.cell(for: node))
+		Router.KillReports.Groups(category: row.object).perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	//MARK: UISearchResultsUpdating

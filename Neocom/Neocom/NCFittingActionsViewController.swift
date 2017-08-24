@@ -134,12 +134,12 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	}
 
 	@IBAction func onShare(_ sender: Any) {
-		performShare()
+		performShare(sender: sender)
 	}
 	
 	@IBAction func onSkills(_ sender: Any) {
 		guard let ship = fleet?.engine.sync(execute: {self.fleet?.active?.ship}) else {return}
-		Router.Fitting.RequiredSkills(for: ship).perform(source: self)
+		Router.Fitting.RequiredSkills(for: ship).perform(source: self, sender: sender)
 	}
 
 	@IBAction func onShoppingList(_ sender: Any) {
@@ -150,7 +150,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 			guard let shoppingItem = pilot.shoppingItem else {return}
 			DispatchQueue.main.async {
 				UIApplication.shared.endIgnoringInteractionEvents()
-				Router.ShoppingList.Add(items: [shoppingItem]).perform(source: self)
+				Router.ShoppingList.Add(items: [shoppingItem]).perform(source: self, sender: sender)
 			}
 		}
 	}
@@ -217,13 +217,13 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let item = node as? TreeNodeRoutable else {return}
 		guard let route = item.route else {return}
-		route.perform(source: self, view: treeController.cell(for: node))
+		route.perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		guard let node = node as? TreeRow else {return}
 		guard let route = node.accessoryButtonRoute else {return}
-		route.perform(source: self, view: treeController.cell(for: node))
+		route.perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
@@ -349,7 +349,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		}
 	}
 	
-	private func performShare() {
+	private func performShare(sender: Any) {
 		guard let pilot = fleet?.active else {return}
 		
 		pilot.engine?.perform {
@@ -417,7 +417,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 
 						let font = UIFont.preferredFont(forTextStyle: .body)
 						let s = name * [NSLinkAttributeName: url, NSFontAttributeName: font] + " " * [NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor.white]
-						Router.Mail.NewMessage(recipients: nil, subject: nil, body: s).perform(source: strongSelf)
+						Router.Mail.NewMessage(recipients: nil, subject: nil, body: s).perform(source: strongSelf, sender: sender)
 					}))
 
 				}

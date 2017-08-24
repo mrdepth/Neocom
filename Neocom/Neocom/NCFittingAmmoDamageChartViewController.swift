@@ -163,7 +163,7 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		guard let node = node as? NCAmmoNode else {return}
-		Router.Database.TypeInfo(node.object).perform(source: self, view: treeController.cell(for: node))
+		Router.Database.TypeInfo(node.object).perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	

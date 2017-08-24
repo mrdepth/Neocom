@@ -180,12 +180,12 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 		
 		defaultRows = rows
 		
-		let kills = Router.Custom { [weak self] (controller, view) in
-			self?.showReports(.kills, from: view)
+		let kills = Router.Custom { [weak self] (controller, sender) in
+			self?.showReports(.kills, from: sender)
 		}
 		
-		let losses = Router.Custom { [weak self] (controller, view) in
-			self?.showReports(.losses, from: view)
+		let losses = Router.Custom { [weak self] (controller, sender) in
+			self?.showReports(.losses, from: sender)
 		}
 		
 
@@ -213,7 +213,7 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 		completionHandler()
 	}
 	
-	private func showReports(_ type: ZKillboard.Filter, from: UIView?) {
+	private func showReports(_ type: ZKillboard.Filter, from: Any?) {
 		var filter = self.filter
 		filter.append(type)
 		
@@ -250,7 +250,7 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 			}
 		}
 		
-		Router.KillReports.ZKillboardReports(filter: filter).perform(source: self, view: view)
+		Router.KillReports.ZKillboardReports(filter: filter).perform(source: self, sender: from)
 	}
 	
 	private func select(ship: NSManagedObject) {

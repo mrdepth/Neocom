@@ -22,25 +22,34 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 			}
 			
 			pageControl.titles = viewControllers?.map({$0.title?.uppercased() ?? "-"}) ?? []
-			self.view.setNeedsLayout()
-			scrollView.contentOffset = .zero
 			
-			currentPage = viewControllers?.first
-			if let currentPage = currentPage {
-				let isVisible = isViewLoaded && view.window != nil
-				addChild(viewController: currentPage)
-				scrollView.addSubview(currentPage.view)
-				if isVisible {
-					currentPage.beginAppearanceTransition(true, animated: false)
-					currentPage.didMove(toParentViewController: self)
-					currentPage.endAppearanceTransition()
+			if currentPage == nil || viewControllers?.contains(currentPage!) != true {
+				currentPage = viewControllers?.first
+				
+				if let currentPage = currentPage {
+					let isVisible = isViewLoaded && view.window != nil
+					
+					addChild(viewController: currentPage)
+					scrollView.addSubview(currentPage.view)
+					if isVisible {
+						currentPage.beginAppearanceTransition(true, animated: false)
+						currentPage.didMove(toParentViewController: self)
+						currentPage.endAppearanceTransition()
+					}
+					else {
+						currentPage.didMove(toParentViewController: self)
+					}
 				}
-				else {
-					currentPage.didMove(toParentViewController: self)
-				}
+			}
+			
+			needsAdjustCurrentPage = true
+			if isViewLoaded {
+				view.setNeedsLayout()
 			}
 		}
 	}
+	
+	private var needsAdjustCurrentPage: Bool = false
 	
 	var currentPage: UIViewController? {
 		didSet {
@@ -85,12 +94,18 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-		scrollView.contentSize = CGSize(width: scrollView.bounds.size.width * CGFloat(viewControllers?.count ?? 0), height: scrollView.bounds.size.height)
-		var rect = scrollView.bounds
-		rect.origin = .zero
-		for controller in viewControllers ?? [] {
-			controller.view.frame = rect
-			rect.origin.x += rect.size.width
+		
+		if !scrollView.isDragging && !scrollView.isDecelerating {
+			scrollView.contentSize = CGSize(width: scrollView.bounds.size.width * CGFloat(viewControllers?.count ?? 0), height: scrollView.bounds.size.height)
+			for (i, controller) in (viewControllers ?? []).enumerated() {
+				controller.view.frame = frameForPage(at: i)
+			}
+		}
+		if needsAdjustCurrentPage {
+			if let currentPage = currentPage, let i = viewControllers?.index(of: currentPage) {
+				self.scrollView.contentOffset.x = CGFloat(i) * scrollView.bounds.size.width
+			}
+			needsAdjustCurrentPage = false
 		}
 	}
 	
@@ -103,12 +118,13 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
-		if let currentPage = currentPage, let i = viewControllers?.index(of: currentPage) {
-			coordinator.animate(alongsideTransition: { _ in
-				self.scrollView.contentOffset.x = CGFloat(i) * size.width
-			}, completion: nil)
-			
-		}
+		needsAdjustCurrentPage = true
+//		if let currentPage = currentPage, let i = viewControllers?.index(of: currentPage) {
+//			coordinator.animate(alongsideTransition: { _ in
+//				self.scrollView.contentOffset.x = CGFloat(i) * size.width
+//			}, completion: nil)
+//			
+//		}
 	}
 	
 	//MARK: - UIScrollViewDelegate
@@ -134,9 +150,10 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		pageControl.setNeedsLayout()
-		for controller in viewControllers ?? [] {
+		for (i, controller) in (viewControllers ?? []).enumerated() {
 			if appearances.first(where: {$0.controller === controller}) == nil {
-				if controller.view.frame.intersects(scrollView.bounds) {
+				let frame = frameForPage(at: i)
+				if frame.intersects(scrollView.bounds) {
 					if controller == currentPage {
 						appearances.append(Appearance(false, controller: controller))
 					}
@@ -147,10 +164,13 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 						}
 
 						appearances.append(Appearance(true, controller: controller))
-						
+
 						if controller.view.superview == nil {
+							controller.view.translatesAutoresizingMaskIntoConstraints = true
 							scrollView.addSubview(controller.view)
 						}
+
+						
 					}
 				}
 			}
@@ -175,14 +195,15 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	
 	private func addChild(viewController: UIViewController) {
 		addChildViewController(viewController)
-		
 	}
 	
 	private func scrollViewDidEndScrolling() {
 		let copy = appearances
 		for appearance in copy {
 			let controller = appearance.controller
-			if controller.view.frame.intersects(scrollView.bounds) {
+			guard let i = viewControllers?.index(of: controller) else {continue}
+
+			if frameForPage(at: i).intersects(scrollView.bounds) {
 				if !appearance.isAppearing {
 					controller.beginAppearanceTransition(true, animated: false)
 					//					appearances.append(Appearance(true, controller: controller))
@@ -202,5 +223,12 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 		}
 		pendingChildren = []
 		appearances = []
+	}
+	
+	private func frameForPage(at index: Int) -> CGRect {
+		var frame = scrollView.bounds
+		frame.origin.y = 0
+		frame.origin.x = frame.size.width * CGFloat(index)
+		return frame
 	}
 }

@@ -9,16 +9,8 @@
 import UIKit
 import CloudData
 
-class NCFittingFleetViewController: UITableViewController, TreeControllerDelegate {
+class NCFittingFleetViewController: UITableViewController, TreeControllerDelegate, NCFittingEditorPage {
 	@IBOutlet weak var treeController: TreeController!
-	
-	var engine: NCFittingEngine? {
-		return (parent as? NCFittingEditorViewController)?.engine
-	}
-	
-	var fleet: NCFittingFleet? {
-		return (parent as? NCFittingEditorViewController)?.fleet
-	}
 	
 	private var observer: NotificationObserver?
 	
@@ -61,7 +53,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		if let route = (node as? TreeRow)?.route {
-			route.perform(source: self, view: treeController.cell(for: node))
+			route.perform(source: self, sender: treeController.cell(for: node))
 			let active = fleet?.active
 			if let node = treeController.content?.children.first(where: {($0 as? NCFleetMemberRow)?.pilot == active}) {
 				treeController.selectCell(for: node, animated: true, scrollPosition: .none)
@@ -80,7 +72,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		guard let route = (node as? TreeRow)?.accessoryButtonRoute else {return}
 		
-		route.perform(source: self, view: treeController.cell(for: node))
+		route.perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	//MARK: - Private

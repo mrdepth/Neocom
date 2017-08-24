@@ -271,7 +271,7 @@ class NCFittingLoadoutsViewController: NCTreeViewController {
 						
 						DispatchQueue.main.async {
 							guard let strongSelf = self else {return}
-							Router.Mail.NewMessage(recipients: nil, subject: nil, body: body).perform(source: strongSelf)
+							Router.Mail.NewMessage(recipients: nil, subject: nil, body: body).perform(source: strongSelf, sender: sender)
 						}
 					}
 					

@@ -81,7 +81,7 @@ class NCZKillboardTypesViewController: NCTreeViewController, NCSearchableViewCon
 		super.treeController(treeController, accessoryButtonTappedWithNode: node)
 		guard let row = node as? NCZKillboardTypeRow else {return}
 		guard let typeID = row.object["typeID"] as? Int else {return}
-		Router.Database.TypeInfo(typeID).perform(source: self, view: treeController.cell(for: node))
+		Router.Database.TypeInfo(typeID).perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	//MARK: NCSearchableViewController

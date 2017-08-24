@@ -79,7 +79,7 @@ class NCRegionsViewController: NCTreeViewController, NCSearchableViewController 
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCRegionRow else {return}
 		if mode.contains(.solarSystems) {
-			Router.Database.SolarSystems(region: row.object).perform(source: self, view: treeController.cell(for: node))
+			Router.Database.SolarSystems(region: row.object).perform(source: self, sender: treeController.cell(for: node))
 		}
 		else {
 			guard let picker = navigationController as? NCLocationPickerViewController else {return}

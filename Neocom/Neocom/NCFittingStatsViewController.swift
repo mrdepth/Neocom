@@ -325,16 +325,8 @@ class NCFittingPriceImplantsRow: NCFittingPriceRow {
 }
 
 
-class NCFittingStatsViewController: NCTreeViewController {
+class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 
-	var engine: NCFittingEngine? {
-		return (parent as? NCFittingEditorViewController)?.engine
-	}
-	
-	var fleet: NCFittingFleet? {
-		return (parent as? NCFittingEditorViewController)?.fleet
-	}
-	
 	private var observer: NotificationObserver?
 	
 	override func viewDidLoad() {

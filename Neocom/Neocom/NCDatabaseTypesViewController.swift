@@ -281,7 +281,7 @@ class NCDatabaseTypesViewController: NCTreeViewController, NCSearchableViewContr
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCDatabaseTypeRow<NSDictionary> else {return}
 		guard let typeID = row.object["typeID"] as? Int else {return}
-		Router.Database.TypeInfo(typeID).perform(source: self, view: treeController.cell(for: node))
+		Router.Database.TypeInfo(typeID).perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	//MARK: NCSearchableViewController

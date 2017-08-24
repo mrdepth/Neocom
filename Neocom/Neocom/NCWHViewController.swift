@@ -68,7 +68,7 @@ class NCWHViewController: NCTreeViewController, NCSearchableViewController {
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCWHGroupRow else {return}
 		guard let type = row.object.type else {return}
-		Router.Database.TypeInfo(type).perform(source: self, view: treeController.cell(for: node))
+		Router.Database.TypeInfo(type).perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	

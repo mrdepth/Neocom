@@ -102,7 +102,7 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		guard let node = node as? NCTypeInfoRow, let type = node.type else {return}
-		Router.Database.TypeInfo(type).perform(source: self, view: treeController.cell(for: node))
+		Router.Database.TypeInfo(type).perform(source: self, sender: treeController.cell(for: node))
 	}
 		
 }

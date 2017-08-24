@@ -129,6 +129,6 @@ class NCDatabaseCertificatesViewController: NCTreeViewController {
 	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCDatabaseCertificateRow else {return}
-		Router.Database.CertificateInfo(certificate: row.object).perform(source: self, view: treeController.cell(for: node))
+		Router.Database.CertificateInfo(certificate: row.object).perform(source: self, sender: treeController.cell(for: node))
 	}
 }

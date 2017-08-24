@@ -73,7 +73,7 @@ class NCZKillboardGroupsViewController: UITableViewController, UISearchResultsUp
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let row = node as? NCDatabaseGroupRow else {return}
-		Router.KillReports.Types(group: row.object).perform(source: self, view: treeController.cell(for: node))
+		Router.KillReports.Types(group: row.object).perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {

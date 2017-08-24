@@ -124,7 +124,7 @@ class NCShoppingListAdditionViewController: UITableViewController, TreeControlle
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		if let row = node as? TreeNodeRoutable {
-			row.route?.perform(source: self, view: treeController.cell(for: node))
+			row.route?.perform(source: self, sender: treeController.cell(for: node))
 		}
 		treeController.deselectCell(for: node, animated: true)
 	}

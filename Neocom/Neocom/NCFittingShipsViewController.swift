@@ -24,7 +24,7 @@ class NCFittingShipsViewController: NCFittingLoadoutsViewController {
 			guard let strongSelf = self else {return}
 			strongSelf.dismiss(animated: true)
 			
-			Router.Fitting.Editor(typeID: Int(type.typeID)).perform(source: strongSelf)
+			Router.Fitting.Editor(typeID: Int(type.typeID)).perform(source: strongSelf, sender: nil)
 			
 		})))
 		

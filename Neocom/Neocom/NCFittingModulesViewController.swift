@@ -192,7 +192,7 @@ class NCFittingModuleSection: TreeSection {
 }
 
 
-class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
+class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, NCFittingEditorPage {
 	@IBOutlet weak var treeController: TreeController!
 	@IBOutlet weak var tableView: UITableView!
 
@@ -201,18 +201,6 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 	@IBOutlet weak var calibrationLabel: NCResourceLabel!
 	@IBOutlet weak var turretsLabel: UILabel!
 	@IBOutlet weak var launchersLabel: UILabel!
-	
-	var engine: NCFittingEngine? {
-		return (parent as? NCFittingEditorViewController)?.engine
-	}
-	
-	var fleet: NCFittingFleet? {
-		return (parent as? NCFittingEditorViewController)?.fleet
-	}
-	
-	var typePickerViewController: NCTypePickerViewController? {
-		return (parent as? NCFittingEditorViewController)?.typePickerViewController
-	}
 	
 	var grouping = [NCFittingModuleSlot: Bool]()
 	
@@ -304,18 +292,20 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate {
 				return
 			}
 			typePickerViewController.category = category
-			typePickerViewController.completionHandler = { [weak typePickerViewController] (_, type) in
+			typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
 				let typeID = Int(type.typeID)
-				self.engine?.perform {
+				engine.perform {
 					guard let ship = pilot.ship ?? pilot.structure else {return}
 					_ = ship.addModule(typeID: typeID, socket: socket)
 				}
-				typePickerViewController?.dismiss(animated: true)
+				if self?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
+					typePickerViewController?.dismiss(animated: true)
+				}
 			}
-			present(typePickerViewController, animated: true)
+			Route(kind: .popover, viewController: typePickerViewController).perform(source: self, sender: treeController.cell(for: node))
 		}
 		else {
-			Router.Fitting.ModuleActions(item.modules).perform(source: self, view: treeController.cell(for: item))
+			Router.Fitting.ModuleActions(item.modules).perform(source: self, sender: treeController.cell(for: item))
 		}
 	}
 	

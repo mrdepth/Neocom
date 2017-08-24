@@ -72,10 +72,10 @@ class NCTypePickerGroupsViewController: NCTreeViewController, NCSearchableViewCo
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCDgmppItemGroupRow else {return}
 		if row.object.subGroups?.count ?? 0 > 0 {
-			Router.Database.TypePickerGroups(parentGroup: row.object).perform(source: self, view: treeController.cell(for: node))
+			Router.Database.TypePickerGroups(parentGroup: row.object).perform(source: self, sender: treeController.cell(for: node))
 		}
 		else {
-			Router.Database.TypePickerTypes(group: row.object).perform(source: self, view: treeController.cell(for: node))
+			Router.Database.TypePickerTypes(group: row.object).perform(source: self, sender: treeController.cell(for: node))
 		}
 	}
 

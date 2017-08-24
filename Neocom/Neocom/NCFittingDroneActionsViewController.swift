@@ -188,13 +188,13 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		guard let node = node as? TreeRow else {return}
 		guard let route = node.route else {return}
-		route.perform(source: self, view: treeController.cell(for: node))
+		route.perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		guard let node = node as? TreeRow else {return}
 		guard let route = node.accessoryButtonRoute else {return}
-		route.perform(source: self, view: treeController.cell(for: node))
+		route.perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	//MARK: Private

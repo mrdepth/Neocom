@@ -79,7 +79,7 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController {
 			
 			
 			NotificationCenter.default.post(name: .NCMarketRegionChanged, object: region)
-		}.perform(source: self)
+		}.perform(source: self, sender: sender)
 		
 
 	}

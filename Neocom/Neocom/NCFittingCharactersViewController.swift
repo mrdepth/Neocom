@@ -66,11 +66,11 @@ class NCFittingCharactersViewController: NCTreeViewController {
 			guard let context = managedObjectContext else {return}
 			let character = NCFitCharacter(entity: NSEntityDescription.entity(forEntityName: "FitCharacter", in: context)!, insertInto: context)
 			character.uuid = UUID().uuidString
-			Router.Fitting.CharacterEditor(character: character).perform(source: self, view: treeController.cell(for: node))
+			Router.Fitting.CharacterEditor(character: character).perform(source: self, sender: treeController.cell(for: node))
 		}
 		else if let node = node as? NCCustomCharacterRow {
 			if isEditing {
-				Router.Fitting.CharacterEditor(character: node.object).perform(source: self, view: treeController.cell(for: node))
+				Router.Fitting.CharacterEditor(character: node.object).perform(source: self, sender: treeController.cell(for: node))
 			}
 			else if let url = node.url {
 				if let context = managedObjectContext?.parent, context.hasChanges {

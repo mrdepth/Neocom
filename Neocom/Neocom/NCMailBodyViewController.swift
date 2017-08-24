@@ -126,7 +126,7 @@ class NCMailBodyViewController: UIViewController {
 			s = nil
 		}
 		
-		Router.Mail.NewMessage(recipients: recipients.map{$0.contactID}, subject: "RE: \(mail?.subject ?? "")", body: s).perform(source: self, view: nil)
+		Router.Mail.NewMessage(recipients: recipients.map{$0.contactID}, subject: "RE: \(mail?.subject ?? "")", body: s).perform(source: self, sender: nil)
 	}
 	
 	private func updateConstraints(_ textView: UITextView) {

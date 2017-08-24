@@ -121,13 +121,13 @@ class NCZKillboardSummaryViewController: NCPageViewController {
 		if let corporation = corporation {
 			controller.addAction(UIAlertAction(title: corporation.name, style: .default) { [weak self] _ in
 				guard let strongSelf = self else {return}
-				Router.KillReports.ContactReports(contact: corporation).perform(source: strongSelf)
+				Router.KillReports.ContactReports(contact: corporation).perform(source: strongSelf, sender: sender)
 			})
 		}
 		if let alliance = alliance {
 			controller.addAction(UIAlertAction(title: alliance.name, style: .default) { [weak self] _ in
 				guard let strongSelf = self else {return}
-				Router.KillReports.ContactReports(contact: alliance).perform(source: strongSelf)
+				Router.KillReports.ContactReports(contact: alliance).perform(source: strongSelf, sender: sender)
 			})
 		}
 		

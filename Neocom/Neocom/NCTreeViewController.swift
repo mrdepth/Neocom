@@ -118,14 +118,14 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 		if (!isEditing && !tableView.allowsMultipleSelection) || (isEditing && !tableView.allowsMultipleSelectionDuringEditing) {
 			treeController.deselectCell(for: node, animated: true)
 			if let route = (node as? TreeNodeRoutable)?.route {
-				route.perform(source: self, view: treeController.cell(for: node))
+				route.perform(source: self, sender: treeController.cell(for: node))
 			}
 		}
 		else {
 			if isEditing && (self as TreeControllerDelegate).treeController?(treeController, editActionsForNode: node) == nil {
 				treeController.deselectCell(for: node, animated: true)
 				if let route = (node as? TreeNodeRoutable)?.route {
-					route.perform(source: self, view: treeController.cell(for: node))
+					route.perform(source: self, sender: treeController.cell(for: node))
 				}
 			}
 		}
@@ -136,7 +136,7 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		if let route = (node as? TreeNodeRoutable)?.accessoryButtonRoute {
-			route.perform(source: self, view: treeController.cell(for: node))
+			route.perform(source: self, sender: treeController.cell(for: node))
 		}
 	}
 	

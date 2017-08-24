@@ -55,10 +55,10 @@ class NCNPCPickerGroupsViewController: NCTreeViewController, NCSearchableViewCon
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCNPCGroupRow else {return}
 		if row.object.group != nil {
-			Router.Database.NPCPickerTypes(npcGroup: row.object).perform(source: self, view: treeController.cell(for: node))
+			Router.Database.NPCPickerTypes(npcGroup: row.object).perform(source: self, sender: treeController.cell(for: node))
 		}
 		else {
-			Router.Database.NPCPickerGroups(parentGroup: row.object).perform(source: self, view: treeController.cell(for: node))
+			Router.Database.NPCPickerGroups(parentGroup: row.object).perform(source: self, sender: treeController.cell(for: node))
 		}
 	}
 

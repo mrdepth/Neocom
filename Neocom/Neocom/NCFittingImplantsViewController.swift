@@ -99,20 +99,7 @@ class NCBoosterRow: TreeRow {
 }
 
 
-class NCFittingImplantsViewController: NCTreeViewController {
-	
-	var engine: NCFittingEngine? {
-		return (parent as? NCFittingEditorViewController)?.engine
-	}
-	
-	var fleet: NCFittingFleet? {
-		return (parent as? NCFittingEditorViewController)?.fleet
-	}
-	
-	var typePickerViewController: NCTypePickerViewController? {
-		return (parent as? NCFittingEditorViewController)?.typePickerViewController
-	}
-
+class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage {
 	
 	private var observer: NotificationObserver?
 	
@@ -137,9 +124,12 @@ class NCFittingImplantsViewController: NCTreeViewController {
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
+		defer {
+			completionHandler()
+		}
+		guard editorViewController != nil else {return}
 		treeController?.content = TreeNode()
 		reload()
-		completionHandler()
 	}
 	
 	//MARK: - TreeControllerDelegate
@@ -173,14 +163,16 @@ class NCFittingImplantsViewController: NCTreeViewController {
 				let category = NCDBDgmppItemCategory.category(categoryID: .implant, subcategory: slot)
 				
 				typePickerViewController.category = category
-				typePickerViewController.completionHandler = { [weak typePickerViewController] (_, type) in
+				typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
 					let typeID = Int(type.typeID)
-					self.engine?.perform {
+					pilot.engine?.perform {
 						pilot.addImplant(typeID: typeID)
 					}
-					typePickerViewController?.dismiss(animated: true)
+					if self?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
+						typePickerViewController?.dismiss(animated: true)
+					}
 				}
-				present(typePickerViewController, animated: true)
+				Route(kind: .popover, viewController: typePickerViewController).perform(source: self, sender: treeController.cell(for: node))
 			}
 		}
 		else if let row = node as? NCBoosterRow {
@@ -190,14 +182,16 @@ class NCFittingImplantsViewController: NCTreeViewController {
 				let category = NCDBDgmppItemCategory.category(categoryID: .booster, subcategory: slot)
 				
 				typePickerViewController.category = category
-				typePickerViewController.completionHandler = { [weak typePickerViewController] (_, type) in
+				typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
 					let typeID = Int(type.typeID)
-					self.engine?.perform {
+					pilot.engine?.perform {
 						pilot.addBooster(typeID: typeID)
 					}
-					typePickerViewController?.dismiss(animated: true)
+					if self?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
+						typePickerViewController?.dismiss(animated: true)
+					}
 				}
-				present(typePickerViewController, animated: true)
+				Route(kind: .popover, viewController: typePickerViewController).perform(source: self, sender: treeController.cell(for: node))
 			}
 		}
 	}

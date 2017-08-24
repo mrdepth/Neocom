@@ -70,10 +70,10 @@ class NCMarketGroupsViewController: NCTreeViewController, NCSearchableViewContro
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCMarketGroupRow else {return}
 		if (row.object.types?.count ?? 0) > 0 {
-			Router.Database.Types(marketGroup: row.object).perform(source: self, view: treeController.cell(for: node))
+			Router.Database.Types(marketGroup: row.object).perform(source: self, sender: treeController.cell(for: node))
 		}
 		else {
-			Router.Database.MarketGroups(parentGroup: row.object).perform(source: self, view: treeController.cell(for: node))
+			Router.Database.MarketGroups(parentGroup: row.object).perform(source: self, sender: treeController.cell(for: node))
 		}
 	}
 	

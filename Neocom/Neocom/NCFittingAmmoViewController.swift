@@ -131,7 +131,7 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		if let route = (node as? TreeNodeRoutable)?.route {
-			route.perform(source: self, view: treeController.cell(for: node))
+			route.perform(source: self, sender: treeController.cell(for: node))
 		}
 		else if let node = node as? NCAmmoNode {
 			completionHandler(self, node.object)
@@ -140,7 +140,7 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 	
 	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		guard let node = node as? NCAmmoNode else {return}
-		Router.Database.TypeInfo(node.object).perform(source: self, view: treeController.cell(for: node))
+		Router.Database.TypeInfo(node.object).perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	//MARK: - Navigation

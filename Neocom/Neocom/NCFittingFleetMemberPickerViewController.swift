@@ -59,7 +59,7 @@ class NCFittingFleetMemberPickerViewController: UITableViewController, TreeContr
 			})
 		}
 		else if let route = (node as? TreeRow)?.route {
-			route.perform(source: self, view: treeController.cell(for: node))
+			route.perform(source: self, sender: treeController.cell(for: node))
 		}
 	}
 	

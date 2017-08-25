@@ -10,16 +10,6 @@ import UIKit
 
 fileprivate let cornerRadius = 16.0 as CGFloat
 
-class NCSheetSegue: UIStoryboardSegue {
-	override func perform() {
-		let presentationController = NCSheetPresentationController(presentedViewController: destination, presenting: source)
-		withExtendedLifetime(presentationController) {
-			destination.transitioningDelegate = presentationController
-			source.present(destination, animated: true, completion: nil)
-		}
-	}
-}
-
 class NCSheetPresentationController: UIPresentationController, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning {
 
 	private var dimmingView: UIView?
@@ -247,13 +237,4 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 		presentingViewController.dismiss(animated: true, completion: nil)
 	}
 
-}
-
-extension NCSheetPresentationController: UIAdaptivePresentationControllerDelegate {
-	
-	func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-		return traitCollection.horizontalSizeClass == .compact ? .overFullScreen : .none
-//		return .overFullScreen
-	}
-	
 }

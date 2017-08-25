@@ -95,7 +95,6 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		//navigationController?.preferredContentSize = CGSize(width: view.bounds.size.width, height: 320)
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDamageTypeTableViewCell.compact,
@@ -110,11 +109,14 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		treeController.delegate = self
 		
 		reload()
-		tableView.layoutIfNeeded()
-		var size = tableView.contentSize
-		size.height += tableView.contentInset.top
-		size.height += tableView.contentInset.bottom
-		navigationController?.preferredContentSize = size
+		
+		if traitCollection.userInterfaceIdiom == .phone {
+			tableView.layoutIfNeeded()
+			var size = tableView.contentSize
+			size.height += tableView.contentInset.top
+			size.height += tableView.contentInset.bottom
+			navigationController?.preferredContentSize = size
+		}
 		
 		if let pilot = fleet?.active, observer == nil {
 			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: pilot.engine, queue: nil) { [weak self] (note) in
@@ -133,7 +135,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		dismiss(animated: true, completion: nil)
 	}
 
-	@IBAction func onShare(_ sender: Any) {
+	@IBAction func onShare(_ sender: UIBarButtonItem) {
 		performShare(sender: sender)
 	}
 	
@@ -349,7 +351,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		}
 	}
 	
-	private func performShare(sender: Any) {
+	private func performShare(sender: UIBarButtonItem) {
 		guard let pilot = fleet?.active else {return}
 		
 		pilot.engine?.perform {
@@ -366,6 +368,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 				func share(representation: NCLoadoutRepresentation) {
 					guard let strongSelf = self else {return}
 					let controller = UIActivityViewController(activityItems: [NCLoadoutActivityItem(representation: representation)], applicationActivities: nil)
+					controller.popoverPresentationController?.barButtonItem = sender
 					strongSelf.present(controller, animated: true, completion: nil)
 
 				}
@@ -426,6 +429,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 				controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
 				
 				strongSelf.present(controller, animated: true, completion: nil)
+				controller.popoverPresentationController?.barButtonItem = sender
 			}
 		}
 		

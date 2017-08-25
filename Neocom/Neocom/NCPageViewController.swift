@@ -23,33 +23,35 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 			
 			pageControl.titles = viewControllers?.map({$0.title?.uppercased() ?? "-"}) ?? []
 			
-			if currentPage == nil || viewControllers?.contains(currentPage!) != true {
-				currentPage = viewControllers?.first
+			if (currentPage == nil || viewControllers?.contains(currentPage!) != true) && viewControllers?.isEmpty == false {
+				currentPage = scrollView.bounds.size.width > 0
+					? viewControllers![Int((scrollView.contentOffset.x / scrollView.bounds.size.width).rounded()).clamped(to: 0...(viewControllers!.count - 1))]
+					: viewControllers?.first
 				
-				if let currentPage = currentPage {
-					let isVisible = isViewLoaded && view.window != nil
-					
-					addChild(viewController: currentPage)
-					scrollView.addSubview(currentPage.view)
-					if isVisible {
-						currentPage.beginAppearanceTransition(true, animated: false)
-						currentPage.didMove(toParentViewController: self)
-						currentPage.endAppearanceTransition()
-					}
-					else {
-						currentPage.didMove(toParentViewController: self)
-					}
+//				let isVisible = isViewLoaded && view.window != nil
+				
+				let noParent = currentPage?.parent == nil
+				if noParent {
+					addChild(viewController: currentPage!)
+				}
+
+				let appearance = Appearance(true, controller: currentPage!)
+				
+				if currentPage?.view.superview == nil {
+					scrollView.addSubview(currentPage!.view)
+				}
+				
+				appearance.finish()
+				if noParent {
+					didMove(toParentViewController: self)
 				}
 			}
 			
-			needsAdjustCurrentPage = true
 			if isViewLoaded {
 				view.setNeedsLayout()
 			}
 		}
 	}
-	
-	private var needsAdjustCurrentPage: Bool = false
 	
 	var currentPage: UIViewController? {
 		didSet {
@@ -95,18 +97,21 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
-		if !scrollView.isDragging && !scrollView.isDecelerating {
+		let contentSize = CGSize(width: scrollView.bounds.size.width * CGFloat(viewControllers?.count ?? 0), height: scrollView.bounds.size.height)
+		
+		if scrollView.contentSize != contentSize {
 			scrollView.contentSize = CGSize(width: scrollView.bounds.size.width * CGFloat(viewControllers?.count ?? 0), height: scrollView.bounds.size.height)
 			for (i, controller) in (viewControllers ?? []).enumerated() {
 				controller.view.frame = frameForPage(at: i)
 			}
-		}
-		if needsAdjustCurrentPage {
 			if let currentPage = currentPage, let i = viewControllers?.index(of: currentPage) {
 				self.scrollView.contentOffset.x = CGFloat(i) * scrollView.bounds.size.width
 			}
-			needsAdjustCurrentPage = false
+			if !scrollView.isDragging && !scrollView.isDecelerating {
+				scrollViewDidEndScrolling()
+			}
 		}
+		
 	}
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
@@ -118,13 +123,17 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
-		needsAdjustCurrentPage = true
 //		if let currentPage = currentPage, let i = viewControllers?.index(of: currentPage) {
 //			coordinator.animate(alongsideTransition: { _ in
 //				self.scrollView.contentOffset.x = CGFloat(i) * size.width
 //			}, completion: nil)
 //			
 //		}
+	}
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		super.traitCollectionDidChange(previousTraitCollection)
+		scrollViewDidEndScrolling()
 	}
 	
 	//MARK: - UIScrollViewDelegate
@@ -139,8 +148,16 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 			self.controller = controller
 		}
 		
+		private var isFinished: Bool = false
+		
+		func finish() {
+			guard !isFinished else {return}
+			controller.endAppearanceTransition()
+			isFinished = true
+		}
+		
 		deinit {
-			self.controller.endAppearanceTransition()
+			finish()
 		}
 		
 	}
@@ -169,8 +186,6 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 							controller.view.translatesAutoresizingMaskIntoConstraints = true
 							scrollView.addSubview(controller.view)
 						}
-
-						
 					}
 				}
 			}

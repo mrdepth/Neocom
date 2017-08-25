@@ -30,6 +30,20 @@ enum RouteKind {
 	case popover
 }
 
+class NCAdaptivePageSheetDelegate: NSObject, UIAdaptivePresentationControllerDelegate {
+	func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+		return traitCollection.horizontalSizeClass == .compact ? .overFullScreen : .none
+	}
+}
+
+class NCAdaptivePopoverDelegate: NSObject, UIPopoverPresentationControllerDelegate {
+	
+	func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+		return .none
+	}
+	
+}
+
 class Route/*: Hashable*/ {
 	let kind: RouteKind?
 	let identifier: String?
@@ -50,6 +64,8 @@ class Route/*: Hashable*/ {
 		prepareForSegue(destination: controller)
 		return controller
 	}
+	
+	private var adaptiveDelegate: Any?
 	
 	func perform(source: UIViewController, sender: Any?) {
 		guard let kind = kind else {return}
@@ -74,11 +90,14 @@ class Route/*: Hashable*/ {
 			
 		case .adaptivePush:
 			let presentedController = source.navigationController ?? source.parent?.navigationController ?? source.parent ?? source
-			if let presentationController = presentedController.presentationController as? NCSheetPresentationController, presentedController.modalPresentationStyle == .custom {
+			if presentedController.presentationController is NCSheetPresentationController || presentedController.presentationController is UIPopoverPresentationController {
 				let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
 				destination.modalPresentationStyle = .pageSheet
 
-				destination.presentationController?.delegate = presentationController
+				let delegate = NCAdaptivePageSheetDelegate()
+				destination.presentationController?.delegate = delegate
+				adaptiveDelegate = delegate
+				
 				NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
 				
 				source.present(destination, animated: true, completion: nil)
@@ -106,15 +125,36 @@ class Route/*: Hashable*/ {
 			
 		case .sheet:
 			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
-			destination.modalPresentationStyle = .custom
-			
-			presentedViewController = destination
-			
-			let presentationController = NCSheetPresentationController(presentedViewController: destination, presenting: source)
-			
-			withExtendedLifetime(presentationController) {
-				destination.transitioningDelegate = presentationController
+			if source.traitCollection.userInterfaceIdiom == .pad {
+				let delegate = NCAdaptivePopoverDelegate()
+				
+				destination.modalPresentationStyle = .popover
+				destination.popoverPresentationController?.delegate = delegate
 				source.present(destination, animated: true, completion: nil)
+				
+				let presentationController = destination.popoverPresentationController
+				presentationController?.permittedArrowDirections = .any
+				if let view = sender as? UIView {
+					presentationController?.sourceView = view
+					presentationController?.sourceRect = view.bounds
+				}
+				else if let item = sender as? UIBarButtonItem {
+					presentationController?.barButtonItem = item
+				}
+				
+				adaptiveDelegate = delegate
+			}
+			else {
+				destination.modalPresentationStyle = .custom
+				
+				presentedViewController = destination
+				
+				let presentationController = NCSheetPresentationController(presentedViewController: destination, presenting: source)
+				
+				withExtendedLifetime(presentationController) {
+					destination.transitioningDelegate = presentationController
+					source.present(destination, animated: true, completion: nil)
+				}
 			}
 		case .popover:
 			destination.modalPresentationStyle = .popover
@@ -131,6 +171,8 @@ class Route/*: Hashable*/ {
 				presentationController?.barButtonItem = item
 			}
 		}
+		
+		presentedViewController?.route = self
 	}
 	
 	func unwind() {
@@ -811,6 +853,19 @@ enum Router {
 			}
 		}
 
+		class Actions: Route {
+			let fleet: NCFittingFleet
+			init(fleet: NCFittingFleet) {
+				self.fleet = fleet
+				super.init(kind: .sheet, storyboard: UIStoryboard.fitting, identifier: "NCFittingActionsViewController")
+			}
+
+			override func prepareForSegue(destination: UIViewController) {
+				(destination as! NCFittingActionsViewController).fleet = fleet
+			}
+
+		}
+		
 		class ModuleActions: Route {
 			let modules: [NCFittingModule]
 			
@@ -1274,5 +1329,18 @@ enum Router {
 			
 		}
 
+	}
+}
+
+private var RouteKey = "currentRoute"
+
+extension UIViewController {
+	fileprivate(set) var route: Route? {
+		get {
+			return objc_getAssociatedObject(self, &RouteKey) as? Route ?? parent?.route
+		}
+		set {
+			objc_setAssociatedObject(self, &RouteKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+		}
 	}
 }

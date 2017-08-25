@@ -108,6 +108,10 @@ extension NCSlideDownDismissalInteractiveTransitioning: UIViewControllerAnimated
 extension NCSlideDownDismissalInteractiveTransitioning: UIGestureRecognizerDelegate {
 	
 	func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+		if viewController?.presentationController is UIPopoverPresentationController && viewController?.traitCollection.userInterfaceIdiom == .pad && viewController?.presentingViewController?.traitCollection.horizontalSizeClass == .regular {
+			return false
+		}
+		
 		guard let recognizer = gestureRecognizer as? UIPanGestureRecognizer else {return true}
 		let t = recognizer.translation(in: nil)
 		guard t.y > 0 else {return false}

@@ -140,18 +140,19 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 		                    Prototype.NCChargeTableViewCell.default,
 			])
 
-		//navigationController?.preferredContentSize = CGSize(width: view.bounds.size.width, height: 320)
 		
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
 		treeController.delegate = self
 		
 		reload()
-		tableView.layoutIfNeeded()
-		var size = tableView.contentSize
-		size.height += tableView.contentInset.top
-		size.height += tableView.contentInset.bottom
-		navigationController?.preferredContentSize = size
+		if traitCollection.userInterfaceIdiom == .phone {
+			tableView.layoutIfNeeded()
+			var size = tableView.contentSize
+			size.height += tableView.contentInset.top
+			size.height += tableView.contentInset.bottom
+			navigationController?.preferredContentSize = size
+		}
 		
 		if let drone = drones?.first, observer == nil {
 			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: drone.engine, queue: nil) { [weak self] (note) in

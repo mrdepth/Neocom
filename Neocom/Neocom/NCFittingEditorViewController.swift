@@ -134,23 +134,32 @@ class NCFittingEditorViewController: UIViewController {
 				pageViewController?.viewControllers?.removeLast()
 			}
 			
-			statsViewController.willMove(toParentViewController: self)
+			statsViewController.willMove(toParentViewController: nil)
+			statsViewController.view.removeFromSuperview()
 			statsViewController.removeFromParentViewController()
+			
 			addChildViewController(statsViewController)
-			statsViewController.view.translatesAutoresizingMaskIntoConstraints = false
 			stackView.addArrangedSubview(statsViewController.view)
+			statsViewController.view.translatesAutoresizingMaskIntoConstraints = false
 			statsViewController.didMove(toParentViewController: self)
 		default:
 			guard let pageViewController = pageViewController else {return}
 			guard statsViewController.view.superview === stackView else {return}
 			
 			statsViewController.willMove(toParentViewController: nil)
+			stackView.removeArrangedSubview(statsViewController.view)
 			statsViewController.view.removeFromSuperview()
 			statsViewController.removeFromParentViewController()
-			statsViewController.didMove(toParentViewController: nil)
+//			statsViewController.didMove(toParentViewController: nil)
 
 			pageViewController.viewControllers?.append(statsViewController)
 		}
+	}
+	
+	
+	@IBAction func onActions(_ sender: UIBarButtonItem) {
+		guard let fleet = self.fleet else {return}
+		Router.Fitting.Actions(fleet: fleet).perform(source: self, sender: sender)
 	}
 	
 	func save(completionHandler: (() -> Void)? = nil) {
@@ -255,18 +264,6 @@ class NCFittingEditorViewController: UIViewController {
 		return controller
 //		return self.storyboard?.instantiateViewController(withIdentifier: "NCTypePickerViewController") as? NCTypePickerViewController
 	}()
-	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		switch segue.identifier {
-		case "NCFittingActionsViewController"?:
-			guard let controller = (segue.destination as? UINavigationController)?.topViewController as? NCFittingActionsViewController else {return}
-			controller.fleet = fleet
-		default:
-			break
-		}
-	}
-	
-	
 	
 	private func updateTitle() {
 		guard let titleLabel = navigationItem.titleView as? UILabel else {return}

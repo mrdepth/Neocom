@@ -62,14 +62,8 @@ class NCColonySection: TreeSection {
 					default:
 						break
 					}
+					pin.contents?.filter {$0.amount > 0}.forEach {facility.addCommodity(typeID: $0.typeID, quantity: Int($0.amount))}
 				}
-				
-				//					planet.facility(identifier: 1020196651494)?.addCommodity(typeID: 2267, quantity: 209063)
-				//					planet.facility(identifier: 1020196651494)?.addCommodity(typeID: 2396, quantity: 3060)
-				//					planet.facility(identifier: 1020196651502)?.addCommodity(typeID: 2288, quantity: 249)
-				//					planet.facility(identifier: 1020196651506)?.addCommodity(typeID: 2270, quantity: 2776)
-				//					planet.facility(identifier: 1020196651508)?.addCommodity(typeID: 2396, quantity: 40)
-				//					planet.facility(identifier: 1020196651514)?.addCommodity(typeID: 2329, quantity: 245)
 				
 				for route in layout.routes {
 					guard let source = planet.facility(identifier: route.sourcePinID),

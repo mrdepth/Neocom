@@ -124,6 +124,12 @@ class NCKillmailAttackerRow: TreeRow {
 			cell.shipImageView?.image = shipType?.icon?.image?.image
 			cell.weaponLabel?.text = String(format: NSLocalizedString("%@ damage done", comment: ""), NCUnitFormatter.localizedString(from: self.attacker.damageDone, unit: .none, style: .full))
 		}
+		else {
+			cell.titleLabel?.text = NSLocalizedString("Unknown", comment: "")
+			cell.shipLabel?.text = shipType?.typeName
+			cell.shipImageView?.image = shipType?.icon?.image?.image
+			cell.weaponLabel?.text = String(format: NSLocalizedString("%@ damage done", comment: ""), NCUnitFormatter.localizedString(from: self.attacker.damageDone, unit: .none, style: .full))
+		}
 		
 		cell.accessoryType = route != nil ? .disclosureIndicator : .none
 		

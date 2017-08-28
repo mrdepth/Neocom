@@ -10,6 +10,7 @@ import UIKit
 import EVEAPI
 import CoreData
 import CloudData
+import SafariServices
 
 @UIApplicationMain
 class NCAppDelegate: UIResponder, UIApplicationDelegate {
@@ -63,6 +64,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		
 		
 		if OAuth2.handleOpenURL(url, clientID: ESClientID, secretKey: ESSecretKey, completionHandler: { (result) in
+			let controller = self.window?.rootViewController?.topMostPresentedViewController
 			switch result {
 			case let .success(token):
 				guard let context = NCStorage.sharedStorage?.viewContext else {break}
@@ -78,11 +80,14 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 					try? context.save()
 				}
 				let request = NSFetchRequest<NCAccount>(entityName: "Account")
-				guard let result = try? context.fetch(request), result.count == 1 else {return}
-				NCAccount.current = result.first
-				
-				break
+				if let result = try? context.fetch(request), result.count == 1 {
+					NCAccount.current = result.first
+				}
+				if controller is SFSafariViewController {
+					controller?.dismiss(animated: true, completion: nil)
+				}
 			case let .failure(error):
+				controller?.present(UIAlertController(error: error), animated: true, completion: nil)
 				break
 			}
 		}) {
@@ -118,6 +123,11 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 		CloudStore.handleRemoteNotification(userInfo: userInfo)
 		completionHandler(.newData)
+	}
+	
+	func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+		let size = UIScreen.main.bounds.size
+		return window?.traitCollection.userInterfaceIdiom == .pad || max(size.width, size.height) > 700 ? [.all] : [.portrait]
 	}
 	
 	//MARK: Private

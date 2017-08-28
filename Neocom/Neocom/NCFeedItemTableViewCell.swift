@@ -47,19 +47,7 @@ class NCFeedItemRow: TreeRow {
 		else {
 			subtitle = nil
 		}
-//		
-//		if let data = self.item.summary?.data(using: .utf8),
-//			let string =  try? NSAttributedString(data: data,
-//			                                      options: [NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue],
-//			                                      documentAttributes: nil).string {
-//			subtitle = String(string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).characters.prefix(256))
-//		}
-//		else {
-//			subtitle = nil
-//		}
 
-		
-		
 		super.init(prototype: Prototype.NCFeedItemTableViewCell.default, route: Router.RSS.Item(item: item))
 	}
 	
@@ -69,14 +57,20 @@ class NCFeedItemRow: TreeRow {
 		return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .medium)
 	}()
 	
+	lazy var isVisited: Bool = {
+		guard let url = self.item.link else {return false}
+		guard let link: NCCacheVisitedLink = NCCache.sharedCache?.viewContext.fetch("VisitedLink", where: "url == %@", url.absoluteString.lowercased()) else {return false}
+		return true
+	}()
+	
 	
 	override func configure(cell: UITableViewCell) {
-		
 		
 		guard let cell = cell as? NCFeedItemTableViewCell else {return}
 		cell.titleLabel.text = item.title
 		cell.subtitleLabel.text = subtitle
 		cell.dateLabel.text = date
+		cell.titleLabel.textColor = isVisited ? .lightText : .white
 	}
 	
 	override var hashValue: Int {

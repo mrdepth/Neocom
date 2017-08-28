@@ -88,6 +88,15 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="VisitedLink" representedClassName="NCCacheVisitedLink" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="url"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <elements>
         <element name="Contact" positionX="27" positionY="81" width="128" height="135"/>
         <element name="LocationPickerRecent" positionX="18" positionY="117" width="128" height="90"/>
@@ -97,5 +106,6 @@
         <element name="Record" positionX="0" positionY="0" width="128" height="135"/>
         <element name="RecordData" positionX="0" positionY="0" width="128" height="75"/>
         <element name="TypePickerRecent" positionX="27" positionY="72" width="128" height="120"/>
+        <element name="VisitedLink" positionX="18" positionY="117" width="128" height="75"/>
     </elements>
 </model>

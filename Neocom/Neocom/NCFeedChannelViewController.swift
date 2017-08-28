@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 class NCFeedChannelViewController: NCTreeViewController {
 	
@@ -96,5 +97,26 @@ class NCFeedChannelViewController: NCTreeViewController {
 	}
 	
 	private var rss: NCCachedResult<RSS.Feed>?
+	
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
+		guard let node = node as? NCFeedItemRow else {return}
+		guard let url = node.item.link?.absoluteString.lowercased() else {return}
+		guard let context = NCCache.sharedCache?.viewContext else {return}
+		
+		if let link: NCCacheVisitedLink = context.fetch("VisitedLink", where: "url == %@", url) {
+			link.date = Date() as NSDate
+		}
+		else {
+			let link = NCCacheVisitedLink(entity: NSEntityDescription.entity(forEntityName: "VisitedLink", in: context)!, insertInto: context)
+			link.url = url
+			link.date = Date() as NSDate
+		}
+		if context.hasChanges {
+			try? context.save()
+		}
+		node.isVisited = true
+		treeController.reloadCells(for: [node])
+	}
 	
 }

@@ -523,6 +523,8 @@ class NCSkillQueueViewController: NCTreeViewController {
 		}
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+		controller.popoverPresentationController?.sourceView = sender
+		controller.popoverPresentationController?.sourceRect = sender.bounds
 		self.present(controller, animated: true, completion: nil)
 	}
 	
@@ -551,7 +553,10 @@ class NCSkillQueueViewController: NCTreeViewController {
 			
 			controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
 			self.present(controller, animated: true, completion: nil)
-			
+			let sender = treeController.cell(for: node)
+			controller.popoverPresentationController?.sourceView = sender
+			controller.popoverPresentationController?.sourceRect = sender?.bounds ?? .zero
+
 		case let row as NCSkillPlanRow:
 			let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 			let skillPlan = row.object
@@ -623,6 +628,10 @@ class NCSkillQueueViewController: NCTreeViewController {
 			
 			controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
 			self.present(controller, animated: true, completion: nil)
+			let sender = treeController.cell(for: node)
+			controller.popoverPresentationController?.sourceView = sender
+			controller.popoverPresentationController?.sourceRect = sender?.bounds ?? .zero
+
 		default:
 			break
 		}
@@ -673,8 +682,8 @@ class NCSkillQueueViewController: NCTreeViewController {
 	
 	func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) -> Void {
 		switch (item as? NCDefaultTreeRow)?.segue {
-		case "NCSkillsViewController"?:
-			self.performSegue(withIdentifier: "NCSkillsViewController", sender: cell)
+		case "NCSkillsPageViewController"?:
+			self.performSegue(withIdentifier: "NCSkillsPageViewController", sender: cell)
 		default:
 			break
 		}
@@ -726,8 +735,15 @@ class NCSkillQueueViewController: NCTreeViewController {
 		}
 		let skillBrowser = TreeSection(prototype: nil)
 		skillBrowser.children = [NCActionRow(title: NSLocalizedString("SKILL BROWSER", comment: ""),
-		                                    route: Router.Character.Skills())]
-		var sections: [TreeNode] = [skillBrowser]
+		                                     route: Router.Character.Skills())]
+		self.skillBrowser = skillBrowser
+		
+		var sections: [TreeNode] = []
+		
+		if traitCollection.horizontalSizeClass != .regular {
+			sections.append(skillBrowser)
+		}
+
 		
 		let attributes = NCOptimalCharacterAttributesSection(account: account, character: character)
 		
@@ -745,6 +761,28 @@ class NCSkillQueueViewController: NCTreeViewController {
 			treeController?.content?.children = sections
 		}
 		completionHandler()
+	}
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		super.traitCollectionDidChange(previousTraitCollection)
+		guard previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass else {return}
+
+		NSObject.cancelPreviousPerformRequests(withTarget: self)
+		perform(#selector(updateTraits), with: nil, afterDelay: 0)
+	}
+	
+	private var skillBrowser: TreeSection?
+	
+	@objc private func updateTraits() {
+		guard let skillBrowser = skillBrowser else {return}
+		if traitCollection.horizontalSizeClass == .regular {
+			guard treeController?.content?.children.first === skillBrowser else {return}
+			treeController?.content?.children.removeFirst()
+		}
+		else {
+			guard treeController?.content?.children.first !== skillBrowser else {return}
+			treeController?.content?.children.insert(skillBrowser, at: 0)
+		}
 	}
 	
 }

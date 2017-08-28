@@ -70,7 +70,7 @@ class NCFittingRequiredSkillsViewController: UITableViewController, TreeControll
 		
 	}
 	
-	func onAdd(_ sender: Any) {
+	func onAdd(_ sender: UIBarButtonItem) {
 		guard let character = self.character, let trainingQueue = self.trainingQueue else {return}
 		guard let account = NCAccount.current else {return}
 		
@@ -89,6 +89,7 @@ class NCFittingRequiredSkillsViewController: UITableViewController, TreeControll
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
 		present(controller, animated: true)
+		controller.popoverPresentationController?.barButtonItem = sender
 
 		
 	}

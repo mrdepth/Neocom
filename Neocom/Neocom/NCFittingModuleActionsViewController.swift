@@ -336,9 +336,14 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 				route = Router.Database.TypeInfo(module)
 			}
 			
-			sections.append(DefaultTreeSection(nodeIdentifier: "Variations",
-			                                   title: NSLocalizedString("Variations", comment: "").uppercased(),
-			                                   children: [NCFittingModuleInfoRow(module: module, type: type, count: modules.count, route: route)]))
+
+			var rows: [TreeNode] = [NCFittingModuleInfoRow(module: module, type: type, count: modules.count, route: route)]
+			if module.canHaveState(.online) {
+				rows.append(NCFittingModuleStateRow(modules: modules))
+			}
+			sections.append(DefaultTreeSection(nodeIdentifier: "Module",
+			                                   title: NSLocalizedString("Module", comment: "").uppercased(),
+			                                   children: rows))
 			
 			
 			let chargeGroups = module.chargeGroups
@@ -359,10 +364,6 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 				}
 				let section = DefaultTreeSection(nodeIdentifier: "Charge", title: NSLocalizedString("Charge", comment: "").uppercased(), children: [row])
 				sections.append(section)
-			}
-			
-			if module.canHaveState(.online) {
-				sections.append(DefaultTreeSection(nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingModuleStateRow(modules: modules)]))
 			}
 			
 			if module.requireTarget && ((module.owner?.owner?.owner as? NCFittingGang)?.pilots.count ?? 0) > 1 {

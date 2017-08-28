@@ -53,24 +53,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="47R-ao-MKp">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603.5"/>
-                                <subviews>
-                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mYC-O0-Mv8">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="603.5"/>
-                                        <connections>
-                                            <segue destination="d5y-1M-pgb" kind="embed" id="Lyo-41-Vhm"/>
-                                        </connections>
-                                    </containerView>
-                                </subviews>
-                            </stackView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mYC-O0-Mv8">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <connections>
+                                    <segue destination="22V-S4-Jis" kind="embed" id="YAj-PE-F1h"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="47R-ao-MKp" firstAttribute="leading" secondItem="jcu-y0-3LT" secondAttribute="leading" id="506-FW-CIZ"/>
-                            <constraint firstAttribute="trailing" secondItem="47R-ao-MKp" secondAttribute="trailing" id="PLk-HI-xYX"/>
-                            <constraint firstAttribute="bottom" secondItem="47R-ao-MKp" secondAttribute="bottom" id="Q07-gt-Gep"/>
-                            <constraint firstItem="47R-ao-MKp" firstAttribute="top" secondItem="tbn-rq-mYf" secondAttribute="bottom" id="nv2-Mw-Hu6"/>
+                            <constraint firstAttribute="trailing" secondItem="mYC-O0-Mv8" secondAttribute="trailing" id="QvC-df-JDl"/>
+                            <constraint firstItem="mYC-O0-Mv8" firstAttribute="leading" secondItem="jcu-y0-3LT" secondAttribute="leading" id="ibz-ks-kDh"/>
+                            <constraint firstItem="i3F-cr-5cT" firstAttribute="top" secondItem="mYC-O0-Mv8" secondAttribute="bottom" id="l2N-an-Ql3"/>
+                            <constraint firstItem="mYC-O0-Mv8" firstAttribute="top" secondItem="tbn-rq-mYf" secondAttribute="bottom" id="w4y-tN-K2Y"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="rAw-1H-bGP">
@@ -80,9 +75,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="stackView" destination="47R-ao-MKp" id="rku-I9-4ER"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jdn-tv-ZLC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -360,6 +352,18 @@
                 </customObject>
             </objects>
             <point key="canvasLocation" x="3329" y="3074"/>
+        </scene>
+        <!--Split View Controller-->
+        <scene sceneID="tBT-g7-3xc">
+            <objects>
+                <splitViewController id="22V-S4-Jis" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="d5y-1M-pgb" kind="relationship" relationship="masterViewController" id="XlU-yd-89G"/>
+                    </connections>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="idJ-na-rc5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2249" y="2369"/>
         </scene>
         <!--Module-->
         <scene sceneID="eYn-x1-Kdv">
@@ -4419,13 +4423,13 @@
         <!--Fitting Editor Page View Controller-->
         <scene sceneID="7Rn-BW-8l6">
             <objects>
-                <viewController id="d5y-1M-pgb" customClass="NCFittingEditorPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCFittingEditorPageViewController" id="d5y-1M-pgb" customClass="NCFittingEditorPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Mk8-Yb-gcm"/>
                         <viewControllerLayoutGuide type="bottom" id="q3q-Oo-csK"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ega-oI-fxs" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>

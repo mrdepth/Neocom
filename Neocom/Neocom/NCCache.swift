@@ -47,6 +47,7 @@ class NCCache: NSObject {
 	static let sharedCache: NCCache? = NCCache()
 	
 	override init() {
+		ValueTransformer.setValueTransformer(NCSecureUnarchiver(), forName: NSValueTransformerName("NCSecureUnarchiver"))
 	}
 	
 	deinit {
@@ -164,6 +165,24 @@ extension NCCacheLocationPickerRecent {
 		case .solarSystem?:
 			return NSLocalizedString("Solar Systems", comment: "")
 		default:
+			return nil
+		}
+	}
+}
+
+class NCSecureUnarchiver: ValueTransformer {
+	override func transformedValue(_ value: Any?) -> Any? {
+		guard let value = value else {return nil}
+		return NSKeyedArchiver.archivedData(withRootObject: value)
+	}
+	
+	override func reverseTransformedValue(_ value: Any?) -> Any? {
+		guard let data = value as? Data else {return nil}
+		do {
+			let result = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data as NSData)
+			return result
+		}
+		catch {
 			return nil
 		}
 	}

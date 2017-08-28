@@ -154,6 +154,9 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 			controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
 			
 			present(controller, animated: true, completion: nil)
+			let sender = treeController.cell(for: node)
+			controller.popoverPresentationController?.sourceView = sender
+			controller.popoverPresentationController?.sourceRect = sender?.bounds ?? .zero
 
 		}
 		else if let row = node as? NCImplantRow {

@@ -115,7 +115,7 @@ class NCZKillboardSummaryViewController: NCPageViewController {
 		
 	}
 	
-	@IBAction func onActions(_ sender: Any) {
+	@IBAction func onActions(_ sender: UIBarButtonItem) {
 		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
 		if let corporation = corporation {
@@ -133,5 +133,6 @@ class NCZKillboardSummaryViewController: NCPageViewController {
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
 		present(controller, animated: true, completion: nil)
+		controller.popoverPresentationController?.barButtonItem = sender
 	}
 }

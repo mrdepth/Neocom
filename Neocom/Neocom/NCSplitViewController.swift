@@ -26,4 +26,18 @@ class NCSplitViewController: UISplitViewController, UISplitViewControllerDelegat
 		(primaryViewController as? UINavigationController)?.isNavigationBarHidden = false
 		return false
 	}
+	
+	func splitViewController(_ splitViewController: UISplitViewController, showDetail vc: UIViewController, sender: Any?) -> Bool {
+		if traitCollection.userInterfaceIdiom == .phone {
+			setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .compact), forChildViewController: vc)
+		}
+		return false
+	}
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		super.traitCollectionDidChange(previousTraitCollection)
+		if traitCollection.userInterfaceIdiom == .phone && viewControllers.count == 2 {
+			setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .compact), forChildViewController: viewControllers[1])
+		}
+	}
 }

@@ -60,7 +60,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 	
 	private var isDeleting: Bool = false
 	
-	@IBAction func onDelete(_ sender: Any) {
+	@IBAction func onDelete(_ sender: UIBarButtonItem) {
 		guard !isDeleting else {return}
 		guard var selected = treeController?.selectedNodes().flatMap ({$0 as? NCInGameFittingRow}) else {return}
 		guard !selected.isEmpty else {return}
@@ -98,6 +98,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
 		
 		present(controller, animated: true, completion: nil)
+		controller.popoverPresentationController?.barButtonItem = sender
 	}
 	
 	//MARK: - TreeControllerDelegate

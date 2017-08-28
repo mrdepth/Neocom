@@ -138,7 +138,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		})
 	}
 	
-	@IBAction func onCancel(_ sender: Any) {
+	@IBAction func onCancel(_ sender: UIBarButtonItem) {
 		if !textView.text.isEmpty {
 			let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 			controller.addAction(UIAlertAction(title: NSLocalizedString("Delete Draft", comment: ""), style: .destructive, handler: { _ in
@@ -175,6 +175,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 				
 			}))
 			present(controller, animated: true, completion: nil)
+			controller.popoverPresentationController?.barButtonItem = sender
 		}
 		else {
 			self.dismiss(animated: true, completion: nil)

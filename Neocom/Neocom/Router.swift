@@ -645,7 +645,7 @@ enum Router {
 		class Skills: Route {
 
 			init() {
-				super.init(kind: .push, storyboard: UIStoryboard.character, identifier: "NCSkillsViewController")
+				super.init(kind: .push, storyboard: UIStoryboard.character, identifier: "NCSkillsPageViewController")
 			}
 			
 		}

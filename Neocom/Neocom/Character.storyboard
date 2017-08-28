@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -161,7 +161,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z7W-3y-i7e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="605.625" y="2364.0845070422533"/>
+            <point key="canvasLocation" x="4492" y="2364"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Fm8-o2-xre">
@@ -172,7 +172,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="nG7-Ib-3hW" kind="relationship" relationship="rootViewController" id="riZ-Zc-yWB"/>
+                        <segue destination="QPL-C0-XeF" kind="relationship" relationship="rootViewController" id="jLF-xn-tSa"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KGb-ng-WBp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -182,7 +182,7 @@
         <!--Skills-->
         <scene sceneID="ahG-u5-4cE">
             <objects>
-                <viewController storyboardIdentifier="NCSkillsViewController" title="Skills" automaticallyAdjustsScrollViewInsets="NO" id="xT2-JQ-e71" customClass="NCSkillsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCSkillsPageViewController" title="Skills" automaticallyAdjustsScrollViewInsets="NO" id="xT2-JQ-e71" customClass="NCSkillsPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="o77-u5-p1Z"/>
                         <viewControllerLayoutGuide type="bottom" id="rzT-iW-dIF"/>
@@ -195,7 +195,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1XD-QE-PKS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1281" y="2365"/>
+            <point key="canvasLocation" x="4492" y="1651"/>
         </scene>
         <!--Skills-->
         <scene sceneID="0ao-DG-Ufy">
@@ -212,7 +212,52 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pia-T2-Ser" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1952" y="2365"/>
+            <point key="canvasLocation" x="5241" y="1650"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="4mM-IN-la7">
+            <objects>
+                <viewController id="QPL-C0-XeF" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rNl-GI-Cpc"/>
+                        <viewControllerLayoutGuide type="bottom" id="wdO-u2-LgQ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6vB-I1-2cA" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y18-Oh-XGw">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <connections>
+                                    <segue destination="3ca-0i-5xO" kind="embed" id="Vzu-i7-TSi"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="y18-Oh-XGw" firstAttribute="leading" secondItem="6vB-I1-2cA" secondAttribute="leading" id="AAb-DI-Tcv"/>
+                            <constraint firstItem="wdO-u2-LgQ" firstAttribute="top" secondItem="y18-Oh-XGw" secondAttribute="bottom" id="DP9-Mj-ecL"/>
+                            <constraint firstAttribute="trailing" secondItem="y18-Oh-XGw" secondAttribute="trailing" id="Esj-g7-1nv"/>
+                            <constraint firstItem="y18-Oh-XGw" firstAttribute="top" secondItem="rNl-GI-Cpc" secondAttribute="bottom" id="vlU-aC-ajS"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="a39-Bf-SkM"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BI0-1R-ZRf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2784.8000000000002" y="2364.4677661169417"/>
+        </scene>
+        <!--Skills View Controller-->
+        <scene sceneID="HV9-1H-1dH">
+            <objects>
+                <splitViewController id="3ca-0i-5xO" customClass="NCSkillsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="nG7-Ib-3hW" kind="relationship" relationship="masterViewController" id="8VR-UX-yuK"/>
+                    </connections>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8eI-8e-q21" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3662" y="2364"/>
         </scene>
         <!--Mail-->
         <scene sceneID="nD4-EK-Uu2">

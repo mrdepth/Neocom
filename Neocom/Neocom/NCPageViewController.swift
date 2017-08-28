@@ -35,13 +35,14 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 					addChild(viewController: currentPage!)
 				}
 
-				let appearance = Appearance(true, controller: currentPage!)
+				
+				let appearance: Appearance? = isViewLoaded ? Appearance(true, controller: currentPage!) : nil
 				
 				if currentPage?.view.superview == nil {
 					scrollView.addSubview(currentPage!.view)
 				}
 				
-				appearance.finish()
+				appearance?.finish()
 				if noParent {
 					didMove(toParentViewController: self)
 				}
@@ -61,6 +62,11 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	}
 	
 	private var toolbarItemsOverride: [UIBarButtonItem]?
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()

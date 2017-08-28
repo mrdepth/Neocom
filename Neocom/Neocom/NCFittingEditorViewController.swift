@@ -14,7 +14,7 @@ class NCFittingEditorViewController: UIViewController {
 	var fleet: NCFittingFleet?
 	var engine: NCFittingEngine?
 	
-	@IBOutlet weak var stackView: UIStackView!
+//	@IBOutlet weak var stackView: UIStackView!
 	
 	private var observer: NotificationObserver?
 	var isModified: Bool = false {
@@ -46,12 +46,16 @@ class NCFittingEditorViewController: UIViewController {
 	}()
 	
 	var pageViewController: NCFittingEditorPageViewController? {
-		return childViewControllers.first {$0 is NCFittingEditorPageViewController} as? NCFittingEditorPageViewController
+		return editSplitViewController?.childViewControllers.first {$0 is NCFittingEditorPageViewController} as? NCFittingEditorPageViewController
 	}
 	
-	var statsViewController: UIViewController?
+	var statsViewController: UIViewController!
+	var editSplitViewController: UISplitViewController? {
+		return childViewControllers.first {$0 is UISplitViewController} as? UISplitViewController
+	}
 	
 	override func viewDidLoad() {
+		
 		super.viewDidLoad()
 		let titleLabel = UILabel(frame: CGRect(origin: .zero, size: .zero))
 		titleLabel.numberOfLines = 2
@@ -86,17 +90,19 @@ class NCFittingEditorViewController: UIViewController {
 		}
 		
 		statsViewController = storyboard!.instantiateViewController(withIdentifier: "NCFittingStatsViewController")
-		if traitCollection.horizontalSizeClass == .compact || traitCollection.userInterfaceIdiom == .phone {
-			controllers.append(statsViewController!)
+		
+		if traitCollection.horizontalSizeClass == .regular {
+			editSplitViewController?.viewControllers.append(statsViewController)
 		}
 		else {
-			addChildViewController(statsViewController!)
-			stackView.addArrangedSubview(statsViewController!.view)
+			controllers.append(statsViewController!)
 		}
-		
-//		viewControllers = controllers
-		
 		pageViewController?.viewControllers = controllers
+		
+		editSplitViewController?.preferredDisplayMode = .allVisible
+		editSplitViewController?.preferredPrimaryColumnWidthFraction = 0.5
+		editSplitViewController?.maximumPrimaryColumnWidth = max(UIScreen.main.bounds.width, UIScreen.main.bounds.height) / 2.0
+
 		
 		updateTitle()
 		
@@ -125,34 +131,28 @@ class NCFittingEditorViewController: UIViewController {
 	override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
 		defer {super.willTransition(to: newCollection, with: coordinator)}
 		guard newCollection.horizontalSizeClass != traitCollection.horizontalSizeClass && newCollection.userInterfaceIdiom == .pad else {return}
+//		guard previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass else {return}
 		guard let statsViewController = statsViewController else {return}
 
+//		switch traitCollection.horizontalSizeClass {
 		switch newCollection.horizontalSizeClass {
 		case .regular:
-			guard statsViewController.view.superview !== stackView else {return}
-			if pageViewController?.viewControllers?.last === statsViewController {
-				pageViewController?.viewControllers?.removeLast()
-			}
+			guard editSplitViewController?.viewControllers.count == 1 else {return}
 			
 			statsViewController.willMove(toParentViewController: nil)
 			statsViewController.view.removeFromSuperview()
+			pageViewController?.viewControllers?.removeLast()
 			statsViewController.removeFromParentViewController()
 			
-			addChildViewController(statsViewController)
-			stackView.addArrangedSubview(statsViewController.view)
-			statsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-			statsViewController.didMove(toParentViewController: self)
+			editSplitViewController?.viewControllers.append(statsViewController)
 		default:
-			guard let pageViewController = pageViewController else {return}
-			guard statsViewController.view.superview === stackView else {return}
-			
-			statsViewController.willMove(toParentViewController: nil)
-			stackView.removeArrangedSubview(statsViewController.view)
-			statsViewController.view.removeFromSuperview()
-			statsViewController.removeFromParentViewController()
-//			statsViewController.didMove(toParentViewController: nil)
+			guard editSplitViewController?.viewControllers.count == 2 else {return}
 
-			pageViewController.viewControllers?.append(statsViewController)
+			statsViewController.willMove(toParentViewController: nil)
+			editSplitViewController?.viewControllers.removeLast()
+			statsViewController.removeFromParentViewController()
+
+			pageViewController?.viewControllers?.append(statsViewController)
 		}
 	}
 	

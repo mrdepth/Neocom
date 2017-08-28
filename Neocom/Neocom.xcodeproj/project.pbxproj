@@ -211,7 +211,7 @@
 		129E60F81E0196AD00B56EB8 /* UIColor+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F71E0196AD00B56EB8 /* UIColor+NC.swift */; };
 		129E61021E0287F500B56EB8 /* NCSkillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61011E0287F500B56EB8 /* NCSkillTableViewCell.swift */; };
 		129E61041E028B3900B56EB8 /* String+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61031E028B3900B56EB8 /* String+NC.swift */; };
-		129E61061E0291FD00B56EB8 /* NCSkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61051E0291FD00B56EB8 /* NCSkillsViewController.swift */; };
+		129E61061E0291FD00B56EB8 /* NCSkillsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61051E0291FD00B56EB8 /* NCSkillsPageViewController.swift */; };
 		129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61071E029BCB00B56EB8 /* Array+NC.swift */; };
 		12A2374B1EFFB39900BE7404 /* NCKillmailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A2374A1EFFB39800BE7404 /* NCKillmailInfoViewController.swift */; };
 		12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */; };
@@ -242,6 +242,7 @@
 		12B68F2A1E802958006462B7 /* CloudData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12B68F281E802958006462B7 /* CloudData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		12BC40A21DFF1EBB00657D40 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BC40A11DFF1EBB00657D40 /* Alamofire.framework */; };
 		12BC40A31DFF1EBB00657D40 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12BC40A11DFF1EBB00657D40 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		12BE2DC11F53F42500BA43A6 /* NCSkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE2DC01F53F42500BA43A6 /* NCSkillsViewController.swift */; };
 		12BFC45D1E3F7CD2000ED8D6 /* TreeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFC45C1E3F7CD2000ED8D6 /* TreeRow.swift */; };
 		12BFC46E1E409AC2000ED8D6 /* NCThinLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFC46D1E409AC2000ED8D6 /* NCThinLineView.swift */; };
 		12C37D281EFA7E9B0070F055 /* NCEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C37D271EFA7E9B0070F055 /* NCEventViewController.swift */; };
@@ -621,7 +622,7 @@
 		129E60F71E0196AD00B56EB8 /* UIColor+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+NC.swift"; sourceTree = "<group>"; };
 		129E61011E0287F500B56EB8 /* NCSkillTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillTableViewCell.swift; sourceTree = "<group>"; };
 		129E61031E028B3900B56EB8 /* String+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+NC.swift"; sourceTree = "<group>"; };
-		129E61051E0291FD00B56EB8 /* NCSkillsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillsViewController.swift; sourceTree = "<group>"; };
+		129E61051E0291FD00B56EB8 /* NCSkillsPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillsPageViewController.swift; sourceTree = "<group>"; };
 		129E61071E029BCB00B56EB8 /* Array+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+NC.swift"; sourceTree = "<group>"; };
 		12A2374A1EFFB39800BE7404 /* NCKillmailInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCKillmailInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12AC8D901DEF58A100561A7A /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -654,6 +655,7 @@
 		12B563FB1E51E0A200F1BED0 /* NCFittingCharacterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingCharacterTableViewCell.swift; sourceTree = "<group>"; };
 		12B68F281E802958006462B7 /* CloudData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CloudData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12BC40A11DFF1EBB00657D40 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		12BE2DC01F53F42500BA43A6 /* NCSkillsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillsViewController.swift; sourceTree = "<group>"; };
 		12BFC45C1E3F7CD2000ED8D6 /* TreeRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeRow.swift; sourceTree = "<group>"; };
 		12BFC46D1E409AC2000ED8D6 /* NCThinLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCThinLineView.swift; sourceTree = "<group>"; };
 		12C37D271EFA7E9B0070F055 /* NCEventViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCEventViewController.swift; sourceTree = "<group>"; };
@@ -1001,7 +1003,8 @@
 			isa = PBXGroup;
 			children = (
 				1261570C1E01D2F70041B817 /* NCSkillQueueViewController.swift */,
-				129E61051E0291FD00B56EB8 /* NCSkillsViewController.swift */,
+				12BE2DC01F53F42500BA43A6 /* NCSkillsViewController.swift */,
+				129E61051E0291FD00B56EB8 /* NCSkillsPageViewController.swift */,
 				1211A4781EF1843D00364744 /* NCSkillsContentViewController.swift */,
 			);
 			name = Skills;
@@ -1736,6 +1739,7 @@
 				1230A3281DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift in Sources */,
 				121D10B01E26345D00DD671B /* NSManagedObjectContext+NC.swift in Sources */,
 				12AC8DCE1DF08D9B00561A7A /* NCCache.xcdatamodeld in Sources */,
+				12BE2DC11F53F42500BA43A6 /* NCSkillsViewController.swift in Sources */,
 				1230A32F1DFFE2CF00627D92 /* NCTableView.m in Sources */,
 				12D4044E1F32226E007F1715 /* NCLocationPickerRecentViewContrller.swift in Sources */,
 				124247C01E6605AD002E0460 /* NCFleetMemberTableViewCell.swift in Sources */,
@@ -1880,7 +1884,7 @@
 				12D39D141EF969210077BD17 /* NCContractTableViewCell.swift in Sources */,
 				12EA6B401E850BF300C571DF /* NCLoadoutActivityItem.swift in Sources */,
 				12D39D101EF936980077BD17 /* NCWalletTransactionsViewController.swift in Sources */,
-				129E61061E0291FD00B56EB8 /* NCSkillsViewController.swift in Sources */,
+				129E61061E0291FD00B56EB8 /* NCSkillsPageViewController.swift in Sources */,
 				12DC56AC1EFC0B0F0088F45E /* NCFittingProductionState.mm in Sources */,
 				129E61021E0287F500B56EB8 /* NCSkillTableViewCell.swift in Sources */,
 				129171161F4DAD6B00EED981 /* NCSlideDownDismissalInteractiveTransitioning.swift in Sources */,

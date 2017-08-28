@@ -63,7 +63,7 @@
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RecordData" inverseName="record" inverseEntity="RecordData" syncable="YES"/>
     </entity>
     <entity name="RecordData" representedClassName="NCCacheRecordData" syncable="YES" codeGenerationType="class">
-        <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="NSSecureCoding" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="NCSecureUnarchiver" customClassName="NSSecureCoding" syncable="YES"/>
         <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Record" inverseName="data" inverseEntity="Record" syncable="YES"/>
     </entity>
     <entity name="TypePickerRecent" representedClassName="NCCacheTypePickerRecent" syncable="YES" codeGenerationType="class">
@@ -90,12 +90,12 @@
     </entity>
     <elements>
         <element name="Contact" positionX="27" positionY="81" width="128" height="135"/>
+        <element name="LocationPickerRecent" positionX="18" positionY="117" width="128" height="90"/>
         <element name="Mail" positionX="18" positionY="72" width="128" height="195"/>
         <element name="MailBody" positionX="36" positionY="90" width="128" height="75"/>
         <element name="Price" positionX="9" positionY="36" width="128" height="75"/>
         <element name="Record" positionX="0" positionY="0" width="128" height="135"/>
         <element name="RecordData" positionX="0" positionY="0" width="128" height="75"/>
         <element name="TypePickerRecent" positionX="27" positionY="72" width="128" height="120"/>
-        <element name="LocationPickerRecent" positionX="18" positionY="117" width="128" height="90"/>
     </elements>
 </model>

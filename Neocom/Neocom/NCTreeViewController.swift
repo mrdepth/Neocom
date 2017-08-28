@@ -58,6 +58,7 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 		becomeActiveObserver = NotificationCenter.default.addNotificationObserver(forName: .UIApplicationDidBecomeActive, object: nil, queue: nil) { [weak self] _ in
 			self?.reloadIfNeeded()
 		}
+		
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

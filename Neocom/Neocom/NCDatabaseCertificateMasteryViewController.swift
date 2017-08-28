@@ -104,14 +104,14 @@ class NCDatabaseCertificateMasteryViewController: NCTreeViewController {
 	override func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
 		super.treeController(treeController, accessoryButtonTappedWithNode: node)
 		if let item = node as? NCDatabaseSkillsSection {
-			performTraining(trainingQueue: item.trainingQueue, character: item.character)
+			performTraining(trainingQueue: item.trainingQueue, character: item.character, sender: treeController.cell(for: node))
 		}
 	}
 	
 
 	// MARK: Private
 	
-	private func performTraining(trainingQueue: NCTrainingQueue, character: NCCharacter) {
+	private func performTraining(trainingQueue: NCTrainingQueue, character: NCCharacter, sender: UITableViewCell?) {
 		guard let account = NCAccount.current else {return}
 		
 		let message = String(format: NSLocalizedString("Total Training Time: %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: trainingQueue.trainingTime(characterAttributes: character.attributes), precision: .seconds))
@@ -129,6 +129,8 @@ class NCDatabaseCertificateMasteryViewController: NCTreeViewController {
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
 		present(controller, animated: true)
+		controller.popoverPresentationController?.sourceView = sender
+		controller.popoverPresentationController?.sourceRect = sender?.bounds ?? .zero
 	}
 	
 }

@@ -135,7 +135,7 @@ class NCFittingLoadoutsViewController: NCTreeViewController {
 		updateToolbar()
 	}
 	
-	@IBAction func onDelete(_ sender: Any) {
+	@IBAction func onDelete(_ sender: UIBarButtonItem) {
 		guard let selected = treeController?.selectedNodes().flatMap ({($0 as? NCLoadoutRow)?.loadoutID}) else {return}
 		guard !selected.isEmpty else {return}
 		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -152,9 +152,10 @@ class NCFittingLoadoutsViewController: NCTreeViewController {
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
 		
 		present(controller, animated: true, completion: nil)
+		controller.popoverPresentationController?.barButtonItem = sender
 	}
 	
-	@IBAction func onShare(_ sender: Any) {
+	@IBAction func onShare(_ sender: UIBarButtonItem) {
 		guard let selected = treeController?.selectedNodes().flatMap ({($0 as? NCLoadoutRow)?.loadoutID}) else {return}
 		
 		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -283,7 +284,8 @@ class NCFittingLoadoutsViewController: NCTreeViewController {
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
 		
 		present(controller, animated: true, completion: nil)
-		
+		controller.popoverPresentationController?.barButtonItem = sender
+
 	}
 	
 	//MARK: - TreeControllerDelegate

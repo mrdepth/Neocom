@@ -398,6 +398,7 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
                         <segue destination="aKc-6p-ULR" kind="relationship" relationship="masterViewController" id="fRj-Fc-6eo"/>
+                        <segue destination="jzY-fj-lmf" kind="relationship" relationship="detailViewController" id="ftP-7O-kc6"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bb8-GB-8B6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -498,6 +499,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XxC-nM-i65" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3096" y="868"/>
+        </scene>
+        <!--Splash Screen View Controller-->
+        <scene sceneID="vZJ-qC-DR5">
+            <objects>
+                <viewController storyboardIdentifier="NCSplashScreenViewController" id="jzY-fj-lmf" customClass="NCSplashScreenViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cG4-19-34f"/>
+                        <viewControllerLayoutGuide type="bottom" id="hl3-1f-4tg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6oG-l3-5QP" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Cog-vD-dzd">
+                                <rect key="frame" x="40" y="226.5" width="240" height="115"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Cog-vD-dzd" firstAttribute="centerY" secondItem="6oG-l3-5QP" secondAttribute="centerY" id="0g2-2u-wc4"/>
+                            <constraint firstItem="hl3-1f-4tg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Cog-vD-dzd" secondAttribute="bottom" constant="40" id="8Jh-nj-fHV"/>
+                            <constraint firstItem="Cog-vD-dzd" firstAttribute="centerX" secondItem="6oG-l3-5QP" secondAttribute="centerX" id="aDz-tq-cvB"/>
+                            <constraint firstItem="Cog-vD-dzd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6oG-l3-5QP" secondAttribute="leading" constant="40" id="kdF-bF-IQW"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="rJe-d2-Dr4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="03d-Jt-scA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1031" y="686"/>
         </scene>
         <!--Accounts-->
         <scene sceneID="56w-hi-x3n">
@@ -1015,6 +1046,7 @@
     <resources>
         <image name="addAccount" width="100" height="100"/>
         <image name="login" width="100" height="100"/>
+        <image name="logo" width="440" height="115"/>
         <image name="necrorise.png" width="256" height="256"/>
     </resources>
     <inferredMetricsTieBreakers>

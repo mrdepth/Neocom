@@ -47,6 +47,7 @@
 		1226D9631F223A690049FA0C /* NCNPCPickerGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9621F223A690049FA0C /* NCNPCPickerGroupsViewController.swift */; };
 		1226D9651F223A740049FA0C /* NCNPCPickerTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9641F223A740049FA0C /* NCNPCPickerTypesViewController.swift */; };
 		1227B81E1E096A4F00C816A0 /* NCDamageTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */; };
+		1227D0E31F55468600494811 /* NCSplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227D0E21F55468600494811 /* NCSplashScreenViewController.swift */; };
 		122A7CA21F4B49D100537467 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA11F4B49D100537467 /* Database.storyboard */; };
 		122A7CA41F4B589200537467 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA31F4B589200537467 /* Character.storyboard */; };
 		122A7CA61F4B5DD800537467 /* Business.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA51F4B5DD800537467 /* Business.storyboard */; };
@@ -450,6 +451,7 @@
 		1226D9621F223A690049FA0C /* NCNPCPickerGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCNPCPickerGroupsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1226D9641F223A740049FA0C /* NCNPCPickerTypesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCNPCPickerTypesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamageTypeLabel.swift; sourceTree = "<group>"; };
+		1227D0E21F55468600494811 /* NCSplashScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSplashScreenViewController.swift; sourceTree = "<group>"; };
 		122A7CA11F4B49D100537467 /* Database.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Database.storyboard; sourceTree = "<group>"; };
 		122A7CA31F4B589200537467 /* Character.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Character.storyboard; sourceTree = "<group>"; };
 		122A7CA51F4B5DD800537467 /* Business.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Business.storyboard; sourceTree = "<group>"; };
@@ -926,6 +928,7 @@
 				122B55601EB73E3500E46536 /* NCAccountsViewController.swift */,
 				12D404571F34BA70007F1715 /* NCAccountsFoldersViewController.swift */,
 				12D404591F34BAD6007F1715 /* NCAccountsFolderPickerViewController.swift */,
+				1227D0E21F55468600494811 /* NCSplashScreenViewController.swift */,
 			);
 			name = MainMenu;
 			sourceTree = "<group>";
@@ -1730,6 +1733,7 @@
 				125CE1361E9FF0E7007B8B6B /* NCNewMailViewController.swift in Sources */,
 				12E9321E1E6B56D40033D71A /* NCFittingCharactersViewController.swift in Sources */,
 				12DC56881EFC0A040088F45E /* NCFittingFacility.mm in Sources */,
+				1227D0E31F55468600494811 /* NCSplashScreenViewController.swift in Sources */,
 				127DE7D81E9513B4008D4873 /* ChartView.swift in Sources */,
 				126C9D4D1F30A9270071E792 /* NCLocationSearchResultsViewController.swift in Sources */,
 				12C37D341EFAAA290070F055 /* NCNPCViewController.swift in Sources */,

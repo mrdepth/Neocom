@@ -201,7 +201,10 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 		self.tableView.rowHeight = UITableViewAutomaticDimension
 		updateHeader()
 		loadMenu()
-		NotificationCenter.default.addObserver(self, selector: #selector(currentAccountChanged(_:)), name: NSNotification.Name.NCCurrentAccountChanged, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(currentAccountChanged(_:)), name: .NCCurrentAccountChanged, object: nil)
+		if let context = NCStorage.sharedStorage?.viewContext {
+			NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextDidSave(_:)), name: .NSManagedObjectContextDidSave, object: nil)
+		}
 	}
 	
 	deinit {
@@ -313,6 +316,19 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 		updateHeader()
 	}
 	
+	func managedObjectContextDidSave(_ note: Notification) {
+		guard NCAccount.current == nil else {return}
+		guard let viewContext = NCStorage.sharedStorage?.viewContext, let context = note.object as? NSManagedObjectContext else {return}
+		guard context.persistentStoreCoordinator === viewContext.persistentStoreCoordinator else {return}
+		
+		if (note.userInfo?[NSDeletedObjectsKey] as? NSSet)?.contains(where: {$0 is NCAccount}) == true ||
+			(note.userInfo?[NSInsertedObjectsKey] as? NSSet)?.contains(where: {$0 is NCAccount}) == true {
+			DispatchQueue.main.async {
+				self.updateHeader()
+			}
+		}
+	}
+	
 	//MARK: UIScrollViewDelegate
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -366,7 +382,6 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	private func updateHeader() {
 		let identifier: String
 		if NCAccount.current != nil {
-			//identifier = account.eveAPIKey.corporate ? "NCMainMenuCorporationHeaderViewController" : "NCMainMenuCharacterHeaderViewController"
 			identifier = "NCMainMenuCharacterHeaderViewController"
 		}
 		else {

@@ -114,13 +114,19 @@ class NCStorage: NSObject {
 	//MARK: Private
 	
 	func managedObjectContextDidSave(_ notification: Notification) {
-		guard let context = notification.object as? NSManagedObjectContext,
-			viewContext !== context && context.persistentStoreCoordinator === viewContext.persistentStoreCoordinator
-		else {
-			return
+		guard let context = notification.object as? NSManagedObjectContext else {return}
+		if viewContext === context {
+			if let account = NCAccount.current, (notification.userInfo?[NSDeletedObjectsKey] as? NSSet)?.contains(account) == true {
+				NCAccount.current = nil
+			}
 		}
-		viewContext.perform {
-			self.viewContext.mergeChanges(fromContextDidSave: notification)
+		else if context.persistentStoreCoordinator === viewContext.persistentStoreCoordinator {
+			viewContext.perform {
+				self.viewContext.mergeChanges(fromContextDidSave: notification)
+				if self.viewContext.hasChanges {
+					try? self.viewContext.save()
+				}
+			}
 		}
 	}
 	

@@ -25,7 +25,8 @@ class NCNPCPickerTypesViewController: NCTreeViewController, NCSearchableViewCont
 		                    ])
 		
 		if navigationController != nil {
-			setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCZKillboardTypesViewController"))
+			
+			setupSearchController(searchResultsController: UIStoryboard.killReports.instantiateViewController(withIdentifier: "NCZKillboardTypesViewController"))
 		}
 	}
 	

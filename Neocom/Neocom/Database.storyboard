@@ -221,8 +221,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="146.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view opaque="NO" contentMode="redraw" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p63-3a-yFG" customClass="NCMarketHistoryView" customModule="Neocom" customModuleProvider="target">
-                                            <rect key="frame" x="-1" y="4" width="375" height="118"/>
+                                        <view opaque="NO" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="p63-3a-yFG" customClass="NCMarketHistoryView" customModule="Neocom" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="4" width="375" height="118"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="p63-3a-yFG" secondAttribute="height" multiplier="2:1" priority="999" id="FF8-FE-DOZ"/>
@@ -895,13 +895,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="cfY-d5-6Eo">
-                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="xOH-1c-EAF">
-                            <connections>
-                                <action selector="dismissAnimated:" destination="FnB-sM-78M" id="eUV-h9-xRS"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="cfY-d5-6Eo"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hVN-Y4-i3X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -920,13 +914,7 @@
                             <outlet property="delegate" destination="fZs-ff-3DS" id="QUv-Ki-39F"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Items" id="gEQ-ch-b91">
-                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="NQy-yO-mhD">
-                            <connections>
-                                <action selector="dismissAnimated:" destination="fZs-ff-3DS" id="hH8-kc-S4u"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Items" id="gEQ-ch-b91"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JP1-1n-J1U" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -938,7 +926,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NCTypePickerRecentViewController" title="Recent" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6tY-E8-UEv" customClass="NCTypePickerRecentViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="DW5-4G-TTz" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -947,6 +935,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Items" id="CbH-Nn-GuM"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pJP-OZ-OiU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -982,13 +971,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="753-WR-qPi">
-                        <barButtonItem key="rightBarButtonItem" title="Cancel" id="Lbs-p5-iJA">
-                            <connections>
-                                <action selector="dismissAnimated:" destination="nq9-7x-dXv" id="yK3-Rq-b3R"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="753-WR-qPi"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="22A-lZ-VSf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1008,13 +991,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Items" id="Xt1-NO-twK">
-                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="bt1-cv-o8h">
-                            <connections>
-                                <action selector="dismissAnimated:" destination="nd9-MN-r0y" id="rRR-l0-AKc"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Items" id="Xt1-NO-twK"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="giz-sx-XE1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1121,13 +1098,7 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Regions" id="o9t-Rs-agj">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="WI8-3g-XQc">
-                            <connections>
-                                <action selector="dismissAnimated:" destination="TQl-rd-3tn" id="UP4-IT-twd"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Regions" id="o9t-Rs-agj"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P3k-A3-HhJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

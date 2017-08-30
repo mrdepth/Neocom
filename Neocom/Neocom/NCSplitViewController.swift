@@ -22,6 +22,10 @@ class NCSplitViewController: UISplitViewController, UISplitViewControllerDelegat
 		maximumPrimaryColumnWidth = 375
 	}
 	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+	}
+	
 	private weak var detailViewController: UIViewController?
 	
 	override public var preferredStatusBarStyle: UIStatusBarStyle {
@@ -37,12 +41,13 @@ class NCSplitViewController: UISplitViewController, UISplitViewControllerDelegat
 	}
 	
 	func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
-		(primaryViewController as? UINavigationController)?.isNavigationBarHidden = false
+		(primaryViewController as? UINavigationController)?.isNavigationBarHidden = secondaryViewController is NCSplashScreenViewController
 		(secondaryViewController as? UINavigationController)?.viewControllers.first?.navigationItem.leftBarButtonItem = nil
 		return secondaryViewController is NCSplashScreenViewController
 	}
 	
 	public func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
+		(viewControllers[0] as? UINavigationController)?.isNavigationBarHidden = true
 		(detailViewController as? UINavigationController)?.viewControllers.first?.navigationItem.leftBarButtonItem = displayModeButtonItem
 		return nil
 	}
@@ -57,6 +62,7 @@ class NCSplitViewController: UISplitViewController, UISplitViewControllerDelegat
 		if traitCollection.horizontalSizeClass == .regular {
 			(vc as? UINavigationController)?.viewControllers.first?.navigationItem.leftBarButtonItem = displayModeButtonItem
 		}
+		
 		return false
 	}
 	

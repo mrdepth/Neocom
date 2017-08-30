@@ -298,7 +298,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 					guard let ship = pilot.ship ?? pilot.structure else {return}
 					_ = ship.addModule(typeID: typeID, socket: socket)
 				}
-				if self?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
+				if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
 					typePickerViewController?.dismiss(animated: true)
 				}
 			}

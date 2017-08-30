@@ -37,10 +37,12 @@ class NCAdaptivePageSheetDelegate: NSObject, UIAdaptivePresentationControllerDel
 }
 
 class NCAdaptivePopoverDelegate: NSObject, UIPopoverPresentationControllerDelegate {
-	
 	func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
 		return .none
 	}
+}
+
+class NCPopoverBackgroundView: UIPopoverBackgroundView {
 	
 }
 
@@ -134,6 +136,7 @@ class Route/*: Hashable*/ {
 				
 				let presentationController = destination.popoverPresentationController
 				presentationController?.permittedArrowDirections = .any
+				presentationController?.backgroundColor = .separator
 				if let view = sender as? UIView {
 					presentationController?.sourceView = view
 					presentationController?.sourceRect = view.bounds
@@ -157,12 +160,17 @@ class Route/*: Hashable*/ {
 				}
 			}
 		case .popover:
+			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
+			destination.topViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
+			
 			destination.modalPresentationStyle = .popover
 			source.present(destination, animated: true, completion: nil)
 			NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
 			
 			let presentationController = destination.popoverPresentationController
+			presentationController?.backgroundColor = .separator
 			presentationController?.permittedArrowDirections = .any
+			presentationController?.popoverBackgroundViewClass = NCPopoverBackgroundView.self
 			if let view = sender as? UIView {
 				presentationController?.sourceView = view
 				presentationController?.sourceRect = view.bounds
@@ -304,15 +312,15 @@ enum Router {
 				super.init(kind: kind, storyboard: UIStoryboard.database, identifier: "NCDatabaseGroupsViewController")
 			}
 			
-			convenience init(_ category: NCDBInvCategory, kind: RouteKind = .adaptivePush) {
+			convenience init(_ category: NCDBInvCategory, kind: RouteKind = .push) {
 				self.init(category: category, categoryID: nil, objectID: nil, kind: kind)
 			}
 			
-			convenience init(_ categoryID: Int, kind: RouteKind = .adaptivePush) {
+			convenience init(_ categoryID: Int, kind: RouteKind = .push) {
 				self.init(category: nil, categoryID: categoryID, objectID: nil, kind: kind)
 			}
 			
-			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .adaptivePush) {
+			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .push) {
 				self.init(category: nil, categoryID: nil, objectID: objectID, kind: kind)
 			}
 			
@@ -456,15 +464,15 @@ enum Router {
 				super.init(kind: kind, storyboard: UIStoryboard.database, identifier: "NCDatabaseMarketInfoViewController")
 			}
 			
-			convenience init(_ type: NCDBInvType, kind: RouteKind = .adaptivePush) {
+			convenience init(_ type: NCDBInvType, kind: RouteKind = .push) {
 				self.init(type: type, typeID: nil, objectID: nil, kind: kind)
 			}
 			
-			convenience init(_ typeID: Int, kind: RouteKind = .adaptivePush) {
+			convenience init(_ typeID: Int, kind: RouteKind = .push) {
 				self.init(type: nil, typeID: typeID, objectID: nil, kind: kind)
 			}
 			
-			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .adaptivePush) {
+			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .push) {
 				self.init(type: nil, typeID: nil, objectID: objectID, kind: kind)
 			}
 			
@@ -533,7 +541,7 @@ enum Router {
 			
 			init(typeObjectID: NSManagedObjectID) {
 				self.typeObjectID = typeObjectID
-				super.init(kind: .adaptivePush, storyboard: UIStoryboard.database, identifier: "NCDatabaseTypeVariationsViewController")
+				super.init(kind: .push, storyboard: UIStoryboard.database, identifier: "NCDatabaseTypeVariationsViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -547,7 +555,7 @@ enum Router {
 			
 			init(typeObjectID: NSManagedObjectID) {
 				self.typeObjectID = typeObjectID
-				super.init(kind: .adaptivePush, storyboard: UIStoryboard.database, identifier: "NCDatabaseTypeRequiredForViewController")
+				super.init(kind: .push, storyboard: UIStoryboard.database, identifier: "NCDatabaseTypeRequiredForViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -561,7 +569,7 @@ enum Router {
 			
 			init(completionHandler: @escaping (NCNPCPickerViewController, NCDBInvType) -> Void) {
 				self.completionHandler = completionHandler
-				super.init(kind: .modal, storyboard: UIStoryboard.database, identifier: "NCNPCPickerViewController")
+				super.init(kind: .popover, storyboard: UIStoryboard.database, identifier: "NCNPCPickerViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -613,7 +621,7 @@ enum Router {
 			init(mode: [NCLocationPickerViewController.Mode], completionHandler: @escaping (NCLocationPickerViewController, Any) -> Void) {
 				self.completionHandler = completionHandler
 				self.mode = mode
-				super.init(kind: .modal, storyboard: UIStoryboard.database, identifier: "NCLocationPickerViewController")
+				super.init(kind: .popover, storyboard: UIStoryboard.database, identifier: "NCLocationPickerViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -782,7 +790,7 @@ enum Router {
 				self.category = category
 				self.completionHandler = completionHandler
 				self.modules = modules
-				super.init(kind: .adaptivePush, storyboard: UIStoryboard.fitting, identifier: "NCFittingAmmoViewController")
+				super.init(kind: .popover, storyboard: UIStoryboard.fitting, identifier: "NCFittingAmmoViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -800,7 +808,7 @@ enum Router {
 			init(category: NCDBDgmppItemCategory, modules: [NCFittingModule]) {
 				self.category = category
 				self.modules = modules
-				super.init(kind: .adaptivePush, storyboard: UIStoryboard.fitting, identifier: "NCFittingAmmoDamageChartViewController")
+				super.init(kind: .push, storyboard: UIStoryboard.fitting, identifier: "NCFittingAmmoDamageChartViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -815,7 +823,7 @@ enum Router {
 			
 			init(completionHandler: @escaping (NCFittingAreaEffectsViewController, NCDBInvType?) -> Void) {
 				self.completionHandler = completionHandler
-				super.init(kind: .adaptivePush, storyboard: UIStoryboard.fitting, identifier: "NCFittingAreaEffectsViewController")
+				super.init(kind: .popover, storyboard: UIStoryboard.fitting, identifier: "NCFittingAreaEffectsViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -828,7 +836,7 @@ enum Router {
 			
 			init(completionHandler: @escaping (NCFittingDamagePatternsViewController, NCFittingDamage) -> Void) {
 				self.completionHandler = completionHandler
-				super.init(kind: .adaptivePush, storyboard: UIStoryboard.fitting, identifier: "NCFittingDamagePatternsViewController")
+				super.init(kind: .popover, storyboard: UIStoryboard.fitting, identifier: "NCFittingDamagePatternsViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -843,7 +851,7 @@ enum Router {
 			init(type: NCDBInvType, completionHandler: @escaping (NCFittingVariationsViewController, NCDBInvType) -> Void) {
 				self.type = type
 				self.completionHandler = completionHandler
-				super.init(kind: .adaptivePush, storyboard: UIStoryboard.fitting, identifier: "NCFittingVariationsViewController")
+				super.init(kind: .popover, storyboard: UIStoryboard.fitting, identifier: "NCFittingVariationsViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -899,7 +907,7 @@ enum Router {
 			init(fleet: NCFittingFleet, completionHandler: @escaping (NCFittingFleetMemberPickerViewController) -> Void) {
 				self.fleet = fleet
 				self.completionHandler = completionHandler
-				super.init(kind: .adaptivePush, storyboard: UIStoryboard.fitting, identifier: "NCFittingFleetMemberPickerViewController")
+				super.init(kind: .popover, storyboard: UIStoryboard.fitting, identifier: "NCFittingFleetMemberPickerViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -916,7 +924,7 @@ enum Router {
 			init(modules: [NCFittingModule], completionHandler: @escaping (NCFittingTargetsViewController, NCFittingShip?) -> Void) {
 				self.modules = modules
 				self.completionHandler = completionHandler
-				super.init(kind: .adaptivePush, storyboard: UIStoryboard.fitting, identifier: "NCFittingTargetsViewController")
+				super.init(kind: .popover, storyboard: UIStoryboard.fitting, identifier: "NCFittingTargetsViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -933,7 +941,7 @@ enum Router {
 			init(pilot: NCFittingCharacter, completionHandler: @escaping (NCFittingCharactersViewController, URL) -> Void) {
 				self.pilot = pilot
 				self.completionHandler = completionHandler
-				super.init(kind: .adaptivePush, storyboard: UIStoryboard.fitting, identifier: "NCFittingCharactersViewController")
+				super.init(kind: .popover, storyboard: UIStoryboard.fitting, identifier: "NCFittingCharactersViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -946,7 +954,7 @@ enum Router {
 		class CharacterEditor: Route {
 			let character: NCFitCharacter
 			
-			init(character: NCFitCharacter, kind: RouteKind = .adaptivePush) {
+			init(character: NCFitCharacter, kind: RouteKind = .push) {
 				self.character = character
 				super.init(kind: kind, storyboard: UIStoryboard.fitting, identifier: "NCFittingCharacterEditorViewController")
 			}
@@ -1168,7 +1176,7 @@ enum Router {
 			
 			init(completionHandler: @escaping (NCZKillboardTypePickerViewController, Any) -> Void) {
 				self.completionHandler = completionHandler
-				super.init(kind: .modal, storyboard: UIStoryboard.killReports, identifier: "NCZKillboardTypePickerViewController")
+				super.init(kind: .popover, storyboard: UIStoryboard.killReports, identifier: "NCZKillboardTypePickerViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -1311,7 +1319,7 @@ enum Router {
 			
 			init(completionHandler: @escaping (NCAccountsFolderPickerViewController, NCAccountsFolder?) -> Void) {
 				self.completionHandler = completionHandler
-				super.init(kind: .modal, identifier: "NCAccountsFolderPickerViewController")
+				super.init(kind: .popover, identifier: "NCAccountsFolderPickerViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -1324,7 +1332,7 @@ enum Router {
 		class Folders: Route {
 			
 			init() {
-				super.init(kind: .modal, identifier: "NCAccountsFolderPickerViewController")
+				super.init(kind: .popover, identifier: "NCAccountsFolderPickerViewController")
 			}
 			
 		}

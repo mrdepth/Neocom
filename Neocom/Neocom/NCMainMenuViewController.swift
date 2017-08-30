@@ -186,6 +186,25 @@ class NCMainMenuDetails: NSObject {
 	}
 }
 
+class TestViewController: UIViewController {
+	override func viewDidLoad() {
+		super.viewDidLoad()
+	}
+//	override func viewWillAppear(_ animated: Bool) {
+//		super.viewWillAppear(animated)
+//		if presentedViewController == nil {
+//			let controller = storyboard!.instantiateViewController(withIdentifier: "NCMainMenuViewController")
+//			controller.modalPresentationStyle = .overCurrentContext
+//			present(controller, animated: false, completion: nil)
+//		}
+//
+//	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+	}
+}
+
 class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIViewControllerTransitioningDelegate {
 	@IBOutlet weak var tableView: NCTableView!
 	private weak var headerViewController: NCMainMenuHeaderViewController? = nil
@@ -224,23 +243,15 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 		self.navigationController?.setNavigationBarHidden(true, animated: animated)
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+	}
+	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
-		if let toVC = self.transitionCoordinator?.viewController(forKey: UITransitionContextViewControllerKey.to) {
-			if toVC === self {
-				return
-			}
-			else if let navigationController = toVC as? UINavigationController {
-				if navigationController.topViewController is NCAccountsViewController {
-					return
-				}
-			}
+		if transitionCoordinator?.viewController(forKey: .to)?.parent == navigationController {
 			self.navigationController?.setNavigationBarHidden(false, animated: animated)
 		}
-		else {
-			return
-		}
-
 	}
 	
 	override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {

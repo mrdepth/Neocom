@@ -78,7 +78,7 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 					}
 				}
 				typePickerViewController?.dismiss(animated: true)
-				if self?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
+				if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
 					typePickerViewController?.dismiss(animated: true)
 				}
 

@@ -612,12 +612,12 @@ class NCAccountsViewController: NCTreeViewController, UIViewControllerTransition
 			treeController.deselectCell(for: node, animated: true)
 			if node is NCActionRow {
 				let url = OAuth2.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.default, state: "esi")
-//				present(SFSafariViewController(url: url), animated: true, completion: nil)
-				if #available(iOS 10.0, *) {
-					UIApplication.shared.open(url, options: [:], completionHandler: nil)
-				} else {
-					UIApplication.shared.openURL(url)
-				}
+				present(SFSafariViewController(url: url), animated: true, completion: nil)
+//				if #available(iOS 10.0, *) {
+//					UIApplication.shared.open(url, options: [:], completionHandler: nil)
+//				} else {
+//					UIApplication.shared.openURL(url)
+//				}
 			}
 			else if let node = node as? NCAccountRow {
 				NCAccount.current = node.object

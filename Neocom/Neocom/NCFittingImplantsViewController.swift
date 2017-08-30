@@ -171,7 +171,7 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 					pilot.engine?.perform {
 						pilot.addImplant(typeID: typeID)
 					}
-					if self?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
+					if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
 						typePickerViewController?.dismiss(animated: true)
 					}
 				}
@@ -190,7 +190,7 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 					pilot.engine?.perform {
 						pilot.addBooster(typeID: typeID)
 					}
-					if self?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
+					if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
 						typePickerViewController?.dismiss(animated: true)
 					}
 				}

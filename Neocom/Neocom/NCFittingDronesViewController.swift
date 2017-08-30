@@ -199,7 +199,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate, N
 						engine.assign(identifier: identifier, for: drone)
 					}
 				}
-				if self?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
+				if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
 					typePickerViewController?.dismiss(animated: true)
 				}
 			}

@@ -64,7 +64,6 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		
 		
 		if OAuth2.handleOpenURL(url, clientID: ESClientID, secretKey: ESSecretKey, completionHandler: { (result) in
-			let controller = self.window?.rootViewController?.topMostPresentedViewController
 			switch result {
 			case let .success(token):
 				guard let context = NCStorage.sharedStorage?.viewContext else {break}
@@ -83,14 +82,16 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 				if let result = try? context.fetch(request), result.count == 1 {
 					NCAccount.current = result.first
 				}
-				if controller is SFSafariViewController {
-					controller?.dismiss(animated: true, completion: nil)
-				}
 			case let .failure(error):
+				let controller = self.window?.rootViewController?.topMostPresentedViewController
 				controller?.present(UIAlertController(error: error), animated: true, completion: nil)
 				break
 			}
 		}) {
+			if let controller = self.window?.rootViewController?.topMostPresentedViewController as? SFSafariViewController {
+				controller.dismiss(animated: true, completion: nil)
+			}
+
 			return true
 		}
 		else if let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {

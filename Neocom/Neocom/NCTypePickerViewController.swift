@@ -27,7 +27,7 @@ class NCTypePickerViewController: NCNavigationController {
 				else {
 					guard let controller = storyboard?.instantiateViewController(withIdentifier: "NCTypePickerContainerViewContrller") as? NCTypePickerContainerViewContrller else {return}
 					controller.group = group
-					controller.loadViewIfNeeded()
+//					controller.loadViewIfNeeded()
 					viewControllers = [controller]
 					//let groupsViewController = self.groupsViewController
 					//self.viewControllers.first?.title = groupsViewController?.group?.groupName

@@ -84,6 +84,9 @@ class NCNotificationManager: NSObject {
 					let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(characterID)_64.png")
 					
 					dispatchGroup.enter()
+					
+					let lifeTime = NCExtendedLifeTime(managedObjectContext)
+					
 					dataManager.skillQueue { result in
 						switch result {
 						case let .success(value, _):
@@ -93,10 +96,12 @@ class NCNotificationManager: NSObject {
 								}
 								self.schedule(skillQueue: value, account: account, requests: requests, imageURL: url) { result in
 									dispatchGroup.leave()
+									lifeTime.finalize()
 								}
 							}
 						case .failure:
 							dispatchGroup.leave()
+							lifeTime.finalize()
 						}
 					}
 				}
@@ -249,9 +254,8 @@ class NCNotificationManager: NSObject {
 				}
 				
 			} else {
-				// Fallback on earlier versions
+				completionHandler?(true)
 			}
-			completionHandler?(true)
 		}
 	}
 }

@@ -53,6 +53,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
 		NCDataManager().updateMarketPrices()
+		NCNotificationManager.sharedManager.schedule()
 	}
 
 	func applicationWillTerminate(_ application: UIApplication) {

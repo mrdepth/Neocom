@@ -66,6 +66,12 @@
         <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="NCSecureUnarchiver" customClassName="NSSecureCoding" syncable="YES"/>
         <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Record" inverseName="data" inverseEntity="Record" syncable="YES"/>
     </entity>
+    <entity name="SectionCollapse" representedClassName="NCCacheSectionCollapse" syncable="YES" codeGenerationType="class">
+        <attribute name="identifier" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="isExpanded" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SectionCollapse" inverseName="parent" inverseEntity="SectionCollapse" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SectionCollapse" inverseName="children" inverseEntity="SectionCollapse" syncable="YES"/>
+    </entity>
     <entity name="TypePickerRecent" representedClassName="NCCacheTypePickerRecent" syncable="YES" codeGenerationType="class">
         <attribute name="category" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" indexed="YES" syncable="YES"/>
         <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -107,5 +113,6 @@
         <element name="RecordData" positionX="0" positionY="0" width="128" height="75"/>
         <element name="TypePickerRecent" positionX="27" positionY="72" width="128" height="120"/>
         <element name="VisitedLink" positionX="18" positionY="117" width="128" height="75"/>
+        <element name="SectionCollapse" positionX="18" positionY="117" width="128" height="105"/>
     </elements>
 </model>

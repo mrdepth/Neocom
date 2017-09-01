@@ -38,8 +38,11 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func applicationWillResignActive(_ application: UIApplication) {
-		// Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-		// Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+		let task = application.beginBackgroundTask(expirationHandler: nil)
+		
+		NCNotificationManager.sharedManager.schedule { _ in
+			application.endBackgroundTask(task)
+		}
 	}
 
 	func applicationDidEnterBackground(_ application: UIApplication) {
@@ -53,7 +56,6 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
 		NCDataManager().updateMarketPrices()
-		NCNotificationManager.sharedManager.schedule()
 	}
 
 	func applicationWillTerminate(_ application: UIApplication) {

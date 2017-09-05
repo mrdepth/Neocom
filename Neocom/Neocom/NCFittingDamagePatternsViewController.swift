@@ -150,9 +150,6 @@ class NCCustomDamagePatternRow: NCFetchedResultsObjectNode<NCDamagePattern> {
 		isExpandable = false
 	}
 	
-	private var handler: NCActionHandler?
-
-	
 	override func configure(cell: UITableViewCell) {
 		if let cell = cell as? NCDamageTypeTableViewCell {
 			cell.titleLabel?.text = object.name?.isEmpty == false ? object.name : " "
@@ -171,7 +168,7 @@ class NCCustomDamagePatternRow: NCFetchedResultsObjectNode<NCDamagePattern> {
 			let textField = cell.textField
 //			cell.backgroundColor = .background
 			textField?.text = editingObject?.name
-			handler = NCActionHandler(cell.textField, for: .editingChanged, handler: { [weak self] _ in
+			cell.handlers[.editingChanged] = NCActionHandler(cell.textField, for: .editingChanged, handler: { [weak self] _ in
 				self?.editingObject?.name = textField?.text
 				//self?.text = textField?.text
 			})

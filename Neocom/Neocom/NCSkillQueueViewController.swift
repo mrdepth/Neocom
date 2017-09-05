@@ -263,7 +263,7 @@ fileprivate class NCSkillPlanRow: NCFetchedResultsObjectNode<NCSkillPlan> {
 		guard let cell = cell as? NCActionHeaderTableViewCell else {return}
 		cell.titleLabel?.text = title
 		cell.titleLabel?.textColor = object.active ? .caption : .lightText
-		cell.handler = NCActionHandler(cell.button!, for: .touchUpInside) { [weak self] _ in
+		cell.actionHandler = NCActionHandler(cell.button!, for: .touchUpInside) { [weak self] _ in
 			guard let strongSelf = self else {return}
 			guard let controller = strongSelf.treeController else {return}
 			controller.delegate?.treeController?(controller, accessoryButtonTappedWithNode: strongSelf)
@@ -319,14 +319,12 @@ fileprivate class NCSkillPlansSection: FetchedResultsNode<NCSkillPlan> {
 		cellIdentifier = Prototype.NCActionHeaderTableViewCell.default.reuseIdentifier
 	}
 	
-	private var buttonHandler: NCActionHandler?
-	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCActionHeaderTableViewCell else {return}
 		cell.titleLabel?.text = NSLocalizedString("Skill Plans", comment: "").uppercased()
 		cell.titleLabel?.textColor = .lightText
 		
-		buttonHandler = NCActionHandler(cell.button!, for: .touchUpInside) { [weak self] _ in
+		cell.actionHandler = NCActionHandler(cell.button!, for: .touchUpInside) { [weak self] _ in
 			guard let strongSelf = self else {return}
 			guard let treeController = strongSelf.treeController else {return}
 			treeController.delegate?.treeController?(treeController, accessoryButtonTappedWithNode: strongSelf)

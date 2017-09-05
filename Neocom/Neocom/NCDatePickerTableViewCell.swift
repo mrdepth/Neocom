@@ -18,6 +18,11 @@ class NCDatePickerTableViewCell: NCTableViewCell {
 		datePicker.setValue(UIColor.white, forKeyPath: "textColor")
 		datePicker.setValue(false, forKeyPath: "highlightsToday")
 	}
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		actionHandler = nil
+	}
 }
 
 extension Prototype {

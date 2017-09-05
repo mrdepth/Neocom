@@ -33,7 +33,7 @@ class RootNode: TreeNode, CollapseSerializable {
 	let collapseState: NCCacheSectionCollapse?
 	
 	init(_ children: [TreeNode] = [], collapseIdentifier: String? = nil) {
-		if let collapseIdentifier = collapseIdentifier {
+/*		if let collapseIdentifier = collapseIdentifier {
 			collapseState = NCCache.sharedCache?.viewContext.fetch("SectionCollapse", where: "identifier == %@", collapseIdentifier) ?? {
 				let state = NCCacheSectionCollapse(entity: NSEntityDescription.entity(forEntityName: "SectionCollapse!", in: NCCache.sharedCache!.viewContext)!, insertInto: NCCache.sharedCache!.viewContext)
 				state.identifier = collapseIdentifier
@@ -43,7 +43,8 @@ class RootNode: TreeNode, CollapseSerializable {
 		}
 		else {
 			collapseState = nil
-		}
+		}*/
+		collapseState = nil
 		super.init()
 		self.children = children
 	}

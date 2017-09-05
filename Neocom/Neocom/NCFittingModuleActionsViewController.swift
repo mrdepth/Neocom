@@ -23,8 +23,6 @@ class NCFittingModuleStateRow: TreeRow {
 		
 	}
 	
-	var actionHandler: NCActionHandler?
-	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCFittingModuleStateTableViewCell else {return}
 		cell.segmentedControl?.removeAllSegments()
@@ -37,7 +35,7 @@ class NCFittingModuleStateRow: TreeRow {
 		guard let module = modules.first else {return}
 
 		let segmentedControl = cell.segmentedControl!
-		self.actionHandler = NCActionHandler(segmentedControl, for: .valueChanged) { [weak self, weak segmentedControl] _ in
+		cell.actionHandler = NCActionHandler(segmentedControl, for: .valueChanged) { [weak self, weak segmentedControl] _ in
 			guard let sender = segmentedControl else {return}
 			guard let state = self?.states[sender.selectedSegmentIndex] else {return}
 			module.engine?.perform {

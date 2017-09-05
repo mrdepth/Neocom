@@ -52,8 +52,6 @@ class NCFittingDroneStateRow: TreeRow {
 		
 	}
 	
-	var actionHandler: NCActionHandler?
-	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCFittingDroneStateTableViewCell else {return}
 		cell.object = self
@@ -61,7 +59,7 @@ class NCFittingDroneStateRow: TreeRow {
 		
 		let segmentedControl = cell.segmentedControl!
 		
-		self.actionHandler = NCActionHandler(segmentedControl, for: .valueChanged) { [weak self, weak segmentedControl] _ in
+		cell.actionHandler = NCActionHandler(segmentedControl, for: .valueChanged) { [weak self, weak segmentedControl] _ in
 			guard let sender = segmentedControl else {return}
 			guard let drones = self?.drones else {return}
 			let isActive = sender.selectedSegmentIndex == 1

@@ -14,10 +14,19 @@ class NCFittingModuleTableViewCell: NCTableViewCell {
 	@IBOutlet weak var titleLabel: UILabel?
 	@IBOutlet weak var subtitleLabel: UILabel?
 	@IBOutlet weak var targetIconView: UIImageView!
+	
 }
 
 class NCFittingModuleStateTableViewCell: NCTableViewCell {
 	@IBOutlet weak var segmentedControl: UISegmentedControl?
+	
+	var actionHandler: NCActionHandler?
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		actionHandler = nil
+	}
+
 }
 
 typealias NCFittingDroneTableViewCell = NCFittingModuleTableViewCell

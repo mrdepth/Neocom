@@ -160,6 +160,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		
 		let toolbar = UIToolbar.appearance(whenContainedInInstancesOf: [NCNavigationController.self])
 		toolbar.tintColor = UIColor.white
+		toolbar.barStyle = .black
 	}
 
 }

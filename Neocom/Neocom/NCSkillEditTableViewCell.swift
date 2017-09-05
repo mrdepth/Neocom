@@ -12,6 +12,13 @@ class NCSkillEditTableViewCell: NCTableViewCell {
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var levelSegmentedControl: UISegmentedControl!
 	
+	var actionHandler: NCActionHandler?
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		actionHandler = nil
+	}
+	
 }
 
 
@@ -35,15 +42,13 @@ class NCSkillEditRow: NCFetchedResultsObjectNode<NSDictionary>, TreeNodeRoutable
 		cellIdentifier = Prototype.NCSkillEditTableViewCell.default.reuseIdentifier
 	}
 	
-	private var handler: NCActionHandler?
-	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCSkillEditTableViewCell else {return}
 		cell.titleLabel.text = object["typeName"] as? String
 		cell.levelSegmentedControl.selectedSegmentIndex = level
 		
 		let segmentedControl = cell.levelSegmentedControl!
-		handler = NCActionHandler(cell.levelSegmentedControl, for: .valueChanged) { [weak self] _ in
+		cell.actionHandler = NCActionHandler(cell.levelSegmentedControl, for: .valueChanged) { [weak self] _ in
 			self?.level = segmentedControl.selectedSegmentIndex
 		}
 	}

@@ -14,10 +14,10 @@ class NCTrainingSkill: Hashable {
 	let level: Int
 	
 	init?(type: NCDBInvType?, skill: NCSkill? = nil, level: Int, trainedLevel: Int? = nil) {
-		guard level > 0 && level <= 5 else {return nil}
+		guard level >= 0 && level <= 5 else {return nil}
 		guard let type = type else {return nil}
 		let trainedLevel = trainedLevel ?? skill?.level ?? 0
-		guard level > trainedLevel else {return nil}
+		guard level >= trainedLevel else {return nil}
 		
 		if let skill = skill, let skillLevel = skill.level, skillLevel == trainedLevel {
 			guard let skill = NCSkill(type: type, level: trainedLevel, startSkillPoints: skill.startSkillPoints, trainingStartDate: skill.trainingStartDate, trainingEndDate: skill.trainingEndDate) else {return nil}
@@ -87,7 +87,7 @@ class NCTrainingQueue {
 	func add(mastery: NCDBCertMastery) {
 		for skill in mastery.skills?.allObjects as? [NCDBCertSkill] ?? [] {
 			guard let type = skill.type else {continue}
-			add(skill: type, level: Int(skill.skillLevel))
+			add(skill: type, level: max(Int(skill.skillLevel), 1))
 		}
 	}
 	

@@ -19,6 +19,7 @@ class NCTableViewCell: UITableViewCell {
 	override func prepareForReuse() {
 		binder.unbindAll()
 		super.prepareForReuse()
+		accessoryButtonHandler = nil
 	}
 	
 	override func awakeFromNib() {

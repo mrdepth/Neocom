@@ -169,7 +169,7 @@ class NCDatabaseTypeSkillRow: DefaultTreeRow {
 		cell.iconView?.tintColor = tintColor
 
 		
-		if let skill = self.skill, trainingTime > 0 {
+		if let skill = self.skill/*, trainingTime > 0*/ {
 			let typeID = skill.skill.typeID
 			let level = skill.level
 

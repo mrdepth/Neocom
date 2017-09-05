@@ -161,7 +161,7 @@ class Route/*: Hashable*/ {
 			}
 		case .popover:
 			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
-			destination.topViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
+			destination.viewControllers.first?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
 			
 			destination.modalPresentationStyle = .popover
 			source.present(destination, animated: true, completion: nil)

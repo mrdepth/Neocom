@@ -72,7 +72,12 @@ class NCHeaderTableViewCell: UITableViewCell, NCExpandable, Expandable {
 class NCActionHeaderTableViewCell: NCHeaderTableViewCell {
 	@IBOutlet weak var button: UIButton?
 	
-	var handler: NCActionHandler?
+	var actionHandler: NCActionHandler?
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		actionHandler = nil
+	}
 }
 
 extension Prototype {
@@ -93,11 +98,10 @@ class NCActionTreeSection: DefaultTreeSection {
 		super.init(prototype: prototype, nodeIdentifier: nodeIdentifier, image: image, title: title, attributedTitle: attributedTitle, children: children)
 	}
 	
-	var handler: NCActionHandler?
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
 		guard let cell = cell as? NCActionHeaderTableViewCell else {return}
-		handler = NCActionHandler(cell.button!, for: .touchUpInside) { [weak self] _ in
+		cell.actionHandler = NCActionHandler(cell.button!, for: .touchUpInside) { [weak self] _ in
 			guard let strongSelf = self else {return}
 			guard let controller = strongSelf.treeController else {return}
 			controller.delegate?.treeController?(controller, accessoryButtonTappedWithNode: strongSelf)

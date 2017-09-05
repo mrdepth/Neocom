@@ -126,6 +126,11 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		navigationController?.setToolbarHidden(false, animated: false)
+	}
+	
 	@IBAction func onDelete(_ sender: Any) {
 		guard let fleet = fleet else {return}
 		guard let pilot = fleet.active else {return}

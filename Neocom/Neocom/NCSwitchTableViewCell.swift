@@ -13,6 +13,12 @@ class NCSwitchTableViewCell: NCTableViewCell {
 	@IBOutlet weak var switchControl: UISwitch!
 	
 	var actionHandler: NCActionHandler?
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		actionHandler = nil
+	}
+
 }
 
 extension Prototype {

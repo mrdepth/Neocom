@@ -20,8 +20,6 @@ class NCSolarSystemRow: NCFetchedResultsObjectNode<NCDBMapSolarSystem> {
 		cellIdentifier = Prototype.NCDefaultTableViewCell.noImage.reuseIdentifier
 	}
 	
-	var handler: NCActionHandler?
-	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
 		cell.titleLabel?.attributedText = title

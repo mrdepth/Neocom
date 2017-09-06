@@ -232,6 +232,7 @@ fileprivate class NCSkillPlanRow: NCFetchedResultsObjectNode<NCSkillPlan> {
 	required init(object: NCSkillPlan) {
 		super.init(object: object)
 		cellIdentifier = Prototype.NCActionHeaderTableViewCell.default.reuseIdentifier
+		isExpandable = true
 		isExpanded = object.active
 	}
 	
@@ -317,6 +318,7 @@ fileprivate class NCSkillPlansSection: FetchedResultsNode<NCSkillPlan> {
 		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: account.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
 		super.init(resultsController: results, sectionNode: nil, objectNode: NCSkillPlanRow.self)
 		cellIdentifier = Prototype.NCActionHeaderTableViewCell.default.reuseIdentifier
+		isExpandable = true
 	}
 	
 	override func configure(cell: UITableViewCell) {

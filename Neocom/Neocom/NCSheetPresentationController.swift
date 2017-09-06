@@ -14,6 +14,7 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 
 	private var dimmingView: UIView?
 	private var presentationWrappingView: UIView?
+	private var presentedViewControllerWrappingView: UIView?
 	private var keyboardFrame: CGRect = .zero
 	private var interactiveTransition: NCSlideDownDismissalInteractiveTransitioning?
 
@@ -45,6 +46,7 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 			
 			let presentedViewControllerWrapperView = UIView(frame: UIEdgeInsetsInsetRect(presentationRoundedCornerView.bounds, UIEdgeInsets(top: 0, left: 0, bottom: cornerRadius * 2.0, right: 0)))
 			presentedViewControllerWrapperView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+			self.presentedViewControllerWrappingView = presentedViewControllerWrapperView
 			
 			presentedViewControllerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 			presentedViewControllerView.frame = presentedViewControllerWrapperView.bounds
@@ -139,6 +141,10 @@ class NCSheetPresentationController: UIPresentationController, UIViewControllerT
 	}
 	
 	override func containerViewWillLayoutSubviews() {
+		if let view = super.presentedView, let presentedViewControllerWrappingView = presentedViewControllerWrappingView, view.superview != presentedViewControllerWrappingView {
+			presentedViewControllerWrappingView.addSubview(view)
+			view.frame = presentedViewControllerWrappingView.bounds
+		}
 		super.containerViewWillLayoutSubviews()
 		
 		if let containerView = self.containerView {

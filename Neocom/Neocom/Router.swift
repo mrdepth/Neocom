@@ -30,20 +30,16 @@ enum RouteKind {
 	case popover
 }
 
-class NCAdaptivePageSheetDelegate: NSObject, UIAdaptivePresentationControllerDelegate {
-	func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-		return traitCollection.horizontalSizeClass == .compact ? .overFullScreen : .none
-	}
-}
+//class NCAdaptivePageSheetDelegate: NSObject, UIAdaptivePresentationControllerDelegate {
+//	func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+//		return traitCollection.horizontalSizeClass == .compact ? .overFullScreen : .none
+//	}
+//}
 
 class NCAdaptivePopoverDelegate: NSObject, UIPopoverPresentationControllerDelegate {
 	func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
 		return .none
 	}
-}
-
-class NCPopoverBackgroundView: UIPopoverBackgroundView {
-	
 }
 
 class Route/*: Hashable*/ {
@@ -86,7 +82,9 @@ class Route/*: Hashable*/ {
 			}
 		case .modal:
 			destination.modalPresentationStyle = .pageSheet
-			NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
+			if (destination as? UINavigationController)?.viewControllers.first?.navigationItem.leftBarButtonItem == nil {
+				NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
+			}
 			
 			source.present(destination, animated: true, completion: nil)
 			
@@ -96,15 +94,18 @@ class Route/*: Hashable*/ {
 				let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
 				destination.modalPresentationStyle = .pageSheet
 
-				let delegate = NCAdaptivePageSheetDelegate()
-				destination.presentationController?.delegate = delegate
-				adaptiveDelegate = delegate
+//				let delegate = NCAdaptivePageSheetDelegate()
+//				destination.presentationController?.delegate = delegate
+//				adaptiveDelegate = delegate
 				
-				NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
+				let firstVC = destination.viewControllers.first
+				if firstVC?.navigationItem.leftBarButtonItem == nil {
+					NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
+					firstVC?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
+				}
 				
-				source.present(destination, animated: true, completion: nil)
-				destination.topViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
 				presentedViewController = destination
+				source.present(destination, animated: true, completion: nil)
 			}
 			else {
                 if source.parent is UISearchController {
@@ -118,7 +119,12 @@ class Route/*: Hashable*/ {
 		case .adaptiveModal:
 			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
 			destination.modalPresentationStyle = .custom
-			destination.topViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
+			
+			let firstVC = destination.viewControllers.first
+			if firstVC?.navigationItem.leftBarButtonItem == nil {
+				NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
+				firstVC?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
+			}
 
 			NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
 			
@@ -161,16 +167,21 @@ class Route/*: Hashable*/ {
 			}
 		case .popover:
 			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
-			destination.viewControllers.first?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
 			
 			destination.modalPresentationStyle = .popover
+
 			source.present(destination, animated: true, completion: nil)
-			NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
+
+			
+			let firstVC = destination.viewControllers.first
+			if firstVC?.navigationItem.leftBarButtonItem == nil {
+				NCSlideDownDismissalInteractiveTransitioning.add(to: destination)
+				firstVC?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: destination, action: #selector(UIViewController.dismissAnimated(_:)))
+			}
 			
 			let presentationController = destination.popoverPresentationController
 			presentationController?.backgroundColor = .separator
 			presentationController?.permittedArrowDirections = .any
-			presentationController?.popoverBackgroundViewClass = NCPopoverBackgroundView.self
 			if let view = sender as? UIView {
 				presentationController?.sourceView = view
 				presentationController?.sourceRect = view.bounds

@@ -42,15 +42,21 @@ class NCAccountsNode: TreeNode {
 	}
 }
 
-class NCAccountsFolderSection: NCFetchedResultsObjectNode<NCAccountsFolder> {
+class NCAccountsFolderSection: NCFetchedResultsObjectNode<NCAccountsFolder>, CollapseSerializable {
+	var collapseState: NCCacheSectionCollapse?
+	var collapseIdentifier: String? {
+		return self.object.objectID.uriRepresentation().absoluteString
+	}
+
 	required init(object: NCAccountsFolder) {
 		super.init(object: object)
+		isExpandable = true
 		cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCHeaderTableViewCell else {return}
-		cell.titleLabel?.text = (object.name?.isEmpty == false ? object.name : NSLocalizedString("Unnmaed", comment: ""))?.uppercased()
+		cell.titleLabel?.text = (object.name?.isEmpty == false ? object.name : NSLocalizedString("Unnamed", comment: ""))?.uppercased()
 	}
 	
 	override func loadChildren() {
@@ -62,6 +68,23 @@ class NCAccountsFolderSection: NCFetchedResultsObjectNode<NCAccountsFolder> {
 		
 		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
 		children = [FetchedResultsNode(resultsController: results, objectNode: NCAccountRow.self)]
+	}
+	
+	override func willMoveToTreeController(_ treeController: TreeController?) {
+		if let collapseState = getCollapseState() {
+			isExpanded = collapseState.isExpanded
+			self.collapseState = collapseState
+		}
+		else {
+			self.collapseState = nil
+		}
+		super.willMoveToTreeController(treeController)
+	}
+	
+	override var isExpanded: Bool {
+		didSet {
+			collapseState?.isExpanded = isExpanded
+		}
 	}
 }
 
@@ -590,7 +613,7 @@ class NCAccountsViewController: NCTreeViewController, UIViewControllerTransition
 		guard let context = NCStorage.sharedStorage?.viewContext else {return}
 		let row = NCActionRow(title: NSLocalizedString("SIGN IN", comment: ""))
 		let space = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty)
-		treeController?.content = RootNode([NCAccountsNode(context: context, cachePolicy: cachePolicy), space, row])
+		treeController?.content = RootNode([NCAccountsNode(context: context, cachePolicy: cachePolicy), space, row], collapseIdentifier: "NCAccountsViewController")
 	}
 	
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {

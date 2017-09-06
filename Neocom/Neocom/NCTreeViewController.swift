@@ -66,6 +66,13 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 		reloadIfNeeded()
 	}
 	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		if let context = NCCache.sharedCache?.viewContext, context.hasChanges {
+			try? context.save()
+		}
+	}
+	
 	//MARK: - NCAPIController
 	
 	var needsReloadOnAccountChange: Bool = false {

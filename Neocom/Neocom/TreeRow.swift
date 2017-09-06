@@ -27,12 +27,35 @@ public enum NCTableViewCellAccessoryType {
 
 protocol CollapseSerializable {
 	var collapseState: NCCacheSectionCollapse? {get}
+	var collapseIdentifier: String? {get}
+}
+
+extension CollapseSerializable where Self: TreeNode {
+	var parentCollapseState: NCCacheSectionCollapse? {
+		return (sequence(first: self.parent, next: {$0?.parent}).first(where: {$0 is CollapseSerializable}) as? CollapseSerializable)?.collapseState
+	}
+	
+	func getCollapseState() -> NCCacheSectionCollapse? {
+		guard isExpandable else {return nil}
+		guard let collapseIdentifier = collapseIdentifier,
+			let parent = (sequence(first: self.parent, next: {$0?.parent}).first(where: {$0 is CollapseSerializable}) as? CollapseSerializable)?.collapseState else {return nil}
+		
+		return NCCache.sharedCache?.viewContext.fetch("SectionCollapse", where: "identifier == %@ AND parent == %@", collapseIdentifier, parent) ?? {
+			let state = NCCacheSectionCollapse(entity: NSEntityDescription.entity(forEntityName: "SectionCollapse", in: NCCache.sharedCache!.viewContext)!, insertInto: NCCache.sharedCache!.viewContext)
+			state.identifier = collapseIdentifier
+			state.parent = parent
+			state.isExpanded = self.isExpanded
+			return state
+			}()
+	}
 }
 
 class RootNode: TreeNode, CollapseSerializable {
-	let collapseState: NCCacheSectionCollapse?
+	var collapseState: NCCacheSectionCollapse?
+	let collapseIdentifier: String?
 	
 	init(_ children: [TreeNode] = [], collapseIdentifier: String? = nil) {
+		self.collapseIdentifier = collapseIdentifier
 /*		if let collapseIdentifier = collapseIdentifier {
 			collapseState = NCCache.sharedCache?.viewContext.fetch("SectionCollapse", where: "identifier == %@", collapseIdentifier) ?? {
 				let state = NCCacheSectionCollapse(entity: NSEntityDescription.entity(forEntityName: "SectionCollapse!", in: NCCache.sharedCache!.viewContext)!, insertInto: NCCache.sharedCache!.viewContext)
@@ -44,9 +67,25 @@ class RootNode: TreeNode, CollapseSerializable {
 		else {
 			collapseState = nil
 		}*/
-		collapseState = nil
 		super.init()
 		self.children = children
+	}
+	
+	override func willMoveToTreeController(_ treeController: TreeController?) {
+		if let collapseIdentifier = collapseIdentifier {
+			let collapseState: NCCacheSectionCollapse = NCCache.sharedCache?.viewContext.fetch("SectionCollapse", where: "identifier == %@ AND parent == NULL", collapseIdentifier) ?? {
+				let state = NCCacheSectionCollapse(entity: NSEntityDescription.entity(forEntityName: "SectionCollapse", in: NCCache.sharedCache!.viewContext)!, insertInto: NCCache.sharedCache!.viewContext)
+				state.identifier = collapseIdentifier
+				state.isExpanded = true
+				return state
+				}()
+			isExpanded = collapseState.isExpanded
+			self.collapseState = collapseState
+		}
+		else {
+			collapseState = nil
+		}
+		super.willMoveToTreeController(treeController)
 	}
 }
 
@@ -74,8 +113,12 @@ class TreeRow: TreeNode, TreeNodeRoutable {
 	
 }
 
-class TreeSection: TreeNode {
-	init(prototype: Prototype? = nil) {
+class TreeSection: TreeNode, CollapseSerializable {
+	var collapseState: NCCacheSectionCollapse?
+	let collapseIdentifier: String?
+	
+	init(prototype: Prototype? = nil, collapseIdentifier: String? = nil) {
+		self.collapseIdentifier = collapseIdentifier
 		super.init(cellIdentifier: prototype?.reuseIdentifier)
 		isExpandable = true
 	}
@@ -83,20 +126,40 @@ class TreeSection: TreeNode {
 	override var separatorInset: UIEdgeInsets {
 		return isLeaf && (children.isEmpty || !isExpanded) ? sequence(first: self, next: {$0.parent}).first {!$0.isLeaf}?.separatorInset ?? .zero : parent?.separatorInset ?? .zero
 	}
+	
+	override func willMoveToTreeController(_ treeController: TreeController?) {
+		if let collapseState = getCollapseState() {
+			isExpanded = collapseState.isExpanded
+			self.collapseState = collapseState
+		}
+		else {
+			self.collapseState = nil
+		}
+		super.willMoveToTreeController(treeController)
+	}
+	
+	override var isExpanded: Bool {
+		didSet {
+			collapseState?.isExpanded = isExpanded
+		}
+	}
 }
 
 class DefaultTreeSection: TreeSection {
-	let nodeIdentifier: String?
 	let image: UIImage?
 	var title: String?
 	var attributedTitle: NSAttributedString?
+	
+	var nodeIdentifier: String? {
+		return collapseIdentifier
+	}
+
 
 	init(prototype: Prototype = Prototype.NCHeaderTableViewCell.default, nodeIdentifier: String? = nil, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
 		self.image = image
 		self.title = title
 		self.attributedTitle = attributedTitle
-		self.nodeIdentifier = nodeIdentifier
-		super.init(prototype: prototype)
+		super.init(prototype: prototype, collapseIdentifier: nodeIdentifier)
 		self.children = children ?? []
 	}
 	
@@ -235,7 +298,7 @@ class NCActionRow: TreeRow {
 
 
 class NCDefaultFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: FetchedResultsSectionNode<ResultType> {
-	
+
 	required init(section: NSFetchedResultsSectionInfo, objectNode: FetchedResultsObjectNode<ResultType>.Type) {
 		super.init(section: section, objectNode: objectNode)
 		self.cellIdentifier = Prototype.NCHeaderTableViewCell.default.reuseIdentifier
@@ -246,7 +309,6 @@ class NCDefaultFetchedResultsSectionNode<ResultType: NSFetchRequestResult>: Fetc
 		guard let cell = cell as? NCHeaderTableViewCell else {return}
 		cell.titleLabel?.text = section.name.uppercased()
 	}
-	
 }
 
 class NCDefaultFetchedResultsSectionCollapsedNode<ResultType: NSFetchRequestResult>: NCDefaultFetchedResultsSectionNode<ResultType> {

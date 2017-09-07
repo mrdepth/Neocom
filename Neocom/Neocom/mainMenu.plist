@@ -327,10 +327,6 @@
 			<string>Settings</string>
 			<key>image</key>
 			<string>settings</string>
-			<key>scopes</key>
-			<array>
-				<string>n/a</string>
-			</array>
 		</dict>
 		<dict>
 			<key>url</key>

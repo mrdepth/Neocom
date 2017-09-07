@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -135,6 +135,7 @@
                         <segue destination="jPu-JT-1dL" kind="showDetail" identifier="NCZKillboardViewController" id="HhQ-qT-gaR"/>
                         <segue destination="1Gi-Vb-nuh" kind="showDetail" identifier="NCKillmailsPageViewController" id="6AF-uU-hLR"/>
                         <segue destination="MsB-i8-Yx3" kind="showDetail" identifier="NCFittingMenuViewController" id="LJF-EU-NLP"/>
+                        <segue destination="kGf-Ma-71n" kind="showDetail" identifier="NCSettingsViewController" id="6d9-75-sm2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mhh-2D-7TI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1068,6 +1069,37 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mqO-7i-f0S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3023" y="697"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="hWx-gI-0He">
+            <objects>
+                <navigationController useStoryboardIdentifierAsRestorationIdentifier="YES" id="kGf-Ma-71n" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="6ju-MU-P0n">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="4ob-ss-A75" kind="relationship" relationship="rootViewController" id="6qp-gM-lbt"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bAB-qC-wep" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-227" y="2622"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="kmJ-q0-fLW">
+            <objects>
+                <tableViewController storyboardIdentifier="NCSettingsViewController" modalPresentationStyle="overCurrentContext" id="4ob-ss-A75" customClass="NCSettingsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="ebV-5g-SOo" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Settings" id="oBX-Fe-gVP"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dTu-6T-8mF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="478" y="2622"/>
         </scene>
     </scenes>
     <resources>

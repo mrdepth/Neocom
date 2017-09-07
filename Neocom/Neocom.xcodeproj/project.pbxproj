@@ -150,6 +150,7 @@
 		126C9D491F30A6CD0071E792 /* NCRegionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C9D481F30A6CD0071E792 /* NCRegionsViewController.swift */; };
 		126C9D4B1F30A8580071E792 /* NCSolarSystemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C9D4A1F30A8580071E792 /* NCSolarSystemsViewController.swift */; };
 		126C9D4D1F30A9270071E792 /* NCLocationSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C9D4C1F30A9270071E792 /* NCLocationSearchResultsViewController.swift */; };
+		126E183B1F6133710008C081 /* NCSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E183A1F6133710008C081 /* NCSettingsViewController.swift */; };
 		127332E11E71D01D00DE46C9 /* TreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127332E01E71D01D00DE46C9 /* TreeController.swift */; };
 		1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */; };
 		127BE3901E5AFC2900FA7F9F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BE38F1E5AFC2900FA7F9F /* Router.swift */; };
@@ -556,6 +557,7 @@
 		126C9D481F30A6CD0071E792 /* NCRegionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCRegionsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		126C9D4A1F30A8580071E792 /* NCSolarSystemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSolarSystemsViewController.swift; sourceTree = "<group>"; };
 		126C9D4C1F30A9270071E792 /* NCLocationSearchResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocationSearchResultsViewController.swift; sourceTree = "<group>"; };
+		126E183A1F6133710008C081 /* NCSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSettingsViewController.swift; sourceTree = "<group>"; };
 		127332E01E71D01D00DE46C9 /* TreeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TreeController.swift; path = ../../ThirdParty/TreeController/TreeController/TreeController/TreeController.swift; sourceTree = "<group>"; };
 		1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
 		127BE38F1E5AFC2900FA7F9F /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -822,6 +824,7 @@
 				1203E8871F093A48009ADF8D /* NCFeedsViewController.swift */,
 				1203E8891F093AEA009ADF8D /* NCFeedChannelViewController.swift */,
 				1203E88B1F093B7E009ADF8D /* NCFeedItemViewController.swift */,
+				126E183A1F6133710008C081 /* NCSettingsViewController.swift */,
 			);
 			name = Misc;
 			sourceTree = "<group>";
@@ -1890,6 +1893,7 @@
 				1230A3341DFFE2CF00627D92 /* NSExpressionDescription+NC.swift in Sources */,
 				1203E8881F093A48009ADF8D /* NCFeedsViewController.swift in Sources */,
 				12D39D141EF969210077BD17 /* NCContractTableViewCell.swift in Sources */,
+				126E183B1F6133710008C081 /* NCSettingsViewController.swift in Sources */,
 				12EA6B401E850BF300C571DF /* NCLoadoutActivityItem.swift in Sources */,
 				12D39D101EF936980077BD17 /* NCWalletTransactionsViewController.swift in Sources */,
 				129E61061E0291FD00B56EB8 /* NCSkillsPageViewController.swift in Sources */,

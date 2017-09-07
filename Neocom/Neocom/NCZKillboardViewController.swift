@@ -137,6 +137,14 @@ fileprivate class NCZKillboardDateRow: TreeRow, NCZKillboardFilterRow {
 	}
 }
 
+fileprivate class NCZKillboardSwitchRow: NCSwitchRow {
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		guard let cell = cell as? NCSwitchTableViewCell else {return}
+		cell.titleLabel.textColor = .caption
+	}
+}
+
 
 class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultViewControllerDelegate {
 	
@@ -189,10 +197,10 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 		}
 		
 
-		self.moreRows = [NCSwitchRow(title: NSLocalizedString("Solo", comment: "").uppercased(), value: false, handler: { [weak self] _ in
+		self.moreRows = [NCZKillboardSwitchRow(title: NSLocalizedString("Solo", comment: "").uppercased(), value: false, handler: { [weak self] _ in
 			self?.update()
 		}),
-		                 NCSwitchRow(title: NSLocalizedString("W-Space", comment: "").uppercased(), value: false, handler: { [weak self] _ in
+		                 NCZKillboardSwitchRow(title: NSLocalizedString("W-Space", comment: "").uppercased(), value: false, handler: { [weak self] _ in
 							self?.update()
 						})]
 		

@@ -41,14 +41,17 @@ class NCNotificationManager: NSObject {
 		static let oneHour = SkillQueueNotificationOptions(rawValue: 1 << 1)
 		static let fourHours = SkillQueueNotificationOptions(rawValue: 1 << 2)
 		static let oneDay = SkillQueueNotificationOptions(rawValue: 1 << 3)
+		static let skillTrainingComplete = SkillQueueNotificationOptions(rawValue: 1 << 4)
+		
+		static let `default`: SkillQueueNotificationOptions = [.inactive, .oneHour, .fourHours, .oneDay, .skillTrainingComplete]
 	}
 	
-	lazy var skillQueueNotificationOptions: [SkillQueueNotificationOptions] = {
-		if let setting = (NCSetting.setting(key: "NCNotificationManager.skillQueue")?.value as? NSNumber)?.intValue {
-			return [SkillQueueNotificationOptions(rawValue: setting)]
+	lazy var skillQueueNotificationOptions: SkillQueueNotificationOptions = {
+		if let setting = (NCSetting.setting(key: NCSetting.Key.skillQueueNotifications)?.value as? NSNumber)?.intValue {
+			return SkillQueueNotificationOptions(rawValue: setting)
 		}
 		else {
-			return [.inactive, .oneHour, .fourHours, .oneDay]
+			return .default
 		}
 	}()
 	
@@ -64,6 +67,10 @@ class NCNotificationManager: NSObject {
 	}
 	
 	private var lastScheduleDate: Date?
+	
+	func setNeedsUpdate() {
+		lastScheduleDate = nil
+	}
 	
 	func schedule(completionHandler: ((Bool) -> Void)? = nil) {
 		guard let storage = NCStorage.sharedStorage else {
@@ -163,11 +170,12 @@ class NCNotificationManager: NSObject {
 	}
 	
 	private func schedule(skillQueue: [ESI.Skills.SkillQueueItem], account: NCAccount, requests: [NotificationRequest], imageURL: URL, completionHandler: ((Bool) -> Void)?) {
-		guard let context = account.managedObjectContext else {
+		let options = self.skillQueueNotificationOptions
+		guard let context = account.managedObjectContext, !options.isEmpty else {
 			completionHandler?(false)
 			return
 		}
-		let options = self.skillQueueNotificationOptions
+		
 		
 		context.perform {
 			guard let uuid = account.uuid else {
@@ -184,30 +192,33 @@ class NCNotificationManager: NSObject {
 			
 			let dispatchGroup = DispatchGroup()
 			
-			NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> [NotificationRequest] in
-				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
-				return value.map { skill -> NotificationRequest in
-					return self.request(title: characterName,
-					                    subtitle: NSLocalizedString("Skill Training Complete", comment: ""),
-					                    body: "\(invTypes[skill.skillID]?.typeName ?? NSLocalizedString("Unknown", comment: "")): \(skill.finishedLevel)",
-						date: skill.finishDate!,
-						imageURL: imageURL,
-						identifier: "\(uuid).\(skill.skillID).\(skill.finishedLevel)",
-						accountUUID: uuid)
-				}
-				}.forEach {
-					dispatchGroup.enter()
-					self.add(request: $0) { error in
-						dispatchGroup.leave()
+			if options.contains(.skillTrainingComplete) {
+				NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> [NotificationRequest] in
+					let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
+					return value.map { skill -> NotificationRequest in
+						return self.request(title: characterName,
+						                    subtitle: NSLocalizedString("Skill Training Complete", comment: ""),
+						                    body: "\(invTypes[skill.skillID]?.typeName ?? NSLocalizedString("Unknown", comment: "")): \(skill.finishedLevel)",
+							date: skill.finishDate!,
+							imageURL: imageURL,
+							identifier: "\(uuid).\(skill.skillID).\(skill.finishedLevel)",
+							accountUUID: uuid)
 					}
+					}.forEach {
+						dispatchGroup.enter()
+						self.add(request: $0) { error in
+							dispatchGroup.leave()
+						}
+				}
 			}
+			
 			
 			if let lastSkill = value.last {
 				let a: [(SkillQueueNotificationOptions, Date)] = [(.inactive, lastSkill.finishDate!),
 				                                                  (.oneHour, lastSkill.finishDate!.addingTimeInterval(-3600)),
 				                                                  (.fourHours, lastSkill.finishDate!.addingTimeInterval(-3600 * 4)),
 				                                                  (.oneDay, lastSkill.finishDate!.addingTimeInterval(-3600 * 24))]
-				a.filter{options.contains($0.0) && $0.1 > date}.map { (option, date) -> NotificationRequest in
+				a.filter{options.contains($0.0) && $0.1 > date}.flatMap { (option, date) -> NotificationRequest? in
 					let body: String
 					switch option.rawValue {
 					case SkillQueueNotificationOptions.inactive.rawValue:
@@ -219,7 +230,7 @@ class NCNotificationManager: NSObject {
 					case SkillQueueNotificationOptions.oneDay.rawValue:
 						body = NSLocalizedString("Training Queue will finish in 24 hours.", comment: "")
 					default:
-						body = ""
+						return nil
 					}
 
 					return self.request(title: characterName,

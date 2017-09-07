@@ -108,11 +108,22 @@ extension NCAccount {
 }
 
 extension NCSetting {
-	class func setting(key: String) -> NCSetting? {
+	
+	struct Key {
+		var rawValue: String
+		public init (_ rawValue: String) {
+			self.rawValue = rawValue
+		}
+		
+		static let skillQueueNotifications = Key("NCNotificationManager.skillQueue")
+//
+	}
+	
+	class func setting(key: Key) -> NCSetting? {
 		guard let context = NCStorage.sharedStorage?.viewContext else {return nil}
 		
 		let request = NSFetchRequest<NCSetting>(entityName: "Setting")
-		request.predicate = NSPredicate(format: "key == %@", key)
+		request.predicate = NSPredicate(format: "key == %@", key.rawValue)
 		request.fetchLimit = 1
 		
 		if let setting = (try? context.fetch(request))?.first {
@@ -120,7 +131,7 @@ extension NCSetting {
 		}
 		else {
 			let setting = NCSetting(entity: NSEntityDescription.entity(forEntityName: "Setting", in: context)!, insertInto: context)
-			setting.key = key
+			setting.key = key.rawValue
 			//setting.value = defaultValue as? NSObject
 			return setting
 		}

@@ -74,8 +74,13 @@
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="scopes" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="Setting" representedClassName="NCSetting" syncable="YES" codeGenerationType="class">
-        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="key" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="key"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="ShoppingItem" representedClassName="NCShoppingItem" syncable="YES" codeGenerationType="class">
         <attribute name="finished" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -105,27 +110,6 @@
         <attribute name="typeID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="skillPlan" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SkillPlan" inverseName="skills" inverseEntity="SkillPlan" syncable="YES"/>
     </entity>
-    <configuration name="Cloud">
-        <memberEntity name="Account"/>
-        <memberEntity name="DamagePattern"/>
-        <memberEntity name="DronesSet"/>
-        <memberEntity name="FitCharacter"/>
-        <memberEntity name="ImplantSet"/>
-        <memberEntity name="Loadout"/>
-        <memberEntity name="LoadoutData"/>
-        <memberEntity name="ShoppingItem"/>
-        <memberEntity name="ShoppingList"/>
-        <memberEntity name="SkillPlan"/>
-        <memberEntity name="Fleet"/>
-        <memberEntity name="Scope"/>
-        <memberEntity name="SkillPlanSkill"/>
-        <memberEntity name="MailDraft"/>
-        <memberEntity name="MarketQuickItem"/>
-        <memberEntity name="AccountsFolder"/>
-    </configuration>
-    <configuration name="Local">
-        <memberEntity name="Setting"/>
-    </configuration>
     <elements>
         <element name="Account" positionX="18" positionY="63" width="128" height="225"/>
         <element name="AccountsFolder" positionX="36" positionY="153" width="128" height="75"/>

@@ -320,12 +320,7 @@ class NCCharacterSheetViewController: NCTreeViewController {
 			}
 		}
 		
-		if treeController?.content == nil {
-			treeController?.content = RootNode(sections)
-		}
-		else {
-			treeController?.content?.children = sections
-		}
+		treeController?.content = RootNode(sections, collapseIdentifier: "NCCharacterSheetViewController")
 		
 		tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
 		

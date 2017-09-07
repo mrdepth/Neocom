@@ -1085,7 +1085,7 @@ struct NCDatabaseTypeInfo {
 		
 		let trainingQueue = NCTrainingQueue(character: character)
 		trainingQueue.addRequiredSkills(for: activity)
-		return !rows.isEmpty ? NCDatabaseSkillsSection(nodeIdentifier: nil, title: NSLocalizedString("Required Skills", comment: "").uppercased(), trainingQueue: trainingQueue, character: character, children: rows) : nil
+		return !rows.isEmpty ? NCDatabaseSkillsSection(nodeIdentifier: "RequiredSkills.\(activity.activity?.activityName ?? "")", title: NSLocalizedString("Required Skills", comment: "").uppercased(), trainingQueue: trainingQueue, character: character, children: rows) : nil
 	}
 	
 	static func masteries(type: NCDBInvType, character: NCCharacter) -> TreeSection? {
@@ -1146,7 +1146,7 @@ struct NCDatabaseTypeInfo {
 
 		}
 		guard !rows.isEmpty else {return nil}
-		return DefaultTreeSection(nodeIdentifier: "Skill Plan", title: NSLocalizedString("Skill Plan", comment: "").uppercased(), children: rows)
+		return DefaultTreeSection(nodeIdentifier: "SkillPlan", title: NSLocalizedString("Skill Plan", comment: "").uppercased(), children: rows)
 	}
 	
 }

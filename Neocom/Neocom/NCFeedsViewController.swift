@@ -31,10 +31,11 @@ class NCFeedsViewController: NCTreeViewController {
 				                      accessoryType: .disclosureIndicator,
 				                      route: Router.RSS.Channel(url: url, title: title))
 			}
-			return DefaultTreeSection(title: (i["title"] as? String)?.uppercased(), children: rows)
+			let title = (i["title"] as? String)?.uppercased()
+			return DefaultTreeSection(nodeIdentifier: title, title: title, children: rows)
 		}
 		
-		treeController?.content = RootNode(sections ?? [])
+		treeController?.content = RootNode(sections ?? [], collapseIdentifier: "NCFeedsViewController")
 		completionHandler()
 	}
 }

@@ -42,11 +42,6 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 			addChildViewController(headerViewController)
 			self.headerViewController = headerViewController
 			
-			NCDatabaseTypeInfo.typeInfo(type: type, attributeValues: attributeValues) { result in
-				let node = TreeNode()
-				node.children = result
-				self.treeController?.content = node
-			}
 			NCDataManager().image(typeID: Int(type.typeID), dimension: 512) { result in
 				switch result {
 				case let .success(value, _):
@@ -91,6 +86,16 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 		}
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(didChangeMarketRegion(_:)), name: .NCMarketRegionChanged, object: nil)
+	}
+	
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		guard let type = type else {
+			completionHandler()
+			return
+		}
+		NCDatabaseTypeInfo.typeInfo(type: type, attributeValues: attributeValues) { result in
+			self.treeController?.content = RootNode(result, collapseIdentifier: "NCDatabaseTypeInfoViewController")
+		}
 	}
 	
 	var marketQuickItem: NCMarketQuickItem? {

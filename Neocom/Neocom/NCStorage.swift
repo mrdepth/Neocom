@@ -32,23 +32,10 @@ class NCStorage: NSObject {
 		for i in 0...1 {
 			do {
 				try persistentStoreCoordinator.addPersistentStore(ofType: CloudStoreType,
-				                                                  configurationName: "Cloud",
+				                                                  configurationName: nil,
 				                                                  at: url,
 				                                                  options: [CloudStoreOptions.recordZoneKey: "Neocom",
 				                                                            CloudStoreOptions.binaryDataCompressionLevel: BinaryDataCompressionLevel.default])
-				break
-			} catch {
-				try? FileManager.default.removeItem(at: url)
-			}
-		}
-		
-		url = directory.appendingPathComponent("local.sqlite")
-		for i in 0...1 {
-			do {
-				try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
-				                                                  configurationName: "Local",
-				                                                  at: url,
-				                                                  options: nil)
 				break
 			} catch {
 				try? FileManager.default.removeItem(at: url)

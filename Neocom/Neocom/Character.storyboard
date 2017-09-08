@@ -217,7 +217,7 @@
         <!--View Controller-->
         <scene sceneID="4mM-IN-la7">
             <objects>
-                <viewController id="QPL-C0-XeF" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCSkillsContainerViewController" id="QPL-C0-XeF" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rNl-GI-Cpc"/>
                         <viewControllerLayoutGuide type="bottom" id="wdO-u2-LgQ"/>
@@ -262,7 +262,7 @@
         <!--Mail-->
         <scene sceneID="nD4-EK-Uu2">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="cRP-gC-plC" customClass="NCMailPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NCMailPageViewController" automaticallyAdjustsScrollViewInsets="NO" id="cRP-gC-plC" customClass="NCMailPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sp4-ij-5IN"/>
                         <viewControllerLayoutGuide type="bottom" id="Sc9-Nl-ptp"/>
@@ -493,7 +493,7 @@
             <objects>
                 <tableViewController modalPresentationStyle="overCurrentContext" id="zam-Il-kne" customClass="NCContactsSearchResultViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="w8a-oR-jqW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="571"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="635"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>

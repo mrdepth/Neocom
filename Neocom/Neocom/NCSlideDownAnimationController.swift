@@ -53,7 +53,9 @@ class NCSlideDownAnimationController: NSObject, UIViewControllerAnimatedTransiti
 		UIView.animate(withDuration: self.transitionDuration(using: transitionContext), delay: 0, options: [.curveEaseInOut], animations: {
 //			fromView?.frame = CGRect(origin: CGPoint(x: initialFrame.origin.x, y: isPresenting ? initialFrame.minY : finalFrame.origin.y - initialFrame.size.height), size: initialFrame.size)
 //			toView?.frame = finalFrame
-			fromView.frame = frame.offsetBy(dx: 0, dy: isPresenting ? frame.height : -frame.height)
+			let r = frame.offsetBy(dx: 0, dy: isPresenting ? frame.height : -frame.height)
+			fromView.center = CGPoint(x: r.midX, y: r.midY)
+//			fromView.frame = frame.offsetBy(dx: 0, dy: isPresenting ? frame.height : -frame.height)
 			toView.frame = frame
 			
 //			fromView.transform = CGAffineTransform(translationX: 0, y: isPresenting ? frame.height : -frame.height)

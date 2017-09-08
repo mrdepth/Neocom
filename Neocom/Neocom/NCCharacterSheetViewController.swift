@@ -26,7 +26,7 @@ class NCCharacterSheetViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		needsReloadOnAccountChange = true
+		accountChangeAction = .reload
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.attribute,

@@ -13,7 +13,7 @@ class NCMarketOrdersViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		needsReloadOnAccountChange = true
+		accountChangeAction = .reload
 		tableView.register([Prototype.NCHeaderTableViewCell.default])
 	}
 	

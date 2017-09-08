@@ -94,7 +94,7 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		needsReloadOnAccountChange = true
+		accountChangeAction = .reload
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.image,
 		                    Prototype.NCDefaultTableViewCell.default])

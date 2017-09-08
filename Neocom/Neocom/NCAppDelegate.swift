@@ -38,6 +38,10 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func applicationWillResignActive(_ application: UIApplication) {
+		if let context = NCCache.sharedCache?.viewContext, context.hasChanges {
+			try? context.save()
+		}
+		
 		let task = application.beginBackgroundTask(expirationHandler: nil)
 		
 		NCNotificationManager.sharedManager.schedule { _ in
@@ -145,6 +149,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		navigationBar.tintColor = UIColor.white
 		navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
 		navigationBar.barStyle = .black
+		navigationBar.isTranslucent = true
 		let tableView = NCTableView.appearance()
 		tableView.tableBackgroundColor = UIColor.background
 		tableView.separatorColor = UIColor.separator

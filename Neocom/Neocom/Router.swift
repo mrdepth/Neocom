@@ -28,6 +28,7 @@ enum RouteKind {
 	case adaptiveModal
 	case sheet
 	case popover
+	case detail
 }
 
 //class NCAdaptivePageSheetDelegate: NSObject, UIAdaptivePresentationControllerDelegate {
@@ -156,7 +157,6 @@ class Route/*: Hashable*/ {
 			else {
 				destination.modalPresentationStyle = .custom
 				
-				presentedViewController = destination
 				
 				let presentationController = NCSheetPresentationController(presentedViewController: destination, presenting: source)
 				
@@ -165,6 +165,8 @@ class Route/*: Hashable*/ {
 					source.present(destination, animated: true, completion: nil)
 				}
 			}
+			presentedViewController = destination
+
 		case .popover:
 			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
 			
@@ -189,6 +191,10 @@ class Route/*: Hashable*/ {
 			else if let item = sender as? UIBarButtonItem {
 				presentationController?.barButtonItem = item
 			}
+		case .detail:
+			let destination = destination as? UINavigationController ?? NCNavigationController(rootViewController: destination)
+			source.showDetailViewController(destination, sender: sender)
+			presentedViewController = destination
 		}
 		
 		presentedViewController?.route = self
@@ -1346,6 +1352,158 @@ enum Router {
 				super.init(kind: .popover, identifier: "NCAccountsFolderPickerViewController")
 			}
 			
+		}
+	}
+	
+	enum MainMenu {
+		
+		class CharacterSheet: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .character, identifier: "NCCharacterSheetViewController")
+			}
+		}
+
+		class JumpClones: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .character, identifier: "NCJumpClonesViewController")
+			}
+		}
+
+		class Skills: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .character, identifier: "NCSkillsContainerViewController")
+			}
+		}
+
+		class Mail: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .character, identifier: "NCMailPageViewController")
+			}
+		}
+
+		class Calendar: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .character, identifier: "NCCalendarViewController")
+			}
+		}
+
+		class Wealth: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .character, identifier: "NCWealthViewController")
+			}
+		}
+		
+
+		class Database: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .database, identifier: "NCDatabaseCategoriesViewController")
+			}
+		}
+
+		class Certificates: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .database, identifier: "NCDatabaseCertificateGroupsViewController")
+			}
+			
+		}
+		
+		class Market: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .database, identifier: "NCMarketPageViewController")
+			}
+			
+		}
+		
+		class NPC: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .database, identifier: "NCDatabaseCategoriesViewController")
+			}
+			
+		}
+
+		class Wormholes: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .database, identifier: "NCWHViewController")
+			}
+			
+		}
+
+		class Incursions: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .database, identifier: "NCIncursionsViewController")
+			}
+		}
+
+		class Fitting: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .fitting, identifier: "NCFittingMenuViewController")
+			}
+		}
+
+		class KillReports: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .killReports, identifier: "NCKillmailsPageViewController")
+			}
+		}
+
+		class ZKillboardReports: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .killReports, identifier: "NCZKillboardViewController")
+			}
+		}
+
+		class Assets: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .business, identifier: "NCAssetsViewController")
+			}
+		}
+
+		class MarketOrders: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .business, identifier: "NCMarketOrdersViewController")
+			}
+		}
+
+		class Contracts: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .business, identifier: "NCContractsViewController")
+			}
+		}
+
+		class WalletTransactions: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .business, identifier: "NCWalletTransactionsViewController")
+			}
+		}
+
+		class WalletJournal: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .business, identifier: "NCWalletJournalViewController")
+			}
+		}
+
+		class IndustryJobs: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .business, identifier: "NCIndustryViewController")
+			}
+		}
+
+		class Planetaries: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .business, identifier: "NCPlanetaryViewController")
+			}
+		}
+		
+		class News: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .main, identifier: "NCFeedsViewController")
+			}
+		}
+
+		class Settings: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .main, identifier: "NCSettingsViewController")
+			}
 		}
 
 	}

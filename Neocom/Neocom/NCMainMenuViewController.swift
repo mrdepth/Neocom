@@ -186,28 +186,155 @@ class NCMainMenuDetails: NSObject {
 	}
 }
 
-class TestViewController: UIViewController {
-	override func viewDidLoad() {
-		super.viewDidLoad()
-	}
-//	override func viewWillAppear(_ animated: Bool) {
-//		super.viewWillAppear(animated)
-//		if presentedViewController == nil {
-//			let controller = storyboard!.instantiateViewController(withIdentifier: "NCMainMenuViewController")
-//			controller.modalPresentationStyle = .overCurrentContext
-//			present(controller, animated: false, completion: nil)
-//		}
-//
-//	}
-	
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
+class NCMainMenuRow: DefaultTreeRow {
+	let scopes: Set<ESI.Scope>
+	let account: NCAccount?
+	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.default, nodeIdentifier: String, image: UIImage, title: String, route: Route, scopes: [ESI.Scope] = [], account: NCAccount? = nil) {
+		self.scopes = Set(scopes)
+		self.account = account
+		super.init(prototype: prototype, nodeIdentifier: nodeIdentifier, image: image, title: title, accessoryType: .disclosureIndicator, route: route)
 	}
 }
 
-class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIViewControllerTransitioningDelegate {
-	@IBOutlet weak var tableView: NCTableView!
-	private weak var headerViewController: NCMainMenuHeaderViewController? = nil
+class NCAccountDataMenuRow<T>: NCMainMenuRow {
+	private var observer: NCManagedObjectObserver?
+	var isLoading = false
+
+	var result: NCCachedResult<T>? {
+		didSet {
+			if let cacheRecord = result?.cacheRecord {
+				self.observer = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] _ in
+					guard let strongSelf = self else {return}
+					strongSelf.treeController?.reloadCells(for: [strongSelf], with: .none)
+				}
+			}
+		}
+	}
+}
+
+class NCCharacterSheetMenuRow: NCAccountDataMenuRow<ESI.Skills.CharacterSkills> {
+
+	
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+
+		if let result = result {
+			if let value = result.value {
+				cell.subtitleLabel?.text = NCUnitFormatter.localizedString(from: value.totalSP ?? 0, unit: .skillPoints, style: .full)
+			}
+			else {
+				cell.subtitleLabel?.text = result.error?.localizedDescription
+			}
+		}
+		else {
+			guard let account = account, !isLoading else {return}
+			isLoading = true
+			NCDataManager(account: account).skills { result in
+				self.result = result
+				self.isLoading = false
+				self.treeController?.reloadCells(for: [self], with: .none)
+			}
+		}
+	}
+}
+
+class NCJumpClonesMenuRow: NCAccountDataMenuRow<ESI.Clones.JumpClones> {
+	
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		
+		if let result = result {
+			if let value = result.value {
+				let t = 3600 * 24 + (value.lastJumpDate ?? .distantPast).timeIntervalSinceNow
+				cell.subtitleLabel?.text = String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: ""))
+			}
+			else {
+				cell.subtitleLabel?.text = result.error?.localizedDescription
+			}
+		}
+		else {
+			guard let account = account, !isLoading else {return}
+			isLoading = true
+			NCDataManager(account: account).clones { result in
+				self.result = result
+				self.isLoading = false
+				self.treeController?.reloadCells(for: [self], with: .none)
+			}
+		}
+	}
+}
+
+class NCSkillsMenuRow: NCAccountDataMenuRow<[ESI.Skills.SkillQueueItem]> {
+	
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		
+		if let result = result {
+			if let value = result.value {
+				let date = Date()
+				
+				let skillQueue = value.filter {
+					guard let finishDate = $0.finishDate else {return false}
+					return finishDate >= date
+				}
+				
+				if let skill = skillQueue.last,
+					let endTime = skill.finishDate {
+					cell.subtitleLabel?.text = String(format: NSLocalizedString("%d skills in queue (%@)", comment: ""), skillQueue.count, NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .minutes))
+				}
+					else {
+					cell.subtitleLabel?.text = NSLocalizedString("No skills in training", comment: "")
+				}
+				
+			}
+			else {
+				cell.subtitleLabel?.text = result.error?.localizedDescription
+			}
+		}
+		else {
+			guard let account = account, !isLoading else {return}
+			isLoading = true
+			NCDataManager(account: account).skillQueue { result in
+				self.result = result
+				self.isLoading = false
+				self.treeController?.reloadCells(for: [self], with: .none)
+			}
+		}
+	}
+}
+
+class NCWealthMenuRow: NCAccountDataMenuRow<Float> {
+	
+	override func configure(cell: UITableViewCell) {
+		super.configure(cell: cell)
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		
+		if let result = result {
+			if let value = result.value {
+				cell.subtitleLabel?.text = NCUnitFormatter.localizedString(from: value, unit: .isk, style: .full)
+			}
+			else {
+				cell.subtitleLabel?.text = result.error?.localizedDescription
+			}
+		}
+		else {
+			guard let account = account, !isLoading else {return}
+			isLoading = true
+			NCDataManager(account: account).walletBalance { result in
+				self.result = result
+				self.isLoading = false
+				self.treeController?.reloadCells(for: [self], with: .none)
+			}
+		}
+	}
+}
+
+class NCMainMenuViewController: NCTreeViewController, UIViewControllerTransitioningDelegate {
+	
+	private weak var headerViewController: NCMainMenuHeaderViewController?
 	private var headerMinHeight: CGFloat = 0
 	private var headerMaxHeight: CGFloat = 0
 	private var mainMenu: [[[String: Any]]] = []
@@ -216,11 +343,14 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		self.tableView.estimatedRowHeight = self.tableView.rowHeight
-		self.tableView.rowHeight = UITableViewAutomaticDimension
+		accountChangeAction = .update
+		
+		tableView.register([Prototype.NCHeaderTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.default])
+		
 		updateHeader()
 		loadMenu()
-		NotificationCenter.default.addObserver(self, selector: #selector(currentAccountChanged(_:)), name: .NCCurrentAccountChanged, object: nil)
+//		NotificationCenter.default.addObserver(self, selector: #selector(currentAccountChanged(_:)), name: .NCCurrentAccountChanged, object: nil)
 		if let context = NCStorage.sharedStorage?.viewContext {
 			NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextDidSave(_:)), name: .NSManagedObjectContextDidSave, object: nil)
 		}
@@ -232,8 +362,8 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-		let rect = CGRect(x: 0, y: self.topLayoutGuide.length, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y, self.headerMinHeight))
-		self.headerViewController?.view.frame = self.view.convert(rect, to:self.tableView)
+		let rect = CGRect(x: 0, y: tableView.contentOffset.y, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y - self.tableView.contentInset.top, self.headerMinHeight))
+		self.headerViewController?.view.frame = rect//self.view.convert(rect, to:self.tableView)
 		self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(rect.size.height, 0, 0, 0)
 
 	}
@@ -263,12 +393,157 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 				var rect = CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.size.width, height: self.headerMaxHeight))
 				self.tableView?.tableHeaderView?.frame = rect
 				
-				rect = CGRect(x: 0, y: self.topLayoutGuide.length, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y, self.headerMinHeight))
+				rect = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y, self.headerMinHeight))
 				headerViewController.view.frame = self.view.convert(rect, to:self.tableView)
 				self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(rect.size.height, 0, 0, 0)
 			}
 
 		}
+	}
+	
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		let account = NCAccount.current
+		
+		var sections = [
+			DefaultTreeSection(nodeIdentifier: "Character", title: NSLocalizedString("Character", comment: "").uppercased(),
+			                   children: [
+								NCCharacterSheetMenuRow(nodeIdentifier: "CharacterSheet",
+								                        image: #imageLiteral(resourceName: "charactersheet"),
+								                        title: NSLocalizedString("Character Sheet", comment: ""),
+								                        route: Router.MainMenu.CharacterSheet(),
+								                        scopes: [.esiWalletReadCharacterWalletV1,
+								                                 .esiSkillsReadSkillsV1,
+								                                 .esiLocationReadLocationV1,
+								                                 .esiLocationReadShipTypeV1,
+								                                 .esiClonesReadImplantsV1],
+								                        account: account),
+								NCJumpClonesMenuRow(nodeIdentifier: "JumpClones",
+								                    image: #imageLiteral(resourceName: "jumpclones"),
+								                    title: NSLocalizedString("Jump Clones", comment: ""),
+								                    route: Router.MainMenu.JumpClones(),
+								                    scopes: [.esiClonesReadClonesV1,
+								                             .esiClonesReadImplantsV1],
+								                    account: account),
+								NCSkillsMenuRow(nodeIdentifier: "Skills",
+								                image: #imageLiteral(resourceName: "skills"),
+								                title: NSLocalizedString("Skills", comment: ""),
+								                route: Router.MainMenu.Skills(),
+								                scopes: [.esiSkillsReadSkillqueueV1,
+								                         .esiSkillsReadSkillsV1,
+								                         .esiClonesReadImplantsV1],
+								                account: account),
+								NCMainMenuRow(nodeIdentifier: "Mail",
+								              image: #imageLiteral(resourceName: "evemail"),
+								              title: NSLocalizedString("EVE Mail", comment: ""),
+								              route: Router.MainMenu.Mail(),
+								              scopes: [.esiMailReadMailV1,
+								                       .esiMailSendMailV1,
+								                       .esiMailOrganizeMailV1],
+								              account: account),
+								NCMainMenuRow(nodeIdentifier: "Calendar",
+								              image: #imageLiteral(resourceName: "calendar"),
+								              title: NSLocalizedString("Calendar", comment: ""),
+								              route: Router.MainMenu.Calendar(),
+								              scopes: [.esiCalendarReadCalendarEventsV1,
+								                       .esiCalendarRespondCalendarEventsV1],
+								              account: account),
+								NCWealthMenuRow(nodeIdentifier: "Wealth",
+								                image: #imageLiteral(resourceName: "folder"),
+								                title: NSLocalizedString("Wealth", comment: ""),
+								                route: Router.MainMenu.Wealth(),
+								                scopes: [.esiWalletReadCharacterWalletV1,
+								                         .esiAssetsReadAssetsV1],
+								                account: account)
+								]),
+
+			DefaultTreeSection(nodeIdentifier: "Database", title: NSLocalizedString("Database", comment: "").uppercased(),
+		                                   children: [
+											NCMainMenuRow(nodeIdentifier: "Database", image: #imageLiteral(resourceName: "items"), title: NSLocalizedString("Database", comment: ""), route: Router.MainMenu.Database()),
+											NCMainMenuRow(nodeIdentifier: "Certificates", image: #imageLiteral(resourceName: "certificates"), title: NSLocalizedString("Certificates", comment: ""), route: Router.MainMenu.Certificates()),
+											NCMainMenuRow(nodeIdentifier: "Market", image: #imageLiteral(resourceName: "market"), title: NSLocalizedString("Market", comment: ""), route: Router.MainMenu.Market()),
+											NCMainMenuRow(nodeIdentifier: "NPC", image: #imageLiteral(resourceName: "criminal"), title: NSLocalizedString("NPC", comment: ""), route: Router.MainMenu.NPC()),
+											NCMainMenuRow(nodeIdentifier: "Wormholes", image: #imageLiteral(resourceName: "terminate"), title: NSLocalizedString("Wormholes", comment: ""), route: Router.MainMenu.Wormholes()),
+											NCMainMenuRow(nodeIdentifier: "Incursions", image: #imageLiteral(resourceName: "incursions"), title: NSLocalizedString("Incursions", comment: ""), route: Router.MainMenu.Incursions())
+				]),
+			
+			DefaultTreeSection(nodeIdentifier: "Fitting", title: NSLocalizedString("Fitting/Kills", comment: "").uppercased(),
+			                   children: [
+								NCMainMenuRow(nodeIdentifier: "Fitting", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("Fitting", comment: ""), route: Router.MainMenu.Fitting()),
+								NCMainMenuRow(nodeIdentifier: "KillReports",
+								              image: #imageLiteral(resourceName: "killreport"),
+								              title: NSLocalizedString("Kill Reports", comment: ""),
+								              route: Router.MainMenu.KillReports(),
+								              scopes: [.esiKillmailsReadKillmailsV1],
+								              account: account),
+								NCMainMenuRow(nodeIdentifier: "zKillboardReports", image: #imageLiteral(resourceName: "killrights"), title: NSLocalizedString("zKillboard Reports", comment: ""), route: Router.MainMenu.ZKillboardReports())
+				]),
+			
+			DefaultTreeSection(nodeIdentifier: "Business", title: NSLocalizedString("Business", comment: "").uppercased(),
+			                   children: [
+								NCMainMenuRow(nodeIdentifier: "Assets",
+								              image: #imageLiteral(resourceName: "assets"),
+								              title: NSLocalizedString("Assets", comment: ""),
+								              route: Router.MainMenu.Assets(),
+								              scopes: [.esiAssetsReadAssetsV1],
+								              account: account),
+								NCMainMenuRow(nodeIdentifier: "MarketOrders",
+								              image: #imageLiteral(resourceName: "marketdeliveries"),
+								              title: NSLocalizedString("Market Orders", comment: ""),
+								              route: Router.MainMenu.MarketOrders(),
+								              scopes: [.esiMarketsReadCharacterOrdersV1],
+								              account: account),
+								NCMainMenuRow(nodeIdentifier: "Contracts",
+								              image: #imageLiteral(resourceName: "contracts"),
+								              title: NSLocalizedString("Contracts", comment: ""),
+								              route: Router.MainMenu.Contracts(),
+								              scopes: [.esiContractsReadCharacterContractsV1],
+								              account: account),
+								NCMainMenuRow(nodeIdentifier: "WalletTransactions",
+								              image: #imageLiteral(resourceName: "journal"),
+								              title: NSLocalizedString("Wallet Transactions", comment: ""),
+								              route: Router.MainMenu.WalletTransactions(),
+								              scopes: [.characterWalletRead],
+								              account: account),
+								NCMainMenuRow(nodeIdentifier: "WalletJournal",
+								              image: #imageLiteral(resourceName: "wallet"),
+								              title: NSLocalizedString("Wallet Journal", comment: ""),
+								              route: Router.MainMenu.WalletJournal(),
+								              scopes: [.characterWalletRead],
+								              account: account),
+								NCMainMenuRow(nodeIdentifier: "IndustryJobs",
+								              image: #imageLiteral(resourceName: "industry"),
+								              title: NSLocalizedString("Industry Jobs", comment: ""),
+								              route: Router.MainMenu.IndustryJobs(),
+								              scopes: [.esiIndustryReadCharacterJobsV1],
+								              account: account),
+								NCMainMenuRow(nodeIdentifier: "Planetaries",
+								              image: #imageLiteral(resourceName: "planets"),
+								              title: NSLocalizedString("Planetaries", comment: ""),
+								              route: Router.MainMenu.Planetaries(),
+								              scopes: [.esiPlanetsManagePlanetsV1],
+								              account: account),
+				]),
+
+			DefaultTreeSection(nodeIdentifier: "Info", title: NSLocalizedString("Info", comment: "").uppercased(),
+			                   children: [
+								NCMainMenuRow(nodeIdentifier: "News", image: #imageLiteral(resourceName: "newspost"), title: NSLocalizedString("News", comment: ""), route: Router.MainMenu.News()),
+								NCMainMenuRow(nodeIdentifier: "Settings", image: #imageLiteral(resourceName: "settings"), title: NSLocalizedString("Settings", comment: ""), route: Router.MainMenu.Settings())
+				])
+
+
+		]
+		
+//		let currentScopes = Set((account?.scopes?.allObjects as? [NCScope])?.flatMap {return $0.name != nil ? ESI.Scope($0.name!) : nil} ?? [])
+		
+		sections.forEach {$0.children = ($0.children as! [NCMainMenuRow]).filter({$0.scopes.isEmpty || account != nil})}
+		sections = sections.filter {!$0.children.isEmpty}
+		
+		treeController?.content = RootNode(sections, collapseIdentifier: "NCMainMenuViewController")
+		
+		tableView.layoutIfNeeded()
+		updateHeader()
+
+		completionHandler()
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -277,7 +552,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 		}
 	}
 	
-	//MARK: UITableViewDataSource
+	/*//MARK: UITableViewDataSource
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return self.mainMenu.count
@@ -325,7 +600,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 		tableView.reloadData()
 		tableView.layoutIfNeeded()
 		updateHeader()
-	}
+	}*/
 	
 	func managedObjectContextDidSave(_ note: Notification) {
 		guard NCAccount.current == nil else {return}
@@ -339,7 +614,7 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 			}
 		}
 	}
-	
+	/*
 	//MARK: UIScrollViewDelegate
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -365,13 +640,14 @@ class NCMainMenuViewController: UIViewController, UITableViewDelegate, UITableVi
 				UIApplication.shared.openURL(url)
 			}
 		}
-	}
+	}*/
 	
-	func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		let rect = CGRect(x: 0, y: self.topLayoutGuide.length, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y, self.headerMinHeight))
-		self.headerViewController?.view.frame = self.view.convert(rect, to:self.tableView)
-		self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(rect.size.height, 0, 0, 0)
-		if (scrollView.contentOffset.y < -50 && self.transitionCoordinator == nil && scrollView.isTracking) {
+	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//		let rect = CGRect(x: 0, y: self.topLayoutGuide.length + self.tableView.contentOffset.y, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y, self.headerMinHeight))
+//
+//		self.headerViewController?.view.frame = rect//self.view.convert(rect, to:self.tableView)
+//		self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(rect.size.height, 0, 0, 0)
+		if (scrollView.contentOffset.y < -70 && self.transitionCoordinator == nil && scrollView.isTracking) {
 			self.isInteractive = true
 			self.performSegue(withIdentifier: "NCAccountsViewController", sender: self)
 			self.isInteractive = false;

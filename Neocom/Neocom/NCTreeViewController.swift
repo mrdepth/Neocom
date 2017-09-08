@@ -75,12 +75,19 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 	
 	//MARK: - NCAPIController
 	
-	var needsReloadOnAccountChange: Bool = false {
+	var accountChangeAction: AccountChangeAction = .none {
 		didSet {
-			accountChangeObserver = nil
-			if needsReloadOnAccountChange {
+			switch accountChangeAction {
+			case .none:
+				accountChangeObserver = nil
+			case .reload:
 				accountChangeObserver = NotificationCenter.default.addNotificationObserver(forName: .NCCurrentAccountChanged, object: nil, queue: nil) { [weak self] _ in
 					self?.reload()
+				}
+			case .update:
+				accountChangeObserver = NotificationCenter.default.addNotificationObserver(forName: .NCCurrentAccountChanged, object: nil, queue: nil) { [weak self] _ in
+					self?.updateContent {
+					}
 				}
 			}
 		}
@@ -150,6 +157,12 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 	
 }
 
+enum AccountChangeAction {
+	case none
+	case reload
+	case update
+}
+
 protocol NCAPIController: class {
 	func updateContent(completionHandler: @escaping () -> Void)
 	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void )
@@ -157,8 +170,9 @@ protocol NCAPIController: class {
 	func didStartLoading()
 	func didFailLoading(error: Error)
 	func didFinishLoading()
+	
 
-	var needsReloadOnAccountChange: Bool {get set}
+	var accountChangeAction: AccountChangeAction {get set}
 	var isLoading: Bool {get set}
 	var dataManager: NCDataManager {get set}
 	
@@ -220,14 +234,15 @@ extension NCAPIController where Self: UIViewController {
 
 		didStartLoading()
 
-		guard !needsReloadOnAccountChange || dataManager.account != nil else {
+		let account = NCAccount.current
+		guard accountChangeAction != .reload || account != nil else {
 			didFailLoading(error: NCAPIControllerError.authorizationRequired)
 			return
 		}
 		
 		isLoading = true
 		
-		dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
+		dataManager = NCDataManager(account: account, cachePolicy: cachePolicy)
 		managedObjectsObserver = nil
 		
 		

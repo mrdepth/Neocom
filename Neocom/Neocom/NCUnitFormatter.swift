@@ -137,6 +137,10 @@ class NCUnitFormatter: Formatter {
 		return localizedString(from: Double(number), unit: unit, style: style)
 	}
 
+	class func localizedString(from number: Int64, unit: Unit, style: Style, useSIPrefix: Bool? = nil) -> String {
+		return localizedString(from: Double(number), unit: unit, style: style)
+	}
+
 	class func localizedString(from number: Float, unit: Unit, style: Style, useSIPrefix: Bool? = nil) -> String {
 		return localizedString(from: Double(number), unit: unit, style: style)
 	}

@@ -16,7 +16,7 @@ class NCWealthViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		needsReloadOnAccountChange = true
+		accountChangeAction = .reload
 		
 		tableView.register([Prototype.NCDefaultTableViewCell.attribute,
 		                    Prototype.NCPieChartTableViewCell.default])

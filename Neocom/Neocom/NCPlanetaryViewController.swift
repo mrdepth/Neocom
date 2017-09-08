@@ -513,7 +513,7 @@ class NCPlanetaryViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		needsReloadOnAccountChange = true
+		accountChangeAction = .reload
 		tableView.register([Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact,
 							Prototype.NCDefaultTableViewCell.placeholder,

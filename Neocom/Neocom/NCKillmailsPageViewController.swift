@@ -44,7 +44,7 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		needsReloadOnAccountChange = true
+		accountChangeAction = .reload
 
 		killsViewController = storyboard!.instantiateViewController(withIdentifier: "NCKillmailsViewController") as? NCKillmailsViewController
 		killsViewController?.title = NSLocalizedString("Kills", comment: "")
@@ -83,13 +83,19 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 	
 	//MAKR: - NCAPIController
 	
-
-	var needsReloadOnAccountChange: Bool = false {
+	var accountChangeAction: AccountChangeAction = .none {
 		didSet {
-			accountChangeObserver = nil
-			if needsReloadOnAccountChange {
+			switch accountChangeAction {
+			case .none:
+				accountChangeObserver = nil
+			case .reload:
 				accountChangeObserver = NotificationCenter.default.addNotificationObserver(forName: .NCCurrentAccountChanged, object: nil, queue: nil) { [weak self] _ in
 					self?.reload()
+				}
+			case .update:
+				accountChangeObserver = NotificationCenter.default.addNotificationObserver(forName: .NCCurrentAccountChanged, object: nil, queue: nil) { [weak self] _ in
+					self?.updateContent {
+					}
 				}
 			}
 		}

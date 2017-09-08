@@ -499,7 +499,7 @@ struct NCDatabaseTypeInfo {
 				}
 				
 				if type.parentType != nil || (type.variations?.count ?? 0) > 0 {
-					let n = (type.variations?.count ?? type.parentType?.variations?.count ?? 0) + 1
+					let n = max(type.variations?.count ?? 0, type.parentType?.variations?.count ?? 0) + 1
 					let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
 					                                nodeIdentifier: "Variations",
 					                                title: String(format: NSLocalizedString("%d types", comment: ""), n).uppercased(),

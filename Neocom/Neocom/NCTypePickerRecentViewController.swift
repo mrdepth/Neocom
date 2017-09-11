@@ -135,7 +135,7 @@ class NCTypePickerRecentViewController: UITableViewController, NSFetchedResultsC
 		case .move:
 			tableView.moveRow(at: indexPath!, to: newIndexPath!)
 		case .update:
-			tableView.reloadRows(at: [newIndexPath!], with: .fade)
+			tableView.reloadRows(at: [indexPath!], with: .fade)
 		}
 	}
 	

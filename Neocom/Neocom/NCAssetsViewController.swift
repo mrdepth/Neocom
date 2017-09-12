@@ -78,8 +78,8 @@ class NCAssetRow: DefaultTreeRow {
 			attributedTitle: title,
 			subtitle: subtitle,
 			accessoryType: hasLoadout ? .detailButton : .disclosureIndicator,
-			route: route,
-			accessoryButtonRoute: hasLoadout ? Router.Fitting.Editor(asset: asset, contents: contents) : nil,
+			route: hasLoadout ? Router.Fitting.Editor(asset: asset, contents: contents) : route,
+			accessoryButtonRoute: hasLoadout ? route : nil,
 			object: asset)
 		self.children = children
 	}

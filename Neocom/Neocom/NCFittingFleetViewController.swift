@@ -59,12 +59,13 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 				treeController.selectCell(for: node, animated: true, scrollPosition: .none)
 			}
 		}
-		else if let node = node as? NCFleetMemberRow {
-			if fleet?.active == node.pilot {
-				parent?.performSegue(withIdentifier: "NCFittingActionsViewController", sender: treeController.cell(for: node))
+		else if let node = node as? NCFleetMemberRow, let fleet = fleet {
+			if fleet.active == node.pilot {
+				Router.Fitting.Actions(fleet: fleet).perform(source: self, sender: treeController.cell(for: node))
+//				parent?.performSegue(withIdentifier: "NCFittingActionsViewController", sender: treeController.cell(for: node))
 			}
 			else {
-				fleet?.active = node.pilot
+				fleet.active = node.pilot
 			}
 		}
 	}
@@ -80,7 +81,8 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 	private func reload() {
 		guard let fleet = self.fleet else {return}
 		let route = Router.Fitting.FleetMemberPicker(fleet: fleet, completionHandler: { controller in
-			_ = controller.navigationController?.popViewController(animated: true)
+//			_ = controller.navigationController?.popViewController(animated: true)
+			controller.dismiss(animated: true, completion: nil)
 		})
 		
 

@@ -20,6 +20,7 @@ class NCAccountTableViewCell: NCTableViewCell {
 	@IBOutlet weak var trainingTimeLabel: UILabel!
 	@IBOutlet weak var skillQueueLabel: UILabel!
 	@IBOutlet weak var trainingProgressView: UIProgressView!
+	@IBOutlet weak var alertLabel: UILabel!
 	
 	var progressHandler: NCProgressHandler?
 	

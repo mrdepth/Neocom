@@ -9,7 +9,6 @@
 import UIKit
 import CoreData
 import EVEAPI
-import SafariServices
 
 class NCAccountsNode: TreeNode {
 	let cachePolicy: URLRequest.CachePolicy
@@ -132,16 +131,24 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 		configureCharacter(cell: cell)
 		configureSkillQueue(cell: cell)
 		configureCorporation(cell: cell)
+		
+		if let scopes = object.scopes?.flatMap({($0 as? NCScope)?.name}), Set(ESI.Scope.default.map{$0.rawValue}) != Set(scopes) {
+			cell.alertLabel.isHidden = false
+		}
+		else {
+			cell.alertLabel.isHidden = true
+		}
 	}
 	
 	func configureCharacter(cell: NCAccountTableViewCell) {
 		if let value = character?.value {
-			if let scopes = object.scopes?.flatMap({($0 as? NCScope)?.name}), Set(ESI.Scope.default.map{$0.rawValue}) != Set(scopes) {
-				cell.characterNameLabel.attributedText = value.name + " (!)" * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .subheadline)]
-			}
-			else {
-				cell.characterNameLabel.text = value.name
-			}
+//			if let scopes = object.scopes?.flatMap({($0 as? NCScope)?.name}), Set(ESI.Scope.default.map{$0.rawValue}) != Set(scopes) {
+//				cell.characterNameLabel.attributedText = value.name + " (!)" * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .subheadline)]
+//			}
+//			else {
+//				cell.characterNameLabel.text = value.name
+//			}
+			cell.characterNameLabel.text = value.name
 		}
 		else {
 			cell.characterNameLabel.text = character?.error?.localizedDescription ?? " "
@@ -634,8 +641,7 @@ class NCAccountsViewController: NCTreeViewController, UIViewControllerTransition
 		else {
 			treeController.deselectCell(for: node, animated: true)
 			if node is NCActionRow {
-				let url = OAuth2.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.default, state: "esi")
-				present(SFSafariViewController(url: url), animated: true, completion: nil)
+				ESI.performAuthorization(from: self)
 //				if #available(iOS 10.0, *) {
 //					UIApplication.shared.open(url, options: [:], completionHandler: nil)
 //				} else {

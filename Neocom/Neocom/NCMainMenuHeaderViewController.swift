@@ -141,12 +141,14 @@ class NCMainMenuHeaderViewController: UIViewController {
 	}
 	
 	@IBAction func onAddAccount(_ sender: Any) {
-		let url = OAuth2.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.default, state: "esi")
-		if #available(iOS 10.0, *) {
-			UIApplication.shared.open(url, options: [:], completionHandler: nil)
-		} else {
-			UIApplication.shared.openURL(url)
-		}
+		ESI.performAuthorization(from: self)
+
+//		let url = OAuth2.authURL(clientID: ESClientID, callbackURL: ESCallbackURL, scope: ESI.Scope.default, state: "esi")
+//		if #available(iOS 10.0, *) {
+//			UIApplication.shared.open(url, options: [:], completionHandler: nil)
+//		} else {
+//			UIApplication.shared.openURL(url)
+//		}
 		
 	}
 }

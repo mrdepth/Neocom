@@ -189,10 +189,35 @@ class NCMainMenuDetails: NSObject {
 class NCMainMenuRow: DefaultTreeRow {
 	let scopes: Set<ESI.Scope>
 	let account: NCAccount?
+	let isEnabled: Bool
 	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.default, nodeIdentifier: String, image: UIImage, title: String, route: Route, scopes: [ESI.Scope] = [], account: NCAccount? = nil) {
-		self.scopes = Set(scopes)
+		let scopes = Set(scopes)
+		self.scopes = scopes
 		self.account = account
-		super.init(prototype: prototype, nodeIdentifier: nodeIdentifier, image: image, title: title, accessoryType: .disclosureIndicator, route: route)
+		let isEnabled: Bool = {
+			guard !scopes.isEmpty else {return true}
+			guard let currentScopes = account?.scopes?.flatMap({($0 as? NCScope)?.name}).flatMap ({ESI.Scope($0)}) else {return false}
+			return scopes.isSubset(of: currentScopes)
+		}()
+		
+		self.isEnabled = isEnabled
+		
+		super.init(prototype: prototype, nodeIdentifier: nodeIdentifier, image: image, title: title, accessoryType: .disclosureIndicator, route: isEnabled ? route : nil)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		cell.titleLabel?.text = title
+		cell.iconView?.image = image
+		cell.accessoryType = .disclosureIndicator
+		
+		if !isEnabled {
+			cell.titleLabel?.textColor = .lightText
+			cell.subtitleLabel?.text = NSLocalizedString("Please sign in again to unlock all features", comment: "")
+		}
+		else {
+			cell.titleLabel?.textColor = .white
+		}
 	}
 }
 
@@ -216,7 +241,7 @@ class NCCharacterSheetMenuRow: NCAccountDataMenuRow<ESI.Skills.CharacterSkills> 
 
 	
 	override func configure(cell: UITableViewCell) {
-		super.configure(cell: cell)
+		defer {super.configure(cell: cell)}
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
 
 		if let result = result {
@@ -614,6 +639,14 @@ class NCMainMenuViewController: NCTreeViewController, UIViewControllerTransition
 			}
 		}
 	}
+	
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
+		if (node as? NCMainMenuRow)?.isEnabled == false {
+			ESI.performAuthorization(from: self)
+		}
+	}
+	
 	/*
 	//MARK: UIScrollViewDelegate
 	

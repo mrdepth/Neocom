@@ -26,16 +26,18 @@ extension Prototype {
 }
 
 class NCWalletTransactionRow: TreeRow {
-	let transaction: EVE.Char.WalletTransactions.Transaction
+	let transaction: ESI.Wallet.Transaction
 	let location: NCLocation?
+	let client: NCContact?
 	
 	lazy var type: NCDBInvType? = {
 		return NCDatabase.sharedDatabase?.invTypes[self.transaction.typeID]
 	}()
 	
-	init(transaction: EVE.Char.WalletTransactions.Transaction, location: NCLocation?) {
+	init(transaction: ESI.Wallet.Transaction, location: NCLocation?, client: NCContact?) {
 		self.transaction = transaction
 		self.location = location
+		self.client = client
 		
 		super.init(prototype: Prototype.NCWalletTransactionTableViewCell.default, route: Router.Database.TypeInfo(transaction.typeID))
 	}
@@ -46,14 +48,14 @@ class NCWalletTransactionRow: TreeRow {
 		cell.subtitleLabel.attributedText = location?.displayName ?? NSLocalizedString("Unknown Location", comment: "") * [NSForegroundColorAttributeName: UIColor.lightText]
 		cell.iconView.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		
-		cell.priceLabel.text = NCUnitFormatter.localizedString(from: transaction.price, unit: .isk, style: .full)
+		cell.priceLabel.text = NCUnitFormatter.localizedString(from: transaction.unitPrice, unit: .isk, style: .full)
 		cell.qtyLabel.text = NCUnitFormatter.localizedString(from: Double(transaction.quantity), unit: .none, style: .full)
-		cell.dateLabel.text = DateFormatter.localizedString(from: transaction.transactionDateTime, dateStyle: .medium, timeStyle: .medium)
+		cell.dateLabel.text = DateFormatter.localizedString(from: transaction.date, dateStyle: .medium, timeStyle: .medium)
 		
 		
-		var s = "\(transaction.transactionType == .buy ? "-" : "")\(NCUnitFormatter.localizedString(from: transaction.price * Double(transaction.quantity), unit: .isk, style: .full))" * [NSForegroundColorAttributeName: transaction.transactionType == .buy ? UIColor.red : UIColor.green]
-		if !transaction.clientName.isEmpty {
-			s = s + " \(transaction.transactionType == .buy ? NSLocalizedString("to", comment: "") : NSLocalizedString("from", comment: "")) \(transaction.clientName)"
+		var s = "\(transaction.isBuy ? "-" : "")\(NCUnitFormatter.localizedString(from: transaction.unitPrice * Float(transaction.quantity), unit: .isk, style: .full))" * [NSForegroundColorAttributeName: transaction.isBuy ? UIColor.red : UIColor.green]
+		if let client = client?.name {
+			s = s + " \(transaction.isBuy ? NSLocalizedString("to", comment: "") : NSLocalizedString("from", comment: "")) \(client)"
 		}
 		
 		cell.amountLabel.attributedText = s

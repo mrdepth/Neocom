@@ -3,13 +3,6 @@
 import UIKit
 import PlaygroundSupport
 
-var a: [Int] = [1,2,3,4,5,6,7]
+let s = "jump_clone_installation_fee"
 
-let i = a.partition(by: {$0 % 2 == 0})
-let b = a[0..<i]
-a.removeSubrange(0..<i)
-
-
-a
-b
-
+s.replacingOccurrences(of: "_", with: " ").capitalized

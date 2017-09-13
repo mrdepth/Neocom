@@ -27,10 +27,36 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 	override func updateContent(completionHandler: @escaping () -> Void) {
 		if let value = walletTransactions?.value {
 			tableView.backgroundView = nil
+			let progress = Progress(totalUnitCount: 3)
+
+			let locationIDs = Set(value.map {$0.locationID})
+			let contactIDs = Set(value.map{Int64($0.clientID)})
 			
-			let locationIDs = Set(value.transactions.map {Int64($0.stationID)})
+			var locations: [Int64: NCLocation]?
+			var contacts: [Int64: NCContact]?
+			let dispatchGroup = DispatchGroup()
 			
-			dataManager.locations(ids: locationIDs) { locations in
+			progress.perform {
+				if !contactIDs.isEmpty {
+					dispatchGroup.enter()
+					dataManager.contacts(ids: contactIDs) { result in
+						contacts = result
+						dispatchGroup.leave()
+					}
+				}
+			}
+			
+			progress.perform {
+				if !locationIDs.isEmpty {
+					dispatchGroup.enter()
+					dataManager.locations(ids: locationIDs) { result in
+						locations = result
+						dispatchGroup.leave()
+					}
+				}
+			}
+			
+			dispatchGroup.notify(queue: .main) {
 				NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 					
 					let dateFormatter = DateFormatter()
@@ -38,7 +64,7 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 					dateFormatter.timeStyle = .none
 					dateFormatter.doesRelativeDateFormatting = true
 					
-					let transactions = value.transactions.sorted {$0.transactionDateTime > $1.transactionDateTime}
+					let transactions = value.sorted {$0.date > $1.date}
 					let calendar = Calendar(identifier: .gregorian)
 					
 					var date = calendar.date(from: calendar.dateComponents([.day, .month, .year], from: Date())) ?? Date()
@@ -47,8 +73,8 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 					
 					var rows = [NCWalletTransactionRow]()
 					for transaction in transactions {
-						let row = NCWalletTransactionRow(transaction: transaction, location: locations[Int64(transaction.stationID)])
-						if transaction.transactionDateTime > date {
+						let row = NCWalletTransactionRow(transaction: transaction, location: locations?[transaction.locationID], client: contacts?[Int64(transaction.clientID)])
+						if transaction.date > date {
 							rows.append(row)
 						}
 						else {
@@ -56,7 +82,7 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 								let title = dateFormatter.string(from: date)
 								sections.append(DefaultTreeSection(nodeIdentifier: title, title: title.uppercased(), children: rows))
 							}
-							date = calendar.date(from: calendar.dateComponents([.day, .month, .year], from: transaction.transactionDateTime)) ?? Date()
+							date = calendar.date(from: calendar.dateComponents([.day, .month, .year], from: transaction.date)) ?? Date()
 							rows = [row]
 						}
 					}
@@ -68,6 +94,7 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 					
 					
 					DispatchQueue.main.async {
+						progress.completedUnitCount += 1
 						
 						if self.treeController?.content == nil {
 							self.treeController?.content = RootNode(sections)
@@ -89,6 +116,6 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 		}
 	}
 	
-	private var walletTransactions: NCCachedResult<EVE.Char.WalletTransactions>?
+	private var walletTransactions: NCCachedResult<[ESI.Wallet.Transaction]>?
 	
 }

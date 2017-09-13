@@ -882,17 +882,17 @@ class NCDataManager {
 		})
 	}
 
-	func walletJournal(completionHandler: @escaping (NCCachedResult<EVE.Char.WalletJournal>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.WalletJournal", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.eve.char.walletJournal { result in
+	func walletJournal(completionHandler: @escaping (NCCachedResult<[ESI.Wallet.WalletJournalItem]>) -> Void) {
+		loadFromCache(forKey: "ESI.Wallet.WalletJournalItem", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.wallet.getCharacterWalletJournal(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0 * 1)
 			}
 		})
 	}
 
-	func walletTransactions(completionHandler: @escaping (NCCachedResult<EVE.Char.WalletTransactions>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.WalletTransactions", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.eve.char.walletTransactions { result in
+	func walletTransactions(completionHandler: @escaping (NCCachedResult<[ESI.Wallet.Transaction]>) -> Void) {
+		loadFromCache(forKey: "ESI.Wallet.Transaction", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.wallet.getWalletTransactions(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0 * 1)
 			}
 		})

@@ -18,48 +18,25 @@ class NCWalletJournalViewController: NCTreeViewController {
 	}
 	
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
-		let progress = Progress(totalUnitCount: 2)
-		
-		let dispatchGroup = DispatchGroup()
-		
-		dispatchGroup.enter()
-		progress.perform {
-			dataManager.refTypes { result in
-				self.refTypes = result
-				dispatchGroup.leave()
-			}
-		}
-		
-		dispatchGroup.enter()
-		progress.perform {
-			dataManager.walletJournal { result in
-				self.walletJournal = result
-				dispatchGroup.leave()
-			}
-		}
-		
-		dispatchGroup.notify(queue: .main) {
+		dataManager.walletJournal { result in
+			self.walletJournal = result
 			completionHandler([self.walletJournal?.cacheRecord].flatMap {$0})
 		}
+		
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
 		if let value = walletJournal?.value {
-			let refTypes = self.refTypes?.value
 			
 			DispatchQueue.global(qos: .background).async {
 				autoreleasepool {
-					var names: [Int: EVE.Eve.RefTypes.RefType] = [:]
-					refTypes?.refTypes.forEach {
-						names[$0.refTypeID] = $0
-					}
 					
 					let dateFormatter = DateFormatter()
 					dateFormatter.dateStyle = .medium
 					dateFormatter.timeStyle = .none
 					dateFormatter.doesRelativeDateFormatting = true
 					
-					let transactions = value.transactions.sorted {$0.date > $1.date}
+					let transactions = value.sorted {$0.date > $1.date}
 					let calendar = Calendar(identifier: .gregorian)
 					
 					var date = calendar.date(from: calendar.dateComponents([.day, .month, .year], from: Date())) ?? Date()
@@ -68,7 +45,8 @@ class NCWalletJournalViewController: NCTreeViewController {
 					
 					var rows = [NCWalletJournalRow]()
 					for transaction in transactions {
-						let row = NCWalletJournalRow(transaction: transaction, refType: names[transaction.refTypeID])
+
+						let row = NCWalletJournalRow(transaction: transaction)
 						if transaction.date > date {
 							rows.append(row)
 						}
@@ -109,7 +87,6 @@ class NCWalletJournalViewController: NCTreeViewController {
 		}
 	}
 	
-	private var walletJournal: NCCachedResult<EVE.Char.WalletJournal>?
-	private var refTypes: NCCachedResult<EVE.Eve.RefTypes>?
+	private var walletJournal: NCCachedResult<[ESI.Wallet.WalletJournalItem]>?
 		
 }

@@ -746,3 +746,9 @@ extension ESI.PlanetaryInteraction.Colony.PlanetType {
 		}
 	}
 }
+
+extension ESI.Wallet.WalletJournalItem.RefType {
+	var title: String {
+		return rawValue.replacingOccurrences(of: "_", with: " ").capitalized
+	}
+}

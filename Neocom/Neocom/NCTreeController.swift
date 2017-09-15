@@ -181,7 +181,7 @@ class NCTreeControllerNode: NSObject {
 class NCTreeController: NSObject, UITableViewDataSource, UITableViewDelegate {
 	
 	var childrenKeyPath: String?
-	dynamic var content: [NSObject]?/* {
+	@objc dynamic var content: [NSObject]?/* {
 		didSet {
 			if let root = _root, let oldValue = oldValue, let content = content {
 				self.tableView?.beginUpdates()

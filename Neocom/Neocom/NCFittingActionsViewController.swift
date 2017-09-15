@@ -235,7 +235,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard node is NCFittingAreaEffectRow else {return nil}
-		return [UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: ""), handler: {[weak self] _ in
+		return [UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: ""), handler: {[weak self] (_,_) in
 			guard let engine = self?.fleet?.active?.engine else {return}
 			engine.perform {
 				engine.area = nil
@@ -424,7 +424,7 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 						let name = !name.isEmpty ? name : NCDatabase.sharedDatabase?.invTypes[typeID]?.typeName ?? NSLocalizedString("Unknown", comment: "")
 
 						let font = UIFont.preferredFont(forTextStyle: .body)
-						let s = name * [NSLinkAttributeName: url, NSFontAttributeName: font] + " " * [NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor.white]
+						let s = name * [NSAttributedStringKey.link: url, NSAttributedStringKey.font: font] + " " * [NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: UIColor.white]
 						Router.Mail.NewMessage(recipients: nil, subject: nil, body: s).perform(source: strongSelf, sender: sender)
 					}))
 

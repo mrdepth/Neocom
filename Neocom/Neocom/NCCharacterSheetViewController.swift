@@ -69,7 +69,7 @@ class NCCharacterSheetViewController: NCTreeViewController {
 				self.character = result
 				
 				if let cacheRecord = result.cacheRecord {
-					self.characterObserver = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] _ in
+					self.characterObserver = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] (_,_) in
 						self?.reloadCharacterDetails(completionHandler: nil)
 					}
 				}

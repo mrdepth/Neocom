@@ -3,6 +3,6 @@
 import UIKit
 import PlaygroundSupport
 
-let s = "jump_clone_installation_fee"
+let d = [NSAttributedStringKey.font.rawValue: UIFont.systemFont(ofSize: 12)]
 
-s.replacingOccurrences(of: "_", with: " ").capitalized
+let d2 =  d.map {(NSAttributedStringKey(rawValue: $0), $1)}

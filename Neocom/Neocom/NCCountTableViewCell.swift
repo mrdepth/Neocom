@@ -49,7 +49,7 @@ class NCCountRow: TreeRow, UIPickerViewDataSource, UIPickerViewDelegate {
 	//MARK: - UIPickerViewDelegate
 	
 	func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-		return String(range.lowerBound + row) * [NSForegroundColorAttributeName: pickerView.tintColor]
+		return String(range.lowerBound + row) * [NSAttributedStringKey.foregroundColor: pickerView.tintColor]
 	}
 	
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

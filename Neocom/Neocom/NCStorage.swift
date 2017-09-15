@@ -100,7 +100,7 @@ class NCStorage: NSObject {
 	
 	//MARK: Private
 	
-	func managedObjectContextDidSave(_ notification: Notification) {
+	@objc func managedObjectContextDidSave(_ notification: Notification) {
 		guard let context = notification.object as? NSManagedObjectContext else {return}
 		if viewContext === context {
 			if let account = NCAccount.current, (notification.userInfo?[NSDeletedObjectsKey] as? NSSet)?.contains(account) == true {
@@ -117,7 +117,7 @@ class NCStorage: NSObject {
 		}
 	}
 	
-	func oauth2TokenDidRefresh(_ notification: Notification) {
+	@objc func oauth2TokenDidRefresh(_ notification: Notification) {
 		guard let token = notification.object as? OAuth2Token else {return}
 		performBackgroundTask { managedObjectContext in
 			let request = NSFetchRequest<NCAccount>(entityName: "Account")

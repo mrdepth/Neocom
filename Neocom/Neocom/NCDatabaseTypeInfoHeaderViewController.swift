@@ -39,7 +39,7 @@ class NCDatabaseTypeInfoHeaderViewController: UIViewController {
 			subtitleLabel.text = nil
 		}
 		textView.attributedText = type?.typeDescription?.text?.withFont(textView.font!, textColor: textView.textColor!)
-		textView.linkTextAttributes = [NSForegroundColorAttributeName: UIColor.caption]
+		textView.linkTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: UIColor.caption]
 		imageView.image = image ?? type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 	}
 	

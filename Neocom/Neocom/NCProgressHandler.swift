@@ -88,7 +88,7 @@ class NCProgressHandler: NSObject {
 				
 				if let navigationBar = viewController?.navigationController?.navigationController?.navigationBar ?? viewController?.navigationController?.navigationBar {
 					let c = progressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor)
-					c.priority = UILayoutPriorityDefaultLow
+					c.priority = UILayoutPriority.defaultLow
 					c.isActive = true
 					progressView.topAnchor.constraint(greaterThanOrEqualTo: viewController!.view.topAnchor).isActive = true
 					

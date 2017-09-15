@@ -74,7 +74,7 @@ class ChartAxis {
 		case right
 	}
 	
-	var textAttributes: [String: Any] = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)]
+	var textAttributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .footnote)]
 	
 	var range: ClosedRange<Double> = 0...0 {
 		didSet {

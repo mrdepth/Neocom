@@ -72,7 +72,7 @@ class NCFittingFleetsViewController: NCTreeViewController {
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let node = node as? NCFleetRow else {return nil}
 		
-		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { _ in
+		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { _,_  in
 			guard let context = NCStorage.sharedStorage?.viewContext else {return}
 			let fleet = node.object
 			context.delete(fleet)

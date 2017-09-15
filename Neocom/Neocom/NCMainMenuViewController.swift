@@ -12,11 +12,11 @@ import CoreData
 
 class NCMainMenuDetails: NSObject {
 	let account: NCAccount
-	dynamic var skillPoints: String?
-	dynamic var skillQueueInfo: String?
-	dynamic var unreadMails: String?
-	dynamic var balance: String?
-	dynamic var jumpClones: String?
+	@objc dynamic var skillPoints: String?
+	@objc dynamic var skillQueueInfo: String?
+	@objc dynamic var unreadMails: String?
+	@objc dynamic var balance: String?
+	@objc dynamic var jumpClones: String?
 
 	private(set) lazy var binder: NCBinder = {
 		return NCBinder(target: self)
@@ -217,6 +217,7 @@ class NCMainMenuRow: DefaultTreeRow {
 		}
 		else {
 			cell.titleLabel?.textColor = .white
+			cell.subtitleLabel?.text = nil
 		}
 	}
 }
@@ -228,7 +229,7 @@ class NCAccountDataMenuRow<T>: NCMainMenuRow {
 	var result: NCCachedResult<T>? {
 		didSet {
 			if let cacheRecord = result?.cacheRecord {
-				self.observer = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] _ in
+				self.observer = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] (_,_) in
 					guard let strongSelf = self else {return}
 					strongSelf.treeController?.reloadCells(for: [strongSelf], with: .none)
 				}
@@ -241,8 +242,8 @@ class NCCharacterSheetMenuRow: NCAccountDataMenuRow<ESI.Skills.CharacterSkills> 
 
 	
 	override func configure(cell: UITableViewCell) {
-		defer {super.configure(cell: cell)}
-		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		super.configure(cell: cell)
+		guard let cell = cell as? NCDefaultTableViewCell, isEnabled else {return}
 
 		if let result = result {
 			if let value = result.value {
@@ -268,7 +269,7 @@ class NCJumpClonesMenuRow: NCAccountDataMenuRow<ESI.Clones.JumpClones> {
 	
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
-		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		guard let cell = cell as? NCDefaultTableViewCell, isEnabled else {return}
 		
 		if let result = result {
 			if let value = result.value {
@@ -295,7 +296,7 @@ class NCSkillsMenuRow: NCAccountDataMenuRow<[ESI.Skills.SkillQueueItem]> {
 	
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
-		guard let cell = cell as? NCDefaultTableViewCell else {return}
+		guard let cell = cell as? NCDefaultTableViewCell, isEnabled else {return}
 		
 		if let result = result {
 			if let value = result.value {
@@ -335,7 +336,8 @@ class NCWealthMenuRow: NCAccountDataMenuRow<Float> {
 	
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
-		guard let cell = cell as? NCDefaultTableViewCell else {return}
+
+		guard let cell = cell as? NCDefaultTableViewCell, isEnabled else {return}
 		
 		if let result = result {
 			if let value = result.value {
@@ -387,10 +389,17 @@ class NCMainMenuViewController: NCTreeViewController, UIViewControllerTransition
 
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-		let rect = CGRect(x: 0, y: tableView.contentOffset.y, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y - self.tableView.contentInset.top, self.headerMinHeight))
+		let rect: CGRect
+		if #available(iOS 11.0, *) {
+			let inset = tableView.adjustedContentInset.top
+			rect = CGRect(x: 0, y: tableView.contentOffset.y, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y - self.tableView.contentInset.top + inset, self.headerMinHeight))
+		} else {
+			rect = CGRect(x: 0, y: tableView.contentOffset.y, width: self.view.bounds.size.width, height: max(self.headerMaxHeight - self.tableView.contentOffset.y - self.tableView.contentInset.top, self.headerMinHeight))
+		}
 		self.headerViewController?.view.frame = rect//self.view.convert(rect, to:self.tableView)
-		self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(rect.size.height, 0, 0, 0)
-
+		self.tableView.scrollIndicatorInsets.top = rect.size.height
+//		parent?.view.setNeedsLayout()
+//		parent?.view.layoutIfNeeded()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -413,8 +422,8 @@ class NCMainMenuViewController: NCTreeViewController, UIViewControllerTransition
 		super.willTransition(to: newCollection, with: coordinator)
 		DispatchQueue.main.async {
 			if let headerViewController = self.headerViewController {
-				self.headerMinHeight = headerViewController.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityDefaultHigh).height
-				self.headerMaxHeight = headerViewController.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel).height
+				self.headerMinHeight = headerViewController.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.defaultHigh).height
+				self.headerMaxHeight = headerViewController.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel).height
 				var rect = CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.size.width, height: self.headerMaxHeight))
 				self.tableView?.tableHeaderView?.frame = rect
 				
@@ -627,7 +636,7 @@ class NCMainMenuViewController: NCTreeViewController, UIViewControllerTransition
 		updateHeader()
 	}*/
 	
-	func managedObjectContextDidSave(_ note: Notification) {
+	@objc func managedObjectContextDidSave(_ note: Notification) {
 		guard NCAccount.current == nil else {return}
 		guard let viewContext = NCStorage.sharedStorage?.viewContext, let context = note.object as? NSManagedObjectContext else {return}
 		guard context.persistentStoreCoordinator === viewContext.persistentStoreCoordinator else {return}
@@ -700,6 +709,7 @@ class NCMainMenuViewController: NCTreeViewController, UIViewControllerTransition
 	//MARK: Private
 	
 	private func updateHeader() {
+		return
 		let identifier: String
 		if NCAccount.current != nil {
 			identifier = "NCMainMenuCharacterHeaderViewController"
@@ -711,15 +721,14 @@ class NCMainMenuViewController: NCTreeViewController, UIViewControllerTransition
 		let from = self.headerViewController
 		let to = self.storyboard!.instantiateViewController(withIdentifier: identifier) as! NCMainMenuHeaderViewController
 		
-		headerMinHeight = to.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityDefaultHigh).height
-		headerMaxHeight = to.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel).height
+		headerMinHeight = to.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.defaultHigh).height
+		headerMaxHeight = to.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel).height
 		
 		let rect = CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.size.width, height: self.headerMaxHeight))
 
 		to.view.frame = rect
 		to.view.translatesAutoresizingMaskIntoConstraints = true
 		to.view.layoutIfNeeded()
-		
 		
 		if let from = from {
 			from.willMove(toParentViewController: nil)

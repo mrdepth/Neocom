@@ -97,7 +97,7 @@ class NCTypePickerTypesViewController: NCTreeViewController, NCSearchableViewCon
 			recent?.raceID = category.race?.raceID ?? 0
 			recent?.typeID = type.typeID
 		}
-		recent?.date = Date() as NSDate
+		recent?.date = Date()
 		if context.hasChanges {
 			try? context.save()
 		}

@@ -170,7 +170,7 @@ class NCFittingPriceTypeRow: NCFittingPriceRow {
 		
 		let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
 		if quantity > 1 {
-			cell.titleLabel?.attributedText = typeName + " x\(NCUnitFormatter.localizedString(from: quantity, unit: .none, style: .full))" * [NSForegroundColorAttributeName: UIColor.caption]
+			cell.titleLabel?.attributedText = typeName + " x\(NCUnitFormatter.localizedString(from: quantity, unit: .none, style: .full))" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 		}
 		else {
 			cell.titleLabel?.text = typeName

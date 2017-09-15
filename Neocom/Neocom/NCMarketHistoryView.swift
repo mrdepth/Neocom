@@ -143,7 +143,7 @@ class NCMarketHistoryView: UIView {
 		var y = 0 as CGFloat
 		let grid = UIBezierPath()
 		
-		let attributes: [String: Any] = [NSFontAttributeName: UIFont.systemFont(ofSize: 10), NSForegroundColorAttributeName: UIColor.white]
+		let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 10), NSAttributedStringKey.foregroundColor: UIColor.white]
 		let size = CGSize.init(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
 		
 		var donchian = donchianRange.upperBound

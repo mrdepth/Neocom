@@ -46,16 +46,16 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: .UIKeyboardWillHide, object: nil)
 		
 		var label = UILabel(frame: .zero)
-		label.attributedText = "To: " * [NSForegroundColorAttributeName: UIColor.lightText, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .subheadline)]
+		label.attributedText = "To: " * [NSAttributedStringKey.foregroundColor: UIColor.lightText, NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .subheadline)]
 		label.sizeToFit()
 		label.frame.origin = CGPoint(x: textView.textContainerInset.left, y: textView.textContainerInset.top)
 		
 		toTextView.addSubview(label)
 		toTextView.textContainer.exclusionPaths = [UIBezierPath(rect: label.frame)]
-		toTextView.typingAttributes = [NSForegroundColorAttributeName: toTextView.textColor!, NSFontAttributeName: toTextView.font!]
+		toTextView.typingAttributes = [NSAttributedStringKey.foregroundColor.rawValue: toTextView.textColor!, NSAttributedStringKey.font.rawValue: toTextView.font!]
 		
 		label = UILabel(frame: .zero)
-		label.attributedText = "Subject: " * [NSForegroundColorAttributeName: UIColor.lightText, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .subheadline)]
+		label.attributedText = "Subject: " * [NSAttributedStringKey.foregroundColor: UIColor.lightText, NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .subheadline)]
 		label.sizeToFit()
 		label.frame.origin = CGPoint(x: textView.textContainerInset.left, y: textView.textContainerInset.top)
 
@@ -63,8 +63,8 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		subjectTextView.textContainer.exclusionPaths = [UIBezierPath(rect: label.frame)]
 		
 		textView.inputAccessoryView = accessoryView
-		textView.linkTextAttributes = [NSForegroundColorAttributeName: UIColor.caption]
-		textView.typingAttributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body), NSForegroundColorAttributeName: UIColor.white]
+		textView.linkTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: UIColor.caption]
+		textView.typingAttributes = [NSAttributedStringKey.font.rawValue: UIFont.preferredFont(forTextStyle: .body), NSAttributedStringKey.foregroundColor.rawValue: UIColor.white]
 
 		subjectTextView.text = self.subject
 		textView.attributedText = body
@@ -108,7 +108,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 
 		let recipients = self.recipients.flatMap { id -> ESI.Mail.Recipient? in
 			guard let contact = self._recipients[id] else {return nil}
-			contact.lastUse = Date() as NSDate
+			contact.lastUse = Date()
 			guard let recipientType = contact.recipientType else {return nil}
 			let recipient = ESI.Mail.Recipient()
 			recipient.recipientID = Int(contact.contactID)
@@ -165,7 +165,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 				draft.to = self.recipients
 				draft.subject = self.subjectTextView.text
 				draft.body = self.textView.attributedText
-				draft.date = NSDate()
+				draft.date = Date()
 				if context.hasChanges {
 					try? context.save()
 				}
@@ -223,7 +223,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 	
 	func textViewDidChangeSelection(_ textView: UITextView) {
 		if textView == self.textView {
-			textView.typingAttributes = [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body), NSForegroundColorAttributeName: UIColor.white]
+			textView.typingAttributes = [NSAttributedStringKey.font.rawValue: UIFont.preferredFont(forTextStyle: .body), NSAttributedStringKey.foregroundColor.rawValue: UIColor.white]
 		}
 	}
 	
@@ -241,7 +241,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 			else {
 				textView.attributedText.enumerateAttributes(in: range, options: [], using: { (attributes, _, _) in
 //					guard let attachment = attributes[NSAttachmentAttributeName] as? NSTextAttachment else {return}
-					guard let recipientID = attributes["recipientID"] as? Int64 else {return}
+					guard let recipientID = attributes[.recipientID] as? Int64 else {return}
 					guard let i = recipients.index(of: recipientID) else {return}
 					recipients.remove(at: i)
 					_recipients[recipientID] = nil
@@ -313,16 +313,17 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		var s = NSAttributedString()
 		for id in recipients {
 			guard let contact = _recipients[id] else {continue}
-			let i = ((contact.name ?? "") + ", ") * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: toTextView.font!]
+			let i = ((contact.name ?? "") + ", ") * [NSAttributedStringKey.foregroundColor: UIColor.caption, NSAttributedStringKey.font: toTextView.font!]
 			let rect = i.boundingRect(with: .zero, options: [.usesLineFragmentOrigin], context: nil)
 			UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
 			i.draw(in: rect)
 			let image = UIGraphicsGetImageFromCurrentImageContext()
 			UIGraphicsEndImageContext()
 			
-			s = s + (NSAttributedString(image: image, font: toTextView.font!) * ["recipientID": contact.contactID])
+			s = s + (NSAttributedString(image: image, font: toTextView.font!) * [NSAttributedStringKey.recipientID: contact.contactID])
 		}
-		s = s * toTextView.typingAttributes
+		
+		s = s * Dictionary(uniqueKeysWithValues: toTextView.typingAttributes.map{(NSAttributedStringKey(rawValue: $0), $1)})
 		toTextView.attributedText = s
 	}
 	
@@ -332,7 +333,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 			guard let data = loadout.data?.data else {return}
 			let name = loadout.name?.isEmpty == false ? loadout.name! : NCDatabase.sharedDatabase?.invTypes[Int(loadout.typeID)]?.typeName ?? NSLocalizedString("Unknown", comment: "")
 			guard let url = (NCLoadoutRepresentation.dnaURL([(typeID: Int(loadout.typeID), data: data, name: name)]).value as? [URL])?.first else {return}
-			let s = name * [NSLinkAttributeName: url, NSFontAttributeName: textView.font!] + " " * textView.typingAttributes
+			let s = name * [NSAttributedStringKey.link: url, NSAttributedStringKey.font: textView.font!] + " " * Dictionary(uniqueKeysWithValues: toTextView.typingAttributes.map{(NSAttributedStringKey(rawValue: $0), $1)})
 			textView.textStorage.replaceCharacters(in: textView.selectedRange, with: s)
 			textView.selectedRange = NSMakeRange(textView.selectedRange.location + s.length, 0)
 			updateConstraints(textView)

@@ -122,12 +122,12 @@ class NCColonySection: TreeSection {
 		
 		if let solarSystem = solarSystem {
 			let security = solarSystem.security
-			title = (String(format: "%.1f ", security) * [NSForegroundColorAttributeName: UIColor(security: security)] + location + " (\(self.colony.planetType.title))").uppercased()
+			title = (String(format: "%.1f ", security) * [NSAttributedStringKey.foregroundColor: UIColor(security: security)] + location + " (\(self.colony.planetType.title))").uppercased()
 		}
 		else {
 			title = (location + " (\(self.colony.planetType.title))").uppercased() * [:]
 		}
-		return self.isHalted ? title + " [\(NSLocalizedString("halted", comment: "").uppercased())]" * [NSForegroundColorAttributeName: UIColor.red] : title
+		return self.isHalted ? title + " [\(NSLocalizedString("halted", comment: "").uppercased())]" * [NSAttributedStringKey.foregroundColor: UIColor.red] : title
 	}()
 	
 	override func configure(cell: UITableViewCell) {
@@ -167,7 +167,7 @@ class NCFacilityRow: TreeRow {
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
-		cell.titleLabel?.attributedText = (type?.typeName ?? "") + " \(facilityName)" * [NSForegroundColorAttributeName: UIColor.caption]
+		cell.titleLabel?.attributedText = (type?.typeName ?? "") + " \(facilityName)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		cell.accessoryType = .detailButton
 	}
@@ -379,11 +379,11 @@ class NCFactoryInputRow: TreeRow {
 
 		let shortage = expiryTime - currentTime
 		if shortage <= 0  {
-			cell.subtitleLabel?.attributedText = typeName + " (\(NSLocalizedString("Depleted", comment: "")))" * [NSForegroundColorAttributeName: UIColor.red]
+			cell.subtitleLabel?.attributedText = typeName + " (\(NSLocalizedString("Depleted", comment: "")))" * [NSAttributedStringKey.foregroundColor: UIColor.red]
 		}
 		else {
 			let s = String(format: NSLocalizedString("Shortage in %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: shortage, precision: .minutes))
-			cell.subtitleLabel?.attributedText = typeName + " (\(s))" * [NSForegroundColorAttributeName: UIColor.caption]
+			cell.subtitleLabel?.attributedText = typeName + " (\(s))" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 		}
 		cell.accessoryType = .disclosureIndicator
 	}

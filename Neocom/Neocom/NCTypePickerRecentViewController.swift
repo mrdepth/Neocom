@@ -111,7 +111,7 @@ class NCTypePickerRecentViewController: UITableViewController, NSFetchedResultsC
 		guard let type = invTypes?[Int(recent.typeID)] else {return}
 		guard let context = recent.managedObjectContext else {return}
 		
-		recent.date = Date() as NSDate
+		recent.date = Date()
 		if context.hasChanges {
 			try? context.save()
 		}

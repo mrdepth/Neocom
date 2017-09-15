@@ -283,7 +283,7 @@ class NCKillmailInfoViewController: UITableViewController, TreeControllerDelegat
 					                                                  corporation: contacts?[Int64(victim.corporationID ?? 0)],
 					                                                  alliance: contacts?[Int64(victim.allianceID ?? 0)], dataManager: dataManager), at: 0)
 					if cost > 0 {
-						victimSection.attributedTitle = NSLocalizedString("Victim", comment: "").uppercased() + " (\((NCUnitFormatter.localizedString(from: cost, unit: .isk, style: .full))))" * [NSForegroundColorAttributeName: UIColor.white]
+						victimSection.attributedTitle = NSLocalizedString("Victim", comment: "").uppercased() + " (\((NCUnitFormatter.localizedString(from: cost, unit: .isk, style: .full))))" * [NSAttributedStringKey.foregroundColor: UIColor.white]
 					}
 					
 					

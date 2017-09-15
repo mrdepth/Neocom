@@ -55,7 +55,7 @@ class NCIndustryRow: TreeRow {
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCIndustryTableViewCell else {return}
 		cell.titleLabel.text = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
-		cell.subtitleLabel.attributedText = location?.displayName ?? NSLocalizedString("Unknown Location", comment: "") * [NSForegroundColorAttributeName: UIColor.lightText]
+		cell.subtitleLabel.attributedText = location?.displayName ?? NSLocalizedString("Unknown Location", comment: "") * [NSAttributedStringKey.foregroundColor: UIColor.lightText]
 		cell.iconView.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		
 		let activity = self.activity?.activityName ?? NSLocalizedString("Unknown Activity", comment: "")
@@ -84,7 +84,7 @@ class NCIndustryRow: TreeRow {
 			s = "\(NSLocalizedString("reverted", comment: "")) \(DateFormatter.localizedString(from: job.endDate, dateStyle: .short, timeStyle: .short))"
 			cell.progressView.progress = 0
 		}
-		cell.stateLabel.attributedText = "\(activity): " * [NSForegroundColorAttributeName: UIColor.white] + s * [NSForegroundColorAttributeName: UIColor.lightText]
+		cell.stateLabel.attributedText = "\(activity): " * [NSAttributedStringKey.foregroundColor: UIColor.white] + s * [NSAttributedStringKey.foregroundColor: UIColor.lightText]
 		
 		cell.jobRunsLabel.text = NCUnitFormatter.localizedString(from: job.runs, unit: .none, style: .full)
 		cell.runsPerCopyLabel.text = NCUnitFormatter.localizedString(from: job.licensedRuns ?? 0, unit: .none, style: .full)

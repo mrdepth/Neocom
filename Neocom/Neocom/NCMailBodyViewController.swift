@@ -28,7 +28,7 @@ class NCMailBodyViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		textView.linkTextAttributes = [NSForegroundColorAttributeName: UIColor.caption]
+		textView.linkTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: UIColor.caption]
 		
 		guard let mail = self.mail, let account = NCAccount.current, let mailID = mail.mailID else {return}
 		
@@ -72,17 +72,17 @@ class NCMailBodyViewController: UIViewController {
 //				let html = "<body style=\"color:white;font-size: \(font.pointSize);font-family: '\(font.familyName)';\">\(value.body ?? "")</body>"
 				let html = value.body ?? ""
 				if let s = try? NSAttributedString(data: html.data(using: .utf8) ?? Data(),
-				                                options: [NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType,
-				                                          NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue,
-				                                          NSDefaultAttributesDocumentAttribute: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote)]],
+				                                options: [.documentType : NSAttributedString.DocumentType.html,
+				                                          .characterEncoding: String.Encoding.utf8.rawValue,
+				                                          .defaultAttributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .footnote)]],
 				                                documentAttributes: nil) {
 					let body = NSMutableAttributedString(attributedString: s)
 					s.enumerateAttributes(in: NSMakeRange(0, s.length), options: []) { (attributes, range, stop) in
-						attributes.keys.filter {$0 != NSLinkAttributeName}.forEach {
+						attributes.keys.filter {$0 != NSAttributedStringKey.link}.forEach {
 							body.removeAttribute($0, range: range)
 						}
 					}
-					self.body = body * [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: font]
+					self.body = body * [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: font]
 					self.textView.attributedText = self.body
 				}
 			case let .failure(error):
@@ -120,7 +120,7 @@ class NCMailBodyViewController: UIViewController {
 		let s: NSAttributedString?
 		if let body = self.body {
 			let font = UIFont.preferredFont(forTextStyle: .body)
-			s = "\n\n" * [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: font] + ("--------------------------------\n" + body) * [NSForegroundColorAttributeName: UIColor.lightText, NSFontAttributeName: UIFont.italicSystemFont(ofSize: font.pointSize)]
+			s = "\n\n" * [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: font] + ("--------------------------------\n" + body) * [NSAttributedStringKey.foregroundColor: UIColor.lightText, NSAttributedStringKey.font: UIFont.italicSystemFont(ofSize: font.pointSize)]
 		}
 		else {
 			s = nil

@@ -283,7 +283,7 @@ class NCFittingServerViewController: UIViewController {
 				textLabel.text = NSLocalizedString("Unable to determine your IP Address", comment: "")
 			}
 			else {
-				textLabel.attributedText = NSLocalizedString("Open one of the following links", comment: "") + ":\n\n" + urls.joined(separator: "\n") * [NSForegroundColorAttributeName: UIColor.caption]
+				textLabel.attributedText = NSLocalizedString("Open one of the following links", comment: "") + ":\n\n" + urls.joined(separator: "\n") * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 			}
 		}
 		catch {
@@ -298,7 +298,7 @@ class NCFittingServerViewController: UIViewController {
 					textLabel.text = NSLocalizedString("Unable to determine your IP Address", comment: "")
 				}
 				else {
-					textLabel.attributedText = NSLocalizedString("Open one of the following links", comment: "") + ":\n\n" + urls.joined(separator: "\n") * [NSForegroundColorAttributeName: UIColor.caption]
+					textLabel.attributedText = NSLocalizedString("Open one of the following links", comment: "") + ":\n\n" + urls.joined(separator: "\n") * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 				}
 			}
 			catch {

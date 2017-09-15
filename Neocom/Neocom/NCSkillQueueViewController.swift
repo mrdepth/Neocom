@@ -347,7 +347,7 @@ fileprivate class NCOptimalCharacterAttributesSection: DefaultTreeSection {
 			
 			skillPlanObserver = nil
 			guard let skillPlan = skillPlan else {return}
-			skillPlanObserver = NCManagedObjectObserver(managedObject: skillPlan) { [weak self] _ in
+			skillPlanObserver = NCManagedObjectObserver(managedObject: skillPlan) { [weak self] (_,_) in
 				self?.reload()
 			}
 		}

@@ -106,14 +106,14 @@ class NCDataManager {
 		}
 	}()
 
-	lazy var eve: EVE = {
-		if let token = self.token {
-			return EVE(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility, cachePolicy: self.cachePolicy, retrier: self.retrier)
-		}
-		else {
-			return EVE(cachePolicy: self.cachePolicy)
-		}
-	}()
+//	lazy var eve: EVE = {
+//		if let token = self.token {
+//			return EVE(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility, cachePolicy: self.cachePolicy, retrier: self.retrier)
+//		}
+//		else {
+//			return EVE(cachePolicy: self.cachePolicy)
+//		}
+//	}()
 	
 	lazy var zKillboard: ZKillboard = {
 		return ZKillboard(cachePolicy: self.cachePolicy)
@@ -898,13 +898,13 @@ class NCDataManager {
 		})
 	}
 
-	func refTypes(completionHandler: @escaping (NCCachedResult<EVE.Eve.RefTypes>) -> Void) {
-		loadFromCache(forKey: "EVE.Eve.RefTypes", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.eve.eve.refTypes { result in
-				completion(result, 3600.0 * 24 * 7)
-			}
-		})
-	}
+//	func refTypes(completionHandler: @escaping (NCCachedResult<EVE.Eve.RefTypes>) -> Void) {
+//		loadFromCache(forKey: "EVE.Eve.RefTypes", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+//			self.eve.eve.refTypes { result in
+//				completion(result, 3600.0 * 24 * 7)
+//			}
+//		})
+//	}
 
 	func contracts(completionHandler: @escaping (NCCachedResult<[ESI.Contracts.Contract]>) -> Void) {
 		loadFromCache(forKey: "ESI.Contracts.Contract", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
@@ -1065,7 +1065,7 @@ class NCDataManager {
 			loader { (result, cacheTime) in
 				switch (result) {
 				case let .success(value):
-					cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
+					cache.store(value as? NSObject, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
 //						completionHandler(.success(value: value, cacheRecord: cacheRecord))
 						finish(value: value, record: cacheRecord, error: nil)
 					}
@@ -1094,7 +1094,7 @@ class NCDataManager {
 						loader { (result, cacheTime) in
 							switch (result) {
 							case let .success(value):
-								cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
+								cache.store(value as? NSObject, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
 //									completionHandler(.success(value: value, cacheRecord: cacheRecord))
 									finish(value: value, record: cacheRecord, error: nil)
 								}
@@ -1141,7 +1141,7 @@ class NCDataManager {
 							loader { (result, cacheTime) in
 								switch (result) {
 								case let .success(value):
-									cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { _ in
+									cache.store(value as? NSObject, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { _ in
 									}
 								default:
 									break
@@ -1155,7 +1155,7 @@ class NCDataManager {
 						loader { (result, cacheTime) in
 							switch (result) {
 							case let .success(value):
-								cache.store(value as? NSSecureCoding, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
+								cache.store(value as? NSObject, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
 //									completionHandler(.success(value: value, cacheRecord: cacheRecord))
 									finish(value: value, record: cacheRecord, error: nil)
 								}

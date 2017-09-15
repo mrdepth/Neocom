@@ -61,10 +61,10 @@ class NCShoppingItemRow: NCFetchedResultsObjectNode<NCShoppingItem>, TreeNodeRou
 		let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
 		let s = NCUnitFormatter.localizedString(from: quantity, unit: .none, style: .full)
 		if let name = object.name, !name.isEmpty {
-			cell.titleLabel?.attributedText = "\(typeName) / \(name) " + "x\(s)" * [NSForegroundColorAttributeName: UIColor.caption]
+			cell.titleLabel?.attributedText = "\(typeName) / \(name) " + "x\(s)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 		}
 		else {
-			cell.titleLabel?.attributedText = "\(typeName) " + "x\(s)" * [NSForegroundColorAttributeName: UIColor.caption]
+			cell.titleLabel?.attributedText = "\(typeName) " + "x\(s)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 		}
 		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		

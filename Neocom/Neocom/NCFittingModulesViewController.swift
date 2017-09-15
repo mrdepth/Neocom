@@ -63,7 +63,7 @@ class NCFittingModuleRow: TreeRow {
 			cell.titleLabel?.textColor = isEnabled ? .white : .red
 
 			if modules.count > 1 {
-				cell.titleLabel?.attributedText = (type?.typeName ?? "") + " " + "x\(modules.count)" * [NSForegroundColorAttributeName: UIColor.caption]
+				cell.titleLabel?.attributedText = (type?.typeName ?? "") + " " + "x\(modules.count)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 			}
 			else {
 				cell.titleLabel?.text = type?.typeName
@@ -89,7 +89,7 @@ class NCFittingModuleRow: TreeRow {
 					if let chargeName = chargeName  {
 						var s = NSAttributedString(image: chargeImage, font: font) + " \(chargeName)"
 						if module.charges > 0 {
-							s = s + " x\(module.charges)" * [NSForegroundColorAttributeName: UIColor.caption]
+							s = s + " x\(module.charges)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 						}
 						string.appendLine(s)
 					}
@@ -100,7 +100,7 @@ class NCFittingModuleRow: TreeRow {
 					
 					if optimal > 0 {
 						let s: NSAttributedString
-						let attr = [NSForegroundColorAttributeName: UIColor.caption]
+						let attr = [NSAttributedStringKey.foregroundColor: UIColor.caption]
 						let image = NSAttributedString(image: #imageLiteral(resourceName: "targetingRange"), font: font)
 						if falloff > 0 {
 							s = image + " \(NSLocalizedString("optimal + falloff", comment: "")): " + (NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full) + " + " + NCUnitFormatter.localizedString(from: falloff, unit: .meter, style: .full)) * attr
@@ -122,19 +122,19 @@ class NCFittingModuleRow: TreeRow {
 
 						let color = accuracy.color
 						
-						let accuracy = NCUnitFormatter.localizedString(from: accuracyScore, unit: .none, style: .full) * [NSForegroundColorAttributeName: UIColor.caption]
-						let range = NCUnitFormatter.localizedString(from: orbitRadius, unit: .custom(NSLocalizedString("+ m", comment: "meter"), false), style: .full) * [NSForegroundColorAttributeName: color]
+						let accuracy = NCUnitFormatter.localizedString(from: accuracyScore, unit: .none, style: .full) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
+						let range = NCUnitFormatter.localizedString(from: orbitRadius, unit: .custom(NSLocalizedString("+ m", comment: "meter"), false), style: .full) * [NSAttributedStringKey.foregroundColor: color]
 						let s = NSAttributedString(image: #imageLiteral(resourceName: "tracking"), font: font) + " \(NSLocalizedString("accuracy", comment: "")): " + accuracy + " (" + NSAttributedString(image: #imageLiteral(resourceName: "targetingRange"), font: font) + " " + range + " )"
 						
 						string.appendLine(s)
 					}
 					if cycleTime > 0 {
-						let s = NSAttributedString(image: #imageLiteral(resourceName: "dps"), font: font) + " \(NSLocalizedString("rate of fire", comment: "")): " + NCTimeIntervalFormatter.localizedString(from: cycleTime, precision: .seconds) * [NSForegroundColorAttributeName: UIColor.caption]
+						let s = NSAttributedString(image: #imageLiteral(resourceName: "dps"), font: font) + " \(NSLocalizedString("rate of fire", comment: "")): " + NCTimeIntervalFormatter.localizedString(from: cycleTime, precision: .seconds) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 						string.appendLine(s)
 					}
 					
 					if lifeTime > 0 {
-						let s = NSAttributedString(image: #imageLiteral(resourceName: "overheated"), font: font) + " \(NSLocalizedString("lifetime", comment: "")): " + NCTimeIntervalFormatter.localizedString(from: lifeTime, precision: .seconds) * [NSForegroundColorAttributeName: UIColor.caption]
+						let s = NSAttributedString(image: #imageLiteral(resourceName: "overheated"), font: font) + " \(NSLocalizedString("lifetime", comment: "")): " + NCTimeIntervalFormatter.localizedString(from: lifeTime, precision: .seconds) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 						string.appendLine(s)
 					}
 					

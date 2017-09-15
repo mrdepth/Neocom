@@ -45,7 +45,7 @@ class NCWalletTransactionRow: TreeRow {
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCWalletTransactionTableViewCell else {return}
 		cell.titleLabel.text = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
-		cell.subtitleLabel.attributedText = location?.displayName ?? NSLocalizedString("Unknown Location", comment: "") * [NSForegroundColorAttributeName: UIColor.lightText]
+		cell.subtitleLabel.attributedText = location?.displayName ?? NSLocalizedString("Unknown Location", comment: "") * [NSAttributedStringKey.foregroundColor: UIColor.lightText]
 		cell.iconView.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		
 		cell.priceLabel.text = NCUnitFormatter.localizedString(from: transaction.unitPrice, unit: .isk, style: .full)
@@ -53,7 +53,7 @@ class NCWalletTransactionRow: TreeRow {
 		cell.dateLabel.text = DateFormatter.localizedString(from: transaction.date, dateStyle: .medium, timeStyle: .medium)
 		
 		
-		var s = "\(transaction.isBuy ? "-" : "")\(NCUnitFormatter.localizedString(from: transaction.unitPrice * Float(transaction.quantity), unit: .isk, style: .full))" * [NSForegroundColorAttributeName: transaction.isBuy ? UIColor.red : UIColor.green]
+		var s = "\(transaction.isBuy ? "-" : "")\(NCUnitFormatter.localizedString(from: transaction.unitPrice * Float(transaction.quantity), unit: .isk, style: .full))" * [NSAttributedStringKey.foregroundColor: transaction.isBuy ? UIColor.red : UIColor.green]
 		if let client = client?.name {
 			s = s + " \(transaction.isBuy ? NSLocalizedString("to", comment: "") : NSLocalizedString("from", comment: "")) \(client)"
 		}

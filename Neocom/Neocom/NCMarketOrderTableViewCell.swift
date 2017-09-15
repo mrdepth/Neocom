@@ -46,7 +46,7 @@ class NCMarketOrderRow: TreeRow {
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCMarketOrderTableViewCell else {return}
 		cell.titleLabel.text = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
-		cell.subtitleLabel.attributedText = location?.displayName ?? NSLocalizedString("Unknown Location", comment: "") * [NSForegroundColorAttributeName: UIColor.lightText]
+		cell.subtitleLabel.attributedText = location?.displayName ?? NSLocalizedString("Unknown Location", comment: "") * [NSAttributedStringKey.foregroundColor: UIColor.lightText]
 		cell.iconView.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		cell.priceLabel.text = NCUnitFormatter.localizedString(from: order.price, unit: .isk, style: .full)
 		cell.qtyLabel.text = NCUnitFormatter.localizedString(from: order.volumeRemain, unit: .none, style: .full) + "/" + NCUnitFormatter.localizedString(from: order.volumeTotal, unit: .none, style: .full)

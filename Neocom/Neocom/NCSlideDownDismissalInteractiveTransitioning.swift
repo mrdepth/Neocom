@@ -32,7 +32,7 @@ class NCSlideDownDismissalInteractiveTransitioning: UIPercentDrivenInteractiveTr
 		super.startInteractiveTransition(transitionContext)
 	}
 	
-	func onPan(_ recognizer: UIPanGestureRecognizer) {
+	@objc func onPan(_ recognizer: UIPanGestureRecognizer) {
 		switch recognizer.state {
 		case .began:
 			break

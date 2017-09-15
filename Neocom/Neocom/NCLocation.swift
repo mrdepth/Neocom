@@ -74,14 +74,14 @@ class NCLocation {
 	lazy var displayName: NSAttributedString = {
 		let s = NSMutableAttributedString()
 		if let security = self.security {
-			s.append(NSAttributedString(string: String(format: "%.1f ", security) , attributes: [NSForegroundColorAttributeName: UIColor(security: security)]))
+			s.append(NSAttributedString(string: String(format: "%.1f ", security) , attributes: [NSAttributedStringKey.foregroundColor: UIColor(security: security)]))
 		}
 		if let itemName = self.itemName {
 			if let solarSystemName = self.solarSystemName {
 				let r = (itemName as NSString).range(of: solarSystemName)
 				if r.length > 0  {
 					let title = NSMutableAttributedString(string: itemName)
-					title.addAttributes([NSForegroundColorAttributeName: UIColor.white], range: r)
+					title.addAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], range: r)
 					s.append(title)
 				}
 				else {

@@ -97,7 +97,7 @@ class NCFittingModuleInfoRow: TreeRow {
 	override func configure(cell: UITableViewCell) {
 		let title: NSAttributedString
 		if count > 1 {
-			title = (type.typeName ?? "") + " " + "x\(count)" * [NSForegroundColorAttributeName: UIColor.caption]
+			title = (type.typeName ?? "") + " " + "x\(count)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 		}
 		else {
 			title = NSAttributedString(string: type.typeName ?? "")
@@ -139,7 +139,7 @@ class NCFittingChargeRow: NCChargeRow {
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
 		if charges > 0 {
-			let title = (type.typeName ?? "") + " x\(charges)" * [NSForegroundColorAttributeName: UIColor.caption]
+			let title = (type.typeName ?? "") + " x\(charges)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 			if let cell = cell as? NCChargeTableViewCell {
 				cell.titleLabel?.attributedText = title
 			}
@@ -258,7 +258,7 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		if node is NCFittingChargeRow {
-			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Unload", comment: "Unload ammo"), handler: { _ in
+			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Unload", comment: "Unload ammo"), handler: { _,_  in
 				guard let modules = self.modules else {return}
 				
 				modules.first?.engine?.perform {

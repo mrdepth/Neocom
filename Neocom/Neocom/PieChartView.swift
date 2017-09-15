@@ -78,7 +78,7 @@ public class PieSegmentLayer: CALayer {
 		}
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.alignment = .center
-		return NSAttributedString(string: s, attributes: [NSForegroundColorAttributeName: model().segment!.color, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .footnote),NSParagraphStyleAttributeName: paragraph])
+		return NSAttributedString(string: s, attributes: [NSAttributedStringKey.foregroundColor: model().segment!.color, NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .footnote),NSAttributedStringKey.paragraphStyle: paragraph])
 	}
 	
 	fileprivate func titleFrame(at: CGFloat, size: CGSize) -> CGRect {
@@ -170,7 +170,7 @@ public class PieTotalLayer: CALayer {
 		let s =  "\(model().formatter?.string(for: value) ?? "\(model().value)")"
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.alignment = .center
-		return NSAttributedString(string: s, attributes: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .subheadline),NSParagraphStyleAttributeName: paragraph])
+		return NSAttributedString(string: s, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .subheadline),NSAttributedStringKey.paragraphStyle: paragraph])
 	}
 
 	override public func draw(in ctx: CGContext) {

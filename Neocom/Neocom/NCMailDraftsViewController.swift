@@ -33,7 +33,7 @@ class NCMailDraftsViewController: NCTreeViewController {
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let node = node as? NCDraftRow else { return nil}
-		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { _ in
+		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { _,_  in
 			node.object.managedObjectContext?.delete(node.object)
 			if node.object.managedObjectContext?.hasChanges == true {
 				try? node.object.managedObjectContext?.save()

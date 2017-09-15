@@ -299,12 +299,12 @@ class NCFittingDamagePatternsViewController: NCTreeViewController, UITextFieldDe
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		switch node {
 		case let node as NCCustomDamagePatternRow:
-			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { _ in
+			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { _,_  in
 				guard let controller = self.treeController else {return}
 				self.treeController(controller, commit: .delete, forNode: node)
 			})]
 		case let node as NCFittingDamagePatternInfoRow:
-			return [UITableViewRowAction(style: .normal, title: NSLocalizedString("Duplicate", comment: ""), handler: { _ in
+			return [UITableViewRowAction(style: .normal, title: NSLocalizedString("Duplicate", comment: ""), handler: { _,_  in
 				self.addDamagePattern(damagePattern: node.damagePattern, name: node.name + " " + NSLocalizedString("Copy", comment: "Ex: Guristas Copy"))
 			})]
 		default:
@@ -358,10 +358,11 @@ class NCFittingDamagePatternsViewController: NCTreeViewController, UITextFieldDe
 		let attributes = npc.allAttributes
 		
 		let turrets: (Float, Float, Float, Float) = {
-			let damage = (attributes[NCDBAttributeID.emDamage.rawValue]?.value ?? 0,
-			              attributes[NCDBAttributeID.thermalDamage.rawValue]?.value ?? 0,
-			              attributes[NCDBAttributeID.kineticDamage.rawValue]?.value ?? 0,
-			              attributes[NCDBAttributeID.explosiveDamage.rawValue]?.value ?? 0)
+			let damage: (Float, Float, Float, Float) =
+				(attributes[NCDBAttributeID.emDamage.rawValue]?.value ?? 0,
+				 attributes[NCDBAttributeID.thermalDamage.rawValue]?.value ?? 0,
+				 attributes[NCDBAttributeID.kineticDamage.rawValue]?.value ?? 0,
+				 attributes[NCDBAttributeID.explosiveDamage.rawValue]?.value ?? 0)
 			
 			let multiplier = attributes[NCDBAttributeID.damageMultiplier.rawValue]?.value ?? 1
 			let rof = (attributes[NCDBAttributeID.speed.rawValue]?.value ?? 1000) / 1000
@@ -371,10 +372,11 @@ class NCFittingDamagePatternsViewController: NCTreeViewController, UITextFieldDe
 		let launchers: (Float, Float, Float, Float) = {
 			guard let missileID = attributes[NCDBAttributeID.entityMissileTypeID.rawValue]?.value, let missile = NCDatabase.sharedDatabase?.invTypes[Int(missileID)] else {return (0,0,0,0)}
 			let attributes = missile.allAttributes
-			let damage = (attributes[NCDBAttributeID.emDamage.rawValue]?.value ?? 0,
-			              attributes[NCDBAttributeID.thermalDamage.rawValue]?.value ?? 0,
-			              attributes[NCDBAttributeID.kineticDamage.rawValue]?.value ?? 0,
-			              attributes[NCDBAttributeID.explosiveDamage.rawValue]?.value ?? 0)
+			let damage: (Float, Float, Float, Float) =
+				(attributes[NCDBAttributeID.emDamage.rawValue]?.value ?? 0,
+				 attributes[NCDBAttributeID.thermalDamage.rawValue]?.value ?? 0,
+				 attributes[NCDBAttributeID.kineticDamage.rawValue]?.value ?? 0,
+				 attributes[NCDBAttributeID.explosiveDamage.rawValue]?.value ?? 0)
 			
 			let multiplier = attributes[NCDBAttributeID.missileDamageMultiplier.rawValue]?.value ?? 1
 			let rof = (attributes[NCDBAttributeID.missileLaunchDuration.rawValue]?.value ?? 1000) / 1000

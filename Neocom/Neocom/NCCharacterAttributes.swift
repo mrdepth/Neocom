@@ -74,7 +74,7 @@ class NCCharacterAttributes {
 		self.augmentations = augmentations
 	}
 	
-	init(clones: EVE.Char.Clones) {
+	/*init(clones: EVE.Char.Clones) {
 		self.intelligence = clones.attributes.intelligence
 		self.memory = clones.attributes.memory
 		self.perception = clones.attributes.perception
@@ -112,7 +112,7 @@ class NCCharacterAttributes {
 		willpower += augmentations.willpower
 		charisma += augmentations.charisma
 
-	}
+	}*/
 	
 	func skillpointsPerSecond(forSkill skill: NCSkill) -> Double {
 		return skillpointsPerSecond(primaryAttributeID: skill.primaryAttributeID, secondaryAttribute: skill.secondaryAttributeID)

@@ -53,7 +53,9 @@ class NCDamageTypeLabel: NCLabel {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		self.tintColor = (NCDamageType(rawValue: self.damageType) ?? .em).color
-		var rgba: [CGFloat] = [0, 0, 0, 0]
+		let rgba = UnsafeMutablePointer<CGFloat>.allocate(capacity: 4)
+		defer {rgba.deallocate(capacity: 4)}
+
 		backgroundColor = UIColor.clear
 		self.tintColor.getRed(&rgba[0], green: &rgba[1], blue: &rgba[2], alpha: &rgba[3])
 		self.dimingColor = UIColor(red: rgba[0] * 0.4, green: rgba[1] * 0.4, blue: rgba[2] * 0.4, alpha: rgba[3])

@@ -70,7 +70,7 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController {
 					location.locationType = NCCacheLocationPickerRecent.LocationType.region.rawValue
 					return location
 					}()
-				location.date = Date() as NSDate
+				location.date = Date()
 				
 				if context.hasChanges {
 					try? context.save()

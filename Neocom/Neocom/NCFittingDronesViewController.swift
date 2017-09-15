@@ -36,7 +36,7 @@ class NCFittingDroneRow: TreeRow {
 		cell.object = drones
 		
 		if drones.count > 1 {
-			cell.titleLabel?.attributedText = (type?.typeName ?? "") + " " + "x\(drones.count)" * [NSForegroundColorAttributeName: UIColor.caption]
+			cell.titleLabel?.attributedText = (type?.typeName ?? "") + " " + "x\(drones.count)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 		}
 		else {
 			cell.titleLabel?.text = type?.typeName
@@ -63,7 +63,7 @@ class NCFittingDroneRow: TreeRow {
 				
 				if optimal > 0 {
 					let s: NSAttributedString
-					let attr = [NSForegroundColorAttributeName: UIColor.caption]
+					let attr = [NSAttributedStringKey.foregroundColor: UIColor.caption]
 					let image = NSAttributedString(image: #imageLiteral(resourceName: "targetingRange"), font: font)
 					if falloff > 0 {
 						s = image + " \(NSLocalizedString("optimal + falloff", comment: "")): " + (NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full) + " + " + NCUnitFormatter.localizedString(from: falloff, unit: .meter, style: .full)) * attr
@@ -74,7 +74,7 @@ class NCFittingDroneRow: TreeRow {
 					string.appendLine(s)
 				}
 				if velocity > 0.1 {
-					let s = NSAttributedString(image: #imageLiteral(resourceName: "velocity"), font: font) + " \(NSLocalizedString("velocity", comment: "")): " + NCUnitFormatter.localizedString(from: velocity, unit: .meterPerSecond, style: .full) * [NSForegroundColorAttributeName: UIColor.caption]
+					let s = NSAttributedString(image: #imageLiteral(resourceName: "velocity"), font: font) + " \(NSLocalizedString("velocity", comment: "")): " + NCUnitFormatter.localizedString(from: velocity, unit: .meterPerSecond, style: .full) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 					string.appendLine(s)
 				}
 				
@@ -118,7 +118,7 @@ class NCFittingDroneSection: TreeSection {
 			cell.titleLabel?.text = squadron.title?.uppercased()
 		}
 		else {
-			cell.titleLabel?.attributedText = (squadron.title?.uppercased() ?? "") + " \(used)/\(limit)" * [NSForegroundColorAttributeName: UIColor.caption]
+			cell.titleLabel?.attributedText = (squadron.title?.uppercased() ?? "") + " \(used)/\(limit)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 		}
 	}
 	

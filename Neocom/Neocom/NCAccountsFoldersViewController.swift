@@ -105,11 +105,11 @@ class NCAccountsFoldersViewController: NCTreeViewController {
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let node = node as? NCAccountsFolderRow else {return nil}
 		let folder = node.object
-		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { _ in
+		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { _,_  in
 			folder.managedObjectContext?.delete(folder)
 			try? folder.managedObjectContext?.save()
 		}),
-		        UITableViewRowAction(style: .normal, title: NSLocalizedString("Rename", comment: ""), handler: { [weak self] _ in
+		        UITableViewRowAction(style: .normal, title: NSLocalizedString("Rename", comment: ""), handler: { [weak self] (_,_) in
 					self?.performRename(folder: folder)
 				})]
 	}

@@ -25,7 +25,7 @@ class NCTableViewBackgroundLabel: NCLabel {
 		paragraph.headIndent = 20
 		paragraph.tailIndent = -20
 		paragraph.alignment = NSTextAlignment.center
-		attributedText = NSAttributedString(string: text, attributes: [NSParagraphStyleAttributeName: paragraph])
+		attributedText = NSAttributedString(string: text, attributes: [NSAttributedStringKey.paragraphStyle: paragraph])
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

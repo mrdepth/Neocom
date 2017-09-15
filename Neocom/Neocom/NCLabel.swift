@@ -49,7 +49,7 @@ class NCLabel: UILabel {
 		return max(p, 11)
 	}
 	
-	func didChangeContentSizeCategory(_ note: NSNotification) {
+	@objc func didChangeContentSizeCategory(_ note: NSNotification) {
 		font = font.withSize(fontSize(contentSizeCategory: UIApplication.shared.preferredContentSizeCategory))
 		invalidateIntrinsicContentSize()
 	}

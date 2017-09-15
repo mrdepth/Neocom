@@ -70,7 +70,7 @@ class NCFittingRequiredSkillsViewController: UITableViewController, TreeControll
 		
 	}
 	
-	func onAdd(_ sender: UIBarButtonItem) {
+	@objc func onAdd(_ sender: UIBarButtonItem) {
 		guard let character = self.character, let trainingQueue = self.trainingQueue else {return}
 		guard let account = NCAccount.current else {return}
 		

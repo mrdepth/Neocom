@@ -64,7 +64,7 @@ class NCMailViewController: NCTreeViewController {
 		guard let mailID = node.mail.mailID else {return nil}
 		let header = node.mail
 		
-		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self] _ in
+		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self] (_,_) in
 			guard let cell = self?.treeController?.cell(for: node) else {return}
 			self?.tableView.isUserInteractionEnabled = false
 

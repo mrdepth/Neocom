@@ -264,7 +264,7 @@ extension NCAPIController where Self: UIViewController {
 						strongSelf.didFinishLoading()
 					}
 				}
-				strongSelf.managedObjectsObserver = NCManagedObjectObserver(managedObjects: records) { [weak self] _ in
+				strongSelf.managedObjectsObserver = NCManagedObjectObserver(managedObjects: records) { [weak self] (_,_) in
 					guard let strongSelf = self else {return}
 					strongSelf.updateWork?.cancel()
 					strongSelf.updateWork = DispatchWorkItem {

@@ -126,7 +126,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let node = node as? NCInGameFittingRow else {return nil}
 		
-		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self, weak node] _ in
+		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self, weak node] (_,_) in
 			guard let strongSelf = self else {return}
 			guard let node = node else {return}
 			guard let cell = strongSelf.treeController?.cell(for: node) else {return}

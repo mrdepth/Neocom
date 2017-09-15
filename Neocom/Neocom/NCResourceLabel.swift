@@ -39,7 +39,8 @@ class NCResourceLabel: NCLabel {
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		var rgba: [CGFloat] = [0, 0, 0, 0]
+		let rgba = UnsafeMutablePointer<CGFloat>.allocate(capacity: 4)
+		defer {rgba.deallocate(capacity: 4)}
 		self.tintColor.getRed(&rgba[0], green: &rgba[1], blue: &rgba[2], alpha: &rgba[3])
 		self.backgroundColor = UIColor(red: rgba[0] * 0.4, green: rgba[1] * 0.4, blue: rgba[2] * 0.4, alpha: rgba[3])
 		tintAdjustmentMode = .normal

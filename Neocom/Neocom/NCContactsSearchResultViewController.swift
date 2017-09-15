@@ -43,7 +43,7 @@ class NCContactsSearchResultViewController: NCTreeViewController {
 				let section = DefaultTreeSection(nodeIdentifier: identifiers[key], title: titles[key], children: rows)
 				sections.append(section)
 			}
-			sections.sort { ($0.0.nodeIdentifier ?? "Z") < ($0.1.nodeIdentifier ?? "Z") }
+			sections.sort { ($0.nodeIdentifier ?? "Z") < ($1.nodeIdentifier ?? "Z") }
 			
 			UIView.performWithoutAnimation {
 				if let root = treeController?.content {

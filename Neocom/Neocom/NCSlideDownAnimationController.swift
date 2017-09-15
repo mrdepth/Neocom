@@ -108,7 +108,7 @@ class NCSlideDownInteractiveTransition: UIPercentDrivenInteractiveTransition {
 		self.scrollView.panGestureRecognizer.removeTarget(self, action: #selector(NCSlideDownInteractiveTransition.onPan(_:)))
 	}
 	
-	func onPan(_ recognizer: UIPanGestureRecognizer) {
+	@objc func onPan(_ recognizer: UIPanGestureRecognizer) {
 		let t = recognizer.translation(in: containerView)
 		let p = (t.y - startPanOffset) / self.distance
 		switch recognizer.state {

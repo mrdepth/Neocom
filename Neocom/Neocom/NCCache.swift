@@ -78,7 +78,7 @@ class NCCache: NSObject {
 		}
 	}
 	
-	func store(_ object: NSSecureCoding?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, completionHandler: ((NCCacheRecord?) -> Void)?) {
+	func store(_ object: NSObject?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, completionHandler: ((NCCacheRecord?) -> Void)?) {
 		performBackgroundTask { (managedObjectContext) in
 			var record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
 			if record == nil {
@@ -91,8 +91,8 @@ class NCCache: NSObject {
 			}
 			if object != nil || record!.data!.data == nil {
 				record!.data?.data = object
-				record!.date = (date ?? Date()) as NSDate?
-				record!.expireDate = (expireDate as NSDate?) ?? record!.expireDate ?? record!.date!.addingTimeInterval(3) as NSDate?
+				record!.date = date ?? Date()
+				record!.expireDate = expireDate ?? record!.expireDate ?? record!.date!.addingTimeInterval(3) as Date?
 			}
 			if managedObjectContext.hasChanges {
 				try? managedObjectContext.save()
@@ -107,7 +107,7 @@ class NCCache: NSObject {
 	
 	//MARK: Private
 	
-	func managedObjectContextDidSave(_ notification: Notification) {
+	@objc func managedObjectContextDidSave(_ notification: Notification) {
 		guard let context = notification.object as? NSManagedObjectContext,
 			viewContext !== context && context.persistentStoreCoordinator === viewContext.persistentStoreCoordinator
 			else {
@@ -179,7 +179,7 @@ class NCSecureUnarchiver: ValueTransformer {
 	override func reverseTransformedValue(_ value: Any?) -> Any? {
 		guard let data = value as? Data else {return nil}
 		do {
-			let result = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data as NSData)
+			let result = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)
 			return result
 		}
 		catch {

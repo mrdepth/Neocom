@@ -195,7 +195,7 @@ class NCFittingImplantSetViewController: NCTreeViewController {
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let row = node as? NCImplantSetRow else {return nil}
 		let object = row.object
-		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { _ in
+		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { _,_  in
 			object.managedObjectContext?.delete(object)
 			if object.managedObjectContext?.hasChanges == true {
 				try? object.managedObjectContext?.save()

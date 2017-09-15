@@ -36,7 +36,8 @@ class NCFeedItemRow: TreeRow {
 			NCFeedItemRow.tagRegexp.replaceMatches(in: summary, options: [], range: NSMakeRange(0, summary.length), withTemplate: "")
 			if let data = (summary as String).data(using: .utf8),
 				let string =  try? NSAttributedString(data: data,
-			                                      options: [NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue],
+			                                      options: [.documentType : NSAttributedString.DocumentType.html,
+			                                                .characterEncoding: String.Encoding.utf8.rawValue],
 			                                      documentAttributes: nil).string {
 				subtitle = String(string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).characters.prefix(256))
 			}

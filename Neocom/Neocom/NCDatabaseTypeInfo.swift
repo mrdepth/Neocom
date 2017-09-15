@@ -392,7 +392,7 @@ class NCDatabaseSkillsSection: NCActionTreeSection {
 		if trainingTime > 0 {
 			attributedTitle.append(NSAttributedString(
 				string: " (\(NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))",
-				attributes: [NSForegroundColorAttributeName: UIColor.white]))
+				attributes: [NSAttributedStringKey.foregroundColor: UIColor.white]))
 		}
 		super.init(nodeIdentifier: nodeIdentifier,
 		           attributedTitle: attributedTitle, children: children)
@@ -433,7 +433,8 @@ struct NCDatabaseTypeInfo {
 				guard let price = result[typeID] else {return}
 				let subtitle = NCUnitFormatter.localizedString(from: price, unit: .isk, style: .full)
 				let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute, image: #imageLiteral(resourceName: "wallet"), title: NSLocalizedString("PRICE", comment: ""), subtitle: subtitle, accessoryType: .disclosureIndicator, route: Router.Database.MarketInfo(typeID))
-				marketSection?.mutableArrayValue(forKey: "children").insert(row, at: 0)
+				marketSection?.children.insert(row, at: 0)
+//				marketSection?.mutableArrayValue(forKey: "children").insert(row, at: 0)
 			}
 		}
 		switch NCDBCategoryID(rawValue: Int(type.group?.category?.categoryID ?? 0)) {

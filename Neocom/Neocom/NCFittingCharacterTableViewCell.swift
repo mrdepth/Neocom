@@ -24,7 +24,7 @@ extension UIImage {
 		let paragraph = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
 		paragraph.alignment = .center
 		let font = UIFont.boldSystemFont(ofSize: round(size.height * 0.7))
-		let attributes = [NSFontAttributeName:font, NSParagraphStyleAttributeName: paragraph]
+		let attributes = [NSAttributedStringKey.font:font, NSAttributedStringKey.paragraphStyle: paragraph]
 		let s = text * attributes
 		let c = NSStringDrawingContext()
 		c.minimumScaleFactor = 0.5

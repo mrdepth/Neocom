@@ -46,7 +46,7 @@ extension NCAccount {
 			if characterID != token.characterID {characterID = token.characterID}
 			if characterName != token.characterName {characterName = token.characterName}
 			if realm != token.realm {realm = token.realm}
-			if let expiresOn = token.expiresOn as NSDate?, expiresOn != self.expiresOn {
+			if let expiresOn = token.expiresOn, expiresOn != self.expiresOn {
 				self.expiresOn = expiresOn
 			}
 			let newScopes = Set<String>(token.scopes)

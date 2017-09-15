@@ -16,7 +16,7 @@ class NCAssetRow: DefaultTreeRow {
 		let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
 		let title: NSAttributedString
 		if let qty = asset.quantity, qty > 1 {
-			title = typeName + (" x" + NCUnitFormatter.localizedString(from: qty, unit: .none, style: .full)) * [NSForegroundColorAttributeName: UIColor.caption]
+			title = typeName + (" x" + NCUnitFormatter.localizedString(from: qty, unit: .none, style: .full)) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 		}
 		else {
 			title = NSAttributedString(string: typeName)
@@ -40,7 +40,7 @@ class NCAssetRow: DefaultTreeRow {
 				}
 			}
 			
-			rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
+			rows.sort { ($0.attributedTitle?.string ?? "") < ($1.attributedTitle?.string ?? "") }
 			children = rows
 			
 			let sections = map.sorted {$0.key.rawValue < $1.key.rawValue}.map { i -> DefaultTreeSection in
@@ -48,7 +48,7 @@ class NCAssetRow: DefaultTreeRow {
 				                                 nodeIdentifier: "\(asset.itemID).\(i.key.rawValue)",
 					image: i.key.image,
 					title: i.key.title?.uppercased(),
-					children: i.value.sorted { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") })
+					children: i.value.sorted { ($0.attributedTitle?.string ?? "") < ($1.attributedTitle?.string ?? "") })
 				section.isExpandable = false
 				return section
 			}
@@ -140,7 +140,7 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 					for locationID in Set(locations.keys).subtracting(Set(items.keys)) {
 						guard var rows = contents[locationID]?.map ({NCAssetRow(asset: $0, contents: contents, types: types)}) else {continue}
 						
-						rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
+						rows.sort { ($0.attributedTitle?.string ?? "") < ($1.attributedTitle?.string ?? "") }
 						
 						let location = locations[locationID]
 						let title = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: ""))

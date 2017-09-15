@@ -21,7 +21,7 @@ class NCFittingDroneInfoRow: NCChargeRow {
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
 		if count > 0 {
-			let title = (type.typeName ?? "") + " x\(count)" * [NSForegroundColorAttributeName: UIColor.caption]
+			let title = (type.typeName ?? "") + " x\(count)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 			if let cell = cell as? NCChargeTableViewCell {
 				cell.titleLabel?.attributedText = title
 			}

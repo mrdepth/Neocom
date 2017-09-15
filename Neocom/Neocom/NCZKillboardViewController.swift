@@ -227,7 +227,7 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 		
 		
 		if let contact = (treeController?.content?.children[0] as? NCZKillboardContactRow)?.contact {
-			contact.lastUse = Date() as NSDate
+			contact.lastUse = Date()
 			if contact.managedObjectContext?.hasChanges == true {
 				try? contact.managedObjectContext?.save()
 			}
@@ -241,7 +241,7 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 					location.locationType = NCCacheLocationPickerRecent.LocationType.solarSystem.rawValue
 					return location
 				}()
-				location.date = Date() as NSDate
+				location.date = Date()
 			}
 			else if let region = location as? NCDBMapRegion {
 				let location: NCCacheLocationPickerRecent = context.fetch("LocationPickerRecent", where: "locationID == %d", region.regionID) ?? {
@@ -250,7 +250,7 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 					location.locationType = NCCacheLocationPickerRecent.LocationType.region.rawValue
 					return location
 					}()
-				location.date = Date() as NSDate
+				location.date = Date()
 			}
 			
 			if context.hasChanges {

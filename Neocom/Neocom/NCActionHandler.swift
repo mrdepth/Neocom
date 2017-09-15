@@ -30,7 +30,7 @@ class NCActionHandler {
 			self.handler = handler
 		}
 		
-		func handle(_ sender: UIControl) {
+		@objc func handle(_ sender: UIControl) {
 			handler(sender)
 		}
 		

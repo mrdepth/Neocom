@@ -96,7 +96,7 @@ class NCAssetsSearchResultViewController: NCTreeViewController, UISearchResultsU
                 for locationID in Set(locations.keys).subtracting(Set(items.keys)) {
                     guard var rows = filteredContents[locationID]?.map ({NCAssetRow(asset: $0, contents: filteredContents, types: types)}) else {continue}
                     
-                    rows.sort { ($0.0.attributedTitle?.string ?? "") < ($0.1.attributedTitle?.string ?? "") }
+                    rows.sort { ($0.attributedTitle?.string ?? "") < ($1.attributedTitle?.string ?? "") }
                     
                     let location = locations[locationID]
                     let title = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: ""))

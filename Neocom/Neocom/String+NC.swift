@@ -12,6 +12,7 @@ extension String {
 	private static let numbers = ["0","I","II","III","IV","V"]
 	
 	init(romanNumber: Int) {
-		self.init(String.numbers[romanNumber.clamped(to: 0...5)])!
+		self = String.numbers[romanNumber.clamped(to: 0...5)]
+//		self.init(String.numbers[romanNumber.clamped(to: 0...5)])!
 	}
 }

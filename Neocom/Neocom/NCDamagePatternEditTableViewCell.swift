@@ -95,7 +95,7 @@ class NCDamagePatternEditRow: TreeRow, UIPickerViewDataSource, UIPickerViewDeleg
 		let label = (view as? UILabel) ?? UILabel()
 		let font = UIFont.preferredFont(forTextStyle: .headline)
 		let damage = NCDamagePatternEditRow.damages[component]
-		label.attributedText = NSAttributedString(image: damage.image, font: font) + "\(row)%" * [NSForegroundColorAttributeName: damage.color, NSFontAttributeName: font]
+		label.attributedText = NSAttributedString(image: damage.image, font: font) + "\(row)%" * [NSAttributedStringKey.foregroundColor: damage.color, NSAttributedStringKey.font: font]
 		label.textAlignment = .center
 		return label
 	}

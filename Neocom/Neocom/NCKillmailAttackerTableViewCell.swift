@@ -134,7 +134,7 @@ class NCKillmailAttackerRow: TreeRow {
 		cell.accessoryType = route != nil ? .disclosureIndicator : .none
 		
 		if attacker.finalBlow {
-			cell.titleLabel?.attributedText = (cell.titleLabel?.text ?? "") + " [\(NSLocalizedString("final blow", comment: ""))]" * [NSForegroundColorAttributeName: UIColor.caption]
+			cell.titleLabel?.attributedText = (cell.titleLabel?.text ?? "") + " [\(NSLocalizedString("final blow", comment: ""))]" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 		}
 		
 		if image == nil, let size = cell.iconView?.bounds.size {

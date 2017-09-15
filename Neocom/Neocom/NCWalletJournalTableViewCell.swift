@@ -37,7 +37,7 @@ class NCWalletJournalRow: TreeRow {
 		cell.dateLabel.text = DateFormatter.localizedString(from: transaction.date, dateStyle: .medium, timeStyle: .medium)
 		var s: NSAttributedString
 		if let amount = transaction.amount {
-			s = "\(amount < 0 ? "-" : "")\(NCUnitFormatter.localizedString(from: abs(amount), unit: .isk, style: .full))" * [NSForegroundColorAttributeName: amount < 0 ? UIColor.red : UIColor.green]
+			s = "\(amount < 0 ? "-" : "")\(NCUnitFormatter.localizedString(from: abs(amount), unit: .isk, style: .full))" * [NSAttributedStringKey.foregroundColor: amount < 0 ? UIColor.red : UIColor.green]
 		}
 		else {
 			s = NSAttributedString()

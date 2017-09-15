@@ -260,15 +260,15 @@ class NCFittingLoadoutsViewController: NCTreeViewController {
 							let s: NSAttributedString
 							
 							if body.length == 0 {
-								s = name * [NSLinkAttributeName: $0.0, NSFontAttributeName: font]
+								s = name * [NSAttributedStringKey.link: $0.0, NSAttributedStringKey.font: font]
 							}
 							else {
-								s = ", " * [NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor.white] + name * [NSLinkAttributeName: $0.0, NSFontAttributeName: font]
+								s = ", " * [NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: UIColor.white] + name * [NSAttributedStringKey.link: $0.0, NSAttributedStringKey.font: font]
 							}
 							body.append(s)
 						}
 						
-						body.append(" " * [NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor.white])
+						body.append(" " * [NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: UIColor.white])
 						
 						DispatchQueue.main.async {
 							guard let strongSelf = self else {return}
@@ -311,7 +311,7 @@ class NCFittingLoadoutsViewController: NCTreeViewController {
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let node = node as? NCLoadoutRow else {return nil}
 		
-		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { _ in
+		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { _,_  in
 			guard let context = NCStorage.sharedStorage?.viewContext else {return}
 			guard let loadout = (try? context.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
 			context.delete(loadout)

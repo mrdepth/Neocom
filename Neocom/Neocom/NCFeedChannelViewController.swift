@@ -105,12 +105,12 @@ class NCFeedChannelViewController: NCTreeViewController {
 		guard let context = NCCache.sharedCache?.viewContext else {return}
 		
 		if let link: NCCacheVisitedLink = context.fetch("VisitedLink", where: "url == %@", url) {
-			link.date = Date() as NSDate
+			link.date = Date()
 		}
 		else {
 			let link = NCCacheVisitedLink(entity: NSEntityDescription.entity(forEntityName: "VisitedLink", in: context)!, insertInto: context)
 			link.url = url
-			link.date = Date() as NSDate
+			link.date = Date()
 		}
 		if context.hasChanges {
 			try? context.save()

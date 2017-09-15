@@ -21,7 +21,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		
 		ESI.initialize()
-		EVE.initialize()
+//		EVE.initialize()
 		
 		application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert], categories: nil))
 		application.registerForRemoteNotifications()
@@ -147,7 +147,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		navigationBar.shadowImage = UIImage.image(color: UIColor.background)
 		navigationBar.barTintColor = UIColor.background
 		navigationBar.tintColor = UIColor.white
-		navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+		navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
 		navigationBar.barStyle = .black
 		navigationBar.isTranslucent = true
 		let tableView = NCTableView.appearance()

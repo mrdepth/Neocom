@@ -9,7 +9,7 @@
 import Foundation
 
 class NCTreeNode: NSObject {
-	dynamic var children: [NCTreeNode]?
+	@objc dynamic var children: [NCTreeNode]?
 	let cellIdentifier: String
 	let nodeIdentifier: String?
 	var canExpand: Bool {get {return self.children?.count ?? 0 > 0}}
@@ -29,8 +29,8 @@ class NCTreeNode: NSObject {
 }
 
 class NCTreeSection: NCTreeNode {
-	dynamic var title: String?
-	dynamic var attributedTitle: NSAttributedString?
+	@objc dynamic var title: String?
+	@objc dynamic var attributedTitle: NSAttributedString?
 	var configurationHandler: ((UITableViewCell) -> Void)?
 	
 	init(cellIdentifier: String, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [NCTreeNode]? = nil, object: Any? = nil, configurationHandler: ((UITableViewCell) -> Void)? = nil) {
@@ -74,12 +74,12 @@ class NCTreeRow: NCTreeNode {
 }
 
 class NCDefaultTreeRow: NCTreeRow {
-	dynamic var image: UIImage?
-	dynamic var title: String?
-	dynamic var attributedTitle: NSAttributedString?
-	dynamic var subtitle: String?
+	@objc dynamic var image: UIImage?
+	@objc dynamic var title: String?
+	@objc dynamic var attributedTitle: NSAttributedString?
+	@objc dynamic var subtitle: String?
 	var segue: String?
-	dynamic var accessoryType: UITableViewCellAccessoryType
+	@objc dynamic var accessoryType: UITableViewCellAccessoryType
 	
 	init(cellIdentifier: String, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, subtitle: String? = nil, accessoryType: UITableViewCellAccessoryType = .none, segue: String? = nil, object: Any? = nil, children: [NCTreeNode]? = nil) {
 		self.image = image

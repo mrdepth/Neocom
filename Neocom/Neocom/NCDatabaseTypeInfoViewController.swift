@@ -35,7 +35,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 			headerViewController.type = type
 			
 			var frame = CGRect.zero
-			frame.size = headerViewController.view.systemLayoutSizeFitting(CGSize(width: view.bounds.size.width, height:0), withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+			frame.size = headerViewController.view.systemLayoutSizeFitting(CGSize(width: view.bounds.size.width, height:0), withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
 			headerViewController.view.frame = frame
 			tableView.tableHeaderView = UIView(frame: frame)
 			tableView.addSubview(headerViewController.view)
@@ -49,7 +49,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 					to.type = type
 					to.image = value
 					var frame = CGRect.zero
-					frame.size = to.view.systemLayoutSizeFitting(CGSize(width: self.view.bounds.size.width, height:0), withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+					frame.size = to.view.systemLayoutSizeFitting(CGSize(width: self.view.bounds.size.width, height:0), withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
 					to.view.frame = frame
 					to.view.layoutIfNeeded()
 
@@ -131,7 +131,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 		if let headerViewController = headerViewController {
 			DispatchQueue.main.async {
 				var frame = CGRect.zero
-				frame.size = headerViewController.view.systemLayoutSizeFitting(CGSize(width: size.width, height:0), withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+				frame.size = headerViewController.view.systemLayoutSizeFitting(CGSize(width: size.width, height:0), withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
 				headerViewController.view.frame = frame
 				self.tableView.tableHeaderView?.frame = frame
 				self.tableView.tableHeaderView = self.tableView.tableHeaderView

@@ -317,8 +317,8 @@ enum NCLoadoutRepresentation {
 				let qty: Int
 				let s: String
 				if let result = regEx.firstMatch(in: line, options: [], range: NSMakeRange(0, ns.length)) {
-					s = ns.substring(with: result.rangeAt(1))
-					qty = Int(ns.substring(with: result.rangeAt(2))) ?? 1
+					s = ns.substring(with: result.range(at: 1))
+					qty = Int(ns.substring(with: result.range(at: 2))) ?? 1
 				}
 				else {
 					s = line

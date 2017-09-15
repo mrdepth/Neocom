@@ -199,7 +199,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 				}
 			}
 			else {
-				title = NSAttributedString(string: NSLocalizedString("No skills in training", comment: ""), attributes: [NSForegroundColorAttributeName: UIColor.lightText])
+				title = NSAttributedString(string: NSLocalizedString("No skills in training", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightText])
 				trainingProgress = 0
 				trainingTime = " "
 			}
@@ -259,16 +259,16 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 		
 		if let ship = ship, let location = location {
 			let s = NSMutableAttributedString()
-			s.append(NSAttributedString(string: ship, attributes: [NSForegroundColorAttributeName: UIColor.white]))
-			s.append(NSAttributedString(string: ", \(location)", attributes: [NSForegroundColorAttributeName: UIColor.lightText]))
+			s.append(NSAttributedString(string: ship, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white]))
+			s.append(NSAttributedString(string: ", \(location)", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightText]))
 			cell.locationLabel.attributedText = s
 		}
 		else if let location = location {
-			let s = NSAttributedString(string: location, attributes: [NSForegroundColorAttributeName: UIColor.lightText])
+			let s = NSAttributedString(string: location, attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightText])
 			cell.locationLabel.attributedText = s
 		}
 		else if let ship = ship {
-			let s = NSAttributedString(string: ship, attributes: [NSForegroundColorAttributeName: UIColor.white])
+			let s = NSAttributedString(string: ship, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
 			cell.locationLabel.attributedText = s
 		}
 		else {
@@ -673,7 +673,7 @@ class NCAccountsViewController: NCTreeViewController, UIViewControllerTransition
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let node = node as? NCAccountRow else {return nil}
-		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self] _ in
+		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self] (_,_) in
 			let account = node.object
 			account.managedObjectContext?.delete(account)
 			try? account.managedObjectContext?.save()

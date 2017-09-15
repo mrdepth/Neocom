@@ -58,7 +58,7 @@ class NCTextFieldRow: TreeRow {
 
 
 		if let placeholder = placeholder {
-			cell.textField.attributedPlaceholder = placeholder * [NSForegroundColorAttributeName: UIColor.lightGray]
+			cell.textField.attributedPlaceholder = placeholder * [NSAttributedStringKey.foregroundColor: UIColor.lightGray]
 		}
 	}
 	

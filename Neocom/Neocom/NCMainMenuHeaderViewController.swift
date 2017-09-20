@@ -131,8 +131,8 @@ class NCMainMenuHeaderViewController: UIViewController {
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "NCAccountsViewController", let delegate = self.parent as? UIViewControllerTransitioningDelegate {
-			segue.destination.transitioningDelegate = delegate
+		if segue.identifier == "NCAccountsViewController" {
+			segue.destination.transitioningDelegate = parent as? UIViewControllerTransitioningDelegate
 		}
 	}
 

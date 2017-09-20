@@ -80,17 +80,15 @@ class NCSlideDownAnimationController: NSObject, UIViewControllerAnimatedTransiti
 
 class NCSlideDownInteractiveTransition: UIPercentDrivenInteractiveTransition {
 	
-	private let scrollView: UIScrollView
 	private var presenting: Bool = false
-	private var startPanOffset: CGFloat = 0
-	private var startContentOffset: CGPoint = CGPoint()
 	private var distance: CGFloat = 0
 	private var containerView: UIView? = nil
+	private let panGestureRecognizer: UIPanGestureRecognizer
 	
-	init (scrollView: UIScrollView) {
-		self.scrollView = scrollView
+	init(panGestureRecognizer: UIPanGestureRecognizer) {
+		self.panGestureRecognizer = panGestureRecognizer
 		super.init()
-		self.scrollView.panGestureRecognizer.addTarget(self, action: #selector(NCSlideDownInteractiveTransition.onPan(_:)))
+		panGestureRecognizer.addTarget(self, action: #selector(NCSlideDownInteractiveTransition.onPan(_:)))
 	}
 	
 	override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
@@ -99,23 +97,20 @@ class NCSlideDownInteractiveTransition: UIPercentDrivenInteractiveTransition {
 		guard let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) else {return}
 		containerView = transitionContext.containerView
 		presenting = toVC.presentingViewController == fromVC
-		startPanOffset = scrollView.panGestureRecognizer.translation(in: containerView).y
-		startContentOffset = scrollView.contentOffset
 		distance = transitionContext.initialFrame(for: fromVC).size.height
 	}
 	
 	deinit {
-		self.scrollView.panGestureRecognizer.removeTarget(self, action: #selector(NCSlideDownInteractiveTransition.onPan(_:)))
+		panGestureRecognizer.removeTarget(self, action: #selector(NCSlideDownInteractiveTransition.onPan(_:)))
 	}
 	
 	@objc func onPan(_ recognizer: UIPanGestureRecognizer) {
 		let t = recognizer.translation(in: containerView)
-		let p = (t.y - startPanOffset) / self.distance
+		let p = t.y / self.distance
 		switch recognizer.state {
 		case .changed:
 			if presenting {
 				if p > 0 {
-					scrollView.contentOffset = startContentOffset
 					self.update(p)
 				}
 				else {
@@ -125,14 +120,14 @@ class NCSlideDownInteractiveTransition: UIPercentDrivenInteractiveTransition {
 			else {
 				if p < 0 {
 					self.update(-p)
-					self.scrollView.contentOffset = startContentOffset
 				}
 				else {
 					self.update(0)
 				}
 			}
 		case .ended:
-			if (presenting && p > 0) || (!presenting && p < 0) {
+			let v = recognizer.velocity(in: containerView)
+			if (presenting && v.y > 0) || (!presenting && v.y < 0) {
 				self.finish()
 			}
 			else {

@@ -495,7 +495,8 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 	
 }
 
-class NCAccountsViewController: NCTreeViewController, UIViewControllerTransitioningDelegate {
+class NCAccountsViewController: NCTreeViewController {
+	@IBOutlet var panGestureRecognizer: UIPanGestureRecognizer!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -578,7 +579,40 @@ class NCAccountsViewController: NCTreeViewController, UIViewControllerTransition
 	}
 	
 	@IBAction func onFolders(_ sender: Any) {
-		Router.Account.Folders().perform(source: self, sender: sender)
+		guard let selected = treeController?.selectedNodes().flatMap ({$0 as? NCAccountRow}) else {return}
+
+		if selected.isEmpty {
+			Router.Account.Folders().perform(source: self, sender: sender)
+		}
+		else {
+			Router.Account.AccountsFolderPicker { [weak self] (controller, folder) in
+				controller.dismiss(animated: true, completion: nil)
+				selected.forEach {
+					$0.object.folder = folder
+				}
+				
+				let account: NCAccount?
+				if let folder = folder {
+					account = folder.managedObjectContext?.fetch("Account", limit: 1, sortedBy: [NSSortDescriptor(key: "order", ascending: false)], where: "folder == %@", folder)
+				}
+				else {
+					account = selected.first?.object.managedObjectContext?.fetch("Account", limit: 1, sortedBy: [NSSortDescriptor(key: "order", ascending: false)], where: "folder == nil")
+				}
+				
+				var order = account != nil ? account!.order : 0
+				
+				selected.forEach {
+					$0.object.order = order
+					order += 1
+				}
+				
+				if let context = selected.first?.object.managedObjectContext, context.hasChanges {
+					try? context.save()
+				}
+				self?.updateTitle()
+				
+				}.perform(source: self, sender: sender)
+		}
 	}
 
 	
@@ -588,6 +622,7 @@ class NCAccountsViewController: NCTreeViewController, UIViewControllerTransition
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
+		
 		if !editing {
 			guard let context = NCStorage.sharedStorage?.viewContext else {return}
 			if context.hasChanges {
@@ -598,17 +633,17 @@ class NCAccountsViewController: NCTreeViewController, UIViewControllerTransition
 		updateTitle()
 	}
 	
-	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		guard !isEditing else {return}
-		
-		let bottom = max(scrollView.contentSize.height - scrollView.bounds.size.height, 0)
-		let y = scrollView.contentOffset.y - bottom
-		if (y > 40 && transitionCoordinator == nil && scrollView.isTracking) {
-			self.isInteractive = true
-			dismiss(animated: true, completion: nil)
-			self.isInteractive = false
-		}
-	}
+//	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//		guard !isEditing else {return}
+//
+//		let bottom = max(scrollView.contentSize.height - scrollView.bounds.size.height, 0)
+//		let y = scrollView.contentOffset.y - bottom
+//		if (y > 40 && transitionCoordinator == nil && scrollView.isTracking) {
+//			self.isInteractive = true
+//			dismiss(animated: true, completion: nil)
+//			self.isInteractive = false
+//		}
+//	}
 	
 	private var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
 	
@@ -691,16 +726,15 @@ class NCAccountsViewController: NCTreeViewController, UIViewControllerTransition
 		}
 	}
 	
+	@IBAction func onPan(_ sender: UIPanGestureRecognizer) {
+		if sender.state == .began && sender.translation(in: view).y < 0 {
+			dismiss(animated: true, completion: nil)
+		}
+	}
+	
 	// MARK: UIViewControllerTransitioningDelegate
 	private var isInteractive: Bool = false
 
-	func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-		return NCSlideDownAnimationController()
-	}
-	
-	func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-		return isInteractive ? NCSlideDownInteractiveTransition(scrollView: self.tableView) : nil
-	}
 	
 	//MARK: - Private
 	
@@ -708,11 +742,48 @@ class NCAccountsViewController: NCTreeViewController, UIViewControllerTransition
 		if isEditing {
 			let n = treeController?.selectedNodes().count ?? 0
 			title = n > 0 ? String(format: NSLocalizedString("Selected %d Accounts", comment: ""), n) : NSLocalizedString("Accounts", comment: "")
-			toolbarItems?.first?.isEnabled = n > 0
-			toolbarItems?.last?.isEnabled = n > 0
+//			toolbarItems?.first?.isEnabled = n > 0
+//			toolbarItems?.last?.isEnabled = n > 0
+			
+			toolbarItems?[0].title = n > 0 ? NSLocalizedString("Move To", comment: "") : NSLocalizedString("Folders", comment: "")
 		}
 		else {
 			title = NSLocalizedString("Accounts", comment: "")
 		}
 	}
+}
+
+extension NCAccountsViewController: UIViewControllerTransitioningDelegate {
+	func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+		return NCSlideDownAnimationController()
+	}
+	
+	func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+		let isInteractive = panGestureRecognizer.state == .changed || panGestureRecognizer.state == .began
+		return isInteractive ? NCSlideDownInteractiveTransition(panGestureRecognizer: panGestureRecognizer) : nil
+	}
+}
+
+extension NCAccountsViewController: UIGestureRecognizerDelegate {
+	
+	func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+		guard !isEditing else {return false}
+		guard let t = (gestureRecognizer as? UIPanGestureRecognizer)?.translation(in: view) else {return true}
+		
+		if #available(iOS 11.0, *) {
+			if tableView.bounds.maxY < tableView.contentSize.height + tableView.adjustedContentInset.bottom {
+				return false
+			}
+		} else {
+			if tableView.bounds.maxY < tableView.contentSize.height + tableView.contentInset.bottom {
+				return false
+			}
+		}
+		return t.y < 0
+	}
+	
+	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+		return true
+	}
+	
 }

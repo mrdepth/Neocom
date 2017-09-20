@@ -14,7 +14,7 @@
         <!--View Controller-->
         <scene sceneID="xf2-J8-D9Z">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="MZf-NS-74p" sceneMemberID="viewController">
+                <viewController id="MZf-NS-74p" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="lkY-fO-LS4"/>
                         <viewControllerLayoutGuide type="bottom" id="rDp-fX-tH2"/>
@@ -90,15 +90,28 @@
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="xiO-UB-iBj" firstAttribute="top" secondItem="04W-e4-wXp" secondAttribute="top" id="Hjt-7y-dLC"/>
                             <constraint firstItem="xiO-UB-iBj" firstAttribute="leading" secondItem="04W-e4-wXp" secondAttribute="leading" id="Rhf-xA-XaY"/>
                             <constraint firstAttribute="bottom" secondItem="xiO-UB-iBj" secondAttribute="bottom" id="gyu-oj-YnI"/>
                             <constraint firstAttribute="trailing" secondItem="xiO-UB-iBj" secondAttribute="trailing" id="sv4-PA-2V6"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="gfi-qf-SMy" appends="YES" id="Loh-ag-bUr"/>
+                        </connections>
                     </view>
+                    <connections>
+                        <outlet property="panGestureRecognizer" destination="gfi-qf-SMy" id="hlu-YQ-fNJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dfG-wH-DYH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="gfi-qf-SMy">
+                    <connections>
+                        <action selector="onPan:" destination="0zo-XV-3EL" id="QMn-pU-ChU"/>
+                        <outlet property="delegate" destination="0zo-XV-3EL" id="Xxi-Pj-C1G"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="353" y="-800"/>
         </scene>
@@ -499,14 +512,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="aN5-nH-Kq5" appends="YES" id="CZB-W7-eZG"/>
+                        </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem title="Move To" id="kvt-1B-QTs">
-                            <connections>
-                                <action selector="onMoveTo:" destination="CRE-3B-1kr" id="RRh-ae-g7A"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="uf0-M3-P0H"/>
                         <barButtonItem title="Folders" id="voE-7M-lJW">
                             <connections>
                                 <action selector="onFolders:" destination="CRE-3B-1kr" id="dBT-gX-c30"/>
@@ -535,8 +546,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
+                    <connections>
+                        <outlet property="panGestureRecognizer" destination="aN5-nH-Kq5" id="Rcu-4z-j0w"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f6O-Ll-Vw1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="aN5-nH-Kq5">
+                    <connections>
+                        <action selector="onPan:" destination="CRE-3B-1kr" id="kYl-3O-VG7"/>
+                        <outlet property="delegate" destination="CRE-3B-1kr" id="oCO-dY-Ajf"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2897" y="-83"/>
         </scene>
@@ -951,7 +971,7 @@
             </objects>
             <point key="canvasLocation" x="-1614" y="3322"/>
         </scene>
-        <!--Select Folder-->
+        <!--Folders-->
         <scene sceneID="IlK-3P-DET">
             <objects>
                 <tableViewController storyboardIdentifier="NCAccountsFoldersViewController" id="5JF-Ri-Kdo" customClass="NCAccountsFoldersViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
@@ -960,7 +980,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Select Folder" id="uBx-kw-j4z"/>
+                    <navigationItem key="navigationItem" title="Folders" id="uBx-kw-j4z"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MwP-KE-NRA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1037,6 +1057,6 @@
         <image name="necrorise.png" width="256" height="256"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="N8o-qX-9ny"/>
+        <segue reference="Fa9-Rs-G2v"/>
     </inferredMetricsTieBreakers>
 </document>

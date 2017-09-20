@@ -18,6 +18,8 @@ class NCMainMenuContainerViewController: UIViewController {
 	private var headerHeightConstraint: NSLayoutConstraint?
 	private var headerMaxHeightConstraint: NSLayoutConstraint?
 	
+	@IBOutlet var panGestureRecognizer: UIPanGestureRecognizer!
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		updateHeader()
@@ -28,11 +30,14 @@ class NCMainMenuContainerViewController: UIViewController {
 			strongSelf.headerHeightConstraint?.constant = max(rect.maxY, 0)
 		}
 
+		NotificationCenter.default.addObserver(self, selector: #selector(currentAccountChanged(_:)), name: .NCCurrentAccountChanged, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextDidSave(_:)), name: .NSManagedObjectContextDidSave, object: nil)
 	}
 	
 	private var boundsObserver: NSKeyValueObservation?
 	
 	deinit {
+		NotificationCenter.default.removeObserver(self)
 		boundsObserver?.invalidate()
 		boundsObserver = nil
 	}
@@ -84,15 +89,15 @@ class NCMainMenuContainerViewController: UIViewController {
 			})
 		}
 		else {
-			self.mainMenuViewController?.tableView.tableHeaderView?.frame = rect
-			self.mainMenuViewController?.tableView.tableHeaderView = self.mainMenuViewController?.tableView.tableHeaderView
+			mainMenuViewController?.tableView.tableHeaderView?.frame = rect
+			mainMenuViewController?.tableView.tableHeaderView = mainMenuViewController?.tableView.tableHeaderView
 
 			addChildViewController(to)
 			view.addSubview(to.view)
 			to.didMove(toParentViewController: self)
 		}
 		
-		self.headerViewController = to;
+		headerViewController = to
 		
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: [], metrics: nil, views: ["view": to.view]))
 		to.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -100,7 +105,77 @@ class NCMainMenuContainerViewController: UIViewController {
 		headerHeightConstraint?.priority = UILayoutPriority(900)
 		headerHeightConstraint?.isActive = true
 		to.view.heightAnchor.constraint(greaterThanOrEqualToConstant: headerMinHeight).isActive = true
-		headerMaxHeightConstraint = to.view.heightAnchor.constraint(lessThanOrEqualToConstant: headerMaxHeight)
+		if #available(iOS 11.0, *) {
+//			headerMaxHeightConstraint = to.view.heightAnchor.constraint(lessThanOrEqualToConstant: headerMaxHeight + view.safeAreaInsets.top)
+		} else {
+//			headerMaxHeightConstraint = to.view.heightAnchor.constraint(lessThanOrEqualToConstant: headerMaxHeight + topLayoutGuide.length)
+		}
 		headerMaxHeightConstraint?.isActive = true
 	}
+	
+}
+
+extension NCMainMenuContainerViewController: UIViewControllerTransitioningDelegate {
+
+	func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+		return NCSlideDownAnimationController()
+	}
+	
+	func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+//		guard let tableView = mainMenuViewController?.tableView else {return nil}
+//		let isInteractive = tableView.isTracking == true
+		let isInteractive = panGestureRecognizer.state == .changed || panGestureRecognizer.state == .began
+		return isInteractive ? NCSlideDownInteractiveTransition(panGestureRecognizer: panGestureRecognizer) : nil
+	}
+	
+}
+
+extension NCMainMenuContainerViewController {
+	
+	@objc func managedObjectContextDidSave(_ note: Notification) {
+		guard NCAccount.current == nil else {return}
+		guard let viewContext = NCStorage.sharedStorage?.viewContext, let context = note.object as? NSManagedObjectContext else {return}
+		guard context.persistentStoreCoordinator === viewContext.persistentStoreCoordinator else {return}
+		
+		if (note.userInfo?[NSDeletedObjectsKey] as? NSSet)?.contains(where: {$0 is NCAccount}) == true ||
+			(note.userInfo?[NSInsertedObjectsKey] as? NSSet)?.contains(where: {$0 is NCAccount}) == true {
+			DispatchQueue.main.async {
+				self.updateHeader()
+			}
+		}
+	}
+	
+	@objc func currentAccountChanged(_ note: Notification) {
+		updateHeader()
+	}
+	
+	@IBAction func onPan(_ sender: UIPanGestureRecognizer) {
+		if sender.state == .began && sender.translation(in: view).y > 0 {
+			mainMenuViewController?.performSegue(withIdentifier: "NCAccountsViewController", sender: self)
+		}
+	}
+
+}
+
+
+extension NCMainMenuContainerViewController: UIGestureRecognizerDelegate {
+	
+	func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+		guard let t = (gestureRecognizer as? UIPanGestureRecognizer)?.translation(in: view) else {return true}
+		
+		if let tableView: UITableView = view.hitTest(gestureRecognizer.location(in: view), with: nil)?.ancestor() {
+			if tableView.contentOffset.y > -tableView.contentInset.top {
+				return false
+			}
+		}
+		return t.y > 0
+	}
+	
+	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+		return true
+	}
+	
+//	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//		return true
+//	}
 }

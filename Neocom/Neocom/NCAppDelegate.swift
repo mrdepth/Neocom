@@ -135,7 +135,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
 		let size = UIScreen.main.bounds.size
-		return window?.traitCollection.userInterfaceIdiom == .pad || max(size.width, size.height) > 700 ? [.all] : [.portrait]
+		return window?.traitCollection.userInterfaceIdiom == .pad || min(size.width, size.height) > 400 ? [.all] : [.portrait]
 	}
 	
 	//MARK: Private
@@ -149,7 +149,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		navigationBar.tintColor = UIColor.white
 		navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
 		navigationBar.barStyle = .black
-		navigationBar.isTranslucent = true
+		navigationBar.isTranslucent = false
 		let tableView = NCTableView.appearance()
 		tableView.tableBackgroundColor = UIColor.background
 		tableView.separatorColor = UIColor.separator

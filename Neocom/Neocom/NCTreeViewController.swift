@@ -13,7 +13,7 @@ protocol NCSearchableViewController: UISearchResultsUpdating {
 	var searchController: UISearchController? {get set}
 }
 
-extension NCSearchableViewController {
+extension NCSearchableViewController where Self: UIViewController {
 	func setupSearchController(searchResultsController: UIViewController) {
 		guard let controller = self as? UITableViewController else {return}
 		searchController = UISearchController(searchResultsController: searchResultsController)
@@ -21,9 +21,11 @@ extension NCSearchableViewController {
 		searchController?.searchResultsUpdater = self
 		searchController?.searchBar.barStyle = UIBarStyle.black
 		searchController?.hidesNavigationBarDuringPresentation = false
+		searchResultsController.edgesForExtendedLayout = []
 		controller.tableView.backgroundView = UIView()
 		controller.tableView.tableHeaderView = searchController?.searchBar
-		controller.definesPresentationContext = true
+//		controller.definesPresentationContext = true
+		definesPresentationContext = true
 		
 	}
 }

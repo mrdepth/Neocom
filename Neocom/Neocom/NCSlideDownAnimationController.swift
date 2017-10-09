@@ -8,6 +8,8 @@
 
 import UIKit
 
+fileprivate let TransitionThreshold: CGFloat = 50
+
 class NCSlideDownAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
 	
 	public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -127,7 +129,12 @@ class NCSlideDownInteractiveTransition: UIPercentDrivenInteractiveTransition {
 			}
 		case .ended:
 			let v = recognizer.velocity(in: containerView)
+			let t = recognizer.translation(in: containerView)
+			
 			if (presenting && v.y > 0) || (!presenting && v.y < 0) {
+				self.finish()
+			}
+			else if v.y == 0 && ((presenting && t.y > TransitionThreshold) || (!presenting && t.y < TransitionThreshold)) {
 				self.finish()
 			}
 			else {

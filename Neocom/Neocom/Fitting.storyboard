@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -45,10 +47,6 @@
         <scene sceneID="DMi-AP-qqT">
             <objects>
                 <viewController storyboardIdentifier="NCFittingEditorViewController" automaticallyAdjustsScrollViewInsets="NO" id="2mg-wV-mVw" customClass="NCFittingEditorViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="tbn-rq-mYf"/>
-                        <viewControllerLayoutGuide type="bottom" id="i3F-cr-5cT"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jcu-y0-3LT" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -62,11 +60,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="mYC-O0-Mv8" secondAttribute="trailing" id="QvC-df-JDl"/>
-                            <constraint firstItem="mYC-O0-Mv8" firstAttribute="leading" secondItem="jcu-y0-3LT" secondAttribute="leading" id="ibz-ks-kDh"/>
-                            <constraint firstItem="i3F-cr-5cT" firstAttribute="top" secondItem="mYC-O0-Mv8" secondAttribute="bottom" id="l2N-an-Ql3"/>
-                            <constraint firstItem="mYC-O0-Mv8" firstAttribute="top" secondItem="tbn-rq-mYf" secondAttribute="bottom" id="w4y-tN-K2Y"/>
+                            <constraint firstItem="gP3-mj-QRv" firstAttribute="trailing" secondItem="mYC-O0-Mv8" secondAttribute="trailing" id="QvC-df-JDl"/>
+                            <constraint firstItem="mYC-O0-Mv8" firstAttribute="leading" secondItem="gP3-mj-QRv" secondAttribute="leading" id="ibz-ks-kDh"/>
+                            <constraint firstItem="gP3-mj-QRv" firstAttribute="bottom" secondItem="mYC-O0-Mv8" secondAttribute="bottom" id="l2N-an-Ql3"/>
+                            <constraint firstItem="mYC-O0-Mv8" firstAttribute="top" secondItem="gP3-mj-QRv" secondAttribute="top" id="w4y-tN-K2Y"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="gP3-mj-QRv"/>
                     </view>
                     <navigationItem key="navigationItem" id="rAw-1H-bGP">
                         <barButtonItem key="rightBarButtonItem" image="actionsItem" id="MHT-vd-ZZc">
@@ -84,10 +83,6 @@
         <scene sceneID="O8a-4f-CAn">
             <objects>
                 <viewController storyboardIdentifier="NCFittingModulesViewController" title="Modules" id="Zmp-Yn-Qcm" customClass="NCFittingModulesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="0Hp-IE-YbP"/>
-                        <viewControllerLayoutGuide type="bottom" id="CBv-f6-RB1"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="V6m-gh-aSS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -325,14 +320,15 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="elb-6M-RUF" firstAttribute="leading" secondItem="V6m-gh-aSS" secondAttribute="leading" id="1b1-a0-w6n"/>
-                            <constraint firstItem="Xa0-JR-6cN" firstAttribute="leading" secondItem="V6m-gh-aSS" secondAttribute="leading" id="2jS-KB-Wcd"/>
+                            <constraint firstItem="elb-6M-RUF" firstAttribute="leading" secondItem="4jh-1d-T7Q" secondAttribute="leading" id="1b1-a0-w6n"/>
+                            <constraint firstItem="Xa0-JR-6cN" firstAttribute="leading" secondItem="4jh-1d-T7Q" secondAttribute="leading" id="2jS-KB-Wcd"/>
                             <constraint firstItem="elb-6M-RUF" firstAttribute="top" secondItem="Xa0-JR-6cN" secondAttribute="bottom" id="4Cb-rf-R7D"/>
                             <constraint firstItem="Xa0-JR-6cN" firstAttribute="top" secondItem="V6m-gh-aSS" secondAttribute="top" id="Ux4-N6-dj3"/>
-                            <constraint firstItem="CBv-f6-RB1" firstAttribute="top" secondItem="elb-6M-RUF" secondAttribute="bottom" id="kgs-MH-6Nu"/>
-                            <constraint firstAttribute="trailing" secondItem="elb-6M-RUF" secondAttribute="trailing" id="uRq-32-O5w"/>
-                            <constraint firstAttribute="trailing" secondItem="Xa0-JR-6cN" secondAttribute="trailing" id="ufQ-Ej-ZHc"/>
+                            <constraint firstItem="4jh-1d-T7Q" firstAttribute="bottom" secondItem="elb-6M-RUF" secondAttribute="bottom" id="kgs-MH-6Nu"/>
+                            <constraint firstItem="4jh-1d-T7Q" firstAttribute="trailing" secondItem="elb-6M-RUF" secondAttribute="trailing" id="uRq-32-O5w"/>
+                            <constraint firstItem="4jh-1d-T7Q" firstAttribute="trailing" secondItem="Xa0-JR-6cN" secondAttribute="trailing" id="ufQ-Ej-ZHc"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="4jh-1d-T7Q"/>
                     </view>
                     <connections>
                         <outlet property="calibrationLabel" destination="ly3-Cv-2ne" id="w6q-74-Cuo"/>
@@ -696,10 +692,6 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="Fru-xb-qe4" id="Kbu-sF-Lpa"/>
-                            <outlet property="delegate" destination="Fru-xb-qe4" id="fL3-WU-zem"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Module" id="157-fL-3rC">
                         <barButtonItem key="leftBarButtonItem" title="Close" id="QA1-q7-NpP">
@@ -714,16 +706,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="Fru-xb-qe4" id="GfC-rf-RKw"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Clq-kq-fwm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="Fru-xb-qe4" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="sq4-Cs-GKL" id="qhP-Mq-Lie"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="4790" y="3067"/>
         </scene>
@@ -732,7 +716,7 @@
             <objects>
                 <navigationController id="xV0-eU-gV5" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="fao-iC-vFm">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -748,11 +732,10 @@
             <objects>
                 <navigationController storyboardIdentifier="NCFittingMenuNavigationController" id="Oce-xF-oFp" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bnK-ku-6MM">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="Bwz-Cp-eib">
-                        <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
@@ -767,14 +750,11 @@
         <scene sceneID="tGo-h3-A7Z">
             <objects>
                 <viewController storyboardIdentifier="NCFittingMenuViewController" automaticallyAdjustsScrollViewInsets="NO" id="quB-aO-oIE" customClass="NCFittingMenuViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="SfD-UD-xdG"/>
-                        <viewControllerLayoutGuide type="bottom" id="z5N-VA-8Rr"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="sMY-CW-uqY" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="Qas-nf-Nu1"/>
                     </view>
                     <navigationItem key="navigationItem" title="Fitting" id="8XL-HB-U9n"/>
                 </viewController>
@@ -790,10 +770,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="RaR-PR-xTg" id="knY-ZN-sBc"/>
-                            <outlet property="delegate" destination="RaR-PR-xTg" id="t35-Bq-FCD"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Ammo" id="g4p-rj-4el">
                         <barButtonItem key="rightBarButtonItem" title="Unload" id="r4p-O4-jnF">
@@ -804,16 +780,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="RaR-PR-xTg" id="eVS-mj-gXN"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EF5-yR-rCv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="RaR-PR-xTg" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="vFf-aO-PIz" id="K9R-ai-hhC"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="5614" y="3068"/>
         </scene>
@@ -836,10 +804,6 @@
         <scene sceneID="qDW-tE-dcu">
             <objects>
                 <viewController storyboardIdentifier="NCFittingDronesViewController" title="Drones" id="WpC-Gy-tvY" customClass="NCFittingDronesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="u7R-3h-2fL"/>
-                        <viewControllerLayoutGuide type="bottom" id="Da6-E7-4w9"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="FeM-Fy-T3u">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -961,14 +925,15 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Xhm-li-QDp" firstAttribute="leading" secondItem="FeM-Fy-T3u" secondAttribute="leading" id="J5v-VQ-DoF"/>
+                            <constraint firstItem="Xhm-li-QDp" firstAttribute="leading" secondItem="8nw-79-Jwf" secondAttribute="leading" id="J5v-VQ-DoF"/>
                             <constraint firstItem="Xhm-li-QDp" firstAttribute="top" secondItem="FeM-Fy-T3u" secondAttribute="top" id="LMP-Nj-JMr"/>
-                            <constraint firstAttribute="trailing" secondItem="Bkk-qm-ARw" secondAttribute="trailing" id="Q3p-Q4-LVJ"/>
+                            <constraint firstItem="8nw-79-Jwf" firstAttribute="trailing" secondItem="Bkk-qm-ARw" secondAttribute="trailing" id="Q3p-Q4-LVJ"/>
                             <constraint firstItem="Bkk-qm-ARw" firstAttribute="top" secondItem="Xhm-li-QDp" secondAttribute="bottom" id="QRR-LF-QHe"/>
-                            <constraint firstItem="Da6-E7-4w9" firstAttribute="top" secondItem="Bkk-qm-ARw" secondAttribute="bottom" id="eug-nM-1qU"/>
-                            <constraint firstItem="Bkk-qm-ARw" firstAttribute="leading" secondItem="FeM-Fy-T3u" secondAttribute="leading" id="j82-jP-Fqn"/>
-                            <constraint firstAttribute="trailing" secondItem="Xhm-li-QDp" secondAttribute="trailing" id="tup-l7-8q4"/>
+                            <constraint firstItem="8nw-79-Jwf" firstAttribute="bottom" secondItem="Bkk-qm-ARw" secondAttribute="bottom" id="eug-nM-1qU"/>
+                            <constraint firstItem="Bkk-qm-ARw" firstAttribute="leading" secondItem="8nw-79-Jwf" secondAttribute="leading" id="j82-jP-Fqn"/>
+                            <constraint firstItem="8nw-79-Jwf" firstAttribute="trailing" secondItem="Xhm-li-QDp" secondAttribute="trailing" id="tup-l7-8q4"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="8nw-79-Jwf"/>
                     </view>
                     <connections>
                         <outlet property="droneBandwidthLabel" destination="yIp-1c-yMe" id="Bac-Rf-ybe"/>
@@ -1022,10 +987,6 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="8z9-HE-YWa" id="kRH-wC-ioX"/>
-                            <outlet property="delegate" destination="8z9-HE-YWa" id="vUR-pi-JYj"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Drone" id="Z81-LG-NcL">
                         <barButtonItem key="leftBarButtonItem" title="Close" id="Rqv-kR-mDO">
@@ -1040,16 +1001,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="8z9-HE-YWa" id="LSR-NR-NDU"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NY2-e9-Hln" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="8z9-HE-YWa" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="tAv-jh-8YI" id="kue-6e-cLQ"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="4790" y="3851"/>
         </scene>
@@ -1072,7 +1025,7 @@
                                     </connections>
                                 </switch>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Factor in Reload Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZS-eD-HKc">
-                                    <rect key="frame" x="99.5" y="25.5" width="148.5" height="18"/>
+                                    <rect key="frame" x="100" y="25.5" width="148" height="18"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -2509,7 +2462,7 @@
                                                                     <rect key="frame" x="166.5" y="0.0" width="79" height="20"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rlw-k6-HV6">
-                                                                            <rect key="frame" x="12.5" y="0.0" width="54" height="20"/>
+                                                                            <rect key="frame" x="12.5" y="0.0" width="53.5" height="20"/>
                                                                             <subviews>
                                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dps" translatesAutoresizingMaskIntoConstraints="NO" id="MNm-Fv-OtI">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -2518,7 +2471,7 @@
                                                                                     </constraints>
                                                                                 </imageView>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lZW-VA-BOa">
-                                                                                    <rect key="frame" x="24" y="0.0" width="30" height="20"/>
+                                                                                    <rect key="frame" x="24" y="0.0" width="29.5" height="20"/>
                                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                                     <nil key="highlightedColor"/>
@@ -2786,11 +2739,11 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="290" height="20"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fAY-e5-LcZ">
-                                                            <rect key="frame" x="0.0" y="0.0" width="28" height="20"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="27.5" height="20"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         </view>
                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KiG-QQ-7pS">
-                                                            <rect key="frame" x="36" y="0.0" width="254" height="20"/>
+                                                            <rect key="frame" x="35.5" y="0.0" width="254.5" height="20"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gDR-di-68E">
                                                                     <rect key="frame" x="0.0" y="0.0" width="82" height="20"/>
@@ -2832,10 +2785,10 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kev-KH-HKz">
-                                                                    <rect key="frame" x="86" y="0.0" width="82" height="20"/>
+                                                                    <rect key="frame" x="86" y="0.0" width="82.5" height="20"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XLg-ux-MVR">
-                                                                            <rect key="frame" x="11" y="0.0" width="61" height="20"/>
+                                                                            <rect key="frame" x="11.5" y="0.0" width="61" height="20"/>
                                                                             <subviews>
                                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="drone" translatesAutoresizingMaskIntoConstraints="NO" id="I5R-pa-4vT">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -2871,10 +2824,10 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Olx-QW-3au">
-                                                                    <rect key="frame" x="172" y="0.0" width="82" height="20"/>
+                                                                    <rect key="frame" x="172.5" y="0.0" width="82" height="20"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="53a-ZB-ofE">
-                                                                            <rect key="frame" x="14" y="0.0" width="54" height="20"/>
+                                                                            <rect key="frame" x="14" y="0.0" width="53.5" height="20"/>
                                                                             <subviews>
                                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cargo" translatesAutoresizingMaskIntoConstraints="NO" id="sIF-vI-tkH">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -2883,7 +2836,7 @@
                                                                                     </constraints>
                                                                                 </imageView>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Syw-w8-NHy">
-                                                                                    <rect key="frame" x="24" y="0.0" width="30" height="20"/>
+                                                                                    <rect key="frame" x="24" y="0.0" width="29.5" height="20"/>
                                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                                     <nil key="highlightedColor"/>
@@ -2920,7 +2873,7 @@
                                                     <rect key="frame" x="0.0" y="20" width="290" height="5"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5s6-67-WSH" customClass="NCThinLineView" customModule="Neocom" customModuleProvider="target">
-                                                            <rect key="frame" x="36" y="2" width="254" height="1"/>
+                                                            <rect key="frame" x="35.5" y="2" width="254.5" height="1"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
@@ -2939,13 +2892,13 @@
                                                     <rect key="frame" x="0.0" y="25" width="290" height="26.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="900" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="m³/s" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MjN-jM-p95">
-                                                            <rect key="frame" x="0.0" y="0.0" width="28" height="26.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="27.5" height="26.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="WSu-wX-mvy">
-                                                            <rect key="frame" x="36" y="0.0" width="254" height="26.5"/>
+                                                            <rect key="frame" x="35.5" y="0.0" width="254.5" height="26.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wg6-Hb-F5v">
                                                                     <rect key="frame" x="0.0" y="0.0" width="82" height="26.5"/>
@@ -2954,13 +2907,13 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IO3-gg-8gv">
-                                                                    <rect key="frame" x="86" y="0.0" width="82" height="26.5"/>
+                                                                    <rect key="frame" x="86" y="0.0" width="82.5" height="26.5"/>
                                                                     <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lgM-Xe-3qZ">
-                                                                    <rect key="frame" x="172" y="0.0" width="82" height="26.5"/>
+                                                                    <rect key="frame" x="172.5" y="0.0" width="82" height="26.5"/>
                                                                     <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
@@ -3503,7 +3456,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NCFittingActionsViewController" id="nlD-pR-bju" customClass="NCFittingActionsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="RjR-pT-wiP" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -3541,10 +3494,6 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="9zH-r0-CiH" id="aiT-Gd-LC3"/>
-                            <outlet property="delegate" destination="9zH-r0-CiH" id="aLq-uk-76C"/>
-                        </connections>
                     </tableView>
                     <toolbarItems>
                         <barButtonItem title="Skills" id="8Ku-BL-KgE">
@@ -3579,16 +3528,8 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black" translucent="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="9zH-r0-CiH" id="eCu-C7-fg5"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xXv-0o-9js" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="9zH-r0-CiH" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="RjR-pT-wiP" id="7aW-DA-L8E"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="4790" y="4626"/>
         </scene>
@@ -3600,10 +3541,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="1ax-Nn-g25" id="agw-gX-Hil"/>
-                            <outlet property="delegate" destination="1ax-Nn-g25" id="ml6-kO-03W"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Area Effects" id="teS-aN-rwN">
                         <barButtonItem key="rightBarButtonItem" systemItem="trash" id="IJ2-kI-3Sp">
@@ -3613,16 +3550,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="1ax-Nn-g25" id="LMQ-Kz-wCm"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GKF-gJ-QnY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="1ax-Nn-g25" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="jCh-av-pHn" id="lMy-gf-Brb"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="5546" y="4627"/>
         </scene>
@@ -3751,21 +3680,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <connections>
-                            <outlet property="dataSource" destination="4aZ-lk-k7R" id="Bio-4H-IIT"/>
-                            <outlet property="delegate" destination="4aZ-lk-k7R" id="Nbo-qa-fNQ"/>
-                        </connections>
                     </tableView>
-                    <connections>
-                        <outlet property="treeController" destination="4aZ-lk-k7R" id="Dpr-2b-eKh"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O7I-Nx-AiL" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="4aZ-lk-k7R" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="q60-y0-ciO" id="8mq-A6-ADs"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="4159" y="6212"/>
         </scene>
@@ -3774,7 +3691,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NCFittingFleetsViewController" title="Fleets" id="CeV-qo-X4b" customClass="NCFittingFleetsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="121" sectionHeaderHeight="18" sectionFooterHeight="18" id="9pe-bi-6Ae" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -3875,10 +3792,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <connections>
-                            <outlet property="dataSource" destination="f3q-Rb-9G5" id="oEC-hN-UTT"/>
-                            <outlet property="delegate" destination="f3q-Rb-9G5" id="e3d-fs-f1a"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Targets" id="uv7-VQ-gFN">
                         <barButtonItem key="rightBarButtonItem" title="Clear" id="zhW-LC-YwL">
@@ -3889,16 +3802,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="f3q-Rb-9G5" id="cEI-jn-fUd"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ptP-pX-29f" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="f3q-Rb-9G5" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="9NY-aK-uBa" id="xHg-77-kkK"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="5546" y="6211"/>
         </scene>
@@ -4037,10 +3942,6 @@
         <scene sceneID="Y18-cc-ZGx">
             <objects>
                 <viewController storyboardIdentifier="NCFittingFightersViewController" title="Fighters" id="doF-vP-sQT" customClass="NCFittingFightersViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="guj-VL-iww"/>
-                        <viewControllerLayoutGuide type="bottom" id="Oww-E5-d6R"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="150-x0-O1J">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -4083,7 +3984,7 @@
                                                 <rect key="frame" x="183.5" y="0.0" width="175.5" height="24"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ECp-5M-ogK">
-                                                        <rect key="frame" x="63.5" y="0.0" width="49" height="24"/>
+                                                        <rect key="frame" x="64" y="0.0" width="48.5" height="24"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="drone" translatesAutoresizingMaskIntoConstraints="NO" id="fQf-PZ-Cch">
                                                                 <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
@@ -4093,7 +3994,7 @@
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="0/0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OLy-am-EUg">
-                                                                <rect key="frame" x="28" y="4" width="21" height="16"/>
+                                                                <rect key="frame" x="28" y="4" width="20.5" height="16"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
@@ -4138,14 +4039,15 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="hKw-3b-SDO" secondAttribute="trailing" id="8x6-Ub-caa"/>
-                            <constraint firstAttribute="trailing" secondItem="Vam-ef-frQ" secondAttribute="trailing" id="Q2y-HV-lwP"/>
-                            <constraint firstItem="Vam-ef-frQ" firstAttribute="leading" secondItem="150-x0-O1J" secondAttribute="leading" id="V2V-Xa-Jig"/>
-                            <constraint firstItem="Oww-E5-d6R" firstAttribute="top" secondItem="hKw-3b-SDO" secondAttribute="bottom" id="VXJ-8x-xXv"/>
+                            <constraint firstItem="GWB-Rp-eeu" firstAttribute="trailing" secondItem="hKw-3b-SDO" secondAttribute="trailing" id="8x6-Ub-caa"/>
+                            <constraint firstItem="GWB-Rp-eeu" firstAttribute="trailing" secondItem="Vam-ef-frQ" secondAttribute="trailing" id="Q2y-HV-lwP"/>
+                            <constraint firstItem="Vam-ef-frQ" firstAttribute="leading" secondItem="GWB-Rp-eeu" secondAttribute="leading" id="V2V-Xa-Jig"/>
+                            <constraint firstItem="GWB-Rp-eeu" firstAttribute="bottom" secondItem="hKw-3b-SDO" secondAttribute="bottom" id="VXJ-8x-xXv"/>
                             <constraint firstItem="Vam-ef-frQ" firstAttribute="top" secondItem="150-x0-O1J" secondAttribute="top" id="Z4u-Vw-KtW"/>
                             <constraint firstItem="hKw-3b-SDO" firstAttribute="top" secondItem="Vam-ef-frQ" secondAttribute="bottom" id="bbj-gJ-bKg"/>
-                            <constraint firstItem="hKw-3b-SDO" firstAttribute="leading" secondItem="150-x0-O1J" secondAttribute="leading" id="esA-my-VGU"/>
+                            <constraint firstItem="hKw-3b-SDO" firstAttribute="leading" secondItem="GWB-Rp-eeu" secondAttribute="leading" id="esA-my-VGU"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="GWB-Rp-eeu"/>
                     </view>
                     <connections>
                         <outlet property="droneBayLabel" destination="D7V-t8-2f7" id="qru-5w-8zh"/>
@@ -4167,12 +4069,8 @@
         <scene sceneID="96l-H1-LAL">
             <objects>
                 <viewController storyboardIdentifier="NCFittingAmmoDamageChartViewController" automaticallyAdjustsScrollViewInsets="NO" id="li0-Pt-XFi" customClass="NCFittingAmmoDamageChartViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Ian-OT-J5Y"/>
-                        <viewControllerLayoutGuide type="bottom" id="sUV-RJ-AwL"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="K7x-Ym-TeN" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WGt-RQ-eVf" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
@@ -4248,14 +4146,15 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="WGt-RQ-eVf" firstAttribute="top" secondItem="Ian-OT-J5Y" secondAttribute="bottom" id="A8F-jJ-Rrs"/>
+                            <constraint firstItem="WGt-RQ-eVf" firstAttribute="top" secondItem="mWT-61-5Mx" secondAttribute="top" id="A8F-jJ-Rrs"/>
                             <constraint firstItem="UtX-hL-YLR" firstAttribute="top" secondItem="WGt-RQ-eVf" secondAttribute="bottom" id="BN3-uK-MUo"/>
-                            <constraint firstAttribute="trailing" secondItem="WGt-RQ-eVf" secondAttribute="trailing" id="EKt-lO-gFc"/>
-                            <constraint firstAttribute="trailing" secondItem="UtX-hL-YLR" secondAttribute="trailing" id="amz-CP-A5C"/>
-                            <constraint firstItem="UtX-hL-YLR" firstAttribute="leading" secondItem="K7x-Ym-TeN" secondAttribute="leading" id="lRT-l7-LBK"/>
-                            <constraint firstItem="WGt-RQ-eVf" firstAttribute="leading" secondItem="K7x-Ym-TeN" secondAttribute="leading" id="n81-Gz-rqg"/>
-                            <constraint firstItem="sUV-RJ-AwL" firstAttribute="top" secondItem="UtX-hL-YLR" secondAttribute="bottom" id="stc-mw-I06"/>
+                            <constraint firstItem="mWT-61-5Mx" firstAttribute="trailing" secondItem="WGt-RQ-eVf" secondAttribute="trailing" id="EKt-lO-gFc"/>
+                            <constraint firstItem="mWT-61-5Mx" firstAttribute="trailing" secondItem="UtX-hL-YLR" secondAttribute="trailing" id="amz-CP-A5C"/>
+                            <constraint firstItem="UtX-hL-YLR" firstAttribute="leading" secondItem="mWT-61-5Mx" secondAttribute="leading" id="lRT-l7-LBK"/>
+                            <constraint firstItem="WGt-RQ-eVf" firstAttribute="leading" secondItem="mWT-61-5Mx" secondAttribute="leading" id="n81-Gz-rqg"/>
+                            <constraint firstItem="mWT-61-5Mx" firstAttribute="bottom" secondItem="UtX-hL-YLR" secondAttribute="bottom" id="stc-mw-I06"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="mWT-61-5Mx"/>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="ZFz-3z-ISd">
                         <barButtonItem key="rightBarButtonItem" title="Clear" id="kWb-Gc-hHU">
@@ -4292,23 +4191,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="P92-Je-TZ0" id="MhG-e7-elg"/>
-                            <outlet property="delegate" destination="P92-Je-TZ0" id="Shq-fg-03n"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Required Skills" id="Wpp-cH-RfG"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="P92-Je-TZ0" id="kQ6-FJ-lRb"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hia-fQ-VKb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="P92-Je-TZ0" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="9eR-Hk-LCA" id="daa-zM-JXS"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="6252" y="5364"/>
         </scene>
@@ -4317,7 +4204,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NCFittingStructuresViewController" title="Structures" id="Jnc-wI-WbW" customClass="NCFittingStructuresViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="Go6-KJ-Py2" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -4348,7 +4235,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NCFittingInGameFittingsViewController" title="In-Game" id="CfN-Al-ncv" customClass="NCFittingInGameFittingsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="fft-i0-csK" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -4377,10 +4264,6 @@
         <scene sceneID="3CO-xD-zdx">
             <objects>
                 <viewController storyboardIdentifier="NCFittingServerViewController" title="HTTP Server" id="jqp-Vk-5b6" customClass="NCFittingServerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="YVI-4X-One"/>
-                        <viewControllerLayoutGuide type="bottom" id="kxf-jn-Uey"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="2rE-vt-Ovm" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -4395,9 +4278,10 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Czh-t5-DEv" firstAttribute="centerY" secondItem="2rE-vt-Ovm" secondAttribute="centerY" id="FTp-BK-hW6"/>
-                            <constraint firstItem="Czh-t5-DEv" firstAttribute="leading" secondItem="2rE-vt-Ovm" secondAttribute="leading" constant="20" id="Mf3-s4-guu"/>
-                            <constraint firstItem="Czh-t5-DEv" firstAttribute="centerX" secondItem="2rE-vt-Ovm" secondAttribute="centerX" id="hox-lP-Y9R"/>
+                            <constraint firstItem="Czh-t5-DEv" firstAttribute="leading" secondItem="h9t-xa-Ks3" secondAttribute="leading" constant="20" id="Mf3-s4-guu"/>
+                            <constraint firstItem="Czh-t5-DEv" firstAttribute="centerX" secondItem="h9t-xa-Ks3" secondAttribute="centerX" id="hox-lP-Y9R"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="h9t-xa-Ks3"/>
                     </view>
                     <connections>
                         <outlet property="textLabel" destination="Czh-t5-DEv" id="plk-2Z-E4Y"/>
@@ -4425,14 +4309,11 @@
         <scene sceneID="7Rn-BW-8l6">
             <objects>
                 <viewController storyboardIdentifier="NCFittingEditorPageViewController" id="d5y-1M-pgb" customClass="NCFittingEditorPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Mk8-Yb-gcm"/>
-                        <viewControllerLayoutGuide type="bottom" id="q3q-Oo-csK"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ega-oI-fxs" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="MAC-TB-yET"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fbI-n9-ll0" userLabel="First Responder" sceneMemberID="firstResponder"/>

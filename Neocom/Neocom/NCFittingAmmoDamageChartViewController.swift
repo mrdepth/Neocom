@@ -203,7 +203,7 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 
 		module.engine?.perform {
 			guard let ship = module.owner as? NCFittingShip else {return}
-			let charge = module.charge
+			let chargeID = module.charge?.typeID
 			
 			func dps(at range: Double, signature: Double = 0) -> Double {
 				let angularVelocity = signature > 0 ? ship.maxVelocity(orbit: range) / range : 0
@@ -256,7 +256,9 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 				statistics[typeID] = best
 				
 			}
-			module.charge = charge
+			if let chargeID = chargeID {
+				module.charge = NCFittingCharge(typeID: chargeID)
+			}
 			
 			DispatchQueue.main.async {
 

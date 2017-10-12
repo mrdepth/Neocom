@@ -118,14 +118,12 @@ class NCFittingDroneCountRow: NCCountRow {
 }
 
 
-class NCFittingDroneActionsViewController: UITableViewController, TreeControllerDelegate {
+class NCFittingDroneActionsViewController: NCTreeViewController {
 	var drones: [NCFittingDrone]?
 	var type: NCDBInvType? {
 		guard let drone = self.drones?.first else {return nil}
 		return NCDatabase.sharedDatabase?.invTypes[drone.typeID]
 	}
-	
-	@IBOutlet var treeController: TreeController!
 	
 	private var observer: NotificationObserver?
 	
@@ -139,16 +137,17 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 			])
 
 		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
-		
 		reload()
 		if traitCollection.userInterfaceIdiom == .phone {
 			tableView.layoutIfNeeded()
 			var size = tableView.contentSize
-			size.height += tableView.contentInset.top
-			size.height += tableView.contentInset.bottom
+			if navigationController?.isNavigationBarHidden == false {
+				size.height += navigationController!.navigationBar.frame.height
+			}
+			if navigationController?.isToolbarHidden == false {
+				size.height += navigationController!.toolbar.frame.height
+			}
+
 			navigationController?.preferredContentSize = size
 		}
 		
@@ -160,6 +159,10 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 		
 	}
 	
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		completionHandler()
+	}
+
 	@IBAction func onDelete(_ sender: UIButton) {
 		guard let drones = self.drones else {return}
 		guard let drone = drones.first else {return}
@@ -182,19 +185,6 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 		}
 	}
 	
-	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		guard let node = node as? TreeRow else {return}
-		guard let route = node.route else {return}
-		route.perform(source: self, sender: treeController.cell(for: node))
-	}
-	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		guard let node = node as? TreeRow else {return}
-		guard let route = node.accessoryButtonRoute else {return}
-		route.perform(source: self, sender: treeController.cell(for: node))
-	}
 	
 	//MARK: Private
 	
@@ -280,13 +270,11 @@ class NCFittingDroneActionsViewController: UITableViewController, TreeController
 			
 		}
 		
-		if treeController.content == nil {
-			let root = TreeNode()
-			root.children = sections
-			treeController.content = root
+		if treeController?.content == nil {
+			treeController?.content = RootNode(sections)
 		}
 		else {
-			treeController.content?.children = sections
+			treeController?.content?.children = sections
 		}
 	}
 

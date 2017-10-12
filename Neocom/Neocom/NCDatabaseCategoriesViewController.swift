@@ -86,17 +86,5 @@ class NCDatabaseCategoriesViewController: NCTreeViewController, NCSearchableView
 		controller.reloadData()
 	}
 	
-	//MARK: Private
-	
-	private func setupSearchController() {
-		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
-		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
-		searchController?.searchResultsUpdater = self
-		searchController?.searchBar.barStyle = UIBarStyle.black
-		searchController?.hidesNavigationBarDuringPresentation = false
-		tableView.backgroundView = UIView()
-		tableView.tableHeaderView = searchController?.searchBar
-		definesPresentationContext = true
 
-	}
 }

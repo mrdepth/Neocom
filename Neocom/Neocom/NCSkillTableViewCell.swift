@@ -47,10 +47,13 @@ class NCSkillRow: TreeRow {
         guard let cell = cell as? NCSkillTableViewCell else {return}
 		cell.object = skill
         cell.titleLabel?.text = "\(skill.typeName) (x\(Int(skill.rank)))"
-        if let level = skill.level {
+        if var level = skill.level {
+			if skill.isActive {
+				level = min(level + 1, 5)
+			}
 //            cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)
 			cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)
-            cell.skillLevelView?.level = level
+			cell.skillLevelView?.level = level
 			cell.skillLevelView?.isActive = skill.isActive
         }
         else {

@@ -76,8 +76,8 @@ class NCAmmoSection: FetchedResultsNode<NCDBInvType> {
 	}
 }
 
-class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCFittingAmmoViewController: NCTreeViewController {
+
 	var category: NCDBDgmppItemCategory?
 	var completionHandler: ((NCFittingAmmoViewController, NCDBInvType?) -> Void)!
 	var modules: [NCFittingModule]?
@@ -92,15 +92,15 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 			}
 		}
 		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
-		
 		tableView.register([Prototype.NCActionTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact,
 		                    Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCChargeTableViewCell.default])
-
+	}
+	
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		defer {completionHandler()}
+		
 		guard let category = category else {return}
 		guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return}
 		title = group.groupName
@@ -119,8 +119,9 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 		else {
 			root.children = [ammo]
 		}
-
-		treeController.content = root
+		
+		treeController?.content = root
+		
 	}
 	
 	@IBAction func onClear(_ sender: Any) {
@@ -129,16 +130,16 @@ class NCFittingAmmoViewController: UITableViewController, TreeControllerDelegate
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		if let route = (node as? TreeNodeRoutable)?.route {
-			route.perform(source: self, sender: treeController.cell(for: node))
-		}
-		else if let node = node as? NCAmmoNode {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
+		
+		if let node = node as? NCAmmoNode {
 			completionHandler(self, node.object)
 		}
 	}
 	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+		super.treeController(treeController, accessoryButtonTappedWithNode: node)
 		guard let node = node as? NCAmmoNode else {return}
 		Router.Database.TypeInfo(node.object).perform(source: self, sender: treeController.cell(for: node))
 	}

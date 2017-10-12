@@ -70,6 +70,9 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		scrollView.canCancelContentTouches = false
+//		scrollView.delaysContentTouches = false
+		
 		self.toolbarItemsOverride = self.toolbarItems
 		
 		pageControl.translatesAutoresizingMaskIntoConstraints = false

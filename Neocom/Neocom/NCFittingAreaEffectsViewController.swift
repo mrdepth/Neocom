@@ -29,8 +29,8 @@ import CoreData
 	}
 }*/
 
-class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCFittingAreaEffectsViewController: NCTreeViewController {
+
 	var category: NCDBDgmppItemCategory?
 	var completionHandler: ((NCFittingAreaEffectsViewController, NCDBInvType?) -> Void)!
 	
@@ -40,27 +40,28 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 		tableView.register([Prototype.NCDefaultTableViewCell.compact,
 		                    Prototype.NCHeaderTableViewCell.default
 		                    ])
-		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
+	}
+	
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		guard let context = NCDatabase.sharedDatabase?.viewContext else {
+			completionHandler()
+			return
+		}
 
-		guard let context = NCDatabase.sharedDatabase?.viewContext else {return}
-		
 		NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 			guard let types: [NCDBInvType] = managedObjectContext.fetch("InvType", sortedBy: [NSSortDescriptor(key: "typeName", ascending: true)], where: "group.groupID == 920") else {return}
 			
 			let prefixes = ["Black Hole Effect Beacon Class",
-			 "Cataclysmic Variable Effect Beacon Class",
-			 "Magnetar Effect Beacon Class",
-			 "Pulsar Effect Beacon Class",
-			 "Red Giant Beacon Class",
-			 "Wolf Rayet Effect Beacon Class",
-			 "Incursion",
-			 "Drifter Incursion",
-			 ]
+			                "Cataclysmic Variable Effect Beacon Class",
+			                "Magnetar Effect Beacon Class",
+			                "Pulsar Effect Beacon Class",
+			                "Red Giant Beacon Class",
+			                "Wolf Rayet Effect Beacon Class",
+			                "Incursion",
+			                "Drifter Incursion",
+			                ]
 			let n = prefixes.count
-
+			
 			var arrays = [[NSManagedObjectID]](repeating: [], count: n + 1)
 			
 			types: for type in types {
@@ -81,12 +82,10 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 			}
 			
 			DispatchQueue.main.async {
-				let root = TreeNode()
-				root.children = sections
-				self.treeController.content = root
+				self.treeController?.content = RootNode(sections)
+				completionHandler()
 			}
 		}
-		
 	}
 	
 	@IBAction func onClear(_ sender: Any) {
@@ -95,12 +94,14 @@ class NCFittingAreaEffectsViewController: UITableViewController, TreeControllerD
 
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let node = node as? NCTypeInfoRow, let type = node.type else {return}
 		completionHandler(self, type)
 	}
 	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+		super.treeController(treeController, accessoryButtonTappedWithNode: node)
 		guard let node = node as? NCTypeInfoRow, let type = node.type else {return}
 		Router.Database.TypeInfo(type).perform(source: self, sender: treeController.cell(for: node))
 	}

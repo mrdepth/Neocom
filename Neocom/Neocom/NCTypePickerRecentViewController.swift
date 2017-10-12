@@ -30,6 +30,7 @@ class NCTypePickerRecentViewController: UITableViewController, NSFetchedResultsC
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+
 		if results == nil {
 			guard let typePickerController = navigationController as? NCTypePickerViewController else {return}
 			guard let category = typePickerController.category else {return}

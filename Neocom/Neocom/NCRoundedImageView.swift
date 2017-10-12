@@ -8,7 +8,7 @@
 
 import UIKit
 
-@IBDesignable
+//@IBDesignable
 class NCRoundedImageView: NCImageView {
 	
 	override func layoutSubviews() {

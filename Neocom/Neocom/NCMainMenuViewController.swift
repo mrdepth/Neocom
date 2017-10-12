@@ -14,7 +14,7 @@ class NCMainMenuRow: DefaultTreeRow {
 	let scopes: Set<ESI.Scope>
 	let account: NCAccount?
 	let isEnabled: Bool
-	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.default, nodeIdentifier: String, image: UIImage, title: String, route: Route, scopes: [ESI.Scope] = [], account: NCAccount? = nil) {
+	init(prototype: Prototype = Prototype.NCDefaultTableViewCell.default, nodeIdentifier: String, image: UIImage? = nil, title: String? = nil, route: Route? = nil, scopes: [ESI.Scope] = [], account: NCAccount? = nil) {
 		let scopes = Set(scopes)
 		self.scopes = scopes
 		self.account = account
@@ -183,6 +183,73 @@ class NCWealthMenuRow: NCAccountDataMenuRow<Float> {
 	}
 }
 
+class NCServerStatusRow: NCAccountDataMenuRow<ESI.Status.ServerStatus> {
+	
+	lazy var dateFormatter: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+		dateFormatter.timeStyle = .medium
+		dateFormatter.dateStyle = .none
+		return dateFormatter
+	}()
+	
+	override func configure(cell: UITableViewCell) {
+		guard let cell = cell as? NCDefaultTableViewCell, isEnabled else {return}
+		cell.accessoryType = .none
+		
+		if let result = result {
+			if let value = result.value {
+				if value.players > 0 {
+					cell.titleLabel?.text = NSLocalizedString("Tranquility Online: ", comment: "") + NCUnitFormatter.localizedString(from: value.players, unit: .none, style: .full)
+				}
+				else {
+					cell.titleLabel?.text = NSLocalizedString("Tranquility Offline", comment: "")
+				}
+				cell.subtitleLabel?.text = NSLocalizedString("EVE Time: ", comment: "") + dateFormatter.string(from: Date())
+			}
+			else {
+				cell.titleLabel?.text = NSLocalizedString("Tranquility Status", comment: "")
+				cell.subtitleLabel?.text = result.error?.localizedDescription
+			}
+		}
+		else {
+			cell.titleLabel?.text = NSLocalizedString("Tranquility Status", comment: "")
+			cell.subtitleLabel?.text = NSLocalizedString("Updating...", comment: "")
+			guard !isLoading else {return}
+			isLoading = true
+			NCDataManager(account: NCAccount.current).serverStatus { result in
+				self.result = result
+				self.isLoading = false
+				self.treeController?.reloadCells(for: [self], with: .none)
+			}
+		}
+	}
+	
+	deinit {
+		timer?.invalidate()
+	}
+	
+	private var timer: Timer? {
+		didSet {
+			oldValue?.invalidate()
+		}
+	}
+	
+	override func willDisplay(cell: UITableViewCell) {
+		timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerTick(_:)), userInfo: cell, repeats: true)
+	}
+	
+	@objc func timerTick(_ timer: Timer) {
+		guard let cell = timer.userInfo as? UITableViewCell else {return}
+		configure(cell: cell)
+	}
+	
+	override func didEndDisplaying(cell: UITableViewCell) {
+		timer = nil
+	}
+}
+
+
 class NCMainMenuViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
@@ -190,7 +257,8 @@ class NCMainMenuViewController: NCTreeViewController {
 		accountChangeAction = .update
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
-		                    Prototype.NCDefaultTableViewCell.default])
+		                    Prototype.NCDefaultTableViewCell.default,
+		                    Prototype.NCDefaultTableViewCell.noImage])
 		
 	}
 	
@@ -241,7 +309,7 @@ class NCMainMenuViewController: NCTreeViewController {
 	override func updateContent(completionHandler: @escaping () -> Void) {
 		let account = NCAccount.current
 		
-		var sections = [
+		var sections: [TreeNode] = [
 			DefaultTreeSection(nodeIdentifier: "Character", title: NSLocalizedString("Character", comment: "").uppercased(),
 			                   children: [
 								NCCharacterSheetMenuRow(nodeIdentifier: "CharacterSheet",
@@ -375,6 +443,7 @@ class NCMainMenuViewController: NCTreeViewController {
 		sections.forEach {$0.children = ($0.children as! [NCMainMenuRow]).filter({$0.scopes.isEmpty || account != nil})}
 		sections = sections.filter {!$0.children.isEmpty}
 		
+		sections.insert(NCServerStatusRow(prototype: Prototype.NCDefaultTableViewCell.noImage,nodeIdentifier: "ServerStatus"), at: 0)
 		treeController?.content = RootNode(sections, collapseIdentifier: "NCMainMenuViewController")
 		
 		completionHandler()

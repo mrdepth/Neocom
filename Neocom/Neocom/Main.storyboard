@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -8,6 +8,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,16 +16,12 @@
         <scene sceneID="xf2-J8-D9Z">
             <objects>
                 <viewController id="MZf-NS-74p" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="lkY-fO-LS4"/>
-                        <viewControllerLayoutGuide type="bottom" id="rDp-fX-tH2"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Yds-xQ-UUS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lGm-gq-ayo" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <connections>
                                     <segue destination="0zo-XV-3EL" kind="embed" id="3st-Ue-d7Z"/>
                                 </connections>
@@ -32,11 +29,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="lGm-gq-ayo" firstAttribute="leading" secondItem="Yds-xQ-UUS" secondAttribute="leading" id="BUU-Il-fza"/>
+                            <constraint firstItem="lGm-gq-ayo" firstAttribute="leading" secondItem="bqz-C6-wNf" secondAttribute="leading" id="BUU-Il-fza"/>
                             <constraint firstItem="lGm-gq-ayo" firstAttribute="top" secondItem="Yds-xQ-UUS" secondAttribute="top" id="Sdj-0r-ziz"/>
                             <constraint firstAttribute="bottom" secondItem="lGm-gq-ayo" secondAttribute="bottom" id="deV-fx-B1G"/>
-                            <constraint firstAttribute="trailing" secondItem="lGm-gq-ayo" secondAttribute="trailing" id="qdZ-3R-CRr"/>
+                            <constraint firstItem="bqz-C6-wNf" firstAttribute="trailing" secondItem="lGm-gq-ayo" secondAttribute="trailing" id="qdZ-3R-CRr"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="bqz-C6-wNf"/>
                     </view>
                     <navigationItem key="navigationItem" id="6pL-iT-woW"/>
                 </viewController>
@@ -49,7 +47,7 @@
             <objects>
                 <tableViewController id="sUh-3c-8sa" customClass="NCMainMenuViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="zON-jb-B7E" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <view key="tableHeaderView" userInteractionEnabled="NO" contentMode="scaleToFill" id="jja-fc-6VT">
@@ -74,16 +72,12 @@
         <scene sceneID="lAZ-MU-3q2">
             <objects>
                 <viewController definesPresentationContext="YES" id="0zo-XV-3EL" customClass="NCMainMenuContainerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="MSU-sp-PaT"/>
-                        <viewControllerLayoutGuide type="bottom" id="orB-SE-ukV"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="04W-e4-wXp">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xiO-UB-iBj">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <connections>
                                     <segue destination="sUh-3c-8sa" kind="embed" id="fCj-8c-arU"/>
                                 </connections>
@@ -93,10 +87,11 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="xiO-UB-iBj" firstAttribute="top" secondItem="04W-e4-wXp" secondAttribute="top" id="Hjt-7y-dLC"/>
-                            <constraint firstItem="xiO-UB-iBj" firstAttribute="leading" secondItem="04W-e4-wXp" secondAttribute="leading" id="Rhf-xA-XaY"/>
+                            <constraint firstItem="xiO-UB-iBj" firstAttribute="leading" secondItem="rpl-nH-22b" secondAttribute="leading" id="Rhf-xA-XaY"/>
                             <constraint firstAttribute="bottom" secondItem="xiO-UB-iBj" secondAttribute="bottom" id="gyu-oj-YnI"/>
-                            <constraint firstAttribute="trailing" secondItem="xiO-UB-iBj" secondAttribute="trailing" id="sv4-PA-2V6"/>
+                            <constraint firstItem="rpl-nH-22b" firstAttribute="trailing" secondItem="xiO-UB-iBj" secondAttribute="trailing" id="sv4-PA-2V6"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="rpl-nH-22b"/>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="gfi-qf-SMy" appends="YES" id="Loh-ag-bUr"/>
                         </connections>
@@ -119,10 +114,6 @@
         <scene sceneID="ZQg-gz-Knu">
             <objects>
                 <viewController storyboardIdentifier="NCMainMenuCharacterHeaderViewController" id="uDW-QB-rGv" customClass="NCMainMenuHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ehy-sj-lTF"/>
-                        <viewControllerLayoutGuide type="bottom" id="GoC-ob-uaQ"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zAk-bV-w0n" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -131,37 +122,37 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="OH5-ud-gSv" customClass="NCRoundedImageView" customModule="Neocom" customModuleProvider="target">
-                                        <rect key="frame" x="109.5" y="4" width="102" height="102.5"/>
+                                        <rect key="frame" x="103.5" y="4" width="114" height="114.5"/>
                                         <color key="backgroundColor" white="1" alpha="0.050000000000000003" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="OH5-ud-gSv" secondAttribute="height" id="dDo-lx-Xq4"/>
                                         </constraints>
                                     </imageView>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oVJ-WG-YA0">
-                                        <rect key="frame" x="0.0" y="156" width="320" height="48"/>
+                                        <rect key="frame" x="0.0" y="172" width="320" height="32"/>
                                         <subviews>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0gT-Fn-1dY">
-                                                <rect key="frame" x="0.0" y="0.0" width="18.5" height="48"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="18.5" height="32"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qHb-tS-MfO">
-                                                <rect key="frame" x="18.5" y="0.0" width="132" height="48"/>
+                                                <rect key="frame" x="18.5" y="0.0" width="132" height="32"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="CORPORATION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o3x-Fs-Jgo" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
-                                                        <rect key="frame" x="40" y="0.0" width="92" height="32"/>
+                                                        <rect key="frame" x="40" y="0.0" width="92" height="16"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                         <color key="textColor" red="0.45490196078431372" green="0.61960784313725492" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" image="necrorise.png" translatesAutoresizingMaskIntoConstraints="NO" id="JHj-Ap-Kax">
-                                                        <rect key="frame" x="0.0" y="8" width="32" height="32"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="32" id="28z-ky-ovN"/>
                                                             <constraint firstAttribute="height" constant="32" id="gNr-VR-wkr"/>
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PMf-Zw-BIq" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
-                                                        <rect key="frame" x="40" y="32" width="92" height="16"/>
+                                                        <rect key="frame" x="40" y="16" width="92" height="16"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
@@ -181,29 +172,29 @@
                                                 </constraints>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YSx-jI-p67">
-                                                <rect key="frame" x="150.5" y="0.0" width="19" height="48"/>
+                                                <rect key="frame" x="150.5" y="0.0" width="19" height="32"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="15" id="sY1-7d-rEm"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gAt-zn-gHf">
-                                                <rect key="frame" x="169.5" y="0.0" width="132" height="48"/>
+                                                <rect key="frame" x="169.5" y="0.0" width="132" height="32"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="751" text="ALLIANCE" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57j-Vl-8bo" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="92" height="32"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="92" height="16"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                         <color key="textColor" red="0.45490196078431372" green="0.61960784313725492" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="MwE-ey-BLc" customClass="NCLabel" customModule="Neocom" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="32" width="92" height="16"/>
+                                                        <rect key="frame" x="0.0" y="16" width="92" height="16"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" image="necrorise.png" translatesAutoresizingMaskIntoConstraints="NO" id="xzD-41-sRt">
-                                                        <rect key="frame" x="100" y="8" width="32" height="32"/>
+                                                        <rect key="frame" x="100" y="0.0" width="32" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="32" id="TIb-xt-wul"/>
                                                             <constraint firstAttribute="width" constant="32" id="fYY-N1-Xrg"/>
@@ -224,7 +215,7 @@
                                                 </constraints>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fEi-HC-YiI">
-                                                <rect key="frame" x="301.5" y="0.0" width="18.5" height="48"/>
+                                                <rect key="frame" x="301.5" y="0.0" width="18.5" height="32"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </view>
                                         </subviews>
@@ -265,7 +256,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Artem Valiant" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YI8-mz-cic" customClass="NCAutoHeightLabel" customModule="Neocom" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="114.5" width="290" height="33.5"/>
+                                        <rect key="frame" x="15" y="126.5" width="290" height="37.5"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="999" constant="21" id="ZhB-q6-9Ck"/>
                                         </constraints>
@@ -300,11 +291,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="jnE-t0-ZJ1" secondAttribute="trailing" priority="999" id="9da-fS-AKk"/>
-                            <constraint firstItem="jnE-t0-ZJ1" firstAttribute="leading" secondItem="zAk-bV-w0n" secondAttribute="leading" id="Cwf-kq-7Qi"/>
-                            <constraint firstItem="jnE-t0-ZJ1" firstAttribute="top" secondItem="ehy-sj-lTF" secondAttribute="bottom" id="LQ5-k5-ilu"/>
-                            <constraint firstItem="GoC-ob-uaQ" firstAttribute="top" secondItem="jnE-t0-ZJ1" secondAttribute="bottom" id="pqF-3L-8d1"/>
+                            <constraint firstItem="lj3-UR-cQI" firstAttribute="trailing" secondItem="jnE-t0-ZJ1" secondAttribute="trailing" priority="999" id="9da-fS-AKk"/>
+                            <constraint firstItem="jnE-t0-ZJ1" firstAttribute="leading" secondItem="lj3-UR-cQI" secondAttribute="leading" id="Cwf-kq-7Qi"/>
+                            <constraint firstItem="jnE-t0-ZJ1" firstAttribute="top" secondItem="lj3-UR-cQI" secondAttribute="top" id="LQ5-k5-ilu"/>
+                            <constraint firstItem="lj3-UR-cQI" firstAttribute="bottom" secondItem="jnE-t0-ZJ1" secondAttribute="bottom" id="pqF-3L-8d1"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="lj3-UR-cQI"/>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -351,9 +343,10 @@
         <!--Banner Navigation View Controller-->
         <scene sceneID="j43-7O-0Kk">
             <objects>
-                <navigationController navigationBarHidden="YES" id="aKc-6p-ULR" customClass="NCBannerNavigationViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController id="aKc-6p-ULR" customClass="NCBannerNavigationViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="9qV-1T-8Vh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="9qV-1T-8Vh">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -370,8 +363,8 @@
                 <splitViewController id="jOF-Zr-V9H" customClass="NCSplitViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <segue destination="jzY-fj-lmf" kind="relationship" relationship="detailViewController" id="ftP-7O-kc6"/>
                         <segue destination="aKc-6p-ULR" kind="relationship" relationship="masterViewController" id="zsx-Pr-xSn"/>
+                        <segue destination="jzY-fj-lmf" kind="relationship" relationship="detailViewController" id="r6L-FF-iza"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bb8-GB-8B6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -382,10 +375,6 @@
         <scene sceneID="iZ5-Vc-nMS">
             <objects>
                 <viewController storyboardIdentifier="NCMainMenuHeaderViewController" id="zO0-hy-Pcb" customClass="NCMainMenuHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="AVu-lT-oAi"/>
-                        <viewControllerLayoutGuide type="bottom" id="fAJ-xm-8wO"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4O2-gG-Atd" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -428,11 +417,12 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="RKI-G4-hKZ" firstAttribute="leading" secondItem="4O2-gG-Atd" secondAttribute="leading" id="3jf-Xk-wYN"/>
-                            <constraint firstItem="fAJ-xm-8wO" firstAttribute="top" secondItem="RKI-G4-hKZ" secondAttribute="bottom" id="4gp-LI-fmf"/>
-                            <constraint firstItem="RKI-G4-hKZ" firstAttribute="top" secondItem="AVu-lT-oAi" secondAttribute="bottom" id="L04-6V-awo"/>
-                            <constraint firstAttribute="trailing" secondItem="RKI-G4-hKZ" secondAttribute="trailing" priority="999" id="fYN-bk-XX6"/>
+                            <constraint firstItem="RKI-G4-hKZ" firstAttribute="leading" secondItem="4og-xS-tIe" secondAttribute="leading" id="3jf-Xk-wYN"/>
+                            <constraint firstItem="4og-xS-tIe" firstAttribute="bottom" secondItem="RKI-G4-hKZ" secondAttribute="bottom" id="4gp-LI-fmf"/>
+                            <constraint firstItem="RKI-G4-hKZ" firstAttribute="top" secondItem="4og-xS-tIe" secondAttribute="top" id="L04-6V-awo"/>
+                            <constraint firstItem="4og-xS-tIe" firstAttribute="trailing" secondItem="RKI-G4-hKZ" secondAttribute="trailing" priority="999" id="fYN-bk-XX6"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="4og-xS-tIe"/>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="XDf-8W-wKp" appends="YES" id="LaA-oE-WTv"/>
                         </connections>
@@ -450,38 +440,10 @@
             </objects>
             <point key="canvasLocation" x="2466" y="-880"/>
         </scene>
-        <!--NCDatabaseNavigationViewController-->
-        <scene sceneID="PDR-Pp-d3m">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Database" referencedIdentifier="NCDatabaseNavigationViewController" id="zgB-qn-NZm" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dds-TT-TTZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3023" y="777"/>
-        </scene>
-        <!--NCIncursionsNavigationController-->
-        <scene sceneID="vAF-3p-Rp5">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Database" referencedIdentifier="NCIncursionsNavigationController" id="NDb-d7-Z3S" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Pw5-JK-C7e" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3023" y="948"/>
-        </scene>
-        <!--NCDatabaseCertificateGroupsNavigationController-->
-        <scene sceneID="bBx-2i-p7G">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Database" referencedIdentifier="NCDatabaseCertificateGroupsNavigationController" id="0nL-gq-mhU" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XxC-nM-i65" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3096" y="868"/>
-        </scene>
         <!--Splash Screen View Controller-->
         <scene sceneID="vZJ-qC-DR5">
             <objects>
                 <viewController storyboardIdentifier="NCSplashScreenViewController" id="jzY-fj-lmf" customClass="NCSplashScreenViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="cG4-19-34f"/>
-                        <viewControllerLayoutGuide type="bottom" id="hl3-1f-4tg"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6oG-l3-5QP" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -493,10 +455,11 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Cog-vD-dzd" firstAttribute="centerY" secondItem="6oG-l3-5QP" secondAttribute="centerY" id="0g2-2u-wc4"/>
-                            <constraint firstItem="hl3-1f-4tg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Cog-vD-dzd" secondAttribute="bottom" constant="40" id="8Jh-nj-fHV"/>
-                            <constraint firstItem="Cog-vD-dzd" firstAttribute="centerX" secondItem="6oG-l3-5QP" secondAttribute="centerX" id="aDz-tq-cvB"/>
-                            <constraint firstItem="Cog-vD-dzd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6oG-l3-5QP" secondAttribute="leading" constant="40" id="kdF-bF-IQW"/>
+                            <constraint firstItem="WBw-du-kp3" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Cog-vD-dzd" secondAttribute="bottom" constant="40" id="8Jh-nj-fHV"/>
+                            <constraint firstItem="Cog-vD-dzd" firstAttribute="centerX" secondItem="WBw-du-kp3" secondAttribute="centerX" id="aDz-tq-cvB"/>
+                            <constraint firstItem="Cog-vD-dzd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WBw-du-kp3" secondAttribute="leading" constant="40" id="kdF-bF-IQW"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="WBw-du-kp3"/>
                     </view>
                     <navigationItem key="navigationItem" id="rJe-d2-Dr4"/>
                 </viewController>
@@ -564,10 +527,6 @@
         <scene sceneID="ryu-mK-cD5">
             <objects>
                 <viewController storyboardIdentifier="NCMainMenuLoginHeaderViewController" id="oCk-jp-6fN" customClass="NCMainMenuHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="fxp-dI-HR5"/>
-                        <viewControllerLayoutGuide type="bottom" id="U0A-y1-qrR"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="yBV-Xh-Ggp" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -610,11 +569,12 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="U0A-y1-qrR" firstAttribute="top" secondItem="x5P-wH-WNk" secondAttribute="bottom" id="DWN-Z5-Vky"/>
-                            <constraint firstAttribute="trailing" secondItem="x5P-wH-WNk" secondAttribute="trailing" priority="999" id="HBZ-MC-H22"/>
-                            <constraint firstItem="x5P-wH-WNk" firstAttribute="top" secondItem="fxp-dI-HR5" secondAttribute="bottom" id="b33-BZ-Mm3"/>
-                            <constraint firstItem="x5P-wH-WNk" firstAttribute="leading" secondItem="yBV-Xh-Ggp" secondAttribute="leading" id="wPP-pH-a85"/>
+                            <constraint firstItem="YaY-wZ-udn" firstAttribute="bottom" secondItem="x5P-wH-WNk" secondAttribute="bottom" id="DWN-Z5-Vky"/>
+                            <constraint firstItem="YaY-wZ-udn" firstAttribute="trailing" secondItem="x5P-wH-WNk" secondAttribute="trailing" priority="999" id="HBZ-MC-H22"/>
+                            <constraint firstItem="x5P-wH-WNk" firstAttribute="top" secondItem="YaY-wZ-udn" secondAttribute="top" id="b33-BZ-Mm3"/>
+                            <constraint firstItem="x5P-wH-WNk" firstAttribute="leading" secondItem="YaY-wZ-udn" secondAttribute="leading" id="wPP-pH-a85"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="YaY-wZ-udn"/>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="mmc-wa-Z9i" appends="YES" id="Zxt-W9-AZz"/>
                         </connections>
@@ -632,168 +592,17 @@
             </objects>
             <point key="canvasLocation" x="1800" y="-880"/>
         </scene>
-        <!--NCCharacterSheetNavigationController-->
-        <scene sceneID="vJW-9E-mXs">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Character" referencedIdentifier="NCCharacterSheetNavigationController" id="Kxq-EU-dj8" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WGx-9n-F6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-108" y="473"/>
-        </scene>
-        <!--NCJumpClonesNavigationController-->
-        <scene sceneID="4Xm-I4-l1R">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Character" referencedIdentifier="NCJumpClonesNavigationController" id="XgW-CF-JmI" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dMU-JL-ogG" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-117" y="551"/>
-        </scene>
-        <!--NCSkillQueueNavigationController-->
-        <scene sceneID="i2u-FV-Vet">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Character" referencedIdentifier="NCSkillQueueNavigationController" id="UKp-DW-R1v" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1tq-a5-7Lg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-127" y="611"/>
-        </scene>
-        <!--NCMailNavigationController-->
-        <scene sceneID="wyV-CG-oE7">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Character" referencedIdentifier="NCMailNavigationController" id="RrH-iS-0ic" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7fX-Aj-rLv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-123" y="687"/>
-        </scene>
-        <!--NCCalendarNavigationController-->
-        <scene sceneID="O1Q-XD-GJU">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Character" referencedIdentifier="NCCalendarNavigationController" id="SFZ-Do-o1b" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="GAZ-HV-0gm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-125" y="748"/>
-        </scene>
-        <!--NCWealthNavigationController-->
-        <scene sceneID="Tbt-j3-hIc">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Character" referencedIdentifier="NCWealthNavigationController" id="u7B-1w-232" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tRN-M2-Pa4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-129" y="817"/>
-        </scene>
-        <!--NCFittingMenuNavigationController-->
-        <scene sceneID="2np-Tb-UfX">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Fitting" referencedIdentifier="NCFittingMenuNavigationController" id="MsB-i8-Yx3" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CqH-XU-zAz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1014" y="1675"/>
-        </scene>
-        <!--NCAssetsNavigationController-->
-        <scene sceneID="0cV-6l-cgB">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Business" referencedIdentifier="NCAssetsNavigationController" id="TlU-cX-Rrc" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Pa7-kh-HOf" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-57" y="1400"/>
-        </scene>
-        <!--NCMarketOrdersNavigationController-->
-        <scene sceneID="Crv-U5-gVL">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Business" referencedIdentifier="NCMarketOrdersNavigationController" id="eTK-RD-hUo" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nln-5p-ERQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-113" y="1498"/>
-        </scene>
-        <!--NCIndustryNavigationController-->
-        <scene sceneID="EtP-qQ-Ybj">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Business" referencedIdentifier="NCIndustryNavigationController" id="1md-yZ-PSM" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8Yu-XP-P4T" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-108" y="1574"/>
-        </scene>
-        <!--NCWalletJournalNavigationController-->
-        <scene sceneID="4zi-1s-aTI">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Business" referencedIdentifier="NCWalletJournalNavigationController" id="pEH-VL-hA4" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0vn-0d-bHS" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-127" y="1633"/>
-        </scene>
-        <!--NCWalletTransactionsNavigationController-->
-        <scene sceneID="9tX-Mq-SGh">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Business" referencedIdentifier="NCWalletTransactionsNavigationController" id="8Ub-4g-1E4" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3gi-1v-TEY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-126" y="1699"/>
-        </scene>
-        <!--NCContractsNavigationController-->
-        <scene sceneID="iDt-3f-0l4">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Business" referencedIdentifier="NCContractsNavigationController" id="Ucy-H8-iyU" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ZjI-fK-PsT" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-137" y="1764"/>
-        </scene>
-        <!--NCPlanetaryNavigationController-->
-        <scene sceneID="2vb-Nl-YaX">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Business" referencedIdentifier="NCPlanetaryNavigationController" id="K2q-Ms-OBE" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="i2j-Xy-1vC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-134" y="1832"/>
-        </scene>
-        <!--NCNPCNavigationController-->
-        <scene sceneID="LVg-qh-eUp">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Database" referencedIdentifier="NCNPCNavigationController" id="yKn-jQ-bbO" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VMH-gm-Rky" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3036" y="552"/>
-        </scene>
-        <!--NCZKillboardNavigationController-->
-        <scene sceneID="4e2-yh-taw">
-            <objects>
-                <viewControllerPlaceholder storyboardName="KillReports" referencedIdentifier="NCZKillboardNavigationController" id="jPu-JT-1dL" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ehu-iS-2tV" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1006" y="1538"/>
-        </scene>
-        <!--NCKillmailsPageNavigationController-->
-        <scene sceneID="8UF-Yx-2FD">
-            <objects>
-                <viewControllerPlaceholder storyboardName="KillReports" referencedIdentifier="NCKillmailsPageNavigationController" id="1Gi-Vb-nuh" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sHQ-h5-KOl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1021" y="1610"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="rL6-sq-LgX">
-            <objects>
-                <navigationController useStoryboardIdentifierAsRestorationIdentifier="YES" id="i4p-bm-rfW" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="0tr-Nr-8y6">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="X5o-kA-3iz" kind="relationship" relationship="rootViewController" id="rKa-km-T15"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3Us-Ge-NBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2987" y="2622"/>
-        </scene>
         <!--RSS Feeds-->
         <scene sceneID="Dvq-Hi-uMg">
             <objects>
-                <tableViewController storyboardIdentifier="NCFeedsViewController" modalPresentationStyle="overCurrentContext" id="X5o-kA-3iz" customClass="NCFeedsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCFeedsViewController" id="X5o-kA-3iz" customClass="NCFeedsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="HY8-2x-9bn" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>
                     <navigationItem key="navigationItem" title="RSS Feeds" id="pfj-gY-ONF"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nlr-bM-VLG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -870,14 +679,11 @@
         <scene sceneID="Jdm-0f-VwW">
             <objects>
                 <viewController storyboardIdentifier="NCFeedItemViewController" id="Qst-LA-op6" customClass="NCFeedItemViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Tdw-ec-rza"/>
-                        <viewControllerLayoutGuide type="bottom" id="k3B-Y2-snN"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="5gO-Bq-cy4" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="cZl-R5-6EN"/>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </viewController>
@@ -1001,22 +807,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zAm-Sj-yIk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3750" y="-83"/>
-        </scene>
-        <!--NCWHNavigationController-->
-        <scene sceneID="Mwe-jE-I6J">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Database" referencedIdentifier="NCWHNavigationController" id="euW-Hv-oYh" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="YZ0-vt-wnh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3030" y="611"/>
-        </scene>
-        <!--NCMarketPageNavigationController-->
-        <scene sceneID="AIb-IX-AiX">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Database" referencedIdentifier="NCMarketPageNavigationController" id="4qp-cz-EGz" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mqO-7i-f0S" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3023" y="697"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="hWx-gI-0He">

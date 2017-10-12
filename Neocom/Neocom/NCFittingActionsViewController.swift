@@ -87,8 +87,7 @@ class NCLoadoutNameRow: NCTextFieldRow {
 	}
 }
 
-class NCFittingActionsViewController: UITableViewController, TreeControllerDelegate, UITextFieldDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate {
 	var fleet: NCFittingFleet?
 	
 	private var observer: NotificationObserver?
@@ -104,17 +103,17 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 							Prototype.NCFittingBoosterTableViewCell.default
 		                    ])
 		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
-		
 		reload()
-		
 		if traitCollection.userInterfaceIdiom == .phone {
 			tableView.layoutIfNeeded()
 			var size = tableView.contentSize
-			size.height += tableView.contentInset.top
-			size.height += tableView.contentInset.bottom
+			if navigationController?.isNavigationBarHidden == false {
+				size.height += navigationController!.navigationBar.frame.height
+			}
+			if navigationController?.isToolbarHidden == false {
+				size.height += navigationController!.toolbar.frame.height
+			}
+
 			navigationController?.preferredContentSize = size
 		}
 		
@@ -130,6 +129,11 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 		super.viewWillAppear(animated)
 		navigationController?.setToolbarHidden(false, animated: false)
 	}
+	
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		completionHandler()
+	}
+
 	
 	@IBAction func onDelete(_ sender: Any) {
 		guard let fleet = fleet else {return}
@@ -182,7 +186,8 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 				if name.endIndex == r.upperBound {
 					name += " 1"
 				}
-				else if let n = Int(name.substring(from: name.index(after: r.upperBound))) {
+				else if let n = Int(name[name.index(after: r.upperBound)...]) {
+					
 					name.replaceSubrange(r.upperBound..<name.endIndex, with: " \(n + 1)")
 				}
 				else {
@@ -220,18 +225,6 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 	}
 
 	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		guard let item = node as? TreeNodeRoutable else {return}
-		guard let route = item.route else {return}
-		route.perform(source: self, sender: treeController.cell(for: node))
-	}
-	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		guard let node = node as? TreeRow else {return}
-		guard let route = node.accessoryButtonRoute else {return}
-		route.perform(source: self, sender: treeController.cell(for: node))
-	}
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard node is NCFittingAreaEffectRow else {return nil}
@@ -346,13 +339,11 @@ class NCFittingActionsViewController: UITableViewController, TreeControllerDeleg
 //			sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [shareAction]))
 		}
 		
-		if treeController.content == nil {
-			let root = TreeNode()
-			root.children = sections
-			treeController.content = root
+		if treeController?.content == nil {
+			treeController?.content = RootNode(sections)
 		}
 		else {
-			treeController.content?.children = sections
+			treeController?.content?.children = sections
 		}
 	}
 	

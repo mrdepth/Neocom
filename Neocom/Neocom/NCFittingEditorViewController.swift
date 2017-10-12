@@ -57,13 +57,8 @@ class NCFittingEditorViewController: UIViewController {
 	override func viewDidLoad() {
 		
 		super.viewDidLoad()
-		let titleLabel = UILabel(frame: CGRect(origin: .zero, size: .zero))
-		titleLabel.numberOfLines = 2
-		titleLabel.textAlignment = .center
-		titleLabel.textColor = .white
-		titleLabel.minimumScaleFactor = 0.5
-		titleLabel.font = navigationController?.navigationBar.titleTextAttributes?[NSAttributedStringKey.font] as? UIFont ?? UIFont.systemFont(ofSize: 17)
-		navigationItem.titleView = titleLabel
+		
+		navigationItem.titleView = NCNavigationItemTitleLabel(frame: CGRect(origin: .zero, size: .zero))
 		
 		let pilot = fleet?.active
 		var useFighters = false
@@ -266,7 +261,7 @@ class NCFittingEditorViewController: UIViewController {
 	}()
 	
 	private func updateTitle() {
-		guard let titleLabel = navigationItem.titleView as? UILabel else {return}
+		guard let titleLabel = navigationItem.titleView as? NCNavigationItemTitleLabel else {return}
 		let pilot = fleet?.active
 		var shipName: String = ""
 		var typeName: String = ""
@@ -276,8 +271,9 @@ class NCFittingEditorViewController: UIViewController {
 			shipName = ship.name
 			typeName = NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.typeName ?? ""
 		}
-		titleLabel.attributedText = typeName * [:] + (!shipName.isEmpty ? "\n" + shipName * [NSAttributedStringKey.font:UIFont.preferredFont(forTextStyle: .footnote), NSAttributedStringKey.foregroundColor: UIColor.lightText] : "" * [:])
-		titleLabel.sizeToFit()
+//		titleLabel.attributedText = typeName * [:] + (!shipName.isEmpty ? "\n" + shipName * [NSAttributedStringKey.font:UIFont.preferredFont(forTextStyle: .footnote), NSAttributedStringKey.foregroundColor: UIColor.lightText] : "" * [:])
+//		titleLabel.sizeToFit()
+		titleLabel.set(title: typeName, subtitle: shipName)
 	}
 
 }

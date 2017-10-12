@@ -211,6 +211,9 @@ class NCCharacterSheetViewController: NCTreeViewController {
 				let ancestry = NCDatabase.sharedDatabase?.chrAncestries[ancestryID]?.ancestryName {
 				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Bloodline", title: NSLocalizedString("Bloodline", comment: "").uppercased(), subtitle: "\(race) / \(bloodline) / \(ancestry)"))
 			}
+			if let ss = value.securityStatus {
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "SS", title: NSLocalizedString("Security Status", comment: "").uppercased(), attributedSubtitle: String(format: "%.1f", ss) * [NSAttributedStringKey.foregroundColor: UIColor(security: ss)]))
+			}
 		}
 		
 		if let ship = self.characterShip?.value, let location = self.characterLocation?.value {

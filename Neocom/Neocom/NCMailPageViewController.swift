@@ -16,6 +16,7 @@ class NCMailPageViewController: NCPageViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		navigationController?.isToolbarHidden = false
 		navigationItem.rightBarButtonItem = editButtonItem
 		reload()
 		

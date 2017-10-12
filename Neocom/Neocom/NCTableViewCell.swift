@@ -72,7 +72,10 @@ class NCDefaultTableViewCell: NCTableViewCell {
 //		self.separatorInset.left = indent
 	}
 	
-
+	override func willDisplay() {
+		super.willDisplay()
+		iconView?.isHidden = iconView?.image == nil
+	}
 }
 
 class NCActionTableViewCell: NCTableViewCell {

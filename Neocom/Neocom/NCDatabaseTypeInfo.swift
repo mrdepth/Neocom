@@ -422,7 +422,7 @@ struct NCDatabaseTypeInfo {
 				case let .success(value, cacheRecord):
 					if let cacheRecord = cacheRecord, !value.isEmpty {
 						let row = NCDatabaseTypeMarketRow(history: cacheRecord, typeID: typeID)
-						marketSection?.mutableArrayValue(forKey: "children").add(row)
+						marketSection?.children.append(row)
 					}
 				default:
 					break
@@ -434,7 +434,6 @@ struct NCDatabaseTypeInfo {
 				let subtitle = NCUnitFormatter.localizedString(from: price, unit: .isk, style: .full)
 				let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute, image: #imageLiteral(resourceName: "wallet"), title: NSLocalizedString("PRICE", comment: ""), subtitle: subtitle, accessoryType: .disclosureIndicator, route: Router.Database.MarketInfo(typeID))
 				marketSection?.children.insert(row, at: 0)
-//				marketSection?.mutableArrayValue(forKey: "children").insert(row, at: 0)
 			}
 		}
 		switch NCDBCategoryID(rawValue: Int(type.group?.category?.categoryID ?? 0)) {

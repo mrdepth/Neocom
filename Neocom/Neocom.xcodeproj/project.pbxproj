@@ -48,6 +48,7 @@
 		1226D9651F223A740049FA0C /* NCNPCPickerTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9641F223A740049FA0C /* NCNPCPickerTypesViewController.swift */; };
 		1227B81E1E096A4F00C816A0 /* NCDamageTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */; };
 		1227D0E31F55468600494811 /* NCSplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227D0E21F55468600494811 /* NCSplashScreenViewController.swift */; };
+		122A1C431F8DFCC2005DE351 /* NCNavigationItemTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122A1C421F8DFCC2005DE351 /* NCNavigationItemTitleLabel.swift */; };
 		122A7CA21F4B49D100537467 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA11F4B49D100537467 /* Database.storyboard */; };
 		122A7CA41F4B589200537467 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA31F4B589200537467 /* Character.storyboard */; };
 		122A7CA61F4B5DD800537467 /* Business.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA51F4B5DD800537467 /* Business.storyboard */; };
@@ -227,7 +228,6 @@
 		12AC8DB21DEF5B6D00561A7A /* NCDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DB11DEF5B6D00561A7A /* NCDatabase.swift */; };
 		12AC8DB41DEF642600561A7A /* NCFetchedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DB31DEF642600561A7A /* NCFetchedCollection.swift */; };
 		12AC8DB61DEF6A3200561A7A /* NCDBImageValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DB51DEF6A3200561A7A /* NCDBImageValueTransformer.swift */; };
-		12AC8DB91DF012BA00561A7A /* NCTreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DB81DF012BA00561A7A /* NCTreeController.swift */; };
 		12AC8DBD1DF01BF100561A7A /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DBC1DF01BF100561A7A /* Test.m */; };
 		12AC8DC21DF0833B00561A7A /* NCBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DC11DF0833B00561A7A /* NCBinder.swift */; };
 		12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DC31DF088A000561A7A /* NCValueTransformer.swift */; };
@@ -455,6 +455,7 @@
 		1226D9641F223A740049FA0C /* NCNPCPickerTypesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCNPCPickerTypesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1227B81D1E096A4F00C816A0 /* NCDamageTypeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamageTypeLabel.swift; sourceTree = "<group>"; };
 		1227D0E21F55468600494811 /* NCSplashScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSplashScreenViewController.swift; sourceTree = "<group>"; };
+		122A1C421F8DFCC2005DE351 /* NCNavigationItemTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCNavigationItemTitleLabel.swift; sourceTree = "<group>"; };
 		122A7CA11F4B49D100537467 /* Database.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Database.storyboard; sourceTree = "<group>"; };
 		122A7CA31F4B589200537467 /* Character.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Character.storyboard; sourceTree = "<group>"; };
 		122A7CA51F4B5DD800537467 /* Business.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Business.storyboard; sourceTree = "<group>"; };
@@ -960,6 +961,7 @@
 				12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */,
 				1285FB321EB8DBFA0025331A /* NCImageView.swift */,
 				12E7D5ED1F27569200676AFE /* NCSkillLevelView.swift */,
+				122A1C421F8DFCC2005DE351 /* NCNavigationItemTitleLabel.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1807,7 +1809,6 @@
 				12406A071F20F9E400A4DAE7 /* NCShipTableViewCell.swift in Sources */,
 				121314BF1F13881700DAFD12 /* NCMailAttachmentsViewController.swift in Sources */,
 				12961DBF1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift in Sources */,
-				12AC8DB91DF012BA00561A7A /* NCTreeController.swift in Sources */,
 				1256BE531DF4725B00A2A24B /* NCMainMenuViewController.swift in Sources */,
 				12D20EAE1EBC867E00BEC926 /* NCWealthAssetsViewController.swift in Sources */,
 				12D39D0A1EF921810077BD17 /* NCWalletJournalTableViewCell.swift in Sources */,
@@ -1840,6 +1841,7 @@
 				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
 				12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */,
 				12DC56971EFC0A620088F45E /* NCFittingExtractorControlUnit.mm in Sources */,
+				122A1C431F8DFCC2005DE351 /* NCNavigationItemTitleLabel.swift in Sources */,
 				12DC56A61EFC0AED0088F45E /* NCFittingProductionCycle.mm in Sources */,
 				129B316C1E534B7300B9A88D /* NCFittingDamagePatternsViewController.swift in Sources */,
 				1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */,

@@ -10,8 +10,7 @@ import UIKit
 import CoreData
 
 
-class NCFittingFleetMemberPickerViewController: UITableViewController, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 	
 	var completionHandler: ((NCFittingFleetMemberPickerViewController) -> Void)!
 	var fleet: NCFittingFleet?
@@ -22,9 +21,6 @@ class NCFittingFleetMemberPickerViewController: UITableViewController, TreeContr
 		tableView.register([Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.default])
 
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
 	}
 	
 	override func didReceiveMemoryWarning() {
@@ -32,40 +28,9 @@ class NCFittingFleetMemberPickerViewController: UITableViewController, TreeContr
 		// Dispose of any resources that can be recreated.
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		defer {completionHandler()}
 		
-		if treeController.content == nil {
-			reload()
-		}
-	}
-	
-	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		
-		if let node = node as? NCLoadoutRow {
-			guard let fleet = fleet else {return}
-			guard let engine = fleet.active?.engine else {return}
-
-			NCStorage.sharedStorage?.performBackgroundTask({ (managedObjectContext) in
-				guard let loadout = (try? managedObjectContext.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
-				engine.performBlockAndWait {
-					fleet.append(loadout: loadout, engine: engine)
-					DispatchQueue.main.async {
-						self.completionHandler(self)
-					}
-				}
-			})
-		}
-		else if let route = (node as? TreeRow)?.route {
-			route.perform(source: self, sender: treeController.cell(for: node))
-		}
-	}
-	
-	//MARK: - Private
-	
-	private func reload() {
 		guard let fleet = fleet else {return}
 		guard let engine = fleet.active?.engine else {return}
 		
@@ -91,12 +56,35 @@ class NCFittingFleetMemberPickerViewController: UITableViewController, TreeContr
 			return context?.object(with: objectID) as? NCLoadout
 		}
 		let predicate = filter.count > 0 ? NSPredicate(format: "NONE SELF IN %@", filter) : nil
-
+		
 		
 		sections.append(NCLoadoutsSection(categoryID: .ship, filter: predicate))
-		if self.treeController.content == nil {
-			self.treeController.content = TreeNode()
+		if self.treeController?.content == nil {
+			self.treeController?.content = TreeNode()
 		}
-		self.treeController.content?.children = sections
+		self.treeController?.content?.children = sections
+		
 	}
+	
+	//MARK: - TreeControllerDelegate
+	
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
+
+		if let node = node as? NCLoadoutRow {
+			guard let fleet = fleet else {return}
+			guard let engine = fleet.active?.engine else {return}
+
+			NCStorage.sharedStorage?.performBackgroundTask({ (managedObjectContext) in
+				guard let loadout = (try? managedObjectContext.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
+				engine.performBlockAndWait {
+					fleet.append(loadout: loadout, engine: engine)
+					DispatchQueue.main.async {
+						self.completionHandler(self)
+					}
+				}
+			})
+		}
+	}
+	
 }

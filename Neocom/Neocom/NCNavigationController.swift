@@ -9,8 +9,17 @@
 import UIKit
 
 class NCNavigationController: UINavigationController {
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
+	
+	override init(rootViewController: UIViewController) {
+		super.init(rootViewController: rootViewController)
+		navigationBar.isTranslucent = false
 	}
 	
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+	}
+	
+	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+	}
 }

@@ -9,49 +9,45 @@
 import UIKit
 import CoreData
 
-class NCZKillboardCategoriesViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
-	
-	@IBOutlet var treeController: TreeController!
+class NCZKillboardCategoriesViewController: NCTreeViewController, NCSearchableViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		tableView.register([Prototype.NCDefaultTableViewCell.compact])
-		treeController.delegate = self
 		
-		setupSearchController()
+		setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCZKillboardTypesViewController"))
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if treeController.content == nil {
+		if treeController?.content == nil {
 			let request = NSFetchRequest<NCDBInvCategory>(entityName: "InvCategory")
 			request.predicate = NSPredicate(format: "categoryID IN %@", [NCDBCategoryID.ship.rawValue, NCDBCategoryID.structure.rawValue])
 			request.sortDescriptors = [NSSortDescriptor(key: "categoryName", ascending: true)]
 			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
 			
-			treeController.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDatabaseCategoryRow.self)
+			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDatabaseCategoryRow.self)
 		}
 	}
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			treeController.content = nil
+			treeController?.content = nil
 		}
 	}
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCDatabaseCategoryRow else {return}
 		Router.KillReports.Groups(category: row.object).perform(source: self, sender: treeController.cell(for: node))
 	}
 	
-	//MARK: UISearchResultsUpdating
+	//MARK: NCSearchableViewController
 	
-	private var searchController: UISearchController?
+	var searchController: UISearchController?
 	
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
@@ -66,17 +62,5 @@ class NCZKillboardCategoriesViewController: UITableViewController, UISearchResul
 		controller.reloadData()
 	}
 	
-	//MARK: Private
-	
-	private func setupSearchController() {
-		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCZKillboardTypesViewController"))
-		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
-		searchController?.searchResultsUpdater = self
-		searchController?.searchBar.barStyle = UIBarStyle.black
-		searchController?.hidesNavigationBarDuringPresentation = false
-		tableView.backgroundView = UIView()
-		tableView.tableHeaderView = searchController?.searchBar
-		definesPresentationContext = true
-		
-	}
+
 }

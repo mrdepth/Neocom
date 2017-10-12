@@ -152,7 +152,7 @@ class NCFittingChargeRow: NCChargeRow {
 	}
 }
 
-class NCFittingModuleActionsViewController: UITableViewController, TreeControllerDelegate {
+class NCFittingModuleActionsViewController: NCTreeViewController {
 	var modules: [NCFittingModule]?
 	var type: NCDBInvType? {
 		guard let module = self.modules?.first else {return nil}
@@ -179,8 +179,6 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 	var chargeSection: DefaultTreeSection?
 
 	
-	@IBOutlet var treeController: TreeController!
-	
 	private var observer: NotificationObserver?
 	
 	override func viewDidLoad() {
@@ -199,16 +197,17 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 
 		
 
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
-
 		reload()
 		if traitCollection.userInterfaceIdiom == .phone {
 			tableView.layoutIfNeeded()
 			var size = tableView.contentSize
-			size.height += tableView.contentInset.top
-			size.height += tableView.contentInset.bottom
+			if navigationController?.isNavigationBarHidden == false {
+				size.height += navigationController!.navigationBar.frame.height
+			}
+			if navigationController?.isToolbarHidden == false {
+				size.height += navigationController!.toolbar.frame.height
+			}
+
 			navigationController?.preferredContentSize = size
 		}
 
@@ -218,6 +217,10 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 			}
 		}
 
+	}
+	
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		completionHandler()
 	}
 
 	@IBAction func onDelete(_ sender: UIButton) {
@@ -243,18 +246,6 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 	}
 	
 	//MARK: - TreeControllerDelegate
-	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		guard let node = node as? TreeRow else {return}
-		guard let route = node.route else {return}
-		route.perform(source: self, sender: treeController.cell(for: node))
-	}
-	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		guard let node = node as? TreeRow else {return}
-		guard let route = node.accessoryButtonRoute else {return}
-		route.perform(source: self, sender: treeController.cell(for: node))
-	}
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		if node is NCFittingChargeRow {
@@ -392,13 +383,11 @@ class NCFittingModuleActionsViewController: UITableViewController, TreeControlle
 			}
 		}
 		
-		if treeController.content == nil {
-			let root = TreeNode()
-			root.children = sections
-			treeController.content = root
+		if treeController?.content == nil {
+			treeController?.content = RootNode(sections)
 		}
 		else {
-			treeController.content?.children = sections
+			treeController?.content?.children = sections
 		}
 	}
 }

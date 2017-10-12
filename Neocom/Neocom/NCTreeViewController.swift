@@ -13,20 +13,17 @@ protocol NCSearchableViewController: UISearchResultsUpdating {
 	var searchController: UISearchController? {get set}
 }
 
-extension NCSearchableViewController where Self: UIViewController {
+extension NCSearchableViewController where Self: UITableViewController {
 	func setupSearchController(searchResultsController: UIViewController) {
-		guard let controller = self as? UITableViewController else {return}
 		searchController = UISearchController(searchResultsController: searchResultsController)
 		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
 		searchController?.searchResultsUpdater = self
 		searchController?.searchBar.barStyle = UIBarStyle.black
+		searchController?.searchBar.isTranslucent = false
 		searchController?.hidesNavigationBarDuringPresentation = false
-		searchResultsController.edgesForExtendedLayout = []
-		controller.tableView.backgroundView = UIView()
-		controller.tableView.tableHeaderView = searchController?.searchBar
-//		controller.definesPresentationContext = true
+		tableView.backgroundView = UIView()
+		tableView.tableHeaderView = searchController?.searchBar
 		definesPresentationContext = true
-		
 	}
 }
 

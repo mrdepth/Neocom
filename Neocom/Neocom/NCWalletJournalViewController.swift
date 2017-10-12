@@ -15,17 +15,45 @@ class NCWalletJournalViewController: NCTreeViewController {
 		super.viewDidLoad()
 		accountChangeAction = .reload
 		tableView.register([Prototype.NCHeaderTableViewCell.default])
-	}
-	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
-		dataManager.walletJournal { result in
-			self.walletJournal = result
-			completionHandler([self.walletJournal?.cacheRecord].flatMap {$0})
-		}
+		
+		let label = NCNavigationItemTitleLabel(frame: CGRect(origin: .zero, size: .zero))
+		label.set(title: NSLocalizedString("Wallet Journal", comment: ""), subtitle: nil)
+		navigationItem.titleView = label
 		
 	}
 	
+	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+		let progress = Progress(totalUnitCount: 2)
+		
+		let dispatchGroup = DispatchGroup()
+		
+		progress.perform {
+			dispatchGroup.enter()
+			dataManager.walletJournal { result in
+				self.walletJournal = result
+				dispatchGroup.leave()
+			}
+		}
+
+		progress.perform {
+			dispatchGroup.enter()
+			dataManager.walletBalance { result in
+				self.walletBalance = result
+				dispatchGroup.leave()
+			}
+		}
+	
+		dispatchGroup.notify(queue: .main) {
+			completionHandler([self.walletJournal?.cacheRecord, self.walletBalance?.cacheRecord].flatMap {$0})
+		}
+	}
+	
 	override func updateContent(completionHandler: @escaping () -> Void) {
+		if let value = walletBalance?.value {
+			let label = navigationItem.titleView as? NCNavigationItemTitleLabel
+			label?.set(title: NSLocalizedString("Wallet Journal", comment: ""), subtitle: NCUnitFormatter.localizedString(from: value, unit: .isk, style: .full))
+		}
+		
 		if let value = walletJournal?.value {
 			
 			DispatchQueue.global(qos: .background).async {
@@ -88,5 +116,6 @@ class NCWalletJournalViewController: NCTreeViewController {
 	}
 	
 	private var walletJournal: NCCachedResult<[ESI.Wallet.WalletJournalItem]>?
+	private var walletBalance: NCCachedResult<Float>?
 		
 }

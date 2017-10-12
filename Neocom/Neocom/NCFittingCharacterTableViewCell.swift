@@ -145,7 +145,7 @@ class NCCustomCharacterRow: NCFetchedResultsObjectNode<NCFitCharacter>, TreeNode
 		if image == nil {
 			let s: String
 			if let name = object.name, !name.isEmpty {
-				s = name.substring(to: name.index(after: name.startIndex))
+				s = String(name[..<name.index(after: name.startIndex)])
 			}
 			else {
 				s = "C"

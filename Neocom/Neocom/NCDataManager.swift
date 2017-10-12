@@ -1015,6 +1015,14 @@ class NCDataManager {
 		self.esi.fittings.createFitting(characterID: Int(self.characterID), fitting: fitting, completionBlock: completionHandler)
 	}
 	
+	func serverStatus(completionHandler: @escaping (NCCachedResult<ESI.Status.ServerStatus>) -> Void) {
+		loadFromCache(forKey: "ESI.Status.ServerStatus", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.status.retrieveTheUptimeAndPlayerCounts { result in
+				completion(result, 600)
+			}
+		})
+	}
+	
 	//MARK: Private
 	
 	private var completionHandlers: [String: [(Any?, NCCacheRecord?, Error?) -> Void]] = [:]

@@ -680,15 +680,6 @@ class NCSkillQueueViewController: NCTreeViewController {
 		}
 	}
 	
-	func treeController(_ treeController: NCTreeController, didSelectCell cell: UITableViewCell, withItem item: AnyObject) -> Void {
-		switch (item as? NCDefaultTreeRow)?.segue {
-		case "NCSkillsPageViewController"?:
-			self.performSegue(withIdentifier: "NCSkillsPageViewController", sender: cell)
-		default:
-			break
-		}
-	}
-
     //MARK: - NCRefreshable
 	
 	var characterObserver: NotificationObserver?

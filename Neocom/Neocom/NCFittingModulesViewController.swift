@@ -291,12 +291,18 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 			default:
 				return
 			}
+			let isGrouped = grouping[item.slot] == true
+
 			typePickerViewController.category = category
 			typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
 				let typeID = Int(type.typeID)
 				engine.perform {
 					guard let ship = pilot.ship ?? pilot.structure else {return}
-					_ = ship.addModule(typeID: typeID, socket: socket)
+					let n = isGrouped ? max(ship.freeSlots(item.slot), 1) : 1
+
+					for _ in 0..<n {
+						guard ship.addModule(typeID: typeID, socket: socket) != nil else {break}
+					}
 				}
 				if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
 					typePickerViewController?.dismiss(animated: true)
@@ -307,6 +313,23 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 		else {
 			Router.Fitting.ModuleActions(item.modules).perform(source: self, sender: treeController.cell(for: item))
 		}
+	}
+	
+	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
+		guard let node = node as? NCFittingModuleRow else {return nil}
+		
+		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (_, _) in
+			let modules = node.modules
+			guard let engine = modules.first?.engine else {return}
+			engine.perform {
+				guard let ship = modules.first?.owner as? NCFittingShip else {return}
+				modules.forEach {
+					ship.removeModule($0)
+				}
+			}
+		}
+		
+		return [deleteAction]
 	}
 	
 	//MARK: - Navigation

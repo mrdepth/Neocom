@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -92,14 +93,11 @@
         <scene sceneID="NLT-yp-pkH">
             <objects>
                 <viewController storyboardIdentifier="NCMarketPageViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5ug-iz-g0c" customClass="NCMarketPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="AK9-7s-opU"/>
-                        <viewControllerLayoutGuide type="bottom" id="QYf-9G-QKw"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pZY-W5-UGn" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="TIY-FD-CMK"/>
                     </view>
                     <navigationItem key="navigationItem" title="Market" id="5Qt-Eu-pxX"/>
                 </viewController>
@@ -164,7 +162,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="d0p-H6-hLd" kind="relationship" relationship="rootViewController" id="oFK-SQ-UrN"/>
+                        <segue destination="d0p-H6-hLd" kind="relationship" relationship="rootViewController" id="u0G-Bu-xQh"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="obR-21-xry" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -347,10 +345,6 @@
         <scene sceneID="n3s-JM-UnT">
             <objects>
                 <viewController storyboardIdentifier="NCDatabaseTypeInfoHeaderViewControllerSmall" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uoE-D0-WpL" customClass="NCDatabaseTypeInfoHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="AeO-yT-tBj"/>
-                        <viewControllerLayoutGuide type="bottom" id="Csx-Wh-cIj"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="E4M-pN-utd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -407,11 +401,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="pJq-4r-lXN" firstAttribute="leading" secondItem="E4M-pN-utd" secondAttribute="leading" id="00R-fV-N3B"/>
+                            <constraint firstItem="pJq-4r-lXN" firstAttribute="leading" secondItem="RG8-jV-njj" secondAttribute="leading" id="00R-fV-N3B"/>
                             <constraint firstItem="pJq-4r-lXN" firstAttribute="top" secondItem="E4M-pN-utd" secondAttribute="top" id="eSy-DR-9tj"/>
-                            <constraint firstAttribute="trailing" secondItem="pJq-4r-lXN" secondAttribute="trailing" priority="900" id="fsN-Lu-avK"/>
+                            <constraint firstItem="RG8-jV-njj" firstAttribute="trailing" secondItem="pJq-4r-lXN" secondAttribute="trailing" priority="900" id="fsN-Lu-avK"/>
                             <constraint firstAttribute="bottom" secondItem="pJq-4r-lXN" secondAttribute="bottom" priority="900" id="k4C-kY-Ap1"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="RG8-jV-njj"/>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
@@ -430,10 +425,6 @@
         <scene sceneID="d28-9L-ubu">
             <objects>
                 <viewController storyboardIdentifier="NCDatabaseTypeInfoHeaderViewControllerLarge" useStoryboardIdentifierAsRestorationIdentifier="YES" id="wgi-Pu-2eV" customClass="NCDatabaseTypeInfoHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="CMc-gN-Rjw"/>
-                        <viewControllerLayoutGuide type="bottom" id="EhK-E1-T5V"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="LzC-bA-aeY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -493,10 +484,11 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="JFI-Je-ERl" secondAttribute="bottom" priority="900" id="8AV-e7-Seb"/>
-                            <constraint firstAttribute="trailing" secondItem="JFI-Je-ERl" secondAttribute="trailing" priority="900" id="Ea9-CV-zKG"/>
-                            <constraint firstItem="JFI-Je-ERl" firstAttribute="leading" secondItem="LzC-bA-aeY" secondAttribute="leading" id="Xii-Og-5Zj"/>
+                            <constraint firstItem="tAD-Ky-Edz" firstAttribute="trailing" secondItem="JFI-Je-ERl" secondAttribute="trailing" priority="900" id="Ea9-CV-zKG"/>
+                            <constraint firstItem="JFI-Je-ERl" firstAttribute="leading" secondItem="tAD-Ky-Edz" secondAttribute="leading" id="Xii-Og-5Zj"/>
                             <constraint firstItem="JFI-Je-ERl" firstAttribute="top" secondItem="LzC-bA-aeY" secondAttribute="top" id="gGz-tV-X7t"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="tAD-Ky-Edz"/>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
@@ -562,10 +554,6 @@
         <scene sceneID="nVI-DR-H7J">
             <objects>
                 <viewController storyboardIdentifier="NCDatabaseCertificateInfoHeaderViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="LYp-Ti-Zkg" customClass="NCDatabaseCertificateInfoHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="gIU-nr-vbO"/>
-                        <viewControllerLayoutGuide type="bottom" id="qzQ-2A-jPt"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Xem-aD-Zfk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -611,11 +599,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="HRf-2R-bj1" firstAttribute="leading" secondItem="Xem-aD-Zfk" secondAttribute="leading" id="4LG-1M-771"/>
-                            <constraint firstAttribute="trailing" secondItem="HRf-2R-bj1" secondAttribute="trailing" priority="900" id="JSN-kR-W24"/>
+                            <constraint firstItem="HRf-2R-bj1" firstAttribute="leading" secondItem="A8F-Du-Y09" secondAttribute="leading" id="4LG-1M-771"/>
+                            <constraint firstItem="A8F-Du-Y09" firstAttribute="trailing" secondItem="HRf-2R-bj1" secondAttribute="trailing" priority="900" id="JSN-kR-W24"/>
                             <constraint firstAttribute="bottom" secondItem="HRf-2R-bj1" secondAttribute="bottom" priority="900" id="Ru7-on-3TX"/>
                             <constraint firstItem="HRf-2R-bj1" firstAttribute="top" secondItem="Xem-aD-Zfk" secondAttribute="top" id="fKJ-ty-nmn"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="A8F-Du-Y09"/>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
@@ -633,14 +622,11 @@
         <scene sceneID="w8a-f9-ZmR">
             <objects>
                 <viewController storyboardIdentifier="NCDatabaseCertificateInfoViewController" title="Certificate" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JYW-Ra-jdp" customClass="NCDatabaseCertificateInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="7d0-LV-oP4"/>
-                        <viewControllerLayoutGuide type="bottom" id="4Fb-W9-6Qw"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="5vK-0V-RAh" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="7TD-kL-9zr"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bSX-P8-XNz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -655,22 +641,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="zem-KY-Hgm" id="nzD-0w-KJr"/>
-                            <outlet property="delegate" destination="zem-KY-Hgm" id="NL1-vx-6fL"/>
-                        </connections>
                     </tableView>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="zem-KY-Hgm" id="AZB-Xd-LxK"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h1g-RL-Ndk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="zem-KY-Hgm" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="Oou-wa-Jhi" id="Guo-dc-7bg"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="6505" y="2462"/>
         </scene>
@@ -682,22 +656,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="2b7-5T-coX" id="K2m-L4-8RR"/>
-                            <outlet property="delegate" destination="2b7-5T-coX" id="Pi7-cc-9wV"/>
-                        </connections>
                     </tableView>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="2b7-5T-coX" id="kGZ-nJ-N9v"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1o8-67-Fae" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="2b7-5T-coX" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="7lr-XU-b5j" id="QzB-Aj-UO1"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="7225" y="2462"/>
         </scene>
@@ -732,13 +694,13 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T6e-w5-yRM">
                                                             <rect key="frame" x="174.5" y="0.0" width="170.5" height="16"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Quantity:" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8Dy-JP-bct">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" ambiguous="YES" text="Quantity:" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8Dy-JP-bct">
                                                                     <rect key="frame" x="0.0" y="0.0" width="135.5" height="16"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="n2h-rM-TTg">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" ambiguous="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="n2h-rM-TTg">
                                                                     <rect key="frame" x="137.5" y="0.0" width="33" height="16"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -887,14 +849,11 @@
         <scene sceneID="Kjr-px-hsJ">
             <objects>
                 <viewController storyboardIdentifier="NCTypePickerContainerViewContrller" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FnB-sM-78M" customClass="NCTypePickerContainerViewContrller" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="USS-iI-fFq"/>
-                        <viewControllerLayoutGuide type="bottom" id="rEL-Qg-2nh"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Umd-hp-a1v" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="CE8-xj-apD"/>
                     </view>
                     <navigationItem key="navigationItem" id="cfY-d5-6Eo"/>
                 </viewController>
@@ -1037,23 +996,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="HnK-13-Okq" id="IMy-tp-nan"/>
-                            <outlet property="delegate" destination="HnK-13-Okq" id="lpn-H2-WjS"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Solar Systems" id="8k1-8u-VHR"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="HnK-13-Okq" id="V56-cT-Fug"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qDI-x7-JQp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="HnK-13-Okq" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="JIs-ez-GqC" id="xhq-wb-ghA"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="7193" y="4615"/>
         </scene>
@@ -1065,23 +1012,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="BNS-5b-b5n" id="bBP-iH-A4S"/>
-                            <outlet property="delegate" destination="BNS-5b-b5n" id="rBW-mh-NXg"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Solar Systems" id="JhD-ov-rX9"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="BNS-5b-b5n" id="x5b-Og-uHI"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iAV-4U-DkV" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="BNS-5b-b5n" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="HH6-Oa-BbR" id="PBR-Zq-myc"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="7881" y="4614"/>
         </scene>
@@ -1089,14 +1024,11 @@
         <scene sceneID="Rrc-x0-4KA">
             <objects>
                 <viewController storyboardIdentifier="NCLocationPickerContainerViewContrller" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TQl-rd-3tn" customClass="NCLocationPickerContainerViewContrller" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="5og-0g-zZw"/>
-                        <viewControllerLayoutGuide type="bottom" id="RuG-g3-4cI"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="mlY-ze-WdZ" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="jwV-6U-BeQ"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Regions" id="o9t-Rs-agj"/>
@@ -1236,22 +1168,10 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="3L5-mt-bXd" id="eLq-Gf-IcK"/>
-                            <outlet property="delegate" destination="3L5-mt-bXd" id="z4a-ye-rhR"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Incursions" id="7dh-mC-U7y"/>
-                    <connections>
-                        <outlet property="treeController" destination="3L5-mt-bXd" id="dda-HD-X2e"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5vI-bx-qKr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="3L5-mt-bXd" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="VEc-g9-FKK" id="ORi-Ka-IRW"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="5046" y="5388"/>
         </scene>

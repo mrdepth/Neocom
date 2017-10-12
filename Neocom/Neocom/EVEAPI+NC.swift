@@ -661,7 +661,7 @@ protocol NCKillmail: class {
 	func getAttackers() -> [NCAttacker]
 	var killmailID: Int {get}
 	var killmailTime: Date {get}
-	var moonID: Int? {get}
+//	var moonID: Int? {get}
 	var solarSystemID: Int {get}
 	func getVictim() -> NCVictim
 	func getItems() -> [NCItem]?

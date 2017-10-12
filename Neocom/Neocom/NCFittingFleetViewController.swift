@@ -76,6 +76,21 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		route.perform(source: self, sender: treeController.cell(for: node))
 	}
 	
+	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
+		guard let node = node as? NCFleetMemberRow else {return nil}
+		guard let fleet = fleet else {return nil}
+		guard fleet.pilots.count > 1 else {return nil}
+		
+		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (_, _) in
+			guard let engine = node.pilot.engine else {return}
+			engine.perform {
+				fleet.remove(pilot: node.pilot)
+			}
+		}
+		
+		return [deleteAction]
+	}
+	
 	//MARK: - Private
 	
 	private func reload() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -25,7 +26,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ges-dc-9sd" customClass="NCImageView" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" secondItem="ges-dc-9sd" secondAttribute="height" multiplier="1:1" id="I9s-nV-sOF"/>
+                                    <constraint firstAttribute="width" secondItem="ges-dc-9sd" secondAttribute="height" multiplier="1:1" id="I9s-nV-sOF"/>
                                     <constraint firstAttribute="height" constant="32" id="IZn-gZ-8Tg"/>
                                 </constraints>
                             </imageView>
@@ -60,6 +61,7 @@
             <constraints>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="EOm-C2-knA" secondAttribute="trailing" constant="15" id="doV-fs-aam"/>
             </constraints>
+            <viewLayoutGuide key="safeArea" id="QZA-3f-Le8"/>
             <connections>
                 <outlet property="iconView" destination="ges-dc-9sd" id="c2o-5E-uZr"/>
                 <outlet property="subtitleLabel" destination="Zsf-gg-kMK" id="tgq-Bk-42Y"/>

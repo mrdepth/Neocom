@@ -12,6 +12,7 @@ class NCSkillsViewController: UISplitViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
 		preferredDisplayMode = .allVisible
 		preferredPrimaryColumnWidthFraction = 0.5
 		maximumPrimaryColumnWidth = max(UIScreen.main.bounds.width, UIScreen.main.bounds.height) / 2.0

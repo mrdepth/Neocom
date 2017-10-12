@@ -8,6 +8,21 @@
 
 import UIKit
 
+struct NCRSS: Codable {
+	struct Folder: Codable {
+		struct Feed: Codable {
+			let title: String
+			let url: URL
+			let link: String
+		}
+		
+		let title: String
+		let feeds: [Feed]
+	}
+	
+	let folders: [Folder]
+}
+
 class NCFeedsViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
@@ -19,23 +34,25 @@ class NCFeedsViewController: NCTreeViewController {
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
-		let folders = try! JSONSerialization.jsonObject(with: try! Data(contentsOf: Bundle.main.url(forResource: "rssFeeds", withExtension: "json")!), options: []) as! [String: Any]
+		defer {completionHandler()}
 		
-		let sections = (folders["folders"] as? [[String: Any]])?.map { i -> DefaultTreeSection in
-			let rows = (i["feeds"] as? [[String: Any]])?.flatMap { j -> DefaultTreeRow? in
-				guard let s = j["url"] as? String, let url = URL(string: s) else {return nil}
-				guard let title = j["title"] as? String else {return nil}
+		guard let url = Bundle.main.url(forResource: "rssFeeds", withExtension: "json"),
+			let data = try? Data(contentsOf: url),
+			let rss = try? JSONDecoder().decode(NCRSS.self, from: data)
+			else {return}
+		
+		let sections = rss.folders.map { i -> DefaultTreeSection in
+			let rows = i.feeds.map { j -> DefaultTreeRow in
 				return DefaultTreeRow(image: #imageLiteral(resourceName: "rss"),
-				                      title: title,
-				                      subtitle: j["link"] as? String,
+				                      title: j.title,
+				                      subtitle: j.link,
 				                      accessoryType: .disclosureIndicator,
-				                      route: Router.RSS.Channel(url: url, title: title))
+				                      route: Router.RSS.Channel(url: j.url, title: j.title))
 			}
-			let title = (i["title"] as? String)?.uppercased()
+			
+			let title = i.title.uppercased()
 			return DefaultTreeSection(nodeIdentifier: title, title: title, children: rows)
 		}
-		
-		treeController?.content = RootNode(sections ?? [], collapseIdentifier: "NCFeedsViewController")
-		completionHandler()
+		treeController?.content = RootNode(sections, collapseIdentifier: "NCFeedsViewController")
 	}
 }

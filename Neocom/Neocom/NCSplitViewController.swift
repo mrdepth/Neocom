@@ -34,18 +34,18 @@ class NCSplitViewController: UISplitViewController, UISplitViewControllerDelegat
 		}
 	}
 	
-	func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
-		if traitCollection.userInterfaceIdiom == .phone && viewControllers.count == 2 {
-			setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: displayMode == .primaryHidden ? traitCollection.horizontalSizeClass : .compact), forChildViewController: viewControllers[1])
-		}
-	}
-	
 	func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
 		(primaryViewController as? UINavigationController)?.isNavigationBarHidden = secondaryViewController is NCSplashScreenViewController
 		(secondaryViewController as? UINavigationController)?.viewControllers.first?.navigationItem.leftBarButtonItem = nil
 		return secondaryViewController is NCSplashScreenViewController
 	}
-	
+
+/*	func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
+		if traitCollection.userInterfaceIdiom == .phone && viewControllers.count == 2 {
+			setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: displayMode == .primaryHidden ? traitCollection.horizontalSizeClass : .compact), forChildViewController: viewControllers[1])
+		}
+	}
+
 	public func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
 		(viewControllers[0] as? UINavigationController)?.isNavigationBarHidden = true
 		(detailViewController as? UINavigationController)?.viewControllers.first?.navigationItem.leftBarButtonItem = displayModeButtonItem
@@ -72,6 +72,6 @@ class NCSplitViewController: UISplitViewController, UISplitViewControllerDelegat
 		if traitCollection.userInterfaceIdiom == .phone {
 			setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .compact), forChildViewController: viewControllers[1])
 		}
-	}
+	}*/
 	
 }

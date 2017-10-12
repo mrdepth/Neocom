@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -12,14 +14,11 @@
         <scene sceneID="FC5-XY-ocy">
             <objects>
                 <viewController storyboardIdentifier="NCKillmailsPageViewController" automaticallyAdjustsScrollViewInsets="NO" id="Iid-cs-F8D" customClass="NCKillmailsPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="TJe-Zp-Rta"/>
-                        <viewControllerLayoutGuide type="bottom" id="9yR-Pd-wFk"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="FsB-LK-oAj" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="Q4t-uE-9V3"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Kill Log" id="UfO-5U-SuJ"/>
@@ -33,7 +32,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCKillmailsPageNavigationController" id="xr4-o3-Dw1" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="cub-ha-jKQ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -71,10 +70,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="9L9-HM-obd" id="ifI-I6-mn0"/>
-                            <outlet property="delegate" destination="9L9-HM-obd" id="jAq-sN-fqw"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Kill Report" id="wKx-LB-C4l">
                         <barButtonItem key="rightBarButtonItem" title="Fitting" id="A0Q-gV-EhP">
@@ -84,16 +79,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="9L9-HM-obd" id="7Pu-XG-gSX"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oxN-fQ-3gt" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="9L9-HM-obd" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="t9C-PA-gJv" id="h2h-Cf-okh"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="-1911" y="-343"/>
         </scene>
@@ -102,7 +89,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCZKillboardNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="tGN-vN-K5N" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="djp-JQ-zbM">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -144,23 +131,13 @@
                                 <outlet property="delegate" destination="YtO-j7-ZRR" id="n7e-h2-axz"/>
                             </connections>
                         </searchBar>
-                        <connections>
-                            <outlet property="dataSource" destination="USC-38-bEv" id="iOv-iq-eIa"/>
-                            <outlet property="delegate" destination="USC-38-bEv" id="Azg-sK-jaR"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Pilots" id="yKv-fP-k4t"/>
                     <connections>
                         <outlet property="searchBar" destination="zRS-qx-Crd" id="azm-rG-DO7"/>
-                        <outlet property="treeController" destination="USC-38-bEv" id="hm7-lG-YsY"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lN0-wM-Tm3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="USC-38-bEv" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="M3M-Gf-G00" id="f57-ip-MdB"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="-2502" y="1254"/>
         </scene>
@@ -172,10 +149,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="e92-e3-58J" id="5xa-HV-a9S"/>
-                            <outlet property="delegate" destination="e92-e3-58J" id="seF-kV-Mn4"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Categories" id="lOS-lt-7od">
                         <barButtonItem key="leftBarButtonItem" title="Close" id="LrS-Al-ZgT">
@@ -184,16 +157,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="treeController" destination="e92-e3-58J" id="ybT-Q4-jsG"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sOO-4i-1tb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="e92-e3-58J" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="PeF-dC-FOg" id="XeX-zt-Syy"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="-3361" y="505"/>
         </scene>
@@ -205,23 +170,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="fV0-BE-1E0" id="qcG-DU-bJf"/>
-                            <outlet property="delegate" destination="fV0-BE-1E0" id="XMl-e4-8PP"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Groups" id="4fe-F6-Nmw"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="fV0-BE-1E0" id="pUh-Xz-27J"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P5f-of-WYF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="fV0-BE-1E0" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="1ra-zD-jzz" id="f1q-sy-IIr"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="-2628" y="505"/>
         </scene>
@@ -230,7 +183,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCZKillboardTypePickerViewController" id="H1g-SK-mKc" customClass="NCZKillboardTypePickerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="aJJ-qj-EZW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -249,23 +202,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="TC8-Ql-9cT" id="5bk-mc-xxI"/>
-                            <outlet property="delegate" destination="TC8-Ql-9cT" id="S5B-AM-vLP"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Types" id="V4e-Jk-pLO"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <connections>
-                        <outlet property="treeController" destination="TC8-Ql-9cT" id="nNy-5g-1Jv"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5br-O1-iYm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="TC8-Ql-9cT" customClass="TreeController" customModule="Neocom" customModuleProvider="target">
-                    <connections>
-                        <outlet property="tableView" destination="bRD-qK-D4a" id="Yft-00-ehD"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="-1911" y="505"/>
         </scene>
@@ -310,14 +251,11 @@
         <scene sceneID="pv3-X8-kcp">
             <objects>
                 <viewController storyboardIdentifier="NCZKillboardSummaryViewController" automaticallyAdjustsScrollViewInsets="NO" id="CWd-c5-Yot" customClass="NCZKillboardSummaryViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="qdv-oD-UJP"/>
-                        <viewControllerLayoutGuide type="bottom" id="pVr-XW-0DY"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="i5K-5y-LO3" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="g3M-9w-B74"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Kill Report" id="nOk-Nt-Jlz">

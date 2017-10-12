@@ -31,58 +31,58 @@ class NCZKillboardGroupRow: NCDatabaseGroupRow {
 }
 
 
-class NCZKillboardGroupsViewController: UITableViewController, UISearchResultsUpdating, TreeControllerDelegate {
-	@IBOutlet var treeController: TreeController!
+class NCZKillboardGroupsViewController: NCTreeViewController, NCSearchableViewController {
 	var category: NCDBInvCategory?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact])
-		treeController.delegate = self
 		
-		setupSearchController()
+		setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCZKillboardTypesViewController"))
 		title = category?.categoryName
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if treeController.content == nil {
+		if treeController?.content == nil {
 			let request = NSFetchRequest<NCDBInvGroup>(entityName: "InvGroup")
 			request.sortDescriptors = [NSSortDescriptor(key: "published", ascending: false), NSSortDescriptor(key: "groupName", ascending: true)]
 			request.predicate = NSPredicate(format: "category == %@ AND published == TRUE AND types.@count > 0", category!)
 			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
 			
-			treeController.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCZKillboardGroupRow.self)
+			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCZKillboardGroupRow.self)
 			
 		}
 	}
 	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
-			treeController.content = nil
+			treeController?.content = nil
 		}
 	}
 	
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCDatabaseGroupRow else {return}
 		Router.KillReports.Types(group: row.object).perform(source: self, sender: treeController.cell(for: node))
 	}
 	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
+		super.treeController(treeController, accessoryButtonTappedWithNode: node)
 		guard let row = node as? NCDatabaseGroupRow else {return}
 		guard let picker = (navigationController as? NCZKillboardTypePickerViewController) ?? presentingViewController?.navigationController as? NCZKillboardTypePickerViewController else {return}
 		picker.completionHandler(picker, row.object)
 
 	}
 	
-	//MARK: UISearchResultsUpdating
+	//MARK: NCSearchableViewController
 	
+	var searchController: UISearchController?
+
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCZKillboardTypesViewController else {return}
@@ -96,19 +96,4 @@ class NCZKillboardGroupsViewController: UITableViewController, UISearchResultsUp
 		controller.reloadData()
 	}
 	
-	//MARK: Private
-	
-	private var searchController: UISearchController?
-	
-	private func setupSearchController() {
-		searchController = UISearchController(searchResultsController: self.storyboard?.instantiateViewController(withIdentifier: "NCZKillboardTypesViewController"))
-		searchController?.searchBar.searchBarStyle = UISearchBarStyle.default
-		searchController?.searchResultsUpdater = self
-		searchController?.searchBar.barStyle = UIBarStyle.black
-		searchController?.hidesNavigationBarDuringPresentation = false
-		tableView.backgroundView = UIView()
-		tableView.tableHeaderView = searchController?.searchBar
-		definesPresentationContext = true
-		
-	}
 }

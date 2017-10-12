@@ -88,6 +88,23 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 		}
 	}
 	
+	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
+		guard let node = node as? NCFittingDroneRow else {return nil}
+		
+		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (_, _) in
+			let drones = node.drones
+			guard let engine = drones.first?.engine else {return}
+			engine.perform {
+				guard let ship = drones.first?.owner as? NCFittingShip else {return}
+				drones.forEach {
+					ship.removeDrone($0)
+				}
+			}
+		}
+		
+		return [deleteAction]
+	}
+	
 	//MARK: - Private
 	
 	private func update() {

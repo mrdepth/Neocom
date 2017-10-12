@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -95,7 +97,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCCharacterSheetNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vqN-JQ-mU2" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="9nY-0m-9Ip">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -131,7 +133,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCJumpClonesNavigationController" id="Xy3-R2-Rhg" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="m59-Ej-Dwk">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -147,7 +149,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NCSkillQueueViewController" id="nG7-Ib-3hW" customClass="NCSkillQueueViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="tkU-W3-1fP" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>
@@ -168,7 +170,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCSkillQueueNavigationController" id="Dyn-al-fUt" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Bpw-0c-nZj">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -183,14 +185,11 @@
         <scene sceneID="ahG-u5-4cE">
             <objects>
                 <viewController storyboardIdentifier="NCSkillsPageViewController" title="Skills" automaticallyAdjustsScrollViewInsets="NO" id="xT2-JQ-e71" customClass="NCSkillsPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="o77-u5-p1Z"/>
-                        <viewControllerLayoutGuide type="bottom" id="rzT-iW-dIF"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ifb-Ym-jmB" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="Tc7-zr-AdF"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1XD-QE-PKS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -218,16 +217,12 @@
         <scene sceneID="4mM-IN-la7">
             <objects>
                 <viewController storyboardIdentifier="NCSkillsContainerViewController" id="QPL-C0-XeF" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="rNl-GI-Cpc"/>
-                        <viewControllerLayoutGuide type="bottom" id="wdO-u2-LgQ"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6vB-I1-2cA" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y18-Oh-XGw">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <connections>
                                     <segue destination="3ca-0i-5xO" kind="embed" id="Vzu-i7-TSi"/>
                                 </connections>
@@ -235,12 +230,14 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="y18-Oh-XGw" firstAttribute="leading" secondItem="6vB-I1-2cA" secondAttribute="leading" id="AAb-DI-Tcv"/>
-                            <constraint firstItem="wdO-u2-LgQ" firstAttribute="top" secondItem="y18-Oh-XGw" secondAttribute="bottom" id="DP9-Mj-ecL"/>
-                            <constraint firstAttribute="trailing" secondItem="y18-Oh-XGw" secondAttribute="trailing" id="Esj-g7-1nv"/>
-                            <constraint firstItem="y18-Oh-XGw" firstAttribute="top" secondItem="rNl-GI-Cpc" secondAttribute="bottom" id="vlU-aC-ajS"/>
+                            <constraint firstItem="y18-Oh-XGw" firstAttribute="leading" secondItem="BkX-gh-TeB" secondAttribute="leading" id="AAb-DI-Tcv"/>
+                            <constraint firstItem="BkX-gh-TeB" firstAttribute="bottom" secondItem="y18-Oh-XGw" secondAttribute="bottom" id="DP9-Mj-ecL"/>
+                            <constraint firstItem="BkX-gh-TeB" firstAttribute="trailing" secondItem="y18-Oh-XGw" secondAttribute="trailing" id="Esj-g7-1nv"/>
+                            <constraint firstItem="y18-Oh-XGw" firstAttribute="top" secondItem="BkX-gh-TeB" secondAttribute="top" id="vlU-aC-ajS"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="BkX-gh-TeB"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="a39-Bf-SkM"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BI0-1R-ZRf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -263,14 +260,11 @@
         <scene sceneID="nD4-EK-Uu2">
             <objects>
                 <viewController storyboardIdentifier="NCMailPageViewController" automaticallyAdjustsScrollViewInsets="NO" id="cRP-gC-plC" customClass="NCMailPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="sp4-ij-5IN"/>
-                        <viewControllerLayoutGuide type="bottom" id="Sc9-Nl-ptp"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="UJp-GE-qMw" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="6aG-Lh-9mP"/>
                     </view>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="azY-oH-jMb"/>
@@ -291,7 +285,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCMailNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" toolbarHidden="NO" id="lH7-l7-RYu" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="3jJ-Tt-66W">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="x5p-fM-4re">
@@ -345,10 +339,6 @@
         <scene sceneID="rN1-2A-Hm8">
             <objects>
                 <viewController storyboardIdentifier="NCMailBodyViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fPU-Id-8NR" customClass="NCMailBodyViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="cZ9-pW-MBf"/>
-                        <viewControllerLayoutGuide type="bottom" id="W6h-7a-pUz"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="JdG-7c-Spq" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -446,11 +436,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="LDO-wr-5J8" firstAttribute="leading" secondItem="JdG-7c-Spq" secondAttribute="leading" id="6kE-Qp-AbD"/>
-                            <constraint firstItem="W6h-7a-pUz" firstAttribute="top" secondItem="LDO-wr-5J8" secondAttribute="bottom" id="CiP-fK-8r5"/>
-                            <constraint firstAttribute="trailing" secondItem="LDO-wr-5J8" secondAttribute="trailing" id="DFr-bq-AWg"/>
+                            <constraint firstItem="LDO-wr-5J8" firstAttribute="leading" secondItem="6hh-8K-AZa" secondAttribute="leading" id="6kE-Qp-AbD"/>
+                            <constraint firstItem="6hh-8K-AZa" firstAttribute="bottom" secondItem="LDO-wr-5J8" secondAttribute="bottom" id="CiP-fK-8r5"/>
+                            <constraint firstItem="6hh-8K-AZa" firstAttribute="trailing" secondItem="LDO-wr-5J8" secondAttribute="trailing" id="DFr-bq-AWg"/>
                             <constraint firstItem="LDO-wr-5J8" firstAttribute="top" secondItem="JdG-7c-Spq" secondAttribute="top" id="gQA-te-rgW"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="6hh-8K-AZa"/>
                     </view>
                     <navigationItem key="navigationItem" title="Mail" id="yf1-TF-s5U">
                         <barButtonItem key="rightBarButtonItem" title="Reply" id="UeT-Qr-9KS">
@@ -477,7 +468,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCNewMailNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8bS-pz-Cp6" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ven-dH-ach">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -493,7 +484,7 @@
             <objects>
                 <tableViewController modalPresentationStyle="overCurrentContext" id="zam-Il-kne" customClass="NCContactsSearchResultViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="w8a-oR-jqW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="635"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="571"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>
@@ -507,10 +498,6 @@
         <scene sceneID="25x-XE-cj5">
             <objects>
                 <viewController storyboardIdentifier="NCNewMailViewController" definesPresentationContext="YES" id="noG-GH-n4m" customClass="NCNewMailViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Xkl-RQ-woB"/>
-                        <viewControllerLayoutGuide type="bottom" id="0p5-Sj-xle"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="awn-nA-eRG" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -625,17 +612,18 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="unu-vj-1E6" firstAttribute="top" secondItem="9nX-y8-EQq" secondAttribute="bottom" priority="750" id="7DI-Rg-R8a"/>
-                            <constraint firstAttribute="trailing" secondItem="jN8-Iq-4fu" secondAttribute="trailing" id="Jcm-qr-Jtn"/>
+                            <constraint firstItem="KnL-ao-wAr" firstAttribute="trailing" secondItem="jN8-Iq-4fu" secondAttribute="trailing" id="Jcm-qr-Jtn"/>
                             <constraint firstItem="9nX-y8-EQq" firstAttribute="top" secondItem="Fum-Ju-umX" secondAttribute="bottom" id="VXA-0y-e98"/>
                             <constraint firstItem="unu-vj-1E6" firstAttribute="top" secondItem="jN8-Iq-4fu" secondAttribute="bottom" id="XZ0-dc-Z2h"/>
-                            <constraint firstItem="jN8-Iq-4fu" firstAttribute="leading" secondItem="awn-nA-eRG" secondAttribute="leading" id="YuT-Vv-81X"/>
-                            <constraint firstItem="unu-vj-1E6" firstAttribute="leading" secondItem="awn-nA-eRG" secondAttribute="leading" id="chI-um-ckb"/>
-                            <constraint firstAttribute="trailing" secondItem="unu-vj-1E6" secondAttribute="trailing" id="jyF-1i-VAd"/>
-                            <constraint firstAttribute="trailing" secondItem="9nX-y8-EQq" secondAttribute="trailing" id="kCF-aD-0hn"/>
-                            <constraint firstItem="9nX-y8-EQq" firstAttribute="leading" secondItem="awn-nA-eRG" secondAttribute="leading" id="lQu-HP-B3V"/>
+                            <constraint firstItem="jN8-Iq-4fu" firstAttribute="leading" secondItem="KnL-ao-wAr" secondAttribute="leading" id="YuT-Vv-81X"/>
+                            <constraint firstItem="unu-vj-1E6" firstAttribute="leading" secondItem="KnL-ao-wAr" secondAttribute="leading" id="chI-um-ckb"/>
+                            <constraint firstItem="KnL-ao-wAr" firstAttribute="trailing" secondItem="unu-vj-1E6" secondAttribute="trailing" id="jyF-1i-VAd"/>
+                            <constraint firstItem="KnL-ao-wAr" firstAttribute="trailing" secondItem="9nX-y8-EQq" secondAttribute="trailing" id="kCF-aD-0hn"/>
+                            <constraint firstItem="9nX-y8-EQq" firstAttribute="leading" secondItem="KnL-ao-wAr" secondAttribute="leading" id="lQu-HP-B3V"/>
                             <constraint firstItem="jN8-Iq-4fu" firstAttribute="top" secondItem="awn-nA-eRG" secondAttribute="top" id="ljU-tg-yeu"/>
-                            <constraint firstItem="0p5-Sj-xle" firstAttribute="top" secondItem="unu-vj-1E6" secondAttribute="bottom" id="qHr-j8-ZJ1"/>
+                            <constraint firstItem="KnL-ao-wAr" firstAttribute="bottom" secondItem="unu-vj-1E6" secondAttribute="bottom" id="qHr-j8-ZJ1"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="KnL-ao-wAr"/>
                     </view>
                     <navigationItem key="navigationItem" title="New Message" id="nVX-D5-DDH">
                         <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="3QV-gj-PN4">
@@ -684,6 +672,7 @@
                         <constraint firstItem="c3c-9Q-V48" firstAttribute="top" secondItem="jYB-Gi-hvV" secondAttribute="top" id="cOq-iF-WHy"/>
                         <constraint firstAttribute="trailing" secondItem="c3c-9Q-V48" secondAttribute="trailing" constant="8" id="rZQ-hy-2lz"/>
                     </constraints>
+                    <viewLayoutGuide key="safeArea" id="4MN-yL-1Ja"/>
                 </view>
                 <tapGestureRecognizer id="yQq-PW-9g9">
                     <connections>
@@ -697,14 +686,11 @@
         <scene sceneID="ghU-T5-Pcx">
             <objects>
                 <viewController storyboardIdentifier="NCMailAttachmentsViewController" automaticallyAdjustsScrollViewInsets="NO" id="m4q-YZ-B6d" customClass="NCMailAttachmentsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="bfB-hS-wnw"/>
-                        <viewControllerLayoutGuide type="bottom" id="Gmd-PE-Vt8"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="13o-jg-DC8" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="WWU-Sy-Tec"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Attach" id="xtL-C7-KQZ"/>
@@ -763,7 +749,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCCalendarNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6b1-8R-Ued" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="F4e-lb-XNe">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -794,22 +780,22 @@
                                             <rect key="frame" x="15" y="4" width="327" height="35.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ERm-cf-16C">
-                                                    <rect key="frame" x="0.0" y="9" width="286" height="18"/>
+                                                    <rect key="frame" x="0.0" y="9" width="0.0" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Izp-Sc-xeS">
-                                                    <rect key="frame" x="294" y="2" width="33" height="32"/>
+                                                    <rect key="frame" x="-15" y="2" width="0.0" height="32"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="900" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Nd-Wi-GF8">
-                                                            <rect key="frame" x="0.0" y="0.0" width="33" height="16"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="16"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="900" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G9K-vZ-PZn">
-                                                            <rect key="frame" x="0.0" y="16" width="33" height="16"/>
+                                                            <rect key="frame" x="0.0" y="16" width="0.0" height="16"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -849,10 +835,6 @@
         <scene sceneID="EzC-YP-pKw">
             <objects>
                 <viewController storyboardIdentifier="NCEventViewController" hidesBottomBarWhenPushed="YES" id="9Ia-Fw-c9j" customClass="NCEventViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="rpf-qB-67z"/>
-                        <viewControllerLayoutGuide type="bottom" id="m4M-ei-Sn7"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ILD-NG-lsS" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -939,11 +921,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="m4M-ei-Sn7" firstAttribute="top" secondItem="tVt-zS-Jjf" secondAttribute="bottom" id="82O-vY-u8d"/>
-                            <constraint firstItem="tVt-zS-Jjf" firstAttribute="leading" secondItem="ILD-NG-lsS" secondAttribute="leading" id="VvM-JG-R5y"/>
-                            <constraint firstAttribute="trailing" secondItem="tVt-zS-Jjf" secondAttribute="trailing" id="jpJ-3v-Rrh"/>
+                            <constraint firstItem="fLR-0g-FYu" firstAttribute="bottom" secondItem="tVt-zS-Jjf" secondAttribute="bottom" id="82O-vY-u8d"/>
+                            <constraint firstItem="tVt-zS-Jjf" firstAttribute="leading" secondItem="fLR-0g-FYu" secondAttribute="leading" id="VvM-JG-R5y"/>
+                            <constraint firstItem="fLR-0g-FYu" firstAttribute="trailing" secondItem="tVt-zS-Jjf" secondAttribute="trailing" id="jpJ-3v-Rrh"/>
                             <constraint firstItem="tVt-zS-Jjf" firstAttribute="top" secondItem="ILD-NG-lsS" secondAttribute="top" id="t8i-D0-zoE"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="fLR-0g-FYu"/>
                     </view>
                     <navigationItem key="navigationItem" title="Event" id="biv-Pi-Y2I"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
@@ -964,7 +947,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCWealthNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Znt-P8-sTO" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="jQb-q5-ikj">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>

@@ -199,6 +199,25 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 		}
 	}
 	
+	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
+		guard let item = (node as? NCImplantRow)?.implant ?? (node as? NCBoosterRow)?.booster else {return nil}
+		guard let engine = engine else {return nil}
+		guard let pilot = self.fleet?.active else {return nil}
+		
+		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (_, _) in
+			engine.perform {
+				if let implant = item as? NCFittingImplant {
+					pilot.removeImplant(implant)
+				}
+				else if let booster = item as? NCFittingBooster {
+					pilot.removeBooster(booster)
+				}
+			}
+		}
+		
+		return [deleteAction]
+	}
+	
 	//MARK: - Private
 	
 	private func reload() {

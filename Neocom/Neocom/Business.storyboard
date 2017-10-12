@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -14,7 +15,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCAssetsNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4Ip-1V-BYR" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="mzB-JT-ge1">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -64,7 +65,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCMarketOrdersNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="obF-Wx-WoD" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ZvA-Ib-qFe">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -98,23 +99,23 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="345" height="53.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wp2-cu-aUz" customClass="NCImageView" customModule="Neocom" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="11" width="32" height="32"/>
+                                                            <rect key="frame" x="0.0" y="11" width="0.0" height="32"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" relation="lessThanOrEqual" secondItem="Wp2-cu-aUz" secondAttribute="height" multiplier="1:1" id="KMv-Su-A55"/>
                                                                 <constraint firstAttribute="height" constant="32" id="vC5-Uc-hvo"/>
                                                             </constraints>
                                                         </imageView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="PMy-UJ-hSg">
-                                                            <rect key="frame" x="40" y="10" width="305" height="34"/>
+                                                            <rect key="frame" x="-15" y="10" width="0.0" height="34"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="S0b-3C-5vg">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="305" height="18"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="0.0" height="18"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vYa-ig-5ss">
-                                                                    <rect key="frame" x="0.0" y="18" width="305" height="16"/>
+                                                                    <rect key="frame" x="0.0" y="18" width="0.0" height="16"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -235,7 +236,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCIndustryNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="64b-XU-AaK" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Soi-MI-8wJ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -269,23 +270,23 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="345" height="65"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rj9-1O-xKU" customClass="NCImageView" customModule="Neocom" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="16.5" width="32" height="32"/>
+                                                            <rect key="frame" x="0.0" y="16.5" width="0.0" height="32"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" relation="lessThanOrEqual" secondItem="Rj9-1O-xKU" secondAttribute="height" multiplier="1:1" id="GFZ-di-mku"/>
                                                                 <constraint firstAttribute="height" constant="32" id="nXa-w7-x8e"/>
                                                             </constraints>
                                                         </imageView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="buF-k3-Y7x">
-                                                            <rect key="frame" x="40" y="15.5" width="305" height="34"/>
+                                                            <rect key="frame" x="-15" y="15.5" width="0.0" height="34"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="77W-Hc-lhw">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="305" height="18"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="0.0" height="18"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fz-qF-ufe">
-                                                                    <rect key="frame" x="0.0" y="18" width="305" height="16"/>
+                                                                    <rect key="frame" x="0.0" y="18" width="0.0" height="16"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -398,7 +399,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCWalletJournalNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="iZJ-Zb-kOg" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Uy6-d6-pDF">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -432,13 +433,13 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="345" height="18"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="IDD-c2-QPN">
-                                                            <rect key="frame" x="0.0" y="0.0" width="304" height="18"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="18"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OhW-pN-qe3">
-                                                            <rect key="frame" x="312" y="0.0" width="33" height="18"/>
+                                                            <rect key="frame" x="-15" y="0.0" width="0.0" height="18"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -503,7 +504,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCWalletTransactionsNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="qxv-oF-gNl" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ZA5-bh-0Pk">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -537,23 +538,23 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="345" height="49.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Hs-ol-Xhn" customClass="NCImageView" customModule="Neocom" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="9" width="32" height="32"/>
+                                                            <rect key="frame" x="0.0" y="9" width="0.0" height="32"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" relation="lessThanOrEqual" secondItem="6Hs-ol-Xhn" secondAttribute="height" multiplier="1:1" id="FtF-T7-p7l"/>
                                                                 <constraint firstAttribute="height" constant="32" id="dKF-OU-ec1"/>
                                                             </constraints>
                                                         </imageView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="FHx-vd-BhC">
-                                                            <rect key="frame" x="40" y="8" width="305" height="34"/>
+                                                            <rect key="frame" x="-15" y="8" width="0.0" height="34"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mzc-Un-ZrJ">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="305" height="18"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="0.0" height="18"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HU3-zs-4fc">
-                                                                    <rect key="frame" x="0.0" y="18" width="305" height="16"/>
+                                                                    <rect key="frame" x="0.0" y="18" width="0.0" height="16"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -651,7 +652,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCContractsNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2OU-fM-lh4" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bCE-IQ-hJ7">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -771,7 +772,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NCPlanetaryNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ZeI-Bh-gNh" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="rf2-Ke-yMx">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>

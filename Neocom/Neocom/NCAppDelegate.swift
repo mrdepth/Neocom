@@ -161,11 +161,13 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		searchBar.barTintColor = UIColor.background
 		searchBar.tintColor = UIColor.white
 		searchBar.setSearchFieldBackgroundImage(UIImage.searchFieldBackgroundImage(color: UIColor.separator), for: UIControlState.normal)
-		searchBar.backgroundImage = UIImage.image(color: UIColor.background)
+//		searchBar.backgroundImage = UIImage.image(color: UIColor.background)
 		
 		let toolbar = UIToolbar.appearance(whenContainedInInstancesOf: [NCNavigationController.self])
 		toolbar.tintColor = UIColor.white
 		toolbar.barStyle = .black
+		toolbar.barTintColor = UIColor.background
+		toolbar.isTranslucent = false
 	}
 
 }

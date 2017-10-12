@@ -151,18 +151,24 @@ class NCFacilityRow: TreeRow {
 		typeID = facility.typeID
 		facilityName = facility.facilityName
 		identifier = facility.identifier
+		let isExpanded: Bool
 		switch facility {
 		case is NCFittingExtractorControlUnit:
 			sortDescriptor = "0\(facility.typeName)\(facilityName)"
+			isExpanded = true
 		case is NCFittingStorageFacility:
 			sortDescriptor = "1\(facility.typeName)\(facilityName)"
+			isExpanded = false
 		case is NCFittingIndustryFacility:
 			sortDescriptor = "2\(facility.typeName)\(facilityName)"
+			isExpanded = false
 		default:
 			sortDescriptor = "3\(facility.typeName)\(facilityName)"
+			isExpanded = false
 		}
 		super.init(prototype: prototype, accessoryButtonRoute: Router.Database.TypeInfo(facility.typeID))
 		isExpandable = true
+		self.isExpanded = isExpanded
 	}
 	
 	override func configure(cell: UITableViewCell) {

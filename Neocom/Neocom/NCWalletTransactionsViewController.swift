@@ -15,16 +15,45 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 		super.viewDidLoad()
 		accountChangeAction = .reload
 		tableView.register([Prototype.NCHeaderTableViewCell.default])
+		
+		let label = NCNavigationItemTitleLabel(frame: CGRect(origin: .zero, size: .zero))
+		label.set(title: NSLocalizedString("Wallet Transactions", comment: ""), subtitle: nil)
+		navigationItem.titleView = label
+
 	}
 	
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
-		dataManager.walletTransactions { result in
-			self.walletTransactions = result
-			completionHandler([result.cacheRecord].flatMap {$0})
+		let progress = Progress(totalUnitCount: 2)
+		
+		let dispatchGroup = DispatchGroup()
+		
+		progress.perform {
+			dispatchGroup.enter()
+			dataManager.walletTransactions { result in
+				self.walletTransactions = result
+				dispatchGroup.leave()
+			}
+		}
+		
+		progress.perform {
+			dispatchGroup.enter()
+			dataManager.walletBalance { result in
+				self.walletBalance = result
+				dispatchGroup.leave()
+			}
+		}
+		
+		dispatchGroup.notify(queue: .main) {
+			completionHandler([self.walletTransactions?.cacheRecord, self.walletBalance?.cacheRecord].flatMap {$0})
 		}
 	}
 
 	override func updateContent(completionHandler: @escaping () -> Void) {
+		if let value = walletBalance?.value {
+			let label = navigationItem.titleView as? NCNavigationItemTitleLabel
+			label?.set(title: NSLocalizedString("Wallet Transactions", comment: ""), subtitle: NCUnitFormatter.localizedString(from: value, unit: .isk, style: .full))
+		}
+
 		if let value = walletTransactions?.value {
 			tableView.backgroundView = nil
 			let progress = Progress(totalUnitCount: 3)
@@ -117,5 +146,6 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 	}
 	
 	private var walletTransactions: NCCachedResult<[ESI.Wallet.Transaction]>?
+	private var walletBalance: NCCachedResult<Float>?
 	
 }

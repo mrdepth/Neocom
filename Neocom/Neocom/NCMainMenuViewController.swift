@@ -223,6 +223,16 @@ class NCServerStatusRow: NCAccountDataMenuRow<ESI.Status.ServerStatus> {
 //				self.treeController?.reloadCells(for: [self], with: .none)
 //			}
 		}
+		
+		if result == nil && !isLoading {
+			isLoading = true
+			NCDataManager(account: NCAccount.current).serverStatus { result in
+				self.result = result
+				self.isLoading = false
+				self.treeController?.reloadCells(for: [self], with: .none)
+				self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.timerTick(_:)), userInfo: nil, repeats: true)
+			}
+		}
 	}
 	
 	deinit {
@@ -235,28 +245,21 @@ class NCServerStatusRow: NCAccountDataMenuRow<ESI.Status.ServerStatus> {
 		}
 	}
 	
-	override func willDisplay(cell: UITableViewCell) {
-		if (result == nil || result?.cacheRecord?.isExpired == true) && !isLoading {
-			isLoading = true
-			NCDataManager(account: NCAccount.current).serverStatus { result in
-				self.result = result
-				self.isLoading = false
-				self.treeController?.reloadCells(for: [self], with: .none)
-			}
-		}
-		timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerTick(_:)), userInfo: cell, repeats: true)
-	}
+//	override func willDisplay(cell: UITableViewCell) {
+//		timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerTick(_:)), userInfo: cell, repeats: true)
+//	}
 	
 	@objc func timerTick(_ timer: Timer) {
-		guard let cell = timer.userInfo as? NCDefaultTableViewCell else {return}
+		guard let cell = treeController?.cell(for: self) as? NCDefaultTableViewCell else {return}
+//		guard let cell = timer.userInfo as? NCDefaultTableViewCell else {return}
 		cell.subtitleLabel?.text = NSLocalizedString("EVE Time: ", comment: "") + dateFormatter.string(from: Date())
 	}
 	
-	override func didEndDisplaying(cell: UITableViewCell) {
-		if (timer?.userInfo as? UITableViewCell) == cell {
-			timer = nil
-		}
-	}
+//	override func didEndDisplaying(cell: UITableViewCell) {
+//		if (timer?.userInfo as? UITableViewCell) == cell {
+//			timer = nil
+//		}
+//	}
 }
 
 

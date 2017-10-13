@@ -357,6 +357,8 @@
 		12EFE7F61E40C840007BF69B /* NCSheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EFE7F51E40C840007BF69B /* NCSheetPresentationController.swift */; };
 		12F8FF9F1E5DBC58008F79D5 /* NCFittingShipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */; };
 		12FC3CC81E13F4A400B7744E /* NCDatabaseTypeMasteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FC3CC71E13F4A400B7744E /* NCDatabaseTypeMasteryViewController.swift */; };
+		12FE20FD1F8F9F25004C021E /* NCLoyaltyPointsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FE20FC1F8F9F25004C021E /* NCLoyaltyPointsViewController.swift */; };
+		12FE20FF1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FE20FE1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift */; };
 		12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */; };
 		12FF4D401E33A5DB00A8BAD4 /* NCResourceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */; };
 /* End PBXBuildFile section */
@@ -798,6 +800,8 @@
 		12EFE7F51E40C840007BF69B /* NCSheetPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSheetPresentationController.swift; sourceTree = "<group>"; };
 		12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingShipsViewController.swift; sourceTree = "<group>"; };
 		12FC3CC71E13F4A400B7744E /* NCDatabaseTypeMasteryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseTypeMasteryViewController.swift; sourceTree = "<group>"; };
+		12FE20FC1F8F9F25004C021E /* NCLoyaltyPointsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLoyaltyPointsViewController.swift; sourceTree = "<group>"; };
+		12FE20FE1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLoyaltyStoreOffersViewController.swift; sourceTree = "<group>"; };
 		12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCTypePickerRecentViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCResourceLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1008,6 +1012,8 @@
 				12D20EAD1EBC867E00BEC926 /* NCWealthAssetsViewController.swift */,
 				12D20EAF1EBCB10E00BEC926 /* NCCalendarViewController.swift */,
 				12C37D271EFA7E9B0070F055 /* NCEventViewController.swift */,
+				12FE20FC1F8F9F25004C021E /* NCLoyaltyPointsViewController.swift */,
+				12FE20FE1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift */,
 			);
 			name = Character;
 			sourceTree = "<group>";
@@ -1689,6 +1695,7 @@
 				123AEFF51E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift in Sources */,
 				12E9321A1E6ACEC40033D71A /* NCFittingTargetsViewController.swift in Sources */,
 				125AB8141E42033200B8A2A8 /* NCFittingAmmoViewController.swift in Sources */,
+				12FE20FD1F8F9F25004C021E /* NCLoyaltyPointsViewController.swift in Sources */,
 				128C5FA01F4AE55C0038FE7D /* NCFittingImplantSetViewController.swift in Sources */,
 				12CFDACE1F023BDD00CC0762 /* NCZKillboardViewController.swift in Sources */,
 				12D39D001EF7DB040077BD17 /* NCMarketOrderTableViewCell.swift in Sources */,
@@ -1920,6 +1927,7 @@
 				12AC8DE21DF0B5F200561A7A /* Dark.clr in Sources */,
 				126C9D471F30A69A0071E792 /* NCLocationPickerViewController.swift in Sources */,
 				1230A3291DFFE2CF00627D92 /* NCDatabaseTypeInfoHeaderViewController.swift in Sources */,
+				12FE20FF1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift in Sources */,
 				1226D9651F223A740049FA0C /* NCNPCPickerTypesViewController.swift in Sources */,
 				12F8FF9F1E5DBC58008F79D5 /* NCFittingShipsViewController.swift in Sources */,
 				12B1B82F1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift in Sources */,

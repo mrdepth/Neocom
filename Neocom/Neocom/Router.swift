@@ -654,7 +654,7 @@ enum Router {
 			
 			init(region: NCDBMapRegion) {
 				self.region = region
-				super.init(kind: .push, storyboard: UIStoryboard.database, identifier: "NCSolarSystemsViewController")
+				super.init(kind: .push, storyboard: .database, identifier: "NCSolarSystemsViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
@@ -668,12 +668,38 @@ enum Router {
 	enum Character {
 		
 		class Skills: Route {
-
 			init() {
-				super.init(kind: .push, storyboard: UIStoryboard.character, identifier: "NCSkillsPageViewController")
+				super.init(kind: .push, storyboard: .character, identifier: "NCSkillsPageViewController")
 			}
-			
 		}
+		
+		class LoyaltyStoreOffers: Route {
+			let loyaltyPoints: ESI.Loyalty.Point
+			let filter: NCLoyaltyStoreOffersViewController.Filter?
+			let offers: NCCachedResult<[ESI.Loyalty.Offer]>?
+			
+			init(loyaltyPoints: ESI.Loyalty.Point) {
+				self.loyaltyPoints = loyaltyPoints
+				self.filter = nil
+				self.offers = nil
+				super.init(kind: .push, storyboard: .character, identifier: "NCLoyaltyStoreOffersViewController")
+			}
+
+			init(loyaltyPoints: ESI.Loyalty.Point, filter: NCLoyaltyStoreOffersViewController.Filter, offers: NCCachedResult<[ESI.Loyalty.Offer]>) {
+				self.loyaltyPoints = loyaltyPoints
+				self.filter = filter
+				self.offers = offers
+				super.init(kind: .push, storyboard: .character, identifier: "NCLoyaltyStoreOffersViewController")
+			}
+
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCLoyaltyStoreOffersViewController
+				destination.loyaltyPoints = loyaltyPoints
+				destination.filter = filter
+				destination.offers = offers
+			}
+		}
+
 	}
 	
 	enum Fitting {
@@ -1506,6 +1532,11 @@ enum Router {
 			}
 		}
 
+		class LoyaltyPoints: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .character, identifier: "NCLoyaltyPointsViewController")
+			}
+		}
 	}
 }
 

@@ -1023,6 +1023,23 @@ class NCDataManager {
 		})
 	}
 	
+	func loyaltyPoints(completionHandler: @escaping (NCCachedResult<[ESI.Loyalty.Point]>) -> Void) {
+
+		loadFromCache(forKey: "ESI.Loyalty.Point", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.loyalty.getLoyaltyPoints(characterID: Int(self.characterID)) { result in
+				completion(result, 3600.0 * 1)
+			}
+		})
+	}
+	
+	func loyaltyStoreOffers(corporationID: Int64, completionHandler: @escaping (NCCachedResult<[ESI.Loyalty.Offer]>) -> Void) {
+		loadFromCache(forKey: "ESI.Loyalty.Offer.\(corporationID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.loyalty.listLoyaltyStoreOffers(corporationID: Int(corporationID)) { result in
+				completion(result, 3600.0 * 24)
+			}
+		})
+	}
+
 	//MARK: Private
 	
 	private var completionHandlers: [String: [(Any?, NCCacheRecord?, Error?) -> Void]] = [:]

@@ -200,28 +200,28 @@ class NCServerStatusRow: NCAccountDataMenuRow<ESI.Status.ServerStatus> {
 		if let result = result {
 			if let value = result.value {
 				if value.players > 0 {
-					cell.titleLabel?.text = NSLocalizedString("Tranquility Online: ", comment: "") + NCUnitFormatter.localizedString(from: value.players, unit: .none, style: .full)
+					cell.titleLabel?.text = String(format: NSLocalizedString("Tranquility: online %@ players", comment: ""), NCUnitFormatter.localizedString(from: value.players, unit: .none, style: .full))
 				}
 				else {
-					cell.titleLabel?.text = NSLocalizedString("Tranquility Offline", comment: "")
+					cell.titleLabel?.text = NSLocalizedString("Tranquility: offline", comment: "")
 				}
 				cell.subtitleLabel?.text = NSLocalizedString("EVE Time: ", comment: "") + dateFormatter.string(from: Date())
 			}
 			else {
-				cell.titleLabel?.text = NSLocalizedString("Tranquility Status", comment: "")
+				cell.titleLabel?.text = NSLocalizedString("Tranquility", comment: "")
 				cell.subtitleLabel?.text = result.error?.localizedDescription
 			}
 		}
 		else {
-			cell.titleLabel?.text = NSLocalizedString("Tranquility Status", comment: "")
+			cell.titleLabel?.text = NSLocalizedString("Tranquility", comment: "")
 			cell.subtitleLabel?.text = NSLocalizedString("Updating...", comment: "")
-			guard !isLoading else {return}
-			isLoading = true
-			NCDataManager(account: NCAccount.current).serverStatus { result in
-				self.result = result
-				self.isLoading = false
-				self.treeController?.reloadCells(for: [self], with: .none)
-			}
+//			guard !isLoading else {return}
+//			isLoading = true
+//			NCDataManager(account: NCAccount.current).serverStatus { result in
+//				self.result = result
+//				self.isLoading = false
+//				self.treeController?.reloadCells(for: [self], with: .none)
+//			}
 		}
 	}
 	
@@ -236,16 +236,26 @@ class NCServerStatusRow: NCAccountDataMenuRow<ESI.Status.ServerStatus> {
 	}
 	
 	override func willDisplay(cell: UITableViewCell) {
+		if (result == nil || result?.cacheRecord?.isExpired == true) && !isLoading {
+			isLoading = true
+			NCDataManager(account: NCAccount.current).serverStatus { result in
+				self.result = result
+				self.isLoading = false
+				self.treeController?.reloadCells(for: [self], with: .none)
+			}
+		}
 		timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerTick(_:)), userInfo: cell, repeats: true)
 	}
 	
 	@objc func timerTick(_ timer: Timer) {
-		guard let cell = timer.userInfo as? UITableViewCell else {return}
-		configure(cell: cell)
+		guard let cell = timer.userInfo as? NCDefaultTableViewCell else {return}
+		cell.subtitleLabel?.text = NSLocalizedString("EVE Time: ", comment: "") + dateFormatter.string(from: Date())
 	}
 	
 	override func didEndDisplaying(cell: UITableViewCell) {
-		timer = nil
+		if (timer?.userInfo as? UITableViewCell) == cell {
+			timer = nil
+		}
 	}
 }
 
@@ -358,7 +368,14 @@ class NCMainMenuViewController: NCTreeViewController {
 								                route: Router.MainMenu.Wealth(),
 								                scopes: [.esiWalletReadCharacterWalletV1,
 								                         .esiAssetsReadAssetsV1],
+								                account: account),
+								NCMainMenuRow(nodeIdentifier: "LP",
+								                image: #imageLiteral(resourceName: "lpstore"),
+								                title: NSLocalizedString("Loyalty Points", comment: ""),
+								                route: Router.MainMenu.LoyaltyPoints(),
+								                scopes: [.esiCharactersReadLoyaltyV1],
 								                account: account)
+
 								]),
 
 			DefaultTreeSection(nodeIdentifier: "Database", title: NSLocalizedString("Database", comment: "").uppercased(),

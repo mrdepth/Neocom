@@ -992,6 +992,46 @@
             </objects>
             <point key="canvasLocation" x="1402" y="6051"/>
         </scene>
+        <!--Loyalty Points-->
+        <scene sceneID="4NB-4W-xmw">
+            <objects>
+                <tableViewController storyboardIdentifier="NCLoyaltyPointsViewController" modalPresentationStyle="overCurrentContext" id="sZI-p5-Rlr" customClass="NCLoyaltyPointsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="RY7-80-uhy" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Loyalty Points" id="9Fr-Q1-vW4"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="iGc-7f-K8r">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iCf-4r-Hk5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="665" y="6733"/>
+        </scene>
+        <!--Offers-->
+        <scene sceneID="VgL-cL-fdi">
+            <objects>
+                <tableViewController storyboardIdentifier="NCLoyaltyStoreOffersViewController" modalPresentationStyle="overCurrentContext" id="FTd-su-aMf" customClass="NCLoyaltyStoreOffersViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="Fea-pu-xEF" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Offers" id="UgM-wj-dCq"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="P51-GQ-KHr">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AzG-Wv-Oyr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1401" y="6733"/>
+        </scene>
     </scenes>
     <resources>
         <image name="attachment" width="24" height="24"/>

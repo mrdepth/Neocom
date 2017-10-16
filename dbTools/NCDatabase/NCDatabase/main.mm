@@ -1593,7 +1593,7 @@ void convertDgmppItems(NSManagedObjectContext* context, EVEDBDatabase* database)
 					 
 					 if (groups.count > 0) {
 						 NSString* key;
-						 if (chargeSizeAttribute > 0)
+						 if (chargeSizeAttribute.value > 0)
 							 key = [NSString stringWithFormat:@"%@.%d", [[groups sortedArrayUsingSelector:@selector(compare:)] componentsJoinedByString:@","], (int32_t) chargeSize];
 						 else
 							 key = [NSString stringWithFormat:@"%@.%.2f", [[groups sortedArrayUsingSelector:@selector(compare:)] componentsJoinedByString:@","], type.capacity];

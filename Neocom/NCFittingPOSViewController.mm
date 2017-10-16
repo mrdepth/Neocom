@@ -277,7 +277,7 @@
 			NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:self.storageManagedObjectContext]
 													  insertIntoManagedObjectContext:nil];
 			NCDBInvType* type = [self.databaseManagedObjectContext invTypeWithTypeID:self.fit.typeID];
-			shoppingGroup.name = self.fit.loadoutName > 0 ? self.fit.loadoutName : type.typeName;
+			shoppingGroup.name = self.fit.loadoutName.length > 0 ? self.fit.loadoutName : type.typeName;
 			shoppingGroup.quantity = 1;
 			
 			

@@ -328,31 +328,6 @@
 		128D29B718BDC73A003B8E03 /* NCTableViewHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128D29B618BDC73A003B8E03 /* NCTableViewHeaderView.xib */; };
 		128D29BA18BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29B918BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m */; };
 		1290EC881F250C6100D6E554 /* FlurryEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = 1290EC851F250C6100D6E554 /* FlurryEmpty.m */; };
-		1290ECA41F25109500D6E554 /* Appodeal.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC8B1F25109500D6E554 /* Appodeal.bundle */; };
-		1290ECA51F25109500D6E554 /* button-close-default.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC8C1F25109500D6E554 /* button-close-default.png */; };
-		1290ECA61F25109500D6E554 /* button-close-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC8D1F25109500D6E554 /* button-close-highlighted.png */; };
-		1290ECA71F25109500D6E554 /* MPAdBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC8E1F25109500D6E554 /* MPAdBrowserController.xib */; };
-		1290ECA81F25109500D6E554 /* MPCloseBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC8F1F25109500D6E554 /* MPCloseBtn.png */; };
-		1290ECA91F25109500D6E554 /* MPCloseBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC901F25109500D6E554 /* MPCloseBtn@2x.png */; };
-		1290ECAA1F25109500D6E554 /* MPCloseBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC911F25109500D6E554 /* MPCloseBtn@3x.png */; };
-		1290ECAB1F25109500D6E554 /* MPCloseButtonX.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC921F25109500D6E554 /* MPCloseButtonX.png */; };
-		1290ECAC1F25109500D6E554 /* MPCloseButtonX@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC931F25109500D6E554 /* MPCloseButtonX@2x.png */; };
-		1290ECAD1F25109500D6E554 /* MPCloseButtonX@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC941F25109500D6E554 /* MPCloseButtonX@3x.png */; };
-		1290ECAE1F25109500D6E554 /* MPDAAIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC951F25109500D6E554 /* MPDAAIcon.png */; };
-		1290ECAF1F25109500D6E554 /* MPDAAIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC961F25109500D6E554 /* MPDAAIcon@2x.png */; };
-		1290ECB01F25109500D6E554 /* MPDAAIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC971F25109500D6E554 /* MPDAAIcon@3x.png */; };
-		1290ECB11F25109500D6E554 /* MPMutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC981F25109500D6E554 /* MPMutedBtn.png */; };
-		1290ECB21F25109500D6E554 /* MPMutedBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC991F25109500D6E554 /* MPMutedBtn@2x.png */; };
-		1290ECB31F25109500D6E554 /* MPMutedBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC9A1F25109500D6E554 /* MPMutedBtn@3x.png */; };
-		1290ECB41F25109500D6E554 /* MPPlayBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC9B1F25109500D6E554 /* MPPlayBtn.png */; };
-		1290ECB51F25109500D6E554 /* MPPlayBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC9C1F25109500D6E554 /* MPPlayBtn@2x.png */; };
-		1290ECB61F25109500D6E554 /* MPPlayBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC9D1F25109500D6E554 /* MPPlayBtn@3x.png */; };
-		1290ECB71F25109500D6E554 /* MPUnmutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC9E1F25109500D6E554 /* MPUnmutedBtn.png */; };
-		1290ECB81F25109500D6E554 /* MPUnmutedBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290EC9F1F25109500D6E554 /* MPUnmutedBtn@2x.png */; };
-		1290ECB91F25109500D6E554 /* MPUnmutedBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1290ECA01F25109500D6E554 /* MPUnmutedBtn@3x.png */; };
-		1290ECBA1F25109500D6E554 /* MRAID.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1290ECA11F25109500D6E554 /* MRAID.bundle */; };
-		1290ECBB1F25109500D6E554 /* StartApp.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1290ECA21F25109500D6E554 /* StartApp.bundle */; };
-		1290ECBC1F25109500D6E554 /* TapjoyResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1290ECA31F25109500D6E554 /* TapjoyResources.bundle */; };
 		129421A9187FDF7200977CB8 /* NSString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421A8187FDF7200977CB8 /* NSString+Neocom.m */; };
 		129421AC187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421AB187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m */; };
 		129421B81880321900977CB8 /* NCAccountCorporationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421B71880321900977CB8 /* NCAccountCorporationCell.m */; };
@@ -1155,31 +1130,6 @@
 		1290EC851F250C6100D6E554 /* FlurryEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlurryEmpty.m; sourceTree = "<group>"; };
 		1290EC861F250C6100D6E554 /* FlurrySessionBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurrySessionBuilder.h; sourceTree = "<group>"; };
 		1290EC871F250C6100D6E554 /* libFlurry_7.8.2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_7.8.2.a; sourceTree = "<group>"; };
-		1290EC8B1F25109500D6E554 /* Appodeal.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Appodeal.bundle; sourceTree = "<group>"; };
-		1290EC8C1F25109500D6E554 /* button-close-default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-close-default.png"; sourceTree = "<group>"; };
-		1290EC8D1F25109500D6E554 /* button-close-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-close-highlighted.png"; sourceTree = "<group>"; };
-		1290EC8E1F25109500D6E554 /* MPAdBrowserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MPAdBrowserController.xib; sourceTree = "<group>"; };
-		1290EC8F1F25109500D6E554 /* MPCloseBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseBtn.png; sourceTree = "<group>"; };
-		1290EC901F25109500D6E554 /* MPCloseBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@2x.png"; sourceTree = "<group>"; };
-		1290EC911F25109500D6E554 /* MPCloseBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@3x.png"; sourceTree = "<group>"; };
-		1290EC921F25109500D6E554 /* MPCloseButtonX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseButtonX.png; sourceTree = "<group>"; };
-		1290EC931F25109500D6E554 /* MPCloseButtonX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@2x.png"; sourceTree = "<group>"; };
-		1290EC941F25109500D6E554 /* MPCloseButtonX@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@3x.png"; sourceTree = "<group>"; };
-		1290EC951F25109500D6E554 /* MPDAAIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPDAAIcon.png; sourceTree = "<group>"; };
-		1290EC961F25109500D6E554 /* MPDAAIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@2x.png"; sourceTree = "<group>"; };
-		1290EC971F25109500D6E554 /* MPDAAIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@3x.png"; sourceTree = "<group>"; };
-		1290EC981F25109500D6E554 /* MPMutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPMutedBtn.png; sourceTree = "<group>"; };
-		1290EC991F25109500D6E554 /* MPMutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@2x.png"; sourceTree = "<group>"; };
-		1290EC9A1F25109500D6E554 /* MPMutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@3x.png"; sourceTree = "<group>"; };
-		1290EC9B1F25109500D6E554 /* MPPlayBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPPlayBtn.png; sourceTree = "<group>"; };
-		1290EC9C1F25109500D6E554 /* MPPlayBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@2x.png"; sourceTree = "<group>"; };
-		1290EC9D1F25109500D6E554 /* MPPlayBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@3x.png"; sourceTree = "<group>"; };
-		1290EC9E1F25109500D6E554 /* MPUnmutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPUnmutedBtn.png; sourceTree = "<group>"; };
-		1290EC9F1F25109500D6E554 /* MPUnmutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@2x.png"; sourceTree = "<group>"; };
-		1290ECA01F25109500D6E554 /* MPUnmutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@3x.png"; sourceTree = "<group>"; };
-		1290ECA11F25109500D6E554 /* MRAID.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MRAID.bundle; sourceTree = "<group>"; };
-		1290ECA21F25109500D6E554 /* StartApp.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = StartApp.bundle; sourceTree = "<group>"; };
-		1290ECA31F25109500D6E554 /* TapjoyResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TapjoyResources.bundle; sourceTree = "<group>"; };
 		129421A7187FDF7200977CB8 /* NSString+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Neocom.h"; sourceTree = "<group>"; };
 		129421A8187FDF7200977CB8 /* NSString+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Neocom.m"; sourceTree = "<group>"; };
 		129421AA187FDFAE00977CB8 /* NSNumberFormatter+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+Neocom.h"; sourceTree = "<group>"; };
@@ -1198,6 +1148,31 @@
 		1297FCFD1B2ABF5300176BF0 /* NCFittingShipFleetViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = NCFittingShipFleetViewController.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		1298CA1618C4B1B700F3F550 /* NCSkillPlanImportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillPlanImportViewController.h; sourceTree = "<group>"; };
 		1298CA1718C4B1B700F3F550 /* NCSkillPlanImportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillPlanImportViewController.m; sourceTree = "<group>"; };
+		129956E31F94AA9100FF4B7A /* Appodeal.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Appodeal.bundle; sourceTree = "<group>"; };
+		129956E41F94AA9100FF4B7A /* button-close-default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-close-default.png"; sourceTree = "<group>"; };
+		129956E51F94AA9100FF4B7A /* button-close-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button-close-highlighted.png"; sourceTree = "<group>"; };
+		129956E61F94AA9100FF4B7A /* MPAdBrowserController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MPAdBrowserController.xib; sourceTree = "<group>"; };
+		129956E71F94AA9100FF4B7A /* MPCloseBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseBtn.png; sourceTree = "<group>"; };
+		129956E81F94AA9100FF4B7A /* MPCloseBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@2x.png"; sourceTree = "<group>"; };
+		129956E91F94AA9100FF4B7A /* MPCloseBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@3x.png"; sourceTree = "<group>"; };
+		129956EA1F94AA9100FF4B7A /* MPCloseButtonX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseButtonX.png; sourceTree = "<group>"; };
+		129956EB1F94AA9100FF4B7A /* MPCloseButtonX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@2x.png"; sourceTree = "<group>"; };
+		129956EC1F94AA9100FF4B7A /* MPCloseButtonX@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@3x.png"; sourceTree = "<group>"; };
+		129956ED1F94AA9100FF4B7A /* MPDAAIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPDAAIcon.png; sourceTree = "<group>"; };
+		129956EE1F94AA9100FF4B7A /* MPDAAIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@2x.png"; sourceTree = "<group>"; };
+		129956EF1F94AA9100FF4B7A /* MPDAAIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@3x.png"; sourceTree = "<group>"; };
+		129956F01F94AA9100FF4B7A /* MPMutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPMutedBtn.png; sourceTree = "<group>"; };
+		129956F11F94AA9100FF4B7A /* MPMutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@2x.png"; sourceTree = "<group>"; };
+		129956F21F94AA9100FF4B7A /* MPMutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@3x.png"; sourceTree = "<group>"; };
+		129956F31F94AA9100FF4B7A /* MPPlayBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPPlayBtn.png; sourceTree = "<group>"; };
+		129956F41F94AA9100FF4B7A /* MPPlayBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@2x.png"; sourceTree = "<group>"; };
+		129956F51F94AA9100FF4B7A /* MPPlayBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@3x.png"; sourceTree = "<group>"; };
+		129956F61F94AA9100FF4B7A /* MPUnmutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPUnmutedBtn.png; sourceTree = "<group>"; };
+		129956F71F94AA9100FF4B7A /* MPUnmutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@2x.png"; sourceTree = "<group>"; };
+		129956F81F94AA9100FF4B7A /* MPUnmutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@3x.png"; sourceTree = "<group>"; };
+		129956F91F94AA9100FF4B7A /* MRAID.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MRAID.bundle; sourceTree = "<group>"; };
+		129956FA1F94AA9100FF4B7A /* StartApp.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = StartApp.bundle; sourceTree = "<group>"; };
+		129956FB1F94AA9100FF4B7A /* TapjoyResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TapjoyResources.bundle; sourceTree = "<group>"; };
 		129C585618AA02B200CA8787 /* POSFitting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = POSFitting.storyboard; sourceTree = "<group>"; };
 		129C585B18AA06AA00CA8787 /* NCPOSFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPOSFit.h; sourceTree = "<group>"; };
 		129C585C18AA06AA00CA8787 /* NCPOSFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCPOSFit.mm; sourceTree = "<group>"; };
@@ -2425,7 +2400,7 @@
 		124A9B6C1DDD8DB6004A6EAA /* Appodeal */ = {
 			isa = PBXGroup;
 			children = (
-				1290EC8A1F25109500D6E554 /* Resources */,
+				129956E21F94AA9100FF4B7A /* Resources */,
 				124A9B6D1DDD8DB6004A6EAA /* Appodeal.framework */,
 			);
 			path = Appodeal;
@@ -3056,38 +3031,6 @@
 			name = NCTableViewHeaderView;
 			sourceTree = "<group>";
 		};
-		1290EC8A1F25109500D6E554 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				1290EC8B1F25109500D6E554 /* Appodeal.bundle */,
-				1290EC8C1F25109500D6E554 /* button-close-default.png */,
-				1290EC8D1F25109500D6E554 /* button-close-highlighted.png */,
-				1290EC8E1F25109500D6E554 /* MPAdBrowserController.xib */,
-				1290EC8F1F25109500D6E554 /* MPCloseBtn.png */,
-				1290EC901F25109500D6E554 /* MPCloseBtn@2x.png */,
-				1290EC911F25109500D6E554 /* MPCloseBtn@3x.png */,
-				1290EC921F25109500D6E554 /* MPCloseButtonX.png */,
-				1290EC931F25109500D6E554 /* MPCloseButtonX@2x.png */,
-				1290EC941F25109500D6E554 /* MPCloseButtonX@3x.png */,
-				1290EC951F25109500D6E554 /* MPDAAIcon.png */,
-				1290EC961F25109500D6E554 /* MPDAAIcon@2x.png */,
-				1290EC971F25109500D6E554 /* MPDAAIcon@3x.png */,
-				1290EC981F25109500D6E554 /* MPMutedBtn.png */,
-				1290EC991F25109500D6E554 /* MPMutedBtn@2x.png */,
-				1290EC9A1F25109500D6E554 /* MPMutedBtn@3x.png */,
-				1290EC9B1F25109500D6E554 /* MPPlayBtn.png */,
-				1290EC9C1F25109500D6E554 /* MPPlayBtn@2x.png */,
-				1290EC9D1F25109500D6E554 /* MPPlayBtn@3x.png */,
-				1290EC9E1F25109500D6E554 /* MPUnmutedBtn.png */,
-				1290EC9F1F25109500D6E554 /* MPUnmutedBtn@2x.png */,
-				1290ECA01F25109500D6E554 /* MPUnmutedBtn@3x.png */,
-				1290ECA11F25109500D6E554 /* MRAID.bundle */,
-				1290ECA21F25109500D6E554 /* StartApp.bundle */,
-				1290ECA31F25109500D6E554 /* TapjoyResources.bundle */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		129421A6187FDF5D00977CB8 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -3186,6 +3129,38 @@
 				1298CA1718C4B1B700F3F550 /* NCSkillPlanImportViewController.m */,
 			);
 			name = NCSkillPlanImportViewController;
+			sourceTree = "<group>";
+		};
+		129956E21F94AA9100FF4B7A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				129956E31F94AA9100FF4B7A /* Appodeal.bundle */,
+				129956E41F94AA9100FF4B7A /* button-close-default.png */,
+				129956E51F94AA9100FF4B7A /* button-close-highlighted.png */,
+				129956E61F94AA9100FF4B7A /* MPAdBrowserController.xib */,
+				129956E71F94AA9100FF4B7A /* MPCloseBtn.png */,
+				129956E81F94AA9100FF4B7A /* MPCloseBtn@2x.png */,
+				129956E91F94AA9100FF4B7A /* MPCloseBtn@3x.png */,
+				129956EA1F94AA9100FF4B7A /* MPCloseButtonX.png */,
+				129956EB1F94AA9100FF4B7A /* MPCloseButtonX@2x.png */,
+				129956EC1F94AA9100FF4B7A /* MPCloseButtonX@3x.png */,
+				129956ED1F94AA9100FF4B7A /* MPDAAIcon.png */,
+				129956EE1F94AA9100FF4B7A /* MPDAAIcon@2x.png */,
+				129956EF1F94AA9100FF4B7A /* MPDAAIcon@3x.png */,
+				129956F01F94AA9100FF4B7A /* MPMutedBtn.png */,
+				129956F11F94AA9100FF4B7A /* MPMutedBtn@2x.png */,
+				129956F21F94AA9100FF4B7A /* MPMutedBtn@3x.png */,
+				129956F31F94AA9100FF4B7A /* MPPlayBtn.png */,
+				129956F41F94AA9100FF4B7A /* MPPlayBtn@2x.png */,
+				129956F51F94AA9100FF4B7A /* MPPlayBtn@3x.png */,
+				129956F61F94AA9100FF4B7A /* MPUnmutedBtn.png */,
+				129956F71F94AA9100FF4B7A /* MPUnmutedBtn@2x.png */,
+				129956F81F94AA9100FF4B7A /* MPUnmutedBtn@3x.png */,
+				129956F91F94AA9100FF4B7A /* MRAID.bundle */,
+				129956FA1F94AA9100FF4B7A /* StartApp.bundle */,
+				129956FB1F94AA9100FF4B7A /* TapjoyResources.bundle */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		129C585A18AA068F00CA8787 /* NCPOSFit */ = {
@@ -4508,61 +4483,43 @@
 				1209D1701BDFB9DE006FEF67 /* UI.xcassets in Resources */,
 				122A82BF1C96F1CB00FD1CF6 /* SpaceStructureFitting.storyboard in Resources */,
 				120B507418FCFFCB0033AF78 /* level_040.gif in Resources */,
-				1290ECB41F25109500D6E554 /* MPPlayBtn.png in Resources */,
 				128D29B718BDC73A003B8E03 /* NCTableViewHeaderView.xib in Resources */,
 				841534F0188A9A7500B42433 /* Database.storyboard in Resources */,
-				1290ECAD1F25109500D6E554 /* MPCloseButtonX@3x.png in Resources */,
 				120F98A71B539E220047A019 /* NCDatabase.sqlite in Resources */,
 				120B508818FCFFCB0033AF78 /* level_300.gif in Resources */,
 				120B508518FCFFCB0033AF78 /* level_241.gif in Resources */,
 				120B508918FCFFCB0033AF78 /* level_340.gif in Resources */,
 				12A7DB9918B3497B00343D25 /* index.html in Resources */,
-				1290ECBC1F25109500D6E554 /* TapjoyResources.bundle in Resources */,
 				120B507F18FCFFCB0033AF78 /* level_150.gif in Resources */,
 				84AC540D18A94034000C308C /* ShipFitting.storyboard in Resources */,
 				12B9509A1ADB8D5E009E31DB /* fits.html in Resources */,
-				1290ECB21F25109500D6E554 /* MPMutedBtn@2x.png in Resources */,
 				124A13941BDFAE78004A41EF /* Fitting.xcassets in Resources */,
-				1290ECB71F25109500D6E554 /* MPUnmutedBtn.png in Resources */,
 				12F407551A8D181D0031FB35 /* NCDefaultTableViewCell.xib in Resources */,
 				120B507E18FCFFCB0033AF78 /* level_141.gif in Resources */,
 				8418BB1C1891970500B99A7E /* eventTemplate.html in Resources */,
 				120B508218FCFFCB0033AF78 /* level_230.gif in Resources */,
-				1290ECB01F25109500D6E554 /* MPDAAIcon@3x.png in Resources */,
 				120B507C18FCFFCB0033AF78 /* level_131.gif in Resources */,
-				1290ECA71F25109500D6E554 /* MPAdBrowserController.xib in Resources */,
 				120B508718FCFFCB0033AF78 /* level_251.gif in Resources */,
 				120B507518FCFFCB0033AF78 /* level_041.gif in Resources */,
-				1290ECAE1F25109500D6E554 /* MPDAAIcon.png in Resources */,
 				120B507618FCFFCB0033AF78 /* level_050.gif in Resources */,
 				120B508E18FCFFCB0033AF78 /* level_450.gif in Resources */,
 				120B507918FCFFCB0033AF78 /* level_120.gif in Resources */,
-				1290ECB91F25109500D6E554 /* MPUnmutedBtn@3x.png in Resources */,
 				120B507318FCFFCB0033AF78 /* level_031.gif in Resources */,
 				120B507718FCFFCB0033AF78 /* level_051.gif in Resources */,
-				1290ECB11F25109500D6E554 /* MPMutedBtn.png in Resources */,
-				1290ECAB1F25109500D6E554 /* MPCloseButtonX.png in Resources */,
 				1225A0B71A400954005DD73B /* Launch Screen.xib in Resources */,
-				1290ECBB1F25109500D6E554 /* StartApp.bundle in Resources */,
-				1290ECB81F25109500D6E554 /* MPUnmutedBtn@2x.png in Resources */,
 				127123A018979E40005F46EE /* NCFittingSectionGenericHeaderView.xib in Resources */,
 				128A1F3818990DA200005C4F /* NCFittingSectionHiSlotHeaderView.xib in Resources */,
 				120B507818FCFFCB0033AF78 /* level_100.gif in Resources */,
 				12EC0AC118C0B18D0010169C /* KillBoard.storyboard in Resources */,
-				1290ECB31F25109500D6E554 /* MPMutedBtn@3x.png in Resources */,
 				1209686B1845F0CB00921A37 /* Images.xcassets in Resources */,
 				120B506F18FCFFCB0033AF78 /* level_011.gif in Resources */,
 				120B508418FCFFCB0033AF78 /* level_240.gif in Resources */,
 				1243761C189653980078F526 /* Character.storyboard in Resources */,
 				129C585718AA02B200CA8787 /* POSFitting.storyboard in Resources */,
 				120B508618FCFFCB0033AF78 /* level_250.gif in Resources */,
-				1290ECAC1F25109500D6E554 /* MPCloseButtonX@2x.png in Resources */,
 				12A7DBA818B36B2F00343D25 /* Market.storyboard in Resources */,
-				1290ECB61F25109500D6E554 /* MPPlayBtn@3x.png in Resources */,
 				120B507B18FCFFCB0033AF78 /* level_130.gif in Resources */,
-				1290ECAA1F25109500D6E554 /* MPCloseBtn@3x.png in Resources */,
 				849B9F7A1896D0CF00D4DD2B /* battleclinic@2x.png in Resources */,
-				1290ECBA1F25109500D6E554 /* MRAID.bundle in Resources */,
 				120B508D18FCFFCB0033AF78 /* level_400.gif in Resources */,
 				120B506D18FCFFCB0033AF78 /* level_000.gif in Resources */,
 				849FEE3218A419A200A4F85E /* Fitting.storyboard in Resources */,
@@ -4570,27 +4527,20 @@
 				120B509018FCFFCB0033AF78 /* level_500.gif in Resources */,
 				120B508C18FCFFCB0033AF78 /* level_351.gif in Resources */,
 				120B508118FCFFCB0033AF78 /* level_200.gif in Resources */,
-				1290ECA81F25109500D6E554 /* MPCloseBtn.png in Resources */,
-				1290ECB51F25109500D6E554 /* MPPlayBtn@2x.png in Resources */,
 				129D263F187E98D500E2062C /* NCNavigationCharacterButton.xib in Resources */,
 				120B507118FCFFCB0033AF78 /* level_021.gif in Resources */,
 				1207C53C1C5C94D000754D43 /* NCTableViewFooterView.xib in Resources */,
 				126ED32D188144370009FA39 /* mainMenu.plist in Resources */,
 				1209D16A1BDFB14D006FEF67 /* Attributes.xcassets in Resources */,
-				1290ECA61F25109500D6E554 /* button-close-highlighted.png in Resources */,
-				1290ECA41F25109500D6E554 /* Appodeal.bundle in Resources */,
 				120B508B18FCFFCB0033AF78 /* level_350.gif in Resources */,
 				120B508318FCFFCB0033AF78 /* level_231.gif in Resources */,
 				120B507A18FCFFCB0033AF78 /* level_121.gif in Resources */,
 				12B42E6E1AC7182000A0D956 /* ShoppingList.storyboard in Resources */,
 				123F0ADB18C5C8AC00D53602 /* evemon.html in Resources */,
 				120B507218FCFFCB0033AF78 /* level_030.gif in Resources */,
-				1290ECA91F25109500D6E554 /* MPCloseBtn@2x.png in Resources */,
-				1290ECA51F25109500D6E554 /* button-close-default.png in Resources */,
 				1209D16F1BDFB9DE006FEF67 /* MainMenu.xcassets in Resources */,
 				120B506E18FCFFCB0033AF78 /* level_010.gif in Resources */,
 				123A980418C71548001045F5 /* rssFeeds.plist in Resources */,
-				1290ECAF1F25109500D6E554 /* MPDAAIcon@2x.png in Resources */,
 				12F330411C340DC700F19C45 /* dgm.sqlite in Resources */,
 				1209685D1845F0CB00921A37 /* InfoPlist.strings in Resources */,
 				120B507018FCFFCB0033AF78 /* level_020.gif in Resources */,

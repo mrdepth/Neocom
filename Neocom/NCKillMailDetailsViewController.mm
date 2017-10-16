@@ -119,7 +119,7 @@
 	}
 	
 	sections = [NSMutableArray new];
-	if (finalBlow > 0) {
+	if (finalBlow.count > 0) {
 		NCKillMailDetailsViewControllerSection* section = [NCKillMailDetailsViewControllerSection new];
 		section.rows = finalBlow;
 		section.title = NSLocalizedString(@"Final blow", nil);

@@ -333,7 +333,7 @@
 		129421B81880321900977CB8 /* NCAccountCorporationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421B71880321900977CB8 /* NCAccountCorporationCell.m */; };
 		1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1296C6C11890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m */; };
 		129C585718AA02B200CA8787 /* POSFitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 129C585618AA02B200CA8787 /* POSFitting.storyboard */; };
-		129D257E187E8CB400E2062C /* NCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D257D187E8CB400E2062C /* NCMainMenuViewController.m */; };
+		129D257E187E8CB400E2062C /* NCMainMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 129D257D187E8CB400E2062C /* NCMainMenuViewController.mm */; };
 		129D2600187E923200E2062C /* ASCaptionTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D2583187E923200E2062C /* ASCaptionTextField.m */; };
 		129D260F187E923300E2062C /* ASInAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D25A5187E923200E2062C /* ASInAppPurchase.m */; };
 		129D2610187E923300E2062C /* CollapsableTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D25A8187E923200E2062C /* CollapsableTableView.m */; };
@@ -1181,7 +1181,7 @@
 		129C586318AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPOSWorkspaceViewController.h; sourceTree = "<group>"; };
 		129C586418AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingPOSWorkspaceViewController.mm; sourceTree = "<group>"; };
 		129D257C187E8CB400E2062C /* NCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMainMenuViewController.h; sourceTree = "<group>"; };
-		129D257D187E8CB400E2062C /* NCMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMainMenuViewController.m; sourceTree = "<group>"; };
+		129D257D187E8CB400E2062C /* NCMainMenuViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCMainMenuViewController.mm; sourceTree = "<group>"; };
 		129D2582187E923200E2062C /* ASCaptionTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCaptionTextField.h; sourceTree = "<group>"; };
 		129D2583187E923200E2062C /* ASCaptionTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASCaptionTextField.m; sourceTree = "<group>"; };
 		129D25A4187E923200E2062C /* ASInAppPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASInAppPurchase.h; sourceTree = "<group>"; };
@@ -3212,7 +3212,7 @@
 			isa = PBXGroup;
 			children = (
 				129D257C187E8CB400E2062C /* NCMainMenuViewController.h */,
-				129D257D187E8CB400E2062C /* NCMainMenuViewController.m */,
+				129D257D187E8CB400E2062C /* NCMainMenuViewController.mm */,
 			);
 			name = NCMainMenuViewController;
 			sourceTree = "<group>";
@@ -4928,7 +4928,7 @@
 				12B9A6731B8F0D38005624D5 /* NSManagedObjectContext+NCDatabase.m in Sources */,
 				12654C451C0B24920060106C /* NCDBIndActivity+CoreDataProperties.m in Sources */,
 				12124AAF1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m in Sources */,
-				129D257E187E8CB400E2062C /* NCMainMenuViewController.m in Sources */,
+				129D257E187E8CB400E2062C /* NCMainMenuViewController.mm in Sources */,
 				1264FD741BBC5776002AFDF3 /* NCSkillCell.m in Sources */,
 				129D2610187E923300E2062C /* CollapsableTableView.m in Sources */,
 				1255B3DF1C4CCA2B0064EE2C /* NCBarChartView.m in Sources */,
@@ -5103,6 +5103,7 @@
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5142,6 +5143,7 @@
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

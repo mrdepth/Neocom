@@ -17,6 +17,11 @@
 #import "NCSplitViewController.h"
 #import "NCPriceManager.h"
 #import "NCUpdater.h"
+#import "NCLoadout.h"
+#import "NCShipFit.h"
+#import "NCSpaceStructureFit.h"
+#import <StoreKit/StoreKit.h>
+
 
 #define NCMarketPricesMonitorDidChangeNotification @"NCMarketPricesMonitorDidChangeNotification"
 
@@ -34,7 +39,7 @@
 
 #define NCPlexRate (209.94 / 12.0 * 1000000000.0)
 
-@interface NCMainMenuViewController ()
+@interface NCMainMenuViewController ()<SKStoreProductViewControllerDelegate>
 @property (nonatomic, strong) NSArray* allSections;
 @property (nonatomic, strong) NSMutableArray* sections;
 @property (nonatomic, strong) EVECharacterSheet* characterSheet;
@@ -138,7 +143,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.sections[section] count];
+    return [(NSArray*) self.sections[section] count];
 }
 
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -163,13 +168,36 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary* row = self.sections[indexPath.section][indexPath.row];
-	NSString* identifier = row[@"segueIdentifier"];
-	if (identifier)
-		[self performSegueWithIdentifier:row[@"segueIdentifier"] sender:[tableView cellForRowAtIndexPath:indexPath]];
+	[tableView deselectRowAtIndexPath:indexPath animated:true];
+	if ([row[@"updateItem"] boolValue]) {
+		NSURL* transferURL = [NSURL URLWithString:@"nc://transfer"];
+		if ([[UIApplication sharedApplication] canOpenURL:transferURL]) {
+			
+			[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+			[self exportLoadoutsWithCompletionHandler:^{
+				[[UIApplication sharedApplication] openURL:transferURL];
+				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+			}];
+		}
+		else {
+			[self exportLoadoutsWithCompletionHandler:^{
+				
+			}];
+			SKStoreProductViewController* controller = [SKStoreProductViewController new];
+			[controller loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier: @1257353838} completionBlock:nil];
+			controller.delegate = self;
+			[self presentViewController:controller animated: true completion:nil];
+		}
+	}
 	else {
-		NSString* urlString = row[@"url"];
-		if (urlString)
-			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+		NSString* identifier = row[@"segueIdentifier"];
+		if (identifier)
+			[self performSegueWithIdentifier:row[@"segueIdentifier"] sender:[tableView cellForRowAtIndexPath:indexPath]];
+		else {
+			NSString* urlString = row[@"url"];
+			if (urlString)
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+		}
 	}
 }
 
@@ -192,21 +220,34 @@
 	tableViewCell.subtitleLabel.numberOfLines = 2;
 	NSDictionary* row = self.sections[indexPath.section][indexPath.row];
 	
-	tableViewCell.titleLabel.text = row[@"title"];
-	tableViewCell.iconView.image = [UIImage imageNamed:row[@"image"]];
-	NSString* detailsKeyPath = row[@"detailsKeyPath"];
-	if (detailsKeyPath) {
-		tableViewCell.subtitleLabel.text = [self valueForKey:detailsKeyPath];
-		tableViewCell.subtitleLabel.numberOfLines = [tableViewCell.subtitleLabel.text componentsSeparatedByString:@"\n"].count;
+	if ([row[@"updateItem"] boolValue]) {
+		NSURL* transferURL = [NSURL URLWithString:@"nc://transfer"];
+		tableViewCell.iconView.image = [UIImage imageNamed:@"tipoftheday"];
+		if ([[UIApplication sharedApplication] canOpenURL:transferURL]) {
+			tableViewCell.titleLabel.text = NSLocalizedString(@"Copy your loadouts to Neocom II", nil);
+			tableViewCell.subtitleLabel.text = nil;
+		}
+		else {
+			tableViewCell.titleLabel.text = NSLocalizedString(@"Neocom II Available", nil);
+			tableViewCell.subtitleLabel.text = NSLocalizedString(@"Download on the App Store", nil);
+		}
 	}
-	else
-		tableViewCell.subtitleLabel.text = nil;
-	
-	if (!tableViewCell.accessoryView) {
-		tableViewCell.accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 44)];
-		tableViewCell.accessoryView.hidden = NO;
+	else {
+		tableViewCell.titleLabel.text = row[@"title"];
+		tableViewCell.iconView.image = [UIImage imageNamed:row[@"image"]];
+		NSString* detailsKeyPath = row[@"detailsKeyPath"];
+		if (detailsKeyPath) {
+			tableViewCell.subtitleLabel.text = [self valueForKey:detailsKeyPath];
+			tableViewCell.subtitleLabel.numberOfLines = [tableViewCell.subtitleLabel.text componentsSeparatedByString:@"\n"].count;
+		}
+		else
+			tableViewCell.subtitleLabel.text = nil;
+		
+		if (!tableViewCell.accessoryView) {
+			tableViewCell.accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 44)];
+			tableViewCell.accessoryView.hidden = NO;
+		}
 	}
-
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -216,6 +257,12 @@
 - (void) didInstallUpdate:(NSNotification *)notification {
 	[super didInstallUpdate:notification];
 	[self.tableView reloadData];
+}
+
+#pragma mark - SKStoreProductViewControllerDelegate
+
+- (void) productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
+	[viewController dismissViewControllerAnimated:true completion:nil];
 }
 
 #pragma mark - Private
@@ -471,6 +518,38 @@
 
 - (void) mailBoxDidUpdateNotification:(NSNotification*) notification {
 	[self reload];
+}
+
+- (void) exportLoadoutsWithCompletionHandler: (void (^)()) completionHandler {
+	NSURL* transferURL = [NSURL URLWithString:@"nc://transfer"];
+	if ([[UIApplication sharedApplication] canOpenURL:transferURL]) {
+		
+		NSManagedObjectContext* storageManagedObjectContext = [[NCStorage sharedStorage] createManagedObjectContext];
+		[storageManagedObjectContext performBlock:^{
+			NSManagedObjectContext* databaseManagedObjectContext = [[NCDatabase sharedDatabase] createManagedObjectContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
+			[databaseManagedObjectContext performBlockAndWait:^{
+				NSMutableString* allFits = [NSMutableString new];
+				[allFits appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
+				for (NCLoadout* loadout in [storageManagedObjectContext loadouts]) {
+					NCDBInvType* type = [databaseManagedObjectContext invTypeWithTypeID:loadout.typeID];
+					if (type.group.category.categoryID == NCCategoryIDShip) {
+						NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
+						[allFits appendString:fit.eveXMLRecordRepresentation];
+					}
+				}
+				
+				[allFits appendString:@"</fittings>"];
+				NSURL* url = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.com.shimanski.neocom"];
+				NSURL* loadoutsURL = [url URLByAppendingPathComponent:@"loadouts.xml"];
+				NSURL* syncFlagURL = [url URLByAppendingPathComponent:@".already_transferred"];
+				[[NSFileManager defaultManager] removeItemAtURL:syncFlagURL error:nil];
+				[allFits writeToURL:loadoutsURL atomically:YES encoding:NSUTF8StringEncoding error:nil];
+				dispatch_async(dispatch_get_main_queue(), ^{
+					completionHandler();
+				});
+			}];
+		}];
+	}
 }
 
 @end

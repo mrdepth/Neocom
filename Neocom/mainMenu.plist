@@ -4,6 +4,12 @@
 <array>
 	<array>
 		<dict>
+			<key>updateItem</key>
+			<true/>
+		</dict>
+	</array>
+	<array>
+		<dict>
 			<key>segueIdentifier</key>
 			<string>NCCharacterSheetViewController</string>
 			<key>title</key>

@@ -611,7 +611,7 @@
         <!--Feed-->
         <scene sceneID="gkh-VO-sU8">
             <objects>
-                <tableViewController storyboardIdentifier="NCFeedChannelViewController" modalPresentationStyle="overCurrentContext" id="ADZ-zL-H3M" customClass="NCFeedChannelViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCFeedChannelViewController" id="ADZ-zL-H3M" customClass="NCFeedChannelViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="feY-lC-Amq" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -808,41 +808,26 @@
             </objects>
             <point key="canvasLocation" x="3750" y="-83"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="hWx-gI-0He">
-            <objects>
-                <navigationController useStoryboardIdentifierAsRestorationIdentifier="YES" id="kGf-Ma-71n" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="6ju-MU-P0n">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="4ob-ss-A75" kind="relationship" relationship="rootViewController" id="6qp-gM-lbt"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bAB-qC-wep" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-227" y="2622"/>
-        </scene>
         <!--Settings-->
         <scene sceneID="kmJ-q0-fLW">
             <objects>
-                <tableViewController storyboardIdentifier="NCSettingsViewController" modalPresentationStyle="overCurrentContext" id="4ob-ss-A75" customClass="NCSettingsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCSettingsViewController" id="4ob-ss-A75" customClass="NCSettingsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="ebV-5g-SOo" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="oBX-Fe-gVP"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dTu-6T-8mF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="478" y="2622"/>
+            <point key="canvasLocation" x="474" y="2622"/>
         </scene>
         <!--Import-->
         <scene sceneID="6ao-aq-I3z">
             <objects>
-                <tableViewController storyboardIdentifier="NCTransferViewController" modalPresentationStyle="overCurrentContext" id="oP7-iq-Yl9" customClass="NCTransferViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCTransferViewController" id="oP7-iq-Yl9" customClass="NCTransferViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="lVe-Sd-yhl" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -877,6 +862,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lje-so-82e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="476" y="1749"/>
+        </scene>
+        <!--About-->
+        <scene sceneID="A8a-gn-p4O">
+            <objects>
+                <tableViewController storyboardIdentifier="NCAboutViewController" id="guz-LG-eZ8" customClass="NCAboutViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="wE6-Dr-F5u" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="About" id="OrR-2f-ahg"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iCR-jj-oox" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1247" y="2622"/>
         </scene>
     </scenes>
     <resources>

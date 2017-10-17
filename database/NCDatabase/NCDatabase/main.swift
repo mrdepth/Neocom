@@ -232,6 +232,7 @@ let out = URL(fileURLWithPath: args["-out"]!)
 let iconsURL = URL(fileURLWithPath: args["-icons"]!)
 let typesURL = URL(fileURLWithPath: args["-types"]!)
 let factionsURL = URL(fileURLWithPath: args["-factions"]!)
+let expansion = args["-expansion"]!
 try? FileManager.default.removeItem(at: out)
 
 let managedObjectModel = NSManagedObjectModel.mergedModel(from: nil)!
@@ -1303,6 +1304,13 @@ do {
 		hullType.signature = Float(signature)
 	}
 	
+}
+
+try! database.exec("SELECT * FROM version") { row in
+	let version = NCDBVersion(context: context)
+	version.expansion = expansion
+	version.build = Int32(row["build"] as! NSNumber)
+	version.version = row["version"] as? String
 }
 
 

@@ -1532,6 +1532,12 @@ enum Router {
 			}
 		}
 
+		class About: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .main, identifier: "NCAboutViewController")
+			}
+		}
+
 		class LoyaltyPoints: Route {
 			init() {
 				super.init(kind: .detail, storyboard: .character, identifier: "NCLoyaltyPointsViewController")

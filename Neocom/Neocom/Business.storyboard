@@ -29,7 +29,7 @@
         <!--Assets-->
         <scene sceneID="NQJ-wZ-wIN">
             <objects>
-                <tableViewController storyboardIdentifier="NCAssetsViewController" modalPresentationStyle="overCurrentContext" id="tvm-Kn-iqi" customClass="NCAssetsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCAssetsViewController" id="tvm-Kn-iqi" customClass="NCAssetsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="SIa-Ha-IkA" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -48,7 +48,7 @@
         <!--Assets-->
         <scene sceneID="TMg-4e-GBg">
             <objects>
-                <tableViewController storyboardIdentifier="NCAssetsSearchResultViewController" modalPresentationStyle="overCurrentContext" id="bEe-2U-Q4b" customClass="NCAssetsSearchResultViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCAssetsSearchResultViewController" id="bEe-2U-Q4b" customClass="NCAssetsSearchResultViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="ljE-5z-ifL" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -79,7 +79,7 @@
         <!--Market Orders-->
         <scene sceneID="g9A-Sq-cM9">
             <objects>
-                <tableViewController storyboardIdentifier="NCMarketOrdersViewController" modalPresentationStyle="overCurrentContext" id="Kbo-YS-0gc" customClass="NCMarketOrdersViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCMarketOrdersViewController" id="Kbo-YS-0gc" customClass="NCMarketOrdersViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="M1V-fv-q8f" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -250,7 +250,7 @@
         <!--Industry-->
         <scene sceneID="krK-FI-K9E">
             <objects>
-                <tableViewController storyboardIdentifier="NCIndustryViewController" modalPresentationStyle="overCurrentContext" id="gja-s4-qkq" customClass="NCIndustryViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCIndustryViewController" id="gja-s4-qkq" customClass="NCIndustryViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="LND-2S-rsP" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -413,7 +413,7 @@
         <!--Wallet Journal-->
         <scene sceneID="FaL-VO-25Y">
             <objects>
-                <tableViewController storyboardIdentifier="NCWalletJournalViewController" modalPresentationStyle="overCurrentContext" id="1dM-Bv-A2h" customClass="NCWalletJournalViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCWalletJournalViewController" id="1dM-Bv-A2h" customClass="NCWalletJournalViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="cvX-bW-Udu" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -518,7 +518,7 @@
         <!--Wallet Transactions-->
         <scene sceneID="REU-jd-SrL">
             <objects>
-                <tableViewController storyboardIdentifier="NCWalletTransactionsViewController" modalPresentationStyle="overCurrentContext" id="YDe-rh-nDE" customClass="NCWalletTransactionsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCWalletTransactionsViewController" id="YDe-rh-nDE" customClass="NCWalletTransactionsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="yIx-mO-7Vu" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -666,7 +666,7 @@
         <!--Contracts-->
         <scene sceneID="Nv0-gp-sIo">
             <objects>
-                <tableViewController storyboardIdentifier="NCContractsViewController" modalPresentationStyle="overCurrentContext" id="2oR-mO-IJT" customClass="NCContractsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCContractsViewController" id="2oR-mO-IJT" customClass="NCContractsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="6LJ-Su-2IE" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -750,7 +750,7 @@
         <!--Contract Info-->
         <scene sceneID="Qvu-qQ-o65">
             <objects>
-                <tableViewController storyboardIdentifier="NCContractInfoViewController" modalPresentationStyle="overCurrentContext" id="n6G-i3-7xo" customClass="NCContractInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCContractInfoViewController" id="n6G-i3-7xo" customClass="NCContractInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="Cbm-UV-66w" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -786,7 +786,7 @@
         <!--Planetaries-->
         <scene sceneID="cQQ-Kc-o4r">
             <objects>
-                <tableViewController storyboardIdentifier="NCPlanetaryViewController" modalPresentationStyle="overCurrentContext" id="Ssg-HO-k04" customClass="NCPlanetaryViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCPlanetaryViewController" id="Ssg-HO-k04" customClass="NCPlanetaryViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="drg-BL-Pd8" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -71,7 +71,7 @@ class NCSettingsViewController: NCTreeViewController {
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
+		super.viewWillDisappear(animated)
 		guard let context = NCStorage.sharedStorage?.viewContext else {return}
 		if context.hasChanges {
 			try? context.save()

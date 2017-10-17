@@ -43,7 +43,7 @@ class NCTransferViewController: NCTreeViewController {
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
+		super.viewWillDisappear(animated)
 		let fileManager = FileManager.default
 		guard let groupURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.com.shimanski.neocom") else {return}
 		let flagURL = groupURL.appendingPathComponent(".already_transferred")
@@ -91,7 +91,7 @@ class NCTransferViewController: NCTreeViewController {
 	}
 	
 	@IBAction func onCancel(_ sender: Any) {
-		let controller = UIAlertController(title: NSLocalizedString("Import", comment: ""), message: NSLocalizedString("Are you sure you want to cancel? You can finish import later.", comment: ""), preferredStyle: .alert)
+		let controller = UIAlertController(title: NSLocalizedString("Cancel Import", comment: ""), message: NSLocalizedString("Are you sure you want to cancel? You can finish import later.", comment: ""), preferredStyle: .alert)
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default, handler: { [weak self] (_) in
 			self?.dismiss(animated: true, completion: nil)
 		}))

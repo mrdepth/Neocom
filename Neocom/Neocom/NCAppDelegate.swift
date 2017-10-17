@@ -12,6 +12,7 @@ import CoreData
 import CloudData
 import SafariServices
 import StoreKit
+import Firebase
 
 @UIApplicationMain
 class NCAppDelegate: UIResponder, UIApplicationDelegate {
@@ -35,6 +36,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		
 		setupAppearance()
 		
+		FirebaseApp.configure()
 		return true
 	}
 

@@ -145,24 +145,15 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 			return true
 		}
-		else if let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
-			switch components.scheme?.lowercased() {
-			case "showinfo"?:
-				guard let typeID = Int(components.path), let type = NCDatabase.sharedDatabase?.invTypes[typeID] else {return false}
-				var controller = (window?.rootViewController as? UISplitViewController)?.viewControllers.last
-				while controller?.presentedViewController != nil {
-					controller = controller?.presentedViewController
-				}
-				guard !(controller is UIAlertController) else {return false}
-				guard let databaseTypeInfoViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NCDatabaseTypeInfoViewController") as? NCDatabaseTypeInfoViewController else {return false}
-				databaseTypeInfoViewController.type = type
-				while let child = (controller as? UINavigationController)?.topViewController as? UINavigationController {
-					controller = child
-				}
-				if let navigationController = controller as? UINavigationController {
-					navigationController.pushViewController(databaseTypeInfoViewController, animated: true)
-				}
-				return true
+		else if let components = URLComponents(url: url, resolvingAgainstBaseURL: false), let scheme = components.scheme?.lowercased() {
+			
+			switch NCURLScheme(rawValue: scheme) {
+			case .showinfo?:
+				guard let path = components.path.components(separatedBy: "/").first else {return false}
+				guard let typeID = Int(path) else {return false}
+				return showTypeInfo(typeID: typeID)
+			case .fitting?:
+				return showFitting(dna: components.path)
 			default:
 				return false
 			}
@@ -218,5 +209,26 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 
 extension NCAppDelegate: UISplitViewControllerDelegate {
+}
+
+extension NCAppDelegate {
 	
+	fileprivate func showTypeInfo(typeID: Int) -> Bool {
+		guard let type = NCDatabase.sharedDatabase?.invTypes[typeID] else {return false}
+		guard let controller = (window?.rootViewController as? UISplitViewController)?.viewControllers.last?.topMostPresentedViewController else {return false}
+		
+		guard !(controller is UIAlertController) else {return false}
+		Router.Database.TypeInfo(type, kind: .push).perform(source: controller, sender: nil)
+		return true
+	}
+	
+	fileprivate func showFitting(dna: String) -> Bool {
+		guard let controller = (window?.rootViewController as? UISplitViewController)?.viewControllers.last?.topMostPresentedViewController else {return false}
+		guard !(controller is UIAlertController) else {return false}
+
+		guard let loadout = NCLoadoutRepresentation(value: dna) else {return false}
+		
+		Router.Fitting.Editor(representation: loadout).perform(source: controller, sender: nil)
+		return true
+	}
 }

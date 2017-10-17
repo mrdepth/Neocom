@@ -714,8 +714,9 @@ enum Router {
 			let contents: [Int64: [ESI.Assets.Asset]]?
 			let killmail: NCKillmail?
 			let fitting: ESI.Fittings.Fitting?
+			let representation: NCLoadoutRepresentation?
 			
-			private init(typeID: Int?, loadoutID: NSManagedObjectID?, fleetID: NSManagedObjectID?, asset: ESI.Assets.Asset?, contents: [Int64: [ESI.Assets.Asset]]?, killmail: NCKillmail?, fitting: ESI.Fittings.Fitting?) {
+			init(typeID: Int? = nil, loadoutID: NSManagedObjectID? = nil, fleetID: NSManagedObjectID? = nil, asset: ESI.Assets.Asset? = nil, contents: [Int64: [ESI.Assets.Asset]]? = nil, killmail: NCKillmail? = nil, fitting: ESI.Fittings.Fitting? = nil, representation: NCLoadoutRepresentation? = nil) {
 				self.typeID = typeID
 				self.loadoutID = loadoutID
 				self.fleetID = fleetID
@@ -723,39 +724,10 @@ enum Router {
 				self.contents = contents
 				self.killmail = killmail
 				self.fitting = fitting
+				self.representation = representation
 				super.init(kind: .push, storyboard: UIStoryboard.fitting, identifier: "NCFittingEditorViewController")
 			}
 			
-//			convenience init(fleet: NCFittingFleet, engine: NCFittingEngine) {
-//				self.init(typeID: nil, loadoutID: nil)
-//				self.fleet = fleet
-//				self.engine = engine
-//			}
-			
-			convenience init(typeID: Int) {
-				self.init(typeID: typeID, loadoutID: nil, fleetID: nil, asset: nil, contents: nil, killmail: nil, fitting: nil)
-			}
-			
-			convenience init(loadoutID: NSManagedObjectID) {
-				self.init(typeID: nil, loadoutID: loadoutID, fleetID: nil, asset: nil, contents: nil, killmail: nil, fitting: nil)
-			}
-
-			convenience init(fleetID: NSManagedObjectID) {
-				self.init(typeID: nil, loadoutID: nil, fleetID: fleetID, asset: nil, contents: nil, killmail: nil, fitting: nil)
-			}
-
-			convenience init(asset: ESI.Assets.Asset, contents: [Int64: [ESI.Assets.Asset]]) {
-				self.init(typeID: nil, loadoutID: nil, fleetID: nil, asset: asset, contents: contents, killmail: nil, fitting: nil)
-			}
-
-			convenience init(killmail: NCKillmail) {
-				self.init(typeID: nil, loadoutID: nil, fleetID: nil, asset: nil, contents: nil, killmail: killmail, fitting: nil)
-			}
-
-			convenience init(fitting: ESI.Fittings.Fitting) {
-				self.init(typeID: nil, loadoutID: nil, fleetID: nil, asset: nil, contents: nil, killmail: nil, fitting: fitting)
-			}
-
 			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCFittingEditorViewController
 				destination.fleet = fleet
@@ -793,6 +765,12 @@ enum Router {
 					}
 					else if let fitting = self.fitting {
 						fleet = NCFittingFleet(fitting: fitting, engine: engine)
+					}
+					else if let loadout = self.representation?.loadouts.first {
+						fleet = NCFittingFleet(typeID: loadout.typeID, engine: engine)
+						let pilot = fleet?.active
+						pilot?.loadout = loadout.data
+						pilot?.ship?.name = loadout.name
 					}
 					
 					DispatchQueue.main.async {

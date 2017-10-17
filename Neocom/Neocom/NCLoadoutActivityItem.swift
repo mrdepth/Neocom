@@ -229,10 +229,15 @@ enum NCLoadoutRepresentation {
 				self = .xml(loadouts)
 				return
 			}
-			if let s = String(data: data, encoding: .utf8),
-				let loadout = NCLoadoutRepresentation.loadoutFrom(eft: s) {
-				self = .eft([loadout])
-				return
+			if let s = String(data: data, encoding: .utf8) {
+				if let loadout = NCLoadoutRepresentation.loadoutFrom(eft: s) {
+					self = .eft([loadout])
+					return
+				}
+				else if let loadout = NCLoadoutRepresentation.loadoutFrom(dna: s) {
+					self = .dna([loadout])
+					return
+				}
 			}
 		}
 		return nil
@@ -293,7 +298,7 @@ enum NCLoadoutRepresentation {
 		guard let ship: (String, String?) = {
 			let s = lines.removeFirst().trimmingCharacters(in: CharacterSet(charactersIn: "[]"))
 			if let r = s.range(of: ",") {
-				return (s.substring(to: r.lowerBound).trimmingCharacters(in: CharacterSet.whitespaces), s.substring(from: r.upperBound).trimmingCharacters(in: CharacterSet.whitespaces))
+				return (s[..<r.lowerBound].trimmingCharacters(in: CharacterSet.whitespaces), s[r.upperBound...].trimmingCharacters(in: CharacterSet.whitespaces))
 			}
 			else {
 				return (s.trimmingCharacters(in: CharacterSet.whitespaces), nil)
@@ -326,7 +331,7 @@ enum NCLoadoutRepresentation {
 				
 				let module: (String, String?) = {
 					if let r = s.range(of: ",") {
-						return (s.substring(to: r.lowerBound).trimmingCharacters(in: CharacterSet.whitespaces), s.substring(from: r.upperBound).trimmingCharacters(in: CharacterSet.whitespaces))
+						return (s[..<r.lowerBound].trimmingCharacters(in: CharacterSet.whitespaces), s[r.upperBound...].trimmingCharacters(in: CharacterSet.whitespaces))
 					}
 					else {
 						return (s.trimmingCharacters(in: CharacterSet.whitespaces), nil)
@@ -382,6 +387,34 @@ enum NCLoadoutRepresentation {
 			return (typeID: Int(shipType.typeID), data: loadout, name: ship.1 ?? "")
 		}
 
+	}
+	
+	private static func loadoutFrom(dna: String) -> (typeID: Int, data: NCFittingLoadout, name: String)? {
+		var components = dna.components(separatedBy: ":")
+		guard components.count > 1, let shipID = Int(components[0]) else {return nil}
+		components.removeFirst()
+		
+		return NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> (typeID: Int, data: NCFittingLoadout, name: String)? in
+			var modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()
+
+			let slots: [NCFittingModuleSlot] = [.subsystem, .hi, .med, .low, .rig, .service]
+			zip(components, slots).forEach { i in
+				let c = i.0.components(separatedBy: ";")
+				guard c.count > 1 else {return}
+				guard let typeID = Int(c[0]) else {return}
+				let qty = c.count > 1 ? (Int(c[1]) ?? 1) : 1
+				let module = NCFittingLoadoutModule(typeID: typeID, count: qty, identifier: nil, charge: nil)
+				modules[i.1, default: []].append(module)
+			}
+			
+		
+			
+			let loadout = NCFittingLoadout()
+			loadout.modules = modules
+			
+			return (typeID: shipID, data: loadout, name: "")
+		}
+		
 	}
 }
 

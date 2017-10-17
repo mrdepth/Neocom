@@ -488,7 +488,7 @@ extension NCFittingCharacter {
 	@nonobjc class func url(account: NCAccount) -> URL? {
 		guard let uuid = account.uuid else {return nil}
 		var components = URLComponents()
-		components.scheme = NCURLScheme
+		components.scheme = NCURLScheme.nc.rawValue
 		components.host = "character"
 		
 		var queryItems = [URLQueryItem(name: "accountUUID", value: uuid)]
@@ -504,7 +504,7 @@ extension NCFittingCharacter {
 
 	@nonobjc class func url(level: Int) -> URL {
 		var components = URLComponents()
-		components.scheme = NCURLScheme
+		components.scheme = NCURLScheme.nc.rawValue
 		components.host = "character"
 		components.queryItems = [
 			URLQueryItem(name: "level", value: String(level)),
@@ -516,7 +516,7 @@ extension NCFittingCharacter {
 	@nonobjc class func url(character: NCFitCharacter) -> URL? {
 		guard let uuid = character.uuid else {return nil}
 		var components = URLComponents()
-		components.scheme = NCURLScheme
+		components.scheme = NCURLScheme.nc.rawValue
 		components.host = "character"
 		components.queryItems = [
 			URLQueryItem(name: "characterUUID", value: uuid),
@@ -551,7 +551,7 @@ extension NCFittingCharacter {
 	@nonobjc func setSkills(from url: URL, completionHandler: ((Bool) -> Void)? = nil) {
 		guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
 			let queryItems = components.queryItems,
-			components.scheme == NCURLScheme,
+			components.scheme == NCURLScheme.nc.rawValue,
 			components.host == "character" else {
 			completionHandler?(false)
 			return

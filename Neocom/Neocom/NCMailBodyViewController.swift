@@ -27,7 +27,7 @@ class NCMailBodyViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+		textView.delegate = self
 		textView.linkTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: UIColor.caption]
 		
 		guard let mail = self.mail, let account = NCAccount.current, let mailID = mail.mailID else {return}
@@ -138,4 +138,14 @@ class NCMailBodyViewController: UIViewController {
 		textView.layoutIfNeeded()
 	}
 
+}
+
+
+extension NCMailBodyViewController: UITextViewDelegate {
+	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+		if UIApplication.shared.canOpenURL(URL) {
+			UIApplication.shared.openURL(URL)
+		}
+		return false
+	}
 }

@@ -190,7 +190,12 @@ let ESClientID = "a0cc80b7006944249313dc22205ec645"
 let ESSecretKey = "deUqMep7TONp68beUoC1c71oabAdKQOJdbiKpPcC"
 let ESCallbackURL = URL(string: "eveauthnc://sso/")!
 
-let NCURLScheme = "nc"
+enum NCURLScheme: String {
+	case nc = "nc"
+	case showinfo = "showinfo"
+	case fitting = "fitting"
+}
+
 let NCSupportEmail = "support@eveuniverseiphone.com"
 let NCHomepage = "https://facebook.com/groups/Neocom"
 let NCSources = "https://github.com/mrdepth/Neocom"

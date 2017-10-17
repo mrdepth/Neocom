@@ -190,16 +190,33 @@ let ESClientID = "a0cc80b7006944249313dc22205ec645"
 let ESSecretKey = "deUqMep7TONp68beUoC1c71oabAdKQOJdbiKpPcC"
 let ESCallbackURL = URL(string: "eveauthnc://sso/")!
 
-let NCURLScheme = "neocom"
+let NCURLScheme = "nc"
+let NCSupportEmail = "support@eveuniverseiphone.com"
+let NCHomepage = "https://facebook.com/groups/Neocom"
+let NCSources = "https://github.com/mrdepth/Neocom"
+
+let NCSpecialThanks = ["Ilya Gepp aka Kane Gepp",
+                       "Dick Starmans aka Enrique d'Ancourt",
+                       "Guy Neale",
+                       "Peter Vlaar aka Tess La'Coil",
+                       "Wayne Hindle",
+                       "Tobias Tango",
+                       "Niclas Titius",
+                       "Fela Sowande",
+                       "Denis Chernov",
+                       "Andrei Kokarev",
+                       "Kurt Otto"]
 
 extension UserDefaults {
 	struct Key {
 		static let NCCurrentAccount = "NCCurrectAccount"
 		static let NCMarketRegion = "NCMarketRegion"
+		static let NCFirstLaunchDate = "NCFirstLaunchDate"
+		static let NCLastReviewDate = "NCLastReviewDate"
 	}
 }
 
-enum NCCellIdentifier {
-	case `default`
-	case action
+extension TimeInterval {
+	static let NCFirstReviewTime: TimeInterval = 3600 * 24
+	static let NCReviewTimeInterval: TimeInterval = 3600 * 24 * 2
 }

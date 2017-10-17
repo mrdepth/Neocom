@@ -11,6 +11,7 @@ import EVEAPI
 import CoreData
 import CloudData
 import SafariServices
+import StoreKit
 
 @UIApplicationMain
 class NCAppDelegate: UIResponder, UIApplicationDelegate {
@@ -77,6 +78,27 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 						}
 					}
 				}
+			}
+		}
+
+		if #available(iOS 10.3, *) {
+			let defaults = UserDefaults.standard
+			if let firstLaunchDate = defaults.object(forKey: UserDefaults.Key.NCFirstLaunchDate) as? Date {
+				if let lastReviewDate = defaults.object(forKey: UserDefaults.Key.NCLastReviewDate) as? Date {
+					if lastReviewDate.timeIntervalSinceNow < -TimeInterval.NCReviewTimeInterval {
+						SKStoreReviewController.requestReview()
+						defaults.set(Date(), forKey: UserDefaults.Key.NCLastReviewDate)
+					}
+				}
+				else {
+					if firstLaunchDate.timeIntervalSinceNow < -TimeInterval.NCFirstReviewTime {
+						SKStoreReviewController.requestReview()
+						defaults.set(Date(), forKey: UserDefaults.Key.NCLastReviewDate)
+					}
+				}
+			}
+			else {
+				defaults.set(Date(), forKey: UserDefaults.Key.NCFirstLaunchDate)
 			}
 		}
 

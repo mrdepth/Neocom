@@ -35,31 +35,19 @@ class NCAboutViewController: NCTreeViewController {
 		}
 		
 		sections.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, children: [
-			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Support", comment: "").uppercased(), subtitle: "support@eveuniverseiphone.com", route: Router.Custom({ (_, _) in
-				UIApplication.shared.openURL(URL(string: "mailto:support@eveuniverseiphone.com")!)
+			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Support", comment: "").uppercased(), subtitle: NCSupportEmail, route: Router.Custom({ (_, _) in
+				UIApplication.shared.openURL(URL(string: "mailto:\(NCSupportEmail)")!)
 			})),
-			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Homepage", comment: "").uppercased(), subtitle: "https://facebook.com/groups/Neocom", route: Router.Custom({ (_, _) in
-				UIApplication.shared.openURL(URL(string: "https://www.facebook.com/groups/Neocom")!)
+			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Homepage", comment: "").uppercased(), subtitle: NCHomepage, route: Router.Custom({ (_, _) in
+				UIApplication.shared.openURL(URL(string: NCHomepage)!)
 			})),
-			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Sources", comment: "").uppercased(), subtitle: "https://github.com/mrdepth/Neocom", route: Router.Custom({ (_, _) in
-				UIApplication.shared.openURL(URL(string: "https://github.com/mrdepth/Neocom")!)
+			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Sources", comment: "").uppercased(), subtitle: NCSources, route: Router.Custom({ (_, _) in
+				UIApplication.shared.openURL(URL(string: NCSources)!)
 			})),
 
 			]))
 		
-		let thanks = ["Ilya Gepp aka Kane Gepp",
-		              "Dick Starmans aka Enrique d'Ancourt",
-		              "Guy Neale",
-		              "Peter Vlaar aka Tess La'Coil",
-		              "Wayne Hindle",
-		              "Tobias Tango",
-		              "Niclas Titius",
-		              "Fela Sowande",
-		              "Denis Chernov",
-		              "Andrei Kokarev",
-		              "Kurt Otto"]
-		
-		sections.append(DefaultTreeSection(title: NSLocalizedString("Special Thanks", comment: "").uppercased(), children: thanks.map { DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage, title: $0) }))
+		sections.append(DefaultTreeSection(title: NSLocalizedString("Special Thanks", comment: "").uppercased(), children: NCSpecialThanks.map { DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage, title: $0) }))
 		
 		treeController?.content = RootNode(sections)
 	}

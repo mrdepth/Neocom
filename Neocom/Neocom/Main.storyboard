@@ -839,6 +839,45 @@
             </objects>
             <point key="canvasLocation" x="478" y="2622"/>
         </scene>
+        <!--Import-->
+        <scene sceneID="6ao-aq-I3z">
+            <objects>
+                <tableViewController storyboardIdentifier="NCTransferViewController" modalPresentationStyle="overCurrentContext" id="oP7-iq-Yl9" customClass="NCTransferViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="lVe-Sd-yhl" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="h1K-Qa-Agc"/>
+                        <barButtonItem enabled="NO" title="Select All" id="Yqv-hW-Gzl">
+                            <connections>
+                                <action selector="onSelectAll:" destination="oP7-iq-Yl9" id="lgx-Rd-IDk"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Import" id="qby-a6-d3t">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="BQ7-2K-mDf">
+                            <connections>
+                                <action selector="onCancel:" destination="oP7-iq-Yl9" id="pTI-UE-cbV"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="URL-cQ-s7z">
+                            <connections>
+                                <action selector="onDone:" destination="oP7-iq-Yl9" id="5VO-2c-GIK"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black" translucent="NO"/>
+                    <connections>
+                        <outlet property="selectAllItem" destination="Yqv-hW-Gzl" id="bdQ-Dy-a4B"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lje-so-82e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="476" y="1749"/>
+        </scene>
     </scenes>
     <resources>
         <image name="addAccount" width="100" height="100"/>

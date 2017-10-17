@@ -225,15 +225,14 @@ enum NCLoadoutRepresentation {
 
 	init?(value: Any) {
 		if let data = value as? Data ?? (value as? String)?.data(using: .utf8) {
-			if let loadouts = NCLoadoutRepresentation.loadoutsFrom(xml: data) {
+			if let loadouts = NCLoadoutRepresentation.loadoutsFrom(xml: data), !loadouts.isEmpty {
 				self = .xml(loadouts)
 				return
 			}
-			if let s = String(data: data, encoding: .utf8) {
-				if let loadout = NCLoadoutRepresentation.loadoutFrom(eft: s) {
-					self = .eft([loadout])
-					return
-				}
+			if let s = String(data: data, encoding: .utf8),
+				let loadout = NCLoadoutRepresentation.loadoutFrom(eft: s) {
+				self = .eft([loadout])
+				return
 			}
 		}
 		return nil

@@ -1538,6 +1538,23 @@ enum Router {
 			}
 		}
 	}
+	
+	enum Utility {
+		
+		class Transfer: Route {
+			let loadouts: NCLoadoutRepresentation
+			
+			init(loadouts: NCLoadoutRepresentation) {
+				self.loadouts = loadouts
+				super.init(kind: .adaptiveModal, storyboard: .main, identifier: "NCTransferViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCTransferViewController
+				destination.loadouts = loadouts
+			}
+		}
+	}
 }
 
 private var RouteKey = "currentRoute"

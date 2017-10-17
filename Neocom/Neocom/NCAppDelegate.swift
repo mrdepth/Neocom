@@ -60,6 +60,26 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
 		NCDataManager().updateMarketPrices()
+
+		DispatchQueue.global(qos: .background).async {
+			autoreleasepool {
+				let fileManager = FileManager.default
+				guard let groupURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.com.shimanski.neocom") else {return}
+				let flagURL = groupURL.appendingPathComponent(".already_transferred")
+				if !fileManager.fileExists(atPath: flagURL.path) {
+					let loadoutsURL = groupURL.appendingPathComponent("loadouts.xml")
+					guard let data = try? Data(contentsOf: loadoutsURL),
+						let loadouts = NCLoadoutRepresentation(value: data) else {return}
+					DispatchQueue.main.async {
+						guard let topMostController = self.window?.rootViewController?.topMostPresentedViewController else {return}
+						if !((topMostController as? UINavigationController)?.viewControllers.first is NCTransferViewController) {
+							Router.Utility.Transfer(loadouts: loadouts).perform(source: topMostController, sender: nil)
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 	func applicationWillTerminate(_ application: UIApplication) {

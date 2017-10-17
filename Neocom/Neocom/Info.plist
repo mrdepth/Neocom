@@ -22,7 +22,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.shimanski.neocom.scheme.neocom</string>
+			<string>com.shimanski.neocom.eveauthnc</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>eveauthnc</string>
@@ -32,10 +32,20 @@
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>com.shimanski.neocom.scheme.showinfo</string>
+			<string>com.shimanski.neocom.showinfo</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>showinfo</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.shimanski.neocom.nc</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>nc</string>
 			</array>
 		</dict>
 	</array>

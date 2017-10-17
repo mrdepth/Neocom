@@ -257,6 +257,7 @@
 		12C37D371EFBA4C80070F055 /* NCWHViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C37D361EFBA4C80070F055 /* NCWHViewController.swift */; };
 		12C44CFA1E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */; };
 		12C44D001E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */; };
+		12C966D71F95E02D00B141CC /* NCTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C966D61F95E02D00B141CC /* NCTransferViewController.swift */; };
 		12CD2CAC1F581B6600367606 /* NCNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CD2CAB1F581B6600367606 /* NCNotificationManager.swift */; };
 		12CFDACB1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDACA1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib */; };
 		12CFDACE1F023BDD00CC0762 /* NCZKillboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDACD1F023BDD00CC0762 /* NCZKillboardViewController.swift */; };
@@ -677,6 +678,7 @@
 		12C37D361EFBA4C80070F055 /* NCWHViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCWHViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleInfoTableViewCell.swift; sourceTree = "<group>"; };
 		12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleDamageChartTableViewCell.swift; sourceTree = "<group>"; };
+		12C966D61F95E02D00B141CC /* NCTransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTransferViewController.swift; sourceTree = "<group>"; };
 		12CD2CAB1F581B6600367606 /* NCNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCNotificationManager.swift; sourceTree = "<group>"; };
 		12CFDACA1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCImageHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		12CFDACD1F023BDD00CC0762 /* NCZKillboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCZKillboardViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -942,6 +944,7 @@
 				12D404571F34BA70007F1715 /* NCAccountsFoldersViewController.swift */,
 				12D404591F34BAD6007F1715 /* NCAccountsFolderPickerViewController.swift */,
 				1227D0E21F55468600494811 /* NCSplashScreenViewController.swift */,
+				12C966D61F95E02D00B141CC /* NCTransferViewController.swift */,
 			);
 			name = MainMenu;
 			sourceTree = "<group>";
@@ -1533,6 +1536,9 @@
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
@@ -1748,6 +1754,7 @@
 				12DC56A91EFC0AFD0088F45E /* NCFittingState.mm in Sources */,
 				126C9D491F30A6CD0071E792 /* NCRegionsViewController.swift in Sources */,
 				1294AB321F161A15002B9BA8 /* NCMailAttachmentsStructuresViewController.swift in Sources */,
+				12C966D71F95E02D00B141CC /* NCTransferViewController.swift in Sources */,
 				125CE1361E9FF0E7007B8B6B /* NCNewMailViewController.swift in Sources */,
 				12E9321E1E6B56D40033D71A /* NCFittingCharactersViewController.swift in Sources */,
 				12DC56881EFC0A040088F45E /* NCFittingFacility.mm in Sources */,

@@ -699,7 +699,7 @@ class NCDataManager {
 	}
 	
 	func mailLabels(completionHandler: @escaping (NCCachedResult<ESI.Mail.MailLabelsAndUnreadCounts>) -> Void) {
-		loadFromCache(forKey: "ESI.Mail.Subscription", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "ESI.Mail.MailLabelsAndUnreadCounts", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.mail.getMailLabelsAndUnreadCounts(characterID: Int(self.characterID)) { result in
 				completion(result, 60*10)
 			}
@@ -859,7 +859,7 @@ class NCDataManager {
 	}
 	
 	func blueprints(completionHandler: @escaping (NCCachedResult<[ESI.Character.Blueprint]>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.Blueprints", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "ESI.Character.Blueprint", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
             self.esi.character.getBlueprints(characterID: Int(self.characterID)) { result in
                 completion(result, 3600.0 * 1)
             }
@@ -867,7 +867,7 @@ class NCDataManager {
 	}
 
 	func industryJobs(completionHandler: @escaping (NCCachedResult<[ESI.Industry.Job]>) -> Void) {
-		loadFromCache(forKey: "EVE.Char.IndustryJobs", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+		loadFromCache(forKey: "ESI.Industry.Job", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.industry.listCharacterIndustryJobs(characterID: Int(self.characterID), includeCompleted: true) { result in
 				completion(result, 3600.0 * 1)
 			}

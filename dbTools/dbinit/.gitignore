@@ -8,3 +8,6 @@
 /EVEIconsIDsParser
 /tmp/
 *.gz
+/NCDatabase.momd/
+/NCDatabase.swiftmodule/
+/NCDatabase

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCSwitchTableViewCell" id="cTQ-3M-kD4" customClass="NCSwitchTableViewCell" customModule="Neocom" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cTQ-3M-kD4" id="fEN-en-tbX">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="40.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="5Sm-Kr-6nJ">
+                        <rect key="frame" x="0.0" y="4" width="320" height="32"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="LABEL" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="uqB-4U-3YQ">
+                                <rect key="frame" x="0.0" y="7" width="320" height="18"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HSv-9d-2hy">
+                                <rect key="frame" x="256" y="0.5" width="51" height="31"/>
+                            </switch>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="kSR-Ad-B8B"/>
+                        </constraints>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="5Sm-Kr-6nJ" firstAttribute="leading" secondItem="fEN-en-tbX" secondAttribute="leading" constant="15" id="5hb-IS-kyh"/>
+                    <constraint firstItem="5Sm-Kr-6nJ" firstAttribute="top" secondItem="fEN-en-tbX" secondAttribute="top" constant="4" id="XZC-Ue-ADD"/>
+                    <constraint firstAttribute="bottom" secondItem="5Sm-Kr-6nJ" secondAttribute="bottom" constant="4" id="kN5-QG-5Se"/>
+                    <constraint firstAttribute="trailing" secondItem="5Sm-Kr-6nJ" secondAttribute="trailing" priority="999" id="zKv-Pj-IjW"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5Sm-Kr-6nJ" secondAttribute="trailing" constant="15" id="OdO-Qv-jul"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="L2Z-i8-mY4"/>
+            <connections>
+                <outlet property="switchControl" destination="HSv-9d-2hy" id="EpS-TT-g8k"/>
+                <outlet property="titleLabel" destination="uqB-4U-3YQ" id="Nj1-8a-KxC"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

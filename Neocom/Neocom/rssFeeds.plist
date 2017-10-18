@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>title</key>
+		<string>News</string>
+		<key>feeds</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string>EVE Online News</string>
+				<key>url</key>
+				<string>http://newsfeed.eveonline.com/en-US/44/articles/page/1/20</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Game World news</string>
+				<key>url</key>
+				<string>http://newsfeed.eveonline.com/en-US/42/articles/page/1/20</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Press Releases</string>
+				<key>url</key>
+				<string>http://newsfeed.eveonline.com/en-US/43/articles/page/1/20</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Dev Corner</string>
+		<key>feeds</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string>Dev Blogs</string>
+				<key>url</key>
+				<string>http://newsfeed.eveonline.com/en-US/2/articles/page/1/20</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Patch Notes</string>
+				<key>url</key>
+				<string>http://newsfeed.eveonline.com/en-US/15/articles/page/1/5</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Partner&apos;s feeds</string>
+		<key>feeds</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string>Notalotofnews</string>
+				<key>url</key>
+				<string>http://www.notalotofnews.com/feed</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>reddit.com/r/eve</string>
+				<key>url</key>
+				<string>http://www.reddit.com/r/eve/.rss</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Eve News24</string>
+				<key>url</key>
+				<string>https://evenews24.com/feed/</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Eve Online Polska</string>
+				<key>url</key>
+				<string>http://www.eveonlinepolska.pl/feeds/posts/default?alt=rss</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Russian</string>
+		<key>feeds</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string>EVE NEWS | Новости EVE online (evenews.ru)</string>
+				<key>url</key>
+				<string>http://www.evenews.ru/index.php?format=feed&amp;type=rss</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>EVE-RU | Лента новостей (eve-ru.com)</string>
+				<key>url</key>
+				<string>http://eve-ru.com/rss/indexfeed</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>EVE-PLAY</string>
+				<key>url</key>
+				<string>http://eve-play.ru/index.php?format=feed</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Official Blog</string>
+		<key>feeds</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string>Official Blog</string>
+				<key>url</key>
+				<string>http://www.eveuniverseiphone.com/feeds/posts/default</string>
+			</dict>
+		</array>
+	</dict>
+</array>
+</plist>

@@ -10,3 +10,15 @@
 [submodule "ThirdParty/flurry-ios-sdk"]
 	path = ThirdParty/flurry-ios-sdk
 	url = https://github.com/flurry/flurry-ios-sdk.git
+[submodule "ThirdParty/TreeController"]
+	path = ThirdParty/TreeController
+	url = https://github.com/mrdepth/TreeController.git
+[submodule "ThirdParty/CloudData"]
+	path = ThirdParty/CloudData
+	url = https://github.com/mrdepth/CloudData.git
+[submodule "ThirdParty/clrconvert"]
+	path = ThirdParty/clrconvert
+	url = https://github.com/mrdepth/clrconvert.git
+[submodule "ThirdParty/swifter"]
+	path = ThirdParty/swifter
+	url = https://github.com/httpswift/swifter.git

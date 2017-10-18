@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCHeaderTableViewCell" rowHeight="40" id="XcH-h2-UZH" customClass="NCHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XcH-h2-UZH" id="vnN-O6-fRj">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cmZ-tc-3FZ">
+                        <rect key="frame" x="8" y="15" width="297" height="16"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" image="expand" translatesAutoresizingMaskIntoConstraints="NO" id="YhN-QI-HJH" customClass="NCTintImageView" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
+                                <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WQJ-0j-ZlV">
+                                <rect key="frame" x="24" y="0.0" width="273" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="cmZ-tc-3FZ" secondAttribute="bottom" constant="8" id="M9B-eR-lGN"/>
+                    <constraint firstAttribute="trailing" secondItem="cmZ-tc-3FZ" secondAttribute="trailing" constant="15" id="WeW-Zm-Yto"/>
+                    <constraint firstItem="cmZ-tc-3FZ" firstAttribute="top" secondItem="vnN-O6-fRj" secondAttribute="top" constant="15" id="wLA-LA-NDd"/>
+                    <constraint firstItem="cmZ-tc-3FZ" firstAttribute="leading" secondItem="vnN-O6-fRj" secondAttribute="leading" constant="8" id="xEc-bh-0dI"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <viewLayoutGuide key="safeArea" id="4n3-v2-LI2"/>
+            <connections>
+                <outlet property="expandIconView" destination="YhN-QI-HJH" id="aQe-N7-Dv1"/>
+                <outlet property="titleLabel" destination="WQJ-0j-ZlV" id="Q9Z-Ft-8Ep"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="expand" width="16" height="16"/>
+    </resources>
+</document>

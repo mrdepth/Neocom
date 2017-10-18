@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="NCChargeCompactTableViewCell" rowHeight="58" id="lHc-qh-cfT" customClass="NCChargeTableViewCell" customModule="Neocom" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lHc-qh-cfT" id="f2b-4S-S8F">
+                <rect key="frame" x="0.0" y="0.0" width="273" height="57.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="pRB-Wq-D23">
+                        <rect key="frame" x="15" y="4" width="258" height="42"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="McM-LG-7Al">
+                                <rect key="frame" x="0.0" y="0.0" width="258" height="18"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="jPv-Wc-We5">
+                                        <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="jPv-Wc-We5" secondAttribute="height" multiplier="1:1" id="Lf1-aC-yGa"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZMp-2Y-dKj">
+                                        <rect key="frame" x="20" y="0.0" width="238" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="jPv-Wc-We5" firstAttribute="top" secondItem="McM-LG-7Al" secondAttribute="top" id="QGn-h9-i7z"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZMp-2Y-dKj" secondAttribute="trailing" id="R6W-vt-Se5"/>
+                                    <constraint firstItem="ZMp-2Y-dKj" firstAttribute="leading" secondItem="jPv-Wc-We5" secondAttribute="trailing" constant="2" id="Sdz-7S-XKl"/>
+                                    <constraint firstItem="ZMp-2Y-dKj" firstAttribute="top" secondItem="McM-LG-7Al" secondAttribute="top" id="UFQ-k9-yPw"/>
+                                    <constraint firstAttribute="bottom" secondItem="ZMp-2Y-dKj" secondAttribute="bottom" id="fYp-qt-iLo"/>
+                                    <constraint firstAttribute="bottom" secondItem="jPv-Wc-We5" secondAttribute="bottom" id="pQS-xr-FwA"/>
+                                    <constraint firstItem="jPv-Wc-We5" firstAttribute="leading" secondItem="McM-LG-7Al" secondAttribute="leading" id="xLZ-5N-EOF"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="u6L-9c-N4K">
+                                <rect key="frame" x="0.0" y="22" width="258" height="20"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1IO-za-qo6">
+                                        <rect key="frame" x="0.0" y="0.0" width="58.5" height="20"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="em" translatesAutoresizingMaskIntoConstraints="NO" id="CKv-Qm-XTf">
+                                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="CKv-Qm-XTf" secondAttribute="height" multiplier="1:1" id="I1i-XT-WuT"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TGc-o9-g51" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
+                                                <rect key="frame" x="22" y="0.0" width="36.5" height="20"/>
+                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="damageType">
+                                                        <integer key="value" value="0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                                        <real key="value" value="0.5"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="TGc-o9-g51" secondAttribute="bottom" id="BvV-tP-7Cx"/>
+                                            <constraint firstItem="TGc-o9-g51" firstAttribute="top" secondItem="1IO-za-qo6" secondAttribute="top" id="JyS-KN-Nic"/>
+                                            <constraint firstItem="CKv-Qm-XTf" firstAttribute="leading" secondItem="1IO-za-qo6" secondAttribute="leading" id="Kcn-u9-a11"/>
+                                            <constraint firstAttribute="trailing" secondItem="TGc-o9-g51" secondAttribute="trailing" id="WSX-Pe-LvT"/>
+                                            <constraint firstItem="CKv-Qm-XTf" firstAttribute="top" secondItem="1IO-za-qo6" secondAttribute="top" id="bWy-Bc-K1A"/>
+                                            <constraint firstItem="TGc-o9-g51" firstAttribute="leading" secondItem="CKv-Qm-XTf" secondAttribute="trailing" constant="2" id="cnH-2w-4qX"/>
+                                            <constraint firstAttribute="bottom" secondItem="CKv-Qm-XTf" secondAttribute="bottom" id="fvf-8i-Hnw"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p7q-Se-Q7W">
+                                        <rect key="frame" x="66.5" y="0.0" width="58.5" height="20"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thermal" translatesAutoresizingMaskIntoConstraints="NO" id="LTU-NT-QEP">
+                                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="LTU-NT-QEP" secondAttribute="height" multiplier="1:1" id="8Fu-lc-oxq"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FvD-z4-8OA" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
+                                                <rect key="frame" x="22" y="0.0" width="36.5" height="20"/>
+                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                                        <real key="value" value="0.5"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="damageType">
+                                                        <integer key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="FvD-z4-8OA" firstAttribute="leading" secondItem="LTU-NT-QEP" secondAttribute="trailing" constant="2" id="58b-4j-qDf"/>
+                                            <constraint firstItem="LTU-NT-QEP" firstAttribute="top" secondItem="p7q-Se-Q7W" secondAttribute="top" id="OuN-kC-O3A"/>
+                                            <constraint firstItem="LTU-NT-QEP" firstAttribute="leading" secondItem="p7q-Se-Q7W" secondAttribute="leading" id="Vsz-t0-NJo"/>
+                                            <constraint firstAttribute="bottom" secondItem="LTU-NT-QEP" secondAttribute="bottom" id="WVP-Si-tPl"/>
+                                            <constraint firstAttribute="trailing" secondItem="FvD-z4-8OA" secondAttribute="trailing" id="cvt-Lg-J1a"/>
+                                            <constraint firstAttribute="bottom" secondItem="FvD-z4-8OA" secondAttribute="bottom" id="wi5-7k-xe5"/>
+                                            <constraint firstItem="FvD-z4-8OA" firstAttribute="top" secondItem="p7q-Se-Q7W" secondAttribute="top" id="ytW-aj-Mxo"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S5I-I9-m6l">
+                                        <rect key="frame" x="133" y="0.0" width="58.5" height="20"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kinetic" translatesAutoresizingMaskIntoConstraints="NO" id="cLT-oI-48H">
+                                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="cLT-oI-48H" secondAttribute="height" multiplier="1:1" id="4Z0-sP-Owt"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bui-X0-wT6" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
+                                                <rect key="frame" x="22" y="0.0" width="36.5" height="20"/>
+                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                                        <real key="value" value="0.5"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="damageType">
+                                                        <integer key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="bui-X0-wT6" secondAttribute="trailing" id="2ti-pH-Nig"/>
+                                            <constraint firstItem="cLT-oI-48H" firstAttribute="leading" secondItem="S5I-I9-m6l" secondAttribute="leading" id="6PL-Ks-fpa"/>
+                                            <constraint firstAttribute="bottom" secondItem="bui-X0-wT6" secondAttribute="bottom" id="DQ3-Me-PiA"/>
+                                            <constraint firstItem="cLT-oI-48H" firstAttribute="top" secondItem="S5I-I9-m6l" secondAttribute="top" id="I16-xC-YyI"/>
+                                            <constraint firstItem="bui-X0-wT6" firstAttribute="leading" secondItem="cLT-oI-48H" secondAttribute="trailing" constant="2" id="RDe-eR-HlB"/>
+                                            <constraint firstItem="bui-X0-wT6" firstAttribute="top" secondItem="S5I-I9-m6l" secondAttribute="top" id="fKn-Rl-oAW"/>
+                                            <constraint firstAttribute="bottom" secondItem="cLT-oI-48H" secondAttribute="bottom" id="wIa-KA-sny"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X0E-Lh-fJJ">
+                                        <rect key="frame" x="199.5" y="0.0" width="58.5" height="20"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="explosion" translatesAutoresizingMaskIntoConstraints="NO" id="kzm-ov-ybg">
+                                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="kzm-ov-ybg" secondAttribute="height" multiplier="1:1" id="rEJ-Jm-ju3"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zz2-qk-SXz" customClass="NCDamageTypeLabel" customModule="Neocom" customModuleProvider="target">
+                                                <rect key="frame" x="22" y="0.0" width="36.5" height="20"/>
+                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                                        <real key="value" value="0.5"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="damageType">
+                                                        <integer key="value" value="3"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="Zz2-qk-SXz" firstAttribute="leading" secondItem="kzm-ov-ybg" secondAttribute="trailing" constant="2" id="Ad1-F1-PFW"/>
+                                            <constraint firstItem="Zz2-qk-SXz" firstAttribute="top" secondItem="X0E-Lh-fJJ" secondAttribute="top" id="N0v-RX-cfJ"/>
+                                            <constraint firstItem="kzm-ov-ybg" firstAttribute="top" secondItem="X0E-Lh-fJJ" secondAttribute="top" id="QTn-zU-GOo"/>
+                                            <constraint firstAttribute="trailing" secondItem="Zz2-qk-SXz" secondAttribute="trailing" id="aVx-kf-56P"/>
+                                            <constraint firstItem="kzm-ov-ybg" firstAttribute="leading" secondItem="X0E-Lh-fJJ" secondAttribute="leading" id="k52-GE-mC3"/>
+                                            <constraint firstAttribute="bottom" secondItem="Zz2-qk-SXz" secondAttribute="bottom" id="mJc-sj-Qlf"/>
+                                            <constraint firstAttribute="bottom" secondItem="kzm-ov-ybg" secondAttribute="bottom" id="tnA-Us-ZUy"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="9TC-A2-b8h"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="pRB-Wq-D23" firstAttribute="leading" secondItem="f2b-4S-S8F" secondAttribute="leading" constant="15" id="DuU-wq-VJa"/>
+                    <constraint firstItem="pRB-Wq-D23" firstAttribute="top" secondItem="f2b-4S-S8F" secondAttribute="top" constant="4" id="dK7-yf-ase"/>
+                    <constraint firstAttribute="bottom" secondItem="pRB-Wq-D23" secondAttribute="bottom" priority="999" constant="4" id="e9a-DI-qOz"/>
+                    <constraint firstAttribute="trailing" secondItem="pRB-Wq-D23" secondAttribute="trailing" id="gjJ-At-iiM"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <viewLayoutGuide key="safeArea" id="hdu-by-wr3"/>
+            <connections>
+                <outlet property="emLabel" destination="TGc-o9-g51" id="cov-p4-lVC"/>
+                <outlet property="explosiveLabel" destination="Zz2-qk-SXz" id="gTD-0x-4SW"/>
+                <outlet property="iconView" destination="jPv-Wc-We5" id="33h-zZ-8z8"/>
+                <outlet property="kineticLabel" destination="bui-X0-wT6" id="uda-GE-u9c"/>
+                <outlet property="thermalLabel" destination="FvD-z4-8OA" id="0VQ-jR-3i7"/>
+                <outlet property="titleLabel" destination="ZMp-2Y-dKj" id="rQj-Mk-RC6"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="em" width="32" height="32"/>
+        <image name="explosion" width="32" height="32"/>
+        <image name="kinetic" width="32" height="32"/>
+        <image name="thermal" width="32" height="32"/>
+    </resources>
+</document>

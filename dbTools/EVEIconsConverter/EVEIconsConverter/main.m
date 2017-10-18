@@ -40,7 +40,7 @@ int main(int argc, const char * argv[])
 				if (c.length == 1)
 					c = [NSString stringWithFormat:@"0%@", c];
 				
-				NSString *fileName2 = [NSString stringWithFormat:@"icon%@_%@.png", a, c];
+				NSString *fileName2 = [NSString stringWithFormat:@"%@_%@.png", a, c];
 				
 				NSDictionary* record = [map valueForKey:fileName2];
 				if (!record)

@@ -148,16 +148,16 @@ class NCSkillsPageViewController: NCPageViewController {
 						group = type.group
 					}
 					
-					allRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill, character: character))
+					allRows.append(NCSkillRow(skill: skill, character: character))
 					if let level = skill.level {
-						myRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill, character: character))
+						myRows.append(NCSkillRow(skill: skill, character: character))
 						if level < 5 {
-							canTrainRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill, character: character))
+							canTrainRows.append(NCSkillRow(skill: skill, character: character))
 						}
 					}
 					else {
-						canTrainRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill, character: character))
-						notKnownRows.append(NCSkillRow(prototype: Prototype.NCSkillTableViewCell.compact, skill: skill, character: character))
+						canTrainRows.append(NCSkillRow(skill: skill, character: character))
+						notKnownRows.append(NCSkillRow(skill: skill, character: character))
 					}
 				}
 				if let group = group {

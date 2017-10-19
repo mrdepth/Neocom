@@ -22,7 +22,6 @@ class NCSkillTableViewCell: NCTableViewCell {
 extension Prototype {
     enum NCSkillTableViewCell {
         static let `default` = Prototype(nib: UINib(nibName: "NCSkillTableViewCell", bundle: nil), reuseIdentifier: "NCSkillTableViewCell")
-		static let compact = Prototype(nib: UINib(nibName: "NCSkillCompactTableViewCell", bundle: nil), reuseIdentifier: "NCSkillCompactTableViewCell")
     }
 }
 
@@ -61,6 +60,11 @@ class NCSkillRow: TreeRow {
 			cell.skillLevelView?.level = 0
 			cell.skillLevelView?.isActive = false
         }
+		
+		let sph = Int((character.attributes.skillpointsPerSecond(forSkill: skill) * 3600).rounded())
+		cell.spLabel?.text = "\(NCUnitFormatter.localizedString(from: sph, unit: .custom(NSLocalizedString("SP/h", comment: ""), false), style: .full))"
+		cell.progressView?.progress = 0
+
 		
 		if let trainingTime = trainingTime {
 			cell.trainingTimeLabel?.text = trainingTime

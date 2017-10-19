@@ -22,7 +22,7 @@ class NCSkillsContentViewController: NCTreeViewController {
 		
 		tableView.register([
 			Prototype.NCHeaderTableViewCell.default,
-			Prototype.NCSkillTableViewCell.compact
+			Prototype.NCSkillTableViewCell.default
 			]
 		)
 

@@ -1420,7 +1420,7 @@ enum Router {
 		
 		class NPC: Route {
 			init() {
-				super.init(kind: .detail, storyboard: .database, identifier: "NCDatabaseCategoriesViewController")
+				super.init(kind: .detail, storyboard: .database, identifier: "NCNPCViewController")
 			}
 			
 		}

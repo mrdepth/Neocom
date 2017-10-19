@@ -683,9 +683,15 @@
                                             <rect key="frame" x="15" y="4" width="345" height="103.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JDA-iI-H0b">
-                                                    <rect key="frame" x="0.0" y="0.0" width="345" height="49.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="345" height="31.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MMX-p5-dPH">
+                                                    <rect key="frame" x="0.0" y="33.5" width="345" height="16"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bqI-OI-6w2">
@@ -732,6 +738,7 @@
                                     <outlet property="dateLabel" destination="5jx-wA-Dlm" id="0V7-2N-cpL"/>
                                     <outlet property="locationLabel" destination="Kac-4P-QZu" id="eyt-FR-lN5"/>
                                     <outlet property="stateLabel" destination="bqI-OI-6w2" id="SIZ-6F-3ko"/>
+                                    <outlet property="subtitleLabel" destination="MMX-p5-dPH" id="bwd-Ad-lXZ"/>
                                     <outlet property="titleLabel" destination="JDA-iI-H0b" id="wMQ-g7-IOa"/>
                                 </connections>
                             </tableViewCell>

@@ -11,6 +11,7 @@ import EVEAPI
 
 class NCContractTableViewCell: NCTableViewCell {
 	@IBOutlet weak var titleLabel: UILabel!
+	@IBOutlet weak var subtitleLabel: UILabel!
 	@IBOutlet weak var locationLabel: UILabel!
 	@IBOutlet weak var stateLabel: UILabel!
 	@IBOutlet weak var dateLabel: UILabel!
@@ -44,7 +45,7 @@ class NCContractRow: TreeRow {
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCContractTableViewCell else {return}
-		
+
 		let type = contract.type.title
 		
 		let availability = contract.availability.title
@@ -61,6 +62,8 @@ class NCContractRow: TreeRow {
 		else {
 			cell.titleLabel.attributedText = "\(type) [\(availability)]" * [NSAttributedStringKey.foregroundColor: color]
 		}
+		
+		cell.subtitleLabel.text = contract.title
 		cell.locationLabel.attributedText = location?.displayName ?? NSLocalizedString("Unknown", comment: "") * [:]
 		
 		switch status {

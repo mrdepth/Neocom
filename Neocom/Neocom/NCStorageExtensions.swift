@@ -133,6 +133,7 @@ extension NCSetting {
 			let setting = NCSetting(entity: NSEntityDescription.entity(forEntityName: "Setting", in: context)!, insertInto: context)
 			setting.key = key.rawValue
 			//setting.value = defaultValue as? NSObject
+			try? context.save()
 			return setting
 		}
 	}

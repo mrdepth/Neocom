@@ -160,7 +160,7 @@ class NCFittingFleet {
 					cargo.insert($0.typeID)
 				default:
 					for _ in 0..<max($0.quantity, 1) {
-						if let module = ship.addModule(typeID: $0.typeID), !module.chargeGroups.isEmpty {
+						if let module = ship.addModule(typeID: $0.typeID, forced: true, socket: -1), !module.chargeGroups.isEmpty {
 							requiresAmmo.append(module)
 						}
 					}

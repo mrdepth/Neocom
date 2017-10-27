@@ -29,7 +29,9 @@ fileprivate class NCSkillQueueRow: NCSkillRow {
 		
 		let a = NCUnitFormatter.localizedString(from: Double(skill.skillPoints), unit: .none, style: .full)
 		let b = NCUnitFormatter.localizedString(from: Double(skill.skillPoints(at: 1 + (skill.level ?? 0))), unit: .skillPoints, style: .full)
-		cell.spLabel?.text = "\(a) / \(b)"
+
+		let sph = Int((character.attributes.skillpointsPerSecond(forSkill: skill) * 3600).rounded())
+		cell.spLabel?.text = "\(a) / \(b) (\(NCUnitFormatter.localizedString(from: sph, unit: .custom(NSLocalizedString("SP/h", comment: ""), false), style: .full)))"
 		if let from = skill.trainingStartDate, let to = skill.trainingEndDate {
 			cell.trainingTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: max(to.timeIntervalSince(max(from, Date())), 0), precision: .minutes)
 		}
@@ -73,7 +75,10 @@ fileprivate class NCSkillPlanSkillRow: NCFetchedResultsObjectNode<NCSkillPlanSki
 			
 			let a = NCUnitFormatter.localizedString(from: Double(skill.skill.skillPoints), unit: .none, style: .full)
 			let b = NCUnitFormatter.localizedString(from: Double(skill.skill.skillPoints(at: skill.level)), unit: .skillPoints, style: .full)
-			cell.spLabel?.text = "\(a) / \(b)"
+			
+			let sph = Int((character.attributes.skillpointsPerSecond(forSkill: skill.skill) * 3600).rounded())
+			cell.spLabel?.text = "\(a) / \(b) (\(NCUnitFormatter.localizedString(from: sph, unit: .custom(NSLocalizedString("SP/h", comment: ""), false), style: .full)))"
+
 			let t = skill.trainingTime(characterAttributes: character.attributes)
 			cell.trainingTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes)
 		}

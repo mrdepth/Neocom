@@ -34,7 +34,7 @@
 
 - (NSInteger) attributeID {
 	std::shared_ptr<dgmpp::Attribute> attribute = self.attribute;
-	return attribute ? attribute->getAttributeID() : 0;
+	return attribute ? static_cast<NSInteger>(attribute->getAttributeID()) : 0;
 }
 
 - (nonnull NSString*) attributeName {

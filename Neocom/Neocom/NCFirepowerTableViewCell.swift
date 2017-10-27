@@ -50,7 +50,7 @@ class NCFirepowerRow: TreeRow {
 			
 			DispatchQueue.main.async {
 				if cell.object as? NCFittingShip === ship {
-					let formatter = NCUnitFormatter(unit: .none, style: .short, useSIPrefix: false)
+					let formatter = NCUnitFormatter(unit: .none, style: .full, useSIPrefix: false)
 					cell.dpsView.weaponLabel.text = formatter.string(for: weaponDPS.total)
 					cell.dpsView.droneLabel.text = formatter.string(for: droneDPS.total)
 					cell.dpsView.totalLabel.text = formatter.string(for: dps.total)

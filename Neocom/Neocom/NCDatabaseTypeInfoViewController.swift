@@ -75,11 +75,14 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 			}
 			
 			if marketQuickItem == nil {
-				navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "favoritesOff"), style: .plain, target: self, action: #selector(onFavorites(_:)))
+				if type.marketGroup != nil {
+					navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "favoritesOff"), style: .plain, target: self, action: #selector(onFavorites(_:)))
+				}
 			}
 			else {
 				navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "favoritesOn"), style: .plain, target: self, action: #selector(onFavorites(_:)))
 			}
+			
 		}
 		else {
 			title = NSLocalizedString("Unknown", comment: "")

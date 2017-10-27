@@ -721,7 +721,7 @@ extension ZKillboard.Killmail: NCKillmail {
 	}
 	
 	func getItems() -> [NCItem]? {
-		return items
+		return victim.items
 	}
 }
 

@@ -46,7 +46,7 @@
 
 - (NSInteger) typeID {
 	auto planet = self.planet;
-	return planet ? planet->getTypeID() : _typeID;
+	return planet ? static_cast<NSInteger>(planet->getTypeID()) : _typeID;
 }
 
 - (nonnull NSArray<NCFittingFacility*>*) facilities {

@@ -22,7 +22,7 @@
 	NCVerifyFittingContext(self.engine);
 	auto facility = std::dynamic_pointer_cast<dgmpp::IndustryFacility>(self.facility);
 	if (facility) {
-		schematic.schematic = facility->setSchematic(static_cast<dgmpp::TypeID>(schematic.schematicID));
+		schematic.schematic = facility->setSchematic(static_cast<dgmpp::SchematicID>(schematic.schematicID));
 		schematic.engine = self.engine;
 	}
 }

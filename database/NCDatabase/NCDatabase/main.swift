@@ -1150,7 +1150,7 @@ try! database.exec("select raceID from invTypes as a, dgmTypeEffects as b where 
 
 importItems(category: NCDBDgmppItemCategory(categoryID: .service, subcategory: 66), categoryName: "Service Slot", predicate: NSPredicate(format: "group.category.categoryID == 66 AND ANY effects.effectID == 6306"))
 
-try! database.exec("select value from dgmTypeAttributes as a, invTypes as b where attributeID=331 and a.typeID=b.typeID and b.published = 1 group by value;") { row in
+try! database.exec("select value from dgmTypeAttributes as a, invTypes as b where attributeID=331 and a.typeID=b.typeID and b.marketGroupID > 0 group by value;") { row in
 	let value = row["value"] as! NSNumber
 	let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
 	request.predicate = NSPredicate(format: "attributeType.attributeID == 331 AND value == %@", value)
@@ -1158,7 +1158,7 @@ try! database.exec("select value from dgmTypeAttributes as a, invTypes as b wher
 	importItems(types: attributes.map{$0.type!}, category: NCDBDgmppItemCategory(categoryID: .implant, subcategory: value.int32Value), categoryName: "Implants")
 }
 
-try! database.exec("select value from dgmTypeAttributes as a, invTypes as b where attributeID=1087 and a.typeID=b.typeID and b.published = 1 group by value;") { row in
+try! database.exec("select value from dgmTypeAttributes as a, invTypes as b where attributeID=1087 and a.typeID=b.typeID and b.marketGroupID > 0 group by value;") { row in
 	let value = row["value"] as! NSNumber
 	let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
 	request.predicate = NSPredicate(format: "attributeType.attributeID == 1087 AND value == %@", value)

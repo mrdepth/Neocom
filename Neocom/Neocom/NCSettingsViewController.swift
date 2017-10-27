@@ -66,7 +66,8 @@ class NCSettingsViewController: NCTreeViewController {
 		
 		tableView.register([Prototype.NCHeaderTableViewCell.default,
 		                    Prototype.NCSwitchTableViewCell.default,
-		                    Prototype.NCDefaultTableViewCell.default])
+		                    Prototype.NCDefaultTableViewCell.default,
+		                    Prototype.NCActionTableViewCell.default])
 		
 	}
 	
@@ -84,6 +85,21 @@ class NCSettingsViewController: NCTreeViewController {
 		if let setting = NCSetting.setting(key: NCSetting.Key.skillQueueNotifications) {
 			sections.append(NCSkillQueueNotificationOptionsSection(setting: setting))
 		}
+		
+		let clearCache = Router.Custom { (controller, _) in
+			let alert = UIAlertController(title: NSLocalizedString("Are You Sure?", comment: ""), message: NSLocalizedString("Some features may be temporarily unavailable", comment: ""), preferredStyle: .alert)
+			alert.addAction(UIAlertAction(title: NSLocalizedString("Clear", comment: ""), style: .default, handler: { (_) in
+				NCCache.sharedCache?.performBackgroundTask { (managedObjectContext) in
+					guard let records: [NCCacheRecord] = managedObjectContext.fetch("Record") else {return}
+					records.forEach { managedObjectContext.delete($0) }
+				}
+			}))
+			alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+			controller.present(alert, animated: true, completion: nil)
+		}
+		
+		
+		sections.append(DefaultTreeSection(title: NSLocalizedString("Cache", comment: "").uppercased(), children: [NCActionRow(title: NSLocalizedString("Clear Cache", comment: "").uppercased(), route: clearCache, object: nil)]))
 
 		treeController?.content = RootNode(sections, collapseIdentifier: "NCFeedsViewController")
 		completionHandler()

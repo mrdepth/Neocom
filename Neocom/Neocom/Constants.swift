@@ -223,5 +223,5 @@ extension UserDefaults {
 
 extension TimeInterval {
 	static let NCFirstReviewTime: TimeInterval = 3600 * 24
-	static let NCReviewTimeInterval: TimeInterval = 3600 * 24 * 2
+	static let NCReviewTimeInterval: TimeInterval = 3600 * 24 * 20
 }

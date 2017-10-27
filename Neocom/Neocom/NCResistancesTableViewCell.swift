@@ -81,7 +81,8 @@ class NCResistancesRow: TreeRow {
 					cell.shieldView.hpLabel.text = formatter.string(for: hp.shield)
 					cell.armorView.hpLabel.text = formatter.string(for: hp.armor)
 					cell.structureView.hpLabel.text = formatter.string(for: hp.hull)
-					cell.ehpLabel.text = NSLocalizedString("EHP", comment: "") + ": \(formatter.string(for: ehp.armor + ehp.shield + ehp.hull) ?? "")"
+					let s = NCUnitFormatter.localizedString(from: ehp.armor + ehp.shield + ehp.hull, unit: .none, style: .full)
+					cell.ehpLabel.text = NSLocalizedString("EHP", comment: "") + ": \(s)"
 				}
 			}
 		}

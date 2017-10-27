@@ -72,7 +72,7 @@
 	if (character) {
 		__block std::map<dgmpp::TypeID, int> levels;
 		[skillLevels enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSNumber * _Nonnull obj, BOOL * _Nonnull stop) {
-			levels[key.intValue] = obj.intValue;
+			levels[static_cast<dgmpp::TypeID>(key.intValue)] = obj.intValue;
 		}];
 		character->setSkillLevels(levels);
 		[_engine updateWithItem: [NCFittingItem item:character withEngine:_engine]];

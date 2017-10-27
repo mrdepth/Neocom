@@ -39,7 +39,7 @@
 	NCVerifyFittingContext(_engine);
 	std::shared_ptr<dgmpp::Item> item = self.item;
 	if (item) {
-		auto attribute = item->getAttribute(static_cast<dgmpp::TypeID>(attributeID));
+		auto attribute = item->getAttribute(static_cast<dgmpp::AttributeID>(attributeID));
 		return attribute ? [[NCFittingAttribute alloc] initWithAttribute:attribute engine:_engine] : nil;
 	}
 	else {
@@ -109,7 +109,7 @@
 
 - (NSInteger) typeID {
 	std::shared_ptr<dgmpp::Item> item = self.item;
-	return item ? item->getTypeID() : 0;
+	return item ? static_cast<NSInteger>(item->getTypeID()) : 0;
 }
 
 - (nonnull NSString*) typeName {
@@ -124,12 +124,12 @@
 
 - (NSInteger) groupID {
 	std::shared_ptr<dgmpp::Item> item = self.item;
-	return item ? item->getGroupID() : 0;
+	return item ? static_cast<NSInteger>(item->getGroupID()) : 0;
 }
 
 - (NSInteger) categoryID {
 	std::shared_ptr<dgmpp::Item> item = self.item;
-	return item ? item->getCategoryID() : 0;
+	return item ? static_cast<NSInteger>(item->getCategoryID()) : 0;
 }
 
 - (nullable NCFittingItem*) owner {

@@ -35,8 +35,6 @@ class NCWHGroupRow: NCFetchedResultsObjectNode<NCDBWhType> {
 
 class NCWHViewController: NCTreeViewController, NCSearchableViewController {
 
-	var isSearchResultsController = false
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -44,7 +42,7 @@ class NCWHViewController: NCTreeViewController, NCSearchableViewController {
 		                    Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact
 		                    ])
-		if !isSearchResultsController {
+		if navigationController != nil {
 			setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCWHViewController"))
 		}
 	}

@@ -54,7 +54,7 @@
 
 - (NSInteger) typeID {
 	auto facility = self.facility;
-	return facility ? facility->getTypeID() : 0;
+	return facility ? static_cast<NSInteger>(facility->getTypeID()) : 0;
 }
 
 - (NSString*) typeName {
@@ -64,7 +64,7 @@
 
 - (NSInteger) groupID {
 	auto facility = self.facility;
-	return facility ? facility->getGroupID() : 0;
+	return facility ? static_cast<NSInteger>(facility->getGroupID()) : 0;
 }
 
 - (int64_t) identifier {

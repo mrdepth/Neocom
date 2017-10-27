@@ -84,7 +84,7 @@
 	if (module) {
 		NSMutableIndexSet* set = [NSMutableIndexSet new];
 		for (auto groupID: module->getChargeGroups()) {
-			[set addIndex:groupID];
+			[set addIndex: static_cast<NSInteger>(groupID)];
 		}
 		return set;
 	}

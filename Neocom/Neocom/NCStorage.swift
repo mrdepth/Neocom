@@ -35,7 +35,8 @@ class NCStorage: NSObject {
 				                                                  configurationName: nil,
 				                                                  at: url,
 				                                                  options: [CloudStoreOptions.recordZoneKey: "Neocom",
-				                                                            CloudStoreOptions.binaryDataCompressionLevel: BinaryDataCompressionLevel.default])
+				                                                            CloudStoreOptions.binaryDataCompressionLevel: BinaryDataCompressionLevel.default,
+				                                                            CloudStoreOptions.mergePolicyType: NSMergePolicyType.overwriteMergePolicyType])
 				break
 			} catch {
 				try? FileManager.default.removeItem(at: url)
@@ -67,7 +68,9 @@ class NCStorage: NSObject {
 					try context.save()
 				}
 				catch {
-					print ("\(error)")
+//					let e = error as NSError
+//					print("\(e.domain): \(e.code)")
+//					print ("\(error)")
 				}
 			}
 		}

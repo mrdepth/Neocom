@@ -18,7 +18,7 @@
 	if (structure) {
 		NSMutableArray* array = [NSMutableArray new];
 		for (const auto i: structure->getSupportedModuleCategories()) {
-			[array addObject: @(i)];
+			[array addObject: @(static_cast<NSInteger>(i))];
 		}
 		return array;
 	}
@@ -34,7 +34,7 @@
 	if (structure) {
 		NSMutableArray* array = [NSMutableArray new];
 		for (const auto i: structure->getSupportedDroneCategories()) {
-			[array addObject: @(i)];
+			[array addObject: @(static_cast<NSInteger>(i))];
 		}
 		return array;
 	}
@@ -46,7 +46,7 @@
 - (NSInteger) fuelBlockTypeID {
 	NCVerifyFittingContext(self.engine);
 	auto structure = std::dynamic_pointer_cast<dgmpp::Structure>(self.item);
-	return structure ? structure->getFuelBlockTypeID() : 0;
+	return structure ? static_cast<NSInteger>(structure->getFuelBlockTypeID()) : 0;
 
 }
 

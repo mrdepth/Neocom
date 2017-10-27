@@ -221,6 +221,11 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 	//MARK: - Private
 	
 	private func reload() {
+		
+		
+		let boosterCategories: [NCDBDgmppItemCategory]? = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemCategory", where: "category == %d", NCDBDgmppItemCategoryID.booster.rawValue)
+		let boosterSlots = boosterCategories?.map {Int($0.subcategory)}.sorted() ?? [1,2,3,4]
+
 		engine?.perform {
 			guard let pilot = self.fleet?.active else {return}
 			var sections = [TreeNode]()
@@ -231,12 +236,14 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 				guard (1...10).contains(implant.slot) else {continue}
 				implants[implant.slot - 1] = NCImplantRow(implant: implant)
 			}
-
-			var boosters = (0...3).map({NCBoosterRow(dummySlot: $0 + 1)})
+			
+			var boosters = boosterSlots.map({NCBoosterRow(dummySlot: $0)})
 			
 			for booster in pilot.boosters.all {
-				guard (1...4).contains(booster.slot) else {continue}
-				boosters[booster.slot - 1] = NCBoosterRow(booster: booster)
+//				guard boosterSlots.contains(booster.slot) else {continue}
+				guard let i = boosters.index(where: {$0.slot == booster.slot}) else {continue}
+				boosters[i] = NCBoosterRow(booster: booster)
+//				boosters[booster.slot - 1] = NCBoosterRow(booster: booster)
 			}
 			
 			var actions = [TreeNode]()

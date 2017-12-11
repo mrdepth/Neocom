@@ -49,14 +49,18 @@ class NCDatabaseTypeInfoRow: DefaultTreeRow {
 			route = Router.Database.TypeInfo(type.objectID)
 		case .sizeClass:
 			switch Int(value) {
+			case 0:
+				return nil;
 			case 1:
 				subtitle = NSLocalizedString("Small", comment: "")
 			case 2:
 				subtitle = NSLocalizedString("Medium", comment: "")
 			case 3:
 				subtitle = NSLocalizedString("Large", comment: "")
-			default:
+			case 4:
 				subtitle = NSLocalizedString("X-Large", comment: "")
+			default:
+				subtitle = "\(Int(value))"
 			}
 		case .bonus:
 			subtitle = "+" + NCUnitFormatter.localizedString(from: Double(value), unit: .none, style: .full)

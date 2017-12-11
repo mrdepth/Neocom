@@ -324,7 +324,7 @@
 		12DA882A1EB8707400FB1922 /* Progress+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DA88291EB8707400FB1922 /* Progress+NC.swift */; };
 		12DA88331EB8C93A00FB1922 /* NCExtendedLifeTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DA88321EB8C93A00FB1922 /* NCExtendedLifeTime.swift */; };
 		12DACE5B1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DACE5A1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift */; };
-		12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */; };
+		12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12DBEAAE1E1D3B710088A486 /* Dgmpp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		12DBEAB71E1D3BD80088A486 /* NCFittingEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DBEAB61E1D3BD80088A486 /* NCFittingEngine.mm */; };
 		12DBEABA1E1D3F3D0088A486 /* NCFittingItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DBEAB91E1D3F3D0088A486 /* NCFittingItem.mm */; };

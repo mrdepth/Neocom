@@ -9,34 +9,43 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Dgmpp
 
-extension NCFittingEngine {
-	func sync<T>(execute block: @escaping () -> T) -> T {
-		var v: T?
-		performBlockAndWait {
-			v = block()
-		}
-		return v!
-	}
+//extension NCFittingEngine {
+//	func sync<T>(execute block: @escaping () -> T) -> T {
+//		var v: T?
+//		performBlockAndWait {
+//			v = block()
+//		}
+//		return v!
+//	}
+//}
+
+enum NCFittingAccuracy {
+	case none
+	case low
+	case average
+	case good
 }
+
 
 class NCFittingLoadoutItem: NSObject, NSSecureCoding {
 	let typeID: Int
 	var count: Int
-	let identifier: String?
+	let identifier: Int?
 	
 	public static var supportsSecureCoding: Bool {
 		return true
 	}
 	
-	init(item: NCFittingItem, count: Int = 1) {
-		self.typeID = item.typeID
+	init(type: DGMType, count: Int = 1) {
+		self.typeID = type.typeID
 		self.count = count
-		self.identifier = item.identifier
+		self.identifier = type.identifier
 		super.init()
 	}
 	
-	init(typeID: Int, count: Int, identifier: String?) {
+	init(typeID: Int, count: Int, identifier: Int? = nil) {
 		self.typeID = typeID
 		self.count = count
 		self.identifier = identifier
@@ -46,7 +55,12 @@ class NCFittingLoadoutItem: NSObject, NSSecureCoding {
 	required init?(coder aDecoder: NSCoder) {
 		typeID = aDecoder.decodeInteger(forKey: "typeID")
 		count = aDecoder.containsValue(forKey: "count") ? aDecoder.decodeInteger(forKey: "count") : 1
-		identifier = (aDecoder.decodeObject(forKey: "identifier") as? String)
+		if let s = (aDecoder.decodeObject(forKey: "identifier") as? String) {
+			identifier = Int(s) ?? s.hashValue
+		}
+		else {
+			identifier = aDecoder.decodeInteger(forKey: "identifier")
+		}
 		super.init()
 	}
 	
@@ -68,23 +82,23 @@ class NCFittingLoadoutItem: NSObject, NSSecureCoding {
 }
 
 class NCFittingLoadoutModule: NCFittingLoadoutItem {
-	let state: NCFittingModuleState
+	let state: DGMModule.State
 	let charge: NCFittingLoadoutItem?
 	let socket: Int
 	
-	init(module: NCFittingModule) {
+	init(module: DGMModule) {
 		state = module.preferredState
 		if let charge = module.charge {
-			self.charge = NCFittingLoadoutItem(item: charge, count: max(module.charges, 1))
+			self.charge = NCFittingLoadoutItem(type: charge, count: max(module.charges, 1))
 		}
 		else {
 			self.charge = nil
 		}
 		socket = module.socket
-		super.init(item: module)
+		super.init(type: module)
 	}
 	
-	init(typeID: Int, count: Int, identifier: String?, state: NCFittingModuleState = .active, charge: NCFittingLoadoutItem? = nil, socket: Int = -1) {
+	init(typeID: Int, count: Int, identifier: Int?, state: DGMModule.State = .active, charge: NCFittingLoadoutItem? = nil, socket: Int = -1) {
 		self.state = state
 		self.charge = charge
 		self.socket = socket
@@ -92,7 +106,7 @@ class NCFittingLoadoutModule: NCFittingLoadoutItem {
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
-		state = NCFittingModuleState(rawValue: aDecoder.decodeInteger(forKey: "state")) ?? .unknown
+		state = DGMModule.State(rawValue: aDecoder.decodeInteger(forKey: "state")) ?? .unknown
 		charge = aDecoder.decodeObject(forKey: "charge") as? NCFittingLoadoutItem
 		socket = aDecoder.containsValue(forKey: "socket") ? aDecoder.decodeInteger(forKey: "socket") : -1
 		super.init(coder: aDecoder)
@@ -114,16 +128,16 @@ class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 	let isActive: Bool
 	let squadronTag: Int
 	
-	init(typeID: Int, count: Int, identifier: String?, isActive: Bool = true, squadronTag: Int = -1) {
+	init(typeID: Int, count: Int, identifier: Int?, isActive: Bool = true, squadronTag: Int = -1) {
 		self.isActive = isActive
 		self.squadronTag = squadronTag
 		super.init(typeID: typeID, count: count, identifier: identifier)
 	}
 	
-	init(drone: NCFittingDrone) {
+	init(drone: DGMDrone) {
 		self.isActive = drone.isActive
 		self.squadronTag = drone.squadronTag
-		super.init(item: drone)
+		super.init(type: drone)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -147,7 +161,7 @@ class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 
 
 public class NCFittingLoadout: NSObject, NSSecureCoding {
-	var modules: [NCFittingModuleSlot: [NCFittingLoadoutModule]]?
+	var modules: [DGMModule.Slot: [NCFittingLoadoutModule]]?
 	var drones: [NCFittingLoadoutDrone]?
 	var cargo: [NCFittingLoadoutItem]?
 	var implants: [NCFittingLoadoutItem]?
@@ -163,9 +177,9 @@ public class NCFittingLoadout: NSObject, NSSecureCoding {
 
 	
 	public required init?(coder aDecoder: NSCoder) {
-		modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()
+		modules = [DGMModule.Slot: [NCFittingLoadoutModule]]()
 		for (key, value) in aDecoder.decodeObject(forKey: "modules") as? [Int: [NCFittingLoadoutModule]] ?? [:] {
-			guard let key = NCFittingModuleSlot(rawValue: key) else {continue}
+			guard let key = DGMModule.Slot(rawValue: key) else {continue}
 			modules?[key] = value
 		}
 		
@@ -199,8 +213,29 @@ public class NCFittingLoadout: NSObject, NSSecureCoding {
 	}
 }
 
+extension DGMModule {
+	func accuracy(targetSignature: DGMMeter, hitChance: DGMPercent = 0.75) -> NCFittingAccuracy{
+		guard let ship = parent as? DGMShip else {return .none}
+		
+		let optimal = self.optimal
+		let falloff = self.falloff
+		let angularVelocity = self.angularVelocity(targetSignature: targetSignature, hitChance: hitChance) * DGMSeconds(1)
+		let v0 = ship.maxVelocityInOrbit(optimal) * DGMSeconds(1)
+		let v1 = ship.maxVelocityInOrbit(optimal + falloff) * DGMSeconds(1)
+		if angularVelocity * optimal > v0 {
+			return .good
+		}
+		else if angularVelocity * (optimal + falloff) > v1 {
+			return .average
+		}
+		else {
+			return .low
+		}
+	}
+}
 
-extension NCFittingModuleSlot {
+
+extension DGMModule.Slot {
 	var image: UIImage? {
 		switch self {
 		case .hi:
@@ -289,7 +324,7 @@ extension NCFittingModuleSlot {
 	}
 }
 
-extension NCFittingModuleState {
+extension DGMModule.State {
 	var image: UIImage? {
 		switch self {
 		case .offline:
@@ -321,7 +356,7 @@ extension NCFittingModuleState {
 	}
 }
 
-extension NCFittingScanType {
+extension DGMShip.ScanType {
 	var image: UIImage? {
 		switch self {
 		case .gravimetric:
@@ -353,17 +388,7 @@ extension NCFittingScanType {
 	}
 }
 
-extension NCFittingDamage {
-	static let omni = NCFittingDamage(em: 0.25, thermal: 0.25, kinetic: 0.25, explosive: 0.25)
-	var total: Double {
-		return em + kinetic + thermal + explosive
-	}
-	static func + (lhs: NCFittingDamage, rhs: NCFittingDamage) -> NCFittingDamage {
-		return NCFittingDamage(em: lhs.em + rhs.em, thermal: lhs.thermal + rhs.thermal, kinetic: lhs.kinetic + rhs.kinetic, explosive: lhs.explosive + rhs.explosive)
-	}
-}
-
-extension NCFittingFighterSquadron {
+extension DGMDrone.Squadron {
 	var title: String? {
 		switch self {
 		case .heavy:
@@ -393,45 +418,34 @@ extension NCFittingAccuracy {
 	}
 }
 
-extension NCFittingSkills{
-	func set(levels: [Int: Int]) {
-		__setLevels(levels as [NSNumber: NSNumber])
-	}
-}
-
-extension NCFittingDamage: Hashable {
+extension DGMDamageVector: Hashable {
 	public var hashValue: Int {
 		return [em, kinetic, thermal, explosive].hashValue
 	}
 	
-	public static func == (lhs: NCFittingDamage, rhs: NCFittingDamage) -> Bool {
+	public static func == (lhs: DGMDamageVector, rhs: DGMDamageVector) -> Bool {
 		return lhs.hashValue == rhs.hashValue
 	}
 }
 
-extension NCFittingItem {
-	var identifier: String? {
-		get {
-			return engine?.identifier(for: self)
-		}
-		set {
-			engine?.assign(identifier: newValue, for: self)
+extension DGMCharacter {
+
+	func setSkills(levels: [Int: Int]) {
+		skills.forEach {
+			$0.level = levels[$0.typeID] ?? 0
 		}
 	}
-}
 
-extension NCFittingCharacter {
-	
 	var loadout: NCFittingLoadout {
 		get {
 			let ship = self.ship ?? self.structure
 			let loadout = NCFittingLoadout()
-			loadout.implants = implants.all.map({NCFittingLoadoutItem(item: $0)})
-			loadout.boosters = boosters.all.map({NCFittingLoadoutItem(item: $0)})
+			loadout.implants = implants.map{ NCFittingLoadoutItem(type: $0) }
+			loadout.boosters = boosters.map{ NCFittingLoadoutItem(type: $0) }
 			
-			var drones = [String: NCFittingLoadoutDrone]()
+			var drones = [Int: NCFittingLoadoutDrone]()
 			for drone in ship?.drones ?? [] {
-				let identifier = drone.identifier ?? "\([drone.typeID, drone.isActive, drone.squadronTag].hashValue)"
+				let identifier = drone.identifier
 				
 				if (drones[identifier]?.count += 1) == nil {
 					drones[identifier] = NCFittingLoadoutDrone(drone: drone)
@@ -440,13 +454,10 @@ extension NCFittingCharacter {
 			
 			loadout.drones = Array(drones.values)
 			
-			var modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()
+			var modules = [DGMModule.Slot: [NCFittingLoadoutModule]]()
 			
 			for module in ship?.modules ?? [] {
-				guard !module.isDummy else {continue}
-				var array = modules[module.slot] ?? []
-				array.append(NCFittingLoadoutModule(module: module))
-				modules[module.slot] = array
+				modules[module.slot, default: []].append(NCFittingLoadoutModule(module: module))
 			}
 			
 			loadout.modules = modules
@@ -456,36 +467,46 @@ extension NCFittingCharacter {
 		set {
 			let ship = (self.ship ?? self.structure)!
 			for implant in newValue.implants ?? [] {
-				addImplant(typeID: implant.typeID)
+				try? add(DGMImplant(typeID: implant.typeID))
 			}
 			for booster in newValue.boosters ?? [] {
-				addBooster(typeID: booster.typeID)
+				try? add(DGMBooster(typeID: booster.typeID))
 			}
 			for drone in newValue.drones ?? [] {
-				let identifier = drone.identifier ?? UUID().uuidString
-				for _ in 0..<drone.count {
-					guard let item = ship.addDrone(typeID: drone.typeID, squadronTag: drone.squadronTag) else {break}
-					item.isActive = drone.isActive
-					item.identifier = identifier
+				do {
+					let identifier = drone.identifier ?? UUID().hashValue
+					for _ in 0..<drone.count {
+						let item = try DGMDrone(typeID: drone.typeID)
+						try ship.add(item, squadronTag: drone.squadronTag)
+						item.isActive = drone.isActive
+						item.identifier = identifier
+					}
+				}
+				catch {
 				}
 			}
 			for (_, modules) in newValue.modules?.sorted(by: { $0.key.rawValue > $1.key.rawValue }) ?? [] {
 				for module in modules {
-					let identifier = module.identifier ?? UUID().uuidString
-					for _ in 0..<module.count {
-						guard let m = ship.addModule(typeID: module.typeID, socket: module.socket) else {break}
-						m.identifier = identifier
-						m.state = module.state
-						if let charge = module.charge {
-							m.charge = NCFittingCharge(typeID: charge.typeID)
+					do {
+						let identifier = module.identifier ?? UUID().hashValue
+						for _ in 0..<module.count {
+							let item = try DGMModule(typeID: module.typeID)
+							try ship.add(item, socket: module.socket)
+							item.identifier = identifier
+							item.state = module.state
+							if let charge = module.charge {
+								try item.setCharge(DGMCharge(typeID: charge.typeID))
+							}
 						}
+					}
+					catch {
 					}
 				}
 			}
 		}
 	}
 	
-	@nonobjc class func url(account: NCAccount) -> URL? {
+	class func url(account: NCAccount) -> URL? {
 		guard let uuid = account.uuid else {return nil}
 		var components = URLComponents()
 		components.scheme = NCURLScheme.nc.rawValue
@@ -502,7 +523,7 @@ extension NCFittingCharacter {
 		return components.url!
 	}
 
-	@nonobjc class func url(level: Int) -> URL {
+	class func url(level: Int) -> URL {
 		var components = URLComponents()
 		components.scheme = NCURLScheme.nc.rawValue
 		components.host = "character"
@@ -513,7 +534,7 @@ extension NCFittingCharacter {
 		return components.url!
 	}
 
-	@nonobjc class func url(character: NCFitCharacter) -> URL? {
+	class func url(character: NCFitCharacter) -> URL? {
 		guard let uuid = character.uuid else {return nil}
 		var components = URLComponents()
 		components.scheme = NCURLScheme.nc.rawValue
@@ -526,7 +547,7 @@ extension NCFittingCharacter {
 	}
 
 	var url: URL? {
-		return URL(string: characterName)
+		return URL(string: name)
 	}
 	
 	var account: NCAccount? {
@@ -548,7 +569,7 @@ extension NCFittingCharacter {
 		return Int(level)
 	}
 	
-	@nonobjc func setSkills(from url: URL, completionHandler: ((Bool) -> Void)? = nil) {
+	func setSkills(from url: URL, completionHandler: ((Bool) -> Void)? = nil) {
 		guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
 			let queryItems = components.queryItems,
 			components.scheme == NCURLScheme.nc.rawValue,
@@ -596,74 +617,40 @@ extension NCFittingCharacter {
 	}
 
 	
-	@nonobjc func setSkills(from account: NCAccount, completionHandler: ((Bool) -> Void)? = nil) {
-		guard let engine = engine else {
-			DispatchQueue.main.async {
-				completionHandler?(false)
-			}
-			return
-		}
-		
-		let url = NCFittingCharacter.url(account: account)
+	func setSkills(from account: NCAccount, completionHandler: ((Bool) -> Void)? = nil) {
+		let url = DGMCharacter.url(account: account)
 		NCDataManager(account: account, cachePolicy: .returnCacheDataElseLoad).skills { result in
 			switch result {
 			case let .success(value, _):
-				engine.perform {
-					var levels = [Int: Int]()
-					for skill in value.skills ?? [] {
-						guard let skillID = skill.skillID, let currentSkillLevel = skill.currentSkillLevel else {continue}
-						levels[skillID] = currentSkillLevel
-					}
-					
-					self.skills.set(levels: levels)
-					self.characterName = url?.absoluteString ?? ""
-					DispatchQueue.main.async {
-						completionHandler?(true)
-					}
+				var levels = [Int: Int]()
+				for skill in value.skills ?? [] {
+					guard let skillID = skill.skillID, let currentSkillLevel = skill.currentSkillLevel else {continue}
+					levels[skillID] = currentSkillLevel
 				}
+				self.setSkills(levels: levels)
+				self.name = url?.absoluteString ?? ""
+				completionHandler?(true)
 
 			default:
-				DispatchQueue.main.async {
-					completionHandler?(false)
-				}
+				completionHandler?(false)
 			}
 		}
 	}
 	
 	@nonobjc func setSkills(from character: NCFitCharacter, completionHandler: ((Bool) -> Void)? = nil) {
-		guard let engine = engine else {
-			DispatchQueue.main.async {
-				completionHandler?(false)
-			}
-			return
-		}
-		let url = NCFittingCharacter.url(character: character)
+		let url = DGMCharacter.url(character: character)
 		let skills = character.skills ?? [:]
-		engine.perform {
-			self.skills.set(levels: skills)
-			self.characterName = url?.absoluteString ?? ""
-			DispatchQueue.main.async {
-				completionHandler?(true)
-			}
-		}
+		setSkills(levels: skills)
+		name = url?.absoluteString ?? ""
+		completionHandler?(true)
 	}
 
 	
 	@nonobjc func setSkills(level: Int, completionHandler: ((Bool) -> Void)? = nil) {
-		guard let engine = engine else {
-			DispatchQueue.main.async {
-				completionHandler?(false)
-			}
-			return
-		}
-		let url = NCFittingCharacter.url(level: level)
-		engine.perform {
-			self.skills.setAllSkillsLevel(level)
-			self.characterName = url.absoluteString
-			DispatchQueue.main.async {
-				completionHandler?(true)
-			}
-		}
+		let url = DGMCharacter.url(level: level)
+		setSkillLevels(level)
+		name = url.absoluteString
+		completionHandler?(true)
 	}
 	
 	var shoppingItem: NCShoppingItem? {
@@ -673,7 +660,7 @@ extension NCFittingCharacter {
 		let shipItem = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
 		shipItem.typeID = Int32(ship.typeID)
 		shipItem.quantity = 1
-		shipItem.identifier = identifier
+		shipItem.identifier = "\(identifier)"
 		shipItem.name = ship.name
 		
 		var cargo = [Int: Int]()
@@ -737,13 +724,3 @@ extension NCFittingCharacter {
 
 }
 
-extension NCFittingStructure {
-	@nonobjc var supportedModuleCategories: [Int] {
-		return __supportedModuleCategories.map{$0.intValue}
-	}
-	
-	@nonobjc var supportedDroneCategories: [Int] {
-		return __supportedDroneCategories.map{$0.intValue}
-	}
-
-}

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
-
+import Dgmpp
 
 
 extension UIStoryboard {
@@ -247,31 +247,31 @@ enum Router {
 			var type: NCDBInvType?
 			var typeID: Int?
 			var objectID: NSManagedObjectID?
-			var fittingItem: NCFittingItem?
+			var fittingType: DGMType?
 			var attributeValues: [Int: Float]?
 			
-			private init(type: NCDBInvType?, typeID: Int?, objectID: NSManagedObjectID?, fittingItem: NCFittingItem?, kind: RouteKind) {
+			private init(type: NCDBInvType?, typeID: Int?, objectID: NSManagedObjectID?, fittingType: DGMType?, kind: RouteKind) {
 				self.type = type
 				self.typeID = typeID
 				self.objectID = objectID
-				self.fittingItem = fittingItem
+				self.fittingType = fittingType
 				super.init(kind: kind, storyboard: UIStoryboard.database, identifier: "NCDatabaseTypeInfoViewController")
 			}
 			
 			convenience init(_ type: NCDBInvType, kind: RouteKind = .adaptivePush) {
-				self.init(type: type, typeID: nil, objectID: nil, fittingItem: nil, kind: kind)
+				self.init(type: type, typeID: nil, objectID: nil, fittingType: nil, kind: kind)
 			}
 			
 			convenience init(_ typeID: Int, kind: RouteKind = .adaptivePush) {
-				self.init(type: nil, typeID: typeID, objectID: nil, fittingItem: nil, kind: kind)
+				self.init(type: nil, typeID: typeID, objectID: nil, fittingType: nil, kind: kind)
 			}
 			
 			convenience init(_ objectID: NSManagedObjectID, kind: RouteKind = .adaptivePush) {
-				self.init(type: nil, typeID: nil, objectID: objectID, fittingItem: nil, kind: kind)
+				self.init(type: nil, typeID: nil, objectID: objectID, fittingType: nil, kind: kind)
 			}
 
-			convenience init(_ fittingItem: NCFittingItem, kind: RouteKind = .adaptivePush) {
-				self.init(type: nil, typeID: nil, objectID: nil, fittingItem: fittingItem, kind: kind)
+			convenience init(_ fittingType: DGMType, kind: RouteKind = .adaptivePush) {
+				self.init(type: nil, typeID: nil, objectID: nil, fittingType: fittingType, kind: kind)
 			}
 
 			override func prepareForSegue(destination: UIViewController) {
@@ -289,21 +289,20 @@ enum Router {
 			}
 			
 			override func perform(source: UIViewController, sender: Any?) {
-				if let fittingItem = fittingItem {
+				if let fittingType = fittingType {
 					NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
-						let typeID = fittingItem.typeID
+						let typeID = fittingType.typeID
 						var attributes = [Int: Float]()
-						fittingItem.engine?.performBlockAndWait {
+//						fittingItem.engine?.performBlockAndWait {
 							guard let type = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)[typeID] else {return}
-							let itemAttributes = fittingItem.attributes
 							type.attributes?.forEach {
 								guard let attribute = $0 as? NCDBDgmTypeAttribute else {return}
 								guard let attributeType = attribute.attributeType else {return}
-								if let value = itemAttributes?[Int(attributeType.attributeID)]?.value {
+								if let value = fittingType[DGMAttributeID(attributeType.attributeID)]?.value {
 									attributes[Int(attributeType.attributeID)] = Float(value)
 								}
 							}
-						}
+//						}
 						DispatchQueue.main.async {
 							self.attributeValues = attributes
 							self.typeID = typeID
@@ -701,12 +700,11 @@ enum Router {
 		}
 
 	}
-	
+
 	enum Fitting {
 		
 		class Editor: Route {
 			var fleet: NCFittingFleet?
-			var engine: NCFittingEngine?
 			let typeID: Int?
 			let loadoutID: NSManagedObjectID?
 			let fleetID: NSManagedObjectID?
@@ -731,43 +729,40 @@ enum Router {
 			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCFittingEditorViewController
 				destination.fleet = fleet
-				destination.engine = engine
 				fleet = nil
-				engine = nil
 			}
 			
 			override func perform(source: UIViewController, sender: Any?) {
 				let progress = NCProgressHandler(viewController: source, totalUnitCount: 1)
-				let engine = NCFittingEngine()
 				UIApplication.shared.beginIgnoringInteractionEvents()
-				engine.perform {
+//				engine.perform {
 					var fleet: NCFittingFleet?
 					if let typeID = self.typeID {
-						fleet = NCFittingFleet(typeID: typeID, engine: engine)
+						fleet = try? NCFittingFleet(typeID: typeID)
 					}
 					else if let loadoutID = self.loadoutID {
 						NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
 							guard let loadout = (try? managedObjectContext.existingObject(with: loadoutID)) as? NCLoadout else {return}
-							fleet = NCFittingFleet(loadouts: [loadout], engine: engine)
+							fleet = try? NCFittingFleet(loadouts: [loadout])
 						}
 					}
 					else if let fleetID = self.fleetID {
 						NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
 							guard let fleetObject = (try? managedObjectContext.existingObject(with: fleetID)) as? NCFleet else {return}
-							fleet = NCFittingFleet(fleet: fleetObject, engine: engine)
+							fleet = try? NCFittingFleet(fleet: fleetObject)
 						}
 					}
 					else if let asset = self.asset, let contents = self.contents {
-						fleet = NCFittingFleet(asset: asset, contents: contents, engine: engine)
+						fleet = try? NCFittingFleet(asset: asset, contents: contents)
 					}
 					else if let killmail = self.killmail {
-						fleet = NCFittingFleet(killmail: killmail, engine: engine)
+						fleet = try? NCFittingFleet(killmail: killmail)
 					}
 					else if let fitting = self.fitting {
-						fleet = NCFittingFleet(fitting: fitting, engine: engine)
+						fleet = try? NCFittingFleet(fitting: fitting)
 					}
 					else if let loadout = self.representation?.loadouts.first {
-						fleet = NCFittingFleet(typeID: loadout.typeID, engine: engine)
+						fleet = try? NCFittingFleet(typeID: loadout.typeID)
 						let pilot = fleet?.active
 						pilot?.loadout = loadout.data
 						pilot?.ship?.name = loadout.name
@@ -782,7 +777,6 @@ enum Router {
 						if let account = NCAccount.current {
 							fleet.active?.setSkills(from: account) {  _ in
 								self.fleet = fleet
-								self.engine = engine
 								super.perform(source: source, sender: sender)
 								progress.finish()
 								UIApplication.shared.endIgnoringInteractionEvents()
@@ -791,23 +785,22 @@ enum Router {
 						else {
 							fleet.active?.setSkills(level: 5) { _ in
 								self.fleet = fleet
-								self.engine = engine
 								super.perform(source: source, sender: sender)
 								progress.finish()
 								UIApplication.shared.endIgnoringInteractionEvents()
 							}
 						}
 					}
-				}
+				//}
 			}
 		}
 		
 		class Ammo: Route {
 			let category: NCDBDgmppItemCategory
 			let completionHandler: (NCFittingAmmoViewController, NCDBInvType?) -> Void
-			let modules: [NCFittingModule]
+			let modules: [DGMModule]
 			
-			init(category: NCDBDgmppItemCategory, modules: [NCFittingModule], completionHandler: @escaping (NCFittingAmmoViewController, NCDBInvType?) -> Void) {
+			init(category: NCDBDgmppItemCategory, modules: [DGMModule], completionHandler: @escaping (NCFittingAmmoViewController, NCDBInvType?) -> Void) {
 				self.category = category
 				self.completionHandler = completionHandler
 				self.modules = modules
@@ -824,9 +817,9 @@ enum Router {
 
 		class AmmoDamageChart: Route {
 			let category: NCDBDgmppItemCategory
-			let modules: [NCFittingModule]
+			let modules: [DGMModule]
 			
-			init(category: NCDBDgmppItemCategory, modules: [NCFittingModule]) {
+			init(category: NCDBDgmppItemCategory, modules: [DGMModule]) {
 				self.category = category
 				self.modules = modules
 				super.init(kind: .push, storyboard: UIStoryboard.fitting, identifier: "NCFittingAmmoDamageChartViewController")
@@ -853,9 +846,9 @@ enum Router {
 		}
 		
 		class DamagePatterns: Route {
-			let completionHandler: (NCFittingDamagePatternsViewController, NCFittingDamage) -> Void
+			let completionHandler: (NCFittingDamagePatternsViewController, DGMDamageVector) -> Void
 			
-			init(completionHandler: @escaping (NCFittingDamagePatternsViewController, NCFittingDamage) -> Void) {
+			init(completionHandler: @escaping (NCFittingDamagePatternsViewController, DGMDamageVector) -> Void) {
 				self.completionHandler = completionHandler
 				super.init(kind: .popover, storyboard: UIStoryboard.fitting, identifier: "NCFittingDamagePatternsViewController")
 			}
@@ -896,9 +889,9 @@ enum Router {
 		}
 		
 		class ModuleActions: Route {
-			let modules: [NCFittingModule]
+			let modules: [DGMModule]
 			
-			init(_ modules: [NCFittingModule]) {
+			init(_ modules: [DGMModule]) {
 				self.modules = modules
 				super.init(kind: .sheet, storyboard: UIStoryboard.fitting, identifier: "NCFittingModuleActionsViewController")
 			}
@@ -909,9 +902,9 @@ enum Router {
 		}
 		
 		class DroneActions: Route {
-			let drones: [NCFittingDrone]
+			let drones: [DGMDrone]
 			
-			init(_ drones: [NCFittingDrone]) {
+			init(_ drones: [DGMDrone]) {
 				self.drones = drones
 				super.init(kind: .sheet, storyboard: UIStoryboard.fitting, identifier: "NCFittingDroneActionsViewController")
 			}
@@ -939,10 +932,10 @@ enum Router {
 		}
 
 		class Targets: Route {
-			let modules: [NCFittingModule]
-			let completionHandler: (NCFittingTargetsViewController, NCFittingShip?) -> Void
+			let modules: [DGMModule]
+			let completionHandler: (NCFittingTargetsViewController, DGMShip?) -> Void
 			
-			init(modules: [NCFittingModule], completionHandler: @escaping (NCFittingTargetsViewController, NCFittingShip?) -> Void) {
+			init(modules: [DGMModule], completionHandler: @escaping (NCFittingTargetsViewController, DGMShip?) -> Void) {
 				self.modules = modules
 				self.completionHandler = completionHandler
 				super.init(kind: .popover, storyboard: UIStoryboard.fitting, identifier: "NCFittingTargetsViewController")
@@ -956,10 +949,10 @@ enum Router {
 		}
 
 		class Characters: Route {
-			let pilot: NCFittingCharacter
+			let pilot: DGMCharacter
 			let completionHandler: (NCFittingCharactersViewController, URL) -> Void
 			
-			init(pilot: NCFittingCharacter, completionHandler: @escaping (NCFittingCharactersViewController, URL) -> Void) {
+			init(pilot: DGMCharacter, completionHandler: @escaping (NCFittingCharactersViewController, URL) -> Void) {
 				self.pilot = pilot
 				self.completionHandler = completionHandler
 				super.init(kind: .popover, storyboard: UIStoryboard.fitting, identifier: "NCFittingCharactersViewController")
@@ -987,9 +980,9 @@ enum Router {
 		}
 		
 		class RequiredSkills: Route {
-			let ship: NCFittingShip
+			let ship: DGMShip
 			
-			init(for ship: NCFittingShip) {
+			init(for ship: DGMShip) {
 				self.ship = ship
 				super.init(kind: .adaptiveModal, storyboard: UIStoryboard.fitting, identifier: "NCFittingRequiredSkillsViewController")
 			}
@@ -1001,18 +994,18 @@ enum Router {
 		}
 		
 		class ImplantSet: Route {
-			let character: NCFittingCharacter?
+			let character: DGMCharacter?
 			let mode: NCFittingImplantSetViewController.Mode
 			let completionHandler: ((NCFittingImplantSetViewController, NCImplantSet) -> Void)?
 			
-			private init(character: NCFittingCharacter?, mode: NCFittingImplantSetViewController.Mode, completionHandler: ((NCFittingImplantSetViewController, NCImplantSet) -> Void)?) {
+			private init(character: DGMCharacter?, mode: NCFittingImplantSetViewController.Mode, completionHandler: ((NCFittingImplantSetViewController, NCImplantSet) -> Void)?) {
 				self.character = character
 				self.mode = mode
 				self.completionHandler = completionHandler
 				super.init(kind: .adaptiveModal, storyboard: UIStoryboard.fitting, identifier: "NCFittingImplantSetViewController")
 			}
 			
-			convenience init(save character: NCFittingCharacter?) {
+			convenience init(save character: DGMCharacter?) {
 				self.init(character: character, mode: .save, completionHandler: nil)
 			}
 
@@ -1026,13 +1019,14 @@ enum Router {
 				destination.completionHandler = completionHandler
 
 				if let character = character {
-					let result: (implants: [Int], boosters: [Int])? = character.engine?.sync {
-						return (character.implants.all.map{$0.typeID}, character.boosters.all.map{$0.typeID})
-					}
+//					let result: (implants: [Int], boosters: [Int])? = character.engine?.sync {
+//						return (character.implants.all.map{$0.typeID}, character.boosters.all.map{$0.typeID})
+//					}
+					
 					
 					let data = NCImplantSetData()
-					data.implantIDs = result?.implants ?? []
-					data.boosterIDs = result?.boosters ?? []
+					data.implantIDs = character.implants.map{$0.typeID}
+					data.boosterIDs = character.boosters.map{$0.typeID}
 					destination.implantSetData = data
 				}
 			}
@@ -1045,7 +1039,7 @@ enum Router {
 			}
 		}
 	}
-	
+
 	enum Mail {
 		
 		class Body: Route {

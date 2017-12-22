@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Dgmpp
 
 class NCAmmoNode: NCFetchedResultsObjectNode<NCDBInvType> {
 	
@@ -80,17 +81,17 @@ class NCFittingAmmoViewController: NCTreeViewController {
 
 	var category: NCDBDgmppItemCategory?
 	var completionHandler: ((NCFittingAmmoViewController, NCDBInvType?) -> Void)!
-	var modules: [NCFittingModule]?
+	var modules: [DGMModule]?
 
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let module = modules?.first
-		module?.engine?.performBlockAndWait {
+//		module?.engine?.performBlockAndWait {
 			if module?.charge == nil {
 				self.navigationItem.rightBarButtonItem = nil
 			}
-		}
+//		}
 		
 		tableView.register([Prototype.NCActionTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact,

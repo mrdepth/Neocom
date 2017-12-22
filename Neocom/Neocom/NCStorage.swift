@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import EVEAPI
 import CloudData
+import Dgmpp
 
 class NCStorage: NSObject {
 	private(set) lazy var managedObjectModel: NSManagedObjectModel = {
@@ -169,17 +170,17 @@ enum NCItemFlag: Int32 {
 	var image: UIImage? {
 		switch self {
 		case .hiSlot:
-			return NCFittingModuleSlot.hi.image
+			return DGMModule.Slot.hi.image
 		case .medSlot:
-			return NCFittingModuleSlot.med.image
+			return DGMModule.Slot.med.image
 		case .lowSlot:
-			return NCFittingModuleSlot.low.image
+			return DGMModule.Slot.low.image
 		case .rigSlot:
-			return NCFittingModuleSlot.rig.image
+			return DGMModule.Slot.rig.image
 		case .subsystemSlot:
-			return NCFittingModuleSlot.subsystem.image
+			return DGMModule.Slot.subsystem.image
 		case .service:
-			return NCFittingModuleSlot.service.image
+			return DGMModule.Slot.service.image
 		case .drone:
 			return #imageLiteral(resourceName: "drone")
 		case .cargo:
@@ -192,17 +193,17 @@ enum NCItemFlag: Int32 {
 	var title: String? {
 		switch self {
 		case .hiSlot:
-			return NCFittingModuleSlot.hi.title
+			return DGMModule.Slot.hi.title
 		case .medSlot:
-			return NCFittingModuleSlot.med.title
+			return DGMModule.Slot.med.title
 		case .lowSlot:
-			return NCFittingModuleSlot.low.title
+			return DGMModule.Slot.low.title
 		case .rigSlot:
-			return NCFittingModuleSlot.rig.title
+			return DGMModule.Slot.rig.title
 		case .subsystemSlot:
-			return NCFittingModuleSlot.subsystem.title
+			return DGMModule.Slot.subsystem.title
 		case .service:
-			return NCFittingModuleSlot.service.title
+			return DGMModule.Slot.service.title
 		case .drone:
 			return NSLocalizedString("Drones", comment: "")
 		case .cargo:

@@ -32,6 +32,12 @@ extension CGFloat {
 	}
 }
 
+extension Date {
+	func clamped(to: ClosedRange<Date>) -> Date {
+		return max(to.lowerBound, min(to.upperBound, self))
+	}
+}
+
 extension CGRect {
 	func lerp(to: CGRect, t: CGFloat) -> CGRect {
 		func lerp(_ a: CGFloat, _ b: CGFloat, _ t: CGFloat) -> CGFloat {

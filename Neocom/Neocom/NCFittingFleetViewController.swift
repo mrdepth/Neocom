@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudData
+import Dgmpp
 
 class NCFittingFleetViewController: UITableViewController, TreeControllerDelegate, NCFittingEditorPage {
 	@IBOutlet weak var treeController: TreeController!
@@ -37,7 +38,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		}
 		
 		if observer == nil {
-			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}
@@ -82,10 +83,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		guard fleet.pilots.count > 1 else {return nil}
 		
 		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (_, _) in
-			guard let engine = node.pilot.engine else {return}
-			engine.perform {
-				fleet.remove(pilot: node.pilot)
-			}
+			fleet.remove(pilot: node.pilot)
 		}
 		
 		return [deleteAction]
@@ -106,7 +104,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 			self.treeController.content?.children = [row]
 		}
 		else {
-			engine?.perform({
+//			engine?.perform({
 				var active: TreeNode?
 				
 				var rows = [TreeNode]()
@@ -126,7 +124,7 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 						self.treeController.selectCell(for: node, animated: false, scrollPosition: .none)
 					}
 				}
-			})
+//			})
 		}
 	}
 }

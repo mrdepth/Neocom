@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudData
+import Dgmpp
 
 class NCFittingDroneRow: TreeRow {
 	lazy var type: NCDBInvType? = {
@@ -15,11 +16,11 @@ class NCFittingDroneRow: TreeRow {
 		return NCDatabase.sharedDatabase?.invTypes[drone.typeID]
 	}()
 	
-	let drones: [NCFittingDrone]
+	let drones: [DGMDrone]
 	let isActive: Bool
 	let hasTarget: Bool
 
-	init(drones: [NCFittingDrone]) {
+	init(drones: [DGMDrone]) {
 		let drone = drones.first
 		self.drones = drones
 		isActive = drone?.isActive == true
@@ -54,12 +55,12 @@ class NCFittingDroneRow: TreeRow {
 			
 			guard let drone = drone else {return}
 			
-			drone.engine?.perform {
+//			drone.engine?.perform {
 				let string = NSMutableAttributedString()
 
-				let optimal = drone.maxRange
+				let optimal = drone.optimal
 				let falloff = drone.falloff
-				let velocity = drone.velocity
+				let velocity = drone.velocity * DGMSeconds(1)
 				
 				if optimal > 0 {
 					let s: NSAttributedString
@@ -83,7 +84,7 @@ class NCFittingDroneRow: TreeRow {
 					self.subtitle = string
 					self.treeController?.reloadCells(for: [self], with: .none)
 				}
-			}
+//			}
 		}
 		else {
 			cell.subtitleLabel?.attributedText = subtitle
@@ -100,13 +101,13 @@ class NCFittingDroneRow: TreeRow {
 }
 
 class NCFittingDroneSection: TreeSection {
-	let squadron: NCFittingFighterSquadron
+	let squadron: DGMDrone.Squadron
 	let used: Int
 	let limit: Int
-	init(squadron: NCFittingFighterSquadron, ship: NCFittingShip, children: [NCFittingDroneRow]) {
+	init(squadron: DGMDrone.Squadron, ship: DGMShip, children: [NCFittingDroneRow]) {
 		self.squadron = squadron
-		used = ship.droneSquadronUsed(squadron)
-		limit = ship.droneSquadronLimit(squadron)
+		used = ship.usedDroneSquadron(squadron)
+		limit = ship.totalDroneSquadron(squadron)
 		super.init(prototype: Prototype.NCHeaderTableViewCell.default)
 		self.children = children
 	}
@@ -166,7 +167,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate, N
 		}
 		
 		if observer == nil {
-			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}
@@ -182,23 +183,26 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate, N
 		else if node is NCActionRow {
 			guard let pilot = fleet?.active else {return}
 			guard let typePickerViewController = typePickerViewController else {return}
-			guard let engine = self.engine else {return}
 
 			let category = NCDBDgmppItemCategory.category(categoryID: .drone, subcategory:  NCDBCategoryID.drone.rawValue)
 			
 			typePickerViewController.category = category
 			typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
 				let typeID = Int(type.typeID)
-				engine.perform {
+//				engine.perform {
 					guard let ship = pilot.ship ?? pilot.structure else {return}
 					let tag = (ship.drones.flatMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
-					let identifier = UUID().uuidString
 
-					for _ in 0..<5 {
-						guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {break}
-						engine.assign(identifier: identifier, for: drone)
+					do {
+						for _ in 0..<5 {
+							let drone = try DGMDrone(typeID: typeID)
+							try ship.add(drone, squadronTag: tag)
+						}
 					}
-				}
+					catch {
+						
+					}
+//				}
 				if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
 					typePickerViewController?.dismiss(animated: true)
 				}
@@ -213,13 +217,13 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate, N
 		
 		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (_, _) in
 			let drones = node.drones
-			guard let engine = drones.first?.engine else {return}
-			engine.perform {
-				guard let ship = drones.first?.owner as? NCFittingShip else {return}
+//			guard let engine = drones.first?.engine else {return}
+//			engine.perform {
+				guard let ship = drones.first?.parent as? DGMShip else {return}
 				drones.forEach {
-					ship.removeDrone($0)
+					ship.remove($0)
 				}
-			}
+//			}
 		}
 		
 		return [deleteAction]
@@ -228,13 +232,13 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate, N
 	//MARK: - Private
 	
 	private func update() {
-		engine?.perform {
+//		engine?.perform {
 			guard let pilot = self.fleet?.active else {return}
 			guard let ship = pilot.ship ?? pilot.structure else {return}
 
-			let droneBay = (ship.droneBayUsed, ship.totalDroneBay)
-			let droneBandwidth = (ship.droneBandwidthUsed, ship.totalDroneBandwidth)
-			let droneSquadron = (ship.droneSquadronUsed(.none), ship.droneSquadronLimit(.none))
+			let droneBay = (ship.usedDroneBay, ship.totalDroneBay)
+			let droneBandwidth = (ship.usedDroneBandwidth, ship.totalDroneBandwidth)
+			let droneSquadron = (ship.usedDroneSquadron(.none), ship.totalDroneSquadron(.none))
 
 			DispatchQueue.main.async {
 				self.droneBayLabel.value = droneBay.0
@@ -244,15 +248,15 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate, N
 				self.dronesCountLabel.text = "\(droneSquadron.0)/\(droneSquadron.1)"
 				self.dronesCountLabel.textColor = droneSquadron.0 > droneSquadron.1 ? .red : .white
 			}
-		}
+//		}
 	}
 	
 	private func reload() {
-		engine?.perform {
+//		engine?.perform {
 			guard let pilot = self.fleet?.active else {return}
 			guard let ship = pilot.ship ?? pilot.structure else {return}
 			
-			var squadrons = [Int: [Int: [Bool: [NCFittingDrone]]]]()
+			var squadrons = [Int: [Int: [Bool: [DGMDrone]]]]()
 			for drone in ship.drones.filter({$0.squadron == .none} ) {
 				var a = squadrons[drone.squadronTag] ?? [:]
 				var b = a[drone.typeID] ?? [:]
@@ -318,7 +322,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate, N
 			DispatchQueue.main.async {
 				self.treeController.content?.children = rows
 			}
-		}
+//		}
 		update()
 	}
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Dgmpp
 
 class NCExtractorDetailsTableViewCell: NCTableViewCell {
 	@IBOutlet weak var sumLabel: UILabel!
@@ -23,27 +24,27 @@ extension Prototype {
 }
 
 class NCExtractorDetailsRow: TreeRow {
-	let currentTime: TimeInterval
+	let currentTime: Date
 	let yield: Int
 	let waste: Int
-	let currentState: NCFittingProductionState?
-	let wasteState: NCFittingProductionState?
-	let extractor: NCFittingExtractorControlUnit
+	let currentState: DGMProductionState?
+	let wasteState: DGMProductionState?
+	let extractor: DGMExtractorControlUnit
 	let identifier: Int64
 
-	init(extractor: NCFittingExtractorControlUnit, currentTime: TimeInterval) {
+	init(extractor: DGMExtractorControlUnit, currentTime: Date) {
 		self.extractor = extractor
 		self.currentTime = currentTime
 		identifier = extractor.identifier
+		let states = extractor.states.filter{$0.cycle != nil}
 		
-		let states = (extractor.states as? [NCFittingProductionState])?.filter{$0.currentCycle as? NCFittingProductionCycle != nil} ?? []
 		
-		(yield, waste) = states.flatMap {$0.currentCycle as? NCFittingProductionCycle}.reduce((0,0)) {
+		(yield, waste) = extractor.cycles.reduce((0,0)) {
 			($0.0 + $1.yield.quantity, $0.1 + $1.waste.quantity)
 		}
 		
-		currentState = states.first {($0.timestamp...($0.timestamp + $0.currentCycle!.cycleTime)).contains(currentTime)}
-		wasteState = states.first {$0.timestamp > currentTime && ($0.currentCycle as! NCFittingProductionCycle).waste.quantity > 0}
+		currentState = states.first {($0.timestamp...($0.timestamp + $0.cycle!.duration)).contains(currentTime)}
+		wasteState = states.first {$0.timestamp > currentTime && $0.cycle!.waste.quantity > 0}
 		
 		super.init(prototype: Prototype.NCExtractorDetailsTableViewCell.default)
 	}
@@ -55,19 +56,19 @@ class NCExtractorDetailsRow: TreeRow {
 		let extractor = self.extractor
 		let currentTime = self.currentTime
 		let currentState = self.currentState
-		extractor.engine?.performBlockAndWait {
+//		extractor.engine?.performBlockAndWait {
 			cell.sumLabel.text = NCUnitFormatter.localizedString(from: sum, unit: .none, style: .full)
-			
-			let duration = extractor.expiryTime - extractor.installTime
-			
+			let duration = extractor.expiryTime.timeIntervalSince(extractor.installTime)
+//			let duration = extractor.expiryTime - extractor.installTime
+		
 			cell.yieldLabel.text = duration > 0 ? NCUnitFormatter.localizedString(from: Double(sum) / (duration / 3600), unit: .none, style: .full) : "0"
 			
 			
-			let remains = extractor.expiryTime - currentTime
-			cell.cycleTimeLabel.text = NCTimeIntervalFormatter.localizedString(from: currentState?.currentCycle?.cycleTime ?? 0, precision: .hours, format: .colonSeparated)
+			let remains = extractor.expiryTime.timeIntervalSince(currentTime)
+			cell.cycleTimeLabel.text = NCTimeIntervalFormatter.localizedString(from: currentState?.cycle?.duration ?? 0, precision: .hours, format: .colonSeparated)
 
-			if let currentState = currentState, let cycle = currentState.currentCycle as? NCFittingProductionCycle, remains > 0 {
-				let t = currentTime.clamped(to: cycle.launchTime...(cycle.launchTime + cycle.cycleTime)) - cycle.launchTime
+			if let currentState = currentState, let cycle = currentState.cycle, remains > 0 {
+				let t = currentTime.clamped(to: cycle.start...cycle.end).timeIntervalSince(cycle.start)
 				cell.currentCycleLabel.text = NCTimeIntervalFormatter.localizedString(from: t, precision: .hours, format: .colonSeparated)
 				cell.depletionLabel.text = NCTimeIntervalFormatter.localizedString(from: remains, precision: .minutes)
 				cell.depletionLabel.textColor = remains < 3600 * 24 ? .yellow : .white
@@ -77,7 +78,7 @@ class NCExtractorDetailsRow: TreeRow {
 				cell.depletionLabel.text = NCTimeIntervalFormatter.localizedString(from: 0, precision: .hours, format: .colonSeparated)
 				cell.depletionLabel.textColor = .red
 			}
-		}
+//		}
 	}
 	
 	override var hashValue: Int {

@@ -9,16 +9,26 @@
 import Foundation
 
 public class NCFleetConfiguration: NSObject, NSCoding {
-	var pilots: [String: String]?
-	var links: [String: String]?
+	var pilots: [Int: String]?
+	var links: [Int: Int]?
 	
 	override init() {
 		super.init()
 	}
 	
 	public required init?(coder aDecoder: NSCoder) {
-		pilots = aDecoder.decodeObject(forKey: "pilots") as? [String: String]
-		links = aDecoder.decodeObject(forKey: "links") as? [String: String]
+		if let d = aDecoder.decodeObject(forKey: "pilots") as? [String: String] {
+			pilots = [Int: String](uniqueKeysWithValues: d.map{ (Int($0) ?? $0.hashValue, $1) })
+		}
+		else {
+			pilots = aDecoder.decodeObject(forKey: "pilots") as? [Int: String]
+		}
+		if let d = aDecoder.decodeObject(forKey: "links") as? [String: String] {
+			links = [Int: Int](uniqueKeysWithValues: d.map{ (Int($0) ?? $0.hashValue, Int($1) ?? $1.hashValue) })
+		}
+		else {
+			links = aDecoder.decodeObject(forKey: "links") as? [Int: Int]
+		}
 		super.init()
 	}
 	

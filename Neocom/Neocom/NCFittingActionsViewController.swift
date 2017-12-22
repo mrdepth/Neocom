@@ -9,6 +9,7 @@
 import UIKit
 import CloudData
 import EVEAPI
+import Dgmpp
 
 /*class NCFittingTypeRow: TreeRow {
 	let type: NCDBInvType
@@ -40,9 +41,9 @@ import EVEAPI
 }*/
 
 class NCFittingDamagePatternRow: TreeRow {
-	let damagePattern: NCFittingDamage
+	let damagePattern: DGMDamageVector
 	
-	init(prototype: Prototype = Prototype.NCDamageTypeTableViewCell.compact, damagePattern: NCFittingDamage, route: Route? = nil) {
+	init(prototype: Prototype = Prototype.NCDamageTypeTableViewCell.compact, damagePattern: DGMDamageVector, route: Route? = nil) {
 		self.damagePattern = damagePattern
 		super.init(prototype: prototype, route: route)
 		
@@ -118,7 +119,7 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 		}
 		
 		if let pilot = fleet?.active, observer == nil {
-			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: pilot.engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}
@@ -138,9 +139,9 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 	@IBAction func onDelete(_ sender: Any) {
 		guard let fleet = fleet else {return}
 		guard let pilot = fleet.active else {return}
-		pilot.engine?.perform {
+//		pilot.engine?.perform {
 			fleet.remove(pilot: pilot)
-		}
+//		}
 		dismiss(animated: true, completion: nil)
 	}
 
@@ -149,7 +150,7 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 	}
 	
 	@IBAction func onSkills(_ sender: Any) {
-		guard let ship = fleet?.engine.sync(execute: {self.fleet?.active?.ship}) else {return}
+		guard let ship = fleet?.active?.ship else {return}
 		Router.Fitting.RequiredSkills(for: ship).perform(source: self, sender: sender)
 	}
 
@@ -157,29 +158,31 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 		guard let fleet = fleet else {return}
 		guard let pilot = fleet.active else {return}
 		UIApplication.shared.beginIgnoringInteractionEvents()
-		pilot.engine?.perform {
+//		pilot.engine?.perform {
 			guard let shoppingItem = pilot.shoppingItem else {return}
 			DispatchQueue.main.async {
 				UIApplication.shared.endIgnoringInteractionEvents()
 				Router.ShoppingList.Add(items: [shoppingItem]).perform(source: self, sender: sender)
 			}
-		}
+//		}
 	}
 
 	@IBAction func onDuplicate(_ sender: Any) {
 		guard let fleet = fleet else {return}
 		guard let pilot = fleet.active else {return}
-		guard let engine = pilot.engine else {return}
 		
-		engine.perform {
+//		engine.perform {
 			guard let ship = pilot.ship else {return}
 			
-			guard let copy = fleet.append(typeID: ship.typeID, engine: engine) else {return}
+			let copy = try! fleet.append(typeID: ship.typeID)
 			if let url = pilot.url {
 				copy.setSkills(from: url)
 			}
-			let copyShip = NCFittingShip(typeID: ship.typeID)
+			let copyShip = try! DGMShip(typeID: ship.typeID)
 			copy.ship = copyShip
+		if let area = ship.area {
+			try? copyShip.area = DGMArea(typeID: area.typeID)
+		}
 			
 			var name = ship.name
 			if let r = name.range(of: "Copy", options: [String.CompareOptions.backwards]) {
@@ -204,24 +207,36 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 			copyShip.name = name
 			
 			ship.modules.forEach {
-				guard let module = copyShip.addModule(typeID: $0.typeID, forced: true, socket: $0.socket) else {return}
-				if let charge = $0.charge {
-					module.charge = NCFittingCharge(typeID: charge.typeID)
+				do {
+					let module = try DGMModule(typeID: $0.typeID)
+					try copyShip.add(module, socket: $0.socket, ignoringRequirements: true)
+					if let charge = $0.charge {
+						try module.setCharge(DGMCharge(typeID: charge.typeID))
+					}
+					module.state = $0.preferredState
 				}
-				module.state = $0.preferredState
+				catch {
+					
+				}
 			}
 			ship.drones.forEach {
-				guard let drone = copyShip.addDrone(typeID: $0.typeID, squadronTag: $0.squadronTag) else {return}
-				drone.isActive = $0.isActive
+				do {
+					let drone = try DGMDrone(typeID: $0.typeID)
+					try copyShip.add(drone, squadronTag: $0.squadronTag)
+					drone.isActive = $0.isActive
+				}
+				catch {
+					
+				}
 			}
-			pilot.implants.all.forEach {
-				copy.addImplant(typeID: $0.typeID)
+			pilot.implants.forEach {
+				try? copy.add(DGMImplant(typeID: $0.typeID))
 			}
-			pilot.boosters.all.forEach {
-				copy.addBooster(typeID: $0.typeID)
+			pilot.boosters.forEach {
+				try? copy.add(DGMBooster(typeID: $0.typeID))
 			}
 			fleet.active = copy
-		}
+//		}
 	}
 
 	//MARK: - TreeControllerDelegate
@@ -229,9 +244,8 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard node is NCFittingAreaEffectRow else {return nil}
 		return [UITableViewRowAction(style: .default, title: NSLocalizedString("Delete", comment: ""), handler: {[weak self] (_,_) in
-			guard let engine = self?.fleet?.active?.engine else {return}
-			engine.perform {
-				engine.area = nil
+			self?.fleet?.pilots.forEach {
+				$0.0.ship?.area = nil
 			}
 		})]
 	}
@@ -253,9 +267,9 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 	@IBAction func onEndEditing(_ sender: UITextField) {
 		guard let pilot = fleet?.active else {return}
 		let text = sender.text
-		pilot.engine?.perform {
+//		pilot.engine?.perform {
 			(pilot.ship ?? pilot.structure)?.name = text ?? ""
-		}
+//		}
 	}
 	
 	//MARK: - Private
@@ -263,13 +277,12 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 	private func reload() {
 		guard let fleet = fleet else {return}
 		guard let pilot = fleet.active else {return}
-		guard let engine = pilot.engine else {return}
 		
 		var sections = [TreeNode]()
 
 		let invTypes = NCDatabase.sharedDatabase?.invTypes
 
-		engine.performBlockAndWait {
+//		engine.performBlockAndWait {
 			let title = (pilot.ship ?? pilot.structure)?.name
 			sections.append(NCLoadoutNameRow(text: title?.isEmpty == false ? title : nil, placeholder: NSLocalizedString("Ship Name", comment: "")))
 			if let ship = pilot.ship ?? pilot.structure, let type = invTypes?[ship.typeID] {
@@ -299,8 +312,8 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 			let areaEffectsRoute = Router.Fitting.AreaEffects { [weak self] (controller, type) in
 				let typeID = type != nil ? Int(type!.typeID) : nil
 				controller.dismiss(animated: true) {
-					self?.fleet?.active?.engine?.perform {
-						self?.fleet?.active?.engine?.area = typeID != nil ? NCFittingArea(typeID: typeID!) : nil
+					self?.fleet?.pilots.forEach {
+						$0.0.ship?.area = typeID != nil ? try? DGMArea(typeID: typeID!) : nil
 					}
 				}
 			}
@@ -309,7 +322,7 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 				self.navigationItem.rightBarButtonItem = nil
 			}
 			
-			if let area = engine.area, let type = invTypes?[area.typeID] {
+			if let area = fleet.pilots.first?.0.ship?.area, let type = invTypes?[area.typeID] {
 				let row = NCFittingAreaEffectRow(type: type, accessoryType: .detailButton, route: areaEffectsRoute, accessoryButtonRoute: Router.Database.TypeInfo(type))
 				sections.append(DefaultTreeSection(nodeIdentifier: "Area", title: NSLocalizedString("Area Effects", comment: "").uppercased(), children: [row]))
 			}
@@ -320,11 +333,11 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 			
 			let damagePatternsRoute = Router.Fitting.DamagePatterns {[weak self] (controller, damagePattern) in
 				controller.dismiss(animated: true) {
-					self?.fleet?.active?.engine?.perform {
+//					self?.fleet?.active?.engine?.perform {
 						for (pilot, _) in self?.fleet?.pilots ?? [] {
 							pilot.ship?.damagePattern = damagePattern
 						}
-					}
+//					}
 				}
 			}
 
@@ -337,7 +350,7 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 //			}))
 //			
 //			sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [shareAction]))
-		}
+//		}
 		
 		if treeController?.content == nil {
 			treeController?.content = RootNode(sections)
@@ -350,7 +363,7 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 	private func performShare(sender: UIBarButtonItem) {
 		guard let pilot = fleet?.active else {return}
 		
-		pilot.engine?.perform {
+//		pilot.engine?.perform {
 			guard let ship = pilot.ship ?? pilot.structure else {return}
 			let typeID = ship.typeID
 			let name = ship.name
@@ -427,7 +440,7 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 				strongSelf.present(controller, animated: true, completion: nil)
 				controller.popoverPresentationController?.barButtonItem = sender
 			}
-		}
+//		}
 		
 
 	}

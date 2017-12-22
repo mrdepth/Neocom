@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Dgmpp
 
 class NCFittingResourcesTableViewCell: NCTableViewCell {
 	@IBOutlet weak var powerGridLabel: NCResourceLabel?
@@ -34,9 +35,9 @@ extension Prototype {
 }
 
 class NCFittingResourcesRow: TreeRow {
-	let ship: NCFittingShip
+	let ship: DGMShip
 	
-	init(ship: NCFittingShip) {
+	init(ship: DGMShip) {
 		self.ship = ship
 		super.init(prototype: Prototype.NCFittingResourcesTableViewCell.default)
 	}
@@ -45,20 +46,20 @@ class NCFittingResourcesRow: TreeRow {
 		guard let cell = cell as? NCFittingResourcesTableViewCell else {return}
 		let ship = self.ship
 		cell.object = ship
-		ship.engine?.perform {
-			let powerGrid = (ship.powerGridUsed, ship.totalPowerGrid)
-			let cpu = (ship.cpuUsed, ship.totalCPU)
-			let calibration = (ship.calibrationUsed, ship.totalCalibration)
+//		ship.engine?.perform {
+			let powerGrid = (ship.usedPowerGrid, ship.totalPowerGrid)
+			let cpu = (ship.usedCPU, ship.totalCPU)
+			let calibration = (ship.usedCalibration, ship.totalCalibration)
 			let turrets = (ship.usedHardpoints(.turret), ship.totalHardpoints(.turret))
 			let launchers = (ship.usedHardpoints(.launcher), ship.totalHardpoints(.launcher))
 			
 			let isCarrier = ship.totalFighterLaunchTubes > 0
-			let droneBay = isCarrier ? (ship.fighterHangarUsed, ship.totalFighterHangar) : (ship.droneBayUsed, ship.totalDroneBay)
-			let droneBandwidth = (ship.droneBandwidthUsed, ship.totalDroneBandwidth)
-			let droneSquadron = isCarrier ? (ship.fighterLaunchTubesUsed, ship.totalFighterLaunchTubes) : (ship.droneSquadronUsed(.none), ship.droneSquadronLimit(.none))
+			let droneBay = isCarrier ? (ship.usedFighterHangar, ship.totalFighterHangar) : (ship.usedDroneBay, ship.totalDroneBay)
+			let droneBandwidth = (ship.usedDroneBandwidth, ship.totalDroneBandwidth)
+			let droneSquadron = isCarrier ? (ship.usedFighterLaunchTubes, ship.totalFighterLaunchTubes) : (ship.usedDroneSquadron(.none), ship.totalDroneSquadron(.none))
 
 			DispatchQueue.main.async {
-				if cell.object as? NCFittingShip === ship {
+				if cell.object as? DGMShip === ship {
 					cell.powerGridLabel?.value = powerGrid.0
 					cell.powerGridLabel?.maximumValue = powerGrid.1
 					cell.cpuLabel?.value = cpu.0
@@ -79,7 +80,7 @@ class NCFittingResourcesRow: TreeRow {
 
 				}
 			}
-		}
+//		}
 	}
 	
 	override var hashValue: Int {

@@ -22,13 +22,13 @@ extension Prototype {
 
 class NCFacilityChartRow: TreeRow {
 	let data: [BarChart.Item]
-	let xRange: ClosedRange<Double>
+	let xRange: ClosedRange<Date>
 	let yRange: ClosedRange<Double>
-	let currentTime: TimeInterval
-	let expiryTime: TimeInterval
+	let currentTime: Date
+	let expiryTime: Date
 	let identifier: Int64
 	
-	init(data: [BarChart.Item], xRange: ClosedRange<Double>, yRange: ClosedRange<Double>, currentTime: TimeInterval, expiryTime: TimeInterval, identifier: Int64) {
+	init(data: [BarChart.Item], xRange: ClosedRange<Date>, yRange: ClosedRange<Double>, currentTime: Date, expiryTime: Date, identifier: Int64) {
 		self.data = data
 		self.xRange = xRange
 		self.yRange = yRange

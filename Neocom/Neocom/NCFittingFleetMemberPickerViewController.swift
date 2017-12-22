@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-
+import Dgmpp
 
 class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 	
@@ -32,7 +32,6 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 		defer {completionHandler()}
 		
 		guard let fleet = fleet else {return}
-		guard let engine = fleet.active?.engine else {return}
 		
 		var sections = [TreeNode]()
 		
@@ -41,12 +40,12 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 			strongSelf.dismiss(animated: true)
 			
 			let typeID = Int(type.typeID)
-			engine.perform {
-				fleet.append(typeID: typeID, engine: engine)
+//			engine.perform {
+				try? fleet.append(typeID: typeID)
 				DispatchQueue.main.async {
 					strongSelf.completionHandler(strongSelf)
 				}
-			}
+//			}
 			
 		})))
 		
@@ -73,16 +72,15 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 
 		if let node = node as? NCLoadoutRow {
 			guard let fleet = fleet else {return}
-			guard let engine = fleet.active?.engine else {return}
 
 			NCStorage.sharedStorage?.performBackgroundTask({ (managedObjectContext) in
 				guard let loadout = (try? managedObjectContext.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
-				engine.performBlockAndWait {
-					fleet.append(loadout: loadout, engine: engine)
+//				engine.performBlockAndWait {
+					try? fleet.append(loadout: loadout)
 					DispatchQueue.main.async {
 						self.completionHandler(self)
 					}
-				}
+//				}
 			})
 		}
 	}

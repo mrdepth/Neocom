@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudData
+import Dgmpp
 
 class NCFittingModuleRow: TreeRow {
 	lazy var type: NCDBInvType? = {
@@ -19,25 +20,24 @@ class NCFittingModuleRow: TreeRow {
 		return NCDatabase.sharedDatabase?.invTypes[charge.typeID]
 	}()
 	
-	let modules: [NCFittingModule]
-	let charge: NCFittingCharge?
-	let slot: NCFittingModuleSlot
-	let state: NCFittingModuleState
+	let modules: [DGMModule]
+	let charge: DGMCharge?
+	let slot: DGMModule.Slot
+	let state: DGMModule.State
 	let isEnabled: Bool
 	let hasTarget: Bool
 	let hasStates: Bool
 	
-	init(modules: [NCFittingModule]) {
+	init(modules: [DGMModule], slot: DGMModule.Slot) {
 		self.modules = modules
 		let module = modules.first
 		self.charge = module?.charge
-		let slot = module?.slot ?? .unknown
 		self.slot = slot
 		self.state = module?.state ?? .unknown
-		self.isEnabled = module?.isEnabled ?? true
+		self.isEnabled = module?.isFail ?? true
 		self.hasTarget = module?.target != nil
 		self.hasStates = slot != .rig && slot != .service && slot != .subsystem && slot != .mode
-		super.init(prototype: module?.isDummy == true ? Prototype.NCDefaultTableViewCell.compact : Prototype.NCFittingModuleTableViewCell.default)
+		super.init(prototype: modules.isEmpty ? Prototype.NCDefaultTableViewCell.compact : Prototype.NCFittingModuleTableViewCell.default)
 	}
 	
 	override func update(from node: TreeNode) {
@@ -51,7 +51,7 @@ class NCFittingModuleRow: TreeRow {
 	
 	override func configure(cell: UITableViewCell) {
 		let module = modules.first
-		if module?.isDummy == true {
+		if modules.isEmpty {
 			guard let cell = cell as? NCDefaultTableViewCell else {return}
 			cell.object = modules
 			cell.iconView?.image = slot.image
@@ -83,8 +83,8 @@ class NCFittingModuleRow: TreeRow {
 				let chargeImage = chargeType?.icon?.image?.image
 				guard let module = module else {return}
 
-				module.engine?.perform {
-					guard let ship = module.owner as? NCFittingShip else {return}
+//				module.engine?.perform {
+					guard let ship = module.parent as? DGMShip else {return}
 					let string = NSMutableAttributedString()
 					if let chargeName = chargeName  {
 						var s = NSAttributedString(image: chargeImage, font: font) + " \(chargeName)"
@@ -93,7 +93,7 @@ class NCFittingModuleRow: TreeRow {
 						}
 						string.appendLine(s)
 					}
-					let optimal = module.maxRange
+					let optimal = module.optimal
 					let falloff = module.falloff
 					let lifeTime = module.lifeTime
 					let cycleTime = module.cycleTime
@@ -110,8 +110,8 @@ class NCFittingModuleRow: TreeRow {
 						}
 						string.appendLine(s)
 					}
-					
-					let signature = ship.attributes?[NCDBAttributeID.signatureRadius.rawValue]?.initialValue ?? 0
+				
+					let signature = ship[NCDBAttributeID.signatureRadius.rawValue]?.initialValue ?? 0
 					let accuracy = module.accuracy(targetSignature: signature)
 
 					if accuracy != .none {
@@ -143,7 +143,7 @@ class NCFittingModuleRow: TreeRow {
 						self.subtitle = string
 						self.treeController?.reloadCells(for: [self], with: .none)
 					}
-				}
+//				}
 			}
 			else {
 				cell.subtitleLabel?.attributedText = subtitle
@@ -162,10 +162,10 @@ class NCFittingModuleRow: TreeRow {
 }
 
 class NCFittingModuleSection: TreeSection {
-	let slot: NCFittingModuleSlot
+	let slot: DGMModule.Slot
 	let grouped: Bool
 	
-	init(slot: NCFittingModuleSlot, children: [NCFittingModuleRow], grouped: Bool) {
+	init(slot: DGMModule.Slot, children: [NCFittingModuleRow], grouped: Bool) {
 		self.slot = slot
 		self.grouped = grouped
 		super.init(prototype: Prototype.NCFittingSlotHeaderTableViewCell.default)
@@ -202,7 +202,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 	@IBOutlet weak var turretsLabel: UILabel!
 	@IBOutlet weak var launchersLabel: UILabel!
 	
-	var grouping = [NCFittingModuleSlot: Bool]()
+	var grouping = [DGMModule.Slot: Bool]()
 	
 	private var observer: NotificationObserver?
 	
@@ -230,7 +230,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 		}
 	
 		if observer == nil {
-			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}
@@ -248,7 +248,6 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 		treeController.deselectCell(for: node, animated: true)
 		guard let item = node as? NCFittingModuleRow else {return}
 		guard let pilot = fleet?.active else {return}
-		guard let engine = self.engine else {return}
 		
 		//guard let ship = ship else {return}
 		guard let typePickerViewController = typePickerViewController else {return}
@@ -259,12 +258,14 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 //			rigSize = pilot.ship?.rigSize ?? pilot.structure?.rigSize
 //		}
 		
-		let (rigSize, isStructure, shipTypeID) = engine.sync {
-			return (pilot.ship?.rigSize ?? pilot.structure?.rigSize, pilot.structure != nil, pilot.ship?.typeID ?? pilot.structure?.typeID)
-		}
+//		let (rigSize, isStructure, shipTypeID) = engine.sync {
+//			return (pilot.ship?.rigSize ?? pilot.structure?.rigSize, pilot.structure != nil, pilot.ship?.typeID ?? pilot.structure?.typeID)
+//		}
+		let rigSize = pilot.ship?.rigSize ?? pilot.structure?.rigSize
+		let isStructure = pilot.structure != nil
+		let shipTypeID = pilot.ship?.typeID ?? pilot.structure?.typeID
 
-		let module = item.modules.first
-		if module?.isDummy == true {
+		if item.modules.isEmpty {
 			let category: NCDBDgmppItemCategory?
 			switch item.slot {
 			case .hi:
@@ -275,13 +276,13 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 				category = NCDBDgmppItemCategory.category(categoryID: .low, subcategory: isStructure ? NCDBCategoryID.structureModule.rawValue : NCDBCategoryID.module.rawValue)
 			case .rig:
 				guard let rigSize = rigSize else {return}
-				category = NCDBDgmppItemCategory.category(categoryID: isStructure ? .structureRig : .rig, subcategory: rigSize)
+				category = NCDBDgmppItemCategory.category(categoryID: isStructure ? .structureRig : .rig, subcategory: rigSize.rawValue)
 			case .subsystem:
-				var raceID: Int?
-				self.engine?.performBlockAndWait {
-					raceID = pilot.ship?.raceID
-				}
-				guard raceID != nil, let race = NCDatabase.sharedDatabase?.chrRaces[raceID!] else {return}
+//				var raceID: DGMRaceID?
+//				self.engine?.performBlockAndWait {
+					guard let raceID = pilot.ship?.raceID, let race = NCDatabase.sharedDatabase?.chrRaces[raceID.rawValue] else {return}
+//				}
+//				guard raceID != nil, let race = NCDatabase.sharedDatabase?.chrRaces[raceID!] else {return}
 				category = NCDBDgmppItemCategory.category(categoryID: .subsystem, subcategory: nil, race: race)
 			case .service:
 				category = NCDBDgmppItemCategory.category(categoryID: .service, subcategory: NCDBCategoryID.structureModule.rawValue)
@@ -296,14 +297,20 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 			typePickerViewController.category = category
 			typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
 				let typeID = Int(type.typeID)
-				engine.perform {
-					guard let ship = pilot.ship ?? pilot.structure else {return}
-					let n = isGrouped ? max(ship.freeSlots(item.slot), 1) : 1
+//				engine.perform {
+					if let ship = pilot.ship ?? pilot.structure {
+						let n = isGrouped ? max(ship.freeSlots(item.slot), 1) : 1
 
-					for _ in 0..<n {
-						guard ship.addModule(typeID: typeID, socket: socket) != nil else {break}
+						do {
+							for _ in 0..<n {
+								
+								try ship.add(DGMModule(typeID: typeID), socket: socket)
+							}
+						}
+						catch {
+						}
 					}
-				}
+//				}
 				if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
 					typePickerViewController?.dismiss(animated: true)
 				}
@@ -320,13 +327,13 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 		
 		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (_, _) in
 			let modules = node.modules
-			guard let engine = modules.first?.engine else {return}
-			engine.perform {
-				guard let ship = modules.first?.owner as? NCFittingShip else {return}
+//			guard let engine = modules.first?.engine else {return}
+//			engine.perform {
+				guard let ship = modules.first?.parent as? DGMShip else {return}
 				modules.forEach {
-					ship.removeModule($0)
+					ship.remove($0)
 				}
-			}
+//			}
 		}
 		
 		return [deleteAction]
@@ -339,7 +346,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 		case "NCFittingModuleActionsViewController"?:
 			guard let controller = (segue.destination as? UINavigationController)?.topViewController as? NCFittingModuleActionsViewController else {return}
 			guard let cell = sender as? NCFittingModuleTableViewCell else {return}
-			controller.modules = cell.object as? [NCFittingModule]
+			controller.modules = cell.object as? [DGMModule]
 		default:
 			break
 		}
@@ -348,12 +355,12 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 	//MARK: - Private
 	
 	private func update() {
-		engine?.perform {
+//		engine?.perform {
 			guard let pilot = self.fleet?.active else {return}
 			guard let ship = pilot.ship ?? pilot.structure else {return}
-			let powerGrid = (ship.powerGridUsed, ship.totalPowerGrid)
-			let cpu = (ship.cpuUsed, ship.totalCPU)
-			let calibration = (ship.calibrationUsed, ship.totalCalibration)
+			let powerGrid = (ship.usedPowerGrid, ship.totalPowerGrid)
+			let cpu = (ship.usedCPU, ship.totalCPU)
+			let calibration = (ship.usedCalibration, ship.totalCalibration)
 			let turrets = (ship.usedHardpoints(.turret), ship.totalHardpoints(.turret))
 			let launchers = (ship.usedHardpoints(.launcher), ship.totalHardpoints(.launcher))
 
@@ -371,21 +378,21 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 				self.launchersLabel.textColor = launchers.0 > launchers.1 ? .red : .white
 
 			}
-		}
+//		}
 	}
 	
 	private func reload() {
 		let grouping = self.grouping
-		engine?.perform {
+//		engine?.perform {
 			guard let pilot = self.fleet?.active else {return}
 			guard let ship = pilot.ship ?? pilot.structure else {return}
 			
 			var sections = [NCFittingModuleSection]()
-			for slot in [NCFittingModuleSlot.hi, NCFittingModuleSlot.med, NCFittingModuleSlot.low, NCFittingModuleSlot.rig, NCFittingModuleSlot.subsystem, NCFittingModuleSlot.service, NCFittingModuleSlot.mode] {
+			for slot in [DGMModule.Slot.hi, DGMModule.Slot.med, DGMModule.Slot.low, DGMModule.Slot.rig, DGMModule.Slot.subsystem, DGMModule.Slot.service, DGMModule.Slot.mode] {
 				let grouped = grouping[slot] ?? false
 				let rows: [NCFittingModuleRow]
 				if grouped {
-					var groups = [[NCFittingModule]]()
+					var groups = [[DGMModule]]()
 					for module in ship.modules(slot: slot) {
 						let charge = module.charge?.typeID ?? 0
 						let state = module.state
@@ -403,12 +410,12 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 						
 					}
 					rows = groups.flatMap({ (modules) -> NCFittingModuleRow? in
-						return NCFittingModuleRow(modules: modules)
+						return NCFittingModuleRow(modules: modules, slot: slot)
 					})
 				}
 				else {
 					rows = ship.modules(slot: slot).flatMap({ (module) -> NCFittingModuleRow? in
-						return NCFittingModuleRow(modules: [module])
+						return NCFittingModuleRow(modules: [module], slot: slot)
 					})
 				}
 				if (rows.count > 0) {
@@ -419,7 +426,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 			DispatchQueue.main.async {
 				self.treeController.content?.children = sections
 			}
-		}
+//		}
 		update()
 	}
 }

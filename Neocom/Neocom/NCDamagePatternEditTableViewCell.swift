@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Dgmpp
 
 class NCDamagePatternEditTableViewCell: NCTextFieldTableViewCell {
 	@IBOutlet weak var pickerView: UIPickerView?

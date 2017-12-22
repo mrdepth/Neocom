@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Dgmpp
 
 class NCFittingCapacitorTableViewCell: NCTableViewCell {
 	@IBOutlet weak var capacityLabel: UILabel?
@@ -24,9 +25,9 @@ extension Prototype {
 }
 
 class NCFittingCapacitorRow: TreeRow {
-	let ship: NCFittingShip
+	let ship: DGMShip
 	
-	init(ship: NCFittingShip) {
+	init(ship: DGMShip) {
 		self.ship = ship
 		super.init(prototype: Prototype.NCFittingCapacitorTableViewCell.default)
 	}
@@ -35,15 +36,15 @@ class NCFittingCapacitorRow: TreeRow {
 		guard let cell = cell as? NCFittingCapacitorTableViewCell else {return}
 		let ship = self.ship
 		cell.object = ship
-		ship.engine?.perform {
-			let capCapacity = ship.capCapacity
-			let isCapStable = ship.isCapStable
-			let capState = isCapStable ? ship.capStableLevel : ship.capLastsTime
-			let capRechargeTime = ship.capRechargeTime
-			let delta = ship.capRecharge - ship.capUsed
+//		ship.engine?.perform {
+			let capCapacity = ship.capacitor.capacity
+			let isCapStable = ship.capacitor.isStable
+			let capState = isCapStable ? ship.capacitor.stableLevel : ship.capacitor.lastsTime
+			let capRechargeTime = ship.capacitor.rechargeTime
+			let delta = (ship.capacitor.recharge - ship.capacitor.use) * DGMSeconds(1)
 			
 			DispatchQueue.main.async {
-				if cell.object as? NCFittingShip === ship {
+				if cell.object as? DGMShip === ship {
 					cell.capacityLabel?.text = NCUnitFormatter.localizedString(from: capCapacity, unit: .gigaJoule, style: .full)
 					cell.rechargeTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: capRechargeTime, precision: .seconds)
 					cell.deltaLabel?.text = (delta > 0 ? "+" : "") + NCUnitFormatter.localizedString(from: delta, unit: .gigaJoulePerSecond, style: .full)
@@ -57,7 +58,7 @@ class NCFittingCapacitorRow: TreeRow {
 					}
 				}
 			}
-		}
+//		}
 	}
 	
 	override var hashValue: Int {

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Dgmpp
 
 fileprivate let Limit = 5
 
@@ -54,15 +55,15 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 
 	
 	var category: NCDBDgmppItemCategory?
-	var modules: [NCFittingModule]?
+	var modules: [DGMModule]?
 	
 	lazy var hullType: NCDBDgmppHullType? = {
 		guard let module = self.modules?.first else {return nil}
 		var hullType: NCDBDgmppHullType?
-		module.engine?.performBlockAndWait {
-			guard let ship = module.owner as? NCFittingShip else {return}
+//		module.engine?.performBlockAndWait {
+			guard let ship = module.parent as? DGMShip else {return nil}
 			hullType = NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.hullType
-		}
+//		}
 		return hullType
 	}()
 
@@ -201,13 +202,13 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 		let n = tableView.bounds.size.width
 		let targetSignature = Double(hullType?.signature ?? 0)
 
-		module.engine?.perform {
-			guard let ship = module.owner as? NCFittingShip else {return}
+//		module.engine?.perform {
+			guard let ship = module.parent as? DGMShip else {return}
 			let chargeID = module.charge?.typeID
 			
 			func dps(at range: Double, signature: Double = 0) -> Double {
-				let angularVelocity = signature > 0 ? ship.maxVelocity(orbit: range) / range : 0
-				return module.dps(target: NCFittingHostileTarget(angularVelocity: angularVelocity, velocity: 0, signature: signature, range: range)).total
+				let angularVelocity = signature > 0 ? (ship.maxVelocityInOrbit(range) * DGMSeconds(1)) / range : 0
+				return (module.dps(target: DGMHostileTarget(angularVelocity: DGMRadiansPerSecond(angularVelocity), velocity: DGMMetersPerSecond(0), signature: signature, range: range)) * DGMSeconds(1)).total
 			}
 			
 			var dataSets = [Int: [(x: Double, y: Double)]]()
@@ -216,48 +217,57 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 			var statistics = [Int: (dps: Double, range: Double)]()
 			
 			for typeID in charges {
-				module.charge = NCFittingCharge(typeID: typeID)
-				let optimal = module.maxRange
-				let falloff = module.falloff
-				let maxX = ceil((optimal + max(falloff * 2, optimal * 0.5)) / 10000) * 10000
-				let maxY = dps(at: optimal * 0.1)
-				size.x = max(size.x, maxX)
-				size.y = max(size.y, maxY)
+				do {
+					try module.setCharge(DGMCharge(typeID: typeID))
+					let optimal = module.optimal
+					let falloff = module.falloff
+					let maxX = ceil((optimal + max(falloff * 2, optimal * 0.5)) / 10000) * 10000
+					let maxY = dps(at: optimal * 0.1)
+					size.x = max(size.x, maxX)
+					size.y = max(size.y, maxY)
+				}
+				catch {
+				}
 			}
 			
 			for typeID in charges {
-				module.charge = NCFittingCharge(typeID: typeID)
-				
-				let maxX = size.x
-				guard maxX > 0 else {continue}
-				
-				var data: [(x: Double, y: Double)] = []
-				let dx = maxX / Double(n)
-				var x: Double = dx
-				
-				var y = dps(at:x, signature: targetSignature)
-				data.append((x: x, y: y))
-				var best = (dps: y, range: x)
-				
-//				size.y = max(size.y, y)
-				x += dx
-
-				while x < maxX {
-					y = dps(at: x, signature: targetSignature)
-					if y > best.dps {
-						best = (dps: y, range: x)
-					}
+				do {
+					try module.setCharge(DGMCharge(typeID: typeID))
+					
+					let maxX = size.x
+					guard maxX > 0 else {continue}
+					
+					var data: [(x: Double, y: Double)] = []
+					let dx = maxX / Double(n)
+					var x: Double = dx
+					
+					var y = dps(at:x, signature: targetSignature)
 					data.append((x: x, y: y))
-//					size.y = max(size.y, y)
+					var best = (dps: y, range: x)
+					
+					//				size.y = max(size.y, y)
 					x += dx
+					
+					while x < maxX {
+						y = dps(at: x, signature: targetSignature)
+						if y > best.dps {
+							best = (dps: y, range: x)
+						}
+						data.append((x: x, y: y))
+						//					size.y = max(size.y, y)
+						x += dx
+					}
+					dataSets[typeID] = data
+					
+					statistics[typeID] = best
+					
 				}
-				dataSets[typeID] = data
-				
-				statistics[typeID] = best
+				catch {
+				}
 				
 			}
 			if let chargeID = chargeID {
-				module.charge = NCFittingCharge(typeID: chargeID)
+				try? module.setCharge(DGMCharge(typeID: chargeID))
 			}
 			
 			DispatchQueue.main.async {
@@ -319,6 +329,6 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 				
 
 			}
-		}
+//		}
 	}
 }

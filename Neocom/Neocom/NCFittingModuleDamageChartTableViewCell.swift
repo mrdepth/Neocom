@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Dgmpp
 
 class NCFittingModuleDamageChartTableViewCell: NCTableViewCell {
 //	@IBOutlet weak var damageChartView: NCFittingModuleDamageChartView!
@@ -28,8 +29,8 @@ extension Prototype {
 }
 
 class NCFittingModuleDamageChartRow: TreeRow {
-	let module: NCFittingModule
-	let ship: NCFittingShip?
+	let module: DGMModule
+	let ship: DGMShip?
 	let count: Int
 	
 	lazy var hullTypes: [NCDBDgmppHullType]? = {
@@ -44,9 +45,9 @@ class NCFittingModuleDamageChartRow: TreeRow {
 		return NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.hullType
 	}()
 	
-	init(module: NCFittingModule, count: Int) {
+	init(module: DGMModule, count: Int) {
 		self.module = module
-		self.ship = module.owner as? NCFittingShip
+		self.ship = module.parent as? DGMShip
 		self.count = count
 		super.init(prototype: Prototype.NCFittingModuleDamageChartTableViewCell.default)
 	}
@@ -60,7 +61,7 @@ class NCFittingModuleDamageChartRow: TreeRow {
 			cell.stepper.value = Double(hullTypes?.index(of: hullType) ?? 0)
 		}
 		cell.dpsLabel.text = NSLocalizedString("DPS AGAINST", comment: "") + " " + (hullType?.hullTypeName?.uppercased() ?? "")
-		let targetSignature = Double(hullType?.signature ?? 0)
+		let targetSignature = DGMMeter(hullType?.signature ?? 0)
 //		cell.damageChartView.targetSignature = targetSignature
 		
 		let n = Double(round((treeController?.tableView?.bounds.size.width ?? 320) / 5))
@@ -69,21 +70,22 @@ class NCFittingModuleDamageChartRow: TreeRow {
 		guard let ship = ship else {return}
 		let module = self.module
 		
-		module.engine?.perform {
+//		module.engine?.perform {
 			var hitChanceData = [(x: Double, y: Double)]()
 			var dpsData = [(x: Double, y: Double)]()
 //			let hitChancePath = UIBezierPath()
 //			let dpsPath = UIBezierPath()
 			
-			let optimal = module.maxRange
+			let optimal = module.optimal
 			let falloff = module.falloff
 			let maxX = ceil((optimal + max(falloff * 2, optimal * 0.5)) / 10000) * 10000
 			guard maxX > 0 else {return}
 			let dx = maxX / n
 			
 			func dps(at range: Double, signature: Double = 0) -> Double {
-				let angularVelocity = signature > 0 ? ship.maxVelocity(orbit: range) / range : 0
-				return module.dps(target: NCFittingHostileTarget(angularVelocity: angularVelocity, velocity: 0, signature: signature, range: range)).total
+				let angularVelocity = signature > 0 ? ship.maxVelocityInOrbit(range) * DGMSeconds(1) / range : 0
+				let dps =  module.dps(target: DGMHostileTarget(angularVelocity: DGMRadiansPerSecond(angularVelocity), velocity: DGMMetersPerSecond(0), signature: signature, range: range))
+				return (dps * DGMSeconds(1)).total
 			}
 			
 			let maxDPS = dps(at: optimal * 0.1)
@@ -109,7 +111,7 @@ class NCFittingModuleDamageChartRow: TreeRow {
 
 			let accuracy = module.accuracy(targetSignature: targetSignature)
 			
-			let totalDPS = module.dps.total
+			let totalDPS = (module.dps() * DGMSeconds(1)).total
 
 			DispatchQueue.main.async {
 				guard (cell.object as? NCFittingModuleDamageChartRow) == self else {return}
@@ -200,49 +202,8 @@ class NCFittingModuleDamageChartRow: TreeRow {
 				}
 
 			}
-		}
+//		}
 		
-		/*module.engine?.perform {
-			let optimal = self.module.maxRange
-			let falloff = self.module.falloff
-			//let maxRange = optimal + max(falloff * 2, optimal * 0.5)
-			let maxRange = ceil((optimal + max(falloff * 2, optimal * 0.5)) / 10000) * 10000
-			let dps = self.module.dps.total
-			let accuracy = self.module.accuracy(targetSignature: targetSignature)
-			
-			DispatchQueue.main.async {
-				guard (cell.object as? NCFittingModuleDamageChartRow) == self else {return}
-				cell.dpsAccuracyView.backgroundColor = accuracy.color
-				if self.count > 1 {
-					cell.rawDpsLabel.text = NSLocalizedString("RAW DPS:", comment: "") + " " + NCUnitFormatter.localizedString(from: dps, unit: .none, style: .full) + " x \(self.count) = " + NCUnitFormatter.localizedString(from: dps * Double(self.count), unit: .none, style: .full)
-				}
-				else {
-					cell.rawDpsLabel.text = NSLocalizedString("RAW DPS:", comment: "") + " " + NCUnitFormatter.localizedString(from: dps * Double(self.count), unit: .none, style: .full)
-				}
-				cell.optimalLabel.text = NSLocalizedString("Optimal", comment: "") + "\n" + NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full)
-				if falloff > 0 {
-					cell.falloffLabel.text = NSLocalizedString("Falloff", comment: "") + "\n" + NCUnitFormatter.localizedString(from: optimal + falloff, unit: .meter, style: .full)
-				}
-				else {
-					cell.falloffLabel.isHidden = true
-				}
-				
-				if let constraint = cell.optimalLabel.superview?.constraints.first(where: {$0.firstItem === cell.optimalLabel && $0.secondItem === cell.optimalLabel.superview && $0.firstAttribute == .centerX}) {
-					let m = maxRange > 0 ? max(0.01, optimal / maxRange) : 0.01
-					constraint.isActive = false
-					let other = NSLayoutConstraint(item: cell.optimalLabel, attribute: .centerX, relatedBy: .equal, toItem: cell.optimalLabel.superview, attribute: .trailing, multiplier: CGFloat(m), constant: 0)
-					other.priority = constraint.priority
-					other.isActive = true
-				}
-				if let constraint = cell.falloffLabel.superview?.constraints.first(where: {$0.firstItem === cell.falloffLabel && $0.secondItem === cell.falloffLabel.superview && $0.firstAttribute == .centerX}) {
-					let m = maxRange > 0 ? max(0.01, (optimal + falloff) / maxRange) : 0.01
-					constraint.isActive = false
-					let other = NSLayoutConstraint(item: cell.falloffLabel, attribute: .centerX, relatedBy: .equal, toItem: cell.falloffLabel.superview, attribute: .trailing, multiplier: CGFloat(m), constant: 0)
-					other.priority = constraint.priority
-					other.isActive = true
-				}
-			}
-		}*/
 	}
 	
 	override var hashValue: Int {

@@ -22,7 +22,7 @@ extension Prototype {
 }
 
 class NCFactoryDetailsRow: TreeRow {
-	let currentTime: TimeInterval
+	let currentTime: Date
 
 	let productionTime: TimeInterval?
 	let idleTime: TimeInterval?
@@ -35,7 +35,7 @@ class NCFactoryDetailsRow: TreeRow {
 	let identifier: Int64
 	let inputRatio: [Double]
 	
-	init(factory: NCFittingIndustryFacility, inputRatio: [Double], currentTime: TimeInterval) {
+	init(factory: NCFittingIndustryFacility, inputRatio: [Double], currentTime: Date) {
 		self.currentTime = currentTime
 		self.inputRatio = inputRatio
 		identifier = factory.identifier

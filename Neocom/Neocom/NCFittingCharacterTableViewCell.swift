@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Dgmpp
 
 extension UIImage {
 	class func placeholder(text: String, size: CGSize) -> UIImage {
@@ -53,7 +54,7 @@ class NCPredefinedCharacterRow: TreeRow {
 
 	init(level: Int, route: Route? = nil) {
 		self.level = level
-		url = NCFittingCharacter.url(level: level)
+		url = DGMCharacter.url(level: level)
 		super.init(prototype: Prototype.NCFittingCharacterTableViewCell.default, route: route)
 	}
 	
@@ -130,7 +131,7 @@ class NCCustomCharacterRow: NCFetchedResultsObjectNode<NCFitCharacter>, TreeNode
 	}
 	
 	required init(object: NCFitCharacter) {
-		url = NCFittingCharacter.url(character: object)
+		url = DGMCharacter.url(character: object)
 		super.init(object: object)
 		self.cellIdentifier = Prototype.NCFittingCharacterTableViewCell.default.reuseIdentifier
 	}
@@ -197,7 +198,7 @@ class NCAccountCharacterRow: NCFetchedResultsObjectNode<NCAccount>, TreeNodeRout
 	}
 
 	required init(object: NCAccount) {
-		url = NCFittingCharacter.url(account: object)
+		url = DGMCharacter.url(account: object)
 		super.init(object: object)
 		self.cellIdentifier = Prototype.NCFittingCharacterTableViewCell.default.reuseIdentifier
 	}

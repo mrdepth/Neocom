@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudData
+import Dgmpp
 
 class NCImplantRow: TreeRow {
 	lazy var type: NCDBInvType? = {
@@ -16,9 +17,9 @@ class NCImplantRow: TreeRow {
 	}()
 
 	
-	let implant: NCFittingImplant?
+	let implant: DGMImplant?
 	let slot: Int?
-	init(implant: NCFittingImplant) {
+	init(implant: DGMImplant) {
 		self.implant = implant
 		self.slot = nil
 		super.init(prototype: Prototype.NCDefaultTableViewCell.compact, accessoryButtonRoute: Router.Database.TypeInfo(implant.typeID))
@@ -60,9 +61,9 @@ class NCBoosterRow: TreeRow {
 		return NCDatabase.sharedDatabase?.invTypes[booster.typeID]
 	}()
 
-	let booster: NCFittingBooster?
+	let booster: DGMBooster?
 	let slot: Int?
-	init(booster: NCFittingBooster) {
+	init(booster: DGMBooster) {
 		self.booster = booster
 		self.slot = nil
 		super.init(prototype: Prototype.NCDefaultTableViewCell.compact, accessoryButtonRoute: Router.Database.TypeInfo(booster.typeID))
@@ -117,7 +118,7 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 		super.viewWillAppear(animated)
 		
 		if observer == nil {
-			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}
@@ -141,14 +142,14 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 			let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 			controller.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { [weak self] _ in
 				guard let pilot = self?.fleet?.active else {return}
-				self?.engine?.perform {
-					if let implant = item as? NCFittingImplant {
-						pilot.removeImplant(implant)
+//				self?.engine?.perform {
+					if let implant = item as? DGMImplant {
+						pilot.remove(implant)
 					}
-					else if let booster = item as? NCFittingBooster {
-						pilot.removeBooster(booster)
+					else if let booster = item as? DGMBooster {
+						pilot.remove(booster)
 					}
-				}
+//				}
 			})
 			
 			controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
@@ -168,9 +169,9 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 				typePickerViewController.category = category
 				typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
 					let typeID = Int(type.typeID)
-					pilot.engine?.perform {
-						pilot.addImplant(typeID: typeID)
-					}
+//					pilot.engine?.perform {
+						try? pilot.add(DGMImplant(typeID: typeID))
+//					}
 					if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
 						typePickerViewController?.dismiss(animated: true)
 					}
@@ -187,9 +188,9 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 				typePickerViewController.category = category
 				typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
 					let typeID = Int(type.typeID)
-					pilot.engine?.perform {
-						pilot.addBooster(typeID: typeID)
-					}
+//					pilot.engine?.perform {
+						try? pilot.add(DGMBooster(typeID: typeID))
+//					}
 					if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
 						typePickerViewController?.dismiss(animated: true)
 					}
@@ -201,18 +202,17 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let item = (node as? NCImplantRow)?.implant ?? (node as? NCBoosterRow)?.booster else {return nil}
-		guard let engine = engine else {return nil}
 		guard let pilot = self.fleet?.active else {return nil}
 		
 		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (_, _) in
-			engine.perform {
-				if let implant = item as? NCFittingImplant {
-					pilot.removeImplant(implant)
+//			engine.perform {
+				if let implant = item as? DGMImplant {
+					pilot.remove(implant)
 				}
-				else if let booster = item as? NCFittingBooster {
-					pilot.removeBooster(booster)
+				else if let booster = item as? DGMBooster {
+					pilot.remove(booster)
 				}
-			}
+//			}
 		}
 		
 		return [deleteAction]
@@ -226,20 +226,20 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 		let boosterCategories: [NCDBDgmppItemCategory]? = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemCategory", where: "category == %d", NCDBDgmppItemCategoryID.booster.rawValue)
 		let boosterSlots = boosterCategories?.map {Int($0.subcategory)}.sorted() ?? [1,2,3,4]
 
-		engine?.perform {
+//		engine?.perform {
 			guard let pilot = self.fleet?.active else {return}
 			var sections = [TreeNode]()
 			
 			var implants = (0...9).map({NCImplantRow(dummySlot: $0 + 1)})
 			
-			for implant in pilot.implants.all {
+			for implant in pilot.implants {
 				guard (1...10).contains(implant.slot) else {continue}
 				implants[implant.slot - 1] = NCImplantRow(implant: implant)
 			}
 			
 			var boosters = boosterSlots.map({NCBoosterRow(dummySlot: $0)})
 			
-			for booster in pilot.boosters.all {
+			for booster in pilot.boosters {
 //				guard boosterSlots.contains(booster.slot) else {continue}
 				guard let i = boosters.index(where: {$0.slot == booster.slot}) else {continue}
 				boosters[i] = NCBoosterRow(booster: booster)
@@ -254,13 +254,13 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 				let implantIDs = implantSet.data?.implantIDs
 				let boosterIDs = implantSet.data?.boosterIDs
 				
-				pilot.engine?.perform {
-					implantIDs?.forEach {pilot.addImplant(typeID: $0, forced: true)}
-					boosterIDs?.forEach {pilot.addBooster(typeID: $0, forced: true)}
-				}
+//				pilot.engine?.perform {
+					implantIDs?.forEach {try? pilot.add(DGMImplant(typeID: $0), replace: true)}
+					boosterIDs?.forEach {try? pilot.add(DGMBooster(typeID: $0), replace: true)}
+//				}
 			})))
 			
-			if !pilot.implants.all.isEmpty || !pilot.boosters.all.isEmpty {
+			if !pilot.implants.isEmpty || !pilot.boosters.isEmpty {
 				actions.append(NCActionRow(title: NSLocalizedString("Save Implant Set", comment: "").uppercased(), route: Router.Fitting.ImplantSet(save: pilot)))
 			}
 			sections.append(RootNode(actions))
@@ -271,6 +271,6 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 			DispatchQueue.main.async {
 				self.treeController?.content?.children = sections
 			}
-		}
+//		}
 	}
 }

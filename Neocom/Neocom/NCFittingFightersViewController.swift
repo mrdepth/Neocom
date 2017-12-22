@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudData
+import Dgmpp
 
 class NCFittingFightersViewController: UIViewController, TreeControllerDelegate, NCFittingEditorPage {
 	@IBOutlet weak var treeController: TreeController!
@@ -41,7 +42,7 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 		}
 		
 		if observer == nil {
-			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}
@@ -57,26 +58,30 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 		else if node is NCActionRow {
 			guard let pilot = fleet?.active else {return}
 			guard let typePickerViewController = typePickerViewController else {return}
-			guard let engine = self.engine else {return}
 			
 			let category = NCDBDgmppItemCategory.category(categoryID: .drone, subcategory:  NCDBCategoryID.fighter.rawValue)
 			
 			typePickerViewController.category = category
 			typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
 				let typeID = Int(type.typeID)
-				engine.perform {
+//				engine.perform {
 					guard let ship = pilot.ship ?? pilot.structure else {return}
 //					let tag = (ship.drones.flatMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
 					let tag = -1
-					let identifier = UUID().uuidString
+
+				do {
+					let drone = try DGMDrone(typeID: typeID)
+					try ship.add(drone, squadronTag: tag)
 					
-					guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {return}
-					engine.assign(identifier: identifier, for: drone)
+//					engine.assign(identifier: identifier, for: drone)
 					for _ in 1..<drone.squadronSize {
-						guard let drone = ship.addDrone(typeID: typeID, squadronTag: tag) else {continue}
-						engine.assign(identifier: identifier, for: drone)
+						try ship.add(DGMDrone(typeID: typeID), squadronTag: tag)
 					}
 				}
+				catch {
+					
+				}
+//				}
 				typePickerViewController?.dismiss(animated: true)
 				if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
 					typePickerViewController?.dismiss(animated: true)
@@ -93,13 +98,12 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 		
 		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (_, _) in
 			let drones = node.drones
-			guard let engine = drones.first?.engine else {return}
-			engine.perform {
-				guard let ship = drones.first?.owner as? NCFittingShip else {return}
+//			engine.perform {
+				guard let ship = drones.first?.parent as? DGMShip else {return}
 				drones.forEach {
-					ship.removeDrone($0)
+					ship.remove($0)
 				}
-			}
+//			}
 		}
 		
 		return [deleteAction]
@@ -108,11 +112,11 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 	//MARK: - Private
 	
 	private func update() {
-		engine?.perform {
+//		engine?.perform {
 			guard let pilot = self.fleet?.active else {return}
 			guard let ship = pilot.ship ?? pilot.structure else {return}
-			let droneBay = (ship.fighterHangarUsed, ship.totalFighterHangar)
-			let droneSquadron = (ship.fighterLaunchTubesUsed, ship.totalFighterLaunchTubes)
+			let droneBay = (ship.usedFighterHangar, ship.totalFighterHangar)
+			let droneSquadron = (ship.usedFighterLaunchTubes, ship.totalFighterLaunchTubes)
 			
 			DispatchQueue.main.async {
 				self.droneBayLabel.value = droneBay.0
@@ -120,11 +124,11 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 				self.dronesCountLabel.text = "\(droneSquadron.0)/\(droneSquadron.1)"
 				self.dronesCountLabel.textColor = droneSquadron.0 > droneSquadron.1 ? .red : .white
 			}
-		}
+//		}
 	}
 	
 	private func reload() {
-		engine?.perform {
+//		engine?.perform {
 			guard let pilot = self.fleet?.active else {return}
 			guard let ship = pilot.ship ?? pilot.structure else {return}
 			
@@ -155,10 +159,10 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 			
 			
 			typealias TypeID = Int
-			typealias Squadron = [Int: [TypeID: [Bool: [NCFittingDrone]]]]
-			var squadrons = [NCFittingFighterSquadron: Squadron]()
-			for squadron in [NCFittingFighterSquadron.none, NCFittingFighterSquadron.heavy, NCFittingFighterSquadron.light, NCFittingFighterSquadron.support] {
-				if ship.droneSquadronLimit(squadron) > 0 {
+			typealias Squadron = [Int: [TypeID: [Bool: [DGMDrone]]]]
+			var squadrons = [DGMDrone.Squadron: Squadron]()
+			for squadron in [DGMDrone.Squadron.none, DGMDrone.Squadron.heavy, DGMDrone.Squadron.light, DGMDrone.Squadron.support] {
+				if ship.totalDroneSquadron(squadron) > 0 {
 					squadrons[squadron] = [:]
 				}
 			}
@@ -203,7 +207,7 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 			DispatchQueue.main.async {
 				self.treeController.content?.children = sections
 			}
-		}
+//		}
 		update()
 	}
 	

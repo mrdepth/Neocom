@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Dgmpp
 
 class NCMiningYieldTableViewCell: NCTableViewCell {
 	@IBOutlet weak var minerLabel: UILabel!
@@ -21,9 +22,9 @@ extension Prototype {
 }
 
 class NCMiningYieldRow: TreeRow {
-	let ship: NCFittingShip
+	let ship: DGMShip
 	
-	init(ship: NCFittingShip) {
+	init(ship: DGMShip) {
 		self.ship = ship
 		super.init(prototype: Prototype.NCMiningYieldTableViewCell.default)
 	}
@@ -32,20 +33,20 @@ class NCMiningYieldRow: TreeRow {
 		guard let cell = cell as? NCMiningYieldTableViewCell else {return}
 		let ship = self.ship
 		cell.object = ship
-		ship.engine?.perform {
-			let minerYield = ship.minerYield
-			let droneYield = ship.droneYield
+//		ship.engine?.perform {
+			let minerYield = ship.minerYield * DGMSeconds(1)
+			let droneYield = ship.droneYield * DGMSeconds(1)
 			let total = minerYield + droneYield;
 			
 			DispatchQueue.main.async {
-				if cell.object as? NCFittingShip === ship {
+				if cell.object as? DGMShip === ship {
 					let formatter = NCUnitFormatter(unit: .none, style: .short, useSIPrefix: false)
 					cell.minerLabel.text = formatter.string(for: minerYield)
 					cell.droneLabel.text = formatter.string(for: droneYield)
 					cell.totalLabel.text = formatter.string(for: total)
 				}
 			}
-		}
+//		}
 	}
 	
 	override var hashValue: Int {

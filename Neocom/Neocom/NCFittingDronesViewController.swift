@@ -255,21 +255,17 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate, N
 //		engine?.perform {
 			guard let pilot = self.fleet?.active else {return}
 			guard let ship = pilot.ship ?? pilot.structure else {return}
-			
-			var squadrons = [Int: [Int: [Bool: [DGMDrone]]]]()
+		
+			var squadrons = [Int: [DGMTypeID: [Bool: [DGMDrone]]]]()
 			for drone in ship.drones.filter({$0.squadron == .none} ) {
-				var a = squadrons[drone.squadronTag] ?? [:]
-				var b = a[drone.typeID] ?? [:]
-				var c = b[drone.isActive] ?? []
-				c.append(drone)
-				b[drone.isActive] = c
-				a[drone.typeID] = b
-				squadrons[drone.squadronTag] = a
+				squadrons[drone.squadronTag, default: [:]][drone.typeID, default: [:]][drone.isActive, default: []].append(drone)
 			}
 			
 			var rows = [TreeNode]()
+		var typeNames = [DGMTypeID: String]()
+		
 			for (_, array) in squadrons.sorted(by: { (a, b) -> Bool in return a.key < b.key } ) {
-				for (_, array) in array.sorted(by: { (a, b) -> Bool in return (a.value.first?.value.first?.typeName ?? "") < (b.value.first?.value.first?.typeName ?? "") }) {
+				for (_, array) in array.sorted(by: { (a, b) -> Bool in return typeNames[a.key, default: a.value.first?.value.first?.type?.typeName ?? ""] < typeNames[b.key, default: b.value.first?.value.first?.type?.typeName ?? ""] }) {
 					for (_, array) in array.sorted(by: { (a, b) -> Bool in return a.key }) {
 						rows.append(NCFittingDroneRow(drones: array))
 					}

@@ -101,7 +101,10 @@ class NCStorage: NSObject {
 		return NCAccount.accounts(managedObjectContext: self.viewContext)
 	}()
 
-	
+	private(set) lazy var fitCharacters: NCFetchedCollection<NCFitCharacter> = {
+		return NCFitCharacter.fitCharacters(managedObjectContext: self.viewContext)
+	}()
+
 	//MARK: Private
 	
 	@objc func managedObjectContextDidSave(_ notification: Notification) {

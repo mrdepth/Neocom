@@ -15,77 +15,39 @@ public extension Notification.Name {
 	public static let NCFittingFleetDidUpdate = Notification.Name(rawValue: "NCFittingFleetDidUpdate")
 }
 
-extension DGMType {
-	var typeName: String? {
-		return NCDatabase.sharedDatabase?.invTypes[typeID]?.typeName
-	}
-}
-
-extension DGMFacility {
-	var typeName: String? {
-		return NCDatabase.sharedDatabase?.invTypes[typeID]?.typeName
-	}
-}
-
 class NCFittingFleet {
-/*	private var dispatchQueue = DispatchQueue(label: "dgmpp")
-	func perform(_ block: @escaping () -> Void) {
-		dispatchQueue.async {
-			block()
-		}
-	}
-	
-	func performAndWait<T: Any> (_ block: @escaping () -> T) -> T {
-		var v: T!
-		dispatchQueue.sync {
-			v = block()
-		}
-		return v
-	}*/
 	
 	var pilots = [(DGMCharacter, NSManagedObjectID?)]()
 	var active: DGMCharacter? {
 		didSet {
-			DispatchQueue.main.async {
-				NotificationCenter.default.post(name: .NCFittingFleetDidUpdate, object: self)
-			}
+			NotificationCenter.default.post(name: .NCFittingFleetDidUpdate, object: self)
 		}
 	}
 	var fleetID: NSManagedObjectID?
-	var gang: DGMGang = DGMGang()
+	let gang: DGMGang = try! DGMGang()
 	
-	init(fleet: NCFleet) {
-		self.fleetID = fleet.objectID
-		for loadout in fleet.loadouts?.array as? [NCLoadout] ?? [] {
-			do {
-				try append(loadout: loadout)
-			}
-			catch {
-			}
-		}
-		if let configuration = fleet.configuration {
-			self.configuration = configuration
-		}
-	}
-	
-	init(loadouts:[NCLoadout]) {
+	init(loadouts: [NCLoadout]) {
 		for loadout in loadouts {
-			do {
-				try append(loadout: loadout)
-			}
-			catch {
-			}
+			_ = try? append(loadout: loadout)
 		}
 	}
 	
 	init(typeID: Int) throws {
-		let pilot = DGMCharacter()
+		let pilot = try DGMCharacter()
+		try pilot.ship = DGMShip(typeID: typeID)
 		gang.add(pilot)
 		pilots.append((pilot, nil))
 		active = pilot
-		try pilot.ship = DGMShip(typeID: typeID)
 	}
-    
+
+	convenience init(fleet: NCFleet) {
+		self.init(loadouts: fleet.loadouts?.array as? [NCLoadout] ?? [])
+		self.fleetID = fleet.objectID
+		if let configuration = fleet.configuration {
+			self.configuration = configuration
+		}
+	}
+
     convenience init(asset: ESI.Assets.Asset, contents: [Int64: [ESI.Assets.Asset]]) throws {
 		try self.init(typeID: asset.typeID)
 		let pilot = active!
@@ -104,10 +66,12 @@ class NCFittingFleet {
 				case .cargo:
 					cargo.insert($0.typeID)
 				default:
-					let module = try DGMModule(typeID: $0.typeID)
-					try ship.add(module, ignoringRequirements: true)
-					if (!module.chargeGroups.isEmpty) {
-						requiresAmmo.append(module)
+					for _ in 0..<($0.quantity ?? 1) {
+						let module = try DGMModule(typeID: $0.typeID)
+						try ship.add(module, ignoringRequirements: true)
+						if (!module.chargeGroups.isEmpty) {
+							requiresAmmo.append(module)
+						}
 					}
 				}
 			}
@@ -216,31 +180,33 @@ class NCFittingFleet {
 
 	}
 	
-	func append(loadout: NCLoadout) throws {
-		guard let data = loadout.data?.data else {return}
+	@discardableResult
+	func append(loadout: NCLoadout) throws -> DGMCharacter {
 		
-		do {
-			let pilot = DGMCharacter()
-			let ship = try DGMShip(typeID: Int(loadout.typeID))
-			pilot.ship = ship
-			ship.name = loadout.name ?? ""
+		let pilot = try DGMCharacter()
+		let ship = try DGMShip(typeID: Int(loadout.typeID))
+		pilot.ship = ship
+		ship.name = loadout.name ?? ""
+
+		if let data = loadout.data?.data {
 			pilot.loadout = data
-			pilots.append((pilot, loadout.objectID))
-			
-			if active == nil {
-				active = pilot
-			}
 		}
-		catch {
-			
+
+		gang.add(pilot)
+		pilots.append((pilot, loadout.objectID))
+		
+		if active == nil {
+			active = pilot
 		}
+		return pilot
 	}
 	
 	@discardableResult
 	func append(typeID: Int) throws -> DGMCharacter {
-		let pilot = DGMCharacter()
+		let pilot = try DGMCharacter()
 		pilot.ship = try DGMShip(typeID: typeID)
 		gang.add(pilot)
+		pilots.append((pilot, nil))
 		if active == nil {
 			active = pilot
 		}

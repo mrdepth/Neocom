@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Dgmpp
 
 class NCFactoryDetailsTableViewCell: NCTableViewCell {
 	@IBOutlet weak var efficiencyLabel: UILabel!
@@ -35,23 +36,23 @@ class NCFactoryDetailsRow: TreeRow {
 	let identifier: Int64
 	let inputRatio: [Double]
 	
-	init(factory: NCFittingIndustryFacility, inputRatio: [Double], currentTime: Date) {
+	init(factory: DGMFactory, inputRatio: [Double], currentTime: Date) {
 		self.currentTime = currentTime
 		self.inputRatio = inputRatio
 		identifier = factory.identifier
 		
-		let states = factory.states as? [NCFittingProductionState]
-		let lastState = states?.reversed().first {$0.currentCycle == nil}
-		let firstProductionState = states?.first {$0.currentCycle?.launchTime == $0.timestamp}
+		let states = factory.states
+		let lastState = states.reversed().first {$0.cycle == nil}
+		let firstProductionState = states.first {$0.cycle?.start == $0.timestamp}
 //		let lastProductionState = states?.reversed().first {$0.currentCycle?.launchTime == $0.timestamp}
-		let currentState = states?.reversed().first {$0.timestamp < currentTime} ?? states?.last
+		let currentState = states.reversed().first {$0.timestamp < currentTime} ?? states.last
 
 		efficiency = currentState?.efficiency
 		extrapolatedEfficiency = lastState?.efficiency
 		
 		(productionTime, idleTime) = {
 			guard let currentState = currentState, let firstProductionState = firstProductionState else {return (nil, nil)}
-			let duration = currentState.timestamp - firstProductionState.timestamp
+			let duration = currentState.timestamp.timeIntervalSince(firstProductionState.timestamp)
 			let productionTime = currentState.efficiency * duration
 			let idleTime = duration - productionTime
 			return (productionTime, idleTime)
@@ -59,7 +60,7 @@ class NCFactoryDetailsRow: TreeRow {
 		
 		(extrapolatedProductionTime, extrapolatedIdleTime) = {
 			guard let lastState = lastState, let firstProductionState = firstProductionState else {return (nil, nil)}
-			let duration = lastState.timestamp - firstProductionState.timestamp
+			let duration = lastState.timestamp.timeIntervalSince(firstProductionState.timestamp)
 			let productionTime = lastState.efficiency * duration
 			let idleTime = duration - productionTime
 			return (productionTime, idleTime)

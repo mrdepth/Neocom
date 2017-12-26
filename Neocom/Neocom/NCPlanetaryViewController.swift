@@ -312,15 +312,16 @@ class NCFactoryRow: NCFacilityRow {
 		super.init(prototype: Prototype.NCDefaultTableViewCell.default, facility: factory)
 		
 		
-		let states = factory.states as? [DGMProductionState]
-		let lastState = states?.reversed().first {$0.cycle == nil}
+		let states = factory.states
+		let lastState = states.reversed().first {$0.cycle == nil}
 		
 		var ratio: [Int: Double] = [:]
-		
+
 		for input in factory.inputs {
-			guard let commodity = input.commodity else {continue}
-			guard let incomming = input.source?.incomming(with: commodity) else {continue}
-			ratio[incomming.typeID] = (ratio[incomming.typeID] ?? 0) + Double(incomming.quantity)
+			let commodity = input.commodity
+			let income = input.from.income(typeID: commodity.typeID)
+			guard income.quantity > 0 else {continue}
+			ratio[income.typeID] = (ratio[income.typeID] ?? 0) + Double(income.quantity)
 		}
 		
 		let p = ratio.filter{$0.value > 0}.map{1.0 / $0.value}.max() ?? 1
@@ -329,7 +330,7 @@ class NCFactoryRow: NCFacilityRow {
 			ratio[key] = ((value * p) * 10).rounded() / 10
 		}
 		
-		let expiryTime = lastState?.timestamp ?? Date.distantPast.timeIntervalSinceReferenceDate
+		let expiryTime = lastState?.timestamp ?? Date.distantPast
 		let identifier = factory.identifier
 		let items = ratio.sorted(by: {$0.key < $1.key})
 		let inputs = items.map {
@@ -339,8 +340,8 @@ class NCFactoryRow: NCFacilityRow {
 		var children: [TreeNode] = []
 		children.append(contentsOf: inputs as [TreeNode])
 		
-		if factory.output.typeID > 0 {
-			children.append(NCFacilityOutputRow(typeID: factory.output.typeID, identifier: factory.identifier))
+		if let output = factory.output {
+			children.append(NCFacilityOutputRow(typeID: output.typeID, identifier: factory.identifier))
 		}
 		
 		children.append(NCFactoryDetailsRow(factory: factory, inputRatio: items.map{$0.value}, currentTime: currentTime))
@@ -358,14 +359,14 @@ class NCFactoryRow: NCFacilityRow {
 class NCFactoryInputRow: TreeRow {
 	let typeID: Int
 	let identifier: Int64
-	let currentTime: TimeInterval
-	let expiryTime: TimeInterval
+	let currentTime: Date
+	let expiryTime: Date
 	
 	lazy var type: NCDBInvType? = {
 		return NCDatabase.sharedDatabase?.invTypes[self.typeID]
 	}()
 	
-	init(typeID: Int, identifier: Int64, currentTime: TimeInterval, expiryTime: TimeInterval) {
+	init(typeID: Int, identifier: Int64, currentTime: Date, expiryTime: Date) {
 		
 		self.typeID = typeID
 		self.identifier = identifier
@@ -383,7 +384,7 @@ class NCFactoryInputRow: TreeRow {
 		
 		let typeName = type?.typeName ?? NSLocalizedString("Unknown", comment: "")
 
-		let shortage = expiryTime - currentTime
+		let shortage = expiryTime.timeIntervalSince(currentTime)
 		if shortage <= 0  {
 			cell.subtitleLabel?.attributedText = typeName + " (\(NSLocalizedString("Depleted", comment: "")))" * [NSAttributedStringKey.foregroundColor: UIColor.red]
 		}

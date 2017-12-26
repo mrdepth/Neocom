@@ -137,6 +137,7 @@
 		126C9D4B1F30A8580071E792 /* NCSolarSystemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C9D4A1F30A8580071E792 /* NCSolarSystemsViewController.swift */; };
 		126C9D4D1F30A9270071E792 /* NCLocationSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C9D4C1F30A9270071E792 /* NCLocationSearchResultsViewController.swift */; };
 		126E183B1F6133710008C081 /* NCSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E183A1F6133710008C081 /* NCSettingsViewController.swift */; };
+		12709D501FF2954800D6CE22 /* dgmpp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12709D4F1FF2954800D6CE22 /* dgmpp.swift */; };
 		127332E11E71D01D00DE46C9 /* TreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127332E01E71D01D00DE46C9 /* TreeController.swift */; };
 		1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */; };
 		127BE3901E5AFC2900FA7F9F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BE38F1E5AFC2900FA7F9F /* Router.swift */; };
@@ -549,6 +550,7 @@
 		126C9D4A1F30A8580071E792 /* NCSolarSystemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSolarSystemsViewController.swift; sourceTree = "<group>"; };
 		126C9D4C1F30A9270071E792 /* NCLocationSearchResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocationSearchResultsViewController.swift; sourceTree = "<group>"; };
 		126E183A1F6133710008C081 /* NCSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSettingsViewController.swift; sourceTree = "<group>"; };
+		12709D4F1FF2954800D6CE22 /* dgmpp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dgmpp.swift; sourceTree = "<group>"; };
 		127332E01E71D01D00DE46C9 /* TreeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TreeController.swift; path = ../../ThirdParty/TreeController/TreeController/TreeController/TreeController.swift; sourceTree = "<group>"; };
 		1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
 		127BE38F1E5AFC2900FA7F9F /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -850,6 +852,7 @@
 				121D10B41E265D5A00DD671B /* NCFittingLoadout.swift */,
 				12424E3D1E3642430078AB0F /* NCFittingFleet.swift */,
 				129B31771E5488AF00B9A88D /* NCFleetConfiguration.swift */,
+				12709D4F1FF2954800D6CE22 /* dgmpp.swift */,
 			);
 			name = Loadouts;
 			sourceTree = "<group>";
@@ -1750,6 +1753,7 @@
 				1220710E1EF2C6E1007D86CE /* NCDatabaseCertificateRequirementsViewController.swift in Sources */,
 				1256BE501DF465BC00A2A24B /* NCSlideDownAnimationController.swift in Sources */,
 				125CE13E1EA12DCB007B8B6B /* NCMailTableViewCell.swift in Sources */,
+				12709D501FF2954800D6CE22 /* dgmpp.swift in Sources */,
 				1230A3321DFFE2CF00627D92 /* NCTreeNode.swift in Sources */,
 				129200371FEBEF5100124EE0 /* NCFittingInGameFittingsViewController.swift in Sources */,
 				12CFDAD21F02995500CC0762 /* NCZKillboardCategoriesViewController.swift in Sources */,

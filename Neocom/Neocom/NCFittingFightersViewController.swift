@@ -159,7 +159,7 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 			
 			
 			typealias TypeID = Int
-			typealias Squadron = [Int: [TypeID: [Bool: [DGMDrone]]]]
+			typealias Squadron = [Int: [DGMTypeID: [Bool: [DGMDrone]]]]
 			var squadrons = [DGMDrone.Squadron: Squadron]()
 			for squadron in [DGMDrone.Squadron.none, DGMDrone.Squadron.heavy, DGMDrone.Squadron.light, DGMDrone.Squadron.support] {
 				if ship.totalDroneSquadron(squadron) > 0 {
@@ -168,22 +168,15 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 			}
 			
 			for drone in ship.drones {
-				var squadron = squadrons[drone.squadron] ?? [:]
-				var types = squadron[drone.squadronTag] ?? [:]
-				var drones = types[drone.typeID] ?? [:]
-				var array = drones[drone.isActive] ?? []
-				array.append(drone)
-				drones[drone.isActive] = array
-				types[drone.typeID] = drones
-				squadron[drone.squadronTag] = types
-				squadrons[drone.squadron] = squadron
+				squadrons[drone.squadron, default: [:]][drone.squadronTag, default: [:]][drone.typeID, default: [:]][drone.isActive, default: []].append(drone)
 			}
 			
 			var sections = [TreeNode]()
+		var typeNames = [DGMTypeID: String]()
 			for (type, squadron) in squadrons.sorted(by: { (a, b) -> Bool in return a.key.rawValue < b.key.rawValue}) {
 				var rows = [NCFittingDroneRow]()
 				for (_, types) in squadron.sorted(by: { (a, b) -> Bool in return a.key < b.key }) {
-					for (_, drones) in types.sorted(by: { (a, b) -> Bool in return a.value.first?.value.first?.typeName ?? "" < b.value.first?.value.first?.typeName ?? "" }) {
+					for (_, drones) in types.sorted(by: { (a, b) -> Bool in return typeNames[a.key, default: a.value.first?.value.first?.type?.typeName ?? ""] < typeNames[b.key, default: b.value.first?.value.first?.type?.typeName ?? ""] }) {
 						for (_, array) in drones.sorted(by: { (a, b) -> Bool in return a.key }) {
 							rows.append(NCFittingDroneRow(drones: array))
 						}

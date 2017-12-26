@@ -60,18 +60,8 @@ class NCFittingEditorViewController: UIViewController {
 		navigationItem.titleView = NCNavigationItemTitleLabel(frame: CGRect(origin: .zero, size: .zero))
 		
 		let pilot = fleet?.active
-		var useFighters = false
-		var isShip = true
-//		engine?.performBlockAndWait {
-			if pilot?.structure != nil {
-				useFighters = true
-				isShip = false
-			}
-			else {
-				useFighters = (pilot?.ship?.totalFighterLaunchTubes ?? 0) > 0
-				isShip = true
-			}
-//		}
+		let isShip = pilot?.structure == nil
+		let useFighters = !isShip || (pilot?.ship?.totalFighterLaunchTubes ?? 0) > 0
 		
 		var controllers = [
 			storyboard!.instantiateViewController(withIdentifier: "NCFittingModulesViewController"),
@@ -258,17 +248,9 @@ class NCFittingEditorViewController: UIViewController {
 	private func updateTitle() {
 		guard let titleLabel = navigationItem.titleView as? NCNavigationItemTitleLabel else {return}
 		let pilot = fleet?.active
-		var shipName: String = ""
-		var typeName: String = ""
 		
-//		engine?.performBlockAndWait {
-			guard let ship = pilot?.ship ?? pilot?.structure else {return}
-			shipName = ship.name
-			typeName = NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.typeName ?? ""
-//		}
-//		titleLabel.attributedText = typeName * [:] + (!shipName.isEmpty ? "\n" + shipName * [NSAttributedStringKey.font:UIFont.preferredFont(forTextStyle: .footnote), NSAttributedStringKey.foregroundColor: UIColor.lightText] : "" * [:])
-//		titleLabel.sizeToFit()
-		titleLabel.set(title: typeName, subtitle: shipName)
+		guard let ship = pilot?.ship ?? pilot?.structure else {return}
+		titleLabel.set(title: ship.type?.typeName, subtitle: ship.name)
 	}
 
 }

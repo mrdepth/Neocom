@@ -24,7 +24,7 @@ class NCFittingModuleRow: TreeRow {
 	let charge: DGMCharge?
 	let slot: DGMModule.Slot
 	let state: DGMModule.State
-	let isEnabled: Bool
+	let isFail: Bool
 	let hasTarget: Bool
 	let hasStates: Bool
 	
@@ -34,7 +34,7 @@ class NCFittingModuleRow: TreeRow {
 		self.charge = module?.charge
 		self.slot = slot
 		self.state = module?.state ?? .unknown
-		self.isEnabled = module?.isFail ?? true
+		self.isFail = module?.isFail ?? true
 		self.hasTarget = module?.target != nil
 		self.hasStates = slot != .rig && slot != .service && slot != .subsystem && slot != .mode
 		super.init(prototype: modules.isEmpty ? Prototype.NCDefaultTableViewCell.compact : Prototype.NCFittingModuleTableViewCell.default)
@@ -60,7 +60,7 @@ class NCFittingModuleRow: TreeRow {
 		else {
 			guard let cell = cell as? NCFittingModuleTableViewCell else {return}
 			cell.object = modules
-			cell.titleLabel?.textColor = isEnabled ? .white : .red
+			cell.titleLabel?.textColor = isFail ? .red : .white
 
 			if modules.count > 1 {
 				cell.titleLabel?.attributedText = (type?.typeName ?? "") + " " + "x\(modules.count)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
@@ -303,9 +303,9 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 
 						do {
 							for _ in 0..<n {
-								
 								try ship.add(DGMModule(typeID: typeID), socket: socket)
 							}
+							NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
 						}
 						catch {
 						}
@@ -409,14 +409,28 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 						}
 						
 					}
+					if ship.freeSlots(slot) > 0 {
+						groups.append([])
+					}
 					rows = groups.flatMap({ (modules) -> NCFittingModuleRow? in
 						return NCFittingModuleRow(modules: modules, slot: slot)
 					})
 				}
 				else {
-					rows = ship.modules(slot: slot).flatMap({ (module) -> NCFittingModuleRow? in
-						return NCFittingModuleRow(modules: [module], slot: slot)
+					var socket = 0
+					var r = [NCFittingModuleRow]()
+					for module in ship.modules(slot: slot) {
+						r.append(contentsOf: (socket..<module.socket).map{ _ in
+							return NCFittingModuleRow(modules: [], slot: slot)
+						})
+						r.append(NCFittingModuleRow(modules: [module], slot: slot))
+						socket = module.socket + 1
+					}
+					r.append(contentsOf: (socket..<ship.totalSlots(slot)).map{ _ in
+						return NCFittingModuleRow(modules: [], slot: slot)
 					})
+
+					rows = r
 				}
 				if (rows.count > 0) {
 					sections.append(NCFittingModuleSection(slot: slot, children: rows, grouped: grouping[slot] ?? false))

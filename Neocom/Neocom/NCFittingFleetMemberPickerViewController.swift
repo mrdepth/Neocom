@@ -45,6 +45,7 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 				DispatchQueue.main.async {
 					strongSelf.completionHandler(strongSelf)
 				}
+			NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 //			}
 			
 		})))
@@ -80,6 +81,7 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 					DispatchQueue.main.async {
 						self.completionHandler(self)
 					}
+				NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 //				}
 			})
 		}

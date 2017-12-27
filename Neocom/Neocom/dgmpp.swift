@@ -38,6 +38,26 @@ extension DGMType {
 	}
 }
 
+extension DGMType: Comparable {
+	
+	public static func <(lhs: DGMType, rhs: DGMType) -> Bool {
+		return lhs.hashValue < rhs.hashValue
+	}
+	
+	public static func <=(lhs: DGMType, rhs: DGMType) -> Bool {
+		return lhs.hashValue <= rhs.hashValue
+	}
+	
+	public static func >=(lhs: DGMType, rhs: DGMType) -> Bool {
+		return lhs.hashValue >= rhs.hashValue
+	}
+	
+	public static func >(lhs: DGMType, rhs: DGMType) -> Bool {
+		return lhs.hashValue > rhs.hashValue
+	}
+	
+}
+
 extension DGMFacility {
 	var typeName: String? {
 		return NCDatabase.sharedDatabase?.invTypes[typeID]?.typeName
@@ -51,6 +71,8 @@ extension DGMModule {
 		let optimal = self.optimal
 		let falloff = self.falloff
 		let angularVelocity = self.angularVelocity(targetSignature: targetSignature, hitChance: hitChance) * DGMSeconds(1)
+		guard angularVelocity > 0 else {return .none}
+		
 		let v0 = ship.maxVelocityInOrbit(optimal) * DGMSeconds(1)
 		let v1 = ship.maxVelocityInOrbit(optimal + falloff) * DGMSeconds(1)
 		if angularVelocity * optimal > v0 {

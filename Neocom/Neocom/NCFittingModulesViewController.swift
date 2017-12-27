@@ -11,32 +11,21 @@ import CloudData
 import Dgmpp
 
 class NCFittingModuleRow: TreeRow {
+	
 	lazy var type: NCDBInvType? = {
-		guard let module = self.modules.first else {return nil}
-		return NCDatabase.sharedDatabase?.invTypes[module.typeID]
+		return self.modules.first?.type
 	}()
+	
 	lazy var chargeType: NCDBInvType? = {
-		guard let charge = self.charge else {return nil}
-		return NCDatabase.sharedDatabase?.invTypes[charge.typeID]
+		return self.modules.first?.charge?.type
 	}()
 	
 	let modules: [DGMModule]
-	let charge: DGMCharge?
 	let slot: DGMModule.Slot
-	let state: DGMModule.State
-	let isFail: Bool
-	let hasTarget: Bool
-	let hasStates: Bool
 	
 	init(modules: [DGMModule], slot: DGMModule.Slot) {
 		self.modules = modules
-		let module = modules.first
-		self.charge = module?.charge
 		self.slot = slot
-		self.state = module?.state ?? .unknown
-		self.isFail = module?.isFail ?? true
-		self.hasTarget = module?.target != nil
-		self.hasStates = slot != .rig && slot != .service && slot != .subsystem && slot != .mode
 		super.init(prototype: modules.isEmpty ? Prototype.NCDefaultTableViewCell.compact : Prototype.NCFittingModuleTableViewCell.default)
 	}
 	
@@ -48,20 +37,19 @@ class NCFittingModuleRow: TreeRow {
 
 	var needsUpdate: Bool = true
 	var subtitle: NSAttributedString?
-	
-	override func configure(cell: UITableViewCell) {
-		let module = modules.first
-		if modules.isEmpty {
-			guard let cell = cell as? NCDefaultTableViewCell else {return}
-			cell.object = modules
-			cell.iconView?.image = slot.image
-			cell.titleLabel?.text = slot.title
-		}
-		else {
-			guard let cell = cell as? NCFittingModuleTableViewCell else {return}
-			cell.object = modules
-			cell.titleLabel?.textColor = isFail ? .red : .white
 
+	override func configure(cell: UITableViewCell) {
+		
+		if let module = modules.first {
+			guard let cell = cell as? NCFittingModuleTableViewCell else {return}
+
+			let hasTarget = module.target != nil
+			let hasStates = slot != .rig && slot != .service && slot != .subsystem && slot != .mode
+			
+			
+			cell.object = modules
+			cell.titleLabel?.textColor = module.isFail ? .red : .white
+			
 			if modules.count > 1 {
 				cell.titleLabel?.attributedText = (type?.typeName ?? "") + " " + "x\(modules.count)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 			}
@@ -69,85 +57,84 @@ class NCFittingModuleRow: TreeRow {
 				cell.titleLabel?.text = type?.typeName
 			}
 			cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
-			cell.stateView?.image = state.image
+			cell.stateView?.image = module.state.image
 			cell.stateView?.isHidden = !hasStates
-			cell.subtitleLabel?.attributedText = subtitle
 			cell.targetIconView.image = hasTarget ? #imageLiteral(resourceName: "targets") : nil
 			
-//			cell.subtitleLabel?.superview?.isHidden = subtitle == nil || subtitle?.length == 0
+			//			cell.subtitleLabel?.superview?.isHidden = subtitle == nil || subtitle?.length == 0
 			
 			if needsUpdate {
 				let font = cell.subtitleLabel!.font!
-
+				
 				let chargeName = chargeType?.typeName
 				let chargeImage = chargeType?.icon?.image?.image
-				guard let module = module else {return}
-
-//				module.engine?.perform {
-					guard let ship = module.parent as? DGMShip else {return}
-					let string = NSMutableAttributedString()
-					if let chargeName = chargeName  {
-						var s = NSAttributedString(image: chargeImage, font: font) + " \(chargeName)"
-						if module.charges > 0 {
-							s = s + " x\(module.charges)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
-						}
-						string.appendLine(s)
-					}
-					let optimal = module.optimal
-					let falloff = module.falloff
-					let lifeTime = module.lifeTime
-					let cycleTime = module.cycleTime
-					
-					if optimal > 0 {
-						let s: NSAttributedString
-						let attr = [NSAttributedStringKey.foregroundColor: UIColor.caption]
-						let image = NSAttributedString(image: #imageLiteral(resourceName: "targetingRange"), font: font)
-						if falloff > 0 {
-							s = image + " \(NSLocalizedString("optimal + falloff", comment: "")): " + (NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full) + " + " + NCUnitFormatter.localizedString(from: falloff, unit: .meter, style: .full)) * attr
-						}
-						else {
-							s =  image + " \(NSLocalizedString("optimal", comment: "")): " + NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full) * attr
-						}
-						string.appendLine(s)
-					}
 				
-					let signature = ship[NCDBAttributeID.signatureRadius.rawValue]?.initialValue ?? 0
-					let accuracy = module.accuracy(targetSignature: signature)
-
-					if accuracy != .none {
-						let accuracyScore = module.accuracyScore
-						let angularVelocity = module.angularVelocity(targetSignature: signature)
-						
-						let orbitRadius = ship.orbitRadius(angularVelocity: angularVelocity)
-
-						let color = accuracy.color
-						
-						let accuracy = NCUnitFormatter.localizedString(from: accuracyScore, unit: .none, style: .full) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
-						let range = NCUnitFormatter.localizedString(from: orbitRadius, unit: .custom(NSLocalizedString("+ m", comment: "meter"), false), style: .full) * [NSAttributedStringKey.foregroundColor: color]
-						let s = NSAttributedString(image: #imageLiteral(resourceName: "tracking"), font: font) + " \(NSLocalizedString("accuracy", comment: "")): " + accuracy + " (" + NSAttributedString(image: #imageLiteral(resourceName: "targetingRange"), font: font) + " " + range + " )"
-						
-						string.appendLine(s)
+				//				module.engine?.perform {
+				guard let ship = module.parent as? DGMShip else {return}
+				let string = NSMutableAttributedString()
+				if let chargeName = chargeName  {
+					var s = NSAttributedString(image: chargeImage, font: font) + " \(chargeName)"
+					if module.charges > 0 {
+						s = s + " x\(module.charges)" * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 					}
-					if cycleTime > 0 {
-						let s = NSAttributedString(image: #imageLiteral(resourceName: "dps"), font: font) + " \(NSLocalizedString("rate of fire", comment: "")): " + NCTimeIntervalFormatter.localizedString(from: cycleTime, precision: .seconds) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
-						string.appendLine(s)
+					string.appendLine(s)
+				}
+				let optimal = module.optimal
+				let falloff = module.falloff
+				let lifeTime = module.lifeTime
+				let cycleTime = module.cycleTime
+				
+				if optimal > 0 {
+					let s: NSAttributedString
+					let attr = [NSAttributedStringKey.foregroundColor: UIColor.caption]
+					let image = NSAttributedString(image: #imageLiteral(resourceName: "targetingRange"), font: font)
+					if falloff > 0 {
+						s = image + " \(NSLocalizedString("optimal + falloff", comment: "")): " + (NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full) + " + " + NCUnitFormatter.localizedString(from: falloff, unit: .meter, style: .full)) * attr
 					}
+					else {
+						s =  image + " \(NSLocalizedString("optimal", comment: "")): " + NCUnitFormatter.localizedString(from: optimal, unit: .meter, style: .full) * attr
+					}
+					string.appendLine(s)
+				}
+				
+				let signature = ship[NCDBAttributeID.signatureRadius.rawValue]?.initialValue ?? 0
+				let accuracy = module.accuracy(targetSignature: signature)
+				
+				if accuracy != .none {
+					let accuracyScore = module.accuracyScore
+					let angularVelocity = module.angularVelocity(targetSignature: signature)
 					
-					if lifeTime > 0 {
-						let s = NSAttributedString(image: #imageLiteral(resourceName: "overheated"), font: font) + " \(NSLocalizedString("lifetime", comment: "")): " + NCTimeIntervalFormatter.localizedString(from: lifeTime, precision: .seconds) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
-						string.appendLine(s)
-					}
+					let orbitRadius = ship.orbitRadius(angularVelocity: angularVelocity)
 					
-					DispatchQueue.main.async {
-						self.needsUpdate = false
-						self.subtitle = string
-						self.treeController?.reloadCells(for: [self], with: .none)
-					}
-//				}
+					let color = accuracy.color
+					
+					let accuracy = NCUnitFormatter.localizedString(from: accuracyScore, unit: .none, style: .full) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
+					let range = NCUnitFormatter.localizedString(from: orbitRadius, unit: .custom(NSLocalizedString("+ m", comment: "meter"), false), style: .full) * [NSAttributedStringKey.foregroundColor: color]
+					let s = NSAttributedString(image: #imageLiteral(resourceName: "tracking"), font: font) + " \(NSLocalizedString("accuracy", comment: "")): " + accuracy + " (" + NSAttributedString(image: #imageLiteral(resourceName: "targetingRange"), font: font) + " " + range + " )"
+					
+					string.appendLine(s)
+				}
+				if cycleTime > 0 {
+					let s = NSAttributedString(image: #imageLiteral(resourceName: "dps"), font: font) + " \(NSLocalizedString("rate of fire", comment: "")): " + NCTimeIntervalFormatter.localizedString(from: cycleTime, precision: .seconds) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
+					string.appendLine(s)
+				}
+				
+				if lifeTime > 0 {
+					let s = NSAttributedString(image: #imageLiteral(resourceName: "overheated"), font: font) + " \(NSLocalizedString("lifetime", comment: "")): " + NCTimeIntervalFormatter.localizedString(from: lifeTime, precision: .seconds) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
+					string.appendLine(s)
+				}
+				
+				needsUpdate = false
+				subtitle = string
 			}
-			else {
-				cell.subtitleLabel?.attributedText = subtitle
-			}
+			cell.subtitleLabel?.attributedText = subtitle
+
+		}
+		else {
+			guard let cell = cell as? NCDefaultTableViewCell else {return}
+			cell.object = modules
+			cell.iconView?.image = slot.image
+			cell.titleLabel?.text = slot.title
 		}
 	}
 	
@@ -248,22 +235,10 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 		treeController.deselectCell(for: node, animated: true)
 		guard let item = node as? NCFittingModuleRow else {return}
 		guard let pilot = fleet?.active else {return}
-		
-		//guard let ship = ship else {return}
+		guard let ship = pilot.ship else {return}
 		guard let typePickerViewController = typePickerViewController else {return}
 		let socket = (node.parent as? NCFittingModuleSection)?.grouped == true ? -1 : node.parent?.children.index(of: item) ?? -1
-		
-//		var rigSize: Int?
-//		self.engine?.performBlockAndWait {
-//			rigSize = pilot.ship?.rigSize ?? pilot.structure?.rigSize
-//		}
-		
-//		let (rigSize, isStructure, shipTypeID) = engine.sync {
-//			return (pilot.ship?.rigSize ?? pilot.structure?.rigSize, pilot.structure != nil, pilot.ship?.typeID ?? pilot.structure?.typeID)
-//		}
-		let rigSize = pilot.ship?.rigSize ?? pilot.structure?.rigSize
-		let isStructure = pilot.structure != nil
-		let shipTypeID = pilot.ship?.typeID ?? pilot.structure?.typeID
+		let isStructure = ship is DGMStructure
 
 		if item.modules.isEmpty {
 			let category: NCDBDgmppItemCategory?
@@ -275,20 +250,14 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 			case .low:
 				category = NCDBDgmppItemCategory.category(categoryID: .low, subcategory: isStructure ? NCDBCategoryID.structureModule.rawValue : NCDBCategoryID.module.rawValue)
 			case .rig:
-				guard let rigSize = rigSize else {return}
-				category = NCDBDgmppItemCategory.category(categoryID: isStructure ? .structureRig : .rig, subcategory: rigSize.rawValue)
+				category = NCDBDgmppItemCategory.category(categoryID: isStructure ? .structureRig : .rig, subcategory: ship.rigSize.rawValue)
 			case .subsystem:
-//				var raceID: DGMRaceID?
-//				self.engine?.performBlockAndWait {
-					guard let raceID = pilot.ship?.raceID, let race = NCDatabase.sharedDatabase?.chrRaces[raceID.rawValue] else {return}
-//				}
-//				guard raceID != nil, let race = NCDatabase.sharedDatabase?.chrRaces[raceID!] else {return}
+				guard let raceID = pilot.ship?.raceID, let race = NCDatabase.sharedDatabase?.chrRaces[raceID.rawValue] else {return}
 				category = NCDBDgmppItemCategory.category(categoryID: .subsystem, subcategory: nil, race: race)
 			case .service:
 				category = NCDBDgmppItemCategory.category(categoryID: .service, subcategory: NCDBCategoryID.structureModule.rawValue)
 			case .mode:
-				guard let shipTypeID = shipTypeID else {return}
-				category = NCDBDgmppItemCategory.category(categoryID: .mode, subcategory: shipTypeID)
+				category = NCDBDgmppItemCategory.category(categoryID: .mode, subcategory: ship.typeID)
 			default:
 				return
 			}
@@ -297,20 +266,15 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 			typePickerViewController.category = category
 			typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
 				let typeID = Int(type.typeID)
-//				engine.perform {
-					if let ship = pilot.ship ?? pilot.structure {
-						let n = isGrouped ? max(ship.freeSlots(item.slot), 1) : 1
-
-						do {
-							for _ in 0..<n {
-								try ship.add(DGMModule(typeID: typeID), socket: socket)
-							}
-							NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
-						}
-						catch {
-						}
+				let n = isGrouped ? max(ship.freeSlots(item.slot), 1) : 1
+				do {
+					for _ in 0..<n {
+						try ship.add(DGMModule(typeID: typeID), socket: socket)
 					}
-//				}
+					NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
+				}
+				catch {
+				}
 				if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
 					typePickerViewController?.dismiss(animated: true)
 				}
@@ -325,15 +289,13 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		guard let node = node as? NCFittingModuleRow else {return nil}
 		
-		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (_, _) in
+		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { [weak self] (_, _) in
 			let modules = node.modules
-//			guard let engine = modules.first?.engine else {return}
-//			engine.perform {
-				guard let ship = modules.first?.parent as? DGMShip else {return}
-				modules.forEach {
-					ship.remove($0)
-				}
-//			}
+			guard let ship = modules.first?.parent as? DGMShip else {return}
+			modules.forEach {
+				ship.remove($0)
+			}
+			NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
 		}
 		
 		return [deleteAction]
@@ -355,92 +317,80 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 	//MARK: - Private
 	
 	private func update() {
-//		engine?.perform {
-			guard let pilot = self.fleet?.active else {return}
-			guard let ship = pilot.ship ?? pilot.structure else {return}
-			let powerGrid = (ship.usedPowerGrid, ship.totalPowerGrid)
-			let cpu = (ship.usedCPU, ship.totalCPU)
-			let calibration = (ship.usedCalibration, ship.totalCalibration)
-			let turrets = (ship.usedHardpoints(.turret), ship.totalHardpoints(.turret))
-			let launchers = (ship.usedHardpoints(.launcher), ship.totalHardpoints(.launcher))
+		guard let pilot = self.fleet?.active else {return}
+		guard let ship = pilot.ship else {return}
+		
+		powerGridLabel.value = ship.usedPowerGrid
+		powerGridLabel.maximumValue = ship.totalPowerGrid
+		cpuLabel.value = ship.usedCPU
+		cpuLabel.maximumValue = ship.totalCPU
+		calibrationLabel.value = ship.usedCalibration
+		calibrationLabel.maximumValue = ship.totalCalibration
+		
+		let turrets = (ship.usedHardpoints(.turret), ship.totalHardpoints(.turret))
+		let launchers = (ship.usedHardpoints(.launcher), ship.totalHardpoints(.launcher))
 
-			DispatchQueue.main.async {
-				self.powerGridLabel.value = powerGrid.0
-				self.powerGridLabel.maximumValue = powerGrid.1
-				self.cpuLabel.value = cpu.0
-				self.cpuLabel.maximumValue = cpu.1
-				self.calibrationLabel.value = calibration.0
-				self.calibrationLabel.maximumValue = calibration.1
-				
-				self.turretsLabel.text = "\(turrets.0)/\(turrets.1)"
-				self.launchersLabel.text = "\(launchers.0)/\(launchers.1)"
-				self.turretsLabel.textColor = turrets.0 > turrets.1 ? .red : .white
-				self.launchersLabel.textColor = launchers.0 > launchers.1 ? .red : .white
-
-			}
-//		}
+		turretsLabel.text = "\(turrets.0)/\(turrets.1)"
+		launchersLabel.text = "\(launchers.0)/\(launchers.1)"
+		turretsLabel.textColor = turrets.0 > turrets.1 ? .red : .white
+		launchersLabel.textColor = launchers.0 > launchers.1 ? .red : .white
 	}
 	
 	private func reload() {
 		let grouping = self.grouping
-//		engine?.perform {
-			guard let pilot = self.fleet?.active else {return}
-			guard let ship = pilot.ship ?? pilot.structure else {return}
-			
-			var sections = [NCFittingModuleSection]()
-			for slot in [DGMModule.Slot.hi, DGMModule.Slot.med, DGMModule.Slot.low, DGMModule.Slot.rig, DGMModule.Slot.subsystem, DGMModule.Slot.service, DGMModule.Slot.mode] {
-				let grouped = grouping[slot] ?? false
-				let rows: [NCFittingModuleRow]
-				if grouped {
-					var groups = [[DGMModule]]()
-					for module in ship.modules(slot: slot) {
-						let charge = module.charge?.typeID ?? 0
-						let state = module.state
-						let type = module.typeID
-						
-						if let index = groups.index(where: { i in
-							guard let m = i.first else {return false}
-							return type == m.typeID && state == m.state && charge == (m.charge?.typeID ?? 0)
-						}) {
-							groups[index].append(module)
-						}
-						else {
-							groups.append([module])
-						}
-						
+		guard let pilot = fleet?.active else {return}
+		guard let ship = pilot.ship else {return}
+		
+		var sections = [NCFittingModuleSection]()
+		for slot in [DGMModule.Slot.hi, DGMModule.Slot.med, DGMModule.Slot.low, DGMModule.Slot.rig, DGMModule.Slot.subsystem, DGMModule.Slot.service, DGMModule.Slot.mode] {
+			let grouped = grouping[slot] ?? false
+			let rows: [NCFittingModuleRow]
+			if grouped {
+				var groups = [[DGMModule]]()
+				for module in ship.modules(slot: slot) {
+					let charge = module.charge?.typeID ?? 0
+					let state = module.state
+					let type = module.typeID
+					
+					if let index = groups.index(where: { i in
+						guard let m = i.first else {return false}
+						return type == m.typeID && state == m.state && charge == (m.charge?.typeID ?? 0)
+					}) {
+						groups[index].append(module)
 					}
-					if ship.freeSlots(slot) > 0 {
-						groups.append([])
+					else {
+						groups.append([module])
 					}
-					rows = groups.flatMap({ (modules) -> NCFittingModuleRow? in
-						return NCFittingModuleRow(modules: modules, slot: slot)
-					})
 				}
-				else {
-					var socket = 0
-					var r = [NCFittingModuleRow]()
-					for module in ship.modules(slot: slot) {
-						r.append(contentsOf: (socket..<module.socket).map{ _ in
-							return NCFittingModuleRow(modules: [], slot: slot)
-						})
-						r.append(NCFittingModuleRow(modules: [module], slot: slot))
-						socket = module.socket + 1
-					}
-					r.append(contentsOf: (socket..<ship.totalSlots(slot)).map{ _ in
+				if ship.freeSlots(slot) > 0 {
+					groups.append([])
+				}
+				rows = groups.flatMap({ (modules) -> NCFittingModuleRow? in
+					return NCFittingModuleRow(modules: modules, slot: slot)
+				})
+			}
+			else {
+				var socket = 0
+				var r = [NCFittingModuleRow]()
+				for module in ship.modules(slot: slot) {
+					r.append(contentsOf: (socket..<module.socket).map{ _ in
 						return NCFittingModuleRow(modules: [], slot: slot)
 					})
-
-					rows = r
+					r.append(NCFittingModuleRow(modules: [module], slot: slot))
+					socket = module.socket + 1
 				}
-				if (rows.count > 0) {
-					sections.append(NCFittingModuleSection(slot: slot, children: rows, grouped: grouping[slot] ?? false))
-				}
+				r.append(contentsOf: (socket..<ship.totalSlots(slot)).map{ _ in
+					return NCFittingModuleRow(modules: [], slot: slot)
+				})
+				
+				rows = r
 			}
-
-			DispatchQueue.main.async {
-				self.treeController.content?.children = sections
+			if (rows.count > 0) {
+				sections.append(NCFittingModuleSection(slot: slot, children: rows, grouped: grouping[slot] ?? false))
 			}
-//		}
+		}
+		
+		treeController.content?.children = sections
 		update()
 	}
 }

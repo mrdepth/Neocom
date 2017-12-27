@@ -361,41 +361,37 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 		if self.treeController?.content == nil {
 			self.treeController?.content = TreeNode()
 		}
-//		engine.perform {
-			guard let pilot = self.fleet?.active else {return}
-			guard let ship = pilot.ship ?? pilot.structure else {return}
-			var sections = [TreeNode]()
-			
-			sections.append(DefaultTreeSection(nodeIdentifier: "Resources", title: NSLocalizedString("Resources", comment: "").uppercased(), children: [NCFittingResourcesRow(ship: ship)]))
-			sections.append(DefaultTreeSection(nodeIdentifier: "Resistances", title: NSLocalizedString("Resistances", comment: "").uppercased(), children: [NCResistancesRow(ship: ship)]))
-			sections.append(DefaultTreeSection(nodeIdentifier: "Capacitor", title: NSLocalizedString("Capacitor", comment: "").uppercased(), children: [NCFittingCapacitorRow(ship: ship)]))
-			sections.append(DefaultTreeSection(nodeIdentifier: "Tank", title: NSLocalizedString("Recharge Rates (HP/s, EHP/s)", comment: "").uppercased(), children: [NCTankRow(ship: ship)]))
-			sections.append(DefaultTreeSection(nodeIdentifier: "Firepower", title: NSLocalizedString("Firepower", comment: "").uppercased(), children: [NCFirepowerRow(ship: ship)]))
-			if ship.minerYield.value > 0 || ship.droneYield.value > 0 {
-				sections.append(DefaultTreeSection(nodeIdentifier: "Mining", title: NSLocalizedString("Mining", comment: "").uppercased(), children: [NCMiningYieldRow(ship: ship)]))
-			}
-			if let structure = pilot.structure {
-				sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [NCFittingMiscRow(structure: structure)]))
-				sections.append(DefaultTreeSection(nodeIdentifier: "Fuel", title: NSLocalizedString("Fuel", comment: "").uppercased(), children: [NCFittingFuelRow(structure: structure)]))
-			}
-			else {
-				sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [NCFittingMiscRow(ship: ship)]))
-			}
-			let pricesSection = NCFittingPriceSection(ship: ship)
-			sections.append(pricesSection)
-			
-			var typeIDs = Set(ship.modules.map {[$0.typeID, $0.charge?.typeID]}.joined().flatMap{$0})
-			typeIDs.formUnion(Set(ship.drones.map{$0.typeID}))
-			typeIDs.insert(ship.typeID)
-			typeIDs.formUnion(Set(pilot.implants.map{$0.typeID}))
-
-			DispatchQueue.main.async {
-				self.treeController?.content?.children = sections
-				NCDataManager(account: NCAccount.current).prices(typeIDs: typeIDs) { result in
-					pricesSection.prices = result
-				}
-				completionHandler()
-			}
-//		}
+		guard let pilot = self.fleet?.active else {return}
+		guard let ship = pilot.ship ?? pilot.structure else {return}
+		var sections = [TreeNode]()
+		
+		sections.append(DefaultTreeSection(nodeIdentifier: "Resources", title: NSLocalizedString("Resources", comment: "").uppercased(), children: [NCFittingResourcesRow(ship: ship)]))
+		sections.append(DefaultTreeSection(nodeIdentifier: "Resistances", title: NSLocalizedString("Resistances", comment: "").uppercased(), children: [NCResistancesRow(ship: ship)]))
+		sections.append(DefaultTreeSection(nodeIdentifier: "Capacitor", title: NSLocalizedString("Capacitor", comment: "").uppercased(), children: [NCFittingCapacitorRow(ship: ship)]))
+		sections.append(DefaultTreeSection(nodeIdentifier: "Tank", title: NSLocalizedString("Recharge Rates (HP/s, EHP/s)", comment: "").uppercased(), children: [NCTankRow(ship: ship)]))
+		sections.append(DefaultTreeSection(nodeIdentifier: "Firepower", title: NSLocalizedString("Firepower", comment: "").uppercased(), children: [NCFirepowerRow(ship: ship)]))
+		if ship.minerYield.value > 0 || ship.droneYield.value > 0 {
+			sections.append(DefaultTreeSection(nodeIdentifier: "Mining", title: NSLocalizedString("Mining", comment: "").uppercased(), children: [NCMiningYieldRow(ship: ship)]))
+		}
+		if let structure = pilot.structure {
+			sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [NCFittingMiscRow(structure: structure)]))
+			sections.append(DefaultTreeSection(nodeIdentifier: "Fuel", title: NSLocalizedString("Fuel", comment: "").uppercased(), children: [NCFittingFuelRow(structure: structure)]))
+		}
+		else {
+			sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [NCFittingMiscRow(ship: ship)]))
+		}
+		let pricesSection = NCFittingPriceSection(ship: ship)
+		sections.append(pricesSection)
+		
+		var typeIDs = Set(ship.modules.map {[$0.typeID, $0.charge?.typeID]}.joined().flatMap{$0})
+		typeIDs.formUnion(Set(ship.drones.map{$0.typeID}))
+		typeIDs.insert(ship.typeID)
+		typeIDs.formUnion(Set(pilot.implants.map{$0.typeID}))
+		
+		treeController?.content?.children = sections
+		NCDataManager(account: NCAccount.current).prices(typeIDs: typeIDs) { result in
+			pricesSection.prices = result
+		}
+		completionHandler()
 	}
 }

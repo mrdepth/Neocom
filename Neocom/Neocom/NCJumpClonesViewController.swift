@@ -37,7 +37,7 @@ class NCJumpClonesViewController: NCTreeViewController {
 			
 			dataManager.locations(ids: Set(locationIDs)) { locations in
 
-				let t = 3600 * 24 + (value.lastJumpDate ?? .distantPast).timeIntervalSinceNow
+				let t = 3600 * 24 + (value.lastCloneJumpDate ?? .distantPast).timeIntervalSinceNow
 				let s = String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: ""))
 				
 				var sections = [TreeNode]()
@@ -57,10 +57,10 @@ class NCJumpClonesViewController: NCTreeViewController {
 				
 				
 				for (i, clone) in value.jumpClones.enumerated() {
-					let implants = clone.implants?.flatMap { implant -> (NCDBInvType, Int)? in
+					let implants = clone.implants.flatMap { implant -> (NCDBInvType, Int)? in
 						guard let type = invTypes?[implant] else {return nil}
 						return (type, Int(type.allAttributes[NCDBAttributeID.implantness.rawValue]?.value ?? 100))
-						}.sorted {$0.1 < $1.1} ?? []
+						}.sorted {$0.1 < $1.1}
 					
 					var rows = implants.map { (type, _) -> TreeRow in
 						if let enhancer = list.first(where: { (type.allAttributes[$0.0.rawValue]?.value ?? 0) > 0 }) {
@@ -85,7 +85,7 @@ class NCJumpClonesViewController: NCTreeViewController {
 					if rows.isEmpty {
 						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, nodeIdentifier: "NoImplants\(i)", title: NSLocalizedString("No Implants Installed", comment: "").uppercased()))
 					}
-					if let locationID = clone.locationID, let title = locations[locationID]?.displayName.uppercased() {
+					if let title = locations[clone.locationID]?.displayName.uppercased() {
 						sections.append(DefaultTreeSection(nodeIdentifier: "\(i)", attributedTitle: title, children: rows))
 					}
 					else {

@@ -44,7 +44,7 @@ class NCCharacterSheetViewController: NCTreeViewController {
 	private var implants: NCCachedResult<[Int]>?
 	private var skills: NCCachedResult<ESI.Skills.CharacterSkills>?
 	private var skillQueue: NCCachedResult<[ESI.Skills.SkillQueueItem]>?
-	private var walletBalance: NCCachedResult<Float>?
+	private var walletBalance: NCCachedResult<Double>?
 	private var characterImage: NCCachedResult<UIImage>?
 	private var corporationImage: NCCachedResult<UIImage>?
 	private var allianceImage: NCCachedResult<UIImage>?
@@ -197,10 +197,10 @@ class NCCharacterSheetViewController: NCTreeViewController {
 			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.image, nodeIdentifier: "CharacterImage", image: value))
 		}
 		if let value = self.corporation?.value {
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Corporation", image: self.corporationImage?.value, title: NSLocalizedString("Corporation", comment: "").uppercased(), subtitle: value.corporationName))
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Corporation", image: self.corporationImage?.value, title: NSLocalizedString("Corporation", comment: "").uppercased(), subtitle: value.name))
 		}
 		if let value = self.alliance?.value {
-			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Alliance", image: self.allianceImage?.value, title: NSLocalizedString("Alliance", comment: "").uppercased(), subtitle: value.allianceName))
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Alliance", image: self.allianceImage?.value, title: NSLocalizedString("Alliance", comment: "").uppercased(), subtitle: value.name))
 		}
 		
 		if let value = self.character?.value {
@@ -241,7 +241,7 @@ class NCCharacterSheetViewController: NCTreeViewController {
 			let sp = character.skills.map{$0.value.skillPoints}.reduce(0, +)
 			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
 			                           nodeIdentifier: "SP",
-			                           title: "\(skills.skills?.count ?? 0) \(NSLocalizedString("skills", comment: ""))".uppercased(),
+			                           title: "\(skills.skills.count) \(NSLocalizedString("skills", comment: ""))".uppercased(),
 			                           subtitle: "\(NCUnitFormatter.localizedString(from: Double(sp), unit: .skillPoints, style: .full))"))
 		}
 		

@@ -53,7 +53,7 @@ class NCWalletTransactionRow: TreeRow {
 		cell.dateLabel.text = DateFormatter.localizedString(from: transaction.date, dateStyle: .medium, timeStyle: .medium)
 		
 		
-		var s = "\(transaction.isBuy ? "-" : "")\(NCUnitFormatter.localizedString(from: transaction.unitPrice * Float(transaction.quantity), unit: .isk, style: .full))" * [NSAttributedStringKey.foregroundColor: transaction.isBuy ? UIColor.red : UIColor.green]
+		var s = "\(transaction.isBuy ? "-" : "")\(NCUnitFormatter.localizedString(from: transaction.unitPrice * Double(transaction.quantity), unit: .isk, style: .full))" * [NSAttributedStringKey.foregroundColor: transaction.isBuy ? UIColor.red : UIColor.green]
 		if let client = client?.name {
 			s = s + " \(transaction.isBuy ? NSLocalizedString("to", comment: "") : NSLocalizedString("from", comment: "")) \(client)"
 		}

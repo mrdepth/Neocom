@@ -110,7 +110,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 	var character: NCCachedResult<ESI.Character.Information>?
 	var corporation: NCCachedResult<ESI.Corporation.Information>?
 	var skillQueue: NCCachedResult<[ESI.Skills.SkillQueueItem]>?
-	var walletBalance: NCCachedResult<Float>?
+	var walletBalance: NCCachedResult<Double>?
 	var skills: NCCachedResult<ESI.Skills.CharacterSkills>?
 	var location: NCCachedResult<ESI.Location.CharacterLocation>?
 	var ship: NCCachedResult<ESI.Location.CharacterShip>?
@@ -157,7 +157,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 	
 	func configureCorporation(cell: NCAccountTableViewCell) {
 		if let value = corporation?.value {
-			cell.corporationLabel.text = value.corporationName
+			cell.corporationLabel.text = value.name
 		}
 		else {
 			cell.corporationLabel.text = corporation?.error?.localizedDescription ?? " "

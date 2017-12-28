@@ -446,9 +446,8 @@ extension DGMCharacter {
 			switch result {
 			case let .success(value, _):
 				var levels = [Int: Int]()
-				for skill in value.skills ?? [] {
-					guard let skillID = skill.skillID, let currentSkillLevel = skill.currentSkillLevel else {continue}
-					levels[skillID] = currentSkillLevel
+				for skill in value.skills {
+					levels[skill.skillID] = skill.trainedSkillLevel
 				}
 				self.setSkills(levels: levels)
 				self.name = url?.absoluteString ?? ""

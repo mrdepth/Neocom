@@ -45,17 +45,17 @@ class NCWealthAssetsViewController: NCTreeViewController {
 				guard let category = invTypes[asset.typeID]?.group?.category, let price = self.prices?[asset.typeID] else {continue}
 				switch NCDBCategoryID(rawValue: Int(category.categoryID)) {
 				case .ship?:
-					ships += Double(asset.quantity ?? 1) * price
+					ships += Double(asset.quantity) * price
 				case .module?, .subsystem?:
-					modules += Double(asset.quantity ?? 1) * price
+					modules += Double(asset.quantity) * price
 				case .charge?:
-					charges += Double(asset.quantity ?? 1) * price
+					charges += Double(asset.quantity) * price
 				case .drone?:
-					drones += Double(asset.quantity ?? 1) * price
+					drones += Double(asset.quantity) * price
 				case .asteroid?, .ancientRelic?, .material?, .planetaryResource?, .reaction?:
-					materials += Double(asset.quantity ?? 1) * price
+					materials += Double(asset.quantity) * price
 				default:
-					other += Double(asset.quantity ?? 1) * price
+					other += Double(asset.quantity) * price
 				}
 			}
 			DispatchQueue.main.async {

@@ -216,8 +216,9 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 		let characterRow: TreeNode
 		let characterRoute = Router.Fitting.Characters(pilot: pilot) { (controller, url) in
 			controller.dismiss(animated: true) {
-				pilot.setSkills(from: url, completionHandler: nil)
-				NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
+				pilot.setSkills(from: url, completionHandler: { _ in
+					NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
+				})
 			}
 		}
 		

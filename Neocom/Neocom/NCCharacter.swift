@@ -134,9 +134,8 @@ class NCCharacter {
 				var skillLevels: [Int : Int] = [:]
 				var map: [IndexPath: ESI.Skills.SkillQueueItem] = [:]
 				
-				skills.skills?.forEach {
-					guard let typeID = $0.skillID, let level = $0.currentSkillLevel else {return}
-					skillLevels[typeID] = level
+				skills.skills.forEach {
+					skillLevels[$0.skillID] = $0.trainedSkillLevel
 				}
 				
 				let date = Date()

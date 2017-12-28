@@ -203,7 +203,7 @@ class NCDataManager {
 	}
 	
 	
-	func walletBalance(completionHandler: @escaping (NCCachedResult<Float>) -> Void) {
+	func walletBalance(completionHandler: @escaping (NCCachedResult<Double>) -> Void) {
 		loadFromCache(forKey: "ESI.WalletBalance", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
 			self.esi.wallet.getCharactersWalletBalance(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0)
@@ -584,11 +584,10 @@ class NCDataManager {
 				ids.formUnion(searchResult.constellation ?? [])
 				ids.formUnion(searchResult.corporation ?? [])
 				ids.formUnion(searchResult.faction ?? [])
-				ids.formUnion(searchResult.inventorytype ?? [])
+				ids.formUnion(searchResult.inventoryType ?? [])
 				ids.formUnion(searchResult.region ?? [])
-				ids.formUnion(searchResult.solarsystem ?? [])
+				ids.formUnion(searchResult.solarSystem ?? [])
 				ids.formUnion(searchResult.station ?? [])
-				ids.formUnion(searchResult.wormhole ?? [])
 				
 				if ids.count > 0 {
 					self.contacts(ids: Set(ids.map{Int64($0)}), completionHandler: completionHandler)

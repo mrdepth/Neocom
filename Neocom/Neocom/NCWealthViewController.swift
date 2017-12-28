@@ -55,7 +55,7 @@ class NCWealthViewController: NCTreeViewController {
 			
 			if let value = clones {
 				value.jumpClones.forEach {
-					$0.implants?.forEach {
+					$0.implants.forEach {
 						_ = (implantsIDs[$0]? += 1) ?? (implantsIDs[$0] = 1)
 					}
 				}
@@ -288,7 +288,7 @@ class NCWealthViewController: NCTreeViewController {
 	
 	private var clones: NCCachedResult<ESI.Clones.JumpClones>?
 	private var implants: NCCachedResult<[Int]>?
-	private var walletBalance: NCCachedResult<Float>?
+	private var walletBalance: NCCachedResult<Double>?
 	private var assets: NCCachedResult<[ESI.Assets.Asset]>?
 	private var blueprints: NCCachedResult<[ESI.Character.Blueprint]>?
 	private var marketOrders: NCCachedResult<[ESI.Market.CharacterOrder]>?

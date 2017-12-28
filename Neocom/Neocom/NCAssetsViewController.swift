@@ -15,8 +15,8 @@ class NCAssetRow: DefaultTreeRow {
 		let type = types[asset.typeID]
 		let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
 		let title: NSAttributedString
-		if let qty = asset.quantity, qty > 1 {
-			title = typeName + (" x" + NCUnitFormatter.localizedString(from: qty, unit: .none, style: .full)) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
+		if asset.quantity > 1 {
+			title = typeName + (" x" + NCUnitFormatter.localizedString(from: asset.quantity, unit: .none, style: .full)) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 		}
 		else {
 			title = NSAttributedString(string: typeName)

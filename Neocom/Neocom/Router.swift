@@ -890,27 +890,31 @@ enum Router {
 		
 		class ModuleActions: Route {
 			let modules: [DGMModule]
-			
-			init(_ modules: [DGMModule]) {
+			let fleet: NCFittingFleet
+			init(_ modules: [DGMModule], fleet: NCFittingFleet) {
 				self.modules = modules
+				self.fleet = fleet
 				super.init(kind: .sheet, storyboard: UIStoryboard.fitting, identifier: "NCFittingModuleActionsViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
 				(destination as! NCFittingModuleActionsViewController).modules = modules
+				(destination as! NCFittingModuleActionsViewController).fleet = fleet
 			}
 		}
 		
 		class DroneActions: Route {
 			let drones: [DGMDrone]
-			
-			init(_ drones: [DGMDrone]) {
+			let fleet: NCFittingFleet
+			init(_ drones: [DGMDrone], fleet: NCFittingFleet) {
 				self.drones = drones
+				self.fleet = fleet
 				super.init(kind: .sheet, storyboard: UIStoryboard.fitting, identifier: "NCFittingDroneActionsViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
 				(destination as! NCFittingDroneActionsViewController).drones = drones
+				(destination as! NCFittingDroneActionsViewController).fleet = fleet
 			}
 		}
 		

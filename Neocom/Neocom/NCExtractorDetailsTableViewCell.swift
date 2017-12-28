@@ -56,29 +56,27 @@ class NCExtractorDetailsRow: TreeRow {
 		let extractor = self.extractor
 		let currentTime = self.currentTime
 		let currentState = self.currentState
-//		extractor.engine?.performBlockAndWait {
-			cell.sumLabel.text = NCUnitFormatter.localizedString(from: sum, unit: .none, style: .full)
-			let duration = extractor.expiryTime.timeIntervalSince(extractor.installTime)
-//			let duration = extractor.expiryTime - extractor.installTime
+		cell.sumLabel.text = NCUnitFormatter.localizedString(from: sum, unit: .none, style: .full)
+		let duration = extractor.expiryTime.timeIntervalSince(extractor.installTime)
+		//			let duration = extractor.expiryTime - extractor.installTime
 		
-			cell.yieldLabel.text = duration > 0 ? NCUnitFormatter.localizedString(from: Double(sum) / (duration / 3600), unit: .none, style: .full) : "0"
-			
-			
-			let remains = extractor.expiryTime.timeIntervalSince(currentTime)
-			cell.cycleTimeLabel.text = NCTimeIntervalFormatter.localizedString(from: currentState?.cycle?.duration ?? 0, precision: .hours, format: .colonSeparated)
-
-			if let currentState = currentState, let cycle = currentState.cycle, remains > 0 {
-				let t = currentTime.clamped(to: cycle.start...cycle.end).timeIntervalSince(cycle.start)
-				cell.currentCycleLabel.text = NCTimeIntervalFormatter.localizedString(from: t, precision: .hours, format: .colonSeparated)
-				cell.depletionLabel.text = NCTimeIntervalFormatter.localizedString(from: remains, precision: .minutes)
-				cell.depletionLabel.textColor = remains < 3600 * 24 ? .yellow : .white
-			}
-			else {
-				cell.currentCycleLabel.text = NCTimeIntervalFormatter.localizedString(from: 0, precision: .hours, format: .colonSeparated)
-				cell.depletionLabel.text = NCTimeIntervalFormatter.localizedString(from: 0, precision: .hours, format: .colonSeparated)
-				cell.depletionLabel.textColor = .red
-			}
-//		}
+		cell.yieldLabel.text = duration > 0 ? NCUnitFormatter.localizedString(from: Double(sum) / (duration / 3600), unit: .none, style: .full) : "0"
+		
+		
+		let remains = extractor.expiryTime.timeIntervalSince(currentTime)
+		cell.cycleTimeLabel.text = NCTimeIntervalFormatter.localizedString(from: currentState?.cycle?.duration ?? 0, precision: .hours, format: .colonSeparated)
+		
+		if let currentState = currentState, let cycle = currentState.cycle, remains > 0 {
+			let t = currentTime.clamped(to: cycle.start...cycle.end).timeIntervalSince(cycle.start)
+			cell.currentCycleLabel.text = NCTimeIntervalFormatter.localizedString(from: t, precision: .hours, format: .colonSeparated)
+			cell.depletionLabel.text = NCTimeIntervalFormatter.localizedString(from: remains, precision: .minutes)
+			cell.depletionLabel.textColor = remains < 3600 * 24 ? .yellow : .white
+		}
+		else {
+			cell.currentCycleLabel.text = NCTimeIntervalFormatter.localizedString(from: 0, precision: .hours, format: .colonSeparated)
+			cell.depletionLabel.text = NCTimeIntervalFormatter.localizedString(from: 0, precision: .hours, format: .colonSeparated)
+			cell.depletionLabel.textColor = .red
+		}
 	}
 	
 	override var hashValue: Int {

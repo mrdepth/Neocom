@@ -341,6 +341,10 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 		
 		if observer == nil {
 			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
+				guard self?.view.window != nil else {
+					self?.treeController?.content = nil
+					return
+				}
 				self?.updateContent {}
 			}
 		}
@@ -361,12 +365,13 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 		if self.treeController?.content == nil {
 			self.treeController?.content = TreeNode()
 		}
-		guard let pilot = self.fleet?.active else {return}
+		guard let fleet = fleet else {return}
+		guard let pilot = fleet.active else {return}
 		guard let ship = pilot.ship ?? pilot.structure else {return}
 		var sections = [TreeNode]()
 		
 		sections.append(DefaultTreeSection(nodeIdentifier: "Resources", title: NSLocalizedString("Resources", comment: "").uppercased(), children: [NCFittingResourcesRow(ship: ship)]))
-		sections.append(DefaultTreeSection(nodeIdentifier: "Resistances", title: NSLocalizedString("Resistances", comment: "").uppercased(), children: [NCResistancesRow(ship: ship)]))
+		sections.append(DefaultTreeSection(nodeIdentifier: "Resistances", title: NSLocalizedString("Resistances", comment: "").uppercased(), children: [NCResistancesRow(ship: ship, fleet: fleet)]))
 		sections.append(DefaultTreeSection(nodeIdentifier: "Capacitor", title: NSLocalizedString("Capacitor", comment: "").uppercased(), children: [NCFittingCapacitorRow(ship: ship)]))
 		sections.append(DefaultTreeSection(nodeIdentifier: "Tank", title: NSLocalizedString("Recharge Rates (HP/s, EHP/s)", comment: "").uppercased(), children: [NCTankRow(ship: ship)]))
 		sections.append(DefaultTreeSection(nodeIdentifier: "Firepower", title: NSLocalizedString("Firepower", comment: "").uppercased(), children: [NCFirepowerRow(ship: ship)]))

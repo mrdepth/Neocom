@@ -87,12 +87,10 @@ class NCFittingAmmoViewController: NCTreeViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let module = modules?.first
-//		module?.engine?.performBlockAndWait {
-			if module?.charge == nil {
-				self.navigationItem.rightBarButtonItem = nil
-			}
-//		}
-		
+		if module?.charge == nil {
+			self.navigationItem.rightBarButtonItem = nil
+		}
+
 		tableView.register([Prototype.NCActionTableViewCell.default,
 		                    Prototype.NCDefaultTableViewCell.compact,
 		                    Prototype.NCHeaderTableViewCell.default,

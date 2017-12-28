@@ -29,6 +29,10 @@ class NCFittingFleetViewController: NCTreeViewController, NCFittingEditorPage {
 		
 		if observer == nil {
 			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
+				guard self?.view.window != nil else {
+					self?.treeController?.content = nil
+					return
+				}
 				self?.reload()
 			}
 		}

@@ -213,6 +213,14 @@ class NCFittingFleet {
 		return pilot
 	}
 	
+	func add(pilot: DGMCharacter) {
+		gang.add(pilot)
+		pilots.append((pilot, nil))
+		if active == nil {
+			active = pilot
+		}
+	}
+	
 	func remove(pilot: DGMCharacter) {
 		if active == pilot {
 			active = pilots.first(where: { $0.0 != pilot })?.0

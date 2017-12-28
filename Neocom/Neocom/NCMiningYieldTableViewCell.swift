@@ -33,20 +33,14 @@ class NCMiningYieldRow: TreeRow {
 		guard let cell = cell as? NCMiningYieldTableViewCell else {return}
 		let ship = self.ship
 		cell.object = ship
-//		ship.engine?.perform {
-			let minerYield = ship.minerYield * DGMSeconds(1)
-			let droneYield = ship.droneYield * DGMSeconds(1)
-			let total = minerYield + droneYield;
-			
-			DispatchQueue.main.async {
-				if cell.object as? DGMShip === ship {
-					let formatter = NCUnitFormatter(unit: .none, style: .short, useSIPrefix: false)
-					cell.minerLabel.text = formatter.string(for: minerYield)
-					cell.droneLabel.text = formatter.string(for: droneYield)
-					cell.totalLabel.text = formatter.string(for: total)
-				}
-			}
-//		}
+		let minerYield = ship.minerYield * DGMSeconds(1)
+		let droneYield = ship.droneYield * DGMSeconds(1)
+		let total = minerYield + droneYield;
+		
+		let formatter = NCUnitFormatter(unit: .none, style: .short, useSIPrefix: false)
+		cell.minerLabel.text = formatter.string(for: minerYield)
+		cell.droneLabel.text = formatter.string(for: droneYield)
+		cell.totalLabel.text = formatter.string(for: total)
 	}
 	
 	override var hashValue: Int {

@@ -40,13 +40,9 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 			strongSelf.dismiss(animated: true)
 			
 			let typeID = Int(type.typeID)
-//			engine.perform {
-				try? fleet.append(typeID: typeID)
-				DispatchQueue.main.async {
-					strongSelf.completionHandler(strongSelf)
-				}
+			_ = try? fleet.append(typeID: typeID)
+			strongSelf.completionHandler(strongSelf)
 			NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
-//			}
 			
 		})))
 		
@@ -76,13 +72,9 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 
 			NCStorage.sharedStorage?.performBackgroundTask({ (managedObjectContext) in
 				guard let loadout = (try? managedObjectContext.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
-//				engine.performBlockAndWait {
-					try? fleet.append(loadout: loadout)
-					DispatchQueue.main.async {
-						self.completionHandler(self)
-					}
+				_ = try? fleet.append(loadout: loadout)
+				self.completionHandler(self)
 				NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
-//				}
 			})
 		}
 	}

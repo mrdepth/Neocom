@@ -43,6 +43,10 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 		
 		if observer == nil {
 			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
+				guard self?.view.window != nil else {
+					self?.treeController.content = nil
+					return
+				}
 				self?.reload()
 			}
 		}
@@ -53,7 +57,8 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		treeController.deselectCell(for: node, animated: true)
 		if let node = node as? NCFittingDroneRow {
-			Router.Fitting.DroneActions(node.drones).perform(source: self, sender: treeController.cell(for: node))
+			guard let fleet = fleet else {return}
+			Router.Fitting.DroneActions(node.drones, fleet: fleet).perform(source: self, sender: treeController.cell(for: node))
 		}
 		else if node is NCActionRow {
 			guard let pilot = fleet?.active else {return}

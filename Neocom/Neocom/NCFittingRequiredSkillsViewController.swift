@@ -79,19 +79,17 @@ class NCFittingRequiredSkillsViewController: NCTreeViewController {
 					NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 						let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 						var typeIDs = Set<Int>()
-//						ship.engine?.performBlockAndWait {
-							typeIDs.insert(ship.typeID)
-							ship.modules.forEach {
-								typeIDs.insert($0.typeID)
-								if let charge = $0.charge {
-									typeIDs.insert(charge.typeID)
-								}
+						typeIDs.insert(ship.typeID)
+						ship.modules.forEach {
+							typeIDs.insert($0.typeID)
+							if let charge = $0.charge {
+								typeIDs.insert(charge.typeID)
 							}
-							ship.drones.forEach {
-								typeIDs.insert($0.typeID)
-							}
-//						}
-						
+						}
+						ship.drones.forEach {
+							typeIDs.insert($0.typeID)
+						}
+
 						typeIDs.forEach {
 							guard let type = invTypes[$0] else {return}
 							trainingQueue.addRequiredSkills(for: type)

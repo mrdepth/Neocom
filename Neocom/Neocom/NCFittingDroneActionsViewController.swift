@@ -45,9 +45,11 @@ class NCFittingDroneInfoRow: NCChargeRow {
 
 class NCFittingDroneStateRow: TreeRow {
 	let drones: [DGMDrone]
+	let fleet: NCFittingFleet
 	let isActive: Bool
-	init(drones: [DGMDrone]) {
+	init(drones: [DGMDrone], fleet: NCFittingFleet) {
 		self.drones = drones
+		self.fleet = fleet
 		isActive = drones.first?.isActive ?? false
 		super.init(prototype: Prototype.NCFittingDroneStateTableViewCell.default)
 		
@@ -64,11 +66,10 @@ class NCFittingDroneStateRow: TreeRow {
 			guard let sender = segmentedControl else {return}
 			guard let drones = self?.drones else {return}
 			let isActive = sender.selectedSegmentIndex == 1
-//			drones.first?.engine?.perform {
-				for drone in drones {
-					drone.isActive = isActive
-				}
-//			}
+			for drone in drones {
+				drone.isActive = isActive
+			}
+			NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
 		}
 
 	}
@@ -153,7 +154,7 @@ class NCFittingDroneActionsViewController: NCTreeViewController {
 			navigationController?.preferredContentSize = size
 		}
 		
-		if let drone = drones?.first, observer == nil {
+		if observer == nil {
 			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
@@ -168,115 +169,110 @@ class NCFittingDroneActionsViewController: NCTreeViewController {
 	@IBAction func onDelete(_ sender: UIButton) {
 		guard let drones = self.drones else {return}
 		guard let drone = drones.first else {return}
-//		drone.engine?.perform {
-			guard let ship = drone.parent as? DGMShip else {return}
-			for drone in drones {
-				ship.remove(drone)
-			}
-//		}
+		guard let ship = drone.parent as? DGMShip else {return}
+		for drone in drones {
+			ship.remove(drone)
+		}
+		NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 		self.dismiss(animated: true, completion: nil)
 	}
 	
 	@IBAction func onChangeState(_ sender: UISegmentedControl) {
 		guard let drones = self.drones else {return}
 		let isActive = sender.selectedSegmentIndex == 1
-//		drones.first?.engine?.perform {
-			for drone in drones {
-				drone.isActive = isActive
-			}
-//		}
+		for drone in drones {
+			drone.isActive = isActive
+		}
+		NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 	}
 	
 	
 	//MARK: Private
 	
 	private func reload() {
+		guard let fleet = fleet else {return}
 		guard let drones = self.drones else {return}
 		guard let drone = drones.first else {return}
 		guard let type = self.type else {return}
 		var sections = [TreeNode]()
 
-//		drone.engine?.performBlockAndWait {
-			guard let ship = drone.parent as? DGMShip else {return}
-			
-			let route: Route
-			
-			if (type.variations?.count ?? 0) > 0 || (type.parentType?.variations?.count ?? 0) > 0 {
-				route = Router.Fitting.Variations (type: type) { [weak self] (controller, type) in
-					let typeID = Int(type.typeID)
-					controller.dismiss(animated: true) {
-						guard let drones = self?.drones else {return}
-						guard let drone = drones.first else {return}
-//						drone.engine?.perform {
-							guard let ship = drone.parent as? DGMShip else {return}
-							let isActive = drone.isActive
-							let tag = drone.squadronTag
-							let count = drones.count
-							var out = [DGMDrone]()
-							for drone in drones {
-								ship.remove(drone)
-							}
-						do {
-							for _ in 0..<count {
-								let drone = try DGMDrone(typeID: typeID)
-								try ship.add(drone, squadronTag: tag)
-								drone.isActive = isActive
-								out.append(drone)
-							}
-						}
-						catch {
-							
-						}
-							self?.drones = out
-//						}
-					}
-				}
-			}
-			else {
-				route = Router.Database.TypeInfo(drone)
-			}
-			
-			sections.append(DefaultTreeSection(nodeIdentifier: "Variations",
-			                                   title: NSLocalizedString("Variations", comment: "").uppercased(),
-			                                   children: [NCFittingDroneInfoRow(type: type, drone: drone, count: drones.count, route: route)]))
-
-			let handler = {[weak self] (_ count: Int, _ node: NCFittingDroneCountRow) in
-				guard let strongSelf = self else {return}
-				guard var drones = strongSelf.drones else {return}
-				guard let drone = drones.first else {return}
-//				engine.performBlockAndWait {
-					var n = drones.count - count
-
-					let typeID = drone.typeID
+		guard let ship = drone.parent as? DGMShip else {return}
+		
+		let route: Route
+		
+		if (type.variations?.count ?? 0) > 0 || (type.parentType?.variations?.count ?? 0) > 0 {
+			route = Router.Fitting.Variations (type: type) { [weak self] (controller, type) in
+				let typeID = Int(type.typeID)
+				controller.dismiss(animated: true) {
+					guard let drones = self?.drones else {return}
+					guard let drone = drones.first else {return}
+					guard let ship = drone.parent as? DGMShip else {return}
 					let isActive = drone.isActive
 					let tag = drone.squadronTag
-					let identifier = drone.identifier
-
-				do {
-					while n < 0 {
-						let drone = try DGMDrone(typeID: typeID)
-						try ship.add(drone, squadronTag: tag)
-						drone.identifier = identifier
-						drone.isActive = isActive
-						n += 1
+					let count = drones.count
+					var out = [DGMDrone]()
+					for drone in drones {
+						ship.remove(drone)
 					}
-				}
-				catch {
-					
-				}
-					while n > 0 {
-						ship.remove(drones.removeLast())
-						n -= 1
+					do {
+						for _ in 0..<count {
+							let drone = try DGMDrone(typeID: typeID)
+							try ship.add(drone, squadronTag: tag)
+							drone.isActive = isActive
+							out.append(drone)
+						}
 					}
-					strongSelf.drones = drones
-					node.drones = drones
-//				}
+					catch {
+						
+					}
+					self?.drones = out
+					NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
+				}
 			}
+		}
+		else {
+			route = Router.Database.TypeInfo(drone)
+		}
+		
+		sections.append(DefaultTreeSection(nodeIdentifier: "Variations",
+										   title: NSLocalizedString("Variations", comment: "").uppercased(),
+										   children: [NCFittingDroneInfoRow(type: type, drone: drone, count: drones.count, route: route)]))
+		
+		let handler = {[weak self] (_ count: Int, _ node: NCFittingDroneCountRow) in
+			guard let strongSelf = self else {return}
+			guard var drones = strongSelf.drones else {return}
+			guard let drone = drones.first else {return}
+			var n = drones.count - count
 			
-			sections.append(DefaultTreeSection(nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingDroneStateRow(drones: drones)]))
-			sections.append(DefaultTreeSection(nodeIdentifier: "Count", title: NSLocalizedString("Count", comment: "").uppercased(), children: [NCFittingDroneCountRow(drones: drones, ship: ship, handler: handler)]))
+			let typeID = drone.typeID
+			let isActive = drone.isActive
+			let tag = drone.squadronTag
+			let identifier = drone.identifier
 			
-//		}
+			do {
+				while n < 0 {
+					let drone = try DGMDrone(typeID: typeID)
+					try ship.add(drone, squadronTag: tag)
+					drone.identifier = identifier
+					drone.isActive = isActive
+					drones.append(drone)
+					n += 1
+				}
+			}
+			catch {
+				
+			}
+			while n > 0 {
+				ship.remove(drones.removeLast())
+				n -= 1
+			}
+			strongSelf.drones = drones
+			node.drones = drones
+			NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
+		}
+		
+		sections.append(DefaultTreeSection(nodeIdentifier: "State", title: NSLocalizedString("State", comment: "").uppercased(), children: [NCFittingDroneStateRow(drones: drones, fleet: fleet)]))
+		sections.append(DefaultTreeSection(nodeIdentifier: "Count", title: NSLocalizedString("Count", comment: "").uppercased(), children: [NCFittingDroneCountRow(drones: drones, ship: ship, handler: handler)]))
 		
 		if treeController?.content == nil {
 			treeController?.content = RootNode(sections)

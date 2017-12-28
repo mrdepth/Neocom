@@ -118,7 +118,6 @@ extension Array {
 			let right = copy[left..<n].partition { (i) -> Bool in
 				return !closure(first, i)
 			}
-			print("\(left..<right)")
 			result.append(copy[left..<right])
 			left = right
 		}

@@ -60,10 +60,8 @@ class NCFittingAmmoDamageChartViewController: UIViewController, TreeControllerDe
 	lazy var hullType: NCDBDgmppHullType? = {
 		guard let module = self.modules?.first else {return nil}
 		var hullType: NCDBDgmppHullType?
-//		module.engine?.performBlockAndWait {
-			guard let ship = module.parent as? DGMShip else {return nil}
-			hullType = NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.hullType
-//		}
+		guard let ship = module.parent as? DGMShip else {return nil}
+		hullType = NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.hullType
 		return hullType
 	}()
 

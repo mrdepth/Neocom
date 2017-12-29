@@ -52,7 +52,7 @@ class NCZKillboardCategoriesViewController: NCTreeViewController, NCSearchableVi
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCZKillboardTypesViewController else {return}
-		if let text = searchController.searchBar.text, text.characters.count > 2 {
+		if let text = searchController.searchBar.text, text.count > 2 {
 			predicate = NSPredicate(format: "published == TRUE AND group.category.categoryID IN %@ AND typeName CONTAINS[C] %@", [NCDBCategoryID.ship.rawValue, NCDBCategoryID.structure.rawValue], text)
 		}
 		else {

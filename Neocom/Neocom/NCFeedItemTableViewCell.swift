@@ -39,7 +39,7 @@ class NCFeedItemRow: TreeRow {
 			                                      options: [.documentType : NSAttributedString.DocumentType.html,
 			                                                .characterEncoding: String.Encoding.utf8.rawValue],
 			                                      documentAttributes: nil).string {
-				subtitle = String(string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).characters.prefix(256))
+				subtitle = String(string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).prefix(256))
 			}
 			else {
 				subtitle = nil

@@ -32,9 +32,9 @@ class NCColonySection: TreeSection {
 		
 		switch layout {
 		case let .success(layout):
-			let planetTypeID: Int32 = NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
-				return NCDBInvType.invTypes(managedObjectContext: managedObjectContext)[self.colony.planetID]?.typeID
-			} ?? 0
+//			let planetTypeID: Int32 = NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
+//				return NCDBInvType.invTypes(managedObjectContext: managedObjectContext)[self.colony.planetID]?.typeID
+//			} ?? 0
 			
 			do {
 				

@@ -77,7 +77,7 @@ class NCWHViewController: NCTreeViewController, NCSearchableViewController {
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCWHViewController else {return}
-		if let text = searchController.searchBar.text, text.characters.count > 0 {
+		if let text = searchController.searchBar.text, !text.isEmpty {
 			predicate = NSPredicate(format: "type.typeName CONTAINS[C] %@", text)
 		}
 		else {

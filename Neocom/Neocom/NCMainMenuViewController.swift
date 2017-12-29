@@ -71,7 +71,7 @@ class NCCharacterSheetMenuRow: NCAccountDataMenuRow<ESI.Skills.CharacterSkills> 
 
 		if let result = result {
 			if let value = result.value {
-				cell.subtitleLabel?.text = NCUnitFormatter.localizedString(from: value.totalSP ?? 0, unit: .skillPoints, style: .full)
+				cell.subtitleLabel?.text = NCUnitFormatter.localizedString(from: value.totalSP, unit: .skillPoints, style: .full)
 			}
 			else {
 				cell.subtitleLabel?.text = result.error?.localizedDescription

@@ -69,7 +69,7 @@ class NCWealthViewController: NCTreeViewController {
 			if let value = assets {
 				for asset in value {
 					guard let type = invTypes[asset.typeID], type.group?.category?.categoryID != Int32(NCDBCategoryID.blueprint.rawValue) else {continue}
-					_ = (assetsIDs[asset.typeID]? += Int64(asset.quantity ?? 1)) ?? (assetsIDs[asset.typeID] = Int64(asset.quantity ?? 1))
+					_ = (assetsIDs[asset.typeID]? += Int64(asset.quantity)) ?? (assetsIDs[asset.typeID] = Int64(asset.quantity))
 				}
 			}
 			

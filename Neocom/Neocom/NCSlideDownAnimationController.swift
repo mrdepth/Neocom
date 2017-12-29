@@ -37,8 +37,8 @@ class NCSlideDownAnimationController: NSObject, UIViewControllerAnimatedTransiti
 		
 		let frame = transitionContext.initialFrame(for: fromVC)
 
-		let initialFrame = transitionContext.initialFrame(for: fromVC)
-		let finalFrame = transitionContext.finalFrame(for: toVC)
+//		let initialFrame = transitionContext.initialFrame(for: fromVC)
+//		let finalFrame = transitionContext.finalFrame(for: toVC)
 //		toView?.frame = CGRect(origin: CGPoint(x: finalFrame.origin.x, y: isPresenting ? initialFrame.origin.y - finalFrame.size.height : initialFrame.maxY), size: finalFrame.size)
 //		fromView?.frame = CGRect(origin: CGPoint(x: initialFrame.origin.x, y: isPresenting ? initialFrame.origin.y : initialFrame.maxY), size: initialFrame.size)
 		

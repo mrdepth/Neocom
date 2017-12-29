@@ -60,13 +60,13 @@ class NCFittingFleet {
 			do {
 				switch $0.locationFlag {
 				case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:
-					for _ in 0..<($0.quantity ?? 1) {
+					for _ in 0..<$0.quantity {
 						try ship.add(DGMDrone(typeID: $0.typeID))
 					}
 				case .cargo:
 					cargo.insert($0.typeID)
 				default:
-					for _ in 0..<($0.quantity ?? 1) {
+					for _ in 0..<$0.quantity {
 						let module = try DGMModule(typeID: $0.typeID)
 						try ship.add(module, ignoringRequirements: true)
 						if (!module.chargeGroups.isEmpty) {

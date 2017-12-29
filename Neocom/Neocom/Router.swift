@@ -743,13 +743,13 @@ enum Router {
 					else if let loadoutID = self.loadoutID {
 						NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
 							guard let loadout = (try? managedObjectContext.existingObject(with: loadoutID)) as? NCLoadout else {return}
-							fleet = try? NCFittingFleet(loadouts: [loadout])
+							fleet = NCFittingFleet(loadouts: [loadout])
 						}
 					}
 					else if let fleetID = self.fleetID {
 						NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
 							guard let fleetObject = (try? managedObjectContext.existingObject(with: fleetID)) as? NCFleet else {return}
-							fleet = try? NCFittingFleet(fleet: fleetObject)
+							fleet = NCFittingFleet(fleet: fleetObject)
 						}
 					}
 					else if let asset = self.asset, let contents = self.contents {

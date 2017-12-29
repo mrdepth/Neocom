@@ -230,7 +230,7 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 	
 	private func reload() {
 		
-		let implantCategories: [NCDBDgmppItemCategory]? = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemCategory", where: "category == %d", NCDBDgmppItemCategoryID.implant.rawValue)
+//		let implantCategories: [NCDBDgmppItemCategory]? = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemCategory", where: "category == %d", NCDBDgmppItemCategoryID.implant.rawValue)
 //		let implantSlots = implantCategories?.map {Int($0.subcategory)}.sorted() ?? Array(stride(from: 1, to: 11, by: 1))
 		let implantSlots = stride(from: 1, to: 11, by: 1)
 

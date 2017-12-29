@@ -13,6 +13,7 @@ import CloudData
 import SafariServices
 import StoreKit
 import Firebase
+import FBSDKCoreKit
 
 @UIApplicationMain
 class NCAppDelegate: UIResponder, UIApplicationDelegate {
@@ -37,6 +38,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		setupAppearance()
 		
 		FirebaseApp.configure()
+		FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
 		return true
 	}
 
@@ -62,6 +64,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
+		FBSDKAppEvents.activateApp()
 		NCDataManager().updateMarketPrices()
 
 		DispatchQueue.global(qos: .background).async {

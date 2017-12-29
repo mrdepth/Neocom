@@ -239,7 +239,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 	
 	func configureSkills(cell: NCAccountTableViewCell) {
 		if let value = skills?.value {
-			cell.spLabel.text = NCUnitFormatter.localizedString(from: Double(value.totalSP ?? 0), unit: .none, style: .short)
+			cell.spLabel.text = NCUnitFormatter.localizedString(from: Double(value.totalSP), unit: .none, style: .short)
 		}
 		else {
 			cell.spLabel.text = skills?.error?.localizedDescription ?? " "

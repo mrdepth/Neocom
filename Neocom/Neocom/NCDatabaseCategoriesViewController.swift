@@ -76,7 +76,7 @@ class NCDatabaseCategoriesViewController: NCTreeViewController, NCSearchableView
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCDatabaseTypesViewController else {return}
-		if let text = searchController.searchBar.text, text.characters.count > 2 {
+		if let text = searchController.searchBar.text, text.count > 2 {
 			predicate = NSPredicate(format: "typeName CONTAINS[C] %@", text)
 		}
 		else {

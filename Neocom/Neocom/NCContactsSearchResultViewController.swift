@@ -78,7 +78,7 @@ class NCContactsSearchResultViewController: NCTreeViewController {
 		let dataManager = self.dataManager
 		
 		gate.perform {
-			guard string.characters.count >= 3 else {
+			guard string.count >= 3 else {
 				DispatchQueue.main.async {
 					self.contacts = self.recent ?? []
 				}

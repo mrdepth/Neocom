@@ -1,3 +1,3 @@
 #!/bin/sh
 make clean
-make EXPANSION="Lifeblood_1.0"
+make EXPANSION="ArmsRace_1.0"

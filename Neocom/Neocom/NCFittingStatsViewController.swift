@@ -351,11 +351,13 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 	}
 	
 	@IBAction func onReloadFactor(_ sender: UISwitch) {
+		fleet?.gang.factorReload = sender.isOn
 //		guard let engine = engine else {return}
 //		let factor = sender.isOn
 //		engine.perform {
 //			engine.factorReload = factor
 //		}
+		NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 	}
 	
 	//MARK: - Private

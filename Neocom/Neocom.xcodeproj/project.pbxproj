@@ -210,6 +210,8 @@
 		12961DBF1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DBE1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift */; };
 		129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 129B316D1E53527C00B9A88D /* damagePatterns.plist */; };
 		129B31701E5439A100B9A88D /* NCTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B316F1E5439A100B9A88D /* NCTextFieldTableViewCell.swift */; };
+		129DE43B1FF628AD00A2C1CD /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129DE4381FF628AD00A2C1CD /* FBSDKCoreKit.framework */; };
+		129DE43C1FF628AD00A2C1CD /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129DE4391FF628AD00A2C1CD /* Bolts.framework */; };
 		129E60EE1E0152A900B56EB8 /* NCAutoHeightLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */; };
 		129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */; };
 		129E60F61E018BD400B56EB8 /* NCLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E60F51E018BD400B56EB8 /* NCLocation.swift */; };
@@ -614,6 +616,8 @@
 		129B31771E5488AF00B9A88D /* NCFleetConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFleetConfiguration.swift; sourceTree = "<group>"; };
 		129C51A01E605E6D0066F2E4 /* NCFittingFleetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingFleetViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		129C51A31E6075E30066F2E4 /* NCFittingFleetMemberPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingFleetMemberPickerViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		129DE4381FF628AD00A2C1CD /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		129DE4391FF628AD00A2C1CD /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAutoHeightLabel.swift; sourceTree = "<group>"; };
 		129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTintImageView.swift; sourceTree = "<group>"; };
 		129E60F51E018BD400B56EB8 /* NCLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocation.swift; sourceTree = "<group>"; };
@@ -825,7 +829,9 @@
 				12C967031F96111900B141CC /* FirebaseNanoPB.framework in Frameworks */,
 				12C967011F96111900B141CC /* FirebaseCoreDiagnostics.framework in Frameworks */,
 				12AC8DA61DEF597400561A7A /* EVEAPI.framework in Frameworks */,
+				129DE43C1FF628AD00A2C1CD /* Bolts.framework in Frameworks */,
 				12BC40A21DFF1EBB00657D40 /* Alamofire.framework in Frameworks */,
+				129DE43B1FF628AD00A2C1CD /* FBSDKCoreKit.framework in Frameworks */,
 				12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */,
 				12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */,
 			);
@@ -1137,6 +1143,15 @@
 			name = KillReports;
 			sourceTree = "<group>";
 		};
+		129DE4371FF628AD00A2C1CD /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				129DE4381FF628AD00A2C1CD /* FBSDKCoreKit.framework */,
+				129DE4391FF628AD00A2C1CD /* Bolts.framework */,
+			);
+			path = Facebook;
+			sourceTree = "<group>";
+		};
 		129E61001E0287CA00B56EB8 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -1355,6 +1370,7 @@
 		12C966ED1F9610CC00B141CC /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				129DE4371FF628AD00A2C1CD /* Facebook */,
 				12C966F41F9610DE00B141CC /* Firebase */,
 				12C966EE1F9610D800B141CC /* clrconvert.xcodeproj */,
 			);

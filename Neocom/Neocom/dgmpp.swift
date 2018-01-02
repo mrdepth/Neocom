@@ -286,7 +286,13 @@ extension DGMCharacter {
 			var drones = [Int: NCFittingLoadoutDrone]()
 			for drone in ship?.drones ?? [] {
 				let identifier = drone.identifier
-				drones[identifier, default: NCFittingLoadoutDrone(drone: drone)].count += 1
+				if let drone = drones[identifier] {
+					drone.count += 1
+				}
+				else {
+					 drones[identifier] = NCFittingLoadoutDrone(drone: drone)
+				}
+//				drones[identifier, default: NCFittingLoadoutDrone(drone: drone)].count += 1
 			}
 			
 			loadout.drones = Array(drones.values)

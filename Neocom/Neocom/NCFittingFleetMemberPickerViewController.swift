@@ -54,7 +54,7 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 		let predicate = filter.count > 0 ? NSPredicate(format: "NONE SELF IN %@", filter) : nil
 		
 		
-		sections.append(NCLoadoutsSection(categoryID: .ship, filter: predicate))
+		sections.append(NCLoadoutsSection<NCLoadoutNoRouteRow>(categoryID: .ship, filter: predicate))
 		if self.treeController?.content == nil {
 			self.treeController?.content = TreeNode()
 		}
@@ -73,8 +73,10 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 			NCStorage.sharedStorage?.performBackgroundTask({ (managedObjectContext) in
 				guard let loadout = (try? managedObjectContext.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
 				_ = try? fleet.append(loadout: loadout)
-				self.completionHandler(self)
-				NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
+				DispatchQueue.main.async {
+					self.completionHandler(self)
+					NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
+				}
 			})
 		}
 	}

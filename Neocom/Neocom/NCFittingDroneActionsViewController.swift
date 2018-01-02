@@ -173,8 +173,9 @@ class NCFittingDroneActionsViewController: NCTreeViewController {
 		for drone in drones {
 			ship.remove(drone)
 		}
-		NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
+		self.drones = nil
 		self.dismiss(animated: true, completion: nil)
+		NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 	}
 	
 	@IBAction func onChangeState(_ sender: UISegmentedControl) {

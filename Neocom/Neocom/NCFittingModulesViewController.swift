@@ -201,6 +201,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 		//treeController.childrenKeyPath = "children"
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
+		treeController.tableView = tableView
 		treeController.delegate = self
 		
 		powerGridLabel.unit = .megaWatts
@@ -213,7 +214,9 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 		
 		if self.treeController.content == nil {
 			self.treeController.content = TreeNode()
-			reload()
+			DispatchQueue.main.async {
+				self.reload()
+			}
 		}
 	
 		if observer == nil {
@@ -384,7 +387,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 					r.append(NCFittingModuleRow(modules: [module], slot: slot))
 					socket = module.socket + 1
 				}
-				r.append(contentsOf: (socket..<ship.totalSlots(slot)).map{ _ in
+				r.append(contentsOf: (socket..<max(ship.totalSlots(slot), socket)).map{ _ in
 					return NCFittingModuleRow(modules: [], slot: slot)
 				})
 				

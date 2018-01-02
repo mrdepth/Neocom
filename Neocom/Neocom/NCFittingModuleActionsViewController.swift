@@ -224,8 +224,9 @@ class NCFittingModuleActionsViewController: NCTreeViewController {
 		for module in modules {
 			ship.remove(module)
 		}
-		NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
+		self.modules = nil
 		self.dismiss(animated: true, completion: nil)
+		NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 	}
 
 	@IBAction func onChangeHullType(_ sender: UIStepper) {

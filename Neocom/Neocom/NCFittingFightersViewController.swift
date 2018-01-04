@@ -33,18 +33,27 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 		droneBayLabel.unit = .cubicMeter
 	}
 	
+	private var needsReload = true
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		if self.treeController.content == nil {
 			self.treeController.content = TreeNode()
-			reload()
+			DispatchQueue.main.async {
+				self.reload()
+			}
 		}
-		
+		else if needsReload {
+			DispatchQueue.main.async {
+				self.reload()
+			}
+		}
+
 		if observer == nil {
 			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				guard self?.view.window != nil else {
-					self?.treeController.content = nil
+					self?.needsReload = true
 					return
 				}
 				self?.reload()
@@ -140,7 +149,7 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 		sections.append(NCActionRow(title: NSLocalizedString("Add Drone", comment: "").uppercased()))
 		treeController.content?.children = sections
 		update()
-		
+		needsReload = false
 	}
 	
 }

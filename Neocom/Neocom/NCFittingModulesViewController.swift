@@ -209,6 +209,8 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 		calibrationLabel.unit = .none
 	}
 	
+	private var needsReload = true
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
@@ -218,11 +220,16 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 				self.reload()
 			}
 		}
+		else if needsReload {
+			DispatchQueue.main.async {
+				self.reload()
+			}
+		}
 	
 		if observer == nil {
 			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				guard self?.view.window != nil else {
-					self?.treeController.content = nil
+					self?.needsReload = true
 					return
 				}
 				self?.reload()
@@ -289,8 +296,28 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 			Route(kind: .popover, viewController: typePickerViewController).perform(source: self, sender: treeController.cell(for: node))
 		}
 		else {
-			guard let fleet = fleet else {return}
-			Router.Fitting.ModuleActions(item.modules, fleet: fleet).perform(source: self, sender: treeController.cell(for: item))
+			if let module = item.modules.first,  module.slot == DGMModule.Slot.mode {
+				typePickerViewController.category = NCDBDgmppItemCategory.category(categoryID: .mode, subcategory: ship.typeID)
+				typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
+					let typeID = Int(type.typeID)
+					do {
+						ship.remove(module)
+						try ship.add(DGMModule(typeID: typeID))
+					}
+					catch {
+					}
+					NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
+					if self?.editorViewController?.traitCollection.horizontalSizeClass == .compact || self?.traitCollection.userInterfaceIdiom == .phone {
+						typePickerViewController?.dismiss(animated: true)
+					}
+				}
+				Route(kind: .popover, viewController: typePickerViewController).perform(source: self, sender: treeController.cell(for: node))
+
+			}
+			else {
+				guard let fleet = fleet else {return}
+				Router.Fitting.ModuleActions(item.modules, fleet: fleet).perform(source: self, sender: treeController.cell(for: item))
+			}
 		}
 	}
 	
@@ -381,7 +408,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 				var socket = 0
 				var r = [NCFittingModuleRow]()
 				for module in ship.modules(slot: slot) {
-					r.append(contentsOf: (socket..<module.socket).map{ _ in
+					r.append(contentsOf: (socket..<max(module.socket, socket)).map{ _ in
 						return NCFittingModuleRow(modules: [], slot: slot)
 					})
 					r.append(NCFittingModuleRow(modules: [module], slot: slot))
@@ -400,5 +427,6 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 		
 		treeController.content?.children = sections
 		update()
+		needsReload = false
 	}
 }

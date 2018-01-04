@@ -336,18 +336,25 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 		
 	}
 	
+	private var needsReload = true
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		if observer == nil {
 			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				guard self?.view.window != nil else {
-					self?.treeController?.content = nil
+					self?.needsReload = true
 					return
 				}
 				self?.updateContent {}
 			}
 		}
+		
+		if needsReload {
+			reload()
+		}
+
 	}
 	
 	@IBAction func onReloadFactor(_ sender: UISwitch) {
@@ -363,7 +370,10 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 	//MARK: - Private
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
-		
+		defer {
+			completionHandler()
+		}
+
 		if self.treeController?.content == nil {
 			self.treeController?.content = TreeNode()
 		}
@@ -399,6 +409,7 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 		NCDataManager(account: NCAccount.current).prices(typeIDs: typeIDs) { result in
 			pricesSection.prices = result
 		}
-		completionHandler()
+		needsReload = false
+
 	}
 }

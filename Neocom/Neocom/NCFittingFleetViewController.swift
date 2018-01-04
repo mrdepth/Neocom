@@ -24,13 +24,15 @@ class NCFittingFleetViewController: NCTreeViewController, NCFittingEditorPage {
 
 	}
 	
+	private var needsReload = true
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		if observer == nil {
 			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				guard self?.view.window != nil else {
-					self?.treeController?.content = nil
+					self?.needsReload = true
 					return
 				}
 				self?.reload()
@@ -40,6 +42,10 @@ class NCFittingFleetViewController: NCTreeViewController, NCFittingEditorPage {
 		let active = fleet?.active
 		if let node = treeController?.content?.children.first(where: {($0 as? NCFleetMemberRow)?.pilot == active}) {
 			treeController?.selectCell(for: node, animated: true, scrollPosition: .none)
+		}
+
+		if needsReload {
+			reload()
 		}
 
 	}
@@ -118,5 +124,6 @@ class NCFittingFleetViewController: NCTreeViewController, NCFittingEditorPage {
 				treeController?.selectCell(for: node, animated: false, scrollPosition: .none)
 			}
 		}
+		needsReload = false
 	}
 }

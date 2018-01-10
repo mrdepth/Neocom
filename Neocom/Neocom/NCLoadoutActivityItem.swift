@@ -154,8 +154,7 @@ enum NCLoadoutRepresentation {
 	}
 	
 	private func inGameRepresentation(_ loadout: (typeID: Int, data: NCFittingLoadout, name: String)) -> ESI.Fittings.MutableFitting {
-		let fitting = ESI.Fittings.MutableFitting()
-		fitting.shipTypeID = loadout.typeID
+		var fitting = ESI.Fittings.MutableFitting(localizedDescription: "", items: [], name: "", shipTypeID: loadout.typeID)
 		
 		let shipName: String = NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> String? in
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
@@ -182,10 +181,7 @@ enum NCLoadoutRepresentation {
 				let items = i.value.map { j -> [ESI.Fittings.Item] in
 					var items: [ESI.Fittings.Item] = []
 					for _ in 0..<j.count {
-						let item = ESI.Fittings.Item()
-						item.quantity = 1
-						item.typeID = j.typeID
-						item.flag = flags[min(slot, flags.count - 1)].intValue
+						let item = ESI.Fittings.Item(flag: flags[min(slot, flags.count - 1)].intValue, quantity: 1, typeID: j.typeID)
 						slot += 1
 						items.append(item)
 					}
@@ -198,11 +194,8 @@ enum NCLoadoutRepresentation {
 				guard let type = invTypes[i.typeID] else {return nil}
 				guard let categoryID = type.group?.category?.categoryID, let category = NCDBCategoryID(rawValue: Int(categoryID)) else {return nil}
 				
-				let item = ESI.Fittings.Item()
-				item.quantity = i.count
-				item.typeID = i.typeID
-				
-				item.flag = category == .fighter ? ESI.Assets.Asset.Flag.fighterBay.intValue : ESI.Assets.Asset.Flag.droneBay.intValue
+				let flag = category == .fighter ? ESI.Assets.Asset.Flag.fighterBay.intValue : ESI.Assets.Asset.Flag.droneBay.intValue
+				let item = ESI.Fittings.Item(flag: flag, quantity: i.count, typeID: i.typeID)
 				return item
 				}
 			

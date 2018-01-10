@@ -15,15 +15,6 @@ enum NCCachedResult<T> {
 	case success(value: T, cacheRecord: NCCacheRecord?)
 	case failure(Error)
 	
-	var value: T? {
-		switch self {
-		case let .success(value, record):
-			return record?.data?.data as? T ?? value
-		default:
-			return nil
-		}
-	}
-	
 	var cacheRecord: NCCacheRecord? {
 		switch self {
 		case let .success(_, record):
@@ -41,7 +32,28 @@ enum NCCachedResult<T> {
 			return nil
 		}
 	}
-	
+}
+
+extension NCCachedResult where T:Codable {
+	var value: T? {
+		switch self {
+		case let .success(value, record):
+			return record?.get() ?? value
+		default:
+			return nil
+		}
+	}
+}
+
+extension NCCachedResult where T == UIImage {
+	var value: T? {
+		switch self {
+		case let .success(value, record):
+			return record?.get() ?? value
+		default:
+			return nil
+		}
+	}
 }
 
 enum NCResult<T> {
@@ -68,10 +80,6 @@ extension OAuth2Token {
 typealias NCLoaderCompletion<T> = (_ result: Result<T>, _ cacheTime: TimeInterval) -> Void
 
 
-fileprivate var tokens: NSMapTable<NSString, OAuth2Token> = NSMapTable.strongToWeakObjects()
-fileprivate var retriers: NSMapTable<NSString, OAuth2Retrier> = NSMapTable.strongToWeakObjects()
-
-
 class NCDataManager {
 	enum NCDataManagerError: Error {
 		case internalError
@@ -83,38 +91,15 @@ class NCDataManager {
 	let cachePolicy: URLRequest.CachePolicy
 	var observer: NCManagedObjectObserver?
 	
-	lazy var retrier: OAuth2Retrier? = {
-		guard let token = self.token else {return nil}
-		
-		let key = token.identifier as NSString
-		if let cached = retriers.object(forKey: key) {
-			return cached
-		}
-		else {
-			let retrier = OAuth2Retrier(token: token, clientID: ESClientID, secretKey: ESSecretKey)
-			retriers.setObject(retrier, forKey: key)
-			return retrier
-		}
-	}()
-	
 	lazy var esi: ESI = {
 		if let token = self.token {
-			return ESI(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility, cachePolicy: self.cachePolicy, retrier: self.retrier)
+			return ESI(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility, cachePolicy: self.cachePolicy)
 		}
 		else {
 			return ESI(cachePolicy: self.cachePolicy)
 		}
 	}()
 
-//	lazy var eve: EVE = {
-//		if let token = self.token {
-//			return EVE(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility, cachePolicy: self.cachePolicy, retrier: self.retrier)
-//		}
-//		else {
-//			return EVE(cachePolicy: self.cachePolicy)
-//		}
-//	}()
-	
 	lazy var zKillboard: ZKillboard = {
 		return ZKillboard(cachePolicy: self.cachePolicy)
 	}()
@@ -130,15 +115,7 @@ class NCDataManager {
 				self?.token = acc.token
 			}*/
 			self.account = String(acc.characterID)
-			let token = acc.token
-			let key = token.identifier as NSString
-			if let cached = tokens.object(forKey: key) {
-				self.token = cached
-			}
-			else {
-				tokens.setObject(token, forKey: key)
-				self.token = token
-			}
+			token = acc.token
 		}
 		else {
 			self.account = nil
@@ -665,10 +642,7 @@ class NCDataManager {
 	}
 
 	func sendMail(body: String, subject: String, recipients: [ESI.Mail.Recipient], completionHandler: @escaping (Result<Int>) -> Void) {
-		let mail = ESI.Mail.NewMail()
-		mail.body = body
-		mail.subject = subject
-		mail.recipients = recipients
+		let mail = ESI.Mail.NewMail(approvedCost: nil, body: body, recipients: recipients, subject: subject)
 		self.esi.mail.sendNewMail(characterID: Int(characterID), mail: mail, completionBlock: completionHandler)
 	}
 	
@@ -728,9 +702,7 @@ class NCDataManager {
 			return
 		}
 		
-		let contents = ESI.Mail.UpdateContents()
-		contents.read = true
-		contents.labels = mail.labels
+		let contents = ESI.Mail.UpdateContents(labels: mail.labels, read: true)
 		self.esi.mail.updateMetadataAboutMail(characterID: Int(self.characterID), contents: contents, mailID: Int(mailID), completionBlock: completionHandler)
 	}
 	
@@ -1089,7 +1061,7 @@ class NCDataManager {
 			loader { (result, cacheTime) in
 				switch (result) {
 				case let .success(value):
-					cache.store(value as? NSObject, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
+					cache.store(value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
 //						completionHandler(.success(value: value, cacheRecord: cacheRecord))
 						finish(value: value, record: cacheRecord, error: nil)
 					}
@@ -1104,7 +1076,7 @@ class NCDataManager {
 		case .returnCacheDataElseLoad:
 			cache.performBackgroundTask { (managedObjectContext) in
 				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
-				let object = record?.data?.data as? T
+				let object: T? = record?.get() ?? nil
 				
 				DispatchQueue.main.async {
 					if let object = object {
@@ -1118,7 +1090,7 @@ class NCDataManager {
 						loader { (result, cacheTime) in
 							switch (result) {
 							case let .success(value):
-								cache.store(value as? NSObject, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
+								cache.store(value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
 //									completionHandler(.success(value: value, cacheRecord: cacheRecord))
 									finish(value: value, record: cacheRecord, error: nil)
 								}
@@ -1136,7 +1108,7 @@ class NCDataManager {
 		case .returnCacheDataDontLoad:
 			cache.performBackgroundTask { (managedObjectContext) in
 				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
-				let object = record?.data?.data as? T
+				let object: T? = record?.get() ?? nil
 				
 				DispatchQueue.main.async {
 					if let object = object {
@@ -1154,7 +1126,7 @@ class NCDataManager {
 		default:
 			cache.performBackgroundTask { (managedObjectContext) in
 				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
-				let object = record?.data?.data as? T
+				let object: T? = record?.get() ?? nil
 				let expired = record?.isExpired ?? true
 				DispatchQueue.main.async {
 					if let object = object {
@@ -1165,7 +1137,7 @@ class NCDataManager {
 							loader { (result, cacheTime) in
 								switch (result) {
 								case let .success(value):
-									cache.store(value as? NSObject, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { _ in
+									cache.store(value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { _ in
 									}
 								default:
 									break
@@ -1179,7 +1151,7 @@ class NCDataManager {
 						loader { (result, cacheTime) in
 							switch (result) {
 							case let .success(value):
-								cache.store(value as? NSObject, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
+								cache.store(value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: cacheTime), error: nil) { cacheRecord in
 //									completionHandler(.success(value: value, cacheRecord: cacheRecord))
 									finish(value: value, record: cacheRecord, error: nil)
 								}

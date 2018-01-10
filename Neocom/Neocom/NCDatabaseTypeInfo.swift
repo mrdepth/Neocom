@@ -220,7 +220,7 @@ class NCDatabaseTypeMarketRow: TreeRow {
 	func reload() {
 		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
 			guard let record = (try? managedObjectContext.existingObject(with: self.history.objectID)) as? NCCacheRecord else {return}
-			guard let history = record.data?.data as? [ESI.Market.History] else {return}
+			guard let history: [ESI.Market.History] = record.get() else {return}
 			guard history.count > 0 else {return}
 			guard let date = history.last?.date.addingTimeInterval(-3600 * 24 * 365) else {return}
 			guard let i = history.index(where: {

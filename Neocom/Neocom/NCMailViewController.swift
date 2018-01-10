@@ -34,20 +34,20 @@ class NCMailViewController: NCTreeViewController {
 		super.treeController(treeController, didSelectCellWithNode: node)
 		if let node = node as? NCMailRow {
 			if node.mail.isRead != true {
-				node.mail.isRead = true
+				var mail = node.mail
+				mail.isRead = true
 				treeController.reloadCells(for: [node])
 				guard let record = node.cacheRecord else {return}
-				guard var headers = record.data?.data as? [ESI.Mail.Header] else {return}
+				guard var headers: [ESI.Mail.Header] = record.get() else {return}
 				guard let i = headers.index(where: {$0.mailID == node.mail.mailID}) else {return}
-				let mail = headers[i].copy() as! ESI.Mail.Header
-				mail.isRead = true
-				headers[i] = mail
-				record.data?.data = headers as NSArray
+				var header = headers[i]
+				header.isRead = true
+				headers[i] = header
+				record.set(headers)
 				if record.managedObjectContext?.hasChanges == true {
 					try? record.managedObjectContext?.save()
 				}
 				if let unread = label?.unreadCount, unread > 0 {
-					label = label?.copy() as? ESI.Mail.MailLabelsAndUnreadCounts.Label
 					label?.unreadCount = unread - 1
 					(parent as? NCMailPageViewController)?.saveUnreadCount()
 				}
@@ -78,20 +78,19 @@ class NCMailViewController: NCTreeViewController {
 					switch result {
 					case .success:
 						guard let record = node.cacheRecord else {return}
-						guard var headers = record.data?.data as? [ESI.Mail.Header] else {return}
+						guard var headers: [ESI.Mail.Header] = record.get() else {return}
 						guard let i = headers.index(where: {$0.mailID == node.mail.mailID}) else {return}
 						headers.remove(at: i)
 						
 						guard let strongSelf = self else {return}
 						
 						if header.isRead == false, let unread = strongSelf.label?.unreadCount, unread > 0 {
-							strongSelf.label = strongSelf.label?.copy() as? ESI.Mail.MailLabelsAndUnreadCounts.Label
 							strongSelf.label?.unreadCount = unread - 1
 							strongSelf.updateTitle()
 							(strongSelf.parent as? NCMailPageViewController)?.saveUnreadCount()
 						}
 						
-						record.data?.data = headers as NSArray
+						record.set(headers)
 						if record.managedObjectContext?.hasChanges == true {
 							try? record.managedObjectContext?.save()
 						}

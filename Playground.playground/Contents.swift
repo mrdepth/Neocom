@@ -4,12 +4,8 @@ import UIKit
 import PlaygroundSupport
 import CoreData
 
-class S {
-	var i: Int = 0
-}
+let s = "1234.123123"
 
-var d = [Int: S]()
+let d = Decimal(string: s)!
 
-d[1, default: S()].i += 1
-
-print("\(d)")
+Double(d)

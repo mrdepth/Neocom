@@ -78,7 +78,7 @@ class NCCache: NSObject {
 		}
 	}
 	
-	func store(_ object: NSObject?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, completionHandler: ((NCCacheRecord?) -> Void)?) {
+	func store<T>(_ object: T?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, completionHandler: ((NCCacheRecord?) -> Void)?) {
 		performBackgroundTask { (managedObjectContext) in
 			var record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
 			if record == nil {
@@ -90,7 +90,7 @@ class NCCache: NSObject {
 				record = r
 			}
 			if object != nil || record!.data!.data == nil {
-				record!.data?.data = object
+				record!.set(object)
 				record!.date = date ?? Date()
 				record!.expireDate = expireDate ?? record!.expireDate ?? record!.date!.addingTimeInterval(3) as Date?
 			}
@@ -104,6 +104,33 @@ class NCCache: NSObject {
 			}
 		}
 	}
+	
+	/*func store(_ data: Data?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, completionHandler: ((NCCacheRecord?) -> Void)?) {
+		performBackgroundTask { (managedObjectContext) in
+			var record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
+			if record == nil {
+				
+				let r = NCCacheRecord(entity: NSEntityDescription.entity(forEntityName: "Record", in: managedObjectContext)!, insertInto: managedObjectContext)
+				r.account = account
+				r.key = key
+				r.data = NCCacheRecordData(entity: NSEntityDescription.entity(forEntityName: "RecordData", in: managedObjectContext)!, insertInto: managedObjectContext)
+				record = r
+			}
+			if data != nil || record!.data!.data == nil {
+				record!.data?.data = data
+				record!.date = date ?? Date()
+				record!.expireDate = expireDate ?? record!.expireDate ?? record!.date!.addingTimeInterval(3) as Date?
+			}
+			if managedObjectContext.hasChanges {
+				try? managedObjectContext.save()
+			}
+			if let completionHandler = completionHandler {
+				DispatchQueue.main.async {
+					completionHandler((try? self.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord)
+				}
+			}
+		}
+	}*/
 	
 	//MARK: Private
 	
@@ -188,6 +215,36 @@ class NCSecureUnarchiver: ValueTransformer {
 	}
 }
 
+extension NCCacheRecord {
+	func get<T: Decodable>() -> T? {
+		guard let data = self.data?.data else {return nil}
+		return try? JSONDecoder().decode(T.self, from: data)
+	}
+	func set<T: Encodable>(_ value: T?) {
+		if let value = value {
+			guard let data = try? JSONEncoder().encode(value) else {return}
+			self.data?.data = data
+		}
+		else {
+			data?.data = nil
+		}
+	}
+	
+	func get() -> UIImage? {
+		guard let data = self.data?.data else {return nil}
+		return UIImage(data: data)
+	}
+	func set(_ value: UIImage?) {
+		if let value = value {
+			guard let data = UIImagePNGRepresentation(value) else {return}
+			self.data?.data = data
+		}
+		else {
+			data?.data = nil
+		}
+	}
+
+}
 
 /*extension NCMail {
 	enum Folder: Int {

@@ -49,14 +49,18 @@ class NCDatabaseTypeInfoRow: DefaultTreeRow {
 			route = Router.Database.TypeInfo(type.objectID)
 		case .sizeClass:
 			switch Int(value) {
+			case 0:
+				return nil;
 			case 1:
 				subtitle = NSLocalizedString("Small", comment: "")
 			case 2:
 				subtitle = NSLocalizedString("Medium", comment: "")
 			case 3:
 				subtitle = NSLocalizedString("Large", comment: "")
-			default:
+			case 4:
 				subtitle = NSLocalizedString("X-Large", comment: "")
+			default:
+				subtitle = "\(Int(value))"
 			}
 		case .bonus:
 			subtitle = "+" + NCUnitFormatter.localizedString(from: Double(value), unit: .none, style: .full)
@@ -216,7 +220,7 @@ class NCDatabaseTypeMarketRow: TreeRow {
 	func reload() {
 		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
 			guard let record = (try? managedObjectContext.existingObject(with: self.history.objectID)) as? NCCacheRecord else {return}
-			guard let history = record.data?.data as? [ESI.Market.History] else {return}
+			guard let history: [ESI.Market.History] = record.get() else {return}
 			guard history.count > 0 else {return}
 			guard let date = history.last?.date.addingTimeInterval(-3600 * 24 * 365) else {return}
 			guard let i = history.index(where: {

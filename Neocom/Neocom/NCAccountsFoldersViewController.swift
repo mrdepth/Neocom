@@ -146,7 +146,7 @@ class NCAccountsFoldersViewController: NCTreeViewController {
 		})
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { (action) in
-			if textField?.text?.characters.count ?? 0 > 0 && folder.name != textField?.text {
+			if textField?.text?.isEmpty == false && folder.name != textField?.text {
 				folder.name = textField?.text
 				if folder.managedObjectContext?.hasChanges == true {
 					try? folder.managedObjectContext?.save()

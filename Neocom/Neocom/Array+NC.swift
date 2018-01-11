@@ -106,3 +106,21 @@ extension Array where Element: NSObject {
 	}*/
 	
 }
+
+extension Array {
+	func group(by closure: (Element, Element) -> Bool) -> [ArraySlice<Element>] {
+		var copy = self
+		var result = [ArraySlice<Element>]()
+		let n = count
+		var left = 0
+		while left < n {
+			let first = copy[left]
+			let right = copy[left..<n].partition { (i) -> Bool in
+				return !closure(first, i)
+			}
+			result.append(copy[left..<right])
+			left = right
+		}
+		return result
+	}
+}

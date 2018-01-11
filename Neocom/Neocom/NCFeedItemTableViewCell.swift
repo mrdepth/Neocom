@@ -39,7 +39,7 @@ class NCFeedItemRow: TreeRow {
 			                                      options: [.documentType : NSAttributedString.DocumentType.html,
 			                                                .characterEncoding: String.Encoding.utf8.rawValue],
 			                                      documentAttributes: nil).string {
-				subtitle = String(string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).characters.prefix(256))
+				subtitle = String(string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).prefix(256))
 			}
 			else {
 				subtitle = nil
@@ -74,9 +74,7 @@ class NCFeedItemRow: TreeRow {
 		cell.titleLabel.textColor = isVisited ? .lightText : .white
 	}
 	
-	override var hashValue: Int {
-		return item.hashValue
-	}
+	override lazy var hashValue: Int = item.hashValue
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCFeedItemRow)?.hashValue == hashValue

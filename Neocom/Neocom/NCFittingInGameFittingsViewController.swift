@@ -33,9 +33,7 @@ class NCInGameFittingRow: TreeRow {
 		cell.accessoryType = .disclosureIndicator
 	}
 	
-	override var hashValue: Int {
-		return fitting.hashValue
-	}
+	override lazy var hashValue: Int = fitting.hashValue
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCInGameFittingRow)?.hashValue == hashValue
@@ -228,12 +226,12 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 				switch result {
 				case .success:
 					guard let record = self.fittings?.cacheRecord else {return}
-					guard var fittings = record.data?.data as? [ESI.Fittings.Fitting] else {return}
+					guard var fittings: [ESI.Fittings.Fitting] = record.get() else {return}
 					guard let i = fittings.index(where: {$0.fittingID == node.fitting.fittingID}) else {return}
 					fittings.remove(at: i)
 					
 					
-					record.data?.data = fittings as NSArray
+					record.set(fittings)
 					
 					if let parent = node.parent, let i = parent.children.index(of: node) {
 						parent.children.remove(at: i)

@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import Dgmpp
 
 enum NCColonyError: Error {
 	case invalidLayout
@@ -16,75 +17,74 @@ enum NCColonyError: Error {
 class NCColonySection: TreeSection {
 	let colony: ESI.PlanetaryInteraction.Colony
 	let layout: NCResult<ESI.PlanetaryInteraction.ColonyLayout>
-	let engine: NCFittingEngine
 	var isHalted: Bool = false
+	let planet = DGMPlanet()
 	
-	lazy var planet: NCDBMapDenormalize? = {
+	lazy var planetInfo: NCDBMapDenormalize? = {
 		return NCDatabase.sharedDatabase?.mapDenormalize[self.colony.planetID]
 	}()
 	
-	init(colony: ESI.PlanetaryInteraction.Colony, layout: NCResult<ESI.PlanetaryInteraction.ColonyLayout>, engine: NCFittingEngine) {
+	init(colony: ESI.PlanetaryInteraction.Colony, layout: NCResult<ESI.PlanetaryInteraction.ColonyLayout>) {
 		self.colony = colony
 		self.layout = layout
-		self.engine = engine
 		
 		super.init(prototype: Prototype.NCHeaderTableViewCell.default)
 		
 		switch layout {
 		case let .success(layout):
-			let planetTypeID: Int32 = NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
-				return NCDBInvType.invTypes(managedObjectContext: managedObjectContext)[self.colony.planetID]?.typeID
-			} ?? 0
+//			let planetTypeID: Int32 = NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
+//				return NCDBInvType.invTypes(managedObjectContext: managedObjectContext)[self.colony.planetID]?.typeID
+//			} ?? 0
 			
 			do {
-				let planet = NCFittingPlanet(typeID: Int(planetTypeID))
-				engine.planet = planet
 				
 				
 				for pin in layout.pins {
-					guard planet.facility(identifier: pin.pinID) == nil,
-						let facility = planet.addFacility(typeID: pin.typeID, identifier: pin.pinID) else {throw NCColonyError.invalidLayout}
+					guard planet[pin.pinID] == nil else {throw NCColonyError.invalidLayout}
+					let facility = try planet.add(facility: pin.typeID, identifier: pin.pinID)
 					
 					switch facility {
-					case let ecu as NCFittingExtractorControlUnit:
-						ecu.launchTime = pin.lastCycleStart?.timeIntervalSinceReferenceDate ?? 0
-						ecu.installTime = pin.installTime?.timeIntervalSinceReferenceDate ?? 0
-						ecu.expiryTime = pin.expiryTime?.timeIntervalSinceReferenceDate ?? 0
+					case let ecu as DGMExtractorControlUnit:
+						ecu.launchTime = pin.lastCycleStart ?? Date.init(timeIntervalSinceReferenceDate: 0)
+						ecu.installTime = pin.installTime ?? Date.init(timeIntervalSinceReferenceDate: 0)
+						ecu.expiryTime = pin.expiryTime ?? Date.init(timeIntervalSinceReferenceDate: 0)
 						ecu.cycleTime = TimeInterval(pin.extractorDetails?.cycleTime ?? 0)
 						ecu.quantityPerCycle = pin.extractorDetails?.qtyPerCycle ?? 0
 					//							ecu.quantityPerCycle *= 2
-					case let factory as NCFittingIndustryFacility:
-						factory.launchTime = pin.lastCycleStart?.timeIntervalSinceReferenceDate ?? 0
+					case let factory as DGMFactory:
+						factory.launchTime = pin.lastCycleStart ?? Date.init(timeIntervalSinceReferenceDate: 0)
 						if let schematicID = pin.schematicID {
-							factory.schematic = NCFittingSchematic(schematicID: schematicID)
+							factory.schematicID = schematicID
 						}
 						
 					default:
 						break
 					}
-					pin.contents?.filter {$0.amount > 0}.forEach {facility.addCommodity(typeID: $0.typeID, quantity: Int($0.amount))}
+					pin.contents?.filter {$0.amount > 0}.forEach {
+						facility.add(DGMCommodity(typeID: $0.typeID, quantity: Int($0.amount)))
+					}
 				}
 				
 				for route in layout.routes {
-					guard let source = planet.facility(identifier: route.sourcePinID),
-						let destination = planet.facility(identifier: route.destinationPinID) else {throw NCColonyError.invalidLayout}
-					
-					planet.addRoute(from: source, to: destination, commodity: NCFittingCommodity(contentType: route.contentTypeID, quantity: Int(route.quantity), engine: engine), identifier: route.routeID)
+					guard let source = planet[route.sourcePinID],
+						let destination = planet[route.destinationPinID] else {throw NCColonyError.invalidLayout}
+					let route = DGMRoute(from: source, to: destination, commodity: DGMCommodity(typeID: route.contentTypeID, quantity: Int(route.quantity)))
+					planet.add(route: route)
 				}
 				
 				let lastUpdate = colony.lastUpdate
-				planet.lastUpdate = lastUpdate.timeIntervalSinceReferenceDate
+				planet.lastUpdate = lastUpdate
 				
-				planet.simulate()
+				planet.run()
 				
-				let currentTime = Date().timeIntervalSinceReferenceDate
+				let currentTime = Date()
 				var rows = planet.facilities.flatMap { i -> NCFacilityRow? in
 					switch i {
-					case let facility as NCFittingExtractorControlUnit:
+					case let facility as DGMExtractorControlUnit:
 						return NCExtractorControlUnitRow(extractor: facility, currentTime: currentTime)
-					case let facility as NCFittingIndustryFacility:
+					case let facility as DGMFactory:
 						return NCFactoryRow(factory: facility, currentTime: currentTime)
-					case let facility as NCFittingStorageFacility:
+					case let facility as DGMStorage:
 						return NCStorageRow(storage: facility, currentTime: currentTime)
 					default:
 						return nil
@@ -95,7 +95,7 @@ class NCColonySection: TreeSection {
 				
 				self.children = rows.map{DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, children: [$0])}
 				
-				isHalted = planet.facilities.lazy.flatMap{$0 as? NCFittingExtractorControlUnit}.first {$0.expiryTime < currentTime} != nil
+				isHalted = planet.facilities.lazy.flatMap{$0 as? DGMExtractorControlUnit}.first {$0.expiryTime < currentTime} != nil
 				isExpanded = isHalted
 			}
 			catch {
@@ -147,23 +147,23 @@ class NCFacilityRow: TreeRow {
 		return NCDatabase.sharedDatabase?.invTypes[self.typeID]
 	}()
 	
-	init(prototype: Prototype, facility: NCFittingFacility) {
+	init(prototype: Prototype, facility: DGMFacility) {
 		typeID = facility.typeID
-		facilityName = facility.facilityName
+		facilityName = facility.name
 		identifier = facility.identifier
 		let isExpanded: Bool
 		switch facility {
-		case is NCFittingExtractorControlUnit:
-			sortDescriptor = "0\(facility.typeName)\(facilityName)"
+		case is DGMExtractorControlUnit:
+			sortDescriptor = "0\(facility.typeName ?? "")\(facilityName)"
 			isExpanded = true
-		case is NCFittingStorageFacility:
-			sortDescriptor = "1\(facility.typeName)\(facilityName)"
+		case is DGMStorage:
+			sortDescriptor = "1\(facility.typeName ?? "")\(facilityName)"
 			isExpanded = false
-		case is NCFittingIndustryFacility:
-			sortDescriptor = "2\(facility.typeName)\(facilityName)"
+		case is DGMFactory:
+			sortDescriptor = "2\(facility.typeName ?? "")\(facilityName)"
 			isExpanded = false
 		default:
-			sortDescriptor = "3\(facility.typeName)\(facilityName)"
+			sortDescriptor = "3\(facility.typeName ?? "")\(facilityName)"
 			isExpanded = false
 		}
 		super.init(prototype: prototype, accessoryButtonRoute: Router.Database.TypeInfo(facility.typeID))
@@ -222,30 +222,30 @@ class NCFacilityOutputRow: TreeRow {
 
 class NCExtractorControlUnitRow: NCFacilityRow {
 
-	let wasteState: NCFittingProductionState?
-	let currentTime: TimeInterval
+	let wasteState: DGMProductionState?
+	let currentTime: Date
 	let yield: Int
 	let waste: Int
-	let extractor: NCFittingExtractorControlUnit
+	let extractor: DGMExtractorControlUnit
 	
-	init(extractor: NCFittingExtractorControlUnit, currentTime: TimeInterval) {
+	init(extractor: DGMExtractorControlUnit, currentTime: Date) {
 		self.currentTime = currentTime
 		self.extractor = extractor
 		
-		let states = (extractor.states as? [NCFittingProductionState])?.flatMap { state -> (BarChart.Item)? in
-			guard let cycle = state.currentCycle as? NCFittingProductionCycle else {return nil}
+		let states = extractor.states.flatMap { state -> (BarChart.Item)? in
+			guard let cycle = state.cycle else {return nil}
 			let yield = Double(cycle.yield.quantity)
 			let waste = Double(cycle.waste.quantity)
-			let launchTime = Double(state.timestamp)
+			let launchTime = state.timestamp
 
 			let total = yield + waste
 			let f = total > 0 ? yield / total : 1
-			return BarChart.Item(x: launchTime, y: total, f: f)
-		} ?? []
+			return BarChart.Item(x: launchTime.timeIntervalSinceReferenceDate, y: total, f: f)
+		}
 		
-		let xRange: ClosedRange<TimeInterval>
+		let xRange: ClosedRange<Date>
 		if let from = states.first?.x, let to = states.last?.x {
-			xRange = from...max(to, currentTime)
+			xRange = Date(timeIntervalSinceReferenceDate: from)...max(Date(timeIntervalSinceReferenceDate: to), currentTime)
 		}
 		else {
 			xRange = currentTime...currentTime
@@ -259,9 +259,9 @@ class NCExtractorControlUnitRow: NCFacilityRow {
 
 		super.init(prototype: Prototype.NCDefaultTableViewCell.default, facility: extractor)
 		
-		if extractor.output.typeID > 0 {
+		if let output = extractor.output {
 			self.children = [NCFacilityChartRow(data: states, xRange: xRange, yRange: yRange, currentTime: currentTime, expiryTime: extractor.expiryTime, identifier: extractor.identifier),
-			                 NCFacilityOutputRow(typeID: extractor.output.typeID, identifier: extractor.identifier),
+			                 NCFacilityOutputRow(typeID: output.typeID, identifier: extractor.identifier),
 //			                 NCTypeInfoRow(typeID: extractor.output.typeID, accessoryType: .disclosureIndicator, route: Router.Database.TypeInfo(extractor.output.typeID)),
 			                 row,
 //			                 DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty)
@@ -273,10 +273,10 @@ class NCExtractorControlUnitRow: NCFacilityRow {
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
-			extractor.engine?.performBlockAndWait {
-				if self.extractor.output.typeID > 0 {
+//			extractor.engine?.performBlockAndWait {
+				if extractor.output != nil {
 					if let state = self.wasteState {
-						let t = state.timestamp - self.currentTime
+						let t = state.timestamp.timeIntervalSince(self.currentTime)
 						let p = Double(self.waste) / Double(self.waste + self.yield) * 100
 						if t > 0 {
 							cell.subtitleLabel?.text = String(format: NSLocalizedString("Waste in %@ (%.0f%%)", comment: ""), NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes), p)
@@ -287,7 +287,7 @@ class NCExtractorControlUnitRow: NCFacilityRow {
 						cell.subtitleLabel?.textColor = .yellow
 					}
 					else {
-						let t = self.extractor.expiryTime - self.currentTime
+						let t = self.currentTime.timeIntervalSince(self.extractor.expiryTime)
 						if t > 0 {
 							cell.subtitleLabel?.text = NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes)
 						}
@@ -301,26 +301,27 @@ class NCExtractorControlUnitRow: NCFacilityRow {
 					cell.subtitleLabel?.text = NSLocalizedString("Not Routed", comment: "")
 					cell.subtitleLabel?.textColor = .lightText
 				}
-		}
+//		}
 	}
 }
 
 class NCFactoryRow: NCFacilityRow {
 
-	init(factory: NCFittingIndustryFacility, currentTime: TimeInterval) {
+	init(factory: DGMFactory, currentTime: Date) {
 
 		super.init(prototype: Prototype.NCDefaultTableViewCell.default, facility: factory)
 		
 		
-		let states = factory.states as? [NCFittingProductionState]
-		let lastState = states?.reversed().first {$0.currentCycle == nil}
+		let states = factory.states
+		let lastState = states.reversed().first {$0.cycle == nil}
 		
 		var ratio: [Int: Double] = [:]
-		
+
 		for input in factory.inputs {
-			guard let commodity = input.commodity else {continue}
-			guard let incomming = input.source?.incomming(with: commodity) else {continue}
-			ratio[incomming.typeID] = (ratio[incomming.typeID] ?? 0) + Double(incomming.quantity)
+			let commodity = input.commodity
+			let income = input.from.income(typeID: commodity.typeID)
+			guard income.quantity > 0 else {continue}
+			ratio[income.typeID] = (ratio[income.typeID] ?? 0) + Double(income.quantity)
 		}
 		
 		let p = ratio.filter{$0.value > 0}.map{1.0 / $0.value}.max() ?? 1
@@ -329,7 +330,7 @@ class NCFactoryRow: NCFacilityRow {
 			ratio[key] = ((value * p) * 10).rounded() / 10
 		}
 		
-		let expiryTime = lastState?.timestamp ?? Date.distantPast.timeIntervalSinceReferenceDate
+		let expiryTime = lastState?.timestamp ?? Date.distantPast
 		let identifier = factory.identifier
 		let items = ratio.sorted(by: {$0.key < $1.key})
 		let inputs = items.map {
@@ -339,8 +340,8 @@ class NCFactoryRow: NCFacilityRow {
 		var children: [TreeNode] = []
 		children.append(contentsOf: inputs as [TreeNode])
 		
-		if factory.output.typeID > 0 {
-			children.append(NCFacilityOutputRow(typeID: factory.output.typeID, identifier: factory.identifier))
+		if let output = factory.output {
+			children.append(NCFacilityOutputRow(typeID: output.typeID, identifier: factory.identifier))
 		}
 		
 		children.append(NCFactoryDetailsRow(factory: factory, inputRatio: items.map{$0.value}, currentTime: currentTime))
@@ -358,14 +359,14 @@ class NCFactoryRow: NCFacilityRow {
 class NCFactoryInputRow: TreeRow {
 	let typeID: Int
 	let identifier: Int64
-	let currentTime: TimeInterval
-	let expiryTime: TimeInterval
+	let currentTime: Date
+	let expiryTime: Date
 	
 	lazy var type: NCDBInvType? = {
 		return NCDatabase.sharedDatabase?.invTypes[self.typeID]
 	}()
 	
-	init(typeID: Int, identifier: Int64, currentTime: TimeInterval, expiryTime: TimeInterval) {
+	init(typeID: Int, identifier: Int64, currentTime: Date, expiryTime: Date) {
 		
 		self.typeID = typeID
 		self.identifier = identifier
@@ -383,7 +384,7 @@ class NCFactoryInputRow: TreeRow {
 		
 		let typeName = type?.typeName ?? NSLocalizedString("Unknown", comment: "")
 
-		let shortage = expiryTime - currentTime
+		let shortage = expiryTime.timeIntervalSince(currentTime)
 		if shortage <= 0  {
 			cell.subtitleLabel?.attributedText = typeName + " (\(NSLocalizedString("Depleted", comment: "")))" * [NSAttributedStringKey.foregroundColor: UIColor.red]
 		}
@@ -408,7 +409,7 @@ class NCStorageRow: NCFacilityRow {
 	let volume: Double
 	let capacity: Double
 	
-	init(storage: NCFittingStorageFacility, currentTime: TimeInterval) {
+	init(storage: DGMStorage, currentTime: Date) {
 		let capacity = storage.capacity
 		
 		var children: [TreeNode] = []
@@ -417,18 +418,18 @@ class NCStorageRow: NCFacilityRow {
 			let states = storage.states
 			var data = states.flatMap { state -> (BarChart.Item)? in
 				let total = state.volume
-				return BarChart.Item(x: state.timestamp, y: total, f: 1)
+				return BarChart.Item(x: state.timestamp.timeIntervalSinceReferenceDate, y: total, f: 1)
 				}
 			
-			let xRange: ClosedRange<TimeInterval>
+			let xRange: ClosedRange<Date>
 			if let from = data.first?.x, let to = data.last?.x {
-				if to > currentTime {
-					xRange = from...to
+				if Date(timeIntervalSinceReferenceDate: to) > currentTime {
+					xRange = Date(timeIntervalSinceReferenceDate: from)...Date(timeIntervalSinceReferenceDate: to)
 				}
 				else {
-					xRange = from...currentTime
+					xRange = Date(timeIntervalSinceReferenceDate: from)...currentTime
 					if var last = data.last {
-						last.x = currentTime
+						last.x = currentTime.timeIntervalSinceReferenceDate
 						data.append(last)
 					}
 				}
@@ -487,7 +488,7 @@ class NCCommodityRow: TreeRow {
 		return NCDatabase.sharedDatabase?.invTypes[self.typeID]
 	}()
 
-	init(commodity: NCFittingCommodity, identifier: Int64) {
+	init(commodity: DGMCommodity, identifier: Int64) {
 		
 		self.typeID = commodity.typeID
 		self.identifier = identifier
@@ -545,7 +546,6 @@ class NCPlanetaryViewController: NCTreeViewController {
 			tableView.backgroundView = nil
 			
 			let progress = Progress(totalUnitCount: Int64(value.count))
-			let engine = NCFittingEngine()
 			var sections = [NCColonySection]()
 			let dispatchGroup = DispatchGroup()
 			
@@ -562,10 +562,10 @@ class NCPlanetaryViewController: NCTreeViewController {
 							layout = .failure(error)
 						}
 						
-						engine.perform {
-							sections.append(NCColonySection(colony: colony, layout: layout, engine: engine))
+//						engine.perform {
+							sections.append(NCColonySection(colony: colony, layout: layout))
 							dispatchGroup.leave()
-						}
+//						}
 					}
 				}
 			}

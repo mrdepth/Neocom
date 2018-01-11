@@ -8,18 +8,18 @@
 
 import UIKit
 import CloudData
+import Dgmpp
 
 class NCFittingFuelRow: TreeRow {
-	let structure: NCFittingStructure
+	let structure: DGMStructure
 	
-	init(structure: NCFittingStructure) {
+	init(structure: DGMStructure) {
 		self.structure = structure
 		super.init(prototype: Prototype.NCDefaultTableViewCell.default)
 	}
 	
 	lazy var type: NCDBInvType? = {
-		guard let engine = self.structure.engine else {return nil}
-		let typeID = engine.sync {self.structure.fuelBlockTypeID}
+		let typeID = structure.fuelBlockTypeID
 		return NCDatabase.sharedDatabase?.invTypes[typeID]
 	}()
 	
@@ -31,14 +31,12 @@ class NCFittingFuelRow: TreeRow {
 		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		cell.accessoryType = .none
 		
-		guard let engine = self.structure.engine else {return}
-
 		if let price = price {
-			let (cycleFuelNeed, cycleTime) = engine.sync{(self.structure.cycleFuelNeed, self.structure.cycleTime)}
-			cell.subtitleLabel?.text = String.init(format: NSLocalizedString("%@/h (%@/day)", comment: ""), NCUnitFormatter.localizedString(from: cycleFuelNeed / cycleTime * 3600, unit: .none, style: .full), NCUnitFormatter.localizedString(from: cycleFuelNeed / cycleTime * 3600 * 24 * price, unit: .isk, style: .full))
+			let fuelUse = structure.fuelUse
+			cell.subtitleLabel?.text = String.init(format: NSLocalizedString("%@/h (%@/day)", comment: ""), NCUnitFormatter.localizedString(from: fuelUse * DGMHours(1), unit: .none, style: .full), NCUnitFormatter.localizedString(from: fuelUse * DGMDays(1) * price, unit: .isk, style: .full))
 		}
 		else {
-			let typeID = engine.sync {self.structure.fuelBlockTypeID}
+			let typeID = structure.fuelBlockTypeID
 			
 			NCDataManager(account: NCAccount.current).prices(typeIDs: Set([typeID])) { result in
 				self.price = result[typeID] ?? 0
@@ -58,7 +56,7 @@ class NCFittingFuelRow: TreeRow {
 }
 
 class NCFittingPriceSection: TreeSection {
-	let ship: NCFittingShip
+	let ship: DGMShip
 	let typeIDs: [Int: Int]
 	
 	var prices: [Int: Double]? {
@@ -71,7 +69,7 @@ class NCFittingPriceSection: TreeSection {
 		}
 	}
 	
-	init(ship: NCFittingShip) {
+	init(ship: DGMShip) {
 		self.ship = ship
 		var children: [TreeNode] = [NCFittingPriceTypeRow(typeID: ship.typeID, quantity: 1)]
 		
@@ -92,7 +90,7 @@ class NCFittingPriceSection: TreeSection {
 			}
 			children.append(row)
 		}
-		if (ship.owner as? NCFittingCharacter)?.implants.all.isEmpty == false {
+		if (ship.parent as? DGMCharacter)?.implants.isEmpty == false {
 			let row = NCFittingPriceImplantsRow(ship: ship)
 			row.typeIDs.forEach {
 				typeIDs[$0] = (typeIDs[$0] ?? 0) + 1
@@ -199,13 +197,13 @@ class NCFittingPriceTypeRow: NCFittingPriceRow {
 
 
 class NCFittingPriceModulesRow: NCFittingPriceRow {
-	let ship: NCFittingShip
+	let ship: DGMShip
 	let typeIDs: [Int: Int]
 	
-	init(ship: NCFittingShip) {
+	init(ship: DGMShip) {
 		self.ship = ship
 		var typeIDs = [Int: Int]()
-		ship.modules.filter{!$0.isDummy}.forEach {
+		ship.modules.forEach {
 			typeIDs[$0.typeID] = (typeIDs[$0.typeID] ?? 0) + 1
 		}
 		self.typeIDs = typeIDs
@@ -242,10 +240,10 @@ class NCFittingPriceModulesRow: NCFittingPriceRow {
 }
 
 class NCFittingPriceDronesRow: NCFittingPriceRow {
-	let ship: NCFittingShip
+	let ship: DGMShip
 	let typeIDs: [Int: Int]
 
-	init(ship: NCFittingShip) {
+	init(ship: DGMShip) {
 		self.ship = ship
 		var typeIDs = [Int: Int]()
 		ship.drones.forEach {
@@ -286,12 +284,12 @@ class NCFittingPriceDronesRow: NCFittingPriceRow {
 }
 
 class NCFittingPriceImplantsRow: NCFittingPriceRow {
-	let ship: NCFittingShip
+	let ship: DGMShip
 	let typeIDs: [Int]
 	
-	init(ship: NCFittingShip) {
+	init(ship: DGMShip) {
 		self.ship = ship
-		typeIDs = (ship.owner as? NCFittingCharacter)?.implants.all.map{$0.typeID} ?? []
+		typeIDs = (ship.parent as? DGMCharacter)?.implants.map{$0.typeID} ?? []
 		super.init(prototype: Prototype.NCDefaultTableViewCell.default)
 		isExpanded = false
 		isExpandable = true
@@ -338,70 +336,80 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 		
 	}
 	
+	private var needsReload = true
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		if observer == nil {
-			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
+				guard self?.view.window != nil else {
+					self?.needsReload = true
+					return
+				}
 				self?.updateContent {}
 			}
 		}
+		
+		if needsReload {
+			reload()
+		}
+
 	}
 	
 	@IBAction func onReloadFactor(_ sender: UISwitch) {
-		guard let engine = engine else {return}
-		let factor = sender.isOn
-		engine.perform {
-			engine.factorReload = factor
-		}
+		fleet?.gang.factorReload = sender.isOn
+//		guard let engine = engine else {return}
+//		let factor = sender.isOn
+//		engine.perform {
+//			engine.factorReload = factor
+//		}
+		NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 	}
 	
 	//MARK: - Private
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
-		guard let engine = engine else {
+		defer {
 			completionHandler()
-			return
 		}
-		
+
 		if self.treeController?.content == nil {
 			self.treeController?.content = TreeNode()
 		}
-		engine.perform {
-			guard let pilot = self.fleet?.active else {return}
-			guard let ship = pilot.ship ?? pilot.structure else {return}
-			var sections = [TreeNode]()
-			
-			sections.append(DefaultTreeSection(nodeIdentifier: "Resources", title: NSLocalizedString("Resources", comment: "").uppercased(), children: [NCFittingResourcesRow(ship: ship)]))
-			sections.append(DefaultTreeSection(nodeIdentifier: "Resistances", title: NSLocalizedString("Resistances", comment: "").uppercased(), children: [NCResistancesRow(ship: ship)]))
-			sections.append(DefaultTreeSection(nodeIdentifier: "Capacitor", title: NSLocalizedString("Capacitor", comment: "").uppercased(), children: [NCFittingCapacitorRow(ship: ship)]))
-			sections.append(DefaultTreeSection(nodeIdentifier: "Tank", title: NSLocalizedString("Recharge Rates (HP/s, EHP/s)", comment: "").uppercased(), children: [NCTankRow(ship: ship)]))
-			sections.append(DefaultTreeSection(nodeIdentifier: "Firepower", title: NSLocalizedString("Firepower", comment: "").uppercased(), children: [NCFirepowerRow(ship: ship)]))
-			if ship.minerYield > 0 || ship.droneYield > 0 {
-				sections.append(DefaultTreeSection(nodeIdentifier: "Mining", title: NSLocalizedString("Mining", comment: "").uppercased(), children: [NCMiningYieldRow(ship: ship)]))
-			}
-			if let structure = pilot.structure {
-				sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [NCFittingMiscRow(structure: structure)]))
-				sections.append(DefaultTreeSection(nodeIdentifier: "Fuel", title: NSLocalizedString("Fuel", comment: "").uppercased(), children: [NCFittingFuelRow(structure: structure)]))
-			}
-			else {
-				sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [NCFittingMiscRow(ship: ship)]))
-			}
-			let pricesSection = NCFittingPriceSection(ship: ship)
-			sections.append(pricesSection)
-			
-			var typeIDs = Set(ship.modules.map {[$0.typeID, $0.charge?.typeID]}.joined().flatMap{$0})
-			typeIDs.formUnion(Set(ship.drones.map{$0.typeID}))
-			typeIDs.insert(ship.typeID)
-			typeIDs.formUnion(Set(pilot.implants.all.map{$0.typeID}))
-
-			DispatchQueue.main.async {
-				self.treeController?.content?.children = sections
-				NCDataManager(account: NCAccount.current).prices(typeIDs: typeIDs) { result in
-					pricesSection.prices = result
-				}
-				completionHandler()
-			}
+		guard let fleet = fleet else {return}
+		guard let pilot = fleet.active else {return}
+		guard let ship = pilot.ship ?? pilot.structure else {return}
+		var sections = [TreeNode]()
+		
+		sections.append(DefaultTreeSection(nodeIdentifier: "Resources", title: NSLocalizedString("Resources", comment: "").uppercased(), children: [NCFittingResourcesRow(ship: ship)]))
+		sections.append(DefaultTreeSection(nodeIdentifier: "Resistances", title: NSLocalizedString("Resistances", comment: "").uppercased(), children: [NCResistancesRow(ship: ship, fleet: fleet)]))
+		sections.append(DefaultTreeSection(nodeIdentifier: "Capacitor", title: NSLocalizedString("Capacitor", comment: "").uppercased(), children: [NCFittingCapacitorRow(ship: ship)]))
+		sections.append(DefaultTreeSection(nodeIdentifier: "Tank", title: NSLocalizedString("Recharge Rates (HP/s, EHP/s)", comment: "").uppercased(), children: [NCTankRow(ship: ship)]))
+		sections.append(DefaultTreeSection(nodeIdentifier: "Firepower", title: NSLocalizedString("Firepower", comment: "").uppercased(), children: [NCFirepowerRow(ship: ship)]))
+		if ship.minerYield.value > 0 || ship.droneYield.value > 0 {
+			sections.append(DefaultTreeSection(nodeIdentifier: "Mining", title: NSLocalizedString("Mining", comment: "").uppercased(), children: [NCMiningYieldRow(ship: ship)]))
 		}
+		if let structure = pilot.structure {
+			sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [NCFittingMiscRow(structure: structure)]))
+			sections.append(DefaultTreeSection(nodeIdentifier: "Fuel", title: NSLocalizedString("Fuel", comment: "").uppercased(), children: [NCFittingFuelRow(structure: structure)]))
+		}
+		else {
+			sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [NCFittingMiscRow(ship: ship)]))
+		}
+		let pricesSection = NCFittingPriceSection(ship: ship)
+		sections.append(pricesSection)
+		
+		var typeIDs = Set(ship.modules.map {[$0.typeID, $0.charge?.typeID]}.joined().flatMap{$0})
+		typeIDs.formUnion(Set(ship.drones.map{$0.typeID}))
+		typeIDs.insert(ship.typeID)
+		typeIDs.formUnion(Set(pilot.implants.map{$0.typeID}))
+		
+		treeController?.content?.children = sections
+		NCDataManager(account: NCAccount.current).prices(typeIDs: typeIDs) { result in
+			pricesSection.prices = result
+		}
+		needsReload = false
+
 	}
 }

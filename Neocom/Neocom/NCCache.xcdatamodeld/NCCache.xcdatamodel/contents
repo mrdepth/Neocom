@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13240" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Contact" representedClassName="NCContact" syncable="YES" codeGenerationType="class">
         <attribute name="contactID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lastUse" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -57,7 +57,7 @@
         </fetchIndex>
     </entity>
     <entity name="RecordData" representedClassName="NCCacheRecordData" syncable="YES" codeGenerationType="class">
-        <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="NCSecureUnarchiver" customClassName="NSObject" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="Binary" valueTransformerName="NCSecureUnarchiver" customClassName="NSObject" syncable="YES"/>
         <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Record" inverseName="data" inverseEntity="Record" syncable="YES"/>
     </entity>
     <entity name="SectionCollapse" representedClassName="NCCacheSectionCollapse" syncable="YES" codeGenerationType="class">

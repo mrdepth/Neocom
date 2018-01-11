@@ -71,7 +71,7 @@ class NCCharacterSheetMenuRow: NCAccountDataMenuRow<ESI.Skills.CharacterSkills> 
 
 		if let result = result {
 			if let value = result.value {
-				cell.subtitleLabel?.text = NCUnitFormatter.localizedString(from: value.totalSP ?? 0, unit: .skillPoints, style: .full)
+				cell.subtitleLabel?.text = NCUnitFormatter.localizedString(from: value.totalSP, unit: .skillPoints, style: .full)
 			}
 			else {
 				cell.subtitleLabel?.text = result.error?.localizedDescription
@@ -97,7 +97,7 @@ class NCJumpClonesMenuRow: NCAccountDataMenuRow<ESI.Clones.JumpClones> {
 		
 		if let result = result {
 			if let value = result.value {
-				let t = 3600 * 24 + (value.lastJumpDate ?? .distantPast).timeIntervalSinceNow
+				let t = 3600 * 24 + (value.lastCloneJumpDate ?? .distantPast).timeIntervalSinceNow
 				cell.subtitleLabel?.text = String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: ""))
 			}
 			else {
@@ -156,7 +156,7 @@ class NCSkillsMenuRow: NCAccountDataMenuRow<[ESI.Skills.SkillQueueItem]> {
 	}
 }
 
-class NCWealthMenuRow: NCAccountDataMenuRow<Float> {
+class NCWealthMenuRow: NCAccountDataMenuRow<Double> {
 	
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)

@@ -8,16 +8,18 @@
 
 import UIKit
 import CloudData
+import Dgmpp
 
 class NCFittingModuleStateRow: TreeRow {
-	let modules: [NCFittingModule]
-	let states: [NCFittingModuleState]
+	let fleet: NCFittingFleet
+	let modules: [DGMModule]
+	let states: [DGMModule.State]
 	
-	init(modules: [NCFittingModule]) {
+	init(modules: [DGMModule], fleet: NCFittingFleet) {
 		self.modules = modules
+		self.fleet = fleet
 		let module = modules.first!
-		let states: [NCFittingModuleState] = [.offline, .online, .active, .overloaded]
-		self.states = states.filter {module.canHaveState($0)}
+		states = module.availableStates
 		
 		super.init(prototype: Prototype.NCFittingModuleStateTableViewCell.default)
 		
@@ -38,20 +40,15 @@ class NCFittingModuleStateRow: TreeRow {
 		cell.actionHandler = NCActionHandler(segmentedControl, for: .valueChanged) { [weak self, weak segmentedControl] _ in
 			guard let sender = segmentedControl else {return}
 			guard let state = self?.states[sender.selectedSegmentIndex] else {return}
-			module.engine?.perform {
-				for module in self?.modules ?? [] {
-					module.state = state
-				}
+			for module in self?.modules ?? [] {
+				module.state = state
 			}
+			NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
 
 		}
-		module.engine?.perform {
-			let state = module.state
-			DispatchQueue.main.async {
-				if let i = self.states.index(of: state) {
-					cell.segmentedControl?.selectedSegmentIndex = i
-				}
-			}
+		
+		if let i = self.states.index(of: module.state) {
+			cell.segmentedControl?.selectedSegmentIndex = i
 		}
 	}
 	
@@ -67,7 +64,7 @@ class NCFittingModuleStateRow: TreeRow {
 }
 
 class NCFittingModuleInfoRow: TreeRow {
-	let module: NCFittingModule
+	let module: DGMModule
 	let cpu: Double
 	let powerGrid: Double
 	let capacitor: Double
@@ -75,12 +72,12 @@ class NCFittingModuleInfoRow: TreeRow {
 	
 	let type: NCDBInvType
 	
-	init(module: NCFittingModule, type: NCDBInvType, count: Int, route: Route? = nil) {
+	init(module: DGMModule, type: NCDBInvType, count: Int, route: Route? = nil) {
 		self.module = module
 		self.count = count
 		let cpu = module.cpuUse
 		let powerGrid = module.powerGridUse
-		let capacitor = module.capUse
+		let capacitor = module.capUse * DGMSeconds(1)
 		self.cpu = cpu
 		self.powerGrid = powerGrid
 		self.capacitor = capacitor
@@ -153,7 +150,8 @@ class NCFittingChargeRow: NCChargeRow {
 }
 
 class NCFittingModuleActionsViewController: NCTreeViewController {
-	var modules: [NCFittingModule]?
+	var fleet: NCFittingFleet?
+	var modules: [DGMModule]?
 	var type: NCDBInvType? {
 		guard let module = self.modules?.first else {return nil}
 		return NCDatabase.sharedDatabase?.invTypes[module.typeID]
@@ -161,14 +159,10 @@ class NCFittingModuleActionsViewController: NCTreeViewController {
 
 	lazy var hullType: NCDBDgmppHullType? = {
 		guard let module = self.modules?.first else {return nil}
-		var targetTypeID: Int?
-		module.engine?.performBlockAndWait {
-			targetTypeID = module.target?.typeID
-		}
-		if let targetTypeID = targetTypeID, let hullType = NCDatabase.sharedDatabase?.invTypes[targetTypeID]?.hullType {
+		if let targetTypeID = module.target?.typeID, let hullType = NCDatabase.sharedDatabase?.invTypes[targetTypeID]?.hullType {
 			return hullType
 		}
-		guard let ship = self.modules?.first?.owner as? NCFittingShip else {return nil}
+		guard let ship = self.modules?.first?.parent as? DGMShip else {return nil}
 		return NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.hullType
 	}()
 
@@ -211,8 +205,8 @@ class NCFittingModuleActionsViewController: NCTreeViewController {
 			navigationController?.preferredContentSize = size
 		}
 
-		if let module = modules?.first, observer == nil {
-			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: module.engine, queue: nil) { [weak self] (note) in
+		if observer == nil {
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				self?.reload()
 			}
 		}
@@ -226,13 +220,13 @@ class NCFittingModuleActionsViewController: NCTreeViewController {
 	@IBAction func onDelete(_ sender: UIButton) {
 		guard let modules = self.modules else {return}
 		guard let module = modules.first else {return}
-		module.engine?.perform {
-			guard let ship = module.owner as? NCFittingShip else {return}
-			for module in modules {
-				ship.removeModule(module)
-			}
+		guard let ship = module.parent as? DGMShip else {return}
+		for module in modules {
+			ship.remove(module)
 		}
+		self.modules = nil
 		self.dismiss(animated: true, completion: nil)
+		NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 	}
 
 	@IBAction func onChangeHullType(_ sender: UIStepper) {
@@ -249,23 +243,21 @@ class NCFittingModuleActionsViewController: NCTreeViewController {
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
 		if node is NCFittingChargeRow {
-			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Unload", comment: "Unload ammo"), handler: { _,_  in
-				guard let modules = self.modules else {return}
-				
-				modules.first?.engine?.perform {
-					for module in modules {
-						module.charge = nil
-					}
+			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Unload", comment: "Unload ammo"), handler: { [weak self] (_,_)  in
+				guard let modules = self?.modules else {return}
+				for module in modules {
+					try? module.setCharge(nil)
 				}
 				
-				let ammoRoute = Router.Fitting.Ammo(category: self.chargeCategory!, modules: modules) { [weak self] (controller, type) in
+				NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
+
+				let ammoRoute = Router.Fitting.Ammo(category: self!.chargeCategory!, modules: modules) { [weak self] (controller, type) in
 					self?.setAmmo(controller: controller, type: type)
+					NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
 				}
 
-				
 				let row = NCActionRow(title: NSLocalizedString("Select Ammo", comment: ""),  route: ammoRoute)
-				self.chargeSection?.children = [row]
-
+				self?.chargeSection?.children = [row]
 			})]
 		}
 		return nil
@@ -277,18 +269,18 @@ class NCFittingModuleActionsViewController: NCTreeViewController {
 		let typeID = type != nil ? Int(type!.typeID) : nil
 		controller.dismiss(animated: true) {
 			guard let modules = self.modules else {return}
-			modules.first?.engine?.perform {
-				for module in modules {
-					module.charge = typeID != nil ? NCFittingCharge(typeID: typeID!) : nil
-				}
+			for module in modules {
+				try? module.setCharge(typeID != nil ? DGMCharge(typeID: typeID!) : nil)
 			}
+			NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self.fleet)
 		}
 	}
 	
 	private func reload() {
-		guard let modules = self.modules else {return}
+		guard let fleet = fleet else {return}
+		guard let modules = modules else {return}
 		guard let module = modules.first else {return}
-		guard let type = self.type else {return}
+		guard let type = type else {return}
 		
 		var sections = [TreeNode]()
 		
@@ -296,91 +288,96 @@ class NCFittingModuleActionsViewController: NCTreeViewController {
 		let count = modules.count
 		
 		
-		module.engine?.performBlockAndWait {
-			
-			let route: Route?
-			
-			if (type.variations?.count ?? 0) > 0 || (type.parentType?.variations?.count ?? 0) > 0 {
-				route = Router.Fitting.Variations(type: type) { [weak self] (controller, type) in
-					let typeID = Int(type.typeID)
-					controller.dismiss(animated: true) {
-						guard let modules = self?.modules else {return}
-						guard let module = modules.first else {return}
-						module.engine?.perform {
-							guard let ship = module.owner as? NCFittingShip else {return}
-							let charge = module.charge
-							var out = [NCFittingModule]()
-							for module in modules {
-								if let m = ship.replaceModule(module: module, typeID: typeID) {
-									m.charge = charge
-									out.append(m)
-								}
+		let route: Route?
+		
+		if (type.variations?.count ?? 0) > 0 || (type.parentType?.variations?.count ?? 0) > 0 {
+			route = Router.Fitting.Variations(type: type) { [weak self] (controller, type) in
+				let typeID = Int(type.typeID)
+				controller.dismiss(animated: true) {
+					guard let modules = self?.modules else {return}
+					guard let module = modules.first else {return}
+					guard let ship = module.parent as? DGMShip else {return}
+					let chargeID = module.charge?.typeID
+					var out = [DGMModule]()
+					for module in modules {
+						do {
+							let socket = module.socket
+							ship.remove(module)
+							let m = try DGMModule(typeID: typeID)
+							try ship.add(m, socket: socket)
+							if let chargeID = chargeID {
+								try m.setCharge(DGMCharge(typeID: chargeID))
 							}
-							self?.modules = out
+							out.append(m)
+						}
+						catch {
+							
 						}
 					}
+					self?.modules = out
+					NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
 				}
+			}
+		}
+		else {
+			route = Router.Database.TypeInfo(module)
+		}
+		
+		
+		var rows: [TreeNode] = [NCFittingModuleInfoRow(module: module, type: type, count: modules.count, route: route)]
+		if module.canHaveState(.online) {
+			rows.append(NCFittingModuleStateRow(modules: modules, fleet: fleet))
+		}
+		sections.append(DefaultTreeSection(nodeIdentifier: "Module",
+										   title: NSLocalizedString("Module", comment: "").uppercased(),
+										   children: rows))
+		
+		
+		let chargeGroups = module.chargeGroups
+		if chargeGroups.count > 0 {
+			
+			let ammoRoute = Router.Fitting.Ammo(category: self.chargeCategory!, modules: modules) { [weak self] (controller, type) in
+				self?.setAmmo(controller: controller, type: type)
+			}
+			
+			let charges = module.charges
+			let charge = module.charge
+			let row: TreeNode
+			if let charge = charge, let type = NCDatabase.sharedDatabase?.invTypes[charge.typeID] {
+				row = NCFittingChargeRow(type: type, charges: charges, route: ammoRoute)
 			}
 			else {
-				route = Router.Database.TypeInfo(module)
+				row = NCActionRow(title: NSLocalizedString("Select Ammo", comment: "").uppercased(),  route: ammoRoute)
 			}
-			
-
-			var rows: [TreeNode] = [NCFittingModuleInfoRow(module: module, type: type, count: modules.count, route: route)]
-			if module.canHaveState(.online) {
-				rows.append(NCFittingModuleStateRow(modules: modules))
-			}
-			sections.append(DefaultTreeSection(nodeIdentifier: "Module",
-			                                   title: NSLocalizedString("Module", comment: "").uppercased(),
-			                                   children: rows))
-			
-			
-			let chargeGroups = module.chargeGroups
-			if chargeGroups.count > 0 {
-				
-				let ammoRoute = Router.Fitting.Ammo(category: self.chargeCategory!, modules: modules) { [weak self] (controller, type) in
-					self?.setAmmo(controller: controller, type: type)
-				}
-
-				let charges = module.charges
-				let charge = module.charge
-				let row: TreeNode
-				if let charge = charge, let type = NCDatabase.sharedDatabase?.invTypes[charge.typeID] {
-					row = NCFittingChargeRow(type: type, charges: charges, route: ammoRoute)
-				}
-				else {
-					row = NCActionRow(title: NSLocalizedString("Select Ammo", comment: "").uppercased(),  route: ammoRoute)
-				}
-				let section = DefaultTreeSection(nodeIdentifier: "Charge", title: NSLocalizedString("Charge", comment: "").uppercased(), children: [row])
-				sections.append(section)
-			}
-			
-			if module.requireTarget && ((module.owner?.owner?.owner as? NCFittingGang)?.pilots.count ?? 0) > 1 {
-				let row: TreeRow
-				let route = Router.Fitting.Targets(modules: modules, completionHandler: { (controller, target) in
-					controller.dismiss(animated: true, completion: { 
-						guard let modules = self.modules else {return}
-						modules.first?.engine?.perform {
-							for module in modules {
-								module.target = target
-							}
-						}
-					})
+			let section = DefaultTreeSection(nodeIdentifier: "Charge", title: NSLocalizedString("Charge", comment: "").uppercased(), children: [row])
+			sections.append(section)
+		}
+		
+		if module.requireTarget && ((module.parent?.parent?.parent as? DGMGang)?.pilots.count ?? 0) > 1 {
+			let row: TreeRow
+			let route = Router.Fitting.Targets(modules: modules, completionHandler: { [weak self] (controller, target) in
+				controller.dismiss(animated: true, completion: {
+					guard let modules = self?.modules else {return}
+					for module in modules {
+						module.target = target
+					}
+					NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
 				})
-				if let target = module.target?.owner as? NCFittingCharacter {
-					row = NCFleetMemberRow(pilot: target, route: route)
-				}
-				else {
-					row = NCActionRow(prototype: Prototype.NCActionTableViewCell.default, title: NSLocalizedString("Select Target", comment: "").uppercased(), route: route)
-				}
-				sections.append(DefaultTreeSection(nodeIdentifier: "Target", title: NSLocalizedString("Target", comment: "").uppercased(), children: [row]))
+			})
+			if let target = module.target?.parent as? DGMCharacter {
+				row = NCFleetMemberRow(pilot: target, route: route)
 			}
-
-			if module.dps.total > 0 {
-				let row = NCFittingModuleDamageChartRow(module: module, count: modules.count)
-				row.hullType = hullType
-				sections.append(DefaultTreeSection(nodeIdentifier: "DPS", title: NSLocalizedString("DPS", comment: "").uppercased() + ": \(NCUnitFormatter.localizedString(from: module.dps.total * Double(count), unit: .none, style: .full))", children: [row]))
+			else {
+				row = NCActionRow(prototype: Prototype.NCActionTableViewCell.default, title: NSLocalizedString("Select Target", comment: "").uppercased(), route: route)
 			}
+			sections.append(DefaultTreeSection(nodeIdentifier: "Target", title: NSLocalizedString("Target", comment: "").uppercased(), children: [row]))
+		}
+		
+		let dps = (module.dps() * DGMSeconds(1)).total
+		if dps > 0 {
+			let row = NCFittingModuleDamageChartRow(module: module, count: modules.count)
+			row.hullType = hullType
+			sections.append(DefaultTreeSection(nodeIdentifier: "DPS", title: NSLocalizedString("DPS", comment: "").uppercased() + ": \(NCUnitFormatter.localizedString(from: dps * Double(count), unit: .none, style: .full))", children: [row]))
 		}
 		
 		if treeController?.content == nil {

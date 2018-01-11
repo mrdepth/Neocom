@@ -37,9 +37,9 @@ class NCImplantSetRow: NCFetchedResultsObjectNode<NCImplantSet> {
 				let i = a.1
 				let a = a.0
 				return i == 3 ? (a + "\n" + "...", i + 1) :
-						i > 3 ? (a, i + 1) :
-						i == 0 ? (b, 1) :
-						(a + "\n" + b, i + 1)
+					i > 3 ? (a, i + 1) :
+					i == 0 ? (b, 1) :
+					(a + "\n" + b, i + 1)
 			}).0
 	}()
 	

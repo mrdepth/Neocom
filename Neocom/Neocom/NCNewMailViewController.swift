@@ -110,10 +110,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 			guard let contact = self._recipients[id] else {return nil}
 			contact.lastUse = Date()
 			guard let recipientType = contact.recipientType else {return nil}
-			let recipient = ESI.Mail.Recipient()
-			recipient.recipientID = Int(contact.contactID)
-			recipient.recipientType = recipientType
-			return recipient
+			return ESI.Mail.Recipient(recipientID: Int(contact.contactID), recipientType: recipientType)
 		}
 		
 		let context = NCCache.sharedCache?.viewContext

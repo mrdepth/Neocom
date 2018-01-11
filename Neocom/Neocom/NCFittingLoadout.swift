@@ -9,34 +9,25 @@
 import UIKit
 import CoreData
 import EVEAPI
-
-extension NCFittingEngine {
-	func sync<T>(execute block: @escaping () -> T) -> T {
-		var v: T?
-		performBlockAndWait {
-			v = block()
-		}
-		return v!
-	}
-}
+import Dgmpp
 
 class NCFittingLoadoutItem: NSObject, NSSecureCoding {
 	let typeID: Int
 	var count: Int
-	let identifier: String?
+	let identifier: Int?
 	
 	public static var supportsSecureCoding: Bool {
 		return true
 	}
 	
-	init(item: NCFittingItem, count: Int = 1) {
-		self.typeID = item.typeID
+	init(type: DGMType, count: Int = 1) {
+		self.typeID = type.typeID
 		self.count = count
-		self.identifier = item.identifier
+		self.identifier = type.identifier
 		super.init()
 	}
 	
-	init(typeID: Int, count: Int, identifier: String?) {
+	init(typeID: Int, count: Int, identifier: Int? = nil) {
 		self.typeID = typeID
 		self.count = count
 		self.identifier = identifier
@@ -46,7 +37,15 @@ class NCFittingLoadoutItem: NSObject, NSSecureCoding {
 	required init?(coder aDecoder: NSCoder) {
 		typeID = aDecoder.decodeInteger(forKey: "typeID")
 		count = aDecoder.containsValue(forKey: "count") ? aDecoder.decodeInteger(forKey: "count") : 1
-		identifier = (aDecoder.decodeObject(forKey: "identifier") as? String)
+		if let s = (aDecoder.decodeObject(forKey: "identifier") as? String) {
+			identifier = Int(s) ?? s.hashValue
+		}
+		else if let n = (aDecoder.decodeObject(forKey: "identifier") as? NSNumber) {
+			identifier = n.intValue
+		}
+		else {
+			identifier = nil
+		}
 		super.init()
 	}
 	
@@ -68,23 +67,23 @@ class NCFittingLoadoutItem: NSObject, NSSecureCoding {
 }
 
 class NCFittingLoadoutModule: NCFittingLoadoutItem {
-	let state: NCFittingModuleState
+	let state: DGMModule.State
 	let charge: NCFittingLoadoutItem?
 	let socket: Int
 	
-	init(module: NCFittingModule) {
+	init(module: DGMModule) {
 		state = module.preferredState
 		if let charge = module.charge {
-			self.charge = NCFittingLoadoutItem(item: charge, count: max(module.charges, 1))
+			self.charge = NCFittingLoadoutItem(type: charge, count: max(module.charges, 1))
 		}
 		else {
 			self.charge = nil
 		}
 		socket = module.socket
-		super.init(item: module)
+		super.init(type: module)
 	}
 	
-	init(typeID: Int, count: Int, identifier: String?, state: NCFittingModuleState = .active, charge: NCFittingLoadoutItem? = nil, socket: Int = -1) {
+	init(typeID: Int, count: Int, identifier: Int?, state: DGMModule.State = .active, charge: NCFittingLoadoutItem? = nil, socket: Int = -1) {
 		self.state = state
 		self.charge = charge
 		self.socket = socket
@@ -92,7 +91,7 @@ class NCFittingLoadoutModule: NCFittingLoadoutItem {
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
-		state = NCFittingModuleState(rawValue: aDecoder.decodeInteger(forKey: "state")) ?? .unknown
+		state = DGMModule.State(rawValue: aDecoder.decodeInteger(forKey: "state")) ?? .unknown
 		charge = aDecoder.decodeObject(forKey: "charge") as? NCFittingLoadoutItem
 		socket = aDecoder.containsValue(forKey: "socket") ? aDecoder.decodeInteger(forKey: "socket") : -1
 		super.init(coder: aDecoder)
@@ -112,22 +111,26 @@ class NCFittingLoadoutModule: NCFittingLoadoutItem {
 
 class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 	let isActive: Bool
+	let isKamikaze: Bool
 	let squadronTag: Int
 	
-	init(typeID: Int, count: Int, identifier: String?, isActive: Bool = true, squadronTag: Int = -1) {
+	init(typeID: Int, count: Int, identifier: Int?, isActive: Bool = true, squadronTag: Int = -1) {
 		self.isActive = isActive
 		self.squadronTag = squadronTag
+		self.isKamikaze = false
 		super.init(typeID: typeID, count: count, identifier: identifier)
 	}
 	
-	init(drone: NCFittingDrone) {
+	init(drone: DGMDrone) {
 		self.isActive = drone.isActive
+		self.isKamikaze = drone.isKamikaze
 		self.squadronTag = drone.squadronTag
-		super.init(item: drone)
+		super.init(type: drone)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
 		isActive = aDecoder.containsValue(forKey: "isActive") ? aDecoder.decodeBool(forKey: "isActive") : true
+		isKamikaze = aDecoder.containsValue(forKey: "isKamikaze") ? aDecoder.decodeBool(forKey: "isKamikaze") : false
 		squadronTag = aDecoder.containsValue(forKey: "squadronTag") ? aDecoder.decodeInteger(forKey: "squadronTag") : -1
 		super.init(coder: aDecoder)
 	}
@@ -137,6 +140,10 @@ class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 		if !isActive {
 			aCoder.encode(isActive, forKey: "isActive")
 		}
+		if !isKamikaze {
+			aCoder.encode(isKamikaze, forKey: "isKamikaze")
+		}
+
 		aCoder.encode(squadronTag, forKey: "squadronTag")
 	}
 
@@ -145,9 +152,8 @@ class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 	}
 }
 
-
 public class NCFittingLoadout: NSObject, NSSecureCoding {
-	var modules: [NCFittingModuleSlot: [NCFittingLoadoutModule]]?
+	var modules: [DGMModule.Slot: [NCFittingLoadoutModule]]?
 	var drones: [NCFittingLoadoutDrone]?
 	var cargo: [NCFittingLoadoutItem]?
 	var implants: [NCFittingLoadoutItem]?
@@ -163,9 +169,9 @@ public class NCFittingLoadout: NSObject, NSSecureCoding {
 
 	
 	public required init?(coder aDecoder: NSCoder) {
-		modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()
+		modules = [DGMModule.Slot: [NCFittingLoadoutModule]]()
 		for (key, value) in aDecoder.decodeObject(forKey: "modules") as? [Int: [NCFittingLoadoutModule]] ?? [:] {
-			guard let key = NCFittingModuleSlot(rawValue: key) else {continue}
+			guard let key = DGMModule.Slot(rawValue: key) else {continue}
 			modules?[key] = value
 		}
 		
@@ -200,550 +206,3 @@ public class NCFittingLoadout: NSObject, NSSecureCoding {
 }
 
 
-extension NCFittingModuleSlot {
-	var image: UIImage? {
-		switch self {
-		case .hi:
-			return #imageLiteral(resourceName: "slotHigh")
-		case .med:
-			return #imageLiteral(resourceName: "slotMed")
-		case .low:
-			return #imageLiteral(resourceName: "slotLow")
-		case .rig:
-			return #imageLiteral(resourceName: "slotRig")
-		case .subsystem:
-			return #imageLiteral(resourceName: "slotSubsystem")
-		case .service:
-			return #imageLiteral(resourceName: "slotService")
-		case .mode:
-			return #imageLiteral(resourceName: "slotSubsystem")
-		default:
-			return nil
-		}
-	}
-	
-	var title: String? {
-		switch self {
-		case .hi:
-			return NSLocalizedString("Hi Slot", comment: "")
-		case .med:
-			return NSLocalizedString("Med Slot", comment: "")
-		case .low:
-			return NSLocalizedString("Low Slot", comment: "")
-		case .rig:
-			return NSLocalizedString("Rig Slot", comment: "")
-		case .subsystem:
-			return NSLocalizedString("Subsystem Slot", comment: "")
-		case .service:
-			return NSLocalizedString("Service Slot", comment: "")
-		case .mode:
-			return NSLocalizedString("Tactical Mode", comment: "")
-		default:
-			return nil
-		}
-	}
-	
-	var name: String? {
-		switch self {
-		case .hi:
-			return "Hi Slot"
-		case .med:
-			return "Med Slot"
-		case .low:
-			return "Low Slot"
-		case .rig:
-			return "Rig Slot"
-		case .subsystem:
-			return "Subsystem Slot"
-		case .service:
-			return "Service Slot"
-		case .mode:
-			return "Tactical Mode"
-		default:
-			return nil
-		}
-	}
-	
-	init?(name: String) {
-		if name.range(of: "hi slot")?.lowerBound == name.startIndex {
-			self = .hi
-		}
-		else if name.range(of: "med slot")?.lowerBound == name.startIndex {
-			self = .med
-		}
-		else if name.range(of: "low slot")?.lowerBound == name.startIndex {
-			self = .low
-		}
-		else if name.range(of: "rig slot")?.lowerBound == name.startIndex {
-			self = .rig
-		}
-		else if name.range(of: "subsystem slot")?.lowerBound == name.startIndex {
-			self = .subsystem
-		}
-		else if name.range(of: "service slot")?.lowerBound == name.startIndex {
-			self = .service
-		}
-		else {
-			return nil
-		}
-	}
-}
-
-extension NCFittingModuleState {
-	var image: UIImage? {
-		switch self {
-		case .offline:
-			return #imageLiteral(resourceName: "offline")
-		case .online:
-			return #imageLiteral(resourceName: "online")
-		case .active:
-			return #imageLiteral(resourceName: "active")
-		case .overloaded:
-			return #imageLiteral(resourceName: "overheated")
-		default:
-			return nil
-		}
-	}
-	
-	var title: String? {
-		switch self {
-		case .offline:
-			return NSLocalizedString("Offline", comment: "")
-		case .online:
-			return NSLocalizedString("Online", comment: "")
-		case .active:
-			return NSLocalizedString("Active", comment: "")
-		case .overloaded:
-			return NSLocalizedString("Overheated", comment: "")
-		default:
-			return nil
-		}
-	}
-}
-
-extension NCFittingScanType {
-	var image: UIImage? {
-		switch self {
-		case .gravimetric:
-			return #imageLiteral(resourceName: "gravimetric")
-		case .magnetometric:
-			return #imageLiteral(resourceName: "magnetometric")
-		case .ladar:
-			return #imageLiteral(resourceName: "ladar")
-		case .radar:
-			return #imageLiteral(resourceName: "radar")
-		case .multispectral:
-			return #imageLiteral(resourceName: "multispectral")
-		}
-	}
-	
-	var title: String? {
-		switch self {
-		case .gravimetric:
-			return NSLocalizedString("Gravimetric", comment: "")
-		case .magnetometric:
-			return NSLocalizedString("Magnetometric", comment: "")
-		case .ladar:
-			return NSLocalizedString("Ladar", comment: "")
-		case .radar:
-			return NSLocalizedString("Radar", comment: "")
-		case .multispectral:
-			return NSLocalizedString("Multispectral", comment: "")
-		}
-	}
-}
-
-extension NCFittingDamage {
-	static let omni = NCFittingDamage(em: 0.25, thermal: 0.25, kinetic: 0.25, explosive: 0.25)
-	var total: Double {
-		return em + kinetic + thermal + explosive
-	}
-	static func + (lhs: NCFittingDamage, rhs: NCFittingDamage) -> NCFittingDamage {
-		return NCFittingDamage(em: lhs.em + rhs.em, thermal: lhs.thermal + rhs.thermal, kinetic: lhs.kinetic + rhs.kinetic, explosive: lhs.explosive + rhs.explosive)
-	}
-}
-
-extension NCFittingFighterSquadron {
-	var title: String? {
-		switch self {
-		case .heavy:
-			return NSLocalizedString("Heavy", comment: "")
-		case .light:
-			return NSLocalizedString("Light", comment: "")
-		case .support:
-			return NSLocalizedString("Support", comment: "")
-		case .none:
-			return NSLocalizedString("Drone", comment: "")
-		}
-	}
-}
-
-extension NCFittingAccuracy {
-	var color: UIColor {
-		switch self {
-		case .none:
-			return .white
-		case .low:
-			return .red
-		case .average:
-			return .yellow
-		case .good:
-			return .green
-		}
-	}
-}
-
-extension NCFittingSkills{
-	func set(levels: [Int: Int]) {
-		__setLevels(levels as [NSNumber: NSNumber])
-	}
-}
-
-extension NCFittingDamage: Hashable {
-	public var hashValue: Int {
-		return [em, kinetic, thermal, explosive].hashValue
-	}
-	
-	public static func == (lhs: NCFittingDamage, rhs: NCFittingDamage) -> Bool {
-		return lhs.hashValue == rhs.hashValue
-	}
-}
-
-extension NCFittingItem {
-	var identifier: String? {
-		get {
-			return engine?.identifier(for: self)
-		}
-		set {
-			engine?.assign(identifier: newValue, for: self)
-		}
-	}
-}
-
-extension NCFittingCharacter {
-	
-	var loadout: NCFittingLoadout {
-		get {
-			let ship = self.ship ?? self.structure
-			let loadout = NCFittingLoadout()
-			loadout.implants = implants.all.map({NCFittingLoadoutItem(item: $0)})
-			loadout.boosters = boosters.all.map({NCFittingLoadoutItem(item: $0)})
-			
-			var drones = [String: NCFittingLoadoutDrone]()
-			for drone in ship?.drones ?? [] {
-				let identifier = drone.identifier ?? "\([drone.typeID, drone.isActive, drone.squadronTag].hashValue)"
-				
-				if (drones[identifier]?.count += 1) == nil {
-					drones[identifier] = NCFittingLoadoutDrone(drone: drone)
-				}
-			}
-			
-			loadout.drones = Array(drones.values)
-			
-			var modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()
-			
-			for module in ship?.modules ?? [] {
-				guard !module.isDummy else {continue}
-				var array = modules[module.slot] ?? []
-				array.append(NCFittingLoadoutModule(module: module))
-				modules[module.slot] = array
-			}
-			
-			loadout.modules = modules
-			
-			return loadout
-		}
-		set {
-			let ship = (self.ship ?? self.structure)!
-			for implant in newValue.implants ?? [] {
-				addImplant(typeID: implant.typeID)
-			}
-			for booster in newValue.boosters ?? [] {
-				addBooster(typeID: booster.typeID)
-			}
-			for drone in newValue.drones ?? [] {
-				let identifier = drone.identifier ?? UUID().uuidString
-				for _ in 0..<drone.count {
-					guard let item = ship.addDrone(typeID: drone.typeID, squadronTag: drone.squadronTag) else {break}
-					item.isActive = drone.isActive
-					item.identifier = identifier
-				}
-			}
-			for (_, modules) in newValue.modules?.sorted(by: { $0.key.rawValue > $1.key.rawValue }) ?? [] {
-				for module in modules {
-					let identifier = module.identifier ?? UUID().uuidString
-					for _ in 0..<module.count {
-						guard let m = ship.addModule(typeID: module.typeID, socket: module.socket) else {break}
-						m.identifier = identifier
-						m.state = module.state
-						if let charge = module.charge {
-							m.charge = NCFittingCharge(typeID: charge.typeID)
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	@nonobjc class func url(account: NCAccount) -> URL? {
-		guard let uuid = account.uuid else {return nil}
-		var components = URLComponents()
-		components.scheme = NCURLScheme.nc.rawValue
-		components.host = "character"
-		
-		var queryItems = [URLQueryItem(name: "accountUUID", value: uuid)]
-		
-		if let name = account.characterName {
-			queryItems.append(URLQueryItem(name: "name", value: name))
-		}
-		queryItems.append(URLQueryItem(name: "characterID", value: "\(account.characterID)"))
-		
-		components.queryItems = queryItems
-		return components.url!
-	}
-
-	@nonobjc class func url(level: Int) -> URL {
-		var components = URLComponents()
-		components.scheme = NCURLScheme.nc.rawValue
-		components.host = "character"
-		components.queryItems = [
-			URLQueryItem(name: "level", value: String(level)),
-			URLQueryItem(name: "name", value: NSLocalizedString("All Skills", comment: "") + " " + String(romanNumber: level))
-		]
-		return components.url!
-	}
-
-	@nonobjc class func url(character: NCFitCharacter) -> URL? {
-		guard let uuid = character.uuid else {return nil}
-		var components = URLComponents()
-		components.scheme = NCURLScheme.nc.rawValue
-		components.host = "character"
-		components.queryItems = [
-			URLQueryItem(name: "characterUUID", value: uuid),
-			URLQueryItem(name: "name", value: character.name ?? "")
-		]
-		return components.url!
-	}
-
-	var url: URL? {
-		return URL(string: characterName)
-	}
-	
-	var account: NCAccount? {
-		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
-		guard let accountUUID = components.queryItems?.first(where: {$0.name == "accountUUID"})?.value else {return nil}
-		return NCStorage.sharedStorage?.accounts[accountUUID]
-	}
-
-	var fitCharacter: NCFitCharacter? {
-		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
-		guard let characterUUID = components.queryItems?.first(where: {$0.name == "characterUUID"})?.value else {return nil}
-		let character: NCFitCharacter? = NCStorage.sharedStorage?.viewContext.fetch("FitCharacter", where: "uuid == %@", characterUUID)
-		return character
-	}
-
-	var level: Int? {
-		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
-		guard let level = components.queryItems?.first(where: {$0.name == "level"})?.value else {return nil}
-		return Int(level)
-	}
-	
-	@nonobjc func setSkills(from url: URL, completionHandler: ((Bool) -> Void)? = nil) {
-		guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-			let queryItems = components.queryItems,
-			components.scheme == NCURLScheme.nc.rawValue,
-			components.host == "character" else {
-			completionHandler?(false)
-			return
-		}
-
-		if let item = queryItems.first(where: {$0.name == "accountUUID"}), let uuid = item.value {
-			NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
-				
-				if let account = NCAccount.accounts(managedObjectContext: managedObjectContext)[uuid] {
-					self.setSkills(from: account, completionHandler: completionHandler)
-				}
-				else {
-					DispatchQueue.main.async {
-						completionHandler?(false)
-					}
-				}
-
-			}
-		}
-		else if let item = queryItems.first(where: {$0.name == "characterUUID"}), let uuid = item.value {
-			NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
-				
-				if let character = NCFitCharacter.fitCharacters(managedObjectContext: managedObjectContext)[uuid] {
-					self.setSkills(from: character, completionHandler: completionHandler)
-				}
-				else {
-					DispatchQueue.main.async {
-						completionHandler?(false)
-					}
-				}
-				
-			}
-		}
-		else if let item = queryItems.first(where: {$0.name == "level"}), let level = Int(item.value ?? ""){
-			setSkills(level: level, completionHandler: completionHandler)
-		}
-		else {
-			DispatchQueue.main.async {
-				completionHandler?(false)
-			}
-		}
-	}
-
-	
-	@nonobjc func setSkills(from account: NCAccount, completionHandler: ((Bool) -> Void)? = nil) {
-		guard let engine = engine else {
-			DispatchQueue.main.async {
-				completionHandler?(false)
-			}
-			return
-		}
-		
-		let url = NCFittingCharacter.url(account: account)
-		NCDataManager(account: account, cachePolicy: .returnCacheDataElseLoad).skills { result in
-			switch result {
-			case let .success(value, _):
-				engine.perform {
-					var levels = [Int: Int]()
-					for skill in value.skills ?? [] {
-						guard let skillID = skill.skillID, let currentSkillLevel = skill.currentSkillLevel else {continue}
-						levels[skillID] = currentSkillLevel
-					}
-					
-					self.skills.set(levels: levels)
-					self.characterName = url?.absoluteString ?? ""
-					DispatchQueue.main.async {
-						completionHandler?(true)
-					}
-				}
-
-			default:
-				DispatchQueue.main.async {
-					completionHandler?(false)
-				}
-			}
-		}
-	}
-	
-	@nonobjc func setSkills(from character: NCFitCharacter, completionHandler: ((Bool) -> Void)? = nil) {
-		guard let engine = engine else {
-			DispatchQueue.main.async {
-				completionHandler?(false)
-			}
-			return
-		}
-		let url = NCFittingCharacter.url(character: character)
-		let skills = character.skills ?? [:]
-		engine.perform {
-			self.skills.set(levels: skills)
-			self.characterName = url?.absoluteString ?? ""
-			DispatchQueue.main.async {
-				completionHandler?(true)
-			}
-		}
-	}
-
-	
-	@nonobjc func setSkills(level: Int, completionHandler: ((Bool) -> Void)? = nil) {
-		guard let engine = engine else {
-			DispatchQueue.main.async {
-				completionHandler?(false)
-			}
-			return
-		}
-		let url = NCFittingCharacter.url(level: level)
-		engine.perform {
-			self.skills.setAllSkillsLevel(level)
-			self.characterName = url.absoluteString
-			DispatchQueue.main.async {
-				completionHandler?(true)
-			}
-		}
-	}
-	
-	var shoppingItem: NCShoppingItem? {
-		guard let context = NCStorage.sharedStorage?.viewContext else {return nil}
-		guard let ship = self.ship ?? self.structure else {return nil}
-		let loadout = self.loadout
-		let shipItem = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
-		shipItem.typeID = Int32(ship.typeID)
-		shipItem.quantity = 1
-		shipItem.identifier = identifier
-		shipItem.name = ship.name
-		
-		var cargo = [Int: Int]()
-		loadout.modules?.forEach { (slot, modules) in
-			let flag: NCItemFlag
-			switch slot {
-			case .hi:
-				flag = .hiSlot
-			case .med:
-				flag = .medSlot
-			case .low:
-				flag = .lowSlot
-			case .rig:
-				flag = .rigSlot
-			case .subsystem:
-				flag = .subsystemSlot
-			case .service:
-				flag = .service
-			default:
-				return
-			}
-			var items = [Int: Int]()
-			modules.forEach {
-				items[$0.typeID] = (items[$0.typeID] ?? 0) + max($0.count, 1)
-				if let charge = $0.charge {
-					cargo[charge.typeID] = (cargo[charge.typeID] ?? 0) + max(charge.count, 1)
-				}
-			}
-			items.forEach { i in
-				let item = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
-				item.flag = flag.rawValue
-				item.typeID = Int32(i.key)
-				item.quantity = Int32(i.value)
-				shipItem.addToContents(item)
-			}
-		}
-		
-		var drones = [Int: Int]()
-		loadout.drones?.forEach {
-			drones[$0.typeID] = (drones[$0.typeID] ?? 0) + $0.count
-		}
-		
-		drones.forEach { i in
-			let item = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
-			item.flag = NCItemFlag.drone.rawValue
-			item.typeID = Int32(i.key)
-			item.quantity = Int32(i.value)
-			shipItem.addToContents(item)
-		}
-
-		cargo.forEach { i in
-			let item = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
-			item.flag = NCItemFlag.cargo.rawValue
-			item.typeID = Int32(i.key)
-			item.quantity = Int32(i.value)
-			shipItem.addToContents(item)
-		}
-
-		return shipItem
-	}
-
-}
-
-extension NCFittingStructure {
-	@nonobjc var supportedModuleCategories: [Int] {
-		return __supportedModuleCategories.map{$0.intValue}
-	}
-	
-	@nonobjc var supportedDroneCategories: [Int] {
-		return __supportedDroneCategories.map{$0.intValue}
-	}
-
-}

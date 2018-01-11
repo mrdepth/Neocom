@@ -8,9 +8,9 @@
 
 import UIKit
 import CloudData
+import Dgmpp
 
-class NCFittingFleetViewController: UITableViewController, TreeControllerDelegate, NCFittingEditorPage {
-	@IBOutlet weak var treeController: TreeController!
+class NCFittingFleetViewController: NCTreeViewController, NCFittingEditorPage {
 	
 	private var observer: NotificationObserver?
 	
@@ -22,36 +22,46 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		                    Prototype.NCFleetMemberTableViewCell.default
 			])
 
-		
-		tableView.estimatedRowHeight = tableView.rowHeight
-		tableView.rowHeight = UITableViewAutomaticDimension
-		treeController.delegate = self
 	}
 	
+	private var needsReload = true
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if self.treeController.content == nil {
-			self.treeController.content = TreeNode()
-			reload()
-		}
-		
 		if observer == nil {
-			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
+				guard self?.view.window != nil else {
+					self?.needsReload = true
+					return
+				}
 				self?.reload()
 			}
 		}
 		
 		let active = fleet?.active
-		if let node = treeController.content?.children.first(where: {($0 as? NCFleetMemberRow)?.pilot == active}) {
-			treeController.selectCell(for: node, animated: true, scrollPosition: .none)
+		if let node = treeController?.content?.children.first(where: {($0 as? NCFleetMemberRow)?.pilot == active}) {
+			treeController?.selectCell(for: node, animated: true, scrollPosition: .none)
+		}
+
+		if needsReload {
+			reload()
 		}
 
 	}
 	
+	override func updateContent(completionHandler: @escaping () -> Void) {
+		defer {
+			completionHandler()
+		}
+		guard editorViewController != nil else {return}
+		treeController?.content = TreeNode()
+		reload()
+	}
+
 	//MARK: - TreeControllerDelegate
 	
-	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		if let route = (node as? TreeRow)?.route {
 			route.perform(source: self, sender: treeController.cell(for: node))
 			let active = fleet?.active
@@ -62,18 +72,11 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		else if let node = node as? NCFleetMemberRow, let fleet = fleet {
 			if fleet.active == node.pilot {
 				Router.Fitting.Actions(fleet: fleet).perform(source: self, sender: treeController.cell(for: node))
-//				parent?.performSegue(withIdentifier: "NCFittingActionsViewController", sender: treeController.cell(for: node))
 			}
 			else {
 				fleet.active = node.pilot
 			}
 		}
-	}
-	
-	func treeController(_ treeController: TreeController, accessoryButtonTappedWithNode node: TreeNode) {
-		guard let route = (node as? TreeRow)?.accessoryButtonRoute else {return}
-		
-		route.perform(source: self, sender: treeController.cell(for: node))
 	}
 	
 	func treeController(_ treeController: TreeController, editActionsForNode node: TreeNode) -> [UITableViewRowAction]? {
@@ -82,10 +85,8 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 		guard fleet.pilots.count > 1 else {return nil}
 		
 		let deleteAction = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { (_, _) in
-			guard let engine = node.pilot.engine else {return}
-			engine.perform {
-				fleet.remove(pilot: node.pilot)
-			}
+			fleet.remove(pilot: node.pilot)
+			NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 		}
 		
 		return [deleteAction]
@@ -96,37 +97,33 @@ class NCFittingFleetViewController: UITableViewController, TreeControllerDelegat
 	private func reload() {
 		guard let fleet = self.fleet else {return}
 		let route = Router.Fitting.FleetMemberPicker(fleet: fleet, completionHandler: { controller in
-//			_ = controller.navigationController?.popViewController(animated: true)
 			controller.dismiss(animated: true, completion: nil)
 		})
 		
 
 		if fleet.pilots.count == 1 {
 			let row = NCActionRow(title: NSLocalizedString("Create Fleet", comment: "").uppercased(), route: route)
-			self.treeController.content?.children = [row]
+			treeController?.content?.children = [row]
 		}
 		else {
-			engine?.perform({
-				var active: TreeNode?
-				
-				var rows = [TreeNode]()
-				for (pilot, _) in fleet.pilots {
-					let row = NCFleetMemberRow(pilot: pilot)
-					rows.append(row)
-					if fleet.active == pilot {
-						active = row
-					}
+			var active: TreeNode?
+			
+			var rows = [TreeNode]()
+			for (pilot, _) in fleet.pilots {
+				let row = NCFleetMemberRow(pilot: pilot)
+				rows.append(row)
+				if fleet.active == pilot {
+					active = row
 				}
-				
-				rows.append(NCActionRow(title: NSLocalizedString("Add Pilot", comment: "").uppercased(), route: route))
-				
-				DispatchQueue.main.async {
-					self.treeController.content?.children = rows
-					if let node = active {
-						self.treeController.selectCell(for: node, animated: false, scrollPosition: .none)
-					}
-				}
-			})
+			}
+			
+			rows.append(NCActionRow(title: NSLocalizedString("Add Pilot", comment: "").uppercased(), route: route))
+			
+			treeController?.content?.children = rows
+			if let node = active {
+				treeController?.selectCell(for: node, animated: false, scrollPosition: .none)
+			}
 		}
+		needsReload = false
 	}
 }

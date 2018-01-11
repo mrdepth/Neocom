@@ -146,6 +146,6 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 	}
 	
 	private var walletTransactions: NCCachedResult<[ESI.Wallet.Transaction]>?
-	private var walletBalance: NCCachedResult<Float>?
+	private var walletBalance: NCCachedResult<Double>?
 	
 }

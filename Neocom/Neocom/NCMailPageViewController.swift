@@ -70,14 +70,13 @@ class NCMailPageViewController: NCPageViewController {
 	
 	func saveUnreadCount() {
 		switch mailLabels {
-		case let .success(value, record)?:
+		case .success(var value, let record)?:
 			guard let record = record else {return}
 			guard let labels = viewControllers?.flatMap ({($0 as? NCMailViewController)?.label}) else {return}
-			let value = value.copy() as? ESI.Mail.MailLabelsAndUnreadCounts
 			
-			value?.totalUnreadCount = labels.flatMap {$0.unreadCount}.reduce(0, +)
-			value?.labels = labels
-			record.data?.data = value
+			value.totalUnreadCount = labels.flatMap {$0.unreadCount}.reduce(0, +)
+			value.labels = labels
+			record.set(value)
 
 			if record.managedObjectContext?.hasChanges == true {
 				try? record.managedObjectContext?.save()

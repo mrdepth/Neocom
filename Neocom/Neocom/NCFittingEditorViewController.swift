@@ -12,7 +12,6 @@ import CloudData
 
 class NCFittingEditorViewController: UIViewController {
 	var fleet: NCFittingFleet?
-	var engine: NCFittingEngine?
 	
 //	@IBOutlet weak var stackView: UIStackView!
 	
@@ -61,18 +60,8 @@ class NCFittingEditorViewController: UIViewController {
 		navigationItem.titleView = NCNavigationItemTitleLabel(frame: CGRect(origin: .zero, size: .zero))
 		
 		let pilot = fleet?.active
-		var useFighters = false
-		var isShip = true
-		engine?.performBlockAndWait {
-			if let ship = pilot?.ship {
-				useFighters = ship.totalFighterLaunchTubes > 0
-				isShip = true
-			}
-			else {
-				useFighters = true
-				isShip = false
-			}
-		}
+		let isShip = pilot?.structure == nil
+		let useFighters = !isShip || (pilot?.ship?.totalFighterLaunchTubes ?? 0) > 0
 		
 		var controllers = [
 			storyboard!.instantiateViewController(withIdentifier: "NCFittingModulesViewController"),
@@ -107,7 +96,7 @@ class NCFittingEditorViewController: UIViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		if observer == nil {
-			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingEngineDidUpdate, object: engine, queue: nil) { [weak self] (note) in
+			observer = NotificationCenter.default.addNotificationObserver(forName: .NCFittingFleetDidUpdate, object: fleet, queue: nil) { [weak self] (note) in
 				self?.isModified = true
 				self?.updateTitle()
 			}
@@ -158,26 +147,22 @@ class NCFittingEditorViewController: UIViewController {
 	}
 	
 	func save(completionHandler: (() -> Void)? = nil) {
-		guard let fleet = fleet, let engine = self.engine else {
+		guard let fleet = fleet else {
 			completionHandler?()
 			return
 		}
 		
 		NCStorage.sharedStorage?.performBackgroundTask {managedObjectContext in
-			engine.performBlockAndWait {
-				var pilots = [String: NCLoadout] ()
+//			engine.performBlockAndWait {
+				var pilots = [Int: NCLoadout] ()
 				for (character, objectID) in fleet.pilots {
-					
-					if character.identifier == nil {
-						character.identifier = UUID().uuidString
-					}
 					
 					guard let ship = character.ship ?? character.structure else {continue}
 					if let objectID = objectID, let loadout = (try? managedObjectContext.existingObject(with: objectID)) as? NCLoadout {
-						loadout.uuid = character.identifier
+//						loadout.uuid = character.identifier
 						loadout.name = ship.name
 						loadout.data?.data = character.loadout
-						pilots[loadout.uuid!] = loadout
+						pilots[character.identifier] = loadout
 					}
 					else {
 						let loadout = NCLoadout(entity: NSEntityDescription.entity(forEntityName: "Loadout", in: managedObjectContext)!, insertInto: managedObjectContext)
@@ -185,8 +170,8 @@ class NCFittingEditorViewController: UIViewController {
 						loadout.typeID = Int32(ship.typeID)
 						loadout.name = ship.name
 						loadout.data?.data = character.loadout
-						loadout.uuid = character.identifier
-						pilots[loadout.uuid!] = loadout
+						loadout.uuid = UUID().uuidString
+						pilots[character.identifier] = loadout
 					}
 				}
 				
@@ -206,7 +191,7 @@ class NCFittingEditorViewController: UIViewController {
 					}
 					
 					for (character, _) in fleet.pilots {
-						guard let pilot = pilots[character.identifier!] else {continue}
+						guard let pilot = pilots[character.identifier] else {continue}
 						pilot.addToFleets(object)
 					}
 					object.configuration = fleet.configuration
@@ -217,14 +202,14 @@ class NCFittingEditorViewController: UIViewController {
 					try? managedObjectContext.save()
 				}
 				
-				fleet.pilots = fleet.pilots.map {($0.0, pilots[$0.0.identifier!]?.objectID)}
+				fleet.pilots = fleet.pilots.map {($0.0, pilots[$0.0.identifier]?.objectID)}
 				fleet.fleetID = opaqueFleet?.objectID
 			}
 			DispatchQueue.main.async {
 				self.isModified = false
 				completionHandler?()
 			}
-		}
+//		}
 	}
 	
 	@objc private func onBack(_ sender: Any) {
@@ -263,17 +248,9 @@ class NCFittingEditorViewController: UIViewController {
 	private func updateTitle() {
 		guard let titleLabel = navigationItem.titleView as? NCNavigationItemTitleLabel else {return}
 		let pilot = fleet?.active
-		var shipName: String = ""
-		var typeName: String = ""
 		
-		engine?.performBlockAndWait {
-			guard let ship = pilot?.ship ?? pilot?.structure else {return}
-			shipName = ship.name
-			typeName = NCDatabase.sharedDatabase?.invTypes[ship.typeID]?.typeName ?? ""
-		}
-//		titleLabel.attributedText = typeName * [:] + (!shipName.isEmpty ? "\n" + shipName * [NSAttributedStringKey.font:UIFont.preferredFont(forTextStyle: .footnote), NSAttributedStringKey.foregroundColor: UIColor.lightText] : "" * [:])
-//		titleLabel.sizeToFit()
-		titleLabel.set(title: typeName, subtitle: shipName)
+		guard let ship = pilot?.ship ?? pilot?.structure else {return}
+		titleLabel.set(title: ship.type?.typeName, subtitle: ship.name)
 	}
 
 }
@@ -287,10 +264,6 @@ extension NCFittingEditorPage where Self: UIViewController {
 	
 	var editorViewController: NCFittingEditorViewController? {
 		return sequence(first: parent, next: {$0?.parent}).first {$0 is NCFittingEditorViewController} as? NCFittingEditorViewController
-	}
-	
-	var engine: NCFittingEngine? {
-		return editorViewController?.engine
 	}
 	
 	var fleet: NCFittingFleet? {

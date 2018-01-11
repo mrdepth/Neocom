@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Dgmpp
 
 class NCFittingMiscTableViewCell: NCTableViewCell {
 	
@@ -35,14 +36,14 @@ extension Prototype {
 
 
 class NCFittingMiscRow: TreeRow {
-	let ship: NCFittingShip
+	let ship: DGMShip
 	
-	init(ship: NCFittingShip) {
+	init(ship: DGMShip) {
 		self.ship = ship
 		super.init(prototype: Prototype.NCFittingMiscTableViewCell.default)
 	}
 	
-	init(structure: NCFittingStructure) {
+	init(structure: DGMShip) {
 		self.ship = structure
 		super.init(prototype: Prototype.NCFittingMiscTableViewCell.structure)
 	}
@@ -51,39 +52,33 @@ class NCFittingMiscRow: TreeRow {
 		guard let cell = cell as? NCFittingMiscTableViewCell else {return}
 		let ship = self.ship
 		cell.object = ship
-		ship.engine?.perform {
-			let maxTargets = ship.maxTargets
-			let maxTargetRange = ship.maxTargetRange
-			let scanResolution = ship.scanResolution
-			let scanStrength = ship.scanStrength
-			let scanType = ship.scanType
-			let droneControlDistance = (ship.owner as? NCFittingCharacter)?.droneControlDistance ?? 0
-			let mass = ship.mass
-			let velocity = ship.velocity
-			let alignTime = ship.alignTime
-			let signatureRadius = ship.signatureRadius
-			let capacity = ship.capacity
-			let oreHoldCapacity = ship.oreHoldCapacity
-			let warpSpeed = ship.warpSpeed
-			
-			DispatchQueue.main.async {
-				if cell.object as? NCFittingShip === ship {
-					cell.targetsLabel?.text = String(maxTargets)
-					cell.targetingRangeLabel?.text = NCUnitFormatter.localizedString(from: maxTargetRange, unit: .meter, style: .short)
-					cell.scanResolution?.text = NCUnitFormatter.localizedString(from: scanResolution, unit: .millimeter, style: .full)
-					cell.sensorStrengthLabel?.text = String(Int(scanStrength))
-					cell.sensorImageView?.image = scanType.image
-					cell.droneRangeLabel?.text = NCUnitFormatter.localizedString(from: droneControlDistance, unit: .meter, style: .short)
-					cell.massLabel?.text = NCUnitFormatter.localizedString(from: mass, unit: .kilogram, style: .short)
-					cell.speedLabel?.text = NCUnitFormatter.localizedString(from: velocity, unit: .meterPerSecond, style: .short)
-					cell.alignTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: alignTime, precision: .seconds)
-					cell.signatureLabel?.text = String(Int(signatureRadius))
-					cell.cargoLabel?.text = NCUnitFormatter.localizedString(from: capacity, unit: .cubicMeter, style: .short)
-					cell.oreHoldLabel?.text = NCUnitFormatter.localizedString(from: oreHoldCapacity, unit: .cubicMeter, style: .short)
-					cell.warpSpeedLabel?.text = NCUnitFormatter.localizedString(from: warpSpeed, unit: .auPerSecond, style: .short)
-				}
-			}
-		}
+		let maxTargets = ship.maxTargets
+		let maxTargetRange = ship.maxTargetRange
+		let scanResolution = ship.scanResolution
+		let scanStrength = ship.scanStrength
+		let scanType = ship.scanType
+		let droneControlDistance = (ship.parent as? DGMCharacter)?.droneControlDistance ?? 0
+		let mass = ship.mass
+		let velocity = ship.velocity * DGMSeconds(1)
+		let alignTime = ship.alignTime
+		let signatureRadius = ship.signatureRadius
+		let capacity = ship.cargoCapacity
+		let oreHoldCapacity = ship.oreHoldCapacity
+		let warpSpeed = ship.warpSpeed * DGMSeconds(1)
+		
+		cell.targetsLabel?.text = String(maxTargets)
+		cell.targetingRangeLabel?.text = NCUnitFormatter.localizedString(from: maxTargetRange, unit: .meter, style: .short)
+		cell.scanResolution?.text = NCUnitFormatter.localizedString(from: scanResolution, unit: .millimeter, style: .full)
+		cell.sensorStrengthLabel?.text = String(Int(scanStrength))
+		cell.sensorImageView?.image = scanType.image
+		cell.droneRangeLabel?.text = NCUnitFormatter.localizedString(from: droneControlDistance, unit: .meter, style: .short)
+		cell.massLabel?.text = NCUnitFormatter.localizedString(from: mass, unit: .kilogram, style: .short)
+		cell.speedLabel?.text = NCUnitFormatter.localizedString(from: velocity, unit: .meterPerSecond, style: .short)
+		cell.alignTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: alignTime, precision: .seconds)
+		cell.signatureLabel?.text = String(Int(signatureRadius))
+		cell.cargoLabel?.text = NCUnitFormatter.localizedString(from: capacity, unit: .cubicMeter, style: .short)
+		cell.oreHoldLabel?.text = NCUnitFormatter.localizedString(from: oreHoldCapacity, unit: .cubicMeter, style: .short)
+		cell.warpSpeedLabel?.text = NCUnitFormatter.localizedString(from: warpSpeed, unit: .auPerSecond, style: .short)
 	}
 	
 	override var hashValue: Int {

@@ -31,9 +31,7 @@ class NCDatabaseMarketInfoRow: TreeRow {
 		cell.quantityLabel.text = quantity
 	}
 	
-	override var hashValue: Int {
-		return order.hashValue
-	}
+	override lazy var hashValue: Int = order.hashValue
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCDatabaseMarketInfoRow)?.hashValue == hashValue

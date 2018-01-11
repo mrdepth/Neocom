@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-
+import Dgmpp
 
 class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 	
@@ -32,7 +32,6 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 		defer {completionHandler()}
 		
 		guard let fleet = fleet else {return}
-		guard let engine = fleet.active?.engine else {return}
 		
 		var sections = [TreeNode]()
 		
@@ -41,12 +40,9 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 			strongSelf.dismiss(animated: true)
 			
 			let typeID = Int(type.typeID)
-			engine.perform {
-				fleet.append(typeID: typeID, engine: engine)
-				DispatchQueue.main.async {
-					strongSelf.completionHandler(strongSelf)
-				}
-			}
+			_ = try? fleet.append(typeID: typeID)
+			strongSelf.completionHandler(strongSelf)
+			NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 			
 		})))
 		
@@ -58,7 +54,7 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 		let predicate = filter.count > 0 ? NSPredicate(format: "NONE SELF IN %@", filter) : nil
 		
 		
-		sections.append(NCLoadoutsSection(categoryID: .ship, filter: predicate))
+		sections.append(NCLoadoutsSection<NCLoadoutNoRouteRow>(categoryID: .ship, filter: predicate))
 		if self.treeController?.content == nil {
 			self.treeController?.content = TreeNode()
 		}
@@ -73,15 +69,13 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 
 		if let node = node as? NCLoadoutRow {
 			guard let fleet = fleet else {return}
-			guard let engine = fleet.active?.engine else {return}
 
 			NCStorage.sharedStorage?.performBackgroundTask({ (managedObjectContext) in
 				guard let loadout = (try? managedObjectContext.existingObject(with: node.loadoutID)) as? NCLoadout else {return}
-				engine.performBlockAndWait {
-					fleet.append(loadout: loadout, engine: engine)
-					DispatchQueue.main.async {
-						self.completionHandler(self)
-					}
+				_ = try? fleet.append(loadout: loadout)
+				DispatchQueue.main.async {
+					self.completionHandler(self)
+					NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 				}
 			})
 		}

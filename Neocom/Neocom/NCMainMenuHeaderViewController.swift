@@ -48,7 +48,7 @@ class NCMainMenuHeaderViewController: UIViewController {
 					dataManager.corporation(corporationID: Int64(corporationID)) { result in
 						switch result {
 						case let .success(value, _):
-							self.corporationLabel?.text = value.corporationName
+							self.corporationLabel?.text = value.name
 							if let allianceID = value.allianceID {
 								self.allianceLabel?.superview?.isHidden = false
 								dispatchGroup.enter()
@@ -56,7 +56,7 @@ class NCMainMenuHeaderViewController: UIViewController {
 								dataManager.alliance(allianceID: Int64(allianceID)) { result in
 									switch result {
 									case let .success(value, _):
-										self.allianceLabel?.text = value.allianceName
+										self.allianceLabel?.text = value.name
 										
 										dispatchGroup.enter()
 										progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)

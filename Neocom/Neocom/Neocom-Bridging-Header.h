@@ -3,7 +3,7 @@
 //
 
 #import "NCTableView.h"
-#import "NCFittingEngine.h"
+//#import "NCFittingEngine.h"
 #import <zlib.h>
 #import <ifaddrs.h>
 

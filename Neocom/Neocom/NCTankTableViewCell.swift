@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Dgmpp
 
 class NCTankStackView: UIStackView {
 	@IBOutlet weak var shieldRechargeLabel: UILabel!
@@ -33,9 +34,9 @@ extension Prototype {
 
 
 class NCTankRow: TreeRow {
-	let ship: NCFittingShip
+	let ship: DGMShip
 	
-	init(ship: NCFittingShip) {
+	init(ship: DGMShip) {
 		self.ship = ship
 		super.init(prototype: Prototype.NCTankTableViewCell.default)
 	}
@@ -44,30 +45,24 @@ class NCTankRow: TreeRow {
 		guard let cell = cell as? NCTankTableViewCell else {return}
 		let ship = self.ship
 		cell.object = ship
-		ship.engine?.perform {
-			let tank = (ship.tank, ship.effectiveTank)
-			let sustainableTank = (ship.sustainableTank, ship.effectiveSustainableTank)
-			
-			DispatchQueue.main.async {
-				if cell.object as? NCFittingShip === ship {
-					let formatter = NCUnitFormatter(unit: .none, style: .short, useSIPrefix: false)
-					
-					func fill(view: NCTankStackView, tank: (NCFittingTank, NCFittingTank)) {
-						view.shieldRechargeLabel.text = formatter.string(for: tank.0.passiveShield)
-						view.effectiveShieldRechargeLabel.text = formatter.string(for: tank.1.passiveShield)
-						view.shieldBoostLabel.text = formatter.string(for: tank.0.shieldRepair)
-						view.effectiveSieldBoostLabel.text = formatter.string(for: tank.1.shieldRepair)
-						view.armorRepairLabel.text = formatter.string(for: tank.0.armorRepair)
-						view.effectiveArmorRepairLabel.text = formatter.string(for: tank.1.armorRepair)
-						view.hullRepairLabel.text = formatter.string(for: tank.0.hullRepair)
-						view.effectiveHullRepairLabel.text = formatter.string(for: tank.1.hullRepair)
-					}
-					
-					fill(view: cell.reinforcedView, tank: tank)
-					fill(view: cell.sustainedView, tank: sustainableTank)
-				}
-			}
+		let tank = (ship.tank, ship.effectiveTank)
+		let sustainableTank = (ship.sustainableTank, ship.effectiveSustainableTank)
+		
+		let formatter = NCUnitFormatter(unit: .none, style: .short, useSIPrefix: false)
+		
+		func fill(view: NCTankStackView, tank: (DGMTank, DGMTank)) {
+			view.shieldRechargeLabel.text = formatter.string(for: tank.0.passiveShield * DGMSeconds(1))
+			view.effectiveShieldRechargeLabel.text = formatter.string(for: tank.1.passiveShield * DGMSeconds(1))
+			view.shieldBoostLabel.text = formatter.string(for: tank.0.shieldRepair * DGMSeconds(1))
+			view.effectiveSieldBoostLabel.text = formatter.string(for: tank.1.shieldRepair * DGMSeconds(1))
+			view.armorRepairLabel.text = formatter.string(for: tank.0.armorRepair * DGMSeconds(1))
+			view.effectiveArmorRepairLabel.text = formatter.string(for: tank.1.armorRepair * DGMSeconds(1))
+			view.hullRepairLabel.text = formatter.string(for: tank.0.hullRepair * DGMSeconds(1))
+			view.effectiveHullRepairLabel.text = formatter.string(for: tank.1.hullRepair * DGMSeconds(1))
 		}
+		
+		fill(view: cell.reinforcedView, tank: tank)
+		fill(view: cell.sustainedView, tank: sustainableTank)
 	}
 	
 	override var hashValue: Int {

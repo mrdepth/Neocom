@@ -8,10 +8,11 @@
 
 import UIKit
 import CoreData
+import Dgmpp
 
 class NCFittingDamagePatternInfoRow: NCFittingDamagePatternRow {
 	let name: String
-	init(damagePattern: NCFittingDamage, name: String) {
+	init(damagePattern: DGMDamageVector, name: String) {
 		self.name = name
 		super.init(prototype: Prototype.NCDamageTypeTableViewCell.default, damagePattern: damagePattern)
 	}
@@ -38,7 +39,7 @@ class NCPredefinedDamagePatternsSection: DefaultTreeSection {
 			guard let thermal = item["thermal"] as? Double else {return nil}
 			guard let kinetic = item["kinetic"] as? Double else {return nil}
 			guard let explosive = item["explosive"] as? Double else {return nil}
-			let vector = NCFittingDamage(em: em, thermal: thermal, kinetic: kinetic, explosive: explosive)
+			let vector = DGMDamageVector(em: em, thermal: thermal, kinetic: kinetic, explosive: explosive)
 			return NCFittingDamagePatternInfoRow(damagePattern: vector, name: name)
 		}
 
@@ -181,7 +182,7 @@ class NCCustomDamagePatternRow: NCFetchedResultsObjectNode<NCDamagePattern> {
 class NCFittingDamagePatternsViewController: NCTreeViewController, UITextFieldDelegate {
 
 	var category: NCDBDgmppItemCategory?
-	var completionHandler: ((NCFittingDamagePatternsViewController, NCFittingDamage) -> Void)!
+	var completionHandler: ((NCFittingDamagePatternsViewController, DGMDamageVector) -> Void)!
 	
 	lazy private var managedObjectContext: NSManagedObjectContext? = {
 		guard let parentContext = NCStorage.sharedStorage?.viewContext else {return nil}
@@ -271,7 +272,7 @@ class NCFittingDamagePatternsViewController: NCTreeViewController, UITextFieldDe
 		else {
 			switch node {
 			case let node as NCCustomDamagePatternRow:
-				completionHandler(self, NCFittingDamage(em: Double(node.object.em),
+				completionHandler(self, DGMDamageVector(em: Double(node.object.em),
 				                                  thermal: Double(node.object.thermal),
 				                                  kinetic: Double(node.object.kinetic),
 				                                  explosive: Double(node.object.explosive)))
@@ -388,20 +389,20 @@ class NCFittingDamagePatternsViewController: NCTreeViewController, UITextFieldDe
 		let totalDPS = dps.0 + dps.1 + dps.2 + dps.3
 		
 		if totalDPS > 0 {
-			completionHandler(self, NCFittingDamage(em: Double(dps.0 / totalDPS),
+			completionHandler(self, DGMDamageVector(em: Double(dps.0 / totalDPS),
 			                                        thermal: Double(dps.1 / totalDPS),
 			                                        kinetic: Double(dps.2 / totalDPS),
 			                                        explosive: Double(dps.3 / totalDPS)))
 		}
 		else {
-			completionHandler(self, NCFittingDamage(em: Double(0.25),
+			completionHandler(self, DGMDamageVector(em: Double(0.25),
 			                                        thermal: Double(0.25),
 			                                        kinetic: Double(0.25),
 			                                        explosive: Double(0.25)))
 		}
 	}
 	
-	private func addDamagePattern(damagePattern: NCFittingDamage = NCFittingDamage.omni, name: String = NSLocalizedString("Unnamed", comment: "")) {
+	private func addDamagePattern(damagePattern: DGMDamageVector = DGMDamageVector.omni, name: String = NSLocalizedString("Unnamed", comment: "")) {
 		guard let managedObjectContext = self.managedObjectContext else {return}
 		
 		let pattern = NCDamagePattern(entity: NSEntityDescription.entity(forEntityName: "DamagePattern", in: managedObjectContext)!, insertInto: managedObjectContext)

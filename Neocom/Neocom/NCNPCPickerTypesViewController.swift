@@ -82,7 +82,7 @@ class NCNPCPickerTypesViewController: NCTreeViewController, NCSearchableViewCont
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCDatabaseTypesViewController else {return}
-		if let text = searchController.searchBar.text, let other = self.predicate, text.characters.count > 2 {
+		if let text = searchController.searchBar.text, let other = self.predicate, text.count > 2 {
 			predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [other, NSPredicate(format: "typeName CONTAINS[C] %@", text)])
 		}
 		else {

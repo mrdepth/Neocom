@@ -13,6 +13,7 @@ import CloudData
 import SafariServices
 import StoreKit
 import Firebase
+import FBSDKCoreKit
 
 @UIApplicationMain
 class NCAppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,7 +23,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		
-		ESI.initialize()
+//		ESI.initialize()
 //		EVE.initialize()
 		
 		application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert], categories: nil))
@@ -37,6 +38,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		setupAppearance()
 		
 		FirebaseApp.configure()
+		FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
 		return true
 	}
 
@@ -62,6 +64,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
+		FBSDKAppEvents.activateApp()
 		NCDataManager().updateMarketPrices()
 
 		DispatchQueue.global(qos: .background).async {

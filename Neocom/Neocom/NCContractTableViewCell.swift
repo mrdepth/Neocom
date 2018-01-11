@@ -81,9 +81,7 @@ class NCContractRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
-		return contract.hashValue
-	}
+	override lazy var hashValue: Int = contract.hashValue
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCContractRow)?.hashValue == hashValue

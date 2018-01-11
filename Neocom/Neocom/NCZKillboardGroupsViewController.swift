@@ -86,7 +86,7 @@ class NCZKillboardGroupsViewController: NCTreeViewController, NCSearchableViewCo
 	func updateSearchResults(for searchController: UISearchController) {
 		let predicate: NSPredicate
 		guard let controller = searchController.searchResultsController as? NCZKillboardTypesViewController else {return}
-		if let text = searchController.searchBar.text, let category = category, text.characters.count > 2 {
+		if let text = searchController.searchBar.text, let category = category, text.count > 2 {
 			predicate = NSPredicate(format: "published == TRUE AND group.category == %@ AND typeName CONTAINS[C] %@", category, text)
 		}
 		else {

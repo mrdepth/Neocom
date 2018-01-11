@@ -8,9 +8,10 @@
 
 import UIKit
 import CoreData
+import Dgmpp
 
 class NCFittingCharactersViewController: NCTreeViewController {
-	var pilot: NCFittingCharacter?
+	var pilot: DGMCharacter?
 	var completionHandler: ((NCFittingCharactersViewController, URL) -> Void)!
 	
 	lazy private var managedObjectContext: NSManagedObjectContext? = {

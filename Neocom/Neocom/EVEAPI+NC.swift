@@ -619,13 +619,13 @@ extension ESI.Assets.Asset.Flag {
 			return 172
 		case .deliveries:
 			return 173
-		case .autoFit, .corpseBay, .hangarAll, .module, .subSystemBay:
+		case .autoFit, .corpseBay, .hangarAll, .subSystemBay, .skill:
 			return 0
 		}
 	}
 }
 
-protocol NCAttacker: class {
+protocol NCAttacker {
 	
 	var characterID: Int? {get}
 	var corporationID: Int? {get}
@@ -638,7 +638,7 @@ protocol NCAttacker: class {
 	var weaponTypeID: Int? {get}
 }
 
-protocol NCVictim: class {
+protocol NCVictim {
 	var characterID: Int? {get}
 	var corporationID: Int? {get}
 	var allianceID: Int? {get}
@@ -647,7 +647,7 @@ protocol NCVictim: class {
 	var shipTypeID: Int {get}
 }
 
-protocol NCItem: class {
+protocol NCItem {
 	var flag: Int {get}
 	var itemTypeID: Int {get}
 	var quantityDestroyed: Int64? {get}
@@ -657,7 +657,7 @@ protocol NCItem: class {
 	func getItems() -> [NCItem]?
 }
 
-protocol NCKillmail: class {
+protocol NCKillmail {
 	func getAttackers() -> [NCAttacker]
 	var killmailID: Int {get}
 	var killmailTime: Date {get}

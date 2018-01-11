@@ -29,9 +29,9 @@ class NCUnitFormatter: Formatter {
 		
 		var useSIPrefix: Bool {
 			switch self {
-			case .isk, .skillPoints, .meter, .millimeter, .meterPerSecond, .auPerSecond, .hpPerSecond:
+			case .isk, .skillPoints, .millimeter, .auPerSecond, .hpPerSecond, .cubicMeter, .kilogram:
 				return false
-			case .gigaJoule, .gigaJoulePerSecond, .megaWatts, .teraflops, .kilogram, .megaBitsPerSecond, .cubicMeter:
+			case .gigaJoule, .gigaJoulePerSecond, .megaWatts, .teraflops, .megaBitsPerSecond, .meter, .meterPerSecond:
 				return true
 			case let .custom(_, bool):
 				return bool

@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import EVEAPI
 import CloudData
+import Dgmpp
 
 class NCStorage: NSObject {
 	private(set) lazy var managedObjectModel: NSManagedObjectModel = {
@@ -51,6 +52,7 @@ class NCStorage: NSObject {
 	override init() {
 		super.init()
 		NotificationCenter.default.addObserver(self, selector: #selector(oauth2TokenDidRefresh(_:)), name: .OAuth2TokenDidRefresh, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(oauth2TokenDidBecomeInvalid(_:)), name: .OAuth2TokenDidBecomeInvalid, object: nil)
 	}
 	
 	deinit {
@@ -100,7 +102,10 @@ class NCStorage: NSObject {
 		return NCAccount.accounts(managedObjectContext: self.viewContext)
 	}()
 
-	
+	private(set) lazy var fitCharacters: NCFetchedCollection<NCFitCharacter> = {
+		return NCFitCharacter.fitCharacters(managedObjectContext: self.viewContext)
+	}()
+
 	//MARK: Private
 	
 	@objc func managedObjectContextDidSave(_ notification: Notification) {
@@ -127,6 +132,18 @@ class NCStorage: NSObject {
 			request.predicate = NSPredicate(format: "refreshToken == %@", token.refreshToken)
 			guard let account = (try? managedObjectContext.fetch(request))?.last else {return}
 			account.token = token
+		}
+	}
+	
+	@objc func oauth2TokenDidBecomeInvalid(_ notification: Notification) {
+		guard let token = notification.object as? OAuth2Token else {return}
+		performBackgroundTask { managedObjectContext in
+			let request = NSFetchRequest<NCAccount>(entityName: "Account")
+			request.predicate = NSPredicate(format: "refreshToken == %@", token.refreshToken)
+			guard let account = (try? managedObjectContext.fetch(request))?.last else {return}
+			account.refreshToken = ""
+			account.accessToken = ""
+			(account.scopes as? Set<NCScope>)?.forEach { $0.managedObjectContext?.delete($0)}
 		}
 	}
 }
@@ -169,17 +186,17 @@ enum NCItemFlag: Int32 {
 	var image: UIImage? {
 		switch self {
 		case .hiSlot:
-			return NCFittingModuleSlot.hi.image
+			return DGMModule.Slot.hi.image
 		case .medSlot:
-			return NCFittingModuleSlot.med.image
+			return DGMModule.Slot.med.image
 		case .lowSlot:
-			return NCFittingModuleSlot.low.image
+			return DGMModule.Slot.low.image
 		case .rigSlot:
-			return NCFittingModuleSlot.rig.image
+			return DGMModule.Slot.rig.image
 		case .subsystemSlot:
-			return NCFittingModuleSlot.subsystem.image
+			return DGMModule.Slot.subsystem.image
 		case .service:
-			return NCFittingModuleSlot.service.image
+			return DGMModule.Slot.service.image
 		case .drone:
 			return #imageLiteral(resourceName: "drone")
 		case .cargo:
@@ -192,17 +209,17 @@ enum NCItemFlag: Int32 {
 	var title: String? {
 		switch self {
 		case .hiSlot:
-			return NCFittingModuleSlot.hi.title
+			return DGMModule.Slot.hi.title
 		case .medSlot:
-			return NCFittingModuleSlot.med.title
+			return DGMModule.Slot.med.title
 		case .lowSlot:
-			return NCFittingModuleSlot.low.title
+			return DGMModule.Slot.low.title
 		case .rigSlot:
-			return NCFittingModuleSlot.rig.title
+			return DGMModule.Slot.rig.title
 		case .subsystemSlot:
-			return NCFittingModuleSlot.subsystem.title
+			return DGMModule.Slot.subsystem.title
 		case .service:
-			return NCFittingModuleSlot.service.title
+			return DGMModule.Slot.service.title
 		case .drone:
 			return NSLocalizedString("Drones", comment: "")
 		case .cargo:

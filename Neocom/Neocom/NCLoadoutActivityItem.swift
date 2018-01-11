@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Dgmpp
 
 enum NCLoadoutRepresentation {
 	case dna([(typeID: Int, data: NCFittingLoadout, name: String)])
@@ -59,7 +60,7 @@ enum NCLoadoutRepresentation {
 	}
 	
 	private func dnaRepresentation(_ loadout: (typeID: Int, data: NCFittingLoadout, name: String)) -> String {
-		let slots: [NCFittingModuleSlot] = [.subsystem, .hi, .med, .low, .rig, .service]
+		let slots: [DGMModule.Slot] = [.subsystem, .hi, .med, .low, .rig, .service]
 		var arrays = [NSCountedSet]()
 		let charges = NSCountedSet()
 		let drones = NSCountedSet()
@@ -104,7 +105,7 @@ enum NCLoadoutRepresentation {
 			guard let type = invTypes[loadout.typeID]?.typeName else {return}
 			xml += "<fitting name=\"\(loadout.name.isEmpty ? type : loadout.name)\">\n<description value=\"\(NSLocalizedString("Created with Neocom on iOS", comment: ""))\"/>\n<shipType value=\"\(type)\"/>\n"
 			
-			let slots: [NCFittingModuleSlot] = [.hi, .med, .low, .rig, .subsystem, .service]
+			let slots: [DGMModule.Slot] = [.hi, .med, .low, .rig, .subsystem, .service]
 			for slot in slots {
 				for (i, module) in (loadout.data.modules?[slot] ?? []).enumerated() {
 					guard let type = invTypes[module.typeID]?.typeName else {continue}
@@ -130,7 +131,7 @@ enum NCLoadoutRepresentation {
 			guard let type = invTypes[loadout.typeID]?.typeName else {return}
 			eft += "[\(type), \(loadout.name.isEmpty ? type : loadout.name)]\n"
 			
-			let slots: [NCFittingModuleSlot] = [.hi, .med, .low, .rig, .subsystem]
+			let slots: [DGMModule.Slot] = [.hi, .med, .low, .rig, .subsystem]
 			for slot in slots {
 				guard let modules = loadout.data.modules?[slot], modules.count > 0 else {continue}
 				for module in modules {
@@ -153,8 +154,7 @@ enum NCLoadoutRepresentation {
 	}
 	
 	private func inGameRepresentation(_ loadout: (typeID: Int, data: NCFittingLoadout, name: String)) -> ESI.Fittings.MutableFitting {
-		let fitting = ESI.Fittings.MutableFitting()
-		fitting.shipTypeID = loadout.typeID
+		var fitting = ESI.Fittings.MutableFitting(localizedDescription: "", items: [], name: "", shipTypeID: loadout.typeID)
 		
 		let shipName: String = NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> String? in
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
@@ -181,10 +181,7 @@ enum NCLoadoutRepresentation {
 				let items = i.value.map { j -> [ESI.Fittings.Item] in
 					var items: [ESI.Fittings.Item] = []
 					for _ in 0..<j.count {
-						let item = ESI.Fittings.Item()
-						item.quantity = 1
-						item.typeID = j.typeID
-						item.flag = flags[min(slot, flags.count - 1)].intValue
+						let item = ESI.Fittings.Item(flag: flags[min(slot, flags.count - 1)].intValue, quantity: 1, typeID: j.typeID)
 						slot += 1
 						items.append(item)
 					}
@@ -197,11 +194,8 @@ enum NCLoadoutRepresentation {
 				guard let type = invTypes[i.typeID] else {return nil}
 				guard let categoryID = type.group?.category?.categoryID, let category = NCDBCategoryID(rawValue: Int(categoryID)) else {return nil}
 				
-				let item = ESI.Fittings.Item()
-				item.quantity = i.count
-				item.typeID = i.typeID
-				
-				item.flag = category == .fighter ? ESI.Assets.Asset.Flag.fighterBay.intValue : ESI.Assets.Asset.Flag.droneBay.intValue
+				let flag = category == .fighter ? ESI.Assets.Asset.Flag.fighterBay.intValue : ESI.Assets.Asset.Flag.droneBay.intValue
+				let item = ESI.Fittings.Item(flag: flag, quantity: i.count, typeID: i.typeID)
 				return item
 				}
 			
@@ -258,7 +252,7 @@ enum NCLoadoutRepresentation {
 				let hardware = fitting["hardware"] as? [[String: Any]] ?? [fitting["hardware"] as? [String: Any] ?? [:]]
 			
 				var invTypes = [String: NCDBInvType]()
-				var modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()
+				var modules = [DGMModule.Slot: [NCFittingLoadoutModule]]()
 				var drones = [NCFittingLoadoutDrone]()
 				
 				for item in hardware {
@@ -273,7 +267,7 @@ enum NCLoadoutRepresentation {
 					if slotName == "drone bay" || slotName == "fighter bay" {
 						drones.append(NCFittingLoadoutDrone(typeID: Int(type.typeID), count: qty, identifier: nil))
 					}
-					else if let slot = NCFittingModuleSlot(name: slotName) {
+					else if let slot = DGMModule.Slot(name: slotName) {
 						var array = modules[slot] ?? []
 						array.append(NCFittingLoadoutModule(typeID: Int(type.typeID), count: qty, identifier: nil))
 						modules[slot] = array
@@ -312,7 +306,7 @@ enum NCLoadoutRepresentation {
 			let regEx = try! NSRegularExpression(pattern: "(.*?)x(\\d+)$", options: [])
 
 			var invTypes = [String: NCDBInvType]()
-			var modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()
+			var modules = [DGMModule.Slot: [NCFittingLoadoutModule]]()
 			var drones = [NCFittingLoadoutDrone]()
 
 			lines.forEach { line in
@@ -345,7 +339,7 @@ enum NCLoadoutRepresentation {
 
 				switch category {
 				case .hi, .med, .low, .rig, .subsystem, .service, .structureRig:
-					let slot: NCFittingModuleSlot
+					let slot: DGMModule.Slot
 					switch category {
 					case .hi:
 						slot = .hi
@@ -395,9 +389,9 @@ enum NCLoadoutRepresentation {
 		components.removeFirst()
 		
 		return NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> (typeID: Int, data: NCFittingLoadout, name: String)? in
-			var modules = [NCFittingModuleSlot: [NCFittingLoadoutModule]]()
+			var modules = [DGMModule.Slot: [NCFittingLoadoutModule]]()
 
-			let slots: [NCFittingModuleSlot] = [.subsystem, .hi, .med, .low, .rig, .service]
+			let slots: [DGMModule.Slot] = [.subsystem, .hi, .med, .low, .rig, .service]
 			zip(components, slots).forEach { i in
 				let c = i.0.components(separatedBy: ";")
 				guard c.count > 1 else {return}

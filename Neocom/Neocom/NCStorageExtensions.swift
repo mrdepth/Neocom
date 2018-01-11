@@ -27,6 +27,10 @@ extension NCAccount {
 			}
 		}
 	}
+	
+	var isInvalid: Bool {
+		return refreshToken?.isEmpty != false
+	}
 
 	var token: OAuth2Token {
 		get {
@@ -34,8 +38,9 @@ extension NCAccount {
 				return $0.name
 			} ?? []
 			
-			let token = OAuth2Token(accessToken: accessToken ?? "", refreshToken: refreshToken ?? "", tokenType: tokenType ?? "", scopes: scopes, characterID: characterID, characterName: characterName ?? "", realm: realm ?? "")
-			token.expiresOn = expiresOn as Date? ?? Date.distantPast
+			let token = OAuth2Token(accessToken: accessToken ?? "", refreshToken: refreshToken ?? "", tokenType: tokenType ?? "", expiresOn: expiresOn as Date? ?? Date.distantPast, characterID: characterID, characterName: characterName ?? "", realm: realm ?? "", scopes: scopes)
+//			let token = OAuth2Token(accessToken: accessToken ?? "", refreshToken: refreshToken ?? "", tokenType: tokenType ?? "", scopes: scopes, characterID: characterID, characterName: characterName ?? "", realm: realm ?? "")
+//			token.expiresOn = expiresOn as Date? ?? Date.distantPast
 			return token
 		}
 		set {
@@ -46,9 +51,7 @@ extension NCAccount {
 			if characterID != token.characterID {characterID = token.characterID}
 			if characterName != token.characterName {characterName = token.characterName}
 			if realm != token.realm {realm = token.realm}
-			if let expiresOn = token.expiresOn, expiresOn != self.expiresOn {
-				self.expiresOn = expiresOn
-			}
+			if expiresOn != token.expiresOn {expiresOn = token.expiresOn}
 			let newScopes = Set<String>(token.scopes)
 			
 			let toInsert: Set<String>

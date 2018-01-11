@@ -42,7 +42,14 @@ class NCLoadoutRow: TreeRow {
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCLoadoutRow)?.hashValue == hashValue
 	}
+}
+
+class NCLoadoutNoRouteRow: NCLoadoutRow {
 	
+	required init(loadout: NCLoadout, type: NCDBInvType) {
+		super.init(loadout: loadout, type: type)
+		route = nil
+	}
 }
 
 class NCLoadoutsSection<T: NCLoadoutRow>: TreeSection {

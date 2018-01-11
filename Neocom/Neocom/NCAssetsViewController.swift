@@ -15,8 +15,8 @@ class NCAssetRow: DefaultTreeRow {
 		let type = types[asset.typeID]
 		let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
 		let title: NSAttributedString
-		if let qty = asset.quantity, qty > 1 {
-			title = typeName + (" x" + NCUnitFormatter.localizedString(from: qty, unit: .none, style: .full)) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
+		if asset.quantity > 1 {
+			title = typeName + (" x" + NCUnitFormatter.localizedString(from: asset.quantity, unit: .none, style: .full)) * [NSAttributedStringKey.foregroundColor: UIColor.caption]
 		}
 		else {
 			title = NSAttributedString(string: typeName)
@@ -104,14 +104,24 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 	}
 	
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
-		dataManager.assets { result in
-			self.assets = result
-			completionHandler([result.cacheRecord].flatMap {$0})
+		var assets: [NCCachedResult<[ESI.Assets.Asset]>] = []
+		func load(page: Int) {
+			dataManager.assets(page: page) { result in
+				assets.append(result)
+				if result.value?.isEmpty == false {
+					load(page: page + 1)
+				}
+				else {
+					self.assets = assets
+					completionHandler(assets.flatMap {$0.cacheRecord})
+				}
+			}
 		}
+		load(page: 1)
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let value = assets?.value {
+		if let value = assets?.flatMap({ $0.value }).joined() {
 			tableView.backgroundView = nil
 			
 			var locationIDs = Set(value.map {$0.locationID})
@@ -180,12 +190,12 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 			}
 		}
 		else {
-			tableView.backgroundView =  treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: assets?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			tableView.backgroundView =  treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: assets?.first?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 			completionHandler()
 		}
 	}
 	
-	private var assets: NCCachedResult<[ESI.Assets.Asset]>?
+	private var assets: [NCCachedResult<[ESI.Assets.Asset]>]?
 	var contents: [Int64: [ESI.Assets.Asset]]?
 	
 	//MARK: - NCSearchableViewController

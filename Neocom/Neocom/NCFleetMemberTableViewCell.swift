@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Dgmpp
 
 class NCFleetMemberTableViewCell: NCTableViewCell {
 	@IBOutlet weak var characterNameLabel: UILabel!
@@ -29,8 +30,8 @@ class NCFleetMemberRow: TreeRow {
 	}()
 	
 	
-	let pilot: NCFittingCharacter
-	let ship: NCFittingShip
+	let pilot: DGMCharacter
+	let ship: DGMShip
 	
 	let shipName: String
 	let characterName: String
@@ -38,12 +39,12 @@ class NCFleetMemberRow: TreeRow {
 	let characterID: Int64?
 	var characterImage: UIImage?
 	
-	init(pilot: NCFittingCharacter, route: Route? = nil) {
+	init(pilot: DGMCharacter, route: Route? = nil) {
 		self.pilot = pilot
 		self.ship = pilot.ship!
 		self.shipName = ship.name
 		
-		let url = pilot.url ?? NCFittingCharacter.url(level: 0)
+		let url = pilot.url ?? DGMCharacter.url(level: 0)
 		let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
 		let query = components?.queryItems
 		
@@ -99,7 +100,7 @@ class NCFleetMemberRow: TreeRow {
 	}
 	
 	override var hashValue: Int {
-		return [pilot.hashValue].hashValue
+		return pilot.hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {

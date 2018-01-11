@@ -111,22 +111,26 @@ class NCFittingLoadoutModule: NCFittingLoadoutItem {
 
 class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 	let isActive: Bool
+	let isKamikaze: Bool
 	let squadronTag: Int
 	
 	init(typeID: Int, count: Int, identifier: Int?, isActive: Bool = true, squadronTag: Int = -1) {
 		self.isActive = isActive
 		self.squadronTag = squadronTag
+		self.isKamikaze = false
 		super.init(typeID: typeID, count: count, identifier: identifier)
 	}
 	
 	init(drone: DGMDrone) {
 		self.isActive = drone.isActive
+		self.isKamikaze = drone.isKamikaze
 		self.squadronTag = drone.squadronTag
 		super.init(type: drone)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
 		isActive = aDecoder.containsValue(forKey: "isActive") ? aDecoder.decodeBool(forKey: "isActive") : true
+		isKamikaze = aDecoder.containsValue(forKey: "isKamikaze") ? aDecoder.decodeBool(forKey: "isKamikaze") : false
 		squadronTag = aDecoder.containsValue(forKey: "squadronTag") ? aDecoder.decodeInteger(forKey: "squadronTag") : -1
 		super.init(coder: aDecoder)
 	}
@@ -136,6 +140,10 @@ class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 		if !isActive {
 			aCoder.encode(isActive, forKey: "isActive")
 		}
+		if !isKamikaze {
+			aCoder.encode(isKamikaze, forKey: "isKamikaze")
+		}
+
 		aCoder.encode(squadronTag, forKey: "squadronTag")
 	}
 

@@ -322,6 +322,7 @@ extension DGMCharacter {
 						let item = try DGMDrone(typeID: drone.typeID)
 						try ship.add(item, squadronTag: drone.squadronTag)
 						item.isActive = drone.isActive
+						item.isKamikaze = drone.isKamikaze
 						item.identifier = identifier
 					}
 				}

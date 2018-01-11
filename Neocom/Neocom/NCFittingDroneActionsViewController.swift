@@ -47,10 +47,12 @@ class NCFittingDroneStateRow: TreeRow {
 	let drones: [DGMDrone]
 	let fleet: NCFittingFleet
 	let isActive: Bool
+	let isKamikaze: Bool
 	init(drones: [DGMDrone], fleet: NCFittingFleet) {
 		self.drones = drones
 		self.fleet = fleet
 		isActive = drones.first?.isActive ?? false
+		isKamikaze = drones.first?.isKamikaze ?? false
 		super.init(prototype: Prototype.NCFittingDroneStateTableViewCell.default)
 		
 	}
@@ -58,16 +60,33 @@ class NCFittingDroneStateRow: TreeRow {
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCFittingDroneStateTableViewCell else {return}
 		cell.object = self
-		cell.segmentedControl?.selectedSegmentIndex = isActive ? 1 : 0
+		
+		cell.segmentedControl?.removeAllSegments()
+		cell.segmentedControl?.insertSegment(withTitle: NSLocalizedString("Inactive", comment: ""), at: 0, animated: false)
+		cell.segmentedControl?.insertSegment(withTitle: NSLocalizedString("Active", comment: ""), at: 1, animated: false)
+		if drones.first?.hasKamikazeAbility == true {
+			cell.segmentedControl?.insertSegment(withTitle: NSLocalizedString("True Sacrifice", comment: ""), at: 2, animated: false)
+		}
+		
+		switch (isActive, isKamikaze) {
+		case (true, true):
+			cell.segmentedControl?.selectedSegmentIndex = 2
+		case (true, false):
+			cell.segmentedControl?.selectedSegmentIndex = 1
+		default:
+			cell.segmentedControl?.selectedSegmentIndex = 0
+		}
 		
 		let segmentedControl = cell.segmentedControl!
 		
 		cell.actionHandler = NCActionHandler(segmentedControl, for: .valueChanged) { [weak self, weak segmentedControl] _ in
 			guard let sender = segmentedControl else {return}
 			guard let drones = self?.drones else {return}
-			let isActive = sender.selectedSegmentIndex == 1
+			let isActive = sender.selectedSegmentIndex > 0
+			let isKamikaze = sender.selectedSegmentIndex == 2
 			for drone in drones {
 				drone.isActive = isActive
+				drone.isKamikaze = isKamikaze
 			}
 			NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
 		}

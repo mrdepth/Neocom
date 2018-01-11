@@ -39,9 +39,10 @@ class NCFittingDroneRow: TreeRow {
 		cell.iconView?.image = type?.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image
 		
 		let isActive = drone?.isActive == true
+		let isKamikaze = drone?.isKamikaze == true
 		let hasTarget = drone?.target != nil
 		
-		cell.stateView?.image = isActive ? #imageLiteral(resourceName: "active") : #imageLiteral(resourceName: "offline")
+		cell.stateView?.image =  (isActive && isKamikaze) ? #imageLiteral(resourceName: "overheated") : isActive ? #imageLiteral(resourceName: "active") : #imageLiteral(resourceName: "offline")
 		cell.subtitleLabel?.attributedText = subtitle
 		cell.targetIconView.image = hasTarget ? #imageLiteral(resourceName: "targets") : nil
 		
